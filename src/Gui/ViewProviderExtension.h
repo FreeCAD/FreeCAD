@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEWPROVIDEREXTENSION_H
-#define GUI_VIEWPROVIDEREXTENSION_H
+#pragma once
 
 #include <QIcon>
 #include <App/Extension.h>
@@ -201,5 +200,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_VIEWPROVIDEREXTENSION_H

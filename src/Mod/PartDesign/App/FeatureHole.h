@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_Hole_H
-#define PARTDESIGN_Hole_H
+#pragma once
 
 #include <optional>
 #include <App/PropertyUnits.h>
@@ -51,6 +52,7 @@ public:
 
     App::PropertyBool Threaded;
     App::PropertyBool ModelThread;
+    App::PropertyBool CosmeticThread;
     App::PropertyLength ThreadPitch;
     App::PropertyEnumeration ThreadType;
     App::PropertyEnumeration ThreadSize;
@@ -128,6 +130,7 @@ public:
     virtual void updateProps();
     bool isDynamicCounterbore(const std::string& thread, const std::string& holeCutType);
     bool isDynamicCountersink(const std::string& thread, const std::string& holeCutType);
+    double getThreadPitch() const;
 
     Base::Vector3d guessNormalDirection(const TopoShape& profileshape) const;
     TopoShape findHoles(
@@ -287,7 +290,6 @@ private:
     double getCountersinkAngle() const;
     double getThreadClassClearance() const;
     double getThreadRunout(int mode = 1) const;
-    double getThreadPitch() const;
     double getThreadProfileAngle();
     void findClosestDesignation();
     void rotateToNormal(const gp_Dir& helixAxis, const gp_Dir& normalAxis, TopoDS_Shape& helixShape) const;
@@ -301,6 +303,3 @@ private:
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PART_Hole_H

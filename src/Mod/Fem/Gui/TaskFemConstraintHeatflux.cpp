@@ -142,7 +142,7 @@ TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(
     ui->qsb_ambienttemp_rad->setValue(pcConstraint->AmbientTemp.getQuantityValue());
     ui->dsb_emissivity->setValue(pcConstraint->Emissivity.getValue());
 
-    ui->qsb_heat_flux->setValue(pcConstraint->DFlux.getQuantityValue());
+    ui->qsb_heat_flux->setValue(pcConstraint->DistributedHeatFlux.getQuantityValue());
 
     ui->lw_references->clear();
     for (std::size_t i = 0; i < Objects.size(); i++) {
@@ -174,7 +174,7 @@ TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(
     ui->qsb_ambienttemp_conv->bind(pcConstraint->AmbientTemp);
     ui->qsb_ambienttemp_rad->bind(pcConstraint->AmbientTemp);
     ui->dsb_emissivity->bind(pcConstraint->Emissivity);
-    ui->qsb_heat_flux->bind(pcConstraint->DFlux);
+    ui->qsb_heat_flux->bind(pcConstraint->DistributedHeatFlux);
 
     updateUI();
 }
@@ -211,7 +211,7 @@ void TaskFemConstraintHeatflux::onEmissivityChanged(double val)
 void TaskFemConstraintHeatflux::onHeatFluxChanged(double val)
 {
     Fem::ConstraintHeatflux* pcConstraint = ConstraintView->getObject<Fem::ConstraintHeatflux>();
-    pcConstraint->DFlux.setValue(val);
+    pcConstraint->DistributedHeatFlux.setValue(val);
 }
 
 void TaskFemConstraintHeatflux::Conv()
@@ -254,7 +254,7 @@ void TaskFemConstraintHeatflux::Flux()
         name.c_str(),
         getConstraintType().c_str()
     );
-    ui->qsb_heat_flux->setValue(pcConstraint->DFlux.getQuantityValue());
+    ui->qsb_heat_flux->setValue(pcConstraint->DistributedHeatFlux.getQuantityValue());
     ui->sw_heatflux->setCurrentIndex(0);
 }
 
@@ -263,7 +263,7 @@ void TaskFemConstraintHeatflux::onConstrTypeChanged(int item)
     auto obj = ConstraintView->getObject<Fem::ConstraintHeatflux>();
     obj->ConstraintType.setValue(item);
     const char* type = obj->ConstraintType.getValueAsString();
-    if (strcmp(type, "DFlux") == 0) {
+    if (strcmp(type, "DistributedHeatFlux") == 0) {
         this->Flux();
     }
     else if (strcmp(type, "Convection") == 0) {
@@ -547,7 +547,7 @@ bool TaskDlgFemConstraintHeatflux::accept()
         );
         Gui::Command::doCommand(
             Gui::Command::Doc,
-            "App.ActiveDocument.%s.DFlux = \"%s\"",
+            "App.ActiveDocument.%s.DistributedHeatFlux = \"%s\"",
             name.c_str(),
             parameterHeatflux->getDFlux().c_str()
         );

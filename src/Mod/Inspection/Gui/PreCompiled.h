@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef INSPECTION_GUI_PRECOMPILED_H
-#define INSPECTION_GUI_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -53,5 +52,3 @@
 #include <QApplication>
 #include <QMenu>
 #include <QMessageBox>
-
-#endif  // GUI_PRECOMPILED_H

@@ -34,6 +34,9 @@
 #include <set>
 #include <vector>
 
+#include <boost_graph_adjacency_list.hpp>
+#include <boost/graph/topological_sort.hpp>
+
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DynamicProperty.h>
@@ -788,7 +791,7 @@ void Sheet::updateProperty(CellAddress key)
 
         if (input) {
             CurrentAddressLock lock(currentRow, currentCol, key);
-            output.reset(input->eval());
+            output = input->eval();
         }
         else {
             std::string s;

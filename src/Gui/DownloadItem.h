@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_DIALOG_DOWNLOADITEM_H
-#define GUI_DIALOG_DOWNLOADITEM_H
+#pragma once
 
 #include <QBasicTimer>
 #include <QElapsedTimer>
@@ -160,5 +159,3 @@ private:
 
 }  // namespace Dialog
 }  // namespace Gui
-
-#endif  // GUI_DIALOG_DOWNLOADITEM_H

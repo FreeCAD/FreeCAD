@@ -161,7 +161,7 @@ SheetView::~SheetView()
     delete delegate;
 }
 
-bool SheetView::onMsg(const char* pMsg, const char**)
+bool SheetView::onMsg(const char* pMsg)
 {
     if (strcmp("Undo", pMsg) == 0) {
         getGuiDocument()->undo(1);
@@ -190,12 +190,12 @@ bool SheetView::onMsg(const char* pMsg, const char**)
     else if (strcmp("Std_Delete", pMsg) == 0) {
         std::vector<Range> ranges = selectedRanges();
         if (sheet->hasCell(ranges)) {
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Clear Cells"));
+            sheet->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Clear Cells"));
             std::vector<Range>::const_iterator i = ranges.begin();
             for (; i != ranges.end(); ++i) {
                 FCMD_OBJ_CMD(sheet, "clear('" << i->rangeString() << "')");
             }
-            Gui::Command::commitCommand();
+            sheet->getDocument()->commitTransaction();
             Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
         }
         return true;
@@ -249,9 +249,6 @@ bool SheetView::onHasMsg(const char* pMsg) const
         return true;
     }
     if (strcmp(pMsg, "PrintPdf") == 0) {
-        return true;
-    }
-    else if (strcmp("AllowsOverlayOnHover", pMsg) == 0) {
         return true;
     }
 
@@ -756,8 +753,7 @@ Py::Object SheetViewPy::select(const Py::Tuple& _args)
             static_cast<QItemSelectionModel::SelectionFlags>(flags)
         );
     }
-    else if (args.size() == 3
-             && PyArg_ParseTuple(_args.ptr(), "ssi", &topLeft, &bottomRight, &flags)) {
+    else if (args.size() == 3 && PyArg_ParseTuple(_args.ptr(), "ssi", &topLeft, &bottomRight, &flags)) {
         sheetView->select(
             App::CellAddress(topLeft),
             App::CellAddress(bottomRight),

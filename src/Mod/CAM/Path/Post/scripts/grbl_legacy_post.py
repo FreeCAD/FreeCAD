@@ -22,6 +22,10 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+#
+# DEPRECATED: This post processor is deprecated and replaced by the generic
+# post processor with Generic_Grbl.fcm machine configuration file.
+# Use the generic post processor instead.
 
 import FreeCAD
 from FreeCAD import Units
@@ -34,7 +38,6 @@ import datetime
 import shlex
 import re
 from builtins import open as pyopen
-
 
 TOOLTIP = """
 Generate g-code from a Path that is compatible with the grbl controller.
@@ -267,7 +270,7 @@ def export(objectslist, filename, argstring):
     global MOTION_MODE
     global SUPPRESS_COMMANDS
 
-    print("Post Processor: " + __name__ + " postprocessing...")
+    # print("Post Processor: " + __name__ + " postprocessing...")  # Commented to reduce test noise
     gcode = ""
 
     # write header
@@ -383,7 +386,7 @@ def export(objectslist, filename, argstring):
     else:
         final = gcode
 
-    print("Done postprocessing.")
+    # print("Done postprocessing.")  # Commented to reduce test noise
 
     # write the file
     if filename != "-":

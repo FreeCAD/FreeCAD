@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEW3DINVENTORVIEWER_H
-#define GUI_VIEW3DINVENTORVIEWER_H
+#pragma once
 
 #include <list>
 #include <map>
@@ -66,6 +65,7 @@ class QSurfaceFormat;
 class SoTranslation;
 class SoTransform;
 class SoText2;
+class SoAnnotation;
 
 class SoSeparator;
 class SoShapeHints;
@@ -507,7 +507,7 @@ public:
 
     void getDimensions(float& fHeight, float& fWidth) const;
     float getMaxDimension() const;
-    SbVec3f getCenterPointOnFocalPlane() const;
+    SbVec3f getFocalPoint() const;
 
     NavigationStyle* navigationStyle() const;
 
@@ -557,6 +557,7 @@ private:
 
 private:
     NaviCube* naviCube;
+    SoAnnotation* naviCubeAnnotation;
     std::set<ViewProvider*> _ViewProviderSet;
     std::map<SoSeparator*, ViewProvider*> _ViewProviderMap;
     std::list<GLGraphicsItem*> graphicsItems;
@@ -634,5 +635,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_VIEW3DINVENTORVIEWER_H

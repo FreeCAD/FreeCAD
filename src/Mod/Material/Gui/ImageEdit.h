@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATGUI_IMAGEEDIT_H
-#define MATGUI_IMAGEEDIT_H
+#pragma once
 
 #include <memory>
 
@@ -100,5 +99,3 @@ private:
 };
 
 }  // namespace MatGui
-
-#endif  // MATGUI_IMAGEEDIT_H

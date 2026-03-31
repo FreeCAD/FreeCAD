@@ -31,7 +31,6 @@ import Measure
 import MeasureGui
 from MeasureCOM import makeMeasureCOM, MeasureCOM
 
-
 # Expose create functions
 Measure.makeMeasureCOM = makeMeasureCOM
 
@@ -39,7 +38,6 @@ Measure.makeMeasureCOM = makeMeasureCOM
 # Register python measure types
 import FreeCAD
 from PySide.QtCore import QT_TRANSLATE_NOOP
-
 
 FreeCAD.MeasureManager.addMeasureType(
     "CENTEROFMASS",

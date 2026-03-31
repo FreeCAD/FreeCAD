@@ -198,6 +198,7 @@ class Document(PropertyContainer):
 
         Args:
             type: the type of the document object to create.
+                  Call method supportedTypes() to get a list of possible values.
             name: the optional name of the new object.
             objProxy: the Python binding object to attach to the new document object.
             viewProxy: the Python binding object to attach the view provider of this object.
@@ -444,5 +445,14 @@ class Document(PropertyContainer):
 
         Args:
             sort: whether to topologically sort the return list
+        """
+        ...
+
+    def getBookedTransactionID(self) -> int:
+        """
+        getBookedTransactionID() -> int
+
+        Returns the currently booked transaction id, which is the id of the current transaction OR the id
+        the next transaction will stick to if no change has occured yet
         """
         ...

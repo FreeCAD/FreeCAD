@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUINATIVEEVENT_H
-#define GUINATIVEEVENT_H
+#pragma once
 
 #include "GuiAbstractNativeEvent.h"
 #include <vector>
@@ -54,5 +53,3 @@ public:
     static bool xcbEventFilter(void* message, long* result);
 };
 }  // namespace Gui
-
-#endif  // GUINATIVEEVENT_H

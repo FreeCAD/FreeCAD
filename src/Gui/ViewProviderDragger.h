@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEWPROVIDER_DRAGGER_H
-#define GUI_VIEWPROVIDER_DRAGGER_H
+#pragma once
 
 #include "ViewProviderDocumentObject.h"
 #include <Base/Placement.h>
@@ -83,7 +82,6 @@ public:
     /** @name Edit methods */
     //@{
     bool doubleClicked() override;
-    void setupContextMenu(QMenu*, QObject*, const char*) override;
     void updateData(const App::Property*) override;
 
     ViewProvider* startEditing(int ModNum = 0) override;
@@ -162,5 +160,3 @@ private:
 }  // namespace Gui
 
 ENABLE_BITMASK_OPERATORS(Gui::ViewProviderDragger::DraggerComponent)
-
-#endif  // GUI_VIEWPROVIDER_DRAGGER_H

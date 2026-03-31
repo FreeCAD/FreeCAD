@@ -35,6 +35,7 @@ from PySide import QtCore
 from PySide import QtGui
 
 import FreeCAD
+import FemGui
 
 from femtools.femutils import getOutputWinColor
 
@@ -67,14 +68,15 @@ class _BaseLogTaskPanel(base_femtaskpanel._BaseTaskPanel, ABC):
     Abstract base class for TaskPanel with logging
     """
 
-    def __init__(self, obj, tool):
+    def __init__(self, obj):
         super().__init__(obj)
-        self.tool = tool
+        self.tool = obj.Tool
         self.timer = QtCore.QTimer()
         self.elapsed = QtCore.QElapsedTimer()
         self._thread = _Thread(self.tool)
-        self.text_log = None
-        self.text_time = None
+
+        self.text_log = self.form.te_output
+        self.text_time = self.form.l_time
 
     def setup_connections(self):
         QtCore.QObject.connect(self._thread, QtCore.SIGNAL("started()"), self.thread_started)
@@ -138,7 +140,6 @@ class _BaseLogTaskPanel(base_femtaskpanel._BaseTaskPanel, ABC):
                     QtGui.QColor(getOutputWinColor("Error")),
                 )
                 return
-            self.tool.update_properties()
             self.write_log("Process finished\n", QtGui.QColor(getOutputWinColor("Text")))
 
     def process_started(self):
@@ -250,3 +251,104 @@ class _BaseLogTaskPanel(base_femtaskpanel._BaseTaskPanel, ABC):
     def get_version(self):
         full_message = self.tool.version()
         QtGui.QMessageBox.information(None, "{} - Info".format(self.tool.name), full_message)
+
+
+class _BaseWorkerTaskPanel(_BaseLogTaskPanel):
+    """
+    Abstract base class for TaskPanel with logging and file input edition
+    """
+
+    def __init__(self, obj):
+        super().__init__(obj)
+        self.prepared = False
+        self.run_complete = False
+
+        # add document observer to detect properties changes
+        FreeCAD.addDocumentObserver(self.observer)
+
+    def setup_connections(self):
+        super().setup_connections()
+
+        QtCore.QObject.connect(
+            self.form.ckb_working_directory,
+            QtCore.SIGNAL("toggled(bool)"),
+            self.working_directory_toggled,
+        )
+        QtCore.QObject.connect(
+            self.form.pb_write_input, QtCore.SIGNAL("clicked()"), self.write_input_clicked
+        )
+        QtCore.QObject.connect(
+            self.form.pb_edit_input, QtCore.SIGNAL("clicked()"), self.edit_input_clicked
+        )
+        QtCore.QObject.connect(
+            self.form.fc_working_directory,
+            QtCore.SIGNAL("fileNameSelected(QString)"),
+            self.working_directory_selected,
+        )
+        QtCore.QObject.connect(
+            self.form,
+            QtCore.SIGNAL("destroyed()"),
+            lambda: FreeCAD.removeDocumentObserver(self.observer),
+        )
+
+    def preparation_finished(self):
+        # override base class method to not auto compute
+        self.prepared = True
+        self.form.pb_edit_input.setEnabled(True)
+        if not self.run_complete:
+            self.timer.stop()
+        else:
+            super().preparation_finished()
+
+    def apply(self):
+        self.text_log.clear()
+        self.elapsed.restart()
+        if self.prepared:
+            self.timer.start(100)
+            self.tool.compute()
+        else:
+            # run complete process if 'Apply' is pressed without
+            # previously write the input files
+            self.run_complete = True
+            super().apply()
+
+    def set_widgets(self):
+        "fill the widgets"
+
+        self.form.fc_working_directory.setProperty("fileName", self.obj.WorkingDirectory)
+        self.form.ckb_working_directory.setChecked(False)
+        self.form.gpb_working_directory.setVisible(False)
+
+    def working_directory_selected(self):
+        self.obj.WorkingDirectory = self.form.fc_working_directory.property("fileName")
+        # if empty, use preferences
+        if not self.obj.WorkingDirectory:
+            self.tool._create_working_directory()
+
+    def write_input_clicked(self):
+        self.prepared = False
+        self.run_complete = False
+        self.run_process()
+
+    def edit_input_clicked(self):
+        gen_param = self.tool.fem_param.GetGroup("General")
+        ext_editor_path = gen_param.GetString("ExternalEditorPath", "")
+        if not ext_editor_path:
+            FemGui.open(self.tool.model_file)
+        else:
+            ext_editor_process = QtCore.QProcess()
+            ext_editor_process.start(ext_editor_path, [self.tool.model_file])
+            ext_editor_process.waitForFinished(-1)
+
+    def working_directory_toggled(self, bool_value):
+        self.form.gpb_working_directory.setVisible(bool_value)
+
+
+class _WorkerObserver:
+    def __init__(self, task):
+        self.task = task
+        self.groups = []
+
+    def slotChangedObject(self, observed, prop):
+        if observed == self.task.obj and (observed.getGroupOfProperty(prop) in self.groups):
+            self.task.prepared = False

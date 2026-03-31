@@ -30,7 +30,6 @@ __url__ = "https://www.freecad.org"
 
 import FreeCAD
 
-
 # PythonFeatures from package femobjects
 # standard object name == class name == type without 'Fem::'
 
@@ -146,17 +145,17 @@ def makeConstraintElectricChargeDensity(doc, name="ElectricChargeDensity"):
     return obj
 
 
-def makeConstraintElectrostaticPotential(doc, name="ConstraintElectrostaticPotential"):
-    """makeConstraintElectrostaticPotential(document, [name]):
-    makes a Fem ElectrostaticPotential object"""
+def makeConstraintElectromagnetic(doc, name="ConstraintElectromagnetic"):
+    """makeConstraintElectromagnetic(document, [name]):
+    makes a Fem Electromagnetic object"""
     obj = doc.addObject("Fem::ConstraintPython", name)
-    from femobjects import constraint_electrostaticpotential
+    from femobjects import constraint_electromagnetic
 
-    constraint_electrostaticpotential.ConstraintElectrostaticPotential(obj)
+    constraint_electromagnetic.ConstraintElectromagnetic(obj)
     if FreeCAD.GuiUp:
-        from femviewprovider import view_constraint_electrostaticpotential
+        from femviewprovider import view_constraint_electromagnetic
 
-        view_constraint_electrostaticpotential.VPConstraintElectroStaticPotential(obj.ViewObject)
+        view_constraint_electromagnetic.VPConstraintElectromagnetic(obj.ViewObject)
     return obj
 
 
@@ -448,7 +447,7 @@ def makeMaterialMechanicalNonlinear(doc, base_material, name="MaterialMechanical
     from femobjects import material_mechanicalnonlinear
 
     material_mechanicalnonlinear.MaterialMechanicalNonlinear(obj)
-    obj.LinearBaseMaterial = base_material
+    base_material.Nonlinear = obj
     if FreeCAD.GuiUp:
         from femviewprovider import view_material_mechanicalnonlinear
 

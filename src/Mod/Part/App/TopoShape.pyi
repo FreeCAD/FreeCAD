@@ -454,11 +454,13 @@ class TopoShape(ComplexGeoData):
 
     def transformShape(
         self, matrix: Matrix, copy: bool = False, checkScale: bool = False, /
-    ) -> None:
+    ) -> TopoShape:
         """
         Apply transformation on a shape without changing the underlying geometry.
-        transformShape(Matrix, [boolean copy=False, checkScale=False]) -> None
+        transformShape(Matrix, [boolean copy=False, checkScale=False]) -> shape
         --
+        If copy is True, returns a transformed copy and leaves the original unchanged.
+        If copy is False, transforms this shape in place and returns itself.
         If checkScale is True, it will use transformGeometry if non-uniform
         scaling is detected.
         """

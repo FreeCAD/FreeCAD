@@ -455,9 +455,7 @@ bool AssemblyObject::validateNewPlacements()
     // First we check if a grounded object has moved. It can happen that they flip.
     auto groundedParts = getGroundedParts();
     for (auto* obj : groundedParts) {
-        auto* propPlacement = dynamic_cast<App::PropertyPlacement*>(
-            obj->getPropertyByName("Placement")
-        );
+        auto* propPlacement = obj->getPlacementProperty();
         if (propPlacement) {
             Base::Placement oldPlc = propPlacement->getValue();
 
@@ -505,7 +503,7 @@ void AssemblyObject::savePlacementsForUndo()
         savePair.first = obj;
 
         // Check if the object has a "Placement" property
-        auto* propPlc = dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
+        auto* propPlc = obj->getPlacementProperty();
         if (!propPlc) {
             continue;
         }
@@ -528,9 +526,7 @@ void AssemblyObject::undoSolve()
         }
 
         // Check if the object has a "Placement" property
-        auto* propPlacement = dynamic_cast<App::PropertyPlacement*>(
-            obj->getPropertyByName("Placement")
-        );
+        auto* propPlacement = obj->getPlacementProperty();
         if (!propPlacement) {
             continue;
         }
@@ -572,9 +568,7 @@ void AssemblyObject::setNewPlacements()
         }
 
         // Check if the object has a "Placement" property
-        auto* propPlacement = dynamic_cast<App::PropertyPlacement*>(
-            obj->getPropertyByName("Placement")
-        );
+        auto* propPlacement = obj->getPlacementProperty();
         if (!propPlacement) {
             continue;
         }
@@ -1663,20 +1657,20 @@ std::string AssemblyObject::handleOneSideOfJoint(
     Base::Placement plc = getPlacementFromProp(joint, propPlcName);
     // Now we have plc which is the JCS placement, but its relative to the Object, not to the
     // containing Part.
-
-    if (obj->getNameInDocument() != part->getNameInDocument()) {
-
-        auto* ref = dynamic_cast<App::PropertyXLinkSub*>(joint->getPropertyByName(propRefName));
-        if (!ref) {
-            return "";
-        }
-
-        Base::Placement obj_global_plc = getGlobalPlacement(obj, ref);
-        plc = obj_global_plc * plc;
-
-        Base::Placement part_global_plc = getGlobalPlacement(part, ref);
-        plc = part_global_plc.inverse() * plc;
+    auto* ref = dynamic_cast<App::PropertyXLinkSub*>(joint->getPropertyByName(propRefName));
+    if (!ref) {
+        return "";
     }
+
+    // This plc adjustment should be necessary only if obj != part. But for some objects like
+    // draft links, we can have obj == part and still need to get global placement to adjust
+    // by the element placement.
+    Base::Placement obj_global_plc = getGlobalPlacement(nullptr, ref);
+    plc = obj_global_plc * plc;
+    // Note part is supposed to be root of ref, so we could use part.Placement directly.
+    Base::Placement part_global_plc = getGlobalPlacement(part, ref);
+    plc = part_global_plc.inverse() * plc;
+
     // check if we need to add an offset in case of bundled parts.
     if (!data.offsetPlc.isIdentity()) {
         plc = data.offsetPlc * plc;
@@ -2054,7 +2048,7 @@ void AssemblyObject::ensureIdentityPlacements()
         // When used in assembly, link groups must have identity placements.
         if (obj->isLinkGroup()) {
             auto* link = dynamic_cast<App::Link*>(obj);
-            auto* pPlc = dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
+            auto* pPlc = obj->getPlacementProperty();
             if (!pPlc || !link) {
                 continue;
             }
@@ -2070,7 +2064,7 @@ void AssemblyObject::ensureIdentityPlacements()
             // To keep the LinkElement positions, we apply plc to their placements
             std::vector<App::DocumentObject*> elts = link->ElementList.getValues();
             for (auto* elt : elts) {
-                pPlc = dynamic_cast<App::PropertyPlacement*>(elt->getPropertyByName("Placement"));
+                pPlc = elt->getPlacementProperty();
                 pPlc->setValue(plc * pPlc->getValue());
                 elt->purgeTouched();
             }

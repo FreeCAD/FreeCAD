@@ -9,6 +9,7 @@ add_executable(PartDesign_tests_run
 
 set(PartDesignTestData_Files
         TestModels/ModelFromV021.FCStd
+        TestModels/TwoLengthsPadWithExpression.FCStd
 )
 
 ADD_CUSTOM_TARGET(PartDesignTestData ALL

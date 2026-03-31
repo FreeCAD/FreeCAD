@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /******************************************************************************
  *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
@@ -579,8 +581,9 @@ void LinearPattern::syncLengthAndOffset(LinearPatternDirection dir)
         && !lengthProp.testStatus(App::Property::Status::Immutable)) {
         lengthProp.setValue(offsetProp.getValue() * occurrences);
     }
-    else if (mode == LinearPatternMode::Extent
-             && !offsetProp.testStatus(App::Property::Status::Immutable)) {
+    else if (
+        mode == LinearPatternMode::Extent && !offsetProp.testStatus(App::Property::Status::Immutable)
+    ) {
         offsetProp.setValue(lengthProp.getValue() / occurrences);
     }
 }

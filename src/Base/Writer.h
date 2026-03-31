@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SRC_BASE_WRITER_H_
-#define SRC_BASE_WRITER_H_
+#pragma once
 
 
 #include <set>
@@ -136,7 +135,22 @@ public:
     void decInd();
     //@}
 
+    /** @name C++ streams */
+    //@{
+    /// get the current indentation
     virtual std::ostream& Stream() = 0;
+    virtual const std::ostream& Stream() const = 0;
+    /// Set error state flags
+    void clear();
+    /// Check whether state of stream is good
+    bool isGood() const;
+    /// Check whether either failbit or badbit is set
+    bool hasFailed() const;
+    /// Check whether badbit is set
+    bool isBad() const;
+    /// Check whether eofbit is set
+    bool isEof() const;
+    //@}
 
     /** Create an output stream for storing character content
      * The input is assumed to be valid character with
@@ -215,6 +229,11 @@ public:
         return ZipStream;
     }
 
+    const std::ostream& Stream() const override
+    {
+        return ZipStream;
+    }
+
     void setComment(const char* str)
     {
         ZipStream.setComment(str);
@@ -248,6 +267,10 @@ public:
     {
         return StrStream;
     }
+    const std::ostream& Stream() const override
+    {
+        return StrStream;
+    }
     std::string getString() const
     {
         return StrStream.str();
@@ -277,6 +300,10 @@ public:
     {
         return FileStream;
     }
+    const std::ostream& Stream() const override
+    {
+        return FileStream;
+    }
     void close()
     {
         FileStream.close();
@@ -302,6 +329,3 @@ protected:
 
 
 }  // namespace Base
-
-
-#endif  // SRC_BASE_WRITER_H_

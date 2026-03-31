@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_PROPERTYPYTHONOBJECT_H
-#define APP_PROPERTYPYTHONOBJECT_H
+#pragma once
 
 #include <string>
 #include <CXX/Objects.hxx>
@@ -84,5 +83,3 @@ private:
 
 
 }  // namespace App
-
-#endif  // APP_PROPERTYPYTHONOBJECT_H

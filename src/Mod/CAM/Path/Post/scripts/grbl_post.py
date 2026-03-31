@@ -24,6 +24,10 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+#
+# DEPRECATED: This post processor is deprecated and replaced by the generic
+# post processor with Generic_Grbl.fcm machine configuration file.
+# Use the generic post processor instead.
 
 import argparse
 
@@ -124,9 +128,7 @@ class Grbl(PostProcessor):
         #
         # Any commands in this value will be output as the last commands in the G-code file.
         #
-        values[
-            "POSTAMBLE"
-        ] = """M5
+        values["POSTAMBLE"] = """M5
 G17 G90
 M2"""
         values["POSTPROCESSOR_FILE_NAME"] = __name__

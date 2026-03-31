@@ -2,6 +2,7 @@
 
 # ***************************************************************************
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
+# *   Copyright (c) 2025 Billy Huddleston <billy@ivdc.com>                  *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -81,31 +82,75 @@ class ObjectOp(PathOp.ObjectOp):
             "Base",
             QT_TRANSLATE_NOOP("App::Property", "List of disabled features"),
         )
+        # Handle SortingMode property with migration support
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "SortingMode",
+            "Sorting",
+            QT_TRANSLATE_NOOP("App::Property", "Manual or Automatic mode sorting of holes"),
+        )
+        obj.SortingMode = ("Automatic", "Manual")  # Set available options
+        obj.SortingMode = "Automatic"  # Set default value
+
+        obj.addProperty(
+            "App::PropertyVectorDistance",
+            "StartPoint",
+            "Sorting",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Start point for automatic sorting (x,y used, z ignored)"
+            ),
+        )
+
+        obj.addProperty(
+            "App::PropertyBool",
+            "UseEndPoint",
+            "Sorting",
+            QT_TRANSLATE_NOOP("App::Property", "Enable to use end point for automatic sorting"),
+        )
+
+        obj.addProperty(
+            "App::PropertyVectorDistance",
+            "EndPoint",
+            "Sorting",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "End point for automatic sorting (x,y used, z ignored)"
+            ),
+        )
+
         self.initCircularHoleOperation(obj)
+
+    def updateSortingVisibility(self, obj):
+        """Show or hide StartPoint, EndPoint and UseEndPoint based on SortingMode."""
+        if hasattr(obj, "SortingMode"):
+            mode = 0 if obj.SortingMode == "Automatic" else 2  # 0=visible, 2=hidden
+            for prop in ("StartPoint", "EndPoint", "UseEndPoint"):
+                if hasattr(obj, prop):
+                    obj.setEditorMode(prop, mode)
+
+    def opOnChanged(self, obj, prop):
+        """opOnChanged(obj, prop) ... react to SortingMode changes to update property visibility."""
+        if prop == "SortingMode" and hasattr(obj, "StartPoint"):
+            self.updateSortingVisibility(obj)
 
     def initCircularHoleOperation(self, obj):
         """initCircularHoleOperation(obj) ... overwrite if the subclass needs initialisation.
         Can safely be overwritten by subclasses."""
         pass
 
-    def holeDiameter(self, obj, base, sub):
-        """holeDiameter(obj, base, sub) ... returns the diameter of the specified hole."""
+    def holeDiameter(self, base, sub):
+        """holeDiameter(base, sub) ... returns the diameter of the specified hole."""
         try:
             shape = base.Shape.getElement(sub)
-            if shape.ShapeType == "Vertex":
+            if isinstance(shape, Part.Vertex):
                 return 0
 
-            if shape.ShapeType == "Edge" and type(shape.Curve) == Part.Circle:
+            if isinstance(shape, Part.Edge) and isinstance(shape.Curve, Part.Circle):
                 return shape.Curve.Radius * 2
 
-            if shape.ShapeType == "Face":
-                for i in range(len(shape.Edges)):
-                    if (
-                        type(shape.Edges[i].Curve) == Part.Circle
-                        and shape.Edges[i].Curve.Radius * 2 < shape.BoundBox.XLength * 1.1
-                        and shape.Edges[i].Curve.Radius * 2 > shape.BoundBox.XLength * 0.9
-                    ):
-                        return shape.Edges[i].Curve.Radius * 2
+            if isinstance(shape, Part.Face):
+                for edge in shape.Edges:
+                    if isinstance(edge.Curve, Part.Circle):
+                        return edge.Curve.Radius * 2
 
             # for all other shapes the diameter is just the dimension in X.
             # This may be inaccurate as the BoundBox is calculated on the tessellated geometry
@@ -121,23 +166,26 @@ class ObjectOp(PathOp.ObjectOp):
 
         return 0
 
-    def holePosition(self, obj, base, sub):
-        """holePosition(obj, base, sub) ... returns a Vector for the position defined by the given features.
+    def holePosition(self, base, sub):
+        """holePosition(base, sub) ... returns a Vector for the position defined by the given features.
         Note that the value for Z is set to 0."""
 
         try:
             shape = base.Shape.getElement(sub)
-            if shape.ShapeType == "Vertex":
+            if isinstance(shape, Part.Vertex):
                 return FreeCAD.Vector(shape.X, shape.Y, 0)
 
-            if shape.ShapeType == "Edge" and hasattr(shape.Curve, "Center"):
+            if isinstance(shape, Part.Edge) and isinstance(shape.Curve, Part.Circle):
                 return FreeCAD.Vector(shape.Curve.Center.x, shape.Curve.Center.y, 0)
 
-            if shape.ShapeType == "Face":
-                if hasattr(shape.Surface, "Center"):
+            if isinstance(shape, Part.Face):
+                if isinstance(shape.Surface, Part.Cylinder):
                     return FreeCAD.Vector(shape.Surface.Center.x, shape.Surface.Center.y, 0)
-                if len(shape.Edges) == 1 and type(shape.Edges[0].Curve) == Part.Circle:
-                    return shape.Edges[0].Curve.Center
+                if all(isinstance(e.Curve, Part.Circle) for e in shape.Edges):
+                    center = shape.Edges[0].Curve.Center
+                    if all(Path.Geom.pointsCoincide(center, e.Curve.Center) for e in shape.Edges):
+                        return FreeCAD.Vector(center.x, center.y, 0)
+
         except Part.OCCError as e:
             Path.Log.error(e)
 
@@ -158,9 +206,6 @@ class ObjectOp(PathOp.ObjectOp):
     def opExecute(self, obj):
         """opExecute(obj) ... processes all Base features and Locations and collects
         them in a list of positions and radii which is then passed to circularHoleExecute(obj, holes).
-        If no Base geometries and no Locations are present, the job's Base is inspected and all
-        drillable features are added to Base. In this case appropriate values for depths are also
-        calculated and assigned.
         Do not overwrite, implement circularHoleExecute(obj, holes) instead."""
         Path.Log.track()
 
@@ -173,23 +218,44 @@ class ObjectOp(PathOp.ObjectOp):
         for base, subs in obj.Base:
             for sub in subs:
                 Path.Log.debug("processing {} in {}".format(sub, base.Name))
-                if self.isHoleEnabled(obj, base, sub):
-                    pos = self.holePosition(obj, base, sub)
-                    if pos:
-                        holes.append(
-                            {
-                                "x": pos.x,
-                                "y": pos.y,
-                                "r": self.holeDiameter(obj, base, sub),
-                            }
-                        )
+                if not self.isHoleEnabled(obj, base, sub):
+                    continue
+                pos = self.holePosition(base, sub)
+                if not pos:
+                    continue
+                diam = self.holeDiameter(base, sub)
+                for hole in holes:  # check positions repeats
+                    if Path.Geom.pointsCoincide((pos.x, pos.y), (hole["x"], hole["y"])):
+                        if diam > hole["d"] and not Path.Geom.isRoughly(diam, hole["d"]):
+                            # use bigger hole and disable with less diameter
+                            name = "%s.%s" % (base.Name, hole["sub"])
+                            disabled = obj.Disabled
+                            disabled.append(name)
+                            obj.Disabled = disabled
+                            hole["d"] = diam
+                            hole["sub"] = sub
+                        else:
+                            # disable repeat with less diameter
+                            name = "%s.%s" % (base.Name, sub)
+                            disabled = obj.Disabled
+                            disabled.append(name)
+                            obj.Disabled = disabled
+                        break
+                else:  # is not a repeat, add unique position
+                    holes.append({"x": pos.x, "y": pos.y, "d": diam, "sub": sub})
 
         if haveLocations(self, obj):
             for location in obj.Locations:
-                holes.append({"x": location.x, "y": location.y, "r": 0})
+                holes.append({"x": location.x, "y": location.y, "d": 0})
 
         if len(holes) > 0:
-            holes = PathUtils.sort_locations(holes, ["x", "y"])
+            if obj.SortingMode == "Automatic":
+                # Use the c++ implementation of the TSP sorting algorithm for better performance
+                startPoint = [obj.StartPoint.x, obj.StartPoint.y]
+                endPoint = [obj.EndPoint.x, obj.EndPoint.y] if obj.UseEndPoint else None
+                holes = PathUtils.sort_locations_tsp(
+                    holes, ["x", "y"], startPoint=startPoint, endPoint=endPoint
+                )
             self.circularHoleExecute(obj, holes)
 
     def circularHoleExecute(self, obj, holes):
@@ -199,20 +265,75 @@ class ObjectOp(PathOp.ObjectOp):
         Must be overwritten by subclasses."""
         pass
 
-    def findAllHoles(self, obj):
-        """findAllHoles(obj) ... find all holes of all base models and assign as features."""
+    def findAllHoles(self, obj, selection=[]):
+        """findAllHoles(obj) ...
+        find all holes of all base or selected models and assign as features."""
         Path.Log.track()
         job = self.getJob(obj)
         if not job:
             return
 
         matchvector = None if job.JobType == "Multiaxis" else FreeCAD.Vector(0, 0, 1)
-        tooldiameter = obj.ToolController.Tool.Diameter
+        tooldiameter = obj.ToolController.Tool.Diameter.Value
 
         features = []
-        for base in self.model:
+        models = []
+        for sel in selection:
+            if sel.isDerivedFrom("Part::Feature"):
+                models.append(sel)
+        if not models:
+            models = self.model
+        for base in models:
+            if not base.isDerivedFrom("Part::Feature"):
+                continue
             features.extend(
-                Drillable.getDrillableTargets(base, ToolDiameter=tooldiameter, vector=matchvector)
+                Drillable.getDrillableTargets(base, toolDiameter=tooldiameter, vector=matchvector)
             )
         obj.Base = features
         obj.Disabled = []
+
+    def onDocumentRestored(self, obj):
+        super().onDocumentRestored(obj)
+        # Migration logic for SortingMode
+        if not hasattr(obj, "SortingMode"):
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "SortingMode",
+                "Sorting",
+                QT_TRANSLATE_NOOP("App::Property", "Manual or Automatic mode sorting of holes"),
+            )
+            obj.SortingMode = ("Automatic", "Manual")
+            obj.SortingMode = "Automatic"
+
+        # Migration logic for StartPoint
+        if not hasattr(obj, "StartPoint"):
+            obj.addProperty(
+                "App::PropertyVectorDistance",
+                "StartPoint",
+                "Sorting",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Start point for automatic sorting (x,y used, z ignored)",
+                ),
+            )
+
+        # Migration logic for UseEndPoint
+        if not hasattr(obj, "UseEndPoint"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "UseEndPoint",
+                "Sorting",
+                QT_TRANSLATE_NOOP("App::Property", "Enable to use end point for automatic sorting"),
+            )
+
+        # Migration logic for EndPoint
+        if not hasattr(obj, "EndPoint"):
+            obj.addProperty(
+                "App::PropertyVectorDistance",
+                "EndPoint",
+                "Sorting",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "End point for automatic sorting (x,y used, z ignored)",
+                ),
+            )

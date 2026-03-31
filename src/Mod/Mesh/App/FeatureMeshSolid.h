@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEATURE_MESH_SOLID_H
-#define FEATURE_MESH_SOLID_H
+#pragma once
 
 #include "MeshFeature.h"
 
@@ -195,5 +194,3 @@ public:
 };
 
 }  // namespace Mesh
-
-#endif  // FEATURE_MESH_SOLID_H

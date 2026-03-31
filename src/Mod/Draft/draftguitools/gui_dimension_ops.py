@@ -29,6 +29,7 @@
 For example, a tool to flip the direction of the text in the dimension
 as the normal is sometimes not correctly calculated automatically.
 """
+
 ## @package gui_dimension_ops
 # \ingroup draftguitools
 # \brief Provides GUI tools to modify dimension objects.

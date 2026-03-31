@@ -28,7 +28,6 @@ import Path.Op.Base as PathOp
 import PathScripts.PathUtils as PathUtils
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
-
 __title__ = "CAM Probing Operation"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"

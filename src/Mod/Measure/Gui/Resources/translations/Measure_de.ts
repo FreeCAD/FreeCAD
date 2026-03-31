@@ -71,7 +71,7 @@
     <message>
       <location filename="../../QuickMeasure.cpp" line="226"/>
       <source>Area: %1</source>
-      <translation>Fläche: %1</translation>
+      <translation>Flächeninhalt: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="230"/>

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_DrawSketchHandlerExternal_H
-#define SKETCHERGUI_DrawSketchHandlerExternal_H
+#pragma once
 
 #include <App/Datums.h>
 #include <Mod/Part/App/DatumFeature.h>
@@ -182,7 +181,7 @@ public:
                 || (subName.size() > 6 && subName.substr(0, 6) == "Vertex")
                 || (subName.size() > 4 && subName.substr(0, 4) == "Face")) {
                 try {
-                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add external geometry"));
+                    openCommand(QT_TRANSLATE_NOOP("Command", "Add external geometry"));
                     Gui::cmdAppObjectArgs(
                         sketchgui->getObject(),
                         "addExternal(\"%s\",\"%s\", %s, %s)",
@@ -192,7 +191,7 @@ public:
                         intersection ? "True" : "False"
                     );
 
-                    Gui::Command::commitCommand();
+                    commitCommand();
 
                     // adding external geometry does not require a solve() per se (the DoF is the
                     // same), however a solve is required to update the amount of solver geometry,
@@ -214,7 +213,7 @@ public:
                         QT_TRANSLATE_NOOP("Notifications", "Failed to add external geometry")
                     );
                     Gui::Selection().clearSelection();
-                    Gui::Command::abortCommand();
+                    abortCommand();
                 }
                 return true;
             }
@@ -267,6 +266,3 @@ public:
 };
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerExternal_H

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 #include "ElementNamingUtils.h"
+#include <charconv>
 #include <boost/algorithm/string/predicate.hpp>
 
 
@@ -122,4 +123,21 @@ const std::string Data::indexSuffix(int index, const char* label)
     std::string name(label);
     name += std::to_string(index);
     return name;
+}
+
+int Data::indexOfElement(std::string_view s, std::string_view prefix)
+{
+    int idx = 0;
+    if (prefix.empty()) {
+        return idx;
+    }
+    if (s.starts_with(prefix)) {
+        auto num = s.substr(prefix.size());
+        auto [ptr, ec] = std::from_chars(num.data(), num.data() + num.size(), idx);
+
+        if (ec != std::errc{} || ptr != num.data() + num.size()) {
+            return 0;
+        }
+    }
+    return idx;
 }

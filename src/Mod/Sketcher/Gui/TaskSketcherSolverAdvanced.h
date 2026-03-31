@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskSketcherSolverAdvanced_H
-#define GUI_TASKVIEW_TaskSketcherSolverAdvanced_H
+#pragma once
 
 #include <Gui/TaskView/TaskView.h>
 
@@ -87,5 +86,3 @@ private:
 };
 
 }  // namespace SketcherGui
-
-#endif  // GUI_TASKVIEW_TaskSketcherSolverAdvanced_H

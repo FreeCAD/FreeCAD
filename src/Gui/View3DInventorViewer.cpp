@@ -509,6 +509,10 @@ void View3DInventorViewer::init()
     this->foregroundroot->ref();
     this->foregroundroot->setName("foregroundroot");
 
+    naviCubeAnnotation = new SoAnnotation();
+    naviCubeAnnotation->ref();
+    naviCubeAnnotation->setName("naviCubeAnnotation");
+
     auto lm = new SoLightModel;
     lm->model = SoLightModel::BASE_COLOR;
 
@@ -530,6 +534,7 @@ void View3DInventorViewer::init()
     this->foregroundroot->addChild(cam);
     this->foregroundroot->addChild(lm);
     this->foregroundroot->addChild(bc);
+    this->foregroundroot->addChild(naviCubeAnnotation);
 
     auto threePointLightingSeparator = new SoTransformSeparator;
     threePointLightingSeparator->addChild(lightRotation);
@@ -692,6 +697,12 @@ void View3DInventorViewer::init()
     );
 
     naviCube = new NaviCube(this);
+    if (auto node = naviCube->getCoinNode()) {
+        if (naviCubeAnnotation) {
+            naviCubeAnnotation->removeAllChildren();
+            naviCubeAnnotation->addChild(node);
+        }
+    }
     naviCubeEnabled = true;
 
     updateColors();
@@ -712,6 +723,15 @@ View3DInventorViewer::~View3DInventorViewer()
     }
 
     // cleanup
+    if (naviCubeAnnotation) {
+        naviCubeAnnotation->removeAllChildren();
+        if (this->foregroundroot) {
+            this->foregroundroot->removeChild(naviCubeAnnotation);
+        }
+        naviCubeAnnotation->unref();
+        naviCubeAnnotation = nullptr;
+    }
+
     this->backgroundroot->unref();
     this->backgroundroot = nullptr;
     this->foregroundroot->unref();
@@ -789,6 +809,9 @@ void View3DInventorViewer::aboutToDestroyGLContext()
     if (naviCube) {
         if (auto gl = qobject_cast<QOpenGLWidget*>(this->viewport())) {
             gl->makeCurrent();
+        }
+        if (naviCubeAnnotation) {
+            naviCubeAnnotation->removeAllChildren();
         }
         delete naviCube;
         naviCube = nullptr;
@@ -1729,7 +1752,11 @@ void View3DInventorViewer::savePicture(int width, int height, int sample, const 
     if (useGrabFramebuffer) {
         auto self = const_cast<View3DInventorViewer*>(this);  // NOLINT
         img = self->grabFramebuffer();
+#if QT_VERSION < QT_VERSION_CHECK(6, 9, 0)
         img = img.mirrored();
+#else
+        img = img.flipped(Qt::Vertical);
+#endif
         img = img.scaledToWidth(width);
         return;
     }
@@ -2445,10 +2472,6 @@ void View3DInventorViewer::renderFramebuffer()
         it->paintGL();
     }
 
-    if (naviCubeEnabled) {
-        naviCube->drawNaviCube();
-    }
-
     glPopAttrib();
 }
 
@@ -2476,10 +2499,6 @@ void View3DInventorViewer::renderGLImage()
 
     for (auto it : this->graphicsItems) {
         it->paintGL();
-    }
-
-    if (naviCubeEnabled) {
-        naviCube->drawNaviCube();
     }
 
     glPopAttrib();
@@ -2630,10 +2649,6 @@ void View3DInventorViewer::renderScene()
         );  // NOLINT
     }
 
-    if (naviCubeEnabled) {
-        naviCube->drawNaviCube();
-    }
-
     // Workaround for inconsistent QT behavior related to handling custom OpenGL widgets that
     // leave non opaque alpha values in final output.
     // On wayland that can cause window to become transparent or blurry trail effect in the
@@ -2674,16 +2689,16 @@ void View3DInventorViewer::setSeekMode(bool on)
     );
 }
 
-SbVec3f View3DInventorViewer::getCenterPointOnFocalPlane() const
+SbVec3f View3DInventorViewer::getFocalPoint() const
 {
-    SoCamera* cam = getSoRenderManager()->getCamera();
-    if (!cam) {
+    const SoCamera* camera = getCamera();
+    if (!camera) {
         return {0., 0., 0.};
     }
 
     SbVec3f direction;
-    cam->orientation.getValue().multVec(SbVec3f(0, 0, -1), direction);
-    return cam->position.getValue() + cam->focalDistance.getValue() * direction;
+    camera->orientation.getValue().multVec(SbVec3f(0, 0, -1), direction);
+    return camera->position.getValue() + camera->focalDistance.getValue() * direction;
 }
 
 float View3DInventorViewer::getMaxDimension() const

@@ -6,21 +6,9 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>409</width>
-    <height>419</height>
+    <width>150</width>
+    <height>80</height>
    </rect>
-  </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>250</width>
-    <height>0</height>
-   </size>
   </property>
   <property name="windowTitle">
    <string>Rich Text Annotation Block</string>
@@ -31,208 +19,156 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
-    <widget class="QFrame" name="frame">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
+    <widget class="QLabel" name="label_BaseFeature">
+     <property name="text">
+      <string>Base feature</string>
      </property>
-     <property name="frameShape">
-      <enum>QFrame::Box</enum>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QLineEdit" name="leBaseView">
+     <property name="enabled">
+      <bool>false</bool>
      </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="label_MaxWidth">
+     <property name="text">
+      <string>Width</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_2">
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="Gui::QuantitySpinBox" name="dsbMaxWidth">
+     <property name="toolTip">
+      <string>Maximal width of the annotation block, if -1 then automatic width</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="minimum">
+      <double>-1.000000000000000</double>
+     </property>
+     <property name="value">
+      <double>-1.000000000000000</double>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0" colspan="2">
+    <widget class="QGroupBox" name="gbFrame">
+     <property name="title">
+      <string>Frame</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_FrameProperties">
+      <property name="leftMargin">
+       <number>6</number>
+      </property>
+      <property name="topMargin">
+       <number>6</number>
+      </property>
+      <property name="rightMargin">
+       <number>6</number>
+      </property>
+      <property name="bottomMargin">
+       <number>4</number>
+      </property>
       <item row="0" column="0">
-       <layout class="QFormLayout" name="formLayout">
-        <item row="0" column="0">
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Base feature</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QLineEdit" name="leBaseView">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>Max width</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="Gui::QuantitySpinBox" name="dsbMaxWidth">
-          <property name="toolTip">
-           <string>Maximal width, if -1 then automatic width</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="minimum">
-           <double>-1.000000000000000</double>
-          </property>
-          <property name="value">
-           <double>-1.000000000000000</double>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="QLabel" name="label_frameThickness">
+        <property name="text">
+         <string>Thickness</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="Gui::QuantitySpinBox" name="dsbWidth">
+        <property name="toolTip">
+         <string>Line width</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+        <property name="value">
+         <double>0.500000000000000</double>
+        </property>
+       </widget>
       </item>
       <item row="1" column="0">
-       <widget class="Line" name="line">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+       <widget class="QLabel" name="label_patternThickness">
+        <property name="text">
+         <string>Style</string>
         </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="cFrameStyle">
+        <property name="toolTip">
+         <string>Line style</string>
+        </property>
+        <property name="currentIndex">
+         <number>1</number>
+        </property>
+        <item>
+         <property name="text">
+          <string>NoLine</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Continuous</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Dash</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Dot</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>DashDot</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>DashDotDot</string>
+         </property>
+        </item>
        </widget>
       </item>
       <item row="2" column="0">
-       <widget class="QPushButton" name="pbEditor">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
+       <widget class="QLabel" name="label_colorThickness">
         <property name="text">
-         <string>Start Rich Text Editor</string>
+         <string>Color</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
-       <widget class="QTextEdit" name="teAnnoText">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
+      <item row="2" column="1">
+       <widget class="Gui::ColorButton" name="cpFrameColor">
+        <property name="toolTip">
+         <string>Line color</string>
+        </property>
+        <property name="color">
+         <color>
+          <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+         </color>
         </property>
        </widget>
-      </item>
-      <item row="4" column="0">
-       <layout class="QFormLayout" name="formLayout_2">
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_3">
-          <property name="text">
-           <string>Show frame</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QCheckBox" name="cbShowFrame">
-          <property name="layoutDirection">
-           <enum>Qt::LeftToRight</enum>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_4">
-          <property name="text">
-           <string>Color</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="Gui::ColorButton" name="cpFrameColor">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="toolTip">
-           <string>Line color</string>
-          </property>
-          <property name="color">
-           <color>
-            <red>0</red>
-            <green>0</green>
-            <blue>0</blue>
-           </color>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_5">
-          <property name="text">
-           <string>Width</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="Gui::QuantitySpinBox" name="dsbWidth">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="toolTip">
-           <string>Line width</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="singleStep">
-           <double>0.100000000000000</double>
-          </property>
-          <property name="value">
-           <double>0.500000000000000</double>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="label_6">
-          <property name="text">
-           <string>Style</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="1">
-         <widget class="QComboBox" name="cFrameStyle">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="toolTip">
-           <string>Line style</string>
-          </property>
-          <property name="currentIndex">
-           <number>1</number>
-          </property>
-          <item>
-           <property name="text">
-            <string>NoLine</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Continuous</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Dash</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Dot</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>DashDot</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>DashDotDot</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-       </layout>
       </item>
      </layout>
     </widget>
@@ -256,50 +192,50 @@
  </resources>
  <connections>
   <connection>
-   <sender>cbShowFrame</sender>
+   <sender>gbFrame</sender>
    <signal>toggled(bool)</signal>
    <receiver>cpFrameColor</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>183</x>
-     <y>270</y>
+     <x>250</x> <!-- Adjust X hint if needed -->
+     <y>380</y> <!-- Adjust Y hint if needed -->
     </hint>
     <hint type="destinationlabel">
-     <x>183</x>
-     <y>294</y>
+     <x>380</x> <!-- Adjust X hint if needed -->
+     <y>380</y> <!-- Adjust Y hint if needed -->
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>cbShowFrame</sender>
+   <sender>gbFrame</sender>
    <signal>toggled(bool)</signal>
    <receiver>cFrameStyle</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>236</x>
-     <y>277</y>
+     <x>250</x>
+     <y>380</y>
     </hint>
     <hint type="destinationlabel">
-     <x>236</x>
-     <y>354</y>
+     <x>330</x> <!-- Adjust X hint if needed -->
+     <y>380</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>cbShowFrame</sender>
+   <sender>gbFrame</sender>
    <signal>toggled(bool)</signal>
    <receiver>dsbWidth</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>236</x>
-     <y>277</y>
+     <x>250</x>
+     <y>380</y>
     </hint>
     <hint type="destinationlabel">
-     <x>236</x>
-     <y>328</y>
+     <x>280</x> <!-- Adjust X hint if needed -->
+     <y>380</y>
     </hint>
    </hints>
   </connection>

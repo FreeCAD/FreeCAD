@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_ACTION_H
-#define GUI_ACTION_H
+#pragma once
 
 #include <memory>
 #include <QAction>
@@ -422,5 +421,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_ACTION_H

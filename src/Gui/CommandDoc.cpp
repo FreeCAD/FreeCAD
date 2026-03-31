@@ -61,6 +61,7 @@
 #include "Placement.h"
 #include "Tools.h"
 #include "Transform.h"
+#include "Tree.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
 #include "ViewProvider.h"
@@ -113,6 +114,7 @@ void StdCmdOpen::activated(int iMsg)
         formatList += QLatin1String(" *.");
         formatList += QLatin1String(it->c_str());
     }
+    formatList += QLatin1String(" *.FCBak");
 
     formatList += QLatin1String(");;");
 
@@ -121,7 +123,11 @@ void StdCmdOpen::activated(int iMsg)
     // Make sure the format name for FCStd is the very first in the list
     for (jt = FilterList.begin(); jt != FilterList.end(); ++jt) {
         if (jt->first.find("*.FCStd") != std::string::npos) {
-            formatList += QLatin1String(jt->first.c_str());
+            QString fcstdFilter = QLatin1String(jt->first.c_str());
+            if (!fcstdFilter.contains(QStringLiteral("*.FCBak"), Qt::CaseInsensitive)) {
+                fcstdFilter.replace(")", QStringLiteral(" *.FCBak)"));
+            }
+            formatList += fcstdFilter;
             formatList += QLatin1String(";;");
             FilterList.erase(jt);
             break;
@@ -140,6 +146,35 @@ void StdCmdOpen::activated(int iMsg)
         QString(),
         formatList,
         &selectedFilter
+    );
+    if (fileList.isEmpty()) {
+        return;
+    }
+
+    // Open backup files as native documents (same data format as FCStd).
+    for (const QString& file : fileList) {
+        if (!file.endsWith(QStringLiteral(".FCBak"), Qt::CaseInsensitive)) {
+            continue;
+        }
+
+        getGuiApplication()->setStatus(Gui::Application::UserInitiatedOpenDocument, true);
+        getGuiApplication()->open(file.toUtf8(), "FreeCAD");
+        getGuiApplication()->setStatus(Gui::Application::UserInitiatedOpenDocument, false);
+
+        App::Document* doc = App::GetApplication().getActiveDocument();
+        getGuiApplication()->checkPartialRestore(doc);
+        getGuiApplication()->checkRestoreError(doc);
+    }
+
+    fileList.erase(
+        std::remove_if(
+            fileList.begin(),
+            fileList.end(),
+            [](const QString& file) {
+                return file.endsWith(QStringLiteral(".FCBak"), Qt::CaseInsensitive);
+            }
+        ),
+        fileList.end()
     );
     if (fileList.isEmpty()) {
         return;
@@ -710,6 +745,7 @@ StdCmdNew::StdCmdNew()
     sStatusTip = sToolTipText;
     sPixmap = "document-new";
     sAccel = keySequenceToAccel(QKeySequence::New);
+    eType = NoTransaction;
 }
 
 void StdCmdNew::activated(int iMsg)
@@ -749,6 +785,15 @@ StdCmdSave::StdCmdSave()
 void StdCmdSave::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+
+    if (App::Document* doc = App::GetApplication().getActiveDocument()) {
+        Base::FileInfo filename(doc->FileName.getValue());
+        if (filename.hasExtension("fcbak")) {
+            Gui::Command::doCommand(Gui::Command::Gui, "Gui.runCommand('Std_SaveAs')");
+            return;
+        }
+    }
+
     doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"Save\")");
 }
 
@@ -791,17 +836,20 @@ bool StdCmdSaveAs::isActive()
 //===========================================================================
 DEF_STD_CMD_A(StdCmdSaveCopy)
 
+
 StdCmdSaveCopy::StdCmdSaveCopy()
     : Command("Std_SaveCopy")
 {
     sGroup = "File";
-    sMenuText = QT_TR_NOOP("Save Cop&y");
+    sMenuText = QT_TR_NOOP("Save a Cop&y…");
 
     sToolTipText = QT_TR_NOOP("Saves a copy of the active document under a new file name");
     sWhatsThis = "Std_SaveCopy";
     sStatusTip = sToolTipText;
     sPixmap = "Std_SaveCopy";
+    sAccel = "Ctrl+Alt+Shift+S";
 }
+
 
 void StdCmdSaveCopy::activated(int iMsg)
 {
@@ -1405,6 +1453,12 @@ void StdCmdSelectAll::activated(int iMsg)
         }
     }
 
+    // try to use TreeWidget's own select all because it handles the grouping stuff
+    if (auto* tree = TreeWidget::instance()) {
+        tree->selectAll();
+        return;
+    }
+
     // fallback to doc level select
     SelectionSingleton& rSel = Selection();
     App::Document* doc = App::GetApplication().getActiveDocument();
@@ -1443,41 +1497,57 @@ void StdCmdDelete::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    std::set<App::Document*> docs;
+    int tid = 0;
     try {
-        openCommand(QT_TRANSLATE_NOOP("Command", "Delete"));
+        std::set<App::Document*> docs;
+        std::vector<App::TransactionLocker> tlocks;
+        auto manageDocCommand = [&tid, &tlocks](App::Document* doc) {
+            // The tid will not be updated if non-zero
+            tid = doc->openTransaction(QT_TRANSLATE_NOOP("Command", "Delete"), tid);
+            tlocks.emplace_back(doc);
+        };
+
         if (getGuiApplication()->sendHasMsgToFocusView(getName())) {
-            commitCommand();
+            // no command has been opened yet so we can skip this commit
+            // commitCommand();
             return;
         }
-
-        App::TransactionLocker tlock;
+        // Ensure that the document from which we send the command
+        // can undo it (e.g delete a subobject of an assembly
+        // from the assembly file)
+        manageDocCommand(getActiveGuiDocument()->getDocument());
 
         Gui::getMainWindow()->setUpdatesEnabled(false);
-        auto editDoc = Application::Instance->editDocument();
-        ViewProviderDocumentObject* vpedit = nullptr;
-        if (editDoc) {
-            vpedit = freecad_cast<ViewProviderDocumentObject*>(editDoc->getInEdit());
-        }
-        if (vpedit && !vpedit->acceptDeletionsInEdit()) {
-            for (auto& sel : Selection().getSelectionEx(editDoc->getDocument()->getName())) {
-                if (sel.getObject() == vpedit->getObject()) {
-                    if (!sel.getSubNames().empty()) {
-                        vpedit->onDelete(sel.getSubNames());
-                        docs.insert(editDoc->getDocument());
+
+        bool deletedSelectionOfEditDocument = false;
+        std::vector<Gui::Document*> editDocs = Application::Instance->editDocuments();
+        for (auto& editDoc : editDocs) {
+            auto vpedit = freecad_cast<ViewProviderDocumentObject*>(editDoc->getInEdit());
+
+            // In practice, no ViewProviderDocumentObject accepts deletion in edit - 2025-06-17
+            if (vpedit && !vpedit->acceptDeletionsInEdit()) {
+                for (auto& sel : Selection().getSelectionEx(editDoc->getDocument()->getName())) {
+                    if (sel.getObject() == vpedit->getObject()) {
+                        if (!sel.getSubNames().empty()) {
+                            deletedSelectionOfEditDocument = true;
+                            manageDocCommand(editDoc->getDocument());
+                            vpedit->onDelete(sel.getSubNames());
+                            docs.insert(editDoc->getDocument());
+                        }
+                        break;
                     }
-                    break;
                 }
             }
         }
-        else {
+
+        if (!deletedSelectionOfEditDocument) {
             std::set<QString> affectedLabels;
             bool more = false;
             auto sels = Selection().getSelectionEx();
             bool autoDeletion = true;
             for (auto& sel : sels) {
                 auto obj = sel.getObject();
-                if (obj == nullptr) {
+                if (!obj) {
                     Base::Console().developerWarning(
                         "StdCmdDelete::activated",
                         "App::DocumentObject pointer is nullptr\n"
@@ -1545,6 +1615,7 @@ void StdCmdDelete::activated(int iMsg)
                     auto obj = sel.getObject();
                     Gui::ViewProvider* vp = Application::Instance->getViewProvider(obj);
                     if (vp) {
+                        manageDocCommand(obj->getDocument());
                         // ask the ViewProvider if it wants to do some clean up
                         if (vp->onDelete(sel.getSubNames())) {
                             docs.insert(obj->getDocument());
@@ -1578,6 +1649,8 @@ void StdCmdDelete::activated(int iMsg)
             QString::fromLatin1(e.what())
         );
         e.reportException();
+        App::GetApplication().abortTransaction(tid);
+        tid = 0;
     }
     catch (...) {
         QMessageBox::critical(
@@ -1585,8 +1658,11 @@ void StdCmdDelete::activated(int iMsg)
             QObject::tr("Delete Failed"),
             QStringLiteral("Unknown error")
         );
+        App::GetApplication().abortTransaction(tid);
+        tid = 0;
     }
-    commitCommand();
+
+    App::GetApplication().commitTransaction(tid);
     Gui::getMainWindow()->setUpdatesEnabled(true);
     Gui::getMainWindow()->update();
 }
@@ -1632,7 +1708,8 @@ void StdCmdRefresh::activated([[maybe_unused]] int iMsg)
         return;
     }
 
-    App::AutoTransaction trans((eType & NoTransaction) ? nullptr : "Recompute");
+    App::AutoTransaction trans((eType & NoTransaction) ? 0 : openActiveDocumentCommand("Recompute"));
+
     try {
         doCommand(Doc, "App.activeDocument().recompute(None,True,True)");
     }
@@ -1735,15 +1812,20 @@ void StdCmdPlacement::activated(int iMsg)
             plm->clearSelection();
         }
     }
-    Gui::Control().showDialog(plm);
+    Gui::Control().showDialog(plm, getDocument());
 }
 
 bool StdCmdPlacement::isActive()
 {
     std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(
-        App::GeoFeature::getClassTypeId()
+        App::GeoFeature::getClassTypeId(),
+        nullptr,
+        ResolveMode::FollowLink
     );
-    return !(sel.empty() || std::ranges::any_of(sel, [](auto obj) { return obj->isFreezed(); }));
+    return !(sel.empty() || std::ranges::any_of(sel, [](auto obj) {
+                 auto* prop = obj->getPlacementProperty();
+                 return obj->isFreezed() || !prop || prop->isReadOnly();
+             }));
 }
 
 //===========================================================================
@@ -1769,7 +1851,9 @@ void StdCmdTransformManip::activated(int iMsg)
         getActiveGuiDocument()->resetEdit();
     }
     std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(
-        App::GeoFeature::getClassTypeId()
+        App::GeoFeature::getClassTypeId(),
+        nullptr,
+        ResolveMode::FollowLink
     );
     Gui::ViewProvider* vp = Application::Instance->getViewProvider(sel.front());
     // FIXME: Need a way to force 'Transform' edit mode
@@ -1782,9 +1866,14 @@ void StdCmdTransformManip::activated(int iMsg)
 bool StdCmdTransformManip::isActive()
 {
     std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(
-        App::GeoFeature::getClassTypeId()
+        App::GeoFeature::getClassTypeId(),
+        nullptr,
+        ResolveMode::FollowLink
     );
-    return (sel.size() == 1 && !sel.front()->isFreezed());
+    return (
+        sel.size() == 1 && !sel.front()->isFreezed() && sel.front()->getPlacementProperty()
+        && !sel.front()->getPlacementProperty()->isReadOnly()
+    );
 }
 
 //===========================================================================
@@ -2130,9 +2219,10 @@ protected:
             return;
         }
 
-        openCommand(QT_TRANSLATE_NOOP("Command", "Paste expressions"));
+        int tid = App::NullTransaction;
         try {
             for (auto& v : exprs) {
+                tid = v.first->openTransaction(QT_TRANSLATE_NOOP("Command", "Paste expressions"), tid);
                 for (auto& v2 : v.second) {
                     auto& expressions = v2.second;
                     auto old = v2.first->getExpressions();
@@ -2149,13 +2239,13 @@ protected:
                     }
                 }
             }
-            commitCommand();
+            App::GetApplication().commitTransaction(tid);
         }
         catch (const Base::Exception& e) {
-            abortCommand();
+            App::GetApplication().abortTransaction(tid);
             QMessageBox::critical(
                 getMainWindow(),
-                QObject::tr("Failed to Paste Expressions"),
+                QObject::tr("Failed to paste expressions"),
                 QString::fromLatin1(e.what())
             );
             e.reportException();

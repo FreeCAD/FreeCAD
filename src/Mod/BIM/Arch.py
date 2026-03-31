@@ -47,6 +47,7 @@ wall = Arch.makeWall(length=5000, width=200, height=3000)  # mm units
 wall.recompute()
 ```
 """
+
 __title__ = "FreeCAD Arch API"
 __author__ = "Yorik van Havre"
 __url__ = "https://www.freecad.org"
@@ -72,7 +73,6 @@ from ArchSql import *
 # TODO: migrate this one
 # Currently makeStructure, makeStructuralSystem need migration
 from ArchStructure import *
-
 
 # make functions
 
@@ -394,7 +394,7 @@ def makeEquipment(baseobj=None, placement=None, name=None):
     # Initialize all relevant properties
     if baseobj:
         if baseobj.isDerivedFrom("Mesh::Feature"):
-            equipment.Mesh = baseobj
+            equipment.HiRes = baseobj
         else:
             equipment.Base = baseobj
     if placement:
@@ -1739,6 +1739,7 @@ def makeWall(
     wall.Align = (
         align if align else ["Center", "Left", "Right"][params.get_param_arch("WallAlignment")]
     )
+    wall.Offset = offset if offset else params.get_param_arch("WallOffset")
 
     if wall.Base and FreeCAD.GuiUp:
         if Draft.getType(wall.Base) != "Space":
@@ -2136,16 +2137,17 @@ def makeWindow(
                         part_offset,
                     ]
             else:
-                # Bind properties from base obj if they exist
+                # Bind properties from base obj if they exist and have a value
                 for prop in ["Height", "Width", "Subvolume", "Tag", "Description", "Material"]:
                     for baseobj_prop in baseobj.PropertiesList:
-                        if (baseobj_prop == prop) or baseobj_prop.endswith(f"_{prop}"):
+                        if (baseobj_prop == prop or baseobj_prop.endswith(f"_{prop}")) and getattr(
+                            baseobj, baseobj_prop
+                        ):
                             window.setExpression(prop, f"{baseobj.Name}.{baseobj_prop}")
 
     if window.Base and FreeCAD.GuiUp:
         from ArchWindow import recolorize
 
-        window.Base.ViewObject.DisplayMode = "Wireframe"
         window.Base.ViewObject.hide()
         todo.ToDo.delay(recolorize, [window.Document.Name, window.Name])
 
@@ -2231,9 +2233,14 @@ def debaseWall(wall):
         return False
 
     doc = wall.Document
-    doc.openTransaction(f"Debase Wall: {wall.Label}")
 
     try:
+        # Record the current global placements of all children that move with the host.
+        # ArchComponent.onChanged will attempt to shift them when the wall's placement is updated
+        # below.
+        children = wall.Proxy.getMovableChildren(wall)
+        child_placements = {child: child.Placement.copy() for child in children}
+
         # --- Calculation of the final placement ---
         base_obj = wall.Base
         base_edge = base_obj.Shape.Edges[0]
@@ -2280,6 +2287,11 @@ def debaseWall(wall):
         # 1. Apply the final placement first.
         wall.Placement = final_placement
 
+        # Restore original placements to counteract the shift from onChanged.
+        # This keeps all hosted elements stationary in world space.
+        for child, original_placement in child_placements.items():
+            child.Placement = original_placement
+
         # 2. Now, remove the base. The recompute triggered by this change
         #    will already have the correct placement to work with.
         wall.Base = None
@@ -2296,11 +2308,8 @@ def debaseWall(wall):
         doc.recompute()
 
     except Exception as e:
-        doc.abortTransaction()
         FreeCAD.Console.PrintError(f"Error debasing wall '{wall.Label}': {e}\n")
         return False
-    finally:
-        doc.commitTransaction()
 
     return True
 

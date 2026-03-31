@@ -36,7 +36,7 @@ def write_step_equation(f, ccxwriter):
 
     # build STEP line
     step = "*STEP"
-    if ccxwriter.solver_obj.GeometricalNonlinearity == "nonlinear":
+    if ccxwriter.solver_obj.GeometricalNonlinearity:
         if ccxwriter.analysis_type in ["static", "thermomech"]:
             # https://www.comsol.com/blogs/what-is-geometric-nonlinearity
             step += ", NLGEOM"

@@ -30,38 +30,36 @@
 #include <QPoint>
 #include <QCoreApplication>
 
-
 using namespace MillSim;
 
 // clang-format off
 // NOLINTBEGIN(*-magic-numbers)
-GuiItem guiItems[] = {
-    {.name=eGuiItemSlider, .vbo=0, .vao=0, .sx=28, .sy=-80, .actionKey=0, .hidden=false, .flags=0},
-    {.name=eGuiItemThumb, .vbo=0, .vao=0, .sx=328, .sy=-94, .actionKey=1, .hidden=false, .flags=0},
-    {.name=eGuiItemPause, .vbo=0, .vao=0, .sx=28, .sy=-50, .actionKey='P', .hidden=true, .flags=0},
-    {.name=eGuiItemPlay, .vbo=0, .vao=0, .sx=28, .sy=-50, .actionKey='S', .hidden=false, .flags=0},
-    {.name=eGuiItemSingleStep, .vbo=0, .vao=0, .sx=68, .sy=-50, .actionKey='T', .hidden=false, .flags=0},
-    {.name=eGuiItemSlower, .vbo=0, .vao=0, .sx=113, .sy=-50, .actionKey=' ', .hidden=false, .flags=0},
-    {.name=eGuiItemFaster, .vbo=0, .vao=0, .sx=158, .sy=-50, .actionKey='F', .hidden=false, .flags=0},
-    {.name=eGuiItemX, .vbo=0, .vao=0, .sx=208, .sy=-45, .actionKey=0, .hidden=false, .flags=0},
-    {.name=eGuiItem1, .vbo=0, .vao=0, .sx=230, .sy=-50, .actionKey=0, .hidden=false, .flags=0},
-    {.name=eGuiItem5, .vbo=0, .vao=0, .sx=230, .sy=-50, .actionKey=0, .hidden=true, .flags=0},
-    {.name=eGuiItem10, .vbo=0, .vao=0, .sx=230, .sy=-50, .actionKey=0, .hidden=true, .flags=0},
-    {.name=eGuiItem25, .vbo=0, .vao=0, .sx=230, .sy=-50, .actionKey=0, .hidden=true, .flags=0},
-    {.name=eGuiItem50, .vbo=0, .vao=0, .sx=230, .sy=-50, .actionKey=0, .hidden=true, .flags=0},
-    {.name=eGuiItemRotate, .vbo=0, .vao=0, .sx=-140, .sy=-50, .actionKey=' ', .hidden=false, .flags=GUIITEM_CHECKABLE},
-    {.name=eGuiItemPath, .vbo=0, .vao=0, .sx=-100, .sy=-50, .actionKey='L', .hidden=false, .flags=GUIITEM_CHECKABLE},
-    {.name=eGuiItemAmbientOclusion, .vbo=0, .vao=0, .sx=-60, .sy=-50, .actionKey='A', .hidden=false, .flags=GUIITEM_CHECKABLE},
-    {.name=eGuiItemView, .vbo=0, .vao=0, .sx=-180, .sy=-50, .actionKey='V', .hidden=false, .flags=0},
-    {.name=eGuiItemHome, .vbo=0, .vao=0, .sx=-220, .sy=-50, .actionKey='H', .hidden=false, .flags=0},
+static const std::vector<DefaultGuiItem> defaultGuiItems = {
+    {.name=eGuiItemSlider, .vbo=0, .sx=28, .sy=-80, .actionKey=0, .hidden=false, .flags=0},
+    {.name=eGuiItemThumb, .vbo=0, .sx=328, .sy=-94, .actionKey=1, .hidden=false, .flags=0},
+    {.name=eGuiItemPause, .vbo=0, .sx=28, .sy=-50, .actionKey='P', .hidden=true, .flags=0},
+    {.name=eGuiItemPlay, .vbo=0, .sx=28, .sy=-50, .actionKey='S', .hidden=false, .flags=0},
+    {.name=eGuiItemSingleStep, .vbo=0, .sx=68, .sy=-50, .actionKey='T', .hidden=false, .flags=0},
+    {.name=eGuiItemSlower, .vbo=0, .sx=113, .sy=-50, .actionKey=' ', .hidden=false, .flags=0},
+    {.name=eGuiItemFaster, .vbo=0, .sx=158, .sy=-50, .actionKey='F', .hidden=false, .flags=0},
+    {.name=eGuiItemX, .vbo=0, .sx=208, .sy=-45, .actionKey=0, .hidden=false, .flags=0},
+    {.name=eGuiItem1, .vbo=0, .sx=230, .sy=-50, .actionKey=0, .hidden=false, .flags=0},
+    {.name=eGuiItem5, .vbo=0, .sx=230, .sy=-50, .actionKey=0, .hidden=true, .flags=0},
+    {.name=eGuiItem10, .vbo=0, .sx=230, .sy=-50, .actionKey=0, .hidden=true, .flags=0},
+    {.name=eGuiItem25, .vbo=0, .sx=230, .sy=-50, .actionKey=0, .hidden=true, .flags=0},
+    {.name=eGuiItem50, .vbo=0, .sx=230, .sy=-50, .actionKey=0, .hidden=true, .flags=0},
+    {.name=eGuiItemRotate, .vbo=0, .sx=-140, .sy=-50, .actionKey=' ', .hidden=false, .flags=GUIITEM_CHECKABLE},
+    {.name=eGuiItemPath, .vbo=0, .sx=-100, .sy=-50, .actionKey='L', .hidden=false, .flags=GUIITEM_CHECKABLE},
+    {.name=eGuiItemAmbientOclusion, .vbo=0, .sx=-60, .sy=-50, .actionKey='A', .hidden=false, .flags=GUIITEM_CHECKABLE},
+    {.name=eGuiItemView, .vbo=0, .sx=-180, .sy=-50, .actionKey='V', .hidden=false, .flags=0},
+    {.name=eGuiItemHome, .vbo=0, .sx=-220, .sy=-50, .actionKey='H', .hidden=false, .flags=0},
 };
 // NOLINTEND(*-magic-numbers)
 // clang-format on
 
-#define NUM_GUI_ITEMS (sizeof(guiItems) / sizeof(GuiItem))
 #define TEX_SIZE 256
 
-std::vector<std::string> guiFileNames = {
+static const std::vector<std::string> guiFileNames = {
     "Slider.png",
     "Thumb.png",
     "Pause.png",
@@ -82,17 +80,49 @@ std::vector<std::string> guiFileNames = {
     "Home.png"
 };
 
+GuiItem::GuiItem(const DefaultGuiItem& item, GuiDisplay& d)
+    : DefaultGuiItem(item)
+    , display(d)
+{}
+
+int GuiItem::posx()
+{
+    return sx >= 0 ? sx : display.width() + sx;
+}
+
+int GuiItem::posy()
+{
+    return sy >= 0 ? sy : display.height() + sy;
+}
+
+void GuiItem::setPosx(int x)
+{
+    sx = sx >= 0 ? x : x - display.width();
+}
+
+void GuiItem::setPosy(int y)
+{
+    sy = sy >= 0 ? y : y - display.height();
+}
+
+GuiDisplay::GuiDisplay()
+{
+    for (auto& item : defaultGuiItems) {
+        mItems.emplace_back(item, *this);
+    }
+}
+
 void GuiDisplay::UpdateProjection()
 {
     mat4x4 projmat;
     // mat4x4 viewmat;
-    mat4x4_ortho(projmat, 0, gWindowSizeW, gWindowSizeH, 0, -1, 1);
+    mat4x4_ortho(projmat, 0, mWidth, mHeight, 0, -1, 1);
     mShader.Activate();
     mShader.UpdateProjectionMat(projmat);
-    mThumbMaxMotion = guiItems[eGuiItemAmbientOclusion].posx()
-        + guiItems[eGuiItemAmbientOclusion].texItem.w
-        - guiItems[eGuiItemSlider].posx();  // - guiItems[eGuiItemThumb].texItem.w;
-    HStretchGlItem(&(guiItems[eGuiItemSlider]), mThumbMaxMotion, 10.0f);
+    mThumbMaxMotion = mItems[eGuiItemAmbientOclusion].posx()
+        + mItems[eGuiItemAmbientOclusion].texItem.w
+        - mItems[eGuiItemSlider].posx();  // - guiItems[eGuiItemThumb].texItem.w;
+    HStretchGlItem(&(mItems[eGuiItemSlider]), mThumbMaxMotion, 10.0f);
 }
 
 bool GuiDisplay::GenerateGlItem(GuiItem* guiItem)
@@ -113,21 +143,10 @@ bool GuiDisplay::GenerateGlItem(GuiItem* guiItem)
     glBindBuffer(GL_ARRAY_BUFFER, guiItem->vbo);
     glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(Vertex2D), verts, GL_STATIC_DRAW);
 
-    // glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_SHORT, nullptr);
-    //  vertex array
-    glGenVertexArrays(1, &(guiItem->vao));
-    glBindVertexArray(guiItem->vao);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2D), (void*)offsetof(Vertex2D, x));
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2D), (void*)offsetof(Vertex2D, tx));
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIbo);
-    glBindVertexArray(0);
-
     return true;
 }
 
-bool MillSim::GuiDisplay::HStretchGlItem(GuiItem* guiItem, float newWidth, float edgeWidth)
+bool GuiDisplay::HStretchGlItem(GuiItem* guiItem, float newWidth, float edgeWidth)
 {
     if (guiItem->vbo == 0) {
         return false;
@@ -167,22 +186,22 @@ bool MillSim::GuiDisplay::HStretchGlItem(GuiItem* guiItem, float newWidth, float
     glBindBuffer(GL_ARRAY_BUFFER, guiItem->vbo);
     glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(Vertex2D), verts, GL_STATIC_DRAW);
 
-    glGenVertexArrays(1, &(guiItem->vao));
-    glBindVertexArray(guiItem->vao);
+    return true;
+}
+
+void GuiDisplay::SetupVertexAttribs(GuiItem* guiItem)
+{
+    glBindBuffer(GL_ARRAY_BUFFER, guiItem->vbo);
+
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2D), (void*)offsetof(Vertex2D, x));
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2D), (void*)offsetof(Vertex2D, tx));
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIbo);
-    glBindVertexArray(0);
-
-    return true;
 }
 
 void GuiDisplay::DestroyGlItem(GuiItem* guiItem)
 {
     GLDELETE_BUFFER((guiItem->vbo));
-    GLDELETE_VERTEXARRAY((guiItem->vao));
 }
 
 bool GuiDisplay::InitGui()
@@ -190,6 +209,7 @@ bool GuiDisplay::InitGui()
     if (guiInitiated) {
         return true;
     }
+
     // index buffer
     SetupTooltips();
     glGenBuffers(1, &mIbo);
@@ -202,29 +222,32 @@ bool GuiDisplay::InitGui()
         return false;
     }
     mTexture.LoadImage(buffer, TEX_SIZE, TEX_SIZE);
-    for (unsigned int i = 0; i < NUM_GUI_ITEMS; i++) {
-        guiItems[i].texItem = *tLoader.GetTextureItem(i);
-        GenerateGlItem(&(guiItems[i]));
+    for (unsigned int i = 0; i < mItems.size(); i++) {
+        auto& item = mItems[i];
+        item.texItem = *tLoader.GetTextureItem(i);
+        GenerateGlItem(&item);
     }
 
-    mThumbStartX = guiItems[eGuiItemSlider].posx() - guiItems[eGuiItemThumb].texItem.w / 2;
-    mThumbMaxMotion = (float)guiItems[eGuiItemSlider].texItem.w;
+    mThumbStartX = mItems[eGuiItemSlider].posx() - mItems[eGuiItemThumb].texItem.w / 2;
+    mThumbMaxMotion = (float)mItems[eGuiItemSlider].texItem.w;
 
     // init shader
     mShader.CompileShader("GuiDisplay", (char*)VertShader2DTex, (char*)FragShader2dTex);
     mShader.UpdateTextureSlot(0);
 
+    UpdatePlayState(false);
     UpdateSimSpeed(1);
-    UpdateProjection();
     guiInitiated = true;
+
+    UpdateWindowScale(800, 600);
     return true;
 }
 
 void GuiDisplay::ResetGui()
 {
     mShader.Destroy();
-    for (unsigned int i = 0; i < NUM_GUI_ITEMS; i++) {
-        DestroyGlItem(&(guiItems[i]));
+    for (auto& item : mItems) {
+        DestroyGlItem(&item);
     }
     mTexture.DestroyTexture();
     GLDELETE_BUFFER(mIbo);
@@ -233,13 +256,14 @@ void GuiDisplay::ResetGui()
 
 void GuiDisplay::RenderItem(int itemId)
 {
-    GuiItem* item = &(guiItems[itemId]);
+    GuiItem* item = &(mItems[itemId]);
     if (item->hidden) {
         return;
     }
+
     mat4x4 model;
     mat4x4_translate(model, (float)item->posx(), (float)item->posy(), 0);
-    mShader.UpdateModelMat(model, nullptr);
+    mShader.UpdateModelMat(model, {});
     if (item == mPressedItem) {
         mShader.UpdateObjColor(mPressedColor);
     }
@@ -256,39 +280,39 @@ void GuiDisplay::RenderItem(int itemId)
         mShader.UpdateObjColor(mStdColor);
     }
 
-    glBindVertexArray(item->vao);
+    SetupVertexAttribs(item);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIbo);
     int nTriangles = (item->flags & GUIITEM_STRETCHED) == 0 ? 6 : 18;
     glDrawElements(GL_TRIANGLES, nTriangles, GL_UNSIGNED_SHORT, nullptr);
 }
 
-void MillSim::GuiDisplay::SetupTooltips()
+void GuiDisplay::SetupTooltips()
 {
-    guiItems[eGuiItemPause].toolTip
+    mItems[eGuiItemPause].toolTip
         = QCoreApplication::translate("CAM:Simulator:Tooltips", "Pause simulation", nullptr);
-    guiItems[eGuiItemPlay].toolTip
+    mItems[eGuiItemPlay].toolTip
         = QCoreApplication::translate("CAM:Simulator:Tooltips", "Play simulation", nullptr);
-    guiItems[eGuiItemSingleStep].toolTip
+    mItems[eGuiItemSingleStep].toolTip
         = QCoreApplication::translate("CAM:Simulator:Tooltips", "Single step simulation", nullptr);
-    guiItems[eGuiItemSlower].toolTip
+    mItems[eGuiItemSlower].toolTip
         = QCoreApplication::translate("CAM:Simulator:Tooltips", "Decrease simulation speed", nullptr);
-    guiItems[eGuiItemFaster].toolTip
+    mItems[eGuiItemFaster].toolTip
         = QCoreApplication::translate("CAM:Simulator:Tooltips", "Increase simulation speed", nullptr);
-    guiItems[eGuiItemPath].toolTip
+    mItems[eGuiItemPath].toolTip
         = QCoreApplication::translate("CAM:Simulator:Tooltips", "Show/Hide tool path", nullptr);
-    guiItems[eGuiItemRotate].toolTip = QCoreApplication::translate(
+    mItems[eGuiItemRotate].toolTip = QCoreApplication::translate(
         "CAM:Simulator:Tooltips",
         "Toggle turn table animation",
         nullptr
     );
-    guiItems[eGuiItemAmbientOclusion].toolTip
+    mItems[eGuiItemAmbientOclusion].toolTip
         = QCoreApplication::translate("CAM:Simulator:Tooltips", "Toggle ambient occlusion", nullptr);
-    guiItems[eGuiItemView].toolTip = QCoreApplication::translate(
+    mItems[eGuiItemView].toolTip = QCoreApplication::translate(
         "CAM:Simulator:Tooltips",
         "Toggle view simulation/model",
         nullptr
     );
-    guiItems[eGuiItemHome].toolTip
+    mItems[eGuiItemHome].toolTip
         = QCoreApplication::translate("CAM:Simulator:Tooltips", "Reset camera", nullptr);
 }
 
@@ -296,24 +320,25 @@ void GuiDisplay::MouseCursorPos(int x, int y)
 {
     GuiItem* prevMouseOver = mMouseOverItem;
     mMouseOverItem = nullptr;
-    for (unsigned int i = 0; i < NUM_GUI_ITEMS; i++) {
-        GuiItem* g = &(guiItems[i]);
-        if (g->actionKey == 0) {
+    for (auto& item : mItems) {
+        if (item.actionKey == 0) {
             continue;
         }
-        bool mouseCursorContained = x > g->posx() && x < (g->posx() + g->texItem.w) && y > g->posy()
-            && y < (g->posy() + g->texItem.h);
+        bool mouseCursorContained = x > item.posx() && x < (item.posx() + item.texItem.w)
+            && y > item.posy() && y < (item.posy() + item.texItem.h);
 
-        g->mouseOver = !g->hidden && mouseCursorContained;
+        item.mouseOver = !item.hidden && mouseCursorContained;
 
-        if (g->mouseOver) {
-            mMouseOverItem = g;
+        if (item.mouseOver) {
+            mMouseOverItem = &item;
         }
     }
     if (mMouseOverItem != prevMouseOver) {
         if (mMouseOverItem != nullptr && !mMouseOverItem->toolTip.isEmpty()) {
-            QPoint pos(x, y);
-            QPoint globPos = CAMSimulator::DlgCAMSimulator::GetInstance()->mapToGlobal(pos);
+            const QWidget* w = CAMSimulator::DlgCAMSimulator::instance();
+            const float ratio = w->devicePixelRatioF();
+            const QPoint pos(x / ratio, y / ratio);
+            const QPoint globPos = w->mapToGlobal(pos);
             QToolTip::showText(globPos, mMouseOverItem->toolTip);
         }
         else {
@@ -322,7 +347,7 @@ void GuiDisplay::MouseCursorPos(int x, int y)
     }
 }
 
-void MillSim::GuiDisplay::HandleActionItem(GuiItem* guiItem)
+void GuiDisplay::HandleActionItem(GuiItem* guiItem)
 {
     if (guiItem->actionKey >= ' ') {
         if (guiItem->flags & GUIITEM_CHECKABLE) {
@@ -373,45 +398,70 @@ void GuiDisplay::MouseDrag(int /* buttons */, int dx, int /* dy */)
     }
 }
 
+void GuiDisplay::SetMillSimulator(MillSimulation* millSim)
+{
+    mMillSim = millSim;
+}
+
 void GuiDisplay::UpdatePlayState(bool isRunning)
 {
-    guiItems[eGuiItemPause].hidden = !isRunning;
-    guiItems[eGuiItemPlay].hidden = isRunning;
+    mItems[eGuiItemPause].hidden = !isRunning;
+    mItems[eGuiItemPlay].hidden = isRunning;
 }
 
-void MillSim::GuiDisplay::UpdateSimSpeed(int speed)
+void GuiDisplay::UpdateSimSpeed(int speed)
 {
-    guiItems[eGuiItem1].hidden = speed != 1;
-    guiItems[eGuiItem5].hidden = speed != 5;
-    guiItems[eGuiItem10].hidden = speed != 10;
-    guiItems[eGuiItem25].hidden = speed != 25;
-    guiItems[eGuiItem50].hidden = speed != 50;
+    mItems[eGuiItem1].hidden = speed != 1;
+    mItems[eGuiItem5].hidden = speed != 5;
+    mItems[eGuiItem10].hidden = speed != 10;
+    mItems[eGuiItem25].hidden = speed != 25;
+    mItems[eGuiItem50].hidden = speed != 50;
 }
 
-void MillSim::GuiDisplay::HandleKeyPress(int key)
+void GuiDisplay::HandleKeyPress(int key)
 {
-    for (unsigned int i = 0; i < NUM_GUI_ITEMS; i++) {
-        GuiItem* g = &(guiItems[i]);
-        if (g->actionKey == key) {
-            HandleActionItem(g);
+    for (auto& item : mItems) {
+        if (item.actionKey == key) {
+            HandleActionItem(&item);
         }
     }
 }
 
-bool MillSim::GuiDisplay::IsChecked(eGuiItems item)
+bool GuiDisplay::IsChecked(eGuiItems item)
 {
-    return (guiItems[item].flags & GUIITEM_CHECKED) != 0;
+    return (mItems[item].flags & GUIITEM_CHECKED) != 0;
 }
 
-void MillSim::GuiDisplay::UpdateWindowScale()
+void GuiDisplay::UpdateWindowScale(int width, int height)
 {
+    if (!guiInitiated || (width == mWidth && height == mHeight)) {
+        return;
+    }
+
+    mWidth = width;
+    mHeight = height;
+
     UpdateProjection();
+}
+
+int GuiDisplay::width() const
+{
+    return mWidth;
+}
+
+int GuiDisplay::height() const
+{
+    return mHeight;
 }
 
 void GuiDisplay::Render(float progress)
 {
+    if (!guiInitiated) {
+        return;
+    }
+
     if (mPressedItem == nullptr || mPressedItem->name != eGuiItemThumb) {
-        guiItems[eGuiItemThumb].setPosx((int)(mThumbMaxMotion * progress) + mThumbStartX);
+        mItems[eGuiItemThumb].setPosx((int)(mThumbMaxMotion * progress) + mThumbStartX);
     }
     glDisable(GL_CULL_FACE);
     glDisable(GL_DEPTH_TEST);
@@ -421,7 +471,7 @@ void GuiDisplay::Render(float progress)
     mShader.UpdateTextureSlot(0);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    for (int i = 0; i < (int)NUM_GUI_ITEMS; i++) {
+    for (int i = 0; i < (int)mItems.size(); i++) {
         RenderItem(i);
     }
 }

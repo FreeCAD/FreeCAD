@@ -416,8 +416,10 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::
             _viewer->setEnabledNaviCube(rGrp.GetBool("ShowNaviCube", true));
         }
     }
-    else if (strcmp(Reason, "AxisXColor") == 0 || strcmp(Reason, "AxisYColor") == 0
-             || strcmp(Reason, "AxisZColor") == 0) {
+    else if (
+        strcmp(Reason, "AxisXColor") == 0 || strcmp(Reason, "AxisYColor") == 0
+        || strcmp(Reason, "AxisZColor") == 0
+    ) {
         for (auto _viewer : _viewers) {
             _viewer->updateColors();
         }
@@ -593,7 +595,7 @@ void NaviCubeSettings::applySettings()
 
 void NaviCubeSettings::parameterChanged(const char* Name)
 {
-    if (Name == nullptr) {
+    if (!Name) {
         return;
     }
     NaviCube* nc = _viewer->getNaviCube();
@@ -653,9 +655,11 @@ void NaviCubeSettings::parameterChanged(const char* Name)
         float opacity = static_cast<float>(hGrp->GetInt("InactiveOpacity", 50)) / 100;
         nc->setInactiveOpacity(opacity);
     }
-    else if (strcmp(Name, "TextTop") == 0 || strcmp(Name, "TextBottom") == 0
-             || strcmp(Name, "TextFront") == 0 || strcmp(Name, "TextRear") == 0
-             || strcmp(Name, "TextLeft") == 0 || strcmp(Name, "TextRight") == 0) {
+    else if (
+        strcmp(Name, "TextTop") == 0 || strcmp(Name, "TextBottom") == 0
+        || strcmp(Name, "TextFront") == 0 || strcmp(Name, "TextRear") == 0
+        || strcmp(Name, "TextLeft") == 0 || strcmp(Name, "TextRight") == 0
+    ) {
         std::vector<std::string> labels;
         QByteArray frontByteArray = tr("FRONT").toUtf8();
         labels.push_back(hGrp->GetASCII("TextFront", frontByteArray.constData()));

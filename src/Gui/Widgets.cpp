@@ -1206,8 +1206,9 @@ bool ToolTip::eventFilter(QObject* o, QEvent* e)
                         // removeEventFilter();
                         this->hidden = true;
                     }
-                    else if (e->type() == QEvent::Timer && !this->hidden
-                             && displayTime.elapsed() < 5000) {
+                    else if (
+                        e->type() == QEvent::Timer && !this->hidden && displayTime.elapsed() < 5000
+                    ) {
                         return true;
                     }
                 }

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SpreadsheetView_H
-#define SpreadsheetView_H
+#pragma once
 
 #include <QHeaderView>
 
@@ -75,7 +74,7 @@ public:
         return "SheetView";
     }
 
-    bool onMsg(const char* pMsg, const char** ppReturn) override;
+    bool onMsg(const char* pMsg) override;
     bool onHasMsg(const char* pMsg) const override;
 
     /** @name Printing */
@@ -174,5 +173,3 @@ protected:
 };
 
 }  // namespace SpreadsheetGui
-
-#endif  // SpreadsheetView_H

@@ -85,6 +85,15 @@ class MaterialCommon(base_fempythonobject.BaseFemPythonObject):
                 value="",
             )
         )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyLink",
+                name="Nonlinear",
+                group="Material",
+                doc="Material nonlinear behavior",
+                value=None,
+            )
+        )
 
         return prop
 

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CELL_H
-#define CELL_H
+#pragma once
 
 #include <set>
 #include <string>
@@ -215,5 +214,3 @@ private:
 };
 
 }  // namespace Spreadsheet
-
-#endif  // CELL_H

@@ -65,6 +65,7 @@
 #include "EllipsePy.h"
 #include "FaceMaker.h"
 #include "FaceMakerBullseye.h"
+#include "FaceMakerBuildFace.h"
 #include "FaceMakerCheese.h"
 #include "FeatureChamfer.h"
 #include "FeatureCompound.h"
@@ -429,6 +430,7 @@ PyMOD_INIT_FUNC(Part)
     Part::FaceMakerExtrusion    ::init();
     Part::FaceMakerBullseye     ::init();
     Part::FaceMakerRing         ::init();
+    Part::FaceMakerBuildFace    ::init();
 
     Attacher::AttachEngine        ::init();
     Attacher::AttachEngine3D      ::init();
@@ -584,6 +586,8 @@ PyMOD_INIT_FUNC(Part)
 
     Base::registerServiceImplementation<App::SubObjectPlacementProvider>(new AttacherSubObjectPlacement);
     Base::registerServiceImplementation<App::CenterOfMassProvider>(new PartCenterOfMass);
+    Base::registerServiceImplementation<App::CustomAttributeProvider>(new ShapeAttributeProvider);
+    Base::registerServiceImplementation<App::PseudoShapeProvider>(new PartPseudoShapeProvider);
 
     PyMOD_Return(partModule);
 }

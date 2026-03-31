@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SRC_APP_DOCUMENT_H_
-#define SRC_APP_DOCUMENT_H_
+#pragma once
 
 #include <CXX/Objects.hxx>
 #include <Base/Observer.h>
@@ -36,6 +35,7 @@
 #include "PropertyLinks.h"
 #include "PropertyStandard.h"
 #include "ExportInfo.h"
+#include "TransactionDefs.h"
 
 #include <map>
 #include <vector>
@@ -465,14 +465,14 @@ public:
     /**
      * @brief Add an object of a given type to the document.
      *
-     * Add an object of of a given type with @p pObjectName that should be
-     * ASCII to this document and set it active.  Unicode names are set through
-     * the Label property.
+     * Add an object of a given type with @p pObjectName that should be ASCII
+     * to this document and set it active.  Unicode names are set through the
+     * Label property.
      *
      * @tparam T The type of created object.
-     * @param[in] pObjectName if `nullptr` generate a new unique name based on @p
-     * T, otherwise use this name.
-     * @param[in] isNew if `false don't call the DocumentObject::setupObject()
+     * @param[in] pObjectName if `nullptr` generate a new unique name based on
+     * @p T, otherwise use this name.
+     * @param[in] isNew if `false` don't call the DocumentObject::setupObject()
      * callback (default * is true)
      * @param[in] viewType    override object's view provider name
      * @param[in] isPartial   indicate if this object is meant to be partially loaded
@@ -499,6 +499,13 @@ public:
      */
     std::vector<DocumentObject*>
     addObjects(const char* sType, const std::vector<std::string>& objectNames, bool isNew = true);
+
+    /**
+     * @brief Remove an object from the document.
+     *
+     * @param[in] object The object to remove.
+     */
+    void removeObject(const DocumentObject* object);
 
     /**
      * @brief Remove an object from the document.
@@ -859,7 +866,19 @@ public:
      * setup a potential transaction that will only be created if there are
      * actual changes.
      */
-    void openTransaction(const char* name = nullptr);
+    int openTransaction(TransactionName name, int tid = 0);
+    int openTransaction(std::string name, int tid = 0);
+
+    // If the tid != 0, it will take the transaction id if it exists
+    int setActiveTransaction(TransactionName name, int tid = 0);
+
+    void lockTransaction();
+    void unlockTransaction();
+    bool isTransactionLocked() const;
+
+    bool transacting() const;
+
+    int getBookedTransactionID() const;
 
     /**
      * @brief Rename the current transaction.
@@ -869,7 +888,7 @@ public:
      * @param[in] name The new name of the transaction.
      * @param[in] id The transaction ID to match.
      */
-    void renameTransaction(const char* name, int id) const;
+    void renameTransaction(const std::string& name, int id) const;
 
     /**
      * @brief Commit the Command transaction.
@@ -1238,7 +1257,7 @@ public:
 
     /// Check if there is any document restoring/importing.
     static bool isAnyRestoring();
-
+                                                                
     /// Register a new label.
     void registerLabel(const std ::string& newLabel);
     /// Unregister a label.
@@ -1329,6 +1348,10 @@ protected:
      */
     void writeObjects(const std::vector<DocumentObject*>& objs, Base::Writer& writer) const;
 
+    void writeObjectDeps(const std::vector<DocumentObject*>& objs, Base::Writer& writer) const;
+    void writeObjectType(const std::vector<DocumentObject*>& objs, Base::Writer& writer) const;
+    void writeObjectData(const std::vector<DocumentObject*>& objs, Base::Writer& writer) const;
+
     /**
      * @brief Save the document to a file.
      *
@@ -1399,8 +1422,7 @@ protected:
      * This function creates an actual transaction regardless of Application
      * AutoTransaction setting.
      */
-    int _openTransaction(const char* name = nullptr, int id = 0);
-
+    int _openTransaction(std::string name = "", int id = 0);
     /**
      * @brief Commit the Command transaction.
      *
@@ -1409,8 +1431,7 @@ protected:
      *
      * @param notify If true, notify the application to close the transaction.
      */
-    void _commitTransaction(bool notify = false);
-
+    bool _commitTransaction(bool notify = false);
     /**
      * @brief Abort the running transaction.
      *
@@ -1466,5 +1487,3 @@ T* Document::addObject(const char* pObjectName, bool isNew, const char* viewType
 }
 
 }  // namespace App
-
-#endif  // SRC_APP_DOCUMENT_H_

@@ -21,8 +21,7 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#ifndef KDL_CHAIN_FKSOLVERVEL_RECURSIVE_HPP
-#define KDL_CHAIN_FKSOLVERVEL_RECURSIVE_HPP
+#pragma once
 
 #include "chainfksolver.hpp"
 
@@ -47,5 +46,3 @@ namespace KDL
         const Chain chain;
     };
 }
-
-#endif

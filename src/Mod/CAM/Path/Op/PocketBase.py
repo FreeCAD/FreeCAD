@@ -29,7 +29,6 @@ import Path.Op.Base as PathOp
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
-
 __title__ = "Base CAM Pocket Operation"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
@@ -74,6 +73,10 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                 (translate("CAM_Pocket", "Line"), "Line"),
                 (translate("CAM_Pocket", "Grid"), "Grid"),
             ],  # Fill Pattern
+            "SortingMode": [
+                (translate("CAM_Pocket", "Automatic"), "Automatic"),
+                (translate("CAM_Pocket", "Manual"), "Manual"),
+            ],
         }
 
         if dataType == "raw":
@@ -172,10 +175,13 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             QT_TRANSLATE_NOOP("App::Property", "Use 3D Sorting of Path"),
         )
         obj.addProperty(
-            "App::PropertyBool",
-            "KeepToolDown",
+            "App::PropertyLength",
+            "RetractThreshold",
             "Pocket",
-            QT_TRANSLATE_NOOP("App::Property", "Attempts to avoid unnecessary retractions."),
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Set distance which will attempts to avoid unnecessary retractions.",
+            ),
         )
         obj.addProperty(
             "App::PropertyPercent",
@@ -195,15 +201,22 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                 "Skips machining regions that have already been cleared by previous operations.",
             ),
         )
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "SortingMode",
+            "Path",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Order processing of the shapes"
+                "\nAutomatic: uses nearest neighbour algorithm to sort shapes"
+                "\nManual: uses order of shapes selection",
+            ),
+        )
 
         for n in self.pocketPropertyEnumerations():
             setattr(obj, n[0], n[1])
 
         self.initPocketOp(obj)
-
-    def areaOpRetractTool(self, obj):
-        Path.Log.debug("retracting tool: %d" % (not obj.KeepToolDown))
-        return not obj.KeepToolDown
 
     def areaOpUseProjection(self, obj):
         """areaOpUseProjection(obj) ... return False"""
@@ -267,7 +280,28 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                     "Skips machining regions that have already been cleared by previous operations.",
                 ),
             )
-
+        if not hasattr(obj, "RetractThreshold"):
+            obj.addProperty(
+                "App::PropertyLength",
+                "RetractThreshold",
+                "Pocket",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Set distance which will attempts to avoid unnecessary retractions.",
+                ),
+            )
+        if not hasattr(obj, "SortingMode"):
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "SortingMode",
+                "Path",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Order processing of the shapes"
+                    "\nAutomatic: uses nearest neighbour algorithm to sort shapes"
+                    "\nManual: uses order of shapes selection",
+                ),
+            )
         if hasattr(obj, "OffsetPattern"):
             obj.setGroupOfProperty("OffsetPattern", "Pocket")
             obj.renameProperty("OffsetPattern", "ClearingPattern")
@@ -275,6 +309,10 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             obj.removeProperty("RestMachiningRegions")
         if hasattr(obj, "RestMachiningRegionsNeedRecompute"):
             obj.removeProperty("RestMachiningRegionsNeedRecompute")
+        if hasattr(obj, "KeepToolDown"):
+            if obj.KeepToolDown:
+                obj.setExpression("RetractThreshold", "1 * OpToolDiameter")
+            obj.removeProperty("KeepToolDown")
 
         Path.Log.track()
 
@@ -296,7 +334,6 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         #
         if obj.MinTravel and obj.UseStartPoint and obj.StartPoint is not None:
             params["sort_mode"] = 3
-            params["threshold"] = self.radius * 2
         return params
 
 
@@ -309,5 +346,4 @@ def SetupProperties():
     setup.append("ClearingPattern")
     setup.append("StartAt")
     setup.append("MinTravel")
-    setup.append("KeepToolDown")
     return setup

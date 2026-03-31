@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef BASE_PRECOMPILED_H
-#define BASE_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -135,5 +134,3 @@
 #include <QTime>
 #include <QTimeZone>
 #include <QUuid>
-
-#endif  // BASE_PRECOMPILED_H

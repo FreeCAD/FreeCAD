@@ -73,7 +73,7 @@ class BIM_Slab:
             FreeCADGui.doCommand(
                 "s = Arch.makeStructure(FreeCAD.ActiveDocument." + sel[0].Name + ",height=200)"
             )
-            FreeCADGui.doCommand('s.Label = "' + translate("BIM", "Slab") + '"')
+            FreeCADGui.doCommand("s.Label = " + repr(translate("BIM", "Slab")))
             FreeCADGui.doCommand('s.IfcType = "Slab"')
             FreeCADGui.doCommand("s.Normal = FreeCAD.Vector(0,0,-1)")
             FreeCAD.ActiveDocument.commitTransaction()

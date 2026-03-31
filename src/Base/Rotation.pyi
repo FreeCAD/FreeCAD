@@ -14,14 +14,12 @@ from typing import overload, Tuple, List, Final
     NumberProtocol=True,
     RichCompare=True,
 )
-@class_declarations(
-    """public:
+@class_declarations("""public:
     RotationPy(const Rotation & mat, PyTypeObject *T = &Type)
     :PyObjectBase(new Rotation(mat),T){}
     Rotation value() const
     { return *(getRotationPtr()); }
-        """
-)
+        """)
 class Rotation(PyObjectBase):
     """
     Base.Rotation class.
@@ -142,6 +140,7 @@ class Rotation(PyObjectBase):
         """
         ...
 
+    @constmethod
     def isSame(self, rotation: "Rotation", tol: float = 0, /) -> bool:
         """
         Checks if `rotation` perform the same transformation as this rotation.

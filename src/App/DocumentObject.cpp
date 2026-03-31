@@ -140,12 +140,10 @@ void DocumentObject::printInvalidLinks() const
             scopenames.pop_back();
         }
 
-        Base::Console().warning("%s: Link(s) to object(s) '%s' go out of the allowed scope '%s'. "
-                                "Instead, the linked object(s) reside within '%s'.\n",
+        Base::Console().warning("%s: %s links are out of scope. Out of scope links to: %s\n",
                                 getTypeId().getName(),
-                                objnames.c_str(),
                                 getNameInDocument(),
-                                scopenames.c_str());
+                                objnames.c_str());
     }
     catch (const Base::Exception& e) {
         e.reportException();
@@ -1170,11 +1168,7 @@ DocumentObject* DocumentObject::getLinkedObject(bool recursive,
 
 void DocumentObject::Save(Base::Writer& writer) const
 {
-    if (this->isFreezed()) {
-        throw Base::AbortException("At least one object is frozen, unable to save.");
-    }
-
-    if (this->isAttachedToDocument()){
+    if (this->isAttachedToDocument()) {
         writer.ObjectName = this->getNameInDocument();
     }
     App::ExtensionContainer::Save(writer);

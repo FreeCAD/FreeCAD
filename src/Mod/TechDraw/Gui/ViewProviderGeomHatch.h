@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_VIEWPROVIDERCROSSHATCH_H
-#define DRAWINGGUI_VIEWPROVIDERCROSSHATCH_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -68,5 +67,3 @@ public:
 };
 
 } // namespace TechDrawGui
-
-#endif // DRAWINGGUI_VIEWPROVIDERHATCH_H

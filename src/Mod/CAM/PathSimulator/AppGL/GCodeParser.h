@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __csgcodeparser_h__
-#define __csgcodeparser_h__
+#pragma once
 #include "MillMotion.h"
 #include <vector>
 
@@ -58,4 +57,3 @@ protected:
     int lastTool = -1;
 };
 }  // namespace MillSim
-#endif

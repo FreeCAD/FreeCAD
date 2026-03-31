@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_COMMAND_H
-#define GUI_COMMAND_H
+#pragma once
 
 #include <list>
 #include <map>
@@ -474,11 +473,24 @@ public:
     /** @name Helper methods for the Undo/Redo and Update handling */
     //@{
     /// Open a new Undo transaction on the active document
-    static void openCommand(const char* sName = nullptr);
+    int openCommand(App::TransactionName name);
+    int openCommand(std::string name);
+    static int openActiveDocumentCommand(App::TransactionName name, int tid = App::NullTransaction);
+    static int openActiveDocumentCommand(std::string name, int tid = App::NullTransaction);
+
+    void rename(const std::string& name);
+
     /// Commit the Undo transaction on the active document
-    static void commitCommand();
+    void commitCommand();
+    static void commitCommand(int tid);
+
     /// Abort the Undo transaction on the active document
-    static void abortCommand();
+    void abortCommand();
+    static void abortCommand(int tid);
+
+    int transactionID() const;
+    void resetTransactionID();
+
     /// Check if an Undo transaction is open on the active document
     static bool hasPendingCommand();
     /// Updates the (active) document (propagate changes)
@@ -716,6 +728,8 @@ protected:
     /// Indicate if the command shall log to MacroManager
     bool bCanLog;
     //@}
+
+    int currentTransactionID {0};  // TransactionID created in _invoke
 private:
     static int _busy;
     bool bEnabled;
@@ -1287,5 +1301,3 @@ private:
         X& operator=(const X&) = delete; \
         X& operator=(X&&) = delete; \
     };
-
-#endif  // GUI_COMMAND_H

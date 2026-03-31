@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_MaterialObject_H
-#define APP_MaterialObject_H
+#pragma once
 
 #include "DocumentObject.h"
 #include "FeaturePython.h"
@@ -55,6 +54,3 @@ using MaterialObjectPython = App::FeaturePythonT<MaterialObject>;
 
 
 }  // namespace App
-
-
-#endif  // APP_MaterialObject_H

@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGKEYBOARD_IMP_H
-#define GUI_DIALOG_DLGKEYBOARD_IMP_H
+#pragma once
 
 #include <fastsignals/connection.h>
 #include <memory>
@@ -137,5 +136,3 @@ private:
 
 }  // namespace Dialog
 }  // namespace Gui
-
-#endif  // GUI_DIALOG_DLGKEYBOARD_IMP_H

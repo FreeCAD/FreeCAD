@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DrawDimHelper_h_
-#define DrawDimHelper_h_
+#pragma once
 
 #include <string>
 #include <vector>
@@ -79,4 +78,3 @@ class TechDrawExport DrawDimHelper {
 };
 
 } //end namespace TechDraw
-#endif

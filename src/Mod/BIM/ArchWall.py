@@ -870,7 +870,10 @@ class _Wall(ArchComponent.Component):
                 obj.setEditorMode("ArchSketchPropertySet", 0)
         else:
             if hasattr(obj, "Width"):
-                obj.setEditorMode("Width", 0)
+                if hasattr(self, "multimaterialsWidth") and self.multimaterialsWidth:
+                    obj.setEditorMode("Width", ["ReadOnly"])
+                else:
+                    obj.setEditorMode("Width", 0)
             if hasattr(obj, "Align"):
                 obj.setEditorMode("Align", 0)
             if hasattr(obj, "Offset"):
@@ -1053,7 +1056,7 @@ class _Wall(ArchComponent.Component):
             else:
                 aligns = [obj.Align]
 
-        # set 'default' align - for filling in any item in the list == 0 or None
+        # Set 'default' align - for filling in any item in the list == 0 or None
         align = obj.Align  # or aligns[0]
 
         # Get offset of each edge segment from Base Objects if they store it
@@ -1106,25 +1109,25 @@ class _Wall(ArchComponent.Component):
         placement = None
         self.basewires = None
 
-        # build wall layers
-        layers = []
-        if hasattr(obj, "Material"):
-            if obj.Material:
-                if hasattr(obj.Material, "Materials"):
-                    thicknesses = [abs(t) for t in obj.Material.Thicknesses]
-                    # multimaterials
-                    varwidth = 0
-                    restwidth = width - sum(thicknesses)
-                    if restwidth > 0:
-                        varwidth = [t for t in thicknesses if t == 0]
-                        if varwidth:
-                            varwidth = restwidth / len(varwidth)
-                    for t in obj.Material.Thicknesses:
-                        if t:
-                            layers.append(t)
-                        elif varwidth:
-                            layers.append(varwidth)
-
+        # Check and build wall layers
+        self.multimaterialsWidth = False
+        layers = self.get_layers(obj)
+        # check total width and update Wall's Width
+        if layers:
+            total = sum(layers)
+            if obj.Width.Value != total:
+                obj.Width = total
+            # If there is no 0 (zero) in any of the layers, the total thickness
+            # is driven by the multi-materials itself.  Otherwise, user should
+            # be able in any time change the Width and drive the total thickness
+            # - in the latter case, Width property should not be changed to
+            # ready-only.
+            if not (0 in obj.Material.Thicknesses):
+                self.multimaterialsWidth = True
+        if self.multimaterialsWidth:
+            obj.setEditorMode("Width", ["ReadOnly"])
+        else:
+            obj.setEditorMode("Width", 0)
         # Check if there is obj.Base and its validity to proceed
         if self.ensureBase(obj):
             if hasattr(obj.Base, "Shape"):
@@ -1667,7 +1670,11 @@ class _Wall(ArchComponent.Component):
                     )
         if not lwidths:
             if obj.OverrideWidth:
-                if obj.Base and obj.Base.isDerivedFrom("Sketcher::SketchObject"):
+                if (
+                    obj.Base
+                    and obj.Base.isDerivedFrom("Sketcher::SketchObject")
+                    and hasattr(ArchSketchObject, "sortSketchWidth")
+                ):
                     lwidths = ArchSketchObject.sortSketchWidth(
                         obj.Base, obj.OverrideWidth, obj.ArchSketchEdges
                     )
@@ -1780,6 +1787,79 @@ class _Wall(ArchComponent.Component):
         return base_faces, placement
 
 
+if FreeCAD.GuiUp:
+
+    class WallTaskPanel(ArchComponent.ComponentTaskPanel):
+        def __init__(self, obj):
+            ArchComponent.ComponentTaskPanel.__init__(self)
+            self.obj = obj
+            self.wallWidget = QtGui.QWidget()
+            self.wallWidget.setWindowTitle(translate("Arch", "Wall Options"))
+
+            layout = QtGui.QFormLayout(self.wallWidget)
+            loader = FreeCADGui.UiLoader()
+
+            # Length
+            self.length = loader.createWidget("Gui::QuantitySpinBox")
+            FreeCADGui.ExpressionBinding(self.length).bind(self.obj, "Length")
+            self.length.setProperty("value", self.obj.Length)
+            layout.addRow(translate("Arch", "Length"), self.length)
+
+            # Width
+            self.width = loader.createWidget("Gui::QuantitySpinBox")
+            FreeCADGui.ExpressionBinding(self.width).bind(self.obj, "Width")
+            self.width.setProperty("value", self.obj.Width)
+            layout.addRow(translate("Arch", "Width"), self.width)
+
+            # Height
+            self.height = loader.createWidget("Gui::QuantitySpinBox")
+            FreeCADGui.ExpressionBinding(self.height).bind(self.obj, "Height")
+            self.height.setProperty("value", self.obj.Height)
+            layout.addRow(translate("Arch", "Height"), self.height)
+
+            self.alignLayout = QtGui.QHBoxLayout()
+            self.alignLeft = QtGui.QRadioButton(translate("Arch", "Left"))
+            self.alignCenter = QtGui.QRadioButton(translate("Arch", "Center"))
+            self.alignRight = QtGui.QRadioButton(translate("Arch", "Right"))
+            self.alignLayout.addWidget(self.alignLeft)
+            self.alignLayout.addWidget(self.alignCenter)
+            self.alignLayout.addWidget(self.alignRight)
+            self.alignLayout.addStretch()
+
+            self.alignGroup = QtGui.QButtonGroup(self.wallWidget)
+            self.alignGroup.addButton(self.alignLeft)
+            self.alignGroup.addButton(self.alignCenter)
+            self.alignGroup.addButton(self.alignRight)
+            self.alignGroup.buttonClicked.connect(self.setAlign)
+
+            if obj.Align == "Left":
+                self.alignLeft.setChecked(True)
+            elif obj.Align == "Right":
+                self.alignRight.setChecked(True)
+            else:
+                self.alignCenter.setChecked(True)
+
+            layout.addRow(translate("Arch", "Alignment"), self.alignLayout)
+
+            # Wall Options first, then Components (inherited self.form)
+            self.form = [self.wallWidget, self.form]
+
+        def setAlign(self, button):
+            if button == self.alignLeft:
+                self.obj.Align = "Left"
+            elif button == self.alignRight:
+                self.obj.Align = "Right"
+            else:
+                self.obj.Align = "Center"
+            self.obj.recompute()
+
+        def accept(self):
+            self.obj.Length = self.length.property("value")
+            self.obj.Width = self.width.property("value")
+            self.obj.Height = self.height.property("value")
+            return super().accept()
+
+
 class _ViewProviderWall(ArchComponent.ViewProviderComponent):
     """The view provider for the wall object.
 
@@ -1810,7 +1890,9 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         if hasattr(self, "Object"):
             if self.Object.CloneOf:
                 return ":/icons/Arch_Wall_Clone.svg"
-            elif (not self.Object.Base) and self.Object.Additions:
+            elif (not self.Object.Base) and self.Object.Additions and not self.Object.Length.Value:
+                # The wall is an assembly: it is built from additions only, yet it is not
+                # strictly a baseless wall, since baseless walls are parametric.
                 return ":/icons/Arch_Wall_Tree_Assembly.svg"
         return ":/icons/Arch_Wall_Tree.svg"
 
@@ -1962,6 +2044,14 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
                     self.fset.coordIndex.setValues(0, len(fdata), fdata)
             return "Wireframe"
         return ArchComponent.ViewProviderComponent.setDisplayMode(self, mode)
+
+    def setEdit(self, vobj, mode):
+        if mode != 0:
+            return None
+        taskd = WallTaskPanel(vobj.Object)
+        taskd.update()
+        FreeCADGui.Control.showDialog(taskd)
+        return True
 
     def setupContextMenu(self, vobj, menu):
 

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_FACEMAKER_BULLSEYE_H
-#define PART_FACEMAKER_BULLSEYE_H
+#pragma once
 
 #include "FaceMaker.h"
 
@@ -167,4 +166,3 @@ public:
 };
 
 }  // namespace Part
-#endif  // PART_FACEMAKER_BULLSEYE_H

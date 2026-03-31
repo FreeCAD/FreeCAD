@@ -234,7 +234,7 @@ void CmdPartPrimitives::activated(int iMsg)
 
 bool CmdPartPrimitives::isActive()
 {
-    return (hasActiveDocument() && !Gui::Control().activeDialog());
+    return (hasActiveDocument() && !Gui::Control().activeDialog(getDocument()));
 }
 
 namespace PartGui
@@ -1424,7 +1424,7 @@ CmdPartBoolean::CmdPartBoolean()
 void CmdPartBoolean::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog(getDocument());
     if (!dlg) {
         dlg = new PartGui::TaskBooleanOperation();
     }
@@ -1433,7 +1433,7 @@ void CmdPartBoolean::activated(int iMsg)
 
 bool CmdPartBoolean::isActive()
 {
-    return (hasActiveDocument() && !Gui::Control().activeDialog());
+    return (hasActiveDocument() && !Gui::Control().activeDialog(getDocument()));
 }
 
 //===========================================================================
@@ -1461,7 +1461,7 @@ void CmdPartExtrude::activated(int iMsg)
 
 bool CmdPartExtrude::isActive()
 {
-    return (hasActiveDocument() && !Gui::Control().activeDialog());
+    return (hasActiveDocument() && !Gui::Control().activeDialog(getDocument()));
 }
 
 //===========================================================================
@@ -1490,7 +1490,7 @@ void CmdPartScale::activated(int iMsg)
 
 bool CmdPartScale::isActive()
 {
-    return (hasActiveDocument() && !Gui::Control().activeDialog());
+    return (hasActiveDocument() && !Gui::Control().activeDialog(getDocument()));
 }
 
 //===========================================================================
@@ -1577,7 +1577,7 @@ void CmdPartRevolve::activated(int iMsg)
 
 bool CmdPartRevolve::isActive()
 {
-    return (hasActiveDocument() && !Gui::Control().activeDialog());
+    return (hasActiveDocument() && !Gui::Control().activeDialog(getDocument()));
 }
 
 //===========================================================================
@@ -1605,7 +1605,7 @@ void CmdPartFillet::activated(int iMsg)
 
 bool CmdPartFillet::isActive()
 {
-    return (hasActiveDocument() && !Gui::Control().activeDialog());
+    return (hasActiveDocument() && !Gui::Control().activeDialog(getDocument()));
 }
 
 //===========================================================================
@@ -1633,7 +1633,7 @@ void CmdPartChamfer::activated(int iMsg)
 
 bool CmdPartChamfer::isActive()
 {
-    return (hasActiveDocument() && !Gui::Control().activeDialog());
+    return (hasActiveDocument() && !Gui::Control().activeDialog(getDocument()));
 }
 
 //===========================================================================
@@ -1661,7 +1661,7 @@ void CmdPartMirror::activated(int iMsg)
 
 bool CmdPartMirror::isActive()
 {
-    return (hasActiveDocument() && !Gui::Control().activeDialog());
+    return (hasActiveDocument() && !Gui::Control().activeDialog(getDocument()));
 }
 
 //===========================================================================
@@ -1684,7 +1684,7 @@ CmdPartCrossSections::CmdPartCrossSections()
 void CmdPartCrossSections::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog(getDocument());
     if (!dlg) {
         std::vector<Part::TopoShape> shapes = PartGui::getShapesFromSelection();
         Base::BoundBox3d bbox;
@@ -1699,7 +1699,7 @@ void CmdPartCrossSections::activated(int iMsg)
 bool CmdPartCrossSections::isActive()
 {
     bool hasShapes = PartGui::hasShapesInSelection();
-    return (hasShapes && !Gui::Control().activeDialog());
+    return (hasShapes && !Gui::Control().activeDialog(getDocument()));
 }
 
 //===========================================================================
@@ -1729,7 +1729,7 @@ void CmdPartBuilder::activated(int iMsg)
 
 bool CmdPartBuilder::isActive()
 {
-    return (hasActiveDocument() && !Gui::Control().activeDialog());
+    return (hasActiveDocument() && !Gui::Control().activeDialog(getDocument()));
 }
 
 //===========================================================================
@@ -1758,7 +1758,7 @@ void CmdPartLoft::activated(int iMsg)
 
 bool CmdPartLoft::isActive()
 {
-    return (hasActiveDocument() && !Gui::Control().activeDialog());
+    return (hasActiveDocument() && !Gui::Control().activeDialog(getDocument()));
 }
 
 //===========================================================================
@@ -1787,7 +1787,7 @@ void CmdPartSweep::activated(int iMsg)
 
 bool CmdPartSweep::isActive()
 {
-    return (hasActiveDocument() && !Gui::Control().activeDialog());
+    return (hasActiveDocument() && !Gui::Control().activeDialog(getDocument()));
 }
 
 //===========================================================================
@@ -2347,7 +2347,7 @@ void CmdCheckGeometry::activated(int iMsg)
 bool CmdCheckGeometry::isActive()
 {
     bool hasShapes = PartGui::hasShapesInSelection();
-    return (hasShapes && !Gui::Control().activeDialog());
+    return (hasShapes && !Gui::Control().activeDialog(getDocument()));
 }
 
 //===========================================================================
@@ -2391,7 +2391,7 @@ void CmdColorPerFace::activated(int iMsg)
 bool CmdColorPerFace::isActive()
 {
     bool objectSelected = Gui::Selection().countObjectsOfType<Part::Feature>() == 1;
-    return (hasActiveDocument() && !Gui::Control().activeDialog() && objectSelected);
+    return (hasActiveDocument() && !Gui::Control().activeDialog(getDocument()) && objectSelected);
 }
 
 //===========================================================================
@@ -2456,7 +2456,7 @@ void CmdPartProjectionOnSurface::activated(int iMsg)
 
 bool CmdPartProjectionOnSurface::isActive()
 {
-    return (hasActiveDocument() && !Gui::Control().activeDialog());
+    return (hasActiveDocument() && !Gui::Control().activeDialog(getDocument()));
 }
 
 //===========================================================================

@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderPartReference_H
-#define PARTGUI_ViewProviderPartReference_H
+#pragma once
 
 #include <Standard_Boolean.hxx>
 #include <TopoDS_Shape.hxx>
@@ -109,6 +108,3 @@ private:
 
 
 }  // namespace PartGui
-
-
-#endif  // PARTGUI_ViewProviderPartReference_H

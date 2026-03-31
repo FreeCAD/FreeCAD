@@ -57,7 +57,6 @@ from .equations import magnetodynamic_writer as MgDyn_writer
 from .equations import magnetodynamic2D_writer as MgDyn2D_writer
 from .equations import staticcurrent_writer as SC_writer
 
-
 _STARTINFO_NAME = "ELMERSOLVER_STARTINFO"
 _SIF_NAME = "case.sif"
 _ELMERGRID_IFORMAT = "8"
@@ -236,6 +235,9 @@ class Writer:
         # the solver that we have another scale
         self._simulation("Coordinate Scaling", 0.001)
         self._simulation("Simulation Type", self.solver.SimulationType)
+        param = ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Elmer")
+        out_level = 10 if self.testmode else param.GetInt("MaxOutputLevel", 10)
+        self._simulation("Max Output Level", out_level)
         if self.solver.SimulationType == "Steady State":
             self._simulation("Steady State Max Iterations", self.solver.SteadyStateMaxIterations)
             self._simulation("Steady State Min Iterations", self.solver.SteadyStateMinIterations)

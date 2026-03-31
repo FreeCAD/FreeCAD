@@ -21,10 +21,10 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef ASSEMBLYGUI_VIEWPROVIDER_ViewProviderAssembly_H
-#define ASSEMBLYGUI_VIEWPROVIDER_ViewProviderAssembly_H
+#pragma once
 
 #include <QCoreApplication>
+#include <QMetaObject>
 #include <fastsignals/signal.h>
 
 #include <Mod/Assembly/AssemblyGlobal.h>
@@ -126,6 +126,10 @@ public:
     void unsetEdit(int ModNum) override;
     void setEditViewer(Gui::View3DInventorViewer*, int ModNum) override;
     bool isInEditMode() const;
+
+    void setActive(bool active) override;
+    void setupActiveAndInEdit();
+    void unsetupActiveAndInEdit();
 
     /// Ask the view provider if it accepts object deletions while in edit
     bool acceptDeletionsInEdit() override
@@ -256,7 +260,6 @@ public:
 private:
     bool tryMouseMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer);
     void tryInitMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer);
-    void removeTaskSolver();
 
     void collectMovableObjects(
         App::DocumentObject* selRoot,
@@ -267,6 +270,9 @@ private:
 
     void slotAboutToOpenTransaction(const std::string& cmdName);
     void slotActivatedVP(const Gui::ViewProviderDocumentObject* vp, const char* name);
+
+    void onWorkbenchActivated(const QString& name);
+    void updateTaskPanel(bool show);
 
     struct ComponentState
     {
@@ -292,13 +298,12 @@ private:
         std::set<App::DocumentObject*>& visited
     );
 
-    TaskAssemblyMessages* taskSolver;
+    TaskAssemblyMessages* taskSolver {nullptr};
 
+    QMetaObject::Connection workbenchConnection;
     fastsignals::connection connectActivatedVP;
     fastsignals::connection connectSolverUpdate;
     fastsignals::scoped_connection m_preTransactionConn;
 };
 
 }  // namespace AssemblyGui
-
-#endif  // ASSEMBLYGUI_VIEWPROVIDER_ViewProviderAssembly_H

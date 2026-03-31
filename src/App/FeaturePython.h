@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_FEATUREPYTHON_H
-#define APP_FEATUREPYTHON_H
+#pragma once
 
 #include <App/GeoFeature.h>
 #include <App/PropertyPythonObject.h>
@@ -460,5 +459,3 @@ using FeaturePython = FeaturePythonT<DocumentObject>;
 using GeometryPython = FeaturePythonT<GeoFeature>;
 
 }  // namespace App
-
-#endif  // APP_FEATUREPYTHON_H

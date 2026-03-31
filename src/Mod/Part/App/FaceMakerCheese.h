@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_FACEMAKER_CHEESE_H
-#define PART_FACEMAKER_CHEESE_H
+#pragma once
 
 #include "FaceMaker.h"
 #include <list>
@@ -74,4 +73,3 @@ protected:
 
 
 }  // namespace Part
-#endif  // PART_FACEMAKER_CHEESE_H

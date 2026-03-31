@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to split wires into separate wire objects."""
+
 ## @package split
 # \ingroup draftfunctions
 # \brief Provides functions to split wires into separate wire objects.

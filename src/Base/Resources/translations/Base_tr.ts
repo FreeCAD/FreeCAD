@@ -16,7 +16,7 @@
     <message>
       <location filename="../../UnitsSchemasData.h" line="593"/>
       <source>US customary (in, lb)</source>
-      <translation>ABD geleneksel (in, lb)</translation>
+      <translation>ABD standart (in, lb)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="642"/>
@@ -26,17 +26,17 @@
     <message>
       <location filename="../../UnitsSchemasData.h" line="75"/>
       <source>Imperial decimal (in, lb)</source>
-      <translation>İngiliz ölçüsü onluk (in, lb)</translation>
+      <translation>Ondalık İngiliz Ölçüsü (in, lb)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="554"/>
       <source>Building Euro (cm, m², m³)</source>
-      <translation>Yapı Avrupa (cm, m², m³)</translation>
+      <translation>Yapı (Avrupa) (cm, m², m³)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="631"/>
       <source>Building US (ft-in, sqft, cft)</source>
-      <translation>Yapı ABD (ft-in, sqft, cft)</translation>
+      <translation>Yapı (ABD) (ft-in, sqft, cft)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="53"/>
@@ -46,12 +46,12 @@
     <message>
       <location filename="../../UnitsSchemasData.h" line="581"/>
       <source>FEM (mm, N, s)</source>
-      <translation>Sonlu Elemenalar Yöntemi (mm, N, s)</translation>
+      <translation>FEM (mm, N, s)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="62"/>
       <source>Meter decimal (m, m², m³)</source>
-      <translation>Metrik onluk (m, m², m³)</translation>
+      <translation>Ondalık Metrik (m, m², m³)</translation>
     </message>
   </context>
 </TS>

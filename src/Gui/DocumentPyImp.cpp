@@ -23,6 +23,7 @@
 #include <sstream>
 
 #include <App/Document.h>
+#include <App/DocumentObjectPy.h>
 #include <Base/Matrix.h>
 #include <Base/MatrixPy.h>
 #include <Base/Stream.h>
@@ -30,18 +31,16 @@
 #include "Application.h"
 #include "MergeDocuments.h"
 #include "MDIView.h"
-#include "ViewProviderExtern.h"
-
-// inclusion of the generated files (generated out of DocumentPy.pyi)
-#include "DocumentPy.h"
-#include "DocumentPy.cpp"
-#include <App/DocumentObjectPy.h>
 #include "Tree.h"
 #include "ViewProviderDocumentObject.h"
-#include "ViewProviderDocumentObjectPy.h"
+#include "ViewProviderExtern.h"
+
+// generated out of Document.pyi
+#include "DocumentPy.h"
+#include "DocumentPy.cpp"
+
 #include "ViewProviderPy.h"
 #include "ViewProviderDocumentObjectPy.h"
-
 
 using namespace Gui;
 
@@ -578,6 +577,34 @@ Py::Long DocumentPy::getEditMode() const
     return Py::Long(mode);
 }
 
+PyObject* DocumentPy::openCommand(PyObject* arg, PyObject* kwd)
+{
+    const char* name = nullptr;
+    if (!PyArg_ParseTuple(arg, "s", &name)) {
+        throw Py::Exception();
+    }
+    int tid = getDocumentPtr()->openCommand(name);
+
+    return Py::new_reference_to(Py::Long(tid));
+}
+PyObject* DocumentPy::commitCommand(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+    getDocumentPtr()->commitCommand();
+
+    Py_Return;
+}
+PyObject* DocumentPy::abortCommand(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+    getDocumentPtr()->abortCommand();
+
+    Py_Return;
+}
 Py::Boolean DocumentPy::getTransacting() const
 {
     return {getDocumentPtr()->isPerformingTransaction()};

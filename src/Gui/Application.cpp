@@ -160,6 +160,12 @@ FC_LOG_LEVEL_INIT("Gui")
 
 Application* Application::Instance = nullptr;
 
+#ifdef USE_3DCONNEXION_NAVLIB
+extern "C" {
+extern const long NlErrorCode;  // initialized before main() by navlib_load.cpp
+}
+#endif
+
 namespace Gui
 {
 
@@ -227,7 +233,7 @@ struct ApplicationP
     std::map<const App::Document*, Gui::Document*> documents;
     /// Active document
     Gui::Document* activeDocument {nullptr};
-    Gui::Document* editDocument {nullptr};
+    std::vector<Gui::Document*> editDocuments;
 
     MacroManager* macroMngr;
     PreferencePackManager* prefPackManager;
@@ -631,7 +637,7 @@ Application::Application(bool GUIenabled)
     PyObject* module = PyImport_AddModule("FreeCADGui");
     PyMethodDef* meth = FreeCADGui_methods;
     PyObject* dict = PyModule_GetDict(module);
-    for (; meth->ml_name != nullptr; meth++) {
+    for (; meth->ml_name; meth++) {
         PyObject* descr;
         descr = PyCFunction_NewEx(meth, nullptr, nullptr);
         if (!descr) {
@@ -675,19 +681,6 @@ Application::Application(bool GUIenabled)
     // instantiate the workbench dictionary
     _pcWorkbenchDictionary = PyDict_New();
 
-#ifdef USE_3DCONNEXION_NAVLIB
-    ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/View"
-    );
-    if (!hViewGrp->GetBool("LegacySpaceMouseDevices", false)) {
-        // Instantiate the 3Dconnexion controller
-        pNavlibInterface = new NavlibInterface();
-    }
-    else {
-        pNavlibInterface = nullptr;
-    }
-#endif
-
     if (GUIenabled) {
         createStandardOperations();
         MacroCommand::load();
@@ -699,7 +692,9 @@ Application::~Application()
 {
     Base::Console().log("Destruct Gui::Application\n");
 #ifdef USE_3DCONNEXION_NAVLIB
-    delete pNavlibInterface;
+    if (pNavlibInterface) {
+        delete pNavlibInterface;
+    }
 #endif
     WorkbenchManager::destruct();
     WorkbenchManipulator::removeAll();
@@ -876,10 +871,8 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
                         "User parameter:BaseApp/Preferences/View"
                     );
                     if (hGrp->GetBool("AutoFitToView", true)) {
-                        MDIView* view = doc->getActiveView();
-                        if (view) {
-                            const char* ret = nullptr;
-                            if (view->onMsg("ViewFit", &ret)) {
+                        if (MDIView* view = doc->getActiveView()) {
+                            if (view->onMsg("ViewFit")) {
                                 updateActions(true);
                             }
                         }
@@ -1287,6 +1280,9 @@ void Application::slotActiveDocument(const App::Document& Doc)
                 Py::Module("FreeCADGui").setAttr(std::string("ActiveDocument"), Py::None());
             }
         }
+        if (!d->activeDocument->workbench().empty()) {
+            activateWorkbench(d->activeDocument->workbench().c_str());
+        }
 
         // Update the application to show the unit change
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
@@ -1404,10 +1400,10 @@ void Application::onLastWindowClosed(Gui::Document* pcDoc)
 }
 
 /// send Messages to the active view
-bool Application::sendMsgToActiveView(const char* pMsg, const char** ppReturn)
+bool Application::sendMsgToActiveView(const char* pMsg)
 {
     MDIView* pView = getMainWindow()->activeWindow();
-    bool res = pView ? pView->onMsg(pMsg, ppReturn) : false;
+    bool res = pView ? pView->onMsg(pMsg) : false;
     updateActions(true);
     return res;
 }
@@ -1419,7 +1415,7 @@ bool Application::sendHasMsgToActiveView(const char* pMsg)
 }
 
 /// send Messages to the active view
-bool Application::sendMsgToFocusView(const char* pMsg, const char** ppReturn)
+bool Application::sendMsgToFocusView(const char* pMsg)
 {
     MDIView* pView = getMainWindow()->activeWindow();
     if (!pView) {
@@ -1427,7 +1423,7 @@ bool Application::sendMsgToFocusView(const char* pMsg, const char** ppReturn)
     }
     for (auto focus = qApp->focusWidget(); focus; focus = focus->parentWidget()) {
         if (focus == pView) {
-            bool res = pView->onMsg(pMsg, ppReturn);
+            bool res = pView->onMsg(pMsg);
             updateActions(true);
             return res;
         }
@@ -1493,26 +1489,65 @@ Gui::Document* Application::activeDocument() const
 
 Gui::Document* Application::editDocument() const
 {
-    return d->editDocument;
-}
-
-Gui::MDIView* Application::editViewOfNode(SoNode* node) const
-{
-    return d->editDocument ? d->editDocument->getViewOfNode(node) : nullptr;
-}
-
-void Application::setEditDocument(Gui::Document* doc)
-{
-    if (!doc) {
-        d->editDocument = nullptr;
+    if (d->editDocuments.empty()) {
+        return nullptr;
     }
-    else if (doc == d->editDocument) {
+    return d->editDocuments[0];
+}
+Gui::Document* Application::editDocument(const std::function<bool(Gui::Document*)>& eval)
+{
+    auto found = std::ranges::find_if(d->editDocuments, eval);
+
+    return found == d->editDocuments.end() ? nullptr : *found;
+}
+std::vector<Gui::Document*> Application::editDocuments() const
+{
+    return d->editDocuments;
+}
+bool Application::isInEdit(Gui::Document* pcDocument) const
+{
+    return std::ranges::find(d->editDocuments, pcDocument) != d->editDocuments.end();
+}
+void Application::unsetEditDocument(Gui::Document* pcDocument)
+{
+    if (std::erase(d->editDocuments, pcDocument) == 0) {
         return;
     }
-    for (auto& v : d->documents) {
-        v.second->_resetEdit();
+
+    pcDocument->_resetEdit();
+    updateActions();
+}
+void Application::unsetEditDocumentIf(const std::function<bool(Gui::Document*)>& eval)
+{
+    std::erase_if(d->editDocuments, [&](Gui::Document* doc) {
+        if (eval(doc)) {
+            doc->_resetEdit();
+            return true;
+        }
+        return false;
+    });
+    updateActions();
+}
+Gui::MDIView* Application::editViewOfNode(SoNode* node) const
+{
+    for (auto editDoc : d->editDocuments) {
+        if (Gui::MDIView* view = editDoc->getViewOfNode(node)) {
+            return view;
+        }
     }
-    d->editDocument = doc;
+    return nullptr;
+}
+
+void Application::setEditDocument(Gui::Document* pcDocument)
+{
+    if (pcDocument == nullptr) {
+        return;
+    }
+    if (std::ranges::find(d->editDocuments, pcDocument) != d->editDocuments.end()) {
+        return;
+    }
+    d->editDocuments.push_back(pcDocument);
+
     updateActions();
 }
 
@@ -1533,12 +1568,18 @@ void Application::setActiveDocument(Gui::Document* pcDocument)
             return;
         }
     }
+    if (d->activeDocument) {
+        d->activeDocument->setIsActive(false);
+    }
     d->activeDocument = pcDocument;
+
     std::string nameApp, nameGui;
 
     // This adds just a line to the macro file but does not set the active document
     // Macro recording of this is problematic, thus it's written out as comment.
     if (pcDocument) {
+        pcDocument->setIsActive(true);
+
         nameApp += "App.setActiveDocument(\"";
         nameApp += pcDocument->getDocument()->getName();
         nameApp += "\")\n";
@@ -1894,6 +1935,9 @@ bool Application::activateWorkbench(const char* name)
                     ->SetASCII("LastModule", nameWb.c_str());
             }
             newWb->activated();
+        }
+        if (activeDocument()) {
+            activeDocument()->setWorkbench(name);
         }
     }
     catch (Py::Exception&) {
@@ -2450,7 +2494,6 @@ void tryRunEventLoop(GUISingleApplication& mainApp)
     Base::FileInfo fi(out.str());
     Base::ofstream lock(fi);
 
-    // In case the file_lock cannot be created start FreeCAD without IPC support.
 #if !defined(FC_OS_WIN32) || (BOOST_VERSION < 107600)
     std::string filename = out.str();
 #else
@@ -2475,17 +2518,21 @@ void tryRunEventLoop(GUISingleApplication& mainApp)
             fi.deleteFile();
         }
         else {
-            Base::Console().warning(
+            Base::Console().error(
                 "Failed to create a file lock for the IPC.\n"
-                "The application will be terminated\n"
+                "The application will be terminated.\n"
+                "Attempted lock file: %s",
+                fi.filePath().c_str()
             );
         }
     }
     catch (const boost::interprocess::interprocess_exception& e) {
         QString msg = QString::fromLocal8Bit(e.what());
-        Base::Console().warning(
-            "Failed to create a file lock for the IPC: %s\n",
-            msg.toUtf8().constData()
+        Base::Console().error(
+            "Failed to create a file lock for the IPC: %s\n"
+            "Attempted lock file: %s\n",
+            msg.toUtf8().constData(),
+            fi.filePath().c_str()
         );
     }
 }
@@ -2588,6 +2635,8 @@ void Application::runApplication()
     StartupPostProcess postProcess(&mw, app, &mainApp);
     postProcess.execute();
 
+    init3DMouse(&mw, &mainApp);
+
     Instance->d->startingUp = false;
 
     // gets called once we start the event loop
@@ -2600,15 +2649,43 @@ void Application::runApplication()
     // https://forum.freecad.org/viewtopic.php?f=10&t=21665
     Gui::getMainWindow()->setProperty("eventLoop", true);
 
-#ifdef USE_3DCONNEXION_NAVLIB
-    if (Instance->pNavlibInterface) {
-        Instance->pNavlibInterface->enableNavigation();
-    }
-#endif
-
     runEventLoop(mainApp);
 
     Base::Console().log("Finish: Event loop left\n");
+}
+
+void Application::init3DMouse(MainWindow* mainWindow, QApplication* qtApp)
+{
+    Instance->pNavlibInterface = nullptr;
+#ifdef USE_3DCONNEXION_NAVLIB
+    ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View"
+    );
+    if (NlErrorCode) {
+        Base::Console().log("Init: 3Dconnexion driver not installed\n");
+    }
+    else {
+        Base::Console().log("Init: 3Dconnexion Navigation Framework present\n");
+    }
+    if (!hViewGrp->GetBool("LegacySpaceMouseDevices", false)) {
+        if (!NlErrorCode) {
+            // Instantiate the 3Dconnexion controller
+            Instance->pNavlibInterface = new NavlibInterface();
+            Base::Console().log("Init: Enabling 3Dconnexion Navigation Framework\n");
+            Instance->pNavlibInterface->enableNavigation();
+        }
+    }
+    else {
+        Base::Console().log("Init: Using legacy SpaceMouse support\n");
+    }
+#endif
+    if (!Instance->pNavlibInterface) {
+        // initialize spaceball.
+        if (auto fcApp = qobject_cast<GUIApplicationNativeEventAware*>(qtApp)) {
+            Base::Console().log("Init: Initializing 3D mouse event handling\n");
+            fcApp->initSpaceball(mainWindow);
+        }
+    }
 }
 
 bool Application::hiddenMainWindow()
@@ -2789,7 +2866,7 @@ void Application::setStyle(const QString& name)
         return qobject_cast<FreeCADStyle*>(style) != nullptr;
     };
 
-    if (auto* current = qApp->style(); current != nullptr && requiresEventFilter(current)) {
+    if (auto* current = qApp->style(); current && requiresEventFilter(current)) {
         qApp->removeEventFilter(current);
     }
 
@@ -2929,42 +3006,4 @@ App::Document* Application::reopen(App::Document* doc)
         }
     }
     return doc;
-}
-
-void Application::getVerboseDPIStyleInfo(QTextStream& str)
-{
-    // Add Stylesheet/Theme/Qtstyle information
-    std::string styleSheet = App::GetApplication()
-                                 .GetParameterGroupByPath(
-                                     "User parameter:BaseApp/Preferences/MainWindow"
-                                 )
-                                 ->GetASCII("StyleSheet");
-    std::string theme = App::GetApplication()
-                            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
-                            ->GetASCII("Theme");
-#if QT_VERSION >= QT_VERSION_CHECK(6, 1, 0)
-    std::string style = qApp->style()->name().toStdString();
-#else
-    std::string style = App::GetApplication()
-                            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
-                            ->GetASCII("QtStyle");
-    if (style.empty()) {
-        style = "Qt default";
-    }
-#endif
-    if (styleSheet.empty()) {
-        styleSheet = "unset";
-    }
-    if (theme.empty()) {
-        theme = "unset";
-    }
-
-    str << "Stylesheet/Theme/QtStyle: " << QString::fromStdString(styleSheet) << "/"
-        << QString::fromStdString(theme) << "/" << QString::fromStdString(style) << "\n";
-
-    // Add DPI information
-    str << "Logical DPI/Physical DPI/Pixel Ratio: "
-        << QApplication::primaryScreen()->logicalDotsPerInch() << "/"
-        << QApplication::primaryScreen()->physicalDotsPerInch() << "/"
-        << QApplication::primaryScreen()->devicePixelRatio() << "\n";
 }
