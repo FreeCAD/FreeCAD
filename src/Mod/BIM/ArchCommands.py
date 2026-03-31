@@ -731,27 +731,26 @@ def removeShape(objs, mark=True):
                 tp = Draft.getType(obj)
                 print(tp)
                 if tp == "Structure":
-                    FreeCAD.ActiveDocument.removeObject(name)
                     import ArchStructure
 
-                    str = ArchStructure.makeStructure(
+                    stru = ArchStructure.makeStructure(
                         length=dims[1], width=dims[2], height=dims[3], name=name
                     )
-                    str.Placement = dims[0]
-                elif tp == "Wall":
+                    stru.Placement = dims[0]
+                    Draft.format_object(stru, obj)
                     FreeCAD.ActiveDocument.removeObject(name)
+                elif tp == "Wall":
                     import Arch
 
+                    place = dims[0]
                     length = dims[1]
-                    width = dims[2]
-                    v1 = Vector(length / 2, 0, 0)
-                    v2 = v1.negative()
-                    v1 = dims[0].multVec(v1)
-                    v2 = dims[0].multVec(v2)
-                    line = Draft.makeLine(v1, v2)
-                    Arch.makeWall(line, width=width, height=dims[3], name=name)
-        else:
-            if mark:
+                    place.move(place.Rotation.multVec(Vector(-length / 2, 0, 0)))
+                    line = Draft.makeLine(Vector(0, 0, 0), Vector(length, 0, 0))
+                    line.Placement = place
+                    wall = Arch.makeWall(line, width=dims[2], height=dims[3], align="Center", name=name)
+                    Draft.format_object(wall, obj)
+                    FreeCAD.ActiveDocument.removeObject(name)
+        elif FreeCAD.GuiUp and mark:
                 obj.ViewObject.ShapeColor = (1.0, 0.0, 0.0, 1.0)
 
 
