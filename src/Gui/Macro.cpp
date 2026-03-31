@@ -22,7 +22,6 @@
 
 
 #include <cassert>
-#include <QDir>
 #include <QFile>
 #include <QTextStream>
 
@@ -399,12 +398,7 @@ void MacroManager::run(MacroType eType, const char* sName)
         PythonRedirector std_out("stdout", pyout);
         PythonRedirector std_err("stderr", pyerr);
         // The given path name is expected to be Utf-8
-        QString pathFile = sName;
-        QFileInfo fileInfo(pathFile);
-        if (fileInfo.exists() && fileInfo.isDir()) {
-            pathFile += QDir::separator() + QString("main.FCMacro");
-        }
-        Base::Interpreter().runFile(pathFile.toStdString().c_str(), this->localEnv);
+        Base::Interpreter().runFile(sName, this->localEnv);
     }
     catch (const Base::SystemExitException&) {
         throw;
