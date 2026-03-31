@@ -683,7 +683,8 @@ void EditModeCoinManager::setAxisPickStyle(bool on)
 }
 
 EditModeCoinManager::PreselectionResult EditModeCoinManager::detectPreselection(
-    const std::vector<std::unique_ptr<SoPickedPoint>>& pickedPoints)
+    const std::vector<std::unique_ptr<SoPickedPoint>>& pickedPoints
+)
 {
     // Constraints have highest pick priority — they render behind geometry
     // but should be pickable through it. Check all picks for constraint hits.

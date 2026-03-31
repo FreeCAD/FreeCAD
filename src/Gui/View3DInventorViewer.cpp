@@ -1162,7 +1162,9 @@ SoPickedPoint* View3DInventorViewer::getPointOnRay(const SbVec2s& pos, const Vie
 }
 
 std::vector<std::unique_ptr<SoPickedPoint>> View3DInventorViewer::getPickedPointsOnRay(
-    const SbVec2s& pos, const ViewProvider* vp) const
+    const SbVec2s& pos,
+    const ViewProvider* vp
+) const
 {
     std::vector<std::unique_ptr<SoPickedPoint>> result;
 

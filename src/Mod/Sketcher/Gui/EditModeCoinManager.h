@@ -199,9 +199,7 @@ public:
 
         bool hasHit() const
         {
-            return PointIndex != InvalidPoint
-                || GeoIndex != InvalidCurve
-                || Cross != Axes::None
+            return PointIndex != InvalidPoint || GeoIndex != InvalidCurve || Cross != Axes::None
                 || !ConstrIndices.empty();
         }
 
@@ -238,7 +236,8 @@ public:
      * PreselectionResult::pickPoint.
      */
     PreselectionResult detectPreselection(
-        const std::vector<std::unique_ptr<SoPickedPoint>>& pickedPoints);
+        const std::vector<std::unique_ptr<SoPickedPoint>>& pickedPoints
+    );
     /// The client is responsible for unref-ing the SoGroup to release the memory.
     SoGroup* getSelectedConstraints();
     //@}

@@ -753,7 +753,9 @@ protected:
     SoPickedPoint* getPointOnRay(const SbVec2s& pos, const View3DInventorViewer* viewer) const;
     /** Helper method to get all picked entities along a ray while editing. */
     std::vector<std::unique_ptr<SoPickedPoint>> getPickedPointsOnRay(
-        const SbVec2s& pos, const View3DInventorViewer* viewer) const;
+        const SbVec2s& pos,
+        const View3DInventorViewer* viewer
+    ) const;
     /** Helper method to get picked entities while editing.
      * It's in the responsibility of the caller to delete the returned instance.
      */
