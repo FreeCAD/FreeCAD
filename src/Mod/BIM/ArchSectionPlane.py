@@ -1514,7 +1514,7 @@ class _ViewProviderSectionPlane:
         menu.addAction(actionEdit)
 
         actionToggleCutview = QtGui.QAction(
-            QtGui.QIcon(":/icons/Draft_Edit.svg"), translate("Arch", "Toggle Cutview"), menu
+            QtGui.QIcon(":/icons/Arch_CutPlane.svg"), translate("Arch", "Toggle Cut View"), menu
         )
         actionToggleCutview.triggered.connect(lambda: self.toggleCutview(vobj))
         menu.addAction(actionToggleCutview)
