@@ -135,6 +135,7 @@ public:
     //@}
 
     std::set<int> detectPreselectionConstr(const SoPickedPoint* Point);
+    std::set<int> detectConstraintAtPosition(SbVec2f worldPos);
 
     SoSeparator* getConstraintIdSeparator(int i);
 

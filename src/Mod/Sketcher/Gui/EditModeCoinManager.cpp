@@ -690,7 +690,15 @@ EditModeCoinManager::PreselectionResult EditModeCoinManager::detectPreselection(
         return result;
     }
 
-    // Base::Console().log("Point pick\n");
+    // Check constraints first — they may be visually behind geometry lines
+    // but should still be pickable (constraint icons have lower z-depth than
+    // geometry for rendering, but should have higher pick priority).
+    result.ConstrIndices = pEditModeConstraintCoinManager->detectConstraintAtPosition(
+        SbVec2f(Point->getPoint()[0], Point->getPoint()[1]));
+    if (!result.ConstrIndices.empty()) {
+        return result;
+    }
+
     SoPath* path = Point->getPath();
     SoNode* tail = path->getTail();  // Tail is directly the node containing points and curves
 

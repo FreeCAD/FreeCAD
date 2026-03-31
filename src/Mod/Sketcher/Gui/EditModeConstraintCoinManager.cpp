@@ -2350,6 +2350,103 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(const SoPi
     return constrIndices;
 }
 
+std::set<int> EditModeConstraintCoinManager::detectConstraintAtPosition(SbVec2f worldPos)
+{
+    std::set<int> constrIndices;
+
+    SbVec2f cursorScreenPos = ViewProviderSketchCoinAttorney::getScreenCoordinates(
+        viewProvider, worldPos);
+
+    int numConstrs = editModeScenegraphNodes.constrGroup->getNumChildren();
+    for (int i = 0; i < numConstrs; ++i) {
+        auto* sep = dynamic_cast<SoSeparator*>(editModeScenegraphNodes.constrGroup->getChild(i));
+        if (!sep || sep->getNumChildren() <= static_cast<int>(ConstraintNodePosition::FirstConstraintIdIndex)) {
+            continue;
+        }
+
+        // Check first icon
+        auto* icon = dynamic_cast<SoImage*>(
+            sep->getChild(static_cast<int>(ConstraintNodePosition::FirstIconIndex)));
+        if (!icon) {
+            continue;
+        }
+
+        auto* transNode = dynamic_cast<SoZoomTranslation*>(
+            sep->getChild(static_cast<int>(ConstraintNodePosition::FirstTranslationIndex)));
+        if (!transNode) {
+            continue;
+        }
+
+        SbVec3s iconSize = getDisplayedSize(icon);
+        SbVec3f absPos = transNode->abPos.getValue();
+        SbVec3f trans = transNode->translation.getValue();
+        float scale = transNode->getScaleFactor();
+        SbVec3f iconWorldPos = absPos + scale * trans;
+
+        SbVec2f iconScreenCenter = ViewProviderSketchCoinAttorney::getScreenCoordinates(
+            viewProvider, SbVec2f(iconWorldPos[0], iconWorldPos[1]));
+
+        // Check if cursor is within the icon bounds
+        float halfW = iconSize[0] / 2.0f;
+        float halfH = iconSize[1] / 2.0f;
+        if (std::abs(cursorScreenPos[0] - iconScreenCenter[0]) <= halfW
+            && std::abs(cursorScreenPos[1] - iconScreenCenter[1]) <= halfH) {
+
+            // Get constraint ID from the SoInfo node
+            auto* info = dynamic_cast<SoInfo*>(
+                sep->getChild(static_cast<int>(ConstraintNodePosition::FirstConstraintIdIndex)));
+            if (info) {
+                QString idStr = QString::fromLatin1(info->string.getValue().getString());
+                QStringList ids = idStr.split(QStringLiteral(","));
+                for (const QString& id : ids) {
+                    constrIndices.insert(id.toInt());
+                }
+                if (!constrIndices.empty()) {
+                    return constrIndices;
+                }
+            }
+        }
+
+        // Check second icon if present
+        if (sep->getNumChildren() > static_cast<int>(ConstraintNodePosition::SecondConstraintIdIndex)) {
+            auto* icon2 = dynamic_cast<SoImage*>(
+                sep->getChild(static_cast<int>(ConstraintNodePosition::SecondIconIndex)));
+            auto* trans2 = dynamic_cast<SoZoomTranslation*>(
+                sep->getChild(static_cast<int>(ConstraintNodePosition::SecondTranslationIndex)));
+            if (icon2 && trans2) {
+                SbVec3s iconSize2 = getDisplayedSize(icon2);
+                SbVec3f absPos2 = absPos + trans2->abPos.getValue();
+                SbVec3f transV2 = trans + trans2->translation.getValue();
+                float scale2 = trans2->getScaleFactor();
+                SbVec3f iconWorldPos2 = absPos2 + scale2 * transV2;
+
+                SbVec2f iconScreenCenter2 = ViewProviderSketchCoinAttorney::getScreenCoordinates(
+                    viewProvider, SbVec2f(iconWorldPos2[0], iconWorldPos2[1]));
+
+                float halfW2 = iconSize2[0] / 2.0f;
+                float halfH2 = iconSize2[1] / 2.0f;
+                if (std::abs(cursorScreenPos[0] - iconScreenCenter2[0]) <= halfW2
+                    && std::abs(cursorScreenPos[1] - iconScreenCenter2[1]) <= halfH2) {
+                    auto* info2 = dynamic_cast<SoInfo*>(
+                        sep->getChild(static_cast<int>(ConstraintNodePosition::SecondConstraintIdIndex)));
+                    if (info2) {
+                        QString idStr = QString::fromLatin1(info2->string.getValue().getString());
+                        QStringList ids = idStr.split(QStringLiteral(","));
+                        for (const QString& id : ids) {
+                            constrIndices.insert(id.toInt());
+                        }
+                        if (!constrIndices.empty()) {
+                            return constrIndices;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return constrIndices;
+}
+
 SbVec3s EditModeConstraintCoinManager::getDisplayedSize(const SoImage* iconPtr) const
 {
     SbVec3s iconSize = iconPtr->image.getValue().getSize();
