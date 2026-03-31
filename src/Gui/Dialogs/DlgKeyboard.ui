@@ -238,7 +238,7 @@ treated as shortcut key sequence 'F, F'.</string>
           <widget class="QTreeWidget" name="assignedTreeWidget">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
-             <horstretch>0</horstretch>
+             <horstretch>1</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
