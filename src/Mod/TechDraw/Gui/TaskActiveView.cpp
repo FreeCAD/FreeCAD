@@ -195,17 +195,32 @@ void TaskActiveView::updatePreview()
         imageHeight = static_cast<int>(ui->sbHeight->value());
     }
 
-    QImage image(imageWidth, imageHeight, QImage::Format_ARGB32_Premultiplied);
-    image.fill(Qt::transparent);
-    Grabber3d::quickView(view3d, bg, image);
-    if (!image.save(QString::fromStdString(tempName), "PNG")) {
+    QImage fullImage(SXGAWidth, SXGAHeight, QImage::Format_ARGB32_Premultiplied);
+    fullImage.fill(Qt::transparent);
+    Grabber3d::quickView(view3d, bg, fullImage);
+
+    QImage finalImage;
+    if (ui->gbFraming->isChecked()) {
+        int cropW = ui->sbWidth->value();
+        int cropH = ui->sbHeight->value();
+
+        int x = (SXGAWidth - cropW) / 2;
+        int y = (SXGAHeight - cropH) / 2;
+
+        finalImage = fullImage.copy(x, y, cropW, cropH);
+    } else {
+        finalImage = fullImage;
+    }
+
+    if (!finalImage.save(QString::fromStdString(tempName), "PNG")) {
          Base::Console().error("ActiveView could not save file: %s\n", tempName.c_str());
     }
 
     tempName = DU::cleanFilespecBackslash(tempName);
     m_previewImageFeat->ImageFile.setValue(tempName);
-    m_previewImageFeat->Width.setValue(imageWidth);
-    m_previewImageFeat->Height.setValue(imageHeight);
+    
+    m_previewImageFeat->Width.setValue(finalImage.width());
+    m_previewImageFeat->Height.setValue(finalImage.height());
 
     if (auto* guiDoc = Gui::Application::Instance->getDocument(doc)) {
         if (auto* vp = guiDoc->getViewProvider(m_previewImageFeat)) {
