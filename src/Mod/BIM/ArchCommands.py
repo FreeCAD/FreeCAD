@@ -747,11 +747,13 @@ def removeShape(objs, mark=True):
                     place.move(place.Rotation.multVec(Vector(-length / 2, 0, 0)))
                     line = Draft.makeLine(Vector(0, 0, 0), Vector(length, 0, 0))
                     line.Placement = place
-                    wall = Arch.makeWall(line, width=dims[2], height=dims[3], align="Center", name=name)
+                    wall = Arch.makeWall(
+                        line, width=dims[2], height=dims[3], align="Center", name=name
+                    )
                     Draft.format_object(wall, obj)
                     FreeCAD.ActiveDocument.removeObject(name)
         elif FreeCAD.GuiUp and mark:
-                obj.ViewObject.ShapeColor = (1.0, 0.0, 0.0, 1.0)
+            obj.ViewObject.ShapeColor = (1.0, 0.0, 0.0, 1.0)
 
 
 def mergeCells(objectslist):

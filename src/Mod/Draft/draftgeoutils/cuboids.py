@@ -129,7 +129,7 @@ def getCubicDimensions(shape):
         _edge_vector(base_point, edge_x),
         _edge_vector(base_point, edge_y),
         _edge_vector(base_point, edge_z),
-        "ZXY"
+        "ZXY",
     )
 
     return [
