@@ -171,7 +171,7 @@ def threadRadii(internal, majorDia, minorDia, toolDia, toolCrest):
         # mill outside in
         innerTip = minorDia / 2.0 - H / 4.0
         # Compensate for the crest of the tool
-        toolTip = innerTip - toolCrest * SQRT_3_DIVIDED_BY_2
+        toolTip = innerTip + toolCrest * SQRT_3_DIVIDED_BY_2
         radii = ((majorDia + toolDia) / 2.0, toolTip + toolDia / 2.0)
     Path.Log.track(radii)
     return radii

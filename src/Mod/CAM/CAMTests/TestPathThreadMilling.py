@@ -97,7 +97,7 @@ class TestPathThreadMilling(PathTestBase):
 
     def test21(self):
         """Verify external radii with tool crest."""
-        self.assertRadii(PathThreadMilling.threadRadii(False, 20, 18, 2, 0.1), (11, 9.513397))
+        self.assertRadii(PathThreadMilling.threadRadii(False, 20, 18, 2, 0.1), (11, 9.686603))
 
     def test30(self):
         """Verify external thread passes."""
