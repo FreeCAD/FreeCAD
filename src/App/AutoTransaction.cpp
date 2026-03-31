@@ -169,7 +169,7 @@ void Application::setTransactionName(int tid, const TransactionName& name)
 }
 int Application::generateTransactionContextId()
 {
-    return transactionContextIdGenerator++;
+    return ++transactionContextIdGenerator;
 }
 
 bool Application::closeActiveTransaction(TransactionCloseMode mode, int id)

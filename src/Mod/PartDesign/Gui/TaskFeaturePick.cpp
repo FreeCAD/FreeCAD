@@ -521,7 +521,7 @@ void TaskFeaturePick::onSelectionChanged(const Gui::SelectionChanges& msg)
                             [docNameCopy] {
                                 Gui::Control().accept(
                                     Gui::Application::Instance->getDocument(docNameCopy.c_str())
-                                        ->getDocument()
+                                        ->getTransactionContext()
                                 );
                             },
                             Qt::QueuedConnection
@@ -568,7 +568,7 @@ void TaskFeaturePick::onDoubleClick(QListWidgetItem* item)
         qobject_cast<Gui::ControlSingleton*>(&Gui::Control()),
         [docNameCopy] {
             Gui::Control().accept(
-                Gui::Application::Instance->getDocument(docNameCopy.c_str())->getDocument()
+                Gui::Application::Instance->getDocument(docNameCopy.c_str())->getTransactionContext()
             );
         },
         Qt::QueuedConnection
@@ -585,15 +585,15 @@ void TaskFeaturePick::slotDeletedObject(const Gui::ViewProviderDocumentObject& O
 void TaskFeaturePick::slotUndoDocument(const Gui::Document& doc)
 {
     if (origins.empty()) {
-        QTimer::singleShot(100, [&doc]() { Gui::Control().closeDialog(doc.getDocument()); });
+        QTimer::singleShot(100, [&doc]() { Gui::Control().closeDialog(doc.getTransactionContext()); });
     }
 }
 
 void TaskFeaturePick::slotDeleteDocument(const Gui::Document& doc)
 {
     origins.clear();
-    App::Document* docPtr = doc.getDocument();
-    QTimer::singleShot(100, [docPtr]() { Gui::Control().closeDialog(docPtr); });
+    int transactionContext = doc.getTransactionContext();
+    QTimer::singleShot(100, [transactionContext]() { Gui::Control().closeDialog(transactionContext); });
 }
 
 void TaskFeaturePick::showExternal(bool val)

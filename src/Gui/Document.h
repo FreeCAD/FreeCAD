@@ -234,6 +234,7 @@ public:
     /// Activate the transaction context associated with the given view or default transaction if
     /// view is nullptr
     void activateTransactionContext(Gui::BaseView* pcView);
+    int getTransactionContext(const Gui::MDIView* view = nullptr) const;
 
     /// helper for selection
     ViewProviderDocumentObject* getViewProviderByPathFromTail(SoPath* path) const;

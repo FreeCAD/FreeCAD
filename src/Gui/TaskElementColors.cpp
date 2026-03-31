@@ -442,15 +442,16 @@ void ElementColors::onTopClicked(bool checked)
 
 void ElementColors::slotDeleteDocument(const Document& Doc)
 {
-    if (d->vpDoc == &Doc || d->editDoc == Doc.getDocument()->getName()) {
-        Control().closeDialog(Doc.getDocument());
-    }
+    // TODO-theo-vt is this really needed?
+    // if (d->vpDoc == &Doc || d->editDoc == Doc.getDocument()->getName()) {
+    //     Control().closeDialog(Doc.getDocument());
+    // }
 }
 
 void ElementColors::slotDeleteObject(const ViewProvider& obj)
 {
     if (d->vp == &obj) {
-        Control().closeDialog(d->vpDoc->getDocument());
+        Control().closeDialog(d->vpDoc->getDocument()->currentTransactionContextId());
     }
 }
 

@@ -112,7 +112,7 @@ struct DocumentP
     std::list<Gui::BaseView*> baseViews;
     /// List of all registered views
     std::list<Gui::BaseView*> passiveViews;
-    std::map<Gui::BaseView*, int> viewToTransactionContext;
+    std::map<const Gui::BaseView*, int> viewToTransactionContext;
     std::map<const App::DocumentObject*, ViewProviderDocumentObject*> _ViewProviderMap;
     std::map<SoSeparator*, ViewProviderDocumentObject*> _CoinMap;
     std::map<std::string, ViewProvider*> _ViewProviderMapAnnotation;
@@ -316,12 +316,14 @@ struct DocumentP
 
     void setDocumentNameOfTaskDialog(App::Document* doc)
     {
-        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog(_pcDocument);
+        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog(
+            _pcDocument->currentTransactionContextId()
+        );
         if (dlg) {
             dlg->setDocumentName(doc->getName());
         }
     }
-    bool attachTransactionContext(Gui::BaseView* pcView)
+    bool attachTransactionContext(const Gui::BaseView* pcView)
     {
         if (!viewToTransactionContext.contains(pcView)) {
             int tcid = _pcDocument->createTransactionContext();
@@ -330,7 +332,7 @@ struct DocumentP
         }
         return false;
     }
-    bool detachTransactionContext(Gui::BaseView* pcView)
+    bool detachTransactionContext(const Gui::BaseView* pcView)
     {
         auto foundTcid = viewToTransactionContext.find(pcView);
         if (foundTcid != viewToTransactionContext.end()) {
@@ -340,7 +342,7 @@ struct DocumentP
         }
         return false;
     }
-    bool activateTransactionContext(Gui::BaseView* pcView)
+    bool activateTransactionContext(const Gui::BaseView* pcView)
     {
         auto foundTcid = viewToTransactionContext.find(pcView);
         if (foundTcid != viewToTransactionContext.end()) {
@@ -348,6 +350,14 @@ struct DocumentP
             return true;
         }
         return false;
+    }
+    int getTransactionContext(const Gui::BaseView* pcView)
+    {
+        auto foundTcid = viewToTransactionContext.find(pcView);
+        if (foundTcid != viewToTransactionContext.end()) {
+            return foundTcid->second;
+        }
+        return App::NullTransactionContext;
     }
 };
 
@@ -2404,7 +2414,13 @@ void Document::activateTransactionContext(Gui::BaseView* pcView)
         d->_pcDocument->activateTransactionContext(d->_pcDocument->defaultTransactionContextId());
     }
 }
-
+int Document::getTransactionContext(const Gui::MDIView* view) const
+{
+    if (view) {
+        return d->getTransactionContext(view);
+    }
+    return d->_pcDocument->currentTransactionContextId();
+}
 void Document::onUpdate()
 {
 #ifdef FC_LOGUPDATECHAIN
@@ -2526,8 +2542,10 @@ bool Document::canClose(bool checkModify, bool checkLink)
         // If a task dialog is open that doesn't allow other commands to modify
         // the document it must be closed by resetting the edit mode of the
         // corresponding view provider.
-        if (!Gui::Control().isAllowedAlterDocument(getDocument())) {
-            std::string name = Gui::Control().activeDialog(getDocument())->getDocumentName();
+        if (!Gui::Control().isAllowedAlterDocument(getDocument()->currentTransactionContextId())) {
+            std::string name = Gui::Control()
+                                   .activeDialog(getDocument()->currentTransactionContextId())
+                                   ->getDocumentName();
             if (name == this->getDocument()->getName()) {
                 // getInEdit() only checks if the currently active MDI view is
                 // a 3D view and that it is in edit mode. However, when closing a

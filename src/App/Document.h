@@ -895,10 +895,12 @@ public:
     int createTransactionContext();
     /// Returns the default transaction context id, the context
     /// it refers to cannot be destroyed
-    int defaultTransactionContextId();
+    int defaultTransactionContextId() const;
     /// Returns the id of the current transaction context, useful
     /// to index taskview and selection for instance
-    int currentTransactionContextId();
+    int currentTransactionContextId() const;
+    /// Returns all the transaction contexts (min 1)
+    std::vector<int> getAllTransactionContexts() const;
     /// Makes a a givent transaction context current, every transaction related call
     /// will apply to the active context
     /// Returns true on success
@@ -906,7 +908,7 @@ public:
     /// Destroys a given transaction context, the transactions will not be recovereable
     /// Returns true on success
     bool removeTransactionContext(int id);
-
+ 
     /**
      * @brief Rename the current transaction.
      *
@@ -943,10 +945,6 @@ public:
      * @return The transaction ID, or 0 if @p pos is out of range.
      */
     int getTransactionID(bool undo, unsigned pos = 0) const;
-
-    int getTransactionContext() const;
-    int getDefaultTransactionContext() const;
-    int createTransactionContext() const;
 
     /**
      * @brief Check if a transaction is open and its list is empty.

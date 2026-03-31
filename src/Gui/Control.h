@@ -29,6 +29,7 @@
 #include <bitset>
 #include <stack>
 
+#include <App/TransactionDefs.h>
 #include <Gui/TaskView/TaskDialog.h>
 
 class QDockWidget;
@@ -64,9 +65,9 @@ public:
      */
     //@{
     /// This method starts a task dialog in the task view
-    /// The dialog is relative to a specific document
-    void showDialog(Gui::TaskView::TaskDialog* dlg, App::Document* attachTo = nullptr);
-    Gui::TaskView::TaskDialog* activeDialog(App::Document* attachedTo = nullptr) const;
+    /// The dialog is relative to a specific document's transaction context
+    void showDialog(Gui::TaskView::TaskDialog* dlg, int transactionContext = App::NullTransactionContext);
+    Gui::TaskView::TaskDialog* activeDialog(int transactionContext = App::NullTransactionContext) const;
     // void closeDialog();
     //@}
 
@@ -82,39 +83,31 @@ public:
       If a task dialog is open then it indicates whether this task dialog allows other commands to
       modify the document while it is open. If no task dialog is open true is returned.
      */
-    bool isAllowedAlterDocument(App::Document* attachedTo = nullptr) const;
+    bool isAllowedAlterDocument(int transactionContext = App::NullTransactionContext) const;
     /*!
       If a task dialog is open then it indicates whether this task dialog allows other commands to
       modify the 3d view while it is open. If no task dialog is open true is returned.
      */
-    bool isAllowedAlterView(App::Document* attachedTo = nullptr) const;
+    bool isAllowedAlterView(int transactionContext = App::NullTransactionContext) const;
     /*!
       If a task dialog is open then it indicates whether this task dialog allows other commands to
       modify the selection while it is open. If no task dialog is open true is returned.
      */
-    bool isAllowedAlterSelection(App::Document* attachedTo = nullptr) const;
+    bool isAllowedAlterSelection(int transactionContext = App::NullTransactionContext) const;
 
 public Q_SLOTS:
-    void accept(App::Document* attachedTo = nullptr);
-    void reject(App::Document* attachedTo = nullptr);
-    void closeDialog(App::Document* attachedTo = nullptr);
+    void accept(int transactionContext = App::NullTransactionContext);
+    void reject(int transactionContext = App::NullTransactionContext);
+    void closeDialog(int transactionContext = App::NullTransactionContext);
 
     /// raises the task view panel
     void showTaskView();
 
 private:
     /// This get called by the TaskView when the Dialog is finished
-    void closedDialog(App::Document* attachedTo = nullptr);
+    void closedDialog(int transactionContext = App::NullTransactionContext);
 
 private:
-    struct status
-    {
-        std::bitset<32> StatusBits;
-    } CurrentStatus;
-
-    std::stack<status> StatusStack;
-
-    std::map<App::Document*, Gui::TaskView::TaskDialog*> ActiveDialogs;
     int oldTabIndex;
 
 private:
@@ -127,8 +120,9 @@ private:
     void aboutToShowDialog(QDockWidget* widget);
     void aboutToHideDialog(QDockWidget* widget);
 
-    // Returns attachTo if not nullptr, otherwise return the active document
-    static App::Document* docOrDefault(App::Document* attachedTo);
+    /// Returns the given transaction context or the active document's active
+    /// transaction context, or NullTransactionContext
+    static int transactionContextOrDefault(int transactionContext);
 
     static ControlSingleton* _pcSingleton;
 };

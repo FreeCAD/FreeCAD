@@ -31,6 +31,7 @@ namespace App {
 class Document;
 
 constexpr int NullTransaction = 0;
+constexpr int NullTransactionContext = 0;
 
 struct TransactionName {
     // Name of the transaction as it will appear in the GUI

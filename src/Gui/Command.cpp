@@ -544,9 +544,14 @@ void Command::testActive()
     if (!(eType & ForEdit)) {  // special case for commands which are only in some edit modes active
 
         App::Document* doc = getDocument();
-        if ((!Gui::Control().isAllowedAlterDocument(doc) && eType & AlterDoc)
-            || (!Gui::Control().isAllowedAlterView(doc) && eType & Alter3DView)
-            || (!Gui::Control().isAllowedAlterSelection(doc) && eType & AlterSelection)) {
+        if (!doc) {
+            return;
+        }
+        int transactionContext = doc->currentTransactionContextId();
+        if ((!Gui::Control().isAllowedAlterDocument(transactionContext) && eType & AlterDoc)
+            || (!Gui::Control().isAllowedAlterView(transactionContext) && eType & Alter3DView)
+            || (!Gui::Control().isAllowedAlterSelection(transactionContext)
+                && eType & AlterSelection)) {
             _pcAction->setEnabled(false);
             return;
         }

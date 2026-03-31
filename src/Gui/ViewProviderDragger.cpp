@@ -30,6 +30,7 @@
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoTransform.h>
 
+#include <App/Document.h>
 #include <App/GeoFeature.h>
 #include <App/DocumentObjectGroup.h>
 #include <Base/Tools.h>
@@ -216,7 +217,10 @@ bool ViewProviderDragger::setEdit(int ModNum)
     transformDragger->addFinishCallback(dragFinishCallback, this);
     transformDragger->addMotionCallback(dragMotionCallback, this);
 
-    Gui::Control().showDialog(getTransformDialog(), getDocument()->getDocument());
+    Gui::Control().showDialog(
+        getTransformDialog(),
+        getDocument()->getDocument()->currentTransactionContextId()
+    );
 
     updateDraggerPosition();
 
@@ -229,7 +233,7 @@ void ViewProviderDragger::unsetEdit(int ModNum)
 
     transformDragger.reset();
 
-    Gui::Control().closeDialog(getDocument()->getDocument());
+    Gui::Control().closeDialog(getDocument()->getDocument()->currentTransactionContextId());
 }
 
 void ViewProviderDragger::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)

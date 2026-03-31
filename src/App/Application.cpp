@@ -1273,6 +1273,13 @@ Document* Application::getActiveDocument() const
 {
     return _pActiveDoc;
 }
+int Application::getActiveTransactionContext() const
+{
+    if (_pActiveDoc) {
+        return _pActiveDoc->currentTransactionContextId();
+    }
+    return NullTransactionContext;
+}
 
 void Application::setActiveDocument(Document* pDoc)
 {

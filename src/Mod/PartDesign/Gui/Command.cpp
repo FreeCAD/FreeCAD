@@ -1162,7 +1162,7 @@ void prepareProfileBased(
         // if (!bNoSketchWasSelected && extReference)
         //    pickDlg->showExternal(true);
 
-        Gui::Control().showDialog(pickDlg, cmd->getDocument());
+        Gui::Control().showDialog(pickDlg);
     }
     else {
         std::vector<App::DocumentObject*> theSketch;

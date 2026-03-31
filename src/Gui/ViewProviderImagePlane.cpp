@@ -185,7 +185,7 @@ void ViewProviderImagePlane::manipulateImage()
 {
     auto dialog = new TaskImageDialog(getObject<Image::ImagePlane>());
 
-    Gui::Control().showDialog(dialog, getDocument()->getDocument());
+    Gui::Control().showDialog(dialog, getDocument()->getDocument()->currentTransactionContextId());
 }
 
 void ViewProviderImagePlane::resizePlane(float xsize, float ysize)

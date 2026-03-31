@@ -146,10 +146,10 @@ void ControlSingleton::showModelView()
     }
 }
 
-void ControlSingleton::showDialog(Gui::TaskView::TaskDialog* dlg, App::Document* attachTo)
+void ControlSingleton::showDialog(Gui::TaskView::TaskDialog* dlg, int transactionContext)
 {
-    attachTo = docOrDefault(attachTo);
-    if (!attachTo) {
+    transactionContext = transactionContextOrDefault(transactionContext);
+    if (transactionContext == App::NullTransactionContext) {
         qWarning() << "ControlSingleton::showDialog: Cannot attach to nullptr document";
         return;
     }
@@ -160,14 +160,14 @@ void ControlSingleton::showDialog(Gui::TaskView::TaskDialog* dlg, App::Document*
         return;
     }
 
-    // only one dialog at a time, print a warning instead of raising an assert
-    TaskView::TaskDialog* foundDialog = taskView->dialog(attachTo);
+    // only one dialog at a time per transaction context, print a warning instead of raising an assert
+    TaskView::TaskDialog* foundDialog = taskView->dialog(transactionContext);
     if (!dlg || foundDialog == dlg) {
         if (dlg) {
             qWarning() << "ControlSingleton::showDialog: Can't show "
                        << dlg->metaObject()->className()
-                       << " since there is already an active task dialog in Document "
-                       << (attachTo ? attachTo->getName() : "''");
+                       << " since there is already an active task dialog for transaction context #"
+                       << transactionContext;
         }
         else {
             qWarning() << "ControlSingleton::showDialog: Task dialog is null";
@@ -175,7 +175,7 @@ void ControlSingleton::showDialog(Gui::TaskView::TaskDialog* dlg, App::Document*
         return;
     }
 
-    bool addedDialog = taskView->showDialog(dlg, attachTo);
+    bool addedDialog = taskView->showDialog(dlg, transactionContext);
 
     // make sure that the combo view is shown
     if (auto dw = qobject_cast<QDockWidget*>(taskView->parentWidget())) {
@@ -189,45 +189,45 @@ void ControlSingleton::showDialog(Gui::TaskView::TaskDialog* dlg, App::Document*
         return;  // dialog is already defined
     }
 
-    connect(dlg, &TaskView::TaskDialog::aboutToBeDestroyed, this, [this, attachTo] {
-        closedDialog(attachTo);
+    connect(dlg, &TaskView::TaskDialog::aboutToBeDestroyed, this, [this, transactionContext] {
+        closedDialog(transactionContext);
     });
 }
 
-Gui::TaskView::TaskDialog* ControlSingleton::activeDialog(App::Document* attachedTo) const
+Gui::TaskView::TaskDialog* ControlSingleton::activeDialog(int transactionContext) const
 {
-    attachedTo = docOrDefault(attachedTo);
-    if (!attachedTo) {
+    transactionContext = transactionContextOrDefault(transactionContext);
+    if (transactionContext == App::NullTransactionContext) {
         return nullptr;
     }
 
     Gui::TaskView::TaskView* taskView = taskPanel();
 
     if (taskView) {
-        return taskView->dialog(attachedTo);
+        return taskView->dialog(transactionContext);
     }
     return nullptr;
 }
 
-void ControlSingleton::accept(App::Document* attachedTo)
+void ControlSingleton::accept(int transactionContext)
 {
-    attachedTo = docOrDefault(attachedTo);
-    if (!attachedTo) {
+    transactionContext = transactionContextOrDefault(transactionContext);
+    if (transactionContext == App::NullTransactionContext) {
         qWarning() << "ControlSingleton::accept: Cannot accept dialog of nullptr document";
         return;
     }
 
     Gui::TaskView::TaskView* taskView = taskPanel();
     if (taskView) {
-        taskView->accept(attachedTo);
+        taskView->accept(transactionContext);
         qApp->processEvents(QEventLoop::ExcludeUserInputEvents | QEventLoop::ExcludeSocketNotifiers);
     }
 }
 
-void ControlSingleton::reject(App::Document* attachedTo)
+void ControlSingleton::reject(int transactionContext)
 {
-    attachedTo = docOrDefault(attachedTo);
-    if (!attachedTo) {
+    transactionContext = transactionContextOrDefault(transactionContext);
+    if (transactionContext == App::NullTransactionContext) {
         qWarning() << "ControlSingleton::reject: Cannot reject dialog of nullptr document";
         return;
     }
@@ -235,26 +235,26 @@ void ControlSingleton::reject(App::Document* attachedTo)
 
     Gui::TaskView::TaskView* taskView = taskPanel();
     if (taskView) {
-        taskView->reject(attachedTo);
+        taskView->reject(transactionContext);
         qApp->processEvents(QEventLoop::ExcludeUserInputEvents | QEventLoop::ExcludeSocketNotifiers);
     }
 }
 
-void ControlSingleton::closeDialog(App::Document* attachedTo)
+void ControlSingleton::closeDialog(int transactionContext)
 {
-    attachedTo = docOrDefault(attachedTo);
-    if (!attachedTo) {
+    transactionContext = transactionContextOrDefault(transactionContext);
+    if (transactionContext == App::NullTransactionContext) {
         qWarning() << "ControlSingleton::closeDialog: Cannot close dialog of nullptr document";
         return;
     }
 
     Gui::TaskView::TaskView* taskView = taskPanel();
     if (taskView) {
-        taskView->removeDialog(attachedTo);
+        taskView->removeDialog(transactionContext);
     }
 }
 
-void ControlSingleton::closedDialog(App::Document* attachedTo)
+void ControlSingleton::closedDialog(int /*transactionContext*/)
 {
     Gui::TaskView::TaskView* taskView = taskPanel();
     assert(taskView);
@@ -270,13 +270,13 @@ void ControlSingleton::closedDialog(App::Document* attachedTo)
     }
 }
 
-bool ControlSingleton::isAllowedAlterDocument(App::Document* attachedTo) const
+bool ControlSingleton::isAllowedAlterDocument(int transactionContext) const
 {
-    attachedTo = docOrDefault(attachedTo);
-    if (!attachedTo) {
+    transactionContext = transactionContextOrDefault(transactionContext);
+    if (transactionContext == App::NullTransactionContext) {
         return true;
     }
-    Gui::TaskView::TaskDialog* dlg = activeDialog(attachedTo);
+    Gui::TaskView::TaskDialog* dlg = activeDialog(transactionContext);
 
     if (dlg) {
         return dlg->isAllowedAlterDocument();
@@ -284,13 +284,13 @@ bool ControlSingleton::isAllowedAlterDocument(App::Document* attachedTo) const
     return true;
 }
 
-bool ControlSingleton::isAllowedAlterView(App::Document* attachedTo) const
+bool ControlSingleton::isAllowedAlterView(int transactionContext) const
 {
-    attachedTo = docOrDefault(attachedTo);
-    if (!attachedTo) {
+    transactionContext = transactionContextOrDefault(transactionContext);
+    if (transactionContext == App::NullTransactionContext) {
         return true;
     }
-    Gui::TaskView::TaskDialog* dlg = activeDialog(attachedTo);
+    Gui::TaskView::TaskDialog* dlg = activeDialog(transactionContext);
 
     if (dlg) {
         return dlg->isAllowedAlterView();
@@ -298,14 +298,14 @@ bool ControlSingleton::isAllowedAlterView(App::Document* attachedTo) const
     return true;
 }
 
-bool ControlSingleton::isAllowedAlterSelection(App::Document* attachedTo) const
+bool ControlSingleton::isAllowedAlterSelection(int transactionContext) const
 {
-    attachedTo = docOrDefault(attachedTo);
-    if (!attachedTo) {
+    transactionContext = transactionContextOrDefault(transactionContext);
+    if (transactionContext == App::NullTransactionContext) {
         return true;
     }
 
-    Gui::TaskView::TaskDialog* dlg = activeDialog(attachedTo);
+    Gui::TaskView::TaskDialog* dlg = activeDialog(transactionContext);
 
     if (dlg) {
         return dlg->isAllowedAlterSelection();
@@ -313,12 +313,16 @@ bool ControlSingleton::isAllowedAlterSelection(App::Document* attachedTo) const
     return true;
 }
 
-App::Document* ControlSingleton::docOrDefault(App::Document* attachedTo)
+int ControlSingleton::transactionContextOrDefault(int transactionContext)
 {
-    if (!attachedTo && Application::Instance->activeDocument()) {
-        attachedTo = Application::Instance->activeDocument()->getDocument();
+    if (transactionContext != App::NullTransactionContext) {
+        return transactionContext;
     }
-    return attachedTo;
+
+    if (auto* doc = App::GetApplication().getActiveDocument()) {
+        return doc->currentTransactionContextId();
+    }
+    return App::NullTransactionContext;
 }
 
 // -------------------------------------------

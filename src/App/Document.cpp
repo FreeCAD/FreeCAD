@@ -720,13 +720,26 @@ int Document::createTransactionContext()
     );
     return d->transactionContexts.back()->id;
 }
-int Document::defaultTransactionContextId()
+int Document::defaultTransactionContextId() const
 {
     return d->transactionContexts[0]->id;
 }
-int Document::currentTransactionContextId()
+int Document::currentTransactionContextId() const
 {
     return d->currentTransactionContext->id;
+}
+std::vector<int> Document::getAllTransactionContexts() const
+{
+    std::vector<int> dst;
+    dst.reserve(d->transactionContexts.size());
+
+    std::transform(d->transactionContexts.begin(), d->transactionContexts.end(),
+        std::back_inserter(dst),
+        [](const auto& ctx) {
+            return ctx->id;
+        }
+    );
+    return dst;
 }
 bool Document::activateTransactionContext(int id)
 {

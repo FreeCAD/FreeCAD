@@ -215,6 +215,8 @@ public:
     Gui::MDIView* activeView() const;
     /// Activate a view of the given type of the active document
     void activateView(const Base::Type&, bool create = false);
+    /// Returns the transaction context associated with a view or NullTransactionContext
+    int getTransactionContext(const Gui::MDIView* view) const;
     /// Shows the associated view provider of the given object
     void showViewProvider(const App::DocumentObject*);
     /// Hides the associated view provider of the given object

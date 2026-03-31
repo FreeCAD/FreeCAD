@@ -1546,6 +1546,13 @@ void Application::activateView(const Base::Type& type, bool create)
         }
     }
 }
+int Application::getTransactionContext(const Gui::MDIView* view) const
+{
+    if (auto doc = view->getGuiDocument()) {
+        return doc->getTransactionContext(view);
+    }
+    return App::NullTransactionContext;
+}
 
 /// Getter for the active view
 Gui::Document* Application::activeDocument() const
