@@ -119,6 +119,11 @@ void DlgCustomKeyboardImp::loadSettings()
     ui->shortcutTimeout->onRestore();
 }
 
+void DlgCustomKeyboardImp::resetSettingsToDefaults()
+{
+    ShortcutManager::instance()->resetAll();
+}
+
 void DlgCustomKeyboardImp::setupConnections()
 {
     // clang-format off

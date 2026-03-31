@@ -63,6 +63,7 @@ public:
 
     void saveSettings() override;
     void loadSettings() override;
+    void resetSettingsToDefaults() override;
 
     /** Public helper function for handling command widgets
      *
