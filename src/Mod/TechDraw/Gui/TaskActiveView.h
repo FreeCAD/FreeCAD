@@ -75,6 +75,8 @@ private Q_SLOTS:
     void onCropChanged();
     void onBgTypeChanged(int index);
     void updatePreview();
+    void scaleTypeChanged(int index);
+    void scaleManuallyChanged(int unused);
 
 private:
     std::unique_ptr<Ui_TaskActiveView> ui;
@@ -88,7 +90,9 @@ private:
         Solid = 1,
         View3D = 2
     };
-
+    
+    void setFractionalScale(double newScale);
+    bool m_blockUpdate;
     QPushButton* m_btnOK;
     QPushButton* m_btnCancel;
     int m_tid;

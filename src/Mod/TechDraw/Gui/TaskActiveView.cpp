@@ -60,6 +60,7 @@ TaskActiveView::TaskActiveView(TechDraw::DrawPage* pageFeat)
     , m_pageFeat(pageFeat)
     , m_imageFeat(nullptr)
     , m_previewImageFeat(nullptr)
+    , m_blockUpdate(false)
     , m_btnOK(nullptr)
     , m_btnCancel(nullptr)
     , m_tid(0)
@@ -80,9 +81,26 @@ TaskActiveView::TaskActiveView(TechDraw::DrawPage* pageFeat)
         this->setEnabled(false);
         return;
     }
+    m_blockUpdate = true;
+    ui->cmbScaleType->setCurrentIndex(m_previewImageFeat->ScaleType.getValue());
+
+    if (m_previewImageFeat->ScaleType.isValue("Custom")) {
+        ui->sbScaleNum->setEnabled(true);
+        ui->sbScaleDen->setEnabled(true);
+    }
+    else {
+        ui->sbScaleNum->setEnabled(false);
+        ui->sbScaleDen->setEnabled(false);
+    }
+    m_blockUpdate = false;
+
+    setFractionalScale(m_previewImageFeat->getScale());
+
+    connect(ui->cmbScaleType, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskActiveView::scaleTypeChanged);
+    connect(ui->sbScaleNum,   qOverload<int>(&QSpinBox::valueChanged), this, &TaskActiveView::scaleManuallyChanged);
+    connect(ui->sbScaleDen,   qOverload<int>(&QSpinBox::valueChanged), this, &TaskActiveView::scaleManuallyChanged);
 
     connect(ui->gbFraming, &QGroupBox::toggled, this, &TaskActiveView::onCropChanged);
-
     connect(ui->qsbWidth, &Gui::QuantitySpinBox::editingFinished, this, &TaskActiveView::updatePreview);
     connect(ui->qsbHeight, &Gui::QuantitySpinBox::editingFinished, this, &TaskActiveView::updatePreview);
 
@@ -291,6 +309,73 @@ TechDraw::DrawViewImage* TaskActiveView::createActiveView()
     return static_cast<TechDraw::DrawViewImage*>(newObj);
 }
 
+void TaskActiveView::scaleTypeChanged(int index)
+{
+    if (m_blockUpdate || !m_previewImageFeat) {
+        return;
+    }
+
+    ui->sbScaleNum->setEnabled(false);
+    ui->sbScaleDen->setEnabled(false);
+
+    if (index == 0) {
+        m_previewImageFeat->ScaleType.setValue("Page");
+    }
+    else if (index == 1) {
+        m_previewImageFeat->ScaleType.setValue("Automatic");
+        m_previewImageFeat->Scale.setValue(1.0);
+        double autoScale = m_previewImageFeat->autoScale();
+        m_previewImageFeat->Scale.setValue(autoScale);
+    }
+    else if (index == 2) {
+        m_previewImageFeat->ScaleType.setValue("Custom");
+        ui->sbScaleNum->setEnabled(true);
+        ui->sbScaleDen->setEnabled(true);
+
+        int numerator = ui->sbScaleNum->value();
+        int denominator = ui->sbScaleDen->value();
+        
+        if (denominator != 0) {
+            double scale = (double) numerator / (double) denominator;
+            m_previewImageFeat->Scale.setValue(scale);
+        }
+    }
+    
+    m_previewImageFeat->recomputeFeature();
+}
+
+void TaskActiveView::scaleManuallyChanged(int unused)
+{
+    Q_UNUSED(unused);
+    if(m_blockUpdate || !m_previewImageFeat) {
+        return;
+    }
+    if (!m_previewImageFeat->ScaleType.isValue("Custom")) {
+        return;
+    }
+
+    int numerator = ui->sbScaleNum->value();
+    int denominator = ui->sbScaleDen->value();
+
+    if (denominator == 0) {
+        return;
+    }
+
+    double scale = (double) numerator / (double) denominator;
+
+    m_previewImageFeat->Scale.setValue(scale);
+    m_previewImageFeat->recomputeFeature();
+}
+
+void TaskActiveView::setFractionalScale(double newScale)
+{
+    m_blockUpdate = true;
+    std::pair<int, int> fraction = DU::nearestFraction(newScale);
+    ui->sbScaleNum->setValue(fraction.first);
+    ui->sbScaleDen->setValue(fraction.second);
+    m_blockUpdate = false;
+}
+
 void TaskActiveView::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
@@ -300,6 +385,16 @@ void TaskActiveView::changeEvent(QEvent* e)
 
 void TaskActiveView::updateTask()
 {
+    if (!m_previewImageFeat) {
+        return;
+    }
+
+    m_blockUpdate = true;
+    ui->cmbScaleType->setCurrentIndex(m_previewImageFeat->ScaleType.getValue());
+
+    setFractionalScale(m_previewImageFeat->getScale());
+
+    m_blockUpdate = false;
 }
 
 TaskDlgActiveView::TaskDlgActiveView(TechDraw::DrawPage* page) : TaskDialog()
