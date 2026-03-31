@@ -67,9 +67,6 @@ TaskActiveView::TaskActiveView(TechDraw::DrawPage* pageFeat)
 {
     ui->setupUi(this);
 
-    ui->qsbWidth->setUnit(Base::Unit::Length);
-    ui->qsbHeight->setUnit(Base::Unit::Length);
-
     setUiPrimary();
 
     // For live preview
@@ -101,8 +98,8 @@ TaskActiveView::TaskActiveView(TechDraw::DrawPage* pageFeat)
     connect(ui->sbScaleDen,   qOverload<int>(&QSpinBox::valueChanged), this, &TaskActiveView::scaleManuallyChanged);
 
     connect(ui->gbFraming, &QGroupBox::toggled, this, &TaskActiveView::onCropChanged);
-    connect(ui->qsbWidth, &Gui::QuantitySpinBox::editingFinished, this, &TaskActiveView::updatePreview);
-    connect(ui->qsbHeight, &Gui::QuantitySpinBox::editingFinished, this, &TaskActiveView::updatePreview);
+    connect(ui->sbWidth, &QSpinBox::editingFinished, this, &TaskActiveView::updatePreview);
+    connect(ui->sbHeight, &QSpinBox::editingFinished, this, &TaskActiveView::updatePreview);
 
     connect(ui->cbBg, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &TaskActiveView::onBgTypeChanged);
     connect(ui->cbBg, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &TaskActiveView::updatePreview);
@@ -194,8 +191,8 @@ void TaskActiveView::updatePreview()
     int imageWidth{SXGAWidth};
     int imageHeight{SXGAHeight};
     if (ui->gbFraming->isChecked()) {
-        imageWidth = Rez::guiX(ui->qsbWidth->rawValue());
-        imageHeight = Rez::guiX(ui->qsbHeight->rawValue());
+        imageWidth = static_cast<int>(ui->sbWidth->value());
+        imageHeight = static_cast<int>(ui->sbHeight->value());
     }
 
     QImage image(imageWidth, imageHeight, QImage::Format_ARGB32_Premultiplied);
@@ -207,8 +204,8 @@ void TaskActiveView::updatePreview()
 
     tempName = DU::cleanFilespecBackslash(tempName);
     m_previewImageFeat->ImageFile.setValue(tempName);
-    m_previewImageFeat->Width.setValue(ui->qsbWidth->rawValue());
-    m_previewImageFeat->Height.setValue(ui->qsbHeight->rawValue());
+    m_previewImageFeat->Width.setValue(imageWidth);
+    m_previewImageFeat->Height.setValue(imageHeight);
 
     if (auto* guiDoc = Gui::Application::Instance->getDocument(doc)) {
         if (auto* vp = guiDoc->getViewProvider(m_previewImageFeat)) {
@@ -252,8 +249,8 @@ void TaskActiveView::setUiPrimary()
     ui->cbBg->setCurrentIndex(static_cast<int>(BackgroundType::Transparent));
     onBgTypeChanged(static_cast<int>(BackgroundType::Transparent)); 
 
-    ui->qsbWidth->setValue(Rez::appX(SXGAWidth));
-    ui->qsbHeight->setValue(Rez::appX(SXGAHeight));
+    ui->sbWidth->setValue(SXGAWidth);
+    ui->sbHeight->setValue(SXGAHeight);
 }
 
 void TaskActiveView::onBgTypeChanged(int index)
@@ -267,8 +264,8 @@ void TaskActiveView::onBgTypeChanged(int index)
 
 void TaskActiveView::enableCrop(bool state)
 {
-    ui->qsbHeight->setEnabled(state);
-    ui->qsbWidth->setEnabled(state);
+    ui->sbHeight->setEnabled(state);
+    ui->sbWidth->setEnabled(state);
     ui->lWidth->setEnabled(state);
     ui->lHeight->setEnabled(state);
 }

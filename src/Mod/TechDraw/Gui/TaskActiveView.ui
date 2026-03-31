@@ -21,7 +21,7 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="1,1,2,0,0,0">
+       <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="0,1,2,0,0,0">
         <item>
          <widget class="QLabel" name="label">
           <property name="text">
@@ -126,34 +126,6 @@
       <property name="verticalSpacing">
        <number>12</number>
       </property>
-      <item row="1" column="1">
-       <widget class="Gui::QuantitySpinBox" name="qsbHeight" native="true">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>20</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>Crops the captured image to this height</string>
-        </property>
-        <property name="unit" stdset="0">
-         <string notr="true"/>
-        </property>
-        <property name="minimum" stdset="0">
-         <double>0.000000000000000</double>
-        </property>
-        <property name="value" stdset="0">
-         <double>100.000000000000000</double>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="0">
        <widget class="QLabel" name="lWidth">
         <property name="text">
@@ -169,30 +141,22 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="Gui::QuantitySpinBox" name="qsbWidth" native="true">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
+       <widget class="QSpinBox" name="sbWidth">
+        <property name="suffix">
+         <string> px</string>
         </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>20</height>
-         </size>
+        <property name="maximum">
+         <number>10000</number>
         </property>
-        <property name="toolTip">
-         <string>Crops the captured image to this width</string>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QSpinBox" name="sbHeight">
+        <property name="suffix">
+         <string> px</string>
         </property>
-        <property name="unit" stdset="0">
-         <string notr="true"/>
-        </property>
-        <property name="minimum" stdset="0">
-         <double>0.000000000000000</double>
-        </property>
-        <property name="value" stdset="0">
-         <double>100.000000000000000</double>
+        <property name="maximum">
+         <number>10000</number>
         </property>
        </widget>
       </item>
@@ -208,10 +172,19 @@
       <property name="verticalSpacing">
        <number>12</number>
       </property>
-      <item row="0" column="0">
-       <widget class="QLabel" name="lType">
-        <property name="text">
-         <string comment="Label for the background type combobox">Type</string>
+      <item row="1" column="1">
+       <widget class="Gui::ColorButton" name="ccBgColor">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Sets the background color</string>
         </property>
        </widget>
       </item>
@@ -234,26 +207,17 @@
         </item>
        </widget>
       </item>
-      <item row="1" column="1">
-       <widget class="Gui::ColorButton" name="ccBgColor">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string>Sets the background color</string>
-        </property>
-       </widget>
-      </item>
       <item row="1" column="0">
        <widget class="QLabel" name="lColor">
         <property name="text">
          <string>Color</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="lType">
+        <property name="text">
+         <string comment="Label for the background type combobox">Type</string>
         </property>
        </widget>
       </item>
@@ -276,11 +240,6 @@
   </layout>
  </widget>
  <customwidgets>
-  <customwidget>
-   <class>Gui::QuantitySpinBox</class>
-   <extends>QWidget</extends>
-   <header>Gui/QuantitySpinBox.h</header>
-  </customwidget>
   <customwidget>
    <class>Gui::ColorButton</class>
    <extends>QPushButton</extends>
