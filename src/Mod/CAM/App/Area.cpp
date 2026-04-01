@@ -2411,24 +2411,6 @@ std::shared_ptr<CArea> Area::performSingleOffset(double offset)
     return area;
 }
 
-bool Area::hasGap(const std::shared_ptr<CArea>& prev, const std::shared_ptr<CArea>& curr, double tool_radius)
-{
-    // Check if there's a gap between previous and current
-    CArea gap = *prev;
-    gap.Subtract(*curr);
-
-    // Subtract the thickened areas (regions cut by the tool)
-    CArea prev_thickened = *prev;
-    prev_thickened.Thicken(tool_radius);
-    gap.Subtract(prev_thickened);
-
-    CArea curr_thickened = *curr;
-    curr_thickened.Thicken(tool_radius);
-    gap.Subtract(curr_thickened);
-
-    return !gap.m_curves.empty();
-}
-
 void Area::makeOffset(
     list<shared_ptr<CArea>>& areas,
     PARAM_ARGS(PARAM_FARG, AREA_PARAMS_OFFSET),
@@ -2462,27 +2444,56 @@ void Area::makeOffset(
 #endif
 
     // Track previous offset area for gap detection
-    std::optional<std::shared_ptr<CArea>> previous_area;
+    std::optional<CArea> previous_area_offset;  // Cached offset of previous area
     double tool_radius = myParams.ToolRadius;
-    bool check_gaps = !myParams.ForceMaxStepover;
-    const double gap_tolerance = 1.0 / myParams.ClipperScale;
+    bool check_gaps = !myParams.ForceMaxStepover && abs(stepover) > tool_radius;
+    const double gap_tolerance = myParams.Accuracy;
+    double sign_stepover = (stepover > 0) ? 1.0 : -1.0;
+    auto jt = static_cast<ClipperLib::JoinType>(JoinType);
+    auto et = static_cast<ClipperLib::EndType>(EndType);
 
     for (int i = 0; count < 0 || i < count; ++i, offset += stepover) {
+        double prevOffset = offset - stepover;
         auto area = performSingleOffset(offset);
 
-        // Check for gaps if we have a previous area and gap checking is enabled
-        if (previous_area && check_gaps) {
-            // First check if the full offset leaves any gaps
-            if (hasGap(*previous_area, area, tool_radius)) {
+        // Check for gaps if needed
+        if (previous_area_offset && check_gaps) {
+            // Offset backwards by tool radius and subtract to find a gap
+            CArea curr_offset_opposite = *area;
+            curr_offset_opposite.OffsetWithClipper(
+                -sign_stepover * tool_radius,
+                jt,
+                et,
+                myParams.MiterLimit,
+                myParams.RoundPrecision
+            );
+            CArea gap = *previous_area_offset;
+            gap.Subtract(curr_offset_opposite);
+            bool has_gap = !gap.m_curves.empty();
+
+            if (has_gap) {
                 // Gap exists, binary search for the largest offset that doesn't leave a gap
-                double offset_min = offset - stepover;
+                // Offsets less than tool radius are guaranteed not to have a gap, so we start there
+                double offset_min = prevOffset + sign_stepover * tool_radius;
                 double offset_max = offset;
 
                 while (fabs(offset_max - offset_min) > gap_tolerance) {
                     double offset_mid = (offset_min + offset_max) / 2.0;
                     auto test_area = performSingleOffset(offset_mid);
 
-                    if (hasGap(previous_area.value(), test_area, tool_radius)) {
+                    // Recompute gap check
+                    CArea test_offset_opposite = *test_area;
+                    test_offset_opposite.OffsetWithClipper(
+                        -sign_stepover * tool_radius,
+                        jt,
+                        et,
+                        myParams.MiterLimit,
+                        myParams.RoundPrecision
+                    );
+                    gap = *previous_area_offset;
+                    gap.Subtract(test_offset_opposite);
+
+                    if (!gap.m_curves.empty()) {
                         offset_max = offset_mid;
                     }
                     else {
@@ -2492,18 +2503,26 @@ void Area::makeOffset(
 
                 // Leave a little extra space to ensure connectivity when the offset vanishes. This
                 // is important because our circular arcs are discretized.
-                double sign_stepover = (stepover > 0) ? 1.0 : -1.0;
                 offset = offset_min - sign_stepover * myParams.Accuracy;
                 area = performSingleOffset(offset);
             }
         }
 
+        // Compute and cache the offset of current area for next iteration's gap check
+        if (check_gaps) {
+            previous_area_offset = *area;
+            previous_area_offset->OffsetWithClipper(
+                sign_stepover * tool_radius,
+                jt,
+                et,
+                myParams.MiterLimit,
+                myParams.RoundPrecision
+            );
+        }
+
         if (area->m_curves.empty()) {
             break;
         }
-
-        // Store this area for next iteration's gap check
-        previous_area = area;
 
         if (from_center) {
             areas.push_front(area);
