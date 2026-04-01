@@ -284,6 +284,7 @@ public:
     /// destructor
     ~PropertyIntegerConstraint() override;
 
+    void setValue(long);
     /// Constraint methods
     //@{
     /// the boundary struct
@@ -623,6 +624,7 @@ public:
     ~PropertyFloatConstraint() override;
 
 
+    void setValue(double lValue);
     /// Constraint methods
     //@{
     /// the boundary struct
