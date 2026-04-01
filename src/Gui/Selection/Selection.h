@@ -846,6 +846,22 @@ protected:
 
     std::map<App::Document*, SelectionInfo> docSelectionContext;
 
+    struct SelectionAllowance
+    {
+        bool allowed;
+        std::string reason;
+    };
+
+    /** @brief Checks if a selection is allowed through the selecetion filter.
+     * Uses SelectionGate (which has a SelectionFilter).
+     * @param context The selection context.
+     * @param sel The object to be selected.
+     * @returns SelectionAllowance
+     */
+    SelectionAllowance isSelectionAllowed(
+        const SelectionContext& context,
+        const SelectionDescription& sel
+    );
     // Preselection helpers, it's a mess, needs clarifying -theo-vt
     std::string DocName;
     std::string FeatName;
