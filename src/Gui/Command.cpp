@@ -1105,7 +1105,9 @@ void Command::updateAction(int)
 
 GroupCommand::GroupCommand(const char* name)
     : Command(name)
-{}
+{
+    eType = 0;
+}
 
 bool GroupCommand::isCheckable() const
 {
