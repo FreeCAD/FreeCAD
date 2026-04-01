@@ -469,7 +469,18 @@ void TaskMeasure::updateResultWithUnit()
         return;
     }
 
-    QString resultString = _mMeasureObject->getResultString();
+    QString resultString;
+    auto prop = _mMeasureObject->getResultProp();
+    auto qtyProp = dynamic_cast<App::PropertyQuantity*>(prop);
+
+    if (qtyProp) {
+        double value = qtyProp->getQuantityValue().getValue();
+        resultString = QString::number(value);
+    }
+    else {
+        resultString = _mMeasureObject->getResultString();
+    }
+
     QString currentUnit = unitSwitch->currentText();
 
     if (currentUnit != QLatin1String("-") && !resultString.isEmpty()) {
@@ -560,17 +571,18 @@ void TaskMeasure::invoke()
     update();
 
     bool greedy = Gui::Selection().getSelectionStyle() == SelectionStyle::GreedySelection;
-    std::list<Gui::InputHint> hints;
-    if (greedy) {
-        hints = std::list<Gui::InputHint> {
-            {tr("%1 start new measurement, %2 toggle auto-save"), {{ModifierCtrl}, {ModifierShift}}}
-        };
-    }
-    else {
-        hints = std::list<Gui::InputHint> {
-            {tr("%1 add to measurement, %2 toggle auto-save"), {{ModifierCtrl}, {ModifierShift}}}
-        };
-    }
+
+    const std::list<Gui::InputHint> hints {
+        {
+            .message = tr("%1 auto-save"),
+            .sequences = {ModifierShift},
+        },
+        {
+            .message = greedy ? tr("%1 start new measurement") : tr("%1 add to measurement"),
+            .sequences = {ModifierCtrl},
+        },
+    };
+
     Gui::getMainWindow()->showHints(hints);
 }
 

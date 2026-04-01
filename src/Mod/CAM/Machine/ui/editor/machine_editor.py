@@ -2339,7 +2339,11 @@ class MachineEditorDialog(QtGui.QDialog):
                 return
 
             # Create widgets for each property in the schema
+            # Skip runtime-only properties — they are shown in the post-processing
+            # dialog, not persisted in the machine configuration.
             for prop in schema:
+                if prop.get("runtime", False):
+                    continue
                 prop_name = prop.get("name")
                 prop_label = prop.get("label", prop_name)
                 prop_default = prop.get("default")

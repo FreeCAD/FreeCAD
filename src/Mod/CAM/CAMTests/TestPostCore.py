@@ -1,31 +1,28 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2016 shopinthewoods@gmail.com
+# SPDX-FileCopyrightText: 2022 LarryWoestman2@gmail.com
 
-# ***************************************************************************
-# *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
-# *   Copyright (c) 2022 Larry Woestman <LarryWoestman2@gmail.com>          *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
-
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import FreeCAD
 import Path
 import Path.Post.Command as PathCommand
+import Path.Post.PostList as PostList
 import Path.Post.Processor as PathPost
 import Path.Post.Utils as PostUtils
 import Path.Main.Job as PathJob
@@ -334,70 +331,16 @@ class TestBuildPostList(unittest.TestCase):
             output.append("")
 
             for obj_idx, obj in enumerate(objects, 1):
-                obj_label = getattr(obj, "Label", str(type(obj).__name__))
-                output.append(f"    [{obj_idx}] {obj_label}")
-
-                # Determine object type/role
-                obj_type = type(obj).__name__
-                if obj_type == "_FixtureSetupObject":
-                    output.append("        Type: Fixture Setup")
-                    if hasattr(obj, "Path") and obj.Path and len(obj.Path.Commands) > 0:
-                        fixture_cmd = obj.Path.Commands[0]
-                        output.append(f"        Fixture: {fixture_cmd.Name}")
-                elif obj_type == "_CommandObject":
-                    output.append("        Type: Command Object")
-                    if hasattr(obj, "Path") and obj.Path and len(obj.Path.Commands) > 0:
-                        cmd = obj.Path.Commands[0]
-                        params = " ".join(
-                            f"{k}:{v}"
-                            for k, v in zip(
-                                cmd.Parameters.keys() if hasattr(cmd.Parameters, "keys") else [],
-                                (
-                                    cmd.Parameters.values()
-                                    if hasattr(cmd.Parameters, "values")
-                                    else cmd.Parameters
-                                ),
-                            )
-                        )
-                        output.append(f"        Command: {cmd.Name} {params}")
-                elif hasattr(obj, "TypeId"):
-                    # Check if it's a tool controller
-                    if hasattr(obj, "Proxy") and hasattr(obj.Proxy, "__class__"):
-                        proxy_name = obj.Proxy.__class__.__name__
-                        if "ToolController" in proxy_name:
-                            output.append("        Type: Tool Controller")
-                            if hasattr(obj, "ToolNumber"):
-                                output.append(f"        Tool Number: {obj.ToolNumber}")
-                            if hasattr(obj, "Path") and obj.Path and obj.Path.Commands:
-                                for cmd in obj.Path.Commands:
-                                    if cmd.Name == "M6":
-                                        params = " ".join(
-                                            f"{k}:{v}"
-                                            for k, v in zip(
-                                                (
-                                                    cmd.Parameters.keys()
-                                                    if hasattr(cmd.Parameters, "keys")
-                                                    else []
-                                                ),
-                                                (
-                                                    cmd.Parameters.values()
-                                                    if hasattr(cmd.Parameters, "values")
-                                                    else cmd.Parameters
-                                                ),
-                                            )
-                                        )
-                                        output.append(f"        M6 Command: {cmd.Name} {params}")
-                        else:
-                            output.append("        Type: Operation")
-                            if hasattr(obj, "ToolController") and obj.ToolController:
-                                tc = obj.ToolController
-                                output.append(
-                                    f"        ToolController: {tc.Label} (T{tc.ToolNumber})"
-                                )
-                    else:
-                        output.append(f"        Type: {obj.TypeId}")
+                if isinstance(obj, PostList.Postable):
+                    output.append(f"    [{obj_idx}] {obj.label}")
+                    output.append(f"        item_type: {obj.item_type}")
+                    if obj.path and obj.path.Commands:
+                        output.append(f"        Commands: {[c.Name for c in obj.path.Commands]}")
+                    if obj.data:
+                        output.append(f"        data: {obj.data}")
                 else:
-                    output.append(f"        Type: {obj_type}")
+                    obj_label = getattr(obj, "Label", str(type(obj).__name__))
+                    output.append(f"    [{obj_idx}] {obj_label} (raw {type(obj).__name__})")
 
             output.append("")
 
@@ -574,52 +517,58 @@ class TestBuildPostList(unittest.TestCase):
         self.assertEqual(len(firstoplist), 6)
         self.assertTrue(firstoutputitem[0] == "G54")
 
+    def _mock_machine_with_early_tool_prep(self):
+        """Return a minimal mock machine that enables early_tool_prep."""
+
+        class _MockProcessing:
+            early_tool_prep = True
+
+        class _MockMachine:
+            processing = _MockProcessing()
+
+        return _MockMachine()
+
     def test070(self):
+        """
+        Test that early_tool_prep inserts Tn prep commands after each M6 when enabled via machine.
+
+        Given: A job split by tool (SplitOutput=True, OrderOutputBy=Tool) and a machine
+               whose processing.early_tool_prep is True
+        When: _buildPostList() is called (no explicit parameter)
+        Then: The first M6 in the first group targets tool 5, and a T2 prep command
+              appears immediately after, before the second M6.
+
+        Example:
+            M6 T5  <- change to tool 5
+            T2     <- early prep for tool 2
+            <ops with T5>
+            M6 T2  <- change to tool 2
+        """
         self.job.SplitOutput = True
         self.job.PostProcessorOutputFile = "%T.nc"
         self.job.OrderOutputBy = "Tool"
-        postables = self.pp._buildPostList(early_tool_prep=True)
+        self.pp._machine = self._mock_machine_with_early_tool_prep()
+        postables = self.pp._buildPostList()
         _, sublist = postables[0]
 
         if self.debug:
             print(self._format_postables(postables, "test070: Early tool prep, split by tool"))
 
-        # Extract all commands from the postables
         commands = []
-        if self.debug:
-            print("\n=== Extracting commands from postables ===")
         for item in sublist:
-            if self.debug:
-                item_type = type(item).__name__
-                has_path = hasattr(item, "Path")
-                path_exists = item.Path if has_path else None
-                has_commands = path_exists and item.Path.Commands if path_exists else False
-                print(
-                    f"Item: {getattr(item, 'Label', item_type)}, Type: {item_type}, HasPath: {has_path}, PathExists: {path_exists is not None}, HasCommands: {bool(has_commands)}"
-                )
-                if has_commands:
-                    print(f"  Commands: {[cmd.Name for cmd in item.Path.Commands]}")
-            if hasattr(item, "Path") and item.Path and item.Path.Commands:
-                commands.extend(item.Path.Commands)
+            if item.path and item.path.Commands:
+                commands.extend(item.path.Commands)
 
-        if self.debug:
-            print(f"\nTotal commands extracted: {len(commands)}")
-            print("=" * 40)
-
-        # Should have M6 command with tool parameter
         m6_commands = [cmd for cmd in commands if cmd.Name == "M6"]
         self.assertTrue(len(m6_commands) > 0, "Should have M6 command")
 
-        # First M6 should have T parameter for tool 5
         first_m6 = m6_commands[0]
         self.assertTrue("T" in first_m6.Parameters, "First M6 should have T parameter")
         self.assertEqual(first_m6.Parameters["T"], 5.0, "First M6 should be for tool 5")
 
-        # Should have T2 prep command (early prep for next tool)
         t2_commands = [cmd for cmd in commands if cmd.Name == "T2"]
         self.assertTrue(len(t2_commands) > 0, "Should have T2 early prep command")
 
-        # T2 prep should come after first M6
         first_m6_index = next((i for i, cmd in enumerate(commands) if cmd.Name == "M6"), None)
         t2_index = next((i for i, cmd in enumerate(commands) if cmd.Name == "T2"), None)
         self.assertIsNotNone(first_m6_index, "M6 should exist")
@@ -627,61 +576,36 @@ class TestBuildPostList(unittest.TestCase):
         self.assertLess(first_m6_index, t2_index, "M6 should come before T2 prep")
 
     def test080(self):
+        """
+        Test early_tool_prep with combined output (SplitOutput=False).
+
+        Given: A job with combined output (SplitOutput=False, OrderOutputBy=Tool) and a
+               machine whose processing.early_tool_prep is True
+        When: _buildPostList() is called
+        Then: Two M6 commands appear (T5 then T2) and a T2 prep command appears after
+              the first M6 and before the second M6.
+
+        Example:
+            M6 T5  <- change to tool 5
+            T2     <- early prep for tool 2
+            <ops with T5>
+            M6 T2  <- change to tool 2
+        """
         self.job.SplitOutput = False
         self.job.OrderOutputBy = "Tool"
+        self.pp._machine = self._mock_machine_with_early_tool_prep()
 
-        postables = self.pp._buildPostList(early_tool_prep=True)
+        postables = self.pp._buildPostList()
         _, sublist = postables[0]
 
         if self.debug:
             print(self._format_postables(postables, "test080: Early tool prep, combined output"))
 
-        # Extract all commands from the postables
         commands = []
-        if self.debug:
-            print("\n=== Extracting commands from postables ===")
         for item in sublist:
-            if self.debug:
-                item_type = type(item).__name__
-                has_path = hasattr(item, "Path")
-                path_exists = item.Path if has_path else None
-                has_commands = path_exists and item.Path.Commands if path_exists else False
-                print(
-                    f"Item: {getattr(item, 'Label', item_type)}, Type: {item_type}, HasPath: {has_path}, PathExists: {path_exists is not None}, HasCommands: {bool(has_commands)}"
-                )
-                if has_commands:
-                    print(f"  Commands: {[cmd.Name for cmd in item.Path.Commands]}")
-            if hasattr(item, "Path") and item.Path and item.Path.Commands:
-                commands.extend(item.Path.Commands)
+            if item.path and item.path.Commands:
+                commands.extend(item.path.Commands)
 
-        if self.debug:
-            print(f"\nTotal commands extracted: {len(commands)}")
-
-        # Expected command sequence with early_tool_prep=True:
-        # M6 T5     <- change to tool 5 (standard format)
-        # T2        <- prep next tool immediately (early prep)
-        # (ops with T5...)
-        # M6 T2     <- change to tool 2 (was prepped early)
-        # (ops with T2...)
-
-        if self.debug:
-            print("\n=== Command Sequence ===")
-            for i, cmd in enumerate(commands):
-                params = " ".join(
-                    f"{k}:{v}"
-                    for k, v in zip(
-                        cmd.Parameters.keys() if hasattr(cmd.Parameters, "keys") else [],
-                        (
-                            cmd.Parameters.values()
-                            if hasattr(cmd.Parameters, "values")
-                            else cmd.Parameters
-                        ),
-                    )
-                )
-                print(f"{i:3d}: {cmd.Name} {params}")
-            print("=" * 40)
-
-        # Find M6 and T2 commands
         m6_commands = [(i, cmd) for i, cmd in enumerate(commands) if cmd.Name == "M6"]
         t2_commands = [(i, cmd) for i, cmd in enumerate(commands) if cmd.Name == "T2"]
 
@@ -692,23 +616,279 @@ class TestBuildPostList(unittest.TestCase):
         second_m6_idx, second_m6_cmd = m6_commands[1] if len(m6_commands) >= 2 else (None, None)
         first_t2_idx = t2_commands[0][0]
 
-        # First M6 should have T parameter for tool 5
         self.assertTrue("T" in first_m6_cmd.Parameters, "First M6 should have T parameter")
         self.assertEqual(first_m6_cmd.Parameters["T"], 5.0, "First M6 should be for tool 5")
 
-        # Second M6 should have T parameter for tool 2
         if second_m6_cmd is not None:
             self.assertTrue("T" in second_m6_cmd.Parameters, "Second M6 should have T parameter")
             self.assertEqual(second_m6_cmd.Parameters["T"], 2.0, "Second M6 should be for tool 2")
 
-        # T2 (early prep) should come shortly after first M6 (within a few commands)
         self.assertLess(first_m6_idx, first_t2_idx, "T2 prep should come after first M6")
 
-        # T2 early prep should come before second M6
         if second_m6_idx is not None:
             self.assertLess(
                 first_t2_idx, second_m6_idx, "T2 early prep should come before second M6"
             )
+
+    def test090_buildpostlist_returns_postable_instances(self):
+        """
+        Test that all items returned by _buildPostList are Postable instances.
+
+        Given: A job with 3 operations, 2 tool controllers, and 2 fixtures
+        When: _buildPostList() is called with no-split, order-by-operation
+        Then: Every item in the flat sublist is an instance of PostList.Postable
+
+        Example:
+            postlist = pp._buildPostList()
+            for _, sublist in postlist:
+                for item in sublist:
+                    assert isinstance(item, PostList.Postable)
+        """
+        self.job.SplitOutput = False
+        self.job.OrderOutputBy = "Operation"
+        postlist = self.pp._buildPostList()
+        _, sublist = postlist[0]
+        for item in sublist:
+            self.assertIsInstance(
+                item,
+                PostList.Postable,
+                f"Expected Postable, got {type(item).__name__}",
+            )
+
+    def test091_postable_standard_fields(self):
+        """
+        Test that every Postable exposes the required standard interface.
+
+        Given: A job producing fixture, tool_controller, and operation items
+        When: _buildPostList() is called
+        Then: Each Postable has:
+            - item_type: a non-empty string
+            - label: a string
+            - path: a Path.Path instance
+            - source: the original object or None
+            - data: a dict
+
+        Example:
+            item.item_type == "operation"
+            item.label == "outsideprofile"
+            isinstance(item.path, Path.Path)
+            isinstance(item.data, dict)
+        """
+        self.job.SplitOutput = False
+        self.job.OrderOutputBy = "Operation"
+        postlist = self.pp._buildPostList()
+        _, sublist = postlist[0]
+        for item in sublist:
+            self.assertIsInstance(item.item_type, str)
+            self.assertTrue(len(item.item_type) > 0)
+            self.assertIsInstance(item.label, str)
+            self.assertIsInstance(item.path, Path.Path)
+            self.assertIsInstance(item.data, dict)
+
+    def test092_postable_item_types_correct(self):
+        """
+        Test that item_type is set correctly for each kind of postable.
+
+        Given: A job ordered by fixture with 2 fixtures, producing fixture, TC, and op items
+        When: _buildPostList() is called with split=True, order-by-fixture
+        Then: The first item in the first group is item_type="fixture",
+              and the set of item_types across all items includes "tool_controller"
+              and "operation".
+
+        Example:
+            sublist[0].item_type == "fixture"
+            types = {item.item_type for item in sublist}
+            assert "tool_controller" in types
+            assert "operation" in types
+        """
+        self.job.SplitOutput = True
+        self.job.PostProcessorOutputFile = "%W.nc"
+        self.job.OrderOutputBy = "Fixture"
+        postlist = self.pp._buildPostList()
+        _, sublist = postlist[0]
+        self.assertEqual(sublist[0].item_type, "fixture")
+        types = {item.item_type for item in sublist}
+        self.assertIn("tool_controller", types)
+        self.assertIn("operation", types)
+
+    def test093_postable_path_is_copy(self):
+        """
+        Test that Postable wraps a copy of the source path, not the original object.
+
+        Given: An operation with a non-empty path in the job
+        When: _buildPostList() creates a Postable for that operation
+        Then: postable.path is a different Python object from source.Path
+              so mutations to postable.path do not touch the document object.
+
+        Example:
+            op_item.source.Path is not op_item.path  # different object
+        """
+        self.job.SplitOutput = False
+        self.job.OrderOutputBy = "Operation"
+        postlist = self.pp._buildPostList()
+        _, sublist = postlist[0]
+        for item in sublist:
+            if item.item_type == "operation" and item.source is not None:
+                self.assertIsNot(
+                    item.path,
+                    item.source.Path,
+                    "Postable.path must be a copy, not the original source.Path",
+                )
+
+    def test094_tool_controller_postable_has_tool_number(self):
+        """
+        Test that tool_controller Postables carry the tool number in data["tool_number"].
+
+        Given: A job with tool controllers whose ToolNumber values are 5 and 2
+        When: _buildPostList() is called
+        Then: Each tool_controller Postable has data["tool_number"] matching ToolNumber.
+
+        Example:
+            tc_item.item_type == "tool_controller"
+            tc_item.data["tool_number"] == 5
+        """
+        self.job.SplitOutput = False
+        self.job.OrderOutputBy = "Operation"
+        postlist = self.pp._buildPostList()
+        _, sublist = postlist[0]
+        tc_items = [item for item in sublist if item.item_type == "tool_controller"]
+        self.assertTrue(len(tc_items) > 0, "Expected at least one tool_controller item")
+        for tc_item in tc_items:
+            self.assertIn("tool_number", tc_item.data)
+            self.assertIsInstance(tc_item.data["tool_number"], (int, float))
+
+    def test095_operation_postable_tool_controller_is_postable(self):
+        """
+        Test that accessing ToolController on an operation Postable returns a Postable,
+        not the raw FreeCAD document object.
+
+        When legacy post scripts or other code accesses item.ToolController on an
+        operation Postable, they must receive a Postable wrapper—not a live reference
+        to the real TC document object.  Returning the live object allows callers to
+        mutate it, which marks the operation dirty even though no re-machining occurred.
+
+        Given: A job with operations linked to tool controllers
+        When: _buildPostList() is called and we access .ToolController on an operation item
+        Then: The returned value is a PostList.Postable instance (not a FreeCAD document object)
+              and its item_type is "tool_controller"
+
+        Example:
+            op_item.item_type == "operation"
+            isinstance(op_item.ToolController, PostList.Postable)  # True
+            op_item.ToolController.item_type == "tool_controller"  # True
+        """
+        self.job.SplitOutput = False
+        self.job.OrderOutputBy = "Operation"
+        postlist = self.pp._buildPostList()
+        _, sublist = postlist[0]
+        op_items = [
+            item
+            for item in sublist
+            if item.item_type == "operation"
+            and item.source is not None
+            and hasattr(item.source, "ToolController")
+            and item.source.ToolController is not None
+        ]
+        self.assertTrue(len(op_items) > 0, "Expected at least one operation with a ToolController")
+        for op_item in op_items:
+            tc = op_item.ToolController
+            self.assertIsInstance(
+                tc,
+                PostList.Postable,
+                f"op_item.ToolController must be a Postable, got {type(tc).__name__}",
+            )
+            self.assertEqual(tc.item_type, "tool_controller")
+
+    def test096_operation_postable_tool_controller_is_isolated(self):
+        """
+        Test that the Postable ToolController returned from an operation Postable is
+        a copy, so mutations do not propagate back to the real FreeCAD TC document object.
+
+        Given: An operation Postable whose ToolController attribute returns a Postable
+        When: We replace the Postable TC's path with a new empty path
+        Then: The original FreeCAD TC document object's Path is unchanged
+
+        Example:
+            original_tc_path = op_item.source.ToolController.Path
+            op_item.ToolController.path = Path.Path([])    # mutate the copy
+            op_item.source.ToolController.Path == original_tc_path  # True — unaffected
+        """
+        self.job.SplitOutput = False
+        self.job.OrderOutputBy = "Operation"
+        postlist = self.pp._buildPostList()
+        _, sublist = postlist[0]
+        op_items = [
+            item
+            for item in sublist
+            if item.item_type == "operation"
+            and item.source is not None
+            and hasattr(item.source, "ToolController")
+            and item.source.ToolController is not None
+        ]
+        self.assertTrue(len(op_items) > 0, "Expected at least one operation with a ToolController")
+        op_item = op_items[0]
+        real_tc = op_item.source.ToolController
+        original_size = real_tc.Path.Size if real_tc.Path else 0
+
+        # Mutate the postable TC's path
+        op_item.ToolController.path = Path.Path([])
+
+        # The real TC document object must be unaffected
+        new_size = real_tc.Path.Size if real_tc.Path else 0
+        self.assertEqual(
+            original_size,
+            new_size,
+            "Mutating the Postable TC path must not affect the real TC document object",
+        )
+
+    def test097_buildpostlist_does_not_touch_operations(self):
+        """
+        Test that _buildPostList() does not mark operations as Touched (needing recompute).
+
+        Post-processing is a read-only activity: it must produce G-code from the current
+        operation state without side-effecting the FreeCAD document.  When operations are
+        marked Touched after postprocessing, the user sees spurious "recompute required"
+        prompts every time they post-process.
+
+        Given:  A job whose operations are up-to-date (not Touched) after document recompute
+        When:   _buildPostList() is called
+        Then:   No operation that was clean before the call is Touched afterwards
+
+        Example:
+            doc.recompute()
+            # op.State does not contain "Touched"
+            pp._buildPostList()
+            # op.State still does not contain "Touched"
+        """
+        # Ensure the document starts in a fully-computed state
+        self.job.Document.recompute()
+
+        ops = list(self.job.Operations.Group)
+
+        # Record which operations are clean before postprocessing.
+        # (Some mock ops without execute() may already be Touched; skip those.)
+        clean_before = {op.Name for op in ops if "Touched" not in op.State}
+
+        # At least some operations should be clean to make the test meaningful
+        self.assertGreater(
+            len(clean_before),
+            0,
+            "No operations were clean after recompute — test cannot validate the invariant",
+        )
+
+        self.job.OrderOutputBy = "Operation"
+        self.job.SplitOutput = False
+        self.pp._buildPostList()
+
+        # No previously-clean operation should now be Touched
+        for op in ops:
+            if op.Name in clean_before:
+                self.assertNotIn(
+                    "Touched",
+                    op.State,
+                    f"Operation {op.Label!r} was Touched by _buildPostList() — "
+                    "post-processing must not mark operations dirty.",
+                )
 
 
 class TestJobPropertyOverrides(unittest.TestCase):

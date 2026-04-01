@@ -195,19 +195,16 @@ class Linuxcnc(PostProcessor):
     def export2(self):
         """Override export2 to inject blend command before parent processing.
 
-        This ensures the blend command is added to the preamble before
-        the parent's export2() reads it from postprocessor_properties.
+        apply_configuration_bundle() (called by parent export2) populates
+        self.values with the final overridden blend settings.  We apply
+        the bundle first, inject the blend G-code into the preamble, then
+        let the parent finish.
         """
-        # Apply job property overrides FIRST so blend command uses overridden values
-        self._apply_job_property_overrides()
+        # Build and apply the full configuration bundle (unless dialog already did it)
+        if not getattr(self, "_bundle_applied", False):
+            self.apply_configuration_bundle()
 
-        # Update values dict with overridden blend tolerance
-        if self._machine and hasattr(self._machine, "postprocessor_properties"):
-            props = self._machine.postprocessor_properties
-            self.values["BLEND_TOLERANCE"] = props.get("blend_tolerance", 0.0)
-            self.values["BLEND_MODE"] = props.get("blend_mode", "BLEND")
-
-        # Inject blend command into preamble before parent export2 processes it
+        # Inject blend command into preamble using the now-final values
         if self._machine and hasattr(self._machine, "postprocessor_properties"):
             blend_cmd = self._get_blend_command()
             props = self._machine.postprocessor_properties
@@ -217,7 +214,7 @@ class Linuxcnc(PostProcessor):
             else:
                 props["preamble"] = blend_cmd
 
-        # Call parent export2 which will now include the blend command in preamble
+        # Parent export2 will call apply_configuration_bundle again (idempotent)
         return super().export2()
 
     def _get_blend_command(self) -> str:
@@ -361,6 +358,166 @@ class Linuxcnc(PostProcessor):
         # Use parent implementation for other modal commands
         return super()._convert_modal_command(command)
 
+    def get_sanity_checks(self, job):
+        """LinuxCNC specific sanity checks."""
+        Path.Log.track("LinuxCNC.get_sanity_checks() called")
+        squawks = []
+
+        # Check blend tolerance vs operation precision
+        Path.Log.track("Checking blend tolerance")
+        blend_tolerance = self.values.get("BLEND_TOLERANCE", 0.0)
+        Path.Log.track(f"blend_tolerance: {blend_tolerance}")
+        if blend_tolerance > 0.1:  # 0.1mm threshold for precision work
+            Path.Log.track("Adding NOTE for high blend tolerance")
+            squawks.append(
+                self._create_squawk(
+                    "NOTE",
+                    f"High blend tolerance ({blend_tolerance}mm) may affect precision - consider reducing for tight tolerances",
+                )
+            )
+        elif blend_tolerance > 0.5:  # Very high tolerance
+            Path.Log.track("Adding CAUTION for very high blend tolerance")
+            squawks.append(
+                self._create_squawk(
+                    "CAUTION",
+                    f"Very high blend tolerance ({blend_tolerance}mm) will significantly affect part accuracy",
+                )
+            )
+
+        # Check for unsupported G-codes in operations
+        Path.Log.track("Checking for unsupported G-codes")
+        supported_commands = set()
+        if self.values.get("SUPPORTED_COMMANDS"):
+            supported_commands = set(
+                cmd.strip()
+                for cmd in self.values.get("SUPPORTED_COMMANDS", "").split("\n")
+                if cmd.strip()
+            )
+        Path.Log.track(f"supported_commands: {supported_commands}")
+
+        # Check operations for potentially problematic commands
+        operations = getattr(job.Operations, "Group", [])
+        Path.Log.track(f"Found {len(operations)} operations to check")
+        for i, op in enumerate(operations):
+            Path.Log.track(f"Checking operation {i}: {getattr(op, 'Label', 'unnamed')}")
+            if hasattr(op, "Path") and op.Path:
+                Path.Log.track(f"Operation has Path with {len(op.Path.Commands)} commands")
+                for j, cmd in enumerate(op.Path.Commands):
+                    if hasattr(cmd, "Name"):
+                        gcode = cmd.Name
+                        # Check for commands that might need special handling in LinuxCNC
+                        if gcode.startswith("G") and gcode not in [
+                            "G0",
+                            "G1",
+                            "G2",
+                            "G3",
+                            "G17",
+                            "G18",
+                            "G19",
+                            "G20",
+                            "G21",
+                            "G40",
+                            "G41",
+                            "G42",
+                            "G43",
+                            "G49",
+                            "G54",
+                            "G55",
+                            "G56",
+                            "G57",
+                            "G58",
+                            "G59",
+                            "G80",
+                            "G90",
+                            "G91",
+                            "G93",
+                            "G94",
+                            "G98",
+                            "G99",
+                        ]:
+                            if supported_commands and gcode not in supported_commands:
+                                Path.Log.track(f"Adding WARNING for unsupported command {gcode}")
+                                squawks.append(
+                                    self._create_squawk(
+                                        "WARNING",
+                                        f"Potentially unsupported command '{gcode}' in operation '{op.Label}' - verify LinuxCNC compatibility",
+                                    )
+                                )
+
+        # Check feed rates vs machine capabilities (if available)
+        Path.Log.track("Checking feed rates vs machine capabilities")
+        max_rapid_feed = self.values.get("MAX_RAPID_FEED", None)
+        Path.Log.track(f"max_rapid_feed: {max_rapid_feed}")
+        if max_rapid_feed:
+            for i, op in enumerate(operations):
+                Path.Log.track(
+                    f"Checking feed rate for operation {i}: {getattr(op, 'Label', 'unnamed')}"
+                )
+                if hasattr(op, "HoriFeed"):
+                    Path.Log.track(f"Operation HoriFeed: {op.HoriFeed}")
+                    if op.HoriFeed > max_rapid_feed:
+                        Path.Log.track("Adding CAUTION for high feed rate")
+                        squawks.append(
+                            self._create_squawk(
+                                "CAUTION",
+                                f"Operation '{op.Label}' feed rate ({op.HoriFeed}) exceeds configured maximum ({max_rapid_feed})",
+                            )
+                        )
+                else:
+                    Path.Log.track("Operation has no HoriFeed attribute")
+
+        # Check spindle speed ranges
+        Path.Log.track("Checking spindle speed ranges")
+        max_spindle_speed = self.values.get("MAX_SPINDLE_SPEED", None)
+        Path.Log.track(f"max_spindle_speed: {max_spindle_speed}")
+        if max_spindle_speed:
+            for i, op in enumerate(operations):
+                Path.Log.track(
+                    f"Checking spindle speed for operation {i}: {getattr(op, 'Label', 'unnamed')}"
+                )
+                if hasattr(op, "SpindleSpeed"):
+                    Path.Log.track(f"Operation SpindleSpeed: {op.SpindleSpeed}")
+                    if op.SpindleSpeed > max_spindle_speed:
+                        Path.Log.track("Adding WARNING for high spindle speed")
+                        squawks.append(
+                            self._create_squawk(
+                                "WARNING",
+                                f"Operation '{op.Label}' spindle speed ({op.SpindleSpeed}) exceeds machine maximum ({max_spindle_speed})",
+                            )
+                        )
+                else:
+                    Path.Log.track("Operation has no SpindleSpeed attribute")
+
+        # Check for G41/G42 usage with tool radius compensation
+        Path.Log.track("Checking tool radius compensation usage")
+        supports_tool_radius_comp = self.values.get("SUPPORTS_TOOL_RADIUS_COMPENSATION", False)
+        Path.Log.track(f"supports_tool_radius_comp: {supports_tool_radius_comp}")
+        if not supports_tool_radius_comp:
+            for i, op in enumerate(operations):
+                Path.Log.track(
+                    f"Checking G41/G42 for operation {i}: {getattr(op, 'Label', 'unnamed')}"
+                )
+                if hasattr(op, "Path") and op.Path:
+                    g41_g42_found = False
+                    for cmd in op.Path.Commands:
+                        if hasattr(cmd, "Name") and cmd.Name in ["G41", "G42"]:
+                            Path.Log.track(f"Found {cmd.Name} in operation")
+                            squawks.append(
+                                self._create_squawk(
+                                    "WARNING",
+                                    f"Tool radius compensation ({cmd.Name}) used in '{op.Label}' but not supported by configuration",
+                                )
+                            )
+                            g41_g42_found = True
+                            break
+                    if not g41_g42_found:
+                        Path.Log.track("No G41/G42 found in operation")
+                else:
+                    Path.Log.track("Operation has no Path")
+
+        Path.Log.track(f"LinuxCNC.get_sanity_checks() returning {len(squawks)} squawks")
+        return squawks
+
     @property
     def tooltip(self):
         tooltip: str = """
@@ -370,5 +527,11 @@ class Linuxcnc(PostProcessor):
 
         Supports rigid tapping via G33.1 when the 'rigid' annotation is present
         on G84/G74 tapping cycles.
+
+        Includes machine-specific sanity checks for:
+        - Blend tolerance validation
+        - Command compatibility verification
+        - Feed and spindle speed limits
+        - Tool radius compensation support
         """
         return tooltip

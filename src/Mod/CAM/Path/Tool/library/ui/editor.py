@@ -52,7 +52,6 @@ from ..models import Library
 from .browser import LibraryBrowserWidget
 from .properties import LibraryPropertyDialog
 
-
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())

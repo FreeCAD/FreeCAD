@@ -31,7 +31,7 @@ target_include_directories(
     SYSTEM
     PUBLIC
     ${Boost_INCLUDE_DIRS}
-    ${PYCXX_INCLUDE_DIR}
+    ${PYCXX_INCLUDE_DIRS}
     ${Python3_INCLUDE_DIRS}
     ${QtCore_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}

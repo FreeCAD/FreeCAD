@@ -253,7 +253,9 @@ class PathBoundary:
                 if edge and cmd.Name in Path.Geom.CmdMoveDrill:
                     inside = edge.common(self.boundary).Edges
                     outside = edge.cut(self.boundary).Edges
-                    if 1 == len(inside) and 0 == len(outside):
+                    if not self.inside:
+                        inside, outside = outside, inside
+                    if inside and not outside:
                         commands.append(cmd)
                 if edge and cmd.Name not in Path.Geom.CmdMoveDrill:
                     inside = edge.common(self.boundary).Edges

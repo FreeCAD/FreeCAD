@@ -137,8 +137,7 @@ class createLabel:
 
     # help
     def help(self):
-        print(
-            """
+        print("""
 Place Label on the screen with an optional image.
 Create an instance:
 import CreateLabels as CL
@@ -163,8 +162,7 @@ The following function are available:
         label1.remove_image()
         label1.hide()  - hide the label
         label1.display()  - display the label, after hide
-"""
-        )
+""")
 
 
 if __name__ == "__main__":

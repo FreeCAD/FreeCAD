@@ -27,7 +27,6 @@ import tempfile
 import os
 from .doc import ShapeDocFromBytes
 
-
 _svg_ns = {"s": "http://www.w3.org/2000/svg"}
 
 

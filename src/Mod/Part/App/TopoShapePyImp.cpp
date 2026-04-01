@@ -323,7 +323,9 @@ PyObject* TopoShapePy::writeInventor(PyObject* args, PyObject* keywds) const
     double dev = 0.3, angle = 0.4;
     int mode = 2;
     PyObject* pylist = nullptr;
-    if (!Base::Wrapped_ParseTupleAndKeywords(args, keywds, "|iddO", kwlist, &mode, &dev, &angle, &pylist)) {
+    if (
+        !Base::Wrapped_ParseTupleAndKeywords(args, keywds, "|iddO", kwlist, &mode, &dev, &angle, &pylist)
+    ) {
         return nullptr;
     }
 
@@ -668,15 +670,9 @@ PyObject* TopoShapePy::revolve(PyObject* args) const
 {
     PyObject *pPos, *pDir;
     double angle = 360;
-    if (!PyArg_ParseTuple(
-            args,
-            "O!O!|d",
-            &(Base::VectorPy::Type),
-            &pPos,
-            &(Base::VectorPy::Type),
-            &pDir,
-            &angle
-        )) {
+    if (
+        !PyArg_ParseTuple(args, "O!O!|d", &(Base::VectorPy::Type), &pPos, &(Base::VectorPy::Type), &pDir, &angle)
+    ) {
         return nullptr;
     }
     Base::Vector3d pos = static_cast<Base::VectorPy*>(pPos)->value();
@@ -1761,7 +1757,9 @@ PyObject* TopoShapePy::project(PyObject* args) const
 PyObject* TopoShapePy::makeParallelProjection(PyObject* args) const
 {
     PyObject *pShape, *pDir;
-    if (!PyArg_ParseTuple(args, "O!O!", &(Part::TopoShapePy::Type), &pShape, &Base::VectorPy::Type, &pDir)) {
+    if (
+        !PyArg_ParseTuple(args, "O!O!", &(Part::TopoShapePy::Type), &pShape, &Base::VectorPy::Type, &pDir)
+    ) {
         return nullptr;
     }
 
@@ -1782,7 +1780,9 @@ PyObject* TopoShapePy::makeParallelProjection(PyObject* args) const
 PyObject* TopoShapePy::makePerspectiveProjection(PyObject* args) const
 {
     PyObject *pShape, *pDir;
-    if (!PyArg_ParseTuple(args, "O!O!", &(Part::TopoShapePy::Type), &pShape, &Base::VectorPy::Type, &pDir)) {
+    if (
+        !PyArg_ParseTuple(args, "O!O!", &(Part::TopoShapePy::Type), &pShape, &Base::VectorPy::Type, &pDir)
+    ) {
         return nullptr;
     }
 
@@ -2010,7 +2010,9 @@ PyObject* TopoShapePy::isInside(PyObject* args) const
     double tolerance;
     PyObject* checkFace = Py_False;
     TopAbs_State stateIn = TopAbs_IN;
-    if (!PyArg_ParseTuple(args, "O!dO!", &(Base::VectorPy::Type), &point, &tolerance, &PyBool_Type, &checkFace)) {
+    if (
+        !PyArg_ParseTuple(args, "O!dO!", &(Base::VectorPy::Type), &point, &tolerance, &PyBool_Type, &checkFace)
+    ) {
         return nullptr;
     }
 
@@ -2189,7 +2191,8 @@ PyObject* TopoShapePy::inTolerance(PyObject* args) const
         }
 
         ShapeAnalysis_ShapeTolerance analysis;
-        Handle(TopTools_HSequenceOfShape) seq = analysis.InTolerance(shape, valmin, valmax, shapetype);
+        Handle(TopTools_HSequenceOfShape)
+            seq = analysis.InTolerance(shape, valmin, valmax, shapetype);
         Py::Tuple tuple(seq->Length());
         std::size_t index = 0;
         for (int i = 1; i <= seq->Length(); i++) {

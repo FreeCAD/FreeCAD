@@ -205,15 +205,6 @@ static const PyMethodDef areaOverrides[] = {
             "'Workplane'.",
     },
     {
-        "getClearedArea",
-        nullptr,
-        0,
-        "getClearedArea(path, diameter, zmax, bbox):\n"
-        "Gets the area cleared when a tool of the specified diameter follows the gcode represented "
-        "in the path, ignoring cleared space above zmax and path segments that don't affect space "
-        "within the x/y space of bbox.\n",
-    },
-    {
         "getRestArea",
         nullptr,
         0,
@@ -327,7 +318,9 @@ PyObject* AreaPy::getShape(PyObject* args, PyObject* keywds)
     PyObject* pcObj = Py_False;
     short index = -1;
     static const std::array<const char*, 3> kwlist {"index", "rebuild", nullptr};
-    if (!Base::Wrapped_ParseTupleAndKeywords(args, keywds, "|hO!", kwlist, &index, &PyBool_Type, &pcObj)) {
+    if (
+        !Base::Wrapped_ParseTupleAndKeywords(args, keywds, "|hO!", kwlist, &index, &PyBool_Type, &pcObj)
+    ) {
         return nullptr;
     }
 
@@ -373,8 +366,9 @@ PyObject* AreaPy::add(PyObject* args, PyObject* keywds)
             Py_INCREF(this);
             return this;
         }
-        else if (PyObject_TypeCheck(pcObj, &(PyList_Type))
-                 || PyObject_TypeCheck(pcObj, &(PyTuple_Type))) {
+        else if (
+            PyObject_TypeCheck(pcObj, &(PyList_Type)) || PyObject_TypeCheck(pcObj, &(PyTuple_Type))
+        ) {
             Py::Sequence shapeSeq(pcObj);
             for (Py::Sequence::iterator it = shapeSeq.begin(); it != shapeSeq.end(); ++it) {
                 PyObject* item = (*it).ptr();
@@ -499,8 +493,10 @@ PyObject* AreaPy::makeSections(PyObject* args, PyObject* keywds)
             if (PyObject_TypeCheck(heights, &(PyFloat_Type))) {
                 h.push_back(PyFloat_AsDouble(heights));
             }
-            else if (PyObject_TypeCheck(heights, &(PyList_Type))
-                     || PyObject_TypeCheck(heights, &(PyTuple_Type))) {
+            else if (
+                PyObject_TypeCheck(heights, &(PyList_Type))
+                || PyObject_TypeCheck(heights, &(PyTuple_Type))
+            ) {
                 Py::Sequence shapeSeq(heights);
                 h.reserve(shapeSeq.size());
                 for (Py::Sequence::iterator it = shapeSeq.begin(); it != shapeSeq.end(); ++it) {
@@ -531,29 +527,6 @@ PyObject* AreaPy::makeSections(PyObject* args, PyObject* keywds)
         return Py::new_reference_to(ret);
     }
     PY_CATCH_OCC
-}
-
-PyObject* AreaPy::getClearedArea(PyObject* args) {PY_TRY {PyObject * pyPath, *pyBbox;
-double diameter, zmax;
-if (!PyArg_ParseTuple(args, "OddO", &pyPath, &diameter, &zmax, &pyBbox)) {
-    return nullptr;
-}
-if (!PyObject_TypeCheck(pyPath, &(PathPy::Type))) {
-    PyErr_SetString(PyExc_TypeError, "path must be of type PathPy");
-    return nullptr;
-}
-if (!PyObject_TypeCheck(pyBbox, &(Base::BoundBoxPy::Type))) {
-    PyErr_SetString(PyExc_TypeError, "bbox must be of type BoundBoxPy");
-    return nullptr;
-}
-const PathPy* path = static_cast<PathPy*>(pyPath);
-const Py::BoundingBox bbox(pyBbox, false);
-std::shared_ptr<Area> clearedArea
-    = getAreaPtr()->getClearedArea(path->getToolpathPtr(), diameter, zmax, bbox.getValue());
-auto pyClearedArea = Py::asObject(new AreaPy(new Area(*clearedArea, true)));
-return Py::new_reference_to(pyClearedArea);
-}
-PY_CATCH_OCC
 }
 
 PyObject* AreaPy::getRestArea(PyObject* args) {PY_TRY {PyObject * pyClearedAreas;

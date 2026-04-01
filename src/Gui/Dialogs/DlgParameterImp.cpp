@@ -344,33 +344,25 @@ void DlgParameterImp::onGroupSelected(QTreeWidgetItem* item)
         // filling up Int nodes
         std::vector<std::pair<std::string, long>> mcIntMap = _hcGrp->GetIntMap();
         for (const auto& It3 : mcIntMap) {
-            (
-                void
-            )new ParameterInt(paramValue, QString::fromUtf8(It3.first.c_str()), It3.second, _hcGrp);
+            (void)new ParameterInt(paramValue, QString::fromUtf8(It3.first.c_str()), It3.second, _hcGrp);
         }
 
         // filling up Float nodes
         std::vector<std::pair<std::string, double>> mcFloatMap = _hcGrp->GetFloatMap();
         for (const auto& It4 : mcFloatMap) {
-            (
-                void
-            )new ParameterFloat(paramValue, QString::fromUtf8(It4.first.c_str()), It4.second, _hcGrp);
+            (void)new ParameterFloat(paramValue, QString::fromUtf8(It4.first.c_str()), It4.second, _hcGrp);
         }
 
         // filling up bool nodes
         std::vector<std::pair<std::string, bool>> mcBoolMap = _hcGrp->GetBoolMap();
         for (const auto& It5 : mcBoolMap) {
-            (
-                void
-            )new ParameterBool(paramValue, QString::fromUtf8(It5.first.c_str()), It5.second, _hcGrp);
+            (void)new ParameterBool(paramValue, QString::fromUtf8(It5.first.c_str()), It5.second, _hcGrp);
         }
 
         // filling up UInt nodes
         std::vector<std::pair<std::string, unsigned long>> mcUIntMap = _hcGrp->GetUnsignedMap();
         for (const auto& It6 : mcUIntMap) {
-            (
-                void
-            )new ParameterUInt(paramValue, QString::fromUtf8(It6.first.c_str()), It6.second, _hcGrp);
+            (void)new ParameterUInt(paramValue, QString::fromUtf8(It6.first.c_str()), It6.second, _hcGrp);
         }
         paramValue->setSortingEnabled(sortingEnabled);
     }

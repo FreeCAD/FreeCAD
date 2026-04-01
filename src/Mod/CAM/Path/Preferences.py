@@ -30,7 +30,6 @@ import pathlib
 from collections import defaultdict
 from typing import Optional
 
-
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())
@@ -309,11 +308,11 @@ def defaultPostProcessorArgs():
 
 
 def defaultGeometryTolerance():
-    return preferences().GetFloat(GeometryTolerance, 0.01)
+    return preferences().GetFloat(GeometryTolerance, 0.01) or 0.01
 
 
 def defaultLibAreaCurveAccuracy():
-    return preferences().GetFloat(LibAreaCurveAccuracy, 0.01)
+    return preferences().GetFloat(LibAreaCurveAccuracy, 0.01) or 0.01
 
 
 def defaultFilePath():

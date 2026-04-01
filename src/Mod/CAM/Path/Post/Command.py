@@ -24,7 +24,6 @@
 """Post Process command that will make use of the Output File and Post
 Processor entries in PathJob"""
 
-
 import FreeCAD
 import FreeCADGui
 import Path
@@ -201,6 +200,19 @@ class CommandPathPost:
         on user selection and document context.
         """
         Path.Log.debug(self.candidate.Name)
+
+        # Show the unified post-processing dialog before starting any work.
+        if FreeCAD.GuiUp:
+            from Path.Post.Gui.DlgPostProcess import PostProcessDialog
+
+            dlg = PostProcessDialog(self.candidate)
+            if dlg.exec_() != QtGui.QDialog.DialogCode.Accepted:
+                return
+            # Files were written by the dialog's Save button; record the transaction and return.
+            FreeCAD.ActiveDocument.openTransaction("Post Process the Selected Job")
+            FreeCAD.ActiveDocument.commitTransaction()
+            return
+
         FreeCAD.ActiveDocument.openTransaction("Post Process the Selected Job")
 
         # Determine if we use new flow (machine-based) or old flow (legacy)
@@ -314,7 +326,7 @@ class CommandPathPost:
                 self._write_file(fname, final_gcode, policy)
 
         FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
+        # FreeCAD.ActiveDocument.recompute()
 
 
 class CommandPathPostSelected(CommandPathPost):

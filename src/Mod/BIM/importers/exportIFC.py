@@ -59,7 +59,6 @@ from importers import exportIFCHelper
 from importers import exportIFCStructuralTools
 from importers.importIFCHelper import dd2dms
 
-
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
 # Templates and other definitions ****
@@ -1690,15 +1689,15 @@ def getPropertyData(key, value, preferences):
     if ptype in ["IfcLabel", "IfcText", "IfcIdentifier", "IfcDescriptiveMeasure"]:
         pass
     elif ptype == "IfcBoolean":
-        if pvalue in ["True", "False"]:
-            pvalue = eval(pvalue)
+        if pvalue == "True":
+            pvalue = True
         elif pvalue == ".T.":
             pvalue = True
         else:
             pvalue = False
     elif ptype == "IfcLogical":
-        if pvalue in ["True", "False"]:
-            pvalue = eval(pvalue)
+        if pvalue == "True":
+            pvalue = True
         elif pvalue.upper() == "TRUE":
             pvalue = True
         else:

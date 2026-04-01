@@ -380,8 +380,10 @@ void SoFCUnifiedSelection::doAction(SoAction* action)
                 currentHighlightPath = nullptr;
             }
         }
-        else if (preselectionMode.getValue() != OFF
-                 && preselectAction->SelChange.Type == SelectionChanges::SetPreselect) {
+        else if (
+            preselectionMode.getValue() != OFF
+            && preselectAction->SelChange.Type == SelectionChanges::SetPreselect
+        ) {
             if (currentHighlightPath) {
                 SoHighlightElementAction highlightAction;
                 highlightAction.apply(currentHighlightPath);
@@ -529,8 +531,10 @@ void SoFCUnifiedSelection::doAction(SoAction* action)
                 selectionAction.apply(this->getChild(i));
             }
         }
-        else if (selectionMode.getValue() == ON
-                 && selectionAction->SelChange.Type == SelectionChanges::SetSelection) {
+        else if (
+            selectionMode.getValue() == ON
+            && selectionAction->SelChange.Type == SelectionChanges::SetSelection
+        ) {
             std::vector<ViewProvider*> vps;
             if (this->pcDocument) {
                 vps = this->pcDocument->getViewProvidersOfType(
@@ -918,8 +922,10 @@ void SoFCUnifiedSelection::handleEvent(SoHandleEventAction* action)
         }
     }
     // mouse press events for (de)selection
-    else if (event->isOfType(SoMouseButtonEvent::getClassTypeId())
-             && selectionMode.getValue() == SoFCUnifiedSelection::ON) {
+    else if (
+        event->isOfType(SoMouseButtonEvent::getClassTypeId())
+        && selectionMode.getValue() == SoFCUnifiedSelection::ON
+    ) {
         const auto e = static_cast<const SoMouseButtonEvent*>(event);
         if (SoMouseButtonEvent::isButtonReleaseEvent(e, SoMouseButtonEvent::BUTTON1)) {
             // check to see if the mouse is over a geometry...
@@ -1807,8 +1813,9 @@ bool SoFCSelectionRoot::doActionPrivate(Stack& stack, SoAction* action)
             return true;
         }
     }
-    else if (action->getWhatAppliedTo() != SoAction::NODE
-             && action->getCurPathCode() != SoAction::BELOW_PATH) {
+    else if (
+        action->getWhatAppliedTo() != SoAction::NODE && action->getCurPathCode() != SoAction::BELOW_PATH
+    ) {
         return true;
     }
 

@@ -2837,7 +2837,8 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
         Base::Console().log("Init:     Processing file: %s\n",file.filePath().c_str());
 
         try {
-            if (file.hasExtension("fcstd") || file.hasExtension("std")) {
+            if (file.hasExtension("fcstd") || file.hasExtension("fcbak")
+                || file.hasExtension("std")) {
                 // try to open
                 Application::_pcSingleton->openDocument(file.filePath().c_str());
                 processed.push_back(it);

@@ -192,6 +192,7 @@ void SketcherSettings::loadSettings()
     setProperty("checkBoxUnifiedCoincident", ui->checkBoxUnifiedCoincident->isChecked());
     ui->checkBoxHorVerAuto->onRestore();
     setProperty("checkBoxHorVerAuto", ui->checkBoxHorVerAuto->isChecked());
+    ui->checkBoxLineGroup->onRestore();
     ui->checkBoxAddExtGeo->onRestore();
     ui->checkBoxMakeInternals->onRestore();
 
@@ -356,6 +357,7 @@ void SketcherSettingsGrid::saveSettings()
     ui->gridSize->onSave();
     ui->checkBoxGridAuto->onSave();
     ui->gridSizePixelThreshold->onSave();
+    ui->gridTransparency->onSave();
     ui->gridLineColor->onSave();
     ui->gridDivLineColor->onSave();
     ui->gridLineWidth->onSave();
@@ -380,6 +382,7 @@ void SketcherSettingsGrid::loadSettings()
     ui->gridSize->onRestore();
     ui->checkBoxGridAuto->onRestore();
     ui->gridSizePixelThreshold->onRestore();
+    ui->gridTransparency->onRestore();
     ui->gridLineColor->onRestore();
     ui->gridDivLineColor->onRestore();
     ui->gridLineWidth->onRestore();
@@ -389,7 +392,7 @@ void SketcherSettingsGrid::loadSettings()
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/General"
     );
-    int pattern = hGrp->GetInt("GridLinePattern", 0b0000111100001111);
+    int pattern = hGrp->GetInt("GridLinePattern", 0b1111111111111111);
     int index = ui->gridLinePattern->findData(QVariant(pattern));
     if (index < 0) {
         index = 1;

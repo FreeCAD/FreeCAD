@@ -155,7 +155,7 @@ QPixmap Gui::InputHintWidget::generateKeyIcon(const InputHint::UserInput key, co
     painter.drawText(
         // adjust the rectangle so it is visually centered
         // this is important for characters that are below baseline
-        keyRect.translated(0, -(textBoundingRect.y() + textBoundingRect.height()) / 2),
+        keyRect.translated(0, -(textBoundingRect.y() + textBoundingRect.height() + 1) / 2),
         Qt::AlignHCenter,
         text
     );

@@ -842,7 +842,11 @@ void TaskView::addTaskWatcher()
     }
 
     TaskWatcherPanel->actionPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
-    setShownTaskInfo(-1);
+    // Don't hide active task dialog when switching workbenches
+    // Only switch to watcher panel if there's no active task dialog
+    if (!currentTaskInfo()) {
+        setShownTaskInfo(-1);
+    }
 }
 
 void TaskView::saveCurrentWidth()

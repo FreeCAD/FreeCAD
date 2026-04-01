@@ -27,7 +27,6 @@ import Path
 import Path.Op.Base as PathOp
 import Path.Op.PocketBase as PathPocketBase
 
-
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
 
@@ -248,7 +247,8 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                             self.exts.append(f)
 
             # check all faces and see if they are touching/overlapping and combine and simplify
-            self.horizontal = Path.Geom.combineHorizontalFaces(self.horiz)
+            keepOrder = getattr(obj, "SortingMode", None) == "Manual"
+            self.horizontal = Path.Geom.combineHorizontalFaces(self.horiz, keepOrder=keepOrder)
 
             # Move all faces to final depth less buffer before extrusion
             # Small negative buffer is applied to compensate for internal significant digits/rounding issue
@@ -290,17 +290,6 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             obj.removalshape = Part.makeCompound([tup[0] for tup in self.removalshapes])
 
         return self.removalshapes
-
-    # Support methods
-    def isVerticalExtrusionFace(self, face):
-        fBB = face.BoundBox
-        if Path.Geom.isRoughly(fBB.ZLength, 0.0):
-            return False
-        extr = face.extrude(FreeCAD.Vector(0.0, 0.0, fBB.ZLength))
-        if hasattr(extr, "Volume"):
-            if Path.Geom.isRoughly(extr.Volume, 0.0):
-                return True
-        return False
 
     def classifySub(self, bs, sub):
         """classifySub(bs, sub)...
@@ -352,8 +341,8 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         elif isinstance(face.Surface, Part.SurfaceOfExtrusion):
             # extrusion wall
             Path.Log.debug("type() == Part.SurfaceOfExtrusion")
-            # Save face to self.horiz for processing or display error
-            if self.isVerticalExtrusionFace(face):
+            if Path.Geom.isRoughly(abs(face.Surface.Direction.z), 1.0):
+                # it's a vertical face
                 self.vert.append(face)
                 return True
             else:

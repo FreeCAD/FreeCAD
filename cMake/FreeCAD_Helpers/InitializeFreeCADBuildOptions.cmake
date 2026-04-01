@@ -12,6 +12,7 @@ macro(InitializeFreeCADBuildOptions)
     option(FREECAD_USE_EXTERNAL_ONDSELSOLVER "Use system installed OndselSolver instead of git submodule." OFF)
     option(FREECAD_USE_EXTERNAL_E57FORMAT "Use system installed libE57Format instead of the bundled." OFF)
     option(FREECAD_USE_EXTERNAL_GTEST "Use system installed Google Test and Google Mock" OFF)
+    option(FREECAD_USE_EXTERNAL_PYCXX "Use system installed PyCXX, located using pkgconfig" OFF)
     option(FREECAD_USE_FREETYPE "Builds the features using FreeType libs" ON)
     option(FREECAD_BUILD_DEBIAN "Prepare for a build of a Debian package" OFF)
     option(FREECAD_CHECK_PIVY "Check for pivy version using Python at build time" ON)
@@ -174,10 +175,6 @@ macro(InitializeFreeCADBuildOptions)
 
     # if this is set override some options
     if (FREECAD_BUILD_DEBIAN)
-        # Disable it until the upstream package has been fixed. See
-        # https://github.com/FreeCAD/FreeCAD/issues/13676#issuecomment-2539978468
-        # https://github.com/FreeCAD/FreeCAD/issues/13676#issuecomment-2541513308
-        set(FREECAD_USE_EXTERNAL_ZIPIOS OFF )
         # A Debian package for SMESH doesn't exist
         #set(FREECAD_USE_EXTERNAL_SMESH ON )
     endif (FREECAD_BUILD_DEBIAN)

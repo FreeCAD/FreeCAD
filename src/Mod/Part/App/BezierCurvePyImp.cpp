@@ -111,7 +111,8 @@ PyObject* BezierCurvePy::insertPoleAfter(PyObject* args)
     Base::Vector3d vec = static_cast<Base::VectorPy*>(p)->value();
     gp_Pnt pnt(vec.x, vec.y, vec.z);
     try {
-        Handle(Geom_BezierCurve) curve = Handle(Geom_BezierCurve)::DownCast(getGeometryPtr()->handle());
+        Handle(Geom_BezierCurve)
+            curve = Handle(Geom_BezierCurve)::DownCast(getGeometryPtr()->handle());
         curve->InsertPoleAfter(index, pnt, weight);
         Py_Return;
     }
@@ -132,7 +133,8 @@ PyObject* BezierCurvePy::insertPoleBefore(PyObject* args)
     Base::Vector3d vec = static_cast<Base::VectorPy*>(p)->value();
     gp_Pnt pnt(vec.x, vec.y, vec.z);
     try {
-        Handle(Geom_BezierCurve) curve = Handle(Geom_BezierCurve)::DownCast(getGeometryPtr()->handle());
+        Handle(Geom_BezierCurve)
+            curve = Handle(Geom_BezierCurve)::DownCast(getGeometryPtr()->handle());
         curve->InsertPoleBefore(index, pnt, weight);
         Py_Return;
     }
@@ -149,7 +151,8 @@ PyObject* BezierCurvePy::removePole(PyObject* args)
         return nullptr;
     }
     try {
-        Handle(Geom_BezierCurve) curve = Handle(Geom_BezierCurve)::DownCast(getGeometryPtr()->handle());
+        Handle(Geom_BezierCurve)
+            curve = Handle(Geom_BezierCurve)::DownCast(getGeometryPtr()->handle());
         curve->RemovePole(index);
         Py_Return;
     }
@@ -166,7 +169,8 @@ PyObject* BezierCurvePy::segment(PyObject* args)
         return nullptr;
     }
     try {
-        Handle(Geom_BezierCurve) curve = Handle(Geom_BezierCurve)::DownCast(getGeometryPtr()->handle());
+        Handle(Geom_BezierCurve)
+            curve = Handle(Geom_BezierCurve)::DownCast(getGeometryPtr()->handle());
         curve->Segment(u1, u2);
         Py_Return;
     }
@@ -187,7 +191,8 @@ PyObject* BezierCurvePy::setPole(PyObject* args)
     Base::Vector3d vec = static_cast<Base::VectorPy*>(p)->value();
     gp_Pnt pnt(vec.x, vec.y, vec.z);
     try {
-        Handle(Geom_BezierCurve) curve = Handle(Geom_BezierCurve)::DownCast(getGeometryPtr()->handle());
+        Handle(Geom_BezierCurve)
+            curve = Handle(Geom_BezierCurve)::DownCast(getGeometryPtr()->handle());
         if (weight < 0.0) {
             curve->SetPole(index, pnt);
         }
@@ -209,7 +214,8 @@ PyObject* BezierCurvePy::getPole(PyObject* args) const
         return nullptr;
     }
     try {
-        Handle(Geom_BezierCurve) curve = Handle(Geom_BezierCurve)::DownCast(getGeometryPtr()->handle());
+        Handle(Geom_BezierCurve)
+            curve = Handle(Geom_BezierCurve)::DownCast(getGeometryPtr()->handle());
         Standard_OutOfRange_Raise_if(index < 1 || index > curve->NbPoles(), "Pole index out of range");
         gp_Pnt pnt = curve->Pole(index);
         Base::VectorPy* vec = new Base::VectorPy(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
@@ -227,7 +233,8 @@ PyObject* BezierCurvePy::getPoles(PyObject* args) const
         return nullptr;
     }
     try {
-        Handle(Geom_BezierCurve) curve = Handle(Geom_BezierCurve)::DownCast(getGeometryPtr()->handle());
+        Handle(Geom_BezierCurve)
+            curve = Handle(Geom_BezierCurve)::DownCast(getGeometryPtr()->handle());
         TColgp_Array1OfPnt p(1, curve->NbPoles());
         curve->Poles(p);
         Py::List poles;
@@ -278,7 +285,8 @@ PyObject* BezierCurvePy::setWeight(PyObject* args)
         return nullptr;
     }
     try {
-        Handle(Geom_BezierCurve) curve = Handle(Geom_BezierCurve)::DownCast(getGeometryPtr()->handle());
+        Handle(Geom_BezierCurve)
+            curve = Handle(Geom_BezierCurve)::DownCast(getGeometryPtr()->handle());
         curve->SetWeight(index, weight);
         Py_Return;
     }
@@ -295,7 +303,8 @@ PyObject* BezierCurvePy::getWeight(PyObject* args) const
         return nullptr;
     }
     try {
-        Handle(Geom_BezierCurve) curve = Handle(Geom_BezierCurve)::DownCast(getGeometryPtr()->handle());
+        Handle(Geom_BezierCurve)
+            curve = Handle(Geom_BezierCurve)::DownCast(getGeometryPtr()->handle());
         Standard_OutOfRange_Raise_if(index < 1 || index > curve->NbPoles(), "Weight index out of range");
         double weight = curve->Weight(index);
         return Py_BuildValue("d", weight);
@@ -312,7 +321,8 @@ PyObject* BezierCurvePy::getWeights(PyObject* args) const
         return nullptr;
     }
     try {
-        Handle(Geom_BezierCurve) curve = Handle(Geom_BezierCurve)::DownCast(getGeometryPtr()->handle());
+        Handle(Geom_BezierCurve)
+            curve = Handle(Geom_BezierCurve)::DownCast(getGeometryPtr()->handle());
         TColStd_Array1OfReal w(1, curve->NbPoles());
         curve->Weights(w);
         Py::List weights;
@@ -334,7 +344,8 @@ PyObject* BezierCurvePy::getResolution(PyObject* args) const
         return nullptr;
     }
     try {
-        Handle(Geom_BezierCurve) curve = Handle(Geom_BezierCurve)::DownCast(getGeometryPtr()->handle());
+        Handle(Geom_BezierCurve)
+            curve = Handle(Geom_BezierCurve)::DownCast(getGeometryPtr()->handle());
         double utol;
         curve->Resolution(tol, utol);
         return Py_BuildValue("d", utol);
@@ -384,7 +395,8 @@ PyObject* BezierCurvePy::interpolate(PyObject* args)
         return nullptr;
     }
     try {
-        Handle(Geom_BezierCurve) curve = Handle(Geom_BezierCurve)::DownCast(getGeometryPtr()->handle());
+        Handle(Geom_BezierCurve)
+            curve = Handle(Geom_BezierCurve)::DownCast(getGeometryPtr()->handle());
         Py::Sequence constraints(obj);
         int nb_pts = constraints.size();
         if (nb_pts < 2) {

@@ -114,6 +114,7 @@ void StdCmdOpen::activated(int iMsg)
         formatList += QLatin1String(" *.");
         formatList += QLatin1String(it->c_str());
     }
+    formatList += QLatin1String(" *.FCBak");
 
     formatList += QLatin1String(");;");
 
@@ -122,7 +123,11 @@ void StdCmdOpen::activated(int iMsg)
     // Make sure the format name for FCStd is the very first in the list
     for (jt = FilterList.begin(); jt != FilterList.end(); ++jt) {
         if (jt->first.find("*.FCStd") != std::string::npos) {
-            formatList += QLatin1String(jt->first.c_str());
+            QString fcstdFilter = QLatin1String(jt->first.c_str());
+            if (!fcstdFilter.contains(QStringLiteral("*.FCBak"), Qt::CaseInsensitive)) {
+                fcstdFilter.replace(")", QStringLiteral(" *.FCBak)"));
+            }
+            formatList += fcstdFilter;
             formatList += QLatin1String(";;");
             FilterList.erase(jt);
             break;
@@ -141,6 +146,35 @@ void StdCmdOpen::activated(int iMsg)
         QString(),
         formatList,
         &selectedFilter
+    );
+    if (fileList.isEmpty()) {
+        return;
+    }
+
+    // Open backup files as native documents (same data format as FCStd).
+    for (const QString& file : fileList) {
+        if (!file.endsWith(QStringLiteral(".FCBak"), Qt::CaseInsensitive)) {
+            continue;
+        }
+
+        getGuiApplication()->setStatus(Gui::Application::UserInitiatedOpenDocument, true);
+        getGuiApplication()->open(file.toUtf8(), "FreeCAD");
+        getGuiApplication()->setStatus(Gui::Application::UserInitiatedOpenDocument, false);
+
+        App::Document* doc = App::GetApplication().getActiveDocument();
+        getGuiApplication()->checkPartialRestore(doc);
+        getGuiApplication()->checkRestoreError(doc);
+    }
+
+    fileList.erase(
+        std::remove_if(
+            fileList.begin(),
+            fileList.end(),
+            [](const QString& file) {
+                return file.endsWith(QStringLiteral(".FCBak"), Qt::CaseInsensitive);
+            }
+        ),
+        fileList.end()
     );
     if (fileList.isEmpty()) {
         return;
@@ -751,6 +785,15 @@ StdCmdSave::StdCmdSave()
 void StdCmdSave::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+
+    if (App::Document* doc = App::GetApplication().getActiveDocument()) {
+        Base::FileInfo filename(doc->FileName.getValue());
+        if (filename.hasExtension("fcbak")) {
+            Gui::Command::doCommand(Gui::Command::Gui, "Gui.runCommand('Std_SaveAs')");
+            return;
+        }
+    }
+
     doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"Save\")");
 }
 
@@ -1775,9 +1818,14 @@ void StdCmdPlacement::activated(int iMsg)
 bool StdCmdPlacement::isActive()
 {
     std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(
-        App::GeoFeature::getClassTypeId()
+        App::GeoFeature::getClassTypeId(),
+        nullptr,
+        ResolveMode::FollowLink
     );
-    return !(sel.empty() || std::ranges::any_of(sel, [](auto obj) { return obj->isFreezed(); }));
+    return !(sel.empty() || std::ranges::any_of(sel, [](auto obj) {
+                 auto* prop = obj->getPlacementProperty();
+                 return obj->isFreezed() || !prop || prop->isReadOnly();
+             }));
 }
 
 //===========================================================================
@@ -1803,7 +1851,9 @@ void StdCmdTransformManip::activated(int iMsg)
         getActiveGuiDocument()->resetEdit();
     }
     std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(
-        App::GeoFeature::getClassTypeId()
+        App::GeoFeature::getClassTypeId(),
+        nullptr,
+        ResolveMode::FollowLink
     );
     Gui::ViewProvider* vp = Application::Instance->getViewProvider(sel.front());
     // FIXME: Need a way to force 'Transform' edit mode
@@ -1816,9 +1866,14 @@ void StdCmdTransformManip::activated(int iMsg)
 bool StdCmdTransformManip::isActive()
 {
     std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(
-        App::GeoFeature::getClassTypeId()
+        App::GeoFeature::getClassTypeId(),
+        nullptr,
+        ResolveMode::FollowLink
     );
-    return (sel.size() == 1 && !sel.front()->isFreezed());
+    return (
+        sel.size() == 1 && !sel.front()->isFreezed() && sel.front()->getPlacementProperty()
+        && !sel.front()->getPlacementProperty()->isReadOnly()
+    );
 }
 
 //===========================================================================

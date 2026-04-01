@@ -528,14 +528,14 @@ class BIMWorkbench(Workbench):
 
         t1 = QT_TRANSLATE_NOOP("Workbench", "&2D Drafting")
         t2 = QT_TRANSLATE_NOOP("Workbench", "&3D/BIM")
-        t3 = QT_TRANSLATE_NOOP("Workbench", "Reinforcement Tools")
+        t3 = QT_TRANSLATE_NOOP("Workbench", "&Reinforcement Tools")
         t4 = QT_TRANSLATE_NOOP("Workbench", "&Annotation")
         t5 = QT_TRANSLATE_NOOP("Workbench", "&Snapping")
-        t6 = QT_TRANSLATE_NOOP("Workbench", "&Modify")
-        t7 = QT_TRANSLATE_NOOP("Workbench", "&Manage")
+        t6 = QT_TRANSLATE_NOOP("Workbench", "M&odify")
+        t7 = QT_TRANSLATE_NOOP("Workbench", "Ma&nage")
         # t8 =  QT_TRANSLATE_NOOP("Workbench", "&IFC")
         t9 = QT_TRANSLATE_NOOP("Workbench", "&Flamingo")
-        t10 = QT_TRANSLATE_NOOP("Workbench", "&Fasteners")
+        t10 = QT_TRANSLATE_NOOP("Workbench", "Fas&teners")
         t11 = QT_TRANSLATE_NOOP("Workbench", "&Utils")
         t12 = QT_TRANSLATE_NOOP("Workbench", "Nudge")
 
@@ -633,8 +633,20 @@ class BIMWorkbench(Workbench):
             FreeCADGui.draftToolBar.Activated()
         if hasattr(FreeCADGui, "Snapper"):
             FreeCADGui.Snapper.show()
-        WorkingPlane._view_observer_start()
-        grid_observer._view_observer_setup()
+        if hasattr(WorkingPlane, "_view_observer_start"):
+            WorkingPlane._view_observer_start()
+        else:
+            FreeCAD.Console.PrintWarning(
+                "Improper loading of WorkingPlane code. "
+                "The BIM Workbench will not work correctly.\n"
+            )
+        if hasattr(grid_observer, "_view_observer_setup"):
+            grid_observer._view_observer_setup()
+        else:
+            FreeCAD.Console.PrintWarning(
+                "Improper loading of grid_observer code. "
+                "The BIM Workbench will not work correctly.\n"
+            )
 
         if PARAMS.GetBool("FirstTime", True) and (not hasattr(FreeCAD, "TestEnvironment")):
             todo.ToDo.delay(FreeCADGui.runCommand, "BIM_Welcome")
@@ -720,8 +732,10 @@ class BIMWorkbench(Workbench):
             FreeCADGui.draftToolBar.Deactivated()
         if hasattr(FreeCADGui, "Snapper"):
             FreeCADGui.Snapper.hide()
-        WorkingPlane._view_observer_stop()
-        grid_observer._view_observer_setup()
+        if hasattr(WorkingPlane, "_view_observer_stop"):
+            WorkingPlane._view_observer_stop()
+        if hasattr(grid_observer, "_view_observer_setup"):
+            grid_observer._view_observer_setup()
 
         # print("Deactivating status icon")
         todo.ToDo.delay(BimStatus.setStatusIcons, False)

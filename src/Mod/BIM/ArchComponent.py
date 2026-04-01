@@ -375,13 +375,12 @@ class Component(ArchIFC.IfcProduct):
 
         if self.clone(obj):
             return
-        if self.ensureBase(obj) is False:
-            # This will fall through if the Component object has no base, allowing the base shapeto
-            # be cleared
+        if getattr(obj, "Base", None) is None:
+            # Do not modify Arch_Components without a Base object.
             return
 
-        # Only proceed if a Base object is linked and contains valid geometry.
-        if obj.Base and hasattr(obj.Base, "Shape") and not obj.Base.Shape.isNull():
+        if hasattr(obj.Base, "Shape") and not obj.Base.Shape.isNull():
+            # The Base object contains valid geometry.
             # Create a standalone shape as a deep copy of the base geometry, to avoid modifying
             # the original source.
             base_shape = Part.Shape(obj.Base.Shape)
@@ -398,8 +397,7 @@ class Component(ArchIFC.IfcProduct):
             final_shape = self.processSubShapes(obj, base_shape, obj.Placement)
             self.applyShape(obj, final_shape, obj.Placement, allownosolid=True)
         else:
-            # Clear the shape if the base has been removed. This avoids leaving a stale shape that
-            # is not updated when the base is removed.
+            # Clear the shape to avoid leaving a stale shape.
             obj.Shape = Part.Shape()
 
     def dumps(self):

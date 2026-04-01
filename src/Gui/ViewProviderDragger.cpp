@@ -357,16 +357,20 @@ Base::Rotation Gui::ViewProviderDragger::orthonormalize(
         z = x.Cross(y);
         z.Normalize();
     }
-    else if (components.testFlag(Gui::ViewProviderDragger::DraggerComponent::XRot)
-             && components.testFlag(Gui::ViewProviderDragger::DraggerComponent::ZRot)) {
+    else if (
+        components.testFlag(Gui::ViewProviderDragger::DraggerComponent::XRot)
+        && components.testFlag(Gui::ViewProviderDragger::DraggerComponent::ZRot)
+    ) {
         x.Normalize();
         z = z - x * (x * z);
         z.Normalize();
         y = z.Cross(x);
         y.Normalize();
     }
-    else if (components.testFlag(Gui::ViewProviderDragger::DraggerComponent::YRot)
-             && components.testFlag(Gui::ViewProviderDragger::DraggerComponent::ZRot)) {
+    else if (
+        components.testFlag(Gui::ViewProviderDragger::DraggerComponent::YRot)
+        && components.testFlag(Gui::ViewProviderDragger::DraggerComponent::ZRot)
+    ) {
         y.Normalize();
         z = z - y * (y * z);
         z.Normalize();

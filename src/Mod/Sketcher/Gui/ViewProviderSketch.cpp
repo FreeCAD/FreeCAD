@@ -32,6 +32,7 @@
 #include <Inventor/details/SoPointDetail.h>
 #include <Inventor/events/SoKeyboardEvent.h>
 #include <Inventor/nodes/SoCamera.h>
+#include <Inventor/nodes/SoShapeHints.h>
 
 #include <QApplication>
 #include <QFontMetricsF>
@@ -347,7 +348,7 @@ void ViewProviderSketch::ParameterObserver::initParameters()
           nullptr}},
         {"GridLinePattern",
          {[this](const std::string& string, [[maybe_unused]] App::Property* property) {
-              auto v = getSketcherGeneralParameter(string, 0x0f0f);
+              auto v = getSketcherGeneralParameter(string, 0xffff);
               Client.setGridLinePattern(v);
           },
           nullptr}},
@@ -383,6 +384,12 @@ void ViewProviderSketch::ParameterObserver::initParameters()
               auto v = getSketcherGeneralParameter(string, packedDefaultGridColor);
               auto color = Base::Color(v);
               Client.setGridDivLineColor(color);
+          },
+          nullptr}},
+        {"GridTransparency",
+         {[this](const std::string& string, [[maybe_unused]] App::Property* property) {
+              auto v = getSketcherGeneralParameter(string, 60);
+              Client.setGridTransparency(static_cast<float>(v) / 100.0f);
           },
           nullptr}},
         {"SegmentsPerGeometry",
@@ -425,7 +432,7 @@ void ViewProviderSketch::ParameterObserver::initParameters()
 
     // unsubscribed parameters which update a property on just once upon construction (and before
     // restore if properties are being restored from a file)
-    updateBoolProperty("ShowGrid", &Client.ShowGrid, false);
+    updateBoolProperty("ShowGrid", &Client.ShowGrid, true);
     updateBoolProperty("GridAuto", &Client.GridAuto, true);
     updateGridSize("GridSize", &Client.GridSize);
 }
@@ -510,7 +517,13 @@ SoSketchFaces::SoSketchFaces(){
     material->diffuseColor.connectFrom(&color);
     material->transparency.connectFrom(&transparency);
 
+    // Enable two-sided lighting so faces are visible from both sides
+    auto* shapeHints = new SoShapeHints;
+    shapeHints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
+    shapeHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
+
     SoSeparator::addChild(material);
+    SoSeparator::addChild(shapeHints);
     SoSeparator::addChild(coords);
     SoSeparator::addChild(norm);
     SoSeparator::addChild(faceset);
@@ -3560,7 +3573,8 @@ bool ViewProviderSketch::getDetailPath(
             auto len = pPath->getLength();
             if (append) {
                 pPath->append(pcRoot);
-                pPath->append(pcModeSwitch);
+                pPath->append(pcAnnotation);
+                pPath->append(pcSketchFacesToggle);
             }
 
             if (!ViewProvider2DObject::getDetailPath(realName, pPath, false, det)) {

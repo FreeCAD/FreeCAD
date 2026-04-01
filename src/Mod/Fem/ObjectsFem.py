@@ -30,7 +30,6 @@ __url__ = "https://www.freecad.org"
 
 import FreeCAD
 
-
 # PythonFeatures from package femobjects
 # standard object name == class name == type without 'Fem::'
 

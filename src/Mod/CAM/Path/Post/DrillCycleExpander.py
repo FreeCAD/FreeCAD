@@ -32,8 +32,18 @@ from typing import List, Optional
 EXPANDABLE_DRILL_CYCLES = {"G81", "G82", "G83", "G73"}
 
 
+debug = True
+if debug:
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
+else:
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+
+
 class DrillCycleExpander:
     """Expands canned drill cycles (Path.Command) into basic G-code movements."""
+
+    EXPANDABLE_CYCLES = EXPANDABLE_DRILL_CYCLES
 
     def __init__(
         self,
@@ -87,7 +97,9 @@ class DrillCycleExpander:
 
         # Handle drill cycles
         if cmd_name in ("G81", "G82", "G73", "G83"):
-            return self._expand_drill_cycle(command)
+            result = self._expand_drill_cycle(command)
+            Path.Log.debug(f"Expanded drill cycle: {command} -> {result}")
+            return result
 
         # Update position for non-drill commands
         if cmd_name in ("G0", "G00", "G1", "G01"):
@@ -99,6 +111,7 @@ class DrillCycleExpander:
                         self.current_position[axis] += params[axis]
 
         # Pass through other commands unchanged
+        Path.Log.debug(f"Passing through command: {command}")
         return [command]
 
     def _expand_drill_cycle(self, command: Path.Command) -> List[Path.Command]:

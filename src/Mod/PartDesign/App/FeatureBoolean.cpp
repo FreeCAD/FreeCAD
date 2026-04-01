@@ -175,7 +175,17 @@ void Boolean::updatePreviewShape()
         TopoShape base = getBaseTopoShape(true).moved(getLocation().Inverted());
         TopoShape result = Shape.getShape();
 
-        PreviewShape.setValue(base.makeElementCut(result.getShape()));
+        try {
+            PreviewShape.setValue(base.makeElementCut(result.getShape()));
+        }
+        catch (Standard_Failure& e) {
+            FC_ERR("Boolean preview failed: " << e.GetMessageString());
+            PreviewShape.setValue(base);
+        }
+        catch (Base::Exception& e) {
+            FC_ERR("Boolean preview failed: " << e.what());
+            PreviewShape.setValue(base);
+        }
         return;
     }
 

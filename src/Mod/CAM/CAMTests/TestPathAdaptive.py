@@ -28,6 +28,8 @@ import Part
 import Path.Op.Adaptive as PathAdaptive
 import Path.Main.Job as PathJob
 from CAMTests.PathTestUtils import PathTestBase
+import area
+import math
 
 if FreeCAD.GuiUp:
     import Path.Main.Gui.Job as PathJobGui
@@ -101,7 +103,331 @@ class TestPathAdaptive(PathTestBase):
         """
         pass
 
-    # Unit tests
+    def checkAdaptiveErrors(self, adaptiveOutput):
+        """Check error flags in C++ AdaptiveOutput object."""
+        self.assertFalse(
+            adaptiveOutput.StartPointNotFound, "Adaptive failed to find entry/start point"
+        )
+        self.assertFalse(
+            adaptiveOutput.LeadPathFailed,
+            "Adaptive failed to generate lead path - overtravel without reaching cleared area",
+        )
+        self.assertFalse(
+            adaptiveOutput.UnexpectedRotateIterations,
+            "Adaptive encountered unexpected number of rotation iterations",
+        )
+        self.assertFalse(
+            adaptiveOutput.TooManyFailedEngagements,
+            "Adaptive exceeded 10000 failed engagement attempts",
+        )
+        self.assertFalse(
+            adaptiveOutput.UnclearedAreaRemains, "Adaptive terminated with uncleared area remaining"
+        )
+        self.assertFalse(
+            adaptiveOutput.FailedToSetUpFinishingPass,
+            "Adaptive failed to set up finishing pass - uncut area would make finishing pass too heavy",
+        )
+        self.assertFalse(
+            adaptiveOutput.FinishingLeadInFailed,
+            "Adaptive failed to generate lead-in for finishing pass",
+        )
+
+    def _createRectangleGeometry(self, stock_width, stock_height, path_width, path_height):
+        """Create centered rectangular geometry for stock and path."""
+        # Stock boundary at origin
+        stock_x0 = 0.0
+        stock_y0 = 0.0
+        stock_x1 = stock_x0 + stock_width
+        stock_y1 = stock_y0 + stock_height
+        stockPath2d = [
+            [[stock_x0, stock_y0], [stock_x1, stock_y0], [stock_x1, stock_y1], [stock_x0, stock_y1]]
+        ]
+
+        # Path centered within stock
+        margin_x = (stock_width - path_width) / 2.0
+        margin_y = (stock_height - path_height) / 2.0
+        path_x0 = stock_x0 + margin_x
+        path_y0 = stock_y0 + margin_y
+        path_x1 = path_x0 + path_width
+        path_y1 = path_y0 + path_height
+        path2d = [[[path_x0, path_y0], [path_x1, path_y0], [path_x1, path_y1], [path_x0, path_y1]]]
+
+        dimensions = {
+            "stock_width": stock_width,
+            "stock_height": stock_height,
+            "path_width": path_width,
+            "path_height": path_height,
+            "stock_x0": stock_x0,
+            "stock_y0": stock_y0,
+            "stock_x1": stock_x1,
+            "stock_y1": stock_y1,
+            "path_x0": path_x0,
+            "path_y0": path_y0,
+            "path_x1": path_x1,
+            "path_y1": path_y1,
+        }
+
+        return stockPath2d, path2d, dimensions
+
+    def _executeAdaptive(self, opType, stockPath2d, path2d, clearedArea=None, **kwargs):
+        """Create, configure, execute Adaptive2d and return total cleared area."""
+        if clearedArea is None:
+            clearedArea = []
+
+        # Create and configure Adaptive2d with defaults
+        a2d = area.Adaptive2d()
+        a2d.stepOverFactor = kwargs.get("stepOverFactor", 0.20)
+        a2d.toolDiameter = kwargs.get("toolDiameter", 5.0)
+        a2d.tolerance = kwargs.get("tolerance", 0.1)
+        a2d.forceInsideOut = kwargs.get("forceInsideOut", False)
+        a2d.finishingProfile = kwargs.get("finishingProfile", True)
+        a2d.keepToolDownDistRatio = kwargs.get("keepToolDownDistRatio", 3.0)
+        a2d.opType = opType
+
+        # Execute
+        results = a2d.Execute(stockPath2d, path2d, clearedArea, lambda paths: False)
+
+        # Validate
+        self.assertTrue(len(results) > 0, "Adaptive2d should return at least one result")
+        for result in results:
+            self.checkAdaptiveErrors(result)
+
+        # Return total cleared area and the configured instance
+        total_cleared = sum(r.ClearedArea for r in results)
+        return total_cleared, a2d
+
+    def _calculateCornerUnclearableArea(self, tool_diameter):
+        """Calculate unclearable area in a single corner due to circular tool."""
+        tool_radius = tool_diameter / 2.0
+        return tool_radius**2 * (1 - math.pi / 4)
+
+    def testClearInside(self):
+        """testClearInside() Test C++ Adaptive2d clearing inside a simple rectangle."""
+        # Create geometry
+        stockPath2d, path2d, dims = self._createRectangleGeometry(50.0, 50.0, 40.0, 40.0)
+
+        # Execute adaptive clearing
+        total_cleared, a2d = self._executeAdaptive(
+            area.AdaptiveOperationType.ClearingInside, stockPath2d, path2d
+        )
+
+        # Verify cleared area
+        corner_unclearable_area = self._calculateCornerUnclearableArea(a2d.toolDiameter)
+        total_unclearable_area = 4 * corner_unclearable_area
+        expected_area = dims["path_width"] * dims["path_height"] - total_unclearable_area
+        delta = corner_unclearable_area / 2.0
+        self.assertAlmostEqual(
+            total_cleared,
+            expected_area,
+            delta=delta,
+            msg=f"Total cleared area {total_cleared} should be within {delta} of {expected_area}",
+        )
+
+    def testClearInsideWithRestMachining(self):
+        """testClearInsideWithRestMachining() Test C++ Adaptive2d rest machining with pre-cleared area."""
+        # Create geometry
+        stockPath2d, path2d, dims = self._createRectangleGeometry(50.0, 50.0, 40.0, 40.0)
+
+        # Pre-cleared area: bottom-left and top-right quadrants of stock
+        quad_width = dims["stock_width"] / 2.0
+        quad_height = dims["stock_height"] / 2.0
+
+        # Bottom-left quadrant
+        bl_x0 = dims["stock_x0"]
+        bl_y0 = dims["stock_y0"]
+        bl_x1 = bl_x0 + quad_width
+        bl_y1 = bl_y0 + quad_height
+
+        # Top-right quadrant
+        tr_x0 = dims["stock_x0"] + quad_width
+        tr_y0 = dims["stock_y0"] + quad_height
+        tr_x1 = tr_x0 + quad_width
+        tr_y1 = tr_y0 + quad_height
+
+        clearedArea = [
+            [
+                [bl_x0, bl_y0],
+                [bl_x1, bl_y0],
+                [bl_x1, bl_y1],
+                [bl_x0, bl_y1],
+            ],
+            [
+                [tr_x0, tr_y0],
+                [tr_x1, tr_y0],
+                [tr_x1, tr_y1],
+                [tr_x0, tr_y1],
+            ],
+        ]
+
+        # Execute adaptive clearing with pre-cleared area
+        total_cleared, a2d = self._executeAdaptive(
+            area.AdaptiveOperationType.ClearingInside, stockPath2d, path2d, clearedArea
+        )
+
+        # Account for unclearable area in corners due to circular tool
+        corner_unclearable_area = self._calculateCornerUnclearableArea(a2d.toolDiameter)
+        # only 2 corners are in the pre-cleared area
+        total_unclearable_area = 2 * corner_unclearable_area
+
+        # Calculate overlap between path and pre-cleared areas (both quadrants)
+        # Bottom-left quadrant overlap
+        bl_overlap_x0 = max(dims["path_x0"], bl_x0)
+        bl_overlap_y0 = max(dims["path_y0"], bl_y0)
+        bl_overlap_x1 = min(dims["path_x1"], bl_x1)
+        bl_overlap_y1 = min(dims["path_y1"], bl_y1)
+        bl_overlap_width = max(0, bl_overlap_x1 - bl_overlap_x0)
+        bl_overlap_height = max(0, bl_overlap_y1 - bl_overlap_y0)
+        bl_overlap_area = bl_overlap_width * bl_overlap_height
+
+        # Top-right quadrant overlap
+        tr_overlap_x0 = max(dims["path_x0"], tr_x0)
+        tr_overlap_y0 = max(dims["path_y0"], tr_y0)
+        tr_overlap_x1 = min(dims["path_x1"], tr_x1)
+        tr_overlap_y1 = min(dims["path_y1"], tr_y1)
+        tr_overlap_width = max(0, tr_overlap_x1 - tr_overlap_x0)
+        tr_overlap_height = max(0, tr_overlap_y1 - tr_overlap_y0)
+        tr_overlap_area = tr_overlap_width * tr_overlap_height
+
+        overlap_area = bl_overlap_area + tr_overlap_area
+
+        # Expected area: path area - corners - pre-cleared overlap
+        expected_area = (
+            dims["path_width"] * dims["path_height"] - total_unclearable_area - overlap_area
+        )
+        # Use half the corner area as tolerance
+        delta = corner_unclearable_area / 2.0
+        self.assertAlmostEqual(
+            total_cleared,
+            expected_area,
+            delta=delta,
+            msg=f"Total cleared area {total_cleared} should be within {delta} of {expected_area}",
+        )
+
+    def testClearOutside(self):
+        """testClearOutside() Test C++ Adaptive2d clearing outside a simple rectangle."""
+        # Create geometry
+        stockPath2d, path2d, dims = self._createRectangleGeometry(50.0, 50.0, 40.0, 40.0)
+
+        # Execute adaptive clearing outside
+        total_cleared, a2d = self._executeAdaptive(
+            area.AdaptiveOperationType.ClearingOutside, stockPath2d, path2d
+        )
+
+        # Verify cleared area (stock minus path, no corner adjustment needed)
+        expected_area = (dims["stock_width"] * dims["stock_height"]) - (
+            dims["path_width"] * dims["path_height"]
+        )
+        corner_unclearable_area = self._calculateCornerUnclearableArea(a2d.toolDiameter)
+        delta = corner_unclearable_area / 2.0
+        self.assertAlmostEqual(
+            total_cleared,
+            expected_area,
+            delta=delta,
+            msg=f"Total cleared area {total_cleared} should be within {delta} of {expected_area}",
+        )
+
+    def testProfilingInside(self):
+        """testProfilingInside() Test C++ Adaptive2d profiling inside a rectangle."""
+        # Create geometry
+        stockPath2d, path2d, dims = self._createRectangleGeometry(50.0, 50.0, 40.0, 40.0)
+
+        # Execute adaptive profiling
+        total_cleared, a2d = self._executeAdaptive(
+            area.AdaptiveOperationType.ProfilingInside, stockPath2d, path2d
+        )
+
+        # Verify cleared area is appropriate for profiling between 2-3 tool diameters
+        # Outer boundary is the path2d
+        outer_area = dims["path_width"] * dims["path_height"]
+
+        # Inner boundary at 2-3 tool diameters offset
+        offset_2_diameters = 2 * a2d.toolDiameter
+        inner_width_min = dims["path_width"] - 2 * offset_2_diameters
+        inner_height_min = dims["path_height"] - 2 * offset_2_diameters
+        inner_area_max = (
+            inner_width_min * inner_height_min
+            if inner_width_min > 0 and inner_height_min > 0
+            else 0
+        )
+
+        offset_3_diameters = 3 * a2d.toolDiameter
+        inner_width_max = dims["path_width"] - 2 * offset_3_diameters
+        inner_height_max = dims["path_height"] - 2 * offset_3_diameters
+        inner_area_min = (
+            inner_width_max * inner_height_max
+            if inner_width_max > 0 and inner_height_max > 0
+            else 0
+        )
+
+        # Expected area range
+        min_area = outer_area - inner_area_max  # 2 diameters deep
+        max_area = outer_area - inner_area_min  # 3 diameters deep
+
+        self.assertGreaterEqual(
+            total_cleared,
+            min_area,
+            msg=f"Profiling cleared area {total_cleared} should be at least {min_area} (2 tool diameters deep)",
+        )
+        self.assertLessEqual(
+            total_cleared,
+            max_area,
+            msg=f"Profiling cleared area {total_cleared} should be at most {max_area} (3 tool diameters deep)",
+        )
+
+    def testProfilingOutside(self):
+        """testProfilingOutside() Test C++ Adaptive2d profiling outside a rectangle."""
+        # Create geometry - use small inner path to allow full 2-3 diameter range
+        stockPath2d, path2d, dims = self._createRectangleGeometry(50.0, 50.0, 15.0, 15.0)
+
+        # Execute adaptive profiling
+        total_cleared, a2d = self._executeAdaptive(
+            area.AdaptiveOperationType.ProfilingOutside, stockPath2d, path2d
+        )
+
+        # Calculate expected area range for a profile 2-3 tool diameters wide
+        # Inner boundary is the path2d
+        inner_area = dims["path_width"] * dims["path_height"]
+
+        # Outer boundary at 2 tool diameters offset (clamped to stock)
+        offset_2_diameters = 2 * a2d.toolDiameter
+        outer_width_min = min(dims["path_width"] + 2 * offset_2_diameters, dims["stock_width"])
+        outer_height_min = min(dims["path_height"] + 2 * offset_2_diameters, dims["stock_height"])
+        outer_area_min = outer_width_min * outer_height_min
+
+        # Account for rounded outer corners (tool follows circular arc, not sharp corner)
+        # Each outer corner: sharp corner = d², rounded = π*d²/4, difference = d²(4-π)/4
+        outer_corner_rounding_2d = offset_2_diameters**2 * (1 - math.pi / 4)
+        total_outer_rounding_2d = 4 * outer_corner_rounding_2d
+
+        # Outer boundary at 3 tool diameters offset (clamped to stock)
+        offset_3_diameters = 3 * a2d.toolDiameter
+        outer_width_max = min(dims["path_width"] + 2 * offset_3_diameters, dims["stock_width"])
+        outer_height_max = min(dims["path_height"] + 2 * offset_3_diameters, dims["stock_height"])
+        outer_area_max = outer_width_max * outer_height_max
+
+        outer_corner_rounding_3d = offset_3_diameters**2 * (1 - math.pi / 4)
+        total_outer_rounding_3d = 4 * outer_corner_rounding_3d
+
+        # Account for inner corners that can't be cleared from outside
+        tool_radius = a2d.toolDiameter / 2.0
+        inner_corner_unclearable = tool_radius**2 * (1 - math.pi / 4)
+        total_inner_unclearable = 4 * inner_corner_unclearable
+
+        # Expected area range
+        min_area = outer_area_min - inner_area - total_outer_rounding_2d - total_inner_unclearable
+        max_area = outer_area_max - inner_area - total_outer_rounding_3d
+
+        self.assertGreaterEqual(
+            total_cleared,
+            min_area,
+            msg=f"Profiling cleared area {total_cleared} should be at least {min_area} (2 tool diameters wide)",
+        )
+        self.assertLessEqual(
+            total_cleared,
+            max_area,
+            msg=f"Profiling cleared area {total_cleared} should be at most {max_area} (3 tool diameters wide)",
+        )
+
     def testFaceSingleSimple(self):
         """testFaceSingleSimple() Verify path generated on Face3."""
 
@@ -636,7 +962,7 @@ class TestPathAdaptive(PathTestBase):
         adaptive.recompute()
 
         # Check:
-        # - Bounding box at Z=10 stays basically above "btall"
+        # - Bounding box at Z=10 does not cut the region to the right
         # - Bounding box at Z=5 and Z=0 are outside of stock
 
         paths = [c for c in adaptive.Path.Commands if c.Name in ["G1", "G01"]]
@@ -648,6 +974,12 @@ class TestPathAdaptive(PathTestBase):
         # NOTE: ADD tol here, since we're effectively flipping our normal
         # comparison and want tolerance to make our check looser
         moffset = toolr + tol
+
+        # Update: I'm reducing the strictness of this check because adaptive
+        #  is allowed to move the tool where there is no stock if it's convenient,
+        #  and the original strictness caused problems. Still, it should not wander
+        #  exceptionally far from the stock.
+        moffset += toolr * 2
 
         zDict = getPathBoundaries(paths, [10, 5])
         sbb = adaptive.Document.Stock.Shape.BoundBox

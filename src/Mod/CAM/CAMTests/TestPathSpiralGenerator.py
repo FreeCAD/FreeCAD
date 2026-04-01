@@ -23,7 +23,6 @@ import Path
 import Path.Base.Generator.spiral as generator
 import CAMTests.PathTestUtils as PathTestUtils
 
-
 Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 Path.Log.trackModule(Path.Log.thisModule())
 

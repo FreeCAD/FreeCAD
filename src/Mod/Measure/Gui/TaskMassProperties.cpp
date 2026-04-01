@@ -261,7 +261,7 @@ TaskMassProperties::TaskMassProperties()
 
     connect(
         panel->ui.unitsComboBox,
-        &QComboBox::currentIndexChanged,
+        qOverload<int>(&QComboBox::currentIndexChanged),
         this,
         [this, preferredSchemaIndex](int index) {
             unitsSchemaIndex = getUnitsSchemaIndex(index, preferredSchemaIndex);

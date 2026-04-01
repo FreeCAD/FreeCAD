@@ -116,8 +116,10 @@ PyObject* CommandPy::listByShortcut(PyObject* args)
                     matches.emplace_back(c->getName());
                 }
             }
-            else if (action->shortcut().toString().remove(spc).toUpper()
-                     == QString::fromLatin1(shortcut_to_find).remove(spc).toUpper()) {
+            else if (
+                action->shortcut().toString().remove(spc).toUpper()
+                == QString::fromLatin1(shortcut_to_find).remove(spc).toUpper()
+            ) {
                 matches.emplace_back(c->getName());
             }
         }
