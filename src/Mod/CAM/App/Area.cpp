@@ -2506,10 +2506,46 @@ void Area::makeOffset(
                 offset = offset_min - sign_stepover * myParams.Accuracy;
                 area = performSingleOffset(offset);
             }
+
+            // Cache this pass's inner offset, and check if done
+            previous_area_offset = *area;
+            previous_area_offset->OffsetWithClipper(
+                sign_stepover * tool_radius,
+                jt,
+                et,
+                myParams.MiterLimit,
+                myParams.RoundPrecision
+            );
+            if (previous_area_offset->m_curves.empty()) {
+                // Done after this pass; do another binary search to determine the minimum offset
+                // required to be done
+                double offset_min = prevOffset;
+                double offset_max = offset;
+
+                while (fabs(offset_max - offset_min) > gap_tolerance) {
+                    double offset_mid = (offset_min + offset_max) / 2.0;
+
+                    // Recompute done check
+                    auto test_done = performSingleOffset(offset_mid + sign_stepover * tool_radius);
+
+                    if (test_done->m_curves.empty()) {
+                        offset_max = offset_mid;
+                    }
+                    else {
+                        offset_min = offset_mid;
+                    }
+                }
+
+                // average the maximum non-gap offset with the minimum offset to be done to get the
+                // final offset
+                offset = (offset + offset_max) / 2;
+                area = performSingleOffset(offset);
+                previous_area_offset->m_curves.clear();
+            }
         }
 
         // Compute and cache the offset of current area for next iteration's gap check
-        if (check_gaps) {
+        if (check_gaps && !previous_area_offset) {
             previous_area_offset = *area;
             previous_area_offset->OffsetWithClipper(
                 sign_stepover * tool_radius,
@@ -2529,6 +2565,10 @@ void Area::makeOffset(
         }
         else {
             areas.push_back(area);
+        }
+
+        if (previous_area_offset && previous_area_offset->m_curves.empty()) {
+            break;
         }
     }
 }
