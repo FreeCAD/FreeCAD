@@ -23,7 +23,7 @@
 
 
 #include <iostream>
-#include <string>
+#include <boost/regex.hpp>
 
 #include <Base/Base64.h>
 #include <Base/Console.h>
@@ -36,36 +36,6 @@
 
 
 using namespace App;
-
-namespace {
-
-/// Check if a module is already known to the Python runtime.
-/// Only modules already in sys.modules (loaded by FreeCAD core or addons
-/// at startup) are allowed during document restore. This prevents a
-/// crafted FCStd from importing arbitrary modules via PyImport_ImportModule().
-bool isModuleAlreadyLoaded(const std::string& moduleName)
-{
-    PyObject* sysModules = PyImport_GetModuleDict();  // borrowed ref
-    if (!sysModules) {
-        return false;
-    }
-    // Check the exact module name and its top-level package
-    if (PyDict_GetItemString(sysModules, moduleName.c_str())) {
-        return true;
-    }
-    // Also check if the top-level package is loaded (e.g. "draftobjects"
-    // for "draftobjects.array") so submodules of known packages are allowed
-    std::string::size_type dot = moduleName.find('.');
-    if (dot != std::string::npos) {
-        std::string topLevel = moduleName.substr(0, dot);
-        if (PyDict_GetItemString(sysModules, topLevel.c_str())) {
-            return true;
-        }
-    }
-    return false;
-}
-
-}  // anonymous namespace
 
 
 TYPESYSTEM_SOURCE(App::PropertyPythonObject, App::Property)
@@ -200,6 +170,32 @@ void PropertyPythonObject::fromString(const std::string& repr)
         }
         else {
             this->object = res;
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e;  // extract the Python error text
+        e.reportException();
+    }
+}
+
+void PropertyPythonObject::loadPickle(const std::string& str)
+{
+    // find the custom attributes and restore them
+    Base::PyGILStateLocker lock;
+    try {
+        std::string buffer = str;
+        boost::regex pickle(R"(S'(\w+)'.+S'(\w+)'\n)");
+        boost::match_results<std::string::const_iterator> what;
+        std::string::const_iterator start, end;
+        start = buffer.begin();
+        end = buffer.end();
+        while (boost::regex_search(start, end, what, pickle)) {
+            std::string key = std::string(what[1].first, what[1].second);
+            std::string val = std::string(what[2].first, what[2].second);
+            this->object.setAttr(key, Py::String(val));
+            buffer = std::string(what[2].second, end);
+            start = buffer.begin();
+            end = buffer.end();
         }
     }
     catch (Py::Exception&) {
@@ -343,6 +339,7 @@ void PropertyPythonObject::Restore(Base::XMLReader& reader)
     }
     else {
         bool load_json = false;
+        bool load_pickle = false;
         bool load_failed = false;
         std::string buffer = reader.getAttribute<const char*>("value");
         if (reader.hasAttribute("encoded") && strcmp(reader.getAttribute<const char*>("encoded"), "yes") == 0) {
@@ -354,26 +351,21 @@ void PropertyPythonObject::Restore(Base::XMLReader& reader)
 
         Base::PyGILStateLocker lock;
         try {
+            boost::regex pickle(R"(^\(i(\w+)\n(\w+)\n)");
+            boost::match_results<std::string::const_iterator> what;
+            std::string::const_iterator start, end;
+            start = buffer.begin();
+            end = buffer.end();
             if (reader.hasAttribute("module") && reader.hasAttribute("class")) {
-                std::string moduleName = reader.getAttribute<const char*>("module");
-                if (!isModuleAlreadyLoaded(moduleName)) {
-                    Base::Console().warning(
-                        "PropertyPythonObject::Restore: blocked import of "
-                        "unknown module '%s' during document restore. Only "
-                        "modules already loaded by FreeCAD or installed "
-                        "addons are permitted.\n",
-                        moduleName.c_str());
-                    throw Py::ImportError("module not loaded in current session: " + moduleName);
-                }
-                Py::Module mod(PyImport_ImportModule(moduleName.c_str()), true);
+                Py::Module mod(PyImport_ImportModule(reader.getAttribute<const char*>("module")), true);
                 if (mod.isNull()) {
                     throw Py::Exception();
                 }
-                std::string className = reader.getAttribute<const char*>("class");
-                PyObject* cls = mod.getAttr(className).ptr();
+                PyObject* cls = mod.getAttr(reader.getAttribute<const char*>("class")).ptr();
                 if (!cls) {
                     std::stringstream s;
-                    s << "Module " << moduleName << " has no class " << className;
+                    s << "Module " << reader.getAttribute<const char*>("module") << " has no class "
+                      << reader.getAttribute<const char*>("class");
                     throw Py::AttributeError(s.str());
                 }
                 if (PyType_Check(cls)) {
@@ -383,6 +375,17 @@ void PropertyPythonObject::Restore(Base::XMLReader& reader)
                     throw Py::TypeError("neither class nor type object");
                 }
                 load_json = true;
+            }
+            else if (boost::regex_search(start, end, what, pickle)) {
+                std::string name = std::string(what[1].first, what[1].second);
+                std::string type = std::string(what[2].first, what[2].second);
+                Py::Module mod(PyImport_ImportModule(name.c_str()), true);
+                if (mod.isNull()) {
+                    throw Py::Exception();
+                }
+                this->object = PyObject_CallObject(mod.getAttr(type).ptr(), nullptr);
+                load_pickle = true;
+                buffer = std::string(what[2].second, end);
             }
             else if (reader.hasAttribute("json")) {
                 load_json = true;
@@ -398,6 +401,9 @@ void PropertyPythonObject::Restore(Base::XMLReader& reader)
         aboutToSetValue();
         if (load_json) {
             this->fromString(buffer);
+        }
+        else if (load_pickle) {
+            this->loadPickle(buffer);
         }
         else if (!load_failed) {
             Base::Console().warning(
