@@ -104,7 +104,7 @@ void applyPreShowTaskPanelPalette(TaskPanel* panel, QWidget* source)
     syncWidgetPalette(panel, palette);
     syncWidgetPalette(panel->actionPanel, palette);
 }
-}
+}  // namespace
 
 
 //**************************************************************************
