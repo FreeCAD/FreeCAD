@@ -55,6 +55,57 @@
 using namespace Gui::TaskView;
 namespace sp = std::placeholders;
 
+namespace
+{
+QDockWidget* findDockWidget(QWidget* widget)
+{
+    for (QWidget* current = widget; current; current = current->parentWidget()) {
+        if (auto* dock = qobject_cast<QDockWidget*>(current)) {
+            return dock;
+        }
+    }
+
+    return nullptr;
+}
+
+QWidget* visualSourceWidget(QWidget* widget)
+{
+    if (!widget) {
+        return nullptr;
+    }
+
+    if (auto* dock = findDockWidget(widget)) {
+        return dock;
+    }
+    if (auto* parent = widget->parentWidget()) {
+        return parent;
+    }
+    return widget;
+}
+
+void syncWidgetPalette(QWidget* widget, const QPalette& palette)
+{
+    if (!widget) {
+        return;
+    }
+
+    widget->setPalette(palette);
+    widget->ensurePolished();
+    widget->update();
+}
+
+void applyPreShowTaskPanelPalette(TaskPanel* panel, QWidget* source)
+{
+    if (!panel || !source) {
+        return;
+    }
+
+    const QPalette palette = source->palette();
+    syncWidgetPalette(panel, palette);
+    syncWidgetPalette(panel->actionPanel, palette);
+}
+}
+
 
 //**************************************************************************
 //**************************************************************************
@@ -650,6 +701,8 @@ bool TaskView::showDialog(TaskDialog* dlg, App::Document* doc)
     connect(outInfo.ActiveCtrl->buttonBox, &QDialogButtonBox::clicked,
             this, [doc, this](QAbstractButton *button) { clicked(button, doc); });
     // clang-format on
+
+    applyPreShowTaskPanelPalette(outInfo.taskPanel, visualSourceWidget(this));
 
     // This will hide whatever was shown in the taskview
     taskInfos.push_back(outInfo);
