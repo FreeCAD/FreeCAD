@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 """Utitily function for Dice3DS.
 
 Defines some routines for calculating normals and transforming points.
