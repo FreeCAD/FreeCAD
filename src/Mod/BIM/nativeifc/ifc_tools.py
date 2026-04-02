@@ -846,8 +846,36 @@ def remove_unused_properties(obj):
                 obj.removeProperty(prop)
 
 
+def _iter_schema_subtypes(declaration):
+    """Yield all descendants of a schema declaration."""
+
+    for subtype in declaration.subtypes():
+        yield subtype
+        yield from _iter_schema_subtypes(subtype)
+
+
+def _inherits_from(declaration, ancestor_name):
+    """Tell if a declaration inherits from a given ancestor."""
+
+    current = declaration
+    while current:
+        if current.name() == ancestor_name:
+            return True
+        current = current.supertype()
+    return False
+
+
+def _get_class_family_root(schema, declaration):
+    """Return the broadest reassignable family root for a declaration."""
+
+    for root_name in ("IfcTypeProduct", "IfcProduct", "IfcGroup"):
+        if _inherits_from(declaration, root_name):
+            return schema.declaration_by_name(root_name)
+    return None
+
+
 def get_ifc_classes(obj, baseclass):
-    """Returns a list of sibling classes from a given FreeCAD object"""
+    """Returns the active-schema IFC classes that can reclassify this object."""
 
     # this function can become pure IFC
 
@@ -859,7 +887,15 @@ def get_ifc_classes(obj, baseclass):
     classes = []
     schema = ifcfile.wrapped_data.schema_name()
     schema = ifcopenshell.ifcopenshell_wrapper.schema_by_name(schema)
-    declaration = schema.declaration_by_name(baseclass)
+    try:
+        declaration = schema.declaration_by_name(baseclass)
+    except RuntimeError:
+        return [baseclass]
+    family_root = _get_class_family_root(schema, declaration)
+    if family_root:
+        classes = {sub.name() for sub in _iter_schema_subtypes(family_root)}
+        classes.add(baseclass)
+        return sorted(classes)
     if "StandardCase" in baseclass:
         declaration = declaration.supertype()
     if declaration.supertype():
