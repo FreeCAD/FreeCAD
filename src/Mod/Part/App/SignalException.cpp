@@ -26,8 +26,10 @@
 #include <FCConfig.h>
 
 #if defined(__GNUC__) && (defined(FC_OS_LINUX) || defined(FC_OS_MACOSX))
-# include <atomic>
+# include <array>
 # include <csetjmp>
+# include <csignal>
+# include <mutex>
 # include <regex>
 # include <string>
 # include <boost/core/demangle.hpp>
@@ -62,17 +64,41 @@ static std::string demangleStackTrace(const char* trace)
 void SignalException::guard(std::function<void()> fn)
 {
 #if defined(__GNUC__) && (defined(FC_OS_LINUX) || defined(FC_OS_MACOSX))
-    // Process-wide nesting counter. Only the outermost guard() installs/uninstalls
-    // signal handlers. Inner guards just add a setjmp landing pad so OCC's longjmp
-    // reaches the nearest handler on the stack. Atomic because signal handlers are
-    // process-wide, so all threads must share the same counter to avoid one thread
-    // uninstalling handlers while another thread's guard() is still active.
-    static std::atomic<int> guardDepth = 0;
-    static constexpr int stackTraceDepth = 50;
+    // Process-wide nesting counter and mutex. Only the outermost guard()
+    // installs/uninstalls signal handlers. The mutex ensures the depth check
+    // and OSD::SetSignal call are atomic - without it, a second thread could
+    // enter guard() and run fn() before the first thread finishes installing
+    // handlers.
+    // Signals that OSD::SetSignal() installs handlers for.
+    static constexpr std::array guardedSignals = {
+        SIGFPE,
+        SIGHUP,
+        SIGINT,
+        SIGQUIT,
+        SIGILL,
+        SIGBUS,
+# ifdef SIGSYS
+        SIGSYS,
+# endif
+        SIGSEGV
+    };
 
-    if (guardDepth++ == 0) {
-        OSD::SetSignalStackTraceLength(stackTraceDepth);
-        OSD::SetSignal(OSD_SignalMode_Set, Standard_False);
+    static int guardDepth = 0;
+    static std::mutex guardMutex;
+    static constexpr int stackTraceDepth = 50;
+    // Snapshot of signal handlers before the outermost guard() installed
+    // OCC's handlers, so we can restore them when the last guard() exits.
+    static std::array<struct sigaction, guardedSignals.size()> savedHandlers = {};
+
+    {
+        std::lock_guard lock(guardMutex);
+        if (guardDepth++ == 0) {
+            for (size_t i = 0; i < guardedSignals.size(); ++i) {
+                sigaction(guardedSignals[i], nullptr, &savedHandlers[i]);
+            }
+            OSD::SetSignalStackTraceLength(stackTraceDepth);
+            OSD::SetSignal(OSD_SignalMode_Set, Standard_False);
+        }
     }
 
     // setjmp returns 0 on initial call (normal path). If a signal fires
@@ -83,8 +109,13 @@ void SignalException::guard(std::function<void()> fn)
         fn();
     }
     else {
-        if (--guardDepth == 0) {
-            OSD::SetSignal(OSD_SignalMode_Unset, Standard_False);
+        {
+            std::lock_guard lock(guardMutex);
+            if (--guardDepth == 0) {
+                for (size_t i = 0; i < guardedSignals.size(); ++i) {
+                    sigaction(guardedSignals[i], &savedHandlers[i], nullptr);
+                }
+            }
         }
         handler.Catches(STANDARD_TYPE(Standard_Failure));
         auto error = handler.Error();
@@ -94,8 +125,13 @@ void SignalException::guard(std::function<void()> fn)
         error->Reraise();
     }
 
-    if (--guardDepth == 0) {
-        OSD::SetSignal(OSD_SignalMode_Unset, Standard_False);
+    {
+        std::lock_guard lock(guardMutex);
+        if (--guardDepth == 0) {
+            for (size_t i = 0; i < guardedSignals.size(); ++i) {
+                sigaction(guardedSignals[i], &savedHandlers[i], nullptr);
+            }
+        }
     }
 #else
     fn();
