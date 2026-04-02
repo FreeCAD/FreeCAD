@@ -1039,7 +1039,11 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
     def saveAnimation(self):
         num_frames = self.assembly.numberOfFrames()
         if num_frames <= 1:
-            QMessageBox.warning(self.form, translate("Assembly", "Animation"), translate("Assembly", "Not enough frames to create an animation."))
+            QMessageBox.warning(
+                self.form,
+                translate("Assembly", "Animation"),
+                translate("Assembly", "Not enough frames to create an animation."),
+            )
             return
 
         # Prompt user for file location and type
@@ -1107,7 +1111,11 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
                 App.Console.PrintMessage(f"Animation successfully saved to {file_path}\n")
 
             except Exception as e:
-                errMsg = translate("Assembly", "An error occurred while saving the animation") + ": " + str(e)
+                errMsg = (
+                    translate("Assembly", "An error occurred while saving the animation")
+                    + ": "
+                    + str(e)
+                )
                 QMessageBox.critical(self.form, "Error", errMsg)
             finally:
                 progress.close()
@@ -1120,7 +1128,9 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
         try:
             from PIL import Image
         except ImportError:
-            errMsg = translate("Assembly", "Pillow (PIL) is not installed. It is required for GIF export.")
+            errMsg = translate(
+                "Assembly", "Pillow (PIL) is not installed. It is required for GIF export."
+            )
             QMessageBox.critical(self.form, "Error", errMsg)
             return
 
@@ -1140,7 +1150,9 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
         try:
             import cv2
         except ImportError:
-            errMsg = translate("Assembly", "OpenCV is not installed. It is required for video export.")
+            errMsg = translate(
+                "Assembly", "OpenCV is not installed. It is required for video export."
+            )
             QMessageBox.critical(self.form, "Error", errMsg)
             return
 
