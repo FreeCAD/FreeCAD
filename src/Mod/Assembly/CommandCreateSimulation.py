@@ -1139,7 +1139,7 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
         """Creates a video file from a list of image files using OpenCV."""
         try:
             import cv2
-        except ImportError: ImportError:
+        except ImportError:
             errMsg = translate("Assembly", "OpenCV is not installed. It is required for video export.")
             QMessageBox.critical(self.form, "Error", errMsg)
             return
@@ -1157,7 +1157,8 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
 
         video_writer = cv2.VideoWriter(output_path, fourcc, fps, size)
         if not video_writer.isOpened():
-            App.Console.PrintError("Could not open video writer. Check codecs.\n")
+            errMsg = translate("Assembly", "Could not open video writer. Check codecs.")
+            QMessageBox.critical(self.form, "Error", errMsg)
             return
 
         for filename in frame_files:
