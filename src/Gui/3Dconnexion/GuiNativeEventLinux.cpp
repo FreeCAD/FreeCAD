@@ -30,6 +30,9 @@
 
 #include <QSocketNotifier>
 
+#include <cerrno>
+#include <sys/socket.h>
+
 #include <spnav.h>
 
 Gui::GuiNativeEvent::GuiNativeEvent(Gui::GUIApplicationNativeEventAware* app)
@@ -38,11 +41,13 @@ Gui::GuiNativeEvent::GuiNativeEvent(Gui::GUIApplicationNativeEventAware* app)
 
 Gui::GuiNativeEvent::~GuiNativeEvent()
 {
-    if (spnav_close()) {
-        Base::Console().log("Couldn't disconnect from spacenav daemon\n");
-    }
-    else {
-        Base::Console().log("Disconnected from spacenav daemon\n");
+    if (spnavNotifier) {
+        if (spnav_close()) {
+            Base::Console().log("Couldn't disconnect from spacenav daemon\n");
+        }
+        else {
+            Base::Console().log("Disconnected from spacenav daemon\n");
+        }
     }
 }
 
@@ -56,9 +61,8 @@ void Gui::GuiNativeEvent::initSpaceball(QMainWindow* window)
     }
     else {
         Base::Console().log("Connected to spacenav daemon\n");
-        QSocketNotifier* SpacenavNotifier
-            = new QSocketNotifier(spnav_fd(), QSocketNotifier::Read, this);
-        connect(SpacenavNotifier, SIGNAL(activated(int)), this, SLOT(pollSpacenav()));
+        spnavNotifier = new QSocketNotifier(spnav_fd(), QSocketNotifier::Read, this);
+        connect(spnavNotifier, SIGNAL(activated(int)), this, SLOT(pollSpacenav()));
         mainApp->setSpaceballPresent(true);
     }
 }
@@ -66,7 +70,10 @@ void Gui::GuiNativeEvent::initSpaceball(QMainWindow* window)
 void Gui::GuiNativeEvent::pollSpacenav()
 {
     spnav_event ev;
+    bool gotEvent = false;
+
     while (spnav_poll_event(&ev)) {
+        gotEvent = true;
         switch (ev.type) {
             case SPNAV_EVENT_MOTION: {
                 motionDataArray[0] = -ev.motion.x;
@@ -81,6 +88,25 @@ void Gui::GuiNativeEvent::pollSpacenav()
             case SPNAV_EVENT_BUTTON: {
                 mainApp->postButtonEvent(ev.button.bnum, ev.button.press);
                 break;
+            }
+        }
+    }
+
+    if (!gotEvent) {
+        // QSocketNotifier fired but no events were available.
+        // Verify the connection is still alive using a non-consuming peek.
+        int fd = spnav_fd();
+        if (fd >= 0) {
+            char buf;
+            ssize_t ret = recv(fd, &buf, 1, MSG_PEEK | MSG_DONTWAIT);
+            if (ret == 0 || (ret < 0 && errno != EAGAIN && errno != EWOULDBLOCK)) {
+                // EOF or socket error — spacenavd disconnected
+                Base::Console().warning(
+                    "Lost connection to spacenav daemon. Restart FreeCAD to reconnect.\n"
+                );
+                spnavNotifier->setEnabled(false);
+                spnav_close();
+                spnavNotifier = nullptr;
             }
         }
     }

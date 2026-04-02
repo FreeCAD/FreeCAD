@@ -26,6 +26,7 @@
 #include "GuiAbstractNativeEvent.h"
 
 class QMainWindow;
+class QSocketNotifier;
 
 namespace Gui
 {
@@ -43,6 +44,9 @@ private:
     GuiNativeEvent();
     GuiNativeEvent(const GuiNativeEvent&);
     GuiNativeEvent& operator=(const GuiNativeEvent&);
+
+    QSocketNotifier* spnavNotifier {nullptr};
+
 private Q_SLOTS:
     void pollSpacenav();
 };
