@@ -290,7 +290,9 @@ class NativeIFCTest(unittest.TestCase):
         finally:
             PARAMS.SetBool("ConvertTypeAskAgain", ask_again)
             PARAMS.SetBool("ConvertTypeKeepOriginal", keep_original)
-        self.assertTrue(getattr(wall, "Type", None), "Wall type conversion did not create a type object")
+        self.assertTrue(
+            getattr(wall, "Type", None), "Wall type conversion did not create a type object"
+        )
         self.assertClassEnumMatchesFamily(wall.Type, "IfcTypeProduct")
 
     def test09_CreateBIMObjects(self):
