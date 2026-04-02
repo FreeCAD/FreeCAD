@@ -441,6 +441,7 @@ SET(Gui_UIC_SRCS
     Dialogs/DlgAuthorization.ui
     Dialogs/DlgChooseIcon.ui
     Dialogs/DlgCreateNewPreferencePack.ui
+    Dialogs/DlgDocumentObject.ui
     Dialogs/DlgInputDialog.ui
     Dialogs/DlgKeyboard.ui
     Dialogs/DlgMacroExecute.ui
@@ -454,7 +455,6 @@ SET(Gui_UIC_SRCS
     Dialogs/DlgPreferences.ui
     Dialogs/DlgProjectInformation.ui
     Dialogs/DlgProjectUtility.ui
-    Dialogs/DlgPropertyLink.ui
     Dialogs/DlgRevertToBackupConfig.ui
     Dialogs/DlgThemeEditor.ui
     Dialogs/DlgVersionMigrator.ui
@@ -559,6 +559,7 @@ SET(Dialog_CPP_SRCS
     Dialogs/DlgAbout.cpp
     Dialogs/DlgActivateWindowImp.cpp
     Dialogs/DlgCreateNewPreferencePackImp.cpp
+    Dialogs/DlgDocumentObject.cpp
     Dialogs/DlgUnitsCalculatorImp.cpp
     Dialogs/DlgInputDialogImp.cpp
     Dialogs/DlgMacroExecuteImp.cpp
@@ -602,6 +603,7 @@ SET(Dialog_HPP_SRCS
     Dialogs/DlgAbout.h
     Dialogs/DlgActivateWindowImp.h
     Dialogs/DlgCreateNewPreferencePackImp.h
+    Dialogs/DlgDocumentObject.h
     Dialogs/DlgUnitsCalculatorImp.h
     Dialogs/DlgInputDialogImp.h
     Dialogs/DlgMacroExecuteImp.h
@@ -650,6 +652,7 @@ SET(Dialog_SRCS
     Dialogs/DlgAuthorization.ui
     Dialogs/DlgInputDialog.ui
     Dialogs/DlgAddProperty.ui
+    Dialogs/DlgDocumentObject.ui
     Dialogs/DlgLocationAngle.ui
     Dialogs/DlgLocationPos.ui
     Dialogs/DlgMacroExecute.ui
@@ -661,7 +664,6 @@ SET(Dialog_SRCS
     Dialogs/DlgPreferencePackManagement.ui
     Dialogs/DlgProjectInformation.ui
     Dialogs/DlgProjectUtility.ui
-    Dialogs/DlgPropertyLink.ui
     Dialogs/DlgRevertToBackupConfig.ui
     Dialogs/DlgCheckableMessageBox.ui
     Dialogs/DlgTreeWidget.ui
