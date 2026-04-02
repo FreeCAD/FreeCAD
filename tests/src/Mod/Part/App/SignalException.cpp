@@ -232,7 +232,7 @@ TEST_F(SignalExceptionTest, threadSafeFirstInFirstOut)
             c.advance();   // phase 1: thread 1 inside guard
             c.waitFor(3);  // wait for thread 2 to also be inside
         });
-        c.advance();       // phase 4: thread 1 has exited guard
+        c.advance();  // phase 4: thread 1 has exited guard
     });
 
     // Thread 2: enter guard, signal thread 1 to exit, then raise SIGSEGV
@@ -284,7 +284,7 @@ TEST_F(SignalExceptionTest, threadSafeFirstInLastOut)
             c.waitFor(1);  // wait for thread 1 to be inside guard
             c.advance();   // phase 2: thread 2 inside guard
         });
-        c.advance();       // phase 3: thread 2 has exited guard
+        c.advance();  // phase 3: thread 2 has exited guard
     });
 
     t1.join();
@@ -305,7 +305,7 @@ TEST_F(SignalExceptionTest, handlersRestoredAfterConcurrentGuards)
             c.advance();   // phase 1: inside
             c.waitFor(2);  // wait for t2 to be inside
         });
-        c.advance();       // phase 3: t1 exited
+        c.advance();  // phase 3: t1 exited
     });
 
     std::thread t2([&] {
