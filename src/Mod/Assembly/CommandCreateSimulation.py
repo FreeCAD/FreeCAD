@@ -50,7 +50,7 @@ if App.GuiUp:
         QProgressDialog,
     )
     from PySide.QtCore import Qt, QPoint
-    from PySide.QtGui import QCursor, QIcon, QGuiApplication
+    from PySide.QtGui import QCursor, QIcon, QGuiApplication, QMessageBox
 
 import UtilsAssembly
 import Preferences
@@ -490,7 +490,7 @@ class MotionEditDialog:
         # Create the line edit for the formula
         formula_edit = QLineEdit(self.dialog)
         formula_edit.setText(self.formula)
-        formula_edit.setPlaceholderText(translate("Assembly", "Enter your formula..."))
+        formula_edit.setPlaceholderText(translate("Assembly", "Enter your formula…"))
 
         # Connect the line edit to update the Formula property
         def on_formula_changed(text):
@@ -1039,7 +1039,7 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
     def saveAnimation(self):
         num_frames = self.assembly.numberOfFrames()
         if num_frames <= 1:
-            App.Console.PrintWarning("Not enough frames to create an animation.\n")
+            QMessageBox.warning(self.form, translate("Assembly", "Animation"), translate("Assembly", "Not enough frames to create an animation."))
             return
 
         # Prompt user for file location and type
@@ -1107,7 +1107,8 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
                 App.Console.PrintMessage(f"Animation successfully saved to {file_path}\n")
 
             except Exception as e:
-                App.Console.PrintError(f"An error occurred while saving the animation: {e}\n")
+                errMsg = translate("Assembly", "An error occurred while saving the animation") + ": " + str(e)
+                QMessageBox.critical(self.form, "Error", errMsg)
             finally:
                 progress.close()
                 # Restore original state
@@ -1116,7 +1117,12 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
 
     def create_gif(self, output_path, frame_files, fps):
         """Creates an animated GIF from a list of image files using Pillow."""
-        from PIL import Image
+        try:
+            from PIL import Image
+        except ImportError:
+            errMsg = translate("Assembly", "Pillow (PIL) is not installed. It is required for GIF export.")
+            QMessageBox.critical(self.form, "Error", errMsg)
+            return
 
         pil_images = [Image.open(f) for f in frame_files]
         duration_ms = int(1000 / fps)
@@ -1131,7 +1137,12 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
 
     def create_video(self, output_path, frame_files, fps, size):
         """Creates a video file from a list of image files using OpenCV."""
-        import cv2
+        try:
+            import cv2
+        except ImportError: ImportError:
+            errMsg = translate("Assembly", "OpenCV is not installed. It is required for video export.")
+            QMessageBox.critical(self.form, "Error", errMsg)
+            return
 
         file_extension = Path(output_path).suffix.lower()
 
