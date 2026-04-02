@@ -100,8 +100,7 @@ void ViewProviderSuppressibleExtension::extensionSetupContextMenu(QMenu* menu, Q
         act->setChecked(obj->Suppressed.getValue());
         func->trigger(act, [obj]() {
             auto* doc = obj->getExtendedObject()->getDocument();
-            App::AutoTransaction trans(
-                doc->openTransaction("Edit " + obj->Suppressed.getFullName()));
+            App::AutoTransaction trans(doc->openTransaction("Edit " + obj->Suppressed.getFullName()));
             obj->Suppressed.setValue(!obj->Suppressed.getValue());
             doc->recompute();
         });
