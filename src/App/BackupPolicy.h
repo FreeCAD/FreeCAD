@@ -44,6 +44,7 @@ public:
     void setNumberOfFiles(const int count);
     void useBackupExtension(const bool on);
     void setDateFormat(const std::string& fmt);
+    void setBackupDirectory(const std::string& backup_dir);
     void apply(const std::string& sourcename, const std::string& targetname);
 
 private:
@@ -57,11 +58,13 @@ private:
                               const std::string& ext) const;
     bool checkDigits(const std::string& cmpl) const;
     bool renameFileNoErase(Base::FileInfo fi, const std::string& newName);
+    Base::FileInfo getBackupDir(Base::FileInfo project_file) const;
 
 private:
     Policy policy {Standard};
     int numberOfFiles {1};
     bool useFCBakExtension {true};
     std::string saveBackupDateFormat {"%Y%m%d-%H%M%S"};
+    std::string backupDirectory {"FCBak"};
 };
 }  // namespace App

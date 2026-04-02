@@ -565,6 +565,30 @@ get date suffix according to the specified format</string>
         </item>
        </layout>
       </item>
+      <item row="10" column="0">
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QLabel" name="label_7">
+          <property name="text">
+           <string>Backup file directory</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefLineEdit" name="prefBackupDirectory">
+          <property name="text">
+           <string notr="true">FCBak</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>BackupDirectory</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Document</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
      </layout>
     </widget>
    </item>
