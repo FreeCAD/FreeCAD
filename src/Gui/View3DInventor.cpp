@@ -149,7 +149,7 @@ View3DInventor::View3DInventor(
     stopSpinTimer = new QTimer(this);
     connect(stopSpinTimer, &QTimer::timeout, this, &View3DInventor::stopAnimating);
 
-    setWindowIcon(Gui::BitmapFactory().pixmap("Document"));
+    setWindowIcon(Gui::BitmapFactory().iconFromTheme("Document", QIcon(Gui::BitmapFactory().pixmap("Document"))));
 }
 
 View3DInventor::~View3DInventor()
@@ -946,3 +946,4 @@ void View3DInventor::customEvent(QEvent* e)
 
 
 #include "moc_View3DInventor.cpp"
+#include <QIcon>

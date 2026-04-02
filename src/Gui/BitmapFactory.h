@@ -21,7 +21,8 @@
  ***************************************************************************/
 
 
-#pragma once
+#ifndef GUI_BITMAPFACTORY_H
+#define GUI_BITMAPFACTORY_H
 
 #include <Base/Factory.h>
 #include <QPixmap>
@@ -31,31 +32,30 @@
 class SoSFImage;
 class QImage;
 
-namespace Gui
-{
+namespace Gui {
 
 using ColorMap = std::map<unsigned long, unsigned long>;
 
 /** The Bitmap Factory
- * the main purpose is to collect all build in Bitmaps and
- * hold all paths for the extern bitmaps (files) to serve
- * as a single point of accessing bitmaps in FreeCAD
- * \author Werner Mayer, Jürgen Riegel
- */
+  * the main purpose is to collect all build in Bitmaps and
+  * hold all paths for the extern bitmaps (files) to serve
+  * as a single point of accessing bitmaps in FreeCAD
+  * \author Werner Mayer, Jürgen Riegel
+  */
 class BitmapFactoryInstP;
-class GuiExport BitmapFactoryInst: public Base::Factory
+class GuiExport BitmapFactoryInst : public Base::Factory
 {
 public:
     enum Position
     {
-        TopLeft,    /**< Place to the top left corner */
-        TopRight,   /**< Place to the top right corner */
+        TopLeft,  /**< Place to the top left corner */
+        TopRight, /**< Place to the top right corner */
         BottomLeft, /**< Place to the bottom left corner */
         BottomRight /**< Place to the bottom right corner */
     };
 
     static BitmapFactoryInst& instance();
-    static void destruct();
+    static void destruct ();
 
     /// Adds a path where pixmaps can be found
     void addPath(const QString& path);
@@ -66,9 +66,15 @@ public:
     /// Returns the absolute file names of icons found in the given search paths
     QStringList findIconFiles() const;
     /// Adds a build in XPM pixmap under a given name
+    void addXPM(const char* name, const char** pXPM);
+    /// Adds a build in XPM pixmap under a given name
     void addPixmapToCache(const char* name, const QPixmap& icon);
     /// Checks whether the pixmap is already registered.
     bool findPixmapInCache(const char* name, QPixmap& icon) const;
+    /// Clears the resolved pixmap cache
+    void clearCache();
+    /// Reloads external theme settings from preferences/environment
+    void reloadExternalThemeSettings();
     /** Returns the QIcon corresponding to name in the current icon theme.
      * If no such icon is found in the current theme fallback is returned instead.
      */
@@ -85,24 +91,26 @@ public:
      * @param colorMapping - a dictionary of substitute colors.
      * Can be used to customize icon color scheme, e.g. crosshair color
      */
-    QPixmap pixmapFromSvg(
-        const char* name,
-        const QSizeF& size,
-        const ColorMap& colorMapping = ColorMap()
-    ) const;
+    QPixmap pixmapFromSvg(const char* name, const QSizeF& size,
+                          const ColorMap& colorMapping = ColorMap()) const;
+    /** Retrieves a pixmap by name and size created by an
+     * scalable vector graphics (SVG) and a device pixel ratio
+     *
+     * @param colorMapping - a dictionary of substitute colors.
+     * Can be used to customize icon color scheme, e.g. crosshair color
+     */
+    QPixmap pixmapFromSvg(const char* name, const QSizeF& size, qreal dpr,
+                          const ColorMap& colorMapping = ColorMap()) const;
     /** This method is provided for convenience and does the same
      * as the method above except that it creates the pixmap from
      * a byte array.
      * @param colorMapping - see above.
      */
-    QPixmap pixmapFromSvg(
-        const QByteArray& contents,
-        const QSizeF& size,
-        const ColorMap& colorMapping = ColorMap()
-    ) const;
+    QPixmap pixmapFromSvg(const QByteArray& contents, const QSizeF& size,
+                          const ColorMap& colorMapping = ColorMap()) const;
     /** Returns the names of all registered pixmaps.
-     * To get the appropriate pixmaps call pixmap() for each name.
-     */
+    * To get the appropriate pixmaps call pixmap() for each name.
+    */
     QStringList pixmapNames() const;
     /** Resizes the area of a pixmap
      * If the new size is greater than the old one the pixmap
@@ -137,11 +145,8 @@ public:
      * of all opaque pixels to a higher value.
      */
     QPixmap disabled(const QPixmap& p) const;
-
-    /** Creates an empty pixmap, takes care of DPI and clearing out the image.
-     */
+    /** Creates an empty pixmap, takes care of DPI and clearing out the image. */
     QPixmap empty(QSize size) const;
-
     /** Converts a QImage into a SoSFImage to use it inside a SoImage node.
      */
     void convert(const QImage& img, SoSFImage& out) const;
@@ -150,18 +155,16 @@ public:
     void convert(const SoSFImage& img, QImage& out) const;
 
     /// Helper method to merge a pixmap into one corner of a QIcon
-    static QIcon mergePixmap(
-        const QIcon& base,
-        const QPixmap& px,
-        Gui::BitmapFactoryInst::Position position
-    );
-
+    static QIcon mergePixmap (const QIcon &base, const QPixmap &px, Gui::BitmapFactoryInst::Position position);
     static qreal getMaximumDPR();
 
 private:
     bool loadPixmap(const QString& path, QPixmap&) const;
+    QPixmap findPixmapNoFallback(const char* name) const;
+    QString findInExternalTheme(const QString& name) const;
     void restoreCustomPaths();
     void configureUseIconTheme();
+    void configureExternalTheme();
 
     static BitmapFactoryInst* _pcSingleton;
     BitmapFactoryInst();
@@ -176,4 +179,6 @@ inline BitmapFactoryInst& BitmapFactory()
     return BitmapFactoryInst::instance();
 }
 
-}  // namespace Gui
+} // namespace Gui
+
+#endif // GUI_BITMAPFACTORY_H
