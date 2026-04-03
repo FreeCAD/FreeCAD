@@ -1071,7 +1071,7 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
         with tempfile.TemporaryDirectory() as temp_dir:
             temp_path = Path(temp_dir)
             progress = QProgressDialog(
-                translate("Assembly", "Generating Frames..."),
+                translate("Assembly", "Generating Frames…"),
                 translate("Assembly", "Cancel"),
                 0,
                 num_frames,
