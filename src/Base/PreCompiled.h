@@ -118,5 +118,3 @@
 // Unicode
 #include <unicode/unistr.h>
 #include <unicode/uchar.h>
-
-#endif  // BASE_PRECOMPILED_H
