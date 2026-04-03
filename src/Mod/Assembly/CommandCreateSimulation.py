@@ -1099,16 +1099,18 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
                     frame_files.append(str(frame_filename))
 
                 # Assemble the final animation file
-                progress.setLabelText(translate("Assembly", "Assembling animation..."))
+                progress.setLabelText(translate("Assembly", "Assembling animation…"))
                 progress.setMaximum(0)  # Indeterminate progress
 
+                success = False
                 file_extension = Path(file_path).suffix.lower()
                 if file_extension == ".gif":
-                    self.create_gif(file_path, frame_files, fps)
+                    success = self.create_gif(file_path, frame_files, fps)
                 elif file_extension in [".mp4", ".avi"]:
-                    self.create_video(file_path, frame_files, fps, (width, height))
-
-                App.Console.PrintMessage(f"Animation successfully saved to {file_path}\n")
+                    success = self.create_video(file_path, frame_files, fps, (width, height))
+    
+                if success:
+                    App.Console.PrintMessage(f"Animation successfully saved to {file_path}\n")
 
             except Exception as e:
                 errMsg = (
@@ -1132,7 +1134,7 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
                 "Assembly", "Pillow (PIL) is not installed. It is required for GIF export."
             )
             QMessageBox.critical(self.form, "Error", errMsg)
-            return
+            return False
 
         pil_images = [Image.open(f) for f in frame_files]
         duration_ms = int(1000 / fps)
@@ -1144,6 +1146,7 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
             duration=duration_ms,
             loop=0,  # 0 means loop forever
         )
+        return True
 
     def create_video(self, output_path, frame_files, fps, size):
         """Creates a video file from a list of image files using OpenCV."""
@@ -1154,7 +1157,7 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
                 "Assembly", "OpenCV is not installed. It is required for video export."
             )
             QMessageBox.critical(self.form, "Error", errMsg)
-            return
+            return False
 
         file_extension = Path(output_path).suffix.lower()
 
@@ -1171,7 +1174,7 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
         if not video_writer.isOpened():
             errMsg = translate("Assembly", "Could not open video writer. Check codecs.")
             QMessageBox.critical(self.form, "Error", errMsg)
-            return
+            return False
 
         for filename in frame_files:
             # OpenCV reads images in BGR format by default
@@ -1179,6 +1182,7 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
             video_writer.write(frame)
 
         video_writer.release()
+        return True
 
 
 if App.GuiUp:
