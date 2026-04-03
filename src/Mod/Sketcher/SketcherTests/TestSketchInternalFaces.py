@@ -573,7 +573,8 @@ class TestSketchInternalFaces(unittest.TestCase):
         self.assertGreater(len(edge_names), 0)
         for idx_name, mapped_name in edge_names.items():
             self.assertNotEqual(
-                idx_name, mapped_name,
+                idx_name,
+                mapped_name,
                 f"{idx_name} has no mapped name (identity mapping = unnamed)",
             )
             # Mapped names from sketch edges should reference geometry IDs
@@ -599,9 +600,7 @@ class TestSketchInternalFaces(unittest.TestCase):
         for idx_name, mapped_name in face_names.items():
             # Face names should NOT start with "Edge<N>;" — that indicates
             # the face was named from an unnamed (indexed-only) edge.
-            has_indexed_ref = any(
-                mapped_name.startswith(f"Edge{i};") for i in range(1, 20)
-            )
+            has_indexed_ref = any(mapped_name.startswith(f"Edge{i};") for i in range(1, 20))
             self.assertFalse(
                 has_indexed_ref,
                 f"{idx_name} -> '{mapped_name}' references indexed edge name",

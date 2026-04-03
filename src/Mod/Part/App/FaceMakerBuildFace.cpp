@@ -190,8 +190,7 @@ bool Part::FaceMakerBuildFace::findPlane(const TopTools_ListOfShape& edges, gp_P
     return true;
 }
 
-TopTools_ListOfShape Part::FaceMakerBuildFace::splitAtIntersections(
-    const TopTools_ListOfShape& edges)
+TopTools_ListOfShape Part::FaceMakerBuildFace::splitAtIntersections(const TopTools_ListOfShape& edges)
 {
     if (edges.Size() <= 1) {
         return edges;
@@ -227,8 +226,8 @@ void Part::FaceMakerBuildFace::postBuild()
     // like "g1;SKT;:M;BFL" instead of bare indexed names like "Edge1".
     this->myTopoShape.Hasher = this->MyHasher;
     MapperMaker mapper(*mySplitter);
-    this->myTopoShape.makeShapeWithElementMap(
-        this->myShape, mapper, this->mySourceShapes, Part::OpCodes::Face);
+    this->myTopoShape
+        .makeShapeWithElementMap(this->myShape, mapper, this->mySourceShapes, Part::OpCodes::Face);
     this->myTopoShape.initCache(true);
     this->Done();
     mySplitter.reset();
