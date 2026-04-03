@@ -143,18 +143,19 @@ jobs:
   Pixi:
     needs: [Gate, Prepare]
     if: >-
-      needs.Gate.outputs.should-run == 'true'
+      (needs.Prepare.result == 'success' || needs.Prepare.result == 'skipped')
       && (github.event_name != 'pull_request'
           || startsWith(github.event.pull_request.base.ref, 'releases/')
           || contains(toJSON(github.event.pull_request.labels.*.name), 'Approved:'))
     uses: ./.github/workflows/sub_buildPixi.yml
     with:
       artifactBasename: Pixi-${{ github.run_id }}
+      skipBuild: ${{ needs.Gate.outputs.should-run != 'true' }}
 
   Windows:
     needs: [Gate, Prepare]
     if: >-
-      needs.Gate.outputs.should-run == 'true'
+      (needs.Prepare.result == 'success' || needs.Prepare.result == 'skipped')
       && !startsWith(github.head_ref, 'refs/heads/backport-')
       && (github.event_name != 'pull_request'
           || startsWith(github.event.pull_request.base.ref, 'releases/')
@@ -162,6 +163,7 @@ jobs:
     uses: ./.github/workflows/sub_buildWindows.yml
     with:
       artifactBasename: Windows-${{ github.run_id }}
+      skipBuild: ${{ needs.Gate.outputs.should-run != 'true' }}
 
   WrapUp:
     needs: [
