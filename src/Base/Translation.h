@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 /***************************************************************************
- *   Copyright (c) 2018 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2026                                                   *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -22,39 +22,49 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifndef BASE_TRANSLATION_H
+#define BASE_TRANSLATION_H
 
-#pragma once
-
-#include <CXX/Extensions.hxx>
 #include <string>
+#include <string_view>
 #include <vector>
-#include <FCGlobal.h>
 
-namespace Py
-{
-class Object;
-class Tuple;
-}  // namespace Py
+#ifndef FC_GLOBAL_H
+# include <FCGlobal.h>
+#endif
 
-namespace Base
+namespace Base::Translation
 {
 
-class BaseExport Translate: public Py::ExtensionModule<Translate>  // NOLINT
+class BaseExport Translator
 {
 public:
-    Translate();
-    ~Translate() override;
+    virtual ~Translator() = default;
 
-private:
-    Py::Object translate(const Py::Tuple& args);
-    Py::Object translateNoop(const Py::Tuple& args);
-    Py::Object translateNoop3(const Py::Tuple& args);
-    Py::Object trNoop(const Py::Tuple& args);
-    Py::Object installTranslator(const Py::Tuple& args);
-    Py::Object removeTranslators(const Py::Tuple& args);
+    virtual std::string translate(
+        std::string_view context,
+        std::string_view sourceText,
+        std::string_view disambiguation,
+        int n
+    ) const = 0;
 
-private:
-    std::vector<std::string> translators;
+    virtual bool installTranslator(std::string_view filename) const = 0;
+    virtual bool removeTranslators(const std::vector<std::string>& filenames) const = 0;
 };
 
-}  // namespace Base
+BaseExport void setTranslator(const Translator* translator);
+BaseExport const Translator* getTranslator();
+
+BaseExport std::string translate(
+    std::string_view context,
+    std::string_view sourceText,
+    std::string_view disambiguation = {},
+    int n = -1
+);
+
+BaseExport bool installTranslator(std::string_view filename);
+BaseExport bool removeTranslators(const std::vector<std::string>& filenames);
+
+}  // namespace Base::Translation
+
+#endif  // BASE_TRANSLATION_H
