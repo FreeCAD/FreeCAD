@@ -402,6 +402,11 @@ public:
         std::vector<Base::Vector3d>& Points,
         std::vector<Line>& lines
     ) const override;
+    /** Get vertices from segment */
+    void getVerticesFromSubElement(
+        const Data::Segment* element,
+        std::vector<Base::Vector3d>& Points
+    ) const override;
     /** Get faces from segment */
     void getFacesFromSubElement(
         const Data::Segment* segment,

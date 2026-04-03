@@ -183,6 +183,18 @@ public:
                                         std::vector<Line>& lines) const;
 
     /**
+     * @brief Get the vertices from a segment.
+     *
+     * @param[in] segment The segment to get the vertices from.
+     *
+     * @param[in,out] Points The list of points used in the segment.
+     */
+    virtual void getVerticesFromSubElement(
+        const Data::Segment* segment,
+        std::vector<Base::Vector3d>& Points
+    ) const;
+
+    /**
      * @brief Get the faces from a segment.
      *
      * @param[in] segment The segment to get the faces from.

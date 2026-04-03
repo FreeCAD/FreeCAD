@@ -22,8 +22,10 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "Base/Vector3D.h"
 #include <FCConfig.h>
 
+#include <TopoDS_Shape.hxx>
 #include <array>
 #include <cmath>
 #include <cstdlib>
@@ -4002,6 +4004,26 @@ void TopoShape::getLinesFromSubElement(
         }
 
         getLinesFromSubShape(shape, vertices, lines);
+    }
+}
+
+void TopoShape::getVerticesFromSubElement(
+    const Data::Segment* element,
+    std::vector<Base::Vector3d>& Points
+) const
+{
+    if (element->is<ShapeSegment>()) {
+        const TopoDS_Shape& shape = static_cast<const ShapeSegment*>(element)->Shape;
+        if (shape.IsNull()) {
+            return;
+        }
+        for (TopExp_Explorer xp(shape, TopAbs_VERTEX, TopAbs_EDGE); xp.More(); xp.Next()) {
+            gp_Pnt p = BRep_Tool::Pnt(TopoDS::Vertex(xp.Current()));
+            Points.push_back(Base::convertTo<Base::Vector3d>(p));
+            return;
+        }
+        std::vector<Line> _;
+        getLinesFromSubShape(shape, Points, _);
     }
 }
 

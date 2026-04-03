@@ -1097,6 +1097,12 @@ void SelectionSingleton::addSelectionGate(Gui::SelectionGate* gate, ResolveMode 
     context.info->gate = gate;
 }
 
+Gui::SelectionGate* SelectionSingleton::getSelectionGate(const App::Document* doc)
+{
+    auto context = getSelectionContext(doc->getName());
+    return context.info->gate;
+}
+
 // remove the active SelectionGate
 void SelectionSingleton::rmvSelectionGate(App::Document* doc)
 {

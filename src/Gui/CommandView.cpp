@@ -20,7 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <cstddef>
 #include <sstream>
+#include <string>
+#include <unordered_set>
 #include <vector>
 #include <tuple>
 
@@ -2987,6 +2990,69 @@ using SelectionMode = enum
     INTERSECT
 };
 
+static bool findObjectsOfTypeInBox(
+    const char* type,
+    const Base::ViewProjMethod& proj,
+    Data::ComplexGeoData* data,
+    const Base::Polygon2d& polygon,
+    std::vector<std::string>& ret,
+    SelectionMode mode
+)
+{
+    size_t count = data->countSubElements(type);
+    if (!count) {
+        return false;
+    }
+
+    bool foundElement = false;
+    for (size_t i = 1; i <= count; ++i) {
+        std::string element(type);
+        element += std::to_string(i);
+        std::unique_ptr<Data::Segment> segment(data->getSubElementByName(element.c_str()));
+        if (!segment) {
+            continue;
+        }
+        if (strcmp("Vertex", type) == 0) {
+            std::vector<Base::Vector3d> points;
+            data->getVerticesFromSubElement(segment.get(), points);
+            if (!points.empty()) {
+                auto v = proj(points[0]);
+                if (polygon.Contains(Base::Vector2d(v.x, v.y))) {
+                    foundElement = true;
+                    ret.push_back(element);
+                    continue;
+                }
+            }
+        }
+        else {
+            // find lines or faces
+            std::vector<Base::Vector3d> points;
+            std::vector<Data::ComplexGeoData::Line> lines;
+            data->getLinesFromSubElement(segment.get(), points, lines);
+            Base::Polygon2d loop;
+            // TODO: can we assume the line returned above are in proper
+            // order if the element is a face?
+            auto v = proj(points[lines.front().I1]);
+            loop.Add(Base::Vector2d(v.x, v.y));
+            for (auto& line : lines) {
+                for (auto i = line.I1; i < line.I2; ++i) {
+                    auto v = proj(points[i + 1]);
+                    loop.Add(Base::Vector2d(v.x, v.y));
+                }
+            }
+            if (!polygon.Intersect(loop)) {
+                continue;
+            }
+            if (mode == CENTER && !polygon.Contains(loop.CalcBoundBox().GetCenter())) {
+                continue;
+            }
+            ret.push_back(element);
+            foundElement = true;
+        }
+    }
+    return foundElement;
+}
+
 static std::vector<std::string> getBoxSelection(
     ViewProviderDocumentObject* vp,
     SelectionMode mode,
@@ -3004,32 +3070,36 @@ static std::vector<std::string> getBoxSelection(
         return ret;
     }
 
+    App::Document* doc = App::GetApplication().getActiveDocument();
+    const auto selectionGate = SelectionSingleton::instance().getSelectionGate(doc);
+
     // DO NOT check this view object Visibility, let the caller do this. Because
     // we may be called by upper object hierarchy that manages our visibility.
 
     auto bbox3 = vp->getBoundingBox(nullptr, transform);
-    if (!bbox3.IsValid()) {
-        return ret;
+    if (bbox3.IsValid() && selectionGate == nullptr) {
+        auto bbox = bbox3.Transformed(mat).ProjectBox(&proj);
+
+
+        // check if both two boundary points are inside polygon, only
+        // valid since we know the given polygon is a box.
+        if (polygon.Contains(Base::Vector2d(bbox.MinX, bbox.MinY))
+            && polygon.Contains(Base::Vector2d(bbox.MaxX, bbox.MaxY)) && selectionGate == nullptr) {
+            ret.emplace_back("");
+            return ret;
+        }
+
+        // we could select the whole polygon if there's no selection filter
+        if (!bbox.Intersect(polygon) && selectionGate == nullptr) {
+            return ret;
+        }
     }
 
-    auto bbox = bbox3.Transformed(mat).ProjectBox(&proj);
-
-    // check if both two boundary points are inside polygon, only
-    // valid since we know the given polygon is a box.
-    if (polygon.Contains(Base::Vector2d(bbox.MinX, bbox.MinY))
-        && polygon.Contains(Base::Vector2d(bbox.MaxX, bbox.MaxY))) {
-        ret.emplace_back("");
-        return ret;
-    }
-
-    if (!bbox.Intersect(polygon)) {
-        return ret;
-    }
-
+    // find subobjects that are contained within the box selection
     const auto& subs = obj->getSubObjects(App::DocumentObject::GS_SELECT);
     if (subs.empty()) {
         if (!selectElement) {
-            if (mode == INTERSECT || polygon.Contains(bbox.GetCenter())) {
+            if (mode == INTERSECT) {
                 ret.emplace_back("");
             }
             return ret;
@@ -3046,52 +3116,31 @@ static std::vector<std::string> getBoxSelection(
             return ret;
         }
         auto data = static_cast<Data::ComplexGeoDataPy*>(pyobj)->getComplexGeoDataPtr();
-        for (auto type : data->getElementTypes()) {
-            size_t count = data->countSubElements(type);
-            if (!count) {
-                continue;
+        const auto& allAllowedDocumentTypes = data->getElementTypes();
+
+        if (selectionGate) {
+            // there's no point to try to iterate over every type of object when a selector is
+            // specified iterate over only those which are allowed
+            auto filteredTypes = selectionGate->getGatedTypes(allAllowedDocumentTypes);
+            if (!filteredTypes.empty()) {
+                for (const auto& type : selectionGate->getGatedTypes(allAllowedDocumentTypes)) {
+                    findObjectsOfTypeInBox(type, proj, data, polygon, ret, mode);
+                }
+                return ret;
             }
-            for (size_t i = 1; i <= count; ++i) {
-                std::string element(type);
-                element += std::to_string(i);
-                std::unique_ptr<Data::Segment> segment(data->getSubElementByName(element.c_str()));
-                if (!segment) {
-                    continue;
-                }
-                std::vector<Base::Vector3d> points;
-                std::vector<Data::ComplexGeoData::Line> lines;
-                data->getLinesFromSubElement(segment.get(), points, lines);
-                if (lines.empty()) {
-                    if (points.empty()) {
-                        continue;
-                    }
-                    auto v = proj(points[0]);
-                    if (polygon.Contains(Base::Vector2d(v.x, v.y))) {
-                        ret.push_back(element);
-                    }
-                    continue;
-                }
-                Base::Polygon2d loop;
-                // TODO: can we assume the line returned above are in proper
-                // order if the element is a face?
-                auto v = proj(points[lines.front().I1]);
-                loop.Add(Base::Vector2d(v.x, v.y));
-                for (auto& line : lines) {
-                    for (auto i = line.I1; i < line.I2; ++i) {
-                        auto v = proj(points[i + 1]);
-                        loop.Add(Base::Vector2d(v.x, v.y));
-                    }
-                }
-                if (!polygon.Intersect(loop)) {
-                    continue;
-                }
-                if (mode == CENTER && !polygon.Contains(loop.CalcBoundBox().GetCenter())) {
-                    continue;
-                }
-                ret.push_back(element);
-            }
-            break;
         }
+
+        // if either selectionGate is not present, or filteredTypes = []
+        // the selection process needs iterate from the biggest objects
+        // to the smallest ones ex. if a line can't be selected (ie. out of selector bounds)
+        // then try to select vertices
+        for (auto type : allAllowedDocumentTypes) {
+            if (findObjectsOfTypeInBox(type, proj, data, polygon, ret, mode)) {
+                // notice the break - if a line can be selected - don't go over to vertices
+                break;
+            }
+        }
+
         return ret;
     }
 

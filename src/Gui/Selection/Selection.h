@@ -27,6 +27,7 @@
 #include <deque>
 #include <list>
 #include <string>
+#include <unordered_set>
 #include <vector>
 
 #include <App/DocumentObject.h>
@@ -277,6 +278,17 @@ class GuiExport SelectionGate
 public:
     virtual ~SelectionGate() = default;
     virtual bool allow(App::Document*, App::DocumentObject*, const char*) = 0;
+    /** @brief filter all available types
+     *  @param allTypesForGeometry Every type available to select (ex. {"Vertex", "Edge"})
+     *  @returns a set of filtered types (ex. {"Vertex"})
+     */
+    virtual std::unordered_set<const char*> getGatedTypes(
+        const std::vector<const char*>& allTypesForGeometry
+    )
+    {
+        (void)allTypesForGeometry;
+        return {};
+    }
 
     /**
      * @brief notAllowedReason is a string that sets the message to be
@@ -410,6 +422,11 @@ public:
         ResolveMode resolve = ResolveMode::OldStyleElement,
         const char* pDocName = nullptr
     );
+
+    /** @brief get the pointer to the selection gate
+     * It will be nullptr when no selection filter active
+     */
+    Gui::SelectionGate* getSelectionGate(const App::Document* document);
     /// remove the document's SelectionGate, by default the active document is selected, which is
     /// usually the intended behavior
     void rmvSelectionGate(const char* pDocName = nullptr);
