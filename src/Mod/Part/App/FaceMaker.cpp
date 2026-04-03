@@ -210,6 +210,14 @@ void Part::FaceMaker::postBuild()
     this->myTopoShape.setShape(this->myShape);
     this->myTopoShape.Hasher = this->MyHasher;
     this->myTopoShape.mapSubElement(this->mySourceShapes);
+    if (this->mySplitter.IsDone()) {
+        MapperMaker mapper(this->mySplitter);
+        TopoShape splitInputShape(this->myTopoShape.Tag);
+
+        splitInputShape.makeShapeWithElementMap(mySplitter.Shape(), mapper, mySourceShapes);
+
+        this->myTopoShape.mapSubElement(splitInputShape);
+    }
     int index = 0;
     const char* op = this->MyOp;
     if (!op) {
