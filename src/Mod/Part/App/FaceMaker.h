@@ -131,7 +131,7 @@ protected:
      * whole Build().
      */
     virtual void Build_Essence() = 0;
-    virtual void postBuild();
+    void postBuild();
 
     static void throwNotImplemented();
 };
