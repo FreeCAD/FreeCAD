@@ -1108,7 +1108,7 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
                     success = self.create_gif(file_path, frame_files, fps)
                 elif file_extension in [".mp4", ".avi"]:
                     success = self.create_video(file_path, frame_files, fps, (width, height))
-    
+
                 if success:
                     App.Console.PrintMessage(f"Animation successfully saved to {file_path}\n")
 
