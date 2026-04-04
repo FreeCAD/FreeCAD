@@ -27,6 +27,7 @@
 #include <QApplication>
 #include <QEvent>
 #include <QLineEdit>
+#include <QTimer>
 
 #include "ui_SketcherToolDefaultWidget.h"
 #include <Gui/Application.h>
@@ -198,14 +199,17 @@ bool SketcherToolDefaultWidget::eventFilter(QObject* object, QEvent* event)
                 }
             }
         }
+
         // Intercept Tab from a visible checkbox so the controller can move focus
         // to the next checkbox or wrap back to the first spinbox.
         if (ke->key() == Qt::Key_Tab) {
             for (int i = 0; i < nCheckbox; i++) {
                 if (object == getCheckBox(i) && getCheckBox(i)->isVisible()) {
-                    // Encode the checkbox index as (nParameters + i) so the controller
-                    // can distinguish it from a spinbox index.
-                    signalParameterTabOrEnterPressed(nParameters + i);
+                    QTimer::singleShot(0, this, [this, i]() {
+                        // Encode checkbox index as (nParameters + i) so controller
+                        // can distinguish it from a parameter index.
+                        signalParameterTabOrEnterPressed(nParameters + i);
+                    });
                     return true;
                 }
             }

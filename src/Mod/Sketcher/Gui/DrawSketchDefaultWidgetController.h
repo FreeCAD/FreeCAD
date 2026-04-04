@@ -172,12 +172,6 @@ public:
             int cbIdx = parameterindex - SketcherToolDefaultWidget::nParameters;
             ControllerBase::parameterWithFocus =
                 static_cast<int>(ControllerBase::onViewParameters.size()) + nParameter + cbIdx;
-            // The queued setFocus to a spinbox may cause its Tab KeyRelease to arrive at the
-            // spinbox's keyboard manager, triggering a spurious second tabShortcut() call.
-            // Suppress that Tab KeyRelease so focus lands correctly on the first spinbox.
-            if (auto* keyManager = ControllerBase::getKeyManager()) {
-                keyManager->suppressNextTabRelease();
-            }
         }
         passFocusToNextParameter();
     }

@@ -79,22 +79,6 @@ bool DrawSketchKeyboardManager::eventFilter(QObject* object, QEvent* event)
 
         auto keyEvent = static_cast<QKeyEvent*>(event);
 
-
-        // A new Tab press clears any pending suppression from a prior checkbox Tab.
-        if (event->type() == QEvent::KeyPress && keyEvent->key() == Qt::Key_Tab) {
-            suppressTabRelease = false;
-        }
-
-        // When Tab was pressed on a checkbox, the queued focus transfer to a spinbox may cause
-        // the Tab KeyRelease to arrive at that spinbox's keyboard manager. Suppress forwarding
-        // it to the viewport to prevent a spurious second tabShortcut() / passFocusToNextParameter()
-        // call that would jump focus one extra step.
-        if (event->type() == QEvent::KeyRelease && keyEvent->key() == Qt::Key_Tab
-            && suppressTabRelease) {
-            suppressTabRelease = false;
-            return false;
-        }
-
         detectKeyboardEventHandlingMode(keyEvent);  // determine the handler
 
         if (vpViewer && isMode(KeyboardEventHandlingMode::ViewProvider)) {
@@ -105,11 +89,6 @@ bool DrawSketchKeyboardManager::eventFilter(QObject* object, QEvent* event)
     }
 
     return false;
-}
-
-void DrawSketchKeyboardManager::suppressNextTabRelease()
-{
-    suppressTabRelease = true;
 }
 
 void DrawSketchKeyboardManager::detectKeyboardEventHandlingMode(QKeyEvent* keyEvent)
