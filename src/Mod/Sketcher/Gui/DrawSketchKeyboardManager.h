@@ -83,6 +83,11 @@ public:
     // returns the current timeout amount
     int timeOut();
 
+    /// Suppress the very next Tab KeyRelease event from being forwarded to the 3D viewport.
+    /// Call this when Tab is handled by a checkbox so its queued focus transfer to a spinbox
+    /// does not cause a spurious second passFocusToNextParameter() call.
+    void suppressNextTabRelease();
+
 private:
     /// This function decides whether events should be send to the ViewProvider
     /// or to the UI control of DSH.
@@ -98,11 +103,11 @@ private:
     QTimer timer;
 
     int timeOutValue = 2000;
-    // Only forward a Tab KeyRelease to the viewport if this manager also saw the Tab KeyPress.
-    // When Tab is pressed on a checkbox (no keyboard manager), the subsequent KeyRelease may
-    // arrive at a spinbox that just received focus; ignoring it prevents a spurious second
-    // passFocusToNextParameter() call.
-    bool tabPressReceived = false;
+
+    // When Tab is pressed on a checkbox, focus may move to a spinbox before KeyRelease arrives.
+    // Suppressing that next Tab KeyRelease prevents a spurious second focus advance.
+    bool suppressTabRelease = false;
+
 };
 
 }  // namespace SketcherGui

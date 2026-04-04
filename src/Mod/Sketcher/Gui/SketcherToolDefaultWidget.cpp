@@ -69,17 +69,12 @@ SketcherToolDefaultWidget::SketcherToolDefaultWidget(QWidget* parent)
     ui->parameterFour->installEventFilter(this);
     ui->parameterFive->installEventFilter(this);
     ui->parameterSix->installEventFilter(this);
-
-
     ui->lineEdit1->installEventFilter(this);
     ui->lineEdit2->installEventFilter(this);
-
     ui->checkBoxTS1->installEventFilter(this);
     ui->checkBoxTS2->installEventFilter(this);
     ui->checkBoxTS3->installEventFilter(this);
     ui->checkBoxTS4->installEventFilter(this);
-
-
     reset();
 }
 

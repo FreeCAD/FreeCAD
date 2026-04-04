@@ -79,21 +79,20 @@ bool DrawSketchKeyboardManager::eventFilter(QObject* object, QEvent* event)
 
         auto keyEvent = static_cast<QKeyEvent*>(event);
 
-        if (keyEvent->key() == Qt::Key_Tab) {
-            if (event->type() == QEvent::KeyPress) {
-                tabPressReceived = true;
-            }
-            else {
-                // KeyRelease: only forward to the viewport if we also received the KeyPress.
-                // If Tab was pressed on a checkbox (no keyboard manager there), the KeyRelease
-                // may arrive here after a queued focus transfer; suppressing it prevents a
-                // spurious second tabShortcut() / passFocusToNextParameter() call.
-                bool hadPress = tabPressReceived;
-                tabPressReceived = false;
-                if (!hadPress) {
-                    return false;
-                }
-            }
+
+        // A new Tab press clears any pending suppression from a prior checkbox Tab.
+        if (event->type() == QEvent::KeyPress && keyEvent->key() == Qt::Key_Tab) {
+            suppressTabRelease = false;
+        }
+
+        // When Tab was pressed on a checkbox, the queued focus transfer to a spinbox may cause
+        // the Tab KeyRelease to arrive at that spinbox's keyboard manager. Suppress forwarding
+        // it to the viewport to prevent a spurious second tabShortcut() / passFocusToNextParameter()
+        // call that would jump focus one extra step.
+        if (event->type() == QEvent::KeyRelease && keyEvent->key() == Qt::Key_Tab
+            && suppressTabRelease) {
+            suppressTabRelease = false;
+            return false;
         }
 
         detectKeyboardEventHandlingMode(keyEvent);  // determine the handler
@@ -106,6 +105,11 @@ bool DrawSketchKeyboardManager::eventFilter(QObject* object, QEvent* event)
     }
 
     return false;
+}
+
+void DrawSketchKeyboardManager::suppressNextTabRelease()
+{
+    suppressTabRelease = true;
 }
 
 void DrawSketchKeyboardManager::detectKeyboardEventHandlingMode(QKeyEvent* keyEvent)
