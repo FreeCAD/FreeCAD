@@ -72,17 +72,13 @@ Base::Reference<ParameterGrp> getGizmoParameterGroup()
 
 Qt::KeyboardModifiers getFineSnapModifier()
 {
-    auto modifier = static_cast<int>(
-        getGizmoParameterGroup()->GetInt("FineSnapModifier", static_cast<int>(Qt::ShiftModifier))
+    auto modifier = static_cast<Qt::KeyboardModifier>(
+        getGizmoParameterGroup()->GetInt("FineSnapModifier", static_cast<long>(Qt::ShiftModifier))
     );
-    auto result = static_cast<Qt::KeyboardModifiers>(modifier);
-    switch (result.toInt()) {
-        case Qt::ShiftModifier:
-        case Qt::ControlModifier:
-            return result;
-        default:
-            return Qt::ShiftModifier;
+    if (modifier == Qt::ControlModifier) {
+        return modifier;
     }
+    return Qt::ShiftModifier;
 }
 
 bool isCoarseSnapEnabled()
