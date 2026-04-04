@@ -724,7 +724,11 @@ class PathData:
         self, obj, count, width=None, height=None, angle=None, radius=None, spacing=None
     ):
         Path.Log.track(count, width, height, angle, spacing)
-        # for e in self.baseWire.Edges:
+
+        # copy edge list into python array for (much) faster random access
+        Edges = list(self.baseWire.Edges)
+
+        # for e in Edges:
         #    debugMarker(e.Vertexes[0].Point, 'base', (0.0, 1.0, 1.0), 0.2)
 
         if spacing:
@@ -740,14 +744,14 @@ class PathData:
         # start assigning tags on the longest segment
         shortestEdge, longestEdge = self.shortestAndLongestPathEdge()
         startIndex = 0
-        for i in range(0, len(self.baseWire.Edges)):
-            edge = self.baseWire.Edges[i]
+        for i in range(0, len(Edges)):
+            edge = Edges[i]
             Path.Log.debug("  %d: %.2f" % (i, edge.Length))
             if Path.Geom.isRoughly(edge.Length, longestEdge.Length):
                 startIndex = i
                 break
 
-        startEdge = self.baseWire.Edges[startIndex]
+        startEdge = Edges[startIndex]
         startCount = int(startEdge.Length / tagDistance)
         if (longestEdge.Length - shortestEdge.Length) > shortestEdge.Length:
             startCount = int(startEdge.Length / tagDistance) + 1
@@ -777,13 +781,13 @@ class PathData:
 
         edgeDict = {startIndex: startCount}
 
-        for i in range(startIndex + 1, len(self.baseWire.Edges)):
-            edge = self.baseWire.Edges[i]
+        for i in range(startIndex + 1, len(Edges)):
+            edge = Edges[i]
             currentLength, lastTagLength = self.processEdge(
                 i, edge, currentLength, lastTagLength, tagDistance, minLength, edgeDict
             )
         for i in range(0, startIndex):
-            edge = self.baseWire.Edges[i]
+            edge = Edges[i]
             currentLength, lastTagLength = self.processEdge(
                 i, edge, currentLength, lastTagLength, tagDistance, minLength, edgeDict
             )
@@ -791,7 +795,7 @@ class PathData:
         tags = []
 
         for i, count in edgeDict.items():
-            edge = self.baseWire.Edges[i]
+            edge = Edges[i]
             Path.Log.debug(" %d: %d" % (i, count))
             # debugMarker(edge.Vertexes[0].Point, 'base', (1.0, 0.0, 0.0), 0.2)
             # debugMarker(edge.Vertexes[1].Point, 'base', (0.0, 1.0, 0.0), 0.2)
