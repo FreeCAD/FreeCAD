@@ -2860,6 +2860,8 @@ def _import_dxf_file(filename, doc_name=None):
                 params.set_param("dxfImportAsFused", mode == 3)
                 hGrp.SetBool("dxfShowDialog", dlg.get_show_dialog_again())
             else:
+                if gui:
+                    FreeCADGui.resumeWaitCursor()
                 return None, None, None, None  # Return None to indicate cancellation
     finally:
         if gui:
