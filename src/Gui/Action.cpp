@@ -596,7 +596,8 @@ void ActionGroup::onActivated(QAction* act)
         if (!this->_isMode) {
             QString str = act->text();
             // remove index from toolTip text
-            str = str.remove(QRegularExpression(QString::fromUtf8("^&?[0-9]+ ")));
+            static const QRegularExpression regex (QString::fromUtf8("^&?[0-9]+ "));
+            str = str.remove(regex);
             this->setToolTip(act->toolTip(), str);
         }
         // recent index is always 0
