@@ -221,7 +221,7 @@ void Part::FaceMakerBuildFace::Build_Essence()
 
     gp_Pln plane;
     if (!findPlane(edges, plane)) {
-        FC_WARN("FaceMakerBuildFace: edges are not coplanar");
+        FC_LOG("FaceMakerBuildFace: cannot determine plane from edges");
         return;
     }
 
