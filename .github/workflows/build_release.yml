@@ -21,7 +21,7 @@ jobs:
       build_tag: ${{ steps.get_tag.outputs.build_tag }}
     steps:
       - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594 # v2.16.0
+        uses: step-security/harden-runner@fe104658747b27e96e4f7e80cd0a94068e53901d # v2.16.1
         with:
           egress-policy: audit
 
@@ -42,7 +42,15 @@ jobs:
           if [ "${{ github.event_name }}" = "release" ]; then
             export BUILD_TAG="${{ github.event.release.tag_name }}"
           else
-            export BUILD_TAG=weekly-$(date "+%Y.%m.%d")
+            BRANCH="${{ github.ref_name }}"
+            DEFAULT_BRANCH="${{ github.event.repository.default_branch }}"
+            if [ "$BRANCH" = "$DEFAULT_BRANCH" ]; then
+              export BUILD_TAG=weekly-$(date "+%Y.%m.%d")
+            else
+              # Sanitize branch name for use in a tag (replace non-alphanumeric with -)
+              SAFE_BRANCH=$(echo "$BRANCH" | sed 's/[^a-zA-Z0-9._-]/-/g')
+              export BUILD_TAG=${SAFE_BRANCH}-$(date "+%Y.%m.%d")
+            fi
             gh release create ${BUILD_TAG} --title "Development Build ${BUILD_TAG}" \
                                            -F .github/workflows/weekly-build-notes.md \
                                            --prerelease || \
@@ -112,7 +120,7 @@ jobs:
     environment: weekly-build
     steps:
       - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594 # v2.16.0
+        uses: step-security/harden-runner@fe104658747b27e96e4f7e80cd0a94068e53901d # v2.16.1
         with:
           egress-policy: audit
 
@@ -226,7 +234,7 @@ jobs:
         id: azure_login
         if: runner.os == 'Windows'
         continue-on-error: true
-        uses: azure/login@a457da9ea143d694b1b9c7c869ebb04ebe844ef5 # v2.3.0
+        uses: azure/login@532459ea530d8321f2fb9bb10d1e0bcf23869a43 # v3.0.0
         with:
           creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
 
