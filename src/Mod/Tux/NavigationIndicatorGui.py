@@ -70,7 +70,7 @@ def RePopulateIcons():
 
     a1.setIcon(QtGui.QIcon(":/icons/NavigationBlender_" + StyleSheetType + ".svg"))
     a2.setIcon(QtGui.QIcon(":/icons/NavigationCAD_" + StyleSheetType + ".svg"))
-    a3.setIcon(QtGui.QIcon(":/icons/NavigationRevit_" + StyleSheetType + ".svg"))
+    a3.setIcon(QtGui.QIcon(":/icons/NavigationFusion_" + StyleSheetType + ".svg"))
     a4.setIcon(QtGui.QIcon(":/icons/NavigationGesture_" + StyleSheetType + ".svg"))
     a5.setIcon(QtGui.QIcon(":/icons/NavigationMayaGesture_" + StyleSheetType + ".svg"))
     a6.setIcon(QtGui.QIcon(":/icons/NavigationOpenCascade_" + StyleSheetType + ".svg"))
