@@ -135,15 +135,15 @@ jobs:
 
   Prepare:
     needs: [Gate]
-    if: needs.Gate.outputs.should-run == 'true'
     uses: ./.github/workflows/sub_prepare.yml
     with:
       artifactBasename: Prepare-approved-${{ github.run_id }}
+      skipBuild: ${{ needs.Gate.outputs.should-run != 'true' }}
 
   Pixi:
     needs: [Gate, Prepare]
     if: >-
-      (needs.Prepare.result == 'success' || needs.Prepare.result == 'skipped')
+      needs.Prepare.result == 'success'
       && (github.event_name != 'pull_request'
           || startsWith(github.event.pull_request.base.ref, 'releases/')
           || contains(toJSON(github.event.pull_request.labels.*.name), 'Approved:'))
@@ -155,7 +155,7 @@ jobs:
   Windows:
     needs: [Gate, Prepare]
     if: >-
-      (needs.Prepare.result == 'success' || needs.Prepare.result == 'skipped')
+      needs.Prepare.result == 'success'
       && !startsWith(github.head_ref, 'refs/heads/backport-')
       && (github.event_name != 'pull_request'
           || startsWith(github.event.pull_request.base.ref, 'releases/')
