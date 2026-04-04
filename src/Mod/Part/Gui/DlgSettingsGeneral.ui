@@ -393,6 +393,133 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="enableCoarseSnap">
+        <property name="text">
+         <string>Enable coarse snapping while dragging</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>EnableCoarseSnap</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Gui/Gizmos</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayoutFineSnapModifier">
+        <item>
+         <widget class="QLabel" name="labelFineSnapModifier">
+          <property name="text">
+           <string>Fine snap modifier</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefComboBox" name="fineSnapModifier">
+          <property name="prefEntry" stdset="0">
+           <cstring>FineSnapModifier</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Gui/Gizmos</cstring>
+          </property>
+          <property name="prefType" stdset="0">
+           <number>0</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayoutDefaultCoarseDragBehavior">
+        <item>
+         <widget class="QLabel" name="labelDefaultCoarseDragBehavior">
+          <property name="text">
+           <string>Default coarse drag behavior</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefComboBox" name="defaultCoarseDragBehavior">
+          <property name="toolTip">
+           <string>Determines whether the drag is coarse or fine without holding the modifier key</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>DefaultCoarseDragBehavior</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Gui/Gizmos</cstring>
+          </property>
+          <property name="prefType" stdset="0">
+           <number>0</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayoutCoarseLinearSnapMultiplier">
+        <item>
+         <widget class="QLabel" name="labelCoarseLinearSnapMultiplier">
+          <property name="text">
+           <string>Coarse movement multiplier</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefSpinBox" name="coarseLinearSnapMultiplier">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="value">
+           <number>5</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>CoarseLinearSnapMultiplier</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Gui/Gizmos</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayoutCoarseRotationSnapMultiplier">
+        <item>
+         <widget class="QLabel" name="labelCoarseRotationSnapMultiplier">
+          <property name="text">
+           <string>Coarse rotation step (degrees)</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefSpinBox" name="coarseRotationSnapMultiplier">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="value">
+           <number>5</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>CoarseRotationSnapMultiplier</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Gui/Gizmos</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
      </layout>
     </widget>
    </item>
@@ -420,6 +547,11 @@
   <customwidget>
    <class>Gui::PrefComboBox</class>
    <extends>QComboBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

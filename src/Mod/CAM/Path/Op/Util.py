@@ -492,6 +492,8 @@ def getClearedAreas(currentOp, bbox):
         baseOp = PathDressup.baseOp(op)
         if baseOp.Name == currentOp.Name:
             break
+        if getattr(op, "RestMachiningPass", None):
+            op = baseOp
         if getattr(baseOp, "Active", False) and op.Path:
             tool = baseOp.ToolController.Tool
             diameter = tool.Diameter.getValueAs("mm")

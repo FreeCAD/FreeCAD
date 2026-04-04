@@ -371,9 +371,10 @@ class TestArchWall(TestArchBase.TestArchBase):
         )
 
     def test_wall_makeblocks(self):
-        """Test the 'MakeBlocks' feature of Arch Wall.
-        This is a regression test for https://github.com/FreeCAD/FreeCAD/issues/26982, and
-        a basic, functional test for the MakeBlocks code path.
+        """Test the 'MakeBlocks' feature for both based and baseless Arch Walls.
+        This is a regression test for https://github.com/FreeCAD/FreeCAD/issues/26982,
+        a unit test for https://github.com/FreeCAD/FreeCAD/issues/27817, and a basic, functional test for the
+        MakeBlocks code path.
         """
         operation = "Checking Arch Wall MakeBlocks functional correctness..."
         self.printTestMessage(operation)
@@ -383,25 +384,11 @@ class TestArchWall(TestArchBase.TestArchBase):
         BL, BH = 400.0, 200.0  # Block Length and Height
         O1, O2 = 0.0, 200.0  # Row offsets
 
-        # Create base line
-        p1 = App.Vector(0, 0, 0)
-        p2 = App.Vector(L, 0, 0)
-        line = Draft.makeLine(p1, p2)
-        self.document.recompute()
-
-        # Create wall based on line and block parameters
-        wall = Arch.makeWall(line, width=W, height=H)
-        wall.BlockLength = BL
-        wall.BlockHeight = BH
-        wall.Joint = 0  # For test and volume calculation simplicity
-        wall.OffsetFirst = O1
-        wall.OffsetSecond = O2
-
         def calc_row(row_start):
             """
             Simulates the 1D block-segmentation logic for a single horizontal course.
 
-            This helper replicates the "sawing" algorithm found in _Wall.execute:
+            This helper replicates the "sawing" algorithm found in _Wall._make_blocks:
             1. It places the first vertical joint at 'row_start'.
             2. It advances the cutting position by 'BlockLength' (BL).
             3. It measures the resulting segments between joints.
@@ -451,28 +438,43 @@ class TestArchWall(TestArchBase.TestArchBase):
             expected_entire += ent
             expected_broken += brk
 
-        # Enable the feature, triggering the #26982 bug via the code path in _Wall.execute()
-        wall.MakeBlocks = True
+        expected_vol = L * W * H
+
+        # Create both wall variants: one with a base line, one baseless
+        line = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(L, 0, 0))
+        self.document.recompute()
+        based_wall = Arch.makeWall(line, width=W, height=H)
+        baseless_wall = Arch.makeWall(None, length=L, width=W, height=H)
+
+        walls = {"based": based_wall, "baseless": baseless_wall}
+        for wall in walls.values():
+            wall.BlockLength = BL
+            wall.BlockHeight = BH
+            wall.Joint = 0  # For test and volume calculation simplicity
+            wall.OffsetFirst = O1
+            wall.OffsetSecond = O2
+            wall.MakeBlocks = True
         self.document.recompute()
 
-        # Regression check: did we crash?
-        self.assertFalse(wall.Shape.isNull(), "Wall shape should not be null")
+        for label, wall in walls.items():
+            with self.subTest(wall=label):
+                # Regression check
+                self.assertFalse(wall.Shape.isNull(), "Wall shape should not be null")
 
-        # Functional check: compare dynamic calculation to property values
-        self.assertEqual(
-            wall.CountEntire,
-            expected_entire,
-            f"Mismatch in Entire blocks. Expected {expected_entire}, got {wall.CountEntire}",
-        )
-        self.assertEqual(
-            wall.CountBroken,
-            expected_broken,
-            f"Mismatch in Broken blocks. Expected {expected_broken}, got {wall.CountBroken}",
-        )
+                # Functional check: block counts and volume correctness
+                self.assertEqual(
+                    wall.CountEntire,
+                    expected_entire,
+                    f"Mismatch in Entire blocks. Expected {expected_entire}, got {wall.CountEntire}",
+                )
+                self.assertEqual(
+                    wall.CountBroken,
+                    expected_broken,
+                    f"Mismatch in Broken blocks. Expected {expected_broken}, got {wall.CountBroken}",
+                )
 
-        # Integrity check: volume correctness
-        expected_vol = L * W * H
-        self.assertAlmostEqual(wall.Shape.Volume, expected_vol, places=3)
+                # Integrity check: volume correctness
+                self.assertAlmostEqual(wall.Shape.Volume, expected_vol, places=3)
 
     def test_debase_wall_stationary_children(self):
         """Test that debasing a wall does not shift its children in world space."""
