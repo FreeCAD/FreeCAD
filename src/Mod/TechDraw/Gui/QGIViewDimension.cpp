@@ -2193,6 +2193,8 @@ void QGIViewDimension::drawAngle(TechDraw::DrawViewDimension* dimension,
         arcRadius = arcRadii[selected];
         startRotation = copysign(startRotation, -handednessFactor);
 
+        m_cachedAngleLabelArcOffset = jointDirections[selected].Length() - arcRadius;
+
         drawDimensionArc(anglePath, angleVertex, arcRadius, endAngle, startRotation,
                          jointAngles[selected], labelRectangle, arrowCount, standardStyle,
                          flipArrows);
@@ -2217,6 +2219,9 @@ void QGIViewDimension::drawAngle(TechDraw::DrawViewDimension* dimension,
         arcRadius = labelDirection.Length()
             - placementFactor
                 * (labelRectangle.Height() * 0.5 + getIsoDimensionLineSpacing());
+
+        m_cachedAngleLabelArcOffset = labelDirection.Length() - arcRadius;
+
         if (arcRadius < 0.0) {
             arcRadius = labelDirection.Length();
         }
@@ -2228,6 +2233,7 @@ void QGIViewDimension::drawAngle(TechDraw::DrawViewDimension* dimension,
         // Text must remain horizontal, but it may split the leader line
         Base::Vector2d labelDirection(labelCenter - angleVertex);
         arcRadius = labelDirection.Length();
+        m_cachedAngleLabelArcOffset = labelDirection.Length() - arcRadius;
 
         drawDimensionArc(anglePath, angleVertex, arcRadius, endAngle, startRotation,
                          labelDirection.Angle(), labelRectangle, arrowCount, standardStyle,

@@ -90,6 +90,7 @@ public:
     virtual QGIDatumLabel* getDatumLabel() const { return datumLabel; }
     std::optional<double> getCachedDiameterLineAngle() const { return m_cachedDiameterLineAngle; }
     std::optional<double> getCachedAngleArcRadius() const { return m_cachedAngleArcRadius; }
+    std::optional<double> getCachedAngleLabelArcOffset() const { return m_cachedAngleLabelArcOffset; }
 
     void setNormalColorAll();
     TechDraw::DrawViewDimension* getDimFeat() { return dvDimension; }
@@ -230,6 +231,7 @@ private:
     mutable std::optional<double> m_cachedDiameterLineAngle;
     mutable std::optional<double> m_cachedDiameterLabelAngle;
     mutable std::optional<double> m_cachedAngleArcRadius;
+    mutable std::optional<double> m_cachedAngleLabelArcOffset;
 
     // needs Phase2 of autocorrect to be useful
     // QGCustomSvg* m_refFlag;

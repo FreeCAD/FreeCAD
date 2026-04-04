@@ -141,7 +141,10 @@ void QGIDatumLabel::snapPosition(QPointF& pos)
         return;
     }
 
-    // We only have snap for distances constraints
+    // We have snap for:
+    // distances constraints
+    // Angles
+    // Radius & Diameter
     std::string type = dim->Type.getValueAsString();
 
     auto* vp = freecad_cast<ViewProviderDimension*>(Gui::Application::Instance->getViewProvider(dim));
@@ -267,13 +270,12 @@ void QGIDatumLabel::snapPosition(QPointF& pos)
         auto cachedAngle = qgivd->getCachedDiameterLineAngle();
         if (!cachedAngle.has_value()) {
             return;
-        }
-        if (cachedAngle.has_value()) {
+        } else {
             radialDir = Base::Vector2d::FromPolar(1.0, -cachedAngle.value());
         }
         Base::Vector2d normal = radialDir.Perpendicular(true);
 
-        Base ::Vector2d mid = rotationCenter;  // for type == "Diameter"
+        Base::Vector2d mid = rotationCenter;  // for type == "Diameter"
         if (type == "Radius") {
             mid += (radius / 2.0) * radialDir;
         }
@@ -287,8 +289,6 @@ void QGIDatumLabel::snapPosition(QPointF& pos)
             double perpDist = toMid.x * normal.x + toMid.y * normal.y;
             double lineLabelDistance = tightBoundingRect().height() * 0.5
                 + Rez::guiX(qgivd->getIsoDimensionLineSpacing());
-
-            Base::Vector2d oldLabelCenter = labelCenter;
 
             if (std::abs(perpDist) > lineLabelDistance * 0.5) { // ISO Style
                 if (!m_snappedNormalOffset.has_value()) {
@@ -335,10 +335,9 @@ void QGIDatumLabel::snapPosition(QPointF& pos)
         Base::Vector2d labelCenter = Base::Vector2d(pos.x(), pos.y()) + toCenter;
         Base::Vector2d labelRadialDir(labelCenter - angleVertex);
         double selfLen = labelRadialDir.Length();
-
+        
         // find mid-point & check distance from label
-        Base ::Vector2d mid = angleVertex
-            + Base::Vector2d::FromPolar(labelRadialDir.Length(), normalDir.Angle());
+        Base ::Vector2d mid = angleVertex + Base::Vector2d::FromPolar(selfLen, normalDir.Angle());
 
         Base::Vector2d projPnt;
         projPnt.ProjectToLine(labelCenter - mid, normalDir);
@@ -359,17 +358,9 @@ void QGIDatumLabel::snapPosition(QPointF& pos)
             auto* dvp = dynamic_cast<TechDraw::DrawViewPart*>(qgiv->getViewObject());
             if (dvp) {
                 snapPercent = 0.2;  // <- copied from original implementation
-                std::vector<TechDraw::DrawViewDimension*> dims = dvp->getDimensions();
 
-                for (auto& d : dims) {
-                    if (d == dim) {
-                        continue;
-                    }
-
-                    std::string typei = d->Type.getValueAsString();
-                    if (typei != "Angle") {
-                        continue;
-                    }
+                for (auto& d : dvp->getDimensions()) {
+                    if (d == dim || std::string(d->Type.getValueAsString()) != "Angle") continue;
 
                     // get neighbour angle points
                     anglePoints nbrAP = d->getAnglePoints();
@@ -377,7 +368,6 @@ void QGIDatumLabel::snapPosition(QPointF& pos)
 
                     // check for a common origin
                     Base::Vector2d nbrAngleVertex = to2D(Rez::guiX(nbrAP.vertex()));
-                    // if ((nbrAngleVertex - angleVertex).Length()>Precision::Confusion()) continue;
 
                     // neighbour end & start angles
                     Base::Vector2d nbrFirDimPoint = to2D(Rez::guiX(nbrAP.first()));
@@ -396,59 +386,38 @@ void QGIDatumLabel::snapPosition(QPointF& pos)
                     auto labeli = qgivDi->getDatumLabel();
                     if (!labeli) continue;
 
-                    // Cached radii from QGIViewDimension
+                    // Cached values from QGIViewDimension
                     const double rNbr = Rez::guiX(qgivDi->getCachedAngleArcRadius().value_or(0.0));
-                    const double rSelf = Rez::guiX(qgivd->getCachedAngleArcRadius().value_or(0.0));
+                    const double offsetSelf = Rez::guiX(qgivd->getCachedAngleLabelArcOffset().value_or(0.0));
+                    double rSelf = selfLen - offsetSelf;
+
                     if (rNbr <= 0.0 || rSelf <= 0.0) continue;
 
-                    QPointF posi = labeli->pos();
-                    Base::Vector2d toCenteri = labeli->getPosToCenterVec();
-                    Base::Vector2d nbrLabelCenter = Base::Vector2d(posi.x(), posi.y()) + toCenteri;
-                    Base::Vector2d nbrLabelRadialDir(nbrLabelCenter - nbrAngleVertex);
+                    bool nbrEdge = std::fabs(nbrEndAngle - startAngle) < Precision::Angular()
+                        || std::fabs(nbrStartAngle - endAngle) < Precision::Angular();
+                    bool cascadeEdge = std::fabs(nbrStartAngle - startAngle) < Precision::Angular()
+                        || std::fabs(nbrEndAngle - endAngle) < Precision::Angular();
+                    bool shouldAlign = nbrEdge
+                        && std::fabs(rNbr - rSelf) < dimSpacing * snapPercent; 
+                    bool shouldCascade = cascadeEdge
+                        && std::fabs(std::fabs(rNbr-rSelf) - 2 * dimSpacing) < dimSpacing * snapPercent;
+                    if (!shouldAlign && !shouldCascade) continue;
 
-                    double nbrLen = nbrLabelRadialDir.Length();
-
-                    // Deltas (offsets from respective arcs)
-                    double dNbr = nbrLen - rNbr;
-                    double dSelf = selfLen - rSelf;
-                    dNbr = (dSelf > 0) ? abs(dNbr) : -abs(dNbr);
-                    nbrLen = rNbr + dNbr;
-
-
-                    bool shouldAlign = ((std::fabs(nbrEndAngle - startAngle) < Precision::Angular())
-                                        || (std::fabs(nbrStartAngle - endAngle) < Precision::Angular()))
-                                        && (std::fabs(nbrLen - selfLen) < dimSpacing * snapPercent);
-
-                    bool shouldCascade = ((std::fabs(nbrStartAngle - startAngle) < Precision::Angular())
-                                            || (std::fabs(nbrEndAngle - endAngle) < Precision::Angular()))
-                                            && (std::fabs(std::fabs(selfLen-nbrLen) - 2 * dimSpacing) < dimSpacing * snapPercent);
-
-
-                    Base::Vector2d candidate;
-                    bool isValidCandidate = shouldAlign || shouldCascade;
-
-                    // CASE A: snapping to nearby neighbors
-                    if (shouldAlign) {
-                        candidate = angleVertex + nbrLen * labelRadialDir.Normalize();
+                    double targetLen = shouldAlign
+                        ? rNbr + offsetSelf
+                        : rNbr + std::copysign(2 * dimSpacing, selfLen - rNbr) + offsetSelf;
+                    if (targetLen <= Precision::Confusion()) {
+                        continue;
                     }
-                    // CASE B: snapping at a certain distance away
-                    else if (shouldCascade) {
-                        // using 2x dimSpacing to avoid label being cut-off by perv dimension arc
-                        candidate = angleVertex + (nbrLen + 2 * std::copysign(dimSpacing, selfLen-nbrLen)) * labelRadialDir.Normalize();
-                    }
-
-
-                    if (isValidCandidate) {
-                        double distToCandidate = (candidate - labelCenter).Length();
-                        if (distToCandidate < nbrSnapDist) {
-                            nbrSnapPnt = candidate;
-                            nbrSnapDist = distToCandidate;
-                            shouldSnap2Nbr = true;
-                        }
-                    }
+                    Base::Vector2d candidate = angleVertex + (targetLen) * labelRadialDir.Normalize();
+                    double distToCandidate = (candidate - labelCenter).Length();
+                    if (distToCandidate < nbrSnapDist) {
+                        nbrSnapPnt = candidate;
+                        nbrSnapDist = distToCandidate;
+                        shouldSnap2Nbr = true;
+                    }              
                 }
-            }
-   
+            }   
         }
 
         Base::Vector2d finalCenter = labelCenter;
@@ -456,6 +425,7 @@ void QGIDatumLabel::snapPosition(QPointF& pos)
         if (shouldSnap2Center) {
             finalCenter = centerSnapPnt;
         }
+
         if(shouldSnap2Nbr)
         {
             Base::Vector2d dir = finalCenter - angleVertex;
