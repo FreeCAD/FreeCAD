@@ -143,7 +143,6 @@ public:
     void setNoticeText(const QString& string);
     void setNoticeVisible(bool visible);
 
-    bool focusFirstVisibleCheckbox();
     bool isCheckboxVisible(int checkboxindex);
     void setCheckboxFocus(int checkboxindex);
 

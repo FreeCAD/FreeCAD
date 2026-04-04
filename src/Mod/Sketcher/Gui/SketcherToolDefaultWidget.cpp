@@ -200,14 +200,10 @@ bool SketcherToolDefaultWidget::eventFilter(QObject* object, QEvent* event)
             }
         }
 
-        // Intercept Tab from a visible checkbox so the controller can move focus
-        // to the next checkbox or wrap back to the first spinbox.
         if (ke->key() == Qt::Key_Tab) {
             for (int i = 0; i < nCheckbox; i++) {
                 if (object == getCheckBox(i) && getCheckBox(i)->isVisible()) {
                     QTimer::singleShot(0, this, [this, i]() {
-                        // Encode checkbox index as (nParameters + i) so controller
-                        // can distinguish it from a parameter index.
                         signalParameterTabOrEnterPressed(nParameters + i);
                     });
                     return true;
@@ -614,21 +610,9 @@ void SketcherToolDefaultWidget::updateVisualValue(int parameterindex, double val
     THROWM(Base::IndexError, QT_TRANSLATE_NOOP("Exceptions", "ToolWidget parameter index out of range"));
 }
 
-bool SketcherToolDefaultWidget::focusFirstVisibleCheckbox()
-{
-    for (int i = 0; i < nCheckbox; i++) {
-        auto* cb = getCheckBox(i);
-        if (cb->isVisible()) {
-            cb->setFocus(Qt::TabFocusReason);
-            return true;
-        }
-    }
-    return false;
-}
-
 bool SketcherToolDefaultWidget::isCheckboxVisible(int checkboxindex)
 {
-    if (checkboxindex < nCheckbox) {
+    if (checkboxindex >= 0 && checkboxindex < nCheckbox) {
         return getCheckBox(checkboxindex)->isVisible();
     }
     return false;
@@ -636,7 +620,7 @@ bool SketcherToolDefaultWidget::isCheckboxVisible(int checkboxindex)
 
 void SketcherToolDefaultWidget::setCheckboxFocus(int checkboxindex)
 {
-    if (checkboxindex < nCheckbox) {
+    if (checkboxindex >= 0 && checkboxindex < nCheckbox) {
         getCheckBox(checkboxindex)->setFocus(Qt::TabFocusReason);
     }
 }
