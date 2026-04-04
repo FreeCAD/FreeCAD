@@ -829,9 +829,9 @@ class PathData:
         tagCount = 0
         currentLength += edge.Length
         if edge.Length >= minLength:
-            while lastTagLength + tagDistance < currentLength:
-                tagCount += 1
-                lastTagLength += tagDistance
+            steps = max(0, int((currentLength - lastTagLength - 1) // tagDistance))
+            tagCount += steps
+            lastTagLength += steps * tagDistance
             if tagCount > 0:
                 Path.Log.debug("      index=%d -> count=%d" % (index, tagCount))
                 edgeDict[index] = tagCount
