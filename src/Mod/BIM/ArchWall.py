@@ -578,11 +578,11 @@ class _Wall(ArchComponent.Component):
             # TODO For consistency in IFC and proper display of materials and
             # colour, fusing to be done in getExtrusionData() rather than below
             #
-            solidsGrp  = []
-            self.solidsNumLst  = []
+            solidsGrp = []
+            self.solidsNumLst = []
             for solidCmpd in solids:  # Nos. of solidCmpd = nos. of Layers
                 fusedSolids = None
-                if hasattr(solidCmpd, 'Solids'):  # always has 'Solids'?
+                if hasattr(solidCmpd, "Solids"):  # always has 'Solids'?
                     for solid in solidCmpd.Solids:
                         fusedSolids = fusedSolids.fuse(solid) if fusedSolids else solid
                     solidsGrp.append(fusedSolids)
@@ -662,7 +662,7 @@ class _Wall(ArchComponent.Component):
             if self.layersNum == 1:
                 for w in self.connectEdges:
                     for e in w:
-                        l += e.Length    
+                        l += e.Length
                 l = l / 2
             else:  # if there are layers, check 1st and last layers only
                 # 1 pair of offset/connected edge for each wire
@@ -675,14 +675,14 @@ class _Wall(ArchComponent.Component):
                 for i in range(0, n, 2):
                     for e in p1[i]:
                         l1p1 += e.Length
-                    for e in p1[i+1]:
+                    for e in p1[i + 1]:
                         l1p2 += e.Length
                     for e in pn[i]:
                         lnp1 += e.Length
-                    for e in pn[i+1]:
+                    for e in pn[i + 1]:
                         lnp2 += e.Length
                 llist = [l1p1, l1p2, lnp1, lnp2]
-                l = (max(llist) + min(llist))/2
+                l = (max(llist) + min(llist)) / 2
             if obj.Length.Value != l:
                 obj.Length = l
                 self.oldLength = (
@@ -1198,7 +1198,7 @@ class _Wall(ArchComponent.Component):
                         #         [e1, e2, e3, e4], [e5], [e6]...]
                         layersAll = []
                         layersAll = [item for item in layers for _ in range(self.wiresNum)]
-                        # e.g. layers of 
+                        # e.g. layers of
                         #      [10, 70, 20]
                         # with multiple wires in Sketch (self.wiresNum) becomes:
                         #      [10, 10, 10 ...
@@ -1281,7 +1281,7 @@ class _Wall(ArchComponent.Component):
                                     # off = off+layeroffset  # off is no longer used
                                     offsets = [x + layeroffset for x in offsets]
                                     dvec.multiply(curWidth[0])
-                                    if (i+1) % self.wiresNum == 0:
+                                    if (i + 1) % self.wiresNum == 0:
                                         layeroffset += abs(curWidth[0])
                                 else:
                                     curWidth = widths
@@ -1332,7 +1332,7 @@ class _Wall(ArchComponent.Component):
                                     # off = off+layeroffset  # off is no longer used
                                     offsets = [x + layeroffset for x in offsets]
                                     dvec.multiply(curWidth[0])
-                                    if (i+1) % self.wiresNum == 0:
+                                    if (i + 1) % self.wiresNum == 0:
                                         layeroffset += abs(curWidth[0])
                                 else:
                                     curWidth = widths
@@ -1417,7 +1417,7 @@ class _Wall(ArchComponent.Component):
                                         basewireOffset=offsetListC,
                                         wireNedge=True,
                                     )
-                                    if (i+1) % self.wiresNum == 0:
+                                    if (i + 1) % self.wiresNum == 0:
                                         layeroffset += abs(curWidth[0])
                                 else:
                                     dvec.multiply(width)
@@ -1460,7 +1460,7 @@ class _Wall(ArchComponent.Component):
                             #      [ [e1, e2, e3, e4], [e5], [e6] ]
                             # become self.connectEdges
                             # (w/o layers)
-                            #      [ [c1-2, c2-2, c3-2, c4-2], 
+                            #      [ [c1-2, c2-2, c3-2, c4-2],
                             #        [c1-1, c2-1, c3-1, c4-1],
                             #        [c5-2],
                             #        [c5-1],
@@ -1507,8 +1507,8 @@ class _Wall(ArchComponent.Component):
                         # Group faces into sub-list:  Each sub-list contains
                         # faces generate from all wires in a Skech for 1 layer,
                         # number of sub-list is number of layers (+ve value)
-                        n =self.wiresNum
-                        basefaceGroup = [baseface[i:i + n] for i in range(0, len(baseface), n)]
+                        n = self.wiresNum
+                        basefaceGroup = [baseface[i : i + n] for i in range(0, len(baseface), n)]
                         basefaceGroupCmpd = []
                         for faces in basefaceGroup:
                             basefaceGroupCmpd.append(Part.Compound(faces))
@@ -2048,10 +2048,12 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
                             if obj.Material.Thicknesses[i] >= 0
                         ]
                         # multi-materials with multiple wires (solids) support
-                        if hasattr(obj.Proxy,'solidsNumLst'):
+                        if hasattr(obj.Proxy, "solidsNumLst"):
                             counts = obj.Proxy.solidsNumLst
-                            activematerials = [a for a, c in zip(activematerials, counts) for _ in range(c)]
-                            # e.g. activematerials of 
+                            activematerials = [
+                                a for a, c in zip(activematerials, counts) for _ in range(c)
+                            ]
+                            # e.g. activematerials of
                             #      [m1, m2, m3]
                             # with multiple solids in layers (self.solidsNumLst)
                             #      [1, 2, 3]
