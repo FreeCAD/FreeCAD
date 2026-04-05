@@ -146,7 +146,6 @@ void QGIDatumLabel::snapPosition(QPointF& pos)
     // Angles
     // Radius & Diameter
     std::string type = dim->Type.getValueAsString();
-    Base::Console().message("%s\n",type);
 
     auto* vp = freecad_cast<ViewProviderDimension*>(Gui::Application::Instance->getViewProvider(dim));
     if (!vp || !vp->AllowSnap.getValue()) {
@@ -394,8 +393,6 @@ void QGIDatumLabel::snapPosition(QPointF& pos)
                     double rSelf = selfLen - offsetSelf;
 
                     if (rNbr <= 0.0 || rSelf <= 0.0) continue;
-
-                    Base::Console().message("point 4\n");
 
                     bool nbrEdge = std::fabs(nbrEndAngle - startAngle) < Precision::Angular()
                         || std::fabs(nbrStartAngle - endAngle) < Precision::Angular();
