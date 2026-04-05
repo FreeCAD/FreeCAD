@@ -25,9 +25,12 @@
 #include <boost/statechart/state_machine.hpp>
 #include <boost/statechart/state.hpp>
 
+#include <App/Application.h>
+#include <App/Document.h>
 #include "Camera.h"
 #include "NavigationStateChart.h"
 #include "View3DInventorViewer.h"
+#include "Selection/BoxSelection.h"
 
 
 using namespace Gui;
@@ -149,6 +152,46 @@ NavigationStateChart::NavigationStateChart()
 NavigationStateChart::~NavigationStateChart()
 {
     naviMachine.reset();
+}
+
+void NavigationStateChart::doSelect(void* ud, SoEventCallback* cb)
+{
+    auto self = static_cast<NavigationStateChart*>(ud);
+    self->removeSelectionCallback();
+    auto viewer = static_cast<Gui::View3DInventorViewer*>(cb->getUserData());
+
+    App::Document* doc = App::GetApplication().getActiveDocument();
+    if (doc) {
+        cb->setHandled();
+
+        const SoEvent* ev = cb->getEvent();
+        if (ev && !ev->wasCtrlDown()) {
+            Gui::Selection().clearSelection(doc->getName());
+        }
+
+        BoxSelection select(doc, viewer);
+        select.perform(true);
+    }
+}
+
+void NavigationStateChart::addSelectionCallback()
+{
+    addEventCallback(SoEvent::getClassTypeId(), &NavigationStateChart::doSelect, this);
+}
+
+void NavigationStateChart::removeSelectionCallback()
+{
+    removeEventCallback(SoEvent::getClassTypeId(), &NavigationStateChart::doSelect, this);
+}
+
+void NavigationStateChart::addEventCallback(SoType eventtype, SoEventCallbackCB* cb, void* userdata)
+{
+    viewer->addEventCallback(eventtype, cb, userdata);
+}
+
+void NavigationStateChart::removeEventCallback(SoType eventtype, SoEventCallbackCB* cb, void* userdata)
+{
+    viewer->removeEventCallback(eventtype, cb, userdata);
 }
 
 SbBool NavigationStateChart::processSoEvent(const SoEvent* const ev)

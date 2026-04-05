@@ -396,6 +396,7 @@ struct NS::SelectionState: public sc::state<NS::SelectionState, NS::NaviMachine>
         mbe.setPosition(pos);
 
         auto& ns = this->outermost_context().ns;
+        ns.addSelectionCallback();
         ns.processEvent(&mbe);
     }
 

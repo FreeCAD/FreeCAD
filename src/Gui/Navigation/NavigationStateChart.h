@@ -26,6 +26,7 @@
 
 #include <boost/statechart/event.hpp>
 #include <Gui/Navigation/NavigationStyle.h>
+#include <Inventor/nodes/SoEventCallback.h>
 
 // NOLINTBEGIN(cppcoreguidelines-avoid*, readability-avoid-const-params-in-decls)
 namespace Gui
@@ -102,9 +103,17 @@ public:
     NavigationStateChart();
     ~NavigationStateChart() override;
 
+    void addSelectionCallback();
+    void removeSelectionCallback();
+    void addEventCallback(SoType eventtype, SoEventCallbackCB* cb, void* userdata = nullptr);
+    void removeEventCallback(SoType eventtype, SoEventCallbackCB* cb, void* userdata = nullptr);
+
 protected:
     SbBool processSoEvent(const SoEvent* const ev) override;
     std::unique_ptr<NaviStateMachine> naviMachine;  // NOLINT
+
+private:
+    static void doSelect(void* ud, SoEventCallback* cb);
 };
 
 class GuiExport NaviStateMachine
