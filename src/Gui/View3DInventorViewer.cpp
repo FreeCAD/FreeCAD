@@ -1102,33 +1102,10 @@ void View3DInventorViewer::resetEditingRoot(bool updateLinks)
             ViewProviderLink::updateLinks(editViewProvider);
         }
     }
-    catch (const Py::Exception& e) {
-        /* coverity[UNCAUGHT_EXCEPT] Uncaught exception */
-        // Coverity created several reports when removeViewProvider()
-        // is used somewhere in a destructor which indirectly invokes
-        // resetEditingRoot().
-        // Now theoretically Py::type can throw an exception which nowhere
-        // will be handled and thus terminates the application. So, add an
-        // extra try/catch block here.
-        try {
-            Py::Object py = Py::type(e);
-            if (py.isString()) {
-                Py::String str(py);
-                Base::Console().warning("%s\n", str.as_std_string("utf-8").c_str());
-            }
-            else {
-                Py::String str(py.repr());
-                Base::Console().warning("%s\n", str.as_std_string("utf-8").c_str());
-            }
-            // Prints message to console window if we are in interactive mode
-            PyErr_Print();
-        }
-        catch (Py::Exception& e) {
-            e.clear();
-            Base::Console().error(
-                "Unexpected exception raised in View3DInventorViewer::resetEditingRoot\n"
-            );
-        }
+    catch (const Py::Exception&) {
+        // resetEditingRoot() can be reached while tearing down view providers,
+        // so keep Python callback failures confined to traceback reporting.
+        PyErr_Print();
     }
 }
 
