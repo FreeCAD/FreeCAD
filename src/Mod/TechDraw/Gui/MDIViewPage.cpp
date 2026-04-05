@@ -25,6 +25,7 @@
 #include <QAction>
 #include <QApplication>
 #include <QContextMenuEvent>
+#include <QMdiSubWindow>
 #include <QMenu>
 #include <QMessageBox>
 #include <QPageLayout>
@@ -160,13 +161,31 @@ void MDIViewPage::closeEvent(QCloseEvent* event)
         App::Document* doc = _pcDocument->getDocument();
         if (doc) {
             App::DocumentObject* obj = doc->getObject(m_objectName.c_str());
-            Gui::ViewProvider* vp = _pcDocument->getViewProvider(obj);
-            if (vp) {
-                vp->hide();
+            if (auto* vpPage = freecad_cast<ViewProviderPage*>(
+                    _pcDocument->getViewProvider(obj))) {
+                // Don't call vpPage->hide() here: that path calls removeMDIView()
+                // -> removeWindow() -> setParent(nullptr) re-entrantly from
+                // inside QMdiSubWindow::closeEvent, making it briefly top-level.
+                vpPage->onMDIViewClosed();
             }
         }
     }
     blockSceneSelection(false);
+}
+
+void MDIViewPage::closeWithoutSavePrompt()
+{
+    // Close through the normal Qt sequence
+    bool savedPassive = bIsPassive;
+    bIsPassive = true;
+    QWidget* parent = parentWidget();
+    if (qobject_cast<QMdiSubWindow*>(parent)) {
+        parent->close();
+    }
+    else {
+        close();
+    }
+    bIsPassive = savedPassive;
 }
 
 void MDIViewPage::onDeleteObject(const App::DocumentObject& obj)

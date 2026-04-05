@@ -102,6 +102,7 @@ public:
     ViewProviderPage* getViewProviderPage() {return m_vpPage;}
 
     void setTabText(std::string tabText);
+    void closeWithoutSavePrompt();
 
     void contextMenuEvent(QContextMenuEvent *event) override;
 
