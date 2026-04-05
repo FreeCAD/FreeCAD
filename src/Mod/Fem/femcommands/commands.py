@@ -1171,6 +1171,32 @@ class _SolverZ88(CommandManager):
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_expand_noset_edit"
 
+    def Activated(self):
+        FreeCAD.ActiveDocument.openTransaction(f"Create Fem SolverZ88")
+        FreeCADGui.addModule("ObjectsFem")
+        FreeCADGui.addModule("FemGui")
+        # expand parent obj in tree view if selected
+        expandParentObject()
+        # add the object
+        FreeCADGui.doCommand("ObjectsFem.makeSolverZ88(FreeCAD.ActiveDocument)")
+        # select only added object
+        FreeCADGui.doCommand(
+            "FemGui.getActiveAnalysis().addObject(FreeCAD.ActiveDocument.ActiveObject)"
+        )
+        z88_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Z88")
+        solver_type = z88_prefs.GetString("Solver", "sorcg")
+        maxgs = z88_prefs.GetInt("MaxGS", 100000000)
+        maxkoi = z88_prefs.GetInt("MaxKOI", 2800000)
+
+        FreeCADGui.doCommand(f"FreeCAD.ActiveDocument.ActiveObject.SolverType = '{solver_type}'")
+        FreeCADGui.doCommand(f"FreeCAD.ActiveDocument.ActiveObject.MatrixMaximum = {maxgs}")
+        FreeCADGui.doCommand(f"FreeCAD.ActiveDocument.ActiveObject.VectorMaximum = {maxkoi}")
+
+        FreeCADGui.Selection.clearSelection()
+        FreeCADGui.doCommand(
+            "FreeCADGui.Selection.addSelection(FreeCAD.ActiveDocument.ActiveObject)"
+        )
+
 
 class _PostFilterGlyph(CommandManager):
     "The FEM_PostFilterGlyph command definition"

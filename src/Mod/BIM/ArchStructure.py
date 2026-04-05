@@ -218,16 +218,21 @@ class _CommandStructure:
 
         return not FreeCAD.ActiveDocument is None
 
+    def _loadDimensions(self):
+        """Load Width/Height/Length from mode-specific params.
+
+        Each mode persists its own set of dimensions so that switching between beam and column
+        doesn't pollute one mode's values with the other's.
+        """
+        prefix = "Beam" if self.mode == StructureMode.BEAM else "Column"
+        self.Width = params.get_param_arch(prefix + "Width")
+        self.Height = params.get_param_arch(prefix + "Height")
+        self.Length = params.get_param_arch(prefix + "Length")
+
     def Activated(self):
 
         self.doc = FreeCAD.ActiveDocument
-        self.Width = params.get_param_arch("StructureWidth")
-        if self.mode == StructureMode.BEAM:
-            self.Height = params.get_param_arch("StructureLength")
-            self.Length = params.get_param_arch("StructureHeight")
-        else:
-            self.Length = params.get_param_arch("StructureLength")
-            self.Height = params.get_param_arch("StructureHeight")
+        self._loadDimensions()
         self.Profile = None
         self.bpoint = None
         self.precastvalues = None
@@ -313,7 +318,7 @@ class _CommandStructure:
         FreeCADGui.addModule("WorkingPlane")
         if self.mode == StructureMode.BEAM:
             self.Length = point.sub(self.bpoint).Length
-            params.set_param_arch("StructureHeight", self.Length)
+            params.set_param_arch("BeamLength", self.Length)
         if self.Profile is not None:
             try:  # try to update latest precast values - fails if dialog has been destroyed already
                 self.precastvalues = self.precast.getValues()
@@ -449,14 +454,7 @@ class _CommandStructure:
         # length
         label1 = QtGui.QLabel(translate("Arch", "Length"))
         self.vLength = ui.createWidget("Gui::InputField")
-        if self.mode == StructureMode.BEAM:
-            self.vLength.setText(
-                FreeCAD.Units.Quantity(self.Height, FreeCAD.Units.Length).UserString
-            )
-        else:
-            self.vLength.setText(
-                FreeCAD.Units.Quantity(self.Length, FreeCAD.Units.Length).UserString
-            )
+        self.vLength.setText(FreeCAD.Units.Quantity(self.Length, FreeCAD.Units.Length).UserString)
         grid.addWidget(label1, 4, 0, 1, 1)
         grid.addWidget(self.vLength, 4, 1, 1, 1)
 
@@ -470,14 +468,7 @@ class _CommandStructure:
         # height
         label3 = QtGui.QLabel(translate("Arch", "Height"))
         self.vHeight = ui.createWidget("Gui::InputField")
-        if self.mode == StructureMode.BEAM:
-            self.vHeight.setText(
-                FreeCAD.Units.Quantity(self.Length, FreeCAD.Units.Length).UserString
-            )
-        else:
-            self.vHeight.setText(
-                FreeCAD.Units.Quantity(self.Height, FreeCAD.Units.Length).UserString
-            )
+        self.vHeight.setText(FreeCAD.Units.Quantity(self.Height, FreeCAD.Units.Length).UserString)
         grid.addWidget(label3, 6, 0, 1, 1)
         grid.addWidget(self.vHeight, 6, 1, 1, 1)
 
@@ -546,29 +537,26 @@ class _CommandStructure:
                 else:
                     self.tracker.off()
 
+    def _paramPrefix(self):
+        return "Beam" if self.mode == StructureMode.BEAM else "Column"
+
     def setWidth(self, d):
 
         self.Width = d
         self.tracker.width(d)
-        params.set_param_arch("StructureWidth", d)
+        params.set_param_arch(self._paramPrefix() + "Width", d)
 
     def setHeight(self, d):
 
         self.Height = d
         self.tracker.height(d)
-        if self.mode == StructureMode.BEAM:
-            params.set_param_arch("StructureLength", d)
-        else:
-            params.set_param_arch("StructureHeight", d)
+        params.set_param_arch(self._paramPrefix() + "Height", d)
 
     def setLength(self, d):
 
         self.Length = d
         self.tracker.length(d)
-        if self.mode == StructureMode.BEAM:
-            params.set_param_arch("StructureHeight", d)
-        else:
-            params.set_param_arch("StructureLength", d)
+        params.set_param_arch(self._paramPrefix() + "Length", d)
 
     def setCategory(self, i):
 
@@ -606,26 +594,37 @@ class _CommandStructure:
                     self.dents.form.hide()
                 params.set_param_arch("StructurePreset", self.Profile)
             else:
-                self.vLength.setText(
-                    FreeCAD.Units.Quantity(float(elt[4]), FreeCAD.Units.Length).UserString
-                )
-                self.vWidth.setText(
-                    FreeCAD.Units.Quantity(float(elt[5]), FreeCAD.Units.Length).UserString
-                )
+                # elt[4] is the cross-section depth, elt[5] is the cross-section width.
+                # For beams the cross-section depth is Height; for columns it is Length.
+                depth = float(elt[4])
+                width = float(elt[5])
+                if self.mode == StructureMode.BEAM:
+                    self.vHeight.setText(
+                        FreeCAD.Units.Quantity(depth, FreeCAD.Units.Length).UserString
+                    )
+                    self.setHeight(depth)
+                else:
+                    self.vLength.setText(
+                        FreeCAD.Units.Quantity(depth, FreeCAD.Units.Length).UserString
+                    )
+                    self.setLength(depth)
+                self.vWidth.setText(FreeCAD.Units.Quantity(width, FreeCAD.Units.Length).UserString)
+                self.setWidth(width)
                 self.Profile = elt
                 params.set_param_arch("StructurePreset", ";".join([str(i) for i in self.Profile]))
 
     def switchLH(self, beam_toggled):
 
-        if beam_toggled:
-            self.mode = StructureMode.BEAM
-            if self.Height > self.Length:
-                self.rotateLH()
-        else:
-            self.mode = StructureMode.COLUMN
-            if self.Length > self.Height:
-                self.rotateLH()
-                self.tracker.setRotation(FreeCAD.Rotation())
+        self.mode = StructureMode.BEAM if beam_toggled else StructureMode.COLUMN
+        self._loadDimensions()
+        self.vWidth.setText(FreeCAD.Units.Quantity(self.Width, FreeCAD.Units.Length).UserString)
+        self.vHeight.setText(FreeCAD.Units.Quantity(self.Height, FreeCAD.Units.Length).UserString)
+        self.vLength.setText(FreeCAD.Units.Quantity(self.Length, FreeCAD.Units.Length).UserString)
+        self.tracker.width(self.Width)
+        self.tracker.height(self.Height)
+        self.tracker.length(self.Length)
+        if self.mode == StructureMode.COLUMN:
+            self.tracker.setRotation(FreeCAD.Rotation())
 
     def rotateLH(self):
 

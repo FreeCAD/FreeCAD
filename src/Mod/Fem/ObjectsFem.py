@@ -964,9 +964,22 @@ def makeSolverMystran(doc, name="SolverMystran"):
 def makeSolverZ88(doc, name="SolverZ88"):
     """makeSolverZ88(document, [name]):
     makes a Z88 solver object"""
-    import femsolver.z88.solver
+    obj = doc.addObject("Fem::FemSolverObjectPython", name)
+    from femobjects import solver_z88
 
-    obj = femsolver.z88.solver.create(doc, name)
+    solver_z88.SolverZ88(obj)
+
+    # some default values
+    obj.IntegrationOrderHexa = "3"
+    obj.IntegrationOrderQuad = "3"
+    obj.IntegrationOrderTetra = "4"
+    obj.IntegrationOrderTria = "7"
+    obj.ShellFlag = 3
+
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_solver_z88
+
+        view_solver_z88.VPSolverZ88(obj.ViewObject)
     return obj
 
 

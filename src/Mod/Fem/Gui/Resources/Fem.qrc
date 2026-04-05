@@ -158,6 +158,7 @@
         <file>ui/SolverCalculiX.ui</file>
         <file>ui/SolverCcxTools.ui</file>
         <file>ui/SolverElmer.ui</file>
+        <file>ui/SolverZ88.ui</file>
         <file>ui/TaskPostGlyph.ui</file>
     </qresource>
 </RCC>
