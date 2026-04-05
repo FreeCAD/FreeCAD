@@ -57,6 +57,10 @@
 
 // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-pro-bounds-pointer-arithmetic)
 constexpr const float ZCONSTR {0.006F};
+// Z offset for extension lines. Must be above external geometry (Z=0) to avoid Z-fighting
+// when looking face-on at a sketch attached to a face, but below sketch geometry (Z>=0.005)
+// so extension lines render behind sketch lines as intended.
+constexpr const float ZEXT_LINE {0.002F};
 // Z offset for arrowheads and text to render them ON TOP of geometry lines.
 // Geometry lines are at Z ~0.005-0.008, so this offset ensures arrowheads
 // and text selection primitives are above them and remain selectable.
@@ -85,7 +89,8 @@ void glVertexes(const std::vector<SbVec3f>& pts)
 void glDrawLine(const SbVec3f& p1, const SbVec3f& p2)
 {
     glBegin(GL_LINES);
-    glVertexes({p1, p2});
+    glVertex3f(p1[0], p1[1], ZEXT_LINE);
+    glVertex3f(p2[0], p2[1], ZEXT_LINE);
     glEnd();
 }
 
@@ -109,7 +114,7 @@ void glDrawArc(
     for (int i = 0; i < countSegments; i++) {
         float theta = startAngle + segment * i;
         SbVec3f v1 = center + radius * SbVec3f(cos(theta), sin(theta), 0);
-        glVertex(v1);
+        glVertex3f(v1[0], v1[1], ZEXT_LINE);
     }
     glEnd();
 }
@@ -1191,11 +1196,10 @@ void SoDatumLabel::GLRender(SoGLRenderAction* action)
     glDisable(GL_LIGHTING);
     glDisable(GL_CULL_FACE);
 
-    // Explicitly enable depth testing for constraint lines. This is needed because the
-    // constraint group may have depth testing disabled (to allow icons to render on top),
-    // but we want constraint LINES to render BELOW geometry lines.
-    // Arrowheads are drawn at elevated Z (ZARROW_TEXT_OFFSET) so they render on top.
-    // Text rendering disables depth testing separately.
+    // Enable depth testing so extension lines render below sketch geometry.
+    // Extension lines are drawn at ZEXT_LINE (above external geometry at Z=0
+    // but below sketch geometry at Z>=0.005), so they remain visible on
+    // face-attached sketches while correctly rendering behind sketch lines.
     glEnable(GL_DEPTH_TEST);
 
     // Enable Anti-alias
@@ -1289,18 +1293,18 @@ void SoDatumLabel::drawDistance(const SbVec3f* points, float& angle, SbVec3f& te
     // Perp Lines
     glBegin(GL_LINES);
     if (this->param1.getValue() != 0.) {
-        glVertex2f(geom.p1[0], geom.p1[1]);
-        glVertex2f(geom.perp1[0], geom.perp1[1]);
+        glVertex3f(geom.p1[0], geom.p1[1], ZEXT_LINE);
+        glVertex3f(geom.perp1[0], geom.perp1[1], ZEXT_LINE);
 
-        glVertex2f(geom.p2[0], geom.p2[1]);
-        glVertex2f(geom.perp2[0], geom.perp2[1]);
+        glVertex3f(geom.p2[0], geom.p2[1], ZEXT_LINE);
+        glVertex3f(geom.perp2[0], geom.perp2[1], ZEXT_LINE);
     }
 
-    glVertex2f(geom.par1[0], geom.par1[1]);
-    glVertex2f(geom.par2[0], geom.par2[1]);
+    glVertex3f(geom.par1[0], geom.par1[1], ZEXT_LINE);
+    glVertex3f(geom.par2[0], geom.par2[1], ZEXT_LINE);
 
-    glVertex2f(geom.par3[0], geom.par3[1]);
-    glVertex2f(geom.par4[0], geom.par4[1]);
+    glVertex3f(geom.par3[0], geom.par3[1], ZEXT_LINE);
+    glVertex3f(geom.par4[0], geom.par4[1], ZEXT_LINE);
     glEnd();
 
     // Draw the arrowheads at elevated Z to render ON TOP of geometry lines
@@ -1349,11 +1353,11 @@ void SoDatumLabel::drawRadiusOrDiameter(const SbVec3f* points, float& angle, SbV
 
     // Draw the Lines
     glBegin(GL_LINES);
-    glVertex2f(geom.p1[0], geom.p1[1]);
-    glVertex2f(geom.pnt1[0], geom.pnt1[1]);
+    glVertex3f(geom.p1[0], geom.p1[1], ZEXT_LINE);
+    glVertex3f(geom.pnt1[0], geom.pnt1[1], ZEXT_LINE);
 
-    glVertex2f(geom.pnt2[0], geom.pnt2[1]);
-    glVertex2f(geom.p2[0], geom.p2[1]);
+    glVertex3f(geom.pnt2[0], geom.pnt2[1], ZEXT_LINE);
+    glVertex3f(geom.p2[0], geom.p2[1], ZEXT_LINE);
     glEnd();
 
     // Draw arrowhead at elevated Z to render ON TOP of geometry lines
