@@ -146,6 +146,7 @@ void QGIDatumLabel::snapPosition(QPointF& pos)
     // Angles
     // Radius & Diameter
     std::string type = dim->Type.getValueAsString();
+    Base::Console().message("%s\n",type);
 
     auto* vp = freecad_cast<ViewProviderDimension*>(Gui::Application::Instance->getViewProvider(dim));
     if (!vp || !vp->AllowSnap.getValue()) {
@@ -308,7 +309,7 @@ void QGIDatumLabel::snapPosition(QPointF& pos)
         }
     }
     // 3. Angle snap
-    else if (type == "Angle") {
+    else if (type == "Angle" || type == "Angle3Pt") {
         snapPercent = 0.4;  // <- copied from original implementation
 
         anglePoints ap = dim->getAnglePoints();
@@ -360,7 +361,8 @@ void QGIDatumLabel::snapPosition(QPointF& pos)
                 snapPercent = 0.2;  // <- copied from original implementation
 
                 for (auto& d : dvp->getDimensions()) {
-                    if (d == dim || std::string(d->Type.getValueAsString()) != "Angle") continue;
+                    const std::string nbrType = d->Type.getValueAsString();
+                    if (d == dim || (nbrType != "Angle" && nbrType != "Angle3Pt")) continue;
 
                     // get neighbour angle points
                     anglePoints nbrAP = d->getAnglePoints();
@@ -392,6 +394,8 @@ void QGIDatumLabel::snapPosition(QPointF& pos)
                     double rSelf = selfLen - offsetSelf;
 
                     if (rNbr <= 0.0 || rSelf <= 0.0) continue;
+
+                    Base::Console().message("point 4\n");
 
                     bool nbrEdge = std::fabs(nbrEndAngle - startAngle) < Precision::Angular()
                         || std::fabs(nbrStartAngle - endAngle) < Precision::Angular();
