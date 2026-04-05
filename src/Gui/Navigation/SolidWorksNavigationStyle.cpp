@@ -253,10 +253,8 @@ SbBool SolidWorksNavigationStyle::processSoEvent(const SoEvent* const ev)
         ALTDOWN = 1 << 5
     };
     unsigned int combo = (this->button1down ? BUTTON1DOWN : 0)
-        | (this->button2down ? BUTTON2DOWN : 0)
-        | (this->button3down ? BUTTON3DOWN : 0)
-        | (this->ctrldown ? CTRLDOWN : 0)
-        | (this->shiftdown ? SHIFTDOWN : 0)
+        | (this->button2down ? BUTTON2DOWN : 0) | (this->button3down ? BUTTON3DOWN : 0)
+        | (this->ctrldown ? CTRLDOWN : 0) | (this->shiftdown ? SHIFTDOWN : 0)
         | (this->altdown ? ALTDOWN : 0);
 
     switch (combo) {
