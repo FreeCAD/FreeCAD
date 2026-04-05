@@ -80,6 +80,7 @@ def RePopulateIcons():
     a10.setIcon(QtGui.QIcon(":/icons/NavigationSolidWorks_" + StyleSheetType + ".svg"))
     a11.setIcon(QtGui.QIcon(":/icons/NavigationTinkerCAD_" + StyleSheetType + ".svg"))
     a12.setIcon(QtGui.QIcon(":/icons/NavigationTouchpad_" + StyleSheetType + ".svg"))
+    a13.setIcon(QtGui.QIcon(":/icons/NavigationOnshape_" + StyleSheetType + ".svg"))
 
 
 def retranslateUi():
@@ -780,6 +781,11 @@ a12.setText("Touchpad  ")
 a12.setData("Gui::TouchpadNavigationStyle")
 a12.setObjectName("Indicator_NavigationTouchpad")
 
+a13 = QtGui.QAction(gStyle)
+a13.setText("Onshape  ")
+a13.setData("Gui::OnshapeNavigationStyle")
+a13.setObjectName("Indicator_NavigationOnshape")
+
 RePopulateIcons()
 
 menu.addMenu(menuSettings)
@@ -789,6 +795,7 @@ menu.addAction(a1)
 menu.addAction(a2)
 menu.addAction(a3)
 menu.addAction(a4)
+menu.addAction(a13)
 menu.addAction(a5)
 menu.addAction(a6)
 menu.addAction(a7)

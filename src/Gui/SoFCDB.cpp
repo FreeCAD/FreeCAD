@@ -58,6 +58,7 @@
 #include "Inventor/Draggers/Gizmo.h"
 #include "Navigation/GestureNavigationStyle.h"
 #include "Navigation/NavigationStyle.h"
+#include "Navigation/OnshapeNavigationStyle.h"
 #include "Navigation/SiemensNXNavigationStyle.h"
 #include "SelectionObject.h"
 #include "SoDevicePixelRatioElement.h"
@@ -214,6 +215,7 @@ void Gui::SoFCDB::init()
     CADNavigationStyle ::init();
     GestureNavigationStyle ::init();
     MayaGestureNavigationStyle ::init();
+    OnshapeNavigationStyle ::init();
     OpenCascadeNavigationStyle ::init();
     InventorNavigationStyle ::init();
     OpenSCADNavigationStyle ::init();
