@@ -31,6 +31,7 @@
 
 #include <QCursor>
 #include <QImage>
+#include <QLabel>
 
 #include <Inventor/SbRotation.h>
 #include <Inventor/nodes/SoEnvironment.h>
@@ -612,6 +613,8 @@ private:
 
     // stuff needed to draw the fps counter
     bool fpsEnabled;
+    QLabel* fpsCounter = nullptr;
+    unsigned long previousAxisLetterColor = 0;
     bool vboEnabled;
     bool naviCubeEnabled;
 

@@ -40,6 +40,7 @@ import Fem
 
 from . import writer
 from .. import settings
+from .calculixutils import define_masks
 
 from femmesh import meshsetsgetter
 from femtools import membertools
@@ -73,6 +74,19 @@ class CalculiXTools(ObjectTools):
             mesh_obj,
             membertools.AnalysisMember(self.analysis),
         )
+        # set masks
+        masks = define_masks(self.obj)
+        meshdatagetter.mask_tria3 = masks["tria3"]
+        meshdatagetter.mask_tria6 = masks["tria6"]
+        meshdatagetter.mask_quad4 = masks["quad4"]
+        meshdatagetter.mask_quad8 = masks["quad8"]
+        meshdatagetter.mask_tetra4 = masks["tetra4"]
+        meshdatagetter.mask_tetra10 = masks["tetra10"]
+        meshdatagetter.mask_hexa8 = masks["hexa8"]
+        meshdatagetter.mask_hexa20 = masks["hexa20"]
+        meshdatagetter.mask_penta6 = masks["penta6"]
+        meshdatagetter.mask_penta15 = masks["penta15"]
+
         meshdatagetter.get_mesh_sets()
 
         # write solver input

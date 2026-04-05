@@ -1117,9 +1117,9 @@ int System::addConstraintPerpendicularArc2Arc(
     return addConstraintPerpendicular(a1.center, p1, a2.center, p2, tagId, driving);
 }
 
-int System::addConstraintTangent(Line& l, Circle& c, int tagId, bool driving)
+int System::addConstraintTangent(Line& l, Circle& c, bool ccw, int tagId, bool driving)
 {
-    return addConstraintP2LDistance(c.center, l, c.rad, tagId, driving);
+    return addConstraintP2LDistance(c.center, l, c.rad, ccw, tagId, driving);
 }
 
 int System::addConstraintTangent(Line& l, Ellipse& e, int tagId, bool driving)
@@ -1130,9 +1130,9 @@ int System::addConstraintTangent(Line& l, Ellipse& e, int tagId, bool driving)
     return addConstraint(constr);
 }
 
-int System::addConstraintTangent(Line& l, Arc& a, int tagId, bool driving)
+int System::addConstraintTangent(Line& l, Arc& a, bool ccw, int tagId, bool driving)
 {
-    return addConstraintP2LDistance(a.center, l, a.rad, tagId, driving);
+    return addConstraintP2LDistance(a.center, l, a.rad, ccw, tagId, driving);
 }
 
 int System::addConstraintTangent(Circle& c1, Circle& c2, int tagId, bool driving)

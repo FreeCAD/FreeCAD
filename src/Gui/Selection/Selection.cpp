@@ -69,7 +69,7 @@ SelectionObserver::SelectionObserver(bool attach, ResolveMode resolve)
     , blockedSelection(false)
 {
     if (auto doc = App::GetApplication().getActiveDocument()) {
-        pDocumentScopeName = doc->getName();
+        documentScopeName = doc->getName();
     }
     if (attach) {
         attachSelection();
@@ -81,7 +81,7 @@ SelectionObserver::SelectionObserver(const ViewProviderDocumentObject* vp, bool 
     , blockedSelection(false)
 {
     if (auto doc = App::GetApplication().getActiveDocument()) {
-        pDocumentScopeName = doc->getName();
+        documentScopeName = doc->getName();
     }
     if (attach) {
         attachSelection();
@@ -131,7 +131,7 @@ void SelectionObserver::_onSelectionChanged(const SelectionChanges& msg)
 {
     try {
         if (blockedSelection
-            || (pDocumentScopeName && msg.pDocName && strcmp(pDocumentScopeName, msg.pDocName) != 0)) {
+            || (!documentScopeName.empty() && msg.pDocName && documentScopeName != msg.pDocName)) {
             return;
         }
         onSelectionChanged(msg);

@@ -1152,6 +1152,9 @@ public:
     void changeConstraintAfterDeletingGeo(Constraint* constr, const int deletedGeoId) const;
 
 private:
+    void setOrientationDistance(Constraint* constr);
+    void setOrientationTangent(Constraint* constr);
+
     /// Internal helper method for exposeInternalGeometryForType
     /// Add geometry and constraints to `this`, then delete the geometry and constraints in the
     /// vectors Note that the contents of the two vectors are invalid after this call.

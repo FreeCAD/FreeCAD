@@ -498,6 +498,9 @@ Multiplier of 'Font size'</string>
            <string>Controls the gap size between dimension line and dimension text.
  Value multiplied by the line width is the line spacing.</string>
           </property>
+          <property name="minimum">
+           <double>-99.000000000000000</double>
+          </property>
           <property name="value">
            <double>2.000000000000000</double>
           </property>
