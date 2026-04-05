@@ -206,6 +206,9 @@ PropertiesDialog::PropertiesDialog(Sheet* _sheet, const std::vector<Range>& _ran
     // Alias
     connect(ui->alias, &QLineEdit::textEdited, this, &PropertiesDialog::aliasChanged);
     ui->aliasStatus->setVisible(false);
+    QPalette statusPalette = ui->aliasStatus->palette();
+    statusPalette.setColor(QPalette::WindowText, invalidTextColor(ui->aliasStatus));
+    ui->aliasStatus->setPalette(statusPalette);
     ui->alias->setToolTip(aliasHelpTooltip());
 
     ui->tabWidget->setCurrentIndex(0);
@@ -333,13 +336,9 @@ void PropertiesDialog::aliasChanged(const QString& text)
                 tooltip = tr("Alias conflicts with a reserved unit token used by expressions");
                 statusText = tr("Invalid: reserved unit token");
             }
-            else if (isConstantToken) {
+            else {
                 tooltip = tr("Alias conflicts with a reserved constant token used by expressions");
                 statusText = tr("Invalid: reserved constant token");
-            }
-            else {
-                tooltip = reservedAliasTooltip();
-                statusText = tr("Invalid: reserved unit or constant name");
             }
         }
         else if (!sheet->getAddressFromAlias(aliasText).empty()) {

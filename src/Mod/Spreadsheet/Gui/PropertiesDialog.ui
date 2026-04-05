@@ -274,10 +274,7 @@
         <widget class="QLineEdit" name="alias"/>
        </item>
        <item row="1" column="1">
-        <widget class="QLabel" name="aliasStatus">
-         <property name="styleSheet">
-          <string notr="true">color: rgb(180, 0, 0);</string>
-         </property>
+       <widget class="QLabel" name="aliasStatus">
          <property name="text">
           <string/>
          </property>
