@@ -332,7 +332,6 @@ void TaskRichAnno::onViewSelectionChanged()
 
 void TaskRichAnno::onViewPositionChanged()
 {
-    Q_UNUSED(scenePos);
     // Make sure you have a local variable for the QGVPage to make the code cleaner
     QGVPage* graphicsView = nullptr;
     if (m_view) {
@@ -551,7 +550,7 @@ bool TaskRichAnno::eventFilter(QObject* watched, QEvent* event)
     if (watched == Gui::getMainWindow()) {
         if (event->type() == QEvent::Move || event->type() == QEvent::Resize) {
             if (m_qgiAnno) {
-                onViewPositionChanged(m_qgiAnno->scenePos());
+                onViewPositionChanged();
             }
         }
     }
