@@ -264,7 +264,7 @@ private:
     std::string filterDocName;
     std::string filterObjName;
     ResolveMode resolve;
-    const char* pDocumentScopeName {nullptr};
+    std::string documentScopeName;
     bool blockedSelection;
 };
 

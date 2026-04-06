@@ -758,7 +758,7 @@ void ViewProviderSketch::purgeHandler()
         return editdoc->getEditViewProvider() == this;
     });
     Gui::View3DInventor* view = nullptr;
-    if (!editDoc) {
+    if (editDoc) {
         view = dynamic_cast<Gui::View3DInventor*>(editDoc->getActiveView());
     }
 

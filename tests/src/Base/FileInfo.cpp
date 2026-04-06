@@ -2,38 +2,14 @@
 #include <Base/FileInfo.h>
 #include <Base/Stream.h>
 #include <Base/TimeInfo.h>
-#include <filesystem>
-#include <stdexcept>
+#include <src/TempDirectory.h>
 
 class FileInfoTest: public ::testing::Test
 {
-
-    std::string createUniqueTempDirectory(const std::string& prefix)
-    {
-        auto tempPath = std::filesystem::path(Base::FileInfo::getTempPath());
-
-        for (int suffix = 0;; ++suffix) {
-            auto candidatePath = tempPath / (prefix + "_" + std::to_string(suffix));
-            std::error_code ec;
-            if (std::filesystem::create_directory(candidatePath, ec)) {
-                return Base::FileInfo::pathToString(candidatePath);
-            }
-
-            if (!ec || ec == std::errc::file_exists) {
-                continue;
-            }
-
-            throw std::runtime_error(
-                "Unable to create temporary test directory: "
-                + Base::FileInfo::pathToString(candidatePath)
-            );
-        }
-    }
-
 protected:
     FileInfoTest()
     {
-        tmp.setFile(createUniqueTempDirectory("fctest"));
+        tmp.setFile(tempDir.string());
 
         file.setFile(tmp.filePath() + "/test.txt");
         dir.setFile(tmp.filePath() + "/subdir");
@@ -54,6 +30,7 @@ protected:
     }
 
 protected:
+    tests::TempDirectory tempDir {"fctest"};
     Base::FileInfo tmp;
     Base::FileInfo file;
     Base::FileInfo dir;
@@ -106,9 +83,12 @@ TEST_F(FileInfoTest, TestSetPermission)
     EXPECT_TRUE(file.isReadable());
     EXPECT_FALSE(file.isWritable());
 
+#ifndef _WIN32
+    // Windows ACLs do not support write-only files: removing read permission has no effect.
     file.setPermissions(Base::FileInfo::WriteOnly);
     EXPECT_FALSE(file.isReadable());
     EXPECT_TRUE(file.isWritable());
+#endif
 
     file.setPermissions(Base::FileInfo::ReadWrite);
     EXPECT_TRUE(file.isReadable());
@@ -137,7 +117,12 @@ TEST_F(FileInfoTest, TestCheckDirectory)
 
 TEST_F(FileInfoTest, TestSize)
 {
+#ifdef _WIN32
+    // Text mode writes \r\n on Windows, so "Test\n" becomes 6 bytes.
+    EXPECT_EQ(file.size(), 6);
+#else
     EXPECT_EQ(file.size(), 5);
+#endif
 }
 
 TEST_F(FileInfoTest, TestLastModified)

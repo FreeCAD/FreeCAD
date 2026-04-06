@@ -1,5 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2017 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2026 Mario Passaglia <mpassaglia[at]cbc.uba.ar>         *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -22,20 +23,29 @@
 # ***************************************************************************
 
 __title__ = "FreeCAD FEM solver Z88 writer"
-__author__ = "Bernd Hahnebach"
+__author__ = "Bernd Hahnebach, Mario Passaglia"
 __url__ = "https://www.freecad.org"
 
 ## \addtogroup FEM
 #  @{
 
+import numpy as np
 import time
 from os.path import join
 
 import FreeCAD
 
 from .. import writerbase
-from feminout import importZ88Mesh
 from femmesh import meshtools
+
+from .write_constraint_displacement import WriterDisplacement
+from .write_constraint_fixed import WriterFixed
+from .write_constraint_force import WriterForce
+from .write_constraint_pressure import WriterPressure
+from .write_element1D import WriterElement1D
+from .write_element2D import WriterElement2D
+from .write_material import WriterMaterial
+from . import z88utils
 
 
 class FemInputWriterZ88(writerbase.FemInputWriter):
@@ -43,22 +53,17 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
         writerbase.FemInputWriter.__init__(
             self, analysis_obj, solver_obj, mesh_obj, member, dir_name
         )
-        self.file_name = join(self.dir_name, "z88")
 
     # ********************************************************************************************
     # write solver input
     def write_solver_input(self):
         timestart = time.process_time()
-        FreeCAD.Console.PrintMessage("\n")  # because of time print in separate line
-        FreeCAD.Console.PrintMessage("Z88 solver input writing...\n")
-        FreeCAD.Console.PrintLog(f"FemInputWriterZ88 --> self.dir_name  -->  {self.dir_name}\n")
+
+        FreeCAD.Console.PrintMessage("\nZ88 solver input writing...\n")
         FreeCAD.Console.PrintMessage(
-            f"FemInputWriterZ88 --> self.file_name  -->  {self.file_name}\n"
+            f"Write z88 input files to: {self.solver_obj.WorkingDirectory}\n"
         )
-        FreeCAD.Console.PrintMessage(f"Write z88 input files to: {self.dir_name}\n")
-        control = self.set_z88_elparam()
-        if control is False:
-            return None
+
         self.write_z88_mesh()
         self.write_z88_constraints()
         self.write_z88_face_loads()
@@ -67,301 +72,254 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
         self.write_z88_integration_properties()
         self.write_z88_memory_parameter()
         self.write_z88_solver_parameter()
+
         writing_time_string = "Writing time input file: {} seconds".format(
             round((time.process_time() - timestart), 2)
         )
         FreeCAD.Console.PrintMessage(f"{writing_time_string}\n\n")
-        return self.dir_name
-
-    # ********************************************************************************************
-    def set_z88_elparam(self):
-        # TODO: param should be moved to the solver object like the known analysis
-        z8804 = {"INTORD": "0", "INTOS": "0", "IHFLAG": "0", "ISFLAG": "1"}  # seg2 --> stab4
-        z8824 = {"INTORD": "7", "INTOS": "7", "IHFLAG": "1", "ISFLAG": "1"}  # tria6 --> schale24
-        z8823 = {"INTORD": "3", "INTOS": "0", "IHFLAG": "1", "ISFLAG": "0"}  # quad8 --> schale23
-        z8817 = {"INTORD": "4", "INTOS": "0", "IHFLAG": "0", "ISFLAG": "0"}  # tetra4 --> volume17
-        z8816 = {"INTORD": "4", "INTOS": "0", "IHFLAG": "0", "ISFLAG": "0"}  # tetra10 --> volume16
-        z8801 = {"INTORD": "2", "INTOS": "2", "IHFLAG": "0", "ISFLAG": "1"}  # hexa8 --> volume1
-        z8810 = {"INTORD": "3", "INTOS": "0", "IHFLAG": "0", "ISFLAG": "0"}  # hexa20 --> volume10
-        param = {4: z8804, 24: z8824, 23: z8823, 17: z8817, 16: z8816, 1: z8801, 10: z8810}
-        # TODO: test elements 17, 16, 10, INTORD etc
-        self.z88_element_type = importZ88Mesh.get_z88_element_type(
-            self.femmesh, self.femelement_table
-        )
-        if self.z88_element_type in param:
-            self.z88_elparam = param[self.z88_element_type]
-        else:
-            FreeCAD.Console.PrintError(
-                "Element type not supported by Z88. Can not write Z88 solver input.\n"
-            )
-            return False
-        FreeCAD.Console.PrintMessage(self.z88_elparam)
-        FreeCAD.Console.PrintMessage("\n")
-        return True
-
-    # ********************************************************************************************
-    def write_z88_mesh(self):
-        if not self.femnodes_mesh:
-            self.femnodes_mesh = self.femmesh.Nodes
-        if not self.femelement_table:
-            self.femelement_table = meshtools.get_femelement_table(self.femmesh)
-            self.element_count = len(self.femelement_table)
-        mesh_file_path = self.file_name + "i1.txt"
-        f = open(mesh_file_path, "w")
-        importZ88Mesh.write_z88_mesh_to_file(
-            self.femnodes_mesh, self.femelement_table, self.z88_element_type, f
-        )
-        f.close()
 
     # ********************************************************************************************
     def write_z88_constraints(self):
-        constraints_data = []  # will be a list of tuple for better sorting
+        constraints_file_path = join(self.solver_obj.WorkingDirectory, "z88i2.txt")
+        self.z88i2 = open(constraints_file_path, "w")
+        self.z88i2_rows = []
+
+        # displacement constraints
+        w_disp = WriterDisplacement(self)
+        w_disp.write_items()
 
         # fixed constraints
-        # write nodes to constraints_data (different from writing to file in ccxInpWriter
-        for femobj in self.member.cons_fixed:
-            for n in femobj["Nodes"]:
-                constraints_data.append((n, f"{n}  1  2  0\n"))
-                constraints_data.append((n, f"{n}  2  2  0\n"))
-                constraints_data.append((n, f"{n}  3  2  0\n"))
+        w_fixed = WriterFixed(self)
+        w_fixed.write_items()
 
-        # forces constraints
-        # write node loads to constraints_data
-        # a bit different from writing to file for ccxInpWriter
-        for femobj in self.member.cons_force:
-            # femobj --> dict, FreeCAD document object is femobj["Object"]
-            direction_vec = femobj["Object"].DirectionVector
-            for ref_shape in femobj["NodeLoadTable"]:
-                for n in sorted(ref_shape[1]):
-                    # the loads in ref_shape[1][n] are without unit
-                    node_load = ref_shape[1][n]
-                    if direction_vec.x != 0.0:
-                        v1 = direction_vec.x * node_load
-                        constraints_data.append((n, f"{n}  1  1  {v1}\n"))
-                    if direction_vec.y != 0.0:
-                        v2 = direction_vec.y * node_load
-                        constraints_data.append((n, f"{n}  2  1  {v2}\n"))
-                    if direction_vec.z != 0.0:
-                        v3 = direction_vec.z * node_load
-                        constraints_data.append((n, f"{n}  3  1  {v3}\n"))
+        # force constraints
+        w_force = WriterForce(self)
+        w_force.write_items()
 
-        # write constraints_data to file
-        constraints_file_path = self.file_name + "i2.txt"
-        f = open(constraints_file_path, "w")
-        f.write(str(len(constraints_data)) + "\n")
-        for c in sorted(constraints_data):
-            f.write(c[1])
-        f.close()
+        self.z88i2.write(f"{len(self.z88i2_rows)}\n")
+        self.z88i2.writelines(self.z88i2_rows)
+
+        self.z88i2.close()
 
     # ********************************************************************************************
     def write_z88_face_loads(self):
-        # not yet supported
-        face_load_file_path = self.file_name + "i5.txt"
-        f = open(face_load_file_path, "w")
-        f.write(" 0")
-        f.write("\n")
-        f.close()
+        face_load_file_path = join(self.solver_obj.WorkingDirectory, "z88i5.txt")
+        self.z88i5 = open(face_load_file_path, "w")
+        self.z88i5_rows = []
+
+        # pressure constraints
+        w_pressure = WriterPressure(self)
+        w_pressure.write_items()
+
+        self.z88i5.write(f"{len(self.z88i5_rows)}\n")
+        self.z88i5.writelines(self.z88i5_rows)
+
+        self.z88i5.close()
 
     # ********************************************************************************************
     def write_z88_materials(self):
-        mat_obj = self.member.mats_linear[0]["Object"]
-        material_data_file_name = "51.txt"
-        materials_file_path = self.file_name + "mat.txt"
-        fms = open(materials_file_path, "w")
-        fms.write("1\n")
-        fms.write(f"1 {self.element_count} {material_data_file_name}")
-        fms.write("\n")
-        fms.close()
-        material_data_file_path = join(self.dir_name, material_data_file_name)
-        fmd = open(material_data_file_path, "w")
-        YM = FreeCAD.Units.Quantity(mat_obj.Material["YoungsModulus"])
-        YM_in_MPa = YM.getValueAs("MPa")
-        PR = float(mat_obj.Material["PoissonRatio"])
-        fmd.write(f"{YM_in_MPa} {PR:.3f}")
-        fmd.write("\n")
-        fmd.close()
+        material_file_path = join(self.solver_obj.WorkingDirectory, "z88mat.txt")
+        self.z88mat = open(material_file_path, "w")
+        self.z88mat_rows = []
+
+        # material constraints
+        w_material = WriterMaterial(self)
+        w_material.write_items()
+
+        self.z88mat.write(f"{len(self.z88mat_rows)}\n")
+        self.z88mat.writelines(self.z88mat_rows)
+
+        self.z88mat.close()
 
     # ********************************************************************************************
     def write_z88_elements_properties(self):
-        element_properties_file_path = self.file_name + "elp.txt"
-        elements_data = []
-        if meshtools.is_edge_femmesh(self.femmesh):
-            beam_obj = self.member.geos_beamsection[0]["Object"]
-            area = 0
-            if beam_obj.SectionType == "Rectangular":
-                width = beam_obj.RectWidth.getValueAs("mm").Value
-                height = beam_obj.RectHeight.getValueAs("mm").Value
-                area = width * height
-            elif beam_obj.SectionType == "Circular":
-                diameter = beam_obj.CircDiameter.getValueAs("mm").Value
-                from math import pi
+        element_properties_file_path = join(self.solver_obj.WorkingDirectory, "z88elp.txt")
+        self.z88elp = open(element_properties_file_path, "w")
+        self.z88elp_rows = []
 
-                area = 0.25 * pi * diameter * diameter
-            else:
-                FreeCAD.Console.PrintError(
-                    "Cross section type {} not supported, "
-                    "cross section area will be 0 in solver input.\n".format(beam_obj.SectionType)
-                )
-                # TODO make the check in prechecks and delete it here
-                # no extensive errorhandling in writer
-                # this way the solver will fail and an exception is raised somehow
-            elements_data.append(f"1 {self.element_count} {area} 0 0 0 0 0 0 ")
-            FreeCAD.Console.PrintWarning("Be aware, only trusses are supported for edge meshes!\n")
-        elif meshtools.is_face_femmesh(self.femmesh):
-            thick_obj = self.member.geos_shellthickness[0]["Object"]
-            thickness = thick_obj.Thickness.getValueAs("mm").Value
-            elements_data.append(f"1 {self.element_count} {thickness} 0 0 0 0 0 0 ")
-        elif meshtools.is_solid_femmesh(self.femmesh):
-            elements_data.append(f"1 {self.element_count} 0 0 0 0 0 0 0")
-        else:
-            FreeCAD.Console.PrintError("Error!\n")
-        f = open(element_properties_file_path, "w")
-        f.write(str(len(elements_data)) + "\n")
-        for e in elements_data:
-            f.write(e)
-        f.write("\n")
-        f.close()
+        # elements parameters
+        w_element1D = WriterElement1D(self)
+        w_element1D.write_items()
+        w_element2D = WriterElement2D(self)
+        w_element2D.write_items()
+
+        self.z88elp.write(f"{len(self.z88elp_rows)}\n")
+        self.z88elp.writelines(self.z88elp_rows)
+
+        self.z88elp.close()
 
     # ********************************************************************************************
     def write_z88_integration_properties(self):
-        integration_data = []
-        integration_data.append(
-            "1 {} {} {}".format(
-                self.element_count, self.z88_elparam["INTORD"], self.z88_elparam["INTOS"]
-            )
-        )
-        integration_properties_file_path = self.file_name + "int.txt"
-        f = open(integration_properties_file_path, "w")
-        f.write(f"{len(integration_data)}\n")
-        for i in integration_data:
-            f.write(i)
-        f.write("\n")
-        f.close()
+        integration_properties_file_path = join(self.solver_obj.WorkingDirectory, "z88int.txt")
+        self.z88int = open(integration_properties_file_path, "w")
+        self.z88int_rows = []
+        el_types = np.unique(self.elements["type"])
+
+        # at the moment, stress integration order is 0
+        param = "0 0"
+        for t in el_types:
+            idx = np.arange(1, len(self.elements) + 1)[self.elements["type"] == t]
+            if t in [16, 17]:
+                # tetra elements
+                param = f"{self.solver_obj.IntegrationOrderTetra} 0"
+            elif t in [14, 15, 18, 24]:
+                # tria elements
+                param = f"{self.solver_obj.IntegrationOrderTria} 0"
+            elif t in [7, 8, 20, 23]:
+                # quad elements
+                param = f"{self.solver_obj.IntegrationOrderQuad} 0"
+            elif t in [1, 7, 8, 10, 20, 23]:
+                # hexa elements
+                param = f"{self.solver_obj.IntegrationOrderHexa} 0"
+
+            # write integration orders as z88 ranges
+            first = idx[0]
+            start_end = [first, first]
+            for el_index in idx[1:]:
+                if el_index - start_end[1] == 1:
+                    start_end[1] = el_index
+                else:
+                    self.z88int_rows.append(f"{start_end[0]} {start_end[1]} {param}\n")
+                    start_end = [el_index, el_index]
+            # add last computed range
+            self.z88int_rows.append(f"{start_end[0]} {start_end[1]} {param}\n")
+
+        self.z88int.write(f"{len(self.z88int_rows)}\n")
+        self.z88int.writelines(self.z88int_rows)
+
+        self.z88int.close()
 
     # ********************************************************************************************
     def write_z88_solver_parameter(self):
-        global z88_man_template
-        z88_man_template = z88_man_template.replace(
-            "$z88_param_ihflag", str(self.z88_elparam["IHFLAG"])
+        el_types = np.unique(self.elements["type"])
+        # check beams in structure
+        ibflag = 1 if any([i in el_types for i in [2, 13, 25]]) else 0
+        # check plates in structure
+        ipflag = 1 if any([i in el_types for i in [18, 20]]) else 0
+        # check shells in structure
+        ihflag = self.solver_obj.ShellFlag if any([i in el_types for i in [23, 24]]) else 0
+        maxit = self.solver_obj.IterationMaximum
+        eps = self.solver_obj.ResidualLimit
+        ralpha = self.solver_obj.ShiftFactor
+        romega = self.solver_obj.RelaxationFactor
+        kdflag = 0
+        isflag = 0
+
+        z88_man_template = z88utils.z88_man_template.format(
+            param_ibflag=ibflag,
+            param_ipflag=ipflag,
+            param_ihflag=ihflag,
+            param_maxit=maxit,
+            param_eps=eps,
+            param_ralpha=ralpha,
+            param_romega=romega,
+            param_kdflag=kdflag,
+            param_isflag=isflag,
         )
-        z88_man_template = z88_man_template.replace(
-            "$z88_param_isflag", str(self.z88_elparam["ISFLAG"])
-        )
-        solver_parameter_file_path = self.file_name + "man.txt"
-        f = open(solver_parameter_file_path, "w")
-        f.write(z88_man_template)
-        f.close()
+
+        solver_parameter_file_path = join(self.solver_obj.WorkingDirectory, "z88man.txt")
+        self.z88man = open(solver_parameter_file_path, "w")
+        self.z88man.write(z88_man_template)
+        self.z88man.close()
 
     # ********************************************************************************************
     def write_z88_memory_parameter(self):
-        prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Z88")
-        MaxGS = prefs.GetInt("MaxGS", 100000000)
-        MaxKOI = prefs.GetInt("MaxKOI", 2800000)
-        global z88_dyn_template
-        template_array = z88_dyn_template.splitlines()
-        output = ""
-        for line in template_array:
-            if line.find("MAXGS") > -1:
-                line = f"    MAXGS  {MaxGS}"
-            if line.find("MAXKOI") > -1:
-                line = f"    MAXKOI   {MaxKOI}"
-            output += line + "\n"
+        maxgs = self.solver_obj.MatrixMaximum
+        maxkoi = self.solver_obj.VectorMaximum
+        z88_dyn_template = z88utils.z88_dyn_template.format(
+            param_maxgs=maxgs,
+            param_maxkoi=maxkoi,
+        )
 
-        solver_parameter_file_path = self.file_name + ".dyn"
-        f = open(solver_parameter_file_path, "w")
-        f.write(output)
-        f.close()
+        solver_parameter_file_path = join(self.solver_obj.WorkingDirectory, "z88.dyn")
+        self.z88dyn = open(solver_parameter_file_path, "w")
+        self.z88dyn.write(z88_dyn_template)
+        self.z88dyn.close()
 
+    def write_z88_mesh(self):
+        mesh = self.mesh_object.FemMesh
+        mesh_nodes = dict(sorted(mesh.Nodes.items()))
+        # save map node key -> array order
+        self.node_id_map = dict(zip(mesh_nodes.keys(), range(len(mesh_nodes))))
 
-# for solver parameter file Z88man.txt
-z88_man_template = """DYNAMIC START
----------------------------------------------------------------------------
-Z88V14OS
----------------------------------------------------------------------------
+        nodes_dof_map = {}
+        mesh_elem = mesh_nodes.keys()
+        e_count = len(mesh_elem)
+        smesh_type_from_nodes = {1: 1}
+        max_elem_nodes = 1
 
----------------------------------------------------------------------------
-GLOBAL
----------------------------------------------------------------------------
+        if meshtools.is_solid_femmesh(mesh):
+            e_count = mesh.VolumeCount
+            mesh_elem = mesh.Volumes
+            smesh_type_from_nodes = z88utils.smesh_volume_type_from_nodes
+            max_elem_nodes = 20
+        elif meshtools.is_face_femmesh(mesh):
+            e_count = mesh.FaceCount
+            smesh_type_from_nodes = z88utils.smesh_face_type_from_nodes
+            mesh_elem = mesh.Faces
+            max_elem_nodes = 8
+        elif meshtools.is_edge_femmesh(mesh):
+            e_count = mesh.EdgeCount
+            smesh_type_from_nodes = z88utils.smesh_edge_type_from_nodes
+            mesh_elem = mesh.Edges
+            max_elem_nodes = 3
 
-GLOBAL START
-   IBFLAG          0
-   IPFLAG          0
-   IHFLAG          $z88_param_ihflag
-GLOBAL END
+        smesh_to_z88_type = z88utils.smesh_to_z88_type(self.solver_obj)
 
----------------------------------------------------------------------------
-LINEAR SOLVER
----------------------------------------------------------------------------
+        dt_elements = np.dtype(
+            {
+                "names": ["nodes", "index", "type", "size"],
+                "formats": [("u4", (max_elem_nodes,)), "u4", "u1", "u1"],
+            }
+        )
+        self.elements = np.zeros((e_count), dtype=dt_elements)
+        self.elements["index"] = mesh_elem
 
-SOLVER START
-   MAXIT           10000
-   EPS             1e-007
-   RALPHA          0.0001
-   ROMEGA          1.1
-SOLVER END
+        for elem in self.elements:
+            nodes = mesh.getElementNodes(elem["index"])
+            n_len = len(nodes)
+            smesh_type = smesh_type_from_nodes[n_len]
+            try:
+                z88_type = smesh_to_z88_type[smesh_type]
+            except KeyError:
+                raise ValueError(
+                    f"Mesh element {elem['index']}: {z88utils.smesh_type_names[smesh_type]} type not supported by Z88"
+                )
+            elem["type"] = z88_type
+            elem["nodes"][:n_len] = np.array(nodes)[z88utils.smesh_to_z88_order[smesh_type]]
+            elem["size"] = n_len
+            # set dof for each node
+            for n in nodes:
+                nodes_dof_map[n] = z88utils.z88_dof[elem["type"]]
 
----------------------------------------------------------------------------
-STRESS
----------------------------------------------------------------------------
+        nodes_dof_map = dict(sorted(nodes_dof_map.items()))
+        self.element_id_map = dict(zip(self.elements["index"], range(e_count)))
 
-STRESS START
-   KDFLAG        0
-   ISFLAG        $z88_param_isflag
-STRESS END
+        self.nodes = np.array(
+            list(zip(mesh_nodes.keys(), mesh_nodes.values(), nodes_dof_map.values())),
+            dtype=[("index", "u4"), ("coords", ("f8", (3,))), ("dof", "u1")],
+        )
 
-DYNAMIC END
-"""
+        self.z88i1 = open(join(self.solver_obj.WorkingDirectory, "z88i1.txt"), "w")
 
-# for memory parameter file z88.dyn
-z88_dyn_template = """DYNAMIC START
----------------------------------------------------------------------------
-Z88 new version 14OS                   Z88 neue Version 14OS
----------------------------------------------------------------------------
+        dim = 3 if self.solver_obj.ModelSpace == "3D" else 2
+        self.z88i1.writelines(
+            "{0} {1} {2} {3} written by FreeCAD\n".format(
+                dim, self.nodes.size, self.elements.size, np.sum(self.nodes["dof"])
+            )
+        )
 
----------------------------------------------------------------------------
-LANGUAGE                   SPRACHE
----------------------------------------------------------------------------
-GERMAN
+        # Z88 elements ascending order and starting from 1
+        for i, node in enumerate(self.nodes, start=1):
+            self.z88i1.writelines(
+                "{0} {1} {2:E} {3:E} {4:E}\n".format(i, node["dof"], *node["coords"])
+            )
 
----------------------------------------------------------------------------
-Entries for mesh generator Z88N        Daten fuer Netzgenerator
----------------------------------------------------------------------------
-  NET START
-    MAXSE  40000
-    MAXESS   800
-    MAXKSS  4000
-    MAXAN     15
-  NET END
+        for i, elem in enumerate(self.elements, start=1):
+            self.z88i1.writelines("{} {}\n".format(i, elem["type"]))
+            self.z88i1.writelines(" ".join(map(str, elem["nodes"][: elem["size"]])) + "\n")
 
----------------------------------------------------------------------------
-Common entries for all modules         gemeinsame Daten fuer alle Module
----------------------------------------------------------------------------
+        self.z88i1.close()
 
-  COMMON START
-    MAXGS  100000000
-    MAXKOI   2800000
-    MAXK       60000
-    MAXE      300000
-    MAXNFG    200000
-    MAXMAT        32
-    MAXPEL        32
-    MAXJNT        32
-    MAXPR      10000
-    MAXRBD     15000
-    MAXIEZ   6000000
-    MAXGP    2000000
-  COMMON END
-
----------------------------------------------------------------------------
-Entries for Cuthill-McKee Z88H         Daten fuer Cuthill- McKee Programm
----------------------------------------------------------------------------
-  CUTKEE START
-    MAXGRA  200
-    MAXNDL 1000
-  CUTKEE END
-
-
-DYNAMIC END
-"""
 
 ##  @}
