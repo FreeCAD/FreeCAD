@@ -183,26 +183,45 @@ App::DocumentObjectExecReturn* Boolean::execute()
             throw NullShapeException("Tool shape is null");
         }
 
-        if (!containsSolid(BaseShape)) {
-            return new App::DocumentObjectExecReturn(
-                (std::string("'") + base->Label.getValue() + "' is a "
-                 + shapeTypeName(BaseShape.ShapeType())
-                 + ", not a Solid. Boolean operations require Solid inputs.")
-                    .c_str()
-            );
-        }
-        if (!containsSolid(ToolShape)) {
+        // Pre-flight: catch mixed solid/non-solid inputs, which typically
+        // produce garbage geometry.  Pure non-solid booleans (e.g. FEM
+        // shell operations) are intentional and allowed through.
+        bool baseHasSolid = containsSolid(BaseShape);
+        bool toolHasSolid = containsSolid(ToolShape);
+        if (baseHasSolid && !toolHasSolid) {
             return new App::DocumentObjectExecReturn(
                 (std::string("'") + tool->Label.getValue() + "' is a "
                  + shapeTypeName(ToolShape.ShapeType())
-                 + ", not a Solid. Boolean operations require Solid inputs.")
+                 + ", not a Solid, but the base ('"
+                 + base->Label.getValue()
+                 + "') is a Solid. Mixing Solid and non-Solid inputs"
+                 " typically produces invalid results.")
+                    .c_str()
+            );
+        }
+        if (toolHasSolid && !baseHasSolid) {
+            return new App::DocumentObjectExecReturn(
+                (std::string("'") + base->Label.getValue() + "' is a "
+                 + shapeTypeName(BaseShape.ShapeType())
+                 + ", not a Solid, but the tool ('"
+                 + tool->Label.getValue()
+                 + "') is a Solid. Mixing Solid and non-Solid inputs"
+                 " typically produces invalid results.")
                     .c_str()
             );
         }
 
         std::unique_ptr<BRepAlgoAPI_BooleanOperation> mkBool(makeOperation(BaseShape, ToolShape));
         if (!mkBool->IsDone()) {
-            return new App::DocumentObjectExecReturn("Boolean operation failed");
+            std::stringstream error;
+            error << "Boolean operation failed";
+            if (BaseShape.ShapeType() != TopAbs_SOLID) {
+                error << std::endl << base->Label.getValue() << " is not a solid";
+            }
+            if (ToolShape.ShapeType() != TopAbs_SOLID) {
+                error << std::endl << tool->Label.getValue() << " is not a solid";
+            }
+            return new App::DocumentObjectExecReturn(error.str());
         }
         TopoDS_Shape resShape = mkBool->Shape();
         if (resShape.IsNull()) {

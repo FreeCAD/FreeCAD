@@ -138,35 +138,41 @@ App::DocumentObjectExecReturn* MultiFuse::execute()
             if (shape.isNull()) {
                 throw Base::RuntimeError("Input shape is null");
             }
-            if (!containsSolid(shape.getShape())) {
-                const std::string label = (!argumentsAreInCompound && !obj.empty())
-                    ? obj[0]->Label.getValue()
-                    : "shape 1";
-                throw Base::CADKernelError(
-                    (std::string("'") + label + "' is a " + shapeTypeName(shape.getShape().ShapeType())
-                     + ", not a Solid. Boolean operations require Solid inputs.")
-                        .c_str()
-                );
-            }
             shapeArguments.Append(shape.getShape());
 
             for (auto it2 = shapes.begin() + 1; it2 != shapes.end(); ++it2) {
                 if (it2->isNull()) {
                     throw Base::RuntimeError("Input shape is null");
                 }
-                if (!containsSolid(it2->getShape())) {
-                    std::size_t idx = std::distance(shapes.begin(), it2);
-                    const std::string label = (!argumentsAreInCompound && idx < obj.size())
-                        ? obj[idx]->Label.getValue()
-                        : ("shape " + std::to_string(idx + 1));
-                    throw Base::CADKernelError(
-                        (std::string("'") + label + "' is a "
-                         + shapeTypeName(it2->getShape().ShapeType())
-                         + ", not a Solid. Boolean operations require Solid inputs.")
-                            .c_str()
-                    );
-                }
                 shapeTools.Append(it2->getShape());
+            }
+
+            // Pre-flight: if any input contains a solid, require all to
+            // contain solids.  Mixed solid/non-solid inputs typically
+            // produce garbage.  Pure non-solid fuses (e.g. FEM shell
+            // operations) are intentional and allowed through.
+            bool anySolid = false;
+            for (const auto& s : shapes) {
+                if (containsSolid(s.getShape())) {
+                    anySolid = true;
+                    break;
+                }
+            }
+            if (anySolid) {
+                for (std::size_t i = 0; i < shapes.size(); ++i) {
+                    if (!containsSolid(shapes[i].getShape())) {
+                        const std::string label = (!argumentsAreInCompound && i < obj.size())
+                            ? obj[i]->Label.getValue()
+                            : ("shape " + std::to_string(i + 1));
+                        throw Base::CADKernelError(
+                            (std::string("'") + label + "' is a "
+                             + shapeTypeName(shapes[i].getShape().ShapeType())
+                             + ", not a Solid. All inputs must be Solids when"
+                             " any input is a Solid.")
+                                .c_str()
+                        );
+                    }
+                }
             }
 
             mkFuse.SetArguments(shapeArguments);
