@@ -191,22 +191,20 @@ App::DocumentObjectExecReturn* Boolean::execute()
         if (baseHasSolid && !toolHasSolid) {
             return new App::DocumentObjectExecReturn(
                 (std::string("'") + tool->Label.getValue() + "' is a "
-                 + shapeTypeName(ToolShape.ShapeType())
-                 + ", not a Solid, but the base ('"
+                 + shapeTypeName(ToolShape.ShapeType()) + ", not a Solid, but the base ('"
                  + base->Label.getValue()
                  + "') is a Solid. Mixing Solid and non-Solid inputs"
-                 " typically produces invalid results.")
+                   " typically produces invalid results.")
                     .c_str()
             );
         }
         if (toolHasSolid && !baseHasSolid) {
             return new App::DocumentObjectExecReturn(
                 (std::string("'") + base->Label.getValue() + "' is a "
-                 + shapeTypeName(BaseShape.ShapeType())
-                 + ", not a Solid, but the tool ('"
+                 + shapeTypeName(BaseShape.ShapeType()) + ", not a Solid, but the tool ('"
                  + tool->Label.getValue()
                  + "') is a Solid. Mixing Solid and non-Solid inputs"
-                 " typically produces invalid results.")
+                   " typically produces invalid results.")
                     .c_str()
             );
         }

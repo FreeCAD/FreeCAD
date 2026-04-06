@@ -168,7 +168,7 @@ App::DocumentObjectExecReturn* MultiFuse::execute()
                             (std::string("'") + label + "' is a "
                              + shapeTypeName(shapes[i].getShape().ShapeType())
                              + ", not a Solid. All inputs must be Solids when"
-                             " any input is a Solid.")
+                               " any input is a Solid.")
                                 .c_str()
                         );
                     }
