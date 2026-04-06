@@ -227,6 +227,21 @@ class RegressionTests(unittest.TestCase):
             # AttacherEngine should show "Engine Plane" (not "Engine 3D")
             self.assertEqual(attacher_engine, "Engine Plane")
 
+    def test_getSortedClusters(self):
+        "Part.getSortedClusters() may crash with short edges"
+        poly = self.Doc.addObject("Part::RegularPolygon", "RegularPolygon")
+        poly.Circumradius = 1
+        for i in range(3, 1004, 50):
+            poly.Polygon = i
+            poly.recompute()
+            clusters = Part.getSortedClusters(poly.Shape.Edges)
+
+            # should be only one cluster
+            self.assertEqual(len(clusters), 1)
+
+            # cluster should contain all edges
+            self.assertEqual(len(clusters[0]), i)
+
     def tearDown(self):
         """Clean up our test, optionally preserving the test document"""
         # This flag allows doing something like this:
