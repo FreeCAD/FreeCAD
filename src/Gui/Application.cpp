@@ -2673,8 +2673,10 @@ void Application::init3DMouse(MainWindow* mainWindow, QApplication* qtApp)
             Instance->pNavlibInterface = new NavlibInterface();
             Base::Console().log("Init: Enabling 3Dconnexion Navigation Framework\n");
             if (!Instance->pNavlibInterface->enableNavigation()) {
-                Base::Console().log("Init: 3Dconnexion Navigation Framework failed, "
-                                    "falling back to legacy support\n");
+                Base::Console().log(
+                    "Init: 3Dconnexion Navigation Framework failed, "
+                    "falling back to legacy support\n"
+                );
                 Instance->pNavlibInterface = nullptr;
             }
         }
