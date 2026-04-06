@@ -64,7 +64,7 @@ class NavlibInterface: public CNav3D
 public:
     NavlibInterface();
     ~NavlibInterface();
-    void enableNavigation();
+    bool enableNavigation();
     void disableNavigation();
 
 private:

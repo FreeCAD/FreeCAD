@@ -71,20 +71,9 @@ Gui::GUIApplicationNativeEventAware::~GUIApplicationNativeEventAware() = default
 void Gui::GUIApplicationNativeEventAware::initSpaceball(QMainWindow* window)
 {
 #if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
-# if defined(USE_3DCONNEXION_NAVLIB)
-    ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/View"
-    );
-    if (nativeEvent && hViewGrp->GetBool("LegacySpaceMouseDevices", false)) {
-        // Even though Navlib is enabled, process native events to support legacy devices.
+    if (nativeEvent) {
         nativeEvent->initSpaceball(window);
     }
-    else {
-        Base::Console().log("Legacy device support not enabled\n");
-    }
-# else
-    nativeEvent->initSpaceball(window);
-# endif
 #else
     Base::Console().log("3D mouse support not enabled in this build\n");
     Q_UNUSED(window);

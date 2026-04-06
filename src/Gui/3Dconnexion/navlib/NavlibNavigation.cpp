@@ -187,7 +187,7 @@ void NavlibInterface::onViewChanged(const Gui::MDIView* view)
     }
 }
 
-void NavlibInterface::enableNavigation()
+bool NavlibInterface::enableNavigation()
 {
 #if defined(Q_OS_MAC)
     if (!CFBundleGetIdentifier(CFBundleGetMainBundle())) {
@@ -196,7 +196,7 @@ void NavlibInterface::enableNavigation()
         // than opening the .app. If future versions of the driver report the error,
         // this special case can be removed.
         Base::Console().error("3Dconnexion Navigation Framework does not support running apart from an .app!\n");
-        return;
+        return false;
     }
 #endif
 
@@ -204,7 +204,7 @@ void NavlibInterface::enableNavigation()
     CNav3D::EnableNavigation(true, errorCode);
     if (errorCode) {
         Base::Console().error("NavlibInterface::EnableNavigation error %d\n", errorCode.value());
-        return;
+        return false;
     }
 
     PutFrameTimingSource(TimingSource::SpaceMouse);
@@ -221,6 +221,7 @@ void NavlibInterface::enableNavigation()
 
     initializePivot();
     connectActiveTab();
+    return true;
 }
 
 void NavlibInterface::connectActiveTab()
