@@ -50,15 +50,24 @@ namespace Part
 const char* shapeTypeName(TopAbs_ShapeEnum type)
 {
     switch (type) {
-        case TopAbs_COMPOUND:  return "Compound";
-        case TopAbs_COMPSOLID: return "CompSolid";
-        case TopAbs_SOLID:     return "Solid";
-        case TopAbs_SHELL:     return "Shell";
-        case TopAbs_FACE:      return "Face";
-        case TopAbs_WIRE:      return "Wire";
-        case TopAbs_EDGE:      return "Edge";
-        case TopAbs_VERTEX:    return "Vertex";
-        default:               return "Shape";
+        case TopAbs_COMPOUND:
+            return "Compound";
+        case TopAbs_COMPSOLID:
+            return "CompSolid";
+        case TopAbs_SOLID:
+            return "Solid";
+        case TopAbs_SHELL:
+            return "Shell";
+        case TopAbs_FACE:
+            return "Face";
+        case TopAbs_WIRE:
+            return "Wire";
+        case TopAbs_EDGE:
+            return "Edge";
+        case TopAbs_VERTEX:
+            return "Vertex";
+        default:
+            return "Shape";
     }
 }
 
@@ -202,15 +211,14 @@ App::DocumentObjectExecReturn* Boolean::execute()
             error << std::endl << std::endl;
             error << "Things to try:" << std::endl;
             error << "  - Reposition one shape slightly (e.g. add 0.01 mm "
-                     "in Placement)" << std::endl;
+                     "in Placement)"
+                  << std::endl;
             error << "  - Combine shapes in a different order" << std::endl;
             error << "  - Check each input with Part > Check Geometry";
             error << std::endl << std::endl;
-            error << "Input types: '"
-                  << base->Label.getValue() << "' ("
-                  << shapeTypeName(BaseShape.ShapeType()) << "), '"
-                  << tool->Label.getValue() << "' ("
-                  << shapeTypeName(ToolShape.ShapeType()) << ")";
+            error << "Input types: '" << base->Label.getValue() << "' ("
+                  << shapeTypeName(BaseShape.ShapeType()) << "), '" << tool->Label.getValue()
+                  << "' (" << shapeTypeName(ToolShape.ShapeType()) << ")";
             error << std::endl;
             error << "See: https://wiki.freecad.org/Boolean_Troubleshooting";
             return new App::DocumentObjectExecReturn(error.str());

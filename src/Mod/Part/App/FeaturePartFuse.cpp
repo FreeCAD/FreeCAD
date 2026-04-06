@@ -199,8 +199,8 @@ App::DocumentObjectExecReturn* MultiFuse::execute()
                         // We just built an element map above for the fuse,
                         // don't erase it for a refine.
                         res.setShape(mkRefine.Shape(), false);
-                        ShapeHistory hist = buildHistory(
-                            mkRefine, TopAbs_FACE, res.getShape(), oldShape);
+                        ShapeHistory hist
+                            = buildHistory(mkRefine, TopAbs_FACE, res.getShape(), oldShape);
                         for (auto& jt : history) {
                             jt = joinHistory(jt, hist);
                         }
