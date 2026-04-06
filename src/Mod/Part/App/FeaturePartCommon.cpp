@@ -34,6 +34,7 @@
 #include "TopoShapeOpCode.h"
 #include "modelRefine.h"
 
+#include <Base/Console.h>
 #include <Base/ProgramVersion.h>
 
 
@@ -43,6 +44,7 @@ namespace Part
 {
 extern void throwIfInvalidIfCheckModel(const TopoDS_Shape& shape);
 extern bool getRefineModelParameter();
+extern bool refineResultIsValid(const TopoDS_Shape& shape);
 }  // namespace Part
 
 PROPERTY_SOURCE(Part::Common, Part::Boolean)
@@ -168,7 +170,21 @@ App::DocumentObjectExecReturn* MultiCommon::execute()
     throwIfInvalidIfCheckModel(res.getShape());
 
     if (this->Refine.getValue()) {
+        TopoShape preRefine = res;
         res = res.makeElementRefine();
+        if (!refineResultIsValid(res.getShape())) {
+            res = preRefine;
+            Base::Console().warning(
+                "'%s': Refine (removeSplitter) produced invalid geometry "
+                "(self-intersections) and was skipped. The result is "
+                "geometrically correct but contains redundant edges that "
+                "may slow downstream operations. Consider disabling Refine "
+                "on this feature, or restructuring input geometry to avoid "
+                "coplanar faces with partial overlap. This is a known issue "
+                "in the CAD kernel (OCCT ShapeUpgrade_UnifySameDomain).\n",
+                this->Label.getValue()
+            );
+        }
     }
     this->Shape.setValue(res);
     if (Shapes.getSize() > 0) {

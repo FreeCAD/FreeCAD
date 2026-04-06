@@ -46,6 +46,7 @@ namespace Part
 {
 extern void throwIfInvalidIfCheckModel(const TopoDS_Shape& shape);
 extern bool getRefineModelParameter();
+extern bool refineResultIsValid(const TopoDS_Shape& shape);
 }  // namespace Part
 
 PROPERTY_SOURCE(Part::Fuse, Part::Boolean)
@@ -172,11 +173,29 @@ App::DocumentObjectExecReturn* MultiFuse::execute()
                 try {
                     TopoDS_Shape oldShape = res.getShape();
                     BRepBuilderAPI_RefineModel mkRefine(oldShape);
-                    // We just built an element map above for the fuse, don't erase it for a refine.
-                    res.setShape(mkRefine.Shape(), false);
-                    ShapeHistory hist = buildHistory(mkRefine, TopAbs_FACE, res.getShape(), oldShape);
-                    for (auto& jt : history) {
-                        jt = joinHistory(jt, hist);
+                    if (!refineResultIsValid(mkRefine.Shape())) {
+                        Base::Console().warning(
+                            "'%s': Refine (removeSplitter) produced invalid "
+                            "geometry (self-intersections) and was skipped. The "
+                            "result is geometrically correct but contains "
+                            "redundant edges that may slow downstream "
+                            "operations. Consider disabling Refine on this "
+                            "feature, or restructuring input geometry to avoid "
+                            "coplanar faces with partial overlap. This is a "
+                            "known issue in the CAD kernel "
+                            "(OCCT ShapeUpgrade_UnifySameDomain).\n",
+                            this->Label.getValue()
+                        );
+                    }
+                    else {
+                        // We just built an element map above for the fuse,
+                        // don't erase it for a refine.
+                        res.setShape(mkRefine.Shape(), false);
+                        ShapeHistory hist = buildHistory(
+                            mkRefine, TopAbs_FACE, res.getShape(), oldShape);
+                        for (auto& jt : history) {
+                            jt = joinHistory(jt, hist);
+                        }
                     }
                 }
                 catch (Standard_Failure&) {

@@ -27,10 +27,13 @@
 #include <memory>
 
 #include <Mod/Part/App/FCBRepAlgoAPI_BooleanOperation.h>
+#include <BOPAlgo_ArgumentAnalyzer.hxx>
+#include <BRepBuilderAPI_Copy.hxx>
 #include <BRepCheck_Analyzer.hxx>
 #include <Standard_Failure.hxx>
 
 #include <App/Application.h>
+#include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Parameter.h>
 #include <Base/ProgramVersion.h>
@@ -68,6 +71,31 @@ bool getRefineModelParameter()
                                              ->GetGroup("Preferences")
                                              ->GetGroup("Mod/Part/Boolean");
     return hGrp->GetBool("RefineModel", true);
+}
+
+bool refineResultIsValid(const TopoDS_Shape& shape)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
+                                             .GetUserParameter()
+                                             .GetGroup("BaseApp")
+                                             ->GetGroup("Preferences")
+                                             ->GetGroup("Mod/Part/Boolean");
+
+    if (!hGrp->GetBool("CheckRefine", false)) {
+        return true;  // validation disabled, assume valid
+    }
+
+    // Run BOPAlgo_ArgumentAnalyzer to detect self-intersections that
+    // BRepCheck_Analyzer misses.  This catches corruption introduced by
+    // ShapeUpgrade_UnifySameDomain (removeSplitter/Refine) on shapes with
+    // coplanar faces and partial overlap.
+    TopoDS_Shape copy = BRepBuilderAPI_Copy(shape).Shape();
+    BOPAlgo_ArgumentAnalyzer checker;
+    checker.SetShape1(copy);
+    checker.SelfInterMode() = true;
+    checker.SetRunParallel(true);
+    checker.Perform();
+    return !checker.HasFaulty();
 }
 
 }  // namespace Part
@@ -169,7 +197,21 @@ App::DocumentObjectExecReturn* Boolean::execute()
         TopoShape res(0);
         res.makeElementShape(*mkBool, shapes, opCode());
         if (this->Refine.getValue()) {
+            TopoShape preRefine = res;
             res = res.makeElementRefine();
+            if (!refineResultIsValid(res.getShape())) {
+                res = preRefine;
+                Base::Console().warning(
+                    "'%s': Refine (removeSplitter) produced invalid geometry "
+                    "(self-intersections) and was skipped. The result is "
+                    "geometrically correct but contains redundant edges that "
+                    "may slow downstream operations. Consider disabling Refine "
+                    "on this feature, or restructuring input geometry to avoid "
+                    "coplanar faces with partial overlap. This is a known issue "
+                    "in the CAD kernel (OCCT ShapeUpgrade_UnifySameDomain).\n",
+                    this->Label.getValue()
+                );
+            }
         }
         this->Shape.setValue(res);
         copyMaterial(base);
