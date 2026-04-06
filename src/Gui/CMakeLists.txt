@@ -1023,7 +1023,7 @@ SET(Navigation_SRCS
     Navigation/GestureNavigationStyle.h
     Navigation/NavigationAnimator.h
     Navigation/NavigationAnimation.h
-        Navigation/OnShapeNavigationStyle.h
+        Navigation/OnshapeNavigationStyle.h
     Navigation/SiemensNXNavigationStyle.h
 )
 SOURCE_GROUP("Navigation" FILES ${Navigation_SRCS})
