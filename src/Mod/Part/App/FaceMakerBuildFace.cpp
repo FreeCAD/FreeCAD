@@ -27,7 +27,6 @@
 #include <Bnd_Box.hxx>
 #include <BOPAlgo_BuilderFace.hxx>
 #include <BRep_Builder.hxx>
-#include <BRepAlgoAPI_BuilderAlgo.hxx>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepLib.hxx>
@@ -76,16 +75,15 @@ void Part::FaceMakerBuildFace::Build_Essence()
     // Step 2: Split edges at all mutual intersections
     TopTools_ListOfShape splitEdges;
     if (edgeList.Size() > 1) {
-        BRepAlgoAPI_BuilderAlgo splitter;
-        splitter.SetArguments(edgeList);
-        splitter.SetRunParallel(true);
-        splitter.SetNonDestructive(Standard_True);
-        splitter.Build();
-        if (!splitter.IsDone()) {
+        mySplitter.SetArguments(edgeList);
+        mySplitter.SetRunParallel(true);
+        mySplitter.SetNonDestructive(Standard_True);
+        mySplitter.Build();
+        if (!mySplitter.IsDone()) {
             FC_WARN("FaceMakerBuildFace: failed to split edges at intersections");
             return;
         }
-        for (TopExp_Explorer exp(splitter.Shape(), TopAbs_EDGE); exp.More(); exp.Next()) {
+        for (TopExp_Explorer exp(mySplitter.Shape(), TopAbs_EDGE); exp.More(); exp.Next()) {
             splitEdges.Append(exp.Current());
         }
     }
