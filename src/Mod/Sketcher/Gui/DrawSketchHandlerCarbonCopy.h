@@ -131,7 +131,7 @@ public:
     }
 };
 
-class CarbonCopyTreeWidgetFilter : public QObject
+class CarbonCopyTreeWidgetFilter: public QObject
 {
     Q_OBJECT
 public:
