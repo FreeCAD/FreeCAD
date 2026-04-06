@@ -175,13 +175,12 @@ App::DocumentObjectExecReturn* MultiCommon::execute()
         if (!refineResultIsValid(res.getShape())) {
             res = preRefine;
             Base::Console().warning(
-                "'%s': Refine (removeSplitter) produced invalid geometry "
-                "(self-intersections) and was skipped. The result is "
-                "geometrically correct but contains redundant edges that "
-                "may slow downstream operations. Consider disabling Refine "
-                "on this feature, or restructuring input geometry to avoid "
-                "coplanar faces with partial overlap. This is a known issue "
-                "in the CAD kernel (OCCT ShapeUpgrade_UnifySameDomain).\n",
+                "'%s': The boolean result is correct, but the Refine "
+                "(cleanup) step damaged it and was skipped. The result "
+                "may have extra internal edges. To prevent this, disable "
+                "Refine in this feature's properties. This is a known "
+                "limitation of the geometry engine. "
+                "See: https://wiki.freecad.org/Boolean_Troubleshooting\n",
                 this->Label.getValue()
             );
         }

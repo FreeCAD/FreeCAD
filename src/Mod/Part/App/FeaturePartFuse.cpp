@@ -155,7 +155,17 @@ App::DocumentObjectExecReturn* MultiFuse::execute()
             mkFuse.Build();
 
             if (!mkFuse.IsDone()) {
-                throw Base::RuntimeError("MultiFusion failed");
+                throw Base::RuntimeError(
+                    "MultiFusion failed. This is usually caused by a "
+                    "limitation in the geometry engine, not a problem with "
+                    "your model. Faces that are exactly aligned, nearly "
+                    "touching, or in complex coplanar arrangements can be "
+                    "difficult for the engine to process. Try repositioning "
+                    "one shape slightly (e.g. add 0.01 mm in Placement), "
+                    "combining in a different order, or fusing in smaller "
+                    "groups. See: https://wiki.freecad.org/"
+                    "Boolean_Troubleshooting"
+                );
             }
 
             TopoShape res(0);
@@ -175,15 +185,13 @@ App::DocumentObjectExecReturn* MultiFuse::execute()
                     BRepBuilderAPI_RefineModel mkRefine(oldShape);
                     if (!refineResultIsValid(mkRefine.Shape())) {
                         Base::Console().warning(
-                            "'%s': Refine (removeSplitter) produced invalid "
-                            "geometry (self-intersections) and was skipped. The "
-                            "result is geometrically correct but contains "
-                            "redundant edges that may slow downstream "
-                            "operations. Consider disabling Refine on this "
-                            "feature, or restructuring input geometry to avoid "
-                            "coplanar faces with partial overlap. This is a "
-                            "known issue in the CAD kernel "
-                            "(OCCT ShapeUpgrade_UnifySameDomain).\n",
+                            "'%s': The boolean result is correct, but the "
+                            "Refine (cleanup) step damaged it and was skipped. "
+                            "The result may have extra internal edges. To "
+                            "prevent this, disable Refine in this feature's "
+                            "properties. This is a known limitation of the "
+                            "geometry engine. See: https://wiki.freecad.org/"
+                            "Boolean_Troubleshooting\n",
                             this->Label.getValue()
                         );
                     }
