@@ -75,6 +75,10 @@ DlgPropertyLink::DlgPropertyLink(QWidget* parent)
     , SelectionObserver(false, ResolveMode::NoResolve)
     , ui(new Ui_DlgPropertyLink)
 {
+#if defined(Q_OS_MACOS)
+    // Clicking the 3D view would push this window behind the main window without this.
+    setWindowFlag(Qt::WindowStaysOnTopHint);
+#endif
     // clang-format off
     ui->setupUi(this);
     connect(ui->checkObjectType, &QCheckBox::toggled,
