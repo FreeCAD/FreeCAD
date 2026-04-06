@@ -25,12 +25,14 @@
 #pragma once
 
 #include <QApplication>
+#include <QDockWidget>
 
 #include <Gui/Notifications.h>
 #include <Gui/Selection/SelectionFilter.h>
 #include <Gui/Command.h>
 #include <Gui/CommandT.h>
 #include <Gui/MDIView.h>
+#include <Gui/Tree.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 
@@ -129,6 +131,27 @@ public:
     }
 };
 
+class CarbonCopyTreeWidgetFilter : public QObject
+{
+    Q_OBJECT
+public:
+    CarbonCopyTreeWidgetFilter(QObject* parent = nullptr)
+        : QObject(parent)
+    {}
+
+protected:
+    bool eventFilter(QObject* obj, QEvent* event) override
+    {
+        // Filter out mouse move events
+        // to prevent drag-selection in the TreeWidget,
+        // avoiding repeated CarbonCopy execution
+        if (event->type() == QEvent::MouseMove) {
+            return true;
+        }
+        return QObject::eventFilter(obj, event);
+    }
+};
+
 class DrawSketchHandlerCarbonCopy: public DrawSketchHandler
 {
     Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerCarbonCopy)
@@ -224,6 +247,17 @@ private:
         Gui::Selection().clearSelection();
         Gui::Selection().rmvSelectionGate();
         Gui::Selection().addSelectionGate(new CarbonCopySelection(sketchgui->getObject()));
+
+        treeWidgetFilter = std::make_unique<CarbonCopyTreeWidgetFilter>();
+        Gui::MainWindow* mw = Gui::getMainWindow();
+        if (mw) {
+            auto dock = mw->findChild<QDockWidget*>("Model");
+            tree = dock ? dock->findChild<Gui::TreeWidget*>() : nullptr;
+            if (tree && treeWidgetFilter) {
+                tree->installEventFilter(treeWidgetFilter.get());
+                tree->viewport()->installEventFilter(treeWidgetFilter.get());
+            }
+        }
     }
 
     QString getCrosshairCursorSVGName() const override
@@ -235,7 +269,18 @@ private:
     {
         Q_UNUSED(sketchgui);
         setAxisPickStyle(true);
+        if (tree && treeWidgetFilter) {
+            tree->removeEventFilter(treeWidgetFilter.get());
+            tree->viewport()->removeEventFilter(treeWidgetFilter.get());
+        }
+        if (treeWidgetFilter) {
+            treeWidgetFilter.reset();
+        }
+        tree = nullptr;
     }
+
+    Gui::TreeWidget* tree = nullptr;
+    std::unique_ptr<CarbonCopyTreeWidgetFilter> treeWidgetFilter;
 
 public:
     std::list<Gui::InputHint> getToolHints() const override
