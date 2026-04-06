@@ -21,12 +21,24 @@
  ***************************************************************************/
 
 
+#include <memory>
+
+#include <FCConfig.h>
+
+#ifdef FC_OS_WIN32
+// windows.h must be kept above commdlg.h and shlobj.h
+# include <windows.h>
+# include <commdlg.h>
+# include <shlobj.h>
+#endif
+
 #include <QApplication>
 #include <QButtonGroup>
 #include <QCompleter>
 #include <QCryptographicHash>
 #include <QDialogButtonBox>
 #include <QDir>
+#include <QFileSystemModel>
 #include <QGridLayout>
 #include <QGroupBox>
 #include <QLineEdit>
@@ -246,21 +258,301 @@ void FileDialog::accept()
     QFileDialog::accept();
 }
 
-void FileDialog::getSuffixesDescription(QStringList& suffixes, const QString* suffixDescriptions)
+static void getSuffixesDescription(QStringList& suffixes, const QString& suffixDescriptions)
 {
     QRegularExpression rx;
     // start the raw string with a (
     // match a *, a . and at least one word character (a-z, A-Z, 0-9, _) with \*\.\w+
     // end the raw string with a )
-    rx.setPattern(QLatin1String(R"(\*\.\w+)"));
+    rx.setPattern(QStringLiteral(R"(\*\.\w+)"));
 
-    QRegularExpressionMatchIterator i = rx.globalMatch(*suffixDescriptions);
+    QRegularExpressionMatchIterator i = rx.globalMatch(suffixDescriptions);
     while (i.hasNext()) {
         QRegularExpressionMatch match = i.next();
         QString suffix = match.captured(0);
         suffixes << suffix;
     }
 }
+
+static bool getPreferShowFilterExtensions()
+{
+    bool show = true;
+#ifdef FC_OS_WIN32
+    SHELLFLAGSTATE shellFlags;
+    SHGetSettings(&shellFlags, SSF_SHOWEXTENSIONS);
+    show = shellFlags.fShowExtensions;
+#endif
+
+    ParameterGrp::handle group = App::GetApplication()
+                                     .GetUserParameter()
+                                     .GetGroup("BaseApp")
+                                     ->GetGroup("Preferences")
+                                     ->GetGroup("Dialog");
+    return group->GetBool("ShowFilterExtensions", show);
+}
+
+struct FilterSpec
+{
+    QString name;
+    QStringList extensions;
+
+    bool operator==(const FilterSpec& rhs) const
+    {
+        return name == rhs.name && extensions == rhs.extensions;
+    }
+
+    static FilterSpec fromFilterString(const QString& filter)
+    {
+        const auto start = filter.lastIndexOf(QLatin1Char('('));
+        const auto end = filter.lastIndexOf(QLatin1Char(')'));
+        const auto name = filter.left(start).trimmed();
+        const auto extensionsPart = filter.mid(start + 1, end - start - 1);
+        return {name, extensionsPart.split(QLatin1Char(' '), Qt::SkipEmptyParts)};
+    }
+
+    QString getDisplayName(bool showExtensions) const
+    {
+        // Avoid overflowing the screen with an excessively long filter list (see #23139).
+        const qsizetype MaxFiltersLength = 128;
+        const qsizetype TypicalMaxExtensionLength = 12;
+
+        if (!showExtensions) {
+            return name;
+        }
+
+        QString formatted(name);
+        formatted += QLatin1Char(' ');
+
+        // Deduplicate the extensions which usually come in both *.ext & *.EXT variants.
+        // Keeps the first case encountered for a given extension set.
+        // O(n^2) in complexity but the extension lists are usually short.
+        QList<QStringView> seen;
+        seen.reserve(extensions.size());
+        const auto wasSeen = [&seen](QStringView ext) -> bool {
+            for (QStringView extSeen : seen) {
+                if (extSeen.compare(ext, Qt::CaseInsensitive) == 0) {
+                    return true;
+                }
+            }
+            return false;
+        };
+        QString dedupExtensions;
+        dedupExtensions.reserve(extensions.length() * TypicalMaxExtensionLength);
+        for (auto it = extensions.cbegin(); it != extensions.cend(); ++it) {
+            if (!wasSeen(*it)) {
+                seen.append(*it);
+                if (it != extensions.cbegin()) {
+                    dedupExtensions += QLatin1Char(' ');
+                }
+                dedupExtensions += *it;
+            }
+        }
+
+        if (dedupExtensions.size() <= MaxFiltersLength) {
+            formatted += QLatin1Char('(');
+            formatted += dedupExtensions;
+            formatted += QLatin1Char(')');
+        }
+
+        return formatted;
+    }
+
+    QString toQtFilter(bool showExtensions) const
+    {
+        return getDisplayName(showExtensions) + QStringLiteral(" (")
+            + extensions.join(QLatin1Char(' ')) + QLatin1Char(')');
+    }
+};
+
+class FilterSpecList: public QList<FilterSpec>
+{
+public:
+    static FilterSpecList fromFilterStringList(const QStringList& filterStringList)
+    {
+        FilterSpecList specs;
+        specs.reserve(filterStringList.length());
+        for (const auto& filterString : filterStringList) {
+            specs += FilterSpec::fromFilterString(filterString);
+        }
+        return specs;
+    }
+
+    QStringList toQtFilterList(bool showExtensions) const
+    {
+        QStringList qtFilters;
+        for (const auto& filterSpec : *this) {
+            qtFilters += filterSpec.toQtFilter(showExtensions);
+        }
+        return qtFilters;
+    }
+
+    qsizetype indexOfFilterString(const QString& filterString) const
+    {
+        return indexOf(FilterSpec::fromFilterString(filterString));
+    }
+};
+
+enum class NativeFileDialogMode
+{
+    OpenSingle,
+    OpenMultiple,
+    Save,
+};
+
+#ifdef FC_OS_WIN32
+static std::unique_ptr<wchar_t[]> qStringToWCharArray(const QString& s, size_t reserveSize = 0)
+{
+    const size_t stringSize = s.size();
+    wchar_t* result = new wchar_t[qMax(stringSize + 1, reserveSize)];
+    s.toWCharArray(result);
+    result[stringSize] = 0;
+    return std::unique_ptr<wchar_t[]>(result);
+}
+
+/* Use the legacy Get{Open,Save}FileNameW functions as the Vista+ IFileDialog forces
+ * extension display in filter lists, leading to exceedingly long entries as seen in
+ * issue #23139.
+ * Note neither this legacy function set nor IFileDialog are valid for UWP WinRT,
+ * for which Windows::Storage::Pickers::FileOpenPicker will have to be used instead.
+ */
+static QStringList nativeFileDialog(
+    NativeFileDialogMode mode,
+    QWidget* parent,
+    const QString& caption,
+    QString& dir,
+    const FilterSpecList& filterSpecs,
+    qsizetype* selectedFilterIndex,
+    FileDialog::Options options
+)
+{
+    const bool showExtensions = getPreferShowFilterExtensions();
+
+    OPENFILENAMEW ofn;
+    memset(&ofn, 0, sizeof(OPENFILENAMEW));
+    ofn.lStructSize = sizeof(OPENFILENAMEW);
+    if (parent) {
+        ofn.hwndOwner = HWND(parent->winId());
+    }
+
+    QString flatFilter;
+    for (const auto& filterSpec : filterSpecs) {
+        flatFilter += filterSpec.getDisplayName(showExtensions);
+        flatFilter += QLatin1Char('\0');
+        flatFilter += filterSpec.extensions.join(QLatin1Char(';'));
+        flatFilter += QLatin1Char('\0');
+    }
+    flatFilter += QLatin1Char('\0');
+    auto ofnFilter = qStringToWCharArray(flatFilter);
+    ofn.lpstrFilter = ofnFilter.get();
+
+    if (selectedFilterIndex && *selectedFilterIndex >= 0) {
+        ofn.nFilterIndex = *selectedFilterIndex + 1;  // OPENFILENAMEW index is 1-based
+    }
+
+    constexpr const DWORD SelectionBufferSize = 65535;
+    auto selectedFile = std::make_unique<wchar_t[]>(SelectionBufferSize);
+    selectedFile[0] = L'\0';
+    ofn.nMaxFile = SelectionBufferSize;
+    ofn.lpstrFile = selectedFile.get();
+
+    auto initialDir = qStringToWCharArray(QDir::toNativeSeparators(dir));
+    ofn.lpstrInitialDir = initialDir.get();
+
+    auto title = qStringToWCharArray(caption);
+    ofn.lpstrTitle = title.get();
+
+    ofn.Flags = OFN_NOCHANGEDIR | OFN_HIDEREADONLY | OFN_EXPLORER | OFN_PATHMUSTEXIST;
+    if (mode == NativeFileDialogMode::OpenSingle || mode == NativeFileDialogMode::OpenMultiple) {
+        ofn.Flags |= OFN_FILEMUSTEXIST;
+    }
+
+    BOOL ok = FALSE;
+    if (mode == NativeFileDialogMode::OpenSingle) {
+        ok = ::GetOpenFileNameW(&ofn);
+    }
+    else if (mode == NativeFileDialogMode::OpenMultiple) {
+        ofn.Flags |= OFN_ALLOWMULTISELECT;
+        ok = ::GetOpenFileNameW(&ofn);
+    }
+    else /* (mode == NativeFileDialogMode::Save) */ {
+        ok = ::GetSaveFileNameW(&ofn);
+    }
+
+    QStringList selected;
+    if (ok) {
+        if (selectedFilterIndex) {
+            *selectedFilterIndex = ofn.nFilterIndex - 1;
+        }
+        const QString dir = QDir::cleanPath(QString::fromWCharArray(ofn.lpstrFile));
+        selected += dir;
+        if (ofn.Flags & OFN_ALLOWMULTISELECT) {
+            const wchar_t* ptr = ofn.lpstrFile + dir.size() + 1;
+            if (*ptr) {
+                selected.clear();
+                const QString path = dir + u'/';
+                while (*ptr) {
+                    const QString fileName = QString::fromWCharArray(ptr);
+                    selected += path + fileName;
+                    ptr += fileName.size() + 1;
+                }
+            }
+        }
+    }
+    return selected;
+}
+#else
+static QStringList nativeFileDialog(
+    NativeFileDialogMode mode,
+    QWidget* parent,
+    const QString& caption,
+    QString& dir,
+    const FilterSpecList& filterSpecs,
+    qsizetype* selectedFilterIndex,
+    FileDialog::Options options
+)
+{
+    const bool showExtensions = getPreferShowFilterExtensions();
+    const auto qtFilterList = filterSpecs.toQtFilterList(showExtensions);
+    QString selectedQtFilter = (selectedFilterIndex != nullptr && *selectedFilterIndex >= 0)
+        ? qtFilterList[*selectedFilterIndex]
+        : "";
+    QStringList selected;
+    if (mode == NativeFileDialogMode::OpenSingle) {
+        selected = {QFileDialog::getOpenFileName(
+            parent,
+            caption,
+            dir,
+            qtFilterList.join(QStringLiteral(";;")),
+            &selectedQtFilter,
+            options
+        )};
+    }
+    else if (mode == NativeFileDialogMode::OpenMultiple) {
+        selected = QFileDialog::getOpenFileNames(
+            parent,
+            caption,
+            dir,
+            qtFilterList.join(QStringLiteral(";;")),
+            &selectedQtFilter,
+            options
+        );
+    }
+    else /* (mode == NativeFileDialogMode::Save) */ {
+        selected = {QFileDialog::getSaveFileName(
+            parent,
+            caption,
+            dir,
+            qtFilterList.join(QStringLiteral(";;")),
+            &selectedQtFilter,
+            options
+        )};
+    }
+    if (selectedFilterIndex != nullptr) {
+        *selectedFilterIndex = qtFilterList.indexOf(selectedQtFilter);
+    }
+    return selected;
+}
+#endif
 
 /**
  * This is a convenience static function that will return a file name selected by the user. The file
@@ -275,8 +567,23 @@ QString FileDialog::getSaveFileName(
     Options options
 )
 {
-    ActionDisabler actionDisabler {};
+    return getSaveFileName(parent, caption, dir, filter.split(QStringLiteral(";;")), selectedFilter, options);
+}
 
+/**
+ * This is a convenience static function that will return a file name selected by the user. The file
+ * does not have to exist.
+ */
+QString FileDialog::getSaveFileName(
+    QWidget* parent,
+    const QString& caption,
+    const QString& dir,
+    const QStringList& filters,
+    QString* selectedFilter,
+    Options options
+)
+{
+    ActionDisabler actionDisabler {};
     QString dirName = dir;
     bool hasFilename = false;
     if (dirName.isEmpty()) {
@@ -286,7 +593,7 @@ QString FileDialog::getSaveFileName(
         QFileInfo fi(dir);
         if (fi.isRelative()) {
             dirName = getPreferredDialogDirectory();
-            dirName += QLatin1String("/");
+            dirName += QStringLiteral("/");
             dirName += fi.fileName();
         }
         if (!fi.fileName().isEmpty()) {
@@ -295,12 +602,12 @@ QString FileDialog::getSaveFileName(
 
         // get the suffix for the filter: use the selected filter if there is one,
         // otherwise find the first valid suffix in the complete list of filters
-        const QString* filterToSearch;
+        QString filterToSearch;
         if (selectedFilter && !selectedFilter->isEmpty()) {
-            filterToSearch = selectedFilter;
+            filterToSearch = *selectedFilter;
         }
         else {
-            filterToSearch = &filter;
+            filterToSearch = filters.join(QLatin1Char(';'));
         }
 
         QStringList filterSuffixes;
@@ -321,12 +628,20 @@ QString FileDialog::getSaveFileName(
         windowTitle = FileDialog::tr("Save As");
     }
 
+    const auto filterSpecList = FilterSpecList::fromFilterStringList(filters);
+    qsizetype selectedFilterIndex = (selectedFilter != nullptr && !selectedFilter->isEmpty())
+        ? filterSpecList.indexOfFilterString(*selectedFilter)
+        : -1;
+
+    options |= QFileDialog::HideNameFilterDetails;
 
     // NOTE: We must not change the specified file name afterwards as we may return the name of an
     // already existing file. Hence we must extract the first matching suffix from the filter list
     // and append it before showing the file dialog.
     QString file;
     if (DialogOptions::dontUseNativeFileDialog()) {
+        const bool showExtensions = getPreferShowFilterExtensions();
+        const auto qtFilterList = filterSpecList.toQtFilterList(showExtensions);
         QList<QUrl> urls = fetchSidebarUrls();
 
         options |= QFileDialog::DontUseNativeDialog;
@@ -343,22 +658,32 @@ QString FileDialog::getSaveFileName(
         if (hasFilename) {
             dlg.selectFile(dirName);
         }
-        dlg.setNameFilters(filter.split(QLatin1String(";;")));
-        if (selectedFilter && !selectedFilter->isEmpty()) {
-            dlg.selectNameFilter(*selectedFilter);
+        dlg.setNameFilters(qtFilterList);
+        if (selectedFilterIndex >= 0) {
+            dlg.selectNameFilter(filterSpecList[selectedFilterIndex].toQtFilter(showExtensions));
         }
         dlg.onSelectedFilter(dlg.selectedNameFilter());
-        dlg.setOption(QFileDialog::HideNameFilterDetails, false);
         dlg.setOption(QFileDialog::DontConfirmOverwrite, false);
         if (dlg.exec() == QDialog::Accepted) {
             if (selectedFilter) {
-                *selectedFilter = dlg.selectedNameFilter();
+                *selectedFilter = filters[qtFilterList.indexOf(dlg.selectedNameFilter())];
             }
             file = dlg.selectedFiles().constFirst();
         }
     }
     else {
-        file = QFileDialog::getSaveFileName(parent, windowTitle, dirName, filter, selectedFilter, options);
+        file = nativeFileDialog(
+            NativeFileDialogMode::Save,
+            parent,
+            windowTitle,
+            dirName,
+            filterSpecList,
+            &selectedFilterIndex,
+            options
+        )[0];
+        if (selectedFilter && selectedFilterIndex >= 0) {
+            *selectedFilter = filters[selectedFilterIndex];
+        }
         file = QDir::fromNativeSeparators(file);
     }
 
@@ -410,6 +735,22 @@ QString FileDialog::getOpenFileName(
     Options options
 )
 {
+    return getOpenFileName(parent, caption, dir, filter.split(QStringLiteral(";;")), selectedFilter, options);
+}
+
+/**
+ * This is a convenience static function that returns an existing file selected by the user.
+ * If the user pressed Cancel, it returns a null string.
+ */
+QString FileDialog::getOpenFileName(
+    QWidget* parent,
+    const QString& caption,
+    const QString& dir,
+    const QStringList& filters,
+    QString* selectedFilter,
+    Options options
+)
+{
     ActionDisabler actionDisabler {};
     QString dirName = dir;
     if (dirName.isEmpty()) {
@@ -421,8 +762,17 @@ QString FileDialog::getOpenFileName(
         windowTitle = FileDialog::tr("Open");
     }
 
+    const auto filterSpecList = FilterSpecList::fromFilterStringList(filters);
+    qsizetype selectedFilterIndex = (selectedFilter && !selectedFilter->isEmpty())
+        ? filterSpecList.indexOfFilterString(*selectedFilter)
+        : -1;
+
+    options |= QFileDialog::HideNameFilterDetails;
+
     QString file;
     if (DialogOptions::dontUseNativeFileDialog()) {
+        const bool showExtensions = getPreferShowFilterExtensions();
+        const auto qtFilterList = filterSpecList.toQtFilterList(showExtensions);
         QList<QUrl> urls = fetchSidebarUrls();
 
         options |= QFileDialog::DontUseNativeDialog;
@@ -436,20 +786,30 @@ QString FileDialog::getOpenFileName(
         dlg.setFileMode(QFileDialog::ExistingFile);
         dlg.setAcceptMode(QFileDialog::AcceptOpen);
         dlg.setDirectory(dirName);
-        dlg.setNameFilters(filter.split(QLatin1String(";;")));
-        dlg.setOption(QFileDialog::HideNameFilterDetails, false);
-        if (selectedFilter && !selectedFilter->isEmpty()) {
-            dlg.selectNameFilter(*selectedFilter);
+        dlg.setNameFilters(qtFilterList);
+        if (selectedFilterIndex >= 0) {
+            dlg.selectNameFilter(filterSpecList[selectedFilterIndex].toQtFilter(showExtensions));
         }
         if (dlg.exec() == QDialog::Accepted) {
             if (selectedFilter) {
-                *selectedFilter = dlg.selectedNameFilter();
+                *selectedFilter = filters[qtFilterList.indexOf(dlg.selectedNameFilter())];
             }
             file = dlg.selectedFiles().constFirst();
         }
     }
     else {
-        file = QFileDialog::getOpenFileName(parent, windowTitle, dirName, filter, selectedFilter, options);
+        file = nativeFileDialog(
+            NativeFileDialogMode::OpenSingle,
+            parent,
+            windowTitle,
+            dirName,
+            filterSpecList,
+            &selectedFilterIndex,
+            options
+        )[0];
+        if (selectedFilter && selectedFilterIndex >= 0) {
+            *selectedFilter = filters[selectedFilterIndex];
+        }
         file = QDir::fromNativeSeparators(file);
     }
 
@@ -475,6 +835,22 @@ QStringList FileDialog::getOpenFileNames(
     Options options
 )
 {
+    return getOpenFileNames(parent, caption, dir, filter.split(QStringLiteral(";;")), selectedFilter, options);
+}
+
+/**
+ * This is a convenience static function that will return one or more existing files selected by the
+ * user.
+ */
+QStringList FileDialog::getOpenFileNames(
+    QWidget* parent,
+    const QString& caption,
+    const QString& dir,
+    const QStringList& filters,
+    QString* selectedFilter,
+    Options options
+)
+{
     ActionDisabler actionDisabler {};
     QString dirName = dir;
     if (dirName.isEmpty()) {
@@ -486,8 +862,17 @@ QStringList FileDialog::getOpenFileNames(
         windowTitle = FileDialog::tr("Open");
     }
 
+    const auto filterSpecList = FilterSpecList::fromFilterStringList(filters);
+    qsizetype selectedFilterIndex = (selectedFilter != nullptr && !selectedFilter->isEmpty())
+        ? filterSpecList.indexOfFilterString(*selectedFilter)
+        : -1;
+
+    options |= QFileDialog::HideNameFilterDetails;
+
     QStringList files;
     if (DialogOptions::dontUseNativeFileDialog()) {
+        const bool showExtensions = getPreferShowFilterExtensions();
+        const auto qtFilterList = filterSpecList.toQtFilterList(showExtensions);
         QList<QUrl> urls = fetchSidebarUrls();
 
         options |= QFileDialog::DontUseNativeDialog;
@@ -501,20 +886,30 @@ QStringList FileDialog::getOpenFileNames(
         dlg.setFileMode(QFileDialog::ExistingFiles);
         dlg.setAcceptMode(QFileDialog::AcceptOpen);
         dlg.setDirectory(dirName);
-        dlg.setNameFilters(filter.split(QLatin1String(";;")));
-        dlg.setOption(QFileDialog::HideNameFilterDetails, false);
-        if (selectedFilter && !selectedFilter->isEmpty()) {
-            dlg.selectNameFilter(*selectedFilter);
+        dlg.setNameFilters(qtFilterList);
+        if (selectedFilterIndex >= 0) {
+            dlg.selectNameFilter(filterSpecList[selectedFilterIndex].toQtFilter(showExtensions));
         }
         if (dlg.exec() == QDialog::Accepted) {
             if (selectedFilter) {
-                *selectedFilter = dlg.selectedNameFilter();
+                *selectedFilter = filters[qtFilterList.indexOf(dlg.selectedNameFilter())];
             }
             files = dlg.selectedFiles();
         }
     }
     else {
-        files = QFileDialog::getOpenFileNames(parent, windowTitle, dirName, filter, selectedFilter, options);
+        files = nativeFileDialog(
+            NativeFileDialogMode::OpenMultiple,
+            parent,
+            windowTitle,
+            dirName,
+            filterSpecList,
+            &selectedFilterIndex,
+            options
+        );
+        if (selectedFilter && selectedFilterIndex >= 0) {
+            *selectedFilter = filters[selectedFilterIndex];
+        }
         for (auto& file : files) {
             file = QDir::fromNativeSeparators(file);
         }

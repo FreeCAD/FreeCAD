@@ -288,7 +288,7 @@ void View3DInventor::printPdf()
         this,
         tr("Export PDF"),
         QString(),
-        QStringLiteral("%1 (*.pdf)").arg(tr("PDF file"))
+        QStringList(QStringLiteral("%1 (*.pdf)").arg(tr("PDF file")))
     );
     if (!filename.isEmpty()) {
         Gui::WaitCursor wc;
