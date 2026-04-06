@@ -485,6 +485,23 @@ ViewProviderBody* ViewProvider::getBodyViewProvider()
     return nullptr;
 }
 
+void ViewProvider::toggleVisibility()
+{
+    if (!PartDesign::Body::isSolidFeature(getObject())) {
+        Gui::ViewProvider::toggleVisibility();
+        return;
+    }
+    auto body = PartDesign::Body::findBodyOf(getObject());
+    auto doc = getDocument();
+    if (body && doc) {
+        if (auto* bodyVp = doc->getViewProvider(body)) {
+            bodyVp->toggleVisibility();
+            return;
+        }
+    }
+    Gui::ViewProvider::toggleVisibility();
+}
+
 namespace Gui
 {
 /// @cond DOXERR
