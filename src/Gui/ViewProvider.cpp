@@ -1117,6 +1117,16 @@ void ViewProvider::setRenderCacheMode(int mode)
                                       : (mode == 1 ? SoSeparator::ON : SoSeparator::OFF);
 }
 
+void ViewProvider::toggleVisibility()
+{
+    if (isShow()) {
+        hide();
+    }
+    else {
+        show();
+    }
+}
+
 Base::BoundBox3d ViewProvider::getBoundingBox(const char* subname, bool transform, MDIView* view) const
 {
     if (!pcRoot || !pcModeSwitch || pcRoot->findChild(pcModeSwitch) < 0) {

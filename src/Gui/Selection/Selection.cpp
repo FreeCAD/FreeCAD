@@ -1908,31 +1908,36 @@ void SelectionSingleton::setVisible(VisibleState vis, const char* pDocName)
         auto vp = Application::Instance->getViewProvider(obj);
 
         if (vp) {
-            bool visObject;
-            if (visible >= 0) {
-                visObject = visible ? true : false;
-            }
-            else {
-                visObject = !vp->isShow();
-            }
-
-            if (visObject) {
-                vp->show();
+            if (visible < 0) {
+                // VisToggle: delegate to the VP, which may redirect to a container.
+                vp->toggleVisibility();
                 updateSelection(
-                    visObject,
+                    vp->isShow(),
                     sel.DocName.c_str(),
                     sel.FeatName.c_str(),
                     sel.SubName.c_str()
                 );
             }
             else {
-                updateSelection(
-                    visObject,
-                    sel.DocName.c_str(),
-                    sel.FeatName.c_str(),
-                    sel.SubName.c_str()
-                );
-                vp->hide();
+                bool visObject = visible ? true : false;
+                if (visObject) {
+                    vp->show();
+                    updateSelection(
+                        visObject,
+                        sel.DocName.c_str(),
+                        sel.FeatName.c_str(),
+                        sel.SubName.c_str()
+                    );
+                }
+                else {
+                    updateSelection(
+                        visObject,
+                        sel.DocName.c_str(),
+                        sel.FeatName.c_str(),
+                        sel.SubName.c_str()
+                    );
+                    vp->hide();
+                }
             }
         }
     }
