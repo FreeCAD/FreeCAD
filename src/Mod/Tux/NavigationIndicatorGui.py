@@ -651,6 +651,35 @@ def retranslateUi():
         + "</p>"
     )
 
+    global t13
+    t13 = (
+        "<p align='center'><b>Onshape</b> "
+        + text06
+        + """</p>
+    <table>
+     <tr>
+      <th><small>"""
+        + text01
+        + """</small></th>
+      <th><small>"""
+        + text02
+        + """</small></th>
+      <th><small>"""
+        + text03
+        + """</small></th>
+      <th><small>"""
+        + text04
+        + """</small></th>
+     </tr>
+     <tr>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Left.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Scroll.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Right.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Middle.svg'></td>
+     </tr>
+    </table>"""
+    )
+
     menuSettings.setTitle(translate("NavigationIndicator", "Settings"))
     menuOrbit.setTitle(translate("NavigationIndicator", "Orbit style"))
     aCompact.setText(translate("NavigationIndicator", "Compact"))
@@ -846,6 +875,7 @@ def onTooltip():
         a10.setToolTip(t10)
         a11.setToolTip(t11)
         a12.setToolTip(t12)
+        a13.setToolTip(t13)
         p.SetBool("Tooltip", 1)
     else:
         for i in gStyle.actions():
