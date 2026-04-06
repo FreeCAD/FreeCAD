@@ -94,7 +94,7 @@ void CmdRobotExportKukaCompact::activated(int)
         Gui::getMainWindow(),
         QObject::tr("Export program"),
         QString(),
-        filter.join(QLatin1String(";;"))
+        filter
     );
     if (fn.isEmpty()) {
         return;
@@ -175,7 +175,7 @@ void CmdRobotExportKukaFull::activated(int)
         Gui::getMainWindow(),
         QObject::tr("Export program"),
         QString(),
-        filter.join(QLatin1String(";;"))
+        filter
     );
     if (fn.isEmpty()) {
         return;
