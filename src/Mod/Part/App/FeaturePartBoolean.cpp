@@ -101,7 +101,6 @@ Boolean::Boolean()
         "Shape history"
     );
     History.setSize(0);
-
 }
 
 short Boolean::mustExecute() const

@@ -89,7 +89,6 @@ MultiCommon::MultiCommon()
         "compatibility with FreeCAD 1.0)."
     );
     Behavior.setEnums(BehaviorEnums);
-
 }
 
 short MultiCommon::mustExecute() const

@@ -80,7 +80,6 @@ MultiFuse::MultiFuse()
         "Shape history"
     );
     History.setSize(0);
-
 }
 
 short MultiFuse::mustExecute() const
