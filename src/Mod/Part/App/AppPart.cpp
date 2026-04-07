@@ -78,6 +78,7 @@
 #include "FeatureMirroring.h"
 #include "FeatureOffset.h"
 #include "FeaturePartBoolean.h"
+#include "FeaturePartRefinable.h"
 #include "FeaturePartBox.h"
 #include "FeaturePartCircle.h"
 #include "FeaturePartCommon.h"
@@ -454,6 +455,7 @@ PyMOD_INIT_FUNC(Part)
     Part::Primitive             ::init();
     Part::Box                   ::init();
     Part::Spline                ::init();
+    Part::RefinableFeature      ::init();
     Part::Boolean               ::init();
     Part::Common                ::init();
     Part::MultiCommon           ::init();
