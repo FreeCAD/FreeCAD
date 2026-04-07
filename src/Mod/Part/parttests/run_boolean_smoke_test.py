@@ -2,6 +2,7 @@
 Headless smoke test runner for Part boolean feature tests.
 Run via: pixi run smoke-test-boolean
 """
+
 import sys
 import unittest
 

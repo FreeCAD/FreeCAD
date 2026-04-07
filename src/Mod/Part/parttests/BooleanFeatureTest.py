@@ -16,9 +16,7 @@ def _make_boxes(doc):
 
     b2 = doc.addObject("Part::Box", "Box2")
     b2.Length = b2.Width = b2.Height = 10.0
-    b2.Placement = FreeCAD.Placement(
-        FreeCAD.Vector(5, 0, 0), FreeCAD.Rotation()
-    )
+    b2.Placement = FreeCAD.Placement(FreeCAD.Vector(5, 0, 0), FreeCAD.Rotation())
     doc.recompute()
     return b1, b2
 
@@ -69,7 +67,9 @@ class TestBooleanFeatures(unittest.TestCase):
         mc = self.doc.addObject("Part::MultiCommon", "MultiCommon")
         mc.Shapes = [b1, b2]
         self.assertTrue(hasattr(mc, "Refine"), "Part::MultiCommon missing Refine property")
-        self.assertTrue(hasattr(mc, "CheckRefine"), "Part::MultiCommon missing CheckRefine property")
+        self.assertTrue(
+            hasattr(mc, "CheckRefine"), "Part::MultiCommon missing CheckRefine property"
+        )
 
     # ------------------------------------------------------------------
     # Basic execute() smoke tests
