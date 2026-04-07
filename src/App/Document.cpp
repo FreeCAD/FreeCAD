@@ -2671,9 +2671,9 @@ Document::getDependencyList(const std::vector<DocumentObject*>& objs, int option
                 components[c[i]].push_back(i);
             }
 
-            FC_ERR("Dependency cycles: ");
             std::ostringstream ss;
-            ss << '\n';
+            ss << "Dependency cycles:\n";
+            bool hasOutput = false;
             for (auto& [key, vertexes] : components) {
                 if (vertexes.size() == 1) {
                     // For components with only one member, we still need to
@@ -2685,27 +2685,61 @@ Document::getDependencyList(const std::vector<DocumentObject*>& objs, int option
                     // Try search the object in its own out list
                     for (auto obj : it->second->getOutList()) {
                         if (obj == it->second) {
-                            ss << '\n' << it->second->getFullName() << '\n';
+                            ss << "    " << it->second->getFullName() << " -> itself";
+                            hasOutput = true;
                             break;
                         }
                     }
                     continue;
                 }
                 // For components with more than one member, they form a loop together
+                bool printedHeader = false;
+                int edgeIdx = 0;
                 for (size_t i = 0; i < vertexes.size(); ++i) {
                     auto it = vertexMap.find(vertexes[i]);
                     if (it == vertexMap.end()) {
                         continue;
                     }
-                    if (i % 6 == 0) {
-                        ss << '\n';
+                    if (!printedHeader) {
+                        ss << "    ";
+                        printedHeader = true;
+                    } else {
+                        ss << ", ";
                     }
-                    ss << it->second->getFullName() << ", ";
+                    ss << it->second->getFullName();
                 }
-                ss << '\n';
+                if (printedHeader) {
+                    ss << '\n';
+                }
+                for (size_t i = 0; i < vertexes.size(); ++i) {
+                    auto it = vertexMap.find(vertexes[i]);
+                    if (it == vertexMap.end()) {
+                        continue;
+                    }
+                    for (auto objB : it->second->getOutList()) {
+                        for (size_t j = 0; j < vertexes.size(); ++j) {
+                            auto itB = vertexMap.find(vertexes[j]);
+                            if (itB == vertexMap.end()) {
+                                continue;
+                            }
+                            if (objB == itB->second) {
+                                if (edgeIdx > 0) {
+                                    ss << '\n';
+                                }
+                                ss << "    " << ++edgeIdx << ". "
+                                   << it->second->getFullName()
+                                   << " -> "
+                                   << itB->second->getFullName();
+                                hasOutput = true;
+                            }
+                        }
+                    }
+                }
             }
-            FC_ERR(ss.str());
-            FC_THROWM(Base::BadGraphError, e.what());
+            if (hasOutput) {
+                FC_ERR(ss.str());
+                FC_THROWM(Base::BadGraphError, e.what());
+            }
         }
         FC_ERR(objs.front()->getFullNameLabel() << ": " << e.what());
         ret = DocumentP::partialTopologicalSort(objs);
