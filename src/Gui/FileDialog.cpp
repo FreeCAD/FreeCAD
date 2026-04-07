@@ -518,17 +518,17 @@ static QStringList nativeFileDialog(
         : "";
     QStringList selected;
     if (mode == NativeFileDialogMode::OpenSingle) {
-        selected = {QFileDialog::getOpenFileName(
+        selected << QFileDialog::getOpenFileName(
             parent,
             caption,
             dir,
             qtFilterList.join(QStringLiteral(";;")),
             &selectedQtFilter,
             options
-        )};
+        );
     }
     else if (mode == NativeFileDialogMode::OpenMultiple) {
-        selected = QFileDialog::getOpenFileNames(
+        selected << QFileDialog::getOpenFileNames(
             parent,
             caption,
             dir,
@@ -538,14 +538,14 @@ static QStringList nativeFileDialog(
         );
     }
     else /* (mode == NativeFileDialogMode::Save) */ {
-        selected = {QFileDialog::getSaveFileName(
+        selected << QFileDialog::getSaveFileName(
             parent,
             caption,
             dir,
             qtFilterList.join(QStringLiteral(";;")),
             &selectedQtFilter,
             options
-        )};
+        );
     }
     if (selectedFilterIndex != nullptr) {
         *selectedFilterIndex = qtFilterList.indexOf(selectedQtFilter);
