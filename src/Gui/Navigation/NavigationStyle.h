@@ -203,6 +203,7 @@ public:
     void startSelection(SelectionMode = Lasso);
     void abortSelection();
     void stopSelection();
+    void resetButtonState();
     SbBool isSelecting() const;
     const std::vector<SbVec2s>& getPolygon(SelectionRole* role = nullptr) const;
 
@@ -212,6 +213,7 @@ public:
     {
         return ClarifySelectionMode::Default;
     }
+
 
     void setOrbitStyle(OrbitStyle style);
     OrbitStyle getOrbitStyle() const;

@@ -173,6 +173,13 @@ public:
 private:
     void triggerClarifySelection()
     {
+        // reset navigation state so button1down doesn't stay stuck ie. gh issue #29090
+        // (the blocking QMenu::exec in ClarifySelection steals the LMB release)
+        if (currentViewer) {
+            if (auto* nav = currentViewer->navigationStyle()) {
+                nav->resetButtonState();
+            }
+        }
         Gui::Command::runCommand(Gui::Command::Gui, "Gui.runCommand('Std_ClarifySelection')");
     }
 
