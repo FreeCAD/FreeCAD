@@ -29,14 +29,14 @@
 
 #include <Mod/Part/PartGlobal.h>
 
-#include "PartFeature.h"
+#include "FeaturePartRefinable.h"
 
 class FCBRepAlgoAPI_BooleanOperation;
 
 namespace Part
 {
 
-class PartExport Boolean: public Part::Feature
+class PartExport Boolean: public Part::RefinableFeature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::Boolean);
 
@@ -46,8 +46,6 @@ public:
     App::PropertyLink Base;
     App::PropertyLink Tool;
     PropertyShapeHistory History;
-    App::PropertyBool Refine;
-    App::PropertyBool CheckRefine;
 
     /** @name methods override Feature */
     //@{

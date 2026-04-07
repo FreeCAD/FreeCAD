@@ -43,9 +43,6 @@ using namespace Part;
 namespace Part
 {
 extern void throwIfInvalidIfCheckModel(const TopoDS_Shape& shape);
-extern bool getRefineModelParameter();
-extern bool getCheckRefineParameter();
-extern bool refineResultIsValid(const TopoDS_Shape& shape, bool checkRefine);
 }  // namespace Part
 
 PROPERTY_SOURCE(Part::Common, Part::Boolean)
@@ -65,7 +62,7 @@ BRepAlgoAPI_BooleanOperation* Common::makeOperation(const TopoDS_Shape& base, co
 
 // ----------------------------------------------------
 
-PROPERTY_SOURCE(Part::MultiCommon, Part::Feature)
+PROPERTY_SOURCE(Part::MultiCommon, Part::RefinableFeature)
 
 const char* MultiCommon::BehaviorEnums[] = {"CommonOfAllShapes", "CommonOfFirstAndRest", nullptr};
 
@@ -83,21 +80,6 @@ MultiCommon::MultiCommon()
     History.setSize(0);
 
     ADD_PROPERTY_TYPE(
-        Refine,
-        (0),
-        "Boolean",
-        (App::PropertyType)(App::Prop_None),
-        "Refine shape (clean up redundant edges) after this boolean operation"
-    );
-    ADD_PROPERTY_TYPE(
-        CheckRefine,
-        (false),
-        "Boolean",
-        (App::PropertyType)(App::Prop_None),
-        "Validate refine result and revert if it introduces self-intersections (slower)"
-    );
-
-    ADD_PROPERTY_TYPE(
         Behavior,
         (CommonOfAllShapes),
         "Compatibility",
@@ -108,8 +90,6 @@ MultiCommon::MultiCommon()
     );
     Behavior.setEnums(BehaviorEnums);
 
-    this->Refine.setValue(getRefineModelParameter());
-    this->CheckRefine.setValue(getCheckRefineParameter());
 }
 
 short MultiCommon::mustExecute() const
@@ -178,22 +158,7 @@ App::DocumentObjectExecReturn* MultiCommon::execute()
 
     throwIfInvalidIfCheckModel(res.getShape());
 
-    if (this->Refine.getValue()) {
-        TopoShape preRefine = res;
-        res = res.makeElementRefine();
-        if (!refineResultIsValid(res.getShape(), this->CheckRefine.getValue())) {
-            res = preRefine;
-            Base::Console().warning(
-                "'%s': The boolean result is correct, but the Refine "
-                "(cleanup) step damaged it and was skipped. The result "
-                "may have extra internal edges. To prevent this, disable "
-                "Refine in this feature's properties. This is a known "
-                "limitation of the geometry engine. "
-                "See: https://wiki.freecad.org/Boolean_Troubleshooting\n",
-                this->Label.getValue()
-            );
-        }
-    }
+    this->applyRefine(res);
     this->Shape.setValue(res);
     if (Shapes.getSize() > 0) {
         App::DocumentObject* link = Shapes.getValues()[0];
