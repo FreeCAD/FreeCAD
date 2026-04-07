@@ -277,26 +277,38 @@ void Part::FaceMaker::postBuild()
                 }
 
                 Data::MappedNameDataTree tree = name.getNameDataTree();
+                size_t treeSize = tree.size();
 
-                if (tree.size() == 1 && tree[0][7][0] == "SRC") {
-                    std::stringstream ss;
+                if (treeSize != 0 && tree[0][7][0] == "SRC") {
+                    bool canMap = treeSize <= 2;
+                    std::string index = "_";
 
-                    for (const auto &id : tree[0][0]) {
-                        if (id != "_") {
-                            ss << id;
-                            ss << ":";
-                            ss << tree[0][2][0];
+                    if (treeSize == 2) {
+                        if (tree[0][2][0] == tree[1][2][0]) {
+                            index = tree[1][4][0];
+                        }  else {
+                            canMap = false;
+                        }
+                    }
 
-                            std::string index = tree[0][4][0];
-                            
-                            if (index != "_" && index != "0") {
+                    if (canMap) {
+                        std::stringstream ss;
+
+                        for (const auto &id : tree[0][0]) {
+                            if (id != "_") {
+                                ss << id;
                                 ss << ":";
-                                ss << index;
-                            }
-                            
-                            edgeIDs.push_back(ss.str());
+                                ss << tree[0][2][0];
 
-                            ss.str("");
+                                if (index != "_") {
+                                    ss << ":";
+                                    ss << index;
+                                }
+                                
+                                edgeIDs.push_back(ss.str());
+
+                                ss.str("");
+                            }
                         }
                     }
                 } else {
@@ -326,9 +338,11 @@ void Part::FaceMaker::postBuild()
                                                                    0,
                                                                    "_");
             
-            this->myTopoShape.setElementName(Data::IndexedName::fromConst("Face", index),
-                                             Data::MappedName(faceString, this->myTopoShape.getHistoryAlgorithm()),
-                                             this->myTopoShape.Tag);
+            this->myTopoShape.setElementName(
+                Data::IndexedName::fromConst("Face", index),
+                Data::MappedName(faceString, this->myTopoShape.getHistoryAlgorithm()),
+                this->myTopoShape.Tag
+            );
         } 
     }
     this->myTopoShape.initCache(true);

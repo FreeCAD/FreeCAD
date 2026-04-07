@@ -1836,16 +1836,44 @@ const char *SketchObject::convertInternalName(const char *name)
     return nullptr;
 }
 
+std::vector<Data::MappedElement> SketchObject::findSimilarNames(const Data::MappedName &searchName) const
+{
+    std::vector<Data::MappedElement> ret;
+
+    ret = Part::Feature::findSimilarNames(searchName, Shape.getShape());
+
+    if (ret.empty()) {
+        const Part::TopoShape &internalShape = InternalShape.getShape();
+
+        if (internalShape.getHistoryAlgorithm() == App::HistoryAlgorithm::V2 && searchName.getHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+            for (const Data::MappedElement &loopNamePair : internalShape.getElementMap()) {
+                if (loopNamePair.name == searchName || Feature::doNamesMatch(searchName, loopNamePair.name)) {
+                    std::string loopNameIndexString = internalPrefix();
+                    loopNameIndexString += loopNamePair.index.toString();
+
+                    Data::IndexedName loopNameIndex = Data::IndexedName(
+                        loopNameIndexString.c_str()
+                    );
+
+                    ret.emplace_back(loopNamePair.name, loopNameIndex);
+                    Base::Console().log("Name match resolved name %s as equivelent to %s\n", searchName.toString(), loopNamePair.name.toString());
+                }
+            }
+        }
+    }
+
+    return ret;
+}
+
 App::ElementNamePair SketchObject::getElementName(
         const char *name, ElementNameType type) const
 {
     App::ElementNamePair ret;
     if(!name) return ret;
 
-    // If this is an InternalFace then don't check the MappedName below, as that would cause
-    // the wrong element to be selected.
     const char *mapped = Data::isMappedElement(name);
     const char* indexedSubname = mapped;
+    bool isInternalElement = false;
 
     if (mapped) {
         const char* dot = strchr(mapped, '.');
@@ -1853,47 +1881,23 @@ App::ElementNamePair SketchObject::getElementName(
         if (dot) {
             indexedSubname = dot + 1; 
 
-            if (indexedSubname == strstr(indexedSubname, "InternalFace")) {
-                Data::IndexedName internalFaceIndexedName = Data::IndexedName(indexedSubname, {"InternalFace"}, false);
-
-                if (internalFaceIndexedName) {
-                    const Part::TopoShape &internalShape = InternalShape.getShape();
-                    Data::MappedElement mappedElement = internalShape.getElementName(name);
-
-                    // let's attempt to find the right mapped name before marking this as missing by running findSimilarNames.
-                    // We could use getExportElementName to do the same thing, but this is more direct and should be more performant
-                    if (!mappedElement.index && type == ElementNameType::Export) {
-                        std::vector<Data::MappedElement> foundNames = findSimilarNames(mappedElement.name, internalShape);
-
-                        if (foundNames.size()) {
-                            // just grab the first name.
-                            mappedElement = foundNames[0];
-                        }
-                    }
-
-                    ret.newName = Data::ComplexGeoData::elementMapPrefix();
-                    mappedElement.name.appendToBuffer(ret.newName);
-
-                    ret.oldName = internalPrefix();
-                    mappedElement.index.appendToStringBuffer(ret.oldName);
-
-                    ret.newName += ".";
-                    ret.newName += ret.oldName;
-
-                    return ret;
-                }
+            if (indexedSubname == strstr(indexedSubname, internalPrefix().c_str())) {
+                isInternalElement = true;
             }
         }
     }
 
-    if(hasSketchMarker(name))
+    if(hasSketchMarker(name) && !isInternalElement)
         return Part2DObject::getElementName(name,type);
 
-    Data::IndexedName index = checkSubName(name);
+    Data::IndexedName index = isInternalElement ? Data::IndexedName(indexedSubname, {"InternalFace", "InternalEdge", "InternalVertex"}, false) : checkSubName(name);
     index.appendToStringBuffer(ret.oldName);
     if (auto realName = convertInternalName(ret.oldName.c_str())) {
         Data::MappedElement mappedElement;
-        if (type == ElementNameType::Export) {
+        if (mapped) {
+            mappedElement = InternalShape.getShape().getElementName(name);
+        }
+        else if (type == ElementNameType::Export) {
             ret.newName = getExportElementName(InternalShape.getShape(), realName).newName;
         }
         else {
@@ -1941,6 +1945,7 @@ App::ElementNamePair SketchObject::getElementName(
         ret.newName.clear();
     return ret;
 }
+
 
 Data::IndexedName SketchObject::checkSubName(const char *subname) const
 {
