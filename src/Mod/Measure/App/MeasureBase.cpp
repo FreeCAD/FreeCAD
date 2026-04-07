@@ -27,6 +27,8 @@
 #include <Base/PlacementPy.h>
 #include <App/FeaturePythonPyImp.h>
 #include <App/DocumentObjectPy.h>
+#include <Base/UnitsApi.h>
+#include <Base/Quantity.h>
 
 #include "MeasureBase.h"
 // Generated from MeasureBasePy.xml
@@ -45,6 +47,13 @@ MeasureBase::MeasureBase()
         nullptr,
         App::PropertyType(App::Prop_ReadOnly | App::Prop_Output | App::Prop_NoRecompute),
         "Visual placement of the measurement"
+    );
+    ADD_PROPERTY_TYPE(
+        DisplayUnit,
+        (""),
+        nullptr,
+        App::PropertyType(App::Prop_NoRecompute),
+        "User selected display unit override. Empty uses the global schema."
     );
 }
 
@@ -154,6 +163,36 @@ std::vector<std::string> MeasureBase::getInputProps()
 }
 
 
+QString MeasureBase::formatQuantity(const Base::Quantity& qty) const
+{
+    const std::string displayUnitstr = DisplayUnit.getStrValue();
+
+    if (!displayUnitstr.empty()) {
+        try {
+            const Base::Quantity targetUnit = Base::Quantity::parse("1 " + displayUnitstr);
+            if (qty.getUnit() == targetUnit.getUnit()) {
+                const double convertedValue = qty.getValueAs(targetUnit);
+                QString formattedValue;
+                int decimals = Base::UnitsApi::getDecimals();
+                // If between -1 and 1: use 'g' with significant digits = decimals
+                if (std::abs(convertedValue) < 1.0 && convertedValue != 0.0) {
+                    formattedValue = QString::number(convertedValue, 'g', decimals);
+                }
+                else {
+                    formattedValue = QString::number(convertedValue, 'f', decimals);
+                }
+                return formattedValue + QLatin1String(" ") + QString::fromStdString(displayUnitstr);
+            }
+        }
+        catch (const Base::ParserError&) {
+            Base::Console().error("Failed to parse DisplayUnit '%s'\n", displayUnitstr.c_str());
+        }
+    }
+
+    return QString::fromStdString(qty.getUserString());
+}
+
+
 QString MeasureBase::getResultString()
 {
     Py::Object proxy = getProxyObject();
@@ -183,9 +222,7 @@ QString MeasureBase::getResultString()
     }
 
     if (prop->isDerivedFrom<App::PropertyQuantity>()) {
-        return QString::fromStdString(
-            static_cast<App::PropertyQuantity*>(prop)->getQuantityValue().getUserString()
-        );
+        return formatQuantity(static_cast<App::PropertyQuantity*>(prop)->getQuantityValue());
     }
 
 

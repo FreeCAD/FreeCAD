@@ -129,15 +129,16 @@ QString MeasurePosition::getResultString()
     if (prop == nullptr) {
         return {};
     }
-
+    Base::Unit unit = Position.getUnit();
     Base::Vector3d value = Position.getValue();
-    QString unit = QString::fromStdString(Position.getUnit().getString());
-    int precision = 2;
-    QString text;
+    Base::Quantity qx(value.x, unit);
+    Base::Quantity qy(value.y, unit);
+    Base::Quantity qz(value.z, unit);
 
-    QTextStream(&text) << "X: " << QString::number(value.x, 'f', precision) << " " << unit << Qt::endl
-                       << "Y: " << QString::number(value.y, 'f', precision) << " " << unit << Qt::endl
-                       << "Z: " << QString::number(value.z, 'f', precision) << " " << unit;
+    QString text;
+    QTextStream(&text) << "X: " << formatQuantity(qx) << Qt::endl
+                       << "Y: " << formatQuantity(qy) << Qt::endl
+                       << "Z: " << formatQuantity(qz);
     return text;
 }
 

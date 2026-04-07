@@ -382,7 +382,7 @@ void ViewProviderMeasureBase::updateData(const App::Property* prop)
         return;
     }
 
-    if (strcmp(prop->getName(), "Label") == 0) {
+    if (strcmp(prop->getName(), "Label") == 0 || prop == &obj->DisplayUnit) {
         doUpdate = true;
     }
 

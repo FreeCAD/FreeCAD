@@ -56,6 +56,9 @@ public:
     ~MeasureBase() override = default;
 
     App::PropertyPlacement Placement;
+    App::PropertyString DisplayUnit;
+
+    QString formatQuantity(const Base::Quantity& qty) const;
 
     // fastsignals::signal<void (const MeasureBase*)> signalGuiInit;
 
