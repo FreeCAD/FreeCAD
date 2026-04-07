@@ -100,6 +100,8 @@ DocumentObject::~DocumentObject()
 
 void DocumentObject::printInvalidLinks() const
 {
+    constexpr int max_visible = 5;
+
     try {
         // Get objects that have invalid link scope, and print their names.
         // Truncate the invalid object list name strings for readability, if they happen to be very
@@ -108,19 +110,19 @@ void DocumentObject::printInvalidLinks() const
         std::string objnames, scopenames;
         GeoFeatureGroupExtension::getInvalidLinkObjects(this, invalid_linkobjs);
         for (auto& obj : invalid_linkobjs) {
-            objnames += obj->getNameInDocument();
-            objnames += " ";
+            objnames += obj->getFullName();
+            objnames += "\n";
             for (auto& scope : obj->getParents()) {
-                if (scopenames.length() > 80) {
+                if (scopenames.length() > max_visible) {
                     scopenames += "... ";
                     break;
                 }
 
-                scopenames += scope.first->getNameInDocument();
-                scopenames += " ";
+                scopenames += scope.first->getFullName();
+                scopenames += "\n";
             }
 
-            if (objnames.length() > 80) {
+            if (objnames.length() > max_visible) {
                 objnames += "... ";
                 break;
             }
@@ -140,10 +142,9 @@ void DocumentObject::printInvalidLinks() const
             scopenames.pop_back();
         }
 
-        Base::Console().warning("%s: %s links are out of scope. Out of scope links to: %s\n",
-                                getTypeId().getName(),
-                                getNameInDocument(),
-                                objnames.c_str());
+        Base::Console().warning(
+            "%s: %s out of scope links to:\n%s", 
+            getTypeId().getName(), getFullName(), objnames.c_str());
     }
     catch (const Base::Exception& e) {
         e.reportException();
