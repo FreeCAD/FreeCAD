@@ -125,7 +125,7 @@ class Z88Tools(ObjectTools):
         # results are z88oN.txt files
         dir_content = os.listdir(self.obj.WorkingDirectory)
         for f in dir_content:
-            if re.match(r"^z88o\d+\.txt$", f):
+            if re.match(r"^z88o\d+\.txt$", f) or re.match(r"^.+\.dat$", f):
                 path = os.path.join(self.obj.WorkingDirectory, f)
                 os.remove(path)
 
@@ -145,15 +145,12 @@ class Z88Tools(ObjectTools):
             tmp.append(dat)
             self.obj.Results = tmp
 
-        files = os.listdir(self.obj.WorkingDirectory)
         # load stress results. If test mode, load log file
         target_file = self.log_file if self.obj.AnalysisType == "test" else self.stress_file
-        for f in files:
-            if f.lower() == target_file:
-                dat_file = os.path.join(self.obj.WorkingDirectory, f)
-                with open(dat_file, "r") as file:
-                    dat.Text = file.read()
-                break
+        # clear text data
+        dat.Text = ""
+        self.append_section(dat, self.print_file)
+        self.append_section(dat, target_file)
 
     def _load_vtk_results(self):
         # search current pipeline
@@ -212,6 +209,10 @@ class Z88Tools(ObjectTools):
             FreeCAD.Console.PrintError("".join(format_exception_only(e)))
         try:
             self.load_force(grid)
+        except Exception as e:
+            FreeCAD.Console.PrintError("".join(format_exception_only(e)))
+        try:
+            self.save_section_print(grid)
         except Exception as e:
             FreeCAD.Console.PrintError("".join(format_exception_only(e)))
 
@@ -279,6 +280,53 @@ class Z88Tools(ObjectTools):
         disp_points = vtk_np.numpy_to_vtk(disp_points, deep=True)
         points.SetData(disp_points)
 
+    def save_section_print(self, grid):
+        path_section_print = os.path.join(self.obj.WorkingDirectory, self.section_print_file)
+        if not os.path.exists(path_section_print):
+            return
+
+        sp_dict = np.load(path_section_print, allow_pickle=True).item()
+        path_print = os.path.join(self.obj.WorkingDirectory, self.print_file)
+        data_file = open(path_print, "w")
+
+        pd = grid.GetPointData()
+        if pd.HasArray("Nodal Force"):
+            force = pd.GetAbstractArray("Nodal Force")
+            force = vtk_np.vtk_to_numpy(force)
+            max_len_name = max(map(len, sp_dict.keys()))
+            if self.obj.ModelSpace == "plate":
+                cols = 1
+                names = ["Fz"]
+            else:
+                cols = 3
+                names = ["Fx", "Fy", "Fz"]
+
+            row_format = f"{{:<{max_len_name}}}" + "{:>15}" * cols + "\n"
+            data_file.write(row_format.format("", *names))
+
+            for feat, nodes in sp_dict.items():
+                result = (
+                    force[list(nodes)]
+                    .sum(axis=0)
+                    .reshape(
+                        -1,
+                    )
+                )
+                force_row = list(map(lambda x: "{:E}".format(x), result))
+                data_file.write(row_format.format(feat, *force_row))
+
+        data_file.close()
+
+    def append_section(self, obj, target_file):
+        files = os.listdir(self.obj.WorkingDirectory)
+        for f in files:
+            if f.lower() == target_file:
+                section_header = "#" * 80 + "\n" + "Output file: " + f + "\n\n"
+                data_file = os.path.join(self.obj.WorkingDirectory, f)
+                with open(data_file, "r") as file:
+                    obj.Text = obj.Text + section_header + file.read() + "\n"
+                break
+
     def version(self):
         return "Version: ?"
 
@@ -286,4 +334,6 @@ class Z88Tools(ObjectTools):
     disp_file = "z88o2.txt"
     stress_file = "z88o3.txt"
     force_file = "z88o4.txt"
+    section_print_file = "z88section_print.npy"
+    print_file = "z88print.dat"
     log_file = "z88r.log"
