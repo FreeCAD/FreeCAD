@@ -625,25 +625,47 @@ class MapWireToTag:
 
 class _RapidEdges:
     def __init__(self, rapid):
-        self.rapid = rapid
+        self.rapid_coords = set()
+
+        # Calculate precision based on Path.Geom.Tolerance
+        # e.g., 0.001 -> 3 decimal places
+        try:
+            tol = Path.Geom.Tolerance
+            self.precision = max(0, int(math.ceil(-math.log10(tol))))
+        except (AttributeError, ValueError, OverflowError):
+            self.precision = 6  # Reasonable default
+
+        for edge in rapid:
+            self.markRapid(edge)
+
+    def _get_coords_key(self, edge):
+        """Generates a hashable tuple of rounded coordinates."""
+        try:
+            if type(edge.Curve) not in [Part.Line, Part.LineSegment]:
+                return None
+
+            v0 = edge.Vertexes[0].Point
+            v1 = edge.Vertexes[1].Point
+
+            return (
+                round(v0.x, self.precision),
+                round(v0.y, self.precision),
+                round(v0.z, self.precision),
+                round(v1.x, self.precision),
+                round(v1.y, self.precision),
+                round(v1.z, self.precision)
+            )
+        except (AttributeError, IndexError):
+            return None
 
     def isRapid(self, edge):
-        if type(edge.Curve) in [Part.Line, Part.LineSegment]:
-            v0 = edge.Vertexes[0]
-            v1 = edge.Vertexes[1]
-            for r in self.rapid:
-                r0 = r.Vertexes[0]
-                r1 = r.Vertexes[1]
-                if (
-                    Path.Geom.isRoughly(r0.X, v0.X)
-                    and Path.Geom.isRoughly(r0.Y, v0.Y)
-                    and Path.Geom.isRoughly(r0.Z, v0.Z)
-                    and Path.Geom.isRoughly(r1.X, v1.X)
-                    and Path.Geom.isRoughly(r1.Y, v1.Y)
-                    and Path.Geom.isRoughly(r1.Z, v1.Z)
-                ):
-                    return True
-        return False
+        key = self._get_coords_key(edge)
+        return key is not None and key in self.rapid_coords
+
+    def markRapid(self, edge):
+        key = self._get_coords_key(edge)
+        if key:
+            self.rapid_coords.add(key)
 
 
 class PathData:
