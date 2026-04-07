@@ -46,7 +46,8 @@ namespace Part
 {
 extern void throwIfInvalidIfCheckModel(const TopoDS_Shape& shape);
 extern bool getRefineModelParameter();
-extern bool refineResultIsValid(const TopoDS_Shape& shape);
+extern bool getCheckRefineParameter();
+extern bool refineResultIsValid(const TopoDS_Shape& shape, bool checkRefine);
 }  // namespace Part
 
 PROPERTY_SOURCE(Part::Fuse, Part::Boolean)
@@ -90,8 +91,16 @@ MultiFuse::MultiFuse()
         (App::PropertyType)(App::Prop_None),
         "Refine shape (clean up redundant edges) after this boolean operation"
     );
+    ADD_PROPERTY_TYPE(
+        CheckRefine,
+        (false),
+        "Boolean",
+        (App::PropertyType)(App::Prop_None),
+        "Validate refine result and revert if it introduces self-intersections (slower)"
+    );
 
     this->Refine.setValue(getRefineModelParameter());
+    this->CheckRefine.setValue(getCheckRefineParameter());
 }
 
 short MultiFuse::mustExecute() const
@@ -183,7 +192,7 @@ App::DocumentObjectExecReturn* MultiFuse::execute()
                 try {
                     TopoDS_Shape oldShape = res.getShape();
                     BRepBuilderAPI_RefineModel mkRefine(oldShape);
-                    if (!refineResultIsValid(mkRefine.Shape())) {
+                    if (!refineResultIsValid(mkRefine.Shape(), this->CheckRefine.getValue())) {
                         Base::Console().warning(
                             "'%s': The boolean result is correct, but the "
                             "Refine (cleanup) step damaged it and was skipped. "

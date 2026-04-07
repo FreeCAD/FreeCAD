@@ -97,15 +97,19 @@ bool getRefineModelParameter()
     return hGrp->GetBool("RefineModel", true);
 }
 
-bool refineResultIsValid(const TopoDS_Shape& shape)
+bool getCheckRefineParameter()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication()
                                              .GetUserParameter()
                                              .GetGroup("BaseApp")
                                              ->GetGroup("Preferences")
                                              ->GetGroup("Mod/Part/Boolean");
+    return hGrp->GetBool("CheckRefine", false);
+}
 
-    if (!hGrp->GetBool("CheckRefine", false)) {
+bool refineResultIsValid(const TopoDS_Shape& shape, bool checkRefine)
+{
+    if (!checkRefine) {
         return true;  // validation disabled, assume valid
     }
 
@@ -147,8 +151,16 @@ Boolean::Boolean()
         (App::PropertyType)(App::Prop_None),
         "Refine shape (clean up redundant edges) after this boolean operation"
     );
+    ADD_PROPERTY_TYPE(
+        CheckRefine,
+        (false),
+        "Boolean",
+        (App::PropertyType)(App::Prop_None),
+        "Validate refine result and revert if it introduces self-intersections (slower)"
+    );
 
     this->Refine.setValue(getRefineModelParameter());
+    this->CheckRefine.setValue(getCheckRefineParameter());
 }
 
 short Boolean::mustExecute() const
@@ -235,7 +247,7 @@ App::DocumentObjectExecReturn* Boolean::execute()
         if (this->Refine.getValue()) {
             TopoShape preRefine = res;
             res = res.makeElementRefine();
-            if (!refineResultIsValid(res.getShape())) {
+            if (!refineResultIsValid(res.getShape(), this->CheckRefine.getValue())) {
                 res = preRefine;
                 Base::Console().warning(
                     "'%s': The boolean result is correct, but the Refine "

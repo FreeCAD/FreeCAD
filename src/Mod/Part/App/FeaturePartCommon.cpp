@@ -44,7 +44,8 @@ namespace Part
 {
 extern void throwIfInvalidIfCheckModel(const TopoDS_Shape& shape);
 extern bool getRefineModelParameter();
-extern bool refineResultIsValid(const TopoDS_Shape& shape);
+extern bool getCheckRefineParameter();
+extern bool refineResultIsValid(const TopoDS_Shape& shape, bool checkRefine);
 }  // namespace Part
 
 PROPERTY_SOURCE(Part::Common, Part::Boolean)
@@ -88,6 +89,13 @@ MultiCommon::MultiCommon()
         (App::PropertyType)(App::Prop_None),
         "Refine shape (clean up redundant edges) after this boolean operation"
     );
+    ADD_PROPERTY_TYPE(
+        CheckRefine,
+        (false),
+        "Boolean",
+        (App::PropertyType)(App::Prop_None),
+        "Validate refine result and revert if it introduces self-intersections (slower)"
+    );
 
     ADD_PROPERTY_TYPE(
         Behavior,
@@ -101,6 +109,7 @@ MultiCommon::MultiCommon()
     Behavior.setEnums(BehaviorEnums);
 
     this->Refine.setValue(getRefineModelParameter());
+    this->CheckRefine.setValue(getCheckRefineParameter());
 }
 
 short MultiCommon::mustExecute() const
@@ -172,7 +181,7 @@ App::DocumentObjectExecReturn* MultiCommon::execute()
     if (this->Refine.getValue()) {
         TopoShape preRefine = res;
         res = res.makeElementRefine();
-        if (!refineResultIsValid(res.getShape())) {
+        if (!refineResultIsValid(res.getShape(), this->CheckRefine.getValue())) {
             res = preRefine;
             Base::Console().warning(
                 "'%s': The boolean result is correct, but the Refine "

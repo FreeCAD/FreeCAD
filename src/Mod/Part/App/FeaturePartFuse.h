@@ -58,6 +58,7 @@ public:
     App::PropertyLinkList Shapes;
     PropertyShapeHistory History;
     App::PropertyBool Refine;
+    App::PropertyBool CheckRefine;
 
     /** @name methods override feature */
     //@{
