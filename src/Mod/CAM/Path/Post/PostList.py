@@ -1,37 +1,137 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2026 sliptonic <shopinthewoods@gmail.com>
+
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import re
-from typing import Any, List, Tuple
+from dataclasses import dataclass, field
+from typing import Any, List, Optional, Tuple
 
-import FreeCAD
 import Path
 import Path.Base.Util as PathUtil
-import Path.Tool.Controller as PathToolController
+
+debug = False
+if debug:
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
+else:
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
-class _FixtureSetupObject:
-    Path = None
-    Name = "Fixture"
-    InList = []
-    Label = "Fixture"
+def _get_effective_fixtures(processor):
+    """Return the fixture list the postprocessor should use.
+
+    If the configuration bundle contains a non-empty SELECTED_FIXTURES
+    list, only those fixtures are returned (preserving job order).
+    Otherwise all job fixtures are returned.
+    """
+    all_fixtures = processor._job.Fixtures
+    selected = getattr(processor, "values", {}).get("SELECTED_FIXTURES", None)
+    if selected:
+        return [f for f in all_fixtures if f in selected]
+    return all_fixtures
 
 
-class _CommandObject:
-    def __init__(self, command):
-        self.Path = Path.Path([command])
-        self.Name = "Command"
-        self.InList = []
-        self.Label = "Command"
+@dataclass
+class Postable:
+    """Uniform wrapper for every item that passes through the post-processing pipeline.
 
+    Replaces the three ad-hoc mock classes (_FixtureSetupObject, _CommandObject,
+    _RotationSetupObject) and raw document objects. All downstream code can rely on
+    this single interface instead of duck-typing via hasattr.
 
-class _RotationSetupObject:
-    """Postable for rotation commands to align workpiece/table for 3+2 axis machining."""
+    The wrapper copies essential data (path, label) to prevent postprocessing from
+    accidentally marking the original FreeCAD document objects dirty.
 
-    Path = None
-    Name = "Rotation"
-    InList = []
-    Label = "Rotation"
-    Placement = None
+    Attributes:
+        item_type: One of "operation", "tool_controller", "fixture", "rotation", "command".
+        label:     Human-readable name (mirrors the old .Label attribute).
+        path:      Always a *copy* of the source path so mutations here never touch
+                   the original FreeCAD document object.
+        source:    Reference to the original object for traceability (read-only).
+        data:      Extension dict. Standard keys:
+                     "tool_controller" (Postable) - Present on operation items.
+                     "tool_number" (int/float) - Present on tool_controller items.
+    """
+
+    item_type: str
+    label: str
+    path: "Path.Path"
+    source: Optional[object]
+    data: dict = field(default_factory=dict)
+
+    # Backward-compat properties so legacy code continues to work without changes.
+    @property
+    def Path(self):
+        return self.path
+
+    @Path.setter
+    def Path(self, value):
+        self.path = value
+
+    @property
+    def Label(self):
+        return self.label
+
+    def __getattr__(self, name):
+        """Forward unknown attribute lookups to source for backward-compat.
+
+        Legacy post scripts access attributes like .Name, .InList, .Proxy, .TypeId,
+        .ToolNumber, .CoolantMode, etc. directly on items. Forwarding to source keeps
+        them working without modification.
+
+        ToolController is intercepted: returns the Postable-wrapped TC stored in
+        data["tool_controller"] rather than the live document object, preventing
+        callers from accidentally marking the source operation dirty.
+        """
+        # Use object.__getattribute__ to avoid recursion if source itself isn't set yet.
+        try:
+            data = object.__getattribute__(self, "data")
+        except AttributeError:
+            data = {}
+
+        # Return the Postable-wrapped TC instead of the live document object.
+        if name == "ToolController":
+            return data.get("tool_controller", None)
+
+        try:
+            source = object.__getattribute__(self, "source")
+        except AttributeError:
+            source = None
+
+        if source is not None:
+            return getattr(source, name)
+
+        # Provide sensible fallbacks for items that have no source document object
+        # (fixture, rotation, command).  These mirror what the old mock classes provided.
+        try:
+            label = object.__getattribute__(self, "label")
+        except AttributeError:
+            label = "Unknown"
+
+        _fallbacks = {
+            "Name": label,
+            "InList": [],
+        }
+        if name in _fallbacks:
+            return _fallbacks[name]
+
+        raise AttributeError(f"'{type(self).__name__}' object has no attribute '{name}'")
 
 
 def needsTcOp(oldTc: Any, newTc: Any) -> bool:
@@ -43,91 +143,103 @@ def needsTcOp(oldTc: Any, newTc: Any) -> bool:
     )
 
 
-def create_fixture_setup(processor: Any, order: int, fixture: str) -> _FixtureSetupObject:
-    fobj = _FixtureSetupObject()
+def _wrap_tc(tc: Any) -> Postable:
+    """Wrap a FreeCAD ToolController document object in a Postable.
+
+    Always generates the toolchange path from TC attributes to ensure commands are
+    present even if the document hasn't been recomputed (tc.Path may be empty).
+    """
+    from Path.Base.Generator import toolchange
+
+    if tc.Path and tc.Path.Commands:
+        path = Path.Path(tc.Path.Commands)
+    else:
+        try:
+            spindle_dir = (
+                tc.Tool.Proxy.get_spindle_direction()
+                if tc.Tool
+                else toolchange.SpindleDirection.OFF
+            )
+            commands = toolchange.generate(
+                toolnumber=tc.ToolNumber,
+                toollabel=tc.Label,
+                spindlespeed=tc.SpindleSpeed if tc.SpindleSpeed else 0,
+                spindledirection=spindle_dir,
+            )
+            path = Path.Path(commands)
+        except Exception:
+            path = Path.Path([Path.Command("M6", {"T": int(tc.ToolNumber)})])
+
+    return Postable(
+        item_type="tool_controller",
+        label=tc.Label,
+        path=path,
+        source=tc,
+        data={"tool_number": tc.ToolNumber},
+    )
+
+
+def _wrap_op(op: Any) -> Postable:
+    """Wrap a FreeCAD operation document object in a Postable.
+
+    Creates a safe wrapper that copies essential operation data (path, ToolController)
+    so downstream postprocessing code can read from the copy rather than the live
+    document object. This prevents postprocessing from accidentally marking operations
+    dirty.
+
+    Data keys populated:
+        "tool_controller" (Postable) - Present when the operation has a ToolController.
+    """
+    data = {}
+    raw_tc = PathUtil.toolControllerForOp(op)
+    if raw_tc is not None:
+        data["tool_controller"] = _wrap_tc(raw_tc)
+
+    return Postable(
+        item_type="operation",
+        label=op.Label,
+        path=Path.Path(op.Path.Commands) if op.Path else Path.Path([]),
+        source=op,
+        data=data,
+    )
+
+
+def create_fixture_setup(processor: Any, order: int, fixture: str) -> Postable:
     c1 = Path.Command(fixture)
-    fobj.Path = Path.Path([c1])
+    commands = [c1]
 
     if order != 0:
         clearance_z = (
             processor._job.Stock.Shape.BoundBox.ZMax
             + processor._job.SetupSheet.ClearanceHeightOffset.Value
         )
-        c2 = Path.Command(f"G0 Z{clearance_z}")
-        fobj.Path.addCommands(c2)
+        commands.append(Path.Command(f"G0 Z{clearance_z}"))
 
-    fobj.InList.append(processor._job)
-    return fobj
+    postable = Postable(
+        item_type="fixture",
+        label="Fixture",
+        path=Path.Path(commands),
+        source=None,
+    )
+    return postable
 
 
-def create_rotation_setup(processor: Any, placement: Any) -> _RotationSetupObject:
-    """Create a rotation postable to align machine axes with the operation placement.
+def build_postlist_by_fixture(processor: Any) -> list:
+    """Build postlist ordered by fixture (work coordinate system).
+
+    Wraps operations early to prevent accessing live document objects, which can
+    mark operations dirty during postprocessing.
 
     Args:
-        processor: The postprocessor object
-        placement: The target placement (FreeCAD.Placement)
+        processor: The postprocessor object with job and operations
 
     Returns:
-        _RotationSetupObject with rotation commands, or None if rotation not possible
+        List of tuples: [(fixture_name, [postable_items])]
     """
-    robj = _RotationSetupObject()
-    robj.Placement = placement
-    robj.Label = f"Rotate to {placement}"
-    robj.InList.append(processor._job)
-
-    # Check if machine has rotary axes
-    machine = processor._job.Proxy.getMachine() if processor._job else None
-    if not machine or not machine.has_rotary_axes:
-        Path.Log.warning("Rotation required but machine does not have rotary axes")
-        return None
-
-    try:
-        import Path.Base.Generator.rotation as rotation
-
-        # Get rotation limits from machine (default to unlimited if not specified)
-        aMin, aMax = -360, 360
-        cMin, cMax = -360, 360
-
-        if "A" in machine.rotary_axes:
-            aMin = machine.rotary_axes["A"].min_limit
-            aMax = machine.rotary_axes["A"].max_limit
-        if "C" in machine.rotary_axes:
-            cMin = machine.rotary_axes["C"].min_limit
-            cMax = machine.rotary_axes["C"].max_limit
-
-        # Generate rotation commands to align placement with Z
-        # Extract the Z-axis (normal vector) from the operation placement
-        placement_z_axis = placement.Rotation.multVec(FreeCAD.Vector(0, 0, 1))
-
-        # Use compound moves if machine supports it
-        rotation_commands = rotation.generate(
-            placement_z_axis,
-            aMin=aMin,
-            aMax=aMax,
-            cMin=cMin,
-            cMax=cMax,
-            compound=machine.compound_moves,
-        )
-
-        robj.Path = Path.Path(rotation_commands)
-        Path.Log.debug(f"Created rotation setup: {rotation_commands}")
-        return robj
-
-    except ValueError as e:
-        # No valid rotation solution found within machine limits
-        Path.Log.error(f"Cannot find valid rotation for placement within machine limits: {e}")
-        return None
-    except Exception as e:
-        Path.Log.error(f"Error calculating placement rotation: {e}")
-        return None
-
-
-def build_postlist_by_fixture(processor: Any, early_tool_prep: bool = False) -> list:
     Path.Log.debug("Ordering by Fixture")
     postlist = []
-    wcslist = processor._job.Fixtures
+    wcslist = _get_effective_fixtures(processor)
     currTc = None
-    current_placement = FreeCAD.Placement()  # Track current placement (identity)
 
     for index, f in enumerate(wcslist):
         sublist = [create_fixture_setup(processor, index, f)]
@@ -136,36 +248,39 @@ def build_postlist_by_fixture(processor: Any, early_tool_prep: bool = False) -> 
             if not PathUtil.activeForOp(obj):
                 continue
 
-            # Check if operation placement requires rotation
-            if hasattr(obj, "Placement") and obj.Placement:
-                if not obj.Placement.Rotation.isSame(current_placement.Rotation, 1e-6):
-                    # Placement changed - insert rotation postable
-                    rotation_obj = create_rotation_setup(processor, obj.Placement)
-                    if rotation_obj:
-                        sublist.append(rotation_obj)
-                        current_placement = obj.Placement
-                        Path.Log.debug(f"Inserted rotation for {obj.Label}")
+            # Wrap early: all further access uses the Postable copy, not the raw document object.
+            wrapped_op = _wrap_op(obj)
 
-            tc = PathUtil.toolControllerForOp(obj)
-            if tc is not None:
-                if needsTcOp(currTc, tc):
-                    sublist.append(tc)
-                    Path.Log.debug(f"Appending TC: {tc.Name}")
-                    currTc = tc
-            sublist.append(obj)
+            tc_postable = wrapped_op.ToolController
+            if tc_postable is not None:
+                if needsTcOp(currTc, tc_postable):
+                    sublist.append(tc_postable)
+                    Path.Log.debug(f"Appending TC: {tc_postable.label}")
+                    currTc = tc_postable
+            sublist.append(wrapped_op)
 
         postlist.append((f, sublist))
 
     return postlist
 
 
-def build_postlist_by_tool(processor: Any, early_tool_prep: bool = False) -> list:
+def build_postlist_by_tool(processor: Any) -> list:
+    """Build postlist ordered by tool.
+
+    Groups operations by tool controller to minimize tool changes. Wraps operations
+    early to prevent accessing live document objects.
+
+    Args:
+        processor: The postprocessor object with job and operations
+
+    Returns:
+        List of tuples: [(tool_name, [postable_items])]
+    """
     Path.Log.debug("Ordering by Tool")
     postlist = []
-    wcslist = processor._job.Fixtures
+    wcslist = _get_effective_fixtures(processor)
     toolstring = "None"
     currTc = None
-    current_placement = FreeCAD.Placement()  # Track current placement (identity)
 
     fixturelist = []
     for index, f in enumerate(wcslist):
@@ -189,96 +304,93 @@ def build_postlist_by_tool(processor: Any, early_tool_prep: bool = False) -> lis
             Path.Log.track()
             continue
 
-        tc = PathUtil.toolControllerForOp(obj)
+        # Wrap early: all further access uses the Postable copy, not the raw document object.
+        wrapped_op = _wrap_op(obj)
+        tc_postable = wrapped_op.ToolController
 
-        if tc is None or not needsTcOp(currTc, tc):
-            # Check if operation placement requires rotation before adding to curlist
-            if hasattr(obj, "Placement") and obj.Placement:
-                if not obj.Placement.Rotation.isSame(current_placement.Rotation, 1e-6):
-                    # Placement changed - insert rotation postable
-                    rotation_obj = create_rotation_setup(processor, obj.Placement)
-                    if rotation_obj:
-                        curlist.append(rotation_obj)
-                        current_placement = obj.Placement
-                        Path.Log.debug(f"Inserted rotation for {obj.Label}")
-            curlist.append(obj)
+        if tc_postable is None or not needsTcOp(currTc, tc_postable):
+            curlist.append(wrapped_op)
         else:
             commitToPostlist()
 
-            sublist = [tc]
-
-            # Check if operation placement requires rotation
-            if hasattr(obj, "Placement") and obj.Placement:
-                if not obj.Placement.Rotation.isSame(current_placement.Rotation, 1e-6):
-                    # Placement changed - insert rotation postable
-                    rotation_obj = create_rotation_setup(processor, obj.Placement)
-                    if rotation_obj:
-                        sublist.append(rotation_obj)
-                        current_placement = obj.Placement
-                        Path.Log.debug(f"Inserted rotation for {obj.Label}")
-
-            curlist = [obj]
-            currTc = tc
+            sublist = [tc_postable]
+            curlist = [wrapped_op]
+            currTc = tc_postable
 
             if "%T" in processor._job.PostProcessorOutputFile:
-                toolstring = f"{tc.ToolNumber}"
+                toolstring = f"{tc_postable.data['tool_number']}"
             else:
-                toolstring = re.sub(r"[^\w\d-]", "_", tc.Label)
+                toolstring = re.sub(r"[^\w\d-]", "_", tc_postable.label)
 
     commitToPostlist()
 
     return postlist
 
 
-def build_postlist_by_operation(processor: Any, early_tool_prep: bool = False) -> list:
+def build_postlist_by_operation(processor: Any) -> list:
+    """Build postlist ordered by operation.
+
+    Creates separate sections for each operation with all fixtures. Wraps operations
+    early to prevent accessing live document objects.
+
+    Args:
+        processor: The postprocessor object with job and operations
+
+    Returns:
+        List of tuples: [(operation_name, [postable_items])]
+    """
     Path.Log.debug("Ordering by Operation")
     postlist = []
-    wcslist = processor._job.Fixtures
+    wcslist = _get_effective_fixtures(processor)
     currTc = None
-    current_placement = FreeCAD.Placement()  # Track current placement (identity)
 
     for obj in processor._operations:
         if not PathUtil.activeForOp(obj):
             continue
 
+        # Wrap early: all further access uses the Postable copy, not the raw document object.
+        wrapped_op = _wrap_op(obj)
+        Path.Log.debug(f"obj: {wrapped_op.label}")
+
         sublist = []
-        Path.Log.debug(f"obj: {obj.Name}")
 
         for index, f in enumerate(wcslist):
             sublist.append(create_fixture_setup(processor, index, f))
 
-            # Check if operation placement requires rotation
-            if hasattr(obj, "Placement") and obj.Placement:
-                if not obj.Placement.Rotation.isSame(current_placement.Rotation, 1e-6):
-                    # Placement changed - insert rotation postable
-                    rotation_obj = create_rotation_setup(processor, obj.Placement)
-                    if rotation_obj:
-                        sublist.append(rotation_obj)
-                        current_placement = obj.Placement
-                        Path.Log.debug(f"Inserted rotation for {obj.Label}")
+            tc_postable = wrapped_op.ToolController
+            if tc_postable is not None:
+                if processor._job.SplitOutput or needsTcOp(currTc, tc_postable):
+                    sublist.append(tc_postable)
+                    currTc = tc_postable
+            sublist.append(wrapped_op)
 
-            tc = PathUtil.toolControllerForOp(obj)
-            if tc is not None:
-                if processor._job.SplitOutput or needsTcOp(currTc, tc):
-                    sublist.append(tc)
-                    currTc = tc
-            sublist.append(obj)
-
-        postlist.append((obj.Label, sublist))
+        postlist.append((wrapped_op.label, sublist))
 
     return postlist
 
 
-def buildPostList(processor: Any, early_tool_prep: bool = False) -> List[Tuple[str, List]]:
+def buildPostList(processor: Any) -> List[Tuple[str, List]]:
+    """Build ordered list of postables for postprocessing.
+
+    Determines ordering strategy based on job.OrderOutputBy and delegates to
+    appropriate builder function. All operations are wrapped early to prevent
+    accessing live document objects.
+
+    Args:
+        processor: The postprocessor object with job and operations
+
+    Returns:
+        List of tuples: [(section_name, [postable_items])]
+    """
     orderby = processor._job.OrderOutputBy
     Path.Log.debug(f"Ordering by {orderby}")
 
     if orderby == "Fixture":
-        postlist = build_postlist_by_fixture(processor, early_tool_prep)
+        postlist = build_postlist_by_fixture(processor)
     elif orderby == "Tool":
-        postlist = build_postlist_by_tool(processor, early_tool_prep)
+        postlist = build_postlist_by_tool(processor)
     elif orderby == "Operation":
-        postlist = build_postlist_by_operation(processor, early_tool_prep)
+        postlist = build_postlist_by_operation(processor)
     else:
         raise ValueError(f"Unknown order: {orderby}")
 
@@ -288,6 +400,15 @@ def buildPostList(processor: Any, early_tool_prep: bool = False) -> List[Tuple[s
         final_postlist = postlist
     else:
         final_postlist = [("allitems", [item for sublist in postlist for item in sublist[1]])]
+
+    # Apply early_tool_prep if configured on the machine
+    early_tool_prep = False
+    if (
+        hasattr(processor, "_machine")
+        and processor._machine
+        and hasattr(processor._machine, "processing")
+    ):
+        early_tool_prep = getattr(processor._machine.processing, "early_tool_prep", False)
 
     if early_tool_prep:
         return apply_early_tool_prep(final_postlist)
@@ -312,11 +433,11 @@ def apply_early_tool_prep(postlist: List[Tuple[str, List]]) -> List[Tuple[str, L
         <gcode>    <- operations with T5
         T7 M6      <- change to tool 7 (already prepped)
     """
-    # First, collect all tool controllers across all groups to find next tool
+    # Collect all tool controllers across all groups to find the next tool
     all_tool_controllers = []
     for group_idx, (name, sublist) in enumerate(postlist):
         for item_idx, item in enumerate(sublist):
-            if hasattr(item, "Proxy") and isinstance(item.Proxy, PathToolController.ToolController):
+            if item.item_type == "tool_controller":
                 all_tool_controllers.append((group_idx, item_idx, item))
 
     new_postlist = []
@@ -325,21 +446,15 @@ def apply_early_tool_prep(postlist: List[Tuple[str, List]]) -> List[Tuple[str, L
         i = 0
         while i < len(sublist):
             item = sublist[i]
-            # Check if item is a tool controller
-            if hasattr(item, "Proxy") and isinstance(item.Proxy, PathToolController.ToolController):
-                # Tool controller has Path.Commands like: [Command (comment), Command M6 [T:n]]
-                # Find the M6 command
+            if item.item_type == "tool_controller":
                 m6_cmd = None
-                for cmd in item.Path.Commands:
+                for cmd in item.path.Commands:
                     if cmd.Name == "M6":
                         m6_cmd = cmd
                         break
 
                 if m6_cmd and len(m6_cmd.Parameters) > 0:
-                    # M6 command has parameters like {'T': 5}, access via key
-                    tool_number = m6_cmd.Parameters.get("T", item.ToolNumber)
 
-                    # Find this TC in the global list and check if there's a next one
                     tc_position = next(
                         (
                             idx
@@ -355,18 +470,20 @@ def apply_early_tool_prep(postlist: List[Tuple[str, List]]) -> List[Tuple[str, L
                         else None
                     )
 
-                    # Keep the original M6 command with tool parameter (M6 T5 format)
-                    # This is the valid FreeCAD format, postprocessor will reformat if needed
                     new_sublist.append(item)
 
-                    # If there's a next tool controller, add Tn prep for it immediately after M6
                     if next_tc is not None:
-                        next_tool_number = next_tc.ToolNumber
-                        prep_next = Path.Command(f"T{next_tool_number}")
-                        prep_next_object = _CommandObject(prep_next)
-                        new_sublist.append(prep_next_object)
+                        next_tool_number = next_tc.data["tool_number"]
+                        prep_cmd = Path.Command(f"T{next_tool_number}")
+                        new_sublist.append(
+                            Postable(
+                                item_type="command",
+                                label="Command",
+                                path=Path.Path([prep_cmd]),
+                                source=None,
+                            )
+                        )
                 else:
-                    # No M6 command found or no tool parameter, keep as-is
                     new_sublist.append(item)
             else:
                 new_sublist.append(item)

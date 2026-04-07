@@ -615,19 +615,11 @@ void ExtrusionHelper::makeElementDraft(
                 Standard_Failure::Raise("Failed to make drafted extrusion");
             }
             std::vector<TopoShape> inner;
-            // process each inner wire individually to check edge count
-            // Inner wires (holes) need negated taper angles
+            // Inner wires are lofted into separate solids and then cut from the
+            // outer solid.
             for (auto& innerWire : wires) {
                 ExtrusionParameters innerParams = params;
-
-                int numEdges = 0;
-                TopExp_Explorer xp(innerWire.getShape(), TopAbs_EDGE);
-                while (xp.More()) {
-                    numEdges++;
-                    xp.Next();
-                }
-
-                if (numEdges > 1 || params.innerWireTaper == InnerWireTaper::Inverted) {
+                if (params.innerWireTaper == InnerWireTaper::Inverted) {
                     innerParams.taperAngleFwd = -params.taperAngleFwd;
                     innerParams.taperAngleRev = -params.taperAngleRev;
                 }

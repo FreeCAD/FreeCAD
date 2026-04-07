@@ -32,6 +32,7 @@
 #include <Inventor/details/SoPointDetail.h>
 #include <Inventor/events/SoKeyboardEvent.h>
 #include <Inventor/nodes/SoCamera.h>
+#include <Inventor/nodes/SoShapeHints.h>
 
 #include <QApplication>
 #include <QFontMetricsF>
@@ -347,7 +348,7 @@ void ViewProviderSketch::ParameterObserver::initParameters()
           nullptr}},
         {"GridLinePattern",
          {[this](const std::string& string, [[maybe_unused]] App::Property* property) {
-              auto v = getSketcherGeneralParameter(string, 0x0f0f);
+              auto v = getSketcherGeneralParameter(string, 0xffff);
               Client.setGridLinePattern(v);
           },
           nullptr}},
@@ -383,6 +384,12 @@ void ViewProviderSketch::ParameterObserver::initParameters()
               auto v = getSketcherGeneralParameter(string, packedDefaultGridColor);
               auto color = Base::Color(v);
               Client.setGridDivLineColor(color);
+          },
+          nullptr}},
+        {"GridTransparency",
+         {[this](const std::string& string, [[maybe_unused]] App::Property* property) {
+              auto v = getSketcherGeneralParameter(string, 60);
+              Client.setGridTransparency(static_cast<float>(v) / 100.0f);
           },
           nullptr}},
         {"SegmentsPerGeometry",
@@ -425,7 +432,7 @@ void ViewProviderSketch::ParameterObserver::initParameters()
 
     // unsubscribed parameters which update a property on just once upon construction (and before
     // restore if properties are being restored from a file)
-    updateBoolProperty("ShowGrid", &Client.ShowGrid, false);
+    updateBoolProperty("ShowGrid", &Client.ShowGrid, true);
     updateBoolProperty("GridAuto", &Client.GridAuto, true);
     updateGridSize("GridSize", &Client.GridSize);
 }
@@ -510,7 +517,13 @@ SoSketchFaces::SoSketchFaces(){
     material->diffuseColor.connectFrom(&color);
     material->transparency.connectFrom(&transparency);
 
+    // Enable two-sided lighting so faces are visible from both sides
+    auto* shapeHints = new SoShapeHints;
+    shapeHints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
+    shapeHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
+
     SoSeparator::addChild(material);
+    SoSeparator::addChild(shapeHints);
     SoSeparator::addChild(coords);
     SoSeparator::addChild(norm);
     SoSeparator::addChild(faceset);
@@ -745,7 +758,7 @@ void ViewProviderSketch::purgeHandler()
         return editdoc->getEditViewProvider() == this;
     });
     Gui::View3DInventor* view = nullptr;
-    if (!editDoc) {
+    if (editDoc) {
         view = dynamic_cast<Gui::View3DInventor*>(editDoc->getActiveView());
     }
 
@@ -1989,47 +2002,20 @@ void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constN
     if (!isInEditMode())
         return;
 
-#ifdef FC_DEBUG
     Sketcher::SketchObject* obj = getSketchObject();
-    int intGeoCount = obj->getHighestCurveIndex() + 1;
-    int extGeoCount = obj->getExternalGeometryCount();
-#endif
-
-    // with memory allocation
-    const std::vector<Part::Geometry*> geomlist = getSolvedSketch().extractGeometry(true, true);
-
-    // lambda to finalize the move
-    auto cleanAndDraw = [this, geomlist](){
-        // delete the cloned objects
-        for (Part::Geometry* geomPtr : geomlist) {
-            if (geomPtr) {
-                delete geomPtr;
-            }
-        }
-
-        draw(true, false);
-    };
-
-#ifdef FC_DEBUG
-    assert(int(geomlist.size()) == extGeoCount + intGeoCount);
-    assert((Constr->First >= -extGeoCount && Constr->First < intGeoCount)
-           || Constr->First != GeoEnum::GeoUndef);
-    boost::ignore_unused(intGeoCount);
-    boost::ignore_unused(extGeoCount);
-#endif
 
     if (Constr->Type == Distance || Constr->Type == DistanceX || Constr->Type == DistanceY
         || Constr->Type == Radius || Constr->Type == Diameter || Constr->Type == Weight) {
 
         Base::Vector3d p1(0., 0., 0.), p2(0., 0., 0.);
         if (Constr->SecondPos != Sketcher::PointPos::none) {// point to point distance
-            p1 = getSolvedSketch().getPoint(Constr->First, Constr->FirstPos);
-            p2 = getSolvedSketch().getPoint(Constr->Second, Constr->SecondPos);
+            p1 = obj->getPoint(Constr->First, Constr->FirstPos);
+            p2 = obj->getPoint(Constr->Second, Constr->SecondPos);
         }
         else if (Constr->Second != GeoEnum::GeoUndef) {
-            p1 = getSolvedSketch().getPoint(Constr->First, Constr->FirstPos);
-            const Part::Geometry *geo1 = GeoList::getGeometryFromGeoId (geomlist, Constr->First);
-            const Part::Geometry *geo2 = GeoList::getGeometryFromGeoId (geomlist, Constr->Second);
+            p1 = obj->getPoint(Constr->First, Constr->FirstPos);
+            const Part::Geometry *geo1 = obj->getGeometry(Constr->First);
+            const Part::Geometry *geo2 = obj->getGeometry(Constr->Second);
 
             if (isLineSegment(*geo2)) {
                 if (isCircleOrArc(*geo1) && Constr->FirstPos == Sketcher::PointPos::none){
@@ -2073,10 +2059,10 @@ void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constN
             }
         }
         else if (Constr->FirstPos != Sketcher::PointPos::none) {
-            p2 = getSolvedSketch().getPoint(Constr->First, Constr->FirstPos);
+            p2 = obj->getPoint(Constr->First, Constr->FirstPos);
         }
         else if (Constr->First != GeoEnum::GeoUndef) {
-            const Part::Geometry* geo = GeoList::getGeometryFromGeoId(geomlist, Constr->First);
+            const Part::Geometry* geo = obj->getGeometry(Constr->First);
             if (geo->is<Part::GeomLineSegment>()) {
                 const Part::GeomLineSegment* lineSeg =
                     static_cast<const Part::GeomLineSegment*>(geo);
@@ -2095,7 +2081,8 @@ void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constN
                     Base::Vector2d centerToToPos = toPos - Base::Vector2d(center.x, center.y);
                     Constr->LabelDistance = centerToToPos * arcDirection;
 
-                    cleanAndDraw();
+
+                    draw(true, false);
                     return;
                 }
                 else {
@@ -2201,7 +2188,7 @@ void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constN
         moveAngleConstraint(Constr, constNum, toPos);
     }
 
-    cleanAndDraw();
+    draw(true, false);
 }
 
 void ViewProviderSketch::moveAngleConstraint(Sketcher::Constraint* constr, int constNum, const Base::Vector2d& toPos)
@@ -3560,7 +3547,8 @@ bool ViewProviderSketch::getDetailPath(
             auto len = pPath->getLength();
             if (append) {
                 pPath->append(pcRoot);
-                pPath->append(pcModeSwitch);
+                pPath->append(pcAnnotation);
+                pPath->append(pcSketchFacesToggle);
             }
 
             if (!ViewProvider2DObject::getDetailPath(realName, pPath, false, det)) {

@@ -29,6 +29,7 @@
 #include <utility>
 #include <set>
 #include <memory>
+#include <new>
 #include <string>
 #include <map>
 #include <vector>
@@ -1826,7 +1827,20 @@ static std::string checkFileName(const char* file)
     if (GetApplication()
             .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
             ->GetBool("CheckExtension", true)) {
-        const char* ext = strrchr(file, '.');
+        constexpr std::size_t backupExtLen = sizeof(".fcbak") - 1;
+        constexpr std::size_t backupAndDocExtLen = sizeof(".fcbak.fcstd") - 1;
+        if (boost::iends_with(fn, ".fcbak.fcstd")) {
+            fn.erase(fn.size() - backupAndDocExtLen);
+            fn += ".FCStd";
+            return fn;
+        }
+        if (boost::iends_with(fn, ".fcbak")) {
+            fn.erase(fn.size() - backupExtLen);
+            fn += ".FCStd";
+            return fn;
+        }
+
+        const char* ext = strrchr(fn.c_str(), '.');
         if ((ext == nullptr) || !boost::iequals(ext + 1, "fcstd")) {
             if (ext && ext[1] == 0) {
                 fn += "FCStd";
@@ -3540,21 +3554,21 @@ Document::copyObject(const std::vector<DocumentObject*>& objs, bool recursive, b
 
     // if less than ~10 MB
     bool use_buffer = (memsize < 0xA00000);
-    QByteArray res;
+    std::string res;
     try {
         res.reserve(memsize);
     }
-    catch (const Base::MemoryException&) {
+    catch (const std::bad_alloc&) {
         use_buffer = false;
     }
 
     std::vector<DocumentObject*> imported;
     if (use_buffer) {
-        Base::ByteArrayOStreambuf obuf(res);
+        Base::StringOStreambuf obuf(res);
         std::ostream ostr(&obuf);
         exportObjects(deps, ostr);
 
-        Base::ByteArrayIStreambuf ibuf(res);
+        Base::StringIStreambuf ibuf(res);
         std::istream istr(nullptr);
         istr.rdbuf(&ibuf);
         imported = md.importObjects(istr);

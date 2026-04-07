@@ -60,6 +60,7 @@ from CAMTests.TestPostProcessor import (
     TestPostProcessorFactory,
     TestResolvingPostProcessorName,
     TestHeaderBuilder,
+    TestConfigurationBundle,
 )
 from CAMTests.TestPostOutput import (
     TestFileNameGenerator,
@@ -67,6 +68,7 @@ from CAMTests.TestPostOutput import (
 )
 
 from CAMTests.TestPathPreferences import TestPathPreferences
+from CAMTests.TestPathPocket import TestPathPocket
 from CAMTests.TestPathProfile import TestPathProfile
 from CAMTests.TestPathPropertyBag import TestPathPropertyBag
 from CAMTests.TestPathRotationGenerator import TestPathRotationGenerator
@@ -111,6 +113,7 @@ from CAMTests.TestPathVoronoi import TestPathVoronoi
 from CAMTests.TestGenericPost import TestGenericPost
 from CAMTests.TestGenericPlasma import TestGenericPlasma
 from CAMTests.TestLinuxCNCPost import TestLinuxCNCPost
+from CAMTests.TestDxfPost import TestDxfPost
 from CAMTests.TestFanucPost import TestFanucPost
 
 # from CAMTests.TestGrblPost import TestGrblPost
@@ -128,6 +131,7 @@ from CAMTests.TestCentroidLegacyPost import TestCentroidLegacyPost
 from CAMTests.TestMach3Mach4LegacyPost import TestMach3Mach4LegacyPost
 
 from CAMTests.TestSnapmakerPost import TestSnapmakerPost
+from CAMTests.TestSVGPost import TestSVGPost
 from CAMTests.TestTSPSolver import TestTSPSolver
 from CAMTests.TestGcodeProcessingUtils import (
     TestInsertLineNumbers,

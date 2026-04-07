@@ -426,7 +426,9 @@ bool SketchObject::seekTrimPoints(
 
     // Not found in will be returned as -1, not as GeoUndef, Part WB is agnostic to the concept of
     // GeoUndef
-    if (!Part2DObject::seekTrimPoints(geos, GeoId, point, localindex1, intersect1, localindex2, intersect2)) {
+    if (
+        !Part2DObject::seekTrimPoints(geos, GeoId, point, localindex1, intersect1, localindex2, intersect2)
+    ) {
         return false;
     }
 
@@ -1324,9 +1326,23 @@ int SketchObject::addSymmetric(
 
             // if First of constraint is in geoIdList
             if (addSymmetryConstraints && constr->Type != Sketcher::InternalAlignment) {
-                // if we are making symmetric constraints, then we don't want to copy all
-                // constraints
-                continue;
+                // If we are making symmetric constraints, we only want to copy topological
+                // constraints to maintain the structural shape (Coincident, and
+                // endpoint-to-endpoint Tangent/Perpendicular).
+                bool keepTopological = false;
+                if (constr->Type == Sketcher::Coincident) {
+                    keepTopological = true;
+                }
+                else if (constr->Type == Sketcher::Tangent || constr->Type == Sketcher::Perpendicular) {
+                    if (constr->FirstPos != Sketcher::PointPos::none
+                        && constr->SecondPos != Sketcher::PointPos::none) {
+                        keepTopological = true;
+                    }
+                }
+
+                if (!keepTopological) {
+                    continue;
+                }
             }
 
             if (constr->getElement(1).GeoId == GeoEnum::GeoUndef  //
@@ -1393,6 +1409,16 @@ int SketchObject::addSymmetric(
                 }
 
                 Constraint* constNew = constr->copy();
+
+                // If making a dependent symmetry copy, Tangent/Perp would overconstrain the angle
+                // (which is already locked by the symmetries of the endpoints/centers).
+                // Downgrade endpoint-to-endpoint constraints to Coincident to keep topology.
+                if (addSymmetryConstraints
+                    && (constNew->Type == Sketcher::Tangent
+                        || constNew->Type == Sketcher::Perpendicular)) {
+                    constNew->Type = Sketcher::Coincident;
+                }
+
                 constNew->Name = "";
                 auto rep0 = constNew->getElement(0);
                 auto rep1 = constNew->getElement(1);
@@ -1453,14 +1479,90 @@ int SketchObject::addSymmetric(
             return Geometry.getSize() - 1;
         }
 
+        // Retrieve all coincident point groups in the original sketch
+        auto coincidenceGroups = getCoincidenceGroups();
+        std::set<std::pair<int, Sketcher::PointPos>> symmetricConstrainedOriginalPoints;
+
+        auto markPointConstrained = [&](int geoId, Sketcher::PointPos pos) {
+            std::pair<int, Sketcher::PointPos> pt {geoId, pos};
+            symmetricConstrainedOriginalPoints.insert(pt);
+            for (const auto& group : coincidenceGroups) {
+                if (group.find(geoId) != group.end() && group.at(geoId) == pos) {
+                    for (const auto& member : group) {
+                        symmetricConstrainedOriginalPoints.insert(
+                            std::make_pair(member.first, member.second)
+                        );
+                    }
+                    break;
+                }
+            }
+        };
+
+        // Helper to check if a point lies on the symmetry reference
+        auto isPointOnReference = [&](const Base::Vector3d& pt) {
+            if (refPosId == Sketcher::PointPos::none) {
+                // Reference is a line (Axis of Symmetry)
+                const Part::Geometry* georef = getGeometry(refGeoId);
+                if (georef && georef->is<Part::GeomLineSegment>()) {
+                    auto* refLine = static_cast<const Part::GeomLineSegment*>(georef);
+                    Base::Vector3d l1 = refLine->getStartPoint();
+                    Base::Vector3d l2 = refLine->getEndPoint();
+                    double dx = l2.x - l1.x;
+                    double dy = l2.y - l1.y;
+                    double line_len_sq = dx * dx + dy * dy;
+                    if (line_len_sq > Precision::SquareConfusion()) {
+                        double area = (pt.x - l1.x) * dy - (pt.y - l1.y) * dx;
+                        if (std::abs(area) / sqrt(line_len_sq) < Precision::Confusion()) {
+                            return true;
+                        }
+                    }
+                }
+            }
+            else {
+                // Reference is a point (Point Symmetry)
+                Base::Vector3d refPt;
+                if (refGeoId == Sketcher::GeoEnum::RtPnt) {
+                    refPt = Base::Vector3d(0, 0, 0);
+                }
+                else {
+                    refPt = getPoint(refGeoId, refPosId);
+                }
+                if ((pt - refPt).Length() < Precision::Confusion()) {
+                    return true;
+                }
+            }
+            return false;
+        };
+
         auto createSymConstr =
             [&](int first, int second, Sketcher::PointPos firstPos, Sketcher::PointPos secondPos) {
-                auto* symConstr = new Constraint();
-                symConstr->Type = Symmetric;
-                symConstr->setElement(0, GeoElementId {first, firstPos});
-                symConstr->setElement(1, GeoElementId {second, secondPos});
-                symConstr->setElement(2, GeoElementId {refGeoId, refPosId});
-                newconstrVals.push_back(symConstr);
+                std::pair<int, Sketcher::PointPos> pt {first, firstPos};
+                // If this point (or any coincident peer) already got a symmetry constraint, skip
+                if (symmetricConstrainedOriginalPoints.count(pt) > 0) {
+                    return;
+                }
+
+                Base::Vector3d pCoords = getPoint(first, firstPos);
+
+                if (isPointOnReference(pCoords)) {
+                    // Point is on the mirror axis: use Coincident to stitch and avoid singularity
+                    auto* coincConstr = new Constraint();
+                    coincConstr->Type = Sketcher::Coincident;
+                    coincConstr->setElement(0, GeoElementId {first, firstPos});
+                    coincConstr->setElement(1, GeoElementId {second, secondPos});
+                    newconstrVals.push_back(coincConstr);
+                }
+                else {
+                    // Standard symmetry constraint for off-axis points
+                    auto* symConstr = new Constraint();
+                    symConstr->Type = Sketcher::Symmetric;
+                    symConstr->setElement(0, GeoElementId {first, firstPos});
+                    symConstr->setElement(1, GeoElementId {second, secondPos});
+                    symConstr->setElement(2, GeoElementId {refGeoId, refPosId});
+                    newconstrVals.push_back(symConstr);
+                }
+
+                markPointConstrained(first, firstPos);
             };
         auto createEqualityConstr = [&](int first, int second) {
             auto* symConstr = new Constraint();
@@ -1498,10 +1600,12 @@ int SketchObject::addSymmetric(
                 createEqualityConstr(geoId1, geoId2);
                 createSymConstr(geoId1, geoId2, PointPos::mid, PointPos::mid);
             }
-            else if (geo->is<Part::GeomArcOfCircle>()        //
-                     || geo->is<Part::GeomArcOfEllipse>()    //
-                     || geo->is<Part::GeomArcOfHyperbola>()  //
-                     || geo->is<Part::GeomArcOfParabola>()) {
+            else if (
+                geo->is<Part::GeomArcOfCircle>()        //
+                || geo->is<Part::GeomArcOfEllipse>()    //
+                || geo->is<Part::GeomArcOfHyperbola>()  //
+                || geo->is<Part::GeomArcOfParabola>()
+            ) {
                 createEqualityConstr(geoId1, geoId2);
                 createSymConstr(
                     geoId1,

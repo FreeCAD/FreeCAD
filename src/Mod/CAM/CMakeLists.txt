@@ -313,6 +313,11 @@ SET(PathPythonPost_SRCS
     Path/Post/UtilsParse.py
 )
 
+SET(PathPythonPostGui_SRCS
+    Path/Post/Gui/__init__.py
+    Path/Post/Gui/DlgPostProcess.py
+)
+
 SET(PathPythonPostScripts_SRCS
     Path/Post/scripts/__init__.py
     Path/Post/scripts/centroid_legacy_post.py
@@ -327,6 +332,7 @@ SET(PathPythonPostScripts_SRCS
     Path/Post/scripts/generic_plasma_post.py
     Path/Post/scripts/grbl_post.py
     Path/Post/scripts/heidenhain_legacy_post.py
+    Path/Post/scripts/KineticNCBeamicon2_legacy_post.py
     Path/Post/scripts/linuxcnc_post.py
     Path/Post/scripts/linuxcnc_legacy_post.py
     Path/Post/scripts/jtech_legacy_post.py
@@ -512,6 +518,7 @@ SET(Tests_SRCS
     CAMTests/test_holes00.fcstd
     CAMTests/TestCAMSanity.py
     CAMTests/TestCentroidLegacyPost.py
+    CAMTests/TestDxfPost.py
     CAMTests/TestFanucPost.py
     CAMTests/TestGenericPost.py
     CAMTests/TestGenericPlasma.py
@@ -543,6 +550,7 @@ SET(Tests_SRCS
     CAMTests/TestPostCore.py
     CAMTests/TestPostProcessor.py
     CAMTests/TestPostOutput.py
+    CAMTests/TestPathPocket.py
     CAMTests/TestPathPreferences.py
     CAMTests/TestPathProfile.py
     CAMTests/TestPathPropertyBag.py
@@ -582,6 +590,7 @@ SET(Tests_SRCS
     CAMTests/TestPostMCodes.py
     CAMTests/TestSnapmakerPost.py
     CAMTests/TestPostToolProcessing.py
+    CAMTests/TestSVGPost.py
     CAMTests/TestTSPSolver.py
     CAMTests/TestGcodeProcessingUtils.py
     CAMTests/Tools/Bit/test-path-tool-bit-bit-00.fctb
@@ -630,6 +639,7 @@ SET(all_files
     ${PathPythonOp_SRCS}
     ${PathPythonOpGui_SRCS}
     ${PathPythonPost_SRCS}
+    ${PathPythonPostGui_SRCS}
     ${PathPythonPostScripts_SRCS}
     ${PathPythonTools_SRCS}
     ${PathPythonToolsAssets_SRCS}
@@ -772,6 +782,13 @@ INSTALL(
         ${PathPythonPost_SRCS}
     DESTINATION
         Mod/CAM/Path/Post
+)
+
+INSTALL(
+    FILES
+        ${PathPythonPostGui_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Post/Gui
 )
 
 INSTALL(

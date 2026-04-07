@@ -61,6 +61,7 @@ class AssemblyWorkbench(Workbench):
         translate = FreeCAD.Qt.translate
 
         # load the builtin modules
+        import AssemblyGui
         from PySide import QtCore, QtGui
         from PySide.QtCore import QT_TRANSLATE_NOOP
         import CommandCreateAssembly, CommandInsertLink, CommandInsertNewPart, CommandCreateJoint, CommandSolveAssembly, CommandExportASMT, CommandCreateView, CommandCreateSimulation, CommandCreateBom

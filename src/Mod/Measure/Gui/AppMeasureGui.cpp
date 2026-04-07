@@ -36,10 +36,12 @@
 #include "ViewProviderMeasureAngle.h"
 #include "ViewProviderMeasureDistance.h"
 #include "ViewProviderMeasureBase.h"
+#include "ViewProviderMassPropertiesResult.h"
 
 
 // use a different name to CreateCommand()
 void CreateMeasureCommands();
+void CreateMassPropertiesCommands();
 
 
 namespace MeasureGui
@@ -87,6 +89,7 @@ PyMOD_INIT_FUNC(MeasureGui)
 
     // instantiating the commands
     CreateMeasureCommands();
+    CreateMassPropertiesCommands();
 
     // clang-format off
     MeasureGui::DimensionLinear::initClass();
@@ -103,6 +106,8 @@ PyMOD_INIT_FUNC(MeasureGui)
     MeasureGui::ViewProviderMeasureRadius              ::init();
     MeasureGui::ViewProviderMeasureDiameter            ::init();
     MeasureGui::ViewProviderMeasureCOM                 ::init();
+
+    MassPropertiesGui::ViewProviderMassPropertiesResult::init();
     // clang-format on
 
     // register preferences pages

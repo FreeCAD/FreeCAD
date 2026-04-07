@@ -297,7 +297,7 @@ void SheetView::printPdf()
         this,
         tr("Export PDF"),
         QString(),
-        QStringLiteral("%1 (*.pdf)").arg(tr("PDF file"))
+        QStringList(QStringLiteral("%1 (*.pdf)").arg(tr("PDF file")))
     );
     if (!filename.isEmpty()) {
         QPrinter printer(QPrinter::ScreenResolution);
@@ -753,8 +753,7 @@ Py::Object SheetViewPy::select(const Py::Tuple& _args)
             static_cast<QItemSelectionModel::SelectionFlags>(flags)
         );
     }
-    else if (args.size() == 3
-             && PyArg_ParseTuple(_args.ptr(), "ssi", &topLeft, &bottomRight, &flags)) {
+    else if (args.size() == 3 && PyArg_ParseTuple(_args.ptr(), "ssi", &topLeft, &bottomRight, &flags)) {
         sheetView->select(
             App::CellAddress(topLeft),
             App::CellAddress(bottomRight),

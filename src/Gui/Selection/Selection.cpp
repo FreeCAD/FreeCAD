@@ -69,7 +69,7 @@ SelectionObserver::SelectionObserver(bool attach, ResolveMode resolve)
     , blockedSelection(false)
 {
     if (auto doc = App::GetApplication().getActiveDocument()) {
-        pDocumentScopeName = doc->getName();
+        documentScopeName = doc->getName();
     }
     if (attach) {
         attachSelection();
@@ -81,7 +81,7 @@ SelectionObserver::SelectionObserver(const ViewProviderDocumentObject* vp, bool 
     , blockedSelection(false)
 {
     if (auto doc = App::GetApplication().getActiveDocument()) {
-        pDocumentScopeName = doc->getName();
+        documentScopeName = doc->getName();
     }
     if (attach) {
         attachSelection();
@@ -131,7 +131,7 @@ void SelectionObserver::_onSelectionChanged(const SelectionChanges& msg)
 {
     try {
         if (blockedSelection
-            || (pDocumentScopeName && msg.pDocName && strcmp(pDocumentScopeName, msg.pDocName) != 0)) {
+            || (!documentScopeName.empty() && msg.pDocName && documentScopeName != msg.pDocName)) {
             return;
         }
         onSelectionChanged(msg);
@@ -1223,8 +1223,9 @@ bool SelectionSingleton::addSelection(
             context.info->resolveMode,
             &subelement
         );
-        if (!context.info->gate
-                 ->allow(pObject ? pObject->getDocument() : temp.pDoc, pObject, subelement)) {
+        if (
+            !context.info->gate->allow(pObject ? pObject->getDocument() : temp.pDoc, pObject, subelement)
+        ) {
             if (getMainWindow()) {
                 QString msg;
                 if (context.info->gate->notAllowedReason.length() > 0) {
@@ -2620,7 +2621,9 @@ PyObject* SelectionSingleton::sAddSelection(PyObject* /*self*/, PyObject* args)
     char* docname;
     char* subname = nullptr;
     float x = 0, y = 0, z = 0;
-    if (PyArg_ParseTuple(args, "ss|sfffO!", &docname, &objname, &subname, &x, &y, &z, &PyBool_Type, &clearPreselect)) {
+    if (
+        PyArg_ParseTuple(args, "ss|sfffO!", &docname, &objname, &subname, &x, &y, &z, &PyBool_Type, &clearPreselect)
+    ) {
         Selection()
             .addSelection(docname, objname, subname, x, y, z, nullptr, Base::asBoolean(clearPreselect));
         Py_Return;
@@ -2714,15 +2717,9 @@ PyObject* SelectionSingleton::sUpdateSelection(PyObject* /*self*/, PyObject* arg
     PyObject* show;
     PyObject* object;
     char* subname = nullptr;
-    if (!PyArg_ParseTuple(
-            args,
-            "O!O!|s",
-            &PyBool_Type,
-            &show,
-            &(App::DocumentObjectPy::Type),
-            &object,
-            &subname
-        )) {
+    if (
+        !PyArg_ParseTuple(args, "O!O!|s", &PyBool_Type, &show, &(App::DocumentObjectPy::Type), &object, &subname)
+    ) {
         return nullptr;
     }
 

@@ -643,7 +643,9 @@ def add_properties(obj, ifcfile=None, ifcentity=None, links=False, shapemode=0, 
         if short and attr not in ("Class", "StepId"):
             continue
         attr_def = next((a for a in attr_defs if a.name() == attr), None)
+        attr_type = str(attr_def.type_of_attribute()).lower() if attr_def else ""
         data_type = ifcopenshell.util.attribute.get_primitive_type(attr_def) if attr_def else None
+        is_logical = "<logical>" in attr_type
         if attr == "Class":
             # main enum property, not saved to file
             if attr not in obj.PropertiesList:
@@ -663,6 +665,18 @@ def add_properties(obj, ifcfile=None, ifcentity=None, links=False, shapemode=0, 
             obj.addProperty("App::PropertyDistance", attr, "IFC")
             if value:
                 setattr(obj, attr, value * (1 / get_scale(ifcfile)))
+        elif data_type == "boolean" or is_logical:
+            if attr not in obj.PropertiesList:
+                obj.addProperty("App::PropertyBool", attr, "IFC", locked=True)
+            if isinstance(value, str):
+                value = value.upper()
+            if value in (None, "", False, 0, "0", "FALSE", ".F.", "UNKNOWN"):
+                value = False
+            elif value in (True, 1, "1", "TRUE", ".T."):
+                value = True
+            else:
+                value = bool(value)
+            setattr(obj, attr, value)
         elif isinstance(value, int):
             if attr not in obj.PropertiesList:
                 obj.addProperty("App::PropertyInteger", attr, "IFC", locked=True)
@@ -673,15 +687,6 @@ def add_properties(obj, ifcfile=None, ifcentity=None, links=False, shapemode=0, 
             if attr not in obj.PropertiesList:
                 obj.addProperty("App::PropertyFloat", attr, "IFC", locked=True)
             setattr(obj, attr, value)
-        elif data_type == "boolean":
-            if attr not in obj.PropertiesList:
-                obj.addProperty("App::PropertyBool", attr, "IFC", locked=True)
-            if not value or value in ["UNKNOWN", "FALSE"]:
-                value = False
-            elif not isinstance(value, bool):
-                print("DEBUG: attempting to set boolean value:", attr, value)
-                value = bool(value)
-            setattr(obj, attr, value)  # will trigger error. TODO: Fix this
         elif isinstance(value, ifcopenshell.entity_instance):
             if links:
                 if attr not in obj.PropertiesList:

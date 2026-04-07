@@ -1083,13 +1083,8 @@ void CmdPartImport::activated(int iMsg)
     filter << QStringLiteral("BREP (*.brp *.brep)");
 
     QString select;
-    QString fn = Gui::FileDialog::getOpenFileName(
-        Gui::getMainWindow(),
-        QString(),
-        QString(),
-        filter.join(QLatin1String(";;")),
-        &select
-    );
+    QString fn
+        = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(), filter, &select);
     if (!fn.isEmpty()) {
         Gui::WaitCursor wc;
         App::Document* pDoc = getDocument();
@@ -1097,15 +1092,15 @@ void CmdPartImport::activated(int iMsg)
             return;
         }
 
-        fn = Base::Tools::escapeEncodeFilename(fn);
+        const std::string fnEscapedUtf8 = Base::Tools::escapeEncodeFilename(fn.toUtf8().constData());
         openCommand(QT_TRANSLATE_NOOP("Command", "Import Part"));
         if (select == filter[1] || select == filter[3]) {
             doCommand(Doc, "import ImportGui");
-            doCommand(Doc, "ImportGui.insert(\"%s\",\"%s\")", (const char*)fn.toUtf8(), pDoc->getName());
+            doCommand(Doc, "ImportGui.insert(\"%s\",\"%s\")", fnEscapedUtf8.c_str(), pDoc->getName());
         }
         else {
             doCommand(Doc, "import Part");
-            doCommand(Doc, "Part.insert(\"%s\",\"%s\")", (const char*)fn.toUtf8(), pDoc->getName());
+            doCommand(Doc, "Part.insert(\"%s\",\"%s\")", fnEscapedUtf8.c_str(), pDoc->getName());
         }
         commitCommand();
 
@@ -1157,13 +1152,8 @@ void CmdPartExport::activated(int iMsg)
     filter << QStringLiteral("BREP (*.brp *.brep)");
 
     QString select;
-    QString fn = Gui::FileDialog::getSaveFileName(
-        Gui::getMainWindow(),
-        QString(),
-        QString(),
-        filter.join(QLatin1String(";;")),
-        &select
-    );
+    QString fn
+        = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QString(), QString(), filter, &select);
     if (!fn.isEmpty()) {
         App::Document* pDoc = getDocument();
         if (!pDoc) {  // no document
@@ -1213,12 +1203,7 @@ void CmdPartImportCurveNet::activated(int iMsg)
     filter << QStringLiteral("BREP (*.brp *.brep)");
     filter << QStringLiteral("%1 (*.*)").arg(QObject::tr("All Files"));
 
-    QString fn = Gui::FileDialog::getOpenFileName(
-        Gui::getMainWindow(),
-        QString(),
-        QString(),
-        filter.join(QLatin1String(";;"))
-    );
+    QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(), filter);
     if (!fn.isEmpty()) {
         QFileInfo fi;
         fi.setFile(fn);

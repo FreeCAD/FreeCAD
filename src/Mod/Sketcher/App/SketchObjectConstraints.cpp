@@ -31,6 +31,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/Expression.h>
+#include <App/ExpressionParser.h>
 #include <App/ObjectIdentifier.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>
@@ -244,6 +245,7 @@ int SketchObject::setDriving(int ConstrId, bool isdriving)
     std::vector<Constraint*> newVals(vals);
     newVals[ConstrId] = newVals[ConstrId]->clone();
     newVals[ConstrId]->isDriving = isdriving;
+    setOrientation(newVals[ConstrId], newVals[ConstrId]->isDriving);
 
     this->Constraints.setValues(std::move(newVals));
 
@@ -306,6 +308,8 @@ int SketchObject::setActive(int ConstrId, bool isactive)
     // clone the changed Constraint
     Constraint* constNew = vals[ConstrId]->clone();
     constNew->isActive = isactive;
+    setOrientation(constNew, constNew->isActive);
+
     newVals[ConstrId] = constNew;
     this->Constraints.setValues(std::move(newVals));
 
@@ -363,6 +367,8 @@ int SketchObject::toggleActive(int ConstrId)
     // clone the changed Constraint
     Constraint* constNew = vals[ConstrId]->clone();
     constNew->isActive = !constNew->isActive;
+    setOrientation(constNew, constNew->isActive);
+
     newVals[ConstrId] = constNew;
     this->Constraints.setValues(std::move(newVals));
 
@@ -516,19 +522,69 @@ int SketchObject::moveDatumsToEnd()
 
 void SketchObject::reverseAngleConstraintToSupplementary(Constraint* constr, int constNum)
 {
-    std::swap(constr->First, constr->Second);
-    std::swap(constr->FirstPos, constr->SecondPos);
-    constr->FirstPos = (constr->FirstPos == Sketcher::PointPos::start) ? Sketcher::PointPos::end : Sketcher::PointPos::start;
-
     // Edit the expression if any, else modify constraint value directly
-    if (constraintHasExpression(constNum)) {
-        std::string expression = getConstraintExpression(constNum);
-        setConstraintExpression(constNum, std::move(reverseAngleConstraintExpression(expression)));
+    auto path = Constraints.createPath(constNum);
+    auto expr = getExpression(path).expression;
+    if (expr) {
+        std::shared_ptr<App::Expression> newExpr;
+
+        // if expression matches the pattern "180 - x" without or with a unit, extract "x"
+        auto op = freecad_cast<App::OperatorExpression*>(expr.get());
+        if (op && op->getOperator() == App::OperatorExpression::SUB) {
+            auto leftNum = freecad_cast<App::NumberExpression*>(op->getLeft());
+            if (leftNum && leftNum->getQuantity() == Quantity(180)) {
+                newExpr = op->getRight()->copy();
+            }
+            auto leftOp = freecad_cast<App::OperatorExpression*>(op->getLeft());
+            auto leftOpNum = leftOp ? freecad_cast<App::NumberExpression*>(leftOp->getLeft()) : nullptr;
+            auto leftOpUnit = leftOp ? freecad_cast<App::UnitExpression*>(leftOp->getRight()) : nullptr;
+            auto q = leftOpNum && leftOpUnit ? (leftOpNum->getQuantity() * leftOpUnit->getQuantity()).getValueAs(Base::Quantity::Degree) : 0;
+            if (!newExpr && leftOp && leftOp->getOperator() == App::OperatorExpression::UNIT && fabs(q - 180) < .00001) {
+                newExpr = op->getRight()->copy();
+            }
+        }
+
+        if (!newExpr) {
+            // evaluate expression to check if value is dimensionless or has unit
+            auto result = std::unique_ptr(expr->eval());
+            auto* number = freecad_cast<App::NumberExpression*>(result.get());
+            auto value = number ? number->getQuantity() : Base::Quantity(NAN);
+            if (!value.isValid() || !(value.isDimensionless() || value.getUnit() == Base::Unit::Angle)) {
+                return;
+            }
+
+            // prepend "180 - ..." to expression, with or without unit as required
+            App::Expression* valueExpr = new App::NumberExpression(expr->getOwner(), Base::Quantity(180));
+            if (!value.isDimensionless()) {
+                valueExpr = new App::OperatorExpression(expr->getOwner(),
+                    valueExpr, App::OperatorExpression::UNIT, new App::UnitExpression(expr->getOwner(), Base::Quantity::Degree, "°"));
+            }
+            newExpr = std::make_shared<App::OperatorExpression>(expr->getOwner(),
+                valueExpr, App::OperatorExpression::SUB, expr->copy().release());
+        }
+        try {
+            setExpression(path, newExpr);
+        }
+        catch (const Base::Exception&) {
+            Base::Console().error("Failed to set constraint expression.");
+        }
+
+        // Update value, so constraint arc will have updated size while dragging
+        auto newResult = std::unique_ptr(newExpr->eval());
+        auto* newNumber = freecad_cast<App::NumberExpression*>(newResult.get());
+        auto newValue = newNumber ? newNumber->getQuantity() : Base::Quantity(NAN);
+        if (newValue.isValid()) {
+            constr->setValue(newValue.getValueAs(Base::Quantity::Radian));
+        }
     }
     else {
         double actAngle = constr->getValue();
         constr->setValue(std::numbers::pi - actAngle);
     }
+
+    std::swap(constr->First, constr->Second);
+    std::swap(constr->FirstPos, constr->SecondPos);
+    constr->FirstPos = (constr->FirstPos == Sketcher::PointPos::start) ? Sketcher::PointPos::end : Sketcher::PointPos::start;
 }
 
 void SketchObject::inverseAngleConstraint(Constraint* constr)
@@ -539,63 +595,13 @@ void SketchObject::inverseAngleConstraint(Constraint* constr)
 
 bool SketchObject::constraintHasExpression(int constNum) const
 {
-    App::ObjectIdentifier path = Constraints.createPath(constNum);
-    auto info = getExpression(path);
-    if (info.expression) {
-        return true;
-    }
-    return false;
+    return (bool)getExpression(Constraints.createPath(constNum)).expression;
 }
 
 std::string SketchObject::getConstraintExpression(int constNum) const
 {
-    App::ObjectIdentifier path = Constraints.createPath(constNum);
-    auto info = getExpression(path);
-    if (info.expression) {
-        std::string expression = info.expression->toString();
-        return expression;
-    }
-
-    return {};
-}
-
-void SketchObject::setConstraintExpression(int constNum, const std::string& newExpression)
-{
-    App::ObjectIdentifier path = Constraints.createPath(constNum);
-    auto info = getExpression(path);
-    if (info.expression) {
-        try {
-            std::shared_ptr<App::Expression> expr(App::Expression::parse(this, newExpression));
-            setExpression(path, std::move(expr));
-        }
-        catch (const Base::Exception&) {
-            Base::Console().error("Failed to set constraint expression.");
-        }
-    }
-}
-
-std::string SketchObject::reverseAngleConstraintExpression(std::string expression)
-{
-    // Check if expression contains units (°, deg, rad)
-    if (expression.find("°") != std::string::npos
-        || expression.find("deg") != std::string::npos
-        || expression.find("rad") != std::string::npos) {
-        if (expression.substr(0, 9) == "180 ° - ") {
-            expression = expression.substr(9, expression.size() - 9);
-        }
-        else {
-            expression = "180 ° - (" + expression + ")";
-        }
-    }
-    else {
-        if (expression.substr(0, 6) == "180 - ") {
-            expression = expression.substr(6, expression.size() - 6);
-        }
-        else {
-            expression = "180 - (" + expression + ")";
-        }
-    }
-    return expression;
+    auto expr = getExpression(Constraints.createPath(constNum)).expression;
+    return expr ? expr->toString() : "";
 }
 
 int SketchObject::setVirtualSpace(int ConstrId, bool isinvirtualspace)
@@ -868,6 +874,8 @@ int SketchObject::addConstraints(const std::vector<Constraint*>& ConstraintList)
             AutoLockTangencyAndPerpty(cnew);
         }
 
+        setOrientation(cnew, false);
+
         addGeometryState(cnew);
 
         signalConstraintAdded(cnew);
@@ -939,8 +947,10 @@ int SketchObject::addConstraint(std::unique_ptr<Constraint> constraint)
 
     Constraint* constNew = constraint.release();
 
-    if (constNew->Type == Tangent || constNew->Type == Perpendicular)
+    if (constNew->Type == Tangent || constNew->Type == Perpendicular) {
         AutoLockTangencyAndPerpty(constNew);
+    }
+    setOrientation(constNew, false);
 
     addGeometryState(constNew);
 
@@ -1324,8 +1334,10 @@ int SketchObject::transferConstraints(
             // For example a B-spline pole being a point instead of a circle.
             continue;
         }
-        else if (vals[i]->involvesGeoIdAndPosId(fromGeoId, fromPosId)
-                 && !vals[i]->involvesGeoIdAndPosId(toGeoId, toPosId)) {
+        else if (
+            vals[i]->involvesGeoIdAndPosId(fromGeoId, fromPosId)
+            && !vals[i]->involvesGeoIdAndPosId(toGeoId, toPosId)
+        ) {
             std::unique_ptr<Constraint> constNew(newVals[i]->clone());
             constNew->substituteIndexAndPos(fromGeoId, fromPosId, toGeoId, toPosId);
             if (vals[i]->First < 0 && vals[i]->Second < 0) {
@@ -1401,6 +1413,109 @@ void SketchObject::addConstraint(Sketcher::ConstraintType constrType, int firstG
     this->addConstraint(std::move(newConstr));
 }
 
+ConstraintOrientations ccw2d(const Base::Vector3d& A, const Base::Vector3d& B, const Base::Vector3d& C)
+{
+    double signedArea = B.x * C.y - B.y * C.x - A.x * C.y + A.y * C.x + A.x * B.y - A.y * B.x;
+    return signedArea > 0.0 ? ConstraintOrientations::CounterClockwise : ConstraintOrientations::Clockwise;
+}
+std::optional<gp_Circ> getCircle(const Part::Geometry* geo)
+{
+    if (auto* asCirc = freecad_cast<const Part::GeomCircle*>(geo)) {
+        auto loc = asCirc->getLocation();
+        return gp_Circ(gp_Ax2(gp_Pnt(loc.x, loc.y, loc.z), gp_Dir(1, 0, 0), gp_Dir(0, 1, 0)), std::max(asCirc->getRadius(), 0.0));
+    }
+
+    if (auto* asArcOfCirc = freecad_cast<const Part::GeomArcOfCircle*>(geo)) {
+        auto loc = asArcOfCirc->getLocation();
+        return gp_Circ(gp_Ax2(gp_Pnt(loc.x, loc.y, loc.z), gp_Dir(1, 0, 0), gp_Dir(0, 1, 0)), std::max(asArcOfCirc->getRadius(), 0.0));
+    }
+    return std::nullopt;
+}
+void SketchObject::setOrientationDistance(Constraint* constr)
+{
+    // Try to find the orientation of point-line distance
+    if (constr->FirstPos != PointPos::none && constr->Second != GeoEnum::GeoUndef) {
+        auto* geo1AsLine = freecad_cast<const Part::GeomLineSegment*>(getGeometry(constr->Second));
+        if (geo1AsLine) {
+            constr->Orientation = ccw2d(geo1AsLine->getStartPoint(), geo1AsLine->getEndPoint(), getPoint(constr->First, constr->FirstPos));
+        }
+        return;
+    }
+
+    // Try to find the orientation of circle-circle distance or circle-line
+    if (constr->FirstPos == PointPos::none && constr->SecondPos == PointPos::none && constr->Second != GeoEnum::GeoUndef) {
+        const Part::Geometry* firGeo = getGeometry(constr->First);
+        const Part::Geometry* secGeo = getGeometry(constr->Second);
+        auto geo1AsCirc = getCircle(firGeo);
+        auto geo2AsCirc = getCircle(secGeo);
+
+        if (geo1AsCirc && geo2AsCirc) { // circle-circle distance
+
+            // If one of the circles is completely within the other, we will say that
+            // it is internal, if they are not within each other orcompletly intersect we won't
+            // make a call
+
+            double centerDistance = geo1AsCirc->Location().Distance(geo2AsCirc->Location());
+
+            auto circ1Radius = geo1AsCirc->Radius();
+            auto circ2Radius = geo2AsCirc->Radius();
+            if (centerDistance + circ1Radius < circ2Radius) {
+                constr->Orientation = ConstraintOrientations::Internal; // Circ1 is within circ2
+            } else if (centerDistance + circ2Radius < circ1Radius) {
+                constr->Orientation = ConstraintOrientations::External; // Circ2 is within circ1
+            }
+            return;
+        }
+
+        auto* geo2AsLine = freecad_cast<const Part::GeomLineSegment*>(secGeo);
+        if (geo1AsCirc && geo2AsLine) { // circle-line distance
+            Base::Vector3d circCenter(geo1AsCirc->Location().X(), geo1AsCirc->Location().Y(), geo1AsCirc->Location().Z());
+            bool internal = circCenter.DistanceToLine(geo2AsLine->getStartPoint(), geo2AsLine->getEndPoint()-geo2AsLine->getStartPoint()) < geo1AsCirc->Radius();
+            auto ccw = ccw2d(geo2AsLine->getStartPoint(), geo2AsLine->getEndPoint(), circCenter);
+
+            constr->Orientation = ccw | (internal ? ConstraintOrientations::Internal : ConstraintOrientations::External);
+        }
+    }
+}
+void SketchObject::setOrientationTangent(Constraint* constr)
+{
+    const Part::Geometry* firGeo = getGeometry(constr->First);
+    const Part::Geometry* secGeo = getGeometry(constr->Second);
+
+    auto impl = [&](const Part::Geometry* firGeo, const Part::Geometry* secGeo) -> bool {
+        auto geo1AsCirc = getCircle(firGeo);
+        auto* geo2AsLine = freecad_cast<const Part::GeomLineSegment*>(secGeo);
+
+        if (!geo1AsCirc || !geo2AsLine) {
+            return false;
+        }
+
+        Base::Vector3d circCenter(geo1AsCirc->Location().X(), geo1AsCirc->Location().Y(), geo1AsCirc->Location().Z());
+        constr->Orientation = ccw2d(geo2AsLine->getStartPoint(), geo2AsLine->getEndPoint(), circCenter);
+        return true;
+    };
+
+    // Tangent can be defined as line + [circle] or [circle] + line
+    // so we test both
+    if (impl(firGeo, secGeo)) {
+        return;
+    }
+    if (impl(secGeo, firGeo)) {
+        return;
+    }
+}
+void SketchObject::setOrientation(Constraint* constr, bool reset)
+{
+    if (!reset && !constr->Orientation.testFlag(ConstraintOrientations::None)) {
+        return;
+    }
+
+    if (constr->Type == Distance) {
+        setOrientationDistance(constr);
+    } else if (constr->Type == Tangent) {
+        setOrientationTangent(constr);
+    }
+}
 std::unique_ptr<Constraint>
 SketchObject::getConstraintAfterDeletingGeo(const Constraint* constr,
                                             const int deletedGeoId) const

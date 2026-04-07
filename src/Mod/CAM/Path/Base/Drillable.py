@@ -244,10 +244,10 @@ def compareVecs(vec1, vec2, exact=False):
     angle = 0 if math.isnan(angle) else math.degrees(angle)
     Path.Log.debug("vector angle: {}".format(angle))
     if exact:
-        return numpy.isclose(angle, 0, rtol=1e-05, atol=1e-06)
+        return numpy.isclose(angle, 0, rtol=1e-05, atol=1e-04)
     else:
-        return numpy.isclose(angle, 0, rtol=1e-05, atol=1e-06) or numpy.isclose(
-            angle, 180, rtol=1e-05, atol=1e-06
+        return numpy.isclose(angle, 0, rtol=1e-05, atol=1e-04) or numpy.isclose(
+            angle, 180, rtol=1e-05, atol=1e-04
         )
 
 

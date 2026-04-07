@@ -999,8 +999,10 @@ public:
 
     void setupTitleBar(QDockWidget* dock)
     {
-        if (!dock->titleBarWidget()) {
-            dock->setTitleBarWidget(createTitleBar(dock));
+        auto* oldWidget = dock->titleBarWidget();
+        dock->setTitleBarWidget(createTitleBar(dock));
+        if (oldWidget) {
+            oldWidget->deleteLater();
         }
     }
 
@@ -1674,12 +1676,9 @@ void OverlayManager::onDockFeaturesChange(QDockWidget::DockWidgetFeatures featur
     }
 
     // Rebuild the title widget as it may have a different set of buttons shown.
-    if (auto* titleBarWidget = qobject_cast<OverlayTitleBar*>(dw->titleBarWidget())) {
-        dw->setTitleBarWidget(nullptr);
-        delete titleBarWidget;
+    if (auto tw = dw->titleBarWidget(); !tw || qobject_cast<OverlayTitleBar*>(tw)) {
+        setupTitleBar(dw);
     }
-
-    setupTitleBar(dw);
 }
 
 void OverlayManager::onTaskViewUpdate()
@@ -1813,8 +1812,10 @@ bool OverlayManager::eventFilter(QObject* o, QEvent* ev)
                     if (auto titleBar = qobject_cast<OverlayTitleBar*>(OverlayTabWidget::_Dragging)) {
                         titleBar->endDrag();
                     }
-                    else if (auto splitHandle
-                             = qobject_cast<OverlaySplitterHandle*>(OverlayTabWidget::_Dragging)) {
+                    else if (
+                        auto splitHandle
+                        = qobject_cast<OverlaySplitterHandle*>(OverlayTabWidget::_Dragging)
+                    ) {
                         splitHandle->endDrag();
                     }
                 }
@@ -1848,27 +1849,27 @@ bool OverlayManager::eventFilter(QObject* o, QEvent* ev)
             }
             break;
         // case QEvent::NativeGesture:
-        case QEvent::Wheel:
-            if (!OverlayParams::getDockOverlayWheelPassThrough()) {
-                return false;
-            }
-            // fall through
         case QEvent::ContextMenu: {
             auto cev = static_cast<QContextMenuEvent*>(ev);
             if (cev->reason() != QContextMenuEvent::Mouse) {
                 return false;
             }
         }  // fall through
+        case QEvent::Wheel:
         case QEvent::MouseButtonDblClick:
         case QEvent::MouseButtonRelease:
         case QEvent::MouseButtonPress:
         case QEvent::MouseMove: {
+            if (ev->type() == QEvent::Wheel && !OverlayParams::getDockOverlayWheelPassThrough()) {
+                return false;
+            }
             if (OverlayTabWidget::_Dragging && OverlayTabWidget::_Dragging != o) {
                 if (auto titleBar = qobject_cast<OverlayTitleBar*>(OverlayTabWidget::_Dragging)) {
                     titleBar->endDrag();
                 }
-                else if (auto splitHandle
-                         = qobject_cast<OverlaySplitterHandle*>(OverlayTabWidget::_Dragging)) {
+                else if (
+                    auto splitHandle = qobject_cast<OverlaySplitterHandle*>(OverlayTabWidget::_Dragging)
+                ) {
                     splitHandle->endDrag();
                 }
             }
@@ -1915,8 +1916,10 @@ bool OverlayManager::eventFilter(QObject* o, QEvent* ev)
                 // probably do not matter.
                 return true;
             }
-            else if (ev->type() != QEvent::MouseButtonPress && ev->type() != QEvent::MouseButtonDblClick
-                     && QApplication::mouseButtons() != Qt::NoButton) {
+            else if (
+                ev->type() != QEvent::MouseButtonPress && ev->type() != QEvent::MouseButtonDblClick
+                && QApplication::mouseButtons() != Qt::NoButton
+            ) {
                 return false;
             }
 
@@ -1931,8 +1934,10 @@ bool OverlayManager::eventFilter(QObject* o, QEvent* ev)
                 && pos == d->_lastPos) {
                 hit = 1;
             }
-            else if (ev->type() == QEvent::Wheel && !d->wheelDelay.isNull()
-                     && (isNear(pos, d->wheelPos) || d->wheelDelay > QTime::currentTime())) {
+            else if (
+                ev->type() == QEvent::Wheel && !d->wheelDelay.isNull()
+                && (isNear(pos, d->wheelPos) || d->wheelDelay > QTime::currentTime())
+            ) {
                 d->wheelDelay = QTime::currentTime().addMSecs(
                     OverlayParams::getDockOverlayWheelDelay()
                 );

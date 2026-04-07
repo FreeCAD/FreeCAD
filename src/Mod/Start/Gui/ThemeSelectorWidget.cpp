@@ -140,18 +140,16 @@ void ThemeSelectorWidget::setupButtons(QBoxLayout* layout)
         if (theme.first == Theme::Classic && styleSheetName.isEmpty()) {
             button->setChecked(true);
         }
-        else if (theme.first == Theme::Light
-                 && styleSheetName.contains(
-                     QLatin1String("FreeCAD Light"),
-                     Qt::CaseSensitivity::CaseInsensitive
-                 )) {
+        else if (
+            theme.first == Theme::Light
+            && styleSheetName.contains(QLatin1String("FreeCAD Light"), Qt::CaseSensitivity::CaseInsensitive)
+        ) {
             button->setChecked(true);
         }
-        else if (theme.first == Theme::Dark
-                 && styleSheetName.contains(
-                     QLatin1String("FreeCAD Dark"),
-                     Qt::CaseSensitivity::CaseInsensitive
-                 )) {
+        else if (
+            theme.first == Theme::Dark
+            && styleSheetName.contains(QLatin1String("FreeCAD Dark"), Qt::CaseSensitivity::CaseInsensitive)
+        ) {
             button->setChecked(true);
         }
         connect(button, &QToolButton::clicked, this, [this, theme] { themeChanged(theme.first); });

@@ -54,6 +54,7 @@
 #include <QWhatsThis>
 #include <QWindow>
 #include <QPushButton>
+#include <string>
 
 
 #if defined(Q_OS_WIN)
@@ -1150,7 +1151,12 @@ bool MainWindow::event(QEvent* e)
                 return true;
             }
             else {
-                Application::Instance->commandManager().runCommandByName(commandName.c_str());
+                Command* cmd = Application::Instance->commandManager().getCommandByName(
+                    commandName.c_str()
+                );
+                if (cmd) {
+                    cmd->invoke(1);
+                }
             }
         }
         else {
@@ -2246,9 +2252,10 @@ QMimeData* MainWindow::createMimeDataFromSelection() const
     // if less than ~10 MB
     bool use_buffer = (memsize < 0xA00000);
     QByteArray res;
+    std::string buffer;
     if (use_buffer) {
         try {
-            res.reserve(memsize);
+            buffer.reserve(memsize);
         }
         catch (const std::bad_alloc&) {
             use_buffer = false;
@@ -2259,12 +2266,13 @@ QMimeData* MainWindow::createMimeDataFromSelection() const
     QString mime;
     if (use_buffer) {
         mime = hasXLink ? _MimeDocObjX : _MimeDocObj;
-        Base::ByteArrayOStreambuf buf(res);
-        std::ostream str(&buf);
+        Base::StringOStreambuf sbuf(buffer);
+        std::ostream str(&sbuf);
         // need this instance to call MergeDocuments::Save()
         App::Document* doc = sel.front()->getDocument();
         MergeDocuments mimeView(doc);
         doc->exportObjects(sel, str);
+        res = QByteArray(buffer.data(), static_cast<int>(buffer.size()));
     }
     else {
         mime = hasXLink ? _MimeDocObjXFile : _MimeDocObjFile;
@@ -2395,9 +2403,10 @@ void MainWindow::insertFromMimeData(const QMimeData* mimeData)
     }
     if (!fromDoc) {
         QByteArray res = mimeData->data(format);
+        std::string buffer(res.constData(), static_cast<std::size_t>(res.size()));
 
         doc->openTransaction("Paste");
-        Base::ByteArrayIStreambuf buf(res);
+        Base::StringIStreambuf buf(buffer);
         std::istream in(nullptr);
         in.rdbuf(&buf);
         MergeDocuments mimeView(doc);

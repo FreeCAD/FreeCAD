@@ -300,7 +300,14 @@ public:
         bool driving = true
     );
     int addConstraintP2PAngle(Point& p1, Point& p2, double* angle, int tagId = 0, bool driving = true);
-    int addConstraintP2LDistance(Point& p, Line& l, double* distance, int tagId = 0, bool driving = true);
+    int addConstraintP2LDistance(
+        Point& p,
+        Line& l,
+        double* distance,
+        bool ccw,
+        int tagId = 0,
+        bool driving = true
+    );
     int addConstraintPointOnLine(Point& p, Line& l, int tagId = 0, bool driving = true);
     int addConstraintPointOnLine(Point& p, Point& lp1, Point& lp2, int tagId = 0, bool driving = true);
     int addConstraintPointOnPerpBisector(Point& p, Line& l, int tagId = 0, bool driving = true);
@@ -443,9 +450,9 @@ public:
         int tagId = 0,
         bool driving = true
     );
-    int addConstraintTangent(Line& l, Circle& c, int tagId = 0, bool driving = true);
+    int addConstraintTangent(Line& l, Circle& c, bool ccw, int tagId = 0, bool driving = true);
     int addConstraintTangent(Line& l, Ellipse& e, int tagId = 0, bool driving = true);
-    int addConstraintTangent(Line& l, Arc& a, int tagId = 0, bool driving = true);
+    int addConstraintTangent(Line& l, Arc& a, bool ccw, int tagId = 0, bool driving = true);
     int addConstraintTangent(Circle& c1, Circle& c2, int tagId = 0, bool driving = true);
     int addConstraintTangent(Arc& a1, Arc& a2, int tagId = 0, bool driving = true);
     int addConstraintTangent(Circle& c, Arc& a, int tagId = 0, bool driving = true);
@@ -476,8 +483,23 @@ public:
         bool driving = true
     );
 
-    int addConstraintC2CDistance(Circle& c1, Circle& c2, double* dist, int tagId, bool driving = true);
-    int addConstraintC2LDistance(Circle& c, Line& l, double* dist, int tagId, bool driving = true);
+    int addConstraintC2CDistance(
+        Circle& c1,
+        Circle& c2,
+        double* dist,
+        std::optional<bool> c1bigger,
+        int tagId,
+        bool driving = true
+    );
+    int addConstraintC2LDistance(
+        Circle& c,
+        Line& l,
+        double* dist,
+        bool ccw,
+        bool internal,
+        int tagId,
+        bool driving = true
+    );
     int addConstraintP2CDistance(Point& p, Circle& c, double* distance, int tagId = 0, bool driving = true);
     int addConstraintArcLength(Arc& a, double* dist, int tagId, bool driving = true);
 

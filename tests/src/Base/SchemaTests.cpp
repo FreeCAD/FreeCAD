@@ -24,13 +24,17 @@
 #include "Base/Tools.h"
 #include "Base/Unit.h"
 #include "Base/Quantity.h"
+#include "Base/Translation.h"
 #include "Base/UnitsApi.h"
 #include "Base/UnitsSchemasData.h"
 #include "Base/UnitsSchemas.h"
+#include "TranslationTestHelpers.h"
 
-#include <QLocale>
 #include <array>
 #include <string>
+
+#include <unicode/locid.h>
+#include <unicode/utypes.h>
 
 using Base::Quantity;
 using Base::QuantityFormat;
@@ -46,8 +50,10 @@ class SchemaTest: public testing::Test
 protected:
     void SetUp() override
     {
-        const QLocale loc(QLocale::C);
-        QLocale::setDefault(loc);
+        // Ensure deterministic decimal separator for tests.
+        UErrorCode status = U_ZERO_ERROR;
+        icu::Locale::setDefault(icu::Locale("en_US_POSIX"), status);
+        ASSERT_TRUE(U_SUCCESS(status));
     }
 
     void TearDown() override
@@ -228,6 +234,19 @@ TEST_F(SchemaTest, internal_1_mm_precision_0)
     const auto expect {"1 mm"};
 
     EXPECT_EQ(result, expect);
+}
+
+TEST_F(SchemaTest, schema_descriptions_use_translation_handler)
+{
+    Base::Translation::Test::RecordingTranslator translator;
+    translator.translateMode = Base::Translation::Test::RecordingTranslator::TranslateMode::WrapSource;
+    translator.sourcePrefix = "T(";
+    translator.sourceSuffix = ")";
+    Base::Translation::Test::ScopedTranslator scoped(&translator);
+
+    const auto descriptions = UnitsApi::getDescriptions();
+    ASSERT_FALSE(descriptions.empty());
+    EXPECT_TRUE(descriptions.front().starts_with("T("));
 }
 
 TEST_F(SchemaTest, internal_100_mm_precision_0)
@@ -634,6 +653,7 @@ TEST_F(SchemaTest, round_trip_test)
         Unit::Work,
         Unit::Power,
         Unit::Moment,
+        Unit::Inertia,
         Unit::SpecificEnergy,
         Unit::ThermalConductivity,
         Unit::ThermalExpansionCoefficient,
@@ -804,6 +824,8 @@ TEST_F(SchemaTest, sweep_internal)
          "1000 m^2",
          "1 km^2",
          /* default */ "1e+06 km^2"},
+        // Inertia
+        {"1 kg*mm^2", "10 kg*mm^2", "100 kg*mm^2"},
         // Volume
         {"1 mm^3",
          "10 mm^3",
@@ -1230,7 +1252,27 @@ TEST_F(SchemaTest, sweep_mks)
          "100 mF",
          "1 F",
          /* default */ "1e+06 F"},
+        // Inertia
+        {"1 kg*m^2", "10 kg*m^2", "100 kg*m^2"},
     });
+}
+
+TEST_F(SchemaTest, mks_negative_values_use_magnitude_for_threshold_selection)
+{
+    UnitsApi::setSchema("MKS");
+    UnitsApi::setDecimals(6);
+
+    auto translate = [](const char* raw) {
+        auto quantity = Quantity::parse(raw);
+        QuantityFormat fmt(QuantityFormat::Default);
+        quantity.setFormat(fmt);
+        double factor {};
+        std::string unitString;
+        return UnitsApi::schemaTranslate(quantity, factor, unitString);
+    };
+
+    EXPECT_EQ(translate("-10000000 Pa"), "-10 MPa");
+    EXPECT_EQ(translate("-0.001 mm"), "-1 \xC2\xB5m");
 }
 
 TEST_F(SchemaTest, sweep_imperial)
@@ -1256,6 +1298,8 @@ TEST_F(SchemaTest, sweep_imperial)
          "100 psi",
          "1 ksi",
          /* default */ "1e+06 psi"},
+        // Inertia
+        {"1 lb*in^2", "10 lb*in^2", "100 lb*in^2"},
     });
 }
 
@@ -1268,6 +1312,7 @@ TEST_F(SchemaTest, sweep_imperial_decimal)
         {"1 in^2", "10 in^2", "100 in^2"},
         {"1 in^3", "10 in^3"},
         {"1 lb", "10 lb", "100 lb"},
+        {"1 lb*in^2", "10 lb*in^2", "100 lb*in^2"},
         {"1 psi", "10 psi", "100 psi"},
     });
 }
@@ -1294,6 +1339,7 @@ TEST_F(SchemaTest, sweep_imperial_civil)
         {"1 ft^2", "10 ft^2", "100 ft^2"},
         {"1 ft^3", "10 ft^3"},
         {"1 lb", "10 lb", "100 lb"},
+        {"1 lb*ft^2", "10 lb*ft^2", "100 lb*ft^2"},
         {"1 psi", "10 psi", "100 psi"},
         {"1 mph", "10 mph", "100 mph"},
         // Angle (toDMS)
@@ -1309,6 +1355,7 @@ TEST_F(SchemaTest, sweep_centimeter)
         {"1 cm", "10 cm", "100 cm", "1000 cm"},
         {"1 m^2", "10 m^2", "100 m^2"},
         {"1 m^3", "10 m^3"},
+        {"1 kg*cm^2", "10 kg*cm^2", "100 kg*cm^2"},
         {"1 W", "10 W", "100 W"},
         {"1 V", "10 V", "100 V"},
     });
@@ -1342,6 +1389,7 @@ TEST_F(SchemaTest, sweep_meter_decimal)
         {"1 m", "10 m", "100 m", "1000 m"},
         {"1 m^2", "10 m^2", "100 m^2"},
         {"1 m^3", "10 m^3"},
+        {"1 kg*m^2", "10 kg*m^2", "100 kg*m^2"},
         {"1 W", "10 W", "100 W"},
         {"1 V", "10 V", "100 V"},
         {"1 m/s", "10 m/s", "100 m/s"},

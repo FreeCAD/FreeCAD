@@ -1646,11 +1646,17 @@ bool Document::saveAs()
     if (name.isEmpty()) {
         name = QString::fromUtf8(getDocument()->Label.getValue());
     }
+    if (name.endsWith(QStringLiteral(".FCBak"), Qt::CaseInsensitive)) {
+        name.chop(QStringLiteral(".FCBak").size());
+        if (!name.endsWith(QStringLiteral(".FCStd"), Qt::CaseInsensitive)) {
+            name += QStringLiteral(".FCStd");
+        }
+    }
     QString fn = FileDialog::getSaveFileName(
         getMainWindow(),
         QObject::tr("Save %1 Document").arg(exe),
         name,
-        QStringLiteral("%1 %2 (*.FCStd)").arg(exe, QObject::tr("Document"))
+        QStringList(QStringLiteral("%1 %2 (*.FCStd)").arg(exe, QObject::tr("Document")))
     );
 
     if (!fn.isEmpty()) {
@@ -1769,23 +1775,30 @@ bool Document::saveCopy()
     getMainWindow()->showMessage(QObject::tr("Save a copy of the document under new filename…"));
 
     QString exe = qApp->applicationName();
+    QString name = QString::fromUtf8(getDocument()->FileName.getValue());
+    if (name.endsWith(QStringLiteral(".FCBak"), Qt::CaseInsensitive)) {
+        name.chop(QStringLiteral(".FCBak").size());
+        if (!name.endsWith(QStringLiteral(".FCStd"), Qt::CaseInsensitive)) {
+            name += QStringLiteral(".FCStd");
+        }
+    }
     QString fn = FileDialog::getSaveFileName(
         getMainWindow(),
         QObject::tr("Save %1 Document").arg(exe),
-        QString::fromUtf8(getDocument()->FileName.getValue()),
-        QObject::tr("%1 document (*.FCStd)").arg(exe)
+        name,
+        QStringList(QObject::tr("%1 document (*.FCStd)").arg(exe))
     );
     if (!fn.isEmpty()) {
         const char* DocName = App::GetApplication().getDocumentName(getDocument());
 
         // save as new file name
         Gui::WaitCursor wc;
-        QString pyfn = Base::Tools::escapeEncodeFilename(fn);
+        std::string pyfn = Base::Tools::escapeEncodeFilename(fn.toUtf8().constData());
         Command::doCommand(
             Command::Doc,
             "App.getDocument(\"%s\").saveCopy(\"%s\")",
             DocName,
-            (const char*)pyfn.toUtf8()
+            pyfn.c_str()
         );
 
         return true;

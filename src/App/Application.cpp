@@ -112,6 +112,8 @@
 #include "ApplicationPy.h"
 #include "CleanupProcess.h"
 #include "ComplexGeoData.h"
+#include "ConsoleQtBridge.h"
+#include "TranslationQtBridge.h"
 #include "Services.h"
 #include "DocumentObjectFileIncluded.h"
 #include "DocumentObjectGroup.h"
@@ -1568,7 +1570,7 @@ void Application::retranslateExportTypes()
     std::erase_if(_mExportTypes, [](const FileTypeItem& item) {
         return item.translatable;
     });
-    for (const auto &cacheEntry : translatableExportTypeCache.getCache()) {
+    for (const auto &cacheEntry : cache) {
         addTranslatableExportType(cacheEntry.description, cacheEntry.extensions, cacheEntry.moduleName);
     }
 }
@@ -2633,6 +2635,9 @@ void Application::initConfig(int argc, char ** argv)
     else
         _pConsoleObserverFile = nullptr;
 
+    App::installConsoleQtBridge();
+    App::installTranslationQtBridge();
+
     // Banner ===========================================================
     if (mConfig["RunMode"] != "Cmd" && !(vm.contains("verbose") && vm.contains("version"))) {
         // Remove banner if FreeCAD is invoked via the -c command as regular
@@ -2837,7 +2842,8 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
         Base::Console().log("Init:     Processing file: %s\n",file.filePath().c_str());
 
         try {
-            if (file.hasExtension("fcstd") || file.hasExtension("std")) {
+            if (file.hasExtension("fcstd") || file.hasExtension("fcbak")
+                || file.hasExtension("std")) {
                 // try to open
                 Application::_pcSingleton->openDocument(file.filePath().c_str());
                 processed.push_back(it);

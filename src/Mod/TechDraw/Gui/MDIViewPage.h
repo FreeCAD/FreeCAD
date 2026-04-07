@@ -122,6 +122,7 @@ public Q_SLOTS:
     void saveDXF();
     void slotContextExportPdf();
     void toggleFrame();
+    void toggleGrid();
     void toggleKeepUpdated();
     void sceneSelectionChanged();
     void printAll();
@@ -145,6 +146,7 @@ private:
     Connection connectDeletedObject;
 
     QAction *m_toggleFrameAction;
+    QAction *m_toggleGridAction;
     QAction *m_toggleKeepUpdatedAction;
     QAction *m_exportSVGAction;
     QAction *m_exportDXFAction;

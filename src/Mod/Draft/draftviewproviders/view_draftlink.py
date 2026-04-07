@@ -24,6 +24,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the base viewprovider code for the Link objects."""
+
 ## @package view_draftlink
 # \ingroup draftviewproviders
 # \brief Provides the base viewprovider code for the Link objects.

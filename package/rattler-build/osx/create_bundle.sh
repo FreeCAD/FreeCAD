@@ -47,12 +47,9 @@ cmake --build build
 mkdir -p FreeCAD.app/Contents/MacOS
 cp build/FreeCAD FreeCAD.app/Contents/MacOS/FreeCAD
 
-python_version=$(${conda_env}/bin/python -c 'import platform; print("py" + platform.python_version_tuple()[0] + platform.python_version_tuple()[1])')
-
 # Add deployment target suffix to artifact name (e.g., "-macOS11" or "-macOS15")
 deploy_target="${MACOS_DEPLOYMENT_TARGET:-11.0}"
-deploy_suffix="-macOS${deploy_target%%.*}"
-version_name="FreeCAD_${BUILD_TAG}-macOS-$(uname -m)${deploy_suffix}-${python_version}"
+version_name="FreeCAD_${BUILD_TAG}-macOS${deploy_target%%.*}-$(uname -m)"
 application_menu_name="FreeCAD_${BUILD_TAG}"
 
 echo -e "\################"

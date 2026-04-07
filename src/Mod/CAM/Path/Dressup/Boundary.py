@@ -94,6 +94,15 @@ class DressupPathBoundary(object):
                 "Set distance which will attempts to avoid unnecessary retractions.",
             ),
         )
+        obj.addProperty(
+            "App::PropertyBool",
+            "RestMachiningPass",
+            "Boundary",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Apply boundary to Rest Machining.",
+            ),
+        )
 
         self.obj = obj
         self.safeHeight = None
@@ -131,6 +140,16 @@ class DressupPathBoundary(object):
             if obj.KeepToolDown:
                 obj.RetractThreshold = 999999
             obj.removeProperty("KeepToolDown")
+        if not hasattr(obj, "RestMachiningPass"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "RestMachiningPass",
+                "Boundary",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Apply boundary to Rest Machining.",
+                ),
+            )
 
     def onDelete(self, obj, args):
         if obj.Base:
@@ -253,7 +272,9 @@ class PathBoundary:
                 if edge and cmd.Name in Path.Geom.CmdMoveDrill:
                     inside = edge.common(self.boundary).Edges
                     outside = edge.cut(self.boundary).Edges
-                    if 1 == len(inside) and 0 == len(outside):
+                    if not self.inside:
+                        inside, outside = outside, inside
+                    if inside and not outside:
                         commands.append(cmd)
                 if edge and cmd.Name not in Path.Geom.CmdMoveDrill:
                     inside = edge.common(self.boundary).Edges

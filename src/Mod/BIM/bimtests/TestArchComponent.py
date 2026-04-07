@@ -701,22 +701,35 @@ class TestArchComponent(TestArchBase.TestArchBase):
                 msg="CSG pieces did not align. Base shape likely retained the offset.",
             )
 
-    def test_component_base_removal_cleanup(self):
-        """Test that removing the Base property clears the component shape."""
-        self.printTestMessage("ArchComponent Base Removal Cleanup...")
+    def test_component_without_base(self):
+        """Test that a component without a base retains its shape."""
+        self.printTestMessage("ArchComponent without Base test...")
 
-        box = self.document.addObject("Part::Box", "StaleTestBox")
-        comp = Arch.makeComponent(box)
+        box1 = self.document.addObject("Part::Box", "TestBox1")
+        box2 = self.document.addObject("Part::Box", "TestBox2")
+        self.document.recompute()
+        volume_box1 = box1.Shape.Volume
+        volume_box2 = box2.Shape.Volume  # Box2 will be deleted.
+
+        comp1 = Arch.makeComponent(box1)
+        comp2 = Arch.makeComponent(box2, delete=True)
         self.document.recompute()
 
-        self.assertFalse(comp.Shape.isNull(), "Component should have a shape initially.")
-
-        # Trigger the 'else' block
-        comp.Base = None
+        comp1.Base = None
         self.document.recompute()
 
-        self.assertTrue(
-            comp.Shape.isNull(), "Component retained a stale shape after its Base was removed."
+        self.assertAlmostEqual(
+            volume_box1,
+            comp1.Shape.Volume,
+            places=6,
+            msg="Wrong shape for baseless component!",
+        )
+
+        self.assertAlmostEqual(
+            volume_box2,
+            comp2.Shape.Volume,
+            places=6,
+            msg="Wrong shape for baseless component!",
         )
 
     def test_add_window_link_standard(self):

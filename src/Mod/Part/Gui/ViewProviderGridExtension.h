@@ -80,6 +80,7 @@ protected:
     void setGridDivLineWidth(int width);
     void setGridLineColor(const Base::Color& color);
     void setGridDivLineColor(const Base::Color& color);
+    void setGridTransparency(float transparency);
 
     bool extensionHandleChangedPropertyType(
         Base::XMLReader& reader,

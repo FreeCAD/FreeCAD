@@ -246,8 +246,10 @@ public:
             || label->datumtype.getValue() == SoDatumLabel::DISTANCEY) {
             corners = computeDistanceBBox();
         }
-        else if (label->datumtype.getValue() == SoDatumLabel::RADIUS
-                 || label->datumtype.getValue() == SoDatumLabel::DIAMETER) {
+        else if (
+            label->datumtype.getValue() == SoDatumLabel::RADIUS
+            || label->datumtype.getValue() == SoDatumLabel::DIAMETER
+        ) {
             corners = computeRadiusDiameterBBox();
         }
         else if (label->datumtype.getValue() == SoDatumLabel::ANGLE) {

@@ -54,8 +54,10 @@ ButtonView::ButtonView(QWidget* parent)
 
 void ButtonView::selectButton(int number)
 {
-    this->selectionModel()->select(this->model()->index(number, 0), QItemSelectionModel::ClearAndSelect);
-    this->scrollTo(this->model()->index(number, 0), QAbstractItemView::EnsureVisible);
+    QModelIndex idx = this->model()->index(number, 0);
+    this->selectionModel()->select(idx, QItemSelectionModel::ClearAndSelect);
+    this->setCurrentIndex(idx);
+    this->scrollTo(idx, QAbstractItemView::EnsureVisible);
 }
 
 void ButtonView::goSelectionChanged(const QItemSelection& selected, const QItemSelection& deselected)

@@ -25,7 +25,6 @@ import FreeCAD
 import sys
 import unittest
 
-
 # ---------------------------------------------------------------------------
 # define the functions to test the FreeCAD base code
 # ---------------------------------------------------------------------------

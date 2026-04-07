@@ -1602,7 +1602,7 @@ void TaskSketcherConstraints::onListWidgetConstraintsItemSelectionChanged()
     this->blockSelection(block);
 
     // it seems that addSelections gives back the focus to the view, and not immediately.
-    QTimer::singleShot(200, [this]() {
+    QTimer::singleShot(200, this, [this]() {
         QWidget* fw = QApplication::focusWidget();
         if (fw && ui->listWidgetConstraints->viewport()->isAncestorOf(fw)) {
             return; // Do NOT steal focus if the editor is active

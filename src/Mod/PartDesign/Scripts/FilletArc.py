@@ -128,7 +128,7 @@ def test():
     Part.show(Part.makeLine(P3, Q))
     Part.show(arc.toShape())
 
-    (S1, S2, M2) = makeArc(
+    S1, S2, M2 = makeArc(
         Vector(C.x, C.y, C.z),
         Vector(P3.x, P3.y, P3.z),
         Vector(Q.x, Q.y, Q.z),

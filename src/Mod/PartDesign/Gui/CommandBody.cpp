@@ -709,8 +709,10 @@ void CmdPartDesignMoveTip::activated(int iMsg)
         );
         return;
     }
-    else if (!selFeature->isDerivedFrom(PartDesign::Feature::getClassTypeId()) && selFeature != body
-             && body->BaseFeature.getValue() != selFeature) {
+    else if (
+        !selFeature->isDerivedFrom(PartDesign::Feature::getClassTypeId()) && selFeature != body
+        && body->BaseFeature.getValue() != selFeature
+    ) {
         QMessageBox::warning(
             nullptr,
             QObject::tr("Selection error"),

@@ -68,10 +68,10 @@ struct InputHint
     enum class UserInput
     {
         // Modifier
-        ModifierShift = Qt::KeyboardModifier::ShiftModifier,
-        ModifierCtrl = Qt::KeyboardModifier::ControlModifier,
-        ModifierAlt = Qt::KeyboardModifier::AltModifier,
-        ModifierMeta = Qt::KeyboardModifier::MetaModifier,
+        ModifierShift = Qt::Key_Shift,
+        ModifierCtrl = Qt::Key_Control,
+        ModifierAlt = Qt::Key_Alt,
+        ModifierMeta = Qt::Key_Meta,
 
         // Keyboard Keys
         KeySpace = Qt::Key_Space,
