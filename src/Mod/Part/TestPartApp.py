@@ -30,6 +30,7 @@ from FreeCAD import Base
 
 App = FreeCAD
 
+from parttests.BooleanFeatureTest import TestBooleanFeatures
 from parttests.BRep_tests import BRepTests
 from parttests.Geom2d_tests import Geom2dTests
 from parttests.regression_tests import RegressionTests
