@@ -78,17 +78,25 @@ def validate_executable(path: str) -> tuple[bool, str]:
     return True, ""
 
 
-def run_and_capture(cmd: list[str]) -> tuple[int, str]:
+def run_and_capture(cmd: list[str], timeout: int = 120) -> tuple[int, str]:
     """Run `cmd` and return (returncode, combined stdout+stderr string).
 
     If the executable is not found a return code of 127 is returned and a small error string is
-    provided as output to aid diagnosis.
+    provided as output to aid diagnosis. If the process does not complete within `timeout` seconds
+    it is killed and a return code of 126 is returned.
     """
     try:
         proc = subprocess.run(
-            cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, check=False
+            cmd,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            check=False,
+            timeout=timeout,
         )
         return proc.returncode, proc.stdout
+    except subprocess.TimeoutExpired as e:
+        return 126, (e.stdout or "") + f"\nProcess timed out after {timeout} seconds\n"
     except FileNotFoundError:
         return 127, f"Executable not found: {cmd[0]}\n"
 
