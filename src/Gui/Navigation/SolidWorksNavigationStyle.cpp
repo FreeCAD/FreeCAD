@@ -199,20 +199,7 @@ SbBool SolidWorksNavigationStyle::processSoEvent(const SoEvent* const ev)
         this->lockrecenter = true;
         const auto* const event = (const SoLocation2Event*)ev;
         if (this->currentmode == NavigationStyle::ZOOMING) {
-            if (this->altdown && this->button3down) {
-                const SbVec2f center(0.5f, 0.5f);
-                SbVec2f mid = 0.5f * (posn + prevnormalized);
-                SbVec2f r = mid - center;
-                SbVec2f d = posn - prevnormalized;
-
-                float cross = r[0] * d[1] - r[1] * d[0];
-                float angle = 6.0f * cross;
-
-                doRotate(viewer->getSoRenderManager()->getCamera(), angle, SbVec2f(0.5f, 0.5f));
-            }
-            else {
-                this->zoomByCursor(posn, prevnormalized);
-            }
+            this->zoomByCursor(posn, prevnormalized);
             processed = true;
         }
         else if (this->currentmode == NavigationStyle::PANNING) {
@@ -286,7 +273,10 @@ SbBool SolidWorksNavigationStyle::processSoEvent(const SoEvent* const ev)
             newmode = NavigationStyle::ZOOMING;
             break;
         case ALTDOWN | BUTTON3DOWN:
-            newmode = NavigationStyle::ZOOMING;
+            if (newmode != NavigationStyle::DRAGGING) {
+                saveCursorPosition(ev);
+            }
+            newmode = NavigationStyle::DRAGGING;
             break;
         case BUTTON3DOWN:
             if (newmode != NavigationStyle::DRAGGING) {
