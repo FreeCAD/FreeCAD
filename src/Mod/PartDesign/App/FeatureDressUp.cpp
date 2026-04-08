@@ -190,9 +190,13 @@ std::vector<TopoShape> DressUp::getContinuousEdges(const TopoShape& shape)
     std::vector<TopoShape> ret;
     std::unordered_set<TopoDS_Shape, Part::ShapeHasher, Part::ShapeHasher> shapeSet;
 
-    auto addEdge = [&](const TopoDS_Shape& subshape, const std::string& ref) {
+    auto addEdge = [&](const TopoDS_Shape& subshape, std::string& ref) {
         if (!shapeSet.insert(subshape).second) {
             return;
+        }
+
+        if (ref.empty()) {
+            ref = "NOT_FOUND";
         }
 
         auto faces = shape.findAncestorsShapes(subshape, TopAbs_FACE);
