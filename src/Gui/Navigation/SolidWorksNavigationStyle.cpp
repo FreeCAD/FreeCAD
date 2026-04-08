@@ -198,6 +198,7 @@ SbBool SolidWorksNavigationStyle::processSoEvent(const SoEvent* const ev)
     if (type.isDerivedFrom(SoLocation2Event::getClassTypeId())) {
         this->lockrecenter = true;
         const auto* const event = (const SoLocation2Event*)ev;
+
         if (this->currentmode == NavigationStyle::ZOOMING) {
             this->zoomByCursor(posn, prevnormalized);
             processed = true;
@@ -214,9 +215,22 @@ SbBool SolidWorksNavigationStyle::processSoEvent(const SoEvent* const ev)
             processed = true;
         }
         else if (this->currentmode == NavigationStyle::DRAGGING) {
-            this->addToLog(event->getPosition(), event->getTime());
-            this->spin(posn);
-            moveCursorPosition();
+            if (this->altdown && this->button3down) {
+                const SbVec2f center(0.5f, 0.5f);
+                SbVec2f mid = 0.5f * (posn + prevnormalized);
+                SbVec2f r = mid - center;
+                SbVec2f d = posn - prevnormalized;
+
+                float cross = r[0] * d[1] - r[1] * d[0];
+                float angle = 6.0f * cross;
+
+                doRotate(viewer->getSoRenderManager()->getCamera(), angle, center);
+            }
+            else {
+                this->addToLog(event->getPosition(), event->getTime());
+                this->spin(posn);
+                moveCursorPosition();
+            }
             processed = true;
         }
     }
