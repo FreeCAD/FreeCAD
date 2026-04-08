@@ -656,7 +656,7 @@ class _RapidEdges:
                 round(v0.z, self.precision),
                 round(v1.x, self.precision),
                 round(v1.y, self.precision),
-                round(v1.z, self.precision)
+                round(v1.z, self.precision),
             )
         except (AttributeError, IndexError):
             return None
@@ -1193,7 +1193,10 @@ class ObjectTagDressup:
         for i, tag in enumerate(self.pathData.sortedTags(rawTags)):
             if tag.enabled:
                 if prev:
-                    if prev.solid.BoundBox.intersect(tag.solid.BoundBox) and prev.solid.common(tag.solid).Faces:
+                    if (
+                        prev.solid.BoundBox.intersect(tag.solid.BoundBox)
+                        and prev.solid.common(tag.solid).Faces
+                    ):
                         Path.Log.info("Tag #%d intersects with previous tag - disabling\n" % i)
                         Path.Log.debug("this tag = %d [%s]" % (i, tag.solid.BoundBox))
                         tag.enabled = False
