@@ -545,6 +545,11 @@ void AttachEngine::suggestMapModes(SuggestResult& result) const
             }
         }
     }
+
+    // A mode already in allApplicableModes should not also appear in reachableModes
+    for (eMapMode mode : mlist) {
+        mlist_reachable.erase(mode);
+    }
 }
 
 void AttachEngine::EnableAllSupportedModes()
