@@ -207,7 +207,7 @@ endif()
 
 # Export a Coin::Coin target when the library is built as a cmake subdirectory
 # so that the same target can be linked using find_package and this method
-if(NOT CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
+if(NOT CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
   add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 endif()
 
@@ -231,6 +231,12 @@ if(WIN32)
     set_property(SOURCE scxml/eval-minimum-tab.cpp APPEND PROPERTY COMPILE_FLAGS /wd4065)
     set_property(SOURCE soscxml/eval-coin-tab.cpp APPEND PROPERTY COMPILE_FLAGS /wd4065)
   endif()
+  set_target_properties(${PROJECT_NAME} PROPERTIES
+    RELEASE_POSTFIX        "${COIN_DEFAULT_POSTFIX}"
+    MINSIZEREL_POSTFIX     "${COIN_DEFAULT_POSTFIX}"
+    RELWITHDEBINFO_POSTFIX "${COIN_DEFAULT_POSTFIX}"
+    DEBUG_POSTFIX          "${COIN_DEFAULT_POSTFIX}d"
+  )
 elseif(APPLE)
   if(COIN_BUILD_MAC_FRAMEWORK)
     # Set the framework target properties just to make sure the relevant links inside the framework 
@@ -274,10 +280,13 @@ if(NOT COIN_BUILD_MAC_FRAMEWORK)
   target_include_directories(${PROJECT_NAME} INTERFACE $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 endif()
 
-if(WIN32 AND NOT MINGW)
+if(MSVC)
   set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION} SOVERSION ${COIN_SO_VERSION})
 else()
-  set_target_properties(${PROJECT_NAME} PROPERTIES VERSION "${COIN_SO_VERSION}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}" SOVERSION ${COIN_SO_VERSION})
+  set_target_properties(${PROJECT_NAME} PROPERTIES
+    VERSION "${COIN_SO_VERSION}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}"
+    SOVERSION ${COIN_SO_VERSION}
+  )
 endif()
 
 # Setting up a framework means adding all the files and links under a framework
