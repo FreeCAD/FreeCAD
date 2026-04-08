@@ -342,6 +342,7 @@ void NavigationStyle::initialize()
     this->currentmode = NavigationStyle::IDLE;
     this->animationEnabled = true;
     this->spinningAnimationEnabled = false;
+    this->rotationEnabled = true;
     this->spinsamplecounter = 0;
     this->spinincrement = SbRotation::identity();
     this->rotationCenterFound = false;
@@ -1089,6 +1090,10 @@ void NavigationStyle::setRotationCenter(const SbVec3f& cnt)
  */
 void NavigationStyle::spin(const SbVec2f& pointerpos)
 {
+    if (!isRotationEnabled()) {
+        return;
+    }
+
     if (this->log.historysize < 2) {
         return;
     }
@@ -1472,6 +1477,22 @@ SbBool NavigationStyle::isAnimating() const
 SbBool NavigationStyle::isSpinning() const
 {
     return currentmode == NavigationStyle::SPINNING;
+}
+
+/**
+ * @return Whether or not viewer rotation is enabled
+ */
+SbBool NavigationStyle::isRotationEnabled() const
+{
+    return rotationEnabled;
+}
+
+/**
+ * @brief Decide if camera rotation should be possible
+ */
+void NavigationStyle::setRotationEnabled(const SbBool enable)
+{
+    rotationEnabled = enable;
 }
 
 void NavigationStyle::startAnimating(const std::shared_ptr<NavigationAnimation>& animation, bool wait) const
@@ -2034,7 +2055,10 @@ SbBool NavigationStyle::processMotionEvent(const SoMotion3Event* const ev)
         useMotionRotationCenter = true;
     }
 
-    SbRotation newRotation(ev->getRotation() * camera->orientation.getValue());
+    SbRotation newRotation(camera->orientation.getValue());
+    if (isRotationEnabled()) {
+        newRotation = ev->getRotation() * newRotation;
+    }
     SbVec3f newPosition, newDirection;
     if (useMotionRotationCenter) {
         // Reposition the camera so the rotation center stays in the same place
