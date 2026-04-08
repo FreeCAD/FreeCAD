@@ -30,7 +30,8 @@ import os
 import sys
 import tempfile
 import unittest
-from typing import Union, List, Iterator
+from itertools import starmap
+from typing import Union, List, Iterator, Optional
 
 import FreeCAD
 
@@ -176,27 +177,30 @@ def get_fem_test_defs():
     print(f"The file was saved in:{file_path}")
 
 
-def try_converting_to_float(line: str) -> Union[None, List[float]]:
+def _try_converting_to_float(line: str) -> Union[None, List[float]]:
     """Does its best to split a line and convert its elements to float
 
     Has 3 strategies of splitting:
         * by comma - mainly in CalculiX .inp files
         * by space - other solvers
         * by space and ignoring the 1st word - other solvers
-            If there was only 1 word, the line will fail, no compromises
+            If there is only 1 word, the line will fail, no compromises
 
-    Single characters always pass
+    Single characters always fail
 
     :param line: line to split and convert to floats
     :return: None if conversion failed, else list of floats
     """
-    strategies = [
+    strategies = (
         lambda _line: _line[1:].split(","),
         lambda _line: _line[1:].split(),
         lambda _line: (lambda split_line: len(split_line) > 1 and split_line or "fail")(
             _line[1:].split()[1:]
         ),
-    ]
+    )
+    if len(line) <= 1:
+        return None
+
     for strategy in strategies:
         try:
             return list(map(float, strategy(line)))
@@ -205,55 +209,113 @@ def try_converting_to_float(line: str) -> Union[None, List[float]]:
     return None
 
 
-def are_floats_equal(
+def _are_floats_equal(
     orig_floats: Union[None, List[float]], floats_to_compare: Union[None, List[float]]
 ) -> bool:
     """Check if floats in lists are equal with some tolerance
 
-    :param orig_floats: list of floats - left operands of comparison
-    :param floats_to_compare: list of floats - right operands of comparison
+    :param orig_floats: left operands of comparison
+    :param floats_to_compare: right operands of comparison
     :return: True if both lists are equal with some tolerance element-wise, else False
     """
     if any(floats is None for floats in (orig_floats, floats_to_compare)):
         return False
-    for orig_float, float_to_compare in zip(orig_floats, floats_to_compare):
-        if not math.isclose(orig_float, float_to_compare, abs_tol=1e-10):
-            return False
+    return all(
+        math.isclose(orig_float, float_to_compare, abs_tol=1e-10)
+        for orig_float, float_to_compare in zip(orig_floats, floats_to_compare)
+    )
+
+
+def _can_block_be_good(hunk_line: str) -> bool:
+    """Parses the hunk line to determine, whether the block can be good
+
+    The block is good if it has an equal number of 'minus' and 'plus' lines
+
+    The hunk line has 4 formats:
+        when the hunk consists of only one line:
+            @@ -line_number +line_number @@
+        and when there are multiple lines in the hunk:
+            @@ -line_number,count +line_number,count @@
+
+        these are also possible:
+            @@ -line_number +line_number,count @@
+        and:
+            @@ -line_number,count +line_number @@
+
+    :param hunk_line: line with 'diff' info about the block
+    :return: True if the block can turn out to be good, False otherwise
+    """
+    line = hunk_line[4:~2]
+    if line.find(",") != -1:
+        table = str.maketrans({"+": " ", ",": " "})
+        line = line.translate(table).split()
+        return len(line) == 4 and line[1] == line[3]
     return True
 
 
-def parse_diff(diff_lines: Iterator[str]) -> List[str]:
-    """Parses lines from `united_diff`
+def _get_bad_block_if_any(diff_block: List[str], *, can_block_be_good: bool) -> Optional[List[str]]:
+    """Returns a `diff_block` if the block is considered bad, empty list otherwise
 
-    Tries to split a line and convert its contents to float, to
-    compare float numbers with some tolerance
+    `diff_block` is considered bad if it either has unequal number of 'minus' and 'plus' lines, or
+    not all the lines' floats are equal
+
+    :param diff_block: the block of differences
+    :param can_block_be_good: whether the block's lines should be further compared
+        on the lines' floats equality
+    :return: `diff_block` if it is bad, empty list otherwise
+    """
+    if not can_block_be_good:
+        return diff_block
+
+    _diff_block = list(map(_try_converting_to_float, diff_block[1:]))
+    # if there are multiple lines in the diff_block
+    # all the 'minus' lines will be first, then the 'plus' ones
+    # hence the zip is needed
+    #
+    # -first_line
+    # -second_line
+    # +first_line
+    # +second_line
+    #
+    # zip(...) -> zip( ("-f", "-s", "+f", "+s"), ("+f", "+s") ) -> (("-f", "+f"), ("-s", "+s"))
+    are_equal = starmap(_are_floats_equal, zip(_diff_block, _diff_block[len(_diff_block) // 2 :]))
+    if not all(are_equal):
+        return diff_block
+    return []
+
+
+def _parse_diff(diff_lines: Iterator[str]) -> List[str]:
+    """Parses lines from `unified_diff` to differentiate real inconsistencies between files
+    from differences caused by floats' rounding
 
     Recognizes blocks of changes, that start with `@@` and end either at EOF or
-    at the beginning of another block. Only bad lines are added to block.
-    All lines, which didn't pass the element-wise check, are bad lines.
-    :param diff_lines: lines produced by `united_diff`
+    at the beginning of another block.
+    A block is bad if it either has an unequal number of 'minus' and 'plus' lines, or
+    any of its lines is bad. A line is bad if an element-wise float comparison wasn't successful.
+    :param diff_lines: lines produced by `unified_diff`
     :return: list of bad lines with respect to their block of change
     """
     bad_lines = []
-    changes_block = []
+    diff_block = []
+    can_block_be_good = False
     while True:
         try:
-            first = next(diff_lines)
-            if first.startswith("@@"):
-                if len(changes_block) > 1:
-                    bad_lines.extend(changes_block)
-                changes_block = [first]
+            line = next(diff_lines)
+            # skip the diff header
+            if line.startswith("---"):
+                next(diff_lines)
                 continue
-            second = next(diff_lines)
+            if line.startswith("@@"):
+                bad_lines.extend(
+                    _get_bad_block_if_any(diff_block, can_block_be_good=can_block_be_good)
+                )
+                can_block_be_good = _can_block_be_good(line)
+                diff_block = []
+            diff_block.append(line)
         except StopIteration:
             break
-        if first.startswith("---"):
-            continue
-        if not are_floats_equal(*map(try_converting_to_float, (first, second))):
-            changes_block.extend((first, second))
-    # check if we have any remaining block
-    if len(changes_block) > 1:
-        bad_lines.extend(changes_block)
+    # do not forget to check the last diff_block
+    bad_lines.extend(_get_bad_block_if_any(diff_block, can_block_be_good=can_block_be_good))
     return bad_lines
 
 
@@ -293,7 +355,7 @@ def compare_inp_files(file_name1, file_name2):
 
     diff_lines = difflib.unified_diff(lf1, lf2, n=0)
 
-    bad_lines = parse_diff(diff_lines)
+    bad_lines = _parse_diff(diff_lines)
     if bad_lines:
         return f"Comparing {file_name1} to {file_name2} failed!\n{''.join(bad_lines)}"
 
