@@ -127,7 +127,7 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
         w_material.write_items()
 
         self.z88mat.write(f"{len(self.z88mat_rows)}\n")
-        self.z88mat.writelines(self.z88mat_rows)
+        self.z88mat.writelines(map(lambda x: "{} {} {}\n".format(*x), self.z88mat_rows))
 
         self.z88mat.close()
 
@@ -144,7 +144,7 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
         w_element2D.write_items()
 
         self.z88elp.write(f"{len(self.z88elp_rows)}\n")
-        self.z88elp.writelines(self.z88elp_rows)
+        self.z88elp.writelines(map(lambda x: "{} {} {}\n".format(*x), self.z88elp_rows))
 
         self.z88elp.close()
 
