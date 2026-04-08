@@ -1911,10 +1911,10 @@ bool CmdSketcherIntersection::isActive()
     return isCommandActive(getActiveGuiDocument());
 }
 
-// Helper function to get external geometry selection ==================================================================
+// Helper function to get external geometry selection
+// ==================================================================
 
-static Sketcher::SketchObject* getExternalSelection(std::vector<int>* sels = nullptr,
-                                                      bool force = false)
+static Sketcher::SketchObject* getExternalSelection(std::vector<int>* sels = nullptr, bool force = false)
 {
     auto doc = Gui::Application::Instance->editDocument();
     if (!doc) {
@@ -1931,8 +1931,7 @@ static Sketcher::SketchObject* getExternalSelection(std::vector<int>* sels = nul
     for (auto& sel : Gui::Selection().getCompleteSelection()) {
         int geoId;
         Sketcher::PointPos posId;
-        if (sel.pObject != sketch
-            || !sketch->geoIdFromShapeType(sel.SubName, geoId, posId)
+        if (sel.pObject != sketch || !sketch->geoIdFromShapeType(sel.SubName, geoId, posId)
             || geoId > Sketcher::GeoEnum::RefExt) {
             continue;
         }
@@ -1957,7 +1956,9 @@ CmdSketcherAttach::CmdSketcherAttach()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Attach geometry");
-    sToolTipText = QT_TR_NOOP("Attach a missing or detached external geometry to a new external geometry element");
+    sToolTipText = QT_TR_NOOP(
+        "Attach a missing or detached external geometry to a new external geometry element"
+    );
     sWhatsThis = "Sketcher_Attach";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_Attach";
@@ -1973,8 +1974,10 @@ void CmdSketcherAttach::activated(int iMsg)
     if (!sketch) {
         return;
     }
-    ActivateHandler(getActiveGuiDocument(),
-                    std::make_unique<DrawSketchHandlerExternal>(std::move(sels)));
+    ActivateHandler(
+        getActiveGuiDocument(),
+        std::make_unique<DrawSketchHandlerExternal>(std::move(sels))
+    );
 }
 
 bool CmdSketcherAttach::isActive()

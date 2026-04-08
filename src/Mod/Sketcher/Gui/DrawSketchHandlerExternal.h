@@ -249,9 +249,11 @@ public:
                     Gui::NotifyError(
                         sketchgui,
                         QT_TRANSLATE_NOOP("Notifications", "Error"),
-                        QT_TRANSLATE_NOOP("Notifications",
+                        QT_TRANSLATE_NOOP(
+                            "Notifications",
                             !attaching.empty() ? "Failed to attach external geometry"
-                                              : "Failed to add external geometry")
+                                               : "Failed to add external geometry"
+                        )
                     );
                     Gui::Selection().clearSelection();
                     abortCommand();
