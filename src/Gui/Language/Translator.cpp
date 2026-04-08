@@ -25,6 +25,7 @@
 #include <algorithm>
 #include <QApplication>
 #include <QDir>
+#include <QDirListing>
 #include <QKeyEvent>
 #include <QRegularExpression>
 #include <QStringList>
@@ -132,7 +133,7 @@ public:
     std::string activatedLanguage; /**< Active language */
     std::map<std::string, std::string> mapLanguageTopLevelDomain;
     TStringMap mapSupportedLocales;
-    std::list<QTranslator*> translators; /**< A list of all created translators */
+    std::vector<QTranslator*> translators; /**< A list of all created translators */
     QStringList paths;
 };
 }  // namespace Gui
@@ -266,14 +267,14 @@ Translator::~Translator()
     delete d;
 }
 
-TStringList Translator::supportedLanguages() const
+TLanguageList Translator::supportedLanguages() const
 {
-    TStringList languages;
-    TStringMap locales = supportedLocales();
+    TLanguageList languages;
+    const TStringMap locales = supportedLocales();
+    languages.reserve(locales.size());
     for (const auto& it : locales) {
-        languages.push_back(it.first);
+        languages.emplace_back(it.first);
     }
-
     return languages;
 }
 
@@ -283,15 +284,21 @@ TStringMap Translator::supportedLocales() const
         return d->mapSupportedLocales;
     }
 
-    // List all .qm files
-    for (const auto& domainMap : d->mapLanguageTopLevelDomain) {
-        for (const auto& directoryName : std::as_const(d->paths)) {
-            QDir dir(directoryName);
-            QString filter = QStringLiteral("*_%1.qm").arg(QString::fromStdString(domainMap.second));
-            QStringList fileNames = dir.entryList(QStringList(filter), QDir::Files, QDir::Name);
-            if (!fileNames.isEmpty()) {
-                d->mapSupportedLocales[domainMap.first] = domainMap.second;
-                break;
+    // List all *_*.qm files, and if any match a known locale,
+    // report that locale as supported.
+    const QStringList qmFilter(QStringLiteral("*_*.qm"));
+    for (const auto& directoryName : std::as_const(d->paths)) {
+        const QDir dir(directoryName);
+        const QStringList fileNames = dir.entryList(qmFilter, QDir::Files);
+        for (const auto& file : fileNames) {
+            const auto lang
+                = QStringView(file).mid(file.lastIndexOf('_') + 1).chopped(sizeof(".qm") - 1);
+            for (const auto& domainMap : d->mapLanguageTopLevelDomain) {
+                if (lang == domainMap.second) {
+                    // Emplace only inserts if no element exists at the key yet,
+                    // avoiding string copies here.
+                    d->mapSupportedLocales.emplace(domainMap.first, domainMap.second);
+                }
             }
         }
     }
@@ -303,7 +310,7 @@ void Translator::activateLanguage(const char* lang)
 {
     removeTranslators();  // remove the currently installed translators
     d->activatedLanguage = lang;
-    TStringList languages = supportedLanguages();
+    const TLanguageList languages = supportedLanguages();
     if (std::ranges::find(languages, lang) != languages.end()) {
         refresh();
     }
@@ -410,14 +417,13 @@ void Translator::addPath(const QString& path)
 
 void Translator::installQMFiles(const QDir& dir, const char* locale)
 {
-    QString filter = QStringLiteral("*_%1.qm").arg(QLatin1String(locale));
-    QStringList fileNames = dir.entryList(QStringList(filter), QDir::Files, QDir::Name);
+    const QString filter = QStringLiteral("*_%1.qm").arg(QLatin1String(locale));
+    const QStringList fileNames = dir.entryList(QStringList(filter), QDir::Files, QDir::Name);
+    d->translators.reserve(fileNames.size());
     for (const auto& it : fileNames) {
         bool ok = false;
-        for (std::list<QTranslator*>::const_iterator tt = d->translators.begin();
-             tt != d->translators.end();
-             ++tt) {
-            if ((*tt)->objectName() == it) {
+        for (const auto translator : d->translators) {
+            if (translator->objectName() == it) {
                 ok = true;  // this file is already installed
                 break;
             }
