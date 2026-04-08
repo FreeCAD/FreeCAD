@@ -129,7 +129,6 @@
         <file>icons/BIM_ResetCloneColors.svg</file>
         <file>icons/BIM_Rewire.svg</file>
         <file>icons/BIM_Slab.svg</file>
-        <file>icons/BIM_TogglePanels.svg</file>
         <file>icons/BIM_Trash.svg</file>
         <file>icons/BIM_Tutorial.svg</file>
         <file>icons/BIM_Unclone.svg</file>
@@ -202,7 +201,7 @@
         <file>translations/Arch_sl.qm</file>
         <file>translations/Arch_sr-CS.qm</file>
         <file>translations/Arch_sr.qm</file>
-        <file>translations/Arch_sv-SE.qm</file>
+        <file>translations/Arch_sv.qm</file>
         <file>translations/Arch_tr.qm</file>
         <file>translations/Arch_uk.qm</file>
         <file>translations/Arch_val-ES.qm</file>
@@ -212,6 +211,7 @@
         <file>translations/Arch_ms.qm</file>
         <file>translations/Arch_ta.qm</file>
         <file>translations/Arch_ga-IE.qm</file>
+        <file>translations/Arch_sv.qm</file>
         <file>ui/ArchMaterial.ui</file>
         <file>ui/ArchMultiMaterial.ui</file>
         <file>ui/ArchNest.ui</file>

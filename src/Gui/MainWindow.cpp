@@ -422,9 +422,32 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     d->sizeLabel = new DimensionWidget(statusBar());
 
     statusBar()->addWidget(d->actionLabel, 1);
+
     QProgressBar* progressBar = Gui::SequencerBar::instance()->getProgressBar(statusBar());
     statusBar()->addPermanentWidget(progressBar, 0);
     statusBar()->addPermanentWidget(d->sizeLabel, 0);
+
+    // Toggle bottom panels button. Must be added after progressBar and sizeLabel so it appears as
+    // the rightmost permanent widget.
+    auto* toggleBottomPanelsButton = new QToolButton(statusBar());
+    toggleBottomPanelsButton->setObjectName(QStringLiteral("toggleBottomPanelsButton"));
+    int iconSize = App::GetApplication()
+                       .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
+                       ->GetInt("ToolbarIconSize", 24);
+    toggleBottomPanelsButton->setIconSize(QSize(iconSize, iconSize));
+    toggleBottomPanelsButton->setIcon(BitmapFactory().pixmap("Std_ToggleBottomPanels"));
+    toggleBottomPanelsButton->setCheckable(true);
+    // Starts checked because FreeCAD shows bottom panels by default on first launch. On subsequent
+    // launches the command restores the persisted state, but that happens after this point, so
+    // the button state is always an approximation until the first toggle.
+    toggleBottomPanelsButton->setChecked(true);
+    //: Tooltip for the status bar button that toggles bottom dock panels
+    toggleBottomPanelsButton->setToolTip(tr("Toggles the bottom dock panels"));
+    toggleBottomPanelsButton->setAutoRaise(true);
+    connect(toggleBottomPanelsButton, &QToolButton::clicked, this, []() {
+        Application::Instance->commandManager().runCommandByName("Std_ToggleBottomPanels");
+    });
+    statusBar()->addPermanentWidget(toggleBottomPanelsButton);
 
     // hint label
     d->hintLabel = new InputHintWidget(statusBar());

@@ -26,8 +26,8 @@
       <translation>Position</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="376"/>
       <location filename="../propertyeditor/PropertyItem.cpp" line="2989"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="376"/>
       <source>Enum</source>
       <translation>Énumération</translation>
     </message>
@@ -811,7 +811,7 @@ entraîner une perte de données !</translation>
     <message>
       <location filename="../Clipping.ui" line="155"/>
       <source>Custom Clipping Direction</source>
-      <translation>Personnaliser la direction du rognage</translation>
+      <translation>Personnaliser la direction de la coupe</translation>
     </message>
     <message>
       <location filename="../Clipping.ui" line="190"/>
@@ -3329,7 +3329,7 @@ en plus de la barre de couleur</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="132"/>
       <source>Using undo/redo in documents</source>
-      <translation>Utilisation des fonctions Annuler/Rétablir dans les documents</translation>
+      <translation>Utiliser les fonctions Annuler/Rétablir dans les documents</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="165"/>
@@ -4099,14 +4099,14 @@ La valeur est le diamètre de la sphère qui rentre à l'écran.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="856"/>
       <source>Clarify Selection</source>
-      <translation>Définir une sélection</translation>
+      <translation>Choisir une sélection</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="862"/>
       <source>Enable Clarify Selection on long press of left mouse button.
 When enabled, holding left mouse button shows a menu to select overlapping objects.
 Some navigation styles (OpenInventor, Gesture, OpenSCAD) require Ctrl+LMB instead of just LMB.</source>
-      <translation>Activer « Définir la sélection » en appuyant longuement sur le bouton gauche de la souris.
+      <translation>Activer « Choisir une sélection » en appuyant longuement sur le bouton gauche de la souris.
 Lorsque cette option est activée, maintenir le bouton gauche de la souris enfoncé affiche un menu permettant de sélectionner les
 objets qui se chevauchent.
 Certains styles de navigation (OpenInventor, Gesture, OpenSCAD) nécessitent Ctrl + bouton gauche de la souris au lieu de
@@ -4115,12 +4115,12 @@ simplement bouton gauche de la souris.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="867"/>
       <source>Enable long press clarify selection</source>
-      <translation>Activer la sélection par une pression longue</translation>
+      <translation>Activer « Choisir une sélection » par une pression longue</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="883"/>
       <source>Time in seconds to hold left mouse button before showing clarify selection menu</source>
-      <translation>Temps en secondes du maintien du bouton gauche de la souris enfoncé avant d'afficher le menu « Définir la sélection »</translation>
+      <translation>Temps en secondes du maintien du bouton gauche de la souris enfoncé avant d'afficher le menu « Choisir une sélection »</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="886"/>
@@ -4130,7 +4130,7 @@ simplement bouton gauche de la souris.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="902"/>
       <source>Duration in seconds to hold left mouse button before clarify selection is triggered</source>
-      <translation>Durée en secondes du maintien du bouton gauche de la souris enfoncé avant que le menu « Définir la sélection » ne soit activé.</translation>
+      <translation>Durée en secondes du maintien du bouton gauche de la souris enfoncé avant que le menu « Choisir une sélection » ne soit activé.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="774"/>
@@ -5980,15 +5980,15 @@ Pg.Suiv/Pg.Préc du clavier</translation>
       <translation>Format PDF</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="673"/>
       <location filename="../GraphvizView.cpp" line="479"/>
+      <location filename="../CommandDoc.cpp" line="673"/>
       <source>Graphviz format</source>
       <translation>Format de Graphviz</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="676"/>
       <location filename="../GraphvizView.cpp" line="505"/>
       <location filename="../GraphvizView.cpp" line="607"/>
+      <location filename="../CommandDoc.cpp" line="676"/>
       <source>Export graph</source>
       <translation>Exporter un graphique</translation>
     </message>
@@ -6040,66 +6040,66 @@ Pg.Suiv/Pg.Préc du clavier</translation>
   <context>
     <name>Gui::LocationDialog</name>
     <message>
+      <location filename="../InputVector.cpp" line="104"/>
+      <location filename="../InputVector.cpp" line="118"/>
       <location filename="../InputVector.h" line="132"/>
       <location filename="../InputVector.h" line="155"/>
       <location filename="../InputVector.h" line="278"/>
       <location filename="../InputVector.h" line="301"/>
       <location filename="../InputVector.h" line="476"/>
       <location filename="../InputVector.h" line="490"/>
-      <location filename="../InputVector.cpp" line="104"/>
-      <location filename="../InputVector.cpp" line="118"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
+      <location filename="../InputVector.cpp" line="105"/>
+      <location filename="../InputVector.cpp" line="119"/>
       <location filename="../InputVector.h" line="133"/>
       <location filename="../InputVector.h" line="156"/>
       <location filename="../InputVector.h" line="279"/>
       <location filename="../InputVector.h" line="302"/>
       <location filename="../InputVector.h" line="477"/>
       <location filename="../InputVector.h" line="491"/>
-      <location filename="../InputVector.cpp" line="105"/>
-      <location filename="../InputVector.cpp" line="119"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
+      <location filename="../InputVector.cpp" line="106"/>
+      <location filename="../InputVector.cpp" line="120"/>
       <location filename="../InputVector.h" line="134"/>
       <location filename="../InputVector.h" line="157"/>
       <location filename="../InputVector.h" line="280"/>
       <location filename="../InputVector.h" line="303"/>
       <location filename="../InputVector.h" line="478"/>
       <location filename="../InputVector.h" line="492"/>
-      <location filename="../InputVector.cpp" line="106"/>
-      <location filename="../InputVector.cpp" line="120"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
+      <location filename="../InputVector.cpp" line="107"/>
+      <location filename="../InputVector.cpp" line="123"/>
       <location filename="../InputVector.h" line="135"/>
       <location filename="../InputVector.h" line="160"/>
       <location filename="../InputVector.h" line="281"/>
       <location filename="../InputVector.h" line="306"/>
       <location filename="../InputVector.h" line="479"/>
       <location filename="../InputVector.h" line="495"/>
-      <location filename="../InputVector.cpp" line="107"/>
-      <location filename="../InputVector.cpp" line="123"/>
       <source>User defined…</source>
       <translation>Défini par l'utilisateur…</translation>
     </message>
     <message>
+      <location filename="../InputVector.cpp" line="215"/>
       <location filename="../InputVector.h" line="241"/>
       <location filename="../InputVector.h" line="376"/>
       <location filename="../InputVector.h" line="565"/>
-      <location filename="../InputVector.cpp" line="215"/>
       <source>Wrong direction</source>
       <translation>Mauvaise direction</translation>
     </message>
     <message>
+      <location filename="../InputVector.cpp" line="216"/>
       <location filename="../InputVector.h" line="242"/>
       <location filename="../InputVector.h" line="377"/>
       <location filename="../InputVector.h" line="566"/>
-      <location filename="../InputVector.cpp" line="216"/>
       <source>Direction must not be the null vector</source>
       <translation>La direction ne peut pas être un vecteur nul</translation>
     </message>
@@ -7561,7 +7561,7 @@ en modifiant la propriété « label2 ».</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3779"/>
-      <location filename="../Tree.cpp" line="6373"/>
+      <location filename="../Tree.cpp" line="6375"/>
       <source>Rename</source>
       <translation>Renommer</translation>
     </message>
@@ -7581,12 +7581,12 @@ en modifiant la propriété « label2 ».</translation>
       <translation>Ouvrir l'emplacement du fichier</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6341"/>
+      <location filename="../Tree.cpp" line="6343"/>
       <source> (but must be executed)</source>
       <translation> (mais doit être exécuté)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6344"/>
+      <location filename="../Tree.cpp" line="6346"/>
       <source>%1, Internal name: %2</source>
       <translation>%1, nom interne : %2</translation>
     </message>
@@ -8613,11 +8613,11 @@ Choisissez "Interrompre" pour annuler.</translation>
     <message>
       <location filename="../Navigation/NavigationStyle.cpp" line="2137"/>
       <source>Clarify Selection</source>
-      <translation>Définir une sélection</translation>
+      <translation>Choisir une sélection</translation>
     </message>
     <message>
-      <location filename="../ViewProviderDragger.cpp" line="127"/>
       <location filename="../ViewProviderLink.cpp" line="3184"/>
+      <location filename="../ViewProviderDragger.cpp" line="127"/>
       <source>Transform</source>
       <translation>Transformer</translation>
     </message>
@@ -8730,12 +8730,12 @@ Choisissez "Interrompre" pour annuler.</translation>
       <translation>Impossible d'importer tous les liens</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="977"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="980"/>
       <source>Add property</source>
       <translation>Ajouter une propriété</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="978"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="981"/>
       <source>Failed to add property to '%1': %2</source>
       <translation>Impossible d'ajouter la propriété à "%1" : %2</translation>
     </message>
@@ -8746,8 +8746,8 @@ Choisissez "Interrompre" pour annuler.</translation>
       <translation>Le glisser/déposer a échoué</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="900"/>
       <location filename="../ViewProviderLink.cpp" line="2999"/>
+      <location filename="../MainWindow.cpp" line="900"/>
       <source>Apply to all</source>
       <translation>Appliquer à tout</translation>
     </message>
@@ -8859,8 +8859,8 @@ sera perdue.</translation>
       <translation>Activer/désactiver une superposition</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="2555"/>
       <location filename="../OverlayManager.cpp" line="1077"/>
+      <location filename="../OverlayWidgets.cpp" line="2555"/>
       <source>Toggle floating window</source>
       <translation>Activer/désactiver la fenêtre flottante</translation>
     </message>
@@ -9368,7 +9368,7 @@ manière récursive ?</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="568"/>
       <source>&amp;Merge Document</source>
-      <translation>&amp;Fusionner le document</translation>
+      <translation>&amp;Fusionner un document</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="570"/>
@@ -9379,7 +9379,7 @@ manière récursive ?</translation>
       <location filename="../CommandDoc.cpp" line="584"/>
       <location filename="../CommandDoc.cpp" line="596"/>
       <source>Merge document</source>
-      <translation>Fusionner le document</translation>
+      <translation>Fusionner un document</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="586"/>
@@ -9389,7 +9389,7 @@ manière récursive ?</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="597"/>
       <source>Cannot merge document with itself.</source>
-      <translation>Impossible de fusionner le document avec lui-même.</translation>
+      <translation>Il n'est pas possible de fusionner un document avec lui-même.</translation>
     </message>
   </context>
   <context>
@@ -9930,7 +9930,7 @@ manière récursive ?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3695"/>
       <source>&amp;4 Preselection</source>
-      <translation>&amp;4 Présélection</translation>
+      <translation>&amp;4 Présélectionner</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3696"/>
@@ -10206,7 +10206,7 @@ activée ou désactivée.</translation>
     <message>
       <location filename="../Workbench.cpp" line="592"/>
       <source>Standard &amp;Views</source>
-      <translation>&amp;Vues standard</translation>
+      <translation>&amp;Vues standards</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="593"/>
@@ -11278,7 +11278,7 @@ affichera cet écran de démarrage.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="344"/>
       <source>Activate overlay handling of docked panels</source>
-      <translation>Activer la gestion des superpositions des panneaux ancrés</translation>
+      <translation>Activer la gestion de la superposition des panneaux ancrés</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="347"/>
@@ -11979,7 +11979,7 @@ Mettre à zéro pour remplir l'espace.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="104"/>
       <source>Overlay style sheet</source>
-      <translation>Feuille de style superposée</translation>
+      <translation>Feuille de style de superposition</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="197"/>
@@ -12105,7 +12105,7 @@ activée ou désactivée.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="474"/>
       <source>Automatically pass through of the mouse cursor</source>
-      <translation>Passage automatique du curseur de la souris</translation>
+      <translation>Passer automatiquement les clics de la souris à travers</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="490"/>
@@ -12115,7 +12115,7 @@ activée ou désactivée.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="493"/>
       <source>Automatically pass through of the mouse wheel</source>
-      <translation>Passage automatique de la molette de la souris</translation>
+      <translation>Passer automatiquement les actions de la molette de la souris à travers</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="512"/>
@@ -13060,7 +13060,7 @@ Proceed?</source>
     <message>
       <location filename="../CommandFeat.cpp" line="77"/>
       <source>Random &amp;Color</source>
-      <translation>Couleur &amp;aléatoire</translation>
+      <translation>Appliquer une couleur &amp;aléatoire</translation>
     </message>
     <message>
       <location filename="../CommandFeat.cpp" line="78"/>
@@ -13714,7 +13714,7 @@ d'un simple dossier permettant d'organiser les objets dans un modèle.</translat
     <message>
       <location filename="../CommandView.cpp" line="1711"/>
       <source>Standard &amp;Views</source>
-      <translation>&amp;Vues standard</translation>
+      <translation>&amp;Vues standards</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1712"/>
@@ -14117,7 +14117,7 @@ d'un simple dossier permettant d'organiser les objets dans un modèle.</translat
     <message>
       <location filename="../CommandView.cpp" line="3859"/>
       <source>Toggle Overl&amp;ay for All Panels</source>
-      <translation>Activer/désactiver la &amp;superposition pour tous les panneaux</translation>
+      <translation>Activer/désactiver la &amp;superposition de tous les panneaux</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3860"/>
@@ -14130,7 +14130,7 @@ d'un simple dossier permettant d'organiser les objets dans un modèle.</translat
     <message>
       <location filename="../CommandView.cpp" line="3882"/>
       <source>Toggle Tra&amp;nsparent Panels</source>
-      <translation>Activer/désactiver la &amp;transparence pour tout</translation>
+      <translation>Activer/désactiver la &amp;transparence de tous les panneaux</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3883"/>
@@ -14237,7 +14237,7 @@ This makes the docked panel stay transparent at all times.</source>
     <message>
       <location filename="../CommandView.cpp" line="4103"/>
       <source>Overlay Docked Panel</source>
-      <translation>Activer/désactiver la superposition d'un panneau ancré</translation>
+      <translation>Superposition des panneaux ancrables</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="4104"/>
@@ -14569,14 +14569,14 @@ This makes the docked panel stay transparent at all times.</source>
     <message>
       <location filename="../CommandView.cpp" line="4229"/>
       <source>Clarify Selection</source>
-      <translation>Définir une sélection</translation>
+      <translation>Choisir un élément</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="4230"/>
       <source>Displays a context menu at the mouse cursor to select overlapping or obstructed geometry in the 3D view.
 </source>
-      <translation>Affiche un menu contextuel à l'emplacement du curseur de la souris pour sélectionner les éléments géométriques qui se
-chevauchent ou qui sont obstrués dans la vue 3D.</translation>
+      <translation>Affiche un menu contextuel à l'emplacement du curseur de la souris pour sélectionner les éléments géométriques qui se chevauchent ou qui
+sont obstrués dans la vue 3D.</translation>
     </message>
   </context>
   <context>

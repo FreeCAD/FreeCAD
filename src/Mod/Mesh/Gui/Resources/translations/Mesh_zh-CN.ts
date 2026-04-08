@@ -83,7 +83,7 @@
     <message>
       <location filename="../../Command.cpp" line="1384"/>
       <source>Decimate</source>
-      <translation>抽取</translation>
+      <translation>精简</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1385"/>
@@ -137,7 +137,7 @@
     <message>
       <location filename="../../Command.cpp" line="1313"/>
       <source>Evaluate Solid</source>
-      <translation>评估固体</translation>
+      <translation>评估实体</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1314"/>
@@ -160,7 +160,7 @@
     <message>
       <location filename="../../Command.cpp" line="1088"/>
       <source>Opens a dialog to analyze and repair a mesh</source>
-      <translation>打开一个对话框,分析并修复网格</translation>
+      <translation>打开一个对话框，分析并修复网格</translation>
     </message>
   </context>
   <context>
@@ -214,7 +214,7 @@
     <message>
       <location filename="../../Command.cpp" line="1582"/>
       <source>Fills holes in the mesh</source>
-      <translation>在网格中填充孔数</translation>
+      <translation>填充网格中的孔洞</translation>
     </message>
   </context>
   <context>
@@ -615,7 +615,7 @@
     <message>
       <location filename="../../Command.cpp" line="88"/>
       <source>Unifies the selected meshes</source>
-      <translation>统一选定的网格</translation>
+      <translation>合并选定的网格</translation>
     </message>
   </context>
   <context>
@@ -659,17 +659,17 @@
     <message>
       <location filename="../../Command.cpp" line="104"/>
       <source>Mesh union</source>
-      <translation>网格合并</translation>
+      <translation>网格并集</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="188"/>
       <source>Mesh difference</source>
-      <translation>网格差异</translation>
+      <translation>网格差集</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="274"/>
       <source>Mesh intersection</source>
-      <translation>网格交点</translation>
+      <translation>网格交集</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="378"/>
@@ -719,7 +719,7 @@
     <message>
       <location filename="../../DlgDecimating.cpp" line="166"/>
       <source>Mesh Decimating</source>
-      <translation>网格削减</translation>
+      <translation>网格精简</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="552"/>
@@ -878,7 +878,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="838"/>
       <source>Number of points</source>
-      <translation>点的数量</translation>
+      <translation>点数</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="754"/>
@@ -1402,7 +1402,7 @@ is used when writing a file in AMF format</source>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="257"/>
       <source>Two-side rendering</source>
-      <translation>双侧呈现</translation>
+      <translation>双面渲染</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="273"/>
@@ -1422,7 +1422,7 @@ is used when writing a file in AMF format</source>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="343"/>
       <source>Define normal per vertex</source>
-      <translation>定义每个常规顶点</translation>
+      <translation>定义每个顶点的法线</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="356"/>
@@ -2340,7 +2340,7 @@ Visit https://openscad.org/ to install it.</source>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
       <source>Boolean</source>
-      <translation>布尔值</translation>
+      <translation>布尔</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>

@@ -176,7 +176,6 @@ class BIMWorkbench(Workbench):
         ]
 
         self.utils = [
-            "BIM_TogglePanels",
             "BIM_Trash",
             "BIM_WPView",
             "Draft_SelectGroup",
