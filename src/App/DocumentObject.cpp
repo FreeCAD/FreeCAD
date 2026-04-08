@@ -135,7 +135,7 @@ void DocumentObject::printInvalidLinks() const
         }
 
         Base::Console().warning(
-            "%s: %s out of scope links to:\n%s", 
+            "%s: %s out of scope links to:\n%s\n", 
             getTypeId().getName(), getFullName(), objnames.c_str());
     }
     catch (const Base::Exception& e) {
