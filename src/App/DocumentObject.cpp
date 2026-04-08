@@ -100,8 +100,6 @@ DocumentObject::~DocumentObject()
 
 void DocumentObject::printInvalidLinks() const
 {
-    constexpr int max_visible = 5;
-
     try {
         // Get objects that have invalid link scope, and print their names.
         // Truncate the invalid object list name strings for readability, if they happen to be very
@@ -117,18 +115,8 @@ void DocumentObject::printInvalidLinks() const
             objnames += obj->getFullName();
             objnames += "\n";
             for (auto& scope : obj->getParents()) {
-                if (scopenames.length() > max_visible) {
-                    scopenames += "... ";
-                    break;
-                }
-
                 scopenames += scope.first->getFullName();
                 scopenames += "\n";
-            }
-
-            if (objnames.length() > max_visible) {
-                objnames += "... ";
-                break;
             }
         }
 
