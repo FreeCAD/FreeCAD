@@ -24,6 +24,8 @@
 
 #pragma once
 
+#include <sstream>
+
 #include <App/Datums.h>
 #include <Mod/Part/App/DatumFeature.h>
 
@@ -133,6 +135,14 @@ public:
     DrawSketchHandlerExternal(bool alwaysReference, bool intersection)
         : alwaysReference {alwaysReference}
         , intersection {intersection}
+        , attaching {}
+    {}
+
+    // Constructor for attaching/reassigning broken external geometry
+    explicit DrawSketchHandlerExternal(std::vector<int>&& geoIds)
+        : alwaysReference {false}
+        , intersection {false}
+        , attaching {std::move(geoIds)}
     {}
     ~DrawSketchHandlerExternal() override
     {
@@ -181,15 +191,38 @@ public:
                 || (subName.size() > 6 && subName.substr(0, 6) == "Vertex")
                 || (subName.size() > 4 && subName.substr(0, 4) == "Face")) {
                 try {
-                    openCommand(QT_TRANSLATE_NOOP("Command", "Add external geometry"));
-                    Gui::cmdAppObjectArgs(
-                        sketchgui->getObject(),
-                        "addExternal(\"%s\",\"%s\", %s, %s)",
-                        msg.pObjectName,
-                        msg.pSubName,
-                        alwaysReference || isConstructionMode() ? "False" : "True",
-                        intersection ? "True" : "False"
-                    );
+                    if (!attaching.empty()) {
+                        // Attach/reassign mode: attach selected external geometries to new reference
+                        openCommand(QT_TRANSLATE_NOOP("Command", "Attach external geometry"));
+                        std::ostringstream ss;
+                        ss << '[';
+                        for (size_t i = 0; i < attaching.size(); ++i) {
+                            if (i > 0) {
+                                ss << ',';
+                            }
+                            ss << attaching[i];
+                        }
+                        ss << ']';
+                        Gui::cmdAppObjectArgs(
+                            sketchgui->getObject(),
+                            "attachExternal(%s, App.ActiveDocument.getObject(\"%s\"), \"%s\")",
+                            ss.str().c_str(),
+                            msg.pObjectName,
+                            msg.pSubName
+                        );
+                    }
+                    else {
+                        // Normal mode: add new external geometry
+                        openCommand(QT_TRANSLATE_NOOP("Command", "Add external geometry"));
+                        Gui::cmdAppObjectArgs(
+                            sketchgui->getObject(),
+                            "addExternal(\"%s\",\"%s\", %s, %s)",
+                            msg.pObjectName,
+                            msg.pSubName,
+                            alwaysReference || isConstructionMode() ? "False" : "True",
+                            intersection ? "True" : "False"
+                        );
+                    }
 
                     commitCommand();
 
@@ -201,6 +234,12 @@ public:
                     tryAutoRecomputeIfNotSolve(sketchgui->getObject<Sketcher::SketchObject>());
 
                     Gui::Selection().clearSelection();
+
+                    // If we were attaching, exit the handler after one selection
+                    if (!attaching.empty()) {
+                        sketchgui->purgeHandler();
+                    }
+
                     /* this is ok not to call to purgeHandler
                      * in continuous creation mode because the
                      * handler is destroyed by the quit() method on pressing the
@@ -210,7 +249,9 @@ public:
                     Gui::NotifyError(
                         sketchgui,
                         QT_TRANSLATE_NOOP("Notifications", "Error"),
-                        QT_TRANSLATE_NOOP("Notifications", "Failed to add external geometry")
+                        QT_TRANSLATE_NOOP("Notifications",
+                            !attaching.empty() ? "Failed to attach external geometry"
+                                              : "Failed to add external geometry")
                     );
                     Gui::Selection().clearSelection();
                     abortCommand();
@@ -239,6 +280,9 @@ private:
 
     QString getCrosshairCursorSVGName() const override
     {
+        if (!attaching.empty()) {
+            return QStringLiteral("Sketcher_Pointer_Attaching");
+        }
         if (intersection) {
             return QStringLiteral("Sketcher_Pointer_External_Intersection");
         }
@@ -254,6 +298,7 @@ private:
 
     bool alwaysReference;
     bool intersection;
+    std::vector<int> attaching;  // GeoIds to attach/reassign
 
 public:
     std::list<Gui::InputHint> getToolHints() const override

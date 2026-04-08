@@ -1800,6 +1800,7 @@ public:
 
         addCommand("Sketcher_Projection");
         addCommand("Sketcher_Intersection");
+        addCommand("Sketcher_Attach");
     }
 
     void updateAction(int mode) override
@@ -1910,6 +1911,77 @@ bool CmdSketcherIntersection::isActive()
     return isCommandActive(getActiveGuiDocument());
 }
 
+// Helper function to get external geometry selection ==================================================================
+
+static Sketcher::SketchObject* getExternalSelection(std::vector<int>* sels = nullptr,
+                                                      bool force = false)
+{
+    auto doc = Gui::Application::Instance->editDocument();
+    if (!doc) {
+        return nullptr;
+    }
+    auto sketchgui = dynamic_cast<ViewProviderSketch*>(doc->getInEdit());
+    if (!sketchgui) {
+        return nullptr;
+    }
+    auto sketch = sketchgui->getObject<Sketcher::SketchObject>();
+    if (!sketch) {
+        return nullptr;
+    }
+    for (auto& sel : Gui::Selection().getCompleteSelection()) {
+        int geoId;
+        Sketcher::PointPos posId;
+        if (sel.pObject != sketch
+            || !sketch->geoIdFromShapeType(sel.SubName, geoId, posId)
+            || geoId > Sketcher::GeoEnum::RefExt) {
+            continue;
+        }
+        if (!sels) {
+            return sketch;
+        }
+        sels->push_back(geoId);
+    }
+    if (!force && (!sels || sels->empty())) {
+        return nullptr;
+    }
+    return sketch;
+}
+
+// Externals - Attach geometry ==================================================================
+
+DEF_STD_CMD_A(CmdSketcherAttach)
+
+CmdSketcherAttach::CmdSketcherAttach()
+    : Command("Sketcher_Attach")
+{
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("Attach geometry");
+    sToolTipText = QT_TR_NOOP("Attach a missing or detached external geometry to a new external geometry element");
+    sWhatsThis = "Sketcher_Attach";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_Attach";
+    sAccel = "X, A";
+    eType = ForEdit;
+}
+
+void CmdSketcherAttach::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    std::vector<int> sels;
+    auto sketch = getExternalSelection(&sels);
+    if (!sketch) {
+        return;
+    }
+    ActivateHandler(getActiveGuiDocument(),
+                    std::make_unique<DrawSketchHandlerExternal>(std::move(sels)));
+}
+
+bool CmdSketcherAttach::isActive()
+{
+    return getExternalSelection() != nullptr;
+}
+
 // ======================================================================================
 // Carbon copy =============================================
 
@@ -1984,6 +2056,7 @@ void CreateSketcherCommandsCreateGeo()
     rcCmdMgr.addCommand(new CmdSketcherSplit());
     rcCmdMgr.addCommand(new CmdSketcherProjection());
     rcCmdMgr.addCommand(new CmdSketcherIntersection());
+    rcCmdMgr.addCommand(new CmdSketcherAttach());
     rcCmdMgr.addCommand(new CmdSketcherCarbonCopy());
 
     // Group command must be added after its subcommands.

@@ -364,6 +364,23 @@ class SketchObject(Part2DObject):
         """
         ...
 
+    def attachExternal(self, geoIds: List[int], obj, subName: str, /) -> None:
+        """
+        Attach broken or detached external geometries to a new external reference.
+
+        attachExternal(geoIds:List[int], obj:DocumentObject, subName:str)
+
+            Args:
+                geoIds: A list of geometry IDs (negative for external) to reattach.
+                obj: The document object to reference.
+                subName: The name of the sub-element to link to.
+
+            This method allows you to reassign broken external geometries to a new
+            external reference while preserving all constraints attached to those
+            geometries.
+        """
+        ...
+
     @overload
     def delConstraintOnPoint(self, vertexId: int, /) -> None: ...
     @overload

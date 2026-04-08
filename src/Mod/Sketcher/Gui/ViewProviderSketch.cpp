@@ -4798,6 +4798,7 @@ void ViewProviderSketch::generateContextMenu()
     int selectedBsplineKnots = 0;
     int selectedOrigin = 0;
     int selectedEndPoints = 0;
+    int selectedExternalEdges = 0;
     bool onlyOrigin = false;
 
     Gui::MenuItem menu;
@@ -4818,6 +4819,10 @@ void ViewProviderSketch::generateContextMenu()
                 const Part::Geometry* geo = getSketchObject()->getGeometry(geoId);
                 if (name.substr(0, 4) == "Edge" || name.substr(0, 12) == "ExternalEdge") {
                     ++selectedEdges;
+
+                    if (name.substr(0, 12) == "ExternalEdge") {
+                        ++selectedExternalEdges;
+                    }
 
                     if (geoId >= 0) {
                         if (isLineSegment(*geo)) {
@@ -4991,8 +4996,15 @@ void ViewProviderSketch::generateContextMenu()
         if (selectedPoints != 0 || selectedEdges != 0) {
             menu << "Separator"
                  << "Sketcher_ToggleConstruction"
-                 << "Separator"
-                 << "Sketcher_Translate"
+                 << "Separator";
+
+            // Add "Attach geometry" if external edges are selected
+            if (selectedExternalEdges > 0) {
+                menu << "Sketcher_Attach"
+                     << "Separator";
+            }
+
+            menu << "Sketcher_Translate"
                  << "Sketcher_Rotate"
                  << "Sketcher_Scale"
                  << "Sketcher_Offset"
@@ -5033,6 +5045,7 @@ void ViewProviderSketch::generateContextMenu()
              << "Separator"
              << "Sketcher_Projection"
              << "Sketcher_Intersection"
+             << "Sketcher_Attach"
              << "Separator"
              << "Sketcher_CompDimensionTools"
              << "Sketcher_CompConstrainTools"

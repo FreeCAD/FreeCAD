@@ -721,6 +721,66 @@ PyObject* SketchObjectPy::delExternals(PyObject* args)
     throw Py::TypeError(error);
 }
 
+PyObject* SketchObjectPy::attachExternal(PyObject* args)
+{
+    PyObject* pcObj;
+    PyObject* pObjRef;
+    char* SubName = nullptr;
+
+    if (!PyArg_ParseTuple(args, "OOs", &pcObj, &pObjRef, &SubName)) {
+        return nullptr;
+    }
+
+    // Parse the list of GeoIds to attach
+    std::vector<int> geoIds;
+    if (PyObject_TypeCheck(pcObj, &(PyList_Type)) || PyObject_TypeCheck(pcObj, &(PyTuple_Type))) {
+        Py::Sequence list(pcObj);
+        for (const auto& item : list) {
+            if (!PyLong_Check(item.ptr())) {
+                throw Py::TypeError("first argument must be a list of int (GeoIds)");
+            }
+            geoIds.push_back(PyLong_AsLong(item.ptr()));
+        }
+    }
+    else {
+        throw Py::TypeError("first argument must be a list of GeoIds");
+    }
+
+    // Get the target object
+    Sketcher::SketchObject* skObj = this->getSketchObjectPtr();
+
+    // Extract DocumentObject from Python object
+    App::DocumentObject* Obj = nullptr;
+    if (PyObject_TypeCheck(pObjRef, &(App::DocumentObjectPy::Type))) {
+        Obj = static_cast<App::DocumentObjectPy*>(pObjRef)->getDocumentObjectPtr();
+    }
+    else {
+        PyErr_SetString(PyExc_TypeError, "second argument must be a DocumentObject");
+        return nullptr;
+    }
+
+    if (!Obj) {
+        PyErr_SetString(PyExc_ValueError, "target object does not exist");
+        return nullptr;
+    }
+
+    // Check if this type of external geometry is allowed
+    if (!skObj->isExternalAllowed(Obj->getDocument(), Obj)) {
+        std::stringstream str;
+        str << Obj->getNameInDocument() << " is not allowed as external geometry of this sketch";
+        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        return nullptr;
+    }
+
+    // Attach the external geometries
+    if (skObj->attachExternal(geoIds, Obj, SubName) < 0) {
+        PyErr_SetString(PyExc_RuntimeError, "Failed to attach external geometry element");
+        return nullptr;
+    }
+
+    Py_Return;
+}
+
 PyObject* SketchObjectPy::delConstraintOnPoint(PyObject* args)
 {
     int Index, pos = -1;

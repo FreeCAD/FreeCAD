@@ -855,6 +855,27 @@ void ElementView::contextMenuEvent(QContextMenuEvent* event)
                  doToggleConstruction,
                  true)
 
+    // Add "Attach geometry" if external geometry is selected
+    bool hasExternalElement = false;
+    for (const auto* item : items) {
+        if (const ElementItem* elemItem = static_cast<const ElementItem*>(item)) {
+            if (elemItem->State == ElementItem::GeometryState::External) {
+                hasExternalElement = true;
+                break;
+            }
+        }
+    }
+
+    if (hasExternalElement) {
+        auto attachAction = menu.addAction(
+            QIcon(QString::fromLatin1(":/icons/Sketcher_Attach.svg")),
+            tr("Attach geometry"),
+            []() {
+                Gui::Command::doCommand(Gui::Command::Gui, "Gui.runCommand('Sketcher_Attach')");
+            });
+        attachAction->setEnabled(!items.isEmpty());
+    }
+
     menu.addSeparator();
 
     CONTEXT_ITEM("Sketcher_SelectConstraints",
