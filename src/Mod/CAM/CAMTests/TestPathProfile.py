@@ -295,6 +295,12 @@ class TestPathOpenProfile(PathTestBase):
                     # Both vertices at top Z level - this is a top edge
                     edges_at_origin.append(f"Edge{i+1}")
 
+        # Save triangle geometry for test assertions
+        cls.triangle_part = triangle_part
+        cls.triangle_edges = edges_at_origin
+        cls.triangle_base = triangle_base
+        cls.triangle_height = triangle_height
+
         # Create profile operation for the two edges
         cls.profile = PathProfile.Create("TriangleProfile", parentJob=job)
         cls.profile.Base = [(triangle_part, edges_at_origin)]
@@ -304,6 +310,7 @@ class TestPathOpenProfile(PathTestBase):
         # Set operation properties
         cls.profile.Direction = "CCW"
         cls.profile.Side = "Outside"
+        cls.profile.JoinType = "Round"
 
         # Set depth properties for open edge profiling
         # Clear expressions first, then set values
@@ -349,33 +356,64 @@ class TestPathOpenProfile(PathTestBase):
 
     def test02(self):
         """test02() Recompute and verify gcode moves for triangle profile."""
+        import math
+        import Path.Base.Language as PathLanguage
 
         # Perform recompute to generate the path
         self.doc.recompute()
 
-        # Get the gcode moves (excluding rapids)
-        moves = getGcodeMoves(self.profile.Path.Commands, includeRapids=False)
-        operationMoves = ";  ".join(moves)
-        # FreeCAD.Console.PrintMessage(f"test02_moves: {operationMoves}\n")
+        # Process non-rapid move commands and calculate lengths
+        move_lengths = []
+        last = FreeCAD.Vector(0.0, 0.0, 0.0)
 
-        # Expected moves for profiling two edges of triangle
-        expected_moves = (
-            "G1 X7.63 Y30.79 Z0.0;  G1 X-2.37 Y0.79 Z0.0;  G1 X-2.46 Y0.43 Z0.0;  "
-            "G1 X-2.5 Y0.0 Z0.0;  G1 X-2.46 Y-0.43 Z0.0;  G1 X-2.35 Y-0.86 Z0.0;  "
-            "G1 X-2.17 Y-1.25 Z0.0;  G1 X-1.92 Y-1.61 Z0.0;  G1 X-1.61 Y-1.92 Z0.0;  "
-            "G1 X-1.25 Y-2.17 Z0.0;  G1 X-0.86 Y-2.35 Z0.0;  G1 X-0.43 Y-2.46 Z0.0;  "
-            "G1 X0.0 Y-2.5 Z0.0;  G1 X20.0 Y-2.5 Z0.0"
+        for cmd in self.profile.Path.Commands:
+            instr = PathLanguage.Maneuver.InstructionFromCommand(cmd, last)
+            if instr.isMove() and not instr.isRapid() and last.z == instr.positionEnd().z:
+                length = instr.pathLength()
+                move_lengths.append(length)
+            last = instr.positionEnd()
+
+        # Check expected move count: 2 offset triangle legs and an arc between
+        self.assertGreater(len(move_lengths), 2, "Should have at least 3 moves")
+
+        # Check lengths of leg moves
+        leg_length = math.hypot(self.triangle_base / 2.0, self.triangle_height)
+        expected_straight_total = leg_length + self.triangle_base
+
+        first_move = move_lengths[0]
+        last_move = move_lengths[-1]
+        straight_total = first_move + last_move
+
+        self.assertAlmostEqual(
+            straight_total,
+            expected_straight_total,
+            delta=expected_straight_total * 0.01,
+            msg=f"Straight segments ({straight_total:.2f}) should equal triangle legs ({expected_straight_total:.2f})",
         )
 
-        self.assertTrue(
-            expected_moves == operationMoves,
-            f"expected_moves: {expected_moves}\noperationMoves: {operationMoves}",
-        )
+        # Check lengths of arc moves
+        arc_moves = move_lengths[1:-1]
+        arc_total = sum(arc_moves)
 
-        # # Save the document to /tmp
-        # filepath = "/tmp/TestPathOpenProfile.FCStd"
-        # self.doc.saveAs(filepath)
-        # FreeCAD.Console.PrintMessage(f"test02: Document saved to {filepath}\n")
+        # Calculate expected arc angle and length
+        left_leg = FreeCAD.Vector(self.triangle_base / 2.0, self.triangle_height, 0).normalize()
+        base = FreeCAD.Vector(self.triangle_base, 0, 0).normalize()
+        left_normal = FreeCAD.Vector(-left_leg.y, left_leg.x, 0)
+        base_normal = FreeCAD.Vector(base.y, -base.x, 0)
+        dot_product = left_normal.dot(base_normal)
+        dot_product = max(-1.0, min(1.0, dot_product))
+        arc_angle = math.acos(dot_product)
+
+        tool_radius = self.profile.OpToolDiameter.Value / 2.0
+        expected_arc_length = tool_radius * arc_angle
+
+        # Assert: arc segment total ≈ expected arc length
+        self.assertAlmostEqual(
+            arc_total,
+            expected_arc_length,
+            delta=expected_arc_length * 0.01,
+            msg=f"Arc length ({arc_total:.2f}) should equal radius × angle ({expected_arc_length:.2f})",
+        )
 
 
 def _addViewProvider(profileOp):

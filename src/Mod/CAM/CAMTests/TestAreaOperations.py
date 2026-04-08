@@ -5,7 +5,7 @@ These tests directly verify Area boolean and offset operations work correctly.
 Created for Clipper1 to Clipper2 migration - provides safety net for changes.
 
 NOTE: Only tests methods that are exposed to Python via pybind11.
-C++-only methods (Xor, Clip, OffsetWithClipper, UniteCurves) are not tested here.
+C++-only methods (Xor, Clip, OffsetWithClipper) are not tested here.
 """
 
 import unittest

@@ -34,6 +34,9 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <cmath>
 #include "kurve/geometry.h"
 
+namespace heeks
+{
+
 class Point
 {
 public:
@@ -127,3 +130,5 @@ public:
 };
 
 const Point operator*(const double& d, const Point& p);
+
+}  // namespace heeks

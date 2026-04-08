@@ -2955,6 +2955,7 @@ void Application::initConfig(int argc, char ** argv)
     mConfig["SMESH_VERSION"] = SMESH_VERSION_STR;
 #endif
     mConfig["XERCESC_VERSION"] = fcXercescVersion;
+    mConfig["CLIPPER2_VERSION"] = fcClipper2Version;
 
 
     logStatus();
