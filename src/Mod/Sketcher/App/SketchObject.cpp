@@ -1894,14 +1894,15 @@ App::ElementNamePair SketchObject::getElementName(
     index.appendToStringBuffer(ret.oldName);
     if (auto realName = convertInternalName(ret.oldName.c_str())) {
         Data::MappedElement mappedElement;
-        if (mapped) {
-            mappedElement = InternalShape.getShape().getElementName(name);
+        const Part::TopoShape internalShape = InternalShape.getShape();
+        if (mapped) {            
+            mappedElement = internalShape.getElementName(name);
         }
         else if (type == ElementNameType::Export) {
-            ret.newName = getExportElementName(InternalShape.getShape(), realName).newName;
+            ret.newName = getExportElementName(internalShape, realName).newName;
         }
         else {
-            mappedElement = InternalShape.getShape().getElementName(realName);
+            mappedElement = internalShape.getElementName(realName);
         }
 
         if (mapped || type != ElementNameType::Export) {
