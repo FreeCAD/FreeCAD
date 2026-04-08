@@ -809,3 +809,29 @@ std::vector<App::DocumentObject*> getAssemblyComponents(const AssemblyObject* as
 }
 
 }  // namespace Assembly
+
+
+Base::Rotation Assembly::cameraAlignedRotation(const Base::Vector3d& cameraViewDir)
+{
+    Base::Vector3d zAxis = cameraViewDir;
+    zAxis.Normalize();
+    Base::Vector3d worldUp(0, 0, 1);
+    if (std::abs(zAxis.Dot(worldUp)) > 0.99) {
+        worldUp = Base::Vector3d(0, 1, 0);
+    }
+    Base::Vector3d xAxis = worldUp.Cross(zAxis);
+    xAxis.Normalize();
+    Base::Vector3d yAxis = zAxis.Cross(xAxis);
+
+    Base::Matrix4D mat;
+    mat[0][0] = xAxis.x;
+    mat[0][1] = yAxis.x;
+    mat[0][2] = zAxis.x;
+    mat[1][0] = xAxis.y;
+    mat[1][1] = yAxis.y;
+    mat[1][2] = zAxis.y;
+    mat[2][0] = xAxis.z;
+    mat[2][1] = yAxis.z;
+    mat[2][2] = zAxis.z;
+    return Base::Rotation(mat);
+}

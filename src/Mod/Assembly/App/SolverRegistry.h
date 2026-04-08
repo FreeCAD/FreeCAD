@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 /****************************************************************************
  *                                                                          *
- *   Copyright (c) 2023 Ondsel <development@ondsel.com>                     *
+ *   Copyright (c) 2026 Jacob Oursland <jacob.oursland[at]gmail.com>        *
  *                                                                          *
  *   This file is part of FreeCAD.                                          *
  *                                                                          *
@@ -21,44 +21,55 @@
  *                                                                          *
  ***************************************************************************/
 
+#pragma once
 
-#include <Base/Interpreter.h>
-#include <Base/Tools.h>
-
-#include "SolverRegistry.h"
-
+#include <functional>
+#include <memory>
+#include <string>
+#include <vector>
 
 namespace Assembly
 {
-class Module: public Py::ExtensionModule<Module>
-{
-public:
-    Module()
-        : Py::ExtensionModule<Module>("AssemblyApp")
-    {
-        add_varargs_method(
-            "getAvailableSolvers",
-            &Module::getAvailableSolvers,
-            "getAvailableSolvers() -- Returns a list of registered solver backend names."
-        );
-        initialize("This module is the Assembly module.");  // register with Python
-    }
-
-private:
-    Py::Object getAvailableSolvers(const Py::Tuple& /*args*/)
-    {
-        auto solvers = Solver::SolverRegistry::instance().getAvailableSolvers();
-        Py::List result;
-        for (const auto& name : solvers) {
-            result.append(Py::String(name));
-        }
-        return result;
-    }
-};
-
-PyObject* initModule()
-{
-    return Base::Interpreter().addModule(new Module);
+class AssemblyObject;
 }
 
-}  // namespace Assembly
+namespace Assembly::Solver
+{
+
+class AssemblySolver;
+
+/// Registry of available solver backends.
+///
+/// Built-in solvers (Ondsel, Chrono) self-register during module init.
+/// Future Python-based solvers can register via AssemblyApp.registerSolver().
+class SolverRegistry
+{
+public:
+    using FactoryFn = std::function<std::shared_ptr<AssemblySolver>(AssemblyObject*)>;
+
+    static SolverRegistry& instance();
+
+    /// Register a solver backend by name.  First registered becomes the default.
+    void registerSolver(const std::string& name, FactoryFn factory);
+
+    /// Create a solver by name.  Returns nullptr if the name is unknown.
+    std::shared_ptr<AssemblySolver> createSolver(const std::string& name, AssemblyObject* obj) const;
+
+    /// Return the names of all registered solvers, in registration order.
+    std::vector<std::string> getAvailableSolvers() const;
+
+    /// Return the name of the default (first-registered) solver.
+    std::string getDefaultSolverName() const;
+
+private:
+    SolverRegistry() = default;
+
+    struct Entry
+    {
+        std::string name;
+        FactoryFn factory;
+    };
+    std::vector<Entry> entries;
+};
+
+}  // namespace Assembly::Solver

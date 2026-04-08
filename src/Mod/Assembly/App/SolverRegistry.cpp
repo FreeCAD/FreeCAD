@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 /****************************************************************************
  *                                                                          *
- *   Copyright (c) 2023 Ondsel <development@ondsel.com>                     *
+ *   Copyright (c) 2026 Jacob Oursland <jacob.oursland[at]gmail.com>        *
  *                                                                          *
  *   This file is part of FreeCAD.                                          *
  *                                                                          *
@@ -21,44 +21,60 @@
  *                                                                          *
  ***************************************************************************/
 
-
-#include <Base/Interpreter.h>
-#include <Base/Tools.h>
-
 #include "SolverRegistry.h"
 
+#include <Base/Console.h>
 
-namespace Assembly
-{
-class Module: public Py::ExtensionModule<Module>
-{
-public:
-    Module()
-        : Py::ExtensionModule<Module>("AssemblyApp")
-    {
-        add_varargs_method(
-            "getAvailableSolvers",
-            &Module::getAvailableSolvers,
-            "getAvailableSolvers() -- Returns a list of registered solver backend names."
-        );
-        initialize("This module is the Assembly module.");  // register with Python
-    }
+#include <algorithm>
 
-private:
-    Py::Object getAvailableSolvers(const Py::Tuple& /*args*/)
-    {
-        auto solvers = Solver::SolverRegistry::instance().getAvailableSolvers();
-        Py::List result;
-        for (const auto& name : solvers) {
-            result.append(Py::String(name));
-        }
-        return result;
-    }
-};
+using namespace Assembly::Solver;
 
-PyObject* initModule()
+SolverRegistry& SolverRegistry::instance()
 {
-    return Base::Interpreter().addModule(new Module);
+    static SolverRegistry registry;
+    return registry;
 }
 
-}  // namespace Assembly
+void SolverRegistry::registerSolver(const std::string& name, FactoryFn factory)
+{
+    // Prevent duplicate registration
+    auto it = std::ranges::find_if(entries, [&](const Entry& e) { return e.name == name; });
+    if (it != entries.end()) {
+        Base::Console().warning(
+            "SolverRegistry: solver '%s' already registered, skipping\n",
+            name.c_str()
+        );
+        return;
+    }
+    entries.push_back({name, std::move(factory)});
+}
+
+std::shared_ptr<AssemblySolver> SolverRegistry::createSolver(
+    const std::string& name,
+    AssemblyObject* obj
+) const
+{
+    auto it = std::ranges::find_if(entries, [&](const Entry& e) { return e.name == name; });
+    if (it != entries.end()) {
+        return it->factory(obj);
+    }
+    return nullptr;
+}
+
+std::vector<std::string> SolverRegistry::getAvailableSolvers() const
+{
+    std::vector<std::string> names;
+    names.reserve(entries.size());
+    for (const auto& entry : entries) {
+        names.push_back(entry.name);
+    }
+    return names;
+}
+
+std::string SolverRegistry::getDefaultSolverName() const
+{
+    if (entries.empty()) {
+        return "Ondsel";
+    }
+    return entries.front().name;
+}

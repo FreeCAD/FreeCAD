@@ -189,4 +189,9 @@ AssemblyExport std::vector<std::string> getSubAsList(
 );
 AssemblyExport void syncPlacements(App::DocumentObject* src, App::DocumentObject* to);
 
+/// Compute a Base::Rotation whose Z axis aligns with the given camera view direction,
+/// with X/Y axes forming a right-handed frame using a world-up heuristic.
+/// Used by drag interactions to project mouse motion onto a camera-parallel plane.
+AssemblyExport Base::Rotation cameraAlignedRotation(const Base::Vector3d& cameraViewDir);
+
 }  // namespace Assembly

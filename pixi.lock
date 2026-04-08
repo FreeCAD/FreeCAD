@@ -46,6 +46,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/cfgv-3.5.0-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/cgal-cpp-6.0.1-h6aadc51_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/charset-normalizer-3.4.4-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/linux-64/chrono-9.0.1-py311hf51f001_4.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/clang-21-21.1.0-default_h99862b1_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/clang-21.1.0-default_h36abe19_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/clangxx-21.1.0-default_h363a0c9_1.conda
@@ -478,6 +479,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/cfgv-3.5.0-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/cgal-cpp-6.0.1-hcda14ae_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/charset-normalizer-3.4.4-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/chrono-9.0.1-py311h3512406_4.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/clang-21-21.1.0-default_he95a3c9_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/clang-21.1.0-default_h395f21b_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/clangxx-21.1.0-default_h4b04f8d_1.conda
@@ -897,6 +899,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/cfgv-3.5.0-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/cgal-cpp-6.0.1-h20ba9b8_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/charset-normalizer-3.4.4-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/osx-64/chrono-9.0.1-py311h20e1f5c_4.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/clang-18-18.1.8-default_hc369343_17.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/clang-18.1.8-default_h1323312_17.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/clang_impl_osx-64-18.1.8-h6a44ed1_25.conda
@@ -1233,6 +1236,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/cfgv-3.5.0-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/cgal-cpp-6.0.1-h39a0b02_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/charset-normalizer-3.4.4-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/osx-arm64/chrono-9.0.1-py311h24bfb65_4.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/clang-18-18.1.8-default_h73dfc95_17.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/clang-18.1.8-default_hf9bcbb7_17.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/clang_impl_osx-arm64-18.1.8-h2ae9ea5_25.conda
@@ -1563,6 +1567,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/cfgv-3.5.0-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/cgal-cpp-5.6.1-hb7ee40c_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/charset-normalizer-3.4.4-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/win-64/chrono-9.0.1-py311h77e552c_4.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/clang-19-19.1.7-default_hac490eb_7.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/clang-19.1.7-default_hac490eb_7.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/cmake-4.2.3-hdcbee5b_0.conda
@@ -3488,6 +3493,73 @@ packages:
   - pkg:pypi/charset-normalizer?source=hash-mapping
   size: 50965
   timestamp: 1760437331772
+- conda: https://conda.anaconda.org/conda-forge/linux-64/chrono-9.0.1-py311hf51f001_4.conda
+  sha256: aa1337fba2b9f038531a4b1d1574f11e729c812b2de60788fd4eb780332fb981
+  md5: 13695b6aefef6ddc3fd8f18f765a6f0c
+  depends:
+  - eigen
+  - libstdcxx >=14
+  - libgcc >=14
+  - _openmp_mutex >=4.5
+  - __glibc >=2.17,<3.0.a0
+  - python_abi 3.11.* *_cp311
+  license: BSD-3-Clause
+  purls: []
+  size: 462802751
+  timestamp: 1774246725016
+- conda: https://conda.anaconda.org/conda-forge/linux-aarch64/chrono-9.0.1-py311h3512406_4.conda
+  sha256: 587f3bc9e134ee91ffa95ae32997e4cf699d87540c5a0f91303c83856850b73a
+  md5: 42872518c3a66d9a15cb3b8e0c2fecc7
+  depends:
+  - eigen
+  - libgcc >=14
+  - libstdcxx >=14
+  - python_abi 3.11.* *_cp311
+  license: BSD-3-Clause
+  purls: []
+  size: 463068403
+  timestamp: 1774246727777
+- conda: https://conda.anaconda.org/conda-forge/osx-64/chrono-9.0.1-py311h20e1f5c_4.conda
+  sha256: 1d45bf470cc88413a8cff213778e86d7b7512132e330cc2913bc360e51a3fb01
+  md5: 1c40d9e58460131bce27dd5eab7e79df
+  depends:
+  - eigen
+  - llvm-openmp
+  - libcxx >=19
+  - __osx >=11.0
+  - llvm-openmp >=19.1.7
+  - python_abi 3.11.* *_cp311
+  license: BSD-3-Clause
+  purls: []
+  size: 461914809
+  timestamp: 1774246897943
+- conda: https://conda.anaconda.org/conda-forge/osx-arm64/chrono-9.0.1-py311h24bfb65_4.conda
+  sha256: 004240e2d422c293a9388d5a267039f3d823b48d44334db15e4b4a657094f92e
+  md5: f634c20dd9d2c4f203aed8271de13a4a
+  depends:
+  - eigen
+  - llvm-openmp
+  - llvm-openmp >=19.1.7
+  - __osx >=11.0
+  - libcxx >=19
+  - python_abi 3.11.* *_cp311
+  license: BSD-3-Clause
+  purls: []
+  size: 461799089
+  timestamp: 1774246904143
+- conda: https://conda.anaconda.org/conda-forge/win-64/chrono-9.0.1-py311h77e552c_4.conda
+  sha256: 1ece0475c39a4bf1b4d54fedde616b6f1ebee3f83ec4c8051c8fac54ea6794f0
+  md5: 423ca473fea120fe931c3420230df543
+  depends:
+  - eigen
+  - vc >=14.3,<15
+  - vc14_runtime >=14.44.35208
+  - ucrt >=10.0.20348.0
+  - python_abi 3.11.* *_cp311
+  license: BSD-3-Clause
+  purls: []
+  size: 461582594
+  timestamp: 1774246779403
 - conda: https://conda.anaconda.org/conda-forge/linux-64/clang-21.1.0-default_h36abe19_1.conda
   sha256: 5e112250853c16a9f2c3b4d7b553076ba765974ffb0c2d1321566b4f28b480e9
   md5: 2c539e1cb3e1af0dd4cb0f656e1093c0

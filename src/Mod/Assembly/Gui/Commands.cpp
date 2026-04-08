@@ -334,7 +334,6 @@ void CmdAssemblySelectJointsOfComponent::activated(int iMsg)
     }
 
     std::set<App::DocumentObject*> components;
-    App::Document* doc = assembly->getDocument();
 
     for (auto& sel : selection) {
         const std::vector<std::string> subs = sel.getSubNames();
