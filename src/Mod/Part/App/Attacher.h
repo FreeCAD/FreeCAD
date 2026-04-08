@@ -567,8 +567,8 @@ public:
 private:
     gp_Pnt getProximityPoint(
         const std::vector<App::DocumentObject*>& objs,
-        eMapMode mode, 
-        const TopoDS_Shape& s1, 
+        eMapMode mode,
+        const TopoDS_Shape& s1,
         const TopoDS_Shape& s2
     ) const;
 };

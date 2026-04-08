@@ -1038,7 +1038,8 @@ TopoShape AttachEngine::extractSubShape(App::DocumentObject* obj, const std::str
                     // This is a genuine error.
                     FC_THROWM(
                         AttachEngineException,
-                        "AttachEngine3D: " << obj->getFullNameLabel() << " subshape" << subname << "not found\n"
+                        "AttachEngine3D: " << obj->getFullNameLabel() << " subshape" << subname
+                                           << "not found\n"
                     );
                 }
             }
@@ -3253,7 +3254,8 @@ Base::Placement AttachEnginePoint::_calculateAttachedPlacement(
                     // clang-format on
                 }
 
-                BasePoint = getProximityPoint(objs, mmode, shapes[0]->getShape(), shapes[1]->getShape());
+                BasePoint
+                    = getProximityPoint(objs, mmode, shapes[0]->getShape(), shapes[1]->getShape());
             } break;
             case mm0CenterOfMass: {
                 GProp_GProps gpr = AttachEngine::getInertialPropsOfShape(shapes);
