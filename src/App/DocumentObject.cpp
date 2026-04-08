@@ -109,7 +109,11 @@ void DocumentObject::printInvalidLinks() const
         std::vector<App::DocumentObject*> invalid_linkobjs;
         std::string objnames, scopenames;
         GeoFeatureGroupExtension::getInvalidLinkObjects(this, invalid_linkobjs);
+        int idx = 1;
         for (auto& obj : invalid_linkobjs) {
+            objnames += "    ";
+            objnames += std::to_string(idx++);
+            objnames += ". ";
             objnames += obj->getFullName();
             objnames += "\n";
             for (auto& scope : obj->getParents()) {
