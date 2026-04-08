@@ -36,6 +36,7 @@
 #include <TopoDS_Shape.hxx>
 
 #include <App/Document.h>
+#include <App/ObjectIdentifier.h>
 #include <Base/Tools.h>
 #include <Mod/Part/App/ExtrusionHelper.h>
 #include "Mod/Part/App/TopoShapeOpCode.h"
@@ -966,6 +967,35 @@ void FeatureExtrude::onDocumentRestored()
         Type.setValue("Length");
         Type2.setValue("Length");
         SideType.setValue("Two sides");
+
+        // The old TwoLengths code path (generatePrism) always extruded in +dir:
+        //   offset = -L2 * dir  (Reversed=false) or -L * dir (Reversed=true)
+        //   extrude = (L+L2) * dir
+        // The new "Two sides" code extrudes Side 1 in dir, Side 2 in -dir,
+        // with Reversed toggling the sign of dir. To preserve the same OCC
+        // topology (face/edge ordering), we toggle Reversed so the effective
+        // extrusion direction matches the old +dir, and swap Length/Length2
+        // to keep the correct offset for each side.
+        Reversed.setValue(!Reversed.getValue());
+        double origL = Length.getValue();
+        double origL2 = Length2.getValue();
+        Length.setValue(origL2);
+        Length2.setValue(origL);
+
+        App::ObjectIdentifier lengthPath(Length);
+        App::ObjectIdentifier length2Path(Length2);
+        auto exprL = getExpression(lengthPath);
+        auto exprL2 = getExpression(length2Path);
+        if (exprL.expression || exprL2.expression) {
+            clearExpression(lengthPath);
+            clearExpression(length2Path);
+            if (exprL.expression) {
+                setExpression(length2Path, exprL.expression);
+            }
+            if (exprL2.expression) {
+                setExpression(lengthPath, exprL2.expression);
+            }
+        }
     }
     else if (Midplane.getValue()) {
         Midplane.setValue(false);

@@ -4,7 +4,7 @@ General:
   UUID: "7cc39c57-f49c-400d-a985-8f8d141f5478"
   Name: "Diamond"
   Author: "David Carter"
-  License: "All rights reserved"
+  License: "CC-BY-4.0"
 AppearanceModels:
   PAT:
     UUID: "0326c759-4e3d-46ca-bb7d-146ebebea65e"

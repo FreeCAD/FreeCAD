@@ -91,11 +91,11 @@ public:
     /** @name methods for View handling */
     //@{
     /// send Messages to the active view
-    bool sendMsgToActiveView(const char* pMsg, const char** ppReturn = nullptr);
+    bool sendMsgToActiveView(const char* pMsg);
     /// send Messages test to the active view
     bool sendHasMsgToActiveView(const char* pMsg);
     /// send Messages to the focused view
-    bool sendMsgToFocusView(const char* pMsg, const char** ppReturn = nullptr);
+    bool sendMsgToFocusView(const char* pMsg);
     /// send Messages test to the focused view
     bool sendHasMsgToFocusView(const char* pMsg);
     /// Attach a view (get called by the FCView constructor)
@@ -181,11 +181,26 @@ public:
     Gui::Document* activeDocument() const;
     /// Set the active document
     void setActiveDocument(Gui::Document* pcDocument);
-    /// Getter for the editing document
+
+    /// Getter for the editing document, will be removed soon
     Gui::Document* editDocument() const;
+    /// Getter for the first editing document that matches a functor
+    Gui::Document* editDocument(const std::function<bool(Gui::Document*)>& eval);
+    /// Getter for all currently editing documents, all pointers are guaranteed to be non-null
+    std::vector<Gui::Document*> editDocuments() const;
+
+    // Returns true if the document is in edit (will make more sense once the edit document it is a
+    // vector)
+    bool isInEdit(Gui::Document* pcDocument) const;
+    // Reset edit if eval returns true for a document in edit
+
     Gui::MDIView* editViewOfNode(SoNode* node) const;
-    /// Set editing document, which will reset editing of all other document
+    /// Adds a document in edit
     void setEditDocument(Gui::Document* pcDocument);
+    // After this, isInEdit(pcDocument) returns false
+    void unsetEditDocument(Gui::Document* pcDocument);
+    void unsetEditDocumentIf(const std::function<bool(Gui::Document*)>& eval);
+
     /** Retrieves a pointer to the Gui::Document whose App::Document has the name \a name.
      * If no such document exists 0 is returned.
      */
@@ -265,9 +280,6 @@ public:
     void tryClose(QCloseEvent* e);
     //@}
 
-    /// get verbose DPI and style info
-    static void getVerboseDPIStyleInfo(QTextStream& str);
-
     /// whenever GUI is about to start with the main window hidden
     static bool hiddenMainWindow();
     /// return the status bits
@@ -337,6 +349,7 @@ private:
     /// workbench python dictionary
     PyObject* _pcWorkbenchDictionary;
     NavlibInterface* pNavlibInterface;
+    static void init3DMouse(MainWindow* mainWindow, QApplication* qtApp);
 
     friend class ApplicationPy;
 };

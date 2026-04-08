@@ -128,10 +128,10 @@
       <translation>Posició</translation>
     </message>
     <message>
-      <location filename="../ViewProviderAnnotation.cpp" line="423"/>
+      <location filename="../Transform.cpp" line="108"/>
       <location filename="../TaskTransform.cpp" line="128"/>
       <location filename="../TaskTransform.cpp" line="808"/>
-      <location filename="../Transform.cpp" line="108"/>
+      <location filename="../ViewProviderAnnotation.cpp" line="423"/>
       <source>Transform</source>
       <translation>Transforma</translation>
     </message>
@@ -5981,15 +5981,15 @@ Voleu desar tots els canvis?</translation>
       <translation>Format PDF</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="673"/>
       <location filename="../GraphvizView.cpp" line="479"/>
+      <location filename="../CommandDoc.cpp" line="673"/>
       <source>Graphviz format</source>
       <translation>Format Graphviz</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="676"/>
       <location filename="../GraphvizView.cpp" line="505"/>
       <location filename="../GraphvizView.cpp" line="607"/>
+      <location filename="../CommandDoc.cpp" line="676"/>
       <source>Export graph</source>
       <translation>Exporta el gràfic</translation>
     </message>
@@ -7559,7 +7559,7 @@ Specify another directory?</source>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3779"/>
-      <location filename="../Tree.cpp" line="6373"/>
+      <location filename="../Tree.cpp" line="6375"/>
       <source>Rename</source>
       <translation>Reanomena</translation>
     </message>
@@ -7579,12 +7579,12 @@ Specify another directory?</source>
       <translation>Obre la ubicació del fitxer</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6341"/>
+      <location filename="../Tree.cpp" line="6343"/>
       <source> (but must be executed)</source>
       <translation> (però s'ha d'executar)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6344"/>
+      <location filename="../Tree.cpp" line="6346"/>
       <source>%1, Internal name: %2</source>
       <translation>%1, nom intern: %2</translation>
     </message>
@@ -8731,12 +8731,12 @@ Trieu «Interromp» per a interrompre</translation>
       <translation>No s'han pogut importar tots els enllaços</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="977"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="980"/>
       <source>Add property</source>
       <translation>Afegeix una propietat</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="978"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="981"/>
       <source>Failed to add property to '%1': %2</source>
       <translation>No s'ha pogut afegir la propietat a «%1»: %2</translation>
     </message>
@@ -8864,8 +8864,8 @@ la còpia actual es perdrà.
       <translation>Alterna la superposició</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="2555"/>
       <location filename="../OverlayManager.cpp" line="1077"/>
+      <location filename="../OverlayWidgets.cpp" line="2555"/>
       <source>Toggle floating window</source>
       <translation>Alterna la finestra flotant</translation>
     </message>
@@ -9999,7 +9999,7 @@ la còpia actual es perdrà.
     <message>
       <location filename="../CommandView.cpp" line="2672"/>
       <source>Zoom &amp;In</source>
-      <translation>Ampl&amp;ia</translation>
+      <translation>Apropa</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2673"/>
@@ -10012,7 +10012,7 @@ la còpia actual es perdrà.
     <message>
       <location filename="../CommandView.cpp" line="2701"/>
       <source>Zoom &amp;Out</source>
-      <translation>Red&amp;ueix</translation>
+      <translation>Allunya</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2702"/>
@@ -10824,7 +10824,7 @@ after FreeCAD launches</source>
     <message>
       <location filename="../ImageView.cpp" line="184"/>
       <source>Zoom In</source>
-      <translation>Amplia</translation>
+      <translation>Apropa</translation>
     </message>
     <message>
       <location filename="../ImageView.cpp" line="187"/>

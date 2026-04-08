@@ -101,6 +101,7 @@
 #include "Base/BoundBox.h"
 #include "Base/Exception.h"
 #include "Base/Tools.h"
+#include <SignalException.h>
 #include "OCCTProgressIndicator.h"
 
 #include <App/ElementMap.h>
@@ -426,9 +427,10 @@ std::vector<TopoShape> TopoShape::findSubShapesWithSharedVertex(
                         }
                         auto options2 = options;
                         options2.setFlag(Data::SearchOption::SingleResult);
-                        if (ss.isNull() || s.isNull() || ss.shapeType() != s.shapeType()
-                            || ss.findSubShapesWithSharedVertex(s, nullptr, options2, tol, atol)
-                                   .empty()) {
+                        if (
+                            ss.isNull() || s.isNull() || ss.shapeType() != s.shapeType()
+                            || ss.findSubShapesWithSharedVertex(s, nullptr, options2, tol, atol).empty()
+                        ) {
                             found = false;
                             break;
                         }
@@ -1825,8 +1827,9 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                         continue;
                     }
                 }
-                else if (it == newNames.end()
-                         || !boost::starts_with(it->first.getType(), info.shapetype)) {
+                else if (
+                    it == newNames.end() || !boost::starts_with(it->first.getType(), info.shapetype)
+                ) {
                     break;
                 }
                 else {
@@ -2985,8 +2988,10 @@ TopoShape& TopoShape::makeElementOffset2D(
                     v3.Reverse();
                     v4.Reverse();
                 }
-                else if ((fabs(gp_Vec(BRep_Tool::Pnt(v2), BRep_Tool::Pnt(v4)).Magnitude() - fabs(offset))
-                          <= BRep_Tool::Tolerance(v2) + BRep_Tool::Tolerance(v4))) {
+                else if (
+                    (fabs(gp_Vec(BRep_Tool::Pnt(v2), BRep_Tool::Pnt(v4)).Magnitude() - fabs(offset))
+                     <= BRep_Tool::Tolerance(v2) + BRep_Tool::Tolerance(v4))
+                ) {
                     // orientation is as expected, nothing to do
                 }
                 else {
@@ -4135,13 +4140,23 @@ TopoShape& TopoShape::makeElementChamfer(
         if (!shape.findShape(edge)) {
             FC_THROWM(Base::CADKernelError, "edge does not belong to the shape");
         }
+        if (BRep_Tool::Degenerated(TopoDS::Edge(edge))) {
+            FC_THROWM(Base::CADKernelError, "chamfer edge is degenerated");
+        }
         // Add edge to fillet algorithm
         TopoDS_Shape face;
         if (flipDirection == Flip::flip) {
-            face = shape.findAncestorsShapes(edge, TopAbs_FACE).back();
+            const auto faces = shape.findAncestorsShapes(edge, TopAbs_FACE);
+            if (faces.empty()) {
+                FC_THROWM(Base::CADKernelError, "chamfer edge has no adjacent face");
+            }
+            face = faces.back();
         }
         else {
             face = shape.findAncestorShape(edge, TopAbs_FACE);
+        }
+        if (face.IsNull()) {
+            FC_THROWM(Base::CADKernelError, "chamfer edge has no adjacent face");
         }
         switch (chamferType) {
             case ChamferType::equalDistance:  // Equal distance
@@ -4156,6 +4171,7 @@ TopoShape& TopoShape::makeElementChamfer(
                 break;
         }
     }
+    Part::SignalException sig;
     return makeElementShape(mkChamfer, shape, op);
 }
 
@@ -5053,10 +5069,10 @@ TopoShape& TopoShape::makeElementBSplineFace(
         for (const auto& e : edges) {
             const TopoDS_Edge& edge = TopoDS::Edge(e.getShape());
             TopLoc_Location heloc;  // this will be output
-            Handle(Geom_Curve) c_geom = BRep_Tool::Curve(edge, heloc, u1, u2);  // The geometric curve
-            Handle(Geom_BSplineCurve) bspline = Handle(Geom_BSplineCurve)::DownCast(
-                c_geom
-            );  // Try to get BSpline curve
+            Handle(Geom_Curve)
+                c_geom = BRep_Tool::Curve(edge, heloc, u1, u2);  // The geometric curve
+            Handle(Geom_BSplineCurve)
+                bspline = Handle(Geom_BSplineCurve)::DownCast(c_geom);  // Try to get BSpline curve
             if (!bspline.IsNull()) {
                 gp_Trsf transf = heloc.Transformation();
                 bspline->Transform(transf);  // apply original transformation to control points
@@ -5085,8 +5101,8 @@ TopoShape& TopoShape::makeElementBSplineFace(
                 else {
                     // BRepBuilderAPI_NurbsConvert failed, try ShapeConstruct_Curve now
                     ShapeConstruct_Curve scc;
-                    Handle(Geom_BSplineCurve) spline
-                        = scc.ConvertToBSpline(c_geom, u1, u2, Precision::Confusion());
+                    Handle(Geom_BSplineCurve)
+                        spline = scc.ConvertToBSpline(c_geom, u1, u2, Precision::Confusion());
                     if (spline.IsNull()) {
                         Standard_Failure::Raise(
                             "A curve was not a B-spline and could not be converted into one."

@@ -475,7 +475,7 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
         if self.isToolSupported(obj, self.tool):
             self.commandlist.append(Path.Command("(Begin Thread Milling)"))
 
-            (cmd, zStart, zFinal) = threadSetup(obj)
+            cmd, zStart, zFinal = threadSetup(obj)
             pitch = obj.Pitch.Value
             if obj.TPI > 0:
                 pitch = 25.4 / obj.TPI
@@ -535,6 +535,4 @@ def Create(name, obj=None, parentJob=None):
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     obj.Proxy = ObjectThreadMilling(obj, name, parentJob)
-    if obj.Proxy:
-        obj.Proxy.findAllHoles(obj)
     return obj

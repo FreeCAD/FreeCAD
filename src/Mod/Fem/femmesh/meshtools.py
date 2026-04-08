@@ -192,13 +192,10 @@ def get_femnodes_ele_table(femnodes_mesh, femelement_table):
         femnodes_ele_table[n] = []
     for ele in femelement_table:
         ele_list = femelement_table[ele]
-        # FreeCAD.Console.PrintMessage("{}\n".format(ele_list))
         pos = int(1)
         for ele_node in ele_list:
             femnodes_ele_table[ele_node].append([ele, pos])
             pos = pos << 1
-    FreeCAD.Console.PrintLog(f"len femnodes_ele_table: {len(femnodes_ele_table)}\n")
-    FreeCAD.Console.PrintLog(f"femnodes_ele_table: {femnodes_ele_table}\n")
     return femnodes_ele_table
 
 
@@ -224,10 +221,6 @@ def get_bit_pattern_dict(femelement_table, femnodes_ele_table, node_set):
     The number in the ele_dict is organized as a bit array.
     The corresponding bit is set, if the node of the node_set is contained in the element.
     """
-    # print("BIT PATTERN", femelement_table, femnodes_ele_table, node_set)
-    FreeCAD.Console.PrintLog("len femnodes_ele_table: " + str(len(femnodes_ele_table)) + "\n")
-    FreeCAD.Console.PrintLog("len node_set: " + str(len(node_set)) + "\n")
-    FreeCAD.Console.PrintLog(f"node_set: {node_set}\n")
     bit_pattern_dict = get_copy_of_empty_femelement_table(femelement_table)
     # # initializing the bit_pattern_dict
     for ele in femelement_table:
@@ -236,26 +229,25 @@ def get_bit_pattern_dict(femelement_table, femnodes_ele_table, node_set):
     for node in node_set:
         for nList in femnodes_ele_table[node]:
             bit_pattern_dict[nList[0]][1] += nList[1]
-    FreeCAD.Console.PrintLog("len bit_pattern_dict: " + str(len(bit_pattern_dict)) + "\n")
-    # FreeCAD.Console.PrintMessage("bit_pattern_dict: {}\n".format(bit_pattern_dict))
     return bit_pattern_dict
 
 
 # ************************************************************************************************
-def get_ccxelement_volumes_elements_from_binary_search(bit_pattern_dict):
-    tet10_mask = {0b1111111111: 1}
-    tet4_mask = {0b1111: 1}
-    hex8_mask = {0b11111111: 1}
-    hex20_mask = {0b11111111111111111111: 1}
-    pent6_mask = {0b111111: 1}
-    pent15_mask = {0b111111111111111: 1}
+def get_element_volumes_elements_from_binary_search(bit_pattern_dict):
+    """get volume element by coincident nodes"""
+    mask_tetra10 = {0b1111111111: 1}
+    mask_tetra4 = {0b1111: 1}
+    mask_hexa8 = {0b11111111: 1}
+    mask_hexa20 = {0b11111111111111111111: 1}
+    mask_penta6 = {0b111111: 1}
+    mask_penta15 = {0b111111111111111: 1}
     vol_dict = {
-        4: tet4_mask,
-        6: pent6_mask,
-        8: hex8_mask,
-        10: tet10_mask,
-        15: pent15_mask,
-        20: hex20_mask,
+        4: mask_tetra4,
+        6: mask_penta6,
+        8: mask_hexa8,
+        10: mask_tetra10,
+        15: mask_penta15,
+        20: mask_hexa20,
     }
     volumes = []
     for ele in bit_pattern_dict:
@@ -263,22 +255,20 @@ def get_ccxelement_volumes_elements_from_binary_search(bit_pattern_dict):
         for key in mask_dict:
             if (key & bit_pattern_dict[ele][1]) == key:
                 volumes.append(ele)
-    # print("VOLUMES:", volumes)
-    FreeCAD.Console.PrintLog(f"found Volumes: {len(volumes)}\n")
-    # FreeCAD.Console.PrintMessage("faces: {}\n".format(faces))
     return volumes
 
 
-def get_ccxelement_faces_elements_from_binary_search(bit_pattern_dict):
-    tria3_mask = {0b111: 1}
-    tria6_mask = {0b111111: 1}
-    quad4_mask = {0b1111: 1}
-    quad8_mask = {0b11111111: 1}
+def get_element_faces_elements_from_binary_search(bit_pattern_dict):
+    """get face element by coincident nodes"""
+    mask_tria3 = {0b111: 1}
+    mask_tria6 = {0b111111: 1}
+    mask_quad4 = {0b1111: 1}
+    mask_quad8 = {0b11111111: 1}
     vol_dict = {
-        3: tria3_mask,
-        6: tria6_mask,
-        4: quad4_mask,
-        8: quad8_mask,
+        3: mask_tria3,
+        6: mask_tria6,
+        4: mask_quad4,
+        8: mask_quad8,
     }
     faces = []
     for ele in bit_pattern_dict:
@@ -286,56 +276,51 @@ def get_ccxelement_faces_elements_from_binary_search(bit_pattern_dict):
         for key in mask_dict:
             if (key & bit_pattern_dict[ele][1]) == key:
                 faces.append(ele)
-    # print("CARAS:", faces)
-    FreeCAD.Console.PrintMessage(f"found Edges: {len(faces)}\n")
     return faces
 
 
-def get_ccxelement_edges_from_binary_search(bit_pattern_dict, sets_getter):
-    shell_mode = sets_getter.solver_obj.ModelSpace == "3D"
-    offset = 2 if shell_mode else 0
-    tria3_mask = {0b011: 1, 0b110: 2, 0b101: 3}
-    tria6_mask = {0b001011: 1, 0b010110: 2, 0b100101: 3}
-    quad4_mask = {0b0011: 1, 0b0110: 2, 0b1100: 3, 0b1001: 4}
-    quad8_mask = {0b00010011: 1, 0b00100110: 2, 0b01001100: 3, 0b10001001: 4}
+def get_element_edges_from_binary_search(
+    bit_pattern_dict, mask_tria3={}, mask_tria6={}, mask_quad4={}, mask_quad8={}
+):
+    """get face element edges by coincident nodes"""
     vol_dict = {
-        3: tria3_mask,
-        6: tria6_mask,
-        4: quad4_mask,
-        8: quad8_mask,
+        3: mask_tria3,
+        4: mask_quad4,
+        6: mask_tria6,
+        8: mask_quad8,
     }
-    faces = []
+    edges = []
     for ele in bit_pattern_dict:
         mask_dict = vol_dict[bit_pattern_dict[ele][0]]
         for key in mask_dict:
             if (key & bit_pattern_dict[ele][1]) == key:
-                faces.append([ele, mask_dict[key] + offset])
-    # print("EDGES:", faces)
-    FreeCAD.Console.PrintMessage(f"found Edges: {len(faces)}\n")
+                edges.append([ele, mask_dict[key]])
 
-    return faces
+    return edges
 
 
-def get_ccxelement_faces_from_binary_search(bit_pattern_dict):
-    """get the CalculiX element face numbers"""
+def get_element_faces_from_binary_search(
+    bit_pattern_dict,
+    mask_tetra4={},
+    mask_tetra10={},
+    mask_hexa8={},
+    mask_hexa20={},
+    mask_penta6={},
+    mask_penta15={},
+):
+    """get volume element faces by coincident nodes"""
     # the forum topic discussion with ulrich1a and others ... Better mesh last instead of mesh first
     # https://forum.freecad.org/viewtopic.php?f=18&t=17318#p137171
     # https://forum.freecad.org/viewtopic.php?f=18&t=17318&start=60#p141484
     # https://forum.freecad.org/viewtopic.php?f=18&t=17318&start=50#p141108
     # https://forum.freecad.org/viewtopic.php?f=18&t=17318&start=40#p140371
-    tet10_mask = {119: 1, 411: 2, 717: 3, 814: 4}
-    tet4_mask = {7: 1, 11: 2, 13: 3, 14: 4}
-    hex8_mask = {240: 1, 15: 2, 102: 3, 204: 4, 153: 5, 51: 6}
-    hex20_mask = {61680: 1, 3855: 2, 402022: 3, 804044: 4, 624793: 5, 201011: 6}
-    pent6_mask = {56: 1, 7: 2, 54: 3, 45: 4, 27: 5}
-    pent15_mask = {3640: 1, 455: 2, 25782: 3, 22829: 4, 12891: 5}
     vol_dict = {
-        4: tet4_mask,
-        6: pent6_mask,
-        8: hex8_mask,
-        10: tet10_mask,
-        15: pent15_mask,
-        20: hex20_mask,
+        4: mask_tetra4,
+        6: mask_penta6,
+        8: mask_hexa8,
+        10: mask_tetra10,
+        15: mask_penta15,
+        20: mask_hexa20,
     }
     faces = []
     for ele in bit_pattern_dict:
@@ -343,9 +328,6 @@ def get_ccxelement_faces_from_binary_search(bit_pattern_dict):
         for key in mask_dict:
             if (key & bit_pattern_dict[ele][1]) == key:
                 faces.append([ele, mask_dict[key]])
-    # print("FACES:", faces)
-    FreeCAD.Console.PrintLog(f"found Faces: {len(faces)}\n")
-    # FreeCAD.Console.PrintMessage("faces: {}\n".format(faces))
     return faces
 
 
@@ -359,16 +341,12 @@ def get_femelements_by_femnodes_bin(femelement_table, femnodes_ele_table, node_l
     FreeCAD.Console.PrintMessage("binary search: get_femelements_by_femnodes_bin\n")
     vol_masks = {4: 15, 6: 63, 8: 255, 10: 1023, 15: 32767, 20: 1048575}
     # Now we are looking for nodes inside of the Volumes = filling the bit_pattern_dict
-    FreeCAD.Console.PrintMessage(f"len femnodes_ele_table: {len(femnodes_ele_table)}\n")
     bit_pattern_dict = get_bit_pattern_dict(femelement_table, femnodes_ele_table, node_list)
     # search
     ele_list = []  # The ele_list contains the result of the search.
     for ele in bit_pattern_dict:
-        FreeCAD.Console.PrintLog(f"bit_pattern_dict[ele][0]: {bit_pattern_dict[ele][0]}\n")
         if bit_pattern_dict[ele][1] == vol_masks[bit_pattern_dict[ele][0]]:
             ele_list.append(ele)
-    FreeCAD.Console.PrintMessage(f"found Volumes: {len(ele_list)}\n")
-    # FreeCAD.Console.PrintMessage("   volumes: {}\n".format(ele_list))
     return ele_list
 
 
@@ -1514,7 +1492,7 @@ def pair_obj_reference(obj_ref):
     return pairs
 
 
-def get_ccx_elements(sets_getter, ref_pair):
+def get_elements(sets_getter, ref_pair, face_masks, edge_masks):
     ref_obj, sub_ref = ref_pair
     geom_type = ref_obj.getSubObject(sub_ref).ShapeType
     elem = []
@@ -1531,37 +1509,43 @@ def get_ccx_elements(sets_getter, ref_pair):
         case 3:
             match geom_type:
                 case "Solid":
-                    elem = get_ccx_elements_by_references(sets_getter, ref_pair)
+                    elem = get_elements_by_references(sets_getter, ref_pair)
                     is_sub_element = False
                 case "Face" | "Edge" | "Vertex":
-                    elem = get_ccx_subelements_by_references(sets_getter, ref_pair)
+                    elem = get_subelements_by_references(
+                        sets_getter, ref_pair, face_masks, edge_masks
+                    )
                     is_sub_element = True
         case 2:
             match geom_type:
                 case "Face":
-                    elem = get_ccx_elements_by_references(sets_getter, ref_pair)
+                    elem = get_elements_by_references(sets_getter, ref_pair)
                     is_sub_element = False
                 case "Edge" | "Vertex":
-                    elem = get_ccx_subelements_by_references(sets_getter, ref_pair)
+                    elem = get_subelements_by_references(
+                        sets_getter, ref_pair, face_masks, edge_masks
+                    )
                     is_sub_element = True
         case 1:
             match geom_type:
                 case "Edge":
                     is_sub_element = False
-                    elem = get_ccx_elements_by_references(sets_getter, ref_pair)
+                    elem = get_elements_by_references(sets_getter, ref_pair)
                 case "Vertex":
-                    elem = get_ccx_subelements_by_references(sets_getter, ref_pair)
+                    elem = get_subelements_by_references(
+                        sets_getter, ref_pair, face_masks, edge_masks
+                    )
                     is_sub_element = True
         case 0:
             match geom_type:
                 case "Vertex":
-                    elem = get_ccx_elements_by_references(sets_getter, ref_pair)
+                    elem = get_elements_by_references(sets_getter, ref_pair)
                     is_sub_element = False
 
     return (*elem, is_sub_element)
 
 
-def get_ccx_elements_by_references(sets_getter, femobj_ref):
+def get_elements_by_references(sets_getter, femobj_ref):
     node_set = []
     result = []
     # TODO get elements from mesh groups
@@ -1589,16 +1573,16 @@ def get_ccx_elements_by_references(sets_getter, femobj_ref):
         )
         sh = feat.getSubObject(sub_ref)
         if sh.ShapeType == "Solid":
-            elem = get_ccxelement_volumes_elements_from_binary_search(bit_pattern_dict)
+            elem = get_element_volumes_elements_from_binary_search(bit_pattern_dict)
         elif sh.ShapeType == "Face":
-            elem = get_ccxelement_faces_elements_from_binary_search(bit_pattern_dict)
+            elem = get_element_faces_elements_from_binary_search(bit_pattern_dict)
 
         result = (sub, elem)
 
     return result
 
 
-def get_ccx_subelements_by_references(sets_getter, femobj_ref):
+def get_subelements_by_references(sets_getter, femobj_ref, face_masks, edge_masks):
     node_set = []
     result = []
     # TODO get elements from mesh groups
@@ -1626,228 +1610,13 @@ def get_ccx_subelements_by_references(sets_getter, femobj_ref):
         )
         sh = feat.getSubObject(sub_ref)
         if sh.ShapeType == "Face":
-            sub_elem = get_ccxelement_faces_from_binary_search(bit_pattern_dict)
+            sub_elem = get_element_faces_from_binary_search(bit_pattern_dict, **face_masks)
         elif sh.ShapeType == "Edge":
-            sub_elem = get_ccxelement_edges_from_binary_search(bit_pattern_dict, sets_getter)
+            sub_elem = get_element_edges_from_binary_search(bit_pattern_dict, **edge_masks)
 
         result = (sub, sub_elem)
 
     return result
-
-
-# ***** pressure faces ***************************************************************************
-def get_pressure_obj_faces(femmesh, femelement_table, femnodes_ele_table, femobj):
-    # see get_ccxelement_faces_from_binary_search for more information
-    if is_solid_femmesh(femmesh):
-        # get the nodes
-        # sorted and duplicates removed
-        prs_face_node_set = get_femnodes_by_femobj_with_references(femmesh, femobj)
-        # FreeCAD.Console.PrintMessage("prs_face_node_set: {}\n".format(prs_face_node_set))
-        # fill the bit_pattern_dict and search for the faces
-        bit_pattern_dict = get_bit_pattern_dict(
-            femelement_table, femnodes_ele_table, prs_face_node_set
-        )
-        pressure_faces = get_ccxelement_faces_from_binary_search(bit_pattern_dict)
-    elif is_face_femmesh(femmesh):
-        pressure_faces = []
-        # normally we should call get_femelements_by_references and
-        # the group check should be integrated there
-        if femmesh.GroupCount:
-            meshfaces = get_femmesh_groupdata_sets_by_name(femmesh, femobj, "Face")
-            # FreeCAD.Console.PrintMessage("{}\n".format(meshfaces))
-            if not meshfaces:
-                FreeCAD.Console.PrintError(
-                    "Error: Something went wrong in getting the group element faces.\n"
-                )
-            else:
-                for mf in meshfaces:
-                    # pressure_faces.append([mf, 0])
-                    pressure_faces.append([mf, -1])
-                    # 0 if femmeshface normal == reference face normal direction
-                    # -1 if femmeshface normal opposite reference face normal direction
-                    # easy on plane faces, but on a half sphere ... ?!?
-                    # might be useful to add ...
-                    # How to find the orientation of a FEM mesh face?
-                    # https://forum.freecad.org/viewtopic.php?f=18&t=51898
-        else:
-            for obj, elems in femobj["Object"].References:
-                for e in elems:
-                    ref_face = sub_shape_at_global_placement(obj, e)
-                    meshfaces = femmesh.getFacesByFace(ref_face)
-                    for mf in meshfaces:
-                        pressure_faces.append([mf, -1])
-
-    return pressure_faces
-
-
-# ***** deprecated method for retrieving pressure faces *****************************************
-# for constraint pressure and finite solid element mesh
-# it was switched to the method get_ccxelement_faces_from_binary_search
-# because of performance and the support of all solid elements
-# see get_ccxelement_faces_from_binary_search for more information
-def get_pressure_obj_faces_depreciated(femmesh, femobj):
-    pressure_faces = []
-    for o, elem_tup in femobj["Object"].References:
-        for elem in elem_tup:
-            ref_shape = o.Shape.getElement(elem)
-            elem_info_string = "face load on shape: " + o.Name + ":" + elem
-            FreeCAD.Console.PrintMessage(f"{elem_info_string}\n")
-            if ref_shape.ShapeType == "Face":
-                pressure_faces.append((elem_info_string, femmesh.getccxVolumesByFace(ref_shape)))
-    return pressure_faces
-
-
-# ***** contact faces ****************************************************************************
-def get_contact_obj_faces(femmesh, femelement_table, femnodes_ele_table, femobj):
-    # see comment on get_pressure_obj_faces_depreciated in the regard of getccxVolumesByFace()
-
-    # sets are needed for each of the references separated
-    # BTW constraint tie works the same way AFAIK
-    # TODO it might be useful to introduce a Reference_master and Reference_slave attribute
-
-    # groups makes no sense, since group would be needed for each contact face (master and slave)
-
-    # slave is DEP1 and master is IND1 in input file
-    # first element face or ref_shape is slave, second is master
-
-    # TODO above pre check in ccxtools
-    # TODO ref_shape_type should be Face
-
-    slave_faces, master_faces = [], []
-
-    contact_obj = femobj["Object"]
-    if len(contact_obj.References) == 1 and len(contact_obj.References[0][1]) == 2:
-        # [(<Part::Feature>, ('Face7', 'Face3'))]
-        # refs are merged because they are on the same doc obj
-        # but only one element face for each contact face (Gui, TaskPael contact)
-        ref_obj = contact_obj.References[0][0]
-        ref_ele = contact_obj.References[0][1]
-        slave_ref = (ref_obj, (ref_ele[0],))  # the comma is needed!
-        master_ref = (ref_obj, (ref_ele[1],))  # the comma is needed!
-    elif (
-        len(contact_obj.References) == 2
-        and len(contact_obj.References[0][1]) == 1
-        and len(contact_obj.References[1][1]) == 1
-    ):
-        # [(<Part::Feature>, ('Face3',)), (<Part::Feature>, ('Face7',))]
-        # refs are on different objects
-        # but only one element face for each contact face (Gui, TaskPael contact)
-        slave_ref = contact_obj.References[0]
-        master_ref = contact_obj.References[1]
-    else:
-        FreeCAD.Console.PrintError(
-            "Not valid (example: only master or slave defined) "
-            "or not supported reference shape elements, contact face combination "
-            "(example: multiple element faces per master or slave\n"
-        )
-        return [[], []]
-
-    FreeCAD.Console.PrintLog(f"    Slave: {slave_ref[0].Name}, {slave_ref}\n")
-    FreeCAD.Console.PrintLog(f"    Master: {master_ref[0].Name}, {master_ref}\n")
-
-    if is_solid_femmesh(femmesh):
-        FreeCAD.Console.PrintLog("    Get the nodes, sorted and duplicates removed.\n")
-        slaveface_nds = sorted(list(set(get_femnodes_by_refshape(femmesh, slave_ref))))
-        masterface_nds = sorted(list(set(get_femnodes_by_refshape(femmesh, master_ref))))
-        FreeCAD.Console.PrintLog(f"    slaveface_nds: {slaveface_nds}\n")
-        FreeCAD.Console.PrintLog(f"    masterface_nds: {slaveface_nds}\n")
-
-        FreeCAD.Console.PrintLog("    Fill the bit_pattern_dict and search for the faces.\n")
-        slave_bit_pattern_dict = get_bit_pattern_dict(
-            femelement_table, femnodes_ele_table, slaveface_nds
-        )
-        master_bit_pattern_dict = get_bit_pattern_dict(
-            femelement_table, femnodes_ele_table, masterface_nds
-        )
-
-        FreeCAD.Console.PrintLog("    Get the FaceIDs.\n")
-        slave_faces = get_ccxelement_faces_from_binary_search(slave_bit_pattern_dict)
-        master_faces = get_ccxelement_faces_from_binary_search(master_bit_pattern_dict)
-
-    elif is_face_femmesh(femmesh):
-        slave_ref_shape = slave_ref[0].Shape.getElement(slave_ref[1][0])
-        master_ref_shape = master_ref[0].Shape.getElement(master_ref[1][0])
-
-        FreeCAD.Console.PrintLog("    Get the FaceIDs.\n")
-        slave_face_ids = femmesh.getFacesByFace(slave_ref_shape)
-        master_face_ids = femmesh.getFacesByFace(master_ref_shape)
-
-        # build slave_faces and master_faces
-        # face 2 for tria6 element
-        # is it face 2 for all shell elements
-        for fid in slave_face_ids:
-            slave_faces.append([fid, 2])
-        for fid in master_face_ids:
-            master_faces.append([fid, 2])
-
-    FreeCAD.Console.PrintLog("    Master and slave face ready to use for writer:\n")
-    FreeCAD.Console.PrintLog(f"    slave_faces: {slave_faces}\n")
-    FreeCAD.Console.PrintLog(f"    master_faces: {master_faces}\n")
-    if len(slave_faces) == 0:
-        FreeCAD.Console.PrintError("No faces found for contact slave face.\n")
-    if len(master_faces) == 0:
-        FreeCAD.Console.PrintError("No faces found for contact master face.\n")
-    return [slave_faces, master_faces]
-
-
-# ***** tie faces ****************************************************************************
-def get_tie_obj_faces(femmesh, femelement_table, femnodes_ele_table, femobj):
-    # see comment get_contact_obj_faces
-    # TODO get rid of duplicate code for contact and tie
-
-    slave_faces, master_faces = [], []
-
-    tie_obj = femobj["Object"]
-    if len(tie_obj.References) == 1 and len(tie_obj.References[0][1]) == 2:
-        # [(<Part::Feature>, ('Face7', 'Face3'))]
-        # refs are merged because they are on the same doc obj
-        # but only one element face for each contact face (Gui, TaskPael tie)
-        ref_obj = tie_obj.References[0][0]
-        ref_ele = tie_obj.References[0][1]
-        slave_ref = (ref_obj, (ref_ele[0],))  # the comma is needed!
-        master_ref = (ref_obj, (ref_ele[1],))  # the comma is needed!
-    elif (
-        len(tie_obj.References) == 2
-        and len(tie_obj.References[0][1]) == 1
-        and len(tie_obj.References[1][1]) == 1
-    ):
-        # [(<Part::Feature>, ('Face3',)), (<Part::Feature>, ('Face7',))]
-        # refs are on different objects
-        # but only one element face for each contact face (Gui, TaskPael tie)
-        slave_ref = tie_obj.References[0]
-        master_ref = tie_obj.References[1]
-    else:
-        FreeCAD.Console.PrintError(
-            "Not valid (example: only master or slave defined) "
-            "or not supported reference shape elements, contact face combination "
-            "(example: multiple element faces per master or slave\n"
-        )
-        return [[], []]
-
-    FreeCAD.Console.PrintLog(f"Slave: {slave_ref[0].Name}, {slave_ref}\n")
-    FreeCAD.Console.PrintLog(f"Master: {master_ref[0].Name}, {master_ref}\n")
-
-    # get the nodes, sorted and duplicates removed
-    slaveface_nds = sorted(list(set(get_femnodes_by_refshape(femmesh, slave_ref))))
-    masterface_nds = sorted(list(set(get_femnodes_by_refshape(femmesh, master_ref))))
-    # FreeCAD.Console.PrintLog("slaveface_nds: {}\n".format(slaveface_nds))
-    # FreeCAD.Console.PrintLog("masterface_nds: {}\n".format(slaveface_nds))
-
-    # fill the bit_pattern_dict and search for the faces
-    slave_bit_pattern_dict = get_bit_pattern_dict(
-        femelement_table, femnodes_ele_table, slaveface_nds
-    )
-    master_bit_pattern_dict = get_bit_pattern_dict(
-        femelement_table, femnodes_ele_table, masterface_nds
-    )
-
-    # get the faces ids
-    slave_faces = get_ccxelement_faces_from_binary_search(slave_bit_pattern_dict)
-    master_faces = get_ccxelement_faces_from_binary_search(master_bit_pattern_dict)
-
-    FreeCAD.Console.PrintLog(f"slave_faces: {slave_faces}\n")
-    FreeCAD.Console.PrintLog(f"master_faces: {master_faces}\n")
-    return [slave_faces, master_faces]
 
 
 # ************************************************************************************************

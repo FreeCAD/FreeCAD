@@ -45,7 +45,6 @@ from . import ifc_psets
 from . import ifc_objects
 from . import ifc_generator
 
-
 IFC_FILE_PATH = None  # downloaded IFC file path
 FCSTD_FILE_PATH = None  # saved FreeCAD file
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/NativeIFC")
@@ -340,6 +339,60 @@ class NativeIFCTest(unittest.TestCase):
         res = ifcopenshell.util.element.get_material(elem)
         mats_after = ifcfile.by_type("IfcMaterialDefinition")
         self.assertTrue(len(mats_after) == len(mats_before) + 1, "Materials failed")
+
+    def test13b_MaterialLayerLogical(self):
+        FreeCAD.Console.PrintMessage("NativeIFC 13b: Material layer logical values...")
+        clearObjects()
+        proj = ifc_tools.create_document(FreeCAD.getDocument("IfcTest"), silent=True)
+        ifcfile = ifc_tools.get_ifcfile(proj)
+        material_set = ifc_tools.api_run(
+            "material.add_material_set",
+            ifcfile,
+            name="Layer Set",
+            set_type="IfcMaterialLayerSet",
+        )
+        material = ifc_tools.api_run("material.add_material", ifcfile, name="Layer Material")
+        layer_unknown = ifc_tools.api_run(
+            "material.add_layer",
+            ifcfile,
+            layer_set=material_set,
+            material=material,
+            name="Unknown Layer",
+        )
+        ifc_tools.api_run(
+            "material.edit_layer",
+            ifcfile,
+            layer=layer_unknown,
+            attributes={"LayerThickness": 42, "IsVentilated": "UNKNOWN"},
+        )
+        layer_true = ifc_tools.api_run(
+            "material.add_layer",
+            ifcfile,
+            layer_set=material_set,
+            material=material,
+            name="True Layer",
+        )
+        ifc_tools.api_run(
+            "material.edit_layer",
+            ifcfile,
+            layer=layer_true,
+            attributes={"LayerThickness": 21, "IsVentilated": True},
+        )
+        ifc_materials.create_material(material_set, proj, recursive=True)
+        layer_unknown_obj = ifc_tools.get_object(layer_unknown, FreeCAD.getDocument("IfcTest"))
+        layer_true_obj = ifc_tools.get_object(layer_true, FreeCAD.getDocument("IfcTest"))
+        self.assertTrue(layer_unknown_obj is not None, "Logical UNKNOWN layer import failed")
+        self.assertTrue(layer_true_obj is not None, "Logical TRUE layer import failed")
+        self.assertTrue(
+            layer_unknown_obj.getTypeIdOfProperty("IsVentilated") == "App::PropertyBool",
+            "Logical UNKNOWN type failed",
+        )
+        self.assertTrue(
+            layer_true_obj.getTypeIdOfProperty("IsVentilated") == "App::PropertyBool",
+            "Logical TRUE type failed",
+        )
+        self.assertTrue(layer_unknown_obj.IsVentilated is False, "Logical UNKNOWN value failed")
+        self.assertTrue(layer_true_obj.IsVentilated is True, "Logical TRUE value failed")
 
     def test14_Layers(self):
         FreeCAD.Console.PrintMessage("NativeIFC 14: Layers...")

@@ -89,6 +89,12 @@ PyMethodDef ApplicationPy::Methods[] = {
      (PyCFunction)ApplicationPy::sAddExportType,
      METH_VARARGS,
      "Register filetype for export"},
+    {"addTranslatableExportType",
+     (PyCFunction)ApplicationPy::sAddTranslatableExportType,
+     METH_VARARGS,
+     "addTranslatableExportType(description:str, extensions:list[str], module_name:str)\n\n"
+     "Register filetype with translatable description for export. Description should be a\n"
+     "string registered with the translation system using the 'FileFormat' context."},
     {"changeExportModule",
      (PyCFunction)ApplicationPy::sChangeExportModule,
      METH_VARARGS,
@@ -236,9 +242,7 @@ PyMethodDef ApplicationPy::Methods[] = {
      METH_VARARGS,
      "setActiveTransaction(name, persist=False) -- setup active transaction with the given name\n\n"
      "name: the transaction name\n"
-     "persist(False): by default, if the calling code is inside any invocation of a command, it\n"
-     "                will be auto closed once all commands within the current stack exists. To\n"
-     "                disable auto closing, set persist=True\n"
+     "persist(False): This parameter has no effect and is kept for compatibility reasonss"
      "Returns the transaction ID for the active transaction. An application-wide\n"
      "active transaction causes any document changes to open a transaction with\n"
      "the given name and ID."},
@@ -296,11 +300,10 @@ PyObject* ApplicationPy::sLoadFile(PyObject* /*self*/, PyObject* args)
             module = modules.front();
         }
 
-        // path could contain characters that need escaping, such as quote signs
-        // therefore use its representation in the Python code string
-        PyObject* pathObj = PyUnicode_FromString(path);
-        PyObject* pathReprObj = PyObject_Repr(pathObj);
-        const char* pathRepr = PyUnicode_AsUTF8(pathReprObj);
+        // path and doc could contain characters that need escaping, such as quote signs
+        // therefore use their repr() in the Python code string
+        auto pathRepr = static_cast<std::string>(Py::String(path).repr());
+        auto docRepr = static_cast<std::string>(Py::String(doc).repr());
 
         std::stringstream str;
         str << "import " << module << std::endl;
@@ -308,11 +311,8 @@ PyObject* ApplicationPy::sLoadFile(PyObject* /*self*/, PyObject* args)
             str << module << ".openDocument(" << pathRepr << ")" << std::endl;
         }
         else {
-            str << module << ".insert(" << pathRepr << ",'" << doc << "')" << std::endl;
+            str << module << ".insert(" << pathRepr << "," << docRepr << ")" << std::endl;
         }
-
-        Py_DECREF(pathObj);
-        Py_DECREF(pathReprObj);
 
         Base::Interpreter().runString(str.str().c_str());
         Py_Return;
@@ -751,6 +751,47 @@ PyObject* ApplicationPy::sAddExportType(PyObject* /*self*/, PyObject* args)
     Py_Return;
 }
 
+PyObject* ApplicationPy::sAddTranslatableExportType(PyObject* /*self*/, PyObject* args)
+{
+    char *description {};
+    PyObject *pyExtensions {};
+    char *moduleName {};
+
+    if (!PyArg_ParseTuple(args, "sOs", &description, &pyExtensions, &moduleName)) {
+        return nullptr;
+    }
+
+    if (!PyList_Check(pyExtensions)) {
+        PyErr_SetString(PyExc_TypeError,
+                        "Expected a list of strings as second argument");
+        return nullptr;
+    }
+
+    Py_ssize_t n = PyList_Size(pyExtensions);
+
+    std::vector<std::string> extensions;
+    for (Py_ssize_t i = 0; i < n; ++i) {
+        PyObject *item = PyList_GetItem(pyExtensions, i);
+
+        if (!PyUnicode_Check(item)) {
+            PyErr_SetString(PyExc_TypeError,
+                            "Extensions list elements must be strings");
+            return nullptr;
+        }
+
+        const char *value = PyUnicode_AsUTF8(item);
+        if (!value) {
+            return nullptr;
+        }
+
+        extensions.emplace_back(value);
+    }
+
+    GetApplication().addTranslatableExportType(description, extensions, moduleName);
+
+    Py_Return;
+}
+
 PyObject* ApplicationPy::sChangeExportModule(PyObject* /*self*/, PyObject* args)
 {
     char *key {};
@@ -1154,14 +1195,14 @@ PyObject* ApplicationPy::sGetDependentObjects(PyObject* /*self*/, PyObject* args
 PyObject* ApplicationPy::sSetActiveTransaction(PyObject* /*self*/, PyObject* args)
 {
     char* name {};
-    PyObject* persist = Py_False;
+    PyObject* persist = Py_False; // Not used
     if (!PyArg_ParseTuple(args, "s|O!", &name, &PyBool_Type, &persist)) {
         return nullptr;
     }
 
     PY_TRY
     {
-        Py::Long ret(GetApplication().setActiveTransaction(name, Base::asBoolean(persist)));
+        Py::Long ret(GetApplication().setActiveTransaction(TransactionName {.name=name, .temporary=false}));
         return Py::new_reference_to(ret);
     }
     PY_CATCH;
@@ -1176,8 +1217,12 @@ PyObject* ApplicationPy::sGetActiveTransaction(PyObject* /*self*/, PyObject* arg
     PY_TRY
     {
         int id = 0;
-        const char* name = GetApplication().getActiveTransaction(&id);
-        if (!name || id <= 0) {
+        std::string name = "";
+        if (Document* doc = GetApplication().getActiveDocument()) {
+            id = doc->getBookedTransactionID();
+            name = GetApplication().getTransactionName(id);
+        }
+        if (name.empty() || id <= 0) {
             Py_Return;
         }
         Py::Tuple ret(2);
@@ -1198,7 +1243,10 @@ PyObject* ApplicationPy::sCloseActiveTransaction(PyObject* /*self*/, PyObject* a
 
     PY_TRY
     {
-        GetApplication().closeActiveTransaction(Base::asBoolean(abort), id);
+        TransactionCloseMode mode = Base::asBoolean(abort)
+            ? TransactionCloseMode::Abort
+            : TransactionCloseMode::Commit;
+        GetApplication().closeActiveTransaction(mode, id);
         Py_Return;
     }
     PY_CATCH;

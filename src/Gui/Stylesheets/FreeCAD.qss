@@ -162,6 +162,11 @@ QColorDialog QLabel {
 }
 */
 
+QFrame[class="popup"] {
+  background-color: @DialogBackgroundColor;
+  border: 1px solid @GeneralBorderColor;
+}
+
 /* QMainWindow ------------------------------------------------------------
 
 This adjusts the splitter in the dock widget, not qsplitter
@@ -1503,6 +1508,10 @@ Tasks panel (custom FreeCAD class)
 Gui--PropertyEditor--PropertyEditor {
   qproperty-groupTextColor: @TextForegroundColor;
   qproperty-groupBackground: @GeneralHeaderBackgroundColor;
+}
+
+Gui--TaskView--TaskPanel QSint--ActionPanel {
+  background-color: transparent;
 }
 
 /* Action group */

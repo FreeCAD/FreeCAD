@@ -1,0 +1,150 @@
+{
+    "blocks": {
+        "postamble": "M05\nG17 G90\nM2",
+        "preamble": "G17 G90"
+    },
+    "freecad_version": "1.2.0",
+    "machine": {
+        "axes": {
+            "X": {
+                "joint": [
+                    [
+                        1.0,
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0,
+                        0,
+                        0
+                    ]
+                ],
+                "max": 500,
+                "max_velocity": 10000,
+                "min": 0,
+                "sequence": 0,
+                "type": "linear"
+            },
+            "Y": {
+                "joint": [
+                    [
+                        0.0,
+                        1.0,
+                        0.0
+                    ],
+                    [
+                        0,
+                        0,
+                        0
+                    ]
+                ],
+                "max": 300,
+                "max_velocity": 10000,
+                "min": 0,
+                "sequence": 0,
+                "type": "linear"
+            },
+            "Z": {
+                "joint": [
+                    [
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    [
+                        0,
+                        0,
+                        0
+                    ]
+                ],
+                "max": 300,
+                "max_velocity": 10000,
+                "min": 0,
+                "sequence": 0,
+                "type": "linear"
+            }
+        },
+        "description": "3 axis CNC using SmoothieBoard controller",
+        "manufacturer": "Smoothieware",
+        "name": "Generic SmoothieBoard",
+        "spindles": [
+            {
+                "id": "spindle1",
+                "max_power_kw": 2.2,
+                "max_rpm": 24000,
+                "min_rpm": 0,
+                "name": "Spindle 1",
+                "tool_axis": [
+                    0.0,
+                    0.0,
+                    -1.0
+                ],
+                "tool_change": "manual",
+                "coolant_flood": false,
+                "coolant_mist": false,
+                "coolant_delay": 0.0
+            }
+        ],
+        "units": "metric"
+    },
+    "output": {
+        "units": "metric",
+        "output_tool_length_offset": true,
+        "output_header": true,
+        "header": {
+            "include_date": true,
+            "include_description": true,
+            "include_document_name": true,
+            "include_machine_name": false,
+            "include_project_file": true,
+            "include_units": true,
+            "include_tool_list": false,
+            "include_fixture_list": true
+        },
+        "comments": {
+            "enabled": true,
+            "symbol": "(",
+            "include_operation_labels": true,
+            "include_blank_lines": true,
+            "output_bcnc_comments": true
+        },
+        "formatting": {
+            "line_numbers": false,
+            "line_number_start": 100,
+            "line_number_prefix": "N",
+            "line_increment": 10,
+            "command_space": " ",
+            "end_of_line_chars": "\n"
+        },
+        "precision": {
+            "axis": 3,
+            "feed": 3,
+            "spindle": 0
+        },
+        "duplicates": {
+            "commands": true,
+            "parameters": true
+        }
+    },
+    "postprocessor": {
+        "args": "",
+        "file_name": "smoothie"
+    },
+    "processing": {
+        "drill_cycles_to_translate": [
+            "G73",
+            "G81",
+            "G82",
+            "G83"
+        ],
+        "early_tool_prep": false,
+        "filter_inefficient_moves": false,
+        "spindle_wait": 0.0,
+        "split_arcs": false,
+        "suppress_commands": [],
+        "tool_change": true,
+        "translate_drill_cycles": false,
+        "translate_rapid_moves": false
+    },
+    "version": 1
+}

@@ -24,6 +24,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides utility functions to handle quantities and units."""
+
 ## @package units
 # \ingroup draftutils
 # \brief Provides utility functions to handle quantities and units.

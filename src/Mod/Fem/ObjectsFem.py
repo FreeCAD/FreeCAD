@@ -30,7 +30,6 @@ __url__ = "https://www.freecad.org"
 
 import FreeCAD
 
-
 # PythonFeatures from package femobjects
 # standard object name == class name == type without 'Fem::'
 
@@ -146,17 +145,17 @@ def makeConstraintElectricChargeDensity(doc, name="ElectricChargeDensity"):
     return obj
 
 
-def makeConstraintElectrostaticPotential(doc, name="ConstraintElectrostaticPotential"):
-    """makeConstraintElectrostaticPotential(document, [name]):
-    makes a Fem ElectrostaticPotential object"""
+def makeConstraintElectromagnetic(doc, name="ConstraintElectromagnetic"):
+    """makeConstraintElectromagnetic(document, [name]):
+    makes a Fem Electromagnetic object"""
     obj = doc.addObject("Fem::ConstraintPython", name)
-    from femobjects import constraint_electrostaticpotential
+    from femobjects import constraint_electromagnetic
 
-    constraint_electrostaticpotential.ConstraintElectrostaticPotential(obj)
+    constraint_electromagnetic.ConstraintElectromagnetic(obj)
     if FreeCAD.GuiUp:
-        from femviewprovider import view_constraint_electrostaticpotential
+        from femviewprovider import view_constraint_electromagnetic
 
-        view_constraint_electrostaticpotential.VPConstraintElectroStaticPotential(obj.ViewObject)
+        view_constraint_electromagnetic.VPConstraintElectromagnetic(obj.ViewObject)
     return obj
 
 
@@ -965,9 +964,22 @@ def makeSolverMystran(doc, name="SolverMystran"):
 def makeSolverZ88(doc, name="SolverZ88"):
     """makeSolverZ88(document, [name]):
     makes a Z88 solver object"""
-    import femsolver.z88.solver
+    obj = doc.addObject("Fem::FemSolverObjectPython", name)
+    from femobjects import solver_z88
 
-    obj = femsolver.z88.solver.create(doc, name)
+    solver_z88.SolverZ88(obj)
+
+    # some default values
+    obj.IntegrationOrderHexa = "3"
+    obj.IntegrationOrderQuad = "3"
+    obj.IntegrationOrderTetra = "4"
+    obj.IntegrationOrderTria = "7"
+    obj.ShellFlag = 3
+
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_solver_z88
+
+        view_solver_z88.VPSolverZ88(obj.ViewObject)
     return obj
 
 

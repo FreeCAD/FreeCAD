@@ -24,6 +24,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides general functions to work with topological shapes."""
+
 ## @package general
 # \ingroup draftgeoutils
 # \brief Provides general functions to work with topological shapes.

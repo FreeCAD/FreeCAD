@@ -701,20 +701,159 @@ class TestArchComponent(TestArchBase.TestArchBase):
                 msg="CSG pieces did not align. Base shape likely retained the offset.",
             )
 
-    def test_component_base_removal_cleanup(self):
-        """Test that removing the Base property clears the component shape."""
-        self.printTestMessage("ArchComponent Base Removal Cleanup...")
+    def test_component_without_base(self):
+        """Test that a component without a base retains its shape."""
+        self.printTestMessage("ArchComponent without Base test...")
 
-        box = self.document.addObject("Part::Box", "StaleTestBox")
-        comp = Arch.makeComponent(box)
+        box1 = self.document.addObject("Part::Box", "TestBox1")
+        box2 = self.document.addObject("Part::Box", "TestBox2")
+        self.document.recompute()
+        volume_box1 = box1.Shape.Volume
+        volume_box2 = box2.Shape.Volume  # Box2 will be deleted.
+
+        comp1 = Arch.makeComponent(box1)
+        comp2 = Arch.makeComponent(box2, delete=True)
         self.document.recompute()
 
-        self.assertFalse(comp.Shape.isNull(), "Component should have a shape initially.")
-
-        # Trigger the 'else' block
-        comp.Base = None
+        comp1.Base = None
         self.document.recompute()
 
-        self.assertTrue(
-            comp.Shape.isNull(), "Component retained a stale shape after its Base was removed."
+        self.assertAlmostEqual(
+            volume_box1,
+            comp1.Shape.Volume,
+            places=6,
+            msg="Wrong shape for baseless component!",
+        )
+
+        self.assertAlmostEqual(
+            volume_box2,
+            comp2.Shape.Volume,
+            places=6,
+            msg="Wrong shape for baseless component!",
+        )
+
+    def test_add_window_link_standard(self):
+        """Test adding a Window Link to a Wall using standard lifecycle (recompute before add).
+        This verifies the 'appLinkExecute' hook mechanism.
+        """
+        operation = "Arch Link addition (Standard Lifecycle)"
+        self.printTestMessage(operation)
+
+        # Create the host wall
+        line = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(4000, 0, 0))
+        wall = Arch.makeWall(line, width=200, height=3000, align="Center")
+        self.document.recompute()
+        initial_volume = wall.Shape.Volume
+
+        # Create a prototype window
+        rect = Draft.makeRectangle(length=1000, height=1500)
+        rect.Placement.Rotation = App.Rotation(App.Vector(1, 0, 0), 90)
+        rect.Placement.Base = App.Vector(0, 0, 0)
+        self.document.recompute()
+
+        win_proto = Arch.makeWindow(baseobj=rect, name="Window_Prototype")
+        win_proto.Width = 1000
+        win_proto.Height = 1500
+        win_proto.Frame = 100
+        self.document.recompute()
+
+        # Create a link to the prototype window and recompute
+        # This is the standard lifecycle
+        link1 = self.document.addObject("App::Link", "Link_Standard")
+        link1.LinkedObject = win_proto
+        link1.Placement.Base = App.Vector(1000, 0, 500)
+        self.document.recompute()  # Trigger appLinkExecute -> shadow_link_properties
+
+        # Add the window link to the wall
+        Arch.addComponents(link1, wall)
+        self.document.recompute()
+
+        # Assert
+        self.assertIn(wall, link1.Hosts, "Link should host the wall")
+        self.assertNotIn(wall, win_proto.Hosts, "Prototype should not host the wall")
+        self.assertLess(wall.Shape.Volume, initial_volume, "Wall volume should decrease (hole cut)")
+
+    def test_add_window_link_immediate(self):
+        """Test adding a Window Link to a Wall immediately without recomputing.
+        This verifies the 'ensure_link_overrides' safeguard mechanism.
+        """
+        operation = "Arch Link addition (Immediate Lifecycle)"
+        self.printTestMessage(operation)
+
+        # Create the host wall
+        line = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(4000, 0, 0))
+        wall = Arch.makeWall(line, width=200, height=3000, align="Center")
+        self.document.recompute()
+        initial_volume = wall.Shape.Volume
+
+        # Create a prototype window
+        rect = Draft.makeRectangle(length=1000, height=1500)
+        rect.Placement.Rotation = App.Rotation(App.Vector(1, 0, 0), 90)
+        rect.Placement.Base = App.Vector(0, 0, 0)
+        self.document.recompute()
+
+        win_proto = Arch.makeWindow(baseobj=rect, name="Window_Prototype")
+        win_proto.Width = 1000
+        win_proto.Height = 1500
+        win_proto.Frame = 100
+        self.document.recompute()
+
+        # Create a link to the prototype window without recomputing
+        link2 = self.document.addObject("App::Link", "Link_Immediate")
+        link2.LinkedObject = win_proto
+        link2.Placement.Base = App.Vector(3000, 0, 500)
+
+        # Add the window link to the wall immediately
+        # This triggers ensure_link_overrides -> shadow_link_properties
+        Arch.addComponents(link2, wall)
+        self.document.recompute()
+
+        # Assert
+        self.assertIn(wall, link2.Hosts, "Link should host the wall")
+        self.assertNotIn(wall, win_proto.Hosts, "Prototype should NOT host the wall")
+        self.assertLess(wall.Shape.Volume, initial_volume, "Wall volume should decrease (hole cut)")
+
+    def test_remove_window_link(self):
+        """Test removing a Window Link from a Wall."""
+        operation = "Arch Link removal"
+        self.printTestMessage(operation)
+
+        # Create the host wall
+        line = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(4000, 0, 0))
+        wall = Arch.makeWall(line, width=200, height=3000, align="Center")
+        self.document.recompute()
+        initial_volume = wall.Shape.Volume
+
+        # Create a prototype window
+        rect = Draft.makeRectangle(length=1000, height=1500)
+        rect.Placement.Rotation = App.Rotation(App.Vector(1, 0, 0), 90)
+        rect.Placement.Base = App.Vector(0, 0, 0)
+        self.document.recompute()
+
+        win_proto = Arch.makeWindow(baseobj=rect)
+        win_proto.Width = 1000
+        win_proto.Height = 1500
+        win_proto.Frame = 100
+        self.document.recompute()
+
+        # Create a link to the prototype window
+        link = self.document.addObject("App::Link", "Link_Remove")
+        link.LinkedObject = win_proto
+        link.Placement.Base = App.Vector(2000, 0, 500)
+        self.document.recompute()
+
+        # Add the window link to the wall, ensure it cuts the hole
+        Arch.addComponents(link, wall)
+        self.document.recompute()
+        cut_volume = wall.Shape.Volume
+        self.assertLess(cut_volume, initial_volume, "Setup failed: Wall not cut")
+
+        # Remove the window link from the wall
+        Arch.removeComponents([link])
+        self.document.recompute()
+
+        # Assert
+        self.assertNotIn(wall, link.Hosts, "Link should no longer host the wall")
+        self.assertAlmostEqual(
+            wall.Shape.Volume, initial_volume, 3, "Wall volume should be restored"
         )

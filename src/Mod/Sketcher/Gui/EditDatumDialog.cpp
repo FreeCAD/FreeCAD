@@ -75,18 +75,20 @@ bool SketcherGui::checkConstraintName(const Sketcher::SketchObject* sketch, std:
 }
 
 
-EditDatumDialog::EditDatumDialog(ViewProviderSketch* vp, int ConstrNbr)
+EditDatumDialog::EditDatumDialog(int tid, ViewProviderSketch* vp, int ConstrNbr)
     : ConstrNbr(ConstrNbr)
     , success(false)
+    , transactionID(tid)
 {
     sketch = vp->getSketchObject();
     const std::vector<Sketcher::Constraint*>& Constraints = sketch->Constraints.getValues();
     Constr = Constraints[ConstrNbr];
 }
 
-EditDatumDialog::EditDatumDialog(Sketcher::SketchObject* pcSketch, int ConstrNbr)
+EditDatumDialog::EditDatumDialog(int tid, Sketcher::SketchObject* pcSketch, int ConstrNbr)
     : sketch(pcSketch)
     , ConstrNbr(ConstrNbr)
+    , transactionID(tid)
 {
     const std::vector<Sketcher::Constraint*>& Constraints = sketch->Constraints.getValues();
     Constr = Constraints[ConstrNbr];
@@ -312,7 +314,7 @@ void EditDatumDialog::accepted()
                 );
             }
 
-            Gui::Command::commitCommand();
+            Gui::Command::commitCommand(transactionID);
 
             // THIS IS A WORK-AROUND NOT TO DELAY 0.19 RELEASE
             //
@@ -337,7 +339,7 @@ void EditDatumDialog::accepted()
         catch (const Base::Exception& e) {
             Gui::NotifyUserError(sketch, QT_TRANSLATE_NOOP("Notifications", "Value Error"), e.what());
 
-            Gui::Command::abortCommand();
+            Gui::Command::abortCommand(transactionID);
 
             if (sketch->noRecomputes) {  // if setdatum failed, it is highly likely that solver
                                          // information is invalid.
@@ -349,7 +351,7 @@ void EditDatumDialog::accepted()
 
 void EditDatumDialog::rejected()
 {
-    Gui::Command::abortCommand();
+    Gui::Command::abortCommand(transactionID);
     sketch->recomputeFeature();
 }
 
@@ -451,11 +453,21 @@ bool hasVisualFeature(App::DocumentObject* obj, App::DocumentObject* rootObj, Gu
 
 void EditDatumDialog::performAutoScale(double newDatum)
 {
+    const std::vector<Sketcher::Constraint*>& constraints = sketch->Constraints.getValues();
+    for (auto* constr : constraints) {
+        if (constr->Type == Sketcher::Group || constr->Type == Sketcher::Text) {
+            // Do not attempt to scale if there's a group
+            return;
+        }
+    }
+
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning"
     );
-    long autoScaleMode
-        = hGrp->GetInt("AutoScaleMode", static_cast<int>(SketcherGui::AutoScaleMode::Always));
+    long autoScaleMode = hGrp->GetInt(
+        "AutoScaleMode",
+        static_cast<int>(SketcherGui::AutoScaleMode::WhenNoScaleFeatureIsVisible)
+    );
 
     // There is a single constraint in the sketch so it can
     // be used as a reference to scale the geometries around the origin

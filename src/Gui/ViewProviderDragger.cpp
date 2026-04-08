@@ -121,14 +121,6 @@ bool ViewProviderDragger::doubleClicked()
     return true;
 }
 
-void ViewProviderDragger::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
-{
-    QIcon iconObject = mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap("Std_TransformManip.svg"));
-    QAction* act = menu->addAction(iconObject, QObject::tr("Transform"), receiver, member);
-    act->setData(QVariant((int)ViewProvider::Transform));
-    ViewProviderDocumentObject::setupContextMenu(menu, receiver, member);
-}
-
 ViewProvider* ViewProviderDragger::startEditing(int mode)
 {
     forwardedViewProvider = nullptr;
@@ -152,8 +144,10 @@ bool ViewProviderDragger::forwardToLink()
         ViewProviderDocumentObject* vpParent = nullptr;
         std::string subname;
 
-        auto doc = Application::Instance->editDocument();
-        if (!doc) {
+        // since we don't want to edit another document, only forward if the
+        // current document is in edit
+        auto doc = getDocument();
+        if (!Application::Instance->isInEdit(doc)) {
             return nullptr;
         }
 
@@ -209,7 +203,7 @@ bool ViewProviderDragger::setEdit(int ModNum)
     transformDragger->addFinishCallback(dragFinishCallback, this);
     transformDragger->addMotionCallback(dragMotionCallback, this);
 
-    Gui::Control().showDialog(getTransformDialog());
+    Gui::Control().showDialog(getTransformDialog(), getDocument()->getDocument());
 
     updateDraggerPosition();
 
@@ -222,7 +216,7 @@ void ViewProviderDragger::unsetEdit(int ModNum)
 
     transformDragger.reset();
 
-    Gui::Control().closeDialog();
+    Gui::Control().closeDialog(getDocument()->getDocument());
 }
 
 void ViewProviderDragger::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
@@ -363,16 +357,20 @@ Base::Rotation Gui::ViewProviderDragger::orthonormalize(
         z = x.Cross(y);
         z.Normalize();
     }
-    else if (components.testFlag(Gui::ViewProviderDragger::DraggerComponent::XRot)
-             && components.testFlag(Gui::ViewProviderDragger::DraggerComponent::ZRot)) {
+    else if (
+        components.testFlag(Gui::ViewProviderDragger::DraggerComponent::XRot)
+        && components.testFlag(Gui::ViewProviderDragger::DraggerComponent::ZRot)
+    ) {
         x.Normalize();
         z = z - x * (x * z);
         z.Normalize();
         y = z.Cross(x);
         y.Normalize();
     }
-    else if (components.testFlag(Gui::ViewProviderDragger::DraggerComponent::YRot)
-             && components.testFlag(Gui::ViewProviderDragger::DraggerComponent::ZRot)) {
+    else if (
+        components.testFlag(Gui::ViewProviderDragger::DraggerComponent::YRot)
+        && components.testFlag(Gui::ViewProviderDragger::DraggerComponent::ZRot)
+    ) {
         y.Normalize();
         z = z - y * (y * z);
         z.Normalize();

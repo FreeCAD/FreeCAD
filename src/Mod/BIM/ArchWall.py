@@ -605,105 +605,6 @@ class _Wall(ArchComponent.Component):
                         return
                 elif obj.Base.Shape.Solids:
                     base = Part.Shape(obj.Base.Shape)
-                # blocks calculation
-                elif hasattr(obj, "MakeBlocks") and hasattr(self, "basewires"):
-                    if obj.MakeBlocks and self.basewires and extdata and obj.Width and obj.Height:
-                        # print "calculating blocks"
-                        if len(self.basewires) == 1:
-                            blocks = []
-                            n = FreeCAD.Vector(extv)
-                            n.normalize()
-                            cuts1 = []
-                            cuts2 = []
-                            if obj.BlockLength.Value:
-                                for i in range(2):
-                                    if i == 0:
-                                        offset = obj.OffsetFirst.Value
-                                    else:
-                                        offset = obj.OffsetSecond.Value
-
-                                    # only 1 wire (first) is supported
-                                    # TODO - Can support multiple wires?
-
-                                    # self.basewires was list of list of edges,
-                                    # no matter Base is DWire, Sketch or else
-                                    # See discussion - https://forum.freecad.org/viewtopic.php?t=86365
-                                    baseEdges = self.basewires[0]
-
-                                    for edge in baseEdges:
-                                        while offset < (edge.Length - obj.Joint.Value):
-                                            if offset:
-                                                t = edge.tangentAt(offset)
-                                                p = t.cross(n)
-                                                p.multiply(1.1 * obj.Width.Value + obj.Offset.Value)
-                                                p1 = edge.valueAt(offset).add(p)
-                                                p2 = edge.valueAt(offset).add(p.negative())
-                                                sh = Part.LineSegment(p1, p2).toShape()
-                                                if obj.Joint.Value:
-                                                    sh = sh.extrude(-t.multiply(obj.Joint.Value))
-                                                sh = sh.extrude(n)
-                                                if i == 0:
-                                                    cuts1.append(sh)
-                                                else:
-                                                    cuts2.append(sh)
-                                            offset += obj.BlockLength.Value + obj.Joint.Value
-                                        offset -= edge.Length
-
-                            base_face = base_faces[0]
-                            if obj.BlockHeight.Value:
-                                fsize = obj.BlockHeight.Value + obj.Joint.Value
-                                bh = obj.BlockHeight.Value
-                            else:
-                                fsize = obj.Height.Value
-                                bh = obj.Height.Value
-                            bvec = FreeCAD.Vector(n)
-                            bvec.multiply(bh)
-                            svec = FreeCAD.Vector(n)
-                            svec.multiply(fsize)
-                            if cuts1:
-                                faces1 = base_face.cut(cuts1).Faces
-                            else:
-                                faces1 = base_face.Faces
-                            blocks1 = Part.makeCompound([f.extrude(bvec) for f in faces1])
-                            if cuts2:
-                                faces2 = base_face.cut(cuts2).Faces
-                            else:
-                                faces2 = base_face.Faces
-                            blocks2 = Part.makeCompound([f.extrude(bvec) for f in faces2])
-                            interval = extv.Length / (fsize)
-                            entire = int(interval)
-                            rest = interval - entire
-                            for i in range(entire):
-                                if i % 2:  # odd
-                                    b = Part.Shape(blocks2)
-                                else:
-                                    b = Part.Shape(blocks1)
-                                if i:
-                                    t = FreeCAD.Vector(svec)
-                                    t.multiply(i)
-                                    b.translate(t)
-                                blocks.append(b)
-                            if rest:
-                                rest = extv.Length - (entire * fsize)
-                                rvec = FreeCAD.Vector(n)
-                                rvec.multiply(rest)
-                                if entire % 2:
-                                    b = Part.makeCompound([f.extrude(rvec) for f in faces2])
-                                else:
-                                    b = Part.makeCompound([f.extrude(rvec) for f in faces1])
-                                t = FreeCAD.Vector(svec)
-                                t.multiply(entire)
-                                b.translate(t)
-                                blocks.append(b)
-                            if blocks:
-                                base = Part.makeCompound(blocks)
-
-                        else:
-                            FreeCAD.Console.PrintWarning(
-                                translate("Arch", "Cannot compute blocks for wall")
-                                + obj.Label
-                                + "\n"
-                            )
 
             elif obj.Base.isDerivedFrom("Mesh::Feature"):
                 if obj.Base.Mesh.isSolid():
@@ -716,6 +617,12 @@ class _Wall(ArchComponent.Component):
                                 translate("Arch", "This mesh is an invalid solid") + "\n"
                             )
                             obj.Base.ViewObject.show()
+        # Blocks calculation
+        if hasattr(obj, "MakeBlocks") and hasattr(self, "basewires"):
+            if obj.MakeBlocks and self.basewires and extdata and obj.Width and obj.Height:
+                blocks = self._make_blocks(obj, base_faces[0], extv)
+                if blocks is not None:
+                    base = blocks
         if not base:
             # FreeCAD.Console.PrintError(translate("Arch","Error: Invalid base object")+"\n")
             # return
@@ -751,7 +658,7 @@ class _Wall(ArchComponent.Component):
                     obj.CountBroken = 0
 
         # set the length property
-        if self.connectEdges:
+        if hasattr(self, "connectEdges") and self.connectEdges:
             l = float(0)
             for e in self.connectEdges:
                 l += e.Length
@@ -1707,6 +1614,124 @@ class _Wall(ArchComponent.Component):
                             layers.append(varwidth)
         return layers
 
+    def _make_blocks(self, obj, base_face, extv):
+        """Cut a wall's base face into block-sized pieces and stack them.
+
+        Uses self.basewires (a list of lists of edges representing the wall's centerline) to compute
+        vertical cutting planes at block boundaries. The base face is then cut and extruded in
+        alternating rows to produce a brick-like pattern.
+
+        Parameters
+        ----------
+        obj : FreeCAD.DocumentObject
+            The wall object. Its block properties (BlockLength, BlockHeight, Joint, OffsetFirst,
+            OffsetSecond) control the block layout.
+        base_face : Part.Face
+            The 2D cross-section face to be cut into blocks and extruded.
+        extv : FreeCAD.Vector
+            The extrusion vector (direction and magnitude of the wall height).
+
+        Returns
+        -------
+        Part.Compound or None
+            A compound of block solids, or None if blocks could not be computed.
+        """
+        import Part
+
+        if len(self.basewires) != 1:
+            FreeCAD.Console.PrintWarning(
+                translate("Arch", "Cannot compute blocks for wall") + obj.Label + "\n"
+            )
+            return None
+
+        n = FreeCAD.Vector(extv)
+        n.normalize()
+        cuts1 = []
+        cuts2 = []
+        if obj.BlockLength.Value:
+            for i in range(2):
+                if i == 0:
+                    offset = obj.OffsetFirst.Value
+                else:
+                    offset = obj.OffsetSecond.Value
+
+                # only 1 wire (first) is supported
+                # TODO - Can support multiple wires?
+
+                # self.basewires was list of list of edges,
+                # no matter Base is DWire, Sketch or else
+                # See discussion - https://forum.freecad.org/viewtopic.php?t=86365
+                baseEdges = self.basewires[0]
+
+                for edge in baseEdges:
+                    while offset < (edge.Length - obj.Joint.Value):
+                        if offset:
+                            t = edge.tangentAt(offset)
+                            p = t.cross(n)
+                            p.multiply(1.1 * obj.Width.Value + obj.Offset.Value)
+                            p1 = edge.valueAt(offset).add(p)
+                            p2 = edge.valueAt(offset).add(p.negative())
+                            sh = Part.LineSegment(p1, p2).toShape()
+                            if obj.Joint.Value:
+                                sh = sh.extrude(-t.multiply(obj.Joint.Value))
+                            sh = sh.extrude(n)
+                            if i == 0:
+                                cuts1.append(sh)
+                            else:
+                                cuts2.append(sh)
+                        offset += obj.BlockLength.Value + obj.Joint.Value
+                    offset -= edge.Length
+
+        blocks = []
+        if obj.BlockHeight.Value:
+            fsize = obj.BlockHeight.Value + obj.Joint.Value
+            bh = obj.BlockHeight.Value
+        else:
+            fsize = obj.Height.Value
+            bh = obj.Height.Value
+        bvec = FreeCAD.Vector(n)
+        bvec.multiply(bh)
+        svec = FreeCAD.Vector(n)
+        svec.multiply(fsize)
+        if cuts1:
+            faces1 = base_face.cut(cuts1).Faces
+        else:
+            faces1 = base_face.Faces
+        blocks1 = Part.makeCompound([f.extrude(bvec) for f in faces1])
+        if cuts2:
+            faces2 = base_face.cut(cuts2).Faces
+        else:
+            faces2 = base_face.Faces
+        blocks2 = Part.makeCompound([f.extrude(bvec) for f in faces2])
+        interval = extv.Length / (fsize)
+        entire = int(interval)
+        rest = interval - entire
+        for i in range(entire):
+            if i % 2:  # odd
+                b = Part.Shape(blocks2)
+            else:
+                b = Part.Shape(blocks1)
+            if i:
+                t = FreeCAD.Vector(svec)
+                t.multiply(i)
+                b.translate(t)
+            blocks.append(b)
+        if rest:
+            rest = extv.Length - (entire * fsize)
+            rvec = FreeCAD.Vector(n)
+            rvec.multiply(rest)
+            if entire % 2:
+                b = Part.makeCompound([f.extrude(rvec) for f in faces2])
+            else:
+                b = Part.makeCompound([f.extrude(rvec) for f in faces1])
+            t = FreeCAD.Vector(svec)
+            t.multiply(entire)
+            b.translate(t)
+            blocks.append(b)
+        if blocks:
+            return Part.makeCompound(blocks)
+        return None
+
     def build_base_from_scratch(self, obj):
         """Generate the 2D profile for extruding a baseless Arch Wall.
 
@@ -1783,6 +1808,11 @@ class _Wall(ArchComponent.Component):
             offset += abs(layer)
 
         placement = FreeCAD.Placement()
+
+        # Set basewires so blocks calculation can use the centerline edge.
+        p1 = Vector(-safe_length / 2, 0, 0)
+        p2 = Vector(safe_length / 2, 0, 0)
+        self.basewires = [[Part.LineSegment(p1, p2).toShape()]]
 
         return base_faces, placement
 

@@ -687,7 +687,7 @@ void SelectionView::onItemContextMenu(const QPoint& point)
 void SelectionView::onUpdate()
 {}
 
-bool SelectionView::onMsg(const char* /*pMsg*/, const char** /*ppReturn*/)
+bool SelectionView::onMsg(const char* /*pMsg*/)
 {
     return false;
 }

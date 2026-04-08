@@ -84,6 +84,7 @@ public:
     App::PropertyPercent Transparency;
     App::PropertyBool PlainColorEdgeOnSurface;
     App::PropertyColor EdgeColor;
+    App::PropertyColor NoneFieldColor;
     App::PropertyFloatConstraint LineWidth;
     App::PropertyFloatConstraint PointSize;
 

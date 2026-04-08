@@ -31,9 +31,8 @@ target_include_directories(
     SYSTEM
     PUBLIC
     ${Boost_INCLUDE_DIRS}
-    ${PYCXX_INCLUDE_DIR}
+    ${PYCXX_INCLUDE_DIRS}
     ${Python3_INCLUDE_DIRS}
-    ${QtCore_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${ZIPIOS_INCLUDES}
@@ -86,8 +85,6 @@ if(BUILD_TRACY_FRAME_PROFILER)
     list(APPEND FreeCADBase_LIBS TracyClient)
 endif()
 
-list(APPEND FreeCADBase_LIBS ${QtCore_LIBRARIES})
-
 list(APPEND FreeCADBase_LIBS libfastsignals fmt::fmt)
 
 if (BUILD_DYNAMIC_LINK_PYTHON)
@@ -128,13 +125,6 @@ if(SWIG_FOUND)
 endif(SWIG_FOUND)
 
 SOURCE_GROUP("pycxx" FILES ${PYCXX_SOURCES})
-
-# auto-generate resource file with all available translations
-set (FreeCADBase_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Base_translation.qrc)
-qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
-    ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
-qt_create_resource_file(${FreeCADBase_TR_QRC} ${QM_SRCS})
-qt_add_resources(FreeCADBase_QRC_SRCS ${FreeCADBase_TR_QRC})
 
 SET(FreeCADBase_Pyi_SRCS
     Axis.pyi
@@ -193,13 +183,12 @@ SET(FreeCADBase_CPP_SRCS
     Color.cpp
     CoordinateSystem.cpp
     CoordinateSystemPyImp.cpp
-    Debugger.cpp
     DualQuaternion.cpp
     Exception.cpp
     ExceptionFactory.cpp
     Factory.cpp
     FileInfo.cpp
-    FutureWatcherProgress.cpp
+    FileLock.cpp
     GeometryPyCXX.cpp
     Handle.cpp
     InputSource.cpp
@@ -233,6 +222,7 @@ SET(FreeCADBase_CPP_SRCS
     Tools.cpp
     Tools2D.cpp
     Tools3D.cpp
+    Translation.cpp
     Translate.cpp
     Type.cpp
     TypePyImp.cpp
@@ -264,14 +254,13 @@ SET(FreeCADBase_HPP_SRCS
     Converter.h
     Color.h
     CoordinateSystem.h
-    Debugger.h
     DualNumber.h
     DualQuaternion.h
     Exception.h
     ExceptionFactory.h
     Factory.h
     FileInfo.h
-    FutureWatcherProgress.h
+    FileLock.h
     GeometryPyCXX.h
     Handle.h
     InputSource.h
@@ -301,6 +290,7 @@ SET(FreeCADBase_HPP_SRCS
     Tools.h
     Tools2D.h
     Tools3D.h
+    Translation.h
     Translate.h
     Type.h
     UnlimitedUnsigned.h
@@ -315,7 +305,6 @@ SET(FreeCADBase_HPP_SRCS
 
 SET(FreeCADBase_SRCS
     ${PYCXX_SOURCES}
-    ${FreeCADBase_QRC_SRCS}
     ${FreeCADBase_CPP_SRCS}
     ${FreeCADBase_HPP_SRCS}
     ${FreeCADBase_Pyi_SRCS}

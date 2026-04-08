@@ -41,7 +41,7 @@
 
 // FreeCAD doc header
 #include <App/Application.h>
-
+#include <App/ProgramInformation.h>
 
 using App::Application;
 using Base::Console;
@@ -89,18 +89,18 @@ int main(int argc, char** argv)
         exit(1);
     }
     catch (const Base::ProgramInformation& e) {
-        if (std::strcmp(e.what(), App::Application::verboseVersionEmitMessage) == 0) {
-            QString data;
-            QTextStream str(&data);
+        if (std::strcmp(e.what(), App::ProgramInformation::verboseVersionEmitMessage) == 0) {
+            std::stringstream str;
             const std::map<std::string, std::string> config = App::Application::Config();
 
-            App::Application::getVerboseCommonInfo(str, config);
-            App::Application::getVerboseAddOnsInfo(str, config);
+            App::ProgramInformation::getVerboseCommonInfo(str, config);
+            App::ProgramInformation::getVerboseAddOnsInfo(str, config);
 
-            std::cout << data.toStdString();
-            exit(0);
+            std::cout << str.str();
         }
-        std::cout << e.what();
+        else {
+            std::cout << e.what();
+        }
         exit(0);
     }
     catch (const Base::Exception& e) {

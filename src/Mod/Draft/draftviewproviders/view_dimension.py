@@ -31,6 +31,7 @@ These include linear dimensions, including radius and diameter,
 as well as angular dimensions.
 They inherit their behavior from the base Annotation viewprovider.
 """
+
 ## @package view_dimension
 # \ingroup draftviewproviders
 # \brief Provides the viewprovider code for the Dimension objects.
@@ -889,6 +890,10 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
 
         arcsegs = 24
 
+        # for ext lines
+        self.p1 = obj.Center
+        self.p4 = obj.Center
+
         vobj = obj.ViewObject
 
         # Determine the orientation of the text by using a normal direction.
@@ -906,6 +911,22 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
         self.p3 = self.circle.Vertexes[-1].Point
         midp = DraftGeomUtils.findMidpoint(self.circle)
         ray = midp - obj.Center
+
+        proj1 = obj.Center - self.p2
+        proj2 = obj.Center - self.p3
+        if hasattr(vobj, "ExtLines") and hasattr(vobj, "ScaleMultiplier"):
+            # The scale multiplier also affects the value
+            # of the extension line; this makes sure a maximum length
+            # is used if the calculated value is larger than it.
+            dmax = vobj.ExtLines.Value * vobj.ScaleMultiplier
+            if dmax and proj1.Length > dmax:
+                if dmax > 0:
+                    self.p1 = self.p2 + DraftVecUtils.scaleTo(proj1, dmax)
+                    self.p4 = self.p3 + DraftVecUtils.scaleTo(proj2, dmax)
+                else:
+                    rest = proj1.Length + dmax
+                    self.p1 = self.p2 + DraftVecUtils.scaleTo(proj1, rest)
+                    self.p4 = self.p3 + DraftVecUtils.scaleTo(proj2, rest)
 
         # Set text value
         if obj.LastAngle.Value > obj.FirstAngle.Value:
@@ -958,16 +979,26 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
                     else:
                         pts2.append([p.x, p.y, p.z])
 
-            self.coords.point.setValues(pts1 + pts2)
-
             pts1_num = len(pts1)
             pts2_num = len(pts2)
-            i1 = pts1_num
-            i2 = i1 + pts2_num
 
-            self.arc.coordIndex.setValues(
-                0, pts1_num + pts2_num + 1, list(range(pts1_num)) + [-1] + list(range(i1, i2))
+            # fmt: off
+            ext_pts = [[self.p1.x, self.p1.y, self.p1.z],
+                       [self.p4.x, self.p4.y, self.p4.z]]
+            # fmt: on
+
+            self.coords.point.setValues(pts1 + pts2 + ext_pts)
+
+            p1_idx = pts1_num + pts2_num
+            p4_idx = p1_idx + 1
+            all_indices = (
+                [p1_idx]
+                + list(range(pts1_num))
+                + [-1]
+                + list(range(pts1_num, pts1_num + pts2_num))
+                + [p4_idx]
             )
+            self.arc.coordIndex.setValues(0, len(all_indices), all_indices)
 
             if pts1_num >= 3 and pts2_num >= 3:
                 self.circle1 = Part.Arc(
@@ -986,8 +1017,16 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
                 p = self.circle.valueAt(first + (last - first) / arcsegs * i)
                 pts.append([p.x, p.y, p.z])
 
-            self.coords.point.setValues(pts)
-            self.arc.coordIndex.setValues(0, arcsegs + 1, list(range(arcsegs + 1)))
+            # fmt: off
+            ext_pts = [[self.p1.x, self.p1.y, self.p1.z],
+                       [self.p4.x, self.p4.y, self.p4.z]]
+            # fmt: on
+
+            self.coords.point.setValues(pts + ext_pts)
+            p1_idx = len(pts)
+            p4_idx = p1_idx + 1
+            all_indices = [p1_idx] + list(range(arcsegs + 1)) + [p4_idx]
+            self.arc.coordIndex.setValues(0, len(all_indices), all_indices)
 
         # Set the arrow coords and rotation
         p2 = (self.p2.x, self.p2.y, self.p2.z)

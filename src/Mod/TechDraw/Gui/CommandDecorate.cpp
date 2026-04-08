@@ -73,8 +73,8 @@ CmdTechDrawToggleFrame::CmdTechDrawToggleFrame()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Turn View Frames On/Off");
-    sToolTipText    = QT_TR_NOOP("Turn View Frames On/Off");
+    sMenuText       = QT_TR_NOOP("Toggle View Frames");
+    sToolTipText    = QT_TR_NOOP("Toggles visibility of view frames and vertices");
     sWhatsThis      = "TechDraw_Toggle";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/TechDraw_ToggleFrame";
@@ -123,6 +123,42 @@ bool CmdTechDrawToggleFrame::isActive()
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
     return (havePage && haveView && PreferencesGui::getViewFrameMode() == ViewFrameMode::Manual);
+}
+
+//===========================================================================
+// TechDraw_ToggleGrid
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawToggleGrid)
+
+CmdTechDrawToggleGrid::CmdTechDrawToggleGrid()
+  : Command("TechDraw_ToggleGrid")
+{
+    sAppModule   = "TechDraw";
+    sGroup       = QT_TR_NOOP("TechDraw");
+    sMenuText    = QT_TR_NOOP("Toggle Grid");
+    sToolTipText = QT_TR_NOOP("Toggles the grid on the active page");
+    sWhatsThis   = "TechDraw_ToggleGrid";
+    sStatusTip   = sToolTipText;
+}
+
+void CmdTechDrawToggleGrid::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    auto mvp = dynamic_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
+    if (!mvp) {
+        return;
+    }
+    ViewProviderPage* vpp = mvp->getViewProviderPage();
+    if (!vpp) {
+        return;
+    }
+    vpp->ShowGrid.setValue(!vpp->ShowGrid.getValue());
+}
+
+bool CmdTechDrawToggleGrid::isActive()
+{
+    return DrawGuiUtil::needPage(this);
 }
 
 //===========================================================================
@@ -319,17 +355,20 @@ void CmdTechDrawImage::activated(int iMsg)
     std::string PageName = page->getNameInDocument();
 
     // Reading an image
+    QStringList filterList;
+    filterList << QString::fromUtf8(QT_TR_NOOP("Image files (*.jpg *.jpeg *.png *.bmp)"));
+    filterList << QString::fromUtf8(QT_TR_NOOP("All files (*)"));
     QString fileName = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(),
         QString::fromUtf8(QT_TR_NOOP("Select an image file")),
         Preferences::defaultSymbolDir(),
-        QString::fromUtf8(QT_TR_NOOP("Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)")));
+        filterList);
     if (fileName.isEmpty()) {
         return;
     }
 
     std::string FeatName = getUniqueObjectName("Image");
-    fileName = Base::Tools::escapeEncodeFilename(fileName);
-    auto filespec = DU::cleanFilespecBackslash(fileName.toStdString());
+    auto filespec = DU::cleanFilespecBackslash(
+        Base::Tools::escapeEncodeFilename(fileName.toStdString()));
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Create Image"));
     doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewImage', '%s')", FeatName.c_str());
@@ -362,6 +401,7 @@ void CreateTechDrawCommandsDecorate()
     rcCmdMgr.addCommand(new CmdTechDrawGeometricHatch());
     rcCmdMgr.addCommand(new CmdTechDrawImage());
     rcCmdMgr.addCommand(new CmdTechDrawToggleFrame());
+    rcCmdMgr.addCommand(new CmdTechDrawToggleGrid());
 
 //    rcCmdMgr.addCommand(new CmdTechDrawLeaderLine());
 //    rcCmdMgr.addCommand(new CmdTechDrawRichTextAnnotation());

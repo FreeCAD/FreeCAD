@@ -25,6 +25,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides GUI tools to apply styles to objects."""
+
 ## @package gui_styles
 # \ingroup draftguitools
 # \brief Provides GUI tools to apply styles to objects.

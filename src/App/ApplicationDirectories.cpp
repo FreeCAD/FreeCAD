@@ -80,12 +80,16 @@ const fs::path& ApplicationDirectories::getTempPath() const {
     return this->_temp;
 }
 
-fs::path ApplicationDirectories::getTempFileName(const std::string & filename) const {
+fs::path ApplicationDirectories::getTempFileName(const std::string & filename) const
+{
     auto tempPath = Base::FileInfo::pathToString(getTempPath());
     if (filename.empty()) {
-        return Base::FileInfo::getTempFileName(nullptr, tempPath.c_str());
+        return Base::FileInfo::stringToPath(Base::FileInfo::getTempFileName(nullptr, tempPath.c_str())
+        );
     }
-    return Base::FileInfo::getTempFileName(filename.c_str(), tempPath.c_str());
+    return Base::FileInfo::stringToPath(
+        Base::FileInfo::getTempFileName(filename.c_str(), tempPath.c_str())
+    );
 }
 
 const fs::path& ApplicationDirectories::getUserCachePath() const
@@ -157,7 +161,9 @@ fs::path ApplicationDirectories::findPath(const fs::path& stdHome, const fs::pat
     return appData;
 }
 
-void ApplicationDirectories::appendVersionIfPossible(const fs::path& basePath, std::vector<std::string> &subdirs) const
+void ApplicationDirectories::appendVersionIfPossible(const fs::path& basePath,
+                                                     std::vector<std::string> &subdirs,
+                                                     MissingDirectoryBehavior behavior) const
 {
     fs::path pathToCheck = basePath;
     for (const auto& it : subdirs) {
@@ -166,7 +172,16 @@ void ApplicationDirectories::appendVersionIfPossible(const fs::path& basePath, s
     if (isVersionedPath(pathToCheck)) {
         return; // Bail out if it's already versioned
     }
-    if (fs::exists(pathToCheck)) {
+    if (behavior == MissingDirectoryBehavior::create) {
+        // Always use the current version, creating the directory if needed
+        auto [major, minor] = _currentVersion;
+        auto versionString = versionStringForPath(major, minor);
+        subdirs.emplace_back(versionString);
+        auto versionedDir = pathToCheck / versionString;
+        if (!fs::exists(versionedDir)) {
+            fs::create_directories(versionedDir);
+        }
+    } else if (fs::exists(pathToCheck)) {
         std::string version = mostRecentAvailableConfigVersion(pathToCheck);
         if (!version.empty()) {
             subdirs.emplace_back(std::move(version));
@@ -182,7 +197,7 @@ void ApplicationDirectories::configurePaths(std::map<std::string,std::string>& m
     bool keepDeprecatedPaths = mConfig.contains("KeepDeprecatedPaths");
 
     // std paths
-    _home = fs::path(mConfig.at("AppHomePath"));
+    _home = Base::FileInfo::stringToPath(mConfig.at("AppHomePath"));
     mConfig["BinPath"] = mConfig.at("AppHomePath") + "bin" + PATHSEP;
     mConfig["DocPath"] = mConfig.at("AppHomePath") + "doc" + PATHSEP;
 
@@ -223,7 +238,7 @@ void ApplicationDirectories::configurePaths(std::map<std::string,std::string>& m
     // User data path
     //
     auto dataSubdirs = subdirs;
-    appendVersionIfPossible(dataHome, dataSubdirs);
+    appendVersionIfPossible(dataHome, dataSubdirs, MissingDirectoryBehavior::doNotAppend);
     fs::path data = findPath(dataHome, customData, dataSubdirs, true);
     _userAppData = data;
     mConfig["UserAppData"] = Base::FileInfo::pathToString(data) + PATHSEP;
@@ -232,7 +247,7 @@ void ApplicationDirectories::configurePaths(std::map<std::string,std::string>& m
     // User config path
     //
     auto configSubdirs = subdirs;
-    appendVersionIfPossible(configHome, configSubdirs);
+    appendVersionIfPossible(configHome, configSubdirs, MissingDirectoryBehavior::doNotAppend);
     fs::path config = findPath(configHome, customHome, configSubdirs, true);
     _userConfig = config;
     mConfig["UserConfigPath"] = Base::FileInfo::pathToString(config) + PATHSEP;
@@ -240,9 +255,10 @@ void ApplicationDirectories::configurePaths(std::map<std::string,std::string>& m
 
     // User cache path
     //
-    std::vector<std::string> cachedirs = subdirs;
-    cachedirs.emplace_back("Cache");
-    fs::path cache = findPath(cacheHome, customTemp, cachedirs, true);
+    std::vector<std::string> cacheDirs = subdirs;
+    appendVersionIfPossible(cacheHome, cacheDirs, MissingDirectoryBehavior::create);
+    cacheDirs.emplace_back("Cache");
+    fs::path cache = findPath(cacheHome, customTemp, cacheDirs, true);
     _userCache = cache;
     mConfig["UserCachePath"] = Base::FileInfo::pathToString(cache) + PATHSEP;
 
@@ -298,7 +314,7 @@ void ApplicationDirectories::configureResourceDirectory(const std::map<std::stri
         _resource = Base::FileInfo::stringToPath(mConfig.at("AppHomePath")) / path;
     }
 #else
-    _resource = fs::path(mConfig.at("AppHomePath"));
+    _resource = Base::FileInfo::stringToPath(mConfig.at("AppHomePath"));
 #endif
 }
 
@@ -554,23 +570,57 @@ bool ApplicationDirectories::usingCurrentVersionConfig(fs::path config) const {
     return version == versionStringForPath(std::get<0>(_currentVersion), std::get<1>(_currentVersion));
 }
 
-void ApplicationDirectories::migrateConfig(const fs::path &oldPath, const fs::path &newPath)
+ApplicationDirectories::MigrationResult ApplicationDirectories::migrateConfig(
+    const fs::path& oldPath,
+    const fs::path& newPath)
 {
+    MigrationResult result;
     fs::create_directories(newPath);
-    for (auto& file : fs::directory_iterator(oldPath)) {
+    std::error_code errorCode;
+    for (auto& file : fs::directory_iterator(oldPath, errorCode)) {
         if (file == newPath) {
             // Handle the case where newPath is a subdirectory of oldPath
             continue;
         }
-        fs::copy(file.path(),
-                 newPath / file.path().filename(),
-                 fs::copy_options::recursive | fs::copy_options::copy_symlinks);
+        auto sourcePath = file.path();
+        auto pathString = Base::FileInfo::pathToString(sourcePath);
+
+        if (file.is_symlink(errorCode)) {
+            auto target = fs::read_symlink(sourcePath, errorCode);
+            if (errorCode || !fs::exists(target, errorCode)) {
+                Base::Console().warning("Migration: skipping broken symlink '%s'\n",
+                                        pathString.c_str());
+                result.failedPaths.push_back(sourcePath);
+                continue;
+            }
+        }
+
+        try {
+            fs::copy(sourcePath,
+                     newPath / sourcePath.filename(),
+                     fs::copy_options::recursive | fs::copy_options::copy_symlinks);
+        }
+        catch (const fs::filesystem_error& error) {
+            Base::Console().warning("Migration: failed to copy '%s': %s\n",
+                                    pathString.c_str(),
+                                    error.what());
+            result.failedPaths.push_back(sourcePath);
+        }
     }
+    if (errorCode) {
+        Base::Console().warning("Migration: error iterating '%s': %s\n",
+                                Base::FileInfo::pathToString(oldPath).c_str(),
+                                errorCode.message().c_str());
+    }
+    return result;
 }
 
-void ApplicationDirectories::migrateAllPaths(const std::vector<fs::path> &paths) const {
+ApplicationDirectories::MigrationResult ApplicationDirectories::migrateAllPaths(
+    const std::vector<fs::path>& paths) const
+{
+    MigrationResult allResult;
     auto [major, minor] = _currentVersion;
-    std::set<fs::path> uniquePaths (paths.begin(), paths.end());
+    std::set<fs::path> uniquePaths(paths.begin(), paths.end());
     for (auto path : uniquePaths) {
         if (path.filename().empty()) {
             // Handle the case where the path was constructed from a std::string with a trailing /
@@ -579,16 +629,29 @@ void ApplicationDirectories::migrateAllPaths(const std::vector<fs::path> &paths)
         fs::path newPath;
         if (isVersionedPath(path)) {
             newPath = path.parent_path() / versionStringForPath(major, minor);
-        } else {
+        }
+        else {
             newPath = path / versionStringForPath(major, minor);
         }
-        Base::Console().message("Migrating config from %s to %s\n", Base::FileInfo::pathToString(path), Base::FileInfo::pathToString(newPath));
+        Base::Console().message("Migrating config from %s to %s\n",
+                                Base::FileInfo::pathToString(path),
+                                Base::FileInfo::pathToString(newPath));
         if (fs::exists(newPath)) {
             continue;  // Ignore an existing path: not an error, just a migration that was already done
         }
         fs::create_directories(newPath);
-        migrateConfig(path, newPath);
+        auto result = migrateConfig(path, newPath);
+        allResult.migratedPaths.emplace_back(path, newPath);
+        allResult.failedPaths.insert(allResult.failedPaths.end(),
+                                     result.failedPaths.begin(),
+                                     result.failedPaths.end());
     }
+    if (!allResult.failedPaths.empty()) {
+        Base::Console().warning("Migration completed with %d skipped file(s). "
+                                "See warnings above for details.\n",
+                                static_cast<int>(allResult.failedPaths.size()));
+    }
+    return allResult;
 }
 
 // TODO: Consider using this for all UNIX-like OSes

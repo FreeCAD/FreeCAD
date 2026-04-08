@@ -113,7 +113,7 @@ public:
     void widthChanged();
     void textChanged();
     void selectionChanged();
-    void positionChanged(const QPointF& scenePos);
+    void positionChanged();
 
 protected:
     void draw() override;
@@ -149,6 +149,8 @@ protected:
     bool m_isEditing;
     double m_textScaleFactor;
     double m_lastGoodWidthScene;
+
+    int m_tid { 0 };
 
 private Q_SLOTS:
     void onContentsChanged();

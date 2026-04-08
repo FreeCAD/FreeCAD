@@ -36,6 +36,10 @@ on:
         default: false
         type: boolean
         required: false
+      testCoinNodeSnapshots:
+        default: true
+        type: boolean
+        required: false
       allowedToFail:
         default: false
         type: boolean
@@ -75,7 +79,7 @@ jobs:
 
     steps:
     - name: Harden the runner (Audit all outbound calls)
-      uses: step-security/harden-runner@a90bcbc6539c36a85cdfeb73f7e2f433735f215b # v2.15.0
+      uses: step-security/harden-runner@fe104658747b27e96e4f7e80cd0a94068e53901d # v2.16.1
       with:
         egress-policy: audit
 
@@ -116,7 +120,7 @@ jobs:
         mkdir -p ${{ env.reportdir }}
         echo "reportFile=${{ env.reportfilename }}" >> $GITHUB_OUTPUT
 
-    - uses: prefix-dev/setup-pixi@a0af7a228712d6121d37aba47adf55c1332c9c2e # v0.9.4
+    - uses: prefix-dev/setup-pixi@1b2de7f3351f171c8b4dfeb558c639cb58ed4ec0 # v0.9.5
       with:
         pixi-version: v0.59.0
         cache: false
@@ -124,7 +128,7 @@ jobs:
     - name: Restore Compiler Cache
       id: cache-restore
       if: always()
-      uses: actions/cache/restore@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
+      uses: actions/cache/restore@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
       with:
         path: ${{ env.CCACHE_DIR }}
         key: FC-${{ env.cacheKey }}-${{ github.ref }}-${{ github.run_id }}
@@ -171,6 +175,26 @@ jobs:
         logFile: ${{ env.logdir }}TestGUIBuild.log
         reportFile: ${{env.reportdir}}${{ env.reportfilename }}
 
+    - name: Coin node snapshot visual tests on build dir
+      if: runner.os == 'Linux' && inputs.testCoinNodeSnapshots
+      timeout-minutes: 15
+      uses: ./.github/workflows/actions/runPythonTests
+      with:
+        testDescription: "Coin node snapshot visual tests on build dir"
+        testCommand: |
+          FC_VISUAL_OUT_DIR="/tmp/FreeCADTesting/CoinNodeSnapshots" \
+          pixi run xvfb-run -a -s "-screen 0 1024x768x24" \
+            "${{ env.builddir }}/bin/FreeCAD" -t TestCoinNodeSnapshots
+        logFile: ${{ env.logdir }}TestCoinNodeSnapshotsBuild.log
+        reportFile: ${{env.reportdir}}${{ env.reportfilename }}
+
+    - name: Upload Coin node snapshot artifacts (on failure)
+      if: failure() && runner.os == 'Linux' && inputs.testCoinNodeSnapshots
+      uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+      with:
+        name: ${{ inputs.artifactBasename }}-${{ matrix.os }}-CoinNodeSnapshots
+        path: /tmp/FreeCADTesting/CoinNodeSnapshots
+
     - name: C++ tests
       timeout-minutes: 10
       if: runner.os != 'Windows'
@@ -209,7 +233,7 @@ jobs:
     - name: Save Compiler Cache
       id: cache-save
       if: always()
-      uses: actions/cache/save@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
+      uses: actions/cache/save@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
       with:
         path: ${{ env.CCACHE_DIR }}
         key: FC-${{ env.cacheKey }}-${{ github.ref }}-${{ github.run_id }}

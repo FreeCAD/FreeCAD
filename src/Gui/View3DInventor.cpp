@@ -58,6 +58,7 @@
 #include <Gui/PreferencePages/DlgSettingsPDF.h>
 
 #include "View3DInventor.h"
+#include "Base/Exception.h"
 #include "View3DSettings.h"
 #include "Application.h"
 #include "BitmapFactory.h"
@@ -287,7 +288,7 @@ void View3DInventor::printPdf()
         this,
         tr("Export PDF"),
         QString(),
-        QStringLiteral("%1 (*.pdf)").arg(tr("PDF file"))
+        QStringList(QStringLiteral("%1 (*.pdf)").arg(tr("PDF file")))
     );
     if (!filename.isEmpty()) {
         Gui::WaitCursor wc;
@@ -338,7 +339,14 @@ void View3DInventor::print(QPrinter* printer)
 
     QRect rect = printer->pageLayout().paintRectPixels(printer->resolution());
     QImage img;
-    _viewer->imageFromFramebuffer(rect.width(), rect.height(), 8, QColor(255, 255, 255), img);
+    _viewer->imageFromFramebuffer(
+        rect.width(),
+        rect.height(),
+        8,
+        QColor(255, 255, 255),
+        img,
+        View3DInventorViewer::RenderIntent::RasterCapture
+    );
     p.drawImage(0, 0, img);
     p.end();
 }
@@ -350,7 +358,7 @@ bool View3DInventor::containsViewProvider(const ViewProvider* vp) const
 
 // **********************************************************************************
 
-bool View3DInventor::onMsg(const char* pMsg, const char** ppReturn)
+bool View3DInventor::onMsg(const char* pMsg)
 {
     if (strcmp("ViewFit", pMsg) == 0) {
         _viewer->viewAll();
@@ -384,17 +392,6 @@ bool View3DInventor::onMsg(const char* pMsg, const char** ppReturn)
     else if (strcmp("SetStereoOff", pMsg) == 0) {
         _viewer->setStereoMode(Quarter::SoQTQuarterAdaptor::MONO);
         return true;
-    }
-    else if (strcmp("GetCamera", pMsg) == 0) {
-        SoCamera* Cam = _viewer->getSoRenderManager()->getCamera();
-        if (!Cam) {
-            return false;
-        }
-        *ppReturn = SoFCDB::writeNodesToString(Cam).c_str();
-        return true;
-    }
-    else if (strncmp("SetCamera", pMsg, 9) == 0) {
-        return setCamera(pMsg + 10);
     }
     else if (strncmp("Dump", pMsg, 4) == 0) {
         dump(pMsg + 5);
@@ -561,12 +558,6 @@ bool View3DInventor::onHasMsg(const char* pMsg) const
     else if (strcmp("ViewAxo", pMsg) == 0) {
         return true;
     }
-    else if (strcmp("GetCamera", pMsg) == 0) {
-        return true;
-    }
-    else if (strncmp("SetCamera", pMsg, 9) == 0) {
-        return true;
-    }
     else if (strncmp("Dump", pMsg, 4) == 0) {
         return true;
     }
@@ -584,6 +575,15 @@ bool View3DInventor::onHasMsg(const char* pMsg) const
     }
 
     return false;
+}
+
+const std::string& View3DInventor::getCamera() const
+{
+    SoCamera* Cam = _viewer->getSoRenderManager()->getCamera();
+    if (!Cam) {
+        throw Base::RuntimeError("Could not find reference to 3D View camera");
+    }
+    return SoFCDB::writeNodesToString(Cam);
 }
 
 bool View3DInventor::setCamera(const char* pCamera)
@@ -604,7 +604,7 @@ bool View3DInventor::setCamera(const char* pCamera)
     }
 
     // this is to make sure to reliably delete the node
-    CoinPtr<SoNode> camPtr(Cam, true);
+    CoinPtr<SoNode> camPtr {Cam};
 
     // toggle between perspective and orthographic camera
     if (Cam->getTypeId() != CamViewer->getTypeId()) {

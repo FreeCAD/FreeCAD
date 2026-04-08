@@ -710,7 +710,7 @@ public:
         : my_base(ctx)
     {
         auto& ns = this->outermost_context().ns;
-        ns.setRotationCenter(ns.getFocalPoint());
+        ns.setRotationCenter(ns.viewer->getFocalPoint());
         ns.setViewingMode(NavigationStyle::DRAGGING);
         this->base_pos
             = static_cast<const NS::Event*>(this->triggering_event())->inventor_event->getPosition();

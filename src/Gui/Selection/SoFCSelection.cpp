@@ -43,6 +43,7 @@
 
 #include "SoFCSelection.h"
 #include "MainWindow.h"
+#include "SoFullPathHelper.h"
 #include "SoFCSelectionAction.h"
 #include "SoFCUnifiedSelection.h"
 #include "ViewParams.h"
@@ -188,8 +189,10 @@ void SoFCSelection::doAction(SoAction* action)
                     }
                 }
             }
-            else if (selaction->getType() == Gui::SoSelectionElementAction::None
-                     || selaction->getType() == Gui::SoSelectionElementAction::Remove) {
+            else if (
+                selaction->getType() == Gui::SoSelectionElementAction::None
+                || selaction->getType() == Gui::SoSelectionElementAction::Remove
+            ) {
                 SelContextPtr ctx
                     = Gui::SoFCSelectionRoot::getActionContext(action, this, selContext, false);
                 if (ctx && ctx->isSelected()) {
@@ -384,9 +387,7 @@ void SoFCSelection::handleEvent(SoHandleEventAction* action)
                             pp->getPoint()[2]
                         )) {
                         SoFCSelection::turnoffcurrent(action);
-                        SoFCSelection::currenthighlight = static_cast<SoFullPath*>(
-                            action->getCurPath()->copy()
-                        );
+                        SoFCSelection::currenthighlight = Gui::toFullPath(action->getCurPath()->copy());
                         SoFCSelection::currenthighlight->ref();
                         highlighted = true;
                         this->touch();  // force scene redraw
@@ -785,7 +786,7 @@ SbBool SoFCSelection::isHighlighted(SoAction* action)
 //
 ////////////////////////////////////////////////////////////////////////
 {
-    auto actionPath = static_cast<const SoFullPath*>(action->getCurPath());
+    auto actionPath = Gui::toFullPath(action->getCurPath());
     return (
         currenthighlight && currenthighlight->getTail() == actionPath->getTail() &&  // nested SoHL!
         *currenthighlight == *actionPath

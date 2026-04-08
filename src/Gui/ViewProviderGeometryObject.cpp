@@ -323,8 +323,23 @@ void ViewProviderGeometryObject::showBoundingBox(bool show)
     }
 
     if (pcBoundSwitch) {
-        pcBoundSwitch->whichChild = (show ? 0 : -1);
+        // Respect object visibility: never show bounding box on a hidden object
+        pcBoundSwitch->whichChild = (show && isShow()) ? 0 : -1;
     }
+}
+
+void ViewProviderGeometryObject::hide()
+{
+    if (pcBoundSwitch) {
+        pcBoundSwitch->whichChild = -1;
+    }
+    ViewProviderDragger::hide();
+}
+
+void ViewProviderGeometryObject::show()
+{
+    ViewProviderDragger::show();
+    showBoundingBox(BoundingBox.getValue());
 }
 
 void ViewProviderGeometryObject::setSelectable(bool selectable)
@@ -378,8 +393,10 @@ void ViewProviderGeometryObject::handleChangedPropertyName(
         prop.Restore(reader);
         ShapeAppearance.setDiffuseColor(prop.getValue());
     }
-    else if (strcmp(PropName, "ShapeMaterial") == 0
-             && strcmp(TypeName, App::PropertyMaterial::getClassTypeId().getName()) == 0) {
+    else if (
+        strcmp(PropName, "ShapeMaterial") == 0
+        && strcmp(TypeName, App::PropertyMaterial::getClassTypeId().getName()) == 0
+    ) {
         App::PropertyMaterial prop;
         prop.Restore(reader);
         ShapeAppearance.setValue(prop.getValue());

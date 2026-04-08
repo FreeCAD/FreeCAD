@@ -25,13 +25,21 @@
 
 # FreeCAD init script of the part module
 
+import FreeCAD
+
+translate = FreeCAD.Qt.translate
+
 # FreeCAD.addImportType("CAD formats (*.igs *.iges *.step *.stp *.brep *.brp)","Part")
 # FreeCAD.addExportType("CAD formats (*.igs *.iges *.step *.stp *.brep *.brp)","Part")
-FreeCAD.addImportType("BREP format (*.brep *.BREP *.brp *.BRP)", "Part")
-FreeCAD.addExportType("BREP format (*.brep *.brp)", "Part")
-FreeCAD.addImportType("IGES format (*.iges *.IGES *.igs *.IGS)", "Part")
-FreeCAD.addExportType("IGES format (*.iges *.igs)", "Part")
+FreeCAD.addImportType("BREP (*.brep *.BREP *.brp *.BRP)", "Part")
+FreeCAD.addExportType("BREP (*.brep *.brp)", "Part")
+FreeCAD.addImportType("IGES (*.iges *.IGES *.igs *.IGS)", "Part")
+FreeCAD.addExportType("IGES (*.iges *.igs)", "Part")
 FreeCAD.addImportType("STEP with colors (*.step *.STEP *.stp *.STP)", "Import")
-FreeCAD.addExportType("STEP with colors (*.step *.stp)", "Import")
+
+#: Translation note: "STEP" is a file type end should not be translated
+FreeCAD.addTranslatableExportType(
+    translate("FileFormat", "STEP with colors"), ["step", "stp"], "Import"
+)
 
 FreeCAD.__unit_test__ += ["TestPartApp"]

@@ -25,6 +25,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides GUI tools to split line and wire objects."""
+
 ## @package gui_split
 # \ingroup draftguitools
 # \brief Provides GUI tools to split line and wire objects.
@@ -103,7 +104,7 @@ class Split(gui_base_original.Modifier):
         cmd_list = [
             "obj = FreeCAD.ActiveDocument." + wire,
             "new = Draft.split(obj, " + point + ", " + index + ")",
-            "FreeCAD.ActiveDocument.recompute()",
+            "if new is not None: FreeCAD.ActiveDocument.recompute()",
         ]
 
         self.commit(translate("draft", "Split Line"), cmd_list)

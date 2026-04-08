@@ -36,7 +36,6 @@ import UtilsAssembly
 import Preferences
 import CommandCreateJoint
 
-
 __title__ = "Assembly Command Insert Component"
 __author__ = "Ondsel"
 __url__ = "https://www.freecad.org"
@@ -140,7 +139,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
 
         self.buildPartList()
 
-        App.setActiveTransaction("Insert Component")
+        Gui.ActiveDocument.openCommand("Insert Component")
 
         # Listen for external deletions to keep the list in sync
         self.docObserver = InsertLinkObserver(self.onObjectDeleted)
@@ -184,13 +183,13 @@ class TaskAssemblyInsertLink(QtCore.QObject):
             )
 
         Gui.doCommandSkip(commands[:-1])  # Get rid of last \n
-        App.closeActiveTransaction()
+        Gui.ActiveDocument.commitCommand()
         return True
 
     def reject(self):
         self.deactivated()
 
-        App.closeActiveTransaction(True)
+        Gui.ActiveDocument.abortCommand()
         return True
 
     def deactivated(self):

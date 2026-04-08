@@ -267,7 +267,7 @@
     <message>
       <location filename="../../../CommandCreateBom.py" line="383"/>
       <source>Only parts: adds only part containers and sub-assemblies to the bill of materials. Solids like Part Design bodies, fasteners, or Part workbench primitives are ignored.</source>
-      <translation type="unfinished">Only parts: adds only part containers and sub-assemblies to the bill of materials. Solids like Part Design bodies, fasteners, or Part workbench primitives are ignored.</translation>
+      <translation>Numai piese: adaugă la lista de materiale doar containere de piese și subansambluri. Solidele precum corpurile Piese Proiectare, elementele de fixare sau primitivele Piese Spațiu de Lucru sunt ignorate.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="385"/>

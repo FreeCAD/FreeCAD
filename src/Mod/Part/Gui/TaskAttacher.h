@@ -155,6 +155,12 @@ private:
      */
     void selectMapMode(Attacher::eMapMode mmode);
 
+    /**
+     * @brief applyBoldMode Sets bold font on the enabled list item matching boldMode,
+     * clears bold on all others.
+     */
+    void applyBoldMode(Attacher::eMapMode boldMode);
+
     void showPlacementUtilities();
 
 protected:
@@ -175,6 +181,7 @@ private:
                                                   // into listOfModes widget.
     Attacher::SuggestResult lastSuggestResult;
     bool completed;
+    bool userSelectedMode;  // true when the user has explicitly clicked a mode in the list
 
     using Connection = fastsignals::connection;
     Connection connectDelObject;
@@ -214,7 +221,7 @@ public:
     bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
-    /// is called by the framework if the user presses the help button
+
     bool isAllowedAlterDocument() const override
     {
         return false;
@@ -234,6 +241,7 @@ protected:
     std::function<void()> onAccept;
     std::function<void()> onReject;
     bool accepted;
+    int tid;
 };
 
 }  // namespace PartGui
