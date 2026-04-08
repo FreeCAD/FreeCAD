@@ -234,6 +234,150 @@ class TestPathProfile(PathTestBase):
         )
 
 
+class TestPathOpenProfile(PathTestBase):
+    """Unit tests for profiling open edges (edges of geometry)."""
+
+    @classmethod
+    def setUpClass(cls):
+        """setUpClass()...
+        This method is called upon instantiation of this test class.
+        Set up the triangle geometry and job for all tests in this class.
+        """
+        # Create a new document (becomes active document)
+        cls.doc = FreeCAD.newDocument("TestPathOpenProfile")
+        FreeCAD.setActiveDocument(cls.doc.Name)
+
+        # Create a triangular solid
+        triangle_base = 20.0
+        triangle_height = 30.0
+        extrude_height = 10.0
+
+        # Create triangle vertices (base on X-axis, apex pointing up in Y)
+        v1 = FreeCAD.Vector(0, 0, 0)
+        v2 = FreeCAD.Vector(triangle_base, 0, 0)
+        v3 = FreeCAD.Vector(triangle_base / 2.0, triangle_height, 0)
+
+        # Create triangle wire and extrude to make solid
+        triangle_wire = Part.makePolygon([v1, v2, v3, v1])
+        triangle_face = Part.Face(triangle_wire)
+        triangle_solid = triangle_face.extrude(FreeCAD.Vector(0, 0, extrude_height))
+
+        # Add triangle part to document
+        triangle_part = cls.doc.addObject("Part::Feature", "Triangle")
+        triangle_part.Shape = triangle_solid
+
+        # Create a job for the triangle
+        job = PathJob.Create("TriangleJob", [triangle_part], None)
+        if FreeCAD.GuiUp:
+            job.ViewObject.Proxy = PathJobGui.ViewProvider(job.ViewObject)
+
+        # Find edges that pass through (0, 0, extrude_height) - the top vertex at origin
+        # We want the 2 top edges (not the vertical edge)
+        target_point = FreeCAD.Vector(0, 0, extrude_height)
+        tolerance = 0.001
+
+        # Loop through all edges and find top edges at the target point
+        edges_at_origin = []
+        for i, edge in enumerate(triangle_solid.Edges):
+            # Check if either vertex of the edge is at the target point
+            if (
+                edge.Vertexes[0].Point.distanceToPoint(target_point) < tolerance
+                or edge.Vertexes[1].Point.distanceToPoint(target_point) < tolerance
+            ):
+                # Filter out vertical edges - we only want edges on the top face
+                # Top face edges have both vertices at Z = extrude_height
+                v0_z = edge.Vertexes[0].Point.z
+                v1_z = edge.Vertexes[1].Point.z
+                if (
+                    abs(v0_z - extrude_height) < tolerance
+                    and abs(v1_z - extrude_height) < tolerance
+                ):
+                    # Both vertices at top Z level - this is a top edge
+                    edges_at_origin.append(f"Edge{i+1}")
+
+        # Create profile operation for the two edges
+        cls.profile = PathProfile.Create("TriangleProfile", parentJob=job)
+        cls.profile.Base = [(triangle_part, edges_at_origin)]
+        cls.profile.Label = "triangle_profile"
+        cls.profile.Comment = "Profile two edges of a triangle."
+
+        # Set operation properties
+        cls.profile.Direction = "CCW"
+        cls.profile.Side = "Outside"
+
+        # Set depth properties for open edge profiling
+        # Clear expressions first, then set values
+        cls.profile.setExpression("FinalDepth", None)
+        cls.profile.setExpression("StartDepth", None)
+        cls.profile.setExpression("StepDown", None)
+
+        cls.profile.FinalDepth.Value = 0.0
+        cls.profile.StartDepth.Value = extrude_height
+        cls.profile.StepDown.Value = extrude_height + 1
+
+        _addViewProvider(cls.profile)
+
+    @classmethod
+    def tearDownClass(cls):
+        """tearDownClass()...
+        Cleanup after all tests in this class have been executed.
+        """
+        # Close the document without saving
+        FreeCAD.closeDocument(cls.doc.Name)
+
+    def setUp(self):
+        """setUp()...
+        This method is called prior to each test() method.
+        """
+        pass
+
+    def tearDown(self):
+        """tearDown()...
+        This method is called after each test() method.
+        """
+        pass
+
+    def testOpenProfileSetup(self):
+        """Verify Profile Base contains 2 edges of the triangle."""
+
+        # Verify profile.Base has correct structure: [(part, edges_tuple)]
+        self.assertEqual(len(self.profile.Base), 1, "Profile.Base should have 1 entry")
+        part, edges = self.profile.Base[0]
+
+        # Assert we are profiling 2 edges
+        self.assertEqual(len(edges), 2, "Profile Base should contain 2 edges")
+
+    def test02(self):
+        """test02() Recompute and verify gcode moves for triangle profile."""
+
+        # Perform recompute to generate the path
+        self.doc.recompute()
+
+        # Get the gcode moves (excluding rapids)
+        moves = getGcodeMoves(self.profile.Path.Commands, includeRapids=False)
+        operationMoves = ";  ".join(moves)
+        # FreeCAD.Console.PrintMessage(f"test02_moves: {operationMoves}\n")
+
+        # Expected moves for profiling two edges of triangle
+        expected_moves = (
+            "G1 X7.63 Y30.79 Z0.0;  G1 X-2.37 Y0.79 Z0.0;  G1 X-2.46 Y0.43 Z0.0;  "
+            "G1 X-2.5 Y0.0 Z0.0;  G1 X-2.46 Y-0.43 Z0.0;  G1 X-2.35 Y-0.86 Z0.0;  "
+            "G1 X-2.17 Y-1.25 Z0.0;  G1 X-1.92 Y-1.61 Z0.0;  G1 X-1.61 Y-1.92 Z0.0;  "
+            "G1 X-1.25 Y-2.17 Z0.0;  G1 X-0.86 Y-2.35 Z0.0;  G1 X-0.43 Y-2.46 Z0.0;  "
+            "G1 X0.0 Y-2.5 Z0.0;  G1 X20.0 Y-2.5 Z0.0"
+        )
+
+        self.assertTrue(
+            expected_moves == operationMoves,
+            f"expected_moves: {expected_moves}\noperationMoves: {operationMoves}",
+        )
+
+        # # Save the document to /tmp
+        # filepath = "/tmp/TestPathOpenProfile.FCStd"
+        # self.doc.saveAs(filepath)
+        # FreeCAD.Console.PrintMessage(f"test02: Document saved to {filepath}\n")
+
+
 def _addViewProvider(profileOp):
     if FreeCAD.GuiUp:
         PathOpGui = PathProfileGui.PathOpGui
