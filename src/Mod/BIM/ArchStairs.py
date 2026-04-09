@@ -584,9 +584,8 @@ class _Stairs(ArchComponent.Component):
         if obj.getTypeIdOfProperty("RailingLeft") == "App::PropertyString":
             self.update_properties_0v19_to_0v20(obj)
 
-        if (
-            (obj.RailingLeft and obj.RailingLeft not in obj.Additions)
-            or (obj.RailingRight and obj.RailingRight not in obj.Additions)
+        if (obj.RailingLeft and obj.RailingLeft not in obj.Additions) or (
+            obj.RailingRight and obj.RailingRight not in obj.Additions
         ):
             self.update_properties_to_1v2(obj)
 
@@ -651,12 +650,7 @@ class _Stairs(ArchComponent.Component):
         obj.recompute()
         from draftutils.messages import _log
 
-        _log(
-            "v1.2.0, "
-            + obj.Name
-            + ", "
-            + "added railing(s) to object Additions"
-        )
+        _log("v1.2.0, " + obj.Name + ", " + "added railing(s) to object Additions")
 
     def _update_railings(self, obj):
         railingLeftObject, railWireL = None, None
