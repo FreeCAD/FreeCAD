@@ -1036,6 +1036,48 @@ class _Structure(ArchComponent.Component):
                 locked=True,
             )
 
+        if not "Offset" in pl:
+            obj.addProperty(
+                "App::PropertyDistance",
+                "Offset",
+                "Structure",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Vertical offset of the slab from its base face along the extrusion "
+                    "normal. Applied after Align / AlignLayer. Only used when IfcType is Slab.",
+                ),
+                locked=True,
+            )
+
+        if not "AlignLayer" in pl:
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "AlignLayer",
+                "Structure",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Fine-grain alignment: pick a specific layer face as the zero "
+                    "reference. Overrides Align when not set to 'None (use Align)'. "
+                    "Only used when IfcType is Slab and a multi-material is assigned.",
+                ),
+                locked=True,
+            )
+            obj.AlignLayer = ["None (use Align)"]
+
+        if not "SlopeEdge" in pl:
+            obj.addProperty(
+                "App::PropertyLinkSub",
+                "SlopeEdge",
+                "Structure",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Edge to use as the slope direction pivot. If not set, the first "
+                    "edge of the base face is used. Only active when Slope != 0 and "
+                    "IfcType is Slab.",
+                ),
+                locked=True,
+            )
+
     def dumps(self):  # Supercede Arch.Component.dumps()
         dump = super().dumps()
         if not isinstance(dump, tuple):
@@ -1076,12 +1118,26 @@ class _Structure(ArchComponent.Component):
             if hasattr(obj, "ArchSketchPropertySet"):
                 obj.setEditorMode("ArchSketchPropertySet", ["ReadOnly"])
 
-        # Restore slab-only property visibility
+        # Restore slab-only property visibility and AlignLayer enum
+        self._update_align_layer_enum(obj)
         is_slab = getattr(obj, "IfcType", "") == "Slab"
-        if hasattr(obj, "Align"):
-            obj.setEditorMode("Align", 0 if is_slab else 2)
-        if hasattr(obj, "Slope"):
-            obj.setEditorMode("Slope", 0 if is_slab else 2)
+
+        for p in ["Align", "AlignLayer", "Offset", "Slope", "SlopeEdge"]:
+            if hasattr(obj, p):
+                obj.setEditorMode(p, 0 if is_slab else 2)
+
+        if is_slab:
+            align_layer = getattr(obj, "AlignLayer", "None (use Align)")
+            if align_layer and align_layer != "None (use Align)":
+                if hasattr(obj, "Align"):
+                    obj.setEditorMode("Align", ["ReadOnly"])
+            else:
+                if hasattr(obj, "Align"):
+                    obj.setEditorMode("Align", 0)
+
+            if hasattr(obj, "Slope") and hasattr(obj, "SlopeEdge"):
+                slope_val = obj.Slope.Value if hasattr(obj.Slope, "Value") else 0.0
+                obj.setEditorMode("SlopeEdge", 0 if abs(slope_val) > 1e-6 else 2)
 
     def execute(self, obj):
         "creates the structure shape"
@@ -1094,14 +1150,17 @@ class _Structure(ArchComponent.Component):
         if obj.Base and not self.ensureBase(obj):
             return
 
-        # --- Slab: sync Height with multi-material total, manage read-only ---
+        # --- Slab: sync Height with multi-material total, manage read-only,
+        #     and keep AlignLayer enum up to date ---
         if getattr(obj, "IfcType", "") == "Slab":
+            # Always keep the AlignLayer dropdown in sync with current material
+            self._update_align_layer_enum(obj)
             layers = self.get_layers(obj)
             if layers:
                 total = sum([abs(l) for l in layers])
                 if obj.Height.Value != total:
                     obj.Height = total
-                # If no zero-thickness entry exists, the material fully drives Height
+                # Lock Height when material fully defines thickness (no zero entry)
                 if hasattr(obj, "Material") and obj.Material:
                     if hasattr(obj.Material, "Thicknesses"):
                         if 0 not in obj.Material.Thicknesses:
@@ -1109,7 +1168,6 @@ class _Structure(ArchComponent.Component):
                         else:
                             obj.setEditorMode("Height", 0)
             else:
-                # No multi-material: Height is always user-editable
                 obj.setEditorMode("Height", 0)
         # --- End slab Height sync ---
 
@@ -1458,7 +1516,6 @@ class _Structure(ArchComponent.Component):
                 else:
                     if height:
                         extrusion = normal.multiply(height)
-
             if extrusion:
                 # --- Multi-material layer support for slabs ---
                 if (
@@ -1471,36 +1528,52 @@ class _Structure(ArchComponent.Component):
                     if layers:
                         unit_n = FreeCAD.Vector(extrusion).normalize()
 
-                        # --- Align offset ---
-                        align = getattr(obj, "Align", "Bottom")
-                        total = sum(abs(l) for l in layers)
-                        if align == "Center":
-                            z_offset = -total / 2
-                        elif align == "Top":
-                            z_offset = -total
-                        else:  # Bottom
-                            z_offset = 0.0
+                        # Resolve z_offset via AlignLayer > Align > Offset
+                        z_offset = self._compute_z_offset(obj, layers)
 
-                        # --- Slope: rotate base face around its local X axis ---
+                        # --- Slope with SlopeEdge direction ---
                         slope_angle = getattr(obj, "Slope", 0)
                         if hasattr(slope_angle, "Value"):
                             slope_angle = slope_angle.Value  # degrees
                         slope_base = None
                         if abs(slope_angle) > 1e-6:
-                            import math
-                            # Determine the local X axis of the base face
-                            # (first edge direction of the face's outer wire)
+                            # Determine slope pivot axis
+                            x_axis = None
+
+                            # 1. Try SlopeEdge property first
+                            slope_edge_link = getattr(obj, "SlopeEdge", None)
+                            if (
+                                slope_edge_link
+                                and len(slope_edge_link) >= 2
+                                and slope_edge_link[0]
+                                and slope_edge_link[1]
+                            ):
+                                try:
+                                    linked_obj = slope_edge_link[0]
+                                    sub_names = slope_edge_link[1]
+                                    sub_name = sub_names[0] if sub_names else None
+                                    if sub_name and hasattr(linked_obj, "Shape"):
+                                        edge = linked_obj.Shape.getElement(sub_name)
+                                        x_axis = edge.tangentAt(
+                                            edge.FirstParameter
+                                        ).normalize()
+                                except Exception:
+                                    x_axis = None
+
+                            # 2. Fall back to first edge of base face
+                            if x_axis is None:
+                                try:
+                                    outer_wire = base.Wires[0]
+                                    x_axis = outer_wire.Edges[0].tangentAt(
+                                        outer_wire.Edges[0].FirstParameter
+                                    ).normalize()
+                                except Exception:
+                                    x_axis = FreeCAD.Vector(1, 0, 0)
+
+                            # Apply slope rotation around x_axis through the face centroid
                             try:
-                                outer_wire = base.Wires[0]
-                                x_axis = outer_wire.Edges[0].tangentAt(
-                                    outer_wire.Edges[0].FirstParameter
-                                )
-                                x_axis.normalize()
-                                # Pivot point: centroid of base face
                                 pivot = base.CenterOfMass
                                 rot = FreeCAD.Rotation(x_axis, slope_angle)
-                                slope_mat = FreeCAD.Matrix()
-                                # Translate to pivot, rotate, translate back
                                 t1 = FreeCAD.Matrix()
                                 t1.move(-pivot)
                                 r = rot.toMatrix()
@@ -1509,12 +1582,11 @@ class _Structure(ArchComponent.Component):
                                 slope_mat = t2.multiply(r.multiply(t1))
                                 slope_base = base.transformGeometry(slope_mat)
                             except Exception:
-                                # If slope geometry fails for any reason, fall through
-                                # to the flat slab path without crashing
                                 slope_base = None
 
                         working_base = slope_base if slope_base is not None else base
 
+                        # Build per-layer face/extrusion/placement lists
                         bases_list, extrusions_list, placements_list = [], [], []
                         cum_offset = z_offset
 
@@ -1585,13 +1657,32 @@ class _Structure(ArchComponent.Component):
                 self.nodes = [v.Point.add(offset) for v in nodes.Vertexes]
                 obj.Nodes = self.nodes
 
-        # --- Show/hide slab-only properties ---
+        # --- Update AlignLayer enum when material or type changes ---
+        if prop in ["Material", "IfcType"]:
+            self._update_align_layer_enum(obj)
+
+        # --- Slab-only property visibility ---
         is_slab = getattr(obj, "IfcType", "") == "Slab"
-        if hasattr(obj, "Align"):
-            obj.setEditorMode("Align", 0 if is_slab else 2)
-        if hasattr(obj, "Slope"):
-            obj.setEditorMode("Slope", 0 if is_slab else 2)
-        # --- End slab-only properties ---
+
+        for p in ["Align", "AlignLayer", "Offset", "Slope", "SlopeEdge"]:
+            if hasattr(obj, p):
+                obj.setEditorMode(p, 0 if is_slab else 2)
+
+        if is_slab:
+            # When AlignLayer is active, Align is redundant — make read-only
+            align_layer = getattr(obj, "AlignLayer", "None (use Align)")
+            if align_layer and align_layer != "None (use Align)":
+                if hasattr(obj, "Align"):
+                    obj.setEditorMode("Align", ["ReadOnly"])
+            else:
+                if hasattr(obj, "Align"):
+                    obj.setEditorMode("Align", 0)
+
+            # Only show SlopeEdge when Slope is non-zero
+            if hasattr(obj, "Slope") and hasattr(obj, "SlopeEdge"):
+                slope_val = obj.Slope.Value if hasattr(obj.Slope, "Value") else 0.0
+                obj.setEditorMode("SlopeEdge", 0 if abs(slope_val) > 1e-6 else 2)
+        # --- End slab-only visibility ---
 
         ArchComponent.Component.onChanged(self, obj, prop)
 
@@ -1662,6 +1753,113 @@ class _Structure(ArchComponent.Component):
                     elif varwidth:
                         layers.append(varwidth)
         return layers
+
+    def _update_align_layer_enum(self, obj):
+        """Rebuild the AlignLayer enumeration from the current multi-material.
+        Called whenever Material or IfcType changes.
+        Preserves the current selection if still valid.
+        """
+        if not hasattr(obj, "AlignLayer"):
+            return
+        if getattr(obj, "IfcType", "") != "Slab":
+            return
+
+        entries = ["None (use Align)"]
+        layers = self.get_layers(obj)
+        if layers and hasattr(obj, "Material") and obj.Material:
+            if hasattr(obj.Material, "Materials"):
+                for i, mat in enumerate(obj.Material.Materials):
+                    # Prefer Material.Names, then Label, then fallback index
+                    if (
+                        hasattr(obj.Material, "Names")
+                        and i < len(obj.Material.Names)
+                        and obj.Material.Names[i]
+                    ):
+                        name = obj.Material.Names[i]
+                    elif hasattr(mat, "Label"):
+                        name = mat.Label
+                    else:
+                        name = f"Layer {i + 1}"
+                    entries.append(f"Bot: {name}")
+                    entries.append(f"Ctr: {name}")
+                    entries.append(f"Top: {name}")
+
+        # Preserve selection if still valid, else reset
+        try:
+            current = obj.AlignLayer
+        except Exception:
+            current = entries[0]
+        if current not in entries:
+            current = entries[0]
+        obj.AlignLayer = entries
+        obj.AlignLayer = current
+
+    def _align_to_z_offset(self, obj, total):
+        """Convert the Align enum (Bottom/Center/Top) to a raw z_offset for the stack."""
+        align = getattr(obj, "Align", "Bottom")
+        if align == "Center":
+            return -total / 2.0
+        elif align == "Top":
+            return -total
+        else:  # Bottom
+            return 0.0
+
+    def _compute_z_offset(self, obj, layers):
+        """Return the full z_offset for slab layer stacking.
+
+        Priority order:
+        1. AlignLayer (layer-specific reference face) — overrides Align when set
+        2. Align (Bottom / Center / Top of full stack) — used when AlignLayer is None
+        3. Offset (manual shift) — always applied on top of 1 or 2
+        """
+        total = sum(abs(l) for l in layers)
+        align_layer = getattr(obj, "AlignLayer", "None (use Align)")
+
+        if align_layer and align_layer != "None (use Align)":
+            # Format is "Bot: name", "Ctr: name", or "Top: name"
+            face_code = align_layer[:3]   # "Bot", "Ctr", "Top"
+            layer_name = align_layer[5:]  # everything after "Bot: " / "Ctr: " / "Top: "
+
+            # Resolve layer index by matching name
+            layer_idx = None
+            if hasattr(obj, "Material") and obj.Material:
+                if hasattr(obj.Material, "Materials"):
+                    for i, mat in enumerate(obj.Material.Materials):
+                        if (
+                            hasattr(obj.Material, "Names")
+                            and i < len(obj.Material.Names)
+                            and obj.Material.Names[i]
+                        ):
+                            name = obj.Material.Names[i]
+                        elif hasattr(mat, "Label"):
+                            name = mat.Label
+                        else:
+                            name = f"Layer {i + 1}"
+                        if name == layer_name:
+                            layer_idx = i
+                            break
+
+            if layer_idx is not None:
+                cum = sum(abs(l) for l in layers[:layer_idx])
+                if face_code == "Bot":
+                    z_offset = -cum
+                elif face_code == "Ctr":
+                    z_offset = -(cum + abs(layers[layer_idx]) / 2.0)
+                else:  # "Top"
+                    z_offset = -(cum + abs(layers[layer_idx]))
+            else:
+                # Layer name not found (material changed), graceful fallback
+                z_offset = self._align_to_z_offset(obj, total)
+        else:
+            z_offset = self._align_to_z_offset(obj, total)
+
+        # Apply manual Offset on top of everything
+        manual_offset = getattr(obj, "Offset", None)
+        if manual_offset is not None:
+            val = manual_offset.Value if hasattr(manual_offset, "Value") else 0.0
+            z_offset += val
+
+        return z_offset
 
 
 class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
