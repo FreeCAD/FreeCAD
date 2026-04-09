@@ -132,6 +132,13 @@ QVariant QGIDatumLabel::itemChange(GraphicsItemChange change, const QVariant& va
 
 void QGIDatumLabel::snapPosition(QPointF& pos)
 {
+    if (!Preferences::SnapViews()) {
+        return;
+    }
+
+    using std::numbers::pi;
+
+
     auto* qgivd = dynamic_cast<QGIViewDimension*>(parentItem());
     if (!qgivd) {
         return;
@@ -321,14 +328,17 @@ void QGIDatumLabel::snapPosition(QPointF& pos)
         Base::Vector2d firstDimPoint = to2D(Rez::guiX(ap.first()));
         Base::Vector2d secondDimPoint = to2D(Rez::guiX(ap.second()));
 
-        double endAngle = (secondDimPoint - angleVertex).Angle();
-        double startAngle = (firstDimPoint - angleVertex).Angle();
+        Base::Vector2d dir1 = (secondDimPoint - angleVertex).Normalize();
+        Base::Vector2d dir2 = (firstDimPoint - angleVertex).Normalize();
+
+        double endAngle = dir1.Angle();
+        double startAngle = dir2.Angle();
         if (isInverted) {
             std::swap(endAngle, startAngle);
         }
 
         Base::Vector2d normalDir
-            = (secondDimPoint - firstDimPoint).Perpendicular(isInverted).Normalize();
+            = (dir1 - dir2).Perpendicular(isInverted).Normalize();
 
         // get label position & direction
         Base::Vector2d toCenter = getPosToCenterVec();
@@ -353,6 +363,17 @@ void QGIDatumLabel::snapPosition(QPointF& pos)
         Base::Vector2d nbrSnapPnt = labelCenter;
         double nbrSnapDist = std::numeric_limits<double>::max();
 
+        // rearrange the arc angles for comparison
+        if (startAngle > endAngle) {
+            std::swap(startAngle, endAngle);
+        }
+        if ((endAngle - startAngle) > pi) {
+            std::swap(startAngle, endAngle);
+        }
+        if (isInverted) {
+            std::swap(startAngle, endAngle);
+        }
+
         auto* qgiv = dynamic_cast<QGIView*>(qgivd->parentItem());
         if (qgiv) {
             auto* dvp = dynamic_cast<TechDraw::DrawViewPart*>(qgiv->getViewObject());
@@ -376,8 +397,7 @@ void QGIDatumLabel::snapPosition(QPointF& pos)
 
                     double nbrEndAngle = (nbrSecDimPoint - nbrAngleVertex).Angle();
                     double nbrStartAngle = (nbrFirDimPoint - nbrAngleVertex).Angle();
-                    if (inv) { std::swap(nbrEndAngle, nbrStartAngle); }
-
+                    
                     auto* vp = freecad_cast<ViewProviderDimension*>(Gui::Application::Instance->getViewProvider(d));
                     if (!vp) continue;
 
@@ -393,6 +413,17 @@ void QGIDatumLabel::snapPosition(QPointF& pos)
                     double rSelf = selfLen - offsetSelf;
 
                     if (rNbr <= 0.0 || rSelf <= 0.0) continue;
+      
+                    // rearrange the arc angles for comparison
+                    if (nbrStartAngle > nbrEndAngle) {
+                        std::swap(nbrStartAngle, nbrEndAngle);
+                    }
+                    if ((nbrEndAngle - nbrStartAngle) > pi) {
+                        std::swap(nbrStartAngle, nbrEndAngle);
+                    }
+                    if (inv) {
+                        std::swap(nbrStartAngle, nbrEndAngle);
+                    }
 
                     bool nbrEdge = std::fabs(nbrEndAngle - startAngle) < Precision::Angular()
                         || std::fabs(nbrStartAngle - endAngle) < Precision::Angular();
@@ -436,7 +467,7 @@ void QGIDatumLabel::snapPosition(QPointF& pos)
                 finalCenter = angleVertex + targetLen * (dir / len);
             }
         }
-
+        
         pos.setX(finalCenter.x - toCenter.x);
         pos.setY(finalCenter.y - toCenter.y);
     }
