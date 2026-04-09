@@ -191,7 +191,12 @@ QStringList DlgMacroExecuteImp::filterFiles(const QString& folder)
 {
     QDir dir(folder, QLatin1String("*.FCMacro *.py"));
     QStringList unfiltered;  // all .fcmacro and .py files
-    QDirIterator it(dir.path(), QStringList() << "*.FCMacro" << "*.py", QDir::Files, QDirIterator::Subdirectories);
+    QDirIterator it(
+        dir.path(),
+        QStringList() << "*.FCMacro" << "*.py",
+        QDir::Files,
+        QDirIterator::Subdirectories
+    );
     while (it.hasNext()) {
         unfiltered += dir.relativeFilePath(it.next());
     }
