@@ -723,23 +723,43 @@ Py::Object SheetViewPy::selectedCells(const Py::Tuple& args)
     return list;
 }
 
+namespace
+{
+/// Convert a Python object to a long, accepting plain ints and PySide6 enum objects (via .value).
+long pyEnumAsLong(PyObject* obj)
+{
+    if (PyLong_Check(obj)) {
+        return PyLong_AsLong(obj);
+    }
+    Py::Object value(PyObject_GetAttrString(obj, "value"), true);
+    if (!value.isNull() && PyLong_Check(value.ptr())) {
+        return PyLong_AsLong(value.ptr());
+    }
+    throw Base::TypeError("Expected an int or enum with a .value attribute");
+}
+}  // namespace
+
 Py::Object SheetViewPy::select(const Py::Tuple& _args)
 {
     SheetView* sheetView = getSheetViewPtr();
 
     Py::Sequence args(_args.ptr());
 
-    const char* cell;
-    const char* topLeft;
-    const char* bottomRight;
-    int flags = 0;
-    if (args.size() == 2 && PyArg_ParseTuple(_args.ptr(), "si", &cell, &flags)) {
+    const char* cell {nullptr};
+    const char* topLeft {nullptr};
+    const char* bottomRight {nullptr};
+    PyObject* flagsObj = nullptr;
+    if (args.size() == 2 && PyArg_ParseTuple(_args.ptr(), "sO", &cell, &flagsObj)) {
+        auto flags = pyEnumAsLong(flagsObj);
         sheetView->select(
             App::CellAddress(cell),
             static_cast<QItemSelectionModel::SelectionFlags>(flags)
         );
     }
-    else if (args.size() == 3 && PyArg_ParseTuple(_args.ptr(), "ssi", &topLeft, &bottomRight, &flags)) {
+    else if (
+        args.size() == 3 && PyArg_ParseTuple(_args.ptr(), "ssO", &topLeft, &bottomRight, &flagsObj)
+    ) {
+        auto flags = pyEnumAsLong(flagsObj);
         sheetView->select(
             App::CellAddress(topLeft),
             App::CellAddress(bottomRight),
@@ -747,24 +767,10 @@ Py::Object SheetViewPy::select(const Py::Tuple& _args)
         );
     }
     else {
-        if (args.size() == 2) {
-            throw Base::TypeError(
-                "Expects the arguments to be a cell name (e.g. 'A1') and "
-                "QItemSelectionModel.SelectionFlags"
-            );
-        }
-        else if (args.size() == 3) {
-            throw Base::TypeError(
-                "Expects the arguments to be a cell name (e.g. 'A1'), a second "
-                "cell name (e.g. 'B5'), and QItemSelectionModel.SelectionFlags"
-            );
-        }
-        else {
-            throw Base::TypeError(
-                "Wrong arguments to select: specify either a cell, or two cells "
-                "(for a range), and QItemSelectionModel.SelectionFlags"
-            );
-        }
+        throw Base::TypeError(
+            "Wrong arguments to select: specify either a cell, or two cells "
+            "(for a range), and QItemSelectionModel.SelectionFlags"
+        );
     }
     return Py::None();
 }
