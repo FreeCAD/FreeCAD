@@ -362,6 +362,20 @@ SET(FreeCADApp_SRCS
     PreCompiled.h
 )
 
+set(_freecad_init_tools_source "${CMAKE_CURRENT_SOURCE_DIR}/FreeCADInitTools.py")
+set(_freecad_init_tools_output "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/FreeCADInitTools.py")
+add_custom_command(
+    OUTPUT "${_freecad_init_tools_output}"
+    COMMAND "${CMAKE_COMMAND}"
+        -DINPUTFILE="${_freecad_init_tools_source}"
+        -DOUTPUTFILE="${_freecad_init_tools_output}"
+        -P "${CMAKE_SOURCE_DIR}/cMake/LinkOrCopy.cmake"
+    MAIN_DEPENDENCY "${_freecad_init_tools_source}"
+    DEPENDS "${CMAKE_SOURCE_DIR}/cMake/LinkOrCopy.cmake"
+    COMMENT "Mirroring ${_freecad_init_tools_source} to ${_freecad_init_tools_output}"
+)
+add_custom_target(FreeCADInitToolsMirror DEPENDS "${_freecad_init_tools_output}")
+
 if(FREECAD_USE_PCH)
     target_precompile_headers(FreeCADApp PRIVATE
         $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
@@ -381,6 +395,7 @@ if (FREECAD_WARN_ERROR)
 endif()
 
 add_dependencies(FreeCADApp fc_version)
+add_dependencies(FreeCADApp FreeCADInitToolsMirror)
 
 SET_BIN_DIR(FreeCADApp FreeCADApp)
 
@@ -394,3 +409,10 @@ else(WIN32)
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
 endif(WIN32)
+
+INSTALL(
+    FILES
+        FreeCADInitTools.py
+    DESTINATION
+        ${CMAKE_INSTALL_LIBDIR}
+)

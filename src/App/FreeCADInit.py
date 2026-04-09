@@ -68,6 +68,22 @@ except ImportError:
     App.Console.PrintError("\n\nSeems the python standard libs are not installed, bailing out!\n\n")
     raise
 
+try:
+    from FreeCADInitTools import (
+        DIR_MOD_APP_COMPAT_GLOBAL_NAMES,
+        dir_mod_base_path,
+        dir_mod_compat_globals,
+        exec_dir_mod_file,
+    )
+except ModuleNotFoundError:
+    sys.path.append(App.getLibraryDir())
+    from FreeCADInitTools import (
+        DIR_MOD_APP_COMPAT_GLOBAL_NAMES,
+        dir_mod_base_path,
+        dir_mod_compat_globals,
+        exec_dir_mod_file,
+    )
+
 # ┌────────────────────────────────────────────────┐
 # │ Logging Frameworks                             │
 # └────────────────────────────────────────────────┘
@@ -1105,6 +1121,7 @@ class DirMod(Mod):
         self.state = ModState.Discovered
         self._path = collections.deque()
         self._path.append(path)
+        self._source_root: Path | None = None
 
     @property
     def kind(self) -> str:
@@ -1166,9 +1183,18 @@ class DirMod(Mod):
         return self._path[0]
 
     @property
+    def source_root(self) -> Path:
+        """Canonical filesystem root backing the active mod."""
+        return self._source_root or self.path.resolve()
+
+    @property
     def alternative_paths(self) -> list[Path]:
         """Alternative paths in priority order"""
         return list(self._path)[1:]
+
+    def remember_source_root(self, script_path: Path) -> Path:
+        self._source_root = dir_mod_base_path(script_path, self.path)
+        return self._source_root
 
     def check_disabled(self) -> bool:
         name = self.path.name
@@ -1208,9 +1234,13 @@ class DirMod(Mod):
             return
 
         try:
-            source = init_py.read_text(encoding="utf-8")
-            code = compile(source, init_py, 'exec')
-            exec(code)
+            self.remember_source_root(init_py)
+            exec_dir_mod_file(
+                self.name,
+                init_py,
+                self.path,
+                dir_mod_app_compat_globals(globals()),
+            )
         except Exception as ex:
             Log(f"Init:      Initializing {self.path!s}... failed")
             Log(utils.HLine)
@@ -1443,6 +1473,10 @@ class InitPipeline:
         search_paths = self.search_paths
         search_paths.commit()
 
+        # Dir mods live under the synthetic `freecad._dir_mods` namespace, so the
+        # real top-level `freecad` package must exist before any legacy mod runs.
+        import freecad
+
         # Dir Mods first
         for mod in self.dir_mod_scanner.iter():
             if mod.state == ModState.Resolved:
@@ -1537,6 +1571,10 @@ class InitPipeline:
         self.post()
         self.report()
         self.setup_tty()
+
+
+def dir_mod_app_compat_globals(source_globals: dict) -> dict:
+    return dir_mod_compat_globals(source_globals, DIR_MOD_APP_COMPAT_GLOBAL_NAMES)
 
 
 # ┌────────────────────────────────────────────────┐

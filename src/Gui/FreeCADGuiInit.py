@@ -40,16 +40,34 @@ from dataclasses import dataclass
 import traceback
 import typing
 import re
+import sys
 from pathlib import Path
 import importlib
 import FreeCAD
 import FreeCADGui
+
+try:
+    from FreeCADInitTools import (
+        DIR_MOD_APP_COMPAT_GLOBAL_NAMES,
+        dir_mod_compat_globals,
+        dir_mod_package_name,
+        exec_dir_mod_file,
+    )
+except ModuleNotFoundError:
+    sys.path.append(FreeCAD.getLibraryDir())
+    from FreeCADInitTools import (
+        DIR_MOD_APP_COMPAT_GLOBAL_NAMES,
+        dir_mod_compat_globals,
+        dir_mod_package_name,
+        exec_dir_mod_file,
+    )
 
 # shortcuts
 Gui = FreeCADGui
 App = FreeCAD
 
 translate = FreeCAD.Qt.translate
+QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 
 App.Console.PrintLog("Init: Running FreeCADGuiInit.py start script...\n")
 App.Console.PrintLog("░░░▀█▀░█▀█░▀█▀░▀█▀░░░█▀▀░█░█░▀█▀░░\n")
@@ -292,9 +310,13 @@ class DirModGui(ModGui):
         init_gui_py = target / self.INIT_GUI_PY
         if init_gui_py.exists():
             try:
-                source = init_gui_py.read_text(encoding="utf-8")
-                code = compile(source, init_gui_py, "exec")
-                exec(code)
+                self.mod.remember_source_root(init_gui_py)
+                exec_dir_mod_file(
+                    self.mod.name,
+                    init_gui_py,
+                    self.mod.path,
+                    dir_mod_gui_compat_globals(globals()),
+                )
             except Exception as ex:
                 sep = "-" * 100 + "\n"
                 Log(f"Init:      Initializing {target!s}... failed\n")
@@ -381,6 +403,27 @@ class ExtModGui(ModGui):
             Log(traceback.format_exc())
             Log(sep)
         return False
+
+
+DIR_MOD_GUI_COMPAT_GLOBAL_NAMES = DIR_MOD_APP_COMPAT_GLOBAL_NAMES + (
+    "Enum",
+    "Gui",
+    "FreeCADGui",
+    "HintManager",
+    "InputHint",
+    "ModState",
+    "ResolveMode",
+    "SelectionStyle",
+    "ToggleVisibilityMode",
+    "Workbench",
+    "dataclass",
+    "translate",
+    "typing",
+)
+
+
+def dir_mod_gui_compat_globals(source_globals: dict) -> dict:
+    return dir_mod_compat_globals(source_globals, DIR_MOD_GUI_COMPAT_GLOBAL_NAMES)
 
 
 def InitApplications():
