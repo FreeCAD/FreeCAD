@@ -2107,55 +2107,55 @@ Please adjust the parameters and try again.</source>
       <translation>Βαλβίδες ελαστικών ISO</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="678"/>
+      <location filename="../../TaskHoleParameters.cpp" line="681"/>
       <source>Medium</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
       <translation>Μεσαία</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="682"/>
+      <location filename="../../TaskHoleParameters.cpp" line="685"/>
       <source>Fine</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
       <translation>Λεπτό</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="686"/>
+      <location filename="../../TaskHoleParameters.cpp" line="689"/>
       <source>Coarse</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
       <translation>Τραχύ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="692"/>
+      <location filename="../../TaskHoleParameters.cpp" line="695"/>
       <source>Normal</source>
       <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
       <translation>Κανονικό</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="696"/>
+      <location filename="../../TaskHoleParameters.cpp" line="699"/>
       <source>Close</source>
       <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
       <translation>Κλείσιμο</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="700"/>
+      <location filename="../../TaskHoleParameters.cpp" line="703"/>
       <source>Loose</source>
       <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
       <translation>Χαλαρή</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="704"/>
+      <location filename="../../TaskHoleParameters.cpp" line="707"/>
       <source>Normal</source>
       <comment>Distance between thread crest and hole wall</comment>
       <translation>Κανονικό</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="705"/>
+      <location filename="../../TaskHoleParameters.cpp" line="708"/>
       <source>Close</source>
       <comment>Distance between thread crest and hole wall</comment>
       <translation>Κλείσιμο</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="706"/>
+      <location filename="../../TaskHoleParameters.cpp" line="709"/>
       <source>Wide</source>
       <comment>Distance between thread crest and hole wall</comment>
       <translation>Ευρεία</translation>
@@ -3191,10 +3191,10 @@ measured along the specified direction</source>
       <translation>Δεν υπάρχουν έγκυρα επίπεδα σε αυτό το έγγραφο</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="95"/>
+      <location filename="../../ViewProvider.cpp" line="135"/>
       <location filename="../../Command.cpp" line="1138"/>
       <location filename="../../SketchWorkflow.cpp" line="728"/>
-      <location filename="../../ViewProvider.cpp" line="135"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="95"/>
       <location filename="../../ViewProviderDatum.cpp" line="257"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Ένα παράθυρο επιλογών είναι ήδη ανοιχτό στον πίνακα εργασιών</translation>
@@ -3235,10 +3235,10 @@ measured along the specified direction</source>
       <translation>Δεν υπάρχει διαθέσιμο σκαρίφημα στο έγγραφο</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="96"/>
+      <location filename="../../ViewProvider.cpp" line="136"/>
       <location filename="../../Command.cpp" line="1139"/>
       <location filename="../../SketchWorkflow.cpp" line="729"/>
-      <location filename="../../ViewProvider.cpp" line="136"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="96"/>
       <location filename="../../ViewProviderDatum.cpp" line="258"/>
       <source>Close this dialog?</source>
       <translation>Κλείσιμο αυτού του διαλόγου?</translation>
@@ -3533,10 +3533,10 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
       <translation>Προκειμένου να χρησιμοποιήσετε αυτό το χαρακτηριστικό θα πρέπει να ανήκει σε κάποιο εξάρτημα που βρίσκεται στο έγγραφο.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="225"/>
       <location filename="../../ViewProviderTransformed.cpp" line="63"/>
-      <location filename="../../ViewProviderDressUp.cpp" line="62"/>
       <location filename="../../ViewProvider.cpp" line="92"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="225"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="62"/>
       <source>Edit %1</source>
       <translation>Επεξεργασία %1</translation>
     </message>
@@ -4467,20 +4467,20 @@ over 90: larger hole radius at the bottom</source>
       <translation>Αδυναμία εκτέλεσης λογικής πράξης: Το σχήμα βάσης δεν είναι έγκυρο</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureDraft.cpp" line="332"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="253"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2067"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="480"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="529"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="159"/>
       <location filename="../../../App/FeatureChamfer.cpp" line="192"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="140"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="773"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="789"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="802"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2077"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="159"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="253"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="774"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="790"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="803"/>
       <location filename="../../../App/FeatureLoft.cpp" line="331"/>
       <location filename="../../../App/FeatureLoft.cpp" line="375"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="332"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="140"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="284"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="480"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="529"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>Το αποτέλεσμα έχει πολλαπλά στερεά: ενεργοποιήστε την επιλογή 'Να επιτρέπονται τα Σύνθετα' (Allow Compound) στο ενεργό Σώμα.</translation>
     </message>
@@ -4495,30 +4495,30 @@ over 90: larger hole radius at the bottom</source>
       <translation>Μη υποστηριζόμενη λογική πράξη</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="351"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="352"/>
       <source>Cannot create a pad with a total length of zero.</source>
       <translation>Αδυναμία δημιουργίας εξώθησης με μηδενικό συνολικό μήκος.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="356"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="357"/>
       <source>Cannot create a pocket with a total length of zero.</source>
       <translation>Αδυναμία δημιουργίας εσοχής με μηδενικό βάθος.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="704"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="705"/>
       <source>No extrusion geometry was generated.</source>
       <translation>Δεν δημιουργήθηκε γεωμετρία εξώθησης.(Δεν προέκυψε κανένας όγκος).</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="728"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="729"/>
       <source>Resulting fused extrusion is null.</source>
       <translation>Το κομμάτι που πρόσθεσες δεν κόλλησε πουθενά και χάθηκε.</translation>
     </message>
     <message>
+      <location filename="../../../App/FeatureExtrude.cpp" line="765"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="368"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="139"/>
       <location filename="../../../App/FeaturePipe.cpp" line="521"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="764"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="368"/>
       <source>Resulting shape is not a solid</source>
       <translation>Το σχήμα που προκύπτει δεν είναι στερεό</translation>
     </message>
@@ -4579,7 +4579,7 @@ over 90: larger hole radius at the bottom</source>
       <translation>Γωνία αυλάκωσης πολύ μικρή</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1719"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1724"/>
       <source>The requested feature cannot be created. The reason may be that:
   - the active Body does not contain a base shape, so there is no
   material to be removed;
@@ -4589,18 +4589,18 @@ over 90: larger hole radius at the bottom</source>
   - το σχέδιο που επιλέξατε βρίσκεται έξω από το ενεργό Σώμα.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="400"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="401"/>
       <source>Failed to obtain profile shape</source>
       <translation>Αποτυχία λήψης του σχήματος του προφίλ</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="454"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="455"/>
       <source>Creation failed because direction is orthogonal to sketch's normal vector</source>
       <translation>Η δημιουργία απέτυχε επειδή η κατεύθυνση είναι κάθετη προς το επίπεδο του σχεδίου</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="154"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="477"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="478"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="176"/>
       <source>Creating a face from sketch failed</source>
       <translation>Η δημιουργία επιφάνειας από αυτό το σχέδιο απέτυχε</translation>
@@ -4674,9 +4674,9 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>Σφάλμα: Η επιφάνεια πρέπει να είναι επίπεδη</translation>
     </message>
     <message>
+      <location filename="../../../App/FeatureHole.cpp" line="2432"/>
       <location filename="../../../App/FeatureHelix.cpp" line="443"/>
       <location filename="../../../App/FeatureHelix.cpp" line="484"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2422"/>
       <source>Error: Result is not a solid</source>
       <translation>Σφάλμα: Το αποτέλεσμα δεν είναι σταθερό (δεν έχει όγκο)</translation>
     </message>
@@ -4713,83 +4713,88 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>Σφάλμα: Το σχέδιο δεν είναι "κλειστό" ή έχει λάθη και δεν μπορεί να γίνει στερεό</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1224"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1229"/>
       <source>Thread type is invalid</source>
       <translation>Ο τύπος σπειρώματος δεν είναι έγκυρος</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1764"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1737"/>
+      <source>Hole error: Diameter too small</source>
+      <translation type="unfinished">Hole error: Diameter too small</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="1774"/>
       <source>Hole error: Unsupported length specification</source>
       <translation>Σφάλμα Οπής: Το βάθος που δώσατε δεν μπορεί να εφαρμοστεί</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1770"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1780"/>
       <source>Hole error: Invalid hole depth</source>
       <translation>Σφάλμα Οπής: Μη έγκυρο βάθος οπής</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1796"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1806"/>
       <source>Hole error: Invalid taper angle</source>
       <translation>Σφάλμα Οπής: Η γωνία κλίσης δεν είναι σωστή</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1820"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1830"/>
       <source>Hole error: Hole cut diameter too small</source>
       <translation>Σφάλμα Οπής: Η διάμετρος είναι πολύ μικρή για να τρυπήσει</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1825"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1835"/>
       <source>Hole error: Hole cut depth must be less than hole depth</source>
       <translation>Σφάλμα Οπής: Το σκάψιμο για το κεφάλι της βίδας είναι πιο βαθύ από την ίδια την τρύπα</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1832"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1842"/>
       <source>Hole error: Hole cut depth must be greater or equal to zero</source>
       <translation>Σφάλμα Οπής: Το βάθος για το κεφάλι της βίδας δεν μπορεί να είναι αρνητικό, πρέπει να είναι μεγαλύτερο ή ίσο με το μηδέν</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1862"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1872"/>
       <source>Hole error: Invalid countersink</source>
       <translation>Σφάλμα Οπής: Η κωνική υποδοχή για το κεφάλι της βίδας δεν μπορεί να σχεδιαστεί</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1898"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1908"/>
       <source>Hole error: Invalid drill point angle</source>
       <translation>Σφάλμα Οπής: Η γωνία της μύτης του τρυπανιού δεν είναι σωστή</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1915"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1925"/>
       <source>Hole error: Invalid drill point</source>
       <translation>Σφάλμα Οπής: Το σχήμα της μύτης στον πάτο της τρύπας δεν είναι σωστό</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1952"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1962"/>
       <source>Hole error: Could not revolve sketch</source>
       <translation>Σφάλμα Οπης: Το πρόγραμμα δεν μπορεί να σχεδιάσει το εσωτερικό της τρύπας</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1959"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1969"/>
       <source>Hole error: Resulting shape is empty</source>
       <translation>Σφάλμα Οπής: Η τρύπα δεν βρίσκει υλικό για να τρυπήσει</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1972"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1982"/>
       <source>Error: Adding the thread failed</source>
       <translation>Σφάλμα: Αποτυχία σχεδιασμού σπειρώματος της βίδας</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1983"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1993"/>
       <source>Hole error: Finding axis failed</source>
       <translation>Σφάλμα Οπής: Δεν βρέθηκε ο άξονας (η κατεύθυνση) για το τρύπημα</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2039"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2047"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2049"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2057"/>
       <source>Boolean operation failed on profile Edge</source>
       <translation>Η λειτουργία Boolean απέτυχε στην ακμή του προφίλ</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2054"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2064"/>
       <source>Boolean operation produced non-solid on profile Edge</source>
       <translation>Η λειτουργία Boolean παρήγαγε μη-στερεό αποτέλεσμα στην ακμή του προφίλ</translation>
     </message>
@@ -4799,24 +4804,24 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>Η λειτουργία Boolean απέτυχε</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2080"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2090"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
       <translation>Αδυναμία δημιουργίας επιφάνειας από το σχέδιο.
 Δεν επιτρέπονται στοιχεία που τέμνονται ή πολλαπλές επιφάνειες σε ένα σχέδιο για τη δημιουργία εσοχής έως μια επιφάνεια.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2245"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2255"/>
       <source>Thread type out of range</source>
       <translation>Ο τύπος σπειρώματος είναι εκτός ορίων</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2248"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2258"/>
       <source>Thread size out of range</source>
       <translation>Το μέγεθος σπειρώματος είναι εκτός ορίων</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2396"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2406"/>
       <source>Error: Thread could not be built</source>
       <translation>Σφάλμα: Αδυναμία κατασκευής σπειρώματος</translation>
     </message>
@@ -4836,13 +4841,13 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
       <translation>Μετάβαση (Loft): Η δημιουργία επιφάνειας από το σχέδιο απέτυχε</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="444"/>
       <location filename="../../../App/FeatureLoft.cpp" line="301"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="444"/>
       <source>Loft: Failed to create shell</source>
       <translation>Μετάβαση (Loft): Αποτυχία δημιουργίας κελύφους</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="817"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="818"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
       <translation>Αδυναμία δημιουργίας επιφάνειας από το σκαρίφημα. 
@@ -4949,16 +4954,16 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>Αδυναμία αφαίρεσης βασικού σχήματος χωρίς την ύπαρξη αρχικού αντικειμένου</translation>
     </message>
     <message>
+      <location filename="../../../App/FeatureLoft.cpp" line="353"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="123"/>
       <location filename="../../../App/FeaturePipe.cpp" line="505"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="353"/>
       <source>Unknown operation type</source>
       <translation>Άγνωστος τύπος λειτουργίας</translation>
     </message>
     <message>
+      <location filename="../../../App/FeatureLoft.cpp" line="361"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="131"/>
       <location filename="../../../App/FeaturePipe.cpp" line="513"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="361"/>
       <source>Failed to perform boolean operation</source>
       <translation>Η εκτέλεση της λειτουργίας Boolean απέτυχε</translation>
     </message>
@@ -5083,7 +5088,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>Ο άξονας αναφοράς δεν είναι έγκυρος</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="756"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="757"/>
       <source>Fusion with base feature failed</source>
       <translation>Η Συγχώνευση με το βασικό αντικείμενο απέτυχε</translation>
     </message>

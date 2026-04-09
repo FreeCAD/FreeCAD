@@ -4,17 +4,17 @@
   <context>
     <name>CmdRobotAddToolShape</name>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="44"/>
+      <location filename="../../CommandInsertRobot.cpp" line="46"/>
       <source>Robot</source>
       <translation>Робот</translation>
     </message>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="45"/>
+      <location filename="../../CommandInsertRobot.cpp" line="47"/>
       <source>Tool</source>
       <translation>Алатка</translation>
     </message>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="46"/>
+      <location filename="../../CommandInsertRobot.cpp" line="48"/>
       <source>Adds a tool shape to the robot</source>
       <translation>Додај алат роботу</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdRobotConstraintAxle</name>
     <message>
-      <location filename="../../Command.cpp" line="199"/>
+      <location filename="../../Command.cpp" line="201"/>
       <source>Robot</source>
       <translation>Робот</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="200"/>
+      <location filename="../../Command.cpp" line="202"/>
       <source>Place Robot</source>
       <translation>Поcтави робота</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="201"/>
+      <location filename="../../Command.cpp" line="203"/>
       <source>Places a robot in the scene</source>
       <translation>Постави робота на сцени</translation>
     </message>
@@ -40,17 +40,17 @@
   <context>
     <name>CmdRobotCreateTrajectory</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="53"/>
+      <location filename="../../CommandTrajectory.cpp" line="55"/>
       <source>Robot</source>
       <translation>Робот</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="54"/>
+      <location filename="../../CommandTrajectory.cpp" line="56"/>
       <source>Trajectory</source>
       <translation type="unfinished">Trajectory</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="55"/>
+      <location filename="../../CommandTrajectory.cpp" line="57"/>
       <source>Creates a new empty trajectory</source>
       <translation>Направи нову празну путању</translation>
     </message>
@@ -58,17 +58,17 @@
   <context>
     <name>CmdRobotEdge2Trac</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="377"/>
+      <location filename="../../CommandTrajectory.cpp" line="379"/>
       <source>Robot</source>
       <translation>Робот</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="378"/>
+      <location filename="../../CommandTrajectory.cpp" line="380"/>
       <source>Edge to Trajectory</source>
       <translation>Ивица у путању</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="379"/>
+      <location filename="../../CommandTrajectory.cpp" line="381"/>
       <source>Generates a trajectory from the selected edges</source>
       <translation>Направи путању од изабраних ивица</translation>
     </message>
@@ -76,17 +76,17 @@
   <context>
     <name>CmdRobotExportKukaCompact</name>
     <message>
-      <location filename="../../CommandExport.cpp" line="44"/>
+      <location filename="../../CommandExport.cpp" line="46"/>
       <source>Robot</source>
       <translation>Робот</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="45"/>
+      <location filename="../../CommandExport.cpp" line="47"/>
       <source>Kuka Compact Subroutine</source>
       <translation>Kuka компактни подпрограм</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="46"/>
+      <location filename="../../CommandExport.cpp" line="48"/>
       <source>Exports the trajectory as a compact KRL subroutine</source>
       <translation>Извези путању као компактни KRL подпрограм</translation>
     </message>
@@ -94,17 +94,17 @@
   <context>
     <name>CmdRobotExportKukaFull</name>
     <message>
-      <location filename="../../CommandExport.cpp" line="125"/>
+      <location filename="../../CommandExport.cpp" line="127"/>
       <source>Robot</source>
       <translation>Робот</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="126"/>
+      <location filename="../../CommandExport.cpp" line="128"/>
       <source>Kuka Full Subroutine</source>
       <translation>Kuka цео подпрограм</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="127"/>
+      <location filename="../../CommandExport.cpp" line="129"/>
       <source>Exports the trajectory as a full KRL subroutine</source>
       <translation>Извези путању као потпун KRL подпрограм</translation>
     </message>
@@ -112,17 +112,17 @@
   <context>
     <name>CmdRobotInsertWaypoint</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="89"/>
+      <location filename="../../CommandTrajectory.cpp" line="91"/>
       <source>Robot</source>
       <translation>Робот</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="90"/>
+      <location filename="../../CommandTrajectory.cpp" line="92"/>
       <source>Insert in Trajectory</source>
       <translation>Уметни у путању</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="91"/>
+      <location filename="../../CommandTrajectory.cpp" line="93"/>
       <source>Inserts the robot tool location into the trajectory</source>
       <translation>Уметни у путању положај алата робота</translation>
     </message>
@@ -130,17 +130,17 @@
   <context>
     <name>CmdRobotInsertWaypointPreselect</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="162"/>
+      <location filename="../../CommandTrajectory.cpp" line="164"/>
       <source>Robot</source>
       <translation>Робот</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="163"/>
+      <location filename="../../CommandTrajectory.cpp" line="165"/>
       <source>Insert in Trajectory</source>
       <translation>Уметни у путању</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="164"/>
+      <location filename="../../CommandTrajectory.cpp" line="166"/>
       <source>Inserts the preselection position into the trajectory (W)</source>
       <translation>Уметни претходно изабран положај у путању (W)</translation>
     </message>
@@ -148,17 +148,17 @@
   <context>
     <name>CmdRobotRestoreHomePos</name>
     <message>
-      <location filename="../../Command.cpp" line="144"/>
+      <location filename="../../Command.cpp" line="146"/>
       <source>Robot</source>
       <translation>Робот</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="145"/>
+      <location filename="../../Command.cpp" line="147"/>
       <source>Move to Home</source>
       <translation>Помери у почетни положај</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="146"/>
+      <location filename="../../Command.cpp" line="148"/>
       <source>Moves to the home position</source>
       <translation>Померање у почетни положај</translation>
     </message>
@@ -166,17 +166,17 @@
   <context>
     <name>CmdRobotSetDefaultOrientation</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="248"/>
+      <location filename="../../CommandTrajectory.cpp" line="250"/>
       <source>Robot</source>
       <translation>Робот</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="249"/>
+      <location filename="../../CommandTrajectory.cpp" line="251"/>
       <source>Set Default Orientation</source>
       <translation>Подеcи унапред задану оријентацију</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="250"/>
+      <location filename="../../CommandTrajectory.cpp" line="252"/>
       <source>Sets the default orientation for subsequent commands for waypoint creation</source>
       <translation>Подеси унапред задану оријентацију за пратеће команде стварања тачака путање</translation>
     </message>
@@ -184,17 +184,17 @@
   <context>
     <name>CmdRobotSetDefaultValues</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="288"/>
+      <location filename="../../CommandTrajectory.cpp" line="290"/>
       <source>Robot</source>
       <translation>Робот</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="289"/>
+      <location filename="../../CommandTrajectory.cpp" line="291"/>
       <source>Set Default Values</source>
       <translation>Подеси унапред задане вредности</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="290"/>
+      <location filename="../../CommandTrajectory.cpp" line="292"/>
       <source>Sets the default values for speed, acceleration, and continuity for subsequent commands of waypoint creation</source>
       <translation>Подеси унапред задане вредности за брзину, убрзање и континуитет за пратеће команде стварања тачака путање</translation>
     </message>
@@ -202,17 +202,17 @@
   <context>
     <name>CmdRobotSetHomePos</name>
     <message>
-      <location filename="../../Command.cpp" line="81"/>
+      <location filename="../../Command.cpp" line="83"/>
       <source>Robot</source>
       <translation>Робот</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="82"/>
+      <location filename="../../Command.cpp" line="84"/>
       <source>Set Home Position</source>
       <translation>Подеси почетни положај</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="83"/>
+      <location filename="../../Command.cpp" line="85"/>
       <source>Sets the home position</source>
       <translation>Подеси почетни положај</translation>
     </message>
@@ -220,17 +220,17 @@
   <context>
     <name>CmdRobotSimulate</name>
     <message>
-      <location filename="../../Command.cpp" line="242"/>
+      <location filename="../../Command.cpp" line="244"/>
       <source>Robot</source>
       <translation>Робот</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="243"/>
+      <location filename="../../Command.cpp" line="245"/>
       <source>Simulate Trajectory</source>
       <translation>Cимулирај путању</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="244"/>
+      <location filename="../../Command.cpp" line="246"/>
       <source>Simulates robot movement along a selected trajectory</source>
       <translation>Симулирај кретање робота по изабраној путањи</translation>
     </message>
@@ -238,17 +238,17 @@
   <context>
     <name>CmdRobotTrajectoryCompound</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="504"/>
+      <location filename="../../CommandTrajectory.cpp" line="506"/>
       <source>Robot</source>
       <translation>Робот</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="505"/>
+      <location filename="../../CommandTrajectory.cpp" line="507"/>
       <source>Trajectory Compound</source>
       <translation>Сложена путања</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="506"/>
+      <location filename="../../CommandTrajectory.cpp" line="508"/>
       <source>Groups and connects multiple trajectories into one</source>
       <translation>Групиши и споји неколико путања у једну</translation>
     </message>
@@ -256,17 +256,17 @@
   <context>
     <name>CmdRobotTrajectoryDressUp</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="440"/>
+      <location filename="../../CommandTrajectory.cpp" line="442"/>
       <source>Robot</source>
       <translation>Робот</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="441"/>
+      <location filename="../../CommandTrajectory.cpp" line="443"/>
       <source>Dress-Up Trajectory</source>
       <translation>Измењена путања</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="442"/>
+      <location filename="../../CommandTrajectory.cpp" line="444"/>
       <source>Creates a dress-up object that overrides aspects of a trajectory</source>
       <translation>Направи путању са измењеним вредностима неких параметара</translation>
     </message>
@@ -274,17 +274,17 @@
   <context>
     <name>Gui::TaskView::TaskWatcherCommands</name>
     <message>
-      <location filename="../../Workbench.cpp" line="49"/>
+      <location filename="../../Workbench.cpp" line="51"/>
       <source>Trajectory Tools</source>
       <translation>Алатке путање</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="50"/>
+      <location filename="../../Workbench.cpp" line="52"/>
       <source>Robot Tools</source>
       <translation>Алатке робота</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="51"/>
+      <location filename="../../Workbench.cpp" line="53"/>
       <source>Insert Robot</source>
       <translation>Уметни Робота</translation>
     </message>
@@ -292,143 +292,143 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="52"/>
-      <source>Select VRML file for Robot</source>
-      <translation>Изабери VRML датотеку за робота</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="54"/>
-      <source>VRML Files (*.wrl *.vrml)</source>
-      <translation>VRML датотеке (*.wrl *.vrml)</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="66"/>
-      <source>Select Kinematic CSV file for Robot</source>
-      <translation>Изабери кинематску CSV датотеку за робота</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="68"/>
-      <source>CSV Files (*.csv)</source>
-      <translation>CSV Датотеке (*.csv)</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="102"/>
-      <location filename="../../Command.cpp" line="165"/>
-      <location filename="../../Command.cpp" line="267"/>
-      <location filename="../../CommandTrajectory.cpp" line="107"/>
-      <location filename="../../CommandTrajectory.cpp" line="178"/>
-      <location filename="../../CommandTrajectory.cpp" line="199"/>
-      <location filename="../../CommandTrajectory.cpp" line="484"/>
-      <location filename="../../CommandInsertRobot.cpp" line="68"/>
-      <location filename="../../CommandExport.cpp" line="61"/>
-      <location filename="../../CommandExport.cpp" line="142"/>
+      <location filename="../../CommandTrajectory.cpp" line="109"/>
+      <location filename="../../CommandTrajectory.cpp" line="180"/>
+      <location filename="../../CommandTrajectory.cpp" line="201"/>
+      <location filename="../../CommandTrajectory.cpp" line="486"/>
+      <location filename="../../Command.cpp" line="104"/>
+      <location filename="../../Command.cpp" line="167"/>
+      <location filename="../../Command.cpp" line="269"/>
+      <location filename="../../CommandInsertRobot.cpp" line="70"/>
+      <location filename="../../CommandExport.cpp" line="63"/>
+      <location filename="../../CommandExport.cpp" line="144"/>
       <source>Wrong selection</source>
       <translation>Погрешан избор</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="103"/>
+      <location filename="../../Command.cpp" line="54"/>
+      <source>Select VRML file for Robot</source>
+      <translation>Изабери VRML датотеку за робота</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="56"/>
+      <source>VRML Files (*.wrl *.vrml)</source>
+      <translation>VRML датотеке (*.wrl *.vrml)</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="68"/>
+      <source>Select Kinematic CSV file for Robot</source>
+      <translation>Изабери кинематску CSV датотеку за робота</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="70"/>
+      <source>CSV Files (*.csv)</source>
+      <translation>CSV Датотеке (*.csv)</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="105"/>
       <source>Select one Robot to set home position</source>
       <translation>Изабери једног Робота да подесиш почетни положај</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="166"/>
+      <location filename="../../Command.cpp" line="168"/>
       <source>Select one Robot</source>
       <translation>Изабери једног Робота</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="268"/>
-      <location filename="../../CommandTrajectory.cpp" line="108"/>
-      <location filename="../../CommandExport.cpp" line="62"/>
-      <location filename="../../CommandExport.cpp" line="143"/>
+      <location filename="../../CommandTrajectory.cpp" line="110"/>
+      <location filename="../../Command.cpp" line="270"/>
+      <location filename="../../CommandExport.cpp" line="64"/>
+      <location filename="../../CommandExport.cpp" line="145"/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>Изабери једног Робота и један објекат Путање.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="276"/>
+      <location filename="../../Command.cpp" line="278"/>
       <source>Trajectory not valid</source>
       <translation>Путања је неважећа</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="277"/>
+      <location filename="../../Command.cpp" line="279"/>
       <source>You need at least two waypoints in a trajectory to simulate.</source>
       <translation>Потребне cу бар две тачке путање за cимулацију.</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="89"/>
-      <location filename="../../CommandExport.cpp" line="170"/>
+      <location filename="../../CommandExport.cpp" line="91"/>
+      <location filename="../../CommandExport.cpp" line="172"/>
       <source>KRL file</source>
       <translation>KRL датотека</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="90"/>
-      <location filename="../../CommandExport.cpp" line="171"/>
+      <location filename="../../CommandExport.cpp" line="92"/>
+      <location filename="../../CommandExport.cpp" line="173"/>
       <source>All Files</source>
       <translation>Све датотеке</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="93"/>
-      <location filename="../../CommandExport.cpp" line="174"/>
+      <location filename="../../CommandExport.cpp" line="95"/>
+      <location filename="../../CommandExport.cpp" line="176"/>
       <source>Export program</source>
       <translation>Извези програм</translation>
     </message>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="69"/>
+      <location filename="../../CommandInsertRobot.cpp" line="71"/>
       <source>Select one robot and one shape or VRML object.</source>
       <translation>Изабери једног робота и један облик, или VRML објекат.</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="179"/>
-      <location filename="../../CommandTrajectory.cpp" line="200"/>
+      <location filename="../../CommandTrajectory.cpp" line="181"/>
+      <location filename="../../CommandTrajectory.cpp" line="202"/>
       <source>Select one Trajectory object.</source>
       <translation>Изабери један објекат Путање.</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="209"/>
+      <location filename="../../CommandTrajectory.cpp" line="211"/>
       <source>No preselection</source>
       <translation>Нема предизбора</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="210"/>
+      <location filename="../../CommandTrajectory.cpp" line="212"/>
       <source>You have to hover above a geometry (Preselection) with the mouse to use this command. See documentation for details.</source>
       <translation>Мораш лебдети мишем изнад геометрије (Предизбор), да би користио ову команду. Погледај документацију за детаље.</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="306"/>
+      <location filename="../../CommandTrajectory.cpp" line="308"/>
       <source>Set default speed</source>
       <translation>Подеси подразумевану брзину</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="307"/>
+      <location filename="../../CommandTrajectory.cpp" line="309"/>
       <source>speed: (e.g. 1 m/s or 3 cm/s)</source>
       <translation>брзина: (e.g. 1 m/s or 3 cm/s)</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="322"/>
+      <location filename="../../CommandTrajectory.cpp" line="324"/>
       <source>Set default continuity</source>
       <translation>Подеси подразумевани континуитет</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="323"/>
+      <location filename="../../CommandTrajectory.cpp" line="325"/>
       <source>continuous ?</source>
       <translation>непрекидно ?</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="338"/>
+      <location filename="../../CommandTrajectory.cpp" line="340"/>
       <source>Set default acceleration</source>
       <translation>Подеcи подразумевано убрзање</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="339"/>
+      <location filename="../../CommandTrajectory.cpp" line="341"/>
       <source>acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)</source>
       <translation>убрзање: (e.g. 1 m/s^2 or 3 cm/s^2)</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="485"/>
+      <location filename="../../CommandTrajectory.cpp" line="487"/>
       <source>Select the Trajectory which you want to dress up.</source>
       <translation>Изабери Путању коју желиш да опремиш.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderTrajectory.cpp" line="143"/>
+      <location filename="../../ViewProviderTrajectory.cpp" line="145"/>
       <source>Modify</source>
       <translation>Измени</translation>
     </message>
@@ -494,7 +494,7 @@
   <context>
     <name>RobotGui::TaskEdge2TracParameter</name>
     <message>
-      <location filename="../../TaskEdge2TracParameter.cpp" line="39"/>
+      <location filename="../../TaskEdge2TracParameter.cpp" line="41"/>
       <source>TaskEdge2TracParameter</source>
       <translation type="unfinished">TaskEdge2TracParameter</translation>
     </message>
@@ -567,7 +567,7 @@
       <translation>Алатка: (0,0,400,0,0,0)</translation>
     </message>
     <message>
-      <location filename="../../TaskRobot6Axis.cpp" line="39"/>
+      <location filename="../../TaskRobot6Axis.cpp" line="41"/>
       <source>TaskRobot6Axis</source>
       <translation type="unfinished">TaskRobot6Axis</translation>
     </message>
@@ -575,7 +575,7 @@
   <context>
     <name>RobotGui::TaskRobotControl</name>
     <message>
-      <location filename="../../TaskRobotControl.cpp" line="34"/>
+      <location filename="../../TaskRobotControl.cpp" line="36"/>
       <source>TaskRobotControl</source>
       <translation type="unfinished">TaskRobotControl</translation>
     </message>
@@ -693,7 +693,7 @@
   <context>
     <name>RobotGui::TaskRobotMessages</name>
     <message>
-      <location filename="../../TaskRobotMessages.cpp" line="34"/>
+      <location filename="../../TaskRobotMessages.cpp" line="36"/>
       <source>TaskRobotMessages</source>
       <translation type="unfinished">TaskRobotMessages</translation>
     </message>
@@ -786,7 +786,7 @@
       <translation>A</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectory.cpp" line="40"/>
+      <location filename="../../TaskTrajectory.cpp" line="42"/>
       <source>Trajectory</source>
       <translation>Путања</translation>
     </message>
@@ -794,7 +794,7 @@
   <context>
     <name>RobotGui::TaskTrajectoryDressUpParameter</name>
     <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.cpp" line="41"/>
+      <location filename="../../TaskTrajectoryDressUpParameter.cpp" line="43"/>
       <source>Dress Up Parameter</source>
       <translation type="unfinished">Dress Up Parameter</translation>
     </message>
@@ -863,22 +863,22 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="45"/>
+      <location filename="../../Workbench.cpp" line="47"/>
       <source>Robot</source>
       <translation>Робот</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="46"/>
+      <location filename="../../Workbench.cpp" line="48"/>
       <source>Insert Robot</source>
       <translation>Уметни Робота</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="48"/>
+      <location filename="../../Workbench.cpp" line="50"/>
       <source>Export Trajectory</source>
       <translation>Извези путању</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="47"/>
+      <location filename="../../Workbench.cpp" line="49"/>
       <source>&amp;Robot</source>
       <translation>&amp;Роботи</translation>
     </message>

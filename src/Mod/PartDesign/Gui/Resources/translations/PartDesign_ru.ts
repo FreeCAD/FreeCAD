@@ -2108,55 +2108,55 @@ Please adjust the parameters and try again.</source>
       <translation>ISO шинные клапаны</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="678"/>
+      <location filename="../../TaskHoleParameters.cpp" line="681"/>
       <source>Medium</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
       <translation>Среднее</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="682"/>
+      <location filename="../../TaskHoleParameters.cpp" line="685"/>
       <source>Fine</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
       <translation>Точно</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="686"/>
+      <location filename="../../TaskHoleParameters.cpp" line="689"/>
       <source>Coarse</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
       <translation>Грубо</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="692"/>
+      <location filename="../../TaskHoleParameters.cpp" line="695"/>
       <source>Normal</source>
       <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
       <translation>Нормальное</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="696"/>
+      <location filename="../../TaskHoleParameters.cpp" line="699"/>
       <source>Close</source>
       <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
       <translation>Закрыть</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="700"/>
+      <location filename="../../TaskHoleParameters.cpp" line="703"/>
       <source>Loose</source>
       <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
       <translation>Свободный</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="704"/>
+      <location filename="../../TaskHoleParameters.cpp" line="707"/>
       <source>Normal</source>
       <comment>Distance between thread crest and hole wall</comment>
       <translation>Основная</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="705"/>
+      <location filename="../../TaskHoleParameters.cpp" line="708"/>
       <source>Close</source>
       <comment>Distance between thread crest and hole wall</comment>
       <translation>Закрыть</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="706"/>
+      <location filename="../../TaskHoleParameters.cpp" line="709"/>
       <source>Wide</source>
       <comment>Distance between thread crest and hole wall</comment>
       <translation>Свободный/широкий</translation>
@@ -3188,10 +3188,10 @@ measured along the specified direction</source>
       <translation>В документе нет подходящих плоскостей</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="95"/>
+      <location filename="../../ViewProvider.cpp" line="135"/>
       <location filename="../../Command.cpp" line="1138"/>
       <location filename="../../SketchWorkflow.cpp" line="728"/>
-      <location filename="../../ViewProvider.cpp" line="135"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="95"/>
       <location filename="../../ViewProviderDatum.cpp" line="257"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Диалог уже открыт в панели задач</translation>
@@ -3232,10 +3232,10 @@ measured along the specified direction</source>
       <translation>В документе отсутствуют эскизы для применения данного действия</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="96"/>
+      <location filename="../../ViewProvider.cpp" line="136"/>
       <location filename="../../Command.cpp" line="1139"/>
       <location filename="../../SketchWorkflow.cpp" line="729"/>
-      <location filename="../../ViewProvider.cpp" line="136"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="96"/>
       <location filename="../../ViewProviderDatum.cpp" line="258"/>
       <source>Close this dialog?</source>
       <translation>Закрыть диалоговое окно?</translation>
@@ -3530,10 +3530,10 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
       <translation>Для использования этой операции/функции, она должна применяться к объекту Деталь в документе.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="225"/>
       <location filename="../../ViewProviderTransformed.cpp" line="63"/>
-      <location filename="../../ViewProviderDressUp.cpp" line="62"/>
       <location filename="../../ViewProvider.cpp" line="92"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="225"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="62"/>
       <source>Edit %1</source>
       <translation>Редактировать %1</translation>
     </message>
@@ -4464,20 +4464,20 @@ over 90: larger hole radius at the bottom</source>
       <translation>Невозможно выполнить логическую операцию с недопустимой базовой формой</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureDraft.cpp" line="332"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="253"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2067"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="480"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="529"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="159"/>
       <location filename="../../../App/FeatureChamfer.cpp" line="192"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="140"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="773"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="789"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="802"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2077"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="159"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="253"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="774"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="790"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="803"/>
       <location filename="../../../App/FeatureLoft.cpp" line="331"/>
       <location filename="../../../App/FeatureLoft.cpp" line="375"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="332"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="140"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="284"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="480"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="529"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>Результат содержит несколько твёрдых тел: включите параметр "Разрешить составные объекты" в активном теле.</translation>
     </message>
@@ -4492,30 +4492,30 @@ over 90: larger hole radius at the bottom</source>
       <translation>Неподдерживаемая булева операция</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="351"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="352"/>
       <source>Cannot create a pad with a total length of zero.</source>
       <translation>Невозможно выполнить выдавливание с нулевой общей длиной.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="356"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="357"/>
       <source>Cannot create a pocket with a total length of zero.</source>
       <translation>Невозможно выполнить вырезание с нулевой общей длиной.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="704"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="705"/>
       <source>No extrusion geometry was generated.</source>
       <translation>Никакой геометрии выдавливания не было сгенерировано.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="728"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="729"/>
       <source>Resulting fused extrusion is null.</source>
       <translation>Результат операции выдавливания равен нулю (null).</translation>
     </message>
     <message>
+      <location filename="../../../App/FeatureExtrude.cpp" line="765"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="368"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="139"/>
       <location filename="../../../App/FeaturePipe.cpp" line="521"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="764"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="368"/>
       <source>Resulting shape is not a solid</source>
       <translation>Полученная форма не является твёрдотельной</translation>
     </message>
@@ -4578,7 +4578,7 @@ over 90: larger hole radius at the bottom</source>
       <translation>Угол канавки слишком мал</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1719"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1724"/>
       <source>The requested feature cannot be created. The reason may be that:
   - the active Body does not contain a base shape, so there is no
   material to be removed;
@@ -4589,18 +4589,18 @@ over 90: larger hole radius at the bottom</source>
   - выбранный эскиз не принадлежит активному телу.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="400"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="401"/>
       <source>Failed to obtain profile shape</source>
       <translation>Не удалось получить форму профиля</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="454"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="455"/>
       <source>Creation failed because direction is orthogonal to sketch's normal vector</source>
       <translation>Создание не удалось, поскольку направление ортогонально вектору нормали эскиза</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="154"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="477"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="478"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="176"/>
       <source>Creating a face from sketch failed</source>
       <translation>Не удалось создать грань из эскиза</translation>
@@ -4674,9 +4674,9 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>Ошибка: грань должна быть плоской</translation>
     </message>
     <message>
+      <location filename="../../../App/FeatureHole.cpp" line="2432"/>
       <location filename="../../../App/FeatureHelix.cpp" line="443"/>
       <location filename="../../../App/FeatureHelix.cpp" line="484"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2422"/>
       <source>Error: Result is not a solid</source>
       <translation>Ошибка: Результат не твердотельный</translation>
     </message>
@@ -4713,83 +4713,88 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>Ошибка: Не удалось создать грань из эскиза</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1224"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1229"/>
       <source>Thread type is invalid</source>
       <translation>Недопустимый тип резьбы</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1764"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1737"/>
+      <source>Hole error: Diameter too small</source>
+      <translation>Ошибка: диаметр отверстия слишком мал.</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="1774"/>
       <source>Hole error: Unsupported length specification</source>
       <translation>Ошибка отверстия: неподдерживаемая длина</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1770"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1780"/>
       <source>Hole error: Invalid hole depth</source>
       <translation>Ошибка отверстия: неверная глубина отверстия</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1796"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1806"/>
       <source>Hole error: Invalid taper angle</source>
       <translation>Ошибка при создании отверстия: недопустимый угол зенкования</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1820"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1830"/>
       <source>Hole error: Hole cut diameter too small</source>
       <translation>Ошибка при создании отверстия: диаметр цековки слишком мал</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1825"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1835"/>
       <source>Hole error: Hole cut depth must be less than hole depth</source>
       <translation>Ошибка при создании отверстия: глубина цековки должна быть меньше глубины отверстия</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1832"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1842"/>
       <source>Hole error: Hole cut depth must be greater or equal to zero</source>
       <translation>Ошибка при создании отверстия: глубина цековки должна быть больше либо равна нулю</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1862"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1872"/>
       <source>Hole error: Invalid countersink</source>
       <translation>Ошибка при создании отверстия: Недопустимая зенковка</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1898"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1908"/>
       <source>Hole error: Invalid drill point angle</source>
       <translation>Ошибка при создании отверстия: Недопустимый угол сверла</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1915"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1925"/>
       <source>Hole error: Invalid drill point</source>
       <translation>Ошибка при создании отверстия: недопустимая режущая часть сверла</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1952"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1962"/>
       <source>Hole error: Could not revolve sketch</source>
       <translation>Ошибка при создании отверстия: Не удалось провернуть эскиз</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1959"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1969"/>
       <source>Hole error: Resulting shape is empty</source>
       <translation>Ошибка при создании отверстия: результирующая форма пуста</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1972"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1982"/>
       <source>Error: Adding the thread failed</source>
       <translation>Ошибка: не удалось добавить резьбу</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1983"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1993"/>
       <source>Hole error: Finding axis failed</source>
       <translation>Ошибка отверстия: Не удалось найти ось</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2039"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2047"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2049"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2057"/>
       <source>Boolean operation failed on profile Edge</source>
       <translation>Булева операция не удалась на профиле Ребра</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2054"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2064"/>
       <source>Boolean operation produced non-solid on profile Edge</source>
       <translation>Булева операция привела к появлению нетвёрдотельных элементов на профиле Ребра</translation>
     </message>
@@ -4799,24 +4804,24 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>Не удалось выполнить булеву операцию</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2080"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2090"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
       <translation>Не удалось создать грань из эскиза.
 Пересекающиеся элементы эскиза или несколько граней в эскизе не допускаются для создания выреза до грани.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2245"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2255"/>
       <source>Thread type out of range</source>
       <translation>Тип резьбы выходит за пределы допустимого диапазона</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2248"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2258"/>
       <source>Thread size out of range</source>
       <translation>Размер резьбы выходит за пределы допустимого диапазона</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2396"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2406"/>
       <source>Error: Thread could not be built</source>
       <translation>Ошибка: резьба не может быть построена</translation>
     </message>
@@ -4836,13 +4841,13 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
       <translation>Операция по сечениям: Не удалось создать грань из эскиза</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="444"/>
       <location filename="../../../App/FeatureLoft.cpp" line="301"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="444"/>
       <source>Loft: Failed to create shell</source>
       <translation>Операция по сечениям: Не удалось создать оболочку</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="817"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="818"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
       <translation>Не удалось создать грань из эскиза.
@@ -4949,16 +4954,16 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>Невозможно вычесть примитив без базового элемента</translation>
     </message>
     <message>
+      <location filename="../../../App/FeatureLoft.cpp" line="353"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="123"/>
       <location filename="../../../App/FeaturePipe.cpp" line="505"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="353"/>
       <source>Unknown operation type</source>
       <translation>Неизвестный тип операции</translation>
     </message>
     <message>
+      <location filename="../../../App/FeatureLoft.cpp" line="361"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="131"/>
       <location filename="../../../App/FeaturePipe.cpp" line="513"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="361"/>
       <source>Failed to perform boolean operation</source>
       <translation>Не удалось выполнить логическую операцию</translation>
     </message>
@@ -5082,7 +5087,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>Базовая ось недействительна</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="756"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="757"/>
       <source>Fusion with base feature failed</source>
       <translation>Сбой слияния с базовым элементом</translation>
     </message>

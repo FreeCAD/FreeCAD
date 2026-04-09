@@ -2059,12 +2059,12 @@ Reimpostare i parametri e riprovare.</translation>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="71"/>
       <source>ISO metric regular</source>
-      <translation>Metrica ISO grossa</translation>
+      <translation>Metrica ISO passo grosso</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="72"/>
       <source>ISO metric fine</source>
-      <translation>Metrica ISO fine</translation>
+      <translation>Metrica ISO passo fine</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="73"/>
@@ -2107,55 +2107,55 @@ Reimpostare i parametri e riprovare.</translation>
       <translation>Parametri elica</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="678"/>
+      <location filename="../../TaskHoleParameters.cpp" line="681"/>
       <source>Medium</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
-      <translation>Medio</translation>
+      <translation>Media</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="682"/>
+      <location filename="../../TaskHoleParameters.cpp" line="685"/>
       <source>Fine</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
       <translation>Fine</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="686"/>
+      <location filename="../../TaskHoleParameters.cpp" line="689"/>
       <source>Coarse</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
       <translation>Grossa</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="692"/>
+      <location filename="../../TaskHoleParameters.cpp" line="695"/>
       <source>Normal</source>
       <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
       <translation>Normale</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="696"/>
+      <location filename="../../TaskHoleParameters.cpp" line="699"/>
       <source>Close</source>
       <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
       <translation>Chiudi</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="700"/>
+      <location filename="../../TaskHoleParameters.cpp" line="703"/>
       <source>Loose</source>
       <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
       <translation>Ampio</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="704"/>
+      <location filename="../../TaskHoleParameters.cpp" line="707"/>
       <source>Normal</source>
       <comment>Distance between thread crest and hole wall</comment>
       <translation>Normale</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="705"/>
+      <location filename="../../TaskHoleParameters.cpp" line="708"/>
       <source>Close</source>
       <comment>Distance between thread crest and hole wall</comment>
       <translation>Chiudi</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="706"/>
+      <location filename="../../TaskHoleParameters.cpp" line="709"/>
       <source>Wide</source>
       <comment>Distance between thread crest and hole wall</comment>
       <translation>Larghezza</translation>
@@ -3190,10 +3190,10 @@ misurata lungo la direzione specificata</translation>
       <translation>In questo documento non c'è nessun piano valido</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="95"/>
+      <location filename="../../ViewProvider.cpp" line="135"/>
       <location filename="../../Command.cpp" line="1138"/>
       <location filename="../../SketchWorkflow.cpp" line="728"/>
-      <location filename="../../ViewProvider.cpp" line="135"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="95"/>
       <location filename="../../ViewProviderDatum.cpp" line="257"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Nel pannello azioni c'è già una finestra di dialogo aperta</translation>
@@ -3234,10 +3234,10 @@ misurata lungo la direzione specificata</translation>
       <translation>Nel documento non è disponibile nessuno schizzo</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="96"/>
+      <location filename="../../ViewProvider.cpp" line="136"/>
       <location filename="../../Command.cpp" line="1139"/>
       <location filename="../../SketchWorkflow.cpp" line="729"/>
-      <location filename="../../ViewProvider.cpp" line="136"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="96"/>
       <location filename="../../ViewProviderDatum.cpp" line="258"/>
       <source>Close this dialog?</source>
       <translation>Chiudere questa finestra di dialogo?</translation>
@@ -3526,10 +3526,10 @@ Per i documenti legacy con oggetti Part Design privi di corpo, utilizzare la fun
       <translation>Per poter utilizzare questa funzione essa deve appartenere a un oggetto parte del documento.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="225"/>
       <location filename="../../ViewProviderTransformed.cpp" line="63"/>
-      <location filename="../../ViewProviderDressUp.cpp" line="62"/>
       <location filename="../../ViewProvider.cpp" line="92"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="225"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="62"/>
       <source>Edit %1</source>
       <translation>Edita %1</translation>
     </message>
@@ -4460,20 +4460,20 @@ over 90: larger hole radius at the bottom</source>
       <translation>Impossibile eseguire l'operazione booleana con una forma di base non valida</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureDraft.cpp" line="332"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="253"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2067"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="480"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="529"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="159"/>
       <location filename="../../../App/FeatureChamfer.cpp" line="192"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="140"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="773"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="789"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="802"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2077"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="159"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="253"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="774"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="790"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="803"/>
       <location filename="../../../App/FeatureLoft.cpp" line="331"/>
       <location filename="../../../App/FeatureLoft.cpp" line="375"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="332"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="140"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="284"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="480"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="529"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>Il risultato ha più solidi: abilita 'Consenti Composta' nel corpo attivo.</translation>
     </message>
@@ -4488,30 +4488,30 @@ over 90: larger hole radius at the bottom</source>
       <translation>Operazione booleana non supportata</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="351"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="352"/>
       <source>Cannot create a pad with a total length of zero.</source>
       <translation>Impossibile creare una estrusione con una lunghezza totale pari a zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="356"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="357"/>
       <source>Cannot create a pocket with a total length of zero.</source>
       <translation>Impossibile creare uno scavo con una lunghezza totale pari a zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="704"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="705"/>
       <source>No extrusion geometry was generated.</source>
       <translation>Non è stata generata alcuna geometria di estrusione.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="728"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="729"/>
       <source>Resulting fused extrusion is null.</source>
       <translation>L'estrusione fusa risultante è nulla.</translation>
     </message>
     <message>
+      <location filename="../../../App/FeatureExtrude.cpp" line="765"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="368"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="139"/>
       <location filename="../../../App/FeaturePipe.cpp" line="521"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="764"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="368"/>
       <source>Resulting shape is not a solid</source>
       <translation>La forma risultante non è un solido</translation>
     </message>
@@ -4572,7 +4572,7 @@ over 90: larger hole radius at the bottom</source>
       <translation>Angolo di scanalatura troppo piccolo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1719"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1724"/>
       <source>The requested feature cannot be created. The reason may be that:
   - the active Body does not contain a base shape, so there is no
   material to be removed;
@@ -4583,18 +4583,18 @@ over 90: larger hole radius at the bottom</source>
   - lo schizzo selezionato non appartiene al corpo attivo.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="400"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="401"/>
       <source>Failed to obtain profile shape</source>
       <translation>Impossibile ottenere la forma del profilo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="454"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="455"/>
       <source>Creation failed because direction is orthogonal to sketch's normal vector</source>
       <translation>Creazione fallita perché la direzione è ortogonale al vettore normale dello schizzo</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="154"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="477"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="478"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="176"/>
       <source>Creating a face from sketch failed</source>
       <translation>Creazione di una faccia dallo schizzo fallita</translation>
@@ -4668,9 +4668,9 @@ L'intersezione delle entità dello schizzo in uno schizzo non è consentita.</tr
       <translation>Errore: la faccia deve essere planare</translation>
     </message>
     <message>
+      <location filename="../../../App/FeatureHole.cpp" line="2432"/>
       <location filename="../../../App/FeatureHelix.cpp" line="443"/>
       <location filename="../../../App/FeatureHelix.cpp" line="484"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2422"/>
       <source>Error: Result is not a solid</source>
       <translation>Errore: il risultato non è un solido</translation>
     </message>
@@ -4707,83 +4707,88 @@ L'intersezione delle entità dello schizzo in uno schizzo non è consentita.</tr
       <translation>Errore: impossibile creare la faccia dallo schizzo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1224"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1229"/>
       <source>Thread type is invalid</source>
       <translation>Tipo di filetto non valido</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1764"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1737"/>
+      <source>Hole error: Diameter too small</source>
+      <translation>Errore foro: diametro troppo piccolo</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="1774"/>
       <source>Hole error: Unsupported length specification</source>
       <translation>Errore foro: Specifica di lunghezza non supportata</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1770"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1780"/>
       <source>Hole error: Invalid hole depth</source>
       <translation>Errore foro: Profondità foro non valida</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1796"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1806"/>
       <source>Hole error: Invalid taper angle</source>
       <translation>Errore foro: Angolo conico non valido</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1820"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1830"/>
       <source>Hole error: Hole cut diameter too small</source>
       <translation>Errore foro: diametro taglio foro troppo piccolo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1825"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1835"/>
       <source>Hole error: Hole cut depth must be less than hole depth</source>
       <translation>Errore foro: La profondità di taglio del foro deve essere inferiore alla profondità del foro</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1832"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1842"/>
       <source>Hole error: Hole cut depth must be greater or equal to zero</source>
       <translation>Errore foro: la profondità di taglio del foro deve essere maggiore o uguale a zero</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1862"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1872"/>
       <source>Hole error: Invalid countersink</source>
       <translation>Errore foro: svasatura non valida</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1898"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1908"/>
       <source>Hole error: Invalid drill point angle</source>
       <translation>Errore foro: angolo punto foratura non valido</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1915"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1925"/>
       <source>Hole error: Invalid drill point</source>
       <translation>Errore foro: punto foratura non valido</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1952"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1962"/>
       <source>Hole error: Could not revolve sketch</source>
       <translation>Errore foro: impossibile fare la rivoluzione dello schizzo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1959"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1969"/>
       <source>Hole error: Resulting shape is empty</source>
       <translation>Errore foro: la forma risultante è vuota</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1972"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1982"/>
       <source>Error: Adding the thread failed</source>
       <translation>Errore: l'aggiunta del filetto non riuscita</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1983"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1993"/>
       <source>Hole error: Finding axis failed</source>
       <translation>Errore foro: fallita ricerca dell'asse</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2039"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2047"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2049"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2057"/>
       <source>Boolean operation failed on profile Edge</source>
       <translation>Operazione booleana fallita sul bordo del profilo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2054"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2064"/>
       <source>Boolean operation produced non-solid on profile Edge</source>
       <translation>Operazione booleana ha prodotto un non solido sul bordo del profilo</translation>
     </message>
@@ -4793,24 +4798,24 @@ L'intersezione delle entità dello schizzo in uno schizzo non è consentita.</tr
       <translation>Operazione booleana fallita</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2080"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2090"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
       <translation>Impossibile creare una faccia dallo schizzo.
 Non è consentito intersecare entità schizzo o più facce in uno schizzo per creare uno scavo fino a una faccia.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2245"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2255"/>
       <source>Thread type out of range</source>
       <translation>Tipo di filettatura fuori dall'intervallo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2248"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2258"/>
       <source>Thread size out of range</source>
       <translation>Dimensione del filetto fuori dall'intervallo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2396"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2406"/>
       <source>Error: Thread could not be built</source>
       <translation>Errore: impossibile costruire il filetto</translation>
     </message>
@@ -4830,13 +4835,13 @@ Non è consentito intersecare entità schizzo o più facce in uno schizzo per cr
       <translation>Loft: impossibile creare una faccia dallo schizzo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="444"/>
       <location filename="../../../App/FeatureLoft.cpp" line="301"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="444"/>
       <source>Loft: Failed to create shell</source>
       <translation>Loft: Creazione della shell non riuscita</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="817"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="818"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
       <translation>Impossibile creare la faccia dallo schizzo.
@@ -4943,16 +4948,16 @@ L'intersezione delle entità dello schizzo in uno schizzo non è consentita.</tr
       <translation>Impossibile sottrarre la funzione primitiva senza la funzione di base</translation>
     </message>
     <message>
+      <location filename="../../../App/FeatureLoft.cpp" line="353"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="123"/>
       <location filename="../../../App/FeaturePipe.cpp" line="505"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="353"/>
       <source>Unknown operation type</source>
       <translation>Tipo di operazione sconosciuto</translation>
     </message>
     <message>
+      <location filename="../../../App/FeatureLoft.cpp" line="361"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="131"/>
       <location filename="../../../App/FeaturePipe.cpp" line="513"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="361"/>
       <source>Failed to perform boolean operation</source>
       <translation>Esecuzione dell'operazione booleana non riuscita</translation>
     </message>
@@ -5076,7 +5081,7 @@ L'intersezione delle entità dello schizzo in uno schizzo non è consentita.</tr
       <translation>Asse di riferimento non valido</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="756"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="757"/>
       <source>Fusion with base feature failed</source>
       <translation>La fusione con la lavorazione di base è fallita</translation>
     </message>

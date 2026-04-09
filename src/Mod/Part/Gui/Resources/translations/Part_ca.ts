@@ -2265,7 +2265,7 @@ La vista de la càmera determina la direcció de la projecció.</translation>
       <translation>Escombrar</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="1603"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="1606"/>
       <source>Project on surface</source>
       <translation>Projectar en una superfície</translation>
     </message>
@@ -3728,7 +3728,7 @@ Comproveu primer una o més entitats de vora.</translation>
       <translation>Document no Actiu</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="2648"/>
+      <location filename="../../DlgPrimitives.cpp" line="2651"/>
       <source>&amp;Create</source>
       <translation>&amp;Crea</translation>
     </message>
@@ -4321,19 +4321,19 @@ s'utilitzarà o negre.</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="37"/>
-      <location filename="../../Location.ui" line="118"/>
+      <location filename="../../Location.ui" line="121"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="54"/>
-      <location filename="../../Location.ui" line="147"/>
+      <location filename="../../Location.ui" line="150"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="71"/>
-      <location filename="../../Location.ui" line="176"/>
+      <location filename="../../Location.ui" line="179"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
@@ -4343,34 +4343,34 @@ s'utilitzarà o negre.</translation>
       <translation>Vista 3D</translation>
     </message>
     <message>
-      <location filename="../../Location.ui" line="110"/>
+      <location filename="../../Location.ui" line="113"/>
       <source>Rotation Axis</source>
       <translation>Eix de rotació</translation>
     </message>
     <message>
-      <location filename="../../Location.ui" line="125"/>
+      <location filename="../../Location.ui" line="128"/>
       <source>X-component of direction vector</source>
       <translation>Component X del vector de direcció</translation>
     </message>
     <message>
-      <location filename="../../Location.ui" line="154"/>
+      <location filename="../../Location.ui" line="157"/>
       <source>Y-component of direction vector</source>
       <translation>Component Y del vector de direcció</translation>
     </message>
     <message>
-      <location filename="../../Location.ui" line="183"/>
+      <location filename="../../Location.ui" line="186"/>
       <source>Z-component of direction vector</source>
       <translation>Component Z del vector de direcció</translation>
     </message>
     <message>
-      <location filename="../../Location.ui" line="106"/>
+      <location filename="../../Location.ui" line="109"/>
       <source>Use custom vector for pad direction otherwise
 the sketch plane's normal vector will be used</source>
       <translation>Utilitzeu un vector personalitzat per a la direcció del Pad en cas contrari
 s'utilitzarà el vector normal del pla d'esbós</translation>
     </message>
     <message>
-      <location filename="../../Location.ui" line="208"/>
+      <location filename="../../Location.ui" line="211"/>
       <source>Angle</source>
       <translation>Angle</translation>
     </message>
@@ -5544,8 +5544,8 @@ de la vista 3D per a la trajectòria d'escombrat.</translation>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="51"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="59"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="54"/>
       <location filename="../../ViewProvider.cpp" line="53"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="54"/>
       <source>Edit %1</source>
       <translation>Editar %1</translation>
     </message>
@@ -5971,7 +5971,7 @@ Vol continuar?</translation>
       <translation>Editor d'adjunts</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1005"/>
+      <location filename="../../ViewProviderExt.cpp" line="1007"/>
       <source>Appearance per Face</source>
       <translation>Aparença per cara</translation>
     </message>
@@ -6182,10 +6182,10 @@ Vol continuar?</translation>
       <translation>Mala selecció</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="402"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="644"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <source>Continue</source>
       <translation>Continua</translation>
     </message>

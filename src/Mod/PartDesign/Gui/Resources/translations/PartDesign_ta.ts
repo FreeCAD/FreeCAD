@@ -2107,55 +2107,55 @@ Please adjust the parameters and try again.</source>
       <translation>ISO டயர் வால்வுகள்</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="678"/>
+      <location filename="../../TaskHoleParameters.cpp" line="681"/>
       <source>Medium</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
       <translation>சராசரி</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="682"/>
+      <location filename="../../TaskHoleParameters.cpp" line="685"/>
       <source>Fine</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
       <translation>நன்றாக</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="686"/>
+      <location filename="../../TaskHoleParameters.cpp" line="689"/>
       <source>Coarse</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
       <translation>கரடுமுரடான</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="692"/>
+      <location filename="../../TaskHoleParameters.cpp" line="695"/>
       <source>Normal</source>
       <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
       <translation>இயல்பானது</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="696"/>
+      <location filename="../../TaskHoleParameters.cpp" line="699"/>
       <source>Close</source>
       <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
       <translation>மூடு</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="700"/>
+      <location filename="../../TaskHoleParameters.cpp" line="703"/>
       <source>Loose</source>
       <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
       <translation>தளர்வான</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="704"/>
+      <location filename="../../TaskHoleParameters.cpp" line="707"/>
       <source>Normal</source>
       <comment>Distance between thread crest and hole wall</comment>
       <translation>இயல்பானது</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="705"/>
+      <location filename="../../TaskHoleParameters.cpp" line="708"/>
       <source>Close</source>
       <comment>Distance between thread crest and hole wall</comment>
       <translation>மூடு</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="706"/>
+      <location filename="../../TaskHoleParameters.cpp" line="709"/>
       <source>Wide</source>
       <comment>Distance between thread crest and hole wall</comment>
       <translation>அகலமான</translation>
@@ -3190,10 +3190,10 @@ measured along the specified direction</source>
       <translation>இந்த ஆவணத்தில் செல்லுபடியாகும் விமானங்கள் இல்லை</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="95"/>
+      <location filename="../../ViewProvider.cpp" line="135"/>
       <location filename="../../Command.cpp" line="1138"/>
       <location filename="../../SketchWorkflow.cpp" line="728"/>
-      <location filename="../../ViewProvider.cpp" line="135"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="95"/>
       <location filename="../../ViewProviderDatum.cpp" line="257"/>
       <source>A dialog is already open in the task panel</source>
       <translation>பணிப் பலகத்தில் ஏற்கனவே ஒரு உரையாடல் திறக்கப்பட்டுள்ளது</translation>
@@ -3234,10 +3234,10 @@ measured along the specified direction</source>
       <translation>ஆவணத்தில் ச்கெட்ச் எதுவும் இல்லை</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="96"/>
+      <location filename="../../ViewProvider.cpp" line="136"/>
       <location filename="../../Command.cpp" line="1139"/>
       <location filename="../../SketchWorkflow.cpp" line="729"/>
-      <location filename="../../ViewProvider.cpp" line="136"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="96"/>
       <location filename="../../ViewProviderDatum.cpp" line="258"/>
       <source>Close this dialog?</source>
       <translation>இந்த உரையாடலை மூடவா?</translation>
@@ -3531,10 +3531,10 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
       <translation>இந்த அம்சத்தைப் பயன்படுத்த, அது ஆவணத்தில் உள்ள ஒரு பகுதிப் பொருளுக்குச் சொந்தமானதாக இருக்க வேண்டும்.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="225"/>
       <location filename="../../ViewProviderTransformed.cpp" line="63"/>
-      <location filename="../../ViewProviderDressUp.cpp" line="62"/>
       <location filename="../../ViewProvider.cpp" line="92"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="225"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="62"/>
       <source>Edit %1</source>
       <translation>திருத்த % 1</translation>
     </message>
@@ -4466,20 +4466,20 @@ over 90: larger hole radius at the bottom</source>
       <translation>தவறான அடிப்படை வடிவத்துடன் பூலியன் செயல்பாட்டைச் செய்ய முடியாது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureDraft.cpp" line="332"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="253"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2067"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="480"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="529"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="159"/>
       <location filename="../../../App/FeatureChamfer.cpp" line="192"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="140"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="773"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="789"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="802"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2077"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="159"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="253"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="774"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="790"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="803"/>
       <location filename="../../../App/FeatureLoft.cpp" line="331"/>
       <location filename="../../../App/FeatureLoft.cpp" line="375"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="332"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="140"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="284"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="480"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="529"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>முடிவு பல திடப்பொருட்களைக் கொண்டுள்ளது: செயலில் உள்ள உடலில் 'கலவையை இசைவு' என்பதை இயக்கவும்.</translation>
     </message>
@@ -4494,30 +4494,30 @@ over 90: larger hole radius at the bottom</source>
       <translation>ஆதரிக்கப்படாத பூலியன் செயல்பாடு</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="351"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="352"/>
       <source>Cannot create a pad with a total length of zero.</source>
       <translation>பூச்சியத்தின் மொத்த நீளம் கொண்ட பேடை உருவாக்க முடியாது.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="356"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="357"/>
       <source>Cannot create a pocket with a total length of zero.</source>
       <translation>பூச்சியத்தின் மொத்த நீளம் கொண்ட பாக்கெட்டை உருவாக்க முடியாது.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="704"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="705"/>
       <source>No extrusion geometry was generated.</source>
       <translation>வெளியேற்ற வடிவியல் உருவாக்கப்படவில்லை.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="728"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="729"/>
       <source>Resulting fused extrusion is null.</source>
       <translation>இதன் விளைவாக இணைந்த வெளியேற்றம் பூச்யமானது.</translation>
     </message>
     <message>
+      <location filename="../../../App/FeatureExtrude.cpp" line="765"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="368"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="139"/>
       <location filename="../../../App/FeaturePipe.cpp" line="521"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="764"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="368"/>
       <source>Resulting shape is not a solid</source>
       <translation>விளைந்த வடிவம் திடமானது அல்ல</translation>
     </message>
@@ -4578,7 +4578,7 @@ over 90: larger hole radius at the bottom</source>
       <translation>பள்ளத்தின் கோணம் மிகவும் சிறியது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1719"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1724"/>
       <source>The requested feature cannot be created. The reason may be that:
   - the active Body does not contain a base shape, so there is no
   material to be removed;
@@ -4589,18 +4589,18 @@ over 90: larger hole radius at the bottom</source>
 - தேர்ந்தெடுக்கப்பட்ட ச்கெட்ச் செயலில் உள்ள உடலுக்கு சொந்தமானது அல்ல.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="400"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="401"/>
       <source>Failed to obtain profile shape</source>
       <translation>சுயவிவர வடிவத்தைப் பெறுவதில் தோல்வி</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="454"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="455"/>
       <source>Creation failed because direction is orthogonal to sketch's normal vector</source>
       <translation>ச்கெட்சின் இயல்பான வெக்டருக்கு திசை ஆர்த்தோகனலாக இருப்பதால் உருவாக்கம் தோல்வியடைந்தது</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="154"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="477"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="478"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="176"/>
       <source>Creating a face from sketch failed</source>
       <translation>ச்கெட்சிலிருந்து முகத்தை உருவாக்குவது தோல்வியடைந்தது</translation>
@@ -4674,9 +4674,9 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>பிழை: முகம் சீராக இருக்க வேண்டும்</translation>
     </message>
     <message>
+      <location filename="../../../App/FeatureHole.cpp" line="2432"/>
       <location filename="../../../App/FeatureHelix.cpp" line="443"/>
       <location filename="../../../App/FeatureHelix.cpp" line="484"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2422"/>
       <source>Error: Result is not a solid</source>
       <translation>பிழை: முடிவு உறுதியானது அல்ல</translation>
     </message>
@@ -4713,83 +4713,88 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>பிழை: ச்கெட்சிலிருந்து முகத்தை உருவாக்க முடியவில்லை</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1224"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1229"/>
       <source>Thread type is invalid</source>
       <translation>நூல் வகை தவறானது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1764"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1737"/>
+      <source>Hole error: Diameter too small</source>
+      <translation type="unfinished">Hole error: Diameter too small</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="1774"/>
       <source>Hole error: Unsupported length specification</source>
       <translation>துளை பிழை: ஆதரிக்கப்படாத நீள விவரக்குறிப்பு</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1770"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1780"/>
       <source>Hole error: Invalid hole depth</source>
       <translation>துளை பிழை: தவறான துளை ஆழம்</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1796"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1806"/>
       <source>Hole error: Invalid taper angle</source>
       <translation>துளை பிழை: தவறான டேப்பர் கோணம்</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1820"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1830"/>
       <source>Hole error: Hole cut diameter too small</source>
       <translation>துளை பிழை: துளை வெட்டு விட்டம் மிகவும் சிறியது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1825"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1835"/>
       <source>Hole error: Hole cut depth must be less than hole depth</source>
       <translation>துளை பிழை: துளை வெட்டு ஆழம் துளை ஆழத்தை விட குறைவாக இருக்க வேண்டும்</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1832"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1842"/>
       <source>Hole error: Hole cut depth must be greater or equal to zero</source>
       <translation>துளை பிழை: துளை வெட்டு ஆழம் பூச்சியத்திற்கு அதிகமாகவோ அல்லது சமமாகவோ இருக்க வேண்டும்</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1862"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1872"/>
       <source>Hole error: Invalid countersink</source>
       <translation>துளை பிழை: தவறான எதிர் துவாரம்</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1898"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1908"/>
       <source>Hole error: Invalid drill point angle</source>
       <translation>துளை பிழை: தவறான துளை புள்ளி கோணம்</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1915"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1925"/>
       <source>Hole error: Invalid drill point</source>
       <translation>துளை பிழை: தவறான துளை புள்ளி</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1952"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1962"/>
       <source>Hole error: Could not revolve sketch</source>
       <translation>துளை பிழை: ச்கெட்சை சுழற்ற முடியவில்லை</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1959"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1969"/>
       <source>Hole error: Resulting shape is empty</source>
       <translation>துளை பிழை: முடிவு வடிவம் காலியாக உள்ளது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1972"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1982"/>
       <source>Error: Adding the thread failed</source>
       <translation>பிழை: நூலைச் சேர்ப்பதில் தோல்வி</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1983"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1993"/>
       <source>Hole error: Finding axis failed</source>
       <translation>துளை பிழை: அச்சைக் கண்டறிவதில் தோல்வி</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2039"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2047"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2049"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2057"/>
       <source>Boolean operation failed on profile Edge</source>
       <translation>சுயவிவர எட்சில் பூலியன் செயல்பாடு தோல்வியடைந்தது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2054"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2064"/>
       <source>Boolean operation produced non-solid on profile Edge</source>
       <translation>பூலியன் செயல்பாடு சுயவிவர விளிம்பில் திடமற்றது</translation>
     </message>
@@ -4799,24 +4804,24 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>பூலியன் செயல்பாடு தோல்வியடைந்தது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2080"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2090"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
       <translation>ச்கெட்சிலிருந்து முகத்தை உருவாக்க முடியவில்லை. 
 குறுக்குவெட்டு ச்கெட்ச் உறுப்புகள் அல்லது ச்கெட்ச்சில் பல முகங்கள் ஒரு முகம் வரை பாக்கெட்டை உருவாக்க அனுமதிக்கப்படாது.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2245"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2255"/>
       <source>Thread type out of range</source>
       <translation>நூல் வகை வரம்பிற்கு வெளியே உள்ளது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2248"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2258"/>
       <source>Thread size out of range</source>
       <translation>நூல் அளவு வரம்பிற்கு வெளியே உள்ளது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2396"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2406"/>
       <source>Error: Thread could not be built</source>
       <translation>பிழை: நூலை உருவாக்க முடியவில்லை</translation>
     </message>
@@ -4836,13 +4841,13 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
       <translation>லாஃப்ட்: ச்கெட்சிலிருந்து முகத்தை உருவாக்குவது தோல்வியடைந்தது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="444"/>
       <location filename="../../../App/FeatureLoft.cpp" line="301"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="444"/>
       <source>Loft: Failed to create shell</source>
       <translation>மாடி: செல் உருவாக்க முடியவில்லை</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="817"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="818"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
       <translation>ச்கெட்சிலிருந்து முகத்தை உருவாக்க முடியவில்லை. 
@@ -4949,16 +4954,16 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>அடிப்படை நற்பொருத்தம் இல்லாமல் பழமையான அம்சத்தைக் கழிக்க முடியாது</translation>
     </message>
     <message>
+      <location filename="../../../App/FeatureLoft.cpp" line="353"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="123"/>
       <location filename="../../../App/FeaturePipe.cpp" line="505"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="353"/>
       <source>Unknown operation type</source>
       <translation>அறியப்படாத செயல்பாட்டு வகை</translation>
     </message>
     <message>
+      <location filename="../../../App/FeatureLoft.cpp" line="361"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="131"/>
       <location filename="../../../App/FeaturePipe.cpp" line="513"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="361"/>
       <source>Failed to perform boolean operation</source>
       <translation>பூலியன் செயல்பாட்டைச் செய்ய முடியவில்லை</translation>
     </message>
@@ -5082,7 +5087,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>குறிப்பு அச்சு தவறானது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="756"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="757"/>
       <source>Fusion with base feature failed</source>
       <translation>அடிப்படை அம்சத்துடன் இணைதல் தோல்வியடைந்தது</translation>
     </message>

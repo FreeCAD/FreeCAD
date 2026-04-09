@@ -150,6 +150,24 @@ FC_LOG_LEVEL_INIT("3DViewer", true, true)
 
 using namespace Gui;
 
+class View3DInventorViewer::ScopedRenderIntent
+{
+public:
+    ScopedRenderIntent(View3DInventorViewer& viewer, View3DInventorViewer::RenderIntent intent)
+        : viewer(viewer)
+    {
+        viewer.pushRenderIntentOverride(intent);
+    }
+
+    ~ScopedRenderIntent()
+    {
+        viewer.popRenderIntentOverride();
+    }
+
+private:
+    View3DInventorViewer& viewer;
+};
+
 /*!
 As ProgressBar has no chance to control the incoming Qt events of Quarter so we need to stop
 the event handling to prevent the scenegraph from being selected or deselected
@@ -509,6 +527,10 @@ void View3DInventorViewer::init()
     this->foregroundroot->ref();
     this->foregroundroot->setName("foregroundroot");
 
+    this->decorationroot = new SoSeparator;
+    this->decorationroot->ref();
+    this->decorationroot->setName("decorationroot");
+
     naviCubeAnnotation = new SoAnnotation();
     naviCubeAnnotation->ref();
     naviCubeAnnotation->setName("naviCubeAnnotation");
@@ -531,10 +553,10 @@ void View3DInventorViewer::init()
     lightRotation->ref();
     lightRotation->rotation.connectFrom(&cam->orientation);
 
-    this->foregroundroot->addChild(cam);
-    this->foregroundroot->addChild(lm);
-    this->foregroundroot->addChild(bc);
-    this->foregroundroot->addChild(naviCubeAnnotation);
+    this->decorationroot->addChild(cam);
+    this->decorationroot->addChild(lm);
+    this->decorationroot->addChild(bc);
+    this->decorationroot->addChild(naviCubeAnnotation);
 
     auto threePointLightingSeparator = new SoTransformSeparator;
     threePointLightingSeparator->addChild(lightRotation);
@@ -664,10 +686,10 @@ void View3DInventorViewer::init()
     // filter a few qt events
     viewerEventFilter = new ViewerEventFilter;
     installEventFilter(viewerEventFilter);
-#if defined(USE_3DCONNEXION_NAVLIB)
     ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/View"
     );
+#if defined(USE_3DCONNEXION_NAVLIB)
     if (hViewGrp->GetBool("LegacySpaceMouseDevices", false)) {
         getEventFilter()->registerInputDevice(new SpaceNavigatorDevice);
     }
@@ -697,13 +719,8 @@ void View3DInventorViewer::init()
     );
 
     naviCube = new NaviCube(this);
-    if (auto node = naviCube->getCoinNode()) {
-        if (naviCubeAnnotation) {
-            naviCubeAnnotation->removeAllChildren();
-            naviCubeAnnotation->addChild(node);
-        }
-    }
-    naviCubeEnabled = true;
+    naviCubeEnabled = hViewGrp->GetBool("ShowNaviCube", true);
+    syncNaviCubeVisibility();
 
     updateColors();
 }
@@ -725,8 +742,8 @@ View3DInventorViewer::~View3DInventorViewer()
     // cleanup
     if (naviCubeAnnotation) {
         naviCubeAnnotation->removeAllChildren();
-        if (this->foregroundroot) {
-            this->foregroundroot->removeChild(naviCubeAnnotation);
+        if (this->decorationroot) {
+            this->decorationroot->removeChild(naviCubeAnnotation);
         }
         naviCubeAnnotation->unref();
         naviCubeAnnotation = nullptr;
@@ -736,6 +753,8 @@ View3DInventorViewer::~View3DInventorViewer()
     this->backgroundroot = nullptr;
     this->foregroundroot->unref();
     this->foregroundroot = nullptr;
+    this->decorationroot->unref();
+    this->decorationroot = nullptr;
     this->pcBackGround->unref();
     this->pcBackGround = nullptr;
 
@@ -1495,11 +1514,56 @@ void View3DInventorViewer::setRenderCache(int mode)
 void View3DInventorViewer::setEnabledNaviCube(bool on)
 {
     naviCubeEnabled = on;
+    syncNaviCubeVisibility();
 }
 
 bool View3DInventorViewer::isEnabledNaviCube() const
 {
     return naviCubeEnabled;
+}
+
+void View3DInventorViewer::pushRenderIntentOverride(RenderIntent intent) const
+{
+    renderIntentOverrideStack.push_back(intent);
+}
+
+void View3DInventorViewer::popRenderIntentOverride() const
+{
+    if (!renderIntentOverrideStack.empty()) {
+        renderIntentOverrideStack.pop_back();
+    }
+}
+
+View3DInventorViewer::RenderIntent View3DInventorViewer::currentRenderIntent() const
+{
+    if (renderIntentOverrideStack.empty()) {
+        return RenderIntent::LiveInteractive;
+    }
+
+    return renderIntentOverrideStack.back();
+}
+
+bool View3DInventorViewer::shouldRenderDecorations(RenderIntent intent)
+{
+    return intent == RenderIntent::LiveInteractive;
+}
+
+void View3DInventorViewer::syncNaviCubeVisibility()
+{
+    if (!naviCubeAnnotation) {
+        return;
+    }
+
+    naviCubeAnnotation->removeAllChildren();
+    if (naviCubeEnabled && naviCube) {
+        if (auto node = naviCube->getCoinNode()) {
+            naviCubeAnnotation->addChild(node);
+        }
+    }
+
+    if (auto* rm = getSoRenderManager()) {
+        rm->scheduleRedraw();
+    }
 }
 
 void View3DInventorViewer::setNaviCubeCorner(int cc)
@@ -1731,7 +1795,14 @@ void View3DInventorViewer::setSceneGraph(SoNode* root)
 #endif
 }
 
-void View3DInventorViewer::savePicture(int width, int height, int sample, const QColor& bg, QImage& img) const
+void View3DInventorViewer::savePicture(
+    int width,
+    int height,
+    int sample,
+    const QColor& bg,
+    QImage& img,
+    RenderIntent intent
+) const
 {
     // Save picture methods:
     // FramebufferObject -- viewer renders into FBO (no offscreen)
@@ -1754,14 +1825,24 @@ void View3DInventorViewer::savePicture(int width, int height, int sample, const 
         useCoinOffscreenRenderer = true;
     }
 
+    const bool needsFreshRender = !shouldRenderDecorations(intent);
+    // Intent takes precedence over the user's preferred capture backend.
+    // grabFramebuffer() reads the already-rendered widget, so it cannot honor
+    // capture-time decoration filtering.
+    if (useGrabFramebuffer && needsFreshRender) {
+        useGrabFramebuffer = false;
+        useFramebufferObject = true;
+    }
+
+    auto self = const_cast<View3DInventorViewer*>(this);  // NOLINT
+    ScopedRenderIntent scopedIntent(*self, intent);
+
     if (useFramebufferObject) {
-        auto self = const_cast<View3DInventorViewer*>(this);  // NOLINT
-        self->imageFromFramebuffer(width, height, sample, bg, img);
+        self->imageFromFramebuffer(width, height, sample, bg, img, intent);
         return;
     }
 
     if (useGrabFramebuffer) {
-        auto self = const_cast<View3DInventorViewer*>(this);  // NOLINT
         img = self->grabFramebuffer();
 #if QT_VERSION < QT_VERSION_CHECK(6, 9, 0)
         img = img.mirrored();
@@ -1782,8 +1863,8 @@ void View3DInventorViewer::savePicture(int width, int height, int sample, const 
 
     // NOTE: To support pixels per inch we must use SbViewportRegion::setPixelsPerInch( ppi );
     // The default value is 72.0.
-    // If we need to support grayscale images with must either use SoOffscreenRenderer::LUMINANCE or
-    // SoOffscreenRenderer::LUMINANCE_TRANSPARENCY.
+    // If we need to support grayscale images with must either use
+    // SoOffscreenRenderer::LUMINANCE or SoOffscreenRenderer::LUMINANCE_TRANSPARENCY.
 
     SoCallback* cb = nullptr;
 
@@ -1834,6 +1915,9 @@ void View3DInventorViewer::savePicture(int width, int height, int sample, const 
     root->addChild(gl);
     root->addChild(pcViewProviderRoot);
     root->addChild(foregroundroot);
+    if (shouldRenderDecorations(intent)) {
+        root->addChild(decorationroot);
+    }
 
     try {
         // render the scene
@@ -1892,8 +1976,16 @@ void View3DInventorViewer::savePicture(int width, int height, int sample, const 
     }
 }
 
-void View3DInventorViewer::saveGraphic(int pagesize, const QColor& bgcolor, SoVectorizeAction* va) const
+void View3DInventorViewer::saveGraphic(
+    int pagesize,
+    const QColor& bgcolor,
+    SoVectorizeAction* va,
+    RenderIntent intent
+) const
 {
+    auto self = const_cast<View3DInventorViewer*>(this);  // NOLINT
+    ScopedRenderIntent scopedIntent(*self, intent);
+
     if (bgcolor.isValid()) {
         va->setBackgroundColor(
             true,
@@ -2317,9 +2409,13 @@ void View3DInventorViewer::imageFromFramebuffer(
     int height,
     int samples,
     const QColor& bgcolor,
-    QImage& img
+    QImage& img,
+    RenderIntent intent
 )
 {
+    auto self = const_cast<View3DInventorViewer*>(this);  // NOLINT
+    ScopedRenderIntent scopedIntent(*self, intent);
+
     auto gl = static_cast<QOpenGLWidget*>(this->viewport());  // NOLINT
     gl->makeCurrent();
 
@@ -2424,6 +2520,9 @@ void View3DInventorViewer::renderToFramebuffer(QOpenGLFramebufferObject* fbo)
     glDepthFunc(GL_LESS);
     gl.apply(this->getSoRenderManager()->getSceneGraph());
     gl.apply(this->foregroundroot);
+    if (shouldRenderDecorations(currentRenderIntent())) {
+        gl.apply(this->decorationroot);
+    }
 
     if (this->axiscrossEnabled) {
         this->drawAxisCross();
@@ -2612,6 +2711,9 @@ void View3DInventorViewer::renderScene()
     {
         ZoneScopedN("Foreground");
         glra->apply(this->foregroundroot);
+        if (shouldRenderDecorations(currentRenderIntent())) {
+            glra->apply(this->decorationroot);
+        }
     }
 
     if (this->axiscrossEnabled) {

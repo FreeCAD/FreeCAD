@@ -4,30 +4,30 @@
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="560"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="561"/>
       <source>&lt;empty&gt;</source>
       <translation>&lt;empty&gt;</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2421"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2708"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2435"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2724"/>
       <source>Angle</source>
       <translation>கோணம்</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2425"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2712"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2439"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2728"/>
       <source>Axis</source>
       <translation>அச்சு</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2717"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2733"/>
       <source>Position</source>
       <translation>பதவி</translation>
     </message>
     <message>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3005"/>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="376"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2989"/>
       <source>Enum</source>
       <translation>எனும்</translation>
     </message>
@@ -58,49 +58,54 @@
       <translation>திருத்து</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="846"/>
+      <location filename="../Application.cpp" line="841"/>
       <source>Import</source>
       <translation>இறக்குமதி</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1448"/>
+      <location filename="../CommandDoc.cpp" line="1506"/>
       <source>Delete</source>
       <translation>நீக்கு</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2133"/>
+      <location filename="../CommandDoc.cpp" line="2225"/>
       <source>Paste expressions</source>
       <translation>வெளிப்பாடுகளை ஒட்டவும்</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="150"/>
+      <location filename="../CommandLink.cpp" line="152"/>
       <source>Make link group</source>
       <translation>இணைப்பு குழுவை உருவாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="293"/>
+      <location filename="../CommandLink.cpp" line="286"/>
       <source>Make link</source>
       <translation>இணைப்பை உருவாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="363"/>
+      <location filename="../CommandLink.cpp" line="375"/>
       <source>Make sub-link</source>
       <translation>துணை இணைப்பை உருவாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="688"/>
+      <location filename="../CommandLink.cpp" line="706"/>
       <source>Import links</source>
       <translation>இறக்குமதி links</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="736"/>
+      <location filename="../CommandLink.cpp" line="754"/>
       <source>Import all links</source>
       <translation>அனைத்து இணைப்புகளையும் இறக்குமதி செய்யவும்</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="792"/>
+      <location filename="../CommandStd.cpp" line="798"/>
       <source>Insert text document</source>
       <translation>உரை ஆவணத்தைச் செருகவும்</translation>
+    </message>
+    <message>
+      <location filename="../CommandStd.cpp" line="1030"/>
+      <source>Create Annotation Label</source>
+      <translation type="unfinished">Create Annotation Label</translation>
     </message>
     <message>
       <location filename="../CommandStructure.cpp" line="64"/>
@@ -108,12 +113,12 @@
       <translation>ஒரு பகுதியைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="136"/>
+      <location filename="../CommandStructure.cpp" line="138"/>
       <source>Add a group</source>
       <translation>ஒரு குழுவைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="205"/>
+      <location filename="../CommandStructure.cpp" line="207"/>
       <source>Add a variable set</source>
       <translation>மாறி தொகுப்பைச் சேர்க்கவும்</translation>
     </message>
@@ -130,13 +135,13 @@
     <message>
       <location filename="../Transform.cpp" line="108"/>
       <location filename="../TaskTransform.cpp" line="128"/>
-      <location filename="../TaskTransform.cpp" line="808"/>
+      <location filename="../TaskTransform.cpp" line="806"/>
       <location filename="../ViewProviderAnnotation.cpp" line="423"/>
       <source>Transform</source>
       <translation>உருமாற்று, உருமாற்றம்</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3157"/>
+      <location filename="../ViewProviderLink.cpp" line="3190"/>
       <source>Toggle array elements</source>
       <translation>வரிசை உறுப்புகளை நிலைமாற்று</translation>
     </message>
@@ -147,34 +152,39 @@
       <translation>படத்தை திருத்து</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="124"/>
+      <location filename="../CommandFeat.cpp" line="156"/>
       <source>Set Random Color</source>
       <translation>சீரற்ற நிறத்தை அமைக்கவும்</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="176"/>
+      <location filename="../CommandFeat.cpp" line="208"/>
       <source>Toggle freeze</source>
       <translation>முடக்கத்தை நிலைமாற்று</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="337"/>
+      <location filename="../CommandFeat.cpp" line="369"/>
       <source>Skip recomputes</source>
       <translation>மறுகணக்கீடுகளைத் தவிர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="921"/>
+      <location filename="../CommandView.cpp" line="987"/>
       <source>Toggle Visibility</source>
       <translation>தெரிவுநிலையை நிலைமாற்று</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="956"/>
+      <location filename="../CommandView.cpp" line="1022"/>
       <source>Toggle Transparency</source>
       <translation>வெளிப்படைத்தன்மையை நிலைமாற்று</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1075"/>
+      <location filename="../CommandView.cpp" line="1141"/>
       <source>Toggle Selectability</source>
       <translation>தேர்ந்தெடுக்கும் தன்மையை நிலைமாற்று</translation>
+    </message>
+    <message>
+      <location filename="../TaskElementColors.cpp" line="202"/>
+      <source>Set colors</source>
+      <translation type="unfinished">Set colors</translation>
     </message>
   </context>
   <context>
@@ -379,42 +389,42 @@ The property of this object will refer to the property of the Variable Set.</sou
   <context>
     <name>EditMode</name>
     <message>
-      <location filename="../Application.h" line="288"/>
+      <location filename="../Application.h" line="299"/>
       <source>&amp;Default</source>
       <translation>&amp;இயல்புநிலை</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="289"/>
+      <location filename="../Application.h" line="300"/>
       <source>The object will be edited using the mode defined internally to be the most appropriate for the object type</source>
       <translation>பொருளின் வகைக்கு மிகவும் பொருத்தமானதாக இருக்கும் வகையில் உள்நாட்டில் வரையறுக்கப்பட்ட பயன்முறையைப் பயன்படுத்தி பொருள் திருத்தப்படும்</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="297"/>
+      <location filename="../Application.h" line="308"/>
       <source>Trans&amp;form</source>
       <translation>மாற்றம்&amp;வடிவம்</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="306"/>
+      <location filename="../Application.h" line="317"/>
       <source>Cu&amp;tting</source>
       <translation>வெட்டுதல்</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="315"/>
+      <location filename="../Application.h" line="326"/>
       <source>&amp;Color</source>
       <translation>&amp;நிறம்</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="316"/>
+      <location filename="../Application.h" line="327"/>
       <source>The object will have the color of its individual faces editable with the Appearance per Face command</source>
       <translation>ஒரு முகத்திற்கு தோற்றம் என்ற கட்டளையுடன் பொருள் அதன் தனிப்பட்ட முகங்களின் நிறத்தைத் திருத்தக்கூடியதாக இருக்கும்</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="298"/>
+      <location filename="../Application.h" line="309"/>
       <source>The object will have its placement editable with the Std TransformManip command</source>
       <translation>பொருள் அதன் இடத்தை Std TransformManip கட்டளையுடன் திருத்தக்கூடியதாக இருக்கும்</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="307"/>
+      <location filename="../Application.h" line="318"/>
       <source>This edit mode is implemented as available but currently does not seem to be used by any object</source>
       <translation>இந்த திருத்து பயன்முறை உள்ளது போல் செயல்படுத்தப்பட்டது ஆனால் தற்போது எந்த பொருளும் பயன்படுத்துவதாக தெரியவில்லை</translation>
     </message>
@@ -422,12 +432,12 @@ The property of this object will refer to the property of the Variable Set.</sou
   <context>
     <name>ExpressionLabel</name>
     <message>
-      <location filename="../QuantitySpinBox_p.h" line="71"/>
+      <location filename="../QuantitySpinBox_p.h" line="70"/>
       <source>Enter expression… (=)</source>
       <translation>வெளிப்பாட்டை உள்ளிடவும்… (=)</translation>
     </message>
     <message>
-      <location filename="../QuantitySpinBox_p.h" line="72"/>
+      <location filename="../QuantitySpinBox_p.h" line="71"/>
       <source>Expression:</source>
       <translation>வெளிப்பாடு:</translation>
     </message>
@@ -641,57 +651,57 @@ while doing a left or right click and move the mouse up or down</source>
   <context>
     <name>Gui::Dialog::AboutDialog</name>
     <message>
-      <location filename="../Dialogs/DlgAbout.cpp" line="321"/>
+      <location filename="../Dialogs/DlgAbout.cpp" line="326"/>
       <source>Credits</source>
       <translation>வரவு</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAbout.cpp" line="330"/>
+      <location filename="../Dialogs/DlgAbout.cpp" line="335"/>
       <source>Credits</source>
       <comment>Header for the Credits tab of the About screen</comment>
       <extracomment>Header for the Credits tab of the About screen</extracomment>
       <translation>வரவு</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAbout.cpp" line="331"/>
+      <location filename="../Dialogs/DlgAbout.cpp" line="336"/>
       <source>FreeCAD would not be possible without the contributions of:</source>
       <translation>இதன் பங்களிப்புகள் இல்லாமல் FreeCAD சாத்தியமில்லை:</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAbout.cpp" line="332"/>
+      <location filename="../Dialogs/DlgAbout.cpp" line="337"/>
       <source>Individuals</source>
       <comment>Header for the list of individual people in the Credits list.</comment>
       <translation>தனிநபர்கள்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAbout.cpp" line="344"/>
+      <location filename="../Dialogs/DlgAbout.cpp" line="349"/>
       <source>Organizations</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
       <translation>நிறுவனங்கள்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAbout.cpp" line="373"/>
-      <location filename="../Dialogs/DlgAbout.cpp" line="465"/>
+      <location filename="../Dialogs/DlgAbout.cpp" line="378"/>
+      <location filename="../Dialogs/DlgAbout.cpp" line="470"/>
       <source>License</source>
       <translation>உரிமங்கள்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAbout.cpp" line="411"/>
+      <location filename="../Dialogs/DlgAbout.cpp" line="416"/>
       <source>Libraries</source>
       <translation>நூலகங்கள்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAbout.cpp" line="433"/>
+      <location filename="../Dialogs/DlgAbout.cpp" line="438"/>
       <source>Collection</source>
       <translation>தொகுப்பு</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAbout.cpp" line="452"/>
+      <location filename="../Dialogs/DlgAbout.cpp" line="457"/>
       <source>Privacy Policy</source>
       <translation>தனியுரிமைக் கொள்கை</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAbout.cpp" line="489"/>
+      <location filename="../Dialogs/DlgAbout.cpp" line="496"/>
       <source>Copied!</source>
       <translation>நகலெடுக்கப்பட்டது!</translation>
     </message>
@@ -722,12 +732,12 @@ while doing a left or right click and move the mouse up or down</source>
   <context>
     <name>Gui::Dialog::ButtonModel</name>
     <message>
-      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="291"/>
+      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="295"/>
       <source>Button %1</source>
       <translation>பொத்தான்% 1</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="294"/>
+      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="298"/>
       <source>Out of range</source>
       <translation>எல்லைக்கு வெளியே</translation>
     </message>
@@ -735,37 +745,37 @@ while doing a left or right click and move the mouse up or down</source>
   <context>
     <name>Gui::Dialog::CameraDialog</name>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="380"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="384"/>
       <source>Camera Settings</source>
       <translation>கேமரா அமைப்புகள்</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="387"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="391"/>
       <source>Orientation</source>
       <translation>நோக்குநிலை</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="401"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="405"/>
       <source>Q0</source>
       <translation>Q0</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="411"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="415"/>
       <source>Q1</source>
       <translation>Q1</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="421"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="425"/>
       <source>Q2</source>
       <translation>Q2</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="431"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="435"/>
       <source>Q3</source>
       <translation>Q3</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="440"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="444"/>
       <source>Current View</source>
       <translation>தற்போதைய காட்சி</translation>
     </message>
@@ -831,7 +841,7 @@ while doing a left or right click and move the mouse up or down</source>
   <context>
     <name>Gui::Dialog::CommandModel</name>
     <message>
-      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="503"/>
+      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="507"/>
       <source>Commands</source>
       <translation>கட்டளைகள்</translation>
     </message>
@@ -880,7 +890,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <location filename="../DemoMode.ui" line="189"/>
-      <location filename="../DemoMode.cpp" line="237"/>
+      <location filename="../DemoMode.cpp" line="236"/>
       <source>Play</source>
       <translation>இயக்கு</translation>
     </message>
@@ -890,7 +900,7 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>மூடு</translation>
     </message>
     <message>
-      <location filename="../DemoMode.cpp" line="233"/>
+      <location filename="../DemoMode.cpp" line="232"/>
       <source>Stop</source>
       <translation>நிறுத்து</translation>
     </message>
@@ -903,7 +913,7 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>சாளரத்தைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgActivateWindowImp.cpp" line="50"/>
+      <location filename="../Dialogs/DlgActivateWindowImp.cpp" line="52"/>
       <source>&amp;Activate</source>
       <translation>&amp;செயல்படுத்து</translation>
     </message>
@@ -915,7 +925,7 @@ while doing a left or right click and move the mouse up or down</source>
   <context>
     <name>Gui::Dialog::DlgActivateWindowImp</name>
     <message>
-      <location filename="../Dialogs/DlgActivateWindowImp.cpp" line="53"/>
+      <location filename="../Dialogs/DlgActivateWindowImp.cpp" line="55"/>
       <source>Windows</source>
       <translation>சாளரங்கள்</translation>
     </message>
@@ -929,7 +939,7 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>சொத்து சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.ui" line="37"/>
+      <location filename="../Dialogs/DlgAddProperty.ui" line="27"/>
       <source>Type</source>
       <translation>வகை</translation>
     </message>
@@ -944,12 +954,12 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>உதவிக்குறிப்பு</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.ui" line="30"/>
+      <location filename="../Dialogs/DlgAddProperty.ui" line="20"/>
       <source>Group</source>
       <translation>குழு</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.ui" line="20"/>
+      <location filename="../Dialogs/DlgAddProperty.ui" line="41"/>
       <source>Name</source>
       <translation>பெயர்</translation>
     </message>
@@ -959,32 +969,32 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>சேர்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="664"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="666"/>
       <source>Invalid group name</source>
       <translation>தவறான குழு பெயர்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="667"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="669"/>
       <source>Invalid type name</source>
       <translation>தவறான வகை பெயர்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="673"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="675"/>
       <source>Invalid property name '%1'</source>
       <translation>தவறான சொத்து பெயர் '% 1'</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="676"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="678"/>
       <source>Property '%1' already exists</source>
       <translation>'% 1' சொத்து ஏற்கனவே உள்ளது</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="679"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="681"/>
       <source>'%1' is a constant</source>
       <translation>'% 1' என்பது ஒரு மாறிலி</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="682"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="684"/>
       <source>'%1' is a unit</source>
       <translation>'% 1' என்பது ஒரு அலகு</translation>
     </message>
@@ -1039,7 +1049,7 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>தேர்வுப்பெட்டி</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgCheckableMessageBox.h" line="125"/>
+      <location filename="../Dialogs/DlgCheckableMessageBox.h" line="126"/>
       <source>Don't show me again</source>
       <translation>என்னை மீண்டும் காட்டாதே</translation>
     </message>
@@ -1083,17 +1093,17 @@ while doing a left or right click and move the mouse up or down</source>
   <context>
     <name>Gui::Dialog::DlgCreateNewPreferencePackImp</name>
     <message>
-      <location filename="../Dialogs/DlgCreateNewPreferencePackImp.cpp" line="181"/>
+      <location filename="../Dialogs/DlgCreateNewPreferencePackImp.cpp" line="183"/>
       <source>Export configuration</source>
       <translation>ஏற்றுமதி கட்டமைப்பு</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgCreateNewPreferencePackImp.cpp" line="192"/>
+      <location filename="../Dialogs/DlgCreateNewPreferencePackImp.cpp" line="194"/>
       <source>Pack already exists</source>
       <translation>பேக் ஏற்கனவே உள்ளது</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgCreateNewPreferencePackImp.cpp" line="193"/>
+      <location filename="../Dialogs/DlgCreateNewPreferencePackImp.cpp" line="195"/>
       <source>A preference pack with that name already exists. Overwrite it?</source>
       <translation>அந்தப் பெயருடன் ஒரு விருப்பத் தொகுப்பு ஏற்கனவே உள்ளது. மேலெழுதவா?</translation>
     </message>
@@ -1169,54 +1179,54 @@ while doing a left or right click and move the mouse up or down</source>
   <context>
     <name>Gui::Dialog::DlgCustomActionsImp</name>
     <message>
-      <location filename="../Dialogs/DlgActionsImp.cpp" line="81"/>
+      <location filename="../Dialogs/DlgActionsImp.cpp" line="83"/>
       <source>Icons</source>
       <translation>சின்னங்கள்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgActionsImp.cpp" line="81"/>
+      <location filename="../Dialogs/DlgActionsImp.cpp" line="83"/>
       <source>Macros</source>
       <translation>பெரியவைகள்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgActionsImp.cpp" line="210"/>
+      <location filename="../Dialogs/DlgActionsImp.cpp" line="212"/>
       <source>Macro not found</source>
       <translation>மேக்ரோ கிடைக்கவில்லை</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgActionsImp.cpp" line="211"/>
+      <location filename="../Dialogs/DlgActionsImp.cpp" line="213"/>
       <source>Could not find macro file '%1'</source>
       <translation>மேக்ரோ கோப்பை '% 1' கண்டுபிடிக்க முடியவில்லை</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgActionsImp.cpp" line="237"/>
+      <location filename="../Dialogs/DlgActionsImp.cpp" line="239"/>
       <source>Empty macro</source>
       <translation>வெறுமை குறுநிரல்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgActionsImp.cpp" line="237"/>
+      <location filename="../Dialogs/DlgActionsImp.cpp" line="239"/>
       <source>Specify the macro first</source>
       <translation>முதலில் மேக்ரோவைக் குறிப்பிடவும்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgActionsImp.cpp" line="242"/>
-      <location filename="../Dialogs/DlgActionsImp.cpp" line="312"/>
+      <location filename="../Dialogs/DlgActionsImp.cpp" line="244"/>
+      <location filename="../Dialogs/DlgActionsImp.cpp" line="314"/>
       <source>Empty text</source>
       <translation>வெற்று உரை</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgActionsImp.cpp" line="242"/>
-      <location filename="../Dialogs/DlgActionsImp.cpp" line="312"/>
+      <location filename="../Dialogs/DlgActionsImp.cpp" line="244"/>
+      <location filename="../Dialogs/DlgActionsImp.cpp" line="314"/>
       <source>Specify the menu text first</source>
       <translation>பட்டியல் உரையை முதலில் குறிப்பிடவும்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgActionsImp.cpp" line="307"/>
+      <location filename="../Dialogs/DlgActionsImp.cpp" line="309"/>
       <source>No item selected</source>
       <translation>உருப்படி எதுவும் தேர்ந்தெடுக்கப்படவில்லை</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgActionsImp.cpp" line="307"/>
+      <location filename="../Dialogs/DlgActionsImp.cpp" line="309"/>
       <source>Select a macro item first</source>
       <translation>முதலில் ஒரு மேக்ரோ உருப்படியைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
@@ -1336,42 +1346,42 @@ same time. The one with the highest priority will be triggered.</source>
   <context>
     <name>Gui::Dialog::DlgCustomKeyboardImp</name>
     <message>
-      <location filename="../Dialogs/DlgKeyboardImp.cpp" line="152"/>
+      <location filename="../Dialogs/DlgKeyboardImp.cpp" line="154"/>
       <source>Type to search…</source>
       <translation>தேட தட்டச்சு செய்யவும்…</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgKeyboardImp.cpp" line="238"/>
+      <location filename="../Dialogs/DlgKeyboardImp.cpp" line="240"/>
       <source>Icon</source>
       <translation>படவுரு</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgKeyboardImp.cpp" line="238"/>
+      <location filename="../Dialogs/DlgKeyboardImp.cpp" line="240"/>
       <source>Command</source>
       <translation>கட்டளை</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgKeyboardImp.cpp" line="238"/>
+      <location filename="../Dialogs/DlgKeyboardImp.cpp" line="240"/>
       <source>Shortcut</source>
       <translation>குறுக்குவழி</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgKeyboardImp.cpp" line="238"/>
+      <location filename="../Dialogs/DlgKeyboardImp.cpp" line="240"/>
       <source>Default</source>
       <translation>இயல்புநிலை</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgKeyboardImp.cpp" line="278"/>
+      <location filename="../Dialogs/DlgKeyboardImp.cpp" line="280"/>
       <source>Name</source>
       <translation>பெயர்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgKeyboardImp.cpp" line="278"/>
+      <location filename="../Dialogs/DlgKeyboardImp.cpp" line="280"/>
       <source>Title</source>
       <translation>தலைப்பு</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgKeyboardImp.cpp" line="434"/>
+      <location filename="../Dialogs/DlgKeyboardImp.cpp" line="436"/>
       <source>All</source>
       <translation>அனைத்தும்</translation>
     </message>
@@ -1449,51 +1459,51 @@ same time. The one with the highest priority will be triggered.</source>
       <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style="margin-top:0px; margin-bottom;0px; margin-bottom; margin-right:0px;</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgToolbarsImp.cpp" line="85"/>
+      <location filename="../Dialogs/DlgToolbarsImp.cpp" line="87"/>
       <source>Global</source>
       <translation>உலகளாவிய</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgToolbarsImp.cpp" line="103"/>
+      <location filename="../Dialogs/DlgToolbarsImp.cpp" line="105"/>
       <source>Command</source>
       <translation>கட்டளை</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgToolbarsImp.cpp" line="70"/>
-      <location filename="../Dialogs/DlgToolbarsImp.cpp" line="221"/>
+      <location filename="../Dialogs/DlgToolbarsImp.cpp" line="72"/>
+      <location filename="../Dialogs/DlgToolbarsImp.cpp" line="223"/>
       <source>&lt;Separator&gt;</source>
       <translation>&lt;பிரிப்பான்&gt;</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgToolbarsImp.cpp" line="245"/>
+      <location filename="../Dialogs/DlgToolbarsImp.cpp" line="247"/>
       <source>%1 module not loaded</source>
       <translation>% 1 தொகுதி ஏற்றப்படவில்லை</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgToolbarsImp.cpp" line="442"/>
+      <location filename="../Dialogs/DlgToolbarsImp.cpp" line="447"/>
       <source>New toolbar</source>
       <translation>புதிய கருவிப்பட்டி</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgToolbarsImp.cpp" line="443"/>
-      <location filename="../Dialogs/DlgToolbarsImp.cpp" line="501"/>
+      <location filename="../Dialogs/DlgToolbarsImp.cpp" line="448"/>
+      <location filename="../Dialogs/DlgToolbarsImp.cpp" line="506"/>
       <source>Toolbar name:</source>
       <translation>கருவிபட்டி பெயர்:</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgToolbarsImp.cpp" line="457"/>
-      <location filename="../Dialogs/DlgToolbarsImp.cpp" line="515"/>
+      <location filename="../Dialogs/DlgToolbarsImp.cpp" line="462"/>
+      <location filename="../Dialogs/DlgToolbarsImp.cpp" line="520"/>
       <source>Duplicated name</source>
       <translation>நகல் பெயர்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgToolbarsImp.cpp" line="458"/>
-      <location filename="../Dialogs/DlgToolbarsImp.cpp" line="516"/>
+      <location filename="../Dialogs/DlgToolbarsImp.cpp" line="463"/>
+      <location filename="../Dialogs/DlgToolbarsImp.cpp" line="521"/>
       <source>The toolbar name '%1' is already used</source>
       <translation>கருவிப்பட்டியின் பெயர் '% 1' ஏற்கனவே பயன்படுத்தப்பட்டுள்ளது</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgToolbarsImp.cpp" line="500"/>
+      <location filename="../Dialogs/DlgToolbarsImp.cpp" line="505"/>
       <source>Rename toolbar</source>
       <translation>கருவிப்பட்டியை மறுபெயரிடவும்</translation>
     </message>
@@ -1505,20 +1515,20 @@ same time. The one with the highest priority will be triggered.</source>
   <context>
     <name>Gui::Dialog::DlgCustomizeImp</name>
     <message>
-      <location filename="../Dialogs/DlgCustomizeImp.cpp" line="53"/>
-      <location filename="../Dialogs/DlgCustomizeImp.cpp" line="125"/>
+      <location filename="../Dialogs/DlgCustomizeImp.cpp" line="55"/>
+      <location filename="../Dialogs/DlgCustomizeImp.cpp" line="127"/>
       <source>Customize</source>
       <translation>தனிப்பயனாக்கு</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgCustomizeImp.cpp" line="65"/>
-      <location filename="../Dialogs/DlgCustomizeImp.cpp" line="126"/>
+      <location filename="../Dialogs/DlgCustomizeImp.cpp" line="67"/>
+      <location filename="../Dialogs/DlgCustomizeImp.cpp" line="128"/>
       <source>&amp;Help</source>
       <translation>&amp;உதவி</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgCustomizeImp.cpp" line="72"/>
-      <location filename="../Dialogs/DlgCustomizeImp.cpp" line="127"/>
+      <location filename="../Dialogs/DlgCustomizeImp.cpp" line="74"/>
+      <location filename="../Dialogs/DlgCustomizeImp.cpp" line="129"/>
       <source>&amp;Close</source>
       <translation>&amp;மூடு</translation>
     </message>
@@ -1526,14 +1536,14 @@ same time. The one with the highest priority will be triggered.</source>
   <context>
     <name>Gui::Dialog::DlgCustomizeSpNavSettings</name>
     <message>
-      <location filename="../Dialogs/DlgCustomizeSpNavSettings.cpp" line="43"/>
-      <location filename="../Dialogs/DlgCustomizeSpNavSettings.cpp" line="130"/>
+      <location filename="../Dialogs/DlgCustomizeSpNavSettings.cpp" line="45"/>
+      <location filename="../Dialogs/DlgCustomizeSpNavSettings.cpp" line="132"/>
       <source>Spaceball Motion</source>
       <translation>ச்பேச்பால் மோசன்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgCustomizeSpNavSettings.cpp" line="44"/>
-      <location filename="../Dialogs/DlgCustomizeSpNavSettings.cpp" line="133"/>
+      <location filename="../Dialogs/DlgCustomizeSpNavSettings.cpp" line="46"/>
+      <location filename="../Dialogs/DlgCustomizeSpNavSettings.cpp" line="135"/>
       <source>No Spaceball present</source>
       <translation>ச்பேச்பால் இல்லை</translation>
     </message>
@@ -1541,27 +1551,27 @@ same time. The one with the highest priority will be triggered.</source>
   <context>
     <name>Gui::Dialog::DlgCustomizeSpaceball</name>
     <message>
-      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="739"/>
+      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="743"/>
       <source>Spaceball Buttons</source>
       <translation>ச்பேச்பால் பொத்தான்கள்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="745"/>
+      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="749"/>
       <source>No Spaceball present</source>
       <translation>ச்பேச்பால் இல்லை</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="801"/>
+      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="805"/>
       <source>Buttons</source>
       <translation>பொத்தான்கள்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="802"/>
+      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="806"/>
       <source>Reset</source>
       <translation>மீட்டமை</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="838"/>
+      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="842"/>
       <source>Print Reference</source>
       <translation>அச்சு குறிப்பு</translation>
     </message>
@@ -1717,57 +1727,57 @@ same time. The one with the highest priority will be triggered.</source>
   <context>
     <name>Gui::Dialog::DlgMacroExecuteImp</name>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="121"/>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="809"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="123"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="811"/>
       <source>Macros</source>
       <translation>பெரியவைகள்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="486"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="488"/>
       <source>Macro file</source>
       <translation>மேக்ரோ கோப்பு</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="512"/>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="922"/>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1085"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="514"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="924"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1087"/>
       <source>Existing file</source>
       <translation>ஏற்கனவே உள்ள கோப்பு</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="513"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="515"/>
       <source>'%1'.
 This file already exists.</source>
       <translation>'% 1'. 
 இந்த கோப்பு ஏற்கனவே உள்ளது.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="521"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="523"/>
       <source>Cannot create file</source>
       <translation>கோப்பை உருவாக்க முடியாது</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="522"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="524"/>
       <source>Creation of file '%1' failed.</source>
       <translation>'% 1' கோப்பு உருவாக்கம் தோல்வியடைந்தது.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="563"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="565"/>
       <source>Delete macro</source>
       <translation>மேக்ரோவை நீக்கு</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="598"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="600"/>
       <source>Do not show again</source>
       <translation>மீண்டும் காட்ட வேண்டாம்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="599"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="601"/>
       <source>Guided Walkthrough</source>
       <translation>வழிகாட்டப்பட்ட நடை</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="601"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="603"/>
       <source>This will guide you in setting up this macro in a custom global toolbar.  Instructions will be in red text inside the dialog.
 
 Note: your changes will be applied when you next switch workbenches
@@ -1778,93 +1788,93 @@ Note: your changes will be applied when you next switch workbenches
 </translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="682"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="684"/>
       <source>Walkthrough instructions: Fill in missing fields (optional) then click Add, then Close</source>
       <translation>ஒத்திகை வழிமுறைகள்: விடுபட்ட புலங்களை நிரப்பவும் (விரும்பினால்) பின்னர் சேர் என்பதைக் சொடுக்கு செய்து, பின்னர் மூடு</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="760"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="762"/>
       <source>Walkthrough instructions: Select macro from list, then click right arrow button (-&gt;), then Close.</source>
       <translation>ஒத்திகை வழிமுறைகள்: பட்டியலிலிருந்து மேக்ரோவைத் தேர்ந்தெடுத்து, வலது அம்புக்குறி பொத்தானைக் சொடுக்கு செய்யவும் (-&gt;), பின்னர் மூடு.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="784"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="786"/>
       <source>Walkthrough instructions: Click New, select macro, then right arrow (-&gt;) button, then Close.</source>
       <translation>ஒத்திகை வழிமுறைகள்: புதியதைக் சொடுக்கு செய்து, மேக்ரோவைத் தேர்ந்தெடுத்து, வலது அம்புக்குறி (-&gt;) பொத்தானைக் சொடுக்கு செய்து, பின்னர் மூடு.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="900"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="902"/>
       <source>Renaming Macro File</source>
       <translation>மேக்ரோ கோப்பை மறுபெயரிடுகிறது</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="467"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="469"/>
       <source>Read-Only</source>
       <translation>படிக்க மட்டும்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="487"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="489"/>
       <source>Enter a file name:</source>
       <translation>கோப்பு பெயரை உள்ளிடவும்:</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="564"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="566"/>
       <source>Delete the macro '%1'?</source>
       <translation>மேக்ரோ '% 1' ஐ நீக்கவா?</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="656"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="658"/>
       <source>Walkthrough, Dialog 1 of 2</source>
       <translation>நடை, உரையாடல் 1 இல் 2</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="724"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="726"/>
       <source>Walkthrough, Dialog 1 of 1</source>
       <translation>நடை, உரையாடல் 1 இல் 1</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="724"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="726"/>
       <source>Walkthrough, Dialog 2 of 2</source>
       <translation>நடை, உரையாடல் 2 இல் 2</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="901"/>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1066"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="903"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1068"/>
       <source>Enter new name</source>
       <translation>புதிய பெயரை உள்ளிடவும்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="923"/>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1086"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="925"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1088"/>
       <source>'%1'
  already exists.</source>
       <translation>'% 1' 
 ஏற்கனவே உள்ளது.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="929"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="931"/>
       <source>Rename Failed</source>
       <translation>மறுபெயரிட முடியவில்லை</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="930"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="932"/>
       <source>Failed to rename to '%1'.
 Perhaps a file permission error?</source>
       <translation>'% 1' என மறுபெயரிடுவதில் தோல்வி. 
 ஒருவேளை கோப்பு இசைவு பிழையா?</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1065"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1067"/>
       <source>Duplicate Macro</source>
       <translation>நகல் மேக்ரோ</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1092"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1094"/>
       <source>Duplicate Failed</source>
       <translation>நகல் தோல்வியடைந்தது</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1093"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1095"/>
       <source>Failed to duplicate to '%1'.
 Perhaps a file permission error?</source>
       <translation>'% 1'க்கு நகலெடுக்க முடியவில்லை. 
@@ -1907,39 +1917,39 @@ Perhaps a file permission error?</source>
   <context>
     <name>Gui::Dialog::DlgMacroRecordImp</name>
     <message>
-      <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="102"/>
-      <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="112"/>
-      <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="142"/>
+      <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="104"/>
+      <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="114"/>
+      <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="144"/>
       <source>Macro recorder</source>
       <translation>மேக்ரோ ரெக்கார்டர்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="103"/>
+      <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="105"/>
       <source>Specify a place to save first.</source>
       <translation>முதலில் சேமிப்பதற்கான இடத்தைக் குறிப்பிடவும்.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="113"/>
+      <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="115"/>
       <source>The macro directory does not exist. Choose another one.</source>
       <translation>மேக்ரோ கோப்பகம் இல்லை. இன்னொன்றைத் தேர்ந்தெடுங்கள்.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="129"/>
+      <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="131"/>
       <source>The macro '%1' already exists. Overwrite it?</source>
       <translation>மேக்ரோ '% 1' ஏற்கனவே உள்ளது. மேலெழுதவா?</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="143"/>
+      <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="145"/>
       <source>You have no write permission for the directory. Choose another one.</source>
       <translation>கோப்பகத்திற்கு எழுத உங்களுக்கு இசைவு இல்லை. இன்னொன்றைத் தேர்ந்தெடுங்கள்.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="128"/>
+      <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="130"/>
       <source>Existing macro</source>
       <translation>இருக்கும் மேக்ரோ</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="189"/>
+      <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="191"/>
       <source>Choose macro directory</source>
       <translation>மேக்ரோ கோப்பகத்தைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
@@ -1952,12 +1962,17 @@ Perhaps a file permission error?</source>
       <translation>பொருள்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMaterialProperties.ui" line="168"/>
+      <location filename="../Dialogs/DlgMaterialProperties.ui" line="179"/>
+      <source>Defines how much light passes through an object, making it partially or fully see-through</source>
+      <translation type="unfinished">Defines how much light passes through an object, making it partially or fully see-through</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgMaterialProperties.ui" line="192"/>
       <source>%</source>
       <translation>%</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMaterialProperties.ui" line="71"/>
+      <location filename="../Dialogs/DlgMaterialProperties.ui" line="77"/>
       <source>Reset</source>
       <translation>மீட்டமை</translation>
     </message>
@@ -1972,32 +1987,67 @@ Perhaps a file permission error?</source>
       <translation>பரவலான நிறம்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMaterialProperties.ui" line="54"/>
+      <location filename="../Dialogs/DlgMaterialProperties.ui" line="50"/>
+      <source>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</source>
+      <translation type="unfinished">Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgMaterialProperties.ui" line="57"/>
       <source>Shininess</source>
       <translation>பளபளப்பு</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMaterialProperties.ui" line="78"/>
+      <location filename="../Dialogs/DlgMaterialProperties.ui" line="60"/>
+      <source>Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</source>
+      <translation type="unfinished">Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgMaterialProperties.ui" line="80"/>
+      <source>Reverts changes done in the dialogue.</source>
+      <translation type="unfinished">Reverts changes done in the dialogue.</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgMaterialProperties.ui" line="87"/>
       <source>Ambient color</source>
       <translation>சுற்றுப்புற நிறம்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMaterialProperties.ui" line="114"/>
+      <location filename="../Dialogs/DlgMaterialProperties.ui" line="90"/>
+      <source>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</source>
+      <translation type="unfinished">Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgMaterialProperties.ui" line="126"/>
       <source>Specular color</source>
       <translation>கண்கவர் நிறம்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMaterialProperties.ui" line="131"/>
+      <location filename="../Dialogs/DlgMaterialProperties.ui" line="129"/>
+      <source>Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</source>
+      <translation type="unfinished">Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgMaterialProperties.ui" line="146"/>
       <source>Default</source>
       <translation>இயல்புநிலை</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMaterialProperties.ui" line="148"/>
+      <location filename="../Dialogs/DlgMaterialProperties.ui" line="149"/>
+      <source>Changes all values to default values</source>
+      <translation type="unfinished">Changes all values to default values</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgMaterialProperties.ui" line="166"/>
       <source>Emissive color</source>
       <translation>உமிழும் நிறம்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMaterialProperties.ui" line="155"/>
+      <location filename="../Dialogs/DlgMaterialProperties.ui" line="169"/>
+      <source>Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</source>
+      <translation type="unfinished">Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgMaterialProperties.ui" line="176"/>
       <source>Transparency</source>
       <translation>வெளிப்படைத்தன்மை</translation>
     </message>
@@ -2027,17 +2077,17 @@ Perhaps a file permission error?</source>
   <context>
     <name>Gui::Dialog::DlgOnlineHelpImp</name>
     <message>
-      <location filename="../Dialogs/DlgOnlineHelpImp.cpp" line="49"/>
+      <location filename="../Dialogs/DlgOnlineHelpImp.cpp" line="51"/>
       <source>HTML files</source>
       <translation>HTML கோப்புகள்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgOnlineHelpImp.cpp" line="101"/>
+      <location filename="../Dialogs/DlgOnlineHelpImp.cpp" line="103"/>
       <source>Access denied</source>
       <translation>அணுமதி மறுக்கப்பட்டது</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgOnlineHelpImp.cpp" line="102"/>
+      <location filename="../Dialogs/DlgOnlineHelpImp.cpp" line="104"/>
       <source>Access denied to '%1'
 
 Specify another directory.</source>
@@ -2133,69 +2183,69 @@ Specify another directory.</source>
       <translation>சரியான சரத்தை பொருத்தவும்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterFind.cpp" line="45"/>
+      <location filename="../Dialogs/DlgParameterFind.cpp" line="47"/>
       <source>Find Next</source>
       <translation>அடுத்ததை தேடு</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterFind.cpp" line="306"/>
+      <location filename="../Dialogs/DlgParameterFind.cpp" line="313"/>
       <source>Not found</source>
       <translation>காணப்படவில்லை</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterFind.cpp" line="306"/>
-      <source>Cannot find the text: %1</source>
-      <translation>உரையைக் கண்டுபிடிக்க முடியவில்லை: % 1</translation>
+      <location filename="../Dialogs/DlgParameterFind.cpp" line="314"/>
+      <source>%1 not found. Would you like to start from the beginning?</source>
+      <translation type="unfinished">%1 not found. Would you like to start from the beginning?</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgParameterImp</name>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="68"/>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="245"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="70"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="247"/>
       <source>Group</source>
       <translation>குழு</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="77"/>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="246"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="79"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="248"/>
       <source>Name</source>
       <translation>பெயர்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="77"/>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="247"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="79"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="249"/>
       <source>Type</source>
       <translation>வகை</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="77"/>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="248"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="79"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="250"/>
       <source>Value</source>
       <translation>மதிப்பு</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="91"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="93"/>
       <source>System parameter</source>
       <translation>கணினி அளவுரு</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="92"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="94"/>
       <source>User parameter</source>
       <translation>பயனர் அளவுரு</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="127"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="129"/>
       <source>Search group</source>
       <translation>தேடல் குழு</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="478"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="472"/>
       <source>Invalid input</source>
       <translation>தவறான உள்ளீடு</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="479"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="473"/>
       <source>Invalid key name '%1'</source>
       <translation>தவறான முக்கிய பெயர் '% 1'</translation>
     </message>
@@ -2216,37 +2266,37 @@ Specify another directory.</source>
   <context>
     <name>Gui::Dialog::DlgPreferencePackManagementImp</name>
     <message>
-      <location filename="../Dialogs/DlgPreferencePackManagementImp.cpp" line="107"/>
+      <location filename="../Dialogs/DlgPreferencePackManagementImp.cpp" line="109"/>
       <source>User-Saved Preference Packs</source>
       <translation>பயனர் சேமித்த விருப்பத் தொகுப்புகள்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencePackManagementImp.cpp" line="111"/>
+      <location filename="../Dialogs/DlgPreferencePackManagementImp.cpp" line="113"/>
       <source>Built-In Preference Packs</source>
       <translation>உள்ளமைக்கப்பட்ட விருப்பத் தொகுப்புகள்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencePackManagementImp.cpp" line="152"/>
+      <location filename="../Dialogs/DlgPreferencePackManagementImp.cpp" line="154"/>
       <source>Toggle visibility of built-in preference pack '%1'</source>
       <translation>உள்ளமைக்கப்பட்ட விருப்பத் தொகுப்பு '% 1' இன் தெரிவுநிலையை நிலைமாற்று</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencePackManagementImp.cpp" line="162"/>
+      <location filename="../Dialogs/DlgPreferencePackManagementImp.cpp" line="164"/>
       <source>Deletes the user-saved preference pack '%1'</source>
       <translation>பயனர் சேமித்த '% 1' விருப்பத் தொகுப்பை நீக்குகிறது</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencePackManagementImp.cpp" line="177"/>
+      <location filename="../Dialogs/DlgPreferencePackManagementImp.cpp" line="179"/>
       <source>Toggles the visibility of the addon preference pack '%1' (use the Addon Manager to remove permanently)</source>
       <translation>addon preference pack '%1' இன் தெரிவுநிலையை மாற்றுகிறது (நிரந்தரமாக நீக்க Addon Manager ஐப் பயன்படுத்தவும்)</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencePackManagementImp.cpp" line="194"/>
+      <location filename="../Dialogs/DlgPreferencePackManagementImp.cpp" line="196"/>
       <source>Delete the preference pack named '%1'? This cannot be undone.</source>
       <translation>'% 1' என்ற விருப்பத் தொகுப்பை நீக்கவா? இதை செயல்தவிர்க்க முடியாது.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencePackManagementImp.cpp" line="193"/>
+      <location filename="../Dialogs/DlgPreferencePackManagementImp.cpp" line="195"/>
       <source>Delete saved preference pack?</source>
       <translation>சேமித்த விருப்பத் தொகுப்பை நீக்கவா?</translation>
     </message>
@@ -2281,72 +2331,72 @@ Specify another directory.</source>
   <context>
     <name>Gui::Dialog::DlgPreferencesImp</name>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="782"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="786"/>
       <source>Reset Page '%1'</source>
       <translation>'% 1' பக்கத்தை மீட்டமை</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="785"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="789"/>
       <source>Resets the user settings for the page '%1'</source>
       <translation>'% 1' பக்கத்திற்கான பயனர் அமைப்புகளை மீட்டமைக்கிறது</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="789"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="793"/>
       <source>Reset Group '%1'</source>
       <translation>'% 1' குழுவை மீட்டமை</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="797"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="801"/>
       <source>Reset All</source>
       <translation>அனைத்தையும் மீட்டமைக்கவும்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="815"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="819"/>
       <source>Clear User Settings</source>
       <translation>பயனர் அமைப்புகளை அழிக்கவும்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="816"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="820"/>
       <source>Clear all your user settings?</source>
       <translation>உங்கள் எல்லா பயனர் அமைப்புகளையும் அழிக்கவா?</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="817"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="821"/>
       <source>All settings will be cleared.</source>
       <translation>அனைத்து அமைப்புகளும் அழிக்கப்படும்.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="961"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="965"/>
       <source>Restart Required</source>
       <translation>மறுதொடக்கம் தேவை</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="962"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="966"/>
       <source>Restart FreeCAD for changes to take effect.</source>
       <translation>மாற்றங்கள் நடைமுறைக்கு வர FreeCAD ஐ மறுதொடக்கம் செய்யவும்.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="967"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="971"/>
       <source>Restart Now</source>
       <translation>இப்போது மறுதொடக்கம் செய்யுங்கள்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="968"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="972"/>
       <source>Restart Later</source>
       <translation>பின்னர் மறுதொடக்கம் செய்யுங்கள்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="794"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="798"/>
       <source>Resets the user settings for the group '%1'</source>
       <translation>'% 1' குழுவிற்கான பயனர் அமைப்புகளை மீட்டமைக்கிறது</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="799"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="803"/>
       <source>Resets the user settings entirely</source>
       <translation>பயனர் அமைப்புகளை முழுவதுமாக மீட்டமைக்கிறது</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="918"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="922"/>
       <source>Wrong parameter</source>
       <translation>தவறான அளவுரு</translation>
     </message>
@@ -2488,41 +2538,41 @@ Specify another directory.</source>
       <translation>உருவாக்கு</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgProjectUtility.cpp" line="47"/>
+      <location filename="../Dialogs/DlgProjectUtility.cpp" line="49"/>
       <source>Project file</source>
       <translation>திட்டப்பணி கோப்பு</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgProjectUtility.cpp" line="60"/>
-      <location filename="../Dialogs/DlgProjectUtility.cpp" line="77"/>
+      <location filename="../Dialogs/DlgProjectUtility.cpp" line="62"/>
+      <location filename="../Dialogs/DlgProjectUtility.cpp" line="79"/>
       <source>Empty source</source>
       <translation>வெறுமையான மூலம்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgProjectUtility.cpp" line="60"/>
-      <location filename="../Dialogs/DlgProjectUtility.cpp" line="77"/>
+      <location filename="../Dialogs/DlgProjectUtility.cpp" line="62"/>
+      <location filename="../Dialogs/DlgProjectUtility.cpp" line="79"/>
       <source>No source is defined.</source>
       <translation>எந்த ஆதாரமும் வரையறுக்கப்படவில்லை.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgProjectUtility.cpp" line="65"/>
-      <location filename="../Dialogs/DlgProjectUtility.cpp" line="81"/>
+      <location filename="../Dialogs/DlgProjectUtility.cpp" line="67"/>
+      <location filename="../Dialogs/DlgProjectUtility.cpp" line="83"/>
       <source>Empty destination</source>
       <translation>வெறுமையான இலக்கு</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgProjectUtility.cpp" line="65"/>
-      <location filename="../Dialogs/DlgProjectUtility.cpp" line="81"/>
+      <location filename="../Dialogs/DlgProjectUtility.cpp" line="67"/>
+      <location filename="../Dialogs/DlgProjectUtility.cpp" line="83"/>
       <source>No destination is defined.</source>
       <translation>எந்த இலக்கும் வரையறுக்கப்படவில்லை.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgProjectUtility.cpp" line="101"/>
+      <location filename="../Dialogs/DlgProjectUtility.cpp" line="103"/>
       <source>Failed to extract document</source>
       <translation>ஆவணத்தைப் பிரித்தெடுக்க முடியவில்லை</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgProjectUtility.cpp" line="118"/>
+      <location filename="../Dialogs/DlgProjectUtility.cpp" line="120"/>
       <source>Failed to create document</source>
       <translation>ஆவணத்தை உருவாக்க முடியவில்லை</translation>
     </message>
@@ -2560,12 +2610,12 @@ Specify another directory.</source>
       <translation>மேலே உள்ள முடிவுகளை வடிகட்ட ஒரு தேடல் முறை</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPropertyLink.cpp" line="112"/>
+      <location filename="../Dialogs/DlgPropertyLink.cpp" line="114"/>
       <source>Reset</source>
       <translation>மீட்டமை</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPropertyLink.cpp" line="113"/>
+      <location filename="../Dialogs/DlgPropertyLink.cpp" line="115"/>
       <source>Clear</source>
       <translation>தெளிவு</translation>
     </message>
@@ -2598,7 +2648,7 @@ Specify another directory.</source>
   <context>
     <name>Gui::Dialog::DlgRevertToBackupConfigImp</name>
     <message>
-      <location filename="../Dialogs/DlgRevertToBackupConfigImp.cpp" line="105"/>
+      <location filename="../Dialogs/DlgRevertToBackupConfigImp.cpp" line="107"/>
       <source>No selection in dialog, cannot load backup file</source>
       <translation>உரையாடலில் தேர்வு இல்லை, காப்பு கோப்பை ஏற்ற முடியாது</translation>
     </message>
@@ -2641,7 +2691,7 @@ Specify another directory.</source>
       <translation>உதவி</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgRunExternal.cpp" line="125"/>
+      <location filename="../Dialogs/DlgRunExternal.cpp" line="127"/>
       <source>Select a file</source>
       <translation>ஒரு கோப்பைத் தேர்வுசெய்க</translation>
     </message>
@@ -3239,12 +3289,12 @@ besides the color bar</source>
   <context>
     <name>Gui::Dialog::DlgSettingsColorGradientImp</name>
     <message>
-      <location filename="../Dialogs/DlgSettingsColorGradientImp.cpp" line="254"/>
+      <location filename="../Dialogs/DlgSettingsColorGradientImp.cpp" line="256"/>
       <source>Wrong parameter</source>
       <translation>தவறான அளவுரு</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgSettingsColorGradientImp.cpp" line="255"/>
+      <location filename="../Dialogs/DlgSettingsColorGradientImp.cpp" line="257"/>
       <source>The maximum value must be higher than the minimum value.</source>
       <translation>அதிகபட்ச மதிப்பு குறைந்தபட்ச மதிப்பை விட அதிகமாக இருக்க வேண்டும்.</translation>
     </message>
@@ -3433,16 +3483,16 @@ get date suffix according to the specified format</source>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="596"/>
-      <source>Enable partial loading of external linked documents.
+      <source>Disable partial loading of external linked documents.
 Then only referenced objects and their dependencies will be loaded
 when a linked document is auto-opened together with the main document.
 A partially loaded document cannot be edited. Double click the document
 icon in the tree view to fully reload it.</source>
-      <translation>வெளிப்புற இணைக்கப்பட்ட ஆவணங்களின் பகுதி ஏற்றுதலை இயக்கவும். 
-பின்னர் குறிப்பிடப்பட்ட பொருள்கள் மற்றும் அவற்றின் சார்புகள் மட்டுமே ஏற்றப்படும் 
-இணைக்கப்பட்ட ஆவணம் முதன்மை ஆவணத்துடன் தானாகத் திறக்கப்படும் போது. 
-பகுதி ஏற்றப்பட்ட ஆவணத்தைத் திருத்த முடியாது. ஆவணத்தில் இருமுறை சொடுக்கு செய்யவும் 
-மரக் காட்சியில் உள்ள ஐகானை முழுமையாக மீண்டும் ஏற்றவும்.</translation>
+      <translation type="unfinished">Disable partial loading of external linked documents.
+Then only referenced objects and their dependencies will be loaded
+when a linked document is auto-opened together with the main document.
+A partially loaded document cannot be edited. Double click the document
+icon in the tree view to fully reload it.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="603"/>
@@ -3499,67 +3549,67 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
       <translation>புதிய ஆவணங்களுக்கான இயல்புநிலை உரிமம்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgProjectInformationImp.cpp" line="40"/>
+      <location filename="../Dialogs/DlgProjectInformationImp.cpp" line="42"/>
       <source>All rights reserved</source>
       <translation>அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgProjectInformationImp.cpp" line="41"/>
+      <location filename="../Dialogs/DlgProjectInformationImp.cpp" line="43"/>
       <source>Creative Commons Attribution</source>
       <translation>கிரியேட்டிவ் காமன்ச் பண்புக்கூறு</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgProjectInformationImp.cpp" line="42"/>
+      <location filename="../Dialogs/DlgProjectInformationImp.cpp" line="44"/>
       <source>Creative Commons Attribution-ShareAlike</source>
       <translation>Creative Commons Attribution-ShareAlike</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgProjectInformationImp.cpp" line="43"/>
+      <location filename="../Dialogs/DlgProjectInformationImp.cpp" line="45"/>
       <source>Creative Commons Attribution-NoDerivatives</source>
       <translation>Creative Commons Attribution-NoDerivatives</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgProjectInformationImp.cpp" line="44"/>
+      <location filename="../Dialogs/DlgProjectInformationImp.cpp" line="46"/>
       <source>Creative Commons Attribution-NonCommercial</source>
       <translation>கிரியேட்டிவ் காமன்ச் பண்புக்கூறு-வணிகமற்றது</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgProjectInformationImp.cpp" line="45"/>
+      <location filename="../Dialogs/DlgProjectInformationImp.cpp" line="47"/>
       <source>Creative Commons Attribution-NonCommercial-ShareAlike</source>
       <translation>கிரியேட்டிவ் காமன்ச் பண்புக்கூறு-வணிகமற்ற-பகிர்வு</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgProjectInformationImp.cpp" line="46"/>
+      <location filename="../Dialogs/DlgProjectInformationImp.cpp" line="48"/>
       <source>Creative Commons Attribution-NonCommercial-NoDerivatives</source>
       <translation>கிரியேட்டிவ் காமன்ச் பண்புக்கூறு-வணிகமற்ற-நோடெரிவேடிவ்கள்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgProjectInformationImp.cpp" line="47"/>
+      <location filename="../Dialogs/DlgProjectInformationImp.cpp" line="49"/>
       <source>Public Domain</source>
       <translation>பொது டொமைன்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgProjectInformationImp.cpp" line="48"/>
+      <location filename="../Dialogs/DlgProjectInformationImp.cpp" line="50"/>
       <source>FreeArt</source>
       <translation>ஃப்ரீஆர்ட்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgProjectInformationImp.cpp" line="49"/>
+      <location filename="../Dialogs/DlgProjectInformationImp.cpp" line="51"/>
       <source>CERN Open Hardware Licence strongly-reciprocal</source>
       <translation>CERN ஓபன் ஆர்டுவேர் உரிமம் கடுமையாக இருவழி</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgProjectInformationImp.cpp" line="50"/>
+      <location filename="../Dialogs/DlgProjectInformationImp.cpp" line="52"/>
       <source>CERN Open Hardware Licence weakly-reciprocal</source>
       <translation>CERN திறந்த வன்பொருள் உரிமம் பலவீனமாக-பரச்பரம்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgProjectInformationImp.cpp" line="51"/>
+      <location filename="../Dialogs/DlgProjectInformationImp.cpp" line="53"/>
       <source>CERN Open Hardware Licence permissive</source>
       <translation>CERN திறந்த வன்பொருள் உரிமம் இசைவு</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgProjectInformationImp.cpp" line="52"/>
+      <location filename="../Dialogs/DlgProjectInformationImp.cpp" line="54"/>
       <source>Other</source>
       <translation>மற்றொன்று</translation>
     </message>
@@ -3590,6 +3640,11 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
       <location filename="../PreferencePages/DlgSettingsDocumentImp.cpp" line="62"/>
       <source>Show format documentation</source>
       <translation>வடிவ ஆவணங்களைக் காட்டு</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsDocumentImp.cpp" line="119"/>
+      <source>Warning: The format '%1' produces '%2' which contains invalid characters. They will be replaced with '-' when saving.</source>
+      <translation type="unfinished">Warning: The format '%1' produces '%2' which contains invalid characters. They will be replaced with '-' when saving.</translation>
     </message>
   </context>
   <context>
@@ -3749,22 +3804,22 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
   <context>
     <name>Gui::Dialog::DlgSettingsImageImp</name>
     <message>
-      <location filename="../Dialogs/DlgSettingsImageImp.cpp" line="54"/>
+      <location filename="../Dialogs/DlgSettingsImageImp.cpp" line="56"/>
       <source>Offscreen (new)</source>
       <translation>ஆஃப்ச்கிரீன் (புதியது)</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgSettingsImageImp.cpp" line="55"/>
+      <location filename="../Dialogs/DlgSettingsImageImp.cpp" line="57"/>
       <source>Offscreen (old)</source>
       <translation>ஆஃப்ச்கிரீன் (பழையது)</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgSettingsImageImp.cpp" line="56"/>
+      <location filename="../Dialogs/DlgSettingsImageImp.cpp" line="58"/>
       <source>Framebuffer (custom)</source>
       <translation>ஃப்ரேம்பஃபர் (தனிப்பயன்)</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgSettingsImageImp.cpp" line="57"/>
+      <location filename="../Dialogs/DlgSettingsImageImp.cpp" line="59"/>
       <source>Framebuffer (as is)</source>
       <translation>ஃப்ரேம்பஃபர் (அப்படியே)</translation>
     </message>
@@ -4261,62 +4316,62 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
       <translation>தொடுதிரை சாய்க்கும் சைகையை முடக்கு</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="211"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="248"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="215"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="252"/>
       <source>Isometric</source>
       <translation>ஐசோமெட்ரிக்</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="212"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="249"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="216"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="253"/>
       <source>Dimetric</source>
       <translation>டிமெட்ரிக்</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="213"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="250"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="217"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="254"/>
       <source>Trimetric</source>
       <translation>டிரிமெட்ரிக்</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="214"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="251"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="218"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="255"/>
       <source>Top</source>
       <translation>மேல்</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="215"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="252"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="219"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="256"/>
       <source>Front</source>
       <translation>முன்</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="216"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="253"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="220"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="257"/>
       <source>Left</source>
       <translation>இடது</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="217"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="254"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="221"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="258"/>
       <source>Right</source>
       <translation>வலது</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="218"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="255"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="222"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="259"/>
       <source>Rear</source>
       <translation>பின்புறம்</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="219"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="256"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="223"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="260"/>
       <source>Bottom</source>
       <translation>கீழே</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="220"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="257"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="224"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="261"/>
       <source>Custom</source>
       <translation>தனிப்பயன்</translation>
     </message>
@@ -4409,12 +4464,17 @@ horizontal space in Python console</source>
       <translation>வியூபோர்ட் தேர்வு நடத்தை</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsSelection.ui" line="67"/>
+      <location filename="../PreferencePages/DlgSettingsSelection.ui" line="26"/>
+      <source>The color used for highlighting selected objects in the 3D view</source>
+      <translation type="unfinished">The color used for highlighting selected objects in the 3D view</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsSelection.ui" line="70"/>
       <source>Radius</source>
       <translation>ஆரம்</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsSelection.ui" line="93"/>
+      <location filename="../PreferencePages/DlgSettingsSelection.ui" line="96"/>
       <source>Area for selecting elements in the 3D view.
 A larger value makes it easier to select elements, but may prevent selection of small features.
       </source>
@@ -4422,52 +4482,77 @@ A larger value makes it easier to select elements, but may prevent selection of 
 ஒரு பெரிய மதிப்பு உறுப்புகளைத் தேர்ந்தெடுப்பதை எளிதாக்குகிறது, ஆனால் சிறிய அம்சங்களைத் தேர்ந்தெடுப்பதைத் தடுக்கலாம்.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsSelection.ui" line="154"/>
+      <location filename="../PreferencePages/DlgSettingsSelection.ui" line="131"/>
+      <source>The color used for highlighting preselected objects in the 3D view</source>
+      <translation type="unfinished">The color used for highlighting preselected objects in the 3D view</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsSelection.ui" line="160"/>
       <source>Enable preselection, highlighted with specified color</source>
       <translation>முன்தேர்வை இயக்கு, குறிப்பிட்ட வண்ணத்துடன் சிறப்பிக்கப்பட்டுள்ளது</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsSelection.ui" line="157"/>
+      <location filename="../PreferencePages/DlgSettingsSelection.ui" line="163"/>
       <source>Enable preselection</source>
       <translation>முன்தேர்வை இயக்கு</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsSelection.ui" line="173"/>
+      <location filename="../PreferencePages/DlgSettingsSelection.ui" line="179"/>
       <source>Preselect the object in the 3D view when hovering the cursor over the tree item</source>
       <translation>மர உருப்படி மீது கர்சரை நகர்த்தும்போது 3D காட்சியில் உள்ள பொருளைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsSelection.ui" line="189"/>
+      <location filename="../PreferencePages/DlgSettingsSelection.ui" line="198"/>
       <source>Tree Selection Behavior</source>
       <translation>மரம் தேர்வு நடத்தை</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsSelection.ui" line="208"/>
+      <location filename="../PreferencePages/DlgSettingsSelection.ui" line="207"/>
+      <source>Selecting an item in the Tree View automatically activates its document and switches to its 3D view.</source>
+      <translation type="unfinished">Selecting an item in the Tree View automatically activates its document and switches to its 3D view.</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsSelection.ui" line="220"/>
       <source>Auto expand tree item when the corresponding object is selected in the 3D view</source>
       <translation>3D காட்சியில் தொடர்புடைய பொருளைத் தேர்ந்தெடுக்கும்போது, ​​தானாக விரிவடையும்</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsSelection.ui" line="46"/>
+      <location filename="../PreferencePages/DlgSettingsSelection.ui" line="255"/>
+      <source>Provides persistent selection toggles for each item. Simplifies batch operations and complex multi-selection without holding modifier keys (Ctrl/Shift).</source>
+      <translation type="unfinished">Provides persistent selection toggles for each item. Simplifies batch operations and complex multi-selection without holding modifier keys (Ctrl/Shift).</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsSelection.ui" line="49"/>
       <source>Enable selection, highlighted with specified color</source>
       <translation>குறிப்பிட்ட வண்ணத்துடன் தனிப்படுத்தப்பட்ட தேர்வை இயக்கு</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsSelection.ui" line="49"/>
+      <location filename="../PreferencePages/DlgSettingsSelection.ui" line="52"/>
       <source>Enable selection</source>
       <translation>தேர்வை இயக்கு</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsSelection.ui" line="195"/>
+      <location filename="../PreferencePages/DlgSettingsSelection.ui" line="204"/>
       <source>Auto switch to the 3D view containing the selected item</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட உருப்படியைக் கொண்ட 3D காட்சிக்கு தானாக மாறவும்</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsSelection.ui" line="221"/>
+      <location filename="../PreferencePages/DlgSettingsSelection.ui" line="223"/>
+      <source>Locates and reveals the selected object within the tree hierarchy. Prevents manual scrolling in deep, complex document structures.</source>
+      <translation type="unfinished">Locates and reveals the selected object within the tree hierarchy. Prevents manual scrolling in deep, complex document structures.</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsSelection.ui" line="236"/>
       <source>Record selection in tree view in order to go back/forward using navigation button</source>
       <translation>வழிசெலுத்தல் பொத்தானைப் பயன்படுத்தி பின்னோக்கி/முன்னோக்கிச் செல்ல, மரக் காட்சியில் தேர்வைப் பதிவுசெய்யவும்</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsSelection.ui" line="234"/>
+      <location filename="../PreferencePages/DlgSettingsSelection.ui" line="239"/>
+      <source>Enables selection history. Use 'Back' and 'Forward' navigation to toggle between previously selected objects without re-searching the tree.</source>
+      <translation type="unfinished">Enables selection history. Use 'Back' and 'Forward' navigation to toggle between previously selected objects without re-searching the tree.</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsSelection.ui" line="252"/>
       <source>Add checkboxes for selection in document tree</source>
       <translation>ஆவண மரத்தில் தேர்வுக்கான பெட்டிகளைச் சேர்க்கவும்</translation>
     </message>
@@ -4740,12 +4825,12 @@ The preference system is the one set in the general preferences.</source>
   <context>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
-      <location filename="../Dialogs/DlgUnitsCalculatorImp.cpp" line="143"/>
+      <location filename="../Dialogs/DlgUnitsCalculatorImp.cpp" line="145"/>
       <source>unknown unit:</source>
       <translation>அறியப்படாத அலகு:</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgUnitsCalculatorImp.cpp" line="150"/>
+      <location filename="../Dialogs/DlgUnitsCalculatorImp.cpp" line="152"/>
       <source>unit mismatch</source>
       <translation>அலகு பொருத்தமின்மை</translation>
     </message>
@@ -4978,12 +5063,12 @@ The 'Status' column shows whether the document could be recovered.</source>
   <context>
     <name>Gui::Dialog::IconDialog</name>
     <message>
-      <location filename="../Dialogs/DlgActionsImp.cpp" line="461"/>
+      <location filename="../Dialogs/DlgActionsImp.cpp" line="463"/>
       <source>Icon Folders</source>
       <translation>படவுரு கோப்புறைகள்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgActionsImp.cpp" line="598"/>
+      <location filename="../Dialogs/DlgActionsImp.cpp" line="600"/>
       <source>Add icon folder</source>
       <translation>படவுரு கோப்புறையைச் சேர்க்கவும்</translation>
     </message>
@@ -4991,17 +5076,17 @@ The 'Status' column shows whether the document could be recovered.</source>
   <context>
     <name>Gui::Dialog::IconFolders</name>
     <message>
-      <location filename="../Dialogs/DlgActionsImp.cpp" line="574"/>
+      <location filename="../Dialogs/DlgActionsImp.cpp" line="576"/>
       <source>Add or remove custom icon folders</source>
       <translation>தனிப்பயன் படவுரு கோப்புறைகளைச் சேர்க்கவும் அல்லது அகற்றவும்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgActionsImp.cpp" line="626"/>
+      <location filename="../Dialogs/DlgActionsImp.cpp" line="628"/>
       <source>Remove folder</source>
       <translation>கோப்புறையை அகற்று</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgActionsImp.cpp" line="627"/>
+      <location filename="../Dialogs/DlgActionsImp.cpp" line="629"/>
       <source>Removing a folder only takes effect after an application restart</source>
       <translation>ஒரு கோப்புறையை அகற்றுவது பயன்பாடு மறுதொடக்கம் செய்யப்பட்ட பிறகு மட்டுமே நடைமுறைக்கு வரும்</translation>
     </message>
@@ -5070,100 +5155,100 @@ The 'Status' column shows whether the document could be recovered.</source>
   <context>
     <name>Gui::Dialog::ParameterGroup</name>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="496"/>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="521"/>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="681"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="490"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="515"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="675"/>
       <source>Expand</source>
       <translation>விரிவாக்கு</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="682"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="593"/>
+      <source>Existing Sub-Group</source>
+      <translation type="unfinished">Existing Sub-Group</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="610"/>
+      <source>Export Parameter to File</source>
+      <translation type="unfinished">Export Parameter to File</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="628"/>
+      <source>Import Parameter From File</source>
+      <translation type="unfinished">Import Parameter From File</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="656"/>
+      <source>Import Error</source>
+      <translation type="unfinished">Import Error</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="676"/>
       <source>Add sub-group</source>
       <translation>துணைக்குழுவைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="543"/>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="683"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="677"/>
       <source>Remove group</source>
       <translation>குழுவை அகற்று</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="498"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="492"/>
       <source>Add Sub-Group</source>
       <translation>துணைக் குழுவைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="499"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="493"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="537"/>
       <source>Remove Group</source>
       <translation>குழுவை அகற்று</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="500"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="494"/>
       <source>Rename Group</source>
       <translation>குழுவை மறுபெயரிடவும்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="502"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="496"/>
       <source>Export Parameter</source>
       <translation>ஏற்றுமதி அளவுரு</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="503"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="497"/>
       <source>Import Parameter</source>
       <translation>இறக்குமதி அளவுரு</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="544"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="538"/>
       <source>Remove this parameter group?</source>
       <translation>இந்த அளவுருக் குழுவை அகற்றவா?</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="662"/>
-      <source>Import error</source>
-      <translation>இறக்குமதி பிழை</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="684"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="678"/>
       <source>Rename group</source>
       <translation>குழுவை மறுபெயரிடவும்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="685"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="679"/>
       <source>Export parameter</source>
       <translation>ஏற்றுமதி அளவுரு</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="686"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="680"/>
       <source>Import parameter</source>
       <translation>இறக்குமதி அளவுரு</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="518"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="512"/>
       <source>Collapse</source>
       <translation>சுருக்கு</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="599"/>
-      <source>Existing sub-group</source>
-      <translation>தற்போதுள்ள துணைக்குழு</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="600"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="594"/>
       <source>The sub-group '%1' already exists.</source>
       <translation>துணைக்குழு '% 1' ஏற்கனவே உள்ளது.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="616"/>
-      <source>Export parameter to file</source>
-      <translation>கோப்பிற்கு அளவுருவை ஏற்றுமதி செய்யவும்</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="634"/>
-      <source>Import parameter from file</source>
-      <translation>கோப்பிலிருந்து அளவுருவை இறக்குமதி செய்யவும்</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="663"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="657"/>
       <source>Reading from '%1' failed.</source>
       <translation>'% 1' இலிருந்து படிக்க முடியவில்லை.</translation>
     </message>
@@ -5171,65 +5256,65 @@ The 'Status' column shows whether the document could be recovered.</source>
   <context>
     <name>Gui::Dialog::ParameterValue</name>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="712"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="706"/>
       <source>New</source>
       <translation>புதிய</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="702"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="696"/>
       <source>Change Value</source>
       <translation>மதிப்பை மாற்றவும்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="707"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="701"/>
       <source>Remove Key</source>
       <translation>விசையை அகற்று</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="708"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="702"/>
       <source>Rename Key</source>
       <translation>விசையை மறுபெயரிடவும்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="713"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="707"/>
       <source>New String Item</source>
       <translation>புதிய சரம் பொருள்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="714"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="708"/>
       <source>New Float Item</source>
       <translation>புதிய மிதவை பொருள்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="715"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="709"/>
       <source>New Integer Item</source>
       <translation>புதிய முழு எண் உருப்படி</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="716"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="710"/>
       <source>New Unsigned Item</source>
       <translation>புதிய கையொப்பமிடாத பொருள்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="717"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="711"/>
       <source>New Boolean Item</source>
       <translation>புதிய பூலியன் பொருள்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="835"/>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="880"/>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="928"/>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="973"/>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="1020"/>
-      <source>Existing item</source>
-      <translation>ஏற்கனவே உள்ள பொருள்</translation>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="829"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="874"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="922"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="967"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="1014"/>
+      <source>Existing Item</source>
+      <translation type="unfinished">Existing Item</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="836"/>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="881"/>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="929"/>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="974"/>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="1021"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="830"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="875"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="923"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="968"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="1015"/>
       <source>The item '%1' already exists.</source>
       <translation>'% 1' உருப்படி ஏற்கனவே உள்ளது.</translation>
     </message>
@@ -5352,12 +5437,12 @@ The 'Status' column shows whether the document could be recovered.</source>
   <context>
     <name>Gui::Dialog::PrintModel</name>
     <message>
-      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="717"/>
+      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="721"/>
       <source>Button</source>
       <translation>பொத்தான்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="720"/>
+      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="724"/>
       <source>Command</source>
       <translation>கட்டளை</translation>
     </message>
@@ -5501,44 +5586,44 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>சார்புகளைக் காட்டு</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="119"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="121"/>
       <source>Depending on</source>
       <translation>பொறுத்து</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="120"/>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="124"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="122"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="126"/>
       <source>Document</source>
       <translation>ஆவணம்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="121"/>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="125"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="123"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="127"/>
       <source>Name</source>
       <translation>பெயர்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="123"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="125"/>
       <source>Depended by</source>
       <translation>சார்ந்தது</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="127"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="129"/>
       <source>Selections</source>
       <translation>தேர்வுகள்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="133"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="135"/>
       <source>All</source>
       <translation>அனைத்தும்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="163"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="165"/>
       <source>&amp;Use Original Selection</source>
       <translation>&amp;அசல் தேர்வைப் பயன்படுத்தவும்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="165"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="167"/>
       <source>Ignore dependencies and proceed with the objects
 originally selected prior to opening this dialog</source>
       <translation>சார்புகளைப் புறக்கணித்து, பொருட்களைத் தொடரவும் 
@@ -5766,12 +5851,12 @@ originally selected prior to opening this dialog</source>
   <context>
     <name>Gui::DocumentModel</name>
     <message>
-      <location filename="../DocumentModel.cpp" line="219"/>
+      <location filename="../DocumentModel.cpp" line="221"/>
       <source>Application</source>
       <translation>விண்ணப்பம்</translation>
     </message>
     <message>
-      <location filename="../DocumentModel.cpp" line="722"/>
+      <location filename="../DocumentModel.cpp" line="724"/>
       <source>Labels &amp; Attributes</source>
       <translation>லேபிள்கள் &amp; பண்புக்கூறுகள்</translation>
     </message>
@@ -5848,13 +5933,13 @@ Save all changes?</source>
   <context>
     <name>Gui::FileDialog</name>
     <message>
-      <location filename="../FileDialog.cpp" line="281"/>
+      <location filename="../FileDialog.cpp" line="321"/>
       <source>Save As</source>
       <translation>என சேமி</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="376"/>
-      <location filename="../FileDialog.cpp" line="441"/>
+      <location filename="../FileDialog.cpp" line="421"/>
+      <location filename="../FileDialog.cpp" line="486"/>
       <source>Open</source>
       <translation>திற</translation>
     </message>
@@ -5862,12 +5947,12 @@ Save all changes?</source>
   <context>
     <name>Gui::FileOptionsDialog</name>
     <message>
-      <location filename="../FileDialog.cpp" line="562"/>
+      <location filename="../FileDialog.cpp" line="607"/>
       <source>Extended</source>
       <translation>நீட்டிக்கப்பட்டது</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="598"/>
+      <location filename="../FileDialog.cpp" line="644"/>
       <source>All files (*.*)</source>
       <translation>அனைத்துக் கோப்புகள் (*.*)</translation>
     </message>
@@ -5992,17 +6077,17 @@ Save all changes?</source>
       <translation>PDF வடிவம்</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="673"/>
-      <location filename="../GraphvizView.cpp" line="479"/>
-      <source>Graphviz format</source>
-      <translation>கிராஃப்விச் வடிவம்</translation>
-    </message>
-    <message>
-      <location filename="../CommandDoc.cpp" line="676"/>
       <location filename="../GraphvizView.cpp" line="505"/>
       <location filename="../GraphvizView.cpp" line="607"/>
-      <source>Export graph</source>
-      <translation>ஏற்றுமதி வரைபடம்</translation>
+      <location filename="../CommandDoc.cpp" line="711"/>
+      <source>Export Graph</source>
+      <translation type="unfinished">Export Graph</translation>
+    </message>
+    <message>
+      <location filename="../GraphvizView.cpp" line="479"/>
+      <location filename="../CommandDoc.cpp" line="708"/>
+      <source>Graphviz format</source>
+      <translation>கிராஃப்விச் வடிவம்</translation>
     </message>
   </context>
   <context>
@@ -6044,7 +6129,7 @@ Save all changes?</source>
   <context>
     <name>Gui::LabelEditor</name>
     <message>
-      <location filename="../Widgets.cpp" line="1498"/>
+      <location filename="../Widgets.cpp" line="1499"/>
       <source>List</source>
       <translation>பட்டியல்</translation>
     </message>
@@ -6052,66 +6137,66 @@ Save all changes?</source>
   <context>
     <name>Gui::LocationDialog</name>
     <message>
+      <location filename="../InputVector.cpp" line="104"/>
+      <location filename="../InputVector.cpp" line="118"/>
+      <location filename="../InputVector.h" line="131"/>
+      <location filename="../InputVector.h" line="154"/>
+      <location filename="../InputVector.h" line="277"/>
+      <location filename="../InputVector.h" line="300"/>
+      <location filename="../InputVector.h" line="475"/>
+      <location filename="../InputVector.h" line="489"/>
+      <source>X</source>
+      <translation>ஓ</translation>
+    </message>
+    <message>
+      <location filename="../InputVector.cpp" line="105"/>
+      <location filename="../InputVector.cpp" line="119"/>
       <location filename="../InputVector.h" line="132"/>
       <location filename="../InputVector.h" line="155"/>
       <location filename="../InputVector.h" line="278"/>
       <location filename="../InputVector.h" line="301"/>
       <location filename="../InputVector.h" line="476"/>
       <location filename="../InputVector.h" line="490"/>
-      <location filename="../InputVector.cpp" line="104"/>
-      <location filename="../InputVector.cpp" line="118"/>
-      <source>X</source>
-      <translation>ஓ</translation>
+      <source>Y</source>
+      <translation>ஔ</translation>
     </message>
     <message>
+      <location filename="../InputVector.cpp" line="106"/>
+      <location filename="../InputVector.cpp" line="120"/>
       <location filename="../InputVector.h" line="133"/>
       <location filename="../InputVector.h" line="156"/>
       <location filename="../InputVector.h" line="279"/>
       <location filename="../InputVector.h" line="302"/>
       <location filename="../InputVector.h" line="477"/>
       <location filename="../InputVector.h" line="491"/>
-      <location filename="../InputVector.cpp" line="105"/>
-      <location filename="../InputVector.cpp" line="119"/>
-      <source>Y</source>
-      <translation>ஔ</translation>
-    </message>
-    <message>
-      <location filename="../InputVector.h" line="134"/>
-      <location filename="../InputVector.h" line="157"/>
-      <location filename="../InputVector.h" line="280"/>
-      <location filename="../InputVector.h" line="303"/>
-      <location filename="../InputVector.h" line="478"/>
-      <location filename="../InputVector.h" line="492"/>
-      <location filename="../InputVector.cpp" line="106"/>
-      <location filename="../InputVector.cpp" line="120"/>
       <source>Z</source>
       <translation>ஃ</translation>
     </message>
     <message>
-      <location filename="../InputVector.h" line="135"/>
-      <location filename="../InputVector.h" line="160"/>
-      <location filename="../InputVector.h" line="281"/>
-      <location filename="../InputVector.h" line="306"/>
-      <location filename="../InputVector.h" line="479"/>
-      <location filename="../InputVector.h" line="495"/>
       <location filename="../InputVector.cpp" line="107"/>
       <location filename="../InputVector.cpp" line="123"/>
+      <location filename="../InputVector.h" line="134"/>
+      <location filename="../InputVector.h" line="159"/>
+      <location filename="../InputVector.h" line="280"/>
+      <location filename="../InputVector.h" line="305"/>
+      <location filename="../InputVector.h" line="478"/>
+      <location filename="../InputVector.h" line="494"/>
       <source>User defined…</source>
       <translation>பயனர் வரையறுக்கப்பட்ட…</translation>
     </message>
     <message>
-      <location filename="../InputVector.h" line="241"/>
-      <location filename="../InputVector.h" line="376"/>
-      <location filename="../InputVector.h" line="565"/>
       <location filename="../InputVector.cpp" line="215"/>
+      <location filename="../InputVector.h" line="240"/>
+      <location filename="../InputVector.h" line="375"/>
+      <location filename="../InputVector.h" line="564"/>
       <source>Wrong direction</source>
       <translation>தவறான திசை</translation>
     </message>
     <message>
-      <location filename="../InputVector.h" line="242"/>
-      <location filename="../InputVector.h" line="377"/>
-      <location filename="../InputVector.h" line="566"/>
       <location filename="../InputVector.cpp" line="216"/>
+      <location filename="../InputVector.h" line="241"/>
+      <location filename="../InputVector.h" line="376"/>
+      <location filename="../InputVector.h" line="565"/>
       <source>Direction must not be the null vector</source>
       <translation>திசையானது சுழிய வெக்டராக இருக்கக்கூடாது</translation>
     </message>
@@ -6142,17 +6227,17 @@ Save all changes?</source>
   <context>
     <name>Gui::MacroCommand</name>
     <message>
-      <location filename="../Dialogs/DlgKeyboardImp.cpp" line="417"/>
+      <location filename="../Dialogs/DlgKeyboardImp.cpp" line="419"/>
       <source>Macros</source>
       <translation>பெரியவைகள்</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1271"/>
+      <location filename="../Command.cpp" line="1312"/>
       <source>Macro file doesn't exist</source>
       <translation>மேக்ரோ கோப்பு இல்லை</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1272"/>
+      <location filename="../Command.cpp" line="1313"/>
       <source>No such macro file: '%1'</source>
       <translation>அத்தகைய மேக்ரோ கோப்பு இல்லை: '% 1'</translation>
     </message>
@@ -6160,88 +6245,88 @@ Save all changes?</source>
   <context>
     <name>Gui::MainWindow</name>
     <message>
-      <location filename="../MainWindow.cpp" line="194"/>
-      <location filename="../MainWindow.cpp" line="2441"/>
+      <location filename="../MainWindow.cpp" line="196"/>
+      <location filename="../MainWindow.cpp" line="2518"/>
       <source>Dimension</source>
       <translation>பரிமாணம்</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="430"/>
-      <source>Input hints</source>
+      <location filename="../MainWindow.cpp" line="433"/>
+      <source>Input Hints</source>
       <extracomment>A context menu action used to show or hide the input hints in the status bar</extracomment>
-      <translation>உள்ளீடு குறிப்புகள்</translation>
+      <translation type="unfinished">Input Hints</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="440"/>
-      <source>Quick measure</source>
+      <location filename="../MainWindow.cpp" line="443"/>
+      <source>Quick Measure</source>
       <extracomment>A context menu action used to enable or disable quick measure in the status bar</extracomment>
-      <translation>விரைவான நடவடிக்கை</translation>
+      <translation type="unfinished">Quick Measure</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="452"/>
+      <location filename="../MainWindow.cpp" line="455"/>
       <source>Notification Area</source>
       <extracomment>A context menu action used to show or hide the 'notificationArea' toolbar widget</extracomment>
       <translation>அறிவிப்பு பகுதி</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="495"/>
+      <location filename="../MainWindow.cpp" line="498"/>
       <source>Ready</source>
       <translation>தயார்</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1298"/>
+      <location filename="../MainWindow.cpp" line="1306"/>
       <source>Close All</source>
       <translation>அனைத்தையும் மூடு</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1565"/>
-      <location filename="../MainWindow.cpp" line="1566"/>
-      <location filename="../MainWindow.cpp" line="1567"/>
+      <location filename="../MainWindow.cpp" line="1573"/>
+      <location filename="../MainWindow.cpp" line="1574"/>
+      <location filename="../MainWindow.cpp" line="1575"/>
       <source>Toggles this toolbar</source>
       <translation>இந்த கருவிப்பட்டியை மாற்றுகிறது</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1586"/>
-      <location filename="../MainWindow.cpp" line="1587"/>
-      <location filename="../MainWindow.cpp" line="1588"/>
+      <location filename="../MainWindow.cpp" line="1594"/>
+      <location filename="../MainWindow.cpp" line="1595"/>
+      <location filename="../MainWindow.cpp" line="1596"/>
       <source>Toggles this dockable window</source>
       <translation>இந்த நறுக்கக்கூடிய சாளரத்தை மாற்றுகிறது</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1785"/>
+      <location filename="../MainWindow.cpp" line="1799"/>
       <source>Safe mode enabled</source>
       <translation>பாதுகாப்பான பயன்முறை இயக்கப்பட்டது</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1786"/>
+      <location filename="../MainWindow.cpp" line="1800"/>
       <source>FreeCAD is now running in safe mode.</source>
       <translation>FreeCAD இப்போது பாதுகாப்பான பயன்முறையில் இயங்குகிறது.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1790"/>
+      <location filename="../MainWindow.cpp" line="1804"/>
       <source>Safe mode temporarily disables your configurations and addons. Restart the application to exit safe mode.</source>
       <translation>பாதுகாப்பான பயன்முறை உங்கள் உள்ளமைவுகளையும் துணை நிரல்களையும் தற்காலிகமாக முடக்குகிறது. பாதுகாப்பான பயன்முறையிலிருந்து வெளியேற பயன்பாட்டை மறுதொடக்கம் செய்யவும்.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2166"/>
-      <location filename="../MainWindow.cpp" line="2318"/>
+      <location filename="../MainWindow.cpp" line="2240"/>
+      <location filename="../MainWindow.cpp" line="2394"/>
       <source>Unsaved document</source>
       <translation>சேமிக்கப்படாத ஆவணம்</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2167"/>
+      <location filename="../MainWindow.cpp" line="2241"/>
       <source>The exported object contains external link. Save the documentat least once before exporting.</source>
       <translation>ஏற்றுமதி செய்யப்பட்ட பொருளில் வெளிப்புற இணைப்பு உள்ளது. ஏற்றுமதி செய்வதற்கு முன் ஆவணத்தை ஒரு முறையாவது சேமிக்கவும்.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2319"/>
+      <location filename="../MainWindow.cpp" line="2395"/>
       <source>To link to external objects, the document must be saved at least once.
 Save the document now?</source>
       <translation>வெளிப்புற பொருட்களுடன் இணைக்க, ஆவணம் ஒரு முறையாவது சேமிக்கப்பட வேண்டும். 
 ஆவணத்தை இப்போது சேமிக்கவா?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2649"/>
+      <location filename="../MainWindow.cpp" line="2729"/>
       <source>Safe Mode</source>
       <translation>பாதுகாப்பான பயன்முறை</translation>
     </message>
@@ -6351,22 +6436,22 @@ How do you want to proceed?</source>
       <translation>எந்த புள்ளியும் எடுக்கப்படவில்லை</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1378"/>
+      <location filename="../ManualAlignment.cpp" line="1379"/>
       <source>&amp;Align</source>
       <translation>&amp;சீரமைக்கவும்</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1379"/>
+      <location filename="../ManualAlignment.cpp" line="1380"/>
       <source>&amp;Remove Last Point</source>
       <translation>&amp;கடைசி புள்ளியை அகற்று</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1385"/>
+      <location filename="../ManualAlignment.cpp" line="1386"/>
       <source>&amp;Synchronize Views</source>
       <translation>&amp;பார்வைகளை ஒத்திசைக்கவும்</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1381"/>
+      <location filename="../ManualAlignment.cpp" line="1382"/>
       <source>&amp;Cancel</source>
       <translation>நிராகரி</translation>
     </message>
@@ -6505,12 +6590,12 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::PropertyEditor::LinkSelection</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4580"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4654"/>
       <source>Error</source>
       <translation>பிழை</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4580"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4654"/>
       <source>Object not found</source>
       <translation>பொருள் கிடைக்கவில்லை</translation>
     </message>
@@ -6518,113 +6603,118 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::PropertyEditor::PropertyEditor</name>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="393"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="389"/>
       <source>Edit</source>
       <translation>திருத்து</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="404"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="400"/>
       <source>property</source>
       <translation>பண்பு</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="865"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="864"/>
       <source>Expand/Collapse Properties</source>
       <translation>பண்புகளை விரிவாக்கு/சுருக்கி</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="867"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="866"/>
       <source>Expand to Default</source>
       <translation>இயல்புநிலைக்கு விரிவாக்கு</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="869"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="868"/>
       <source>Expand All</source>
       <translation>அனைத்தையும் விரிவாக்கு</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="871"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="870"/>
       <source>Collapse All</source>
       <translation>அனைத்தையும் சுருக்கு</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="877"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="876"/>
       <source>Default Expand</source>
       <translation>இயல்புநிலை விரிவாக்கம்</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="880"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="879"/>
       <source>Auto Expand</source>
       <translation>தானாக விரிவாக்கம்</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="883"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="882"/>
       <source>Auto Collapse</source>
       <translation>தானாகச் சரிவு</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="966"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="971"/>
       <source>Copy</source>
       <translation>நகலெடு</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="974"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="979"/>
       <source>Add Property</source>
       <translation>சொத்து சேர்</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="982"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="986"/>
       <source>Rename Property Group</source>
       <translation>சொத்துக் குழுவை மறுபெயரிடவும்</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="990"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="997"/>
+      <source>Cannot rename group: one or more properties have names that start with the group name</source>
+      <translation type="unfinished">Cannot rename group: one or more properties have names that start with the group name</translation>
+    </message>
+    <message>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1006"/>
       <source>Rename Property</source>
       <translation>சொத்தை மறுபெயரிடுங்கள்</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="991"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1171"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1007"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1192"/>
       <source>Edit Property Tooltip</source>
       <translation>சொத்து உதவிக்குறிப்பைத் திருத்து</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1008"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1024"/>
       <source>Delete Property</source>
       <translation>சொத்தை நீக்கு</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1172"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1193"/>
       <source>Tooltip</source>
       <translation>உதவிக்குறிப்பு</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1199"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1222"/>
       <source>Rename property</source>
       <translation>சொத்தை மறுபெயரிடவும்</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1018"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1034"/>
       <source>Show Hidden</source>
       <translation>மறைக்கப்பட்டதைக் காட்டு</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1035"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1051"/>
       <source>Expression</source>
       <translation>கோவை</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1200"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1223"/>
       <source>Property name</source>
       <translation>சொத்து பெயர்</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1226"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1251"/>
       <source>Rename property group</source>
       <translation>சொத்துக் குழுவை மறுபெயரிடவும்</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1227"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1252"/>
       <source>Group name:</source>
       <translation>குழுவின் பெயர்:</translation>
     </message>
@@ -6660,113 +6750,113 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::PythonConsole</name>
     <message>
-      <location filename="../PythonConsole.cpp" line="848"/>
+      <location filename="../PythonConsole.cpp" line="850"/>
       <source>System exit</source>
       <translation>கணினி வெளியேறுதல்</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="849"/>
+      <location filename="../PythonConsole.cpp" line="851"/>
       <source>The application is still running.
 Exit without saving all data?</source>
       <translation>பயன்பாடு இன்னும் இயங்குகிறது. 
 எல்லா தரவையும் சேமிக்காமல் வெளியேறவா?</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="863"/>
+      <location filename="../PythonConsole.cpp" line="865"/>
       <source>Unhandled PyCXX exception.</source>
       <translation>கையாளப்படாத PyCXX விதிவிலக்கு.</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="863"/>
-      <location filename="../PythonConsole.cpp" line="866"/>
-      <location filename="../PythonConsole.cpp" line="869"/>
-      <location filename="../PythonConsole.cpp" line="872"/>
+      <location filename="../PythonConsole.cpp" line="865"/>
+      <location filename="../PythonConsole.cpp" line="868"/>
+      <location filename="../PythonConsole.cpp" line="871"/>
+      <location filename="../PythonConsole.cpp" line="874"/>
       <source>Python Console</source>
       <translation>பைதான் கன்சோல்</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="866"/>
+      <location filename="../PythonConsole.cpp" line="868"/>
       <source>Unhandled FreeCAD exception.</source>
       <translation>கையாளப்படாத FreeCAD விதிவிலக்கு.</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="869"/>
+      <location filename="../PythonConsole.cpp" line="871"/>
       <source>Unhandled std C++ exception.</source>
       <translation>கையாளப்படாத std C++ விதிவிலக்கு.</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="872"/>
+      <location filename="../PythonConsole.cpp" line="874"/>
       <source>Unhandled unknown C++ exception.</source>
       <translation>கையாளப்படாத அறியப்படாத C++ விதிவிலக்கு.</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1338"/>
+      <location filename="../PythonConsole.cpp" line="1340"/>
       <source>&amp;Copy</source>
       <translation>&amp;நகலெடு</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1342"/>
+      <location filename="../PythonConsole.cpp" line="1344"/>
       <source>&amp;Copy Command</source>
       <translation>&amp;கட்டளையை நகலெடு</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1345"/>
+      <location filename="../PythonConsole.cpp" line="1347"/>
       <source>&amp;Copy History</source>
       <translation>&amp;வரலாற்றை நகலெடு</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1348"/>
+      <location filename="../PythonConsole.cpp" line="1350"/>
       <source>Save History As…</source>
       <translation>வரலாற்றை இவ்வாறு சேமி...</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1352"/>
+      <location filename="../PythonConsole.cpp" line="1354"/>
       <source>Saves Python history across %1 sessions</source>
       <translation>% 1 அமர்வுகளில் பைதான் வரலாற்றைச் சேமிக்கிறது</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1358"/>
+      <location filename="../PythonConsole.cpp" line="1360"/>
       <source>&amp;Paste</source>
       <translation>&amp;ஒட்டு</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1363"/>
+      <location filename="../PythonConsole.cpp" line="1365"/>
       <source>Select All</source>
       <translation>அனைத்தையும் தேர்ந்தெடு</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1351"/>
-      <location filename="../PythonConsole.cpp" line="1404"/>
+      <location filename="../PythonConsole.cpp" line="1353"/>
+      <location filename="../PythonConsole.cpp" line="1406"/>
       <source>Save History</source>
       <translation>வரலாற்றை சேமி</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1367"/>
+      <location filename="../PythonConsole.cpp" line="1369"/>
       <source>Clear Console</source>
       <translation>கன்சோலை அழிக்கவும்</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1371"/>
+      <location filename="../PythonConsole.cpp" line="1373"/>
       <source>Insert File Name…</source>
       <translation>கோப்பு பெயரைச் செருகவும்…</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1374"/>
+      <location filename="../PythonConsole.cpp" line="1376"/>
       <source>Word Wrap</source>
       <translation>சொல் மடக்கு</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1406"/>
+      <location filename="../PythonConsole.cpp" line="1408"/>
       <source>Macro Files</source>
       <translation>மேக்ரோ கோப்புகள்</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1428"/>
+      <location filename="../PythonConsole.cpp" line="1430"/>
       <source>Insert file name</source>
       <translation>கோப்புப் பெயரை நுழை</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1430"/>
+      <location filename="../PythonConsole.cpp" line="1432"/>
       <source>All Files</source>
       <translation>அனைத்து கோப்புகள்</translation>
     </message>
@@ -6792,13 +6882,13 @@ Exit without saving all data?</source>
   <context>
     <name>Gui::RecentFilesAction</name>
     <message>
-      <location filename="../Action.cpp" line="860"/>
+      <location filename="../Action.cpp" line="881"/>
       <source>Clear Recent Files</source>
       <extracomment>Empties the list of recent files</extracomment>
       <translation>அண்மைக் கால கோப்புகளை அழிக்கவும்</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="943"/>
+      <location filename="../Action.cpp" line="965"/>
       <source>Open file %1</source>
       <translation>கோப்பை திறக்கவும் % 1</translation>
     </message>
@@ -6806,12 +6896,12 @@ Exit without saving all data?</source>
   <context>
     <name>Gui::RecentMacrosAction</name>
     <message>
-      <location filename="../Action.cpp" line="1117"/>
+      <location filename="../Action.cpp" line="1139"/>
       <source>none</source>
       <translation>எதுவுமில்லை</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1135"/>
+      <location filename="../Action.cpp" line="1157"/>
       <source>Run macro %1 (Shift+click to edit) keyboard shortcut: %2</source>
       <translation>மேக்ரோ %1ஐ இயக்கவும் (Shift+click பெறுநர் edit) விசைப்பலகை குறுக்குவழி: %2</translation>
     </message>
@@ -6865,12 +6955,12 @@ Exit without saving all data?</source>
   <context>
     <name>Gui::SelectModule</name>
     <message>
-      <location filename="../FileDialog.cpp" line="977"/>
+      <location filename="../FileDialog.cpp" line="1023"/>
       <source>Select Module</source>
       <translation>தொகுதியைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="979"/>
+      <location filename="../FileDialog.cpp" line="1025"/>
       <source>Open %1 as</source>
       <translation>% 1ஐ இவ்வாறு திறக்கவும்</translation>
     </message>
@@ -7119,247 +7209,257 @@ Specify another directory?</source>
   <context>
     <name>Gui::Translator</name>
     <message>
-      <location filename="Translator.cpp" line="185"/>
+      <location filename="Translator.cpp" line="188"/>
       <source>Afrikaans</source>
       <translation>ஆப்பிரிக்கா</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="186"/>
+      <location filename="Translator.cpp" line="189"/>
       <source>Arabic</source>
       <translation>அரபு</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="187"/>
+      <location filename="Translator.cpp" line="190"/>
       <source>Basque</source>
       <translation>பாச்க்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="188"/>
+      <location filename="Translator.cpp" line="191"/>
       <source>Belarusian</source>
       <translation>பெலாருசியன்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="189"/>
+      <location filename="Translator.cpp" line="192"/>
       <source>Bulgarian</source>
       <translation>பல்கேரியன்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="190"/>
+      <location filename="Translator.cpp" line="193"/>
       <source>Catalan</source>
       <translation>கற்றலான்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="191"/>
+      <location filename="Translator.cpp" line="194"/>
       <source>Chinese (Simplified)</source>
       <oldsource>Chinese Simplified</oldsource>
       <translation>சீன (எளிமைப்படுத்தப்பட்ட)</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="192"/>
+      <location filename="Translator.cpp" line="195"/>
       <source>Chinese (Traditional)</source>
       <oldsource>Chinese Traditional</oldsource>
       <translation>சீன (பாரம்பரிய)</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="193"/>
+      <location filename="Translator.cpp" line="196"/>
       <source>Croatian</source>
       <translation>குரோசியன்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="194"/>
+      <location filename="Translator.cpp" line="197"/>
       <source>Czech</source>
       <translation>செக்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="196"/>
+      <location filename="Translator.cpp" line="199"/>
       <source>Dutch</source>
       <translation>டச்சு</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="197"/>
+      <location filename="Translator.cpp" line="200"/>
       <source>English</source>
       <translation>ஆங்கிலம்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="198"/>
+      <location filename="Translator.cpp" line="201"/>
       <source>Filipino</source>
       <translation>ஃபிலிபினோ</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="199"/>
+      <location filename="Translator.cpp" line="202"/>
       <source>Finnish</source>
       <translation>பின்னிச்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="200"/>
+      <location filename="Translator.cpp" line="203"/>
       <source>French</source>
       <translation>பிரஞ்சு</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="201"/>
+      <location filename="Translator.cpp" line="204"/>
       <source>Galician</source>
       <translation>காலிசியன்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="203"/>
+      <location filename="Translator.cpp" line="206"/>
       <source>German</source>
       <translation>செர்மன்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="204"/>
+      <location filename="Translator.cpp" line="207"/>
       <source>Greek</source>
       <translation>கிரேக்கம்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="205"/>
+      <location filename="Translator.cpp" line="208"/>
       <source>Hungarian</source>
       <translation>அங்கேரியன்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="206"/>
+      <location filename="Translator.cpp" line="209"/>
       <source>Indonesian</source>
       <translation>இந்தோனேசிய</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="207"/>
+      <location filename="Translator.cpp" line="210"/>
       <source>Italian</source>
       <translation>இத்தாலிய</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="208"/>
+      <location filename="Translator.cpp" line="211"/>
       <source>Japanese</source>
       <translation>சப்பானியர்கள்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="209"/>
+      <location filename="Translator.cpp" line="212"/>
       <source>Kabyle</source>
       <translation>கபாய்ல்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="210"/>
+      <location filename="Translator.cpp" line="213"/>
       <source>Korean</source>
       <translation>கொரிய</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="211"/>
+      <location filename="Translator.cpp" line="214"/>
       <source>Lithuanian</source>
       <translation>லிதுவேனியன்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="212"/>
+      <location filename="Translator.cpp" line="215"/>
       <source>Norwegian</source>
       <translation>நோர்வே</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="213"/>
+      <location filename="Translator.cpp" line="216"/>
       <source>Polish</source>
       <translation>போலீச்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="214"/>
+      <location filename="Translator.cpp" line="217"/>
       <source>Portuguese (Brazilian)</source>
       <oldsource>Portuguese, Brazilian</oldsource>
       <translation>போர்த்துகீசியம் (பிரேசிலியன்)</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="215"/>
+      <location filename="Translator.cpp" line="218"/>
       <source>Portuguese</source>
       <translation>போர்த்துகீசியம்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="216"/>
+      <location filename="Translator.cpp" line="219"/>
       <source>Romanian</source>
       <translation>ருமேனிய</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="217"/>
+      <location filename="Translator.cpp" line="220"/>
       <source>Russian</source>
       <translation>ரச்ய</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="218"/>
+      <location filename="Translator.cpp" line="221"/>
       <source>Serbian</source>
       <translation>செர்பிய</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="219"/>
+      <location filename="Translator.cpp" line="222"/>
       <source>Serbian (Latin)</source>
       <oldsource>Serbian, Latin</oldsource>
       <translation>செர்பிய (லத்தீன்)</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="220"/>
+      <location filename="Translator.cpp" line="223"/>
       <source>Slovak</source>
       <translation>ச்லோவாக்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="221"/>
+      <location filename="Translator.cpp" line="224"/>
       <source>Slovenian</source>
       <translation>ச்லோவேனியன்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="222"/>
+      <location filename="Translator.cpp" line="225"/>
       <source>Spanish</source>
       <translation>ச்பானிச்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="223"/>
+      <location filename="Translator.cpp" line="226"/>
       <source>Spanish (Argentina)</source>
       <oldsource>Spanish, Argentina</oldsource>
       <translation>ச்பானிச் (அர்சென்டினா)</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="224"/>
+      <location filename="Translator.cpp" line="227"/>
       <source>Swedish</source>
       <translation>ச்வீடிச்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="225"/>
+      <location filename="Translator.cpp" line="228"/>
       <source>Turkish</source>
       <translation>துருக்கிய</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="226"/>
+      <location filename="Translator.cpp" line="229"/>
       <source>Ukrainian</source>
       <translation>உக்ரேனிய</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="227"/>
+      <location filename="Translator.cpp" line="230"/>
       <source>Valencian</source>
       <translation>வலென்சியன்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="228"/>
+      <location filename="Translator.cpp" line="231"/>
       <source>Vietnamese</source>
       <translation>வியட்நாமிய</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="229"/>
+      <location filename="Translator.cpp" line="232"/>
       <source>Malay</source>
       <translation>மலாய்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="195"/>
+      <location filename="Translator.cpp" line="233"/>
+      <source>Tamil</source>
+      <translation type="unfinished">Tamil</translation>
+    </message>
+    <message>
+      <location filename="Translator.cpp" line="234"/>
+      <source>Irish</source>
+      <translation type="unfinished">Irish</translation>
+    </message>
+    <message>
+      <location filename="Translator.cpp" line="198"/>
       <source>Danish</source>
       <translation>டேனிச்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="202"/>
+      <location filename="Translator.cpp" line="205"/>
       <source>Georgian</source>
       <translation>சார்சியன்</translation>
     </message>
     <message>
-      <location filename="Translator.h" line="58"/>
+      <location filename="Translator.h" line="59"/>
       <source>Operating system</source>
       <translation>இயங்கு தளம்</translation>
     </message>
     <message>
-      <location filename="Translator.h" line="59"/>
+      <location filename="Translator.h" line="60"/>
       <source>Selected language</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட மொழி</translation>
     </message>
     <message>
-      <location filename="Translator.h" line="60"/>
+      <location filename="Translator.h" line="61"/>
       <source>C/POSIX</source>
       <translation>சி/போசிக்ச்</translation>
     </message>
@@ -7367,7 +7467,7 @@ Specify another directory?</source>
   <context>
     <name>Gui::TreePanel</name>
     <message>
-      <location filename="../Tree.cpp" line="4108"/>
+      <location filename="../Tree.cpp" line="4167"/>
       <source>Search</source>
       <translation>தேடு</translation>
     </message>
@@ -7375,234 +7475,234 @@ Specify another directory?</source>
   <context>
     <name>Gui::TreeWidget</name>
     <message>
-      <location filename="../Tree.cpp" line="1255"/>
+      <location filename="../Tree.cpp" line="1309"/>
       <source>Activate Document</source>
       <translation>ஆவணத்தை செயல்படுத்தவும்</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="1262"/>
+      <location filename="../Tree.cpp" line="1316"/>
       <source>Activates document %1</source>
       <translation>ஆவணம்% 1ஐ செயல்படுத்துகிறது</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="1277"/>
+      <location filename="../Tree.cpp" line="1331"/>
       <source>Tree Settings</source>
       <translation>மர அமைப்புகள்</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="1281"/>
+      <location filename="../Tree.cpp" line="1335"/>
       <source>Show Description</source>
       <translation>விளக்கத்தைக் காட்டு</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="1282"/>
+      <location filename="../Tree.cpp" line="1336"/>
       <source>Show Internal Name</source>
       <translation>அகப் பெயரைக் காட்டு</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="1303"/>
+      <location filename="../Tree.cpp" line="1357"/>
       <source>Shows an internal name column for items.</source>
       <translation>உருப்படிகளுக்கான உள் பெயர் நெடுவரிசையைக் காட்டுகிறது.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="1351"/>
+      <location filename="../Tree.cpp" line="1405"/>
       <source>Group</source>
       <translation>குழு</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3260"/>
-      <location filename="../Tree.cpp" line="3281"/>
+      <location filename="../Tree.cpp" line="3317"/>
+      <location filename="../Tree.cpp" line="3338"/>
       <source>Error</source>
       <translation>பிழை</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3260"/>
+      <location filename="../Tree.cpp" line="3317"/>
       <source>File does not exist.</source>
       <translation>கோப்பு இல்லை.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3281"/>
+      <location filename="../Tree.cpp" line="3338"/>
       <source>Failed to open directory.</source>
       <translation>கோப்பகத்தைத் திறக்க முடியவில்லை.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3762"/>
+      <location filename="../Tree.cpp" line="3817"/>
       <source>Labels &amp; Attributes</source>
       <translation>லேபிள்கள் &amp; பண்புக்கூறுகள்</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3763"/>
+      <location filename="../Tree.cpp" line="3818"/>
       <source>Description</source>
       <translation>விவரம்</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3764"/>
+      <location filename="../Tree.cpp" line="3819"/>
       <source>Internal name</source>
       <translation>உள் பெயர்</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3766"/>
+      <location filename="../Tree.cpp" line="3821"/>
       <source>Show Items Hidden in Tree View</source>
       <translation>ட்ரீ வியூவில் மறைக்கப்பட்ட பொருட்களைக் காட்டு</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3768"/>
+      <location filename="../Tree.cpp" line="3823"/>
       <source>Shows items that are marked as 'hidden' in the tree view</source>
       <translation>மரக் காட்சியில் 'மறைக்கப்பட்டவை' எனக் குறிக்கப்பட்ட உருப்படிகளைக் காட்டுகிறது</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3771"/>
+      <location filename="../Tree.cpp" line="3826"/>
       <source>Toggle Visibility in Tree View</source>
       <translation>மரக் காட்சியில் தெரிவுநிலையை நிலைமாற்று</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3776"/>
+      <location filename="../Tree.cpp" line="3831"/>
       <source>Create Group</source>
       <translation>குழுவை உருவாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3777"/>
+      <location filename="../Tree.cpp" line="3832"/>
       <source>Creates a group</source>
       <translation>ஒரு குழுவை உருவாக்குகிறது</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3780"/>
+      <location filename="../Tree.cpp" line="3835"/>
       <source>Renames object</source>
       <translation>பொருளை மறுபெயரிடுகிறது</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3782"/>
+      <location filename="../Tree.cpp" line="3837"/>
       <source>Finish Editing</source>
       <translation>திருத்துதல் முடிக்கவும்</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3783"/>
+      <location filename="../Tree.cpp" line="3838"/>
       <source>Finishes editing object</source>
       <translation>பொருளைத் திருத்துவதை முடிக்கிறது</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3785"/>
+      <location filename="../Tree.cpp" line="3840"/>
       <source>Add Dependent Objects to Selection</source>
       <translation>தேர்வில் சார்பு பொருள்களைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3788"/>
+      <location filename="../Tree.cpp" line="3843"/>
       <source>Close Document</source>
       <translation>ஆவணத்தை மூடு</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3789"/>
+      <location filename="../Tree.cpp" line="3844"/>
       <source>Closes the document</source>
       <translation>ஆவணத்தை மூடுகிறது</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3793"/>
+      <location filename="../Tree.cpp" line="3848"/>
       <source>Reveals the current file location in Finder</source>
       <translation>ஃபைண்டரில் தற்போதைய கோப்பு இருப்பிடத்தை வெளிப்படுத்துகிறது</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3796"/>
+      <location filename="../Tree.cpp" line="3851"/>
       <source>Opens the current file location</source>
       <translation>தற்போதைய கோப்பு இருப்பிடத்தைத் திறக்கிறது</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3799"/>
+      <location filename="../Tree.cpp" line="3854"/>
       <source>Reload Document</source>
       <translation>ஆவணத்தை மீண்டும் ஏற்றவும்</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3800"/>
+      <location filename="../Tree.cpp" line="3855"/>
       <source>Reloads a partially loaded document</source>
       <translation>பகுதி ஏற்றப்பட்ட ஆவணத்தை மீண்டும் ஏற்றுகிறது</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3802"/>
+      <location filename="../Tree.cpp" line="3857"/>
       <source>Skip Recomputes</source>
       <translation>மறுகணிப்புகளைத் தவிர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3803"/>
+      <location filename="../Tree.cpp" line="3858"/>
       <source>Enables or disables the recomputations of document</source>
       <translation>ஆவணத்தின் மறு கணக்கீடுகளை இயக்குகிறது அல்லது முடக்குகிறது</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3805"/>
+      <location filename="../Tree.cpp" line="3860"/>
       <source>Allow Partial Recomputes</source>
       <translation>பகுதி மறுகணிப்புகளை அனுமதிக்கவும்</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3806"/>
+      <location filename="../Tree.cpp" line="3861"/>
       <source>Enables or disables the recomputating editing object when 'skip recomputation' is enabled</source>
       <translation>'மறு கணக்கீட்டைத் தவிர்' இயக்கப்பட்டிருக்கும் போது, ​​மறுகணிப்பு திருத்துதல் பொருளை இயக்குகிறது அல்லது முடக்குகிறது</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3810"/>
+      <location filename="../Tree.cpp" line="3865"/>
       <source>Mark to Recompute</source>
       <translation>மீண்டும் கணக்கிட குறி</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3811"/>
+      <location filename="../Tree.cpp" line="3866"/>
       <source>Marks this object to be recomputed</source>
       <translation>இந்த பொருளை மீண்டும் கணக்கிட வேண்டும் எனக் குறிக்கும்</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3814"/>
+      <location filename="../Tree.cpp" line="3869"/>
       <source>Recompute Object</source>
       <translation>பொருள் மறுகணிப்பு</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3815"/>
+      <location filename="../Tree.cpp" line="3870"/>
       <source>Recomputes the selected object</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட பொருளை மீண்டும் கணக்கிடுகிறது</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3773"/>
+      <location filename="../Tree.cpp" line="3828"/>
       <source>Toggles the visibility of selected items in the tree view</source>
       <translation>மரக் காட்சியில் தேர்ந்தெடுக்கப்பட்ட உருப்படிகளின் தெரிவுநிலையை மாற்றுகிறது</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="739"/>
+      <location filename="../Tree.cpp" line="654"/>
       <source>Search Objects</source>
       <translation>பொருள்களைத் தேடுங்கள்</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="740"/>
+      <location filename="../Tree.cpp" line="655"/>
       <source>Searches for objects in the tree</source>
       <translation>மரத்தில் உள்ள பொருட்களைத் தேடுகிறது</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="1284"/>
+      <location filename="../Tree.cpp" line="1338"/>
       <source>Shows a description column for items. An item's description can be set by editing the 'label2' property.</source>
       <translation>உருப்படிகளுக்கான விளக்க நெடுவரிசையைக் காட்டுகிறது. 'லேபிள்2' சொத்தை திருத்துவதன் மூலம் ஒரு பொருளின் விளக்கத்தை அமைக்கலாம்.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3779"/>
-      <location filename="../Tree.cpp" line="6373"/>
+      <location filename="../Tree.cpp" line="3834"/>
+      <location filename="../Tree.cpp" line="6422"/>
       <source>Rename</source>
       <translation>மறுபெயரிடு</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3786"/>
+      <location filename="../Tree.cpp" line="3841"/>
       <source>Adds all dependent objects to the selection</source>
       <translation>தேர்வில் அனைத்து சார்ந்த பொருட்களையும் சேர்க்கிறது</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3792"/>
+      <location filename="../Tree.cpp" line="3847"/>
       <source>Reveal in Finder</source>
       <translation>கண்டுபிடிப்பாளரில் வெளிப்படுத்துங்கள்</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3795"/>
+      <location filename="../Tree.cpp" line="3850"/>
       <source>Open File Location</source>
       <translation>கோப்பு இருப்பிடத்தைத் திறக்கவும்</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6341"/>
+      <location filename="../Tree.cpp" line="6390"/>
       <source> (but must be executed)</source>
       <translation>(ஆனால் செயல்படுத்தப்பட வேண்டும்)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6344"/>
+      <location filename="../Tree.cpp" line="6393"/>
       <source>%1, Internal name: %2</source>
       <translation>% 1, உள் பெயர்:% 2</translation>
     </message>
@@ -7633,22 +7733,22 @@ Specify another directory?</source>
   <context>
     <name>Gui::View3DInventor</name>
     <message>
-      <location filename="../View3DInventor.cpp" line="288"/>
+      <location filename="../View3DInventor.cpp" line="289"/>
       <source>Export PDF</source>
       <translation>PDFஐ ஏற்றுமதி செய்</translation>
     </message>
     <message>
-      <location filename="../View3DInventor.cpp" line="290"/>
+      <location filename="../View3DInventor.cpp" line="291"/>
       <source>PDF file</source>
       <translation>PDF கோப்பு</translation>
     </message>
     <message>
-      <location filename="../View3DInventor.cpp" line="332"/>
+      <location filename="../View3DInventor.cpp" line="333"/>
       <source>Opening file failed</source>
       <translation>கோப்பு திறக்கிறது தோல்வியுற்றது</translation>
     </message>
     <message>
-      <location filename="../View3DInventor.cpp" line="333"/>
+      <location filename="../View3DInventor.cpp" line="334"/>
       <source>Can't open file '%1' for writing.</source>
       <translation>கோப்பு '%1' க்கான எழுத்து திறக்க முடியாது.</translation>
     </message>
@@ -7656,12 +7756,12 @@ Specify another directory?</source>
   <context>
     <name>Gui::WorkbenchGroup</name>
     <message>
-      <location filename="../Action.cpp" line="716"/>
+      <location filename="../Action.cpp" line="737"/>
       <source>Selects the '%1' workbench</source>
       <translation>'% 1' பணியிடத்தைத் தேர்ந்தெடுக்கிறது</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="744"/>
+      <location filename="../Action.cpp" line="765"/>
       <source>Select the '%1' workbench</source>
       <translation>'% 1' பணியிடத்தைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
@@ -7813,14 +7913,14 @@ Specify another directory?</source>
   <context>
     <name>PropertyListDialog</name>
     <message>
-      <location filename="../Widgets.cpp" line="1420"/>
-      <location filename="../Widgets.cpp" line="1435"/>
+      <location filename="../Widgets.cpp" line="1421"/>
+      <location filename="../Widgets.cpp" line="1436"/>
       <source>Invalid input</source>
       <translation>தவறான உள்ளீடு</translation>
     </message>
     <message>
-      <location filename="../Widgets.cpp" line="1421"/>
-      <location filename="../Widgets.cpp" line="1436"/>
+      <location filename="../Widgets.cpp" line="1422"/>
+      <location filename="../Widgets.cpp" line="1437"/>
       <source>Input in line %1 is not a number</source>
       <translation>வரி % 1 இல் உள்ளீடு எண் அல்ல</translation>
     </message>
@@ -7828,47 +7928,47 @@ Specify another directory?</source>
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../MainWindow.cpp" line="591"/>
+      <location filename="../MainWindow.cpp" line="594"/>
       <source>Tasks</source>
       <translation>பணிகள்</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="608"/>
+      <location filename="../MainWindow.cpp" line="611"/>
       <source>Selection View</source>
       <translation>தேர்வு பார்வை</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="626"/>
+      <location filename="../MainWindow.cpp" line="629"/>
       <source>Report View</source>
       <translation>அறிக்கை பார்வை</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="646"/>
+      <location filename="../MainWindow.cpp" line="649"/>
       <source>Python Console</source>
       <translation>பைதான் கன்சோல்</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="703"/>
+      <location filename="../MainWindow.cpp" line="706"/>
       <source>Tree View</source>
       <translation>மரக் காட்சி</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="733"/>
+      <location filename="../MainWindow.cpp" line="736"/>
       <source>Property View</source>
       <translation>சொத்து பார்வை</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="762"/>
+      <location filename="../MainWindow.cpp" line="765"/>
       <source>Task List</source>
       <translation>பணி பட்டியல்</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="791"/>
+      <location filename="../MainWindow.cpp" line="794"/>
       <source>Model</source>
       <translation>மாதிரியுரு</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="821"/>
+      <location filename="../MainWindow.cpp" line="824"/>
       <source>DAG View</source>
       <translation>நாள் பார்வை</translation>
     </message>
@@ -7913,35 +8013,35 @@ Specify another directory?</source>
       <translation>பைதான்</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="805"/>
-      <location filename="../Application.cpp" line="914"/>
-      <location filename="../Application.cpp" line="1001"/>
+      <location filename="../Application.cpp" line="800"/>
+      <location filename="../Application.cpp" line="907"/>
+      <location filename="../Application.cpp" line="994"/>
       <source>Unknown filetype</source>
       <translation>அறியப்படாத கோப்பு வகை</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="806"/>
-      <location filename="../Application.cpp" line="915"/>
+      <location filename="../Application.cpp" line="801"/>
+      <location filename="../Application.cpp" line="908"/>
       <source>Cannot open unknown filetype: %1</source>
       <translation>அறியப்படாத கோப்பு வகையைத் திறக்க முடியாது: % 1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="991"/>
+      <location filename="../Application.cpp" line="984"/>
       <source>Export failed</source>
       <translation>ஏற்றுமதி தோல்வியடைந்தது</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1002"/>
+      <location filename="../Application.cpp" line="995"/>
       <source>Cannot save to unknown filetype: %1</source>
       <translation>அறியப்படாத கோப்பு வகைக்கு சேமிக்க முடியாது: % 1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1200"/>
+      <location filename="../Application.cpp" line="1193"/>
       <source>Recomputation required</source>
       <translation>மறு கணக்கீடு தேவை</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1201"/>
+      <location filename="../Application.cpp" line="1194"/>
       <source>Some documents require recomputation for migration purposes. It is highly recommended to perform a recomputation before any modification to avoid compatibility problems.
 
 Recompute now?</source>
@@ -7950,387 +8050,387 @@ Recompute now?</source>
 இப்போது மீண்டும் கணக்கிடவா?</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1227"/>
+      <location filename="../Application.cpp" line="1220"/>
       <source>Failed to recompute some documents.
 Check the report view for more details.</source>
       <translation>சில ஆவணங்களை மீண்டும் கணக்கிட முடியவில்லை. 
 மேலும் விவரங்களுக்கு அறிக்கை காட்சியைப் பார்க்கவும்.</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1226"/>
+      <location filename="../Application.cpp" line="1219"/>
       <source>Recompute error</source>
       <translation>மீள் கணக்கீடு பிழை</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1923"/>
+      <location filename="../Application.cpp" line="1967"/>
       <source>Workbench failure</source>
       <translation>பணியிட தோல்வி</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1924"/>
+      <location filename="../Application.cpp" line="1968"/>
       <source>%1</source>
       <translation>% 1</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="373"/>
+      <location filename="../StartupProcess.cpp" line="382"/>
       <source>This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Upgrade the graphics driver and/or card as required.</source>
       <translation>இந்த அமைப்பு OpenGL %1.%2ஐ இயக்குகிறது. FreeCADக்கு OpenGL 2.0 அல்லது அதற்கு மேல் தேவை. தேவைக்கேற்ப கிராபிக்ச் இயக்கி மற்றும்/அல்லது கார்டை மேம்படுத்தவும்.</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="384"/>
+      <location filename="../StartupProcess.cpp" line="393"/>
       <source>Invalid OpenGL Version</source>
       <translation>தவறான OpenGL பதிப்பு</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="396"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="450"/>
       <source>Migrating</source>
       <translation>இடம்பெயர்கிறது</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="457"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="558"/>
       <source>Restarting</source>
       <translation>மறுதொடக்கம்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="411"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="512"/>
       <source>Migration failed</source>
       <translation>இடம்பெயர்வு தோல்வியடைந்தது</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="374"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="425"/>
       <source>Estimated size of data to copy: %1</source>
       <translation>நகலெடுக்க வேண்டிய தரவின் மதிப்பிடப்பட்ட அளவு: % 1</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="397"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="451"/>
       <source>Migrating configuration data and addons…</source>
       <translation>உள்ளமைவு தரவு மற்றும் துணை நிரல்களை நகர்த்துகிறது…</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="412"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="488"/>
+      <source>Migration completed with warnings</source>
+      <translation type="unfinished">Migration completed with warnings</translation>
+    </message>
+    <message numerus="yes">
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="495"/>
+      <source>%n file(s) could not be copied and were skipped. A full list has been saved to %1 in your new configuration directory.</source>
+      <translation type="unfinished">
+        <numerusform>%n file(s) could not be copied and were skipped. A full list has been saved to %1 in your new configuration directory.</numerusform>
+        <numerusform>%n file(s) could not be copied and were skipped. A full list has been saved to %1 in your new configuration directory.</numerusform>
+      </translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="513"/>
       <source>Migration failed. See the Report View for details.</source>
       <translation>இடம்பெயர்வு தோல்வியடைந்தது. விவரங்களுக்கு அறிக்கை காட்சியைப் பார்க்கவும்.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="456"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="557"/>
       <source> → Restarting…</source>
       <translation>→ மீண்டும் தொடங்குகிறது…</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="524"/>
+      <location filename="../Command.cpp" line="518"/>
       <source>Exception</source>
       <translation>விதிவிலக்கு</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="139"/>
-      <source>Open document</source>
-      <translation>ஆவணத்தைத் திற</translation>
-    </message>
-    <message>
-      <location filename="../Application.cpp" line="1240"/>
-      <location filename="../Application.cpp" line="1255"/>
+      <location filename="../Application.cpp" line="1233"/>
+      <location filename="../Application.cpp" line="1248"/>
       <source>Error</source>
       <translation>பிழை</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1241"/>
+      <location filename="../Application.cpp" line="1234"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
       <translation>கோப்பை ஏற்றும்போது பிழைகள் ஏற்பட்டன. சில தரவு மாற்றப்பட்டிருக்கலாம் அல்லது மீட்டெடுக்கப்படாமல் இருக்கலாம். சம்பந்தப்பட்ட பொருட்களைப் பற்றிய மேலும் குறிப்பிட்ட தகவலுக்கு அறிக்கைக் காட்சியைப் பார்க்கவும்.</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1256"/>
+      <location filename="../Application.cpp" line="1249"/>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
       <translation>கோப்பை ஏற்றும்போது கடுமையான பிழைகள் ஏற்பட்டன. சில தரவு மாற்றப்பட்டிருக்கலாம் அல்லது மீட்டெடுக்கப்படாமல் இருக்கலாம். திட்டத்தைச் சேமிப்பது பெரும்பாலும் தரவு இழப்புக்கு வழிவகுக்கும்.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="236"/>
-      <source>Import file</source>
-      <translation>கோப்பை இறக்குமதி செய்யவும்</translation>
+      <location filename="../CommandDoc.cpp" line="145"/>
+      <source>Open Document</source>
+      <translation type="unfinished">Open Document</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="518"/>
-      <source>Export file</source>
+      <location filename="../CommandDoc.cpp" line="271"/>
+      <source>Import File</source>
+      <translation type="unfinished">Import File</translation>
+    </message>
+    <message>
+      <location filename="../CommandDoc.cpp" line="553"/>
+      <source>Export File</source>
       <translation>ஏற்றுமதி கோப்பு</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="970"/>
+      <location filename="../CommandDoc.cpp" line="1018"/>
       <source>Printing…</source>
       <translation>அச்சிடுகிறது…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1033"/>
+      <location filename="../CommandDoc.cpp" line="1081"/>
       <source>Exporting PDF…</source>
       <translation>PDF ஐ ஏற்றுமதி செய்கிறது…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1323"/>
+      <location filename="../CommandDoc.cpp" line="1371"/>
       <source>The exported object contains an external link. Save the document.at least once before exporting.</source>
       <translation>ஏற்றுமதி செய்யப்பட்ட பொருளில் வெளிப்புற இணைப்பு உள்ளது. ஏற்றுமதி செய்வதற்கு முன் ஒரு முறையாவது ஆவணத்தைச் சேமிக்கவும்.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2004"/>
+      <location filename="../CommandDoc.cpp" line="1648"/>
+      <location filename="../CommandDoc.cpp" line="1658"/>
+      <source>Delete Failed</source>
+      <translation type="unfinished">Delete Failed</translation>
+    </message>
+    <message>
+      <location filename="../CommandDoc.cpp" line="1719"/>
+      <source>Dependency Error</source>
+      <translation type="unfinished">Dependency Error</translation>
+    </message>
+    <message>
+      <location filename="../CommandDoc.cpp" line="2093"/>
       <source>Copy Selected</source>
       <translation>நகல் தேர்ந்தெடுக்கப்பட்டது</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2005"/>
+      <location filename="../CommandDoc.cpp" line="2094"/>
       <source>Copy Active Document</source>
       <translation>செயலில் உள்ள ஆவணத்தை நகலெடுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2006"/>
+      <location filename="../CommandDoc.cpp" line="2095"/>
       <source>Copy All Documents</source>
       <translation>அனைத்து ஆவணங்களையும் நகலெடுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2125"/>
+      <location filename="../CommandDoc.cpp" line="2213"/>
+      <source>Expression Error</source>
+      <translation type="unfinished">Expression Error</translation>
+    </message>
+    <message>
+      <location filename="../CommandDoc.cpp" line="2214"/>
       <source>Failed to parse some of the expressions.
 Check the report view for more details.</source>
       <translation>சில வெளிப்பாடுகளை அலசுவதில் தோல்வி. 
 மேலும் விவரங்களுக்கு அறிக்கை காட்சியைப் பார்க்கவும்.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1322"/>
-      <source>Unsaved document</source>
-      <translation>சேமிக்கப்படாத ஆவணம்</translation>
-    </message>
-    <message>
-      <location filename="../CommandDoc.cpp" line="1577"/>
-      <location filename="../CommandDoc.cpp" line="1585"/>
-      <source>Delete failed</source>
-      <translation>நீக்குவது தோல்வியடைந்தது</translation>
-    </message>
-    <message>
-      <location filename="../CommandDoc.cpp" line="1642"/>
-      <source>Dependency error</source>
-      <translation>சார்பு பிழை</translation>
-    </message>
-    <message>
-      <location filename="../CommandDoc.cpp" line="2007"/>
+      <location filename="../CommandDoc.cpp" line="2096"/>
       <source>Paste</source>
       <translation>ஒட்டு</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2124"/>
-      <source>Expression error</source>
-      <translation>வெளிப்பாடு பிழை</translation>
-    </message>
-    <message>
-      <location filename="../CommandDoc.cpp" line="2158"/>
+      <location filename="../CommandDoc.cpp" line="2248"/>
       <source>Failed to paste expressions</source>
       <translation>வெளிப்பாடுகளை ஒட்டுவதில் தோல்வி</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="103"/>
-      <location filename="../CommandStd.cpp" line="108"/>
+      <location filename="../CommandStd.cpp" line="107"/>
+      <location filename="../CommandStd.cpp" line="112"/>
       <source>Cannot load workbench</source>
       <translation>வொர்க்பெஞ்சை ஏற்ற முடியாது</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="109"/>
+      <location filename="../CommandStd.cpp" line="113"/>
       <source>A general error occurred while loading the workbench</source>
       <translation>வொர்க்பெஞ்சை ஏற்றும்போது பொதுவான பிழை ஏற்பட்டது</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="353"/>
+      <location filename="../CommandStd.cpp" line="359"/>
       <source>Restart in Safe Mode</source>
       <translation>பாதுகாப்பான பயன்முறையில் மீண்டும் தொடங்கவும்</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="354"/>
+      <location filename="../CommandStd.cpp" line="360"/>
       <source>Restart FreeCAD and enter safe mode?</source>
       <translation>FreeCAD ஐ மறுதொடக்கம் செய்து பாதுகாப்பான முறையில் உள்ளிடவா?</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="356"/>
+      <location filename="../CommandStd.cpp" line="362"/>
       <source>Safe mode temporarily disables the configuration and addons.</source>
       <translation>பாதுகாப்பான பயன்முறையானது கட்டமைப்பு மற்றும் துணை நிரல்களை தற்காலிகமாக முடக்குகிறது.</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="347"/>
-      <location filename="../CommandView.cpp" line="618"/>
+      <location filename="../CommandView.cpp" line="350"/>
+      <location filename="../CommandView.cpp" line="628"/>
       <source>&amp;Save Views…</source>
       <translation>&amp;பார்வைகளைச் சேமி...</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="349"/>
-      <location filename="../CommandView.cpp" line="619"/>
+      <location filename="../CommandView.cpp" line="352"/>
+      <location filename="../CommandView.cpp" line="629"/>
       <source>&amp;Load Views…</source>
       <translation>&amp;பார்வைகளை ஏற்றவும்…</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="352"/>
-      <location filename="../CommandView.cpp" line="620"/>
+      <location filename="../CommandView.cpp" line="355"/>
+      <location filename="../CommandView.cpp" line="630"/>
       <source>F&amp;reeze View</source>
       <translation>F&amp;ரீச் காட்சி</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="355"/>
-      <location filename="../CommandView.cpp" line="621"/>
+      <location filename="../CommandView.cpp" line="358"/>
+      <location filename="../CommandView.cpp" line="631"/>
       <source>&amp;Clear Views</source>
       <translation>&amp;பார்வைகளை அழி</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="404"/>
-      <location filename="../CommandView.cpp" line="576"/>
-      <source>Restore view &amp;%1</source>
-      <translation>காட்சியை மீட்டமை &amp;% 1</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="436"/>
-      <source>Save frozen views</source>
-      <translation>உறைந்த காட்சிகளைச் சேமிக்கவும்</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="438"/>
-      <location filename="../CommandView.cpp" line="500"/>
+      <location filename="../CommandView.cpp" line="465"/>
+      <location filename="../CommandView.cpp" line="527"/>
       <source>Frozen views</source>
       <translation>உறைந்த காட்சிகள்</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="482"/>
-      <location filename="../CommandView.cpp" line="509"/>
-      <source>Restore views</source>
-      <translation>காட்சிகளை மீட்டெடுக்கவும்</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="483"/>
+      <location filename="../CommandView.cpp" line="510"/>
       <source>Importing the restored views would clear the already stored views.
 Continue?</source>
       <translation>மீட்டமைக்கப்பட்ட காட்சிகளை இறக்குமதி செய்வது ஏற்கனவே சேமிக்கப்பட்ட காட்சிகளை அழிக்கும். 
 தொடரவா?</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2064"/>
+      <location filename="../CommandView.cpp" line="2130"/>
       <source>Save Image</source>
       <translation>படத்தை சேமிக்கவும்</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2240"/>
+      <location filename="../CommandView.cpp" line="2306"/>
       <source>Choose an Image File to Open</source>
       <translation>திறக்க படக் கோப்பைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="498"/>
-      <source>Restore frozen views</source>
-      <translation>உறைந்த காட்சிகளை மீட்டெடுக்கவும்</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="510"/>
+      <location filename="../CommandView.cpp" line="537"/>
       <source>Cannot open file '%1'.</source>
       <translation>'%1' என்ற கோப்பை திறக்க இயலவில்லை.</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="625"/>
+      <location filename="../CommandView.cpp" line="414"/>
+      <location filename="../CommandView.cpp" line="603"/>
+      <location filename="../CommandView.cpp" line="635"/>
       <source>Restore View &amp;%1</source>
       <translation>பார்வை &amp;% 1 ஐ மீட்டமை</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2055"/>
+      <location filename="../CommandView.cpp" line="463"/>
+      <source>Save Frozen Views</source>
+      <translation type="unfinished">Save Frozen Views</translation>
+    </message>
+    <message>
+      <location filename="../CommandView.cpp" line="509"/>
+      <location filename="../CommandView.cpp" line="536"/>
+      <source>Restore Views</source>
+      <translation type="unfinished">Restore Views</translation>
+    </message>
+    <message>
+      <location filename="../CommandView.cpp" line="525"/>
+      <source>Restore Frozen Views</source>
+      <translation type="unfinished">Restore Frozen Views</translation>
+    </message>
+    <message>
+      <location filename="../CommandView.cpp" line="2121"/>
       <source>files</source>
       <translation>கோப்புகள்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="582"/>
-      <source>New sub-group</source>
-      <translation>புதிய துணைக்குழு</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="583"/>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="819"/>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="864"/>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="912"/>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="957"/>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="1004"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="577"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="813"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="858"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="906"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="951"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="998"/>
       <source>Enter the name:</source>
       <translation>பெயரை உள்ளிடுக:</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="818"/>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="844"/>
-      <source>New text item</source>
-      <translation>புதிய உரை உருப்படி</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="863"/>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="889"/>
-      <source>New integer item</source>
-      <translation>புதிய முழு எண் உருப்படி</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="911"/>
-      <source>New unsigned item</source>
-      <translation>புதிய கையொப்பமிடாத உருப்படி</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="956"/>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="982"/>
-      <source>New float item</source>
-      <translation>புதிய மிதவை பொருள்</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="1032"/>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="1418"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="1026"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="1412"/>
       <source>Choose an item:</source>
       <translation>ஒரு பொருளைத் தேர்ந்தெடுக்கவும்:</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="1003"/>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="1031"/>
-      <source>New boolean item</source>
-      <translation>புதிய பூலியன் பொருள்</translation>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="576"/>
+      <source>New Sub-Group</source>
+      <translation type="unfinished">New Sub-Group</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="845"/>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="1197"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="812"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="838"/>
+      <source>New Text Item</source>
+      <translation type="unfinished">New Text Item</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="839"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="1191"/>
       <source>Enter text:</source>
       <translation>உரையை உள்ளிடவும்:</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="890"/>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="935"/>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="983"/>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="1250"/>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="1302"/>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="1359"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="857"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="883"/>
+      <source>New Integer Item</source>
+      <translation>புதிய முழு எண் உருப்படி</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="884"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="929"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="977"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="1244"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="1296"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="1353"/>
       <source>Enter number:</source>
       <translation>எண்ணை உள்ளிடவும்:</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="936"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="905"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="930"/>
       <source>New Unsigned Item</source>
       <translation>புதிய கையொப்பமிடாத பொருள்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="1105"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="950"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="976"/>
+      <source>New Float Item</source>
+      <translation>புதிய மிதவை பொருள்</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="997"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="1025"/>
+      <source>New Boolean Item</source>
+      <translation>புதிய பூலியன் பொருள்</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="1099"/>
       <source>Rename group</source>
       <translation>குழுவை மறுபெயரிடவும்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="1106"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="1100"/>
       <source>The group '%1' cannot be renamed.</source>
       <translation>'% 1' குழுவை மறுபெயரிட முடியாது.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="1113"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="1107"/>
       <source>Existing group</source>
       <translation>தற்போதுள்ள குழு</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="1114"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="1108"/>
       <source>The group '%1' already exists.</source>
       <translation>குழு '% 1' ஏற்கனவே உள்ளது.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="1196"/>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="1249"/>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="1358"/>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="1417"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="1190"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="1243"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="1352"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="1411"/>
       <source>Change value</source>
       <translation>மதிப்பை மாற்றவும்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgParameterImp.cpp" line="1303"/>
+      <location filename="../Dialogs/DlgParameterImp.cpp" line="1297"/>
       <source>Change Value</source>
       <translation>மதிப்பை மாற்றவும்</translation>
     </message>
@@ -8378,7 +8478,7 @@ Continue?</source>
       <translation>ஊடுருவாத பல அறிவிப்புகள் திறக்கப்பட்டுள்ளன. அறிவிப்புகள் தவிர்க்கப்படுகின்றன!</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1419"/>
+      <location filename="../Document.cpp" line="1456"/>
       <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
 
 </source>
@@ -8386,44 +8486,44 @@ Continue?</source>
 </translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1420"/>
+      <location filename="../Document.cpp" line="1457"/>
       <source>Are you sure you want to continue?</source>
       <translation>நீங்கள் நிச்சயமாக தொடர விரும்புகிறீர்களா?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1446"/>
+      <location filename="../Document.cpp" line="1483"/>
       <source>Check report view for more…</source>
       <translation>மேலும் தகவலுக்கு அறிக்கை காட்சியைப் பார்க்கவும்…</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1450"/>
+      <location filename="../Document.cpp" line="1487"/>
       <source>Physical path:</source>
       <translation>உடல் பாதை:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1451"/>
-      <location filename="../Document.cpp" line="1458"/>
+      <location filename="../Document.cpp" line="1488"/>
+      <location filename="../Document.cpp" line="1495"/>
       <source>Document:</source>
       <translation>ஆவணம்:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1452"/>
-      <location filename="../Document.cpp" line="1459"/>
+      <location filename="../Document.cpp" line="1489"/>
+      <location filename="../Document.cpp" line="1496"/>
       <source>Path:</source>
       <translation>பாதை:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1470"/>
+      <location filename="../Document.cpp" line="1507"/>
       <source>Identical physical path</source>
       <translation>ஒரே மாதிரியான உடல் பாதை</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1482"/>
+      <location filename="../Document.cpp" line="1519"/>
       <source>Could not save document</source>
       <translation>ஆவணத்தைச் சேமிக்க முடியவில்லை</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1483"/>
+      <location filename="../Document.cpp" line="1520"/>
       <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
 
 "%1"
@@ -8436,107 +8536,107 @@ Would you like to save the file with a different name?</source>
 கோப்பை வேறு பெயரில் சேமிக்க விரும்புகிறீர்களா?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1497"/>
-      <location filename="../Document.cpp" line="1655"/>
-      <location filename="../Document.cpp" line="1757"/>
+      <location filename="../Document.cpp" line="1534"/>
+      <location filename="../Document.cpp" line="1698"/>
+      <location filename="../Document.cpp" line="1807"/>
       <source>Saving aborted</source>
       <translation>சேமிப்பு நிறுத்தப்பட்டது</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1543"/>
+      <location filename="../Document.cpp" line="1580"/>
       <source>Save dependent files</source>
       <translation>சார்பு கோப்புகளை சேமிக்கவும்</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1544"/>
+      <location filename="../Document.cpp" line="1581"/>
       <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
       <translation>கோப்பில் வெளிப்புற சார்புகள் உள்ளன. சார்பு கோப்புகளையும் சேமிக்க விரும்புகிறீர்களா?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1590"/>
-      <location filename="../Document.cpp" line="1648"/>
+      <location filename="../Document.cpp" line="1627"/>
+      <location filename="../Document.cpp" line="1691"/>
       <source>Saving document failed</source>
       <translation>ஆவணத்தைச் சேமிப்பதில் தோல்வி</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1605"/>
+      <location filename="../Document.cpp" line="1642"/>
       <source>Save document under new filename…</source>
       <translation>புதிய கோப்பு பெயரில் ஆவணத்தை சேமிக்கவும்...</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1732"/>
+      <location filename="../Document.cpp" line="1775"/>
       <source>Save a copy of the document under new filename…</source>
       <translation>ஆவணத்தின் நகலை புதிய கோப்பு பெயரில் சேமிக்கவும்...</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1614"/>
-      <location filename="../Document.cpp" line="1737"/>
+      <location filename="../Document.cpp" line="1657"/>
+      <location filename="../Document.cpp" line="1787"/>
       <source>Save %1 Document</source>
       <translation>% 1 ஆவணத்தைச் சேமிக்கவும்</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1616"/>
+      <location filename="../Document.cpp" line="1659"/>
       <source>Document</source>
       <translation>ஆவணம்</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1670"/>
-      <location filename="../Document.cpp" line="1720"/>
+      <location filename="../Document.cpp" line="1713"/>
+      <location filename="../Document.cpp" line="1763"/>
       <source>Failed to save document</source>
       <translation>ஆவணத்தைச் சேமிப்பதில் தோல்வி</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1671"/>
+      <location filename="../Document.cpp" line="1714"/>
       <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
       <translation>ஆவணங்களில் சுழற்சி சார்புகள் உள்ளன. நீங்கள் இன்னும் அவர்களை காப்பாற்ற விரும்புகிறீர்களா?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1739"/>
+      <location filename="../Document.cpp" line="1789"/>
       <source>%1 document (*.FCStd)</source>
       <translation>%1 ஆவணம் (*.FCStd)</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2413"/>
+      <location filename="../Document.cpp" line="2457"/>
       <source>Document not closable</source>
       <translation>மூட முடியாத ஆவணம்</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2414"/>
+      <location filename="../Document.cpp" line="2458"/>
       <source>The document is not closable for the moment.</source>
       <translation>ஆவணத்தை தற்போதைக்கு மூட முடியாது.</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2454"/>
+      <location filename="../Document.cpp" line="2498"/>
       <source>Failed to save document '%1'. Would you like to cancel the closure?</source>
       <translation>'% 1' ஆவணத்தைச் சேமிப்பதில் தோல்வி. மூடுதலை ரத்து செய்ய விரும்புகிறீர்களா?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2456"/>
+      <location filename="../Document.cpp" line="2500"/>
       <source>Document saving failed. Would you like to cancel the closure?</source>
       <translation>ஆவணத்தைச் சேமிக்க முடியவில்லை. மூடுதலை ரத்து செய்ய விரும்புகிறீர்களா?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2461"/>
+      <location filename="../Document.cpp" line="2505"/>
       <source>Unable to save document</source>
       <translation>ஆவணத்தைச் சேமிக்க முடியவில்லை</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2818"/>
+      <location filename="../Document.cpp" line="2861"/>
       <source>Undo</source>
       <translation>செயல்தவிர்</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2818"/>
+      <location filename="../Document.cpp" line="2861"/>
       <source>Redo</source>
       <translation>மீண்டும்செய்</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2821"/>
+      <location filename="../Document.cpp" line="2864"/>
       <source>There are grouped transactions in the following documents with other preceding transactions</source>
       <translation>பின்வரும் ஆவணங்களில் மற்ற முந்தைய பரிவர்த்தனைகளுடன் குழுவாக்கப்பட்ட பரிவர்த்தனைகள் உள்ளன</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2826"/>
+      <location filename="../Document.cpp" line="2869"/>
       <source>Choose 'Yes' to roll back all preceding transactions.
 Choose 'No' to roll back in the active document only.
 Choose 'Abort' to abort</source>
@@ -8604,12 +8704,12 @@ Choose 'Abort' to abort</source>
       <translation>உங்கள் கணினி உலாவியைத் திறக்க முடியவில்லை.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2567"/>
+      <location filename="../View3DInventorViewer.cpp" line="2597"/>
       <source>Out of memory</source>
       <translation>நினைவகம் இல்லை</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2568"/>
+      <location filename="../View3DInventorViewer.cpp" line="2598"/>
       <source>Not enough memory available to display the data.</source>
       <translation>தரவைக் காட்ட போதுமான நினைவகம் இல்லை.</translation>
     </message>
@@ -8625,193 +8725,183 @@ Choose 'Abort' to abort</source>
       <translation>% 1 கோப்பை % 2 இல் அல்லது % 3 இல் கண்டுபிடிக்க முடியவில்லை</translation>
     </message>
     <message>
-      <location filename="../Navigation/NavigationStyle.cpp" line="2084"/>
-      <source>Navigation styles</source>
-      <translation>வழிசெலுத்தல் பாணிகள்</translation>
-    </message>
-    <message>
-      <location filename="../Navigation/NavigationStyle.cpp" line="2137"/>
+      <location filename="../Navigation/NavigationStyle.cpp" line="2069"/>
       <source>Clarify Selection</source>
       <translation>தேர்வை தெளிவுபடுத்தவும்</translation>
     </message>
     <message>
-      <location filename="../ViewProviderDragger.cpp" line="127"/>
-      <location filename="../ViewProviderLink.cpp" line="3184"/>
-      <source>Transform</source>
-      <translation>உருமாற்று, உருமாற்றம்</translation>
-    </message>
-    <message>
-      <location filename="../MainWindow.cpp" line="886"/>
+      <location filename="../MainWindow.cpp" line="889"/>
+      <location filename="../CommandDoc.cpp" line="1370"/>
       <source>Unsaved Document</source>
       <translation>சேமிக்கப்படாத ஆவணம்</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="890"/>
+      <location filename="../MainWindow.cpp" line="893"/>
       <source>Save all changes to document '%1' before closing?</source>
       <translation>மூடும் முன் அனைத்து மாற்றங்களையும் '% 1' ஆவணத்தில் சேமிக்கவா?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="891"/>
+      <location filename="../MainWindow.cpp" line="894"/>
       <source>Save all changes to document before closing?</source>
       <translation>மூடும் முன் அனைத்து மாற்றங்களையும் ஆவணத்தில் சேமிக்கவா?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="895"/>
+      <location filename="../MainWindow.cpp" line="898"/>
       <source>Otherwise, all changes will be lost.</source>
       <translation>இல்லையெனில், அனைத்து மாற்றங்களும் இழக்கப்படும்.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1021"/>
+      <location filename="../MainWindow.cpp" line="1024"/>
       <source>%1 Document(s) not saved</source>
       <translation>% 1 ஆவணம்(கள்) சேமிக்கப்படவில்லை</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1022"/>
+      <location filename="../MainWindow.cpp" line="1025"/>
       <source>Some documents could not be saved. Cancel closing?</source>
       <translation>சில ஆவணங்களைச் சேமிக்க முடியவில்லை. மூடுவதை ரத்து செய்யவா?</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="554"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="556"/>
       <source>Delete macro</source>
       <translation>மேக்ரோவை நீக்கு</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="555"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="557"/>
       <source>Not allowed to delete system-wide macros</source>
       <translation>கணினி அளவிலான மேக்ரோக்களை நீக்க அனுமதிக்கப்படவில்லை</translation>
     </message>
     <message>
-      <location filename="../Inventor/Draggers/SoLinearDragger.cpp" line="280"/>
+      <location filename="../Inventor/Draggers/SoLinearDragger.cpp" line="282"/>
       <source>Translation:</source>
       <translation>மொழிபெயர்ப்பு:</translation>
     </message>
     <message>
-      <location filename="../Inventor/Draggers/SoPlanarDragger.cpp" line="280"/>
+      <location filename="../Inventor/Draggers/SoPlanarDragger.cpp" line="282"/>
       <source>Translation XY:</source>
       <translation>மொழிபெயர்ப்பு XY:</translation>
     </message>
     <message>
-      <location filename="../Inventor/Draggers/SoRotationDragger.cpp" line="263"/>
+      <location filename="../Inventor/Draggers/SoRotationDragger.cpp" line="265"/>
       <source>Rotation:</source>
       <translation>சுழற்சி:</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="105"/>
-      <location filename="../CommandLink.cpp" line="123"/>
+      <location filename="../CommandLink.cpp" line="107"/>
+      <location filename="../CommandLink.cpp" line="125"/>
       <source>Simple Group</source>
       <translation>எளிய குழு</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="107"/>
-      <location filename="../CommandLink.cpp" line="124"/>
+      <location filename="../CommandLink.cpp" line="109"/>
+      <location filename="../CommandLink.cpp" line="126"/>
       <source>Group With Links</source>
       <translation>இணைப்புகளுடன் குழு</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="109"/>
-      <location filename="../CommandLink.cpp" line="125"/>
+      <location filename="../CommandLink.cpp" line="111"/>
+      <location filename="../CommandLink.cpp" line="127"/>
       <source>Group With Transform Links</source>
       <translation>உருமாற்ற இணைப்புகளுடன் குழு</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="242"/>
+      <location filename="../CommandLink.cpp" line="244"/>
       <source>Create link group failed</source>
       <translation>இணைப்பு குழுவை உருவாக்க முடியவில்லை</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="328"/>
+      <location filename="../CommandLink.cpp" line="322"/>
       <source>Create link failed</source>
       <translation>இணைப்பை உருவாக்க முடியவில்லை</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="415"/>
+      <location filename="../CommandLink.cpp" line="427"/>
       <source>Failed to create relative link</source>
       <translation>தொடர்புடைய இணைப்பை உருவாக்க முடியவில்லை</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="559"/>
+      <location filename="../CommandLink.cpp" line="577"/>
       <source>Unlink failed</source>
       <translation>இணைப்பை நீக்க முடியவில்லை</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="559"/>
+      <location filename="../CommandLink.cpp" line="577"/>
       <source>Replace link failed</source>
       <translation>இணைப்பை மாற்ற முடியவில்லை</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="705"/>
+      <location filename="../CommandLink.cpp" line="723"/>
       <source>Failed to import links</source>
       <translation>இணைப்புகளை இறக்குமதி செய்ய முடியவில்லை</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="751"/>
+      <location filename="../CommandLink.cpp" line="769"/>
       <source>Failed to import all links</source>
       <translation>அனைத்து இணைப்புகளையும் இறக்குமதி செய்ய முடியவில்லை</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="977"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="984"/>
       <source>Add property</source>
       <translation>சொத்து சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="978"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="985"/>
       <source>Failed to add property to '%1': %2</source>
       <translation>'% 1' இல் சொத்தை சேர்க்க முடியவில்லை:% 2</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2638"/>
-      <location filename="../Tree.cpp" line="3034"/>
+      <location filename="../Tree.cpp" line="2693"/>
+      <location filename="../Tree.cpp" line="3090"/>
       <source>Drag &amp; drop failed</source>
       <translation>இழுத்து விட முடியவில்லை</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="900"/>
-      <location filename="../ViewProviderLink.cpp" line="2999"/>
+      <location filename="../ViewProviderLink.cpp" line="3022"/>
+      <location filename="../MainWindow.cpp" line="903"/>
       <source>Apply to all</source>
       <translation>அனைவருக்கும் விண்ணப்பிக்கவும்</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2973"/>
+      <location filename="../ViewProviderLink.cpp" line="2996"/>
       <source>Setup Configurable Object</source>
       <translation>உள்ளமைக்கக்கூடிய பொருளை அமைக்கவும்</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2975"/>
+      <location filename="../ViewProviderLink.cpp" line="2998"/>
       <source>Selects which object to copy or exclude when configuration changes. All external linked objects are excluded by default.</source>
       <translation>உள்ளமைவு மாறும்போது எந்தப் பொருளை நகலெடுக்க வேண்டும் அல்லது விலக்க வேண்டும் என்பதைத் தேர்ந்தெடுக்கிறது. அனைத்து வெளிப்புற இணைக்கப்பட்ட பொருள்களும் இயல்பாகவே விலக்கப்படும்.</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2997"/>
+      <location filename="../ViewProviderLink.cpp" line="3020"/>
       <source>Select which objects to copy when the configuration is changed</source>
       <translation>கட்டமைப்பு மாற்றப்படும்போது எந்தெந்த பொருட்களை நகலெடுக்க வேண்டும் என்பதைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3000"/>
+      <location filename="../ViewProviderLink.cpp" line="3023"/>
       <source>Applies the setting to all links</source>
       <translation>அனைத்து இணைப்புகளுக்கும் அமைப்பைப் பயன்படுத்துகிறது</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3053"/>
+      <location filename="../ViewProviderLink.cpp" line="3084"/>
       <source>Copy on Change</source>
       <translation>மாற்றத்தின் மீது நகல்</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3054"/>
+      <location filename="../ViewProviderLink.cpp" line="3085"/>
       <source>Enable</source>
       <translation>இயக்கு</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3056"/>
+      <location filename="../ViewProviderLink.cpp" line="3087"/>
       <source>Enable auto copy of linked object when its configuration is changed</source>
       <translation>இணைக்கப்பட்ட பொருளின் உள்ளமைவு மாற்றப்படும்போது அதன் தானாக நகலை இயக்கவும்</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3072"/>
+      <location filename="../ViewProviderLink.cpp" line="3103"/>
       <source>Tracking</source>
       <translation>கண்காணிப்பு</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3074"/>
+      <location filename="../ViewProviderLink.cpp" line="3105"/>
       <source>Copies the linked object when its configuration is changed.
 Also auto redo the copy if the original linked object is changed.
 </source>
@@ -8820,17 +8910,17 @@ Also auto redo the copy if the original linked object is changed.
 </translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3094"/>
+      <location filename="../ViewProviderLink.cpp" line="3125"/>
       <source>Disable Copy on Change</source>
       <translation>மாற்றத்தில் நகலை முடக்கு</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3112"/>
+      <location filename="../ViewProviderLink.cpp" line="3143"/>
       <source>Refresh Configurable Object</source>
       <translation>கட்டமைக்கக்கூடிய பொருளைப் புதுப்பிக்கவும்</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3114"/>
+      <location filename="../ViewProviderLink.cpp" line="3145"/>
       <source>Synchronizes the original configurable source object by
 creating a new deep copy. Any changes made to
 the current copy will be lost.
@@ -8841,28 +8931,23 @@ the current copy will be lost.
 </translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3155"/>
+      <location filename="../ViewProviderLink.cpp" line="3187"/>
       <source>Toggle Array Elements</source>
       <translation>வரிசை உறுப்புகளை நிலைமாற்று</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3166"/>
+      <location filename="../ViewProviderLink.cpp" line="3200"/>
       <source>Changes whether to show each link array element as individual objects</source>
       <translation>ஒவ்வொரு இணைப்பு வரிசை உறுப்புகளையும் தனிப்பட்ட பொருள்களாகக் காட்ட வேண்டுமா என்பதை மாற்றுகிறது</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3185"/>
-      <source>Transforms the object at the origin of the placement</source>
-      <translation>இடத்தின் தோற்றத்தில் பொருளை மாற்றுகிறது</translation>
-    </message>
-    <message>
-      <location filename="../ViewProviderLink.cpp" line="3195"/>
-      <location filename="../ViewProviderLink.cpp" line="3201"/>
+      <location filename="../ViewProviderLink.cpp" line="3209"/>
+      <location filename="../ViewProviderLink.cpp" line="3215"/>
       <source>Override Colors</source>
       <translation>நிறங்களை மேலெழுதவும்</translation>
     </message>
     <message>
-      <location filename="../ViewProviderDocumentObject.cpp" line="275"/>
+      <location filename="../ViewProviderDocumentObject.cpp" line="277"/>
       <source>Edit %1</source>
       <translation>திருத்த % 1</translation>
     </message>
@@ -8877,18 +8962,18 @@ the current copy will be lost.
       <translation>வண்ண புராணம்</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1076"/>
+      <location filename="../OverlayManager.cpp" line="1079"/>
       <source>Toggle overlay</source>
       <translation>மேலடுக்கை நிலைமாற்று</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="2555"/>
-      <location filename="../OverlayManager.cpp" line="1077"/>
+      <location filename="../OverlayManager.cpp" line="1080"/>
+      <location filename="../OverlayWidgets.cpp" line="2562"/>
       <source>Toggle floating window</source>
       <translation>மிதக்கும் சாளரத்தை நிலைமாற்று</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1078"/>
+      <location filename="../OverlayManager.cpp" line="1081"/>
       <source>Close dock window</source>
       <translation>டாக் சாளரத்தை மூடு</translation>
     </message>
@@ -8998,7 +9083,7 @@ the current copy will be lost.
       <translation>அனிமேசன் வளைவு வகை</translation>
     </message>
     <message>
-      <location filename="../ViewProviderSuppressibleExtension.cpp" line="97"/>
+      <location filename="../ViewProviderSuppressibleExtension.cpp" line="98"/>
       <source>Suppressed</source>
       <translation>அடக்கப்பட்டது</translation>
     </message>
@@ -9022,11 +9107,6 @@ the current copy will be lost.
       <location filename="../SoFCColorBar.cpp" line="358"/>
       <source>Options</source>
       <translation>விருப்பங்கள்</translation>
-    </message>
-    <message>
-      <location filename="../ViewProviderImagePlane.cpp" line="170"/>
-      <source>Change Image</source>
-      <translation>படத்தை மாற்றவும்</translation>
     </message>
     <message>
       <location filename="../ViewProviderPart.cpp" line="72"/>
@@ -9068,16 +9148,21 @@ the current copy will be lost.
       <source>Delete group contents recursively?</source>
       <translation>குழு உள்ளடக்கங்களை மறுநிகழ்வு நீக்கவா?</translation>
     </message>
+    <message>
+      <location filename="../ViewProviderImagePlane.cpp" line="171"/>
+      <source>Edit Image Plane</source>
+      <translation type="unfinished">Edit Image Plane</translation>
+    </message>
   </context>
   <context>
     <name>SelectionFilter</name>
     <message>
-      <location filename="../Selection/Selection.cpp" line="876"/>
+      <location filename="../Selection/Selection.cpp" line="858"/>
       <source>Not allowed:</source>
       <translation>இசைவு இல்லை:</translation>
     </message>
     <message>
-      <location filename="../Selection/Selection.cpp" line="1232"/>
+      <location filename="../Selection/Selection.cpp" line="1235"/>
       <source>Selection not allowed by filter</source>
       <translation>வடிகட்டி மூலம் தேர்வு அனுமதிக்கப்படவில்லை</translation>
     </message>
@@ -9085,12 +9170,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdAbout</name>
     <message>
-      <location filename="../CommandStd.cpp" line="229"/>
+      <location filename="../CommandStd.cpp" line="235"/>
       <source>&amp;About %1</source>
       <translation>&amp;சுமார் % 1</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="230"/>
+      <location filename="../CommandStd.cpp" line="236"/>
       <source>Displays information about %1</source>
       <translation>% 1 பற்றிய தகவலைக் காட்டுகிறது</translation>
     </message>
@@ -9098,12 +9183,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdAboutQt</name>
     <message>
-      <location filename="../CommandStd.cpp" line="293"/>
+      <location filename="../CommandStd.cpp" line="299"/>
       <source>About &amp;Qt</source>
       <translation>&amp;Qt</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="294"/>
+      <location filename="../CommandStd.cpp" line="300"/>
       <source>Displays information about Qt</source>
       <translation>கியுடி பற்றிய தகவலைக் காட்டுகிறது</translation>
     </message>
@@ -9176,12 +9261,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdCopy</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1204"/>
+      <location filename="../CommandDoc.cpp" line="1252"/>
       <source>&amp;Copy</source>
       <translation>&amp;நகலெடு</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1205"/>
+      <location filename="../CommandDoc.cpp" line="1253"/>
       <source>Copies the selection to the clipboard</source>
       <translation>தேர்வை இடைநிலைப்பலகைக்கு நகலெடுக்கிறது</translation>
     </message>
@@ -9189,12 +9274,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdCut</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1176"/>
+      <location filename="../CommandDoc.cpp" line="1224"/>
       <source>Cu&amp;t</source>
       <translation>வெட்டு (&amp;t)</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1177"/>
+      <location filename="../CommandDoc.cpp" line="1225"/>
       <source>Removes the selection and copies it to the clipboard</source>
       <translation>தேர்வை அகற்றி, இடைநிலைப்பலகைக்கு நகலெடுக்கிறது</translation>
     </message>
@@ -9202,12 +9287,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdDelete</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1433"/>
+      <location filename="../CommandDoc.cpp" line="1487"/>
       <source>&amp;Delete</source>
       <translation>அழி (&amp;d)</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1434"/>
+      <location filename="../CommandDoc.cpp" line="1488"/>
       <source>Deletes the selected objects</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட பொருட்களை நீக்குகிறது</translation>
     </message>
@@ -9226,8 +9311,8 @@ the current copy will be lost.
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="67"/>
-      <source>S&amp;top macro recording</source>
-      <translation>எச்&amp;டாப் மேக்ரோ ரெக்கார்டிங்</translation>
+      <source>S&amp;top Macro Recording</source>
+      <translation type="unfinished">S&amp;top Macro Recording</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="70"/>
@@ -9251,12 +9336,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdEdit</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1872"/>
+      <location filename="../CommandDoc.cpp" line="1961"/>
       <source>Toggle &amp;Edit Mode</source>
       <translation>&amp;திருத்து பயன்முறையை நிலைமாற்று</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1873"/>
+      <location filename="../CommandDoc.cpp" line="1962"/>
       <source>Toggles the selected object's edit mode</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட பொருள் திருத்து பயன்முறையை நிலைமாற்றவும்</translation>
     </message>
@@ -9264,22 +9349,22 @@ the current copy will be lost.
   <context>
     <name>StdCmdExport</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="285"/>
+      <location filename="../CommandDoc.cpp" line="320"/>
       <source>&amp;Export…</source>
       <translation>&amp;ஏற்றுமதி…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="286"/>
+      <location filename="../CommandDoc.cpp" line="321"/>
       <source>Exports an object in the active document</source>
       <translation>செயலில் உள்ள ஆவணத்தில் ஒரு பொருளை ஏற்றுமதி செய்கிறது</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="434"/>
-      <source>No selection</source>
+      <location filename="../CommandDoc.cpp" line="469"/>
+      <source>No Selection</source>
       <translation>தேர்வு இல்லை</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="435"/>
+      <location filename="../CommandDoc.cpp" line="470"/>
       <source>Select objects to export before using the Export command.</source>
       <translation>ஏற்றுமதி கட்டளையைப் பயன்படுத்துவதற்கு முன் ஏற்றுமதி செய்ய வேண்டிய பொருட்களைத் தேர்ந்தெடுக்கவும்.</translation>
     </message>
@@ -9287,12 +9372,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdExpression</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1954"/>
+      <location filename="../CommandDoc.cpp" line="2043"/>
       <source>Expression Actions</source>
       <translation>வெளிப்பாடு நடவடிக்கைகள்</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1955"/>
+      <location filename="../CommandDoc.cpp" line="2044"/>
       <source>Actions that apply to expressions</source>
       <translation>வெளிப்பாடுகளுக்குப் பொருந்தும் செயல்கள்</translation>
     </message>
@@ -9300,12 +9385,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdFeatRecompute</name>
     <message>
-      <location filename="../CommandFeat.cpp" line="54"/>
+      <location filename="../CommandFeat.cpp" line="56"/>
       <source>&amp;Recompute</source>
       <translation>&amp;மீண்டும் கணக்கிடு</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="55"/>
+      <location filename="../CommandFeat.cpp" line="57"/>
       <source>Recomputes a feature or document</source>
       <translation>ஒரு நற்பொருத்தம் அல்லது ஆவணத்தை மீண்டும் கணக்கிடுகிறது</translation>
     </message>
@@ -9313,12 +9398,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdFreeCADForum</name>
     <message>
-      <location filename="../CommandStd.cpp" line="720"/>
+      <location filename="../CommandStd.cpp" line="726"/>
       <source>FreeCAD &amp;Forum</source>
       <translation>FreeCAD &amp; மன்றம்</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="721"/>
+      <location filename="../CommandStd.cpp" line="727"/>
       <source>The FreeCAD forum, where you can find help from other users</source>
       <translation>FreeCAD மன்றம், மற்ற பயனர்களிடமிருந்து நீங்கள் உதவி பெறலாம்</translation>
     </message>
@@ -9326,12 +9411,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdFreezeViews</name>
     <message>
-      <location filename="../CommandView.cpp" line="332"/>
+      <location filename="../CommandView.cpp" line="335"/>
       <source>F&amp;reeze Display</source>
       <translation>ஃபி&amp;ரீச் காட்சி</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="333"/>
+      <location filename="../CommandView.cpp" line="336"/>
       <source>Freezes the current view position</source>
       <translation>தற்போதைய காட்சி நிலையை முடக்குகிறது</translation>
     </message>
@@ -9339,22 +9424,22 @@ the current copy will be lost.
   <context>
     <name>StdCmdImport</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="186"/>
+      <location filename="../CommandDoc.cpp" line="221"/>
       <source>&amp;Import…</source>
       <translation>&amp;இறக்குமதி…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="187"/>
+      <location filename="../CommandDoc.cpp" line="222"/>
       <source>Imports a file into the active document</source>
       <translation>செயலில் உள்ள ஆவணத்தில் கோப்பை இறக்குமதி செய்கிறது</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="200"/>
+      <location filename="../CommandDoc.cpp" line="235"/>
       <source>Supported formats</source>
       <translation>ஆதரிக்கப்படும் வடிவங்கள்</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="201"/>
+      <location filename="../CommandDoc.cpp" line="236"/>
       <source>All files (*.*)</source>
       <translation>அனைத்துக் கோப்புகள் (*.*)</translation>
     </message>
@@ -9362,12 +9447,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdLinkSelectActions</name>
     <message>
-      <location filename="../CommandLink.cpp" line="1000"/>
+      <location filename="../CommandLink.cpp" line="1018"/>
       <source>&amp;Link Navigation</source>
       <translation>&amp;இணைப்பு வழிசெலுத்தல்</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="1001"/>
+      <location filename="../CommandLink.cpp" line="1019"/>
       <source>Link navigation actions</source>
       <translation>இணைப்பு வழிசெலுத்தல் நடவடிக்கைகள்</translation>
     </message>
@@ -9375,12 +9460,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdLinkUnlink</name>
     <message>
-      <location filename="../CommandLink.cpp" line="620"/>
+      <location filename="../CommandLink.cpp" line="638"/>
       <source>Unlink</source>
       <translation>இணைப்பை நீக்கவும்</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="621"/>
+      <location filename="../CommandLink.cpp" line="639"/>
       <source>Unlinks the object by placing it directly in the container</source>
       <translation>பொருளை நேரடியாக கொள்கலனில் வைப்பதன் மூலம் இணைப்பை நீக்குகிறது</translation>
     </message>
@@ -9388,28 +9473,28 @@ the current copy will be lost.
   <context>
     <name>StdCmdMergeProjects</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="568"/>
+      <location filename="../CommandDoc.cpp" line="603"/>
       <source>&amp;Merge Document</source>
       <translation>&amp;ஆவணத்தை ஒன்றிணைக்கவும்</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="570"/>
+      <location filename="../CommandDoc.cpp" line="605"/>
       <source>Merges another FreeCAD document into the active one</source>
       <translation>செயலில் உள்ள ஒன்றில் மற்றொரு FreeCAD ஆவணத்தை இணைக்கிறது</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="584"/>
-      <location filename="../CommandDoc.cpp" line="596"/>
-      <source>Merge document</source>
-      <translation>ஆவணத்தை இணைக்கவும்</translation>
+      <location filename="../CommandDoc.cpp" line="619"/>
+      <location filename="../CommandDoc.cpp" line="631"/>
+      <source>Merge Document</source>
+      <translation type="unfinished">Merge Document</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="586"/>
+      <location filename="../CommandDoc.cpp" line="621"/>
       <source>%1 document (*.FCStd)</source>
       <translation>%1 ஆவணம் (*.FCStd)</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="597"/>
+      <location filename="../CommandDoc.cpp" line="632"/>
       <source>Cannot merge document with itself.</source>
       <translation>ஆவணத்தை அதனுடன் இணைக்க முடியாது.</translation>
     </message>
@@ -9417,18 +9502,18 @@ the current copy will be lost.
   <context>
     <name>StdCmdNew</name>
     <message>
-      <location filename="../MainWindow.cpp" line="2434"/>
+      <location filename="../MainWindow.cpp" line="2511"/>
       <location filename="../DocumentRecovery.cpp" line="412"/>
       <source>Unnamed</source>
       <translation>பெயரில்லாதது</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="707"/>
+      <location filename="../CommandDoc.cpp" line="742"/>
       <source>&amp;New Document</source>
       <translation>புதிய ஆவணம்</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="708"/>
+      <location filename="../CommandDoc.cpp" line="743"/>
       <source>Creates a new empty document</source>
       <translation>புதிய வெற்று ஆவணத்தை உருவாக்குகிறது</translation>
     </message>
@@ -9436,12 +9521,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdOnlineHelpWebsite</name>
     <message>
-      <location filename="../CommandStd.cpp" line="562"/>
+      <location filename="../CommandStd.cpp" line="568"/>
       <source>Help Website</source>
       <translation>உதவி இணையதளம்</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="563"/>
+      <location filename="../CommandStd.cpp" line="569"/>
       <source>Opens the help documentation</source>
       <translation>உதவி ஆவணத்தைத் திறக்கிறது</translation>
     </message>
@@ -9449,32 +9534,32 @@ the current copy will be lost.
   <context>
     <name>StdCmdOpen</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="85"/>
+      <location filename="../CommandDoc.cpp" line="86"/>
       <source>&amp;Open…</source>
       <translation>&amp;திற...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="86"/>
+      <location filename="../CommandDoc.cpp" line="87"/>
       <source>Opens a document or imports files</source>
       <translation>ஆவணத்தைத் திறக்கிறது அல்லது கோப்புகளை இறக்குமதி செய்கிறது</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="100"/>
+      <location filename="../CommandDoc.cpp" line="101"/>
       <source>Supported formats</source>
       <translation>ஆதரிக்கப்படும் வடிவங்கள்</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="101"/>
+      <location filename="../CommandDoc.cpp" line="102"/>
       <source>All files (*.*)</source>
       <translation>அனைத்துக் கோப்புகள் (*.*)</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="153"/>
-      <source>Cannot open file</source>
-      <translation>கோப்பை திறக்க முடியவில்லை</translation>
+      <location filename="../CommandDoc.cpp" line="188"/>
+      <source>Cannot Open File</source>
+      <translation type="unfinished">Cannot Open File</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="154"/>
+      <location filename="../CommandDoc.cpp" line="189"/>
       <source>Loading the file %1 is not supported</source>
       <translation>% 1 கோப்பை ஏற்றுவது ஆதரிக்கப்படவில்லை</translation>
     </message>
@@ -9482,12 +9567,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdPaste</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1240"/>
+      <location filename="../CommandDoc.cpp" line="1288"/>
       <source>&amp;Paste</source>
       <translation>&amp;ஒட்டு</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1241"/>
+      <location filename="../CommandDoc.cpp" line="1289"/>
       <source>Pastes the contents of the clipboard</source>
       <translation>கிளிப்போர்டின் உள்ளடக்கங்களை ஒட்டுகிறது</translation>
     </message>
@@ -9495,12 +9580,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdQuit</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1053"/>
+      <location filename="../CommandDoc.cpp" line="1101"/>
       <source>E&amp;xit</source>
       <translation>வெளியேறு (&amp;x)</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1054"/>
+      <location filename="../CommandDoc.cpp" line="1102"/>
       <source>Quits the application</source>
       <translation>விண்ணப்பத்தை விட்டு வெளியேறுகிறது</translation>
     </message>
@@ -9508,12 +9593,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdRecentFiles</name>
     <message>
-      <location filename="../CommandStd.cpp" line="143"/>
+      <location filename="../CommandStd.cpp" line="147"/>
       <source>Open &amp;Recent</source>
       <translation>&amp;சமீபத்திய</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="144"/>
+      <location filename="../CommandStd.cpp" line="148"/>
       <source>Displays the list of recently opened files</source>
       <translation>அண்மைக் காலத்தில் திறக்கப்பட்ட கோப்புகளின் பட்டியலைக் காட்டுகிறது</translation>
     </message>
@@ -9521,12 +9606,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdRedo</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1132"/>
+      <location filename="../CommandDoc.cpp" line="1180"/>
       <source>&amp;Redo</source>
       <translation>மீண்டும்செய் (&amp;r)</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1133"/>
+      <location filename="../CommandDoc.cpp" line="1181"/>
       <source>Redoes a previously undone action</source>
       <translation>முன்பு செயல்தவிர்க்கப்பட்ட செயலை மீண்டும் செய்கிறது</translation>
     </message>
@@ -9534,12 +9619,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdRevert</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="854"/>
+      <location filename="../CommandDoc.cpp" line="902"/>
       <source>Rever&amp;t</source>
       <translation>Rever&amp;t</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="855"/>
+      <location filename="../CommandDoc.cpp" line="903"/>
       <source>Reverts to the saved version of this file</source>
       <translation>இந்தக் கோப்பின் சேமிக்கப்பட்ட பதிப்பிற்கு மாற்றியமைக்கிறது</translation>
     </message>
@@ -9547,12 +9632,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdSave</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="740"/>
+      <location filename="../CommandDoc.cpp" line="776"/>
       <source>&amp;Save</source>
       <translation>சேமி (&amp;s)</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="741"/>
+      <location filename="../CommandDoc.cpp" line="777"/>
       <source>Saves the active document</source>
       <translation>செயலில் உள்ள ஆவணத்தை சேமிக்கிறது</translation>
     </message>
@@ -9560,12 +9645,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdSaveAll</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="826"/>
+      <location filename="../CommandDoc.cpp" line="874"/>
       <source>Sa&amp;ve All</source>
       <translation>அனைத்தையும் சேமி (&amp;v)</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="827"/>
+      <location filename="../CommandDoc.cpp" line="875"/>
       <source>Saves all open documents</source>
       <translation>திறந்திருக்கும் அனைத்து ஆவணங்களையும் சேமிக்கிறது</translation>
     </message>
@@ -9573,12 +9658,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdSelectAll</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1385"/>
+      <location filename="../CommandDoc.cpp" line="1433"/>
       <source>Select &amp;All</source>
       <translation>அனைத்தையும் தேர்ந்தெடு (&amp;a)</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1386"/>
+      <location filename="../CommandDoc.cpp" line="1434"/>
       <source>Selects all objects in the active document</source>
       <translation>செயலில் உள்ள ஆவணத்தில் உள்ள அனைத்து பொருட்களையும் தேர்ந்தெடுக்கிறது</translation>
     </message>
@@ -9586,12 +9671,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdSendToPythonConsole</name>
     <message>
-      <location filename="../CommandFeat.cpp" line="210"/>
+      <location filename="../CommandFeat.cpp" line="242"/>
       <source>&amp;Send to Python Console</source>
       <translation>&amp;பைத்தான் கன்சோலுக்கு அனுப்பு</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="211"/>
+      <location filename="../CommandFeat.cpp" line="243"/>
       <source>Sends the selected object to the Python console</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட பொருளை பைதான் கன்சோலுக்கு அனுப்புகிறது</translation>
     </message>
@@ -9638,12 +9723,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdUndo</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1087"/>
+      <location filename="../CommandDoc.cpp" line="1135"/>
       <source>&amp;Undo</source>
       <translation>செயல்தவிர் (&amp;u)</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1088"/>
+      <location filename="../CommandDoc.cpp" line="1136"/>
       <source>Undoes the previous action</source>
       <translation>முந்தைய செயலைச் செயல்தவிர்க்கிறது</translation>
     </message>
@@ -9651,12 +9736,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewBottom</name>
     <message>
-      <location filename="../CommandView.cpp" line="1385"/>
-      <source>&amp;5 Bottom</source>
-      <translation>&amp;5 கீழே</translation>
+      <location filename="../CommandView.cpp" line="1451"/>
+      <source>Bottom</source>
+      <translation>கீழே</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1386"/>
+      <location filename="../CommandView.cpp" line="1452"/>
       <source>Sets the camera to the bottom view</source>
       <translation>கீழே உள்ள காட்சிக்கு கேமராவை அமைக்கிறது</translation>
     </message>
@@ -9664,12 +9749,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewDimetric</name>
     <message>
-      <location filename="../CommandView.cpp" line="1554"/>
+      <location filename="../CommandView.cpp" line="1620"/>
       <source>&amp;Dimetric</source>
       <translation>&amp;டிமெட்ரிக்</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1555"/>
+      <location filename="../CommandView.cpp" line="1621"/>
       <source>Sets the camera to the dimetric view</source>
       <translation>கேமராவை டைமெட்ரிக் காட்சிக்கு அமைக்கிறது</translation>
     </message>
@@ -9677,12 +9762,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewExample1</name>
     <message>
-      <location filename="../CommandView.cpp" line="2392"/>
+      <location filename="../CommandView.cpp" line="2459"/>
       <source>Inventor Example #1</source>
       <translation>கண்டுபிடிப்பாளர் எடுத்துக்காட்டு #1</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2393"/>
+      <location filename="../CommandView.cpp" line="2460"/>
       <source>Shows a 3D texture with manipulator</source>
       <translation>கையாளுதலுடன் 3D அமைப்பைக் காட்டுகிறது</translation>
     </message>
@@ -9690,12 +9775,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewExample2</name>
     <message>
-      <location filename="../CommandView.cpp" line="2420"/>
+      <location filename="../CommandView.cpp" line="2487"/>
       <source>Inventor Example #2</source>
       <translation>கண்டுபிடிப்பாளர் எடுத்துக்காட்டு #2</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2421"/>
+      <location filename="../CommandView.cpp" line="2488"/>
       <source>Shows spheres and drag-lights</source>
       <translation>கோளங்கள் மற்றும் இழுவை விளக்குகளைக் காட்டுகிறது</translation>
     </message>
@@ -9703,12 +9788,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewFront</name>
     <message>
-      <location filename="../CommandView.cpp" line="1409"/>
-      <source>&amp;1 Front</source>
-      <translation>&amp;1 முன்</translation>
+      <location filename="../CommandView.cpp" line="1475"/>
+      <source>Front</source>
+      <translation>முன்</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1410"/>
+      <location filename="../CommandView.cpp" line="1476"/>
       <source>Sets the camera to the front view</source>
       <translation>கேமராவை முன் பார்வைக்கு அமைக்கிறது</translation>
     </message>
@@ -9716,12 +9801,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewHome</name>
     <message>
-      <location filename="../CommandView.cpp" line="1351"/>
+      <location filename="../CommandView.cpp" line="1417"/>
       <source>&amp;Home</source>
       <translation>@வீடு</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1352"/>
+      <location filename="../CommandView.cpp" line="1418"/>
       <source>Sets the camera to the default home view</source>
       <translation>கேமராவை இயல்புநிலை முகப்புக் காட்சிக்கு அமைக்கிறது</translation>
     </message>
@@ -9729,12 +9814,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewIsometric</name>
     <message>
-      <location filename="../CommandView.cpp" line="1530"/>
+      <location filename="../CommandView.cpp" line="1596"/>
       <source>&amp;Isometric</source>
       <translation>&amp;ஐசோமெட்ரிக்</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1531"/>
+      <location filename="../CommandView.cpp" line="1597"/>
       <source>Sets the camera to the isometric view</source>
       <translation>கேமராவை ஐசோமெட்ரிக் காட்சிக்கு அமைக்கிறது</translation>
     </message>
@@ -9742,12 +9827,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewIvStereoInterleavedColumns</name>
     <message>
-      <location filename="../CommandView.cpp" line="2590"/>
+      <location filename="../CommandView.cpp" line="2657"/>
       <source>Stereo Interleaved &amp;Columns</source>
       <translation>ச்டீரியோ இன்டர்லீவ் &amp; நெடுவரிசைகள்</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2591"/>
+      <location filename="../CommandView.cpp" line="2658"/>
       <source>Switches stereo viewing to interleaved columns</source>
       <translation>ச்டீரியோ பார்வையை இன்டர்லீவ்டு நெடுவரிசைகளுக்கு மாற்றுகிறது</translation>
     </message>
@@ -9755,12 +9840,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewIvStereoInterleavedRows</name>
     <message>
-      <location filename="../CommandView.cpp" line="2562"/>
+      <location filename="../CommandView.cpp" line="2629"/>
       <source>Stereo Interleaved &amp;Rows</source>
       <translation>ச்டீரியோ இன்டர்லீவ் &amp; வரிசைகள்</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2563"/>
+      <location filename="../CommandView.cpp" line="2630"/>
       <source>Switches stereo viewing to interleaved rows</source>
       <translation>ச்டீரியோ பார்வையை இடைப்பட்ட வரிசைகளுக்கு மாற்றுகிறது</translation>
     </message>
@@ -9768,12 +9853,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewIvStereoOff</name>
     <message>
-      <location filename="../CommandView.cpp" line="2477"/>
+      <location filename="../CommandView.cpp" line="2544"/>
       <source>Stereo &amp;Off</source>
       <translation>ச்டீரியோ &amp;ஆஃப்</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2478"/>
+      <location filename="../CommandView.cpp" line="2545"/>
       <source>Switches stereo viewing off</source>
       <translation>ச்டீரியோ பார்ப்பதை முடக்குகிறது</translation>
     </message>
@@ -9781,12 +9866,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewLeft</name>
     <message>
-      <location filename="../CommandView.cpp" line="1433"/>
-      <source>&amp;6 Left</source>
-      <translation>&amp;6 இடது</translation>
+      <location filename="../CommandView.cpp" line="1499"/>
+      <source>Left</source>
+      <translation>இடது</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1434"/>
+      <location filename="../CommandView.cpp" line="1500"/>
       <source>Sets the camera to the left view</source>
       <translation>கேமராவை இடது பார்வைக்கு அமைக்கிறது</translation>
     </message>
@@ -9794,12 +9879,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewRear</name>
     <message>
-      <location filename="../CommandView.cpp" line="1457"/>
-      <source>&amp;4 Rear</source>
-      <translation>&amp;4 பின்புறம்</translation>
+      <location filename="../CommandView.cpp" line="1523"/>
+      <source>Rear</source>
+      <translation>பின்புறம்</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1458"/>
+      <location filename="../CommandView.cpp" line="1524"/>
       <source>Sets the camera to the rear view</source>
       <translation>கேமராவை பின்புறக் காட்சிக்கு அமைக்கிறது</translation>
     </message>
@@ -9807,12 +9892,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewRight</name>
     <message>
-      <location filename="../CommandView.cpp" line="1481"/>
-      <source>&amp;3 Right</source>
-      <translation>&amp;3 சரி</translation>
+      <location filename="../CommandView.cpp" line="1547"/>
+      <source>Right</source>
+      <translation>வலது</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1482"/>
+      <location filename="../CommandView.cpp" line="1548"/>
       <source>Sets the camera to the right view</source>
       <translation>கேமராவை சரியான பார்வைக்கு அமைக்கிறது</translation>
     </message>
@@ -9820,12 +9905,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewRotateLeft</name>
     <message>
-      <location filename="../CommandView.cpp" line="1600"/>
+      <location filename="../CommandView.cpp" line="1666"/>
       <source>Rotate &amp;Left</source>
       <translation>&amp;இடதுபுறம் சுழற்று</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1601"/>
+      <location filename="../CommandView.cpp" line="1667"/>
       <source>Rotates the view by 90° counter-clockwise</source>
       <translation>பார்வையை 90° எதிரெதிர் திசையில் சுழற்றுகிறது</translation>
     </message>
@@ -9833,12 +9918,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewTop</name>
     <message>
-      <location filename="../CommandView.cpp" line="1505"/>
-      <source>&amp;2 Top</source>
-      <translation>&amp;2 மேல்</translation>
+      <location filename="../CommandView.cpp" line="1571"/>
+      <source>Top</source>
+      <translation>மேல்</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1506"/>
+      <location filename="../CommandView.cpp" line="1572"/>
       <source>Sets the camera to the top view</source>
       <translation>கேமராவை மேல் பார்வைக்கு அமைக்கிறது</translation>
     </message>
@@ -9846,12 +9931,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewTrimetric</name>
     <message>
-      <location filename="../CommandView.cpp" line="1577"/>
+      <location filename="../CommandView.cpp" line="1643"/>
       <source>&amp;Trimetric</source>
       <translation>&amp;டிரைமெட்ரிக்</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1578"/>
+      <location filename="../CommandView.cpp" line="1644"/>
       <source>Sets the camera to the trimetric view</source>
       <translation>கேமராவை டிரிமெட்ரிக் காட்சிக்கு அமைக்கிறது</translation>
     </message>
@@ -9859,12 +9944,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdWhatsThis</name>
     <message>
-      <location filename="../CommandStd.cpp" line="315"/>
+      <location filename="../CommandStd.cpp" line="321"/>
       <source>&amp;What's This?</source>
       <translation>&amp;இது என்ன?</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="316"/>
+      <location filename="../CommandStd.cpp" line="322"/>
       <source>Opens the documentation for the selected command</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட கட்டளைக்கான ஆவணத்தைத் திறக்கிறது</translation>
     </message>
@@ -9885,12 +9970,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdWorkbench</name>
     <message>
-      <location filename="../CommandStd.cpp" line="72"/>
+      <location filename="../CommandStd.cpp" line="76"/>
       <source>&amp;Workbench</source>
       <translation>&amp;வொர்க்பெஞ்ச்</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="73"/>
+      <location filename="../CommandStd.cpp" line="77"/>
       <source>Switches between workbenches</source>
       <translation>பணியிடங்களுக்கு இடையில் மாறுகிறது</translation>
     </message>
@@ -9898,12 +9983,12 @@ the current copy will be lost.
   <context>
     <name>StdMainFullscreen</name>
     <message>
-      <location filename="../CommandView.cpp" line="1812"/>
+      <location filename="../CommandView.cpp" line="1878"/>
       <source>Fullscreen</source>
       <translation>முழு திரை</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1813"/>
+      <location filename="../CommandView.cpp" line="1879"/>
       <source>Displays the main window in fullscreen mode</source>
       <translation>முதன்மையான சாளரத்தை முழுத்திரை பயன்முறையில் காண்பிக்கும்</translation>
     </message>
@@ -9911,12 +9996,12 @@ the current copy will be lost.
   <context>
     <name>StdOrthographicCamera</name>
     <message>
-      <location filename="../CommandView.cpp" line="135"/>
+      <location filename="../CommandView.cpp" line="138"/>
       <source>Orthographic View</source>
       <translation>ஆர்த்தோகிராஃபிக் பார்வை</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="136"/>
+      <location filename="../CommandView.cpp" line="139"/>
       <source>Switches to orthographic view mode</source>
       <translation>ஆர்த்தோகிராஃபிக் காட்சி முறைக்கு மாறுகிறது</translation>
     </message>
@@ -9924,12 +10009,12 @@ the current copy will be lost.
   <context>
     <name>StdPerspectiveCamera</name>
     <message>
-      <location filename="../CommandView.cpp" line="187"/>
+      <location filename="../CommandView.cpp" line="190"/>
       <source>Perspective View</source>
       <translation>முன்னோக்கு பார்வை</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="188"/>
+      <location filename="../CommandView.cpp" line="191"/>
       <source>Switches to perspective view mode</source>
       <translation>முன்னோக்கு பார்வை பயன்முறைக்கு மாறுகிறது</translation>
     </message>
@@ -9937,12 +10022,12 @@ the current copy will be lost.
   <context>
     <name>StdTreeCollapseDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3593"/>
+      <location filename="../CommandView.cpp" line="3664"/>
       <source>Collapse/E&amp;xpand</source>
       <translation>சுருக்கு/விரிவாக்கு</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3594"/>
+      <location filename="../CommandView.cpp" line="3665"/>
       <source>Expands the active document and collapses all others</source>
       <translation>செயலில் உள்ள ஆவணத்தை விரிவுபடுத்தி மற்ற அனைத்தையும் சுருக்கவும்</translation>
     </message>
@@ -9950,12 +10035,12 @@ the current copy will be lost.
   <context>
     <name>StdTreePreSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3695"/>
-      <source>&amp;4 Preselection</source>
-      <translation>&amp;4 முன்தேர்வு</translation>
+      <location filename="../CommandView.cpp" line="3766"/>
+      <source>Preselection</source>
+      <translation type="unfinished">Preselection</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3696"/>
+      <location filename="../CommandView.cpp" line="3767"/>
       <source>Preselects the object in 3D view when hovering the cursor over the tree item</source>
       <translation>மர உருப்படி மீது கர்சரை நகர்த்தும்போது, ​​3D காட்சியில் பொருளைத் தேர்ந்தெடுக்கும்</translation>
     </message>
@@ -9963,12 +10048,12 @@ the current copy will be lost.
   <context>
     <name>StdViewDock</name>
     <message>
-      <location filename="../CommandView.cpp" line="1750"/>
+      <location filename="../CommandView.cpp" line="1816"/>
       <source>&amp;Docked</source>
       <translation>&amp;டாக் செய்யப்பட்டது</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1751"/>
+      <location filename="../CommandView.cpp" line="1817"/>
       <source>Displays the active view either in fullscreen, undocked, or docked mode</source>
       <translation>செயலில் உள்ள காட்சியை முழுத்திரை, அன்டாக் செய்யப்பட்ட அல்லது நறுக்கப்பட்ட பயன்முறையில் காண்பிக்கும்</translation>
     </message>
@@ -9976,9 +10061,35 @@ the current copy will be lost.
   <context>
     <name>StdViewFullscreen</name>
     <message>
-      <location filename="../CommandView.cpp" line="1847"/>
+      <location filename="../CommandView.cpp" line="1913"/>
       <source>&amp;Fullscreen</source>
       <translation>முழுத்திரை</translation>
+    </message>
+    <message>
+      <location filename="../CommandView.cpp" line="1914"/>
+      <source>Displays the active view either in fullscreen, undocked, or docked mode</source>
+      <translation>செயலில் உள்ள காட்சியை முழுத்திரை, அன்டாக் செய்யப்பட்ட அல்லது நறுக்கப்பட்ட பயன்முறையில் காண்பிக்கும்</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdViewScreenShot</name>
+    <message>
+      <location filename="../CommandView.cpp" line="2084"/>
+      <source>Save &amp;Image…</source>
+      <translation>படத்தை சேமி…</translation>
+    </message>
+    <message>
+      <location filename="../CommandView.cpp" line="2085"/>
+      <source>Creates a screenshot of the active view</source>
+      <translation>செயலில் உள்ள காட்சியின் ச்கிரீன்சாட்டை உருவாக்குகிறது</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdViewUndock</name>
+    <message>
+      <location filename="../CommandView.cpp" line="1847"/>
+      <source>&amp;Undocked</source>
+      <translation>&amp;தடுக்கப்பட்டது</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1848"/>
@@ -9987,40 +10098,14 @@ the current copy will be lost.
     </message>
   </context>
   <context>
-    <name>StdViewScreenShot</name>
-    <message>
-      <location filename="../CommandView.cpp" line="2018"/>
-      <source>Save &amp;Image…</source>
-      <translation>படத்தை சேமி…</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="2019"/>
-      <source>Creates a screenshot of the active view</source>
-      <translation>செயலில் உள்ள காட்சியின் ச்கிரீன்சாட்டை உருவாக்குகிறது</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdViewUndock</name>
-    <message>
-      <location filename="../CommandView.cpp" line="1781"/>
-      <source>&amp;Undocked</source>
-      <translation>&amp;தடுக்கப்பட்டது</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="1782"/>
-      <source>Displays the active view either in fullscreen, undocked, or docked mode</source>
-      <translation>செயலில் உள்ள காட்சியை முழுத்திரை, அன்டாக் செய்யப்பட்ட அல்லது நறுக்கப்பட்ட பயன்முறையில் காண்பிக்கும்</translation>
-    </message>
-  </context>
-  <context>
     <name>StdViewZoomIn</name>
     <message>
-      <location filename="../CommandView.cpp" line="2672"/>
+      <location filename="../CommandView.cpp" line="2743"/>
       <source>Zoom &amp;In</source>
       <translation>பெரிதாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2673"/>
+      <location filename="../CommandView.cpp" line="2744"/>
       <source>Increases the zoom factor by a fixed amount</source>
       <translation>சூம் காரணியை ஒரு நிலையான அளவு அதிகரிக்கிறது</translation>
     </message>
@@ -10028,12 +10113,12 @@ the current copy will be lost.
   <context>
     <name>StdViewZoomOut</name>
     <message>
-      <location filename="../CommandView.cpp" line="2701"/>
+      <location filename="../CommandView.cpp" line="2772"/>
       <source>Zoom &amp;Out</source>
       <translation>பெரிதாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2702"/>
+      <location filename="../CommandView.cpp" line="2773"/>
       <source>Decreases the zoom factor by a fixed amount</source>
       <translation>சூம் காரணியை ஒரு நிலையான அளவு குறைக்கிறது</translation>
     </message>
@@ -10041,7 +10126,7 @@ the current copy will be lost.
   <context>
     <name>Std_Delete</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1520"/>
+      <location filename="../CommandDoc.cpp" line="1590"/>
       <source>The following referencing objects might break.
 
 Continue?
@@ -10052,80 +10137,80 @@ Continue?
 </translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1534"/>
-      <source>Object dependencies</source>
-      <translation>பொருள் சார்புகள்</translation>
+      <location filename="../CommandDoc.cpp" line="1604"/>
+      <source>Object Dependencies</source>
+      <translation type="unfinished">Object Dependencies</translation>
     </message>
   </context>
   <context>
     <name>Std_DrawStyle</name>
     <message>
-      <location filename="../CommandView.cpp" line="779"/>
-      <source>&amp;1 As is</source>
-      <translation>&amp;1 அப்படியே</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="780"/>
+      <location filename="../CommandView.cpp" line="846"/>
       <source>Normal mode</source>
       <translation>இயல்பான பயன்முறை</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="782"/>
-      <source>&amp;2 Points</source>
-      <translation>&amp;2 புள்ளிகள்</translation>
+      <location filename="../CommandView.cpp" line="845"/>
+      <source>As Is</source>
+      <translation type="unfinished">As Is</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="785"/>
-      <source>&amp;3 Wireframe</source>
-      <translation>&amp;3 வயர்ஃப்ரேம்</translation>
+      <location filename="../CommandView.cpp" line="848"/>
+      <source>Points</source>
+      <translation>பிரிவகம்</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="788"/>
-      <source>&amp;4 Hidden line</source>
-      <translation>&amp;4 மறைக்கப்பட்ட வரி</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="791"/>
-      <source>&amp;5 No shading</source>
-      <translation>&amp;5 நிழல் இல்லை</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="794"/>
-      <source>&amp;6 Shaded</source>
-      <translation>&amp;6 சேடட்</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="797"/>
-      <source>&amp;7 Flat lines</source>
-      <translation>&amp;7 தட்டையான கோடுகள்</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="783"/>
+      <location filename="../CommandView.cpp" line="849"/>
       <source>Points mode</source>
       <translation>புள்ளிகள் முறை</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="786"/>
+      <location filename="../CommandView.cpp" line="851"/>
+      <source>Wireframe</source>
+      <translation>வயர்ஃப்ரேம்</translation>
+    </message>
+    <message>
+      <location filename="../CommandView.cpp" line="852"/>
       <source>Wireframe mode</source>
       <translation>வயர்ஃப்ரேம் பயன்முறை</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="789"/>
+      <location filename="../CommandView.cpp" line="854"/>
+      <source>Hidden Line</source>
+      <translation type="unfinished">Hidden Line</translation>
+    </message>
+    <message>
+      <location filename="../CommandView.cpp" line="855"/>
       <source>Hidden line mode</source>
       <translation>மறைக்கப்பட்ட வரி முறை</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="792"/>
+      <location filename="../CommandView.cpp" line="857"/>
+      <source>No Shading</source>
+      <translation type="unfinished">No Shading</translation>
+    </message>
+    <message>
+      <location filename="../CommandView.cpp" line="858"/>
       <source>No shading mode</source>
       <translation>நிழல் முறை இல்லை</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="795"/>
+      <location filename="../CommandView.cpp" line="860"/>
+      <source>Shaded</source>
+      <translation>நிழலாடியது</translation>
+    </message>
+    <message>
+      <location filename="../CommandView.cpp" line="861"/>
       <source>Shaded mode</source>
       <translation>சேடட் பயன்முறை</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="798"/>
+      <location filename="../CommandView.cpp" line="863"/>
+      <source>Flat Lines</source>
+      <translation>பிளாட் கோடுகள்</translation>
+    </message>
+    <message>
+      <location filename="../CommandView.cpp" line="864"/>
       <source>Flat lines mode</source>
       <translation>தட்டையான கோடுகள் முறை</translation>
     </message>
@@ -10133,12 +10218,12 @@ Continue?
   <context>
     <name>Std_DuplicateSelection</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1344"/>
-      <source>Object dependencies</source>
-      <translation>பொருள் சார்புகள்</translation>
+      <location filename="../CommandDoc.cpp" line="1392"/>
+      <source>Object Dependencies</source>
+      <translation type="unfinished">Object Dependencies</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1345"/>
+      <location filename="../CommandDoc.cpp" line="1393"/>
       <source>To link to external objects, the document must be saved at least once.
 Save the document now?</source>
       <translation>வெளிப்புற பொருட்களுடன் இணைக்க, ஆவணம் ஒரு முறையாவது சேமிக்கப்பட வேண்டும். 
@@ -10148,7 +10233,7 @@ Save the document now?</source>
   <context>
     <name>Std_Group</name>
     <message>
-      <location filename="../CommandStructure.cpp" line="140"/>
+      <location filename="../CommandStructure.cpp" line="142"/>
       <source>Group</source>
       <translation>குழு</translation>
     </message>
@@ -10322,12 +10407,12 @@ Save the document now?</source>
   <context>
     <name>Gui::MDIView</name>
     <message>
-      <location filename="../MDIView.cpp" line="286"/>
+      <location filename="../MDIView.cpp" line="285"/>
       <source>Export PDF</source>
       <translation>PDFஐ ஏற்றுமதி செய்</translation>
     </message>
     <message>
-      <location filename="../MDIView.cpp" line="288"/>
+      <location filename="../MDIView.cpp" line="287"/>
       <source>PDF file</source>
       <translation>PDF கோப்பு</translation>
     </message>
@@ -10856,12 +10941,12 @@ FreeCAD தொடங்கப்பட்ட பிறகு</translation>
   <context>
     <name>StdViewLoadImage</name>
     <message>
-      <location filename="../CommandView.cpp" line="2219"/>
+      <location filename="../CommandView.cpp" line="2285"/>
       <source>&amp;Load Image…</source>
       <translation>&amp;படத்தை ஏற்றவும்…</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2220"/>
+      <location filename="../CommandView.cpp" line="2286"/>
       <source>Loads an image</source>
       <translation>படத்தை ஏற்றுகிறது</translation>
     </message>
@@ -10869,12 +10954,12 @@ FreeCAD தொடங்கப்பட்ட பிறகு</translation>
   <context>
     <name>NaviCubeDraggableCmd</name>
     <message>
-      <location filename="../NaviCube.cpp" line="1337"/>
+      <location filename="../NaviCube.cpp" line="1142"/>
       <source>Movable Navigation Cube</source>
       <translation>நகரக்கூடிய வழிசெலுத்தல் கன நாற்கை</translation>
     </message>
     <message>
-      <location filename="../NaviCube.cpp" line="1338"/>
+      <location filename="../NaviCube.cpp" line="1143"/>
       <source>Drag and place NaviCube</source>
       <translation>NaviCube ஐ இழுத்து வைக்கவும்</translation>
     </message>
@@ -10882,32 +10967,32 @@ FreeCAD தொடங்கப்பட்ட பிறகு</translation>
   <context>
     <name>NaviCubeSettings</name>
     <message>
-      <location filename="../View3DSettings.cpp" line="660"/>
+      <location filename="../View3DSettings.cpp" line="664"/>
       <source>FRONT</source>
       <translation>முன்</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="662"/>
+      <location filename="../View3DSettings.cpp" line="666"/>
       <source>TOP</source>
       <translation>மேலே</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="664"/>
+      <location filename="../View3DSettings.cpp" line="668"/>
       <source>RIGHT</source>
       <translation>வலது</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="666"/>
+      <location filename="../View3DSettings.cpp" line="670"/>
       <source>REAR</source>
       <translation>பின்புறம்</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="668"/>
+      <location filename="../View3DSettings.cpp" line="672"/>
       <source>BOTTOM</source>
       <translation>கீழே</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="670"/>
+      <location filename="../View3DSettings.cpp" line="674"/>
       <source>LEFT</source>
       <translation>இடது</translation>
     </message>
@@ -10915,8 +11000,8 @@ FreeCAD தொடங்கப்பட்ட பிறகு</translation>
   <context>
     <name>Gui::ExpLineEdit</name>
     <message>
-      <location filename="../Widgets.cpp" line="1617"/>
-      <location filename="../Widgets.cpp" line="1691"/>
+      <location filename="../Widgets.cpp" line="1618"/>
+      <location filename="../Widgets.cpp" line="1692"/>
       <source>An error occurred -- see Report View for information</source>
       <translation>பிழை ஏற்பட்டது -- தகவலுக்கு அறிக்கை காட்சியைப் பார்க்கவும்</translation>
     </message>
@@ -11894,12 +11979,12 @@ the region are non-opaque.</source>
   <context>
     <name>StdCmdProperties</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1914"/>
+      <location filename="../CommandDoc.cpp" line="2003"/>
       <source>Propert&amp;ies</source>
       <translation>பண்புகள்</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1915"/>
+      <location filename="../CommandDoc.cpp" line="2004"/>
       <source>Shows the property view, which displays the properties of the selected object.</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட பொருளின் பண்புகளைக் காட்டும் சொத்துக் காட்சியைக் காட்டுகிறது.</translation>
     </message>
@@ -11907,12 +11992,12 @@ the region are non-opaque.</source>
   <context>
     <name>StdCmdToggleFreeze</name>
     <message>
-      <location filename="../CommandFeat.cpp" line="157"/>
+      <location filename="../CommandFeat.cpp" line="189"/>
       <source>Toggle Freeze</source>
       <translation>முடக்கத்தை நிலைமாற்று</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="160"/>
+      <location filename="../CommandFeat.cpp" line="192"/>
       <source>Toggles freeze state of the selected objects. A frozen object is not recomputed when its parents change.</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட பொருட்களின் உறைநிலை நிலையை மாற்றுகிறது. உறைந்த பொருள் அதன் பெற்றோர் மாறும்போது மீண்டும் கணக்கிடப்படாது.</translation>
     </message>
@@ -11928,12 +12013,12 @@ the region are non-opaque.</source>
   <context>
     <name>StdCmdReloadStyleSheet</name>
     <message>
-      <location filename="../CommandStd.cpp" line="955"/>
+      <location filename="../CommandStd.cpp" line="961"/>
       <source>&amp;Reload Stylesheet</source>
       <translation>&amp;ச்டைல்சீட்டை மீண்டும் ஏற்றவும்</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="956"/>
+      <location filename="../CommandStd.cpp" line="962"/>
       <source>Reloads the current stylesheet</source>
       <translation>தற்போதைய நடைதாளை மீண்டும் ஏற்றுகிறது</translation>
     </message>
@@ -12205,12 +12290,12 @@ the region are non-opaque.</source>
   <context>
     <name>StdCmdRestartInSafeMode</name>
     <message>
-      <location filename="../CommandStd.cpp" line="339"/>
+      <location filename="../CommandStd.cpp" line="345"/>
       <source>Restart in Safe Mode</source>
       <translation>பாதுகாப்பான பயன்முறையில் மீண்டும் தொடங்கவும்</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="340"/>
+      <location filename="../CommandStd.cpp" line="346"/>
       <source>Starts FreeCAD without any modules or plugins loaded</source>
       <translation>எந்த தொகுதிகள் அல்லது செருகுநிரல்கள் ஏற்றப்படாமல் FreeCAD ஐத் தொடங்குகிறது</translation>
     </message>
@@ -12218,12 +12303,12 @@ the region are non-opaque.</source>
   <context>
     <name>StdCmdOnlineHelp</name>
     <message>
-      <location filename="../CommandStd.cpp" line="537"/>
+      <location filename="../CommandStd.cpp" line="543"/>
       <source>&amp;Help</source>
       <translation>&amp;உதவி</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="538"/>
+      <location filename="../CommandStd.cpp" line="544"/>
       <source>Opens the Help documentation</source>
       <translation>உதவி ஆவணத்தைத் திறக்கிறது</translation>
     </message>
@@ -12231,12 +12316,12 @@ the region are non-opaque.</source>
   <context>
     <name>StdCmdFreeCADWebsite</name>
     <message>
-      <location filename="../CommandStd.cpp" line="657"/>
+      <location filename="../CommandStd.cpp" line="663"/>
       <source>FreeCAD W&amp;ebsite</source>
       <translation>FreeCAD இணையதளம்</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="658"/>
+      <location filename="../CommandStd.cpp" line="664"/>
       <source>Navigates to the official FreeCAD website</source>
       <translation>அதிகாரப்பூர்வ FreeCAD இணையதளத்திற்கு செல்லவும்</translation>
     </message>
@@ -12244,12 +12329,12 @@ the region are non-opaque.</source>
   <context>
     <name>StdCmdFreeCADUserHub</name>
     <message>
-      <location filename="../CommandStd.cpp" line="688"/>
+      <location filename="../CommandStd.cpp" line="694"/>
       <source>&amp;User Documentation</source>
       <translation>&amp;பயனர் ஆவணம்</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="689"/>
+      <location filename="../CommandStd.cpp" line="695"/>
       <source>Opens the documentation for users</source>
       <translation>பயனர்களுக்கான ஆவணத்தைத் திறக்கிறது</translation>
     </message>
@@ -12257,12 +12342,12 @@ the region are non-opaque.</source>
   <context>
     <name>StdCmdReportBug</name>
     <message>
-      <location filename="../CommandStd.cpp" line="751"/>
+      <location filename="../CommandStd.cpp" line="757"/>
       <source>Report an &amp;Issue</source>
       <translation>&amp;சிக்கலைப் புகாரளிக்கவும்</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="752"/>
+      <location filename="../CommandStd.cpp" line="758"/>
       <source>Opens the bugtracker to report an issue</source>
       <translation>சிக்கலைப் புகாரளிக்க பக்ட்ராக்கரைத் திறக்கும்</translation>
     </message>
@@ -12270,12 +12355,12 @@ the region are non-opaque.</source>
   <context>
     <name>StdCmdTransformManip</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1758"/>
+      <location filename="../CommandDoc.cpp" line="1840"/>
       <source>Trans&amp;form</source>
       <translation>மாற்றம்&amp;வடிவம்</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1759"/>
+      <location filename="../CommandDoc.cpp" line="1841"/>
       <source>Transforms the selected object in the 3D view</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட பொருளை 3D காட்சியில் மாற்றுகிறது</translation>
     </message>
@@ -12514,23 +12599,23 @@ the region are non-opaque.</source>
       <translation>உலகளாவிய</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="407"/>
+      <location filename="../TaskTransform.cpp" line="405"/>
       <source>Pick Reference</source>
       <translation>குறிப்பைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="408"/>
+      <location filename="../TaskTransform.cpp" line="406"/>
       <source>Move to Other Object</source>
       <translation>மற்ற பொருளுக்கு நகர்த்தவும்</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="415"/>
+      <location filename="../TaskTransform.cpp" line="413"/>
       <source>Select face, edge, or vertex…</source>
       <translation>முகம், விளிம்பு அல்லது உச்சியைத் தேர்ந்தெடுக்கவும்...</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="416"/>
-      <location filename="../TaskTransform.cpp" line="422"/>
+      <location filename="../TaskTransform.cpp" line="414"/>
+      <location filename="../TaskTransform.cpp" line="420"/>
       <source>Cancel</source>
       <translation>ரத்துசெய்</translation>
     </message>
@@ -12838,22 +12923,22 @@ the region are non-opaque.</source>
   <context>
     <name>Gui::Application</name>
     <message>
-      <location filename="../Application.cpp" line="427"/>
+      <location filename="../Application.cpp" line="433"/>
       <source>Built-in Parameters</source>
       <translation>உள்ளமைக்கப்பட்ட அளவுருக்கள்</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="402"/>
+      <location filename="../Application.cpp" line="408"/>
       <source>Theme Parameters</source>
       <translation>கருப்பொருள் அளவுருக்கள்</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="436"/>
+      <location filename="../Application.cpp" line="442"/>
       <source>Theme Parameters - Fallback</source>
       <translation>கருப்பொருள் அளவுருக்கள் - வீழ்ச்சி</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="448"/>
+      <location filename="../Application.cpp" line="454"/>
       <source>User Parameters</source>
       <translation>பயனர் அளவுருக்கள்</translation>
     </message>
@@ -12869,12 +12954,12 @@ the region are non-opaque.</source>
   <context>
     <name>StdCmdDependencyGraph</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="628"/>
+      <location filename="../CommandDoc.cpp" line="663"/>
       <source>Dependency Gra&amp;ph</source>
       <translation>சார்பு வரைபடம்</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="630"/>
+      <location filename="../CommandDoc.cpp" line="665"/>
       <source>Shows the dependency graph of the objects in the active document</source>
       <translation>செயலில் உள்ள ஆவணத்தில் உள்ள பொருட்களின் சார்பு வரைபடத்தைக் காட்டுகிறது</translation>
     </message>
@@ -12882,7 +12967,7 @@ the region are non-opaque.</source>
   <context>
     <name>Std_DependencyGraph</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="642"/>
+      <location filename="../CommandDoc.cpp" line="677"/>
       <source>Dependency Graph</source>
       <translation>சார்பு வரைபடம்</translation>
     </message>
@@ -12890,12 +12975,12 @@ the region are non-opaque.</source>
   <context>
     <name>StdCmdExportDependencyGraph</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="661"/>
-      <source>Export Dependency &amp;Graph</source>
-      <translation>ஏற்றுமதி சார்பு &amp; வரைபடம்</translation>
+      <location filename="../CommandDoc.cpp" line="696"/>
+      <source>Export Dependency &amp;Graph…</source>
+      <translation type="unfinished">Export Dependency &amp;Graph…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="662"/>
+      <location filename="../CommandDoc.cpp" line="697"/>
       <source>Exports the dependency graph as a Graphviz (.gv) file</source>
       <translation>சார்பு வரைபடத்தை Graphviz (.gv) கோப்பாக ஏற்றுமதி செய்கிறது</translation>
     </message>
@@ -12903,12 +12988,12 @@ the region are non-opaque.</source>
   <context>
     <name>StdCmdSaveAs</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="769"/>
+      <location filename="../CommandDoc.cpp" line="814"/>
       <source>Save &amp;As…</source>
       <translation>இவ்வாறு சேமி...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="770"/>
+      <location filename="../CommandDoc.cpp" line="815"/>
       <source>Saves the active document under a new file name</source>
       <translation>செயலில் உள்ள ஆவணத்தை புதிய கோப்பு பெயரில் சேமிக்கிறது</translation>
     </message>
@@ -12916,12 +13001,12 @@ the region are non-opaque.</source>
   <context>
     <name>StdCmdSaveCopy</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="798"/>
-      <source>Save Cop&amp;y</source>
-      <translation>நகலெடு சேமி</translation>
+      <location filename="../CommandDoc.cpp" line="844"/>
+      <source>Save a Cop&amp;y…</source>
+      <translation type="unfinished">Save a Cop&amp;y…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="800"/>
+      <location filename="../CommandDoc.cpp" line="846"/>
       <source>Saves a copy of the active document under a new file name</source>
       <translation>செயலில் உள்ள ஆவணத்தின் நகலை புதிய கோப்பு பெயரில் சேமிக்கிறது</translation>
     </message>
@@ -12929,17 +13014,17 @@ the region are non-opaque.</source>
   <context>
     <name>Std_Revert</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="867"/>
+      <location filename="../CommandDoc.cpp" line="915"/>
       <source>Revert Document</source>
       <translation>ஆவணத்தை மாற்றவும்</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="869"/>
+      <location filename="../CommandDoc.cpp" line="917"/>
       <source>This will discard all the changes since the last file save.</source>
       <translation>இது கடைசியாக கோப்பு சேமிப்பிலிருந்து அனைத்து மாற்றங்களையும் நிராகரிக்கும்.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="871"/>
+      <location filename="../CommandDoc.cpp" line="919"/>
       <source>Continue?</source>
       <translation>தொடரவா?</translation>
     </message>
@@ -12947,12 +13032,12 @@ the region are non-opaque.</source>
   <context>
     <name>StdCmdProjectInfo</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="896"/>
+      <location filename="../CommandDoc.cpp" line="944"/>
       <source>Doc&amp;ument Information</source>
       <translation>ஆவணம் மற்றும் செய்தி</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="898"/>
+      <location filename="../CommandDoc.cpp" line="946"/>
       <source>Shows information about the active document</source>
       <translation>செயலில் உள்ள ஆவணத்தைப் பற்றிய தகவலைக் காட்டுகிறது</translation>
     </message>
@@ -12960,12 +13045,12 @@ the region are non-opaque.</source>
   <context>
     <name>StdCmdProjectUtil</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="928"/>
+      <location filename="../CommandDoc.cpp" line="976"/>
       <source>Do&amp;cument Utility</source>
       <translation>ஆவண பயன்பாடு</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="930"/>
+      <location filename="../CommandDoc.cpp" line="978"/>
       <source>Extracts or creates document files</source>
       <translation>ஆவணக் கோப்புகளைப் பிரித்தெடுக்கிறது அல்லது உருவாக்குகிறது</translation>
     </message>
@@ -12973,12 +13058,12 @@ the region are non-opaque.</source>
   <context>
     <name>StdCmdPrint</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="956"/>
+      <location filename="../CommandDoc.cpp" line="1004"/>
       <source>&amp;Print</source>
       <translation>&amp;அச்சிடு</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="958"/>
+      <location filename="../CommandDoc.cpp" line="1006"/>
       <source>Prints the active document</source>
       <translation>செயலில் உள்ள ஆவணத்தை அச்சிடுகிறது</translation>
     </message>
@@ -12986,12 +13071,12 @@ the region are non-opaque.</source>
   <context>
     <name>StdCmdPrintPreview</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="989"/>
+      <location filename="../CommandDoc.cpp" line="1037"/>
       <source>Print Previe&amp;w</source>
       <translation>அச்சு முன்னோட்டம்</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="991"/>
+      <location filename="../CommandDoc.cpp" line="1039"/>
       <source>Previews the active document before printing</source>
       <translation>அச்சிடுவதற்கு முன் செயலில் உள்ள ஆவணத்தை முன்னோட்டமிடுகிறது</translation>
     </message>
@@ -12999,12 +13084,12 @@ the region are non-opaque.</source>
   <context>
     <name>StdCmdPrintPdf</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1020"/>
+      <location filename="../CommandDoc.cpp" line="1068"/>
       <source>Export P&amp;DF</source>
       <translation>ஏற்றுமதி P&amp;DF</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1022"/>
+      <location filename="../CommandDoc.cpp" line="1070"/>
       <source>Exports the active document as a PDF file</source>
       <translation>செயலில் உள்ள ஆவணத்தை PDF கோப்பாக ஏற்றுமதி செய்கிறது</translation>
     </message>
@@ -13012,12 +13097,12 @@ the region are non-opaque.</source>
   <context>
     <name>StdCmdDuplicateSelection</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1282"/>
+      <location filename="../CommandDoc.cpp" line="1330"/>
       <source>Duplicate Selecti&amp;on</source>
       <translation>நகல் தேர்வு</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1283"/>
+      <location filename="../CommandDoc.cpp" line="1331"/>
       <source>Duplicates the selected objects to the active document</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட பொருட்களை செயலில் உள்ள ஆவணத்திற்கு நகலெடுக்கிறது</translation>
     </message>
@@ -13025,12 +13110,12 @@ the region are non-opaque.</source>
   <context>
     <name>StdCmdRefresh</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1608"/>
+      <location filename="../CommandDoc.cpp" line="1684"/>
       <source>Recompute</source>
       <translation>மறு கணக்கீடு</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1609"/>
+      <location filename="../CommandDoc.cpp" line="1685"/>
       <source>Recomputes the active document</source>
       <translation>செயலில் உள்ள ஆவணத்தை மீண்டும் கணக்கிடுகிறது</translation>
     </message>
@@ -13038,7 +13123,7 @@ the region are non-opaque.</source>
   <context>
     <name>Std_Refresh</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1643"/>
+      <location filename="../CommandDoc.cpp" line="1720"/>
       <source>The document contains dependency cycles.
 Check the report view for more details.
 
@@ -13052,12 +13137,12 @@ Proceed?</source>
   <context>
     <name>StdCmdTransform</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1673"/>
+      <location filename="../CommandDoc.cpp" line="1750"/>
       <source>Transform</source>
       <translation>உருமாற்று, உருமாற்றம்</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1675"/>
+      <location filename="../CommandDoc.cpp" line="1752"/>
       <source>Transforms the selected object</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட பொருளை மாற்றுகிறது</translation>
     </message>
@@ -13065,12 +13150,12 @@ Proceed?</source>
   <context>
     <name>StdCmdPlacement</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1700"/>
+      <location filename="../CommandDoc.cpp" line="1777"/>
       <source>P&amp;lacement</source>
       <translation>பி&amp;லேச்மென்ட்</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1702"/>
+      <location filename="../CommandDoc.cpp" line="1779"/>
       <source>Opens the placement editor to adjust the placement of the selected object</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட பொருளின் இடத்தை சரிசெய்ய, வேலை வாய்ப்பு திருத்தியைத் திறக்கும்</translation>
     </message>
@@ -13078,12 +13163,12 @@ Proceed?</source>
   <context>
     <name>StdCmdAlignment</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1799"/>
+      <location filename="../CommandDoc.cpp" line="1888"/>
       <source>Ali&amp;gn To…</source>
       <translation>சீரமைக்கவும்…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1801"/>
+      <location filename="../CommandDoc.cpp" line="1890"/>
       <source>Aligns the selected objects</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட பொருட்களை சீரமைக்கிறது</translation>
     </message>
@@ -13091,12 +13176,12 @@ Proceed?</source>
   <context>
     <name>StdCmdRandomColor</name>
     <message>
-      <location filename="../CommandFeat.cpp" line="77"/>
+      <location filename="../CommandFeat.cpp" line="109"/>
       <source>Random &amp;Color</source>
       <translation>சீரற்ற நிறம்</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="78"/>
+      <location filename="../CommandFeat.cpp" line="110"/>
       <source>Assigns random diffuse colors for the selected objects</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட பொருட்களுக்கு சீரற்ற பரவலான வண்ணங்களை ஒதுக்குகிறது</translation>
     </message>
@@ -13104,12 +13189,12 @@ Proceed?</source>
   <context>
     <name>StdCmdToggleSkipRecompute</name>
     <message>
-      <location filename="../CommandFeat.cpp" line="310"/>
+      <location filename="../CommandFeat.cpp" line="342"/>
       <source>Skip Recomputes</source>
       <translation>மறுகணிப்புகளைத் தவிர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="312"/>
+      <location filename="../CommandFeat.cpp" line="344"/>
       <source>Enables or disables the recomputations of the document</source>
       <translation>ஆவணத்தின் மறு கணக்கீடுகளை இயக்குகிறது அல்லது முடக்குகிறது</translation>
     </message>
@@ -13117,12 +13202,12 @@ Proceed?</source>
   <context>
     <name>StdCmdLinkMakeGroup</name>
     <message>
-      <location filename="../CommandLink.cpp" line="84"/>
+      <location filename="../CommandLink.cpp" line="86"/>
       <source>Link Group</source>
       <translation>இணைப்பு குழு</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="85"/>
+      <location filename="../CommandLink.cpp" line="87"/>
       <source>Creates a group of links</source>
       <translation>இணைப்புகளின் குழுவை உருவாக்குகிறது</translation>
     </message>
@@ -13130,12 +13215,12 @@ Proceed?</source>
   <context>
     <name>StdCmdLinkMake</name>
     <message>
-      <location filename="../CommandLink.cpp" line="258"/>
+      <location filename="../CommandLink.cpp" line="260"/>
       <source>Make Link</source>
       <translation>இணைப்பை உருவாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="259"/>
+      <location filename="../CommandLink.cpp" line="261"/>
       <source>A link is an object that references another object, either within the same or in another document. Unlike clones, links reference the original shape directly, making them more memory-efficient, which helps with the creation of complex assemblies.</source>
       <translation>இணைப்பு என்பது மற்றொரு பொருளைக் குறிப்பிடும் ஒரு பொருள், அதே அல்லது மற்றொரு ஆவணத்தில் உள்ளது. குளோன்களைப் போலல்லாமல், இணைப்புகள் அசல் வடிவத்தை நேரடியாகக் குறிப்பிடுகின்றன, மேலும் அவை நினைவாற்றல் திறன் கொண்டதாக ஆக்குகின்றன, இது சிக்கலான கூட்டங்களை உருவாக்க உதவுகிறது.</translation>
     </message>
@@ -13143,12 +13228,12 @@ Proceed?</source>
   <context>
     <name>StdCmdLinkMakeRelative</name>
     <message>
-      <location filename="../CommandLink.cpp" line="343"/>
+      <location filename="../CommandLink.cpp" line="355"/>
       <source>Make Sub-Link</source>
       <translation>துணை இணைப்பை உருவாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="344"/>
+      <location filename="../CommandLink.cpp" line="356"/>
       <source>Creates a sub-object or sub-element link</source>
       <translation>துணை பொருள் அல்லது துணை உறுப்பு இணைப்பை உருவாக்குகிறது</translation>
     </message>
@@ -13156,12 +13241,12 @@ Proceed?</source>
   <context>
     <name>StdCmdLinkReplace</name>
     <message>
-      <location filename="../CommandLink.cpp" line="594"/>
+      <location filename="../CommandLink.cpp" line="612"/>
       <source>Replace With Link</source>
       <translation>இணைப்புடன் மாற்றவும்</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="595"/>
+      <location filename="../CommandLink.cpp" line="613"/>
       <source>Replaces the selected objects with links</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட பொருட்களை இணைப்புகளுடன் மாற்றுகிறது</translation>
     </message>
@@ -13169,12 +13254,12 @@ Proceed?</source>
   <context>
     <name>StdCmdLinkImport</name>
     <message>
-      <location filename="../CommandLink.cpp" line="646"/>
+      <location filename="../CommandLink.cpp" line="664"/>
       <source>Import Links</source>
       <translation>இணைப்புகளை இறக்குமதி செய்யவும்</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="647"/>
+      <location filename="../CommandLink.cpp" line="665"/>
       <source>Imports selected external links</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட வெளிப்புற இணைப்புகளை இறக்குமதி செய்கிறது</translation>
     </message>
@@ -13182,12 +13267,12 @@ Proceed?</source>
   <context>
     <name>StdCmdLinkImportAll</name>
     <message>
-      <location filename="../CommandLink.cpp" line="720"/>
+      <location filename="../CommandLink.cpp" line="738"/>
       <source>Import All Links</source>
       <translation>அனைத்து இணைப்புகளையும் இறக்குமதி செய்யவும்</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="721"/>
+      <location filename="../CommandLink.cpp" line="739"/>
       <source>Imports all links of the active document</source>
       <translation>செயலில் உள்ள ஆவணத்தின் அனைத்து இணைப்புகளையும் இறக்குமதி செய்கிறது</translation>
     </message>
@@ -13195,12 +13280,12 @@ Proceed?</source>
   <context>
     <name>StdCmdLinkSelectLinked</name>
     <message>
-      <location filename="../CommandLink.cpp" line="768"/>
+      <location filename="../CommandLink.cpp" line="786"/>
       <source>&amp;Go to Linked Object</source>
       <translation>இணைக்கப்பட்ட பொருளுக்குச் செல்லவும்</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="769"/>
+      <location filename="../CommandLink.cpp" line="787"/>
       <source>Selects the linked object and switches to its original document</source>
       <translation>இணைக்கப்பட்ட பொருளைத் தேர்ந்தெடுத்து அதன் அசல் ஆவணத்திற்கு மாறுகிறது</translation>
     </message>
@@ -13208,12 +13293,12 @@ Proceed?</source>
   <context>
     <name>StdCmdLinkSelectLinkedFinal</name>
     <message>
-      <location filename="../CommandLink.cpp" line="916"/>
+      <location filename="../CommandLink.cpp" line="934"/>
       <source>Go to &amp;Deepest Linked Object</source>
       <translation>&amp;ஆழமான இணைக்கப்பட்ட பொருளுக்குச் செல்லவும்</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="917"/>
+      <location filename="../CommandLink.cpp" line="935"/>
       <source>Selects the deepest linked object and switches to its original document</source>
       <translation>ஆழமாக இணைக்கப்பட்ட பொருளைத் தேர்ந்தெடுத்து அதன் அசல் ஆவணத்திற்கு மாறுகிறது</translation>
     </message>
@@ -13221,12 +13306,12 @@ Proceed?</source>
   <context>
     <name>StdCmdLinkSelectAllLinks</name>
     <message>
-      <location filename="../CommandLink.cpp" line="956"/>
+      <location filename="../CommandLink.cpp" line="974"/>
       <source>Select &amp;All Links</source>
       <translation>அனைத்து இணைப்புகளையும் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="957"/>
+      <location filename="../CommandLink.cpp" line="975"/>
       <source>Selects all links to the current selected object</source>
       <translation>தற்போதைய தேர்ந்தெடுக்கப்பட்ட பொருளுக்கான அனைத்து இணைப்புகளையும் தேர்ந்தெடுக்கிறது</translation>
     </message>
@@ -13234,12 +13319,12 @@ Proceed?</source>
   <context>
     <name>StdCmdLinkActions</name>
     <message>
-      <location filename="../CommandLink.cpp" line="1029"/>
+      <location filename="../CommandLink.cpp" line="1047"/>
       <source>Link Actions</source>
       <translation>இணைப்பு நடவடிக்கைகள்</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="1030"/>
+      <location filename="../CommandLink.cpp" line="1048"/>
       <source>Commands that operate on link objects</source>
       <translation>இணைப்புப் பொருட்களில் செயல்படும் கட்டளைகள்</translation>
     </message>
@@ -13364,12 +13449,12 @@ Proceed?</source>
   <context>
     <name>StdCmdRecentMacros</name>
     <message>
-      <location filename="../CommandStd.cpp" line="186"/>
+      <location filename="../CommandStd.cpp" line="191"/>
       <source>&amp;Recent Macros</source>
       <translation>&amp;சமீபத்திய மேக்ரோக்கள்</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="187"/>
+      <location filename="../CommandStd.cpp" line="192"/>
       <source>Displays the list of recently used macros</source>
       <translation>அண்மைக் காலத்தில் பயன்படுத்தப்பட்ட மேக்ரோக்களின் பட்டியலைக் காட்டுகிறது</translation>
     </message>
@@ -13377,12 +13462,12 @@ Proceed?</source>
   <context>
     <name>StdCmdDlgParameter</name>
     <message>
-      <location filename="../CommandStd.cpp" line="387"/>
+      <location filename="../CommandStd.cpp" line="393"/>
       <source>E&amp;dit Parameters</source>
       <translation>மின்&amp;இட் அளவுருக்கள்</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="389"/>
+      <location filename="../CommandStd.cpp" line="395"/>
       <source>Opens a dialog to edit the parameters</source>
       <translation>அளவுருக்களை திருத்த ஒரு உரையாடலை திறக்கிறது</translation>
     </message>
@@ -13390,12 +13475,12 @@ Proceed?</source>
   <context>
     <name>StdCmdDlgPreferences</name>
     <message>
-      <location filename="../CommandStd.cpp" line="413"/>
+      <location filename="../CommandStd.cpp" line="419"/>
       <source>Prefere&amp;nces</source>
       <translation>விருப்பங்கள்</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="415"/>
+      <location filename="../CommandStd.cpp" line="421"/>
       <source>Opens a dialog to edit the preferences</source>
       <translation>விருப்பங்களைத் திருத்த ஒரு உரையாடலைத் திறக்கிறது</translation>
     </message>
@@ -13403,12 +13488,12 @@ Proceed?</source>
   <context>
     <name>StdCmdDlgCustomize</name>
     <message>
-      <location filename="../CommandStd.cpp" line="460"/>
-      <source>Cu&amp;stomize…</source>
-      <translation>கு&amp;ஆச்டமி...</translation>
+      <location filename="../CommandStd.cpp" line="466"/>
+      <source>Cu&amp;stomize</source>
+      <translation type="unfinished">Cu&amp;stomize</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="461"/>
+      <location filename="../CommandStd.cpp" line="467"/>
       <source>Opens a dialog to edit toolbars, shortcuts, and macros</source>
       <translation>கருவிப்பட்டிகள், குறுக்குவழிகள் மற்றும் மேக்ரோக்களை திருத்த ஒரு உரையாடலைத் திறக்கிறது</translation>
     </message>
@@ -13416,12 +13501,12 @@ Proceed?</source>
   <context>
     <name>StdCmdCommandLine</name>
     <message>
-      <location filename="../CommandStd.cpp" line="488"/>
+      <location filename="../CommandStd.cpp" line="494"/>
       <source>Command &amp;Line</source>
       <translation>கட்டளை வரி</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="490"/>
+      <location filename="../CommandStd.cpp" line="496"/>
       <source>Opens a command line interface in the console</source>
       <translation>கன்சோலில் கட்டளை வரி இடைமுகத்தைத் திறக்கிறது</translation>
     </message>
@@ -13429,12 +13514,12 @@ Proceed?</source>
   <context>
     <name>StdCmdFreeCADDonation</name>
     <message>
-      <location filename="../CommandStd.cpp" line="593"/>
+      <location filename="../CommandStd.cpp" line="599"/>
       <source>Donate to FreeCA&amp;D</source>
       <translation>FreeCA&amp;Dக்கு நன்கொடை அளியுங்கள்</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="594"/>
+      <location filename="../CommandStd.cpp" line="600"/>
       <source>Support the FreeCAD development</source>
       <translation>FreeCAD வளர்ச்சியை ஆதரிக்கவும்</translation>
     </message>
@@ -13442,12 +13527,12 @@ Proceed?</source>
   <context>
     <name>StdCmdDevHandbook</name>
     <message>
-      <location filename="../CommandStd.cpp" line="624"/>
+      <location filename="../CommandStd.cpp" line="630"/>
       <source>Developers Handbook</source>
       <translation>உருவாக்குபவர்கள் கையேடு</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="626"/>
+      <location filename="../CommandStd.cpp" line="632"/>
       <source>Handbook about FreeCAD development</source>
       <translation>FreeCAD மேம்பாடு பற்றிய கையேடு</translation>
     </message>
@@ -13455,12 +13540,12 @@ Proceed?</source>
   <context>
     <name>StdCmdTextDocument</name>
     <message>
-      <location filename="../CommandStd.cpp" line="780"/>
+      <location filename="../CommandStd.cpp" line="786"/>
       <source>Te&amp;xt Document</source>
       <translation>உரை ஆவணம்</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="781"/>
+      <location filename="../CommandStd.cpp" line="787"/>
       <source>Adds a text document to the active document</source>
       <translation>செயலில் உள்ள ஆவணத்தில் உரை ஆவணத்தைச் சேர்க்கிறது</translation>
     </message>
@@ -13468,12 +13553,12 @@ Proceed?</source>
   <context>
     <name>StdCmdUnitsCalculator</name>
     <message>
-      <location filename="../CommandStd.cpp" line="818"/>
+      <location filename="../CommandStd.cpp" line="824"/>
       <source>&amp;Units Converter</source>
       <translation>&amp;அலகுகள் மாற்றி</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="820"/>
+      <location filename="../CommandStd.cpp" line="826"/>
       <source>Starts the units converter</source>
       <translation>அலகு மாற்றியைத் தொடங்குகிறது</translation>
     </message>
@@ -13481,12 +13566,12 @@ Proceed?</source>
   <context>
     <name>StdCmdUserEditMode</name>
     <message>
-      <location filename="../CommandStd.cpp" line="859"/>
+      <location filename="../CommandStd.cpp" line="865"/>
       <source>Edit &amp;Mode</source>
       <translation>&amp;முறையைத் திருத்து</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="860"/>
+      <location filename="../CommandStd.cpp" line="866"/>
       <source>Defines behavior when editing an object from the tree view</source>
       <translation>மரக் காட்சியிலிருந்து ஒரு பொருளைத் திருத்தும்போது நடத்தையை வரையறுக்கிறது</translation>
     </message>
@@ -13507,12 +13592,12 @@ Proceed?</source>
   <context>
     <name>StdCmdGroup</name>
     <message>
-      <location filename="../CommandStructure.cpp" line="121"/>
+      <location filename="../CommandStructure.cpp" line="123"/>
       <source>New Group</source>
       <translation>புதிய குழு</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="122"/>
+      <location filename="../CommandStructure.cpp" line="124"/>
       <source>Creates a group, which is a general-purpose container to group objects in the tree view, regardless of their data type. It is a simple folder to organize the objects in a model.</source>
       <translation>ஒரு குழுவை உருவாக்குகிறது, இது தரவு வகையைப் பொருட்படுத்தாமல், ட்ரீ வியூவில் உள்ள பொருட்களைக் குழுவாக்குவதற்கான பொதுவான நோக்கத்திற்கான கொள்கலனாகும். ஒரு மாதிரியில் பொருட்களை ஒழுங்கமைக்க இது ஒரு எளிய கோப்புறை.</translation>
     </message>
@@ -13520,12 +13605,12 @@ Proceed?</source>
   <context>
     <name>StdCmdVarSet</name>
     <message>
-      <location filename="../CommandStructure.cpp" line="193"/>
+      <location filename="../CommandStructure.cpp" line="195"/>
       <source>Variable Set</source>
       <translation>மாறி தொகுப்பு</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="195"/>
+      <location filename="../CommandStructure.cpp" line="197"/>
       <source>Creates a variable set, which is an object that maintains a set of properties to be used as variables</source>
       <translation>ஒரு மாறி தொகுப்பை உருவாக்குகிறது, இது மாறிகளாகப் பயன்படுத்தப்படும் பண்புகளின் தொகுப்பைப் பராமரிக்கும் ஒரு பொருளாகும்</translation>
     </message>
@@ -13533,12 +13618,12 @@ Proceed?</source>
   <context>
     <name>StdCmdViewSaveCamera</name>
     <message>
-      <location filename="../CommandView.cpp" line="249"/>
+      <location filename="../CommandView.cpp" line="252"/>
       <source>Save Current Camera</source>
       <translation>தற்போதைய கேமராவைச் சேமிக்கவும்</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="250"/>
+      <location filename="../CommandView.cpp" line="253"/>
       <source>Saves the current camera settings</source>
       <translation>தற்போதைய கேமரா அமைப்புகளைச் சேமிக்கிறது</translation>
     </message>
@@ -13546,12 +13631,12 @@ Proceed?</source>
   <context>
     <name>StdCmdViewRestoreCamera</name>
     <message>
-      <location filename="../CommandView.cpp" line="275"/>
+      <location filename="../CommandView.cpp" line="278"/>
       <source>Restore Saved Camera</source>
       <translation>சேமித்த கேமராவை மீட்டெடுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="276"/>
+      <location filename="../CommandView.cpp" line="279"/>
       <source>Restores the saved camera settings</source>
       <translation>சேமித்த கேமரா அமைப்புகளை மீட்டெடுக்கிறது</translation>
     </message>
@@ -13559,12 +13644,12 @@ Proceed?</source>
   <context>
     <name>StdCmdToggleClipPlane</name>
     <message>
-      <location filename="../CommandView.cpp" line="642"/>
+      <location filename="../CommandView.cpp" line="679"/>
       <source>Clippin&amp;g View</source>
       <translation>கிளிப்பிங்&amp;g காட்சி</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="643"/>
+      <location filename="../CommandView.cpp" line="680"/>
       <source>Toggles clipping of the active view</source>
       <translation>செயலில் உள்ள காட்சியின் கிளிப்பிங்கை மாற்றுகிறது</translation>
     </message>
@@ -13572,12 +13657,12 @@ Proceed?</source>
   <context>
     <name>StdCmdDrawStyle</name>
     <message>
-      <location filename="../CommandView.cpp" line="699"/>
+      <location filename="../CommandView.cpp" line="765"/>
       <source>&amp;Draw Style</source>
       <translation>&amp;டிரா பாணி</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="700"/>
+      <location filename="../CommandView.cpp" line="766"/>
       <source>Changes the draw style of the objects</source>
       <translation>பொருட்களின் வரைதல் பாணியை மாற்றுகிறது</translation>
     </message>
@@ -13585,12 +13670,12 @@ Proceed?</source>
   <context>
     <name>StdCmdToggleVisibility</name>
     <message>
-      <location filename="../CommandView.cpp" line="906"/>
+      <location filename="../CommandView.cpp" line="972"/>
       <source>Toggle &amp;Visibility</source>
       <translation>&amp;பார்வையை நிலைமாற்று</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="907"/>
+      <location filename="../CommandView.cpp" line="973"/>
       <source>Toggles the visibility of the selection</source>
       <translation>தேர்வின் தெரிவுநிலையை மாற்றுகிறது</translation>
     </message>
@@ -13598,12 +13683,12 @@ Proceed?</source>
   <context>
     <name>StdCmdToggleTransparency</name>
     <message>
-      <location filename="../CommandView.cpp" line="940"/>
+      <location filename="../CommandView.cpp" line="1006"/>
       <source>Toggle Transparenc&amp;y</source>
       <translation>வெளிப்படைத்தன்மையை நிலைமாற்று</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="942"/>
+      <location filename="../CommandView.cpp" line="1008"/>
       <source>Toggles the transparency of the selected objects. Transparency can be fine-tuned in the appearance task dialog</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட பொருட்களின் வெளிப்படைத்தன்மையை மாற்றுகிறது. தோற்றப் பணி உரையாடலில் வெளிப்படைத்தன்மையை நன்றாகச் சரிசெய்யலாம்</translation>
     </message>
@@ -13611,12 +13696,12 @@ Proceed?</source>
   <context>
     <name>StdCmdToggleSelectability</name>
     <message>
-      <location filename="../CommandView.cpp" line="1053"/>
+      <location filename="../CommandView.cpp" line="1119"/>
       <source>Toggle Se&amp;lectability</source>
       <translation>தேர்வு&amp;நிலையை நிலைமாற்று</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1054"/>
+      <location filename="../CommandView.cpp" line="1120"/>
       <source>Toggles the property of the objects to get selected in the 3D view</source>
       <translation>3D காட்சியில் தேர்ந்தெடுக்கப்பட்ட பொருட்களின் பண்புகளை நிலைமாற்றுகிறது</translation>
     </message>
@@ -13624,12 +13709,12 @@ Proceed?</source>
   <context>
     <name>StdCmdShowSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="1115"/>
+      <location filename="../CommandView.cpp" line="1181"/>
       <source>Sho&amp;w Selection</source>
       <translation>சோ&amp;வ் தேர்வு</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1116"/>
+      <location filename="../CommandView.cpp" line="1182"/>
       <source>Shows all selected objects</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட அனைத்து பொருட்களையும் காட்டுகிறது</translation>
     </message>
@@ -13637,12 +13722,12 @@ Proceed?</source>
   <context>
     <name>StdCmdHideSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="1143"/>
+      <location filename="../CommandView.cpp" line="1209"/>
       <source>&amp;Hide Selection</source>
       <translation>&amp;தேர்வை மறை</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1144"/>
+      <location filename="../CommandView.cpp" line="1210"/>
       <source>Hides all selected objects</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட அனைத்து பொருட்களையும் மறைக்கிறது</translation>
     </message>
@@ -13650,12 +13735,12 @@ Proceed?</source>
   <context>
     <name>StdCmdSelectVisibleObjects</name>
     <message>
-      <location filename="../CommandView.cpp" line="1171"/>
+      <location filename="../CommandView.cpp" line="1237"/>
       <source>&amp;Select Visible Objects</source>
       <translation>&amp;தெரியும் பொருள்களைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1172"/>
+      <location filename="../CommandView.cpp" line="1238"/>
       <source>Selects all visible objects in the active document</source>
       <translation>செயலில் உள்ள ஆவணத்தில் தெரியும் அனைத்து பொருட்களையும் தேர்ந்தெடுக்கிறது</translation>
     </message>
@@ -13663,12 +13748,12 @@ Proceed?</source>
   <context>
     <name>StdCmdToggleObjects</name>
     <message>
-      <location filename="../CommandView.cpp" line="1215"/>
+      <location filename="../CommandView.cpp" line="1281"/>
       <source>To&amp;ggle All Objects</source>
       <translation>அனைத்து பொருட்களையும்&amp;கிள்வதற்கு</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1216"/>
+      <location filename="../CommandView.cpp" line="1282"/>
       <source>Toggles the visibility of all objects in the active document</source>
       <translation>செயலில் உள்ள ஆவணத்தில் உள்ள அனைத்து பொருட்களின் தெரிவுநிலையையும் மாற்றுகிறது</translation>
     </message>
@@ -13676,12 +13761,12 @@ Proceed?</source>
   <context>
     <name>StdCmdShowObjects</name>
     <message>
-      <location filename="../CommandView.cpp" line="1267"/>
+      <location filename="../CommandView.cpp" line="1333"/>
       <source>Show &amp;All Objects</source>
       <translation>அனைத்து பொருட்களையும் காட்டு</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1268"/>
+      <location filename="../CommandView.cpp" line="1334"/>
       <source>Shows all objects in the document</source>
       <translation>ஆவணத்தில் உள்ள அனைத்து பொருட்களையும் காட்டுகிறது</translation>
     </message>
@@ -13689,12 +13774,12 @@ Proceed?</source>
   <context>
     <name>StdCmdHideObjects</name>
     <message>
-      <location filename="../CommandView.cpp" line="1309"/>
+      <location filename="../CommandView.cpp" line="1375"/>
       <source>Hide All &amp;Objects</source>
       <translation>அனைத்து &amp;பொருள்களையும் மறை</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1310"/>
+      <location filename="../CommandView.cpp" line="1376"/>
       <source>Hides all objects in the document</source>
       <translation>ஆவணத்தில் உள்ள அனைத்து பொருட்களையும் மறைக்கிறது</translation>
     </message>
@@ -13702,12 +13787,12 @@ Proceed?</source>
   <context>
     <name>StdCmdViewRotateRight</name>
     <message>
-      <location filename="../CommandView.cpp" line="1625"/>
+      <location filename="../CommandView.cpp" line="1691"/>
       <source>Rotates &amp;Right</source>
       <translation>வலதுபுறம் சுழற்று</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1626"/>
+      <location filename="../CommandView.cpp" line="1692"/>
       <source>Rotates the view by 90° clockwise</source>
       <translation>பார்வையை 90° கடிகார திசையில் சுழற்றுகிறது</translation>
     </message>
@@ -13715,12 +13800,12 @@ Proceed?</source>
   <context>
     <name>StdCmdViewFitAll</name>
     <message>
-      <location filename="../CommandView.cpp" line="1650"/>
+      <location filename="../CommandView.cpp" line="1716"/>
       <source>&amp;Fit All</source>
       <translation>&amp;அனைத்தையும் பொருத்து</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1651"/>
+      <location filename="../CommandView.cpp" line="1717"/>
       <source>Fits all content into the 3D view</source>
       <translation>அனைத்து உள்ளடக்கத்தையும் 3D காட்சியில் பொருத்துகிறது</translation>
     </message>
@@ -13728,12 +13813,12 @@ Proceed?</source>
   <context>
     <name>StdCmdViewFitSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="1681"/>
+      <location filename="../CommandView.cpp" line="1747"/>
       <source>Fit &amp;Selection</source>
       <translation>ஃபிட் &amp;தேர்வு</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1682"/>
+      <location filename="../CommandView.cpp" line="1748"/>
       <source>Fits the selected content into the 3D view</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட உள்ளடக்கத்தை 3D காட்சியில் பொருத்துகிறது</translation>
     </message>
@@ -13741,12 +13826,12 @@ Proceed?</source>
   <context>
     <name>StdCmdViewGroup</name>
     <message>
-      <location filename="../CommandView.cpp" line="1711"/>
+      <location filename="../CommandView.cpp" line="1777"/>
       <source>Standard &amp;Views</source>
       <translation>நிலையான &amp;பார்வைகள்</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1712"/>
+      <location filename="../CommandView.cpp" line="1778"/>
       <source>Changes to a standard view</source>
       <translation>நிலையான பார்வைக்கு மாற்றங்கள்</translation>
     </message>
@@ -13754,12 +13839,12 @@ Proceed?</source>
   <context>
     <name>StdViewDockUndockFullscreen</name>
     <message>
-      <location filename="../CommandView.cpp" line="1879"/>
+      <location filename="../CommandView.cpp" line="1945"/>
       <source>D&amp;ocument Window</source>
       <translation>ஆவணப்படுத்து சாளரம்</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1880"/>
+      <location filename="../CommandView.cpp" line="1946"/>
       <source>Displays the active view either in fullscreen, undocked, or docked mode</source>
       <translation>செயலில் உள்ள காட்சியை முழுத்திரை, அன்டாக் செய்யப்பட்ட அல்லது நறுக்கப்பட்ட பயன்முறையில் காண்பிக்கும்</translation>
     </message>
@@ -13767,12 +13852,12 @@ Proceed?</source>
   <context>
     <name>StdCmdViewVR</name>
     <message>
-      <location filename="../CommandView.cpp" line="1990"/>
+      <location filename="../CommandView.cpp" line="2056"/>
       <source>FreeCAD VR</source>
       <translation>FreeCAD VR</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1991"/>
+      <location filename="../CommandView.cpp" line="2057"/>
       <source>Extends the FreeCAD 3D Window to a VR device</source>
       <translation>FreeCAD 3D சாளரத்தை VR சாதனத்திற்கு நீட்டிக்கிறது</translation>
     </message>
@@ -13780,12 +13865,12 @@ Proceed?</source>
   <context>
     <name>StdCmdViewCreate</name>
     <message>
-      <location filename="../CommandView.cpp" line="2265"/>
+      <location filename="../CommandView.cpp" line="2332"/>
       <source>New 3D View</source>
       <translation>புதிய 3D காட்சி</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2266"/>
+      <location filename="../CommandView.cpp" line="2333"/>
       <source>Opens a new 3D view window for the active document</source>
       <translation>செயலில் உள்ள ஆவணத்திற்கான புதிய 3D காட்சி சாளரத்தைத் திறக்கிறது</translation>
     </message>
@@ -13793,12 +13878,12 @@ Proceed?</source>
   <context>
     <name>StdCmdToggleNavigation</name>
     <message>
-      <location filename="../CommandView.cpp" line="2294"/>
+      <location filename="../CommandView.cpp" line="2361"/>
       <source>Toggle Navigation/&amp;Edit Mode</source>
       <translation>வழிசெலுத்தல்/&amp;திருத்து பயன்முறையை நிலைமாற்று</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2295"/>
+      <location filename="../CommandView.cpp" line="2362"/>
       <source>Toggles between navigation and edit mode</source>
       <translation>வழிசெலுத்தல் மற்றும் திருத்தும் முறைக்கு இடையில் மாறுகிறது</translation>
     </message>
@@ -13806,12 +13891,12 @@ Proceed?</source>
   <context>
     <name>StdCmdAxisCross</name>
     <message>
-      <location filename="../CommandView.cpp" line="2342"/>
+      <location filename="../CommandView.cpp" line="2409"/>
       <source>Toggle A&amp;xis Cross</source>
       <translation>A&amp;xis கிராசை நிலைமாற்று</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2343"/>
+      <location filename="../CommandView.cpp" line="2410"/>
       <source>Toggles the axis cross at the origin</source>
       <translation>மூலத்தில் அச்சு குறுக்கு மாற்றுகிறது</translation>
     </message>
@@ -13819,12 +13904,12 @@ Proceed?</source>
   <context>
     <name>StdCmdViewExample3</name>
     <message>
-      <location filename="../CommandView.cpp" line="2448"/>
+      <location filename="../CommandView.cpp" line="2515"/>
       <source>Inventor Example #3</source>
       <translation>கண்டுபிடிப்பாளர் எடுத்துக்காட்டு #3</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2449"/>
+      <location filename="../CommandView.cpp" line="2516"/>
       <source>Shows an animated texture</source>
       <translation>அனிமேசன் அமைப்பைக் காட்டுகிறது</translation>
     </message>
@@ -13832,12 +13917,12 @@ Proceed?</source>
   <context>
     <name>StdCmdViewIvStereoRedGreen</name>
     <message>
-      <location filename="../CommandView.cpp" line="2506"/>
+      <location filename="../CommandView.cpp" line="2573"/>
       <source>Stereo Re&amp;d/Cyan</source>
       <translation>ச்டீரியோ ரீ&amp;டி/சியான்</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2507"/>
+      <location filename="../CommandView.cpp" line="2574"/>
       <source>Switches stereo viewing to red/cyan</source>
       <translation>ச்டீரியோ பார்வையை சிவப்பு/சியானுக்கு மாற்றுகிறது</translation>
     </message>
@@ -13845,12 +13930,12 @@ Proceed?</source>
   <context>
     <name>StdCmdViewIvStereoQuadBuff</name>
     <message>
-      <location filename="../CommandView.cpp" line="2534"/>
+      <location filename="../CommandView.cpp" line="2601"/>
       <source>Stereo &amp;Quad Buffer</source>
       <translation>ச்டீரியோ &amp;குவாட் பஃபர்</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2535"/>
+      <location filename="../CommandView.cpp" line="2602"/>
       <source>Switches stereo viewing to quad buffer</source>
       <translation>ச்டீரியோ பார்வையை குவாட் பஃபருக்கு மாற்றுகிறது</translation>
     </message>
@@ -13858,12 +13943,12 @@ Proceed?</source>
   <context>
     <name>StdCmdViewIvIssueCamPos</name>
     <message>
-      <location filename="../CommandView.cpp" line="2619"/>
+      <location filename="../CommandView.cpp" line="2686"/>
       <source>Issue Camera &amp;Position</source>
       <translation>கேமரா &amp;நிலையை வெளியிடவும்</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2620"/>
+      <location filename="../CommandView.cpp" line="2687"/>
       <source>Issues the camera position to the console and to a macro, to easily recall this position</source>
       <translation>இந்த நிலையை எளிதாக நினைவுகூர, கன்சோலுக்கும் மேக்ரோவுக்கும் கேமரா நிலையை வழங்குகிறது</translation>
     </message>
@@ -13871,12 +13956,12 @@ Proceed?</source>
   <context>
     <name>StdViewBoxZoom</name>
     <message>
-      <location filename="../CommandView.cpp" line="2867"/>
+      <location filename="../CommandView.cpp" line="2938"/>
       <source>&amp;Box Zoom</source>
       <translation>&amp;பெட்டி பெரிதாக்கு</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2868"/>
+      <location filename="../CommandView.cpp" line="2939"/>
       <source>Activates the box zoom tool</source>
       <translation>பாக்ச் சூம் கருவியை செயல்படுத்துகிறது</translation>
     </message>
@@ -13884,12 +13969,12 @@ Proceed?</source>
   <context>
     <name>StdBoxSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="2901"/>
+      <location filename="../CommandView.cpp" line="2972"/>
       <source>&amp;Box Selection</source>
       <translation>&amp;பெட்டி தேர்வு</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2902"/>
+      <location filename="../CommandView.cpp" line="2973"/>
       <source>Activates the box selection tool</source>
       <translation>பெட்டி தேர்வு கருவியை செயல்படுத்துகிறது</translation>
     </message>
@@ -13897,12 +13982,12 @@ Proceed?</source>
   <context>
     <name>StdBoxElementSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3176"/>
+      <location filename="../CommandView.cpp" line="3247"/>
       <source>Bo&amp;x Element Selection</source>
       <translation>Bo&amp;x உறுப்பு தேர்வு</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3177"/>
+      <location filename="../CommandView.cpp" line="3248"/>
       <source>Activates box element selection</source>
       <translation>பெட்டி உறுப்பு தேர்வை செயல்படுத்துகிறது</translation>
     </message>
@@ -13910,12 +13995,12 @@ Proceed?</source>
   <context>
     <name>StdTreeSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3232"/>
+      <location filename="../CommandView.cpp" line="3303"/>
       <source>&amp;Go to Selection</source>
       <translation>&amp;தேர்வுக்குச் செல்</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3233"/>
+      <location filename="../CommandView.cpp" line="3304"/>
       <source>Scrolls to the first selected item</source>
       <translation>முதலில் தேர்ந்தெடுக்கப்பட்ட உருப்படிக்கு உருட்டுகிறது</translation>
     </message>
@@ -13923,12 +14008,12 @@ Proceed?</source>
   <context>
     <name>StdCmdTreeCollapse</name>
     <message>
-      <location filename="../CommandView.cpp" line="3257"/>
+      <location filename="../CommandView.cpp" line="3328"/>
       <source>Collapse Selected Items</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட உருப்படிகளைச் சுருக்கவும்</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3258"/>
+      <location filename="../CommandView.cpp" line="3329"/>
       <source>Collapses the currently selected tree items</source>
       <translation>தற்போது தேர்ந்தெடுக்கப்பட்ட மரப் பொருட்களைச் சுருக்குகிறது</translation>
     </message>
@@ -13936,12 +14021,12 @@ Proceed?</source>
   <context>
     <name>StdCmdTreeExpand</name>
     <message>
-      <location filename="../CommandView.cpp" line="3283"/>
+      <location filename="../CommandView.cpp" line="3354"/>
       <source>Expand Selected Items</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட பொருட்களை விரிவாக்குங்கள்</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3284"/>
+      <location filename="../CommandView.cpp" line="3355"/>
       <source>Expands the currently selected tree items</source>
       <translation>தற்போது தேர்ந்தெடுக்கப்பட்ட மர உருப்படிகளை விரிவுபடுத்துகிறது</translation>
     </message>
@@ -13949,12 +14034,12 @@ Proceed?</source>
   <context>
     <name>StdCmdTreeSelectAllInstances</name>
     <message>
-      <location filename="../CommandView.cpp" line="3309"/>
+      <location filename="../CommandView.cpp" line="3380"/>
       <source>Select All Instances</source>
       <translation>அனைத்து நிகழ்வுகளையும் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3310"/>
+      <location filename="../CommandView.cpp" line="3381"/>
       <source>Selects all instances of the currently selected object</source>
       <translation>தற்போது தேர்ந்தெடுக்கப்பட்ட பொருளின் அனைத்து நிகழ்வுகளையும் தேர்ந்தெடுக்கிறது</translation>
     </message>
@@ -13962,12 +14047,12 @@ Proceed?</source>
   <context>
     <name>StdCmdSceneInspector</name>
     <message>
-      <location filename="../CommandView.cpp" line="3377"/>
+      <location filename="../CommandView.cpp" line="3448"/>
       <source>Scene I&amp;nspector</source>
       <translation>காட்சி ஐ&amp;இன்ச்பெக்டர்</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3378"/>
+      <location filename="../CommandView.cpp" line="3449"/>
       <source>Opens the scene inspector</source>
       <translation>காட்சி ஆய்வாளரைத் திறக்கிறார்</translation>
     </message>
@@ -13975,12 +14060,12 @@ Proceed?</source>
   <context>
     <name>StdCmdTextureMapping</name>
     <message>
-      <location filename="../CommandView.cpp" line="3411"/>
+      <location filename="../CommandView.cpp" line="3482"/>
       <source>Text&amp;ure Mapping</source>
       <translation>உரை&amp;மேப்பிங்</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3412"/>
+      <location filename="../CommandView.cpp" line="3483"/>
       <source>Maps textures to shapes</source>
       <translation>வடிவங்களுக்கு வரைபட அமைப்பு</translation>
     </message>
@@ -13988,12 +14073,12 @@ Proceed?</source>
   <context>
     <name>StdCmdDemoMode</name>
     <message>
-      <location filename="../CommandView.cpp" line="3437"/>
+      <location filename="../CommandView.cpp" line="3508"/>
       <source>View &amp;Turntable</source>
       <translation>காண்க &amp;திரும்பக்கூடியது</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3438"/>
+      <location filename="../CommandView.cpp" line="3509"/>
       <source>Opens a turntable view</source>
       <translation>டர்ன்டேபிள் காட்சியைத் திறக்கிறது</translation>
     </message>
@@ -14001,12 +14086,12 @@ Proceed?</source>
   <context>
     <name>StdCmdSelBack</name>
     <message>
-      <location filename="../CommandView.cpp" line="3467"/>
+      <location filename="../CommandView.cpp" line="3538"/>
       <source>Selection &amp;Back</source>
       <translation>தேர்வு &amp;பின்</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3469"/>
+      <location filename="../CommandView.cpp" line="3540"/>
       <source>Restores the previous tree view selection. Only works if tree RecordSelection mode is switched on.</source>
       <translation>முந்தைய மரக் காட்சி தேர்வை மீட்டெடுக்கவும். ட்ரீ ரெக்கார்ட் செலக்சன் மோடு ஆன் செய்யப்பட்டிருந்தால் மட்டுமே வேலை செய்யும்.</translation>
     </message>
@@ -14014,12 +14099,12 @@ Proceed?</source>
   <context>
     <name>StdCmdSelForward</name>
     <message>
-      <location filename="../CommandView.cpp" line="3501"/>
+      <location filename="../CommandView.cpp" line="3572"/>
       <source>Selection &amp;Forward</source>
       <translation>தேர்வு &amp;முன்னோக்கி</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3503"/>
+      <location filename="../CommandView.cpp" line="3574"/>
       <source>Restores the next tree view selection. Only works if tree RecordSelection mode is switched on.</source>
       <translation>அடுத்த மரக் காட்சி தேர்வை மீட்டெடுக்கிறது. ட்ரீ ரெக்கார்ட் செலக்சன் பயன்முறை இயக்கப்பட்டிருந்தால் மட்டுமே வேலை செய்யும்.</translation>
     </message>
@@ -14027,12 +14112,12 @@ Proceed?</source>
   <context>
     <name>StdTreeSingleDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3559"/>
+      <location filename="../CommandView.cpp" line="3630"/>
       <source>&amp;Single Document</source>
       <translation>&amp;ஒற்றை ஆவணம்</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3560"/>
+      <location filename="../CommandView.cpp" line="3631"/>
       <source>Displays only the active document in the tree view</source>
       <translation>ட்ரீ வியூவில் செயலில் உள்ள ஆவணத்தை மட்டும் காட்டுகிறது</translation>
     </message>
@@ -14040,12 +14125,12 @@ Proceed?</source>
   <context>
     <name>StdTreeMultiDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3576"/>
+      <location filename="../CommandView.cpp" line="3647"/>
       <source>&amp;Multi Document</source>
       <translation>&amp;பல ஆவணம்</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3577"/>
+      <location filename="../CommandView.cpp" line="3648"/>
       <source>Displays all documents in the tree view</source>
       <translation>மரக் காட்சியில் அனைத்து ஆவணங்களையும் காட்டுகிறது</translation>
     </message>
@@ -14053,12 +14138,12 @@ Proceed?</source>
   <context>
     <name>StdTreeSyncView</name>
     <message>
-      <location filename="../CommandView.cpp" line="3636"/>
-      <source>&amp;1 Sync View</source>
-      <translation>&amp;1 ஒத்திசைவு காட்சி</translation>
+      <location filename="../CommandView.cpp" line="3707"/>
+      <source>Sync View</source>
+      <translation type="unfinished">Sync View</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3637"/>
+      <location filename="../CommandView.cpp" line="3708"/>
       <source>Switches to the 3D view containing the selected item from the tree view</source>
       <translation>ட்ரீ வியூவிலிருந்து தேர்ந்தெடுக்கப்பட்ட உருப்படியைக் கொண்ட 3D காட்சிக்கு மாறுகிறது</translation>
     </message>
@@ -14066,12 +14151,12 @@ Proceed?</source>
   <context>
     <name>StdTreeSyncSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3656"/>
-      <source>&amp;2 Sync Selection</source>
-      <translation>&amp;2 ஒத்திசைவு தேர்வு</translation>
+      <location filename="../CommandView.cpp" line="3727"/>
+      <source>Sync Selection</source>
+      <translation type="unfinished">Sync Selection</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3657"/>
+      <location filename="../CommandView.cpp" line="3728"/>
       <source>Expands the tree item when the corresponding object is selected in the 3D view</source>
       <translation>3D காட்சியில் தொடர்புடைய பொருள் தேர்ந்தெடுக்கப்படும் போது மர உருப்படியை விரிவுபடுத்துகிறது</translation>
     </message>
@@ -14079,12 +14164,12 @@ Proceed?</source>
   <context>
     <name>StdTreeSyncPlacement</name>
     <message>
-      <location filename="../CommandView.cpp" line="3676"/>
-      <source>&amp;3 Sync Placement</source>
-      <translation>&amp;3 ஒத்திசைவு இடம்</translation>
+      <location filename="../CommandView.cpp" line="3747"/>
+      <source>Sync Placement</source>
+      <translation type="unfinished">Sync Placement</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3678"/>
+      <location filename="../CommandView.cpp" line="3749"/>
       <source>Adjusts the placement on drag-and-drop of objects across coordinate systems (e.g. in part containers)</source>
       <translation>ஆய அமைப்புகளில் (எ.கா. பகுதி கொள்கலன்களில்) பொருள்களை இழுத்து விடுவதில் உள்ள இடத்தைச் சரிசெய்கிறது.</translation>
     </message>
@@ -14092,12 +14177,12 @@ Proceed?</source>
   <context>
     <name>StdTreeRecordSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3715"/>
-      <source>&amp;5 Record Selection</source>
-      <translation>&amp;5 பதிவு தேர்வு</translation>
+      <location filename="../CommandView.cpp" line="3786"/>
+      <source>Record Selection</source>
+      <translation type="unfinished">Record Selection</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3717"/>
+      <location filename="../CommandView.cpp" line="3788"/>
       <source>Records the selection in the tree view in order to go back/forward using the navigation buttons</source>
       <translation>வழிசெலுத்தல் பொத்தான்களைப் பயன்படுத்தி பின்னோக்கி/முன்னோக்கிச் செல்ல மரக் காட்சியில் தேர்வைப் பதிவுசெய்கிறது</translation>
     </message>
@@ -14105,12 +14190,12 @@ Proceed?</source>
   <context>
     <name>StdTreeDrag</name>
     <message>
-      <location filename="../CommandView.cpp" line="3734"/>
+      <location filename="../CommandView.cpp" line="3805"/>
       <source>Initiate &amp;Dragging</source>
       <translation>&amp; இழுப்பதைத் தொடங்கவும்</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3735"/>
+      <location filename="../CommandView.cpp" line="3806"/>
       <source>Initiates dragging of the currently selected tree items</source>
       <translation>தற்போது தேர்ந்தெடுக்கப்பட்ட மரப் பொருட்களை இழுப்பதைத் தொடங்குகிறது</translation>
     </message>
@@ -14118,12 +14203,12 @@ Proceed?</source>
   <context>
     <name>StdCmdTreeViewActions</name>
     <message>
-      <location filename="../CommandView.cpp" line="3767"/>
+      <location filename="../CommandView.cpp" line="3838"/>
       <source>Tree View Actions</source>
       <translation>மரம் காட்சி நடவடிக்கைகள்</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3768"/>
+      <location filename="../CommandView.cpp" line="3839"/>
       <source>Tree view behavior options and actions</source>
       <translation>மரம் பார்வை நடத்தை விருப்பங்கள் மற்றும் செயல்கள்</translation>
     </message>
@@ -14131,12 +14216,12 @@ Proceed?</source>
   <context>
     <name>StdCmdSelBoundingBox</name>
     <message>
-      <location filename="../CommandView.cpp" line="3812"/>
+      <location filename="../CommandView.cpp" line="3883"/>
       <source>&amp;Bounding Box</source>
       <translation>எல்லைப் பெட்டி</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3813"/>
+      <location filename="../CommandView.cpp" line="3884"/>
       <source>Shows selection bounding box</source>
       <translation>தேர்வு எல்லைப் பெட்டியைக் காட்டுகிறது</translation>
     </message>
@@ -14144,12 +14229,12 @@ Proceed?</source>
   <context>
     <name>StdCmdDockOverlayAll</name>
     <message>
-      <location filename="../CommandView.cpp" line="3859"/>
+      <location filename="../CommandView.cpp" line="3930"/>
       <source>Toggle Overl&amp;ay for All Panels</source>
       <translation>அனைத்து பேனல்களுக்கும் மேலெழுதலை மாற்றவும்</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3860"/>
+      <location filename="../CommandView.cpp" line="3931"/>
       <source>Toggled overlay mode for all docked panels</source>
       <translation>அனைத்து டாக் செய்யப்பட்ட பேனல்களுக்கும் நிலைமாற்றப்பட்ட மேலடுக்கு பயன்முறை</translation>
     </message>
@@ -14157,12 +14242,12 @@ Proceed?</source>
   <context>
     <name>StdCmdDockOverlayTransparentAll</name>
     <message>
-      <location filename="../CommandView.cpp" line="3882"/>
+      <location filename="../CommandView.cpp" line="3953"/>
       <source>Toggle Tra&amp;nsparent Panels</source>
       <translation>டிரா&amp;ச்பேரண்ட் பேனல்களை நிலைமாற்று</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3883"/>
+      <location filename="../CommandView.cpp" line="3954"/>
       <source>Toggles transparent mode for all docked overlay panels.
 This makes the docked panels stay transparent at all times.</source>
       <translation>அனைத்து நறுக்கப்பட்ட மேலடுக்கு பேனல்களுக்கும் வெளிப்படையான பயன்முறையை மாற்றுகிறது. 
@@ -14172,12 +14257,12 @@ This makes the docked panels stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlayToggle</name>
     <message>
-      <location filename="../CommandView.cpp" line="3908"/>
+      <location filename="../CommandView.cpp" line="3979"/>
       <source>Toggle &amp;Overlay</source>
       <translation>&amp;மேலடுக்கை நிலைமாற்று</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3909"/>
+      <location filename="../CommandView.cpp" line="3980"/>
       <source>Toggles overlay mode for the docked window under the cursor</source>
       <translation>கர்சரின் கீழ் நறுக்கப்பட்ட சாளரத்திற்கான மேலடுக்கு பயன்முறையை மாற்றுகிறது</translation>
     </message>
@@ -14185,12 +14270,12 @@ This makes the docked panels stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlayToggleTransparent</name>
     <message>
-      <location filename="../CommandView.cpp" line="3931"/>
+      <location filename="../CommandView.cpp" line="4002"/>
       <source>Toggle Tran&amp;sparent Mode</source>
       <translation>வெளிப்படைத்தன்மை பயன்முறையை மாற்றவும்</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3932"/>
+      <location filename="../CommandView.cpp" line="4003"/>
       <source>Toggles transparent mode for the docked panel under cursor.
 This makes the docked panel stay transparent at all times.</source>
       <translation>கர்சரின் கீழ் நறுக்கப்பட்ட பேனலுக்கான வெளிப்படையான பயன்முறையை மாற்றுகிறது. 
@@ -14200,12 +14285,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlayToggleLeft</name>
     <message>
-      <location filename="../CommandView.cpp" line="3957"/>
+      <location filename="../CommandView.cpp" line="4028"/>
       <source>Toggle &amp;Left</source>
       <translation>&amp;இடதுபுறமாக மாறவும்</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3958"/>
+      <location filename="../CommandView.cpp" line="4029"/>
       <source>Toggles the visibility of the left overlay panel</source>
       <translation>இடது மேலடுக்கு பேனலின் தெரிவுநிலையை மாற்றுகிறது</translation>
     </message>
@@ -14213,12 +14298,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlayToggleRight</name>
     <message>
-      <location filename="../CommandView.cpp" line="3982"/>
+      <location filename="../CommandView.cpp" line="4053"/>
       <source>Toggle &amp;Right</source>
       <translation>&amp;வலது நிலைமாற்று</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3983"/>
+      <location filename="../CommandView.cpp" line="4054"/>
       <source>Toggles the visibility of the right overlay panel</source>
       <translation>வலது மேலடுக்கு பேனலின் தெரிவுநிலையை மாற்றுகிறது</translation>
     </message>
@@ -14226,12 +14311,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlayToggleTop</name>
     <message>
-      <location filename="../CommandView.cpp" line="4007"/>
+      <location filename="../CommandView.cpp" line="4078"/>
       <source>Toggle &amp;Top</source>
       <translation>நிலைமாற்று &amp;மேலே</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4008"/>
+      <location filename="../CommandView.cpp" line="4079"/>
       <source>Toggles the visibility of the top overlay panel</source>
       <translation>மேல் மேலடுக்கு பேனலின் தெரிவுநிலையை மாற்றுகிறது</translation>
     </message>
@@ -14239,12 +14324,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlayToggleBottom</name>
     <message>
-      <location filename="../CommandView.cpp" line="4032"/>
+      <location filename="../CommandView.cpp" line="4103"/>
       <source>Toggle &amp;Bottom</source>
       <translation>&amp;கீழே நிலைமாற்று</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4033"/>
+      <location filename="../CommandView.cpp" line="4104"/>
       <source>Toggles the visibility of the bottom overlay panel</source>
       <translation>கீழ் மேலடுக்கு பேனலின் தெரிவுநிலையை மாற்றுகிறது</translation>
     </message>
@@ -14252,12 +14337,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlayMouseTransparent</name>
     <message>
-      <location filename="../CommandView.cpp" line="4057"/>
+      <location filename="../CommandView.cpp" line="4128"/>
       <source>Bypass &amp;Mouse Events in Overlay Panels</source>
       <translation>மேலடுக்கு பேனல்களில் பைபாச் &amp;மவுச் நிகழ்வுகள்</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4058"/>
+      <location filename="../CommandView.cpp" line="4129"/>
       <source>Bypasses all mouse events in docked overlay panels</source>
       <translation>டாக் செய்யப்பட்ட மேலடுக்கு பேனல்களில் உள்ள அனைத்து மவுச் நிகழ்வுகளையும் புறக்கணிக்கிறது</translation>
     </message>
@@ -14265,12 +14350,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlay</name>
     <message>
-      <location filename="../CommandView.cpp" line="4103"/>
+      <location filename="../CommandView.cpp" line="4174"/>
       <source>Overlay Docked Panel</source>
       <translation>மேலடுக்கு டாக் செய்யப்பட்ட பேனல்</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4104"/>
+      <location filename="../CommandView.cpp" line="4175"/>
       <source>Sets the docked panel in overlay mode</source>
       <translation>டாக் செய்யப்பட்ட பேனலை மேலடுக்கு முறையில் அமைக்கிறது</translation>
     </message>
@@ -14278,12 +14363,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdStoreWorkingView</name>
     <message>
-      <location filename="../CommandView.cpp" line="4138"/>
+      <location filename="../CommandView.cpp" line="4209"/>
       <source>St&amp;ore Working View</source>
       <translation>ச்டோர்&amp;வொர்க்கிங் வியூ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4139"/>
+      <location filename="../CommandView.cpp" line="4210"/>
       <source>Stores a temporary working view for the current document</source>
       <translation>தற்போதைய ஆவணத்திற்கான தற்காலிக வேலை பார்வையை சேமிக்கிறது</translation>
     </message>
@@ -14291,12 +14376,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdRecallWorkingView</name>
     <message>
-      <location filename="../CommandView.cpp" line="4168"/>
+      <location filename="../CommandView.cpp" line="4239"/>
       <source>R&amp;ecall Working View</source>
       <translation>பணிக் காட்சியை மறுஅழைப்பு</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4169"/>
+      <location filename="../CommandView.cpp" line="4240"/>
       <source>Recalls a previously stored temporary working view</source>
       <translation>முன்பு சேமிக்கப்பட்ட தற்காலிக வேலைக் காட்சியை நினைவுபடுத்துகிறது</translation>
     </message>
@@ -14304,12 +14389,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdAlignToSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="4201"/>
+      <location filename="../CommandView.cpp" line="4272"/>
       <source>&amp;Align to Selection</source>
       <translation>&amp;தேர்வுக்கு சீரமை</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4202"/>
+      <location filename="../CommandView.cpp" line="4273"/>
       <source>Aligns the camera view to the selected elements in the 3D view</source>
       <translation>3D காட்சியில் தேர்ந்தெடுக்கப்பட்ட உறுப்புகளுக்கு கேமரா காட்சியை சீரமைக்கிறது</translation>
     </message>
@@ -14372,13 +14457,13 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::FileChooser</name>
     <message>
-      <location filename="../FileDialog.cpp" line="864"/>
-      <location filename="../FileDialog.cpp" line="874"/>
+      <location filename="../FileDialog.cpp" line="910"/>
+      <location filename="../FileDialog.cpp" line="920"/>
       <source>Select a File</source>
       <translation>ஒரு கோப்பைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="884"/>
+      <location filename="../FileDialog.cpp" line="930"/>
       <source>Select a Directory</source>
       <translation>ஒரு கோப்பகத்தைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
@@ -14394,7 +14479,7 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::OverlayTitleBar</name>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="2195"/>
+      <location filename="../OverlayWidgets.cpp" line="2202"/>
       <source>Mouse pass through, Esc to stop</source>
       <translation>மவுச் கடந்து செல்கிறது, நிறுத்த தப்பி</translation>
     </message>
@@ -14410,7 +14495,7 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::TreeDockWidget</name>
     <message>
-      <location filename="../Tree.cpp" line="4180"/>
+      <location filename="../Tree.cpp" line="4239"/>
       <source>Tree View</source>
       <translation>மரக் காட்சி</translation>
     </message>
@@ -14418,48 +14503,48 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::Dialog::DlgExpressionInput</name>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="77"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="79"/>
       <source>Revert to last calculated value (as constant)</source>
       <translation>கடைசியாக கணக்கிடப்பட்ட மதிப்புக்கு (நிலையாக) மாற்றியமை</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="393"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="395"/>
       <source> (Warning: unit discarded)</source>
       <translation>(எச்சரிக்கை: அலகு நிராகரிக்கப்பட்டது)</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="500"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="502"/>
       <source>Invalid property name: %1</source>
       <translation>தவறான சொத்து பெயர்:% 1</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="504"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="506"/>
       <source>Unknown object</source>
       <translation>தெரியாத பொருள்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="510"/>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="924"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="512"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="926"/>
       <source>the name cannot be empty</source>
       <translation>பெயர் காலியாக இருக்க முடியாது</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="520"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="522"/>
       <source>%1 is a unit</source>
       <translation>% 1 என்பது ஒரு அலகு</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="525"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="527"/>
       <source>%1 is a constant</source>
       <translation>% 1 என்பது ஒரு மாறிலி</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="531"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="533"/>
       <source>%1 already exists</source>
       <translation>% 1 ஏற்கனவே உள்ளது</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="920"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="922"/>
       <source>Invalid group name: %1</source>
       <translation>தவறான குழு பெயர்:% 1</translation>
     </message>
@@ -14481,11 +14566,16 @@ This makes the docked panel stay transparent at all times.</source>
       <source>Color</source>
       <translation>வண்ணம்</translation>
     </message>
+    <message>
+      <location filename="../Dialogs/DlgThemeEditor.cpp" line="71"/>
+      <source>Tuple</source>
+      <translation type="unfinished">Tuple</translation>
+    </message>
   </context>
   <context>
     <name>Gui</name>
     <message>
-      <location filename="../Dialogs/DlgThemeEditor.cpp" line="281"/>
+      <location filename="../Dialogs/DlgThemeEditor.cpp" line="284"/>
       <source>New parameter...</source>
       <translation>புதிய அளவுரு...</translation>
     </message>
@@ -14493,32 +14583,32 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::StyleParametersModel</name>
     <message>
-      <location filename="../Dialogs/DlgThemeEditor.cpp" line="355"/>
+      <location filename="../Dialogs/DlgThemeEditor.cpp" line="358"/>
       <source>All Theme Editor Parameters</source>
       <translation>அனைத்து கருப்பொருள் எடிட்டர் அளவுருக்கள்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgThemeEditor.cpp" line="425"/>
+      <location filename="../Dialogs/DlgThemeEditor.cpp" line="428"/>
       <source>Root</source>
       <translation>மூலம்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgThemeEditor.cpp" line="500"/>
+      <location filename="../Dialogs/DlgThemeEditor.cpp" line="503"/>
       <source>Name</source>
       <translation>பெயர்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgThemeEditor.cpp" line="502"/>
+      <location filename="../Dialogs/DlgThemeEditor.cpp" line="505"/>
       <source>Expression</source>
       <translation>வெளிப்பாடு</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgThemeEditor.cpp" line="504"/>
+      <location filename="../Dialogs/DlgThemeEditor.cpp" line="507"/>
       <source>Preview</source>
       <translation>முன்னோட்டம்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgThemeEditor.cpp" line="506"/>
+      <location filename="../Dialogs/DlgThemeEditor.cpp" line="509"/>
       <source>Type</source>
       <translation>வகை</translation>
     </message>
@@ -14526,8 +14616,8 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::Dialog::DlgCustomToolBoxbarsImp</name>
     <message>
-      <location filename="../Dialogs/DlgToolbarsImp.cpp" line="881"/>
-      <location filename="../Dialogs/DlgToolbarsImp.cpp" line="890"/>
+      <location filename="../Dialogs/DlgToolbarsImp.cpp" line="886"/>
+      <location filename="../Dialogs/DlgToolbarsImp.cpp" line="895"/>
       <source>Toolbox Bars</source>
       <translation>கருவிப்பெட்டி பார்கள்</translation>
     </message>
@@ -14558,7 +14648,7 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4615"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4689"/>
       <source>Changes the linked object</source>
       <translation>இணைக்கப்பட்ட பொருளை மாற்றுகிறது</translation>
     </message>
@@ -14579,17 +14669,17 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="304"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="306"/>
       <source>Value out of range (%1 out of [%2, %3])</source>
       <translation>வரம்பிற்கு வெளியே மதிப்பு (% 1 / [%2, %3])</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="378"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="380"/>
       <source>Not a number</source>
       <translation>எண் அல்ல</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="386"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="388"/>
       <source>Unit mismatch between result and required unit</source>
       <translation>முடிவு மற்றும் தேவையான அலகு இடையே அலகு பொருந்தவில்லை</translation>
     </message>
@@ -14597,12 +14687,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdClarifySelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="4229"/>
+      <location filename="../CommandView.cpp" line="4300"/>
       <source>Clarify Selection</source>
       <translation>தேர்வை தெளிவுபடுத்தவும்</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4230"/>
+      <location filename="../CommandView.cpp" line="4301"/>
       <source>Displays a context menu at the mouse cursor to select overlapping or obstructed geometry in the 3D view.
 </source>
       <translation>3D பார்வையில் ஒன்றுடன் ஒன்று அல்லது தடைசெய்யப்பட்ட வடிவவியலைத் தேர்ந்தெடுக்க மவுச் கர்சரில் சூழல் மெனுவைக் காட்டுகிறது.
@@ -14676,12 +14766,12 @@ This makes the docked panel stay transparent at all times.</source>
       <translation>புதிய இயல்புநிலை உள்ளமைவைப் பயன்படுத்தவும்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="406"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="507"/>
       <source>Migration complete</source>
       <translation>இடம்பெயர்வு முடிந்தது</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="443"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="544"/>
       <source>New default configuration created</source>
       <translation>புதிய இயல்புநிலை கட்டமைப்பு உருவாக்கப்பட்டது</translation>
     </message>
@@ -14697,6 +14787,106 @@ This makes the docked panel stay transparent at all times.</source>
       <location filename="../StatusBarLabel.cpp" line="84"/>
       <source>Select All</source>
       <translation>அனைத்தையும் தேர்ந்தெடு</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::TaskCommandLinkDialog</name>
+    <message>
+      <location filename="../TaskCommandLink.ui" line="14"/>
+      <source>Insert</source>
+      <translation type="unfinished">Insert</translation>
+    </message>
+  </context>
+  <context>
+    <name>FileFormat</name>
+    <message>
+      <location filename="../FreeCADGuiInit.py" line="463"/>
+      <source>Portable Document Format</source>
+      <translation type="unfinished">Portable Document Format</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdAnnotationLabel</name>
+    <message>
+      <location filename="../CommandStd.cpp" line="983"/>
+      <source>Tools</source>
+      <translation>கருவிகள்</translation>
+    </message>
+    <message>
+      <location filename="../CommandStd.cpp" line="984"/>
+      <source>Annotation Label</source>
+      <translation type="unfinished">Annotation Label</translation>
+    </message>
+    <message>
+      <location filename="../CommandStd.cpp" line="985"/>
+      <source>Creates a new annotation label at the picked location in the 3D view</source>
+      <translation type="unfinished">Creates a new annotation label at the picked location in the 3D view</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::PropertyEditor::PropertyMaterialItem</name>
+    <message>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3577"/>
+      <source>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</source>
+      <translation type="unfinished">Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</translation>
+    </message>
+    <message>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3587"/>
+      <source>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</source>
+      <translation type="unfinished">Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</translation>
+    </message>
+    <message>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3597"/>
+      <source>Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</source>
+      <translation type="unfinished">Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</translation>
+    </message>
+    <message>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3607"/>
+      <source>Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</source>
+      <translation type="unfinished">Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</translation>
+    </message>
+    <message>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3619"/>
+      <source>Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</source>
+      <translation type="unfinished">Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</translation>
+    </message>
+    <message>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3631"/>
+      <source>Defines how much light passes through an object, making it partially or fully see-through</source>
+      <translation type="unfinished">Defines how much light passes through an object, making it partially or fully see-through</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::PropertyEditor::PropertyMaterialListItem</name>
+    <message>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3943"/>
+      <source>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</source>
+      <translation type="unfinished">Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</translation>
+    </message>
+    <message>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3953"/>
+      <source>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</source>
+      <translation type="unfinished">Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</translation>
+    </message>
+    <message>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3963"/>
+      <source>Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</source>
+      <translation type="unfinished">Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</translation>
+    </message>
+    <message>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3973"/>
+      <source>Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</source>
+      <translation type="unfinished">Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</translation>
+    </message>
+    <message>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3985"/>
+      <source>Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</source>
+      <translation type="unfinished">Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</translation>
+    </message>
+    <message>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3997"/>
+      <source>Defines how much light passes through an object, making it partially or fully see-through</source>
+      <translation type="unfinished">Defines how much light passes through an object, making it partially or fully see-through</translation>
     </message>
   </context>
 </TS>

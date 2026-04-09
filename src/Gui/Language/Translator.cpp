@@ -40,6 +40,26 @@
 
 using namespace Gui;
 
+namespace
+{
+Translator::LocaleFormattingPreference toLocaleFormattingPreference(const int format)
+{
+    switch (format) {
+        case static_cast<int>(Translator::LocaleFormattingPreference::OperatingSystem):
+            return Translator::LocaleFormattingPreference::OperatingSystem;
+        case static_cast<int>(Translator::LocaleFormattingPreference::SelectedLanguage):
+            return Translator::LocaleFormattingPreference::SelectedLanguage;
+        case static_cast<int>(Translator::LocaleFormattingPreference::CLocale):
+            return Translator::LocaleFormattingPreference::CLocale;
+        default:
+            throw Base::ValueError(
+                "Parameter \"UseLocaleFormatting\" value out of bounds for "
+                "Translator::formattingOptions"
+            );
+    }
+}
+}  // namespace
+
 /** \defgroup i18n Internationalization with FreeCAD
  *  \ingroup GUI
  *
@@ -135,21 +155,7 @@ public:
 
         std::string_view reason = creason;
         if (reason == "UseLocaleFormatting") {
-            int format = hGrp->GetInt("UseLocaleFormatting");
-            if (format == 0) {
-                client->setLocale();  // Defaults to system locale
-            }
-            else if (format == 1) {
-                // Language must need to be set before locale. How do we ensure this?
-                std::string language = hGrp->GetASCII("Language");
-                client->setLocale(language);
-            }
-            else if (format == 2) {
-                client->setLocale("C");
-            }
-            else {
-                throw Base::ValueError("Parameter \"UseLocaleFormatting\" value out of bounds for Translator::formattingOptions");
-            }
+            client->applyLocaleFormattingPreference();
         }
         else if (reason == "SubstituteDecimalSeparator") {
             bool value = hGrp->GetBool("SubstituteDecimalSeparator");
@@ -224,7 +230,7 @@ Translator::Translator()
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Slovenian"             )] = "sl";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Spanish"               )] = "es-ES";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Spanish (Argentina)"   )] = "es-AR";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Swedish"               )] = "sv-SE";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Swedish"               )] = "sv";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Turkish"               )] = "tr";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Ukrainian"             )] = "uk";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Valencian"             )] = "val-ES";
@@ -319,6 +325,26 @@ std::string Translator::locale(const std::string& lang) const
     return loc;
 }
 
+void Translator::applyLocaleFormattingPreference() const
+{
+    auto hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/General"
+    );
+    const auto format = toLocaleFormattingPreference(hGrp->GetInt("UseLocaleFormatting", 0));
+    switch (format) {
+        case LocaleFormattingPreference::OperatingSystem:
+            setLocale();  // Defaults to system locale.
+            break;
+        case LocaleFormattingPreference::SelectedLanguage:
+            // Language must be activated before locale changes can follow it.
+            setLocale(hGrp->GetASCII("Language", activeLanguage().c_str()));
+            break;
+        case LocaleFormattingPreference::CLocale:
+            setLocale("C");
+            break;
+    }
+}
+
 void Translator::setLocale(const std::string& language) const
 {
     const bool isCLocale = Base::Tools::isCLocaleName(language);
@@ -333,8 +359,17 @@ void Translator::setLocale(const std::string& language) const
             loc = QLocale(QString::fromStdString(bcp47));
         }
     }
+
+    auto icuLocaleId = loc.name().toStdString();
+    if (language.empty()) {
+        // QLocale keeps the effective numeric separators, but loc.name() may still report LANG.
+        const auto operatingSystemNumericLocale = Base::Tools::getOperatingSystemNumericLocale();
+        if (!operatingSystemNumericLocale.empty()) {
+            icuLocaleId = operatingSystemNumericLocale;
+        }
+    }
     QLocale::setDefault(loc);
-    Base::Tools::setIcuDefaultLocale(isCLocale ? "C" : loc.name().toStdString());
+    Base::Tools::setIcuDefaultLocale(isCLocale ? "C" : icuLocaleId);
     updateLocaleChange();
 
 #ifdef FC_DEBUG

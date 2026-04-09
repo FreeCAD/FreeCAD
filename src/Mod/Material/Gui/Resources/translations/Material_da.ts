@@ -1163,15 +1163,15 @@ Hvis ikke markeret, vil de blive sorteret efter deres navn.</translation>
       <translation>Ellers vil alle ændringer gå tabt.</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="170"/>
       <location filename="../../ListEdit.cpp" line="142"/>
+      <location filename="../../Array2D.cpp" line="170"/>
       <location filename="../../MaterialSave.cpp" line="567"/>
       <source>Confirm Delete</source>
       <translation>Bekræft sletning</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="172"/>
       <location filename="../../ListEdit.cpp" line="144"/>
+      <location filename="../../Array2D.cpp" line="172"/>
       <source>Delete the row?</source>
       <translation>Slet rækken?</translation>
     </message>

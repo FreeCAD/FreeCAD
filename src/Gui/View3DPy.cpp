@@ -1106,7 +1106,9 @@ Py::Object View3DInventorPy::saveVectorGraphic(const Py::Tuple& args)
         bg = QColor(colname);
     }
 
-    getView3DInventorPtr()->getViewer()->saveGraphic(ps, bg, vo.get());
+    getView3DInventorPtr()
+        ->getViewer()
+        ->saveGraphic(ps, bg, vo.get(), View3DInventorViewer::RenderIntent::VectorExport);
     out->closeFile();
     return Py::None();
 }

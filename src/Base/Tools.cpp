@@ -44,6 +44,7 @@
 namespace
 {
 constexpr auto underscore = static_cast<UChar32>(U'_');
+std::string operatingSystemNumericLocale;
 
 bool isValidFirstChar(UChar32 c)
 {
@@ -307,6 +308,16 @@ bool Base::Tools::isCLocaleName(std::string_view localeName)
 {
     return localeName == "C" || localeName == "c" || localeName == "C.UTF-8" || localeName == "C.utf8"
         || localeName == "c.utf8" || localeName == "POSIX" || localeName == "posix";
+}
+
+void Base::Tools::setOperatingSystemNumericLocale(std::string_view localeName)
+{
+    operatingSystemNumericLocale = localeName;
+}
+
+std::string Base::Tools::getOperatingSystemNumericLocale()
+{
+    return operatingSystemNumericLocale;
 }
 
 void Base::Tools::setIcuDefaultLocale(std::string_view icuLocaleId)

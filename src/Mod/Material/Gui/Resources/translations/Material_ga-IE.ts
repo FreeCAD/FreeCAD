@@ -1163,15 +1163,15 @@ Mura bhfuil tic sa bhosca seo, déanfar iad a shórtáil de réir a n-ainm.</tra
       <translation>Seachas sin, caillfear na hathruithe go léir.</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="170"/>
       <location filename="../../ListEdit.cpp" line="142"/>
+      <location filename="../../Array2D.cpp" line="170"/>
       <location filename="../../MaterialSave.cpp" line="567"/>
       <source>Confirm Delete</source>
       <translation>Deimhnigh Scriosadh</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="172"/>
       <location filename="../../ListEdit.cpp" line="144"/>
+      <location filename="../../Array2D.cpp" line="172"/>
       <source>Delete the row?</source>
       <translation>Scrios an tsraith?</translation>
     </message>

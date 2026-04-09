@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="755"/>
       <source>Add Triangle</source>
-      <translation type="unfinished">Add Triangle</translation>
+      <translation>삼각형 추가</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="756"/>
       <source>Adds a triangle manually to a mesh</source>
-      <translation type="unfinished">Adds a triangle manually to a mesh</translation>
+      <translation>메쉬에 삼각형을 수동으로 추가합니다.</translation>
     </message>
   </context>
   <context>
@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="1494"/>
       <source>Bounding Box Info</source>
-      <translation type="unfinished">Bounding Box Info</translation>
+      <translation>바운딩 박스 정보</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1495"/>
       <source>Shows the bounding box coordinates of the selected mesh</source>
-      <translation type="unfinished">Shows the bounding box coordinates of the selected mesh</translation>
+      <translation>선택한 메쉬의 바운딩 박스 좌표를 표시합니다.</translation>
     </message>
   </context>
   <context>
@@ -47,12 +47,12 @@
     <message>
       <location filename="../../Command.cpp" line="1549"/>
       <source>Regular Solid</source>
-      <translation type="unfinished">Regular Solid</translation>
+      <translation>기본 솔리드</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1550"/>
       <source>Builds a regular solid</source>
-      <translation>일반 솔리드 만들기</translation>
+      <translation>기본 솔리드를 생성합니다.</translation>
     </message>
   </context>
   <context>
@@ -65,12 +65,12 @@
     <message>
       <location filename="../../Command.cpp" line="999"/>
       <source>Cross-Sections</source>
-      <translation type="unfinished">Cross-Sections</translation>
+      <translation>단면</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1000"/>
       <source>Creates cross-sections of the mesh</source>
-      <translation type="unfinished">Creates cross-sections of the mesh</translation>
+      <translation>메쉬의 단면을 생성합니다.</translation>
     </message>
   </context>
   <context>
@@ -83,12 +83,12 @@
     <message>
       <location filename="../../Command.cpp" line="1384"/>
       <source>Decimate</source>
-      <translation type="unfinished">Decimate</translation>
+      <translation>단순화</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1385"/>
       <source>Decimates a mesh</source>
-      <translation>메쉬 단순화</translation>
+      <translation>메쉬를 단순화합니다.</translation>
     </message>
   </context>
   <context>
@@ -101,12 +101,12 @@
     <message>
       <location filename="../../Command.cpp" line="173"/>
       <source>Difference</source>
-      <translation>차이</translation>
+      <translation>차집합</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="174"/>
       <source>Creates a boolean difference of the selected meshes</source>
-      <translation type="unfinished">Creates a boolean difference of the selected meshes</translation>
+      <translation>선택한 메쉬의 불리언 차집합을 생성합니다.</translation>
     </message>
   </context>
   <context>
@@ -119,12 +119,12 @@
     <message>
       <location filename="../../Command.cpp" line="1132"/>
       <source>Face Info</source>
-      <translation type="unfinished">Face Info</translation>
+      <translation>면 정보</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1133"/>
       <source>Displays information about the selected faces</source>
-      <translation type="unfinished">Displays information about the selected faces</translation>
+      <translation>선택한 면의 정보를 표시합니다.</translation>
     </message>
   </context>
   <context>
@@ -137,12 +137,12 @@
     <message>
       <location filename="../../Command.cpp" line="1313"/>
       <source>Evaluate Solid</source>
-      <translation type="unfinished">Evaluate Solid</translation>
+      <translation>솔리드 검사</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1314"/>
       <source>Checks whether the mesh is a solid</source>
-      <translation>메쉬가 솔리드인지 검사</translation>
+      <translation>메쉬가 솔리드인지 검사합니다.</translation>
     </message>
   </context>
   <context>
@@ -150,17 +150,17 @@
     <message>
       <location filename="../../Command.cpp" line="1085"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>메쉬</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1087"/>
       <source>Evaluate and Repair</source>
-      <translation type="unfinished">Evaluate and Repair</translation>
+      <translation>검사 및 복구</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1088"/>
       <source>Opens a dialog to analyze and repair a mesh</source>
-      <translation>메쉬의 분석/수정을 위한 대화상자 열기</translation>
+      <translation>메쉬를 검사하고 복구하는 대화 상자를 엽니다.</translation>
     </message>
   </context>
   <context>
@@ -168,17 +168,17 @@
     <message>
       <location filename="../../Command.cpp" line="399"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>메쉬</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="400"/>
       <source>Export Mesh…</source>
-      <translation type="unfinished">Export Mesh…</translation>
+      <translation>메쉬 내보내기…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="401"/>
       <source>Exports a mesh to a file</source>
-      <translation type="unfinished">Exports a mesh to a file</translation>
+      <translation>메쉬를 파일로 내보냅니다.</translation>
     </message>
   </context>
   <context>
@@ -186,17 +186,17 @@
     <message>
       <location filename="../../Command.cpp" line="1635"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>메쉬</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1636"/>
       <source>Close Hole</source>
-      <translation type="unfinished">Close Hole</translation>
+      <translation>구멍 닫기</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1637"/>
       <source>Closes a hole interactively in the mesh</source>
-      <translation type="unfinished">Closes a hole interactively in the mesh</translation>
+      <translation>메쉬의 구멍을 대화식으로 닫습니다.</translation>
     </message>
   </context>
   <context>
@@ -204,17 +204,17 @@
     <message>
       <location filename="../../Command.cpp" line="1580"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>메쉬</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1581"/>
       <source>Fill Holes</source>
-      <translation type="unfinished">Fill Holes</translation>
+      <translation>구멍 채우기</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1582"/>
       <source>Fills holes in the mesh</source>
-      <translation type="unfinished">Fills holes in the mesh</translation>
+      <translation>메쉬의 구멍을 채웁니다.</translation>
     </message>
   </context>
   <context>
@@ -222,17 +222,17 @@
     <message>
       <location filename="../../Command.cpp" line="1454"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>메쉬</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1455"/>
       <source>Flip Normals</source>
-      <translation type="unfinished">Flip Normals</translation>
+      <translation>법선 뒤집기</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1456"/>
       <source>Flips the normals of the selected mesh</source>
-      <translation type="unfinished">Flips the normals of the selected mesh</translation>
+      <translation>선택한 메쉬의 법선을 뒤집습니다.</translation>
     </message>
   </context>
   <context>
@@ -240,17 +240,17 @@
     <message>
       <location filename="../../Command.cpp" line="486"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>메쉬</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="487"/>
       <source>Mesh From Geometry</source>
-      <translation type="unfinished">Mesh From Geometry</translation>
+      <translation>형상에서 메쉬 생성</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="488"/>
       <source>Creates a mesh from the selected geometry</source>
-      <translation type="unfinished">Creates a mesh from the selected geometry</translation>
+      <translation>선택한 형상에서 메쉬를 생성합니다.</translation>
     </message>
   </context>
   <context>
@@ -258,17 +258,17 @@
     <message>
       <location filename="../../Command.cpp" line="559"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>메쉬</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="560"/>
       <source>Mesh From Shape</source>
-      <translation type="unfinished">Mesh From Shape</translation>
+      <translation>형상에서 메쉬 생성</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="561"/>
       <source>Tessellates the selected shape to a mesh</source>
-      <translation type="unfinished">Tessellates the selected shape to a mesh</translation>
+      <translation>선택한 형상을 메쉬로 테셀레이션합니다.</translation>
     </message>
   </context>
   <context>
@@ -276,17 +276,17 @@
     <message>
       <location filename="../../Command.cpp" line="1415"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>메쉬</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1416"/>
       <source>Harmonize Normals</source>
-      <translation type="unfinished">Harmonize Normals</translation>
+      <translation>법선 정렬</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1417"/>
       <source>Harmonizes the normals of the mesh</source>
-      <translation>메쉬의 법선을 융합시킴</translation>
+      <translation>메쉬의 법선을 정렬합니다.</translation>
     </message>
   </context>
   <context>
@@ -294,17 +294,17 @@
     <message>
       <location filename="../../Command.cpp" line="344"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>메쉬</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="345"/>
       <source>Import Mesh…</source>
-      <translation type="unfinished">Import Mesh…</translation>
+      <translation>메쉬 가져오기…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="346"/>
       <source>Imports a mesh from a file</source>
-      <translation type="unfinished">Imports a mesh from a file</translation>
+      <translation>파일에서 메쉬를 가져옵니다.</translation>
     </message>
   </context>
   <context>
@@ -312,17 +312,17 @@
     <message>
       <location filename="../../Command.cpp" line="258"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>메쉬</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="259"/>
       <source>Intersection</source>
-      <translation>교차</translation>
+      <translation>교집합</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="260"/>
       <source>Creates a boolean intersection from the selected meshes</source>
-      <translation type="unfinished">Creates a boolean intersection from the selected meshes</translation>
+      <translation>선택한 메쉬의 불리언 교집합을 생성합니다.</translation>
     </message>
   </context>
   <context>
@@ -330,7 +330,7 @@
     <message>
       <location filename="../../Command.cpp" line="1757"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>메쉬</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1758"/>
@@ -340,7 +340,7 @@
     <message>
       <location filename="../../Command.cpp" line="1759"/>
       <source>Merges selected meshes into one</source>
-      <translation>선택된 메쉬를 하나로 병합</translation>
+      <translation>선택한 메쉬를 하나로 병합합니다.</translation>
     </message>
   </context>
   <context>
@@ -348,7 +348,7 @@
     <message>
       <location filename="../../Command.cpp" line="806"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>메쉬</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="807"/>
@@ -358,7 +358,7 @@
     <message>
       <location filename="../../Command.cpp" line="808"/>
       <source>Cuts the mesh with a selected polygon</source>
-      <translation type="unfinished">Cuts the mesh with a selected polygon</translation>
+      <translation>선택한 다각형으로 메쉬를 절단합니다.</translation>
     </message>
   </context>
   <context>
@@ -366,7 +366,7 @@
     <message>
       <location filename="../../Command.cpp" line="693"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>메쉬</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="694"/>
@@ -376,7 +376,7 @@
     <message>
       <location filename="../../Command.cpp" line="695"/>
       <source>Creates a mesh segment</source>
-      <translation>메쉬 세그먼트 생성</translation>
+      <translation>메쉬 세그먼트를 생성합니다.</translation>
     </message>
   </context>
   <context>
@@ -384,7 +384,7 @@
     <message>
       <location filename="../../Command.cpp" line="1026"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>메쉬</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1027"/>
@@ -394,7 +394,7 @@
     <message>
       <location filename="../../Command.cpp" line="1028"/>
       <source>Splits a mesh into 2 meshes</source>
-      <translation type="unfinished">Splits a mesh into 2 meshes</translation>
+      <translation>메쉬를 두 개의 메쉬로 분할합니다.</translation>
     </message>
   </context>
   <context>
@@ -402,22 +402,22 @@
     <message>
       <location filename="../../Command.cpp" line="873"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>메쉬</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="874"/>
       <source>Trim</source>
-      <translation>자르기</translation>
+      <translation>트림</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="875"/>
       <source>Trims a mesh with a selected polygon</source>
-      <translation type="unfinished">Trims a mesh with a selected polygon</translation>
+      <translation>선택한 다각형으로 메쉬를 트림합니다.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="877"/>
       <source>Trims a mesh with a picked polygon</source>
-      <translation>선택한 다각형으로 메쉬를 자르기</translation>
+      <translation>선택한 다각형으로 메쉬를 트림합니다.</translation>
     </message>
   </context>
   <context>
@@ -425,17 +425,17 @@
     <message>
       <location filename="../../Command.cpp" line="1228"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>메쉬</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1229"/>
       <source>Refinement</source>
-      <translation type="unfinished">Refinement</translation>
+      <translation>세분화</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1230"/>
       <source>Refines an existing mesh</source>
-      <translation type="unfinished">Refines an existing mesh</translation>
+      <translation>기존 메쉬를 세분화합니다.</translation>
     </message>
   </context>
   <context>
@@ -443,17 +443,17 @@
     <message>
       <location filename="../../Command.cpp" line="1262"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>메쉬</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1263"/>
       <source>Remove Components Manually</source>
-      <translation type="unfinished">Remove Components Manually</translation>
+      <translation>구성요소 수동 제거</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1264"/>
       <source>Marks a component to remove it from the mesh</source>
-      <translation type="unfinished">Marks a component to remove it from the mesh</translation>
+      <translation>메쉬에서 제거할 구성요소를 표시합니다.</translation>
     </message>
   </context>
   <context>
@@ -461,17 +461,17 @@
     <message>
       <location filename="../../Command.cpp" line="1180"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>메쉬</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1181"/>
       <source>Remove Components</source>
-      <translation type="unfinished">Remove Components</translation>
+      <translation>구성요소 제거</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1182"/>
       <source>Removes topologically independent components from the mesh</source>
-      <translation type="unfinished">Removes topologically independent components from the mesh</translation>
+      <translation>메쉬에서 위상적으로 독립된 구성요소를 제거합니다.</translation>
     </message>
   </context>
   <context>
@@ -479,17 +479,17 @@
     <message>
       <location filename="../../Command.cpp" line="1852"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>메쉬</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1853"/>
       <source>Scale</source>
-      <translation>척도</translation>
+      <translation>크기 조정</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1854"/>
       <source>Scales the selected mesh objects</source>
-      <translation type="unfinished">Scales the selected mesh objects</translation>
+      <translation>선택한 메쉬 객체의 크기를 조정합니다.</translation>
     </message>
   </context>
   <context>
@@ -497,17 +497,17 @@
     <message>
       <location filename="../../Command.cpp" line="969"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>메쉬</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="970"/>
       <source>Section From Plane</source>
-      <translation type="unfinished">Section From Plane</translation>
+      <translation>평면 단면</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="971"/>
       <source>Sections the mesh with the selected plane</source>
-      <translation type="unfinished">Sections the mesh with the selected plane</translation>
+      <translation>선택한 평면으로 메쉬의 단면을 생성합니다.</translation>
     </message>
   </context>
   <context>
@@ -525,7 +525,7 @@
     <message>
       <location filename="../../Command.cpp" line="1685"/>
       <source>Creates new mesh segments from the mesh</source>
-      <translation type="unfinished">Creates new mesh segments from the mesh</translation>
+      <translation>메쉬에서 새 메쉬 세그먼트를 생성합니다.</translation>
     </message>
   </context>
   <context>
@@ -533,17 +533,17 @@
     <message>
       <location filename="../../Command.cpp" line="1720"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>메쉬</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1721"/>
       <source>Segmentation From Best-Fit Surfaces</source>
-      <translation type="unfinished">Segmentation From Best-Fit Surfaces</translation>
+      <translation>최적 맞춤 곡면으로 분할</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1722"/>
       <source>Creates new mesh segments from the best-fit surfaces</source>
-      <translation type="unfinished">Creates new mesh segments from the best-fit surfaces</translation>
+      <translation>최적 맞춤 곡면에서 새 메쉬 세그먼트를 생성합니다.</translation>
     </message>
   </context>
   <context>
@@ -551,17 +551,17 @@
     <message>
       <location filename="../../Command.cpp" line="1354"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>메쉬</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1355"/>
       <source>Smooth</source>
-      <translation type="unfinished">Smooth</translation>
+      <translation>스무딩</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1356"/>
       <source>Smoothes the selected meshes</source>
-      <translation type="unfinished">Smoothes the selected meshes</translation>
+      <translation>선택한 메쉬를 스무딩합니다.</translation>
     </message>
   </context>
   <context>
@@ -569,17 +569,17 @@
     <message>
       <location filename="../../Command.cpp" line="1803"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>메쉬</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1804"/>
       <source>Split by Components</source>
-      <translation type="unfinished">Split by Components</translation>
+      <translation>구성요소별 분할</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1805"/>
       <source>Splits the selected mesh into its components</source>
-      <translation type="unfinished">Splits the selected mesh into its components</translation>
+      <translation>선택한 메쉬를 구성요소별로 분할합니다.</translation>
     </message>
   </context>
   <context>
@@ -587,17 +587,17 @@
     <message>
       <location filename="../../Command.cpp" line="940"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>메쉬</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="941"/>
       <source>Trim With Plane</source>
-      <translation type="unfinished">Trim With Plane</translation>
+      <translation>평면으로 트림</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="942"/>
       <source>Trims a mesh by removing faces on one side of a selected plane</source>
-      <translation type="unfinished">Trims a mesh by removing faces on one side of a selected plane</translation>
+      <translation>선택한 평면의 한쪽에 있는 면을 제거하여 메쉬를 트림합니다.</translation>
     </message>
   </context>
   <context>
@@ -605,17 +605,17 @@
     <message>
       <location filename="../../Command.cpp" line="86"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>메쉬</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="87"/>
       <source>Union</source>
-      <translation>결합체</translation>
+      <translation>합집합</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="88"/>
       <source>Unifies the selected meshes</source>
-      <translation type="unfinished">Unifies the selected meshes</translation>
+      <translation>선택한 메쉬를 합집합으로 결합합니다.</translation>
     </message>
   </context>
   <context>
@@ -623,17 +623,17 @@
     <message>
       <location filename="../../Command.cpp" line="585"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>메쉬</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="586"/>
       <source>Curvature Plot</source>
-      <translation type="unfinished">Curvature Plot</translation>
+      <translation>곡률 플롯</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="587"/>
       <source>Calculates the curvature of the vertices of a mesh</source>
-      <translation>메쉬의 정점의 곡률을 계산</translation>
+      <translation>메쉬 정점의 곡률을 계산합니다.</translation>
     </message>
   </context>
   <context>
@@ -641,17 +641,17 @@
     <message>
       <location filename="../../Command.cpp" line="642"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>메쉬</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="643"/>
       <source>Curvature Info</source>
-      <translation type="unfinished">Curvature Info</translation>
+      <translation>곡률 정보</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="644"/>
       <source>Displays information about the curvature</source>
-      <translation type="unfinished">Displays information about the curvature</translation>
+      <translation>곡률 정보를 표시합니다.</translation>
     </message>
   </context>
   <context>
@@ -659,17 +659,17 @@
     <message>
       <location filename="../../Command.cpp" line="104"/>
       <source>Mesh union</source>
-      <translation>메쉬 융합</translation>
+      <translation>메쉬 합집합</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="188"/>
       <source>Mesh difference</source>
-      <translation>차집합 메쉬 생성</translation>
+      <translation>메쉬 차집합</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="274"/>
       <source>Mesh intersection</source>
-      <translation>교집합 메쉬 생성</translation>
+      <translation>메쉬 교집합</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="378"/>
@@ -679,27 +679,27 @@
     <message>
       <location filename="../../Command.cpp" line="603"/>
       <source>Mesh VertexCurvature</source>
-      <translation>메쉬 정점의 곡률 계산</translation>
+      <translation>메쉬 정점 곡률</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.cpp" line="169"/>
       <source>Mesh Smoothing</source>
-      <translation>메쉬 평탄화</translation>
+      <translation>메쉬 스무딩</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1428"/>
       <source>Harmonize mesh normals</source>
-      <translation>메쉬의 법선 융합</translation>
+      <translation>메쉬 법선 정렬</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1467"/>
       <source>Flip mesh normals</source>
-      <translation>메쉬의 법선 뒤집기</translation>
+      <translation>메쉬 법선 뒤집기</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1608"/>
       <source>Fill up holes</source>
-      <translation>메쉬 채우기</translation>
+      <translation>구멍 채우기</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1772"/>
@@ -714,7 +714,7 @@
     <message>
       <location filename="../../Command.cpp" line="1883"/>
       <source>Mesh scale</source>
-      <translation>메쉬 스케일</translation>
+      <translation>메쉬 크기 조정</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.cpp" line="166"/>
@@ -724,7 +724,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="552"/>
       <source>Harmonize normals</source>
-      <translation>법선 융합</translation>
+      <translation>법선 정렬</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="666"/>
@@ -739,22 +739,22 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="844"/>
       <source>Remove degenerated faces</source>
-      <translation>비정상적인 면 제거</translation>
+      <translation>퇴화된 면 제거</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="917"/>
       <source>Remove duplicated faces</source>
-      <translation>중복되는 면 제거</translation>
+      <translation>중복 면 제거</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="987"/>
       <source>Remove duplicated points</source>
-      <translation>중복되는 점 제거</translation>
+      <translation>중복 점 제거</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1073"/>
       <source>Fix self-intersections</source>
-      <translation>자기 교차 수정</translation>
+      <translation>자체 교차 수정</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1151"/>
@@ -764,7 +764,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1196"/>
       <source>Repair Mesh</source>
-      <translation type="unfinished">Repair Mesh</translation>
+      <translation>메쉬 복구</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.cpp" line="164"/>
@@ -781,7 +781,7 @@
       <location filename="../../ViewProvider.cpp" line="965"/>
       <location filename="../../ViewProvider.cpp" line="1082"/>
       <source>Trim</source>
-      <translation>자르기</translation>
+      <translation>트림</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1167"/>
@@ -801,7 +801,7 @@
     <message>
       <location filename="../../ViewProvider.cpp" line="2001"/>
       <source>Fill hole</source>
-      <translation>구멍을 채움</translation>
+      <translation>구멍 채우기</translation>
     </message>
   </context>
   <context>
@@ -814,7 +814,7 @@
     <message>
       <location filename="../../DlgDecimating.ui" line="20"/>
       <source>Reduction</source>
-      <translation>감소</translation>
+      <translation>감소율</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="28"/>
@@ -824,13 +824,13 @@
     <message>
       <location filename="../../DlgDecimating.ui" line="57"/>
       <source>Full</source>
-      <translation>완전한</translation>
+      <translation>최대</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="66"/>
       <location filename="../../DlgDecimating.cpp" line="107"/>
       <source>Absolute number</source>
-      <translation>절대 값</translation>
+      <translation>절대 개수</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="102"/>
@@ -840,7 +840,7 @@
     <message>
       <location filename="../../DlgDecimating.cpp" line="101"/>
       <source>Absolute number (Maximum: %1)</source>
-      <translation>절대 값 (최대:%1)</translation>
+      <translation>절대 개수(최대: %1)</translation>
     </message>
   </context>
   <context>
@@ -858,27 +858,27 @@
       <location filename="../../DlgEvaluateMesh.ui" line="828"/>
       <location filename="../../DlgEvaluateMesh.ui" line="861"/>
       <source>No information</source>
-      <translation>정보가 없음</translation>
+      <translation>정보 없음</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="745"/>
       <source>Mesh Information</source>
-      <translation type="unfinished">Mesh Information</translation>
+      <translation>메쉬 정보</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="772"/>
       <source>Number of faces</source>
-      <translation>면의 수</translation>
+      <translation>면 수</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="805"/>
       <source>Number of edges</source>
-      <translation type="unfinished">Number of edges</translation>
+      <translation>모서리 수</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="838"/>
       <source>Number of points</source>
-      <translation>점들의 갯수</translation>
+      <translation>점 개수</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="754"/>
@@ -888,7 +888,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="14"/>
       <source>Evaluate and Repair Mesh</source>
-      <translation type="unfinished">Evaluate and Repair Mesh</translation>
+      <translation>메쉬 검사 및 복구</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="37"/>
@@ -906,7 +906,7 @@
       <location filename="../../DlgEvaluateMesh.ui" line="623"/>
       <location filename="../../DlgEvaluateMesh.ui" line="703"/>
       <source>Analyze</source>
-      <translation>분석</translation>
+      <translation>검사</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="94"/>
@@ -919,17 +919,17 @@
       <location filename="../../DlgEvaluateMesh.ui" line="633"/>
       <location filename="../../DlgEvaluateMesh.ui" line="713"/>
       <source>Repair</source>
-      <translation>수정</translation>
+      <translation>복구</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="117"/>
       <source>Duplicated faces</source>
-      <translation>중복되는 면</translation>
+      <translation>중복 면</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="197"/>
       <source>Duplicated points</source>
-      <translation>중복되는 점</translation>
+      <translation>중복 점</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="277"/>
@@ -939,32 +939,32 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="357"/>
       <source>Degenerated faces</source>
-      <translation>비정상적인 면</translation>
+      <translation>퇴화된 면</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="437"/>
       <source>Face indices</source>
-      <translation type="unfinished">Face indices</translation>
+      <translation>면 인덱스</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="517"/>
       <source>Self-intersections</source>
-      <translation>자기 교차</translation>
+      <translation>자체 교차</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="585"/>
       <source>Folds on surface</source>
-      <translation>표면의 주름</translation>
+      <translation>표면 주름</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="656"/>
       <source>All above tests together</source>
-      <translation>위의 모든 테스트 함께 실행</translation>
+      <translation>위의 모든 검사를 함께 수행</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="680"/>
       <source>Repetitive repair</source>
-      <translation>반복적으로 수정</translation>
+      <translation>반복 복구</translation>
     </message>
   </context>
   <context>
@@ -973,7 +973,7 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="255"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="424"/>
       <source>No selection</source>
-      <translation>선택 안 함</translation>
+      <translation>선택 없음</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="454"/>
@@ -988,7 +988,7 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="463"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="464"/>
       <source>No information</source>
-      <translation>정보가 없음</translation>
+      <translation>정보 없음</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="562"/>
@@ -998,7 +998,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="528"/>
       <source>No flipped normals</source>
-      <translation>뒤집은 법선 없음</translation>
+      <translation>뒤집힌 법선 없음</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="142"/>
@@ -1008,17 +1008,17 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="534"/>
       <source>%1 flipped normals</source>
-      <translation>%1 뒤집은 법선</translation>
+      <translation>뒤집힌 법선 %1개</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="622"/>
       <source>No non-manifolds</source>
-      <translation>비다양체가 존재하지 않음</translation>
+      <translation>비다양체 없음</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="630"/>
       <source>%1 non-manifolds</source>
-      <translation>%1비다양체 존재</translation>
+      <translation>비다양체 %1개</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="685"/>
@@ -1029,83 +1029,83 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="688"/>
       <source>Cannot remove non-manifolds</source>
-      <translation>비다양체를 제거할 수 없음</translation>
+      <translation>비다양체를 제거할 수 없습니다</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="728"/>
       <source>Invalid face indices</source>
-      <translation type="unfinished">Invalid face indices</translation>
+      <translation>잘못된 면 인덱스</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="735"/>
       <source>Invalid point indices</source>
-      <translation type="unfinished">Invalid point indices</translation>
+      <translation>잘못된 점 인덱스</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="742"/>
       <source>Multiple point indices</source>
-      <translation type="unfinished">Multiple point indices</translation>
+      <translation>중복 점 인덱스</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="749"/>
       <source>Invalid neighbour indices</source>
-      <translation type="unfinished">Invalid neighbour indices</translation>
+      <translation>잘못된 인접 인덱스</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="756"/>
       <source>No invalid indices</source>
-      <translation type="unfinished">No invalid indices</translation>
+      <translation>잘못된 인덱스 없음</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="783"/>
       <source>Indices</source>
-      <translation type="unfinished">Indices</translation>
+      <translation>인덱스</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="820"/>
       <source>No degenerations</source>
-      <translation>비정상적인 부분 없음</translation>
+      <translation>퇴화 없음</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="826"/>
       <source>%1 degenerated faces</source>
-      <translation>%1 비정상적인 면</translation>
+      <translation>퇴화된 면 %1개</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="855"/>
       <source>Degenerations</source>
-      <translation>비정상적인 부분</translation>
+      <translation>퇴화</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="892"/>
       <source>No duplicated faces</source>
-      <translation>중복되는 면 없음</translation>
+      <translation>중복 면 없음</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="898"/>
       <source>%1 duplicated faces</source>
-      <translation>%1중복되는 면 존재</translation>
+      <translation>중복 면 %1개</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="927"/>
       <source>Duplicated faces</source>
-      <translation>중복되는 면</translation>
+      <translation>중복 면</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="963"/>
       <source>No duplicated points</source>
-      <translation>중복되는 점 없음</translation>
+      <translation>중복 점 없음</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="969"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="997"/>
       <source>Duplicated points</source>
-      <translation>중복되는 점</translation>
+      <translation>중복 점</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1040"/>
       <source>No self-intersections</source>
-      <translation>자기 교차 없음</translation>
+      <translation>자체 교차 없음</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1046"/>
@@ -1115,12 +1115,12 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1116"/>
       <source>No folds on surface</source>
-      <translation>표면에 주름 없음</translation>
+      <translation>표면 주름 없음</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1132"/>
       <source>%1 folds on surface</source>
-      <translation>%1표면에 주름 존재</translation>
+      <translation>표면 주름 %1개</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1161"/>
@@ -1131,7 +1131,7 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1295"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1298"/>
       <source>Mesh repair</source>
-      <translation>메시 복구</translation>
+      <translation>메쉬 복구</translation>
     </message>
   </context>
   <context>
@@ -1139,7 +1139,7 @@
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="14"/>
       <source>Evaluation Settings</source>
-      <translation type="unfinished">Evaluation Settings</translation>
+      <translation>검사 설정</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="20"/>
@@ -1149,7 +1149,7 @@
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="26"/>
       <source>Check for non-manifold points</source>
-      <translation>비다양체 지점 검사</translation>
+      <translation>비다양체 점 검사</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="33"/>
@@ -1159,7 +1159,7 @@
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="40"/>
       <source>Only consider zero area faces as degenerated</source>
-      <translation>영역이 없는 면만 비정상적으로 간주</translation>
+      <translation>면적이 0인 면만 퇴화된 면으로 간주</translation>
     </message>
   </context>
   <context>
@@ -1167,17 +1167,17 @@
     <message>
       <location filename="../../DlgRegularSolid.ui" line="14"/>
       <source>Regular Solid</source>
-      <translation type="unfinished">Regular Solid</translation>
+      <translation>기본 솔리드</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="29"/>
       <source>Solid</source>
-      <translation>고체</translation>
+      <translation>솔리드</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="42"/>
       <source>Cube</source>
-      <translation type="unfinished">Cube</translation>
+      <translation>큐브</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="51"/>
@@ -1187,29 +1187,29 @@
     <message>
       <location filename="../../DlgRegularSolid.ui" line="60"/>
       <source>Cone</source>
-      <translation>고깔</translation>
+      <translation>원뿔</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="69"/>
       <source>Sphere</source>
-      <translation>공모양</translation>
+      <translation>구</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="78"/>
       <source>Ellipsoid</source>
-      <translation>타원 면</translation>
+      <translation>타원체</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="87"/>
       <source>Torus</source>
-      <translation>원환체</translation>
+      <translation>토러스</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="120"/>
       <location filename="../../DlgRegularSolid.ui" line="236"/>
       <location filename="../../DlgRegularSolid.ui" line="387"/>
       <source>Length</source>
-      <translation>길이:</translation>
+      <translation>길이</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="143"/>
@@ -1231,7 +1231,7 @@
       <location filename="../../DlgRegularSolid.ui" line="273"/>
       <location filename="../../DlgRegularSolid.ui" line="424"/>
       <source>Edge length</source>
-      <translation type="unfinished">Edge length</translation>
+      <translation>모서리 길이</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="293"/>
@@ -1240,7 +1240,7 @@
       <location filename="../../DlgRegularSolid.ui" line="642"/>
       <location filename="../../DlgRegularSolid.ui" line="746"/>
       <source>Sampling</source>
-      <translation type="unfinished">Sampling</translation>
+      <translation>샘플링</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="353"/>
@@ -1260,7 +1260,7 @@
       <location filename="../../DlgRegularSolid.ui" line="307"/>
       <location filename="../../DlgRegularSolid.ui" line="455"/>
       <source>Closed</source>
-      <translation type="unfinished">Closed</translation>
+      <translation>닫힘</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="809"/>
@@ -1298,22 +1298,22 @@
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="14"/>
       <source>Mesh Formats</source>
-      <translation>메쉬 포맷</translation>
+      <translation>메쉬 형식</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="20"/>
       <source>Export</source>
-      <translation>추출</translation>
+      <translation>내보내기</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="28"/>
       <source>Deviation of tessellation to the actual surface</source>
-      <translation>테셀레이션의 실제 표면에 대한 편차</translation>
+      <translation>실제 표면에 대한 테셀레이션 편차</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="31"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>테셀레이션된 메쉬가 표면에 대해 최대 편차를 정의한다. 값이 작을 수록 렌더링 속도가 느려지고 이는 높은 세부 사항/해상도라는 결과를 낳는다.</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;테셀레이션&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;테셀레이션된 메쉬와 표면 사이의 최대 편차를 정의합니다. 값이 작을수록 렌더링 속도는 느려지지만 세부 수준과 해상도는 높아집니다.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="34"/>
@@ -1323,27 +1323,27 @@
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="41"/>
       <source>Maximal deviation between mesh and object</source>
-      <translation>메쉬와 대상체의 최대 편차</translation>
+      <translation>메쉬와 객체 사이의 최대 편차</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="63"/>
       <source>ZIP compression is used when writing a mesh file in AMF format</source>
-      <translation>항상 메쉬를 3MF 타입으로 추출합니다.</translation>
+      <translation>AMF 형식으로 메쉬 파일을 저장할 때 ZIP 압축을 사용합니다</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="66"/>
       <source>Export AMF files using compression</source>
-      <translation>압축을 사용하여 AMF 파일 추출</translation>
+      <translation>AMF 파일을 압축하여 내보내기</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="82"/>
       <source>Always export mesh as model type in 3MF format even if not a solid</source>
-      <translation>항상 메쉬를 3MF 타입으로 추출합니다.</translation>
+      <translation>솔리드가 아니어도 메쉬를 항상 3MF 형식의 모델 타입으로 내보냅니다</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="85"/>
       <source>Export 3MF files as model type</source>
-      <translation>3MF파일을 모델 타입으로 추출</translation>
+      <translation>3MF 파일을 모델 타입으로 내보내기</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="114"/>
@@ -1359,7 +1359,7 @@
       <location filename="../../DlgSettingsImportExportImp.cpp" line="41"/>
       <source>This parameter indicates whether ZIP compression
 is used when writing a file in AMF format</source>
-      <translation>이 매개변수는 AMF 형식의 파일을 작성할 떄 ZIP 압축을 사용했는지 나타낸다</translation>
+      <translation>이 매개변수는 AMF 형식의 파일을 저장할 때 ZIP 압축을 사용할지 여부를 나타냅니다</translation>
     </message>
   </context>
   <context>
@@ -1367,17 +1367,17 @@ is used when writing a file in AMF format</source>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="73"/>
       <source>Default mesh color</source>
-      <translation>기본 메시 색</translation>
+      <translation>기본 메쉬 색상</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="80"/>
       <source>Default color for new meshes</source>
-      <translation>새 메쉬를 위한 기본 색상</translation>
+      <translation>새 메쉬의 기본 색상</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="116"/>
       <source>Mesh transparency</source>
-      <translation>메시 투명도</translation>
+      <translation>메쉬 투명도</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="142"/>
@@ -1387,7 +1387,7 @@ is used when writing a file in AMF format</source>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="149"/>
       <source>Default line color for new meshes</source>
-      <translation>새 메쉬를 위한 기본 선 색상</translation>
+      <translation>새 메쉬의 기본 선 색상</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="185"/>
@@ -1397,7 +1397,7 @@ is used when writing a file in AMF format</source>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="211"/>
       <source>Backface color</source>
-      <translation>뒷면의 색</translation>
+      <translation>뒷면 색상</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="257"/>
@@ -1407,32 +1407,32 @@ is used when writing a file in AMF format</source>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="273"/>
       <source>A bounding box will be displayed</source>
-      <translation>경계상자를 표시</translation>
+      <translation>바운딩 박스를 표시합니다</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="276"/>
       <source>Show bounding-box for highlighted or selected meshes</source>
-      <translation>강조되거나 선택된 메쉬의 경계상자를  표시</translation>
+      <translation>강조되거나 선택된 메쉬의 바운딩 박스 표시</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="313"/>
       <source>Smoothing</source>
-      <translation>평탄화</translation>
+      <translation>스무딩</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="343"/>
       <source>Define normal per vertex</source>
-      <translation>각 정점에서 법선을 정의</translation>
+      <translation>정점별 법선 정의</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="356"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>이것은 플랫 셰이딩을 위한 두 면의 법선이 이루는 최소 각도입니다. 만약 인접한 두면의 법선이 이루는 각도가 크리즈 각도보다 작다면, 면들이 그들의 공통된 모서리를 따라서 평탄화 됩니다.</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;플랫 셰이딩을 적용할 때 두 면 사이에서 법선을 계산하는 최소 각도입니다.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;인접한 두 면의 법선 사이 각도가 크리즈 각도보다 작으면 공통 모서리 주변에 스무스 셰이딩이 적용됩니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="404"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;힌트&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;정점별로 법선을 정의하는 것을 &lt;span style=" font-style:italic;"&gt;퐁 셰이딩&lt;/span&gt;이라고도 합니다.&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;반면 면별로 법선을 정의하는 것은 &lt;/span&gt;플랫 셰이딩&lt;span style=" font-style:normal;"&gt;이라고 합니다.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="359"/>
@@ -1442,12 +1442,12 @@ is used when writing a file in AMF format</source>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="14"/>
       <source>Mesh View</source>
-      <translation type="unfinished">Mesh View</translation>
+      <translation>메쉬 보기</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="35"/>
       <source>Default Appearance for New Meshes</source>
-      <translation type="unfinished">Default Appearance for New Meshes</translation>
+      <translation>새 메쉬의 기본 외관</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="251"/>
@@ -1455,10 +1455,10 @@ is used when writing a file in AMF format</source>
 If not checked, it depends on the option "Enable backlight color"
 (preferences section Display -&gt; 3D View). Either the backlight color
 will be used or black.</source>
-      <translation type="unfinished">The bottom side of the surface will be rendered the same way as the top side.
-If not checked, it depends on the option "Enable backlight color"
-(preferences section Display -&gt; 3D View). Either the backlight color
-will be used or black.</translation>
+      <translation>표면의 뒷면을 앞면과 같은 방식으로 렌더링합니다.
+체크하지 않으면 "배면 조명 색상 활성화"
+(환경설정의 표시 -&gt; 3D 보기) 옵션에 따라 결정됩니다. 배면 조명 색상이
+사용되거나 검은색이 사용됩니다.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="334"/>
@@ -1469,12 +1469,11 @@ With flat shading the surface normals are not defined per vertex that leads
 to an unreal appearance for curved surfaces while using Phong shading leads
 to a smoother appearance.
 </source>
-      <translation type="unfinished">If this option is set Phong shading is used, otherwise flat shading.
-Shading defines the appearance of surfaces.
+      <translation>이 옵션을 설정하면 퐁 셰이딩을 사용하고, 그렇지 않으면 플랫 셰이딩을 사용합니다.
+셰이딩은 표면의 외관을 정의합니다.
 
-With flat shading the surface normals are not defined per vertex that leads
-to an unreal appearance for curved surfaces while using Phong shading leads
-to a smoother appearance.
+플랫 셰이딩에서는 표면 법선을 정점별로 정의하지 않으므로 곡면이 부자연스럽게 보일 수 있습니다.
+반면 퐁 셰이딩을 사용하면 더 부드러운 외관을 얻을 수 있습니다.
 </translation>
     </message>
     <message>
@@ -1483,10 +1482,10 @@ to a smoother appearance.
 
  If face angle ≥ crease angle, facet shading is used
  If face angle &lt; crease angle, smooth shading is used</source>
-      <translation>크리즈 각도는 두 면사이의 임계각도입니다.
+      <translation>크리즈 각도는 두 면 사이의 임계 각도입니다.
 
-만약 면의 각도 ≥ 크리즈 각도일 경우 패싯 쉐이딩이 사용되고 
-면의 각도 &lt; 크리즈 각도일 경우,  스무스 쉐이딩이 사용됩니다</translation>
+ 면 각도 ≥ 크리즈 각도이면 패싯 셰이딩을 사용합니다
+ 면 각도 &lt; 크리즈 각도이면 스무스 셰이딩을 사용합니다</translation>
     </message>
   </context>
   <context>
@@ -1494,7 +1493,7 @@ to a smoother appearance.
     <message>
       <location filename="../../DlgSmoothing.ui" line="14"/>
       <source>Smoothing</source>
-      <translation>평탄화</translation>
+      <translation>스무딩</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="23"/>
@@ -1509,32 +1508,32 @@ to a smoother appearance.
     <message>
       <location filename="../../DlgSmoothing.ui" line="39"/>
       <source>Laplace</source>
-      <translation>라플라스 평탄화</translation>
+      <translation>라플라스</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="49"/>
       <source>Parameter</source>
-      <translation>매개 변수</translation>
+      <translation>매개변수</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="55"/>
       <source>Iterations</source>
-      <translation>반복</translation>
+      <translation>반복 횟수</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="72"/>
       <source>Lambda</source>
-      <translation type="unfinished">Lambda</translation>
+      <translation>람다</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="95"/>
       <source>Mu</source>
-      <translation type="unfinished">Mu</translation>
+      <translation>뮤</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="118"/>
       <source>Only selection</source>
-      <translation>선택한 것만</translation>
+      <translation>선택 항목만</translation>
     </message>
   </context>
   <context>
@@ -1547,12 +1546,12 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="101"/>
       <source>Adaptive</source>
-      <translation>적용</translation>
+      <translation>적응형</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="103"/>
       <source>Frontal</source>
-      <translation>정면</translation>
+      <translation>전면</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="106"/>
@@ -1562,12 +1561,12 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="105"/>
       <source>Frontal quad</source>
-      <translation type="unfinished">Frontal quad</translation>
+      <translation>전면 사각형</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="107"/>
       <source>Quasi-structured quad</source>
-      <translation type="unfinished">Quasi-structured quad</translation>
+      <translation>준구조화 사각형</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="201"/>
@@ -1578,12 +1577,12 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="247"/>
       <source>Running Gmsh…</source>
-      <translation type="unfinished">Running Gmsh…</translation>
+      <translation>Gmsh 실행 중…</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="270"/>
       <source>Failed to start</source>
-      <translation>시작에 실패함</translation>
+      <translation>시작하지 못했습니다</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="277"/>
@@ -1596,12 +1595,12 @@ to a smoother appearance.
     <message>
       <location filename="../../MeshEditor.cpp" line="393"/>
       <source>Add Triangle</source>
-      <translation type="unfinished">Add Triangle</translation>
+      <translation>삼각형 추가</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="394"/>
       <source>Flip Normal</source>
-      <translation type="unfinished">Flip Normal</translation>
+      <translation>법선 뒤집기</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="395"/>
@@ -1627,7 +1626,7 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="176"/>
       <source>Surface Fit</source>
-      <translation type="unfinished">Surface Fit</translation>
+      <translation>곡면 맞춤</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="183"/>
@@ -1637,7 +1636,7 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="188"/>
       <source>Selection</source>
-      <translation>선택항목</translation>
+      <translation>선택</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="196"/>
@@ -1667,7 +1666,7 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="308"/>
       <source>Before fitting the surface select an area.</source>
-      <translation>표면을 맞추기 전에 영역을 선택해주세요.</translation>
+      <translation>곡면 맞춤을 수행하기 전에 영역을 선택하십시오.</translation>
     </message>
   </context>
   <context>
@@ -1675,37 +1674,37 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="14"/>
       <source>Remesh by Gmsh</source>
-      <translation type="unfinished">Remesh by Gmsh</translation>
+      <translation>Gmsh로 리메시</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="26"/>
       <source>Remeshing Parameter</source>
-      <translation>메슁 매게변수</translation>
+      <translation>리메시 매개변수</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="32"/>
       <source>Meshing</source>
-      <translation type="unfinished">Meshing</translation>
+      <translation>메싱</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="42"/>
       <source>Max element size (0.0 = Auto)</source>
-      <translation type="unfinished">Max element size (0.0 = Auto)</translation>
+      <translation>최대 요소 크기(0.0 = 자동)</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="68"/>
       <source>Min element size (0.0 = Auto)</source>
-      <translation type="unfinished">Min element size (0.0 = Auto)</translation>
+      <translation>최소 요소 크기(0.0 = 자동)</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="94"/>
       <source>Angle</source>
-      <translation>각</translation>
+      <translation>각도</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="126"/>
       <source>Gmsh</source>
-      <translation type="unfinished">Gmsh</translation>
+      <translation>Gmsh</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="134"/>
@@ -1715,7 +1714,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="141"/>
       <source>Leave empty to use default gmsh executable</source>
-      <translation type="unfinished">Leave empty to use default gmsh executable</translation>
+      <translation>비워 두면 기본 Gmsh 실행 파일을 사용합니다</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="157"/>
@@ -1725,7 +1724,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="184"/>
       <source>Time</source>
-      <translation type="unfinished">Time</translation>
+      <translation>시간</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="191"/>
@@ -1738,7 +1737,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemoveComponents.ui" line="14"/>
       <source>Remove Components</source>
-      <translation type="unfinished">Remove Components</translation>
+      <translation>구성요소 제거</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="20"/>
@@ -1766,23 +1765,23 @@ to a smoother appearance.
     <message>
       <location filename="../../RemoveComponents.ui" line="79"/>
       <source>&lt; faces than</source>
-      <translation type="unfinished">&lt; faces than</translation>
+      <translation>면 수가 다음보다 적음</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="89"/>
       <location filename="../../RemoveComponents.ui" line="175"/>
       <source>Pick Triangle</source>
-      <translation type="unfinished">Pick Triangle</translation>
+      <translation>삼각형 선택</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="192"/>
       <source>Region Options</source>
-      <translation type="unfinished">Region Options</translation>
+      <translation>영역 옵션</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="208"/>
       <source>Respect only triangles with screen-facing normals</source>
-      <translation type="unfinished">Respect only triangles with screen-facing normals</translation>
+      <translation>화면을 향하는 법선을 가진 삼각형만 고려</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="96"/>
@@ -1792,22 +1791,22 @@ to a smoother appearance.
     <message>
       <location filename="../../RemoveComponents.ui" line="106"/>
       <source>Deselect</source>
-      <translation>선택해제</translation>
+      <translation>선택 해제</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="165"/>
       <source>&gt; faces than</source>
-      <translation type="unfinished">&gt; faces than</translation>
+      <translation>면 수가 다음보다 많음</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="182"/>
       <source>Deselect whole component</source>
-      <translation>전체 구성요소 선택해제</translation>
+      <translation>전체 구성요소 선택 해제</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="198"/>
       <source>Respect only visible triangles</source>
-      <translation>화면에 보이는 삼각형만 고려</translation>
+      <translation>보이는 삼각형만 고려</translation>
     </message>
   </context>
   <context>
@@ -1815,12 +1814,12 @@ to a smoother appearance.
     <message>
       <location filename="../../Segmentation.ui" line="14"/>
       <source>Mesh Segmentation</source>
-      <translation type="unfinished">Mesh Segmentation</translation>
+      <translation>메쉬 분할</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="20"/>
       <source>Smooth mesh</source>
-      <translation>메쉬 평탄화</translation>
+      <translation>메쉬 스무딩</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="37"/>
@@ -1841,7 +1840,7 @@ to a smoother appearance.
       <location filename="../../Segmentation.ui" line="206"/>
       <location filename="../../Segmentation.ui" line="303"/>
       <source>Minimum number of faces</source>
-      <translation>면의 최소 수</translation>
+      <translation>최소 면 수</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="83"/>
@@ -1857,32 +1856,32 @@ to a smoother appearance.
     <message>
       <location filename="../../Segmentation.ui" line="109"/>
       <source>Tolerance (flat)</source>
-      <translation type="unfinished">Tolerance (flat)</translation>
+      <translation>공차(평면)</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="126"/>
       <source>Tolerance (curved)</source>
-      <translation type="unfinished">Tolerance (curved)</translation>
+      <translation>공차(곡면)</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="235"/>
       <source>Maximum curvature</source>
-      <translation type="unfinished">Maximum curvature</translation>
+      <translation>최대 곡률</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="269"/>
       <source>Minimum curvature</source>
-      <translation type="unfinished">Minimum curvature</translation>
+      <translation>최소 곡률</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="163"/>
       <source>Sphere</source>
-      <translation>공모양</translation>
+      <translation>구</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="226"/>
       <source>Freeform</source>
-      <translation>자유 형식</translation>
+      <translation>자유형</translation>
     </message>
   </context>
   <context>
@@ -1895,7 +1894,7 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.ui" line="14"/>
       <source>Mesh Segmentation</source>
-      <translation type="unfinished">Mesh Segmentation</translation>
+      <translation>메쉬 분할</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="29"/>
@@ -1916,7 +1915,7 @@ to a smoother appearance.
       <location filename="../../SegmentationBestFit.ui" line="106"/>
       <location filename="../../SegmentationBestFit.ui" line="159"/>
       <source>Minimum number of faces</source>
-      <translation>면의 최소 수</translation>
+      <translation>최소 면 수</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="73"/>
@@ -1926,18 +1925,18 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.ui" line="126"/>
       <source>Sphere</source>
-      <translation>공모양</translation>
+      <translation>구</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="376"/>
       <location filename="../../SegmentationBestFit.cpp" line="401"/>
       <source>Base</source>
-      <translation>베이스</translation>
+      <translation>기준</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="377"/>
       <source>Normal</source>
-      <translation>일반</translation>
+      <translation>법선</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="402"/>
@@ -1967,7 +1966,7 @@ to a smoother appearance.
     <message>
       <location filename="../../Selection.ui" line="39"/>
       <source>Add</source>
-      <translation>추가하기</translation>
+      <translation>추가</translation>
     </message>
     <message>
       <location filename="../../Selection.ui" line="46"/>
@@ -1977,22 +1976,22 @@ to a smoother appearance.
     <message>
       <location filename="../../Selection.ui" line="53"/>
       <source>Accept only visible triangles</source>
-      <translation type="unfinished">Accept only visible triangles</translation>
+      <translation>보이는 삼각형만 허용</translation>
     </message>
     <message>
       <location filename="../../Selection.ui" line="63"/>
       <source>Accept only triangles with screen-facing normals</source>
-      <translation type="unfinished">Accept only triangles with screen-facing normals</translation>
+      <translation>화면을 향하는 법선을 가진 삼각형만 허용</translation>
     </message>
     <message>
       <location filename="../../Selection.cpp" line="87"/>
       <source>Use a brush tool to select the area</source>
-      <translation>브러시 툴을 사용하여 영역 선택</translation>
+      <translation>브러시 도구를 사용하여 영역을 선택합니다.</translation>
     </message>
     <message>
       <location filename="../../Selection.cpp" line="90"/>
       <source>Clears completely the selected area</source>
-      <translation>선택한 영역 완전히 지우기</translation>
+      <translation>선택한 영역을 완전히 지웁니다</translation>
     </message>
   </context>
   <context>
@@ -2016,7 +2015,7 @@ to a smoother appearance.
       <location filename="../../Workbench.cpp" line="122"/>
       <location filename="../../Workbench.cpp" line="123"/>
       <source>X: %1	Y: %2	Z: %3</source>
-      <translation type="unfinished">X: %1	Y: %2	Z: %3</translation>
+      <translation>X: %1	Y: %2	Z: %3</translation>
     </message>
   </context>
   <context>
@@ -2024,7 +2023,7 @@ to a smoother appearance.
     <message>
       <location filename="../../Command.cpp" line="1520"/>
       <source>Boundings of %1:</source>
-      <translation>%1의 경계</translation>
+      <translation>%1의 바운딩 박스:</translation>
     </message>
   </context>
   <context>
@@ -2044,7 +2043,7 @@ to a smoother appearance.
       <location filename="../../Command.cpp" line="228"/>
       <location filename="../../Command.cpp" line="314"/>
       <source>Unknown error occurred while running OpenSCAD.</source>
-      <translation>OpenSCAD를 실행하는 중 알 수 없는 오류가 발생함.</translation>
+      <translation>OpenSCAD를 실행하는 중 알 수 없는 오류가 발생했습니다.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="149"/>
@@ -2052,8 +2051,8 @@ to a smoother appearance.
       <location filename="../../Command.cpp" line="321"/>
       <source>OpenSCAD cannot be found on the system.
 Visit https://openscad.org/ to install it.</source>
-      <translation type="unfinished">OpenSCAD cannot be found on the system.
-Visit https://openscad.org/ to install it.</translation>
+      <translation>시스템에서 OpenSCAD를 찾을 수 없습니다.
+설치하려면 https://openscad.org/를 방문하십시오.</translation>
     </message>
   </context>
   <context>
@@ -2061,7 +2060,7 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1345"/>
       <source>Evaluate &amp; Repair Mesh</source>
-      <translation>메시 평가 및 수정하기</translation>
+      <translation>메쉬 검사 및 복구(&amp;R)</translation>
     </message>
   </context>
   <context>
@@ -2069,12 +2068,12 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../AppMeshGui.cpp" line="156"/>
       <source>Display</source>
-      <translation>화면</translation>
+      <translation>표시</translation>
     </message>
     <message>
       <location filename="../../AppMeshGui.cpp" line="159"/>
       <source>Import-Export</source>
-      <translation>가져오기 내보내기</translation>
+      <translation>가져오기/내보내기</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="357"/>
@@ -2085,7 +2084,7 @@ Visit https://openscad.org/ to install it.</translation>
       <location filename="../../Command.cpp" line="358"/>
       <location filename="../../Command.cpp" line="421"/>
       <source>Binary STL</source>
-      <translation>이진 형태의 STL</translation>
+      <translation>바이너리 STL</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="359"/>
@@ -2098,7 +2097,7 @@ Visit https://openscad.org/ to install it.</translation>
       <location filename="../../Command.cpp" line="360"/>
       <location filename="../../Command.cpp" line="424"/>
       <source>Binary Mesh</source>
-      <translation>이진 형식 메쉬</translation>
+      <translation>바이너리 메쉬</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="361"/>
@@ -2110,23 +2109,23 @@ Visit https://openscad.org/ to install it.</translation>
       <location filename="../../Command.cpp" line="362"/>
       <location filename="../../Command.cpp" line="427"/>
       <source>Object File Format</source>
-      <translation>대상체 파일 형식</translation>
+      <translation>Object File 형식</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="363"/>
       <source>Inventor V2.1 ASCII</source>
-      <translation type="unfinished">Inventor V2.1 ASCII</translation>
+      <translation>Inventor V2.1 ASCII</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="364"/>
       <location filename="../../Command.cpp" line="432"/>
       <source>Stanford Polygon</source>
-      <translation type="unfinished">Stanford Polygon</translation>
+      <translation>Stanford Polygon</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="365"/>
       <source>NASTRAN</source>
-      <translation type="unfinished">NASTRAN</translation>
+      <translation>NASTRAN</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="366"/>
@@ -2142,47 +2141,47 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../Command.cpp" line="426"/>
       <source>Simple Model Format</source>
-      <translation>기본 파일 형식</translation>
+      <translation>단순 모델 형식</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="428"/>
       <source>Inventor V2.1 ascii</source>
-      <translation type="unfinished">Inventor V2.1 ascii</translation>
+      <translation>Inventor V2.1 ascii</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="429"/>
       <source>X3D Extensible 3D</source>
-      <translation type="unfinished">X3D Extensible 3D</translation>
+      <translation>X3D Extensible 3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="430"/>
       <source>Compressed X3D</source>
-      <translation type="unfinished">Compressed X3D</translation>
+      <translation>Compressed X3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="431"/>
       <source>WebGL/X3D</source>
-      <translation type="unfinished">WebGL/X3D</translation>
+      <translation>WebGL/X3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="433"/>
       <source>VRML V2.0</source>
-      <translation type="unfinished">VRML V2.0</translation>
+      <translation>VRML V2.0</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="434"/>
       <source>Compressed VRML 2.0</source>
-      <translation type="unfinished">Compressed VRML 2.0</translation>
+      <translation>Compressed VRML 2.0</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="435"/>
       <source>Nastran</source>
-      <translation type="unfinished">Nastran</translation>
+      <translation>Nastran</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="436"/>
       <source>Python module def</source>
-      <translation>파이썬 모듈 정의</translation>
+      <translation>Python 모듈 정의</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="437"/>
@@ -2192,32 +2191,32 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../Command.cpp" line="438"/>
       <source>3D Manufacturing Format</source>
-      <translation>3D 제작 형식</translation>
+      <translation>3D 제조 형식</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="449"/>
       <source>Export Mesh</source>
-      <translation type="unfinished">Export Mesh</translation>
+      <translation>메쉬 내보내기</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="498"/>
       <source>Meshing Tolerance</source>
-      <translation>메슁 허용 오차</translation>
+      <translation>메싱 공차</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="499"/>
       <source>Enter tolerance for meshing geometry:</source>
-      <translation>메슁 도형에 대한 허용 오차 입력:</translation>
+      <translation>형상을 메싱할 공차를 입력하십시오:</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1329"/>
       <source>The mesh '%1' is not a solid.</source>
-      <translation>%1는 솔리드 메쉬가 아니다</translation>
+      <translation>메쉬 '%1'은(는) 솔리드가 아닙니다.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1333"/>
       <source>The mesh '%1' is a solid.</source>
-      <translation>%1는 솔리드 메쉬이다</translation>
+      <translation>메쉬 '%1'은(는) 솔리드입니다.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1336"/>
@@ -2227,17 +2226,17 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../Command.cpp" line="1529"/>
       <source>Boundings</source>
-      <translation>경계</translation>
+      <translation>바운딩 박스</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1596"/>
       <source>Fill Holes</source>
-      <translation type="unfinished">Fill Holes</translation>
+      <translation>구멍 채우기</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1597"/>
       <source>Fill holes with maximum number of edges</source>
-      <translation type="unfinished">Fill holes with maximum number of edges</translation>
+      <translation>최대 모서리 수를 지정하여 구멍 채우기</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1870"/>
@@ -2247,58 +2246,58 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../Command.cpp" line="1871"/>
       <source>Enter scaling factor:</source>
-      <translation>크기 조정 인수 입력:</translation>
+      <translation>배율을 입력하십시오:</translation>
     </message>
     <message>
       <location filename="../../PropertyEditorMesh.cpp" line="81"/>
       <source>[Points: %1, Edges: %2, Faces: %3]</source>
-      <translation>[점:%1, 모서리:%2, 면%3]</translation>
+      <translation>[점: %1, 모서리: %2, 면: %3]</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="796"/>
       <source>Display Components</source>
-      <translation type="unfinished">Display Components</translation>
+      <translation>구성요소 표시</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="804"/>
       <source>Display Segments</source>
-      <translation type="unfinished">Display Segments</translation>
+      <translation>세그먼트 표시</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="812"/>
       <source>Display Colors</source>
-      <translation type="unfinished">Display Colors</translation>
+      <translation>색상 표시</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1701"/>
       <location filename="../../ViewProviderCurvature.cpp" line="535"/>
       <source>Leave Info Mode</source>
-      <translation type="unfinished">Leave Info Mode</translation>
+      <translation>정보 모드 나가기</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1771"/>
       <source>Index: %1</source>
-      <translation type="unfinished">Index: %1</translation>
+      <translation>인덱스: %1</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1799"/>
       <source>Leave Hole-Filling Mode</source>
-      <translation type="unfinished">Leave Hole-Filling Mode</translation>
+      <translation>구멍 채우기 모드 나가기</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1846"/>
       <source>Leave Removal Mode</source>
-      <translation type="unfinished">Leave Removal Mode</translation>
+      <translation>제거 모드 나가기</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1847"/>
       <source>Delete Selected Faces</source>
-      <translation type="unfinished">Delete Selected Faces</translation>
+      <translation>선택한 면 삭제</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1848"/>
       <source>Clear Selected Faces</source>
-      <translation type="unfinished">Clear Selected Faces</translation>
+      <translation>선택한 면 지우기</translation>
     </message>
     <message>
       <location filename="../../ViewProviderCurvature.cpp" line="532"/>
@@ -2308,32 +2307,32 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="69"/>
       <source>Number of points</source>
-      <translation>점들의 갯수</translation>
+      <translation>점 개수</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="72"/>
       <source>Number of facets</source>
-      <translation type="unfinished">Number of facets</translation>
+      <translation>패싯 수</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="78"/>
       <source>Minimum bound</source>
-      <translation type="unfinished">Minimum bound</translation>
+      <translation>최소 좌표</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="81"/>
       <source>Maximum bound</source>
-      <translation type="unfinished">Maximum bound</translation>
+      <translation>최대 좌표</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="88"/>
       <source>Mesh Info Box</source>
-      <translation type="unfinished">Mesh Info Box</translation>
+      <translation>메쉬 정보 상자</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="89"/>
       <source>Mesh Info</source>
-      <translation type="unfinished">Mesh Info</translation>
+      <translation>메쉬 정보</translation>
     </message>
   </context>
   <context>
@@ -2341,17 +2340,17 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
       <source>Analyze</source>
-      <translation>분석</translation>
+      <translation>검사</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
       <source>Boolean</source>
-      <translation>부울</translation>
+      <translation>불리언</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
       <source>&amp;Meshes</source>
-      <translation>메시(&amp;M)</translation>
+      <translation>메쉬(&amp;M)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
@@ -2361,32 +2360,32 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>Mesh Tools</source>
-      <translation type="unfinished">Mesh Tools</translation>
+      <translation>메쉬 도구</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
       <source>Mesh Modify</source>
-      <translation type="unfinished">Mesh Modify</translation>
+      <translation>메쉬 수정</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>Mesh Boolean</source>
-      <translation type="unfinished">Mesh Boolean</translation>
+      <translation>메쉬 불리언</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>Mesh Cutting</source>
-      <translation type="unfinished">Mesh Cutting</translation>
+      <translation>메쉬 절단</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>Mesh Segmentation</source>
-      <translation type="unfinished">Mesh Segmentation</translation>
+      <translation>메쉬 분할</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
       <source>Mesh Analyze</source>
-      <translation type="unfinished">Mesh Analyze</translation>
+      <translation>메쉬 검사</translation>
     </message>
   </context>
 </TS>
