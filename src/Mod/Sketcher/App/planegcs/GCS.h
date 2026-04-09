@@ -503,6 +503,26 @@ public:
     int addConstraintP2CDistance(Point& p, Circle& c, double* distance, int tagId = 0, bool driving = true);
     int addConstraintArcLength(Arc& a, double* dist, int tagId, bool driving = true);
 
+    // 3D constraints
+    int addConstraintP2PDistance3D(
+        Point3D& p1,
+        Point3D& p2,
+        double* distance,
+        int tagId = 0,
+        bool driving = true
+    );
+    int addConstraintParallel3D(
+        Point3D& p1,
+        Point3D& p2,
+        Point3D& p3,
+        Point3D& p4,
+        int tagId = 0,
+        bool driving = true
+    );
+
+    // 3D derived constraints
+    int addConstraintP2PCoincident3D(Point3D& p1, Point3D& p2, int tagId = 0, bool driving = true);
+
     // internal alignment constraints
     int addConstraintInternalAlignmentPoint2Ellipse(
         Ellipse& e,

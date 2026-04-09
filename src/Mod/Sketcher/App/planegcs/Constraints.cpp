@@ -3229,4 +3229,252 @@ void ConstraintArcLength::evaluate()
     *distance() = (endA - startA) * *arc.rad;
 }
 
+// --------------------------------------------------------
+// P2PDistance3D
+ConstraintP2PDistance3D::ConstraintP2PDistance3D(Point3D& p1, Point3D& p2, double* d)
+{
+    pvec.push_back(p1.x);
+    pvec.push_back(p1.y);
+    pvec.push_back(p1.z);
+    pvec.push_back(p2.x);
+    pvec.push_back(p2.y);
+    pvec.push_back(p2.z);
+    pvec.push_back(d);
+    origpvec = pvec;
+    rescale();
+}
+
+ConstraintType ConstraintP2PDistance3D::getTypeId()
+{
+    return P2PDistance3D;
+}
+
+double ConstraintP2PDistance3D::value()
+{
+    double dx = (*p1x() - *p2x());
+    double dy = (*p1y() - *p2y());
+    double dz = (*p1z() - *p2z());
+    return sqrt(dx * dx + dy * dy + dz * dz);
+}
+
+double ConstraintP2PDistance3D::error()
+{
+    return scale * (value() - *distance());
+}
+
+double ConstraintP2PDistance3D::grad(double* param)
+{
+    double deriv = 0.;
+    if (param == p1x() || param == p1y() || param == p1z() || param == p2x() || param == p2y()
+        || param == p2z()) {
+        double dx = (*p1x() - *p2x());
+        double dy = (*p1y() - *p2y());
+        double dz = (*p1z() - *p2z());
+        double d = sqrt(dx * dx + dy * dy + dz * dz);
+        if (param == p1x()) {
+            deriv += dx / d;
+        }
+        if (param == p1y()) {
+            deriv += dy / d;
+        }
+        if (param == p1z()) {
+            deriv += dz / d;
+        }
+        if (param == p2x()) {
+            deriv += -dx / d;
+        }
+        if (param == p2y()) {
+            deriv += -dy / d;
+        }
+        if (param == p2z()) {
+            deriv += -dz / d;
+        }
+    }
+    if (param == distance()) {
+        deriv += -1.;
+    }
+
+    return scale * deriv;
+}
+
+double ConstraintP2PDistance3D::maxStep(MAP_pD_D& dir, double lim)
+{
+    MAP_pD_D::iterator it;
+    // distance() >= 0
+    it = dir.find(distance());
+    if (it != dir.end()) {
+        if (it->second < 0.) {
+            lim = std::min(lim, -(*distance()) / it->second);
+        }
+    }
+    return lim;
+}
+void ConstraintP2PDistance3D::evaluate()
+{
+    *distance() = value();
+}
+
+// --------------------------------------------------------
+// Parallel3D
+ConstraintParallel3D::ConstraintParallel3D(Point3D& p1,
+                                           Point3D& p2,
+                                           Point3D& p3,
+                                           Point3D& p4,
+                                           Component comp)
+    : component(comp)
+{
+    pvec.push_back(p1.x);
+    pvec.push_back(p1.y);
+    pvec.push_back(p1.z);
+    pvec.push_back(p2.x);
+    pvec.push_back(p2.y);
+    pvec.push_back(p2.z);
+    pvec.push_back(p3.x);
+    pvec.push_back(p3.y);
+    pvec.push_back(p3.z);
+    pvec.push_back(p4.x);
+    pvec.push_back(p4.y);
+    pvec.push_back(p4.z);
+    origpvec = pvec;
+    rescale();
+}
+
+ConstraintType ConstraintParallel3D::getTypeId()
+{
+    return Parallel3D;
+}
+
+void ConstraintParallel3D::rescale(double coef)
+{
+    double dx1 = (*p1x() - *p2x());
+    double dy1 = (*p1y() - *p2y());
+    double dz1 = (*p1z() - *p2z());
+    double dx2 = (*p3x() - *p4x());
+    double dy2 = (*p3y() - *p4y());
+    double dz2 = (*p3z() - *p4z());
+    double lengthProduct =
+        (dx1 * dx1 + dy1 * dy1 + dz1 * dz1) * (dx2 * dx2 + dy2 * dy2 + dz2 * dz2);
+    scale = coef / sqrt(lengthProduct);
+}
+
+double ConstraintParallel3D::error()
+{
+    double dx1 = (*p1x() - *p2x());
+    double dy1 = (*p1y() - *p2y());
+    double dz1 = (*p1z() - *p2z());
+    double dx2 = (*p3x() - *p4x());
+    double dy2 = (*p3y() - *p4y());
+    double dz2 = (*p3z() - *p4z());
+
+    double err = 0;
+    switch (component) {
+        case X:
+            err = dy1 * dz2 - dz1 * dy2;
+            break;
+        case Y:
+            err = dz1 * dx2 - dx1 * dz2;
+            break;
+        case Z:
+            err = dx1 * dy2 - dy1 * dx2;
+            break;
+    }
+    return scale * err;
+}
+
+double ConstraintParallel3D::grad(double* param)
+{
+    double dx1 = (*p1x() - *p2x());
+    double dy1 = (*p1y() - *p2y());
+    double dz1 = (*p1z() - *p2z());
+    double dx2 = (*p3x() - *p4x());
+    double dy2 = (*p3y() - *p4y());
+    double dz2 = (*p3z() - *p4z());
+
+    double deriv = 0;
+
+    if (component == X) {
+        // f = dy1 * dz2 - dz1 * dy2
+        if (param == p1y()) {
+            deriv += dz2;
+        }
+        if (param == p2y()) {
+            deriv -= dz2;
+        }
+        if (param == p1z()) {
+            deriv -= dy2;
+        }
+        if (param == p2z()) {
+            deriv += dy2;
+        }
+        if (param == p3y()) {
+            deriv -= dz1;
+        }
+        if (param == p4y()) {
+            deriv += dz1;
+        }
+        if (param == p3z()) {
+            deriv += dy1;
+        }
+        if (param == p4z()) {
+            deriv -= dy1;
+        }
+    }
+    else if (component == Y) {
+        // f = dz1 * dx2 - dx1 * dz2
+        if (param == p1z()) {
+            deriv += dx2;
+        }
+        if (param == p2z()) {
+            deriv -= dx2;
+        }
+        if (param == p1x()) {
+            deriv -= dz2;
+        }
+        if (param == p2x()) {
+            deriv += dz2;
+        }
+        if (param == p3z()) {
+            deriv -= dx1;
+        }
+        if (param == p4z()) {
+            deriv += dx1;
+        }
+        if (param == p3x()) {
+            deriv += dz1;
+        }
+        if (param == p4x()) {
+            deriv -= dz1;
+        }
+    }
+    else if (component == Z) {
+        // f = dx1 * dy2 - dy1 * dx2
+        if (param == p1x()) {
+            deriv += dy2;
+        }
+        if (param == p2x()) {
+            deriv -= dy2;
+        }
+        if (param == p1y()) {
+            deriv -= dx2;
+        }
+        if (param == p2y()) {
+            deriv += dx2;
+        }
+        if (param == p3x()) {
+            deriv -= dy1;
+        }
+        if (param == p4x()) {
+            deriv += dy1;
+        }
+        if (param == p3y()) {
+            deriv += dx1;
+        }
+        if (param == p4y()) {
+            deriv -= dx1;
+        }
+    }
+
+    return scale * deriv;
+}
+
 }  // namespace GCS

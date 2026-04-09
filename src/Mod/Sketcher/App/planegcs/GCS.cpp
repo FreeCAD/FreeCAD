@@ -955,6 +955,53 @@ int System::addConstraintCoordinateY(Point& p, double* y, int tagId, bool drivin
     return addConstraintEqual(p.y, y, tagId, driving);
 }
 
+// 3D constraints
+
+int System::addConstraintP2PDistance3D(Point3D& p1,
+                                       Point3D& p2,
+                                       double* distance,
+                                       int tagId,
+                                       bool driving)
+{
+    Constraint* constr = new ConstraintP2PDistance3D(p1, p2, distance);
+    constr->setTag(tagId);
+    constr->setDriving(driving);
+    return addConstraint(constr);
+}
+
+int System::addConstraintParallel3D(Point3D& p1,
+                                    Point3D& p2,
+                                    Point3D& p3,
+                                    Point3D& p4,
+                                    int tagId,
+                                    bool driving)
+{
+    
+    Constraint* constrX = new ConstraintParallel3D(p1, p2, p3, p4, ConstraintParallel3D::X);
+    constrX->setTag(tagId);
+    constrX->setDriving(driving);
+    addConstraint(constrX);
+
+    Constraint* constrY = new ConstraintParallel3D(p1, p2, p3, p4, ConstraintParallel3D::Y);
+    constrY->setTag(tagId);
+    constrY->setDriving(driving);
+    addConstraint(constrY);
+
+    Constraint* constrZ = new ConstraintParallel3D(p1, p2, p3, p4, ConstraintParallel3D::Z);
+    constrZ->setTag(tagId);
+    constrZ->setDriving(driving);
+    return addConstraint(constrZ);
+}
+
+// 3D derived constraints
+
+int System::addConstraintP2PCoincident3D(Point3D& p1, Point3D& p2, int tagId, bool driving)
+{
+    addConstraintEqual(p1.x, p2.x, tagId, driving);
+    addConstraintEqual(p1.y, p2.y, tagId, driving);
+    return addConstraintEqual(p1.z, p2.z, tagId, driving);
+}
+
 int System::addConstraintArcRules(Arc& a, int tagId, bool driving)
 {
     addConstraintCurveValue(a.start, a, a.startAngle, tagId, driving);
