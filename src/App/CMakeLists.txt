@@ -364,16 +364,7 @@ SET(FreeCADApp_SRCS
 
 set(_freecad_init_tools_source "${CMAKE_CURRENT_SOURCE_DIR}/FreeCADInitTools.py")
 set(_freecad_init_tools_output "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/FreeCADInitTools.py")
-add_custom_command(
-    OUTPUT "${_freecad_init_tools_output}"
-    COMMAND "${CMAKE_COMMAND}"
-        -DINPUTFILE="${_freecad_init_tools_source}"
-        -DOUTPUTFILE="${_freecad_init_tools_output}"
-        -P "${CMAKE_SOURCE_DIR}/cMake/LinkOrCopy.cmake"
-    MAIN_DEPENDENCY "${_freecad_init_tools_source}"
-    DEPENDS "${CMAKE_SOURCE_DIR}/cMake/LinkOrCopy.cmake"
-    COMMENT "Mirroring ${_freecad_init_tools_source} to ${_freecad_init_tools_output}"
-)
+fc_mirror_file("${_freecad_init_tools_source}" "${_freecad_init_tools_output}")
 add_custom_target(FreeCADInitToolsMirror DEPENDS "${_freecad_init_tools_output}")
 
 if(FREECAD_USE_PCH)

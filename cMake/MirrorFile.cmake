@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 if(NOT DEFINED INPUTFILE OR NOT DEFINED OUTPUTFILE)
-    message(FATAL_ERROR "LinkOrCopy.cmake requires INPUTFILE and OUTPUTFILE")
+    message(FATAL_ERROR "MirrorFile.cmake requires INPUTFILE and OUTPUTFILE")
 endif()
 
 get_filename_component(_output_dir "${OUTPUTFILE}" DIRECTORY)
