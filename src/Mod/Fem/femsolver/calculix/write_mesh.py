@@ -52,6 +52,8 @@ def write_mesh(ccxwriter):
         if ccxwriter.member.geos_fluidsection:
             edge_variant = "network"
 
+    face_variant = "shell"
+
     # Use 2D elements if model space is not set to 3D
     if ccxwriter.solver_obj.ModelSpace == "3D":
         if ccxwriter.solver_obj.ExcludeBendingStiffness:
