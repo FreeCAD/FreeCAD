@@ -235,9 +235,9 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
                     q_0=0.01,
                     q_u=" ",
                     R_p=0.02,
-                    e=1E-05,
+                    e=1e-05,
                     C_e=0.001,
-                    R_l=1E-08,
+                    R_l=1e-08,
                 ),
             )
         )
