@@ -237,6 +237,10 @@ public:
     //@{
     /// Activate a named workbench
     bool activateWorkbench(const char* name);
+    /// Remove a named inactive workbench and detach it from the GUI lifecycle
+    bool removeWorkbench(const char* name);
+    /// Reset a named workbench, switching away first if it is currently active
+    bool resetWorkbench(const char* name);
     QPixmap workbenchIcon(const QString&) const;
     QString workbenchToolTip(const QString&) const;
     QString workbenchMenuText(const QString&) const;

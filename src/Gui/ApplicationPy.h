@@ -42,6 +42,7 @@ public:
     // static python wrapper of the exported functions
     static PyObject* sActivateWorkbenchHandler (PyObject *self,PyObject *args); // activates a workbench object
     static PyObject* sAddWorkbenchHandler      (PyObject *self,PyObject *args); // adds a new workbench handler to a list
+    static PyObject* sResetWorkbenchHandler    (PyObject *self,PyObject *args); // resets a workbench handler and its C++ instance
     static PyObject* sRemoveWorkbenchHandler   (PyObject *self,PyObject *args); // removes a workbench handler from the list
     static PyObject* sGetWorkbenchHandler      (PyObject *self,PyObject *args); // retrieves the workbench handler
     static PyObject* sListWorkbenchHandlers    (PyObject *self,PyObject *args); // retrieves a list of all workbench handlers

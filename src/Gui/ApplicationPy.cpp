@@ -24,6 +24,7 @@
 #include <QDir>
 #include <QPrinter>
 #include <QFileInfo>
+#include <memory>
 #include <Inventor/SoInput.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/nodes/SoSeparator.h>
@@ -72,6 +73,33 @@
 
 using namespace Gui;
 
+namespace
+{
+
+void validatePythonCommandResources(const Py::Object& command, bool isGroup)
+{
+    Py::Callable getResources(command.getAttr("GetResources"));
+    Py::Tuple args;
+    Py::Object resources = getResources.apply(args);
+    if (PyDict_Check(resources.ptr())) {
+        return;
+    }
+
+    if (isGroup) {
+        throw Base::TypeError(
+            "PythonGroupCommand::PythonGroupCommand(): Method GetResources() of the Python "
+            "command object returns the wrong type (has to be dict)"
+        );
+    }
+
+    throw Base::TypeError(
+        "PythonCommand::PythonCommand(): Method GetResources() of the Python "
+        "command object returns the wrong type (has to be dict)"
+    );
+}
+
+}  // namespace
+
 // Application methods structure
 PyMethodDef ApplicationPy::Methods[] = {
     {"activateWorkbench",
@@ -93,6 +121,20 @@ PyMethodDef ApplicationPy::Methods[] = {
      "workbench : Workbench, Workbench type\n"
      "    Instance of a Workbench subclass or subclass of the\n"
      "    Workbench class."},
+    {"resetWorkbench",
+     (PyCFunction)ApplicationPy::sResetWorkbenchHandler,
+     METH_VARARGS,
+     "resetWorkbench(name) -> bool\n"
+     "\n"
+     "Reset a workbench by removing its Python handler and C++ instance.\n"
+     "If the workbench is active, switch to NoneWorkbench first.\n"
+     "\n"
+     "name : str\n    Name of the workbench to reset.\n"
+     "\n"
+     "Returns\n"
+     "-------\n"
+     "bool\n"
+     "    True if the workbench existed and was reset."},
     {"removeWorkbench",
      (PyCFunction)ApplicationPy::sRemoveWorkbenchHandler,
      METH_VARARGS,
@@ -1206,11 +1248,50 @@ PyObject* ApplicationPy::sRemoveWorkbenchHandler(PyObject* /*self*/, PyObject* a
         return nullptr;
     }
 
-    WorkbenchManager::instance()->removeWorkbench(psKey);
-    PyDict_DelItemString(Application::Instance->_pcWorkbenchDictionary, psKey);
-    Application::Instance->signalRefreshWorkbenches();
+    Workbench* active = WorkbenchManager::instance()->active();
+    if (active && active->name() == psKey) {
+        if (!Application::Instance->resetWorkbench(psKey)) {
+            PyErr_Format(PyExc_RuntimeError, "Failed to remove active workbench '%s'", psKey);
+            return nullptr;
+        }
+    }
+    else if (!Application::Instance->removeWorkbench(psKey)) {
+        PyErr_Format(PyExc_RuntimeError, "Failed to remove workbench '%s'", psKey);
+        return nullptr;
+    }
 
     Py_Return;
+}
+
+PyObject* ApplicationPy::sResetWorkbenchHandler(PyObject* /*self*/, PyObject* args)
+{
+    char* psKey = nullptr;
+    if (!PyArg_ParseTuple(args, "s", &psKey)) {
+        return nullptr;
+    }
+
+    PyObject* wb = PyDict_GetItemString(Application::Instance->_pcWorkbenchDictionary, psKey);
+    if (!wb) {
+        PyErr_Format(PyExc_KeyError, "No such workbench '%s'", psKey);
+        return nullptr;
+    }
+
+    try {
+        bool ok = Application::Instance->resetWorkbench(psKey);
+        return Py::new_reference_to(Py::Boolean(ok));
+    }
+    catch (const Base::Exception& e) {
+        std::stringstream err;
+        err << psKey << ": " << e.what();
+        PyErr_SetString(e.getPyExceptionType(), err.str().c_str());
+        return nullptr;
+    }
+    catch (...) {
+        std::stringstream err;
+        err << "Unknown C++ exception raised in resetWorkbench('" << psKey << "')";
+        PyErr_SetString(Base::PyExc_FC_GeneralError, err.str().c_str());
+        return nullptr;
+    }
 }
 
 PyObject* ApplicationPy::sGetWorkbenchHandler(PyObject* /*self*/, PyObject* args)
@@ -1453,29 +1534,51 @@ PyObject* ApplicationPy::sAddCommand(PyObject* /*self*/, PyObject* args)
     catch (Py::Exception& e) {
         e.clear();
     }
+
+    CommandManager& commandManager = Application::Instance->commandManager();
+    Command* existing = commandManager.getCommandByName(pName);
+    if (existing) {
+        if (dynamic_cast<PythonCommand*>(existing) || dynamic_cast<PythonGroupCommand*>(existing)) {
+            // Replacing Python commands is allowed, but validate the new
+            // command resources before dropping the existing one.
+        }
+        else {
+            Base::Console().warning("Command '%s' already exists and is not reloadable\n", pName);
+            Py_Return;
+        }
+    }
+
     try {
         Base::PyGILStateLocker lock;
 
         Py::Object cmd(pcCmdObj);
-        if (cmd.hasAttr("GetCommands")) {
-            Command* cmd = new PythonGroupCommand(pName, pcCmdObj);
+        bool isGroupCommand = cmd.hasAttr("GetCommands");
+        if (existing) {
+            validatePythonCommandResources(cmd, isGroupCommand);
+            commandManager.removeCommand(existing);
+        }
+
+        if (isGroupCommand) {
+            std::unique_ptr<PythonGroupCommand> groupCommand
+                = std::make_unique<PythonGroupCommand>(pName, pcCmdObj);
             if (!module.empty()) {
-                cmd->setAppModuleName(module.c_str());
+                groupCommand->setAppModuleName(module.c_str());
             }
             if (!group.empty()) {
-                cmd->setGroupName(group.c_str());
+                groupCommand->setGroupName(group.c_str());
             }
-            Application::Instance->commandManager().addCommand(cmd);
+            commandManager.addCommand(groupCommand.release());
         }
         else {
-            Command* cmd = new PythonCommand(pName, pcCmdObj, pSource);
+            std::unique_ptr<PythonCommand> pythonCommand
+                = std::make_unique<PythonCommand>(pName, pcCmdObj, pSource);
             if (!module.empty()) {
-                cmd->setAppModuleName(module.c_str());
+                pythonCommand->setAppModuleName(module.c_str());
             }
             if (!group.empty()) {
-                cmd->setGroupName(group.c_str());
+                pythonCommand->setGroupName(group.c_str());
             }
-            Application::Instance->commandManager().addCommand(cmd);
+            commandManager.addCommand(pythonCommand.release());
         }
     }
     catch (const Base::Exception& e) {
