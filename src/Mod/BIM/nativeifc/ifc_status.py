@@ -81,6 +81,7 @@ def set_properties_editor(statuswidget):
             statuswidget.propertybuttons.hide()
             statuswidget.propertybuttons.deleteLater()
         except Exception:
+            # Best-effort cleanup: the old property widget may already be gone.
             pass
         del statuswidget.propertybuttons
 

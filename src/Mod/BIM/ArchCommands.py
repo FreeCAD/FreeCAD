@@ -100,6 +100,7 @@ def _clear_survey_labels(observer=None):
             if FreeCAD.ActiveDocument:
                 FreeCAD.ActiveDocument.removeObject(label)
         except Exception:
+            # Best-effort cleanup: the temporary label may already be gone.
             pass
     observer.labels = []
 

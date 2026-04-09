@@ -97,6 +97,7 @@ class TestArchReloadGui(TestArchBaseGui):
                 try:
                     FreeCAD.closeDocument(doc_name)
                 except Exception:
+                    # Test cleanup only: the document may already be closed.
                     pass
         finally:
             super().tearDown()

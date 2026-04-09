@@ -51,6 +51,7 @@ def _remove_document_observer(observer):
     try:
         FreeCAD.removeDocumentObserver(observer)
     except Exception:
+        # Best-effort cleanup: the observer may already be detached.
         pass
 
 

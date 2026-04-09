@@ -133,6 +133,7 @@ class IFC_UpdateIOS:
 
                     ifc_observer.add_observer()
                 except Exception:
+                    # Best-effort refresh: observer installation should not hide pip success.
                     pass
         return result
 

@@ -1641,6 +1641,7 @@ class ApplicationRuntime:
             try:
                 App.removeDocumentObserver(observer)
             except Exception:
+                # Best-effort cleanup: the observer may already be detached.
                 pass
 
         if key is not None:
@@ -1656,11 +1657,13 @@ class ApplicationRuntime:
                 try:
                     timer.stop()
                 except Exception:
+                    # Best-effort cleanup: the timer may already be stopped.
                     pass
             if delete and hasattr(timer, "deleteLater"):
                 try:
                     timer.deleteLater()
                 except Exception:
+                    # Best-effort cleanup: the timer may already be deleted.
                     pass
 
         self.onDispose(cleanup)
@@ -1672,7 +1675,7 @@ class ApplicationRuntime:
 
         self._disposed = True
         while self._owned:
-            _key, (_value, cleanup) = self._owned.popitem()
+            _, (_value, cleanup) = self._owned.popitem()
             if cleanup is not None:
                 self._run_cleanup(cleanup)
 

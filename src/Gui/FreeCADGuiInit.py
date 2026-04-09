@@ -478,6 +478,7 @@ def _reload_active_workbench() -> None:
     try:
         Gui.activeWorkbench().reloadActive()
     except Exception:
+        # Best-effort refresh: some workbenches may not expose reloadActive().
         pass
 
 
@@ -744,6 +745,7 @@ class WorkbenchRuntime:
             try:
                 Gui.removeDocumentObserver(observer)
             except Exception:
+                # Best-effort cleanup: the observer may already be detached.
                 pass
 
         self.onDispose(cleanup)
@@ -763,6 +765,7 @@ class WorkbenchRuntime:
             try:
                 Gui.Selection.removeObserver(observer)
             except Exception:
+                # Best-effort cleanup: the observer may already be detached.
                 pass
 
         if key is not None:
@@ -786,6 +789,7 @@ class WorkbenchRuntime:
             try:
                 Gui.removeWorkbenchManipulator(manipulator)
             except Exception:
+                # Best-effort cleanup: the manipulator may already be removed.
                 pass
             if refresh:
                 _refresh_workbench_if_active(self.name)
@@ -805,6 +809,7 @@ class WorkbenchRuntime:
             try:
                 Gui.Control.clearTaskWatcher()
             except Exception:
+                # Best-effort cleanup: the task watcher may already be gone.
                 pass
 
         self.onDispose(cleanup)
@@ -818,11 +823,13 @@ class WorkbenchRuntime:
                 try:
                     timer.stop()
                 except Exception:
+                    # Best-effort cleanup: the timer may already be stopped.
                     pass
             if delete and hasattr(timer, "deleteLater"):
                 try:
                     timer.deleteLater()
                 except Exception:
+                    # Best-effort cleanup: the timer may already be deleted.
                     pass
 
         self.onDispose(cleanup)
@@ -837,6 +844,7 @@ class WorkbenchRuntime:
             try:
                 action.setShortcut(previous_shortcut)
             except Exception:
+                # Best-effort cleanup: the action may already be deleted.
                 pass
 
         self.own(key, previous_shortcut, cleanup)
@@ -847,7 +855,7 @@ class WorkbenchRuntime:
 
         self._disposed = True
         while self._owned:
-            _key, (_value, cleanup) = self._owned.popitem()
+            _, (_value, cleanup) = self._owned.popitem()
             if cleanup is not None:
                 self._run_cleanup(cleanup)
 

@@ -172,6 +172,7 @@ class Setup:
             try:
                 view.removeEventCallbackPivy(event_type, callback)
             except Exception:
+                # Best-effort cleanup: the 3D view callback may already be detached.
                 pass
 
     def dispose(self):

@@ -6,39 +6,35 @@ import FreeCAD
 
 translate = FreeCAD.Qt.translate
 
-_has_ifcopenshell = None
-_reported_missing_ifcopenshell = False
+_ifcopenshell_state = {
+    "available": None,
+    "reported_missing": False,
+}
 
 
 def invalidate_ifcopenshell_cache():
     """Clears the cached ifcopenshell availability state."""
 
-    global _has_ifcopenshell, _reported_missing_ifcopenshell
-
-    _has_ifcopenshell = None
-    _reported_missing_ifcopenshell = False
+    _ifcopenshell_state["available"] = None
+    _ifcopenshell_state["reported_missing"] = False
 
 
 def has_ifcopenshell(report=False):
     """Returns True when ifcopenshell is importable in this runtime."""
 
-    global _has_ifcopenshell
+    if _ifcopenshell_state["available"] is None:
+        _ifcopenshell_state["available"] = importlib.util.find_spec("ifcopenshell") is not None
 
-    if _has_ifcopenshell is None:
-        _has_ifcopenshell = importlib.util.find_spec("ifcopenshell") is not None
-
-    if report and not _has_ifcopenshell:
+    if report and not _ifcopenshell_state["available"]:
         report_missing_ifcopenshell()
 
-    return _has_ifcopenshell
+    return _ifcopenshell_state["available"]
 
 
 def report_missing_ifcopenshell():
     """Reports the missing ifcopenshell dependency once per runtime."""
 
-    global _reported_missing_ifcopenshell
-
-    if _reported_missing_ifcopenshell:
+    if _ifcopenshell_state["reported_missing"]:
         return
 
     FreeCAD.Console.PrintError(
@@ -48,4 +44,4 @@ def report_missing_ifcopenshell():
         )
         + "\n"
     )
-    _reported_missing_ifcopenshell = True
+    _ifcopenshell_state["reported_missing"] = True

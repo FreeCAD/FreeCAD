@@ -24,4 +24,6 @@
 
 """Top-level BIM GUI reload regression test entry point."""
 
-from bimtests.TestArchReloadGui import TestArchReloadGui
+from bimtests.TestArchReloadGui import TestArchReloadGui as _TestArchReloadGui
+
+TestArchReloadGui = _TestArchReloadGui

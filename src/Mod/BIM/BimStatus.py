@@ -144,7 +144,8 @@ def setStatusIcons(show=True):
             # ifc widgets
             try:
                 from nativeifc import ifc_status
-            except:
+            except ImportError:
+                # NativeIFC remains optional when ifcopenshell is unavailable.
                 pass
             else:
                 ifc_status.set_status_widget(statuswidget)
