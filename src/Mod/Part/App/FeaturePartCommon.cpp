@@ -117,52 +117,63 @@ void MultiCommon::Restore(Base::XMLReader& reader)
 
 App::DocumentObjectExecReturn* MultiCommon::execute()
 {
-    std::vector<TopoShape> shapes;
-    for (auto obj : Shapes.getValues()) {
-        TopoShape sh = Feature::getTopoShape(obj, ShapeOption::ResolveLink | ShapeOption::Transform);
-        if (sh.isNull()) {
-            return new App::DocumentObjectExecReturn("Input shape is null");
+    try {
+        std::vector<TopoShape> shapes;
+        for (auto obj : Shapes.getValues()) {
+            TopoShape sh =
+                Feature::getTopoShape(obj, ShapeOption::ResolveLink | ShapeOption::Transform);
+            if (sh.isNull()) {
+                return new App::DocumentObjectExecReturn("Input shape is null");
+            }
+            shapes.push_back(sh);
         }
-        shapes.push_back(sh);
-    }
 
-    TopoShape res;
+        TopoShape res;
 
-    if (Behavior.getValue() == CommonOfAllShapes) {
-        // special case - if there is only one argument, and it is compound - expand it
-        if (shapes.size() == 1) {
-            TopoShape shape = shapes.front();
+        if (Behavior.getValue() == CommonOfAllShapes) {
+            // special case - if there is only one argument, and it is compound - expand it
+            if (shapes.size() == 1) {
+                TopoShape shape = shapes.front();
 
-            if (shape.shapeType() == TopAbs_COMPOUND) {
-                shapes.clear();
-                std::ranges::copy(shape.getSubTopoShapes(), std::back_inserter(shapes));
+                if (shape.shapeType() == TopAbs_COMPOUND) {
+                    shapes.clear();
+                    std::ranges::copy(shape.getSubTopoShapes(), std::back_inserter(shapes));
+                }
+            }
+
+            res = shapes.front();
+
+            // to achieve common of all shapes, we need to do it one shape at a time
+            for (const auto& tool : shapes) {
+                res = res.makeElementBoolean(OpCodes::Common, {res, tool});
             }
         }
-
-        res = shapes.front();
-
-        // to achieve common of all shapes, we need to do it one shape at a time
-        for (const auto& tool : shapes) {
-            res = res.makeElementBoolean(OpCodes::Common, {res, tool});
+        else {
+            res = TopoShape(0);
+            res.makeElementBoolean(OpCodes::Common, shapes);
         }
-    }
-    else {
-        res = TopoShape(0);
-        res.makeElementBoolean(OpCodes::Common, shapes);
-    }
 
-    if (res.isNull()) {
-        throw Base::RuntimeError("Resulting shape is null");
+        if (res.isNull()) {
+            return new App::DocumentObjectExecReturn("Resulting shape is null");
+        }
+
+        throwIfInvalidIfCheckModel(res.getShape());
+
+        this->applyRefine(res);
+        this->Shape.setValue(res);
+        if (Shapes.getSize() > 0) {
+            App::DocumentObject* link = Shapes.getValues()[0];
+            copyMaterial(link);
+        }
+
+        return Part::Feature::execute();
     }
-
-    throwIfInvalidIfCheckModel(res.getShape());
-
-    this->applyRefine(res);
-    this->Shape.setValue(res);
-    if (Shapes.getSize() > 0) {
-        App::DocumentObject* link = Shapes.getValues()[0];
-        copyMaterial(link);
+    catch (const Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what());
     }
-
-    return Part::Feature::execute();
+    catch (...) {
+        return new App::DocumentObjectExecReturn(
+            "A fatal error occurred when running boolean operation"
+        );
+    }
 }

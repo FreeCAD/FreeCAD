@@ -143,7 +143,7 @@ App::DocumentObjectExecReturn* MultiFuse::execute()
             mkFuse.Build();
 
             if (!mkFuse.IsDone()) {
-                throw Base::RuntimeError(
+                return new App::DocumentObjectExecReturn(
                     "MultiFusion failed. This is usually caused by a "
                     "limitation in the geometry engine, not a problem with "
                     "your model. Faces that are exactly aligned, nearly "
@@ -236,6 +236,9 @@ App::DocumentObjectExecReturn* MultiFuse::execute()
             App::DocumentObject* link = Shapes.getValues()[0];
             copyMaterial(link);
             return Part::Feature::execute();
+        }
+        catch (Base::Exception& e) {
+            return new App::DocumentObjectExecReturn(e.what());
         }
         catch (Standard_Failure& e) {
             return new App::DocumentObjectExecReturn(e.GetMessageString());
