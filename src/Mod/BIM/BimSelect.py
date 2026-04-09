@@ -36,7 +36,7 @@ def _get_bim_runtime(create=False):
         if create:
             return FreeCADGui.workbenchRuntime(WORKBENCH_NAME)
         return FreeCADGui.findWorkbenchRuntime(WORKBENCH_NAME)
-    except Exception:
+    except RuntimeError:
         return None
 
 

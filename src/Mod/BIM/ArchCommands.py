@@ -68,7 +68,7 @@ def _get_session_runtime(name, create=False):
         if create:
             return FreeCADGui.sessionRuntime(name, workbench_name=SURVEY_WORKBENCH_NAME)
         return FreeCADGui.findSessionRuntime(name, workbench_name=SURVEY_WORKBENCH_NAME)
-    except Exception:
+    except RuntimeError:
         return None
 
 

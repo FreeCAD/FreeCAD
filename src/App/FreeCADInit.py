@@ -1685,11 +1685,7 @@ class ApplicationRuntime:
 
 @transient
 def _app_runtime_table(_app=App) -> dict[str, ApplicationRuntime]:
-    runtimes = getattr(_app, "_pythonAppRuntimes", None)
-    if runtimes is None:
-        runtimes = {}
-        _app._pythonAppRuntimes = runtimes
-    return runtimes
+    return _app._pythonAppRuntimes
 
 
 @transient
@@ -1732,6 +1728,9 @@ def disposeAppRuntime(name: str, _table_getter=_app_runtime_table) -> bool:
     runtime.dispose()
     return True
 
+
+if not hasattr(App, "_pythonAppRuntimes"):
+    App._pythonAppRuntimes = {}
 
 App.appRuntime = appRuntime
 App.findAppRuntime = findAppRuntime

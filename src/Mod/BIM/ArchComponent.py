@@ -84,7 +84,7 @@ def _get_arch_selection_session(create=False):
             ARCH_SELECTION_SESSION_NAME,
             workbench_name=ARCH_SELECTION_WORKBENCH_NAME,
         )
-    except Exception:
+    except RuntimeError:
         return None
 
 

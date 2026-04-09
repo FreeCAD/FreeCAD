@@ -486,15 +486,24 @@ def _refresh_workbench_if_active(workbench_name: str) -> None:
         _reload_active_workbench()
 
 
+def _find_workbench_handler(name: str):
+    workbenches = Gui.listWorkbenches()
+    handler = workbenches.get(name)
+    if handler is not None:
+        return handler
+
+    for handler in workbenches.values():
+        if getattr(handler, "MenuText", None) == name:
+            return handler
+    return None
+
+
 def _get_workbench_handler(name: str | None = None):
-    if name:
-        try:
-            return Gui.getWorkbench(name)
-        except Exception:
-            for workbench_name, handler in Gui.listWorkbenches().items():
-                if workbench_name == name or getattr(handler, "MenuText", None) == name:
-                    return handler
-            raise
+    if name is not None:
+        handler = _find_workbench_handler(name)
+        if handler is None:
+            raise RuntimeError(f"Workbench '{name}' is not available")
+        return handler
     return Gui.activeWorkbench()
 
 
@@ -602,7 +611,18 @@ def _purge_dir_mod_modules(base_path: Path, module_prefix: str | None = None) ->
     return sorted(removed)
 
 
-def _resolve_reload_target(name: str | None = None) -> dict[str, typing.Any]:
+@dataclass(frozen=True)
+class ReloadTarget:
+    handler: typing.Any
+    name: str
+    kind: str
+    mod: typing.Any
+    source_path: Path
+    base_path: Path
+    module_prefix: str | None = None
+
+
+def _resolve_reload_target(name: str | None = None) -> ReloadTarget:
     handler = _get_workbench_handler(name)
     workbench_name = handler.__class__.__name__
     source_path = _workbench_source_path(handler)
@@ -616,52 +636,48 @@ def _resolve_reload_target(name: str | None = None) -> dict[str, typing.Any]:
             base_path = mod.source_root
             module_prefix = dir_mod_package_name(mod.name)
             if handler_module == module_prefix or handler_module.startswith(f"{module_prefix}."):
-                return {
-                    "handler": handler,
-                    "name": workbench_name,
-                    "kind": "Dir",
-                    "mod": mod,
-                    "source_path": source_path,
-                    "module_prefix": module_prefix,
-                    "base_path": base_path,
-                }
+                return ReloadTarget(
+                    handler=handler,
+                    name=workbench_name,
+                    kind="Dir",
+                    mod=mod,
+                    source_path=source_path,
+                    module_prefix=module_prefix,
+                    base_path=base_path,
+                )
             if source_path == base_path or source_path.is_relative_to(base_path):
-                return {
-                    "handler": handler,
-                    "name": workbench_name,
-                    "kind": "Dir",
-                    "mod": mod,
-                    "source_path": source_path,
-                    "base_path": base_path,
-                }
+                return ReloadTarget(
+                    handler=handler,
+                    name=workbench_name,
+                    kind="Dir",
+                    mod=mod,
+                    source_path=source_path,
+                    base_path=base_path,
+                )
 
         if mod.kind == "Ext":
             if handler_module == mod.name or handler_module.startswith(f"{mod.name}."):
-                return {
-                    "handler": handler,
-                    "name": workbench_name,
-                    "kind": "Ext",
-                    "mod": mod,
-                    "source_path": source_path,
-                    "module_prefix": mod.name,
-                    "base_path": source_path.parent,
-                }
+                return ReloadTarget(
+                    handler=handler,
+                    name=workbench_name,
+                    kind="Ext",
+                    mod=mod,
+                    source_path=source_path,
+                    module_prefix=mod.name,
+                    base_path=source_path.parent,
+                )
 
     raise RuntimeError(f"Workbench '{workbench_name}' is not backed by a reloadable Python module")
 
 
 def _resolve_workbench_runtime_name(name: str | None = None) -> str | None:
     if name is None:
-        try:
-            handler = _get_workbench_handler()
-        except Exception:
-            return None
-        return handler.__class__.__name__ if handler else None
+        return _active_workbench_name()
 
-    try:
-        return _get_workbench_handler(name).__class__.__name__
-    except Exception:
+    handler = _find_workbench_handler(name)
+    if handler is None:
         return name
+    return handler.__class__.__name__
 
 
 class WorkbenchRuntime:
@@ -843,17 +859,7 @@ class WorkbenchRuntime:
 
 
 def _runtime_tables():
-    runtimes = getattr(Gui, "_pythonWorkbenchRuntimes", None)
-    if runtimes is None:
-        runtimes = {}
-        Gui._pythonWorkbenchRuntimes = runtimes
-
-    generations = getattr(Gui, "_pythonWorkbenchRuntimeGenerations", None)
-    if generations is None:
-        generations = {}
-        Gui._pythonWorkbenchRuntimeGenerations = generations
-
-    return runtimes, generations
+    return Gui._pythonWorkbenchRuntimes, Gui._pythonWorkbenchRuntimeGenerations
 
 
 def workbenchRuntime(name: str | None = None) -> WorkbenchRuntime:
@@ -910,19 +916,11 @@ def _resolve_session_runtime_target(
 
 
 def _session_runtime_table() -> dict[str, SessionRuntime]:
-    runtimes = getattr(Gui, "_pythonSessionRuntimes", None)
-    if runtimes is None:
-        runtimes = {}
-        Gui._pythonSessionRuntimes = runtimes
-    return runtimes
+    return Gui._pythonSessionRuntimes
 
 
 def _auto_reloaders_table() -> dict[str, "_PythonWorkbenchAutoReloader"]:
-    reloaders = getattr(Gui, "_pythonWorkbenchReloaders", None)
-    if reloaders is None:
-        reloaders = {}
-        Gui._pythonWorkbenchReloaders = reloaders
-    return reloaders
+    return Gui._pythonWorkbenchReloaders
 
 
 def sessionRuntime(name: str, workbench_name: str | None = None) -> SessionRuntime:
@@ -1016,7 +1014,7 @@ def reloadPythonWorkbench(name: str | None = None) -> list[str]:
     """
 
     target = _resolve_reload_target(name)
-    workbench_name = target["name"]
+    workbench_name = target.name
     was_active = _active_workbench_name() == workbench_name
 
     if hasattr(Gui, "resetWorkbench"):
@@ -1030,18 +1028,18 @@ def reloadPythonWorkbench(name: str | None = None) -> list[str]:
     _disposeSessionRuntimes(_resolve_workbench_runtime_name(workbench_name) or workbench_name)
     disposeWorkbenchRuntime(workbench_name)
 
-    if target["kind"] == "Dir":
-        removed = _purge_dir_mod_modules(target["base_path"], target.get("module_prefix"))
-        loader = DirModGui(target["mod"])
+    if target.kind == "Dir":
+        removed = _purge_dir_mod_modules(target.base_path, target.module_prefix)
+        loader = DirModGui(target.mod)
         sub_workbench = (
             None
-            if target["source_path"].parent == target["mod"].path.resolve()
-            else target["source_path"].parent
+            if target.source_path.parent == target.mod.path.resolve()
+            else target.source_path.parent
         )
         ok = loader.run_init_gui(sub_workbench)
     else:
-        removed = _purge_modules_by_prefix(target["module_prefix"])
-        loader = ExtModGui(target["mod"])
+        removed = _purge_modules_by_prefix(target.module_prefix)
+        loader = ExtModGui(target.mod)
         ok = loader.run_init_gui()
 
     if not ok:
@@ -1066,7 +1064,7 @@ def _canonical_auto_reload_name(name: str | None = None) -> str | None:
         return _active_workbench_name()
 
     try:
-        return _resolve_reload_target(name)["name"]
+        return _resolve_reload_target(name).name
     except Exception:
         return _resolve_workbench_runtime_name(name) or name
 
@@ -1098,7 +1096,7 @@ class _PythonWorkbenchAutoReloader:
     def _iter_watch_paths(self) -> typing.Iterable[str]:
         target = _resolve_reload_target(self.name)
         yield from _iter_watch_paths_for_base(
-            target["base_path"],
+            target.base_path,
             self.WATCHED_SUFFIXES,
             self.EXCLUDED_DIRS,
         )
@@ -1140,15 +1138,15 @@ class _PythonWorkbenchAutoReloader:
 def startPythonWorkbenchAutoReload(name: str | None = None, debounce_ms: int = 500) -> None:
     target = _resolve_reload_target(name)
     reloaders = _auto_reloaders_table()
-    existing = reloaders.get(target["name"])
+    existing = reloaders.get(target.name)
     if existing:
         existing.stop()
 
-    reloader = _PythonWorkbenchAutoReloader(target["name"], debounce_ms=debounce_ms)
-    reloaders[target["name"]] = reloader
+    reloader = _PythonWorkbenchAutoReloader(target.name, debounce_ms=debounce_ms)
+    reloaders[target.name] = reloader
     Gui._pythonWorkbenchReloaders = reloaders
 
-    Log(f"Started Python auto reload for {target['name']}\n")
+    Log(f"Started Python auto reload for {target.name}\n")
 
 
 def stopPythonWorkbenchAutoReload(name: str | None = None) -> bool:
@@ -1202,7 +1200,7 @@ class Std_ReloadActivePythonWorkbench:
 
     def Activated(self):
         target = _resolve_reload_target()
-        workbench_name = target["name"]
+        workbench_name = target.name
         removed = reloadPythonWorkbench(workbench_name)
         App.Console.PrintMessage(
             f"Reloaded {workbench_name} ({len(removed)} Python modules cleared)\n"
@@ -1230,7 +1228,7 @@ class Std_ToggleActivePythonWorkbenchAutoReload:
 
     def Activated(self):
         target = _resolve_reload_target()
-        workbench_name = target["name"]
+        workbench_name = target.name
         if isPythonWorkbenchAutoReloadActive(workbench_name):
             stopPythonWorkbenchAutoReload(workbench_name)
             App.Console.PrintMessage(f"Stopped Python auto reload for {workbench_name}\n")
@@ -1297,6 +1295,14 @@ def GeneratePackageIcon(
 App.GuiUp = 1
 App.Gui = FreeCADGui
 FreeCADGui.Workbench = Workbench
+if not hasattr(Gui, "_pythonWorkbenchRuntimes"):
+    Gui._pythonWorkbenchRuntimes = {}
+if not hasattr(Gui, "_pythonWorkbenchRuntimeGenerations"):
+    Gui._pythonWorkbenchRuntimeGenerations = {}
+if not hasattr(Gui, "_pythonSessionRuntimes"):
+    Gui._pythonSessionRuntimes = {}
+if not hasattr(Gui, "_pythonWorkbenchReloaders"):
+    Gui._pythonWorkbenchReloaders = {}
 Gui.workbenchRuntime = workbenchRuntime
 Gui.findWorkbenchRuntime = findWorkbenchRuntime
 Gui.disposeWorkbenchRuntime = disposeWorkbenchRuntime
