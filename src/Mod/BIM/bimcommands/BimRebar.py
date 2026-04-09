@@ -85,13 +85,14 @@ class Arch_Rebar:
                     # we have only a structure: open the sketcher
                     FreeCADGui.activateWorkbench("SketcherWorkbench")
                     FreeCADGui.runCommand("Sketcher_NewSketch")
-                    FreeCAD.ArchObserver = ArchComponent.ArchSelectionObserver(
-                        obj,
-                        FreeCAD.ActiveDocument.Objects[-1],
-                        hide=False,
-                        nextCommand="Arch_Rebar",
+                    ArchComponent.startSelectionSession(
+                        ArchComponent.ArchSelectionObserver(
+                            obj,
+                            FreeCAD.ActiveDocument.Objects[-1],
+                            hide=False,
+                            nextCommand="Arch_Rebar",
+                        )
                     )
-                    FreeCADGui.Selection.addObserver(FreeCAD.ArchObserver)
                     return
             elif hasattr(obj, "Shape"):
                 if len(obj.Shape.Wires) == 1:
@@ -117,8 +118,9 @@ class Arch_Rebar:
         )
         FreeCADGui.Control.closeDialog()
         FreeCADGui.Control.showDialog(ArchComponent.SelectionTaskPanel())
-        FreeCAD.ArchObserver = ArchComponent.ArchSelectionObserver(nextCommand="Arch_Rebar")
-        FreeCADGui.Selection.addObserver(FreeCAD.ArchObserver)
+        ArchComponent.startSelectionSession(
+            ArchComponent.ArchSelectionObserver(nextCommand="Arch_Rebar")
+        )
 
 
 FreeCADGui.addCommand("Arch_Rebar", Arch_Rebar())

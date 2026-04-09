@@ -24,6 +24,29 @@
 
 import FreeCAD
 
+WORKBENCH_NAME = "BIMWorkbench"
+CYCLIC_SELECTION_OBSERVER_KEY = "cyclic_selection_observer"
+SETUP_RUNTIME_KEY = "cyclic_selection_setup"
+
+
+def _get_bim_runtime(create=False):
+    import FreeCADGui
+
+    getter = getattr(FreeCADGui, "workbenchRuntime" if create else "findWorkbenchRuntime", None)
+    if getter is None:
+        return None
+    try:
+        return getter(WORKBENCH_NAME)
+    except Exception:
+        return None
+
+
+def _release_cyclic_selection_observer():
+    runtime = _get_bim_runtime(create=False)
+    if runtime is None:
+        return False
+    return runtime.release(CYCLIC_SELECTION_OBSERVER_KEY)
+
 
 class CyclicSelectionObserver:
     def addSelection(self, document, object, element, position):
@@ -31,11 +54,11 @@ class CyclicSelectionObserver:
 
         if not FreeCAD.ActiveDocument:
             return
-        if not hasattr(FreeCAD, "CyclicSelectionObserver"):
+        runtime = _get_bim_runtime(create=False)
+        if runtime is None or not runtime.owns(CYCLIC_SELECTION_OBSERVER_KEY):
             return
         FreeCADGui.Selection.removeSelection(FreeCAD.ActiveDocument.getObject(object))
-        FreeCADGui.Selection.removeObserver(FreeCAD.CyclicSelectionObserver)
-        del FreeCAD.CyclicSelectionObserver
+        _release_cyclic_selection_observer()
         preselection = FreeCADGui.Selection.getPreselection()
         FreeCADGui.Selection.addSelection(
             FreeCAD.ActiveDocument.getObject(preselection.Object.Name),
@@ -67,13 +90,17 @@ class CyclicObjectSelector:
 
         if not element_list:
             self.selectableObjects = []
-            if hasattr(FreeCAD, "CyclicSelectionObserver"):
-                FreeCADGui.Selection.removeObserver(FreeCAD.CyclicSelectionObserver)
-                del FreeCAD.CyclicSelectionObserver
+            _release_cyclic_selection_observer()
             return
 
-        FreeCAD.CyclicSelectionObserver = CyclicSelectionObserver()
-        FreeCADGui.Selection.addObserver(FreeCAD.CyclicSelectionObserver)
+        runtime = _get_bim_runtime(create=True)
+        if runtime is None:
+            return
+        if not runtime.owns(CYCLIC_SELECTION_OBSERVER_KEY):
+            runtime.addSelectionObserver(
+                CyclicSelectionObserver(),
+                key=CYCLIC_SELECTION_OBSERVER_KEY,
+            )
 
     def cycleSelectableObjects(self, event_callback):
         import FreeCADGui
@@ -111,14 +138,51 @@ class CyclicObjectSelector:
 
 
 class Setup:
-    def slotActivateDocument(self, doc):
+    def __init__(self):
+        self._view_callbacks = []
+
+    def _attach_view(self, view):
         from pivy import coin
 
+        if not view or not hasattr(view, "getSceneGraph"):
+            return
+        if any(registered_view is view for registered_view, _callbacks in self._view_callbacks):
+            return
+
         cos = CyclicObjectSelector()
-        if doc and doc.ActiveView and hasattr(doc.ActiveView, "getSceneGraph"):
-            self.callback = doc.ActiveView.addEventCallbackPivy(
-                coin.SoMouseButtonEvent.getClassTypeId(), cos.selectObject
-            )
-            self.callback = doc.ActiveView.addEventCallbackPivy(
-                coin.SoKeyboardEvent.getClassTypeId(), cos.cycleSelectableObjects
-            )
+        callbacks = [
+            (
+                coin.SoMouseButtonEvent.getClassTypeId(),
+                view.addEventCallbackPivy(
+                    coin.SoMouseButtonEvent.getClassTypeId(),
+                    cos.selectObject,
+                ),
+            ),
+            (
+                coin.SoKeyboardEvent.getClassTypeId(),
+                view.addEventCallbackPivy(
+                    coin.SoKeyboardEvent.getClassTypeId(),
+                    cos.cycleSelectableObjects,
+                ),
+            ),
+        ]
+        self._view_callbacks.append((view, callbacks))
+
+    def _detach_view(self, view, callbacks):
+        for event_type, callback in callbacks:
+            try:
+                view.removeEventCallbackPivy(event_type, callback)
+            except Exception:
+                pass
+
+    def dispose(self):
+        while self._view_callbacks:
+            view, callbacks = self._view_callbacks.pop()
+            self._detach_view(view, callbacks)
+        _release_cyclic_selection_observer()
+
+    def activeCallbackCount(self):
+        return sum(len(callbacks) for _view, callbacks in self._view_callbacks)
+
+    def slotActivateDocument(self, doc):
+        self._attach_view(getattr(doc, "ActiveView", None))

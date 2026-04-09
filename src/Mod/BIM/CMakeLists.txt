@@ -58,6 +58,7 @@ SET(Arch_SRCS
     BimStatus.py
     TestArch.py
     TestArchGui.py
+    TestArchReloadGui.py
     ArchReport.py
     ArchSql.py
 )
@@ -231,6 +232,7 @@ SET(bimtests_SRCS
     bimtests/TestArchSpace.py
     bimtests/TestArchWall.py
     bimtests/TestArchWallGui.py
+    bimtests/TestArchReloadGui.py
     bimtests/TestArchMaterial.py
     bimtests/TestArchPanel.py
     bimtests/TestArchWindow.py

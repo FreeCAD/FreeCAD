@@ -29,6 +29,8 @@ from packaging.version import Version
 import FreeCAD
 import FreeCADGui
 from addonmanager_utilities import create_pip_call
+from . import has_ifcopenshell
+from . import invalidate_ifcopenshell_cache
 
 translate = FreeCAD.Qt.translate
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
@@ -123,6 +125,15 @@ class IFC_UpdateIOS:
         ]
         result = self.run_pip(args)
         QtGui.QApplication.restoreOverrideCursor()
+        if result and result.returncode == 0:
+            invalidate_ifcopenshell_cache()
+            if has_ifcopenshell():
+                try:
+                    from . import ifc_observer
+
+                    ifc_observer.add_observer()
+                except Exception:
+                    pass
         return result
 
     def run_pip(self, args):

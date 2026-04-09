@@ -614,9 +614,14 @@ class BIMWorkbench(Workbench):
 
         import BimSelect
 
-        if hasattr(FreeCADGui, "addDocumentObserver") and not hasattr(self, "BimSelectObserver"):
-            self.BimSelectObserver = BimSelect.Setup()
-            FreeCADGui.addDocumentObserver(self.BimSelectObserver)
+        if hasattr(FreeCADGui, "addDocumentObserver"):
+            runtime = Gui.workbenchRuntime(self.__class__.__name__)
+            setup = BimSelect.Setup()
+            runtime.addDocumentObserver(setup)
+            runtime.own(BimSelect.SETUP_RUNTIME_KEY, setup, setup.dispose)
+            active_document = getattr(FreeCADGui, "ActiveDocument", None)
+            if active_document:
+                setup.slotActivateDocument(active_document)
 
     def Activated(self):
 
@@ -627,6 +632,7 @@ class BIMWorkbench(Workbench):
         from draftutils import grid_observer
 
         PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
+        runtime = Gui.workbenchRuntime(self.__class__.__name__)
 
         if hasattr(FreeCADGui, "draftToolBar"):
             FreeCADGui.draftToolBar.Activated()
@@ -650,7 +656,6 @@ class BIMWorkbench(Workbench):
         if PARAMS.GetBool("FirstTime", True) and (not hasattr(FreeCAD, "TestEnvironment")):
             todo.ToDo.delay(FreeCADGui.runCommand, "BIM_Welcome")
         todo.ToDo.delay(BimStatus.setStatusIcons, True)
-        FreeCADGui.Control.clearTaskWatcher()
 
         class BimWatcher:
             def __init__(self, cmds, name, invert=False):
@@ -668,7 +673,7 @@ class BIMWorkbench(Workbench):
                         not FreeCADGui.Selection.getSelection()
                     )
 
-        FreeCADGui.Control.addTaskWatcher(
+        runtime.setTaskWatcher(
             [
                 BimWatcher(self.draftingtools + self.annotationtools, "2D Geometry"),
                 BimWatcher(self.bimtools, "3D/BIM Geometry"),
@@ -703,12 +708,7 @@ class BIMWorkbench(Workbench):
                     {"insert": "BIM_Welcome", "menuItem": "Std_ReportBug", "after": ""},
                 ]
 
-        reload = hasattr(Gui, "BIM_WBManipulator")  # BIM WB has previously been loaded.
-        if not getattr(Gui, "BIM_WBManipulator", None):
-            Gui.BIM_WBManipulator = BIM_WBManipulator()
-        Gui.addWorkbenchManipulator(Gui.BIM_WBManipulator)
-        if reload:
-            Gui.activeWorkbench().reloadActive()
+        runtime.addWorkbenchManipulator(BIM_WBManipulator(), refresh=True)
 
         Log("BIM workbench activated\n")
 
@@ -722,10 +722,7 @@ class BIMWorkbench(Workbench):
         from draftutils import grid_observer
 
         PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
-
-        if hasattr(self, "BimSelectObserver"):
-            FreeCADGui.removeDocumentObserver(self.BimSelectObserver)
-            del self.BimSelectObserver
+        Gui.disposeWorkbenchRuntime(self.__class__.__name__)
 
         if hasattr(FreeCADGui, "draftToolBar"):
             FreeCADGui.draftToolBar.Deactivated()
@@ -738,7 +735,6 @@ class BIMWorkbench(Workbench):
 
         # print("Deactivating status icon")
         todo.ToDo.delay(BimStatus.setStatusIcons, False)
-        FreeCADGui.Control.clearTaskWatcher()
 
         # store views widget state and vertical size
         w = BimViews.findWidget()
@@ -758,12 +754,6 @@ class BIMWorkbench(Workbench):
             ifc_status.toggle_lock(False)
         except:
             pass
-
-        # remove manipulator
-        if hasattr(Gui, "BIM_WBManipulator"):
-            Gui.removeWorkbenchManipulator(Gui.BIM_WBManipulator)
-            Gui.BIM_WBManipulator = None
-            Gui.activeWorkbench().reloadActive()
 
         Log("BIM workbench deactivated\n")
 
@@ -847,6 +837,6 @@ FreeCADGui.addPreferencePage(":/ui/preferences-sh3d-import.ui", t)
 FreeCADGui.addPreferencePage(":/ui/preferences-webgl.ui", t)
 
 # Add unit tests
-FreeCAD.__unit_test__ += ["TestArchGui"]
+FreeCAD.__unit_test__ += ["TestArchGui", "TestArchReloadGui"]
 # The NativeIFC tests require internet connection and file download
 # FreeCAD.__unit_test__ += ["nativeifc.ifc_selftest"]

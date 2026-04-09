@@ -34,6 +34,19 @@ translate = FreeCAD.Qt.translate
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/NativeIFC")
 text_on = translate("BIM", "Strict IFC mode is ON (all objects are IFC)")
 text_off = translate("BIM", "Strict IFC mode is OFF (IFC and non-IFC objects allowed)")
+WORKBENCH_NAME = "BIMWorkbench"
+IFC_MENU_MANIPULATOR_KEY = "ifc_menu_manipulator"
+IFC_SAVE_SHORTCUT_KEY = "ifc_save_shortcut"
+
+
+def _get_bim_runtime(create=False):
+    getter = getattr(FreeCADGui, "workbenchRuntime" if create else "findWorkbenchRuntime", None)
+    if getter is None:
+        return None
+    try:
+        return getter(WORKBENCH_NAME)
+    except Exception:
+        return None
 
 
 def set_status_widget(statuswidget):
@@ -65,33 +78,38 @@ def set_properties_editor(statuswidget):
     """Adds additional buttons to the properties editor"""
 
     if hasattr(statuswidget, "propertybuttons"):
-        statuswidget.propertybuttons.show()
-    else:
-        from PySide import QtCore, QtGui  # lazy loading
+        try:
+            statuswidget.propertybuttons.hide()
+            statuswidget.propertybuttons.deleteLater()
+        except Exception:
+            pass
+        del statuswidget.propertybuttons
 
-        mw = FreeCADGui.getMainWindow()
-        editor = mw.findChild(QtGui.QTabWidget, "propertyTab")
-        if editor:
-            pTabCornerWidget = QtGui.QWidget()
-            pButton1 = QtGui.QToolButton(pTabCornerWidget)
-            pButton1.setText("")
-            pButton1.setToolTip(translate("BIM", "Add IFC property..."))
-            pButton1.setIcon(QtGui.QIcon(":/icons/IFC.svg"))
-            pButton1.clicked.connect(on_add_property)
-            pButton2 = QtGui.QToolButton(pTabCornerWidget)
-            pButton2.setText("")
-            pButton2.setToolTip(translate("BIM", "Add standard IFC Property Set..."))
-            pButton2.setIcon(QtGui.QIcon(":/icons/BIM_IfcProperties.svg"))
-            pButton2.clicked.connect(on_add_pset)
-            pHLayout = QtGui.QHBoxLayout(pTabCornerWidget)
-            pHLayout.addWidget(pButton1)
-            pHLayout.addWidget(pButton2)
-            pHLayout.setSpacing(2)
-            pHLayout.setContentsMargins(2, 2, 0, 0)
-            pHLayout.insertStretch(0)
-            editor.setCornerWidget(pTabCornerWidget, QtCore.Qt.BottomRightCorner)
-            statuswidget.propertybuttons = pTabCornerWidget
-            QtCore.QTimer.singleShot(0, pTabCornerWidget.show)
+    from PySide import QtCore, QtGui  # lazy loading
+
+    mw = FreeCADGui.getMainWindow()
+    editor = mw.findChild(QtGui.QTabWidget, "propertyTab")
+    if editor:
+        pTabCornerWidget = QtGui.QWidget()
+        pButton1 = QtGui.QToolButton(pTabCornerWidget)
+        pButton1.setText("")
+        pButton1.setToolTip(translate("BIM", "Add IFC property..."))
+        pButton1.setIcon(QtGui.QIcon(":/icons/IFC.svg"))
+        pButton1.clicked.connect(on_add_property)
+        pButton2 = QtGui.QToolButton(pTabCornerWidget)
+        pButton2.setText("")
+        pButton2.setToolTip(translate("BIM", "Add standard IFC Property Set..."))
+        pButton2.setIcon(QtGui.QIcon(":/icons/BIM_IfcProperties.svg"))
+        pButton2.clicked.connect(on_add_pset)
+        pHLayout = QtGui.QHBoxLayout(pTabCornerWidget)
+        pHLayout.addWidget(pButton1)
+        pHLayout.addWidget(pButton2)
+        pHLayout.setSpacing(2)
+        pHLayout.setContentsMargins(2, 2, 0, 0)
+        pHLayout.insertStretch(0)
+        editor.setCornerWidget(pTabCornerWidget, QtCore.Qt.BottomRightCorner)
+        statuswidget.propertybuttons = pTabCornerWidget
+        QtCore.QTimer.singleShot(0, pTabCornerWidget.show)
 
 
 def on_add_property():
@@ -285,23 +303,33 @@ def set_menu(locked=False):
     mw = FreeCADGui.getMainWindow()
     wb = FreeCADGui.activeWorkbench()
     save_action = mw.findChild(QtGui.QAction, "Std_Save")
+    if not save_action:
+        return
     if locked and "IFC_Save" in FreeCADGui.listCommands():
-        if not hasattr(FreeCADGui, "IFC_WBManipulator"):
-            FreeCADGui.IFC_WBManipulator = IFC_WBManipulator()
-        # we need to void the shortcut otherwise it keeps active
-        # even if the command is not shown
-        FreeCADGui.IFC_saveshortcut = save_action.shortcut()
-        save_action.setShortcut("")
-        FreeCADGui.addWorkbenchManipulator(FreeCADGui.IFC_WBManipulator)
-        wb.reloadActive()
+        runtime = _get_bim_runtime(create=True)
+        if runtime is None:
+            return
+
+        changed = False
+        if not runtime.owns(IFC_SAVE_SHORTCUT_KEY):
+            # We need to void the shortcut otherwise it keeps active
+            # even if the command is not shown.
+            runtime.overrideActionShortcut(IFC_SAVE_SHORTCUT_KEY, save_action, "")
+            changed = True
+        if not runtime.owns(IFC_MENU_MANIPULATOR_KEY):
+            runtime.addWorkbenchManipulator(IFC_WBManipulator(), key=IFC_MENU_MANIPULATOR_KEY)
+            changed = True
+        if changed:
+            wb.reloadActive()
     else:
-        if hasattr(FreeCADGui, "IFC_saveshortcut"):
-            save_action.setShortcut(FreeCADGui.IFC_saveshortcut)
-            del FreeCADGui.IFC_saveshortcut
-        if hasattr(FreeCADGui, "IFC_WBManipulator"):
-            FreeCADGui.removeWorkbenchManipulator(FreeCADGui.IFC_WBManipulator)
-            del FreeCADGui.IFC_WBManipulator
-        wb.reloadActive()
+        runtime = _get_bim_runtime(create=False)
+        if runtime is None:
+            return
+
+        changed = runtime.release(IFC_SAVE_SHORTCUT_KEY)
+        changed = runtime.release(IFC_MENU_MANIPULATOR_KEY) or changed
+        if changed:
+            wb.reloadActive()
 
 
 def set_button(checked=False, setchecked=False):

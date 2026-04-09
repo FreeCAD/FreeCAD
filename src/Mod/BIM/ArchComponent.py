@@ -65,6 +65,61 @@ else:
 
     # \endcond
 
+ARCH_SELECTION_WORKBENCH_NAME = "BIMWorkbench"
+ARCH_SELECTION_SESSION_NAME = "arch_selection"
+ARCH_SELECTION_OBSERVER_KEY = "observer"
+
+
+def _get_arch_selection_session(create=False):
+    if not FreeCAD.GuiUp:
+        return None
+
+    getter = getattr(
+        FreeCADGui,
+        "sessionRuntime" if create else "findSessionRuntime",
+        None,
+    )
+    if getter is None:
+        return None
+    try:
+        return getter(
+            ARCH_SELECTION_SESSION_NAME,
+            workbench_name=ARCH_SELECTION_WORKBENCH_NAME,
+        )
+    except Exception:
+        return None
+
+
+def getSelectionObserver():
+    runtime = _get_arch_selection_session(create=False)
+    if runtime is None:
+        return None
+    return runtime.getOwned(ARCH_SELECTION_OBSERVER_KEY)
+
+
+def clearSelectionSession():
+    if not FreeCAD.GuiUp:
+        return False
+
+    disposer = getattr(FreeCADGui, "disposeSessionRuntime", None)
+    if disposer is None:
+        return False
+    return disposer(
+        ARCH_SELECTION_SESSION_NAME,
+        workbench_name=ARCH_SELECTION_WORKBENCH_NAME,
+    )
+
+
+def startSelectionSession(observer):
+    if not FreeCAD.GuiUp:
+        return observer
+
+    clearSelectionSession()
+    runtime = _get_arch_selection_session(create=True)
+    if runtime is None:
+        return observer
+    return runtime.addSelectionObserver(observer, key=ARCH_SELECTION_OBSERVER_KEY)
+
 
 def addToComponent(compobject, addobject, prop):
     """Add an object to a component's property.
@@ -2054,10 +2109,9 @@ class ArchSelectionObserver:
         """
 
         if not self.watched:
-            FreeCADGui.Selection.removeObserver(FreeCAD.ArchObserver)
+            clearSelectionSession()
             if self.nextCommand:
                 FreeCADGui.runCommand(self.nextCommand)
-            del FreeCAD.ArchObserver
         elif object == self.watched.Name:
             if not element:
                 FreeCAD.Console.PrintMessage(translate("Arch", "Closing Sketch edit"))
@@ -2067,9 +2121,7 @@ class ArchSelectionObserver:
                         self.origin.ViewObject.Selectable = True
                     self.watched.ViewObject.hide()
                 FreeCADGui.activateWorkbench("BIMWorkbench")
-                if hasattr(FreeCAD, "ArchObserver"):
-                    FreeCADGui.Selection.removeObserver(FreeCAD.ArchObserver)
-                    del FreeCAD.ArchObserver
+                clearSelectionSession()
                 if self.nextCommand:
                     FreeCADGui.Selection.clearSelection()
                     FreeCADGui.Selection.addSelection(self.watched)
@@ -2093,9 +2145,7 @@ class SelectionTaskPanel:
     def reject(self):
         """The method run when the user selects the cancel button."""
 
-        if hasattr(FreeCAD, "ArchObserver"):
-            FreeCADGui.Selection.removeObserver(FreeCAD.ArchObserver)
-            del FreeCAD.ArchObserver
+        clearSelectionSession()
         return True
 
 
@@ -2406,8 +2456,7 @@ class ComponentTaskPanel:
                 self.accept()
                 if obj.isDerivedFrom("Sketcher::SketchObject"):
                     FreeCADGui.activateWorkbench("SketcherWorkbench")
-                FreeCAD.ArchObserver = ArchSelectionObserver(self.obj, obj)
-                FreeCADGui.Selection.addObserver(FreeCAD.ArchObserver)
+                startSelectionSession(ArchSelectionObserver(self.obj, obj))
                 FreeCADGui.ActiveDocument.setEdit(obj.Name, 0)
 
     def retranslateUi(self, TaskPanel):

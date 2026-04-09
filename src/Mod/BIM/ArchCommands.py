@@ -54,6 +54,74 @@ else:
     # \endcond
 
 
+SURVEY_WORKBENCH_NAME = "BIMWorkbench"
+SURVEY_SESSION_NAME = "survey"
+SURVEY_OBSERVER_KEY = "observer"
+SURVEY_DIALOG_KEY = "dialog"
+
+
+def _get_session_runtime(name, create=False):
+    if not FreeCAD.GuiUp:
+        return None
+
+    getter = getattr(
+        FreeCADGui,
+        "sessionRuntime" if create else "findSessionRuntime",
+        None,
+    )
+    if getter is None:
+        return None
+    try:
+        return getter(name, workbench_name=SURVEY_WORKBENCH_NAME)
+    except Exception:
+        return None
+
+
+def _get_survey_session(create=False):
+    return _get_session_runtime(SURVEY_SESSION_NAME, create=create)
+
+
+def _get_survey_observer():
+    runtime = _get_survey_session(create=False)
+    if runtime is None:
+        return None
+    return runtime.getOwned(SURVEY_OBSERVER_KEY)
+
+
+def _get_survey_dialog():
+    runtime = _get_survey_session(create=False)
+    if runtime is None:
+        return None
+    return runtime.getOwned(SURVEY_DIALOG_KEY)
+
+
+def _clear_survey_labels(observer=None):
+    observer = observer or _get_survey_observer()
+    if observer is None:
+        return
+
+    for label in list(observer.labels):
+        try:
+            if FreeCAD.ActiveDocument:
+                FreeCAD.ActiveDocument.removeObject(label)
+        except Exception:
+            pass
+    observer.labels = []
+
+
+def _dispose_survey_session():
+    runtime = _get_survey_session(create=False)
+    if runtime is None:
+        return False
+
+    observer = runtime.getOwned(SURVEY_OBSERVER_KEY)
+    _clear_survey_labels(observer)
+    return FreeCADGui.disposeSessionRuntime(
+        SURVEY_SESSION_NAME,
+        workbench_name=SURVEY_WORKBENCH_NAME,
+    )
+
+
 # module functions ###############################################
 
 
@@ -1079,47 +1147,43 @@ def survey(callback=False):
     """survey(): starts survey mode, where you can click edges and faces to get their lengths or area.
     Clicking on no object (on an empty area) resets the count."""
     if not callback:
-        if hasattr(FreeCAD, "SurveyObserver"):
-            for label in FreeCAD.SurveyObserver.labels:
-                FreeCAD.ActiveDocument.removeObject(label)
-            FreeCADGui.Selection.removeObserver(FreeCAD.SurveyObserver)
-            del FreeCAD.SurveyObserver
-            FreeCADGui.Control.closeDialog()
-            if hasattr(FreeCAD, "SurveyDialog"):
-                del FreeCAD.SurveyDialog
+        if _get_survey_observer():
+            _dispose_survey_session()
         else:
-            FreeCAD.SurveyObserver = _SurveyObserver(callback=survey)
-            FreeCADGui.Selection.addObserver(FreeCAD.SurveyObserver)
-            FreeCAD.SurveyDialog = SurveyTaskPanel()
-            FreeCADGui.Control.showDialog(FreeCAD.SurveyDialog)
+            runtime = _get_survey_session(create=True)
+            observer = runtime.addSelectionObserver(
+                _SurveyObserver(callback=survey),
+                key=SURVEY_OBSERVER_KEY,
+            )
+            runtime.onDispose(lambda: _clear_survey_labels(observer))
+            runtime.onDispose(FreeCADGui.Control.closeDialog)
+            dialog = runtime.own(SURVEY_DIALOG_KEY, SurveyTaskPanel())
+            FreeCADGui.Control.showDialog(dialog)
     else:
         sel = FreeCADGui.Selection.getSelectionEx()
-        if hasattr(FreeCAD, "SurveyObserver"):
+        observer = _get_survey_observer()
+        dialog = _get_survey_dialog()
+        if observer:
             if not sel:
-                if FreeCAD.SurveyObserver.labels:
-                    for label in FreeCAD.SurveyObserver.labels:
-                        FreeCAD.ActiveDocument.removeObject(label)
-                    tl = FreeCAD.SurveyObserver.totalLength
-                    ta = FreeCAD.SurveyObserver.totalArea
-                    FreeCAD.SurveyObserver.labels = []
-                    FreeCAD.SurveyObserver.selection = []
-                    FreeCAD.SurveyObserver.totalLength = 0
-                    FreeCAD.SurveyObserver.totalArea = 0
-                    FreeCAD.SurveyObserver.totalVolume = 0
-                    if not FreeCAD.SurveyObserver.cancellable:
+                if observer.labels:
+                    _clear_survey_labels(observer)
+                    tl = observer.totalLength
+                    ta = observer.totalArea
+                    observer.selection = []
+                    observer.totalLength = 0
+                    observer.totalArea = 0
+                    observer.totalVolume = 0
+                    if not observer.cancellable:
                         FreeCAD.Console.PrintMessage("\n---- Reset ----\n\n")
-                        FreeCAD.SurveyObserver.cancellable = True
-                        if hasattr(FreeCAD, "SurveyDialog"):
-                            FreeCAD.SurveyDialog.newline(tl, ta)
+                        observer.cancellable = True
+                        if dialog:
+                            dialog.newline(tl, ta)
                     else:
-                        FreeCADGui.Selection.removeObserver(FreeCAD.SurveyObserver)
-                        del FreeCAD.SurveyObserver
-                        FreeCADGui.Control.closeDialog()
-                        if hasattr(FreeCAD, "SurveyDialog"):
-                            del FreeCAD.SurveyDialog
+                        _dispose_survey_session()
+                        return
             else:
-                FreeCAD.SurveyObserver.cancellable = False
-                basesel = FreeCAD.SurveyObserver.selection
+                observer.cancellable = False
+                basesel = observer.selection
                 newsels = []
                 for o in sel:
                     found = False
@@ -1145,7 +1209,7 @@ def survey(callback=False):
                                     anno.BasePosition = o.Object.Shape.CenterOfMass
                                 else:
                                     anno.BasePosition = o.Object.Shape.BoundBox.Center
-                                FreeCAD.SurveyObserver.labels.append(anno.Name)
+                                observer.labels.append(anno.Name)
                                 if o.Object.Shape.Solids:
                                     u = FreeCAD.Units.Quantity(
                                         o.Object.Shape.Volume, FreeCAD.Units.Volume
@@ -1156,7 +1220,7 @@ def survey(callback=False):
                                     FreeCAD.Console.PrintMessage(
                                         "Object: " + n + ", Element: Whole, Volume: " + t + "\n"
                                     )
-                                    FreeCAD.SurveyObserver.totalVolume += u.Value
+                                    observer.totalVolume += u.Value
                                 elif o.Object.Shape.Faces:
                                     u = FreeCAD.Units.Quantity(
                                         o.Object.Shape.Area, FreeCAD.Units.Area
@@ -1167,9 +1231,9 @@ def survey(callback=False):
                                     FreeCAD.Console.PrintMessage(
                                         "Object: " + n + ", Element: Whole, Area: " + t + "\n"
                                     )
-                                    FreeCAD.SurveyObserver.totalArea += u.Value
-                                    if hasattr(FreeCAD, "SurveyDialog"):
-                                        FreeCAD.SurveyDialog.update(2, t)
+                                    observer.totalArea += u.Value
+                                    if dialog:
+                                        dialog.update(2, t)
                                 else:
                                     u = FreeCAD.Units.Quantity(
                                         o.Object.Shape.Length, FreeCAD.Units.Length
@@ -1179,9 +1243,9 @@ def survey(callback=False):
                                     FreeCAD.Console.PrintMessage(
                                         "Object: " + n + ", Element: Whole, Length: " + t + "\n"
                                     )
-                                    FreeCAD.SurveyObserver.totalLength += u.Value
-                                    if hasattr(FreeCAD, "SurveyDialog"):
-                                        FreeCAD.SurveyDialog.update(1, t)
+                                    observer.totalLength += u.Value
+                                    if dialog:
+                                        dialog.update(1, t)
                                 if FreeCAD.GuiUp and t:
                                     if showUnit:
                                         QtGui.QApplication.clipboard().setText(t)
@@ -1201,7 +1265,7 @@ def survey(callback=False):
                                             anno.BasePosition = e.CenterOfMass
                                         else:
                                             anno.BasePosition = e.BoundBox.Center
-                                    FreeCAD.SurveyObserver.labels.append(anno.Name)
+                                    observer.labels.append(anno.Name)
                                     if "Face" in el:
                                         u = FreeCAD.Units.Quantity(e.Area, FreeCAD.Units.Area)
                                         t = u.getUserPreferred()[0]
@@ -1216,9 +1280,9 @@ def survey(callback=False):
                                             + t
                                             + "\n"
                                         )
-                                        FreeCAD.SurveyObserver.totalArea += u.Value
-                                        if hasattr(FreeCAD, "SurveyDialog"):
-                                            FreeCAD.SurveyDialog.update(2, t)
+                                        observer.totalArea += u.Value
+                                        if dialog:
+                                            dialog.update(2, t)
                                     elif "Edge" in el:
                                         u = FreeCAD.Units.Quantity(e.Length, FreeCAD.Units.Length)
                                         t = u.getUserPreferred()[0]
@@ -1232,9 +1296,9 @@ def survey(callback=False):
                                             + t
                                             + "\n"
                                         )
-                                        FreeCAD.SurveyObserver.totalLength += u.Value
-                                        if hasattr(FreeCAD, "SurveyDialog"):
-                                            FreeCAD.SurveyDialog.update(1, t)
+                                        observer.totalLength += u.Value
+                                        if dialog:
+                                            dialog.update(1, t)
                                     elif "Vertex" in el:
                                         u = FreeCAD.Units.Quantity(e.Z, FreeCAD.Units.Length)
                                         t = u.getUserPreferred()[0]
@@ -1254,31 +1318,21 @@ def survey(callback=False):
                                         else:
                                             QtGui.QApplication.clipboard().setText(str(u.Value))
 
-                    FreeCAD.SurveyObserver.selection.extend(newsels)
-            if hasattr(FreeCAD, "SurveyObserver"):
-                if (
-                    FreeCAD.SurveyObserver.totalLength
-                    or FreeCAD.SurveyObserver.totalArea
-                    or FreeCAD.SurveyObserver.totalVolume
-                ):
+                    observer.selection.extend(newsels)
+            if observer:
+                if observer.totalLength or observer.totalArea or observer.totalVolume:
                     msg = " Total:"
-                    if FreeCAD.SurveyObserver.totalLength:
-                        u = FreeCAD.Units.Quantity(
-                            FreeCAD.SurveyObserver.totalLength, FreeCAD.Units.Length
-                        )
+                    if observer.totalLength:
+                        u = FreeCAD.Units.Quantity(observer.totalLength, FreeCAD.Units.Length)
                         t = u.getUserPreferred()[0]
                         msg += " Length: " + t
-                    if FreeCAD.SurveyObserver.totalArea:
-                        u = FreeCAD.Units.Quantity(
-                            FreeCAD.SurveyObserver.totalArea, FreeCAD.Units.Area
-                        )
+                    if observer.totalArea:
+                        u = FreeCAD.Units.Quantity(observer.totalArea, FreeCAD.Units.Area)
                         t = u.getUserPreferred()[0]
                         t = t.replace("^2", "²")
                         msg += " Area: " + t
-                    if FreeCAD.SurveyObserver.totalVolume:
-                        u = FreeCAD.Units.Quantity(
-                            FreeCAD.SurveyObserver.totalVolume, FreeCAD.Units.Volume
-                        )
+                    if observer.totalVolume:
+                        u = FreeCAD.Units.Quantity(observer.totalVolume, FreeCAD.Units.Volume)
                         t = u.getUserPreferred()[0]
                         t = t.replace("^3", "³")
                         msg += " Volume: " + t
@@ -1372,19 +1426,16 @@ class SurveyTaskPanel:
         return QtGui.QDialogButtonBox.Close
 
     def reject(self):
-        if hasattr(FreeCAD, "SurveyObserver"):
-            for label in FreeCAD.SurveyObserver.labels:
-                FreeCAD.ActiveDocument.removeObject(label)
-            FreeCADGui.Selection.removeObserver(FreeCAD.SurveyObserver)
-            del FreeCAD.SurveyObserver
+        _dispose_survey_session()
         return True
 
     def clear(self):
         FreeCADGui.Selection.clearSelection()
 
     def clipLength(self):
-        if hasattr(FreeCAD, "SurveyObserver"):
-            u = FreeCAD.Units.Quantity(FreeCAD.SurveyObserver.totalLength, FreeCAD.Units.Length)
+        observer = _get_survey_observer()
+        if observer:
+            u = FreeCAD.Units.Quantity(observer.totalLength, FreeCAD.Units.Length)
             t = u.getUserPreferred()[0]
             if params.get_param_arch("surveyUnits"):
                 QtGui.QApplication.clipboard().setText(t)
@@ -1392,8 +1443,9 @@ class SurveyTaskPanel:
                 QtGui.QApplication.clipboard().setText(str(u.Value / u.getUserPreferred()[1]))
 
     def clipArea(self):
-        if hasattr(FreeCAD, "SurveyObserver"):
-            u = FreeCAD.Units.Quantity(FreeCAD.SurveyObserver.totalArea, FreeCAD.Units.Area)
+        observer = _get_survey_observer()
+        if observer:
+            u = FreeCAD.Units.Quantity(observer.totalArea, FreeCAD.Units.Area)
             t = u.getUserPreferred()[0]
             t = t.replace("^2", "²")
             if params.get_param_arch("surveyUnits"):
