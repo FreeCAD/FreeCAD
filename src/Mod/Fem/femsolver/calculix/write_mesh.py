@@ -37,12 +37,14 @@ def write_mesh(ccxwriter):
     element_param = 1  # highest element order only
     group_param = False  # do not write mesh group data
 
-    # Use reduced integration beam elements or truss elements if this is enabled in ccx solver settings
-    vol_variant = "standard"
+    is_reduced = ccxwriter.solver_obj.ReducedIntegration
+
+    # Use reduced integration elements or truss elements if this is enabled in ccx solver settings
+    vol_variant = "reduced" if is_reduced else "standard"
     if ccxwriter.solver_obj.ExcludeBendingStiffness:
         edge_variant = "truss"
     else:
-        if ccxwriter.solver_obj.BeamReducedIntegration:
+        if is_reduced:
             edge_variant = "beam reduced"
         else:
             edge_variant = "beam"
@@ -62,6 +64,10 @@ def write_mesh(ccxwriter):
         face_variant = "strain"
     elif ccxwriter.solver_obj.ModelSpace == "axisymmetric":
         face_variant = "axisymmetric"
+
+    # Add "reduced" to the face element group's name if Reduced Integration is enabled
+    if is_reduced:
+        face_variant += " reduced"
 
     if ccxwriter.split_inpfile:
         write_name = "femesh"
