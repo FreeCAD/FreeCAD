@@ -39,11 +39,10 @@ def _get_observer_runtime(create=False):
 
     import FreeCADGui
 
-    getter = getattr(FreeCADGui, "workbenchRuntime" if create else "findWorkbenchRuntime", None)
-    if getter is None:
-        return None
     try:
-        return getter(WORKBENCH_NAME)
+        if create:
+            return FreeCADGui.workbenchRuntime(WORKBENCH_NAME)
+        return FreeCADGui.findWorkbenchRuntime(WORKBENCH_NAME)
     except Exception:
         return None
 

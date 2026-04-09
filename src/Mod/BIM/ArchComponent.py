@@ -74,15 +74,13 @@ def _get_arch_selection_session(create=False):
     if not FreeCAD.GuiUp:
         return None
 
-    getter = getattr(
-        FreeCADGui,
-        "sessionRuntime" if create else "findSessionRuntime",
-        None,
-    )
-    if getter is None:
-        return None
     try:
-        return getter(
+        if create:
+            return FreeCADGui.sessionRuntime(
+                ARCH_SELECTION_SESSION_NAME,
+                workbench_name=ARCH_SELECTION_WORKBENCH_NAME,
+            )
+        return FreeCADGui.findSessionRuntime(
             ARCH_SELECTION_SESSION_NAME,
             workbench_name=ARCH_SELECTION_WORKBENCH_NAME,
         )
@@ -101,10 +99,7 @@ def clearSelectionSession():
     if not FreeCAD.GuiUp:
         return False
 
-    disposer = getattr(FreeCADGui, "disposeSessionRuntime", None)
-    if disposer is None:
-        return False
-    return disposer(
+    return FreeCADGui.disposeSessionRuntime(
         ARCH_SELECTION_SESSION_NAME,
         workbench_name=ARCH_SELECTION_WORKBENCH_NAME,
     )

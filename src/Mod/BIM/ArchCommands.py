@@ -64,15 +64,10 @@ def _get_session_runtime(name, create=False):
     if not FreeCAD.GuiUp:
         return None
 
-    getter = getattr(
-        FreeCADGui,
-        "sessionRuntime" if create else "findSessionRuntime",
-        None,
-    )
-    if getter is None:
-        return None
     try:
-        return getter(name, workbench_name=SURVEY_WORKBENCH_NAME)
+        if create:
+            return FreeCADGui.sessionRuntime(name, workbench_name=SURVEY_WORKBENCH_NAME)
+        return FreeCADGui.findSessionRuntime(name, workbench_name=SURVEY_WORKBENCH_NAME)
     except Exception:
         return None
 

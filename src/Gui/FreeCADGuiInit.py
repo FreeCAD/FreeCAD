@@ -917,6 +917,14 @@ def _session_runtime_table() -> dict[str, SessionRuntime]:
     return runtimes
 
 
+def _auto_reloaders_table() -> dict[str, "_PythonWorkbenchAutoReloader"]:
+    reloaders = getattr(Gui, "_pythonWorkbenchReloaders", None)
+    if reloaders is None:
+        reloaders = {}
+        Gui._pythonWorkbenchReloaders = reloaders
+    return reloaders
+
+
 def sessionRuntime(name: str, workbench_name: str | None = None) -> SessionRuntime:
     runtime_workbench_name, session_name, qualified_name = _resolve_session_runtime_target(
         name,
@@ -1131,7 +1139,7 @@ class _PythonWorkbenchAutoReloader:
 
 def startPythonWorkbenchAutoReload(name: str | None = None, debounce_ms: int = 500) -> None:
     target = _resolve_reload_target(name)
-    reloaders = getattr(Gui, "_pythonWorkbenchReloaders", {})
+    reloaders = _auto_reloaders_table()
     existing = reloaders.get(target["name"])
     if existing:
         existing.stop()
@@ -1144,7 +1152,7 @@ def startPythonWorkbenchAutoReload(name: str | None = None, debounce_ms: int = 5
 
 
 def stopPythonWorkbenchAutoReload(name: str | None = None) -> bool:
-    reloaders = getattr(Gui, "_pythonWorkbenchReloaders", {})
+    reloaders = _auto_reloaders_table()
     target_name = _canonical_auto_reload_name(name)
     if not target_name:
         return False
@@ -1160,7 +1168,7 @@ def stopPythonWorkbenchAutoReload(name: str | None = None) -> bool:
 
 
 def isPythonWorkbenchAutoReloadActive(name: str | None = None) -> bool:
-    reloaders = getattr(Gui, "_pythonWorkbenchReloaders", {})
+    reloaders = _auto_reloaders_table()
     target_name = _canonical_auto_reload_name(name)
     if not target_name:
         return False
