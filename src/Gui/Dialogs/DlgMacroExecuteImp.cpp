@@ -193,11 +193,6 @@ QStringList DlgMacroExecuteImp::filterFiles(const QString& folder)
     QString fileFilter = ui->LineEditFind->text();         // used to search by filename
     QString searchText = ui->LineEditFindInFiles->text();  // used to search in file content
 
-    QDirIterator it(dir.path(), QStringList() << "*.FCMacro", QDir::Files, QDirIterator::Subdirectories);
-    while (it.hasNext()) {
-        unfiltered += dir.relativeFilePath(it.next());
-    }
-
     if (fileFilter.isEmpty() && searchText.isEmpty()) {  // skip filtering if no filters
         return unfiltered;
     }
