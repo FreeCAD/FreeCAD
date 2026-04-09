@@ -159,6 +159,53 @@ class WorkbenchTestCase(unittest.TestCase):
         self.assertFalse(hasattr(handler, "__Workbench__"))
         self.assertNotIn("UnitReplaceResetWorkbench", FreeCADGui.listWorkbenches())
 
+    def testDisposedWorkbenchRuntimeRejectsMutation(self):
+        import __main__
+
+        class UnitRuntimeWorkbench(__main__.Workbench):
+            MenuText = "Runtime Unittest"
+            ToolTip = "Runtime Unittest"
+
+            def Initialize(self):
+                pass
+
+            def GetClassName(self):
+                return "Gui::PythonWorkbench"
+
+        handler = UnitRuntimeWorkbench()
+        session_name = "reload_test"
+        FreeCADGui.addWorkbench(handler)
+        self.assertTrue(FreeCADGui.activateWorkbench("UnitRuntimeWorkbench"))
+
+        runtime = FreeCADGui.workbenchRuntime("UnitRuntimeWorkbench")
+        session = FreeCADGui.sessionRuntime(session_name)
+        self.assertEqual(session.workbench_name, "UnitRuntimeWorkbench")
+        self.assertIs(session, FreeCADGui.findSessionRuntime(session_name))
+        self.assertIs(
+            session,
+            FreeCADGui.findSessionRuntime("UnitRuntimeWorkbench:reload_test"),
+        )
+
+        self.assertTrue(FreeCADGui.disposeSessionRuntime(session_name))
+        self.assertTrue(FreeCADGui.disposeWorkbenchRuntime("UnitRuntimeWorkbench"))
+
+        with self.assertRaises(RuntimeError):
+            session.own("session_key", object())
+        with self.assertRaises(RuntimeError):
+            runtime.own("workbench_key", object())
+
+        self.assertTrue(FreeCADGui.resetWorkbench("UnitRuntimeWorkbench"))
+
+    def testDisposedAppRuntimeRejectsMutation(self):
+        runtime_name = "Test_DisposedAppRuntime"
+        runtime = FreeCAD.appRuntime(runtime_name)
+        self.assertTrue(FreeCAD.disposeAppRuntime(runtime_name))
+
+        with self.assertRaises(RuntimeError):
+            runtime.own("runtime_key", object())
+        with self.assertRaises(RuntimeError):
+            runtime.onDispose(lambda: None)
+
     def tearDown(self):
         FreeCADGui.activateWorkbench(self.Active.name())
         FreeCAD.Console.PrintLog(self.Active.name())
