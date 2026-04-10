@@ -236,7 +236,9 @@ PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* g
              auto sgeo = static_cast<const Part::GeomLineSegment*>(geo);
              SingleGeometry sg;
              sg.creation = boost::str(
-                 boost::format("Part.LineSegment(App.Vector(%.8f, %.8f, %.8f),App.Vector(%.8f, %.8f, %.8f))")
+                 boost::format(
+                     "Part.LineSegment(App.Vector(%.8f, %.8f, %.8f),App.Vector(%.8f, %.8f, %.8f))"
+                 )
                  % sgeo->getStartPoint().x % sgeo->getStartPoint().y % sgeo->getStartPoint().z
                  % sgeo->getEndPoint().x % sgeo->getEndPoint().y % sgeo->getEndPoint().z
              );
@@ -373,7 +375,9 @@ PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* g
              auto circle = static_cast<const Part::GeomCircle*>(geo);
              SingleGeometry sg;
              sg.creation = boost::str(
-                 boost::format("Part.Circle(App.Vector(%.8f, %.8f, %.8f), App.Vector(%.8f, %.8f, %.8f), %.8f)")
+                 boost::format(
+                     "Part.Circle(App.Vector(%.8f, %.8f, %.8f), App.Vector(%.8f, %.8f, %.8f), %.8f)"
+                 )
                  % circle->getCenter().x % circle->getCenter().y % circle->getCenter().z
                  % circle->getAxisDirection().x % circle->getAxisDirection().y
                  % circle->getAxisDirection().z % circle->getRadius()
