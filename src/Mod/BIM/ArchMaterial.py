@@ -376,6 +376,7 @@ class _ArchMaterial:
                 for p in obj.InList:
                     if (
                         hasattr(p, "Material")
+                        and p.Material is not None
                         and p.Material.Name == obj.Name
                         and getattr(obj.ViewObject, "UseMaterialColor", True)
                     ):
