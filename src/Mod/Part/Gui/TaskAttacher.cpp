@@ -1259,8 +1259,8 @@ void TaskAttacher::showPlacementUtilities()
         overrides.override(planarViewProvider->ShowPlane, true);
     }
 
-    if (auto partViewProvider = freecad_cast<PartGui::ViewProviderPartExt*>(ViewProvider)) {
-        overrides.override(partViewProvider->ShowPlacement, true);
+    if (auto draggerViewProvider = freecad_cast<Gui::ViewProviderDragger*>(ViewProvider)) {
+        overrides.override(draggerViewProvider->ShowPlacement, true);
     }
 }
 
