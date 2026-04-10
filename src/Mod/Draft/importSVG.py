@@ -1447,8 +1447,21 @@ def replace_use_with_reference(file_path):
             parent = parent_map[deftag]
             parent.remove(deftag)
 
+    current_encoding = ""
+    try:
+        with pyopen(file_path, "r", encoding="UTF-8") as f:
+            top_line = f.readline()
+            current_encoding = "UTF-8"
+    except UnicodeError:
+        with pyopen(file_path, "r", encoding="UTF-16") as f:
+            top_line = f.readline()
+            current_encoding = "UTF-16"
+    encoding_text = translate("ImportSVG", "is encoded using")
+    FreeCAD.Console.PrintLog(
+        "ImportSVG - '" + file_path + "' " + encoding_text + " " + current_encoding + "\n")
+
     # open file and read
-    svg_content = pyopen(file_path).read()
+    svg_content = pyopen(file_path, encoding=current_encoding).read()
     # register namespace before parsing
     register_svg_namespaces(svg_content)
     # parse as xml.
