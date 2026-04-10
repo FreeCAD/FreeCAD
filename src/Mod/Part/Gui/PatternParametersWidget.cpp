@@ -769,7 +769,7 @@ void PatternParametersWidget::updateSpacingLabels(
             double totalAngle_deg = m_extentProp->getValue();
             double totalAngle_rad = Base::toRadians(totalAngle_deg);
 
-            label->setPoints(center, Base::Vector3d());
+            label->setPoints(Base::Vector3d(), Base::Vector3d());
             label->setLabelDistance(radius);
             label->setLabelStartAngle(startAngle);
             label->setLabelRange(totalAngle_rad);
@@ -793,7 +793,7 @@ void PatternParametersWidget::updateSpacingLabels(
                 double currentAngle_deg = (spacingOverride == -1.0) ? globalOffset : spacingOverride;
                 double currentAngle_rad = Base::toRadians(currentAngle_deg);
 
-                label->setPoints(center, Base::Vector3d());
+                label->setPoints(Base::Vector3d(), Base::Vector3d());
                 label->setLabelDistance(radius);
                 label->setLabelStartAngle(cumulativeAngle);
                 label->setLabelRange(currentAngle_rad);
