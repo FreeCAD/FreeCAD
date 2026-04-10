@@ -436,8 +436,7 @@ void TaskPatternParameters::updateSpacingLabels()
 {
     Base::Vector3d startPoint = getStartPoint();
 
-    auto* linearPattern = dynamic_cast<PartDesign::LinearPattern*>(getObject());
-    if (linearPattern) {
+    if (auto* linearPattern = getObject<PartDesign::LinearPattern>()) {
         // Handle first direction widget
         if (parametersWidget) {
             // Get the direction vector using the feature's public method.
@@ -473,29 +472,29 @@ void TaskPatternParameters::updateSpacingLabels()
         return;
     }
 
-    auto* polarPattern = dynamic_cast<PartDesign::PolarPattern*>(getObject());
-    if (polarPattern) {
+    if (auto* polarPattern = getObject<PartDesign::PolarPattern>()) {
         gp_Ax2 axisDef = polarPattern->getRotation();
+        axisDef.Transform(polarPattern->getLocation().Transformation());
+
         gp_Pnt center_gp = axisDef.Location();
         gp_Dir axis_gp = axisDef.Direction();
-        gp_Dir xDir_gp = axisDef.XDirection();
         Base::Vector3d center(center_gp.X(), center_gp.Y(), center_gp.Z());
         Base::Vector3d axis(axis_gp.X(), axis_gp.Y(), axis_gp.Z());
-        Base::Vector3d xDir(xDir_gp.X(), xDir_gp.Y(), xDir_gp.Z());
 
+        // Calculate X-axis for angular reference in the rotation plane
+        Base::Rotation labelRot(Base::Vector3d(0.0, 0.0, 1.0), axis);
+        Base::Vector3d xDir;
+        labelRot.multVec(Base::Vector3d(1.0, 0.0, 0.0), xDir);
 
         Base::Vector3d startRadiusVec = startPoint - center;
         double radius = startRadiusVec.Length();
         if (radius < Precision::Confusion()) {
-            startRadiusVec = Base::Vector3d(1.0, 0.0, 0.0);
             radius = 1.0;
         }
 
         double initialAngle_rad = 0.0;
-        // Project the radius vector onto the rotation plane to make it 2D
         Base::Vector3d projectedRadiusVec = startRadiusVec - (startRadiusVec.Dot(axis)) * axis;
         if (projectedRadiusVec.Length() > 1e-6) {
-            // The angle is the angle between the plane's X-axis and the projected radius vector.
             initialAngle_rad = xDir.GetAngleOriented(projectedRadiusVec, axis);
         }
 
