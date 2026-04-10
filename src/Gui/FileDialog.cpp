@@ -274,7 +274,7 @@ static void getSuffixesDescription(QStringList& suffixes, const QString& suffixD
     }
 }
 
-static bool getPreferShowFilterExtensions()
+static bool getPreferShowFilterPatterns()
 {
     bool show = true;
 #ifdef FC_OS_WIN32
@@ -288,17 +288,19 @@ static bool getPreferShowFilterExtensions()
                                      .GetGroup("BaseApp")
                                      ->GetGroup("Preferences")
                                      ->GetGroup("Dialog");
-    return group->GetBool("ShowFilterExtensions", show);
+    return group->GetBool("ShowFilterPatterns", show);
 }
 
 struct FilterSpec
 {
     QString name;
-    QStringList extensions;
+    /// List of patterns matched by this filter. Note that extensions are
+    /// just a subset of patterns in the form of "*.ext".
+    QStringList patterns;
 
     bool operator==(const FilterSpec& rhs) const
     {
-        return name == rhs.name && extensions == rhs.extensions;
+        return name == rhs.name && patterns == rhs.patterns;
     }
 
     static FilterSpec fromFilterString(const QString& filter)
@@ -306,61 +308,61 @@ struct FilterSpec
         const auto start = filter.lastIndexOf(QLatin1Char('('));
         const auto end = filter.lastIndexOf(QLatin1Char(')'));
         const auto name = filter.left(start).trimmed();
-        const auto extensionsPart = filter.mid(start + 1, end - start - 1);
-        return {name, extensionsPart.split(QLatin1Char(' '), Qt::SkipEmptyParts)};
+        const auto patternsPart = filter.mid(start + 1, end - start - 1);
+        return {name, patternsPart.split(QLatin1Char(' '), Qt::SkipEmptyParts)};
     }
 
-    QString getDisplayName(bool showExtensions) const
+    QString getDisplayName(bool showPatterns) const
     {
         // Avoid overflowing the screen with an excessively long filter list (see #23139).
         const qsizetype MaxFiltersLength = 128;
-        const qsizetype TypicalMaxExtensionLength = 12;
+        const qsizetype TypicalMaxPatternLength = 12;
 
-        if (!showExtensions) {
+        if (!showPatterns) {
             return name;
         }
 
         QString formatted(name);
         formatted += QLatin1Char(' ');
 
-        // Deduplicate the extensions which usually come in both *.ext & *.EXT variants.
-        // Keeps the first case encountered for a given extension set.
-        // O(n^2) in complexity but the extension lists are usually short.
+        // Deduplicate the patterns which usually come in both uppercase and lowercase variants.
+        // Keeps the first case encountered for a given pattern set.
+        // O(n^2) in complexity but the pattern lists are usually short.
         QList<QStringView> seen;
-        seen.reserve(extensions.size());
-        const auto wasSeen = [&seen](QStringView ext) -> bool {
-            for (QStringView extSeen : seen) {
-                if (extSeen.compare(ext, Qt::CaseInsensitive) == 0) {
+        seen.reserve(patterns.size());
+        const auto wasSeen = [&seen](QStringView pat) -> bool {
+            for (QStringView patSeen : seen) {
+                if (patSeen.compare(pat, Qt::CaseInsensitive) == 0) {
                     return true;
                 }
             }
             return false;
         };
-        QString dedupExtensions;
-        dedupExtensions.reserve(extensions.length() * TypicalMaxExtensionLength);
-        for (auto it = extensions.cbegin(); it != extensions.cend(); ++it) {
+        QString dedupPatterns;
+        dedupPatterns.reserve(patterns.length() * TypicalMaxPatternLength);
+        for (auto it = patterns.cbegin(); it != patterns.cend(); ++it) {
             if (!wasSeen(*it)) {
                 seen.append(*it);
-                if (it != extensions.cbegin()) {
-                    dedupExtensions += QLatin1Char(' ');
+                if (it != patterns.cbegin()) {
+                    dedupPatterns += QLatin1Char(' ');
                 }
-                dedupExtensions += *it;
+                dedupPatterns += *it;
             }
         }
 
-        if (dedupExtensions.size() <= MaxFiltersLength) {
+        if (dedupPatterns.size() <= MaxFiltersLength) {
             formatted += QLatin1Char('(');
-            formatted += dedupExtensions;
+            formatted += dedupPatterns;
             formatted += QLatin1Char(')');
         }
 
         return formatted;
     }
 
-    QString toQtFilter(bool showExtensions) const
+    QString toQtFilter(bool showPatterns) const
     {
-        return getDisplayName(showExtensions) + QStringLiteral(" (")
-            + extensions.join(QLatin1Char(' ')) + QLatin1Char(')');
+        return getDisplayName(showPatterns) + QStringLiteral(" (") + patterns.join(QLatin1Char(' '))
+            + QLatin1Char(')');
     }
 };
 
@@ -377,11 +379,11 @@ public:
         return specs;
     }
 
-    QStringList toQtFilterList(bool showExtensions) const
+    QStringList toQtFilterList(bool showPatterns) const
     {
         QStringList qtFilters;
         for (const auto& filterSpec : *this) {
-            qtFilters += filterSpec.toQtFilter(showExtensions);
+            qtFilters += filterSpec.toQtFilter(showPatterns);
         }
         return qtFilters;
     }
@@ -410,7 +412,7 @@ static std::unique_ptr<wchar_t[]> qStringToWCharArray(const QString& s, size_t r
 }
 
 /* Use the legacy Get{Open,Save}FileNameW functions as the Vista+ IFileDialog forces
- * extension display in filter lists, leading to exceedingly long entries as seen in
+ * pattern/extension display in filter lists, leading to exceedingly long entries as seen in
  * issue #23139.
  * Note neither this legacy function set nor IFileDialog are valid for UWP WinRT,
  * for which Windows::Storage::Pickers::FileOpenPicker will have to be used instead.
@@ -425,7 +427,7 @@ static QStringList nativeFileDialog(
     FileDialog::Options options
 )
 {
-    const bool showExtensions = getPreferShowFilterExtensions();
+    const bool showPatterns = getPreferShowFilterPatterns();
 
     OPENFILENAMEW ofn;
     memset(&ofn, 0, sizeof(OPENFILENAMEW));
@@ -436,9 +438,9 @@ static QStringList nativeFileDialog(
 
     QString flatFilter;
     for (const auto& filterSpec : filterSpecs) {
-        flatFilter += filterSpec.getDisplayName(showExtensions);
+        flatFilter += filterSpec.getDisplayName(showPatterns);
         flatFilter += QLatin1Char('\0');
-        flatFilter += filterSpec.extensions.join(QLatin1Char(';'));
+        flatFilter += filterSpec.patterns.join(QLatin1Char(';'));
         flatFilter += QLatin1Char('\0');
     }
     flatFilter += QLatin1Char('\0');
@@ -511,8 +513,8 @@ static QStringList nativeFileDialog(
     FileDialog::Options options
 )
 {
-    const bool showExtensions = getPreferShowFilterExtensions();
-    const auto qtFilterList = filterSpecs.toQtFilterList(showExtensions);
+    const bool showPatterns = getPreferShowFilterPatterns();
+    const auto qtFilterList = filterSpecs.toQtFilterList(showPatterns);
     QString selectedQtFilter = (selectedFilterIndex != nullptr && *selectedFilterIndex >= 0)
         ? qtFilterList[*selectedFilterIndex]
         : "";
@@ -640,8 +642,8 @@ QString FileDialog::getSaveFileName(
     // and append it before showing the file dialog.
     QString file;
     if (DialogOptions::dontUseNativeFileDialog()) {
-        const bool showExtensions = getPreferShowFilterExtensions();
-        const auto qtFilterList = filterSpecList.toQtFilterList(showExtensions);
+        const bool showPatterns = getPreferShowFilterPatterns();
+        const auto qtFilterList = filterSpecList.toQtFilterList(showPatterns);
         QList<QUrl> urls = fetchSidebarUrls();
 
         options |= QFileDialog::DontUseNativeDialog;
@@ -660,7 +662,7 @@ QString FileDialog::getSaveFileName(
         }
         dlg.setNameFilters(qtFilterList);
         if (selectedFilterIndex >= 0) {
-            dlg.selectNameFilter(filterSpecList[selectedFilterIndex].toQtFilter(showExtensions));
+            dlg.selectNameFilter(filterSpecList[selectedFilterIndex].toQtFilter(showPatterns));
         }
         dlg.onSelectedFilter(dlg.selectedNameFilter());
         dlg.setOption(QFileDialog::DontConfirmOverwrite, false);
@@ -771,8 +773,8 @@ QString FileDialog::getOpenFileName(
 
     QString file;
     if (DialogOptions::dontUseNativeFileDialog()) {
-        const bool showExtensions = getPreferShowFilterExtensions();
-        const auto qtFilterList = filterSpecList.toQtFilterList(showExtensions);
+        const bool showPatterns = getPreferShowFilterPatterns();
+        const auto qtFilterList = filterSpecList.toQtFilterList(showPatterns);
         QList<QUrl> urls = fetchSidebarUrls();
 
         options |= QFileDialog::DontUseNativeDialog;
@@ -788,7 +790,7 @@ QString FileDialog::getOpenFileName(
         dlg.setDirectory(dirName);
         dlg.setNameFilters(qtFilterList);
         if (selectedFilterIndex >= 0) {
-            dlg.selectNameFilter(filterSpecList[selectedFilterIndex].toQtFilter(showExtensions));
+            dlg.selectNameFilter(filterSpecList[selectedFilterIndex].toQtFilter(showPatterns));
         }
         if (dlg.exec() == QDialog::Accepted) {
             if (selectedFilter) {
@@ -871,8 +873,8 @@ QStringList FileDialog::getOpenFileNames(
 
     QStringList files;
     if (DialogOptions::dontUseNativeFileDialog()) {
-        const bool showExtensions = getPreferShowFilterExtensions();
-        const auto qtFilterList = filterSpecList.toQtFilterList(showExtensions);
+        const bool showPatterns = getPreferShowFilterPatterns();
+        const auto qtFilterList = filterSpecList.toQtFilterList(showPatterns);
         QList<QUrl> urls = fetchSidebarUrls();
 
         options |= QFileDialog::DontUseNativeDialog;
@@ -888,7 +890,7 @@ QStringList FileDialog::getOpenFileNames(
         dlg.setDirectory(dirName);
         dlg.setNameFilters(qtFilterList);
         if (selectedFilterIndex >= 0) {
-            dlg.selectNameFilter(filterSpecList[selectedFilterIndex].toQtFilter(showExtensions));
+            dlg.selectNameFilter(filterSpecList[selectedFilterIndex].toQtFilter(showPatterns));
         }
         if (dlg.exec() == QDialog::Accepted) {
             if (selectedFilter) {
