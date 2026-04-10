@@ -1062,12 +1062,14 @@ QMap<QString, QString> SketcherGui::findAvailableFontFiles()
 Gui::TreeWidget* SketcherGui::findModelTreeWidget()
 {
     Gui::MainWindow* mw = Gui::getMainWindow();
-    if (!mw)
+    if (!mw) {
         return nullptr;
+    }
 
     auto dock = mw->findChild<QDockWidget*>("Model");
-    if (!dock)
+    if (!dock) {
         return nullptr;
+    }
 
     return dock->findChild<Gui::TreeWidget*>();
 }
@@ -1076,4 +1078,3 @@ bool SketcherGui::hasModelTreeWidget()
 {
     return SketcherGui::findModelTreeWidget() != nullptr;
 }
-
