@@ -158,16 +158,7 @@ class _Wall(ArchComponent.Component):
         obj.IfcType = "Wall"
 
     def setProperties(self, obj):
-        """Give the wall its wall specific properties, such as its alignment.
-
-        You can learn more about properties here:
-        https://wiki.freecad.org/property
-
-        parameters
-        ----------
-        obj: <part::featurepython>
-            The object to turn into a wall.
-        """
+        """Give the wall its wall specific properties, such as its alignment."""
 
         lp = obj.PropertiesList
         if not "Length" in lp:
@@ -192,8 +183,6 @@ class _Wall(ArchComponent.Component):
                 ),
                 locked=True,
             )
-
-        # To be combined into Width when PropertyLengthList is available
         if not "OverrideWidth" in lp:
             obj.addProperty(
                 "App::PropertyFloatList",
@@ -204,7 +193,7 @@ class _Wall(ArchComponent.Component):
                     "This overrides Width attribute to set width of each segment of wall.  Disabled and ignored if Base object (ArchSketch) provides Widths information, with getWidths() method  (If a value is zero, the value of 'Width' will be followed).  [ENHANCEMENT by ArchSketch] GUI 'Edit Wall Segment Width' Tool is provided in external SketchArch Add-on to let users to set the values interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used.",
                 ),
                 locked=True,
-            )  # see DraftGeomUtils.offsetwire()
+            )
         if not "OverrideAlign" in lp:
             obj.addProperty(
                 "App::PropertyStringList",
@@ -215,7 +204,7 @@ class _Wall(ArchComponent.Component):
                     "This overrides Align attribute to set align of each segment of wall.  Disabled and ignored if Base object (ArchSketch) provides Aligns information, with getAligns() method  (If a value is not 'Left, Right, Center', the value of 'Align' will be followed).  [ENHANCEMENT by ArchSketch] GUI 'Edit Wall Segment Align' Tool is provided in external SketchArch Add-on to let users to set the values interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used.",
                 ),
                 locked=True,
-            )  # see DraftGeomUtils.offsetwire()
+            )
         if not "OverrideOffset" in lp:
             obj.addProperty(
                 "App::PropertyFloatList",
@@ -226,7 +215,7 @@ class _Wall(ArchComponent.Component):
                     "This overrides Offset attribute to set offset of each segment of wall.  Disabled and ignored if Base object (ArchSketch) provides Offsets information, with getOffsets() method  (If a value is zero, the value of 'Offset' will be followed).  [ENHANCED by ArchSketch] GUI 'Edit Wall Segment Offset' Tool is provided in external Add-on ('SketchArch') to let users to select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used. Property is ignored if Base ArchSketch provided the selected edges. ",
                 ),
                 locked=True,
-            )  # see DraftGeomUtils.offsetwire()
+            )
         if not "Height" in lp:
             obj.addProperty(
                 "App::PropertyLength",
@@ -261,6 +250,49 @@ class _Wall(ArchComponent.Component):
                 locked=True,
             )
             obj.Align = ["Left", "Right", "Center"]
+        if not "AlignLayer" in lp:
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "AlignLayer",
+                "Wall",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Reference layer: select a specific material layer to pin to the "
+                    "baseline. When set, overrides the global Align for layer positioning. "
+                    "Requires a multi-material. Disabled if Base object (ArchSketch) "
+                    "provides the information.",
+                ),
+                locked=True,
+            )
+            obj.AlignLayer = ["None (use Align)"]
+        if not "AlignLayerMode" in lp:
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "AlignLayerMode",
+                "Wall",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Which face of the Reference Layer to pin to the baseline: "
+                    "Layer Left (nearest), Layer Center, or Layer Right (farthest). "
+                    "Only active when Align Layer is set to a layer name.",
+                ),
+                locked=True,
+            )
+            # Renamed from ["Bottom", "Center", "Top"] to use Left/Center/Right for walls
+            obj.AlignLayerMode = ["Layer Left", "Layer Center", "Layer Right"]
+        if not "AlignOffset" in lp:
+            obj.addProperty(
+                "App::PropertyDistance",
+                "AlignOffset",
+                "Wall",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Additional lateral offset applied after all alignment calculations. "
+                    "Shifts the entire wall stack from the resolved position. "
+                    "Independent from the per-edge baseline Offset property.",
+                ),
+                locked=True,
+            )
         if not "Normal" in lp:
             obj.addProperty(
                 "App::PropertyVector",
@@ -293,13 +325,6 @@ class _Wall(ArchComponent.Component):
                 ),
                 locked=True,
             )
-
-        # See getExtrusionData(), removeSplitters are no longer used
-        # if not "Refine" in lp:
-        #    obj.addProperty("App::PropertyEnumeration","Refine","Wall",QT_TRANSLATE_NOOP("App::Property","Select whether or not and the method to remove splitter of the Wall. Currently Draft removeSplitter and Part removeSplitter available but may not work on complex sketch."), locked=True)
-        #    obj.Refine = ['No','DraftRemoveSplitter','PartRemoveSplitter']
-        # TODO - To implement in Arch Component ?
-
         if not "MakeBlocks" in lp:
             obj.addProperty(
                 "App::PropertyBool",
@@ -405,11 +430,139 @@ class _Wall(ArchComponent.Component):
                 locked=True,
             )
             obj.ArchSketchPropertySet = ["Default"]
-        if not hasattr(self, "ArchSkPropSetPickedUuid"):  # 'obj.Proxy', 'self' not works ?
+        if not hasattr(self, "ArchSkPropSetPickedUuid"):
             self.ArchSkPropSetPickedUuid = ""
         if not hasattr(self, "ArchSkPropSetListPrev"):
             self.ArchSkPropSetListPrev = []
         self.connectEdges = []
+
+    def get_layers(self, obj):
+        """Returns a list of layers"""
+        layers = []
+        width = self.get_width(obj, widths=False)
+        if hasattr(obj, "Material"):
+            if obj.Material:
+                if hasattr(obj.Material, "Materials"):
+                    thicknesses = [abs(t) for t in obj.Material.Thicknesses]
+                    restwidth = width - sum(thicknesses)
+                    varwidth = 0
+                    if restwidth > 0:
+                        varwidth = [t for t in thicknesses if t == 0]
+                        if varwidth:
+                            varwidth = restwidth / len(varwidth)
+                    for t in obj.Material.Thicknesses:
+                        if t:
+                            layers.append(t)
+                        elif varwidth:
+                            layers.append(varwidth)
+        return layers
+
+    def _update_align_layer_enum(self, obj):
+        """Rebuild the AlignLayer dropdown from current multi-material layer names."""
+        # Guard against re-entrancy: setting obj.AlignLayer below triggers
+        # onChanged("AlignLayer") which would call this method again infinitely.
+        if getattr(self, "_updating_align_layer", False):
+            return
+        if not hasattr(obj, "AlignLayer"):
+            return
+        self._updating_align_layer = True
+        try:
+            entries = ["None (use Align)"]
+            layers = self.get_layers(obj)
+            if layers and hasattr(obj, "Material") and obj.Material:
+                if hasattr(obj.Material, "Materials"):
+                    for i, mat in enumerate(obj.Material.Materials):
+                        if (
+                            hasattr(obj.Material, "Names")
+                            and i < len(obj.Material.Names)
+                            and obj.Material.Names[i]
+                        ):
+                            name = obj.Material.Names[i]
+                        elif hasattr(mat, "Label"):
+                            name = mat.Label
+                        else:
+                            name = "Layer {}".format(i + 1)
+                        entries.append(name)
+            try:
+                current = obj.AlignLayer
+            except Exception:
+                current = entries[0]
+            if current not in entries:
+                current = entries[0]
+            # Only update the enum if the entries actually changed
+            # to minimise unnecessary property change signals
+            try:
+                existing = list(obj.getEnumerationsOfProperty("AlignLayer"))
+            except Exception:
+                existing = []
+            if existing != entries:
+                obj.AlignLayer = entries
+            obj.AlignLayer = current
+        finally:
+            self._updating_align_layer = False
+
+    def _compute_lateral_offset(self, obj, layers):
+        """Compute the initial layeroffset for the layer loop in getExtrusionData.
+
+        Returns 0.0 when no AlignLayer or AlignOffset is set, so existing
+        behavior is completely unchanged for standard walls.
+        """
+        align_offset_val = 0.0
+        align_offset_prop = getattr(obj, "AlignOffset", None)
+        if align_offset_prop is not None:
+            align_offset_val = (
+                align_offset_prop.Value
+                if hasattr(align_offset_prop, "Value")
+                else 0.0
+            )
+        align_layer = getattr(obj, "AlignLayer", "None (use Align)")
+        if not align_layer or align_layer == "None (use Align)":
+            # No reference layer selected. Center alignment handles its own
+            # stack centering via its own math in getExtrusionData, so we
+            # only pass AlignOffset through and let that code run undisturbed.
+            if getattr(obj, "Align", "Left") == "Center":
+                return align_offset_val
+            return align_offset_val
+        # Resolve layer index by name
+        layer_idx = None
+        if hasattr(obj, "Material") and obj.Material:
+            if hasattr(obj.Material, "Materials"):
+                for i, mat in enumerate(obj.Material.Materials):
+                    if (
+                        hasattr(obj.Material, "Names")
+                        and i < len(obj.Material.Names)
+                        and obj.Material.Names[i]
+                    ):
+                        name = obj.Material.Names[i]
+                    elif hasattr(mat, "Label"):
+                        name = mat.Label
+                    else:
+                        name = "Layer {}".format(i + 1)
+                    if name == align_layer:
+                        layer_idx = i
+                        break
+        if layer_idx is None:
+            return align_offset_val
+        # Backward-compatible: accept legacy "Bottom", "Center", "Top" values
+        layer_mode = getattr(obj, "AlignLayerMode", "Layer Left")
+        cum = sum(abs(l) for l in layers[:layer_idx])
+        # Handle both new and legacy mode names
+        if layer_mode in ("Layer Left", "Bottom"):
+            lateral = -cum
+        elif layer_mode in ("Layer Center", "Center"):
+            lateral = -(cum + abs(layers[layer_idx]) / 2.0)
+        else:  # Layer Right, Top, or any other legacy value
+            lateral = -(cum + abs(layers[layer_idx]))
+
+        # When Align is Center, the Center branch in getExtrusionData subtracts
+        # totalwidth/2 from layeroffset internally (off = layeroffset - totalwidth/2).
+        # Pre-compensate here so the reference layer face lands on the baseline
+        # after that subtraction, instead of being shifted an extra totalwidth/2 away.
+        if getattr(obj, "Align", "Left") == "Center":
+            total = sum(abs(l) for l in layers)
+            lateral += total / 2.0
+
+        return lateral + align_offset_val
 
     def dumps(self):
         dump = super().dumps()
@@ -432,19 +585,15 @@ class _Wall(ArchComponent.Component):
             self.ArchSkPropSetListPrev = state[1]
 
     def onDocumentRestored(self, obj):
-        """Method run when the document is restored. Re-adds the Arch component, and Arch wall properties."""
+        """Method run when the document is restored."""
 
         import DraftGeomUtils
         from draftutils.messages import _log
 
         ArchComponent.Component.onDocumentRestored(self, obj)
         self.setProperties(obj)
+        self._update_align_layer_enum(obj)
 
-        # In V1.0 the handling of wall normals has changed. As a result existing
-        # walls with their Normal set to [0, 0, 0], based on wires or faces with
-        # a shape normal pointing towards -Z, would be extruded in that direction
-        # instead of towards +Z as before. To avoid this their Normal property is
-        # changed to [0, 0, 1].
         if (
             FreeCAD.ActiveDocument.getProgramVersion() < "0.22"
             and obj.Normal == Vector(0, 0, 0)
@@ -467,7 +616,7 @@ class _Wall(ArchComponent.Component):
             and obj.ArchSketchData
             and Draft.getType(obj.Base) == "ArchSketch"
         ):
-            if hasattr(obj, "Width"):  # TODO need test?
+            if hasattr(obj, "Width"):
                 obj.setEditorMode("Width", ["ReadOnly"])
             if hasattr(obj, "Align"):
                 obj.setEditorMode("Align", ["ReadOnly"])
@@ -483,6 +632,12 @@ class _Wall(ArchComponent.Component):
                 obj.setEditorMode("ArchSketchEdges", ["ReadOnly"])
             if hasattr(obj, "ArchSketchPropertySet"):
                 obj.setEditorMode("ArchSketchPropertySet", 0)
+            if hasattr(obj, "AlignLayer"):
+                obj.setEditorMode("AlignLayer", ["ReadOnly"])
+            if hasattr(obj, "AlignLayerMode"):
+                obj.setEditorMode("AlignLayerMode", ["ReadOnly"])
+            if hasattr(obj, "AlignOffset"):
+                obj.setEditorMode("AlignOffset", ["ReadOnly"])
         else:
             if hasattr(obj, "Width"):
                 obj.setEditorMode("Width", 0)
@@ -500,6 +655,14 @@ class _Wall(ArchComponent.Component):
                 obj.setEditorMode("ArchSketchEdges", 0)
             if hasattr(obj, "ArchSketchPropertySet"):
                 obj.setEditorMode("ArchSketchPropertySet", ["ReadOnly"])
+            if hasattr(obj, "AlignLayer"):
+                obj.setEditorMode("AlignLayer", 0)
+            if hasattr(obj, "AlignOffset"):
+                obj.setEditorMode("AlignOffset", 0)
+            if hasattr(obj, "AlignLayerMode") and hasattr(obj, "AlignLayer"):
+                align_layer = getattr(obj, "AlignLayer", "None (use Align)")
+                layer_active = bool(align_layer and align_layer != "None (use Align)")
+                obj.setEditorMode("AlignLayerMode", 0 if layer_active else 2)
 
     def execute(self, obj):
         """Method run when the object is recomputed.
@@ -558,6 +721,7 @@ class _Wall(ArchComponent.Component):
                 # else:  # Seems no need ...
                 # obj.PropertySet = 'Default'
 
+        self._update_align_layer_enum(obj)
         extdata = self.getExtrusionData(obj)
         if extdata:
             base_faces = extdata[0]
@@ -695,20 +859,7 @@ class _Wall(ArchComponent.Component):
         ArchComponent.Component.onBeforeChange(self, obj, prop)
 
     def onChanged(self, obj, prop):
-        """Method called when the object has a property changed.
-
-        If length has changed, extend the length of the Base object, if the
-        Base object only has a single edge to extend.
-
-        Also hide subobjects.
-
-        Also call ArchComponent.Component.onChanged().
-
-        Parameters
-        ----------
-        prop: string
-            The name of the property that has changed.
-        """
+        """Method called when the object has a property changed."""
 
         if prop == "Length":
             if (
@@ -749,11 +900,24 @@ class _Wall(ArchComponent.Component):
                                         + "\n"
                                     )
 
+        if prop in ["Material", "AlignLayer"]:
+            self._update_align_layer_enum(obj)
+
+        # NOTE: The following block has been removed to prevent recursive recompute loops.
+        # FreeCAD automatically schedules a recompute when properties change in the GUI.
+        # Manual recompute() calls inside onChanged are unnecessary and cause infinite loops.
+        #
+        # if prop in ["AlignLayer", "AlignLayerMode", "AlignOffset"]:
+        #     obj.touch()
+        #     if FreeCAD.GuiUp:
+        #         FreeCAD.ActiveDocument.recompute()
+
         if prop == "ArchSketchPropertySet" and Draft.getType(obj.Base) == "ArchSketch":
             baseProxy = obj.Base.Proxy
             if hasattr(baseProxy, "getPropertySet"):
                 uuid = baseProxy.getPropertySet(obj, propSetName=obj.ArchSketchPropertySet)
                 self.ArchSkPropSetPickedUuid = uuid
+
         if (
             hasattr(obj, "ArchSketchData")
             and obj.ArchSketchData
@@ -775,6 +939,12 @@ class _Wall(ArchComponent.Component):
                 obj.setEditorMode("ArchSketchEdges", ["ReadOnly"])
             if hasattr(obj, "ArchSketchPropertySet"):
                 obj.setEditorMode("ArchSketchPropertySet", 0)
+            if hasattr(obj, "AlignLayer"):
+                obj.setEditorMode("AlignLayer", ["ReadOnly"])
+            if hasattr(obj, "AlignLayerMode"):
+                obj.setEditorMode("AlignLayerMode", ["ReadOnly"])
+            if hasattr(obj, "AlignOffset"):
+                obj.setEditorMode("AlignOffset", ["ReadOnly"])
         else:
             if hasattr(obj, "Width"):
                 if hasattr(self, "multimaterialsWidth") and self.multimaterialsWidth:
@@ -795,6 +965,14 @@ class _Wall(ArchComponent.Component):
                 obj.setEditorMode("ArchSketchEdges", 0)
             if hasattr(obj, "ArchSketchPropertySet"):
                 obj.setEditorMode("ArchSketchPropertySet", ["ReadOnly"])
+            if hasattr(obj, "AlignLayer"):
+                obj.setEditorMode("AlignLayer", 0)
+            if hasattr(obj, "AlignOffset"):
+                obj.setEditorMode("AlignOffset", 0)
+            if hasattr(obj, "AlignLayerMode") and hasattr(obj, "AlignLayer"):
+                align_layer = getattr(obj, "AlignLayer", "None (use Align)")
+                layer_active = bool(align_layer and align_layer != "None (use Align)")
+                obj.setEditorMode("AlignLayerMode", 0 if layer_active else 2)
 
         self.hideSubobjects(obj, prop)
         ArchComponent.Component.onChanged(self, obj, prop)
@@ -1172,7 +1350,10 @@ class _Wall(ArchComponent.Component):
                             self.layersNum = len(layers)
                         else:
                             self.layersNum = 0
-                        layeroffset = 0
+                        if layers:
+                            layeroffset = self._compute_lateral_offset(obj, layers)
+                        else:
+                            layeroffset = 0
                         baseface = None
                         self.connectEdges = []
                         for i, wire in enumerate(self.basewires):
@@ -1592,27 +1773,6 @@ class _Wall(ArchComponent.Component):
             else:
                 return None
         return width, lwidths
-
-    def get_layers(self, obj):
-        """Returns a list of layers"""
-        layers = []
-        width = self.get_width(obj, widths=False)
-        if hasattr(obj, "Material"):
-            if obj.Material:
-                if hasattr(obj.Material, "Materials"):
-                    thicknesses = [abs(t) for t in obj.Material.Thicknesses]
-                    restwidth = width - sum(thicknesses)
-                    varwidth = 0
-                    if restwidth > 0:
-                        varwidth = [t for t in thicknesses if t == 0]
-                        if varwidth:
-                            varwidth = restwidth / len(varwidth)
-                    for t in obj.Material.Thicknesses:
-                        if t:
-                            layers.append(t)
-                        elif varwidth:
-                            layers.append(varwidth)
-        return layers
 
     def _make_blocks(self, obj, base_face, extv):
         """Cut a wall's base face into block-sized pieces and stack them.
