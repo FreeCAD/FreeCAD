@@ -1787,12 +1787,13 @@ class _Wall(ArchComponent.Component):
         totalwidth = sum([abs(layer) for layer in layers])
 
         # The offset acts as a cursor, tracking the current position along the Y-axis.
-        offset = 0
         if align == "Center":
             offset = -totalwidth / 2
         elif align == "Left":
             # Per convention, 'Left' is on the geometric right (-Y direction).
-            offset = -totalwidth
+            offset = -totalwidth - obj.Offset.Value
+        else:
+            offset = obj.Offset.Value
 
         # Loop through all layers and create a face for each.
         for layer in layers:
