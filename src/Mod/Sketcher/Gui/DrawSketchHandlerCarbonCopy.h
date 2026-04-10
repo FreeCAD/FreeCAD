@@ -25,14 +25,12 @@
 #pragma once
 
 #include <QApplication>
-#include <QDockWidget>
 
 #include <Gui/Notifications.h>
 #include <Gui/Selection/SelectionFilter.h>
 #include <Gui/Command.h>
 #include <Gui/CommandT.h>
 #include <Gui/MDIView.h>
-#include <Gui/Tree.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 
@@ -249,14 +247,10 @@ private:
         Gui::Selection().addSelectionGate(new CarbonCopySelection(sketchgui->getObject()));
 
         treeWidgetFilter = std::make_unique<CarbonCopyTreeWidgetFilter>();
-        Gui::MainWindow* mw = Gui::getMainWindow();
-        if (mw) {
-            auto dock = mw->findChild<QDockWidget*>("Model");
-            tree = dock ? dock->findChild<Gui::TreeWidget*>() : nullptr;
-            if (tree && treeWidgetFilter) {
-                tree->installEventFilter(treeWidgetFilter.get());
-                tree->viewport()->installEventFilter(treeWidgetFilter.get());
-            }
+        tree = SketcherGui::findModelTreeWidget();
+        if (tree && treeWidgetFilter) {
+            tree->installEventFilter(treeWidgetFilter.get());
+            tree->viewport()->installEventFilter(treeWidgetFilter.get());
         }
     }
 

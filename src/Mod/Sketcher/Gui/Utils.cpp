@@ -27,6 +27,7 @@
 #include <QRegularExpression>
 #include <QDir>
 #include <QDirIterator>
+#include <QDockWidget>
 #include <QFileInfo>
 
 #include <App/Application.h>
@@ -35,6 +36,7 @@
 #include <Base/UnitsApi.h>
 #include <Gui/CommandT.h>
 #include <Gui/Document.h>
+#include <Gui/MainWindow.h>
 #include <Gui/Selection/Selection.h>
 #include <Mod/Sketcher/App/GeometryFacade.h>
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -1056,3 +1058,22 @@ QMap<QString, QString> SketcherGui::findAvailableFontFiles()
     }
     return fontMap;
 }
+
+Gui::TreeWidget* SketcherGui::findModelTreeWidget()
+{
+    Gui::MainWindow* mw = Gui::getMainWindow();
+    if (!mw)
+        return nullptr;
+
+    auto dock = mw->findChild<QDockWidget*>("Model");
+    if (!dock)
+        return nullptr;
+
+    return dock->findChild<Gui::TreeWidget*>();
+}
+
+bool SketcherGui::hasModelTreeWidget()
+{
+    return SketcherGui::findModelTreeWidget() != nullptr;
+}
+

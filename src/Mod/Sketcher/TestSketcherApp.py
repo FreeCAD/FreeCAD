@@ -30,6 +30,7 @@ from SketcherTests.TestSketchExpression import TestSketchExpression
 from SketcherTests.TestSketchValidateCoincidents import TestSketchValidateCoincidents
 from SketcherTests.TestSketchCarbonCopyReverseMapping import TestSketchCarbonCopyReverseMapping
 from SketcherTests.TestSketchInternalFaces import TestSketchInternalFaces
+from SketcherTests.TestSketcherGuiModelTreeWidget import TestSketcherGuiModelTreeWidget
 
 # GUI-dependent tests - only import if GUI is available
 try:
