@@ -124,6 +124,27 @@ EditableDatumLabel::EditableDatumLabel(
     // NOLINTEND
 
     static_cast<SoSeparator*>(viewer->getSceneGraph())->addChild(root);  // NOLINT
+
+    if (view) {
+        connect(view, &View3DInventorViewer::cameraChanged, this, [this]() {
+            if (this->label) {
+                // 1. Re-attach the sensor to the NEW camera object
+                if (this->cameraSensor && this->viewer && this->viewer->getCamera()) {
+                    this->cameraSensor->detach();
+                    this->cameraSensor->attach(this->viewer->getCamera());
+                }
+
+                if (this->autoDistance) {
+                    this->setLabelRecommendedDistance();
+                }
+                this->label->touch();
+
+                if (this->isInEdit()) {
+                    this->positionSpinbox();
+                }
+            }
+        });
+    }
 }
 
 EditableDatumLabel::~EditableDatumLabel()
@@ -212,6 +233,7 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
 
     spinBox->show();
     updateGeometry();
+    positionSpinbox();
     setFocusToSpinbox();
 
     const auto validateAndFinish = [this]() {

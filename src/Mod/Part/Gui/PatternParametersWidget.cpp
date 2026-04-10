@@ -613,17 +613,16 @@ void PatternParametersWidget::updateSpacingLabels(
         return;
     }
 
-    // Labels are only shown in Spacing mode.
-    if (static_cast<PatternMode>(m_modeProp->getValue()) != PatternMode::Spacing
-        || m_occurrencesProp->getValue() <= 1) {
+    if (m_occurrencesProp->getValue() <= 1) {
         return;
     }
 
+    auto mode = static_cast<PatternMode>(m_modeProp->getValue());
+
     try {
-        size_t requiredLabels = m_occurrencesProp->getValue() - 1;
+        size_t requiredLabels = (mode == PatternMode::Extent) ? 1 : m_occurrencesProp->getValue() - 1;
         Base::Rotation rotation(Base::Vector3d(1.0, 0.0, 0.0), direction);
 
-        // Adjust the number of label objects.
         if (spacingLabels.size() > requiredLabels) {
             spacingLabels.resize(requiredLabels);
         }
@@ -647,44 +646,58 @@ void PatternParametersWidget::updateSpacingLabels(
             spacingLabels.push_back(std::move(label));
         }
 
-        // Get the spacing values from the bound properties.
-        const auto& spacings = m_spacingsOverrideProp->getValues();
-        double globalOffset = m_spacingProp->getValue();
-
-        // Calculate positions iteratively.
-        Base::Vector3d currentPoint = Base::Vector3d();
-        for (size_t i = 0; i < requiredLabels; ++i) {
-            auto& label = spacingLabels[i];
+        if (mode == PatternMode::Extent) {
+            auto& label = spacingLabels[0];
             if (!label->isActive()) {
                 label->activate();
             }
 
-            // Define the start point for this label's line segment.
-            Base::Vector3d p1 = currentPoint;
+            double totalLength = m_extentProp->getValue();
 
-            // Calculate the end point for this segment.
-            double spacingOverride = spacings.at(i);
-            double currentSpacing = (spacingOverride == -1.0) ? globalOffset : spacingOverride;
-
-            Base::Vector3d p2 = p1 + Base::Vector3d(currentSpacing, 0., 0.);
+            // LOCAL Coordinates! Start at origin, move along X.
+            Base::Vector3d p1(0.0, 0.0, 0.0);
+            Base::Vector3d p2(totalLength, 0.0, 0.0);
 
             label->setPoints(p1, p2);
 
-            Base::Quantity quantity(currentSpacing, Base::Unit::Length);
+            Base::Quantity quantity(totalLength, Base::Unit::Length);
             label->label->string = quantity.getUserString().c_str();
+            label->setActivatedColor();
+        }
+        else {
+            const auto& spacings = m_spacingsOverrideProp->getValues();
+            double globalOffset = m_spacingProp->getValue();
 
-            if (spacingOverride == -1.0) {
-                // Only set color if not currently being edited to avoid flicker.
-                if (!label->isInEdit()) {
-                    label->setDeactivatedColor();
+            // LOCAL Coordinates!
+            Base::Vector3d currentPoint(0.0, 0.0, 0.0);
+            for (size_t i = 0; i < requiredLabels; ++i) {
+                auto& label = spacingLabels[i];
+                if (!label->isActive()) {
+                    label->activate();
                 }
-            }
-            else {
-                label->setActivatedColor();
-            }
 
-            // The end of this segment is the start of the next one.
-            currentPoint = p2;
+                Base::Vector3d p1 = currentPoint;
+                double spacingOverride = spacings.at(i);
+                double currentSpacing = (spacingOverride == -1.0) ? globalOffset : spacingOverride;
+
+                Base::Vector3d p2 = p1 + Base::Vector3d(currentSpacing, 0.0, 0.0);
+
+                label->setPoints(p1, p2);
+
+                Base::Quantity quantity(currentSpacing, Base::Unit::Length);
+                label->label->string = quantity.getUserString().c_str();
+
+                if (spacingOverride == -1.0) {
+                    if (!label->isInEdit()) {
+                        label->setDeactivatedColor();
+                    }
+                }
+                else {
+                    label->setActivatedColor();
+                }
+
+                currentPoint = p2;
+            }
         }
     }
     catch (const Base::Exception& e) {
@@ -705,16 +718,15 @@ void PatternParametersWidget::updateSpacingLabels(
         return;
     }
 
-    if (static_cast<PatternMode>(m_modeProp->getValue()) != PatternMode::Spacing
-        || m_occurrencesProp->getValue() <= 1) {
+    if (m_occurrencesProp->getValue() <= 1) {
         return;
     }
 
-    try {
-        size_t requiredLabels = m_occurrencesProp->getValue() - 1;
+    auto mode = static_cast<PatternMode>(m_modeProp->getValue());
 
-        // Create a placement for the labels. The origin is the rotation center,
-        // and the Z-axis is aligned with the rotation axis.
+    try {
+        size_t requiredLabels = (mode == PatternMode::Extent) ? 1 : m_occurrencesProp->getValue() - 1;
+
         Base::Rotation rotation(Base::Vector3d(0.0, 0.0, 1.0), axis);
         Base::Placement labelPlacement(center, rotation);
 
@@ -737,39 +749,58 @@ void PatternParametersWidget::updateSpacingLabels(
             spacingLabels.push_back(std::move(label));
         }
 
-        const auto& spacings = m_spacingsOverrideProp->getValues();
-        double globalOffset = m_spacingProp->getValue();
-        double cumulativeAngle = startAngle;
-
-        for (size_t i = 0; i < requiredLabels; ++i) {
-            auto& label = spacingLabels[i];
+        if (mode == PatternMode::Extent) {
+            auto& label = spacingLabels[0];
             if (!label->isActive()) {
                 label->activate();
             }
 
-            double spacingOverride = spacings.at(i);
-            // Spacing values for PolarPattern are in degrees, but label params need radians.
-            double currentAngle_deg = (spacingOverride == -1.0) ? globalOffset : spacingOverride;
-            double currentAngle_rad = Base::toRadians(currentAngle_deg);
+            double totalAngle_deg = m_extentProp->getValue();
+            double totalAngle_rad = Base::toRadians(totalAngle_deg);
 
             label->setPoints(center, Base::Vector3d());
             label->setLabelDistance(radius);
-            label->setLabelStartAngle(cumulativeAngle);
-            label->setLabelRange(currentAngle_rad);
+            label->setLabelStartAngle(startAngle);
+            label->setLabelRange(totalAngle_rad);
 
-            Base::Quantity quantity(currentAngle_deg, Base::Unit::Angle);
+            Base::Quantity quantity(totalAngle_deg, Base::Unit::Angle);
             label->label->string = quantity.getUserString().c_str();
+            label->setActivatedColor();
+        }
+        else {
+            const auto& spacings = m_spacingsOverrideProp->getValues();
+            double globalOffset = m_spacingProp->getValue();
+            double cumulativeAngle = startAngle;
 
-            if (spacingOverride == -1.0) {
-                if (!label->isInEdit()) {
-                    label->setDeactivatedColor();
+            for (size_t i = 0; i < requiredLabels; ++i) {
+                auto& label = spacingLabels[i];
+                if (!label->isActive()) {
+                    label->activate();
                 }
-            }
-            else {
-                label->setActivatedColor();
-            }
 
-            cumulativeAngle += currentAngle_rad;
+                double spacingOverride = spacings.at(i);
+                double currentAngle_deg = (spacingOverride == -1.0) ? globalOffset : spacingOverride;
+                double currentAngle_rad = Base::toRadians(currentAngle_deg);
+
+                label->setPoints(center, Base::Vector3d());
+                label->setLabelDistance(radius);
+                label->setLabelStartAngle(cumulativeAngle);
+                label->setLabelRange(currentAngle_rad);
+
+                Base::Quantity quantity(currentAngle_deg, Base::Unit::Angle);
+                label->label->string = quantity.getUserString().c_str();
+
+                if (spacingOverride == -1.0) {
+                    if (!label->isInEdit()) {
+                        label->setDeactivatedColor();
+                    }
+                }
+                else {
+                    label->setActivatedColor();
+                }
+
+                cumulativeAngle += currentAngle_rad;
+            }
         }
     }
     catch (const Base::Exception& e) {
@@ -780,57 +811,87 @@ void PatternParametersWidget::updateSpacingLabels(
 
 void PatternParametersWidget::onSpacingLabelClicked(Gui::EditableDatumLabel* label)
 {
-    if (!m_spacingsOverrideProp || !m_spacingProp) {
+    if (!m_extentProp || !m_spacingProp) {
         return;
     }
+
+    auto mode = static_cast<PatternMode>(m_modeProp->getValue());
 
     auto it = std::find_if(spacingLabels.begin(), spacingLabels.end(), [&](const auto& ptr) {
         return ptr.get() == label;
     });
     if (it == spacingLabels.end()) {
-        return;  // Clicked label not found.
+        return;
     }
     int index = std::distance(spacingLabels.begin(), it);
-
-    const auto& spacings = m_spacingsOverrideProp->getValues();
-    double currentValue = (spacings.at(index) == -1.0) ? m_spacingProp->getValue()
-                                                       : spacings.at(index);
 
     disconnect(label, &Gui::EditableDatumLabel::valueChanged, this, nullptr);
     disconnect(label, &Gui::EditableDatumLabel::focusLost, this, nullptr);
 
-    label->startEdit(currentValue);
+    if (mode == PatternMode::Extent) {
+        double currentValue = m_extentProp->getValue();
+        label->startEdit(currentValue);
 
-    connect(label, &Gui::EditableDatumLabel::valueChanged, this, [this, index, label](double newValue) {
-        if (!label->hasFinishedEditing) {
-            return;
-        }
+        Base::Unit unit = (type == PatternType::Linear) ? Base::Unit::Length : Base::Unit::Angle;
+        label->setSpinboxValue(currentValue, unit);
 
-        disconnect(label, &Gui::EditableDatumLabel::valueChanged, this, nullptr);
-        disconnect(label, &Gui::EditableDatumLabel::focusLost, this, nullptr);
+        connect(label, &Gui::EditableDatumLabel::valueChanged, this, [this, label](double newValue) {
+            if (!label->hasFinishedEditing) {
+                return;
+            }
 
+            disconnect(label, &Gui::EditableDatumLabel::valueChanged, this, nullptr);
+            disconnect(label, &Gui::EditableDatumLabel::focusLost, this, nullptr);
+
+            m_extentProp->setValue(newValue);
+            Q_EMIT parametersChanged();
+            label->stopEdit();
+        });
+    }
+    else {
         if (!m_spacingsOverrideProp) {
             return;
         }
 
-        std::vector<double> currentSpacings = m_spacingsOverrideProp->getValues();
-        if (static_cast<size_t>(index) < currentSpacings.size()) {
-            if (newValue == m_spacingProp->getValue()) {
-                newValue = -1;
+        const auto& spacings = m_spacingsOverrideProp->getValues();
+        double currentValue = (spacings.at(index) == -1.0) ? m_spacingProp->getValue()
+                                                           : spacings.at(index);
+
+        label->startEdit(currentValue);
+
+        Base::Unit unit = (type == PatternType::Linear) ? Base::Unit::Length : Base::Unit::Angle;
+        label->setSpinboxValue(currentValue, unit);
+
+        connect(label, &Gui::EditableDatumLabel::valueChanged, this, [this, index, label](double newValue) {
+            if (!label->hasFinishedEditing) {
+                return;
             }
-            currentSpacings[index] = newValue;
-            m_spacingsOverrideProp->setValues(currentSpacings);
 
-            Q_EMIT parametersChanged();
-        }
+            disconnect(label, &Gui::EditableDatumLabel::valueChanged, this, nullptr);
+            disconnect(label, &Gui::EditableDatumLabel::focusLost, this, nullptr);
 
-        label->stopEdit();
-    });
+            if (!m_spacingsOverrideProp) {
+                return;
+            }
+
+            std::vector<double> currentSpacings = m_spacingsOverrideProp->getValues();
+            if (static_cast<size_t>(index) < currentSpacings.size()) {
+                if (newValue == m_spacingProp->getValue()) {
+                    newValue = -1;
+                }
+                currentSpacings[index] = newValue;
+                m_spacingsOverrideProp->setValues(currentSpacings);
+
+                Q_EMIT parametersChanged();
+            }
+
+            label->stopEdit();
+        });
+    }
 
     connect(label, &Gui::EditableDatumLabel::focusLost, this, [this, label]() {
         disconnect(label, &Gui::EditableDatumLabel::valueChanged, this, nullptr);
         disconnect(label, &Gui::EditableDatumLabel::focusLost, this, nullptr);
-
         label->stopEdit(false);
     });
 }
