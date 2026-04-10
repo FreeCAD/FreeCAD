@@ -463,8 +463,17 @@ void QuantitySpinBox::clampCursorBeforeUnit()
         return;
     }
     QLineEdit* edit = lineEdit();
+    QString text = edit->displayText();
     int cursor = edit->cursorPosition();
-    const int maxCursor = qMax(0, edit->displayText().size() - 1 /*space*/ - d->unitStr.size());
+    int suffixLength = d->unitStr.size();
+    if (suffixLength > 0 && text.endsWith(d->unitStr)) {
+        // Check if there is a space before the unit
+        int spaceIndex = text.size() - suffixLength - 1;
+        if (spaceIndex >= 0 && text.at(spaceIndex) == QLatin1Char(' ')) {
+            suffixLength += 1;
+        }
+    }
+    const int maxCursor = qMax(0, text.size() - suffixLength);
 
     if (cursor > maxCursor) {
         edit->setCursorPosition(maxCursor);
