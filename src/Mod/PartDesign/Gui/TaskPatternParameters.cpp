@@ -526,7 +526,9 @@ Base::Vector3d TaskPatternParameters::getStartPoint() const
             if (auto* addSubFeature = dynamic_cast<PartDesign::FeatureAddSub*>(obj)) {
                 const Part::TopoShape& deltaShape = addSubFeature->AddSubShape.getShape();
                 if (!deltaShape.getShape().IsNull()) {
-                    builder.Add(compoundShape, deltaShape.getShape());
+                    TopoDS_Shape shape = deltaShape.getShape();
+                    shape.Move(addSubFeature->getLocation());
+                    builder.Add(compoundShape, shape);
                 }
             }
         }
