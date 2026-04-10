@@ -545,6 +545,7 @@ def retranslateUi():
       <td align='center'><img src=':/icons/Navigation_Mouse_Scroll.svg'></td>
       <td align='center'><img src=':/icons/Navigation_Mouse_ShiftMiddle.svg'></td>
       <td align='center'><img src=':/icons/Navigation_Mouse_Middle.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_AltMiddle.svg'></td>
       <td align='center'><img src=':/icons/Navigation_Mouse_CtrlMiddle.svg'></td>
      </tr>
     </table>

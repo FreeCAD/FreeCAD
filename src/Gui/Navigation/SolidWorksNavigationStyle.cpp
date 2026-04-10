@@ -50,7 +50,7 @@ const char* SolidWorksNavigationStyle::mouseButtons(ViewerMode mode)
         case NavigationStyle::PANNING:
             return QT_TR_NOOP("Press Ctrl and middle mouse button");
         case NavigationStyle::DRAGGING:
-            return QT_TR_NOOP("Press middle mouse button");
+            return QT_TR_NOOP("Press middle mouse button to orbit or Alt+MMB to roll");
         case NavigationStyle::ZOOMING:
             return QT_TR_NOOP("Scroll mouse wheel");
         default:
@@ -188,6 +188,9 @@ SbBool SolidWorksNavigationStyle::processSoEvent(const SoEvent* const ev)
                     }
                 }
                 this->button3down = press;
+                if (!press) {
+                    this->rollingWithAlt = false;
+                }
                 break;
             default:
                 break;
@@ -215,7 +218,7 @@ SbBool SolidWorksNavigationStyle::processSoEvent(const SoEvent* const ev)
             processed = true;
         }
         else if (this->currentmode == NavigationStyle::DRAGGING) {
-            if (this->altdown && this->button3down) {
+            if (this->rollingWithAlt) {
                 const SbVec2f center(0.5f, 0.5f);
                 SbVec2f mid = 0.5f * (posn + prevnormalized);
                 SbVec2f r = mid - center;
@@ -290,9 +293,16 @@ SbBool SolidWorksNavigationStyle::processSoEvent(const SoEvent* const ev)
             if (newmode != NavigationStyle::DRAGGING) {
                 saveCursorPosition(ev);
             }
+            this->rollingWithAlt = true;
             newmode = NavigationStyle::DRAGGING;
             break;
         case BUTTON3DOWN:
+            if (this->rollingWithAlt) {
+                this->rollingWithAlt = false;
+                newmode = NavigationStyle::IDLE;
+                processed = true;
+                break;
+            }
             if (newmode != NavigationStyle::DRAGGING) {
                 saveCursorPosition(ev);
             }
