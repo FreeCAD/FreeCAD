@@ -27,6 +27,7 @@
 #include <QToolButton>
 #include <QLabel>
 #include <QFormLayout>
+#include <QMenu>
 
 #include "ui_PatternParametersWidget.h"
 #include "PatternParametersWidget.h"
