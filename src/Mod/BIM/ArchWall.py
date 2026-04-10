@@ -511,9 +511,7 @@ class _Wall(ArchComponent.Component):
         align_offset_prop = getattr(obj, "AlignOffset", None)
         if align_offset_prop is not None:
             align_offset_val = (
-                align_offset_prop.Value
-                if hasattr(align_offset_prop, "Value")
-                else 0.0
+                align_offset_prop.Value if hasattr(align_offset_prop, "Value") else 0.0
             )
         align_layer = getattr(obj, "AlignLayer", "None (use Align)")
         if not align_layer or align_layer == "None (use Align)":
