@@ -1450,15 +1450,14 @@ def replace_use_with_reference(file_path):
     current_encoding = ""
     try:
         with pyopen(file_path, "r", encoding="UTF-8") as f:
-            top_line = f.readline()
+            f.readline()
             current_encoding = "UTF-8"
     except UnicodeError:
         with pyopen(file_path, "r", encoding="UTF-16") as f:
-            top_line = f.readline()
+            f.readline()
             current_encoding = "UTF-16"
-    encoding_text = translate("ImportSVG", "is encoded using")
     FreeCAD.Console.PrintLog(
-        "ImportSVG - '" + file_path + "' " + encoding_text + " " + current_encoding + "\n"
+        f"ImportSVG - '{filename}' is encoded using {current_encoding}\n"
     )
 
     # open file and read
