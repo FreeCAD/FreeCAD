@@ -3497,6 +3497,8 @@ void View3DInventorViewer::setCameraType(SoType type)
     }
 
     lightRotation->rotation.connectFrom(&cam->orientation);
+
+    Q_EMIT cameraChanged();
 }
 
 void View3DInventorViewer::moveCameraTo(const SbRotation& orientation, const SbVec3f& position, int duration)
