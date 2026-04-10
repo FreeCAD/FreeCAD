@@ -21,6 +21,9 @@
  ***************************************************************************/
 
 
+#ifndef NDEBUG
+# include <cassert>
+#endif
 #include <memory>
 
 #include <FCConfig.h>
@@ -364,6 +367,17 @@ struct FilterSpec
         return getDisplayName(showPatterns) + QStringLiteral(" (") + patterns.join(QLatin1Char(' '))
             + QLatin1Char(')');
     }
+
+    /// @returns Whether the filter is a full wildcard (i.e. accepts "*" or "*.*")
+    bool isWildcard() const
+    {
+        for (const auto& pat : patterns) {
+            if (pat != "*" || pat != "*.*") {
+                return false;
+            }
+        }
+        return true;
+    }
 };
 
 class FilterSpecList: public QList<FilterSpec>
@@ -556,6 +570,144 @@ static QStringList nativeFileDialog(
 }
 #endif
 
+static void normalizeSavePath(QString& path, const FilterSpec& selectedFilterSpec)
+{
+    // Wildcards have no rule by definition.
+    if (selectedFilterSpec.isWildcard()) {
+        return;
+    }
+
+    // As it stands, much of FreeCAD relies on an extension always being present, so
+    // enforce extension according to selected filter if none is specified.
+    // Ideally code should be migrated to discriminating on the returned selected
+    // filter instead.
+
+    // Platform dialogs can have a variety of behaviors:
+    // * Qt/KDE changes the filter to a matching one if applicable when the user
+    //   types an extension in the file name explicitly, and some of the dialogs
+    //   feature a checkbox to auto-append an extension if absent.
+    // * Windows will never change the selected filter on its own.
+    //   1. Modern dialogs (IFileDialog and Windows::Storage::Pickers) keep typed
+    //      filenames intact *if* they have an extension 1-3 characters long, known
+    //      to HKEY_CLASSES_ROOT, or present in the filters.
+    //      Otherwise, appends the first extension of the selected filter.
+    //   2. Legacy GetSaveFileName() always keeps typed filenames intact.
+    //      However, we use it and want the modern behavior instead.
+
+    // This function uniformizes some of that.
+
+    // Discard everything up to and including directory separator.
+    const auto typedName = QStringView(path).mid(path.lastIndexOf('/') + 1);
+
+    // Check for any full-name filters first.
+    for (const auto& pat : selectedFilterSpec.patterns) {
+        if (!pat.startsWith("*.") && typedName == pat) {
+            return;
+        }
+    }
+
+    const auto lastDot = typedName.lastIndexOf('.');
+    // typedExt includes the last dot and everything after it,
+    // as a stray dot ("abc.") may have been typed. Won't fail
+    // even in the improbable case of only "." being passed.
+    const auto typedExt = lastDot == -1 ? QStringView() : typedName.mid(lastDot);
+
+    if (typedExt.isEmpty()) {
+        // No extension, move directly to append.
+    }
+    else if (typedExt.size() == 1) {
+        // Remove stray dot then append.
+        path.chop(1);
+    }
+    else /* size() > 1 */ {
+        for (const auto& pat : selectedFilterSpec.patterns) {
+            if (pat.startsWith("*.") && typedExt == QStringView(pat).mid(1)) {
+                // Valid extension found for the selected filter.
+                return;
+            }
+        }
+    }
+
+    // Append extension from first *.xyz-style pattern.
+    for (const auto& pat : selectedFilterSpec.patterns) {
+        if (pat.startsWith("*.")) {
+            path.append(QStringView(pat).mid(1));
+            break;
+        }
+    }
+}
+
+#ifndef NDEBUG
+static void testNormalizeSavePath()
+{
+    const auto spec = FilterSpec::fromFilterString(
+        QStringLiteral("Whatever files (what ev.er *.abc *.xyz)")
+    );
+    const auto nspEq = [spec](QString path, const QString& desired) -> bool {
+        normalizeSavePath(path, spec);
+        const auto firstPassResult = path;
+        normalizeSavePath(path, spec);
+        const bool idempotent = firstPassResult == path;
+        return idempotent && path == desired;
+    };
+    for (const auto& root :
+         {QStringLiteral(""),
+          QStringLiteral("/root/.trash/"),
+          QStringLiteral("C:/$Recycle.bin/"),
+          QStringLiteral("//net.worked:123/"),
+          QStringLiteral("//?/o:/ntpath/"),
+          QStringLiteral("/\x3F?/z:/evil/")}) {
+        assert(nspEq(root + "", root + ".abc"));
+        assert(nspEq(root + "hello", root + "hello.abc"));
+
+        // Dots handling
+        assert(nspEq(root + "dotty.", root + "dotty.abc"));
+        assert(nspEq(root + "dotty2..", root + "dotty2..abc"));
+        assert(nspEq(root + "dotty3...", root + "dotty3...abc"));
+        assert(nspEq(root + ".hidden", root + ".hidden.abc"));
+        assert(nspEq(root + ".1dotty1.", root + ".1dotty1.abc"));
+        assert(nspEq(root + ".1dotty2..", root + ".1dotty2..abc"));
+        assert(nspEq(root + "..2dotty2..", root + "..2dotty2..abc"));
+
+        // Extension not in filter
+        assert(nspEq(root + "ascii.txt", root + "ascii.txt.abc"));
+        assert(nspEq(root + "asciidot.txt.", root + "asciidot.txt.abc"));
+
+        // Empty stems but valid extensions
+        assert(nspEq(root + ".abc", root + ".abc"));
+        assert(nspEq(root + ".xyz", root + ".xyz"));
+
+        // Regular cases with extension
+        assert(nspEq(root + "ext.abc", root + "ext.abc"));
+        assert(nspEq(root + "ext.parts.abc", root + "ext.parts.abc"));
+        assert(nspEq(root + ".hidden.ext.abc", root + ".hidden.ext.abc"));
+        assert(nspEq(root + "ext.xyz", root + "ext.xyz"));
+        assert(nspEq(root + "ext.parts.xyz", root + "ext.parts.xyz"));
+        assert(nspEq(root + ".hidden.ext.xyz", root + ".hidden.ext.xyz"));
+
+        // Non-wildcard pattern without ext
+        assert(nspEq(root + "what", root + "what"));
+        assert(nspEq(root + "what.", root + "what.abc"));
+        assert(nspEq(root + ".what", root + ".what.abc"));
+        assert(nspEq(root + ".what.", root + ".what.abc"));
+
+        // Non-wildcard pattern with ext
+        assert(nspEq(root + "ev.er", root + "ev.er"));
+        assert(nspEq(root + "ev.er.", root + "ev.er.abc"));
+        assert(nspEq(root + ".ev.er", root + ".ev.er.abc"));
+        assert(nspEq(root + ".ev.er.", root + ".ev.er.abc"));
+        // Check for mixed up extension matching
+        assert(nspEq(root + "notev.er", root + "notev.er.abc"));
+
+        // The following two should never be encountered in the wild as they refer to
+        // the current or upper directories, but still should be handled gracefully as
+        // if they were just user input tacked on after some directory path.
+        assert(nspEq(root + ".", root + ".abc"));
+        assert(nspEq(root + "..", root + "..abc"));
+    }
+}
+#endif  // NDEBUG
+
 /**
  * This is a convenience static function that will return a file name selected by the user. The file
  * does not have to exist.
@@ -686,16 +838,22 @@ QString FileDialog::getSaveFileName(
         if (selectedFilter && selectedFilterIndex >= 0) {
             *selectedFilter = filters[selectedFilterIndex];
         }
-        file = QDir::fromNativeSeparators(file);
     }
 
-    if (!file.isEmpty()) {
-        setWorkingDirectory(file);
-        return file;
-    }
-    else {
+    if (file.isEmpty()) {
         return {};
     }
+
+    // All directory separators become "/" from here on out.
+    file = QDir::fromNativeSeparators(file);
+
+#ifndef NDEBUG
+    testNormalizeSavePath();
+#endif  // NDEBUG
+    normalizeSavePath(file, filterSpecList[selectedFilterIndex]);
+
+    setWorkingDirectory(file);
+    return file;
 }
 
 /**
