@@ -643,6 +643,16 @@ void PatternParametersWidget::updateSpacingLabels(
                 this,
                 &PatternParametersWidget::onSpacingLabelClicked
             );
+
+            auto mode = static_cast<PatternMode>(m_modeProp->getValue());
+            if (mode == PatternMode::Spacing) {
+                connect(
+                    label.get(),
+                    &Gui::EditableDatumLabel::rightClicked,
+                    this,
+                    &PatternParametersWidget::onSpacingLabelRightClicked
+                );
+            }
             spacingLabels.push_back(std::move(label));
         }
 
@@ -894,6 +904,43 @@ void PatternParametersWidget::onSpacingLabelClicked(Gui::EditableDatumLabel* lab
         disconnect(label, &Gui::EditableDatumLabel::focusLost, this, nullptr);
         label->stopEdit(false);
     });
+}
+
+void PatternParametersWidget::onSpacingLabelRightClicked(
+    Gui::EditableDatumLabel* label,
+    const QPoint& globalPos
+)
+{
+    auto it = std::find_if(spacingLabels.begin(), spacingLabels.end(), [&](const auto& ptr) {
+        return ptr.get() == label;
+    });
+    if (it == spacingLabels.end()) {
+        return;
+    }
+    int index = std::distance(spacingLabels.begin(), it);
+
+    // Only show "Reset" if there is actually an override set
+    const auto& spacings = m_spacingsOverrideProp->getValues();
+    if (index < (int)spacings.size() && spacings.at(index) != -1.0) {
+
+        // Remove the general context menu.
+        if (QWidget* activePopup = qApp->activePopupWidget()) {
+            if (activePopup->isWidgetType() && activePopup->inherits("QMenu")) {
+                activePopup->close();
+            }
+        }
+
+        QMenu menu;
+        QAction* resetAction = menu.addAction(tr("Reset spacing"));
+        QAction* selectedAction = menu.exec(globalPos);
+
+        if (selectedAction == resetAction) {
+            std::vector<double> currentSpacings = spacings;
+            currentSpacings[index] = -1.0;  // Reset to default
+            m_spacingsOverrideProp->setValues(currentSpacings);
+            Q_EMIT parametersChanged();
+        }
+    }
 }
 
 // #include "moc_PatternParametersWidget.cpp"

@@ -208,6 +208,7 @@ private Q_SLOTS:
 
     // Slots for on-view label interaction
     void onSpacingLabelClicked(Gui::EditableDatumLabel* label);
+    void onSpacingLabelRightClicked(Gui::EditableDatumLabel* label, const QPoint& globalPos);
 
 private:
     // Initialization and setup

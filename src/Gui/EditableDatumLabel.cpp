@@ -532,25 +532,28 @@ void EditableDatumLabel::eventCallbackF(void* userData, SoEventCallback* cb)
 
 void EditableDatumLabel::handleEvent(SoEventCallback* cb)
 {
-    // The callback is registered only for SoMouseButtonEvent, so we can rely on the type.
-    const auto* mouseEvent = static_cast<const SoMouseButtonEvent*>(cb->getEvent());
+    const auto* event = cb->getEvent();
+    if (!event->isOfType(SoMouseButtonEvent::getClassTypeId())) {
+        return;
+    }
 
-    if (mouseEvent->getButton() == SoMouseButtonEvent::BUTTON1
-        && mouseEvent->getState() == SoMouseButtonEvent::DOWN) {
-        const SoPickedPoint* pickedPoint = cb->getPickedPoint();
+    const auto* mouseEvent = static_cast<const SoMouseButtonEvent*>(event);
 
-        if (!pickedPoint) {
-            return;
-        }
+    const SoPickedPoint* pickedPoint = cb->getPickedPoint();
+    if (!pickedPoint || !pickedPoint->getPath()->containsNode(this->annotation)) {
+        return;
+    }
 
-        const SoPath* path = pickedPoint->getPath();
-        if (!path) {
-            return;
-        }
-
-        if (path->containsNode(this->annotation)) {
+    if (mouseEvent->getButton() == SoMouseButtonEvent::BUTTON1) {
+        if (mouseEvent->getState() == SoMouseButtonEvent::UP) {
             cb->setHandled();
             Q_EMIT clicked(this);
+        }
+    }
+    else if (mouseEvent->getButton() == SoMouseButtonEvent::BUTTON2) {
+        cb->setHandled();
+        if (mouseEvent->getState() == SoMouseButtonEvent::UP) {
+            Q_EMIT rightClicked(this, QCursor::pos());
         }
     }
 }

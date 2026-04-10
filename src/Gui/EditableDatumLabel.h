@@ -116,6 +116,7 @@ Q_SIGNALS:
     void finishEditingOnAllOVPs();  ///< Emitted when Ctrl+Enter is pressed to finish editing on all
                                     ///< visible OVPs
     void clicked(EditableDatumLabel* label);  ///< Emitted when the label is clicked in the 3D view.
+    void rightClicked(EditableDatumLabel* label, const QPoint& globalPos);
     void editFinished(double value);  ///< Emitted when editing is confirmed (e.g., Enter pressed).
     void focusLost();                 ///< Emitted when the spinbox looses focus.
 
