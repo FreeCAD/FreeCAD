@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
@@ -19,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATGUI_MATERIALTREEWIDGET_H
-#define MATGUI_MATERIALTREEWIDGET_H
+#pragma once
 
 #include <memory>
 
@@ -286,5 +287,3 @@ protected:
 };
 
 }  // namespace MatGui
-
-#endif  // MATGUI_MATERIALTREEWIDGET_H

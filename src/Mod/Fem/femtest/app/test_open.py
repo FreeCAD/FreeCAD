@@ -29,12 +29,12 @@ import platform
 import tempfile
 import unittest
 from os.path import join
+from os import remove
 
 import FreeCAD
 
 from . import support_utils as testtools
 from .support_utils import fcc_print
-
 
 """
 FIXME TODO HACK
@@ -108,8 +108,13 @@ class TestObjectOpen(unittest.TestCase):
 
         # standard name changed
         from femsolver.elmer.equations.flux import Proxy
+        from femobjects.constraint_electromagnetic import ConstraintElectromagnetic
 
+        remove(file_path)
         self.assertEqual(Proxy, self.document.Flux.Proxy.__class__)
+        self.assertEqual(
+            ConstraintElectromagnetic, self.document.ConstraintElectromagnetic.Proxy.__class__
+        )
 
     # ********************************************************************************************
     def test_femobjects_open_de9b3fb438(self):
@@ -134,8 +139,13 @@ class TestObjectOpen(unittest.TestCase):
 
         # standard name changed
         from femsolver.elmer.equations.flux import Proxy
+        from femobjects.constraint_electromagnetic import ConstraintElectromagnetic
 
         self.assertEqual(Proxy, self.document.Fluxsolver.Proxy.__class__)
+        self.assertEqual(
+            ConstraintElectromagnetic,
+            self.document.ConstraintElectrostaticPotential.Proxy.__class__,
+        )
 
     # ********************************************************************************************
     def compare_cpp_objs(self, doc):
@@ -167,12 +177,6 @@ class TestObjectOpen(unittest.TestCase):
         self.assertEqual(
             "Fem::ConstraintCurrentDensity",
             type_of_obj(ObjectsFem.makeConstraintCurrentDensity(doc)),
-        )
-
-        from femobjects.constraint_electrostaticpotential import ConstraintElectrostaticPotential
-
-        self.assertEqual(
-            ConstraintElectrostaticPotential, doc.ConstraintElectrostaticPotential.Proxy.__class__
         )
 
         from femobjects.constraint_flowvelocity import ConstraintFlowVelocity
@@ -259,13 +263,13 @@ class TestObjectOpen(unittest.TestCase):
 
         self.assertEqual(SolverCcxTools, doc.SolverCcxTools.Proxy.__class__)
 
-        from femsolver.elmer.solver import Proxy
+        from femobjects.solver_elmer import SolverElmer
 
-        self.assertEqual(Proxy, doc.SolverElmer.Proxy.__class__)
+        self.assertEqual(SolverElmer, doc.SolverElmer.Proxy.__class__)
 
-        from femsolver.z88.solver import Proxy
+        from femobjects.solver_z88 import SolverZ88
 
-        self.assertEqual(Proxy, doc.SolverZ88.Proxy.__class__)
+        self.assertEqual(SolverZ88, doc.SolverZ88.Proxy.__class__)
 
         from femsolver.elmer.equations.elasticity import Proxy
 

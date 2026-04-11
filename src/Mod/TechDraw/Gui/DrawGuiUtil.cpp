@@ -21,9 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <sstream>
 
 #include <QBitmap>
@@ -39,7 +37,6 @@
 # include <BRepAdaptor_Surface.hxx>
 # include <BRepLProp_SLProps.hxx>
 # include <gp_Dir.hxx>
-#endif
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -650,7 +647,7 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawGuiUtil::getProjDirFromFace(App::D
                                       | Part::ShapeOption::ResolveLink
                                       | Part::ShapeOption::Transform,
                                       faceName.c_str());
-                                          
+
     if (ts.IsNull() || ts.ShapeType() != TopAbs_FACE) {
         Base::Console().warning("getProjDirFromFace(%s) is not a Face\n", faceName.c_str());
         return dirs;

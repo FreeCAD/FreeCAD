@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *   Copyright (c) 2022 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -20,6 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
+import Constants
 import FreeCAD
 import Path
 import math
@@ -29,17 +30,15 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
 __doc__ = "Functions to extract and convert between Path.Command and Part.Edge and utility functions to reason about them."
 
-CmdMoveStraight = Path.Geom.CmdMoveStraight + Path.Geom.CmdMoveRapid
-
 
 class Instruction(object):
     """An Instruction is a pure python replacement of Path.Command which also tracks its begin position."""
 
     def __init__(self, begin, cmd, param=None):
         self.begin = begin
-        if type(cmd) == Path.Command:
-            self.cmd = Path.Name
-            self.param = Path.Parameters
+        if isinstance(cmd, Path.Command):
+            self.cmd = cmd.Name
+            self.param = cmd.Parameters
         else:
             self.cmd = cmd
             if param is None:
@@ -52,6 +51,11 @@ class Instruction(object):
 
     def setPositionBegin(self, begin):
         self.begin = begin
+
+    def setPositionEnd(self, end):
+        self.param["X"] = end.x
+        self.param["Y"] = end.y
+        self.param["Z"] = end.z
 
     def positionBegin(self):
         """positionBegin() ... returns a Vector of the begin position"""
@@ -72,8 +76,15 @@ class Instruction(object):
         return False
 
     def isPlunge(self):
-        """isPlunge() ... return true if this moves up or down"""
-        return self.isMove() and not Path.Geom.isRoughly(self.begin.z, self.z(self.begin.z))
+        """isPlunge() ... return true if this moves is vertical"""
+        if self.isMove():
+            if (
+                Path.Geom.isRoughly(self.begin.x, self.x(self.begin.x))
+                and Path.Geom.isRoughly(self.begin.y, self.y(self.begin.y))
+                and not Path.Geom.isRoughly(self.begin.z, self.z(self.begin.z))
+            ):
+                return True
+        return False
 
     def leadsInto(self, instr):
         """leadsInto(instr) ... return true if instr is a continuation of self"""
@@ -116,6 +127,10 @@ class Instruction(object):
             s = [fmt.format(k, v) for k, v in self.param.items()]
         return f"{self.cmd}{{{', '.join(s)}}}"
 
+    def toCommand(self):
+        """toCommand(instr) ... return Path.Command object"""
+        return Path.Command(self.cmd, self.param)
+
 
 class MoveStraight(Instruction):
     def anglesOfTangents(self):
@@ -130,8 +145,14 @@ class MoveStraight(Instruction):
     def isMove(self):
         return True
 
+    def isStraight(self):
+        return True
+
+    def isArc(self):
+        return False
+
     def isRapid(self):
-        return self.cmd in Path.Geom.CmdMoveRapid
+        return self.cmd in Constants.GCODE_MOVE_RAPID
 
     def pathLength(self):
         return (self.positionEnd() - self.positionBegin()).Length
@@ -158,6 +179,9 @@ class MoveArc(Instruction):
 
     def isArc(self):
         return True
+
+    def isStraight(self):
+        return False
 
     def isCW(self):
         return self.arcDirection() < 0
@@ -230,7 +254,7 @@ class Maneuver(object):
         self.instr.extend(coll)
 
     def toPath(self):
-        return Path.Path([instruction_to_command(instr) for instr in self.instr])
+        return Path.Path([instr.toCommand() for instr in self.instr])
 
     def __repr__(self):
         if self.instr:
@@ -242,11 +266,11 @@ class Maneuver(object):
         if not begin:
             begin = FreeCAD.Vector(0, 0, 0)
 
-        if cmd.Name in CmdMoveStraight:
+        if cmd.Name in Constants.GCODE_MOVE_LINE:
             return MoveStraight(begin, cmd.Name, cmd.Parameters)
-        if cmd.Name in Path.Geom.CmdMoveCW:
+        if cmd.Name in Constants.GCODE_MOVE_CW:
             return MoveArcCW(begin, cmd.Name, cmd.Parameters)
-        if cmd.Name in Path.Geom.CmdMoveCCW:
+        if cmd.Name in Constants.GCODE_MOVE_CCW:
             return MoveArcCCW(begin, cmd.Name, cmd.Parameters)
         return Instruction(begin, cmd.Name, cmd.Parameters)
 
@@ -265,7 +289,3 @@ class Maneuver(object):
     @classmethod
     def FromGCode(cls, gcode, begin=None):
         return cls.FromPath(Path.Path(gcode), begin)
-
-
-def instruction_to_command(instr):
-    return Path.Command(instr.cmd, instr.param)

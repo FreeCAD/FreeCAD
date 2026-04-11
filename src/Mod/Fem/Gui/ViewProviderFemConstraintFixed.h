@@ -22,16 +22,14 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEWPROVIDERFEMCONSTRAINTFIXED_H
-#define GUI_VIEWPROVIDERFEMCONSTRAINTFIXED_H
+#pragma once
 
 #include "ViewProviderFemConstraintOnBoundary.h"
 
 namespace FemGui
 {
 
-class FemGuiExport ViewProviderFemConstraintFixed
-    : public FemGui::ViewProviderFemConstraintOnBoundary
+class FemGuiExport ViewProviderFemConstraintFixed: public FemGui::ViewProviderFemConstraintOnBoundary
 {
     PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemConstraintFixed);
 
@@ -47,6 +45,3 @@ protected:
 };
 
 }  // namespace FemGui
-
-
-#endif  // GUI_VIEWPROVIDERFEMCONSTRAINTFIXED_H

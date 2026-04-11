@@ -11,13 +11,13 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Box definition</string>
+   <string>Box Definition</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
     <widget class="QGroupBox" name="GroupBox5">
      <property name="title">
-      <string>Position:</string>
+      <string>Position</string>
      </property>
      <layout class="QGridLayout">
       <property name="margin">
@@ -29,7 +29,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="TextLabel1">
         <property name="text">
-         <string>X:</string>
+         <string>X</string>
         </property>
        </widget>
       </item>
@@ -49,7 +49,7 @@
       <item row="1" column="0">
        <widget class="QLabel" name="TextLabel2">
         <property name="text">
-         <string>Y:</string>
+         <string>Y</string>
         </property>
        </widget>
       </item>
@@ -69,7 +69,7 @@
       <item row="2" column="0">
        <widget class="QLabel" name="TextLabel3">
         <property name="text">
-         <string>Z:</string>
+         <string>Z</string>
         </property>
        </widget>
       </item>
@@ -89,7 +89,7 @@
       <item row="3" column="0">
        <widget class="QLabel" name="TextLabel1_3">
         <property name="text">
-         <string>Direction:</string>
+         <string>Direction</string>
         </property>
        </widget>
       </item>
@@ -106,7 +106,7 @@
    <item row="1" column="0">
     <widget class="QGroupBox" name="GroupBox5_2">
      <property name="title">
-      <string>Size:</string>
+      <string>Size</string>
      </property>
      <layout class="QGridLayout">
       <property name="margin">
@@ -118,7 +118,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="TextLabel1_2">
         <property name="text">
-         <string>Length:</string>
+         <string>Length</string>
         </property>
        </widget>
       </item>
@@ -138,7 +138,7 @@
       <item row="1" column="0">
        <widget class="QLabel" name="TextLabel2_2">
         <property name="text">
-         <string>Width:</string>
+         <string>Width</string>
         </property>
        </widget>
       </item>
@@ -158,7 +158,7 @@
       <item row="2" column="0">
        <widget class="QLabel" name="TextLabel3_2">
         <property name="text">
-         <string>Height:</string>
+         <string>Height</string>
         </property>
        </widget>
       </item>

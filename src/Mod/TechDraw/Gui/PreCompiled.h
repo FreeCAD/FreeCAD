@@ -20,22 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_PRECOMPILED_H
-#define DRAWINGGUI_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
-#ifdef _MSC_VER
-# pragma warning(disable : 4005)
-#endif
-
 #ifdef FC_OS_WIN32
-#ifndef NOMINMAX
-#define NOMINMAX
 #endif
-#endif
-
-#ifdef _PreComp_
 
 // standard
 #include <cassert>
@@ -51,7 +41,6 @@
 #include <vector>
 
 #ifdef FC_OS_WIN32
-# define WIN32_LEAN_AND_MEAN
 # include <windows.h>
 # undef small
 #endif
@@ -74,7 +63,3 @@
 
 // Open Inventor
 #include <Inventor/SbVec3f.h>
-
-#endif //_PreComp_
-
-#endif // DRAWINGGUI_PRECOMPILED_H

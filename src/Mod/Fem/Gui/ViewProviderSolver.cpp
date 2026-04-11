@@ -20,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QApplication>
 #include <QMessageBox>
 #include <QTextStream>
-#endif
+
 
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
@@ -46,6 +44,11 @@ ViewProviderSolver::ViewProviderSolver()
 }
 
 ViewProviderSolver::~ViewProviderSolver() = default;
+
+std::vector<std::string> ViewProviderSolver::getDisplayModes() const
+{
+    return {"Solver"};
+}
 
 bool ViewProviderSolver::onDelete(const std::vector<std::string>&)
 {

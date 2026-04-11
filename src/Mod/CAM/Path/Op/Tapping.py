@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *   Copyright (c) 2020 Schildkroet                                        *
@@ -36,7 +37,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 __title__ = "Path Tapping Operation"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Path Tapping operation."
 __contributors__ = "luvtofish (Dan Henderson)"
 
@@ -96,6 +97,13 @@ class ObjectTapping(PathCircularHoleBase.ObjectOp):
 
     def initCircularHoleOperation(self, obj):
         """initCircularHoleOperation(obj) ... add tapping specific properties to obj."""
+        # DEPRECATED: This operation is deprecated. Use Drilling operation with Strategy=Tapping instead.
+        Path.Log.warning(
+            "DEPRECATED: The Tapping operation is deprecated and will be removed in a future release. "
+            "Please use the Drilling operation with Strategy set to 'Tapping' instead. "
+            "Existing Tapping operations will continue to work but you cannot create new ones."
+        )
+
         obj.addProperty(
             "App::PropertyFloat",
             "DwellTime",
@@ -147,13 +155,11 @@ class ObjectTapping(PathCircularHoleBase.ObjectOp):
         Path.Log.track()
         machine = PathMachineState.MachineState()
 
-        if not hasattr(obj.ToolController.Tool, "Pitch") or not hasattr(
-            obj.ToolController.Tool, "TPI"
-        ):
+        if not hasattr(obj.ToolController.Tool, "Pitch"):
             Path.Log.error(
                 translate(
                     "Path_Tapping",
-                    "Tapping Operation requires a Tap tool with Pitch or TPI",
+                    "Tapping Operation requires a Tap tool with Pitch",
                 )
             )
             return
@@ -175,7 +181,9 @@ class ObjectTapping(PathCircularHoleBase.ObjectOp):
             endoffset = PathUtils.drillTipLength(self.tool) * 2
 
         # http://linuxcnc.org/docs/html/gcode/g-code.html#gcode:g98-g99
-        self.commandlist.append(Path.Command(obj.ReturnLevel))
+        self.commandlist.append(
+            Path.Command(obj.ReturnLevel).addAnnotations({"operation": "tapping"})
+        )
 
         # This section is technical debt. The computation of the
         # target shapes should be factored out for reuse.
@@ -192,7 +200,6 @@ class ObjectTapping(PathCircularHoleBase.ObjectOp):
 
         # iterate the edgelist and generate gcode
         for edge in edgelist:
-
             Path.Log.debug(edge)
 
             # move to hole location
@@ -222,11 +229,40 @@ class ObjectTapping(PathCircularHoleBase.ObjectOp):
             repeat = 1  # technical debt:  Add a repeat property for user control
 
             # Get attribute from obj.tool, assign default and set to bool for passing to generate
-            isRightHand = getattr(obj.ToolController.Tool, "Rotation", "Right Hand") == "Right Hand"
+            isRightHand = (
+                getattr(obj.ToolController.Tool, "SpindleDirection", "Forward") == "Forward"
+            )
+
+            # Get pitch in mm as a float (no unit string)
+            pitch = getattr(obj.ToolController.Tool, "Pitch", None)
+            if pitch is None or pitch == 0:
+                Path.Log.error(
+                    translate(
+                        "Path_Tapping",
+                        "Tapping Operation requires a Tap tool with non-zero Pitch",
+                    )
+                )
+                continue
+
+            spindle_speed = getattr(obj.ToolController, "SpindleSpeed", None)
+            if spindle_speed is None or spindle_speed == 0:
+                Path.Log.error(
+                    translate(
+                        "Path_Tapping",
+                        "Tapping Operation requires a ToolController with non-zero SpindleSpeed",
+                    )
+                )
+                continue
 
             try:
                 tappingcommands = tapping.generate(
-                    edge, dwelltime, repeat, obj.RetractHeight.Value, isRightHand
+                    edge,
+                    dwelltime,
+                    repeat,
+                    obj.RetractHeight.Value,
+                    isRightHand,
+                    pitch,
+                    spindle_speed,
                 )
 
             except ValueError as e:  # any targets that fail the generator are ignored
@@ -238,7 +274,7 @@ class ObjectTapping(PathCircularHoleBase.ObjectOp):
                 machine.addCommand(command)
 
         # Cancel canned tapping cycle
-        self.commandlist.append(Path.Command("G80"))
+        self.commandlist.append(Path.Command("G80").addAnnotations({"operation": "tapping"}))
         # command = Path.Command("G0", {"Z": obj.SafeHeight.Value})  DLH- Not needed, adds unnecessary move to Z SafeHeight.
         # self.commandlist.append(command)
         # machine.addCommand(command)       DLH - Not needed.
@@ -279,9 +315,5 @@ def Create(name, obj=None, parentJob=None):
     """Create(name) ... Creates and returns a Tapping operation."""
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-
     obj.Proxy = ObjectTapping(obj, name, parentJob)
-    if obj.Proxy:
-        obj.Proxy.findAllHoles(obj)
-
     return obj

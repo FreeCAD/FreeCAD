@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_DrawSketchHandlerSplitting_H
-#define SKETCHERGUI_DrawSketchHandlerSplitting_H
+#pragma once
 
 #include <Gui/Notifications.h>
 #include <Gui/Selection/SelectionFilter.h>
@@ -34,6 +35,7 @@
 #include "GeometryCreationMode.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
+#include "SnapManager.h"
 
 
 namespace SketcherGui
@@ -93,6 +95,8 @@ public:
 
 class DrawSketchHandlerSplitting: public DrawSketchHandler
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerSplitting)
+
 public:
     DrawSketchHandlerSplitting() = default;
     ~DrawSketchHandlerSplitting() override
@@ -100,9 +104,9 @@ public:
         Gui::Selection().rmvSelectionGate();
     }
 
-    void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(SnapManager::SnapHandle snapHandle) override
     {
-        Q_UNUSED(onSketchPos);
+        Q_UNUSED(snapHandle);
     }
 
     bool pressButton(Base::Vector2d onSketchPos) override
@@ -136,12 +140,14 @@ public:
                 // TODO: This has to be a knot. Find the spline.
 
                 const auto& constraints = getSketchObject()->Constraints.getValues();
-                const auto& conIt =
-                    std::find_if(constraints.begin(), constraints.end(), [pointGeoId](auto constr) {
-                        return (constr->Type == Sketcher::InternalAlignment
-                                && constr->AlignmentType == Sketcher::BSplineKnotPoint
-                                && constr->First == pointGeoId);
-                    });
+                const auto& conIt
+                    = std::find_if(constraints.begin(), constraints.end(), [pointGeoId](auto constr) {
+                          return (
+                              constr->Type == Sketcher::InternalAlignment
+                              && constr->AlignmentType == Sketcher::BSplineKnotPoint
+                              && constr->First == pointGeoId
+                          );
+                      });
 
                 if (conIt != constraints.end()) {
                     GeoId = (*conIt)->Second;
@@ -151,21 +157,25 @@ public:
 
         if (GeoId >= 0) {
             try {
-                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Split edge"));
-                Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                      "split(%d,App.Vector(%f,%f,0))",
-                                      GeoId,
-                                      onSketchPos.x,
-                                      onSketchPos.y);
-                Gui::Command::commitCommand();
+                openCommand(QT_TRANSLATE_NOOP("Command", "Split edge"));
+                Gui::cmdAppObjectArgs(
+                    sketchgui->getObject(),
+                    "split(%d,App.Vector(%f,%f,0))",
+                    GeoId,
+                    onSketchPos.x,
+                    onSketchPos.y
+                );
+                commitCommand();
                 tryAutoRecompute(sketchgui->getObject<Sketcher::SketchObject>());
             }
             catch (const Base::Exception&) {
-                Gui::NotifyError(sketchgui,
-                                 QT_TRANSLATE_NOOP("Notifications", "Error"),
-                                 QT_TRANSLATE_NOOP("Notifications", "Failed to add edge"));
+                Gui::NotifyError(
+                    sketchgui,
+                    QT_TRANSLATE_NOOP("Notifications", "Error"),
+                    QT_TRANSLATE_NOOP("Notifications", "Failed to add edge")
+                );
 
-                Gui::Command::abortCommand();
+                abortCommand();
             }
         }
         else {
@@ -195,7 +205,6 @@ private:
 
 private:
     std::vector<Base::Vector2d> EditMarkers;
-    bool mousePressed = false;
 
 public:
     std::list<Gui::InputHint> getToolHints() const override
@@ -208,6 +217,3 @@ public:
 };
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerSplitting_H

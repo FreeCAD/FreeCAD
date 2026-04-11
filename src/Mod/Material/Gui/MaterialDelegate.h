@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
@@ -19,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATGUI_MATERIALDELEGATE_H
-#define MATGUI_MATERIALDELEGATE_H
+#pragma once
 
 #include <QDialog>
 #include <QDir>
@@ -78,7 +79,6 @@ Q_SIGNALS:
 
 private:
     QWidget* createWidget(QWidget* parent, const QVariant& item, const QModelIndex& index) const;
-    // QRgb parseColor(const QString& color) const;
     void showColorModal(const QString& propertyName, QStandardItem* item);
     void showImageModal(const QString& propertyName, QStandardItem* item);
     void showListModal(const QString& propertyName, QStandardItem* item);
@@ -88,5 +88,3 @@ private:
 };
 
 }  // namespace MatGui
-
-#endif  // MATGUI_MATERIALDELEGATE_H

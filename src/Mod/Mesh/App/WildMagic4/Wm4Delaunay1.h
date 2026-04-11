@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 // Wild Magic Source Code
 // David Eberly
 // http://www.geometrictools.com
@@ -14,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4DELAUNAY1_H
-#define WM4DELAUNAY1_H
+#pragma once
 
 // A fancy class to sort a collection of real-valued numbers, but this
 // provides some convenience for Delaunay2 and Delaunay3 when the input point
@@ -113,5 +114,3 @@ typedef Delaunay1<float> Delaunay1f;
 typedef Delaunay1<double> Delaunay1d;
 
 }
-
-#endif

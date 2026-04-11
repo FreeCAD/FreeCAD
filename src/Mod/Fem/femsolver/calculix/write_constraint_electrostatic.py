@@ -80,15 +80,14 @@ def write_constraint(f, femobj, pot_obj, ccxwriter):
         density = pot_obj.ElectricFluxDensity.getValueAs("C/mm^2").Value
         # check internal interface
         internal = _check_shared_interface(pot_obj)
-        for feat, refs in femobj["ElectricFluxFaces"]:
-            f.write("** " + feat + "\n")
+        for feat, surf, is_sub_el in femobj["ElectricFluxFaces"]:
+            f.write("** {0.Name}.{1[0]}\n".format(*feat))
             f.write("*DFLUX\n")
-            for ref in refs:
-                d = density
-                if ref[0] in internal:
-                    d = density / 2
-                for face, fno in ref[1]:
-                    f.write("{},S{},{:.13G}\n".format(face, fno, d))
+            d = density
+            if feat in internal:
+                d = density / 2
+            for face, fno in surf:
+                f.write("{},S{},{:.13G}\n".format(face, fno, d))
 
     f.write("\n")
 

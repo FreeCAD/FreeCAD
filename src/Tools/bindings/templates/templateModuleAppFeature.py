@@ -1,5 +1,6 @@
 #! python
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # (c) 2006 Juergen Riegel
 
 from . import template
@@ -56,7 +57,6 @@ public:
 
 """
     TemplateModule = """
-#include "PreCompiled.h"
 
 #include "@self.feature.Name@.h"
 
@@ -74,7 +74,6 @@ PROPERTY_SOURCE(@self.module.Name@::@self.feature.Name@, App::Feature)
     # Here's the template for the user part of the implementation. This does NOT get overwritten if it already exists.
     TemplateImplement = """
 //
-#include "PreCompiled.h"
 
 #include "@self.feature.Name@.h"
 

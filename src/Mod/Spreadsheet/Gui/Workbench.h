@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2005 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *   Copyright (c) 2015 Eivind Kvedalen (eivind@kvedalen.name)             *
@@ -22,8 +24,7 @@
  ***************************************************************************/
 
 
-#ifndef SPREADSHEET_WORKBENCH_H
-#define SPREADSHEET_WORKBENCH_H
+#pragma once
 
 #include <Gui/Workbench.h>
 #include <Mod/Spreadsheet/SpreadsheetGlobal.h>
@@ -67,6 +68,3 @@ protected:
 };
 
 }  // namespace SpreadsheetGui
-
-
-#endif  // SPREADSHEET_WORKBENCH_H

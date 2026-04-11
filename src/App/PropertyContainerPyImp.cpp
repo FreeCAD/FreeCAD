@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2007 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,12 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <sstream>
-#endif
 
 #include "PropertyContainer.h"
 #include "Property.h"
@@ -34,6 +31,8 @@
 
 #include <boost/iostreams/device/array.hpp>
 #include <boost/iostreams/stream.hpp>
+
+#include "PropertyUnits.h"
 
 // inclusion of the generated files (generated out of PropertyContainerPy.xml)
 #include "PropertyContainerPy.h"
@@ -274,6 +273,12 @@ PyObject* PropertyContainerPy::setPropertyStatus(PyObject* args)
             if (it == statusMap.end()) {
                 if (linkProp && v == "AllowPartial") {
                     linkProp->setAllowPartial(value);
+                    continue;
+                }
+
+                auto lengthProp = freecad_cast<App::PropertyLength*>(prop);
+                if (lengthProp && v == "AllowNegativeValues") {
+                    lengthProp->enableNegative(value);
                     continue;
                 }
 
@@ -645,42 +650,6 @@ PyObject* PropertyContainerPy::getCustomAttributes(const char* attr) const
         }
         return Py::new_reference_to(dict);
     }
-    /// FIXME: For v0.20: Do not use stuff from Part module here!
-    if (Base::streq(attr, "Shape")
-         && getPropertyContainerPtr()->isDerivedFrom<App::DocumentObject>()) {
-        // Special treatment of Shape property
-        static PyObject* _getShape = nullptr;
-        if (!_getShape) {
-            _getShape = Py_None;
-            PyObject* mod = PyImport_ImportModule("Part");
-            if (!mod) {
-                PyErr_Clear();
-            }
-            else {
-                Py::Object pyMod = Py::asObject(mod);
-                if (pyMod.hasAttr("getShape")) {
-                    _getShape = Py::new_reference_to(pyMod.getAttr("getShape"));
-                }
-            }
-        }
-        if (_getShape != Py_None) {
-            Py::Tuple args(1);
-            args.setItem(0, Py::Object(const_cast<PropertyContainerPy*>(this)));
-            auto res = PyObject_CallObject(_getShape, args.ptr());
-            if (!res) {
-                PyErr_Clear();
-            }
-            else {
-                Py::Object pyres(res, true);
-                if (pyres.hasAttr("isNull")) {
-                    Py::Callable func(pyres.getAttr("isNull"));
-                    if (!func.apply().isTrue()) {
-                        return Py::new_reference_to(res);
-                    }
-                }
-            }
-        }
-    }
 
     return nullptr;
 }
@@ -726,3 +695,4 @@ PyObject* PropertyContainerPy::renameProperty(PyObject* args) const
     }
     PY_CATCH
 }
+

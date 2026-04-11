@@ -21,8 +21,6 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QCryptographicHash>
 #include <QDateTime>
 #include <QFileInfo>
@@ -30,7 +28,6 @@
 #include <QTimeZone>
 #include <QUrl>
 #include <fmt/format.h>
-#endif
 
 #include "FileUtilities.h"
 #include <Base/TimeInfo.h>

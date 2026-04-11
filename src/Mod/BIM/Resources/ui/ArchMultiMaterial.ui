@@ -11,14 +11,14 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Multi-material definition</string>
+   <string>Multi-Material Definition</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QComboBox" name="chooseCombo">
      <item>
       <property name="text">
-       <string>Copy existing...</string>
+       <string>Copy existing…</string>
       </property>
      </item>
     </widget>
@@ -34,7 +34,7 @@
         <item>
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>Name:</string>
+           <string>Name</string>
           </property>
          </widget>
         </item>
@@ -46,7 +46,7 @@
       <item>
        <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>Composition:</string>
+         <string>Composition</string>
         </property>
        </widget>
       </item>

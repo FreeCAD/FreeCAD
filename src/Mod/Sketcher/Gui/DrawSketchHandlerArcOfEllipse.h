@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_DrawSketchHandlerArcOfEllipse_H
-#define SKETCHERGUI_DrawSketchHandlerArcOfEllipse_H
+#pragma once
 
 #include <Gui/Notifications.h>
 #include <Gui/Command.h>
@@ -34,6 +35,7 @@
 #include "GeometryCreationMode.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
+#include "SnapManager.h"
 
 
 namespace SketcherGui
@@ -43,41 +45,41 @@ extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGe
 
 class DrawSketchHandlerArcOfEllipse: public DrawSketchHandler
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerArcOfEllipse)
+
 public:
     DrawSketchHandlerArcOfEllipse()
-        : Mode(STATUS_SEEK_First)
+        : Mode(SelectMode::First)
         , EditCurve(34)
-        , rx(0)
-        , ry(0)
         , startAngle(0)
         , endAngle(0)
         , arcAngle(0)
-        , arcAngle_t(0)
     {}
 
     ~DrawSketchHandlerArcOfEllipse() override = default;
 
     /// mode table
-    enum SelectMode
+    enum class SelectMode
     {
-        STATUS_SEEK_First,
-        STATUS_SEEK_Second,
-        STATUS_SEEK_Third,
-        STATUS_SEEK_Fourth,
-        STATUS_Close
+        First,
+        Second,
+        Third,
+        Fourth,
+        End
     };
 
-    void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(SnapManager::SnapHandle snapHandle) override
     {
         using std::numbers::pi;
+        Base::Vector2d onSketchPos = snapHandle.compute();
 
-        if (Mode == STATUS_SEEK_First) {
+        if (Mode == SelectMode::First) {
             setPositionText(onSketchPos);
-            seekAndRenderAutoConstraint(sugConstr1,
-                                        onSketchPos,
-                                        Base::Vector2d(0.f, 0.f));  // TODO: ellipse prio 1
+            seekAndRenderAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f, 0.f));  // TODO:
+                                                                                             // ellipse
+                                                                                             // prio 1
         }
-        else if (Mode == STATUS_SEEK_Second) {
+        else if (Mode == SelectMode::Second) {
             double rx0 = onSketchPos.x - EditCurve[0].x;
             double ry0 = onSketchPos.y - EditCurve[0].y;
             for (int i = 0; i < 16; i++) {
@@ -100,27 +102,40 @@ public:
             }
 
             drawEdit(EditCurve);
-            seekAndRenderAutoConstraint(sugConstr2,
-                                        onSketchPos,
-                                        onSketchPos - centerPoint,
-                                        AutoConstraint::CURVE);
+            seekAndRenderAutoConstraint(
+                sugConstr2,
+                onSketchPos,
+                onSketchPos - centerPoint,
+                AutoConstraint::CURVE
+            );
         }
-        else if (Mode == STATUS_SEEK_Third) {
-            // angle between the major axis of the ellipse and the X axis
-            double a = (EditCurve[1] - EditCurve[0]).Length();
-            double phi = atan2(EditCurve[1].y - EditCurve[0].y, EditCurve[1].x - EditCurve[0].x);
+        else if (Mode == SelectMode::Third) {
+            Base::Vector2d delta12 = axisPoint - centerPoint;
 
-            // This is the angle at cursor point
-            double angleatpoint =
-                acos((onSketchPos.x - EditCurve[0].x + (onSketchPos.y - EditCurve[0].y) * tan(phi))
-                     / (a * (cos(phi) + tan(phi) * sin(phi))));
-            double b = (onSketchPos.y - EditCurve[0].y - a * cos(angleatpoint) * sin(phi))
-                / (sin(angleatpoint) * cos(phi));
+            double a = delta12.Length();
+
+            Base::Vector2d aDir = delta12.Normalize();
+            Base::Vector2d bDir(-aDir.y, aDir.x);
+
+            Base::Vector2d delta13 = onSketchPos - centerPoint;
+            Base::Vector2d delta13Prime(
+                delta13.x * aDir.x + delta13.y * aDir.y,
+                delta13.x * bDir.x + delta13.y * bDir.y
+            );
+
+            double cosT = max(-1.0, min(1.0, delta13Prime.x / a));
+            double sinT = sqrt(max(0.0, 1 - cosT * cosT));
+
+            double b = abs(delta13Prime.y) / sinT;
+            if (sinT == 0.0) {
+                b = 0.0;
+                a = 0.0;
+            }
 
             for (int i = 1; i < 16; i++) {
                 double angle = i * pi / 16.0;
-                double rx1 = a * cos(angle) * cos(phi) - b * sin(angle) * sin(phi);
-                double ry1 = a * cos(angle) * sin(phi) + b * sin(angle) * cos(phi);
+                double rx1 = a * cos(angle) * aDir.x + b * sin(angle) * bDir.x;
+                double ry1 = a * cos(angle) * aDir.y + b * sin(angle) * bDir.y;
                 EditCurve[1 + i] = Base::Vector2d(EditCurve[0].x + rx1, EditCurve[0].y + ry1);
                 EditCurve[17 + i] = Base::Vector2d(EditCurve[0].x - rx1, EditCurve[0].y - ry1);
             }
@@ -139,42 +154,43 @@ public:
             drawEdit(EditCurve);
             seekAndRenderAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.f, 0.f));
         }
-        else if (Mode == STATUS_SEEK_Fourth) {  // here we differ from ellipse creation
-            // angle between the major axis of the ellipse and the X axis
-            double a = (axisPoint - centerPoint).Length();
-            double phi = atan2(axisPoint.y - centerPoint.y, axisPoint.x - centerPoint.x);
+        else if (Mode == SelectMode::Fourth) {  // here we differ from ellipse creation
+            Base::Vector2d delta12 = axisPoint - centerPoint;
 
-            // This is the angle at cursor point
-            double angleatpoint = acos(
-                (startingPoint.x - centerPoint.x + (startingPoint.y - centerPoint.y) * tan(phi))
-                / (a * (cos(phi) + tan(phi) * sin(phi))));
-            double b = abs((startingPoint.y - centerPoint.y - a * cos(angleatpoint) * sin(phi))
-                           / (sin(angleatpoint) * cos(phi)));
+            double a = delta12.Length();
 
-            double rxs = startingPoint.x - centerPoint.x;
-            double rys = startingPoint.y - centerPoint.y;
-            startAngle = atan2(a * (rys * cos(phi) - rxs * sin(phi)),
-                               b * (rxs * cos(phi) + rys * sin(phi)));  // eccentric anomaly angle
+            Base::Vector2d aDir = delta12.Normalize();
+            Base::Vector2d bDir(-aDir.y, aDir.x);
 
-            double angle1 = atan2(a
-                                      * ((onSketchPos.y - centerPoint.y) * cos(phi)
-                                         - (onSketchPos.x - centerPoint.x) * sin(phi)),
-                                  b
-                                      * ((onSketchPos.x - centerPoint.x) * cos(phi)
-                                         + (onSketchPos.y - centerPoint.y) * sin(phi)))
-                - startAngle;
+            Base::Vector2d delta13 = startingPoint - centerPoint;
+            Base::Vector2d delta13Prime(
+                delta13.x * aDir.x + delta13.y * aDir.y,
+                delta13.x * bDir.x + delta13.y * bDir.y
+            );
 
+            double cosT = max(-1.0, min(1.0, delta13Prime.x / a));
+            double sinT = sqrt(max(0.0, 1 - cosT * cosT));
+
+            double b = abs(delta13Prime.y) / sinT;
+
+            startAngle = atan2(delta13Prime.y / b, delta13Prime.x / a);
+
+            Base::Vector2d delta14 = onSketchPos - centerPoint;
+            Base::Vector2d delta14Prime(
+                delta14.x * aDir.x + delta14.y * aDir.y,
+                delta14.x * bDir.x + delta14.y * bDir.y
+            );
+            double angle1 = atan2(delta14Prime.y / b, delta14Prime.x / a) - startAngle;
             double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * pi;
+
             arcAngle = abs(angle1 - arcAngle) < abs(angle2 - arcAngle) ? angle1 : angle2;
 
             for (int i = 0; i < 34; i++) {
-                double angle = startAngle + i * arcAngle / 34.0;
-                double rx1 = a * cos(angle) * cos(phi) - b * sin(angle) * sin(phi);
-                double ry1 = a * cos(angle) * sin(phi) + b * sin(angle) * cos(phi);
+                double angle = startAngle + i * arcAngle / 33.0;
+                double rx1 = a * cos(angle) * aDir.x + b * sin(angle) * bDir.x;
+                double ry1 = a * cos(angle) * aDir.y + b * sin(angle) * bDir.y;
                 EditCurve[i] = Base::Vector2d(centerPoint.x + rx1, centerPoint.y + ry1);
             }
-            //             EditCurve[33] = EditCurve[1];
-            //             EditCurve[17] = EditCurve[16];
 
             // Display radii and angle for user
             if (showCursorCoords()) {
@@ -182,42 +198,51 @@ public:
                 std::string aString = lengthToDisplayFormat(a, 1);
                 std::string bString = lengthToDisplayFormat(b, 1);
                 std::string angleString = angleToDisplayFormat(arcAngle * 180.0 / pi, 1);
-                text.sprintf(" (R%s, R%s, %s)",
-                             aString.c_str(),
-                             bString.c_str(),
-                             angleString.c_str());
+                text.sprintf(" (R%s, R%s, %s)", aString.c_str(), bString.c_str(), angleString.c_str());
                 setPositionText(onSketchPos, text);
             }
 
-            drawEdit(EditCurve);
+            if (onSketchPos != centerPoint) {
+                drawEdit(EditCurve);
+            }
+            else {
+                drawEdit(std::vector<Base::Vector2d>());
+            }
             seekAndRenderAutoConstraint(sugConstr4, onSketchPos, Base::Vector2d(0.f, 0.f));
         }
     }
 
     bool pressButton(Base::Vector2d onSketchPos) override
     {
-        if (Mode == STATUS_SEEK_First) {
+        using std::numbers::pi;
+
+        if (Mode == SelectMode::First) {
             EditCurve[0] = onSketchPos;
             centerPoint = onSketchPos;
             setAngleSnapping(true, centerPoint);
-            Mode = STATUS_SEEK_Second;
+            Mode = SelectMode::Second;
         }
-        else if (Mode == STATUS_SEEK_Second) {
+        else if (
+            Mode == SelectMode::Second
+            && (centerPoint - onSketchPos).Length() >= Precision::Confusion()
+        ) {
             EditCurve[1] = onSketchPos;
             axisPoint = onSketchPos;
-            Mode = STATUS_SEEK_Third;
+            Mode = SelectMode::Third;
         }
-        else if (Mode == STATUS_SEEK_Third) {
+        else if (Mode == SelectMode::Third && validThirdPoint(onSketchPos)) {
             startingPoint = onSketchPos;
             arcAngle = 0.;
-            arcAngle_t = 0.;
-            Mode = STATUS_SEEK_Fourth;
+            Mode = SelectMode::Fourth;
         }
-        else {  // Fourth
+        else if (
+            Mode == SelectMode::Fourth && centerPoint != onSketchPos && arcAngle != 0
+            && abs(arcAngle) != 2 * pi
+        ) {
             endPoint = onSketchPos;
 
             setAngleSnapping(false);
-            Mode = STATUS_Close;
+            Mode = SelectMode::End;
         }
 
         updateHint();
@@ -230,30 +255,36 @@ public:
 
         using std::numbers::pi;
 
-        if (Mode == STATUS_Close) {
+        if (Mode == SelectMode::End) {
             unsetCursor();
             resetPositionText();
 
-            // angle between the major axis of the ellipse and the X axisEllipse
-            double a = (axisPoint - centerPoint).Length();
-            double phi = atan2(axisPoint.y - centerPoint.y, axisPoint.x - centerPoint.x);
+            Base::Vector2d delta12 = axisPoint - centerPoint;
 
-            // This is the angle at cursor point
-            double angleatpoint = acos(
-                (startingPoint.x - centerPoint.x + (startingPoint.y - centerPoint.y) * tan(phi))
-                / (a * (cos(phi) + tan(phi) * sin(phi))));
-            double b = abs((startingPoint.y - centerPoint.y - a * cos(angleatpoint) * sin(phi))
-                           / (sin(angleatpoint) * cos(phi)));
+            double a = delta12.Length();
 
-            double angle1 = atan2(a
-                                      * ((endPoint.y - centerPoint.y) * cos(phi)
-                                         - (endPoint.x - centerPoint.x) * sin(phi)),
-                                  b
-                                      * ((endPoint.x - centerPoint.x) * cos(phi)
-                                         + (endPoint.y - centerPoint.y) * sin(phi)))
-                - startAngle;
+            Base::Vector2d aDir = delta12.Normalize();
+            Base::Vector2d bDir(-aDir.y, aDir.x);
 
+            Base::Vector2d delta13 = startingPoint - centerPoint;
+            Base::Vector2d delta13Prime(
+                delta13.x * aDir.x + delta13.y * aDir.y,
+                delta13.x * bDir.x + delta13.y * bDir.y
+            );
+
+            double cosT = max(-1.0, min(1.0, delta13Prime.x / a));
+            double sinT = sqrt(max(0.0, 1 - cosT * cosT));
+
+            double b = abs(delta13Prime.y) / sinT;
+
+            Base::Vector2d delta14 = endPoint - centerPoint;
+            Base::Vector2d delta14Prime(
+                delta14.x * aDir.x + delta14.y * aDir.y,
+                delta14.x * bDir.x + delta14.y * bDir.y
+            );
+            double angle1 = atan2(delta14Prime.y / b, delta14Prime.x / a) - startAngle;
             double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * pi;
+
             arcAngle = abs(angle1 - arcAngle) < abs(angle2 - arcAngle) ? angle1 : angle2;
 
             bool isOriginalArcCCW = true;
@@ -296,42 +327,42 @@ public:
             int currentgeoid = getHighestCurveIndex();
 
             try {
-                Gui::Command::openCommand(
-                    QT_TRANSLATE_NOOP("Command", "Add sketch arc of ellipse"));
+                openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc of ellipse"));
 
-                Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                      "addGeometry(Part.ArcOfEllipse"
-                                      "(Part.Ellipse(App.Vector(%f,%f,0),App.Vector(%f,%f,0),App."
-                                      "Vector(%f,%f,0)),%f,%f),%s)",
-                                      majAxisPoint.x,
-                                      majAxisPoint.y,
-                                      minAxisPoint.x,
-                                      minAxisPoint.y,
-                                      centerPoint.x,
-                                      centerPoint.y,
-                                      startAngle,
-                                      endAngle,
-                                      constructionModeAsBooleanText());
+                Gui::cmdAppObjectArgs(
+                    sketchgui->getObject(),
+                    "addGeometry(Part.ArcOfEllipse"
+                    "(Part.Ellipse(App.Vector(%f,%f,0),App.Vector(%f,%f,0),App."
+                    "Vector(%f,%f,0)),%f,%f),%s)",
+                    majAxisPoint.x,
+                    majAxisPoint.y,
+                    minAxisPoint.x,
+                    minAxisPoint.y,
+                    centerPoint.x,
+                    centerPoint.y,
+                    startAngle,
+                    endAngle,
+                    constructionModeAsBooleanText()
+                );
 
                 currentgeoid++;
 
-                Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                      "exposeInternalGeometry(%d)",
-                                      currentgeoid);
+                Gui::cmdAppObjectArgs(sketchgui->getObject(), "exposeInternalGeometry(%d)", currentgeoid);
             }
             catch (const Base::Exception&) {
                 Gui::NotifyError(
                     sketchgui,
                     QT_TRANSLATE_NOOP("Notifications", "Error"),
-                    QT_TRANSLATE_NOOP("Notifications", "Failed to add arc of ellipse"));
-                Gui::Command::abortCommand();
+                    QT_TRANSLATE_NOOP("Notifications", "Failed to add arc of ellipse")
+                );
+                abortCommand();
 
                 tryAutoRecomputeIfNotSolve(sketchgui->getObject<Sketcher::SketchObject>());
 
                 return false;
             }
 
-            Gui::Command::commitCommand();
+            commitCommand();
 
             // add auto constraints for the center point
             if (!sugConstr1.empty()) {
@@ -347,30 +378,33 @@ public:
 
             // add suggested constraints for start of arc
             if (!sugConstr3.empty()) {
-                createAutoConstraints(sugConstr3,
-                                      currentgeoid,
-                                      isOriginalArcCCW ? Sketcher::PointPos::start
-                                                       : Sketcher::PointPos::end);
+                createAutoConstraints(
+                    sugConstr3,
+                    currentgeoid,
+                    isOriginalArcCCW ? Sketcher::PointPos::start : Sketcher::PointPos::end
+                );
                 sugConstr3.clear();
             }
 
             // add suggested constraints for start of arc
             if (!sugConstr4.empty()) {
-                createAutoConstraints(sugConstr4,
-                                      currentgeoid,
-                                      isOriginalArcCCW ? Sketcher::PointPos::end
-                                                       : Sketcher::PointPos::start);
+                createAutoConstraints(
+                    sugConstr4,
+                    currentgeoid,
+                    isOriginalArcCCW ? Sketcher::PointPos::end : Sketcher::PointPos::start
+                );
                 sugConstr4.clear();
             }
 
             tryAutoRecomputeIfNotSolve(sketchgui->getObject<Sketcher::SketchObject>());
 
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Preferences/Mod/Sketcher");
+                "User parameter:BaseApp/Preferences/Mod/Sketcher"
+            );
             bool continuousMode = hGrp->GetBool("ContinuousCreationMode", true);
             if (continuousMode) {
                 // This code enables the continuous creation mode.
-                Mode = STATUS_SEEK_First;
+                Mode = SelectMode::First;
                 EditCurve.clear();
                 drawEdit(EditCurve);
                 EditCurve.resize(34);
@@ -401,7 +435,7 @@ protected:
     SelectMode Mode;
     std::vector<Base::Vector2d> EditCurve;
     Base::Vector2d centerPoint, axisPoint, startingPoint, endPoint;
-    double rx, ry, startAngle, endAngle, arcAngle, arcAngle_t;
+    double startAngle, endAngle, arcAngle;
     std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3, sugConstr4;
 
 private:
@@ -412,31 +446,47 @@ private:
         return Gui::lookupHints<SelectMode>(
             Mode,
             {
-                {.state = STATUS_SEEK_First,
+                {.state = SelectMode::First,
                  .hints =
                      {
                          {tr("%1 pick ellipse center"), {MouseLeft}},
                      }},
-                {.state = STATUS_SEEK_Second,
+                {.state = SelectMode::Second,
                  .hints =
                      {
                          {tr("%1 pick axis point"), {MouseLeft}},
                      }},
-                {.state = STATUS_SEEK_Third,
+                {.state = SelectMode::Third,
                  .hints =
                      {
                          {tr("%1 pick arc start point"), {MouseLeft}},
                      }},
-                {.state = STATUS_SEEK_Fourth,
+                {.state = SelectMode::Fourth,
                  .hints =
                      {
                          {tr("%1 pick arc end point"), {MouseLeft}},
                      }},
             });
     }
+
+    bool validThirdPoint(Base::Vector2d onSketchPos)
+    {
+        Base::Vector2d delta12 = axisPoint - centerPoint;
+
+        double a = delta12.Length();
+
+        Base::Vector2d aDir = delta12.Normalize();
+        Base::Vector2d bDir(-aDir.y, aDir.x);
+
+        Base::Vector2d delta13 = onSketchPos - centerPoint;
+        Base::Vector2d delta13Prime(
+            delta13.x * aDir.x + delta13.y * aDir.y,
+            delta13.x * bDir.x + delta13.y * bDir.y
+        );
+
+        double cosT = max(-1.0, min(1.0, delta13Prime.x / a));
+        return cosT != -1.0 && cosT != 1.0 && delta13Prime.y != 0;
+    }
 };
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerArcOfEllipse_H

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-3.0-only
 /***************************************************************************
  *                                                                         *
  *   Copyright: https://code.google.com/p/qsint/                           *
@@ -90,11 +91,6 @@ ActionGroup *ActionPanel::createGroup(const QPixmap &icon, const QString &title,
     auto *group = new ActionGroup(icon, title, expandable, this);
     addWidget(group);
     return group;
-}
-
-QSize ActionPanel::minimumSizeHint() const
-{
-    return {200,150};
 }
 
 } // namespace QSint

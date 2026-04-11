@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2022-2023 FreeCAD Project Association                   *
@@ -31,15 +32,15 @@ import FreeCAD
 
 def get_python_exe() -> str:
     """Find Python. In preference order
-    A) The value of the BaseApp/Preferences/PythonConsole/ExternalPythonExecutable user preference
+    A) The value of the BaseApp/Preferences/PythonConsole/PathToPythonExecutable user preference
     B) The executable located in the same bin directory as FreeCAD and called "python3"
     C) The executable located in the same bin directory as FreeCAD and called "python"
     D) The result of a shutil search for your system's "python3" executable
     E) The result of a shutil search for your system's "python" executable"""
     prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/PythonConsole")
-    python_exe = prefs.GetString("ExternalPythonExecutable", "Not set")
+    python_exe = prefs.GetString("PathToPythonExecutable", "")
     fc_dir = FreeCAD.getHomePath()
-    if not python_exe or python_exe == "Not set" or not os.path.exists(python_exe):
+    if not python_exe or not os.path.exists(python_exe):
         python_exe = os.path.join(fc_dir, "bin", "python3")
         if "Windows" in platform.system():
             python_exe += ".exe"
@@ -59,5 +60,4 @@ def get_python_exe() -> str:
         return ""
 
     python_exe = python_exe.replace("/", os.path.sep)
-    prefs.SetString("ExternalPythonExecutable", python_exe)
     return python_exe

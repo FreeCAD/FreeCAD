@@ -11,13 +11,13 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Projection on surface</string>
+   <string>Project on Surface</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QPushButton" name="pushButtonAddProjFace">
      <property name="text">
-      <string>Select projection surface</string>
+      <string>Select Projection Surface</string>
      </property>
     </widget>
    </item>
@@ -28,21 +28,21 @@
        <item>
         <widget class="QPushButton" name="pushButtonAddFace">
          <property name="text">
-          <string>Add face</string>
+          <string>Add Face</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QPushButton" name="pushButtonAddWire">
          <property name="text">
-          <string>Add wire</string>
+          <string>Add Wire</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QPushButton" name="pushButtonAddEdge">
          <property name="text">
-          <string>Add edge</string>
+          <string>Add Edge</string>
          </property>
         </widget>
        </item>
@@ -73,7 +73,7 @@
        <item>
         <widget class="QRadioButton" name="radioButtonEdges">
          <property name="text">
-          <string>Show Edges</string>
+          <string>Show edges</string>
          </property>
          <property name="checked">
           <bool>false</bool>
@@ -144,7 +144,7 @@
       <item>
        <widget class="QPushButton" name="pushButtonGetCurrentCamDir">
         <property name="text">
-         <string>Get current camera direction</string>
+         <string>Get Current Camera Direction</string>
         </property>
        </widget>
       </item>
@@ -153,7 +153,7 @@
         <item>
          <widget class="QPushButton" name="pushButtonDirX">
           <property name="text">
-           <string>X:</string>
+           <string>X</string>
           </property>
          </widget>
         </item>
@@ -183,7 +183,7 @@
         <item>
          <widget class="QPushButton" name="pushButtonDirY">
           <property name="text">
-           <string>Y:</string>
+           <string>Y</string>
           </property>
          </widget>
         </item>
@@ -210,7 +210,7 @@
         <item>
          <widget class="QPushButton" name="pushButtonDirZ">
           <property name="text">
-           <string>Z:</string>
+           <string>Z</string>
           </property>
          </widget>
         </item>

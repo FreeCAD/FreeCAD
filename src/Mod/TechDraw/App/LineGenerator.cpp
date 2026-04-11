@@ -35,10 +35,6 @@
 //! the graphical elements and line definitions are stored in csv files.
 //! these values only change if ISO128.20 or ANSI Y14.2 change
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
-
 #include <QVector>
 
 #include <Base/Console.h>

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2006 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_FEATUREPARTPOLYGON_H
-#define PART_FEATUREPARTPOLYGON_H
+#pragma once
 
 #include <App/PropertyGeo.h>
 
@@ -31,7 +32,7 @@
 namespace Part
 {
 
-class Polygon : public Part::Feature
+class Polygon: public Part::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::Polygon);
 
@@ -40,16 +41,14 @@ public:
     ~Polygon() override;
 
     App::PropertyVectorList Nodes;
-    App::PropertyBool       Close;
+    App::PropertyBool Close;
 
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
     //@}
 };
 
-} //namespace Part
-
-#endif // PART_FEATUREPARTPOLYGON_H
+}  // namespace Part

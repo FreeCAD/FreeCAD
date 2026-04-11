@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Gui/BitmapFactory.h>
 
@@ -112,7 +111,7 @@ void TaskSelectLineAttributes::changeEvent(QEvent *e)
 
 void TaskSelectLineAttributes::setUiEdit()
 {
-    setWindowTitle(tr("Select line attributes"));
+    setWindowTitle(tr("Select Line Attributes"));
     int lineStyle = LineFormat::getCurrentLineFormat().getStyle();
     // line numbering starts at 1, not 0
     DrawGuiUtil::loadLineStyleChoices(ui->cbLineStyle, m_lineGenerator);
@@ -164,10 +163,7 @@ bool TaskSelectLineAttributes::accept()
         LineFormat::getCurrentLineFormat().setWidth(TechDraw::LineGroup::getDefaultWidth("Graphic"));
     }
 
-    QColor qTemp = ui->cbColor->color();
-    Base::Color temp;
-    temp.set(qTemp.redF(), qTemp.greenF(), qTemp.blueF(), 1.0 - qTemp.alphaF());
-    LineFormat::getCurrentLineFormat().setColor(temp);
+    LineFormat::getCurrentLineFormat().setQColor(ui->cbColor->color());
 
     double cascadeSpacing = ui->sbSpacing->value();
     activeDimAttributes.setCascadeSpacing(cascadeSpacing);

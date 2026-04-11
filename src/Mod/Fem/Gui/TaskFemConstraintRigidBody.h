@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskFemConstraintRigidBody_H
-#define GUI_TASKVIEW_TaskFemConstraintRigidBody_H
+#pragma once
 
 #include <QObject>
 
@@ -38,8 +37,10 @@ class TaskFemConstraintRigidBody: public TaskFemConstraintOnBoundary
     Q_OBJECT
 
 public:
-    explicit TaskFemConstraintRigidBody(ViewProviderFemConstraintRigidBody* ConstraintView,
-                                        QWidget* parent = nullptr);
+    explicit TaskFemConstraintRigidBody(
+        ViewProviderFemConstraintRigidBody* ConstraintView,
+        QWidget* parent = nullptr
+    );
     ~TaskFemConstraintRigidBody() override;
 
     const std::string getReferences() const override;
@@ -84,5 +85,3 @@ public:
 };
 
 }  // namespace FemGui
-
-#endif  // GUI_TASKVIEW_TaskFemConstraintRigidBody_H

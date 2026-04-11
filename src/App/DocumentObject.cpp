@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
@@ -21,27 +23,25 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <stack>
 #include <memory>
 #include <map>
 #include <set>
 #include <vector>
 #include <string>
-#endif
 
-#include <App/DocumentObjectPy.h>
 #include <Base/Console.h>
 #include <Base/Matrix.h>
+#include <Base/Placement.h>
 #include <Base/Tools.h>
 #include <Base/Writer.h>
 
+#include "Expression.h"
 #include "Application.h"
 #include "ElementNamingUtils.h"
 #include "Document.h"
 #include "DocumentObject.h"
+#include "DocumentObjectPy.h"
 #include "DocumentObjectExtension.h"
 #include "DocumentObjectGroup.h"
 #include "GeoFeatureGroupExtension.h"
@@ -140,12 +140,10 @@ void DocumentObject::printInvalidLinks() const
             scopenames.pop_back();
         }
 
-        Base::Console().warning("%s: Link(s) to object(s) '%s' go out of the allowed scope '%s'. "
-                                "Instead, the linked object(s) reside within '%s'.\n",
+        Base::Console().warning("%s: %s links are out of scope. Out of scope links to: %s\n",
                                 getTypeId().getName(),
-                                objnames.c_str(),
                                 getNameInDocument(),
-                                scopenames.c_str());
+                                objnames.c_str());
     }
     catch (const Base::Exception& e) {
         e.reportException();
@@ -206,13 +204,6 @@ bool DocumentObject::recomputeFeature(bool recursive)
     return isValid();
 }
 
-/**
- * @brief Set this document object touched.
- * Touching a document object does not mean to recompute it, it only means that
- * other document objects that link it (i.e. its InList) will be recomputed.
- * If it should be forced to recompute a document object then use
- * \ref enforceRecompute() instead.
- */
 void DocumentObject::touch(bool noRecompute)
 {
     if (!noRecompute) {
@@ -224,54 +215,55 @@ void DocumentObject::touch(bool noRecompute)
     }
 }
 
-/**
- * @brief Set this document object freezed.
- * A freezed document object does not recompute ever.
- */
 void DocumentObject::freeze()
 {
     StatusBits.set(ObjectStatus::Freeze);
+
+    // store read-only property names
+    this->readOnlyProperties.clear();
+    std::vector<std::pair<const char*, Property*>> list;
+    static_cast<App::PropertyContainer*>(this)->getPropertyNamedList(list);
+    for (auto pair: list){
+        if (pair.second->isReadOnly()){
+            this->readOnlyProperties.push_back(pair.first);
+        } else {
+            pair.second->setReadOnly(true);
+        }
+    }
+
     // use the signalTouchedObject to refresh the Gui
     if (_pDoc) {
         _pDoc->signalTouchedObject(*this);
     }
 }
 
-/**
- * @brief Set this document object unfreezed.
- * A freezed document object does not recompute ever.
- */
 void DocumentObject::unfreeze(bool noRecompute)
 {
     StatusBits.reset(ObjectStatus::Freeze);
+
+    // reset read-only property status
+    std::vector<std::pair<const char*, Property*>> list;
+    static_cast<App::PropertyContainer*>(this)->getPropertyNamedList(list);
+
+    for (auto pair: list){
+        if (! std::count(readOnlyProperties.begin(), readOnlyProperties.end(), pair.first)){
+            pair.second->setReadOnly(false);
+        }
+    }
+
     touch(noRecompute);
 }
 
-/**
- * @brief Check whether the document object is touched or not.
- * @return true if document object is touched, false if not.
- */
 bool DocumentObject::isTouched() const
 {
     return ExpressionEngine.isTouched() || StatusBits.test(ObjectStatus::Touch);
 }
 
-/**
- * @brief Enforces this document object to be recomputed.
- * This can be useful to recompute the feature without
- * having to change one of its input properties.
- */
 void DocumentObject::enforceRecompute()
 {
     touch(false);
 }
 
-/**
- * @brief Check whether the document object must be recomputed or not.
- * This means that the 'Enforce' flag is set or that \ref mustExecute()
- * returns a value > 0.
- * @return true if document object must be recomputed, false if not.
- */
 bool DocumentObject::mustRecompute() const
 {
     if (StatusBits.test(ObjectStatus::Freeze)) {
@@ -622,7 +614,7 @@ bool DocumentObject::isInOutListRecursive(DocumentObject* linkTo) const
 }
 
 std::vector<std::list<App::DocumentObject*>>
-DocumentObject::getPathsByOutList(App::DocumentObject* to) const
+DocumentObject::getPathsByOutList(const App::DocumentObject* to) const
 {
     return _pDoc->getPathsByOutList(this, to);
 }
@@ -715,10 +707,33 @@ bool DocumentObject::removeDynamicProperty(const char* name)
 bool DocumentObject::renameDynamicProperty(Property* prop, const char* name)
 {
     std::string oldName = prop->getName();
+
+    auto expressions = ExpressionEngine.getExpressions();
+    std::vector<std::shared_ptr<Expression>> expressionsToMove;
+    std::vector<App::ObjectIdentifier> idsWithExprsToRemove;
+
+    for (const auto& [id, expr] : expressions) {
+        if (id.getProperty() == prop) {
+            idsWithExprsToRemove.push_back(id);
+            expressionsToMove.emplace_back(expr->copy());
+        }
+    }
+
+    for (const auto& it : idsWithExprsToRemove) {
+        ExpressionEngine.setValue(it, std::shared_ptr<Expression>());
+    }
+
     bool renamed = TransactionalObject::renameDynamicProperty(prop, name);
     if (renamed && _pDoc) {
         _pDoc->renamePropertyOfObject(this, prop, oldName.c_str());
     }
+
+
+    App::ObjectIdentifier idNewProp(prop->getContainer(), std::string(name));
+    for (auto& exprToMove : expressionsToMove) {
+        ExpressionEngine.setValue(idNewProp, exprToMove);
+    }
+
     return renamed;
 }
 
@@ -780,12 +795,11 @@ DocumentObject::onProposedLabelChange(std::string& newLabel)
     }
     if (doc && !newLabel.empty() && !_hPGrp->GetBool("DuplicateLabels") && !allowDuplicateLabel()
         && doc->containsLabel(newLabel)) {
-        // We must ensure the Label is unique in the document (well, sort of...).
+        // The label already exists but settings are such that duplicate labels should not be assigned.
         std::string objName = getNameInDocument();
-        if (doc->haveSameBaseName(objName, newLabel)) {
-            // The base name of the proposed label equals the base name of the object Name, so we
-            // use the object Name, which could actually be identical to another object's Label, but
-            // probably isn't.
+        if (!doc->containsLabel(objName) && doc->haveSameBaseName(objName, newLabel)) {
+            // The object name is not already a Label and the base name of the proposed label
+            // equals the base name of the object Name, so we use the object Name as the replacement Label.
             newLabel = objName;
         }
         else {
@@ -820,6 +834,10 @@ DocumentObject::onProposedLabelChange(std::string& newLabel)
 
 void DocumentObject::onEarlyChange(const Property* prop)
 {
+    if (isFreezed() && prop != &Visibility) {
+        return;
+    }
+
     if (GetApplication().isClosingAll()) {
         return;
     }
@@ -1150,42 +1168,21 @@ DocumentObject* DocumentObject::getLinkedObject(bool recursive,
 
 void DocumentObject::Save(Base::Writer& writer) const
 {
-    if (this->isFreezed()) {
-        throw Base::AbortException("At least one object is frozen, unable to save.");
-    }
-
-    if (this->isAttachedToDocument()){
+    if (this->isAttachedToDocument()) {
         writer.ObjectName = this->getNameInDocument();
     }
     App::ExtensionContainer::Save(writer);
 }
-
-/**
- * @brief Associate the expression \expr with the object identifier \a path in this document object.
- * @param path Target object identifier for the result of the expression
- * @param expr Expression tree
- */
 
 void DocumentObject::setExpression(const ObjectIdentifier& path, std::shared_ptr<Expression> expr)
 {
     ExpressionEngine.setValue(path, std::move(expr));
 }
 
-/**
- * @brief Clear the expression of the object identifier \a path in this document object.
- * @param path Target object identifier
- */
-
 void DocumentObject::clearExpression(const ObjectIdentifier& path)
 {
     setExpression(path, std::shared_ptr<Expression>());
 }
-
-/**
- * @brief Get expression information associated with \a path.
- * @param path Object identifier
- * @return Expression info, containing expression and optional comment.
- */
 
 const PropertyExpressionEngine::ExpressionInfo
 DocumentObject::getExpression(const ObjectIdentifier& path) const
@@ -1199,13 +1196,6 @@ DocumentObject::getExpression(const ObjectIdentifier& path) const
         return PropertyExpressionEngine::ExpressionInfo();
     }
 }
-
-/**
- * @brief Invoke ExpressionEngine's renameObjectIdentifier, to possibly rewrite expressions using
- * the \a paths map with current and new identifiers.
- *
- * @param paths
- */
 
 void DocumentObject::renameObjectIdentifiers(
     const std::map<ObjectIdentifier, ObjectIdentifier>& paths)
@@ -1568,3 +1558,54 @@ void DocumentObject::onPropertyStatusChanged(const Property& prop, unsigned long
         getDocument()->signalChangePropertyEditor(*getDocument(), prop);
     }
 }
+
+Base::Placement DocumentObject::getPlacementOf(const std::string& sub, DocumentObject* targetObj)
+{
+    Base::Placement plc;
+    auto* propPlacement = freecad_cast<App::PropertyPlacement*>(getPropertyByName("Placement"));
+    if (propPlacement) {
+        // If the object has no placement (like a Group), plc stays identity so we can proceed.
+        plc = propPlacement->getValue();
+    }
+
+    std::vector<std::string> names = Base::Tools::splitSubName(sub);
+
+    if (names.empty() || this == targetObj) {
+        return plc;
+    }
+
+    DocumentObject* subObj = getDocument()->getObject(names.front().c_str());
+
+    if (!subObj) {
+        return plc;
+    }
+
+    std::vector<std::string> newNames(names.begin() + 1, names.end());
+    std::string newSub = Base::Tools::joinList(newNames, ".");
+
+    return plc * subObj->getPlacementOf(newSub, targetObj);
+}
+
+Base::Placement DocumentObject::getPlacement() const
+{
+    Base::Placement plc;
+    if (auto* prop = getPlacementProperty()) {
+        plc = prop->getValue();
+    }
+    return plc;
+}
+
+App::PropertyPlacement* DocumentObject::getPlacementProperty() const
+{
+    if (auto linkExtension = getExtensionByType<App::LinkBaseExtension>(true)) {
+        if (auto linkPlacementProp = linkExtension->getLinkPlacementProperty()) {
+            return linkPlacementProp;
+        }
+
+        return linkExtension->getPlacementProperty();
+    }
+
+    return getPropertyByName<App::PropertyPlacement>("Placement");
+}
+
+

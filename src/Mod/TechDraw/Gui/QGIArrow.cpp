@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <cassert>
 # include <QPainterPath>
-#endif
+
 
 #include <Mod/TechDraw/App/ArrowPropEnum.h>
 

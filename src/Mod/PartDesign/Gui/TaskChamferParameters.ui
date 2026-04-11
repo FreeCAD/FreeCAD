@@ -17,8 +17,7 @@
    <item>
     <widget class="QToolButton" name="buttonRefSel">
      <property name="toolTip">
-      <string>Click button to enter selection mode,
-click again to end selection</string>
+      <string>Toggles between selection and preview mode</string>
      </property>
      <property name="text">
       <string>Select</string>
@@ -77,7 +76,7 @@ click again to end selection</string>
         <bool>false</bool>
        </property>
        <property name="toolTip">
-        <string>Flip direction</string>
+        <string>Flips the direction</string>
        </property>
        <property name="text">
         <string/>
@@ -117,7 +116,7 @@ click again to end selection</string>
    <item>
     <widget class="QCheckBox" name="checkBoxUseAllEdges">
      <property name="text">
-      <string>Use All Edges</string>
+      <string>Use all edges</string>
      </property>
     </widget>
    </item>

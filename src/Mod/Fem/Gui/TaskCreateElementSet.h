@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FemGui_TaskCreateElementSet_H
-#define FemGui_TaskCreateElementSet_H
+#pragma once
 
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/Fem/App/FemSetElementNodesObject.h>
@@ -57,8 +56,7 @@ class TaskCreateElementSet: public Gui::TaskView::TaskBox, public Gui::Selection
     Q_OBJECT
 
 public:
-    explicit TaskCreateElementSet(Fem::FemSetElementNodesObject* pcObject,
-                                  QWidget* parent = nullptr);
+    explicit TaskCreateElementSet(Fem::FemSetElementNodesObject* pcObject, QWidget* parent = nullptr);
     ~TaskCreateElementSet() override;
 
     std::set<long> elementTempSet;
@@ -89,5 +87,3 @@ private:
 };
 
 }  // namespace FemGui
-
-#endif  // FemGui_TaskCreateElementSet_H

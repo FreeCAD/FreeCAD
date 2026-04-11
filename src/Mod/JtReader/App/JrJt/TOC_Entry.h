@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /**************************************************************************
  *   Copyright (c) 2014 Juergen Riegel <juergen.riegel@web.de>             *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TOC_Entry_HEADER
-#define TOC_Entry_HEADER
+#pragma once
 
 #include <istream>
 #include <stdint.h>
@@ -72,6 +73,3 @@ struct TOC_Entry
     I32 Segment_Length;
     U32 Segment_Attributes;
 };
-
-
-#endif

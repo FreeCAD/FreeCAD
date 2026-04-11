@@ -48,6 +48,8 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
         for prop in self._get_properties():
             prop.add_to_object(obj)
 
+        obj.addExtension("Fem::WorkerExtensionPython")
+
     def _get_properties(self):
         prop = []
 
@@ -55,7 +57,7 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
             _PropHelper(
                 type="App::PropertyLinkList",
                 name="MeshRegionList",
-                group="Base",
+                group="Mesh Parameters",
                 doc="Refinements of the mesh",
                 value=[],
             )
@@ -517,6 +519,15 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
         )
         prop.append(
             _PropHelper(
+                type="App::PropertyBool",
+                name="Glue",
+                group="Mesh Parameters",
+                doc="Glue shapes to get a conformal mesh",
+                value=True,
+            )
+        )
+        prop.append(
+            _PropHelper(
                 type="App::PropertyEnumeration",
                 name="Fineness",
                 group="Mesh Parameters",
@@ -567,6 +578,13 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
                 )
                 # update enum values
                 setattr(obj, prop.name, prop.value)
+
+            # Migrate group of properties for old projects
+            if obj.getGroupOfProperty(prop.name) != prop.group:
+                obj.setGroupOfProperty(prop.name, prop.group)
+
+        if not obj.hasExtension("Fem::WorkerExtensionPython"):
+            obj.addExtension("Fem::WorkerExtensionPython")
 
     def get_predef_fineness_params(self, fineness):
         # set specific parameters by fineness

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Juergen Riegel <juergen.riegel@web.de>             *
  *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
@@ -21,8 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SPREADSHEET_ViewProviderImagePlane_H
-#define SPREADSHEET_ViewProviderImagePlane_H
+#pragma once
 
 #include <QPointer>
 
@@ -91,6 +92,3 @@ private:
 using ViewProviderSheetPython = Gui::ViewProviderFeaturePythonT<ViewProviderSheet>;
 
 }  // namespace SpreadsheetGui
-
-
-#endif  // SPREADSHEET_ViewProviderSpreadsheet_H

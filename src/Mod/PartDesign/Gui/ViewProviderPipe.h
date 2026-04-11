@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
@@ -21,19 +23,20 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderPipe_H
-#define PARTGUI_ViewProviderPipe_H
+#pragma once
 
-#include "ViewProviderAddSub.h"
+#include "ViewProvider.h"
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
-class PartDesignGuiExport ViewProviderPipe : public ViewProviderAddSub
+class PartDesignGuiExport ViewProviderPipe: public ViewProvider
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderPipe);
 
 public:
-    enum Reference {
+    enum Reference
+    {
         Spine,
         AuxiliarySpine,
         Profile,
@@ -46,19 +49,16 @@ public:
     ~ViewProviderPipe() override;
 
     /// grouping handling
-    std::vector<App::DocumentObject*> claimChildren()const override;
+    std::vector<App::DocumentObject*> claimChildren() const override;
     void setupContextMenu(QMenu*, QObject*, const char*) override;
 
-    bool onDelete(const std::vector<std::string> &) override;
     void highlightReferences(Reference mode, bool on);
 
 protected:
     QIcon getIcon() const override;
-    bool setEdit(int ModNum) override;
-    void unsetEdit(int ModNum) override;
 
     /// Returns a newly created TaskDlgPipeParameters
-    TaskDlgFeatureParameters *getEditDialog() override;
+    TaskDlgFeatureParameters* getEditDialog() override;
 
 private:
     void highlightReferences(Part::Feature*, const std::vector<std::string>&, bool);
@@ -68,7 +68,4 @@ private:
 };
 
 
-} // namespace PartDesignGui
-
-
-#endif // PARTGUI_ViewProviderPipe_H
+}  // namespace PartDesignGui

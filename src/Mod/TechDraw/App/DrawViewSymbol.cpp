@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <sstream>
 # include <QDomDocument>
-#endif
+
 
 #include <Base/Console.h>
 

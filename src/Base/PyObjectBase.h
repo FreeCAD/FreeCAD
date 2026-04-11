@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BASE_PYOBJECTBASE_H
-#define BASE_PYOBJECTBASE_H
+#pragma once
 
 // clang-format off
 // NOLINTBEGIN(cppcoreguidelines-macro-usage)
@@ -570,5 +571,3 @@ void PyRegisterEnum(PyObject* module, const char* name, const std::map<const cha
 
 // NOLINTEND(cppcoreguidelines-macro-usage)
 // clang-format on
-
-#endif  // BASE_PYOBJECTBASE_H

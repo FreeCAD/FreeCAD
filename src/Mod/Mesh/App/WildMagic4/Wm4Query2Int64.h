@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 // Wild Magic Source Code
 // David Eberly
 // http://www.geometrictools.com
@@ -14,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4QUERY2INT64_H
-#define WM4QUERY2INT64_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4Query2.h"
@@ -66,5 +67,3 @@ typedef Query2Int64<float> Query2Int64f;
 typedef Query2Int64<double> Query2Int64d;
 
 }
-
-#endif

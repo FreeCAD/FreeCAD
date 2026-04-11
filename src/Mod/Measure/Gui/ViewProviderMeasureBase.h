@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Friedli <david[at]friedli-be.ch>             *
  *                                                                         *
@@ -19,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef GUI_VIEWPROVIDER_MEASUREMENTBASE_H
-#define GUI_VIEWPROVIDER_MEASUREMENTBASE_H
+#pragma once
 
 #include <Mod/Measure/MeasureGlobal.h>
 
@@ -138,6 +139,7 @@ protected:
     void setLabelValue(const QString& value);
     void setLabelTranslation(const SbVec3f& position);
     void updateIcon();
+    void syncDraggerOrientationToView();
 
     SoPickStyle* getSoPickStyle();
     SoDrawStyle* getSoLineStylePrimary();
@@ -145,8 +147,10 @@ protected:
     SoSeparator* getSoSeparatorText();
 
     static constexpr double defaultTolerance = 10e-6;
-    virtual Base::Vector3d getTextDirection(Base::Vector3d elementDirection,
-                                            double tolerance = defaultTolerance);
+    virtual Base::Vector3d getTextDirection(
+        Base::Vector3d elementDirection,
+        double tolerance = defaultTolerance
+    );
     float getViewScale();
 
     // TODO: getters & setters and move variables to private?
@@ -164,7 +168,7 @@ protected:
     SoSeparator* pLineSeparatorSecondary;
 
 private:
-    boost::signals2::connection _mVisibilityChangedConnection;
+    fastsignals::connection _mVisibilityChangedConnection;
 };
 
 
@@ -241,7 +245,27 @@ public:
     }
 };
 
+class ViewProviderMeasureDiameter: public ViewProviderMeasure
+{
+    PROPERTY_HEADER(MeasureGui::ViewProviderMeasureDiameter);
+
+public:
+    ViewProviderMeasureDiameter()
+    {
+        sPixmap = "Measurement-Diameter";
+    }
+};
+
+class ViewProviderMeasureCOM: public ViewProviderMeasure
+{
+    PROPERTY_HEADER(MeasureGui::ViewProviderMeasureCOM);
+
+public:
+    ViewProviderMeasureCOM()
+    {
+        sPixmap = "Measurement-CenterOfMass";
+    }
+};
+
 
 }  // namespace MeasureGui
-
-#endif  // GUI_VIEWPROVIDER_MEASUREMENTBASE_H

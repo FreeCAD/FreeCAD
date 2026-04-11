@@ -22,9 +22,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__  = "FreeCAD SweetHome3D Importer"
+__title__ = "FreeCAD SweetHome3D Importer"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecad.org"
+__url__ = "https://www.freecad.org"
 
 ## @package importSH3D
 #  \ingroup ARCH
@@ -37,7 +37,6 @@ import zipfile
 
 import FreeCAD
 from FreeCAD import Base
-
 
 DEBUG = True
 
@@ -52,7 +51,7 @@ def open(filename):
     return doc
 
 
-def insert(filename,docname):
+def insert(filename, docname):
     "called when freecad wants to import a file"
     try:
         doc = FreeCAD.getDocument(docname)
@@ -67,8 +66,10 @@ def read(filename):
     "reads the file and creates objects in the active document"
 
     import BIM.importers.importSH3DHelper
+
     if DEBUG:
         from importlib import reload
+
         reload(BIM.importers.importSH3DHelper)
 
     pi = Base.ProgressIndicator()

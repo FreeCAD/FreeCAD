@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-3.0-only
 /***************************************************************************
  *                                                                         *
  *   Copyright: https://code.google.com/p/qsint/                           *
@@ -5,8 +6,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ACTIONPANELSCHEME_H
-#define ACTIONPANELSCHEME_H
+#pragma once
 
 #include "qsint_global.h"
 
@@ -136,5 +136,3 @@ private:
 };
 
 } // namespace QSint
-
-#endif // ACTIONPANELSCHEME_H

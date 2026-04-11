@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # ***************************************************************************
 # *   Copyright (c) 2022 FreeCAD Project Association                        *
 # *                                                                         *
@@ -123,8 +121,7 @@ class TestMetadata(unittest.TestCase):
         try:
             filename = os.path.join(tempfile.gettempdir(), b"H\xc3\xa5vard.xml".decode("utf-8"))
             xmlfile = codecs.open(filename, mode="w", encoding="utf-8")
-            xmlfile.write(
-                r"""<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+            xmlfile.write(r"""<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <package format="1" xmlns="https://wiki.freecad.org/Package_Metadata">
   <name>test</name>
   <description>Text</description>
@@ -135,8 +132,7 @@ class TestMetadata(unittest.TestCase):
       <classname>Workbench</classname>
     </workbench>
   </content>
-</package>"""
-            )
+</package>""")
             xmlfile.close()
             md = FreeCAD.Metadata(filename)
             self.assertEqual(md.Name, "test")

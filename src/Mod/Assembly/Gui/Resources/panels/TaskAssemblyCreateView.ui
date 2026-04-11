@@ -11,13 +11,13 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Create Exploded View</string>
+   <string>Exploded View</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
     <widget class="Gui::PrefCheckBox" name="CheckBox_PartsAsSingleSolid">
      <property name="toolTip">
-      <string>If checked, Parts will be selected as a single solid.</string>
+      <string>If checked, parts will be selected as a single solid</string>
      </property>
      <property name="text">
       <string>Parts as single solid</string>
@@ -39,23 +39,21 @@
    <item row="3" column="0">
     <widget class="QPushButton" name="btnAlignDragger">
      <property name="text">
-      <string>Align dragger</string>
+      <string>Align Dragger</string>
      </property>
     </widget>
    </item>
    <item row="4" column="0">
     <widget class="QLabel" name="LabelAlignDragger">
      <property name="text">
-      <string>Aligning dragger:
-Select a feature.
-Press ESC to cancel.</string>
+      <string>Select a feature to align. Press Esc to cancel.</string>
      </property>
     </widget>
    </item>
    <item row="5" column="0">
     <widget class="QPushButton" name="btnRadialExplosion">
      <property name="text">
-      <string>Explode radially</string>
+      <string>Explode Radially</string>
      </property>
     </widget>
    </item>

@@ -75,7 +75,7 @@
         <item>
          <widget class="QPushButton" name="buttonAddFeature">
           <property name="text">
-           <string>Add feature</string>
+           <string>Add Feature</string>
           </property>
           <property name="checkable">
            <bool>true</bool>
@@ -85,7 +85,7 @@
         <item>
          <widget class="QPushButton" name="buttonRemoveFeature">
           <property name="text">
-           <string>Remove feature</string>
+           <string>Remove Feature</string>
           </property>
           <property name="checkable">
            <bool>true</bool>
@@ -119,7 +119,7 @@
    <item>
     <widget class="QCheckBox" name="checkBoxUpdateView">
      <property name="text">
-      <string>Update view</string>
+      <string>Recompute on change</string>
      </property>
      <property name="checked">
       <bool>true</bool>

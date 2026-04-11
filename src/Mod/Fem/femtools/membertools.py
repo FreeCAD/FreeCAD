@@ -27,7 +27,6 @@ This module contains function for managing a analysis and all the different
 types of objects it contains, helper for executing a simulation.
 """
 
-
 __title__ = "FEM analysis tools"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "https://www.freecad.org"
@@ -275,6 +274,7 @@ class AnalysisMember:
         self.cons_force = self.get_several_member("Fem::ConstraintForce")
         self.cons_heatflux = self.get_several_member("Fem::ConstraintHeatflux")
         self.cons_initialtemperature = self.get_several_member("Fem::ConstraintInitialTemperature")
+        self.cons_finaltemperature = self.get_several_member("Fem::ConstraintInitialTemperature")
         self.cons_planerotation = self.get_several_member("Fem::ConstraintPlaneRotation")
         self.cons_pressure = self.get_several_member("Fem::ConstraintPressure")
         self.cons_sectionprint = self.get_several_member("Fem::ConstraintSectionPrint")
@@ -282,7 +282,7 @@ class AnalysisMember:
         self.cons_temperature = self.get_several_member("Fem::ConstraintTemperature")
         self.cons_tie = self.get_several_member("Fem::ConstraintTie")
         self.cons_transform = self.get_several_member("Fem::ConstraintTransform")
-        self.cons_electrostatic = self.get_several_member("Fem::ConstraintElectrostaticPotential")
+        self.cons_electrostatic = self.get_several_member("Fem::ConstraintElectromagnetic")
         self.cons_electricchargedensity = self.get_several_member(
             "Fem::ConstraintElectricChargeDensity"
         )

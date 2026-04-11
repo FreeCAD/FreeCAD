@@ -20,16 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAW_PRECOMPILED_H
-#define TECHDRAW_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
-
-#ifdef _MSC_VER
-# pragma warning( disable : 4275 )
-#endif
-
-#ifdef _PreComp_
 
 // standard
 #include <algorithm>
@@ -67,6 +60,3 @@
 
 // OpenCasCade
 #include <Mod/Part/App/OpenCascadeAll.h>
-
-#endif // _PreComp_
-#endif

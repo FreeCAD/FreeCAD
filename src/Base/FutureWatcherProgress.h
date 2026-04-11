@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef BASE_FUTUREWATCHER_H
-#define BASE_FUTUREWATCHER_H
+#pragma once
 
 #include <QObject>
 #include <Base/Sequencer.h>
@@ -52,5 +53,3 @@ private:
     unsigned int steps, current {0};
 };
 }  // namespace Base
-
-#endif  // BASE_FUTUREWATCHER_H

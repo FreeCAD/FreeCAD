@@ -20,32 +20,36 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUINATIVEEVENT_H
-#define GUINATIVEEVENT_H
+#pragma once
 
 #include "GuiAbstractNativeEvent.h"
+#include <memory>
 
 class QMainWindow;
+class QSocketNotifier;
 
 namespace Gui
 {
-    class GUIApplicationNativeEventAware;
+class GUIApplicationNativeEventAware;
+class DeadzoneCache;
 
-    class GuiNativeEvent : public GuiAbstractNativeEvent
-    {
+class GuiNativeEvent: public GuiAbstractNativeEvent
+{
     Q_OBJECT
-    public:
-        GuiNativeEvent(GUIApplicationNativeEventAware *app);
-        ~GuiNativeEvent() override;
-        void initSpaceball(QMainWindow *window) override final;
-    private:
-        GuiNativeEvent();
-        GuiNativeEvent(const GuiNativeEvent&);
-        GuiNativeEvent& operator=(const GuiNativeEvent&);
-    private Q_SLOTS:
-        void pollSpacenav();
-    };
-}
+public:
+    GuiNativeEvent(GUIApplicationNativeEventAware* app);
+    ~GuiNativeEvent() override;
+    void initSpaceball(QMainWindow* window) override final;
 
-#endif //GUINATIVEEVENT_H
+private:
+    GuiNativeEvent();
+    GuiNativeEvent(const GuiNativeEvent&);
+    GuiNativeEvent& operator=(const GuiNativeEvent&);
 
+    std::unique_ptr<DeadzoneCache> dzCache;
+    QSocketNotifier* spnavNotifier {nullptr};
+
+private Q_SLOTS:
+    void pollSpacenav();
+};
+}  // namespace Gui

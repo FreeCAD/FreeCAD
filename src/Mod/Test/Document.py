@@ -75,6 +75,23 @@ class DocumentBasicCases(unittest.TestCase):
         FreeCAD.closeDocument(doc.Name)
         self.Doc = FreeCAD.newDocument("CreateTest")
 
+    def testIssue24571(self):
+        obj = self.Doc.addObject("App::FeatureTest", "Object")
+        obj.ConstraintInt = (50, 0, 100, 1)
+        obj.ConstraintFloat = (50.0, 0.0, 100.0, 1.0)
+        self.Doc = self.saveAndRestore()
+        obj = self.Doc.getObject("Object")
+        # int
+        obj.ConstraintInt = -1
+        self.assertEqual(obj.ConstraintInt, 0)
+        obj.ConstraintInt = 101
+        self.assertEqual(obj.ConstraintInt, 100)
+        # float
+        obj.ConstraintFloat = -1.0
+        self.assertEqual(obj.ConstraintFloat, 0.0)
+        obj.ConstraintFloat = 101.0
+        self.assertEqual(obj.ConstraintFloat, 100.0)
+
     def testAccessByNameOrID(self):
         obj = self.Doc.addObject("App::DocumentObject", "MyName")
 
@@ -431,7 +448,7 @@ class DocumentBasicCases(unittest.TestCase):
 
         # test if the method override works
         class SpecialGroup:
-            def allowObject(self, obj):
+            def allowObject(self, ext, obj):
                 return False
 
         callback = SpecialGroup()
@@ -444,7 +461,7 @@ class DocumentBasicCases(unittest.TestCase):
             grp2.addObject(obj)
             self.assertTrue(len(grp2.Group) == 0)
         except Exception:
-            self.assertTrue(True)
+            self.assertTrue(False)
 
         self.Doc.removeObject(grp.Name)
         self.Doc.removeObject(grp2.Name)
@@ -666,53 +683,20 @@ class DocumentBasicCases(unittest.TestCase):
         root = ET.fromstring(test.Content)
         self.assertEqual(root.tag, "Properties")
 
+    def testValidateXml(self):
+        self.Doc.openTransaction("Add")
+        obj = self.Doc.addObject("App::FeatureTest", "Label")
+        obj.Label = "abc\x01ef"
+        TempPath = tempfile.gettempdir()
+        SaveName = TempPath + os.sep + "CreateTest.FCStd"
+        self.Doc.saveAs(SaveName)
+        FreeCAD.closeDocument(self.Doc.Name)
+        self.Doc = FreeCAD.open(SaveName)
+        self.assertEqual(self.Doc.ActiveObject.Label, "abc_ef")
+
     def tearDown(self):
         # closing doc
         FreeCAD.closeDocument("CreateTest")
-
-
-class DocumentImportCases(unittest.TestCase):
-    def testDXFImportCPPIssue20195(self):
-        if "BUILD_DRAFT" in FreeCAD.__cmake__:
-            import importDXF
-            from draftutils import params
-
-            # Set options, doing our best to restore them:
-            wasShowDialog = params.get_param("dxfShowDialog")
-            wasUseLayers = params.get_param("dxfUseDraftVisGroups")
-            wasUseLegacyImporter = params.get_param("dxfUseLegacyImporter")
-            wasCreatePart = params.get_param("dxfCreatePart")
-            wasCreateDraft = params.get_param("dxfCreateDraft")
-            wasCreateSketch = params.get_param("dxfCreateSketch")
-
-            try:
-                # disable Preferences dialog in gui mode (avoids popup prompt to user)
-                params.set_param("dxfShowDialog", False)
-                # Preserve the DXF layers (makes the checking of document contents easier)
-                params.set_param("dxfUseDraftVisGroups", True)
-                # Use the new C++ importer -- that's where the bug was
-                params.set_param("dxfUseLegacyImporter", False)
-                # create simple part shapes (3 params)
-                # This is required to display the bug because creation of Draft objects clears out the
-                # pending exception this test is looking for, whereas creation of the simple shape object
-                # actually throws on the pending exception so the entity is absent from the document.
-                params.set_param("dxfCreatePart", True)
-                params.set_param("dxfCreateDraft", False)
-                params.set_param("dxfCreateSketch", False)
-                importDXF.insert(
-                    FreeCAD.getHomePath() + "Mod/Test/TestData/DXFSample.dxf", "ImportedDocName"
-                )
-            finally:
-                params.set_param("dxfShowDialog", wasShowDialog)
-                params.set_param("dxfUseDraftVisGroups", wasUseLayers)
-                params.set_param("dxfUseLegacyImporter", wasUseLegacyImporter)
-                params.set_param("dxfCreatePart", wasCreatePart)
-                params.set_param("dxfCreateDraft", wasCreateDraft)
-                params.set_param("dxfCreateSketch", wasCreateSketch)
-            doc = FreeCAD.getDocument("ImportedDocName")
-            # This doc should have 3 objects: The Layers container, the DXF layer called 0, and one Line
-            self.assertEqual(len(doc.Objects), 3)
-            FreeCAD.closeDocument("ImportedDocName")
 
 
 # class must be defined in global scope to allow it to be reloaded on document open
@@ -721,7 +705,7 @@ class SaveRestoreSpecialGroup:
         obj.addExtension("App::GroupExtensionPython")
         obj.Proxy = self
 
-    def allowObject(self, obj):
+    def allowObject(self, ext, obj):
         return False
 
 
@@ -2707,3 +2691,49 @@ class DocumentAutoCreatedCases(unittest.TestCase):
             FreeCAD.closeDocument("TestDoc")
         self.assertIn("TestDoc", FreeCAD.listDocuments())
         self.assertIn("SavedDoc", FreeCAD.listDocuments())
+
+
+# Test if actions done on two documents are undone together
+# (working toward making this test pass)
+class MultiDocumentUndo(unittest.TestCase):
+    def setUp(self):
+        self.Doc1 = FreeCAD.newDocument("Doc1")
+        self.Doc2 = FreeCAD.newDocument("Doc2")
+        self.Doc1.UndoMode = 1
+        self.Doc2.UndoMode = 1
+
+    def testAddObjects(self):
+        self.Doc1.openTransaction("transact1")
+        self.Doc2.openTransaction("transact2")
+
+        obj1 = self.Doc1.addObject("App::DocumentObject", "Obj1Name")
+        obj2 = self.Doc2.addObject("App::DocumentObject", "Obj2Name")
+
+        self.assertNotEqual(self.Doc1.getBookedTransactionID(), self.Doc2.getBookedTransactionID())
+
+        self.Doc1.commitTransaction()
+        self.Doc2.commitTransaction()
+
+        with self.assertRaises(TypeError):
+            self.Doc1.getObject([1])
+            self.Doc2.getObject([1])
+
+        self.assertEqual(self.Doc1.getObject("Obj1Name"), obj1)
+        self.assertEqual(self.Doc2.getObject("Obj2Name"), obj2)
+
+        self.Doc1.undo()
+        self.assertEqual(self.Doc1.getObject("Obj1Name"), None)
+        self.assertEqual(self.Doc2.getObject("Obj2Name"), obj2)
+
+        self.Doc2.undo()
+        self.assertEqual(self.Doc1.getObject("Obj1Name"), None)
+        self.assertEqual(self.Doc2.getObject("Obj2Name"), None)
+
+        self.Doc1.redo()
+        self.assertEqual(self.Doc1.getObject("Obj1Name"), obj1)
+        self.assertEqual(self.Doc2.getObject("Obj2Name"), None)
+
+    def tearDown(self):
+        # closing doc
+        FreeCAD.closeDocument("Doc1")
+        FreeCAD.closeDocument("Doc2")

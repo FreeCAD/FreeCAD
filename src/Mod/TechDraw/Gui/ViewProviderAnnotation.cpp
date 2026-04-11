@@ -21,14 +21,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QPushButton>
-#endif
 
 #include <App/DocumentObject.h>
 #include <Gui/ComboView.h>
 #include <Gui/DockWindowManager.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/propertyeditor/PropertyEditor.h>
 #include <Gui/propertyeditor/PropertyModel.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
@@ -98,6 +96,7 @@ TechDraw::DrawViewAnnotation* ViewProviderAnnotation::getViewObject() const
 bool ViewProviderAnnotation::doubleClicked()
 {
     setEdit(ViewProvider::Default);
+    Gui::Selection().clearSelection();
     return true;
 }
 

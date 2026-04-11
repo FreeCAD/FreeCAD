@@ -22,8 +22,7 @@
 
 /* Text completion mechanism */
 
-#ifndef GUI_TEXTEDIT_H
-#define GUI_TEXTEDIT_H
+#pragma once
 
 #include <QListWidget>
 #include <QPlainTextEdit>
@@ -32,20 +31,21 @@
 #include "Window.h"
 
 
-namespace Gui {
+namespace Gui
+{
 class CompletionBox;
 class SyntaxHighlighter;
 
 /**
  * Completion is a means by which an editor automatically completes words that the user is typing.
- * For example, in a code editor, a programmer might type "sur", then Tab, and the editor will complete
- * the word the programmer was typing so that "sur" is replaced by "surnameLineEdit". This is very
- * useful for text that contains long words or variable names. The completion mechanism usually works
- * by looking at the existing text to see if any words begin with what the user has typed, and in most
- * editors completion is invoked by a special key sequence.
+ * For example, in a code editor, a programmer might type "sur", then Tab, and the editor will
+ * complete the word the programmer was typing so that "sur" is replaced by "surnameLineEdit". This
+ * is very useful for text that contains long words or variable names. The completion mechanism
+ * usually works by looking at the existing text to see if any words begin with what the user has
+ * typed, and in most editors completion is invoked by a special key sequence.
  *
- * TextEdit can detect a special key sequence to invoke the completion mechanism, and can handle three
- * different situations:
+ * TextEdit can detect a special key sequence to invoke the completion mechanism, and can handle
+ * three different situations:
  * \li There are no possible completions.
  * \li There is a single possible completion.
  * \li There are two or more possible completions.
@@ -54,12 +54,12 @@ class SyntaxHighlighter;
  * @author Werner Mayer
  */
 class CompletionList;
-class GuiExport TextEdit : public QPlainTextEdit
+class GuiExport TextEdit: public QPlainTextEdit
 {
     Q_OBJECT
 
 public:
-    explicit TextEdit(QWidget *parent = nullptr);
+    explicit TextEdit(QWidget* parent = nullptr);
     ~TextEdit() override;
 
     //! Get the cursor position of the current line being edited
@@ -71,12 +71,12 @@ private Q_SLOTS:
     void complete();
 
 Q_SIGNALS:
-    void showSearchBar();
+    void showSearchBar(const QString& prefill);
     void findNext();
     void findPrevious();
 
 protected:
-    void keyPressEvent(QKeyEvent *) override;
+    void keyPressEvent(QKeyEvent*) override;
     void wheelEvent(QWheelEvent* e) override;
     CallTipsList* callTipsList = nullptr;
 
@@ -84,25 +84,26 @@ private:
     void createListBox();
 
 private:
+    QString selectionForSearch() const;
     QString wordPrefix;
     int cursorPosition;
-    CompletionList *listBox;
+    CompletionList* listBox;
 };
 
 class SyntaxHighlighter;
-class GuiExport TextEditor : public TextEdit, public WindowParameter
+class GuiExport TextEditor: public TextEdit, public WindowParameter
 {
     Q_OBJECT
 
 public:
-    explicit TextEditor(QWidget *parent = nullptr);
+    explicit TextEditor(QWidget* parent = nullptr);
     ~TextEditor() override;
     void setSyntaxHighlighter(SyntaxHighlighter*);
 
-    void OnChange(Base::Subject<const char*> &rCaller,const char* rcReason) override;
+    void OnChange(Base::Subject<const char*>& rCaller, const char* rcReason) override;
 
     /** Draw a beam in the line where the cursor is. */
-    void lineNumberAreaPaintEvent(QPaintEvent* );
+    void lineNumberAreaPaintEvent(QPaintEvent*);
     int lineNumberAreaWidth();
     void setVisibleLineNumbers(bool value);
     bool isVisibleLineNumbers() const;
@@ -111,13 +112,15 @@ public:
 
 private Q_SLOTS:
     void updateLineNumberAreaWidth(int newBlockCount);
-    void updateLineNumberArea(const QRect &, int);
+    void updateLineNumberArea(const QRect&, int);
     void highlightCurrentLine();
 
 protected:
     void resizeEvent(QResizeEvent* e) override;
     QWidget* getMarker() const
-    { return lineNumberArea; }
+    {
+        return lineNumberArea;
+    }
     virtual void drawMarker(int line, int x, int y, QPainter*);
 
 private:
@@ -132,11 +135,11 @@ private:
  *  python editor and the python console where we handle
  *  the tab key conversion to spaces, depending on user settings
  */
-class GuiExport PythonTextEditor : public TextEditor
+class GuiExport PythonTextEditor: public TextEditor
 {
     Q_OBJECT
 public:
-    explicit PythonTextEditor(QWidget *parent = nullptr);
+    explicit PythonTextEditor(QWidget* parent = nullptr);
     ~PythonTextEditor() override;
 
 public Q_SLOTS:
@@ -150,25 +153,37 @@ public Q_SLOTS:
     void remove(const QString& str);
 
 protected:
-    void keyPressEvent(QKeyEvent *) override;
+    void keyPressEvent(QKeyEvent*) override;
 };
 
-
-class LineMarker : public QWidget
+/**
+ * @brief Line number widget (left margin gutter).
+ *
+ * Handles line number and mouse-based line range selections.
+ */
+class LineMarker: public QWidget
 {
     Q_OBJECT
 
 public:
     explicit LineMarker(TextEditor* editor);
-    ~LineMarker() override;
+    ~LineMarker() override = default;
 
     QSize sizeHint() const override;
 
 protected:
-    void paintEvent (QPaintEvent *) override;
+    void paintEvent(QPaintEvent* event) override;
+    void mousePressEvent(QMouseEvent* event) override;
+    void mouseMoveEvent(QMouseEvent* event) override;
+    void mouseReleaseEvent(QMouseEvent* event) override;
 
 private:
-    TextEditor *textEditor;
+    TextEditor* const textEditor;
+    int anchorLine = -1;
+    bool dragging = false;
+
+    QTextBlock blockAtPosition(int y) const;
+    void selectBlocks(int startLine, int endLine);
 };
 
 /**
@@ -176,7 +191,7 @@ private:
  * an accelerator to complete the current word they are typing in.
  * @author Werner Mayer
  */
-class CompletionList : public QListWidget
+class CompletionList: public QListWidget
 {
     Q_OBJECT
 
@@ -189,15 +204,13 @@ public:
     void findCurrentWord(const QString&);
 
 protected:
-    bool eventFilter(QObject *, QEvent *) override;
+    bool eventFilter(QObject*, QEvent*) override;
 
 private Q_SLOTS:
-    void completionItem(QListWidgetItem *item);
+    void completionItem(QListWidgetItem* item);
 
 private:
     QPlainTextEdit* textEdit;
 };
 
-} // namespace Gui
-
-#endif // GUI_TEXTEDIT_H
+}  // namespace Gui

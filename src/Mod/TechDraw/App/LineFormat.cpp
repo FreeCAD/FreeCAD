@@ -22,10 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
-
 #include "LineGroup.h"
 #include "LineGenerator.h"
 #include "Preferences.h"

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,8 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QAction>
 #include <QMenu>
 #include <sstream>
@@ -32,7 +32,6 @@
 #include <Inventor/nodes/SoLineSet.h>
 #include <Inventor/nodes/SoMarkerSet.h>
 #include <Inventor/nodes/SoSeparator.h>
-#endif
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -96,7 +95,8 @@ void ViewProviderTrajectory::attach(App::DocumentObject* pcObj)
         "CROSS",
         App::GetApplication()
             .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
-            ->GetInt("MarkerSize", 5));
+            ->GetInt("MarkerSize", 5)
+    );
     linesep->addChild(markcol);
     linesep->addChild(marker);
 

@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEM_VIEWPROVIDERFEMPOSTOBJECT_H
-#define FEM_VIEWPROVIDERFEMPOSTOBJECT_H
+#pragma once
 
 #include <Base/Observer.h>
 #include <Gui/ViewProviderGeometryObject.h>
@@ -85,6 +84,7 @@ public:
     App::PropertyPercent Transparency;
     App::PropertyBool PlainColorEdgeOnSurface;
     App::PropertyColor EdgeColor;
+    App::PropertyColor NoneFieldColor;
     App::PropertyFloatConstraint LineWidth;
     App::PropertyFloatConstraint PointSize;
 
@@ -118,9 +118,11 @@ public:
     virtual void setupTaskDialog(TaskDlgPost* dlg);
 
 protected:
-    void handleChangedPropertyName(Base::XMLReader& reader,
-                                   const char* typeName,
-                                   const char* propName) override;
+    void handleChangedPropertyName(
+        Base::XMLReader& reader,
+        const char* typeName,
+        const char* propName
+    ) override;
 
     bool setupPipeline();
     void updateVtk();
@@ -155,7 +157,6 @@ protected:
     vtkSmartPointer<vtkVertexGlyphFilter> m_points, m_pointsSurface;
 
 private:
-    void filterArtifacts(vtkDataSet* data);
     void updateProperties();
     void update3D();
     void WritePointData(vtkPoints* points, vtkDataArray* normals, vtkDataArray* tcoords);
@@ -170,6 +171,3 @@ private:
 };
 
 }  // namespace FemGui
-
-
-#endif  // FEM_VIEWPROVIDERFEMPOSTOBJECT_H

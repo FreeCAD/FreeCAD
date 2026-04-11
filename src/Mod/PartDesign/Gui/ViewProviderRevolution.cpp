@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -21,18 +23,15 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+#include <QMenu>
 
-#ifndef _PreComp_
-# include <QMenu>
-#endif
 
 #include "TaskRevolutionParameters.h"
 #include "ViewProviderRevolution.h"
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderRevolution,PartDesignGui::ViewProviderSketchBased)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderRevolution, PartDesignGui::ViewProviderSketchBased)
 
 ViewProviderRevolution::ViewProviderRevolution()
 {
@@ -43,11 +42,11 @@ ViewProviderRevolution::~ViewProviderRevolution() = default;
 
 void ViewProviderRevolution::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    addDefaultAction(menu, QObject::tr("Edit revolution"));
+    addDefaultAction(menu, QObject::tr("Edit Revolution"));
     PartDesignGui::ViewProviderSketchBased::setupContextMenu(menu, receiver, member);
 }
 
-TaskDlgFeatureParameters *ViewProviderRevolution::getEditDialog()
+TaskDlgFeatureParameters* ViewProviderRevolution::getEditDialog()
 {
-    return new TaskDlgRevolutionParameters( this );
+    return new TaskDlgRevolutionParameters(this);
 }

@@ -25,6 +25,7 @@
 import Arch
 from bimtests import TestArchBase
 
+
 class TestArchProfile(TestArchBase.TestArchBase):
 
     def test_makeProfile(self):
@@ -32,6 +33,6 @@ class TestArchProfile(TestArchBase.TestArchBase):
         operation = "Testing makeProfile function"
         self.printTestMessage(operation)
 
-        profile = Arch.makeProfile(profile=[0, 'REC', 'REC100x100', 'R', 100, 100])
+        profile = Arch.makeProfile(profile=[0, "REC", "REC100x100", "R", 100, 100])
         self.assertIsNotNone(profile, "makeProfile failed to create a profile object.")
         self.assertEqual(profile.Label, "REC100x100_", "Profile label is incorrect.")

@@ -21,18 +21,19 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGSETTINGSEDITOR_H
-#define GUI_DIALOG_DLGSETTINGSEDITOR_H
+#pragma once
 
 #include <Gui/PropertyPage.h>
 #include <memory>
 
 class QTreeWidgetItem;
 
-namespace Gui {
+namespace Gui
+{
 class PythonSyntaxHighlighter;
 
-namespace Dialog {
+namespace Dialog
+{
 class Ui_DlgSettingsEditor;
 
 /** This class implements a preferences page for the editor settings.
@@ -40,12 +41,12 @@ class Ui_DlgSettingsEditor;
  *  @author Werner Mayer
  */
 struct DlgSettingsEditorP;
-class DlgSettingsEditor : public PreferencePage
+class DlgSettingsEditor: public PreferencePage
 {
     Q_OBJECT
 
 public:
-    explicit DlgSettingsEditor( QWidget* parent = nullptr );
+    explicit DlgSettingsEditor(QWidget* parent = nullptr);
     ~DlgSettingsEditor() override;
 
 public:
@@ -55,13 +56,13 @@ public:
 
 private:
     void setupConnections();
-    void onDisplayItemsCurrentItemChanged(QTreeWidgetItem *i);
+    void onDisplayItemsCurrentItemChanged(QTreeWidgetItem* i);
     void onColorButtonChanged();
     void onFontFamilyActivated(const QString&);
     void onFontSizeValueChanged(const QString&);
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
     void setEditorTabWidth(int);
 
 private:
@@ -69,11 +70,9 @@ private:
     DlgSettingsEditorP* d;
     Gui::PythonSyntaxHighlighter* pythonSyntax;
 
-    DlgSettingsEditor( const DlgSettingsEditor & );
-    DlgSettingsEditor& operator=( const DlgSettingsEditor & );
+    DlgSettingsEditor(const DlgSettingsEditor&);
+    DlgSettingsEditor& operator=(const DlgSettingsEditor&);
 };
 
-} // namespace Dialog
-} // namespace Gui
-
-#endif // GUI_DIALOG_DLGSETTINGSEDITOR_H
+}  // namespace Dialog
+}  // namespace Gui

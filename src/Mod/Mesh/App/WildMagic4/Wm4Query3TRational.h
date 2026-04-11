@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 // Wild Magic Source Code
 // David Eberly
 // http://www.geometrictools.com
@@ -14,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4QUERY3TRATIONAL_H
-#define WM4QUERY3TRATIONAL_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4Query3.h"
@@ -96,5 +97,3 @@ typedef Query3TRational<float> Query3TRationalf;
 typedef Query3TRational<double> Query3TRationald;
 
 }
-
-#endif

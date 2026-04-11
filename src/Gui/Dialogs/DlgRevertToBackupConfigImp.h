@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Chris Hennes <chennes@pioneerlibrarysystem.org>    *
  *                                                                         *
@@ -21,25 +23,26 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLG_REVERT_TO_BACKUP_CONFIG_IMP
-#define GUI_DIALOG_DLG_REVERT_TO_BACKUP_CONFIG_IMP
+#pragma once
 
 #include <memory>
 #include <QDialog>
 
-namespace Gui {
-namespace Dialog {
+namespace Gui
+{
+namespace Dialog
+{
 class Ui_DlgRevertToBackupConfig;
 
 /** The DlgRevertToBackupConfigImp class
  * \author Chris Hennes
  */
-class DlgRevertToBackupConfigImp : public QDialog
+class DlgRevertToBackupConfigImp: public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit DlgRevertToBackupConfigImp( QWidget* parent = nullptr );
+    explicit DlgRevertToBackupConfigImp(QWidget* parent = nullptr);
     ~DlgRevertToBackupConfigImp() override;
 
 public Q_SLOTS:
@@ -47,14 +50,12 @@ public Q_SLOTS:
     void onItemSelectionChanged();
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
     void showEvent(QShowEvent* event) override;
 
 private:
     std::unique_ptr<Ui_DlgRevertToBackupConfig> ui;
 };
 
-} // namespace Dialog
-} // namespace Gui
-
-#endif //GUI_DIALOG_DLG_REVERT_TO_BACKUP_CONFIG_IMP
+}  // namespace Dialog
+}  // namespace Gui

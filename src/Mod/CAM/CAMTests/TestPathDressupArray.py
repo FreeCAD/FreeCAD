@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2025 phaseloop <phaseloop@protonmail.com>               *
 # *                                                                         *
@@ -92,7 +93,7 @@ class TestDressupArray(PathTestBase):
         da.execute(obj)
         self.assertTrue(obj.Path.toGCode() == expected_gcode, "Incorrect g-code generated")
 
-    def test01(self):
+    def test02(self):
         """Verify linear x/y/z 2D array."""
 
         source_gcode = "G0 X0 Y0 Z0\n" "G1 X10 Y10 Z0\n"

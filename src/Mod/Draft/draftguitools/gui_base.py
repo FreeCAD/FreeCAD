@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   (c) 2009 Yorik van Havre <yorik@uncreated.net>                        *
 # *   (c) 2010 Ken Cline <cline@frii.com>                                   *
@@ -23,12 +25,15 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the base classes for newer Draft Gui Commands."""
+
 ## @package gui_base
 # \ingroup draftguitools
 # \brief Provides the base classes for newer Draft Gui Commands.
 
 ## \addtogroup draftguitools
 # @{
+from PySide import QtCore
+
 import FreeCAD as App
 import FreeCADGui as Gui
 from draftguitools import gui_trackers as trackers
@@ -88,7 +93,7 @@ class GuiCommandSimplest:
         Also update the `doc` attribute.
         """
         self.doc = App.activeDocument()
-        _toolmsg("{}".format(16*"-"))
+        _toolmsg("{}".format(16 * "-"))
         _toolmsg("GuiCommand: {}".format(self.featureName))
 
 
@@ -168,8 +173,14 @@ class GuiCommandBase:
         if params.get_param("showPlaneTracker"):
             self.planetrack = trackers.PlaneTracker()
 
-        _toolmsg("{}".format(16*"-"))
+        _toolmsg("{}".format(16 * "-"))
         _toolmsg("GuiCommand: {}".format(self.featureName))
+
+    def update_hints(self):
+        Gui.HintManager.show(*self.get_hints())
+
+    def get_hints(self):
+        return []
 
     def finish(self):
         """Terminate the active command by committing the list of commands.
@@ -194,6 +205,8 @@ class GuiCommandBase:
             todo.ToDo.delayCommit(self.commit_list)
         self.commit_list = []
 
+        QtCore.QTimer.singleShot(0, Gui.HintManager.hide)
+
     def commit(self, name, func):
         """Store actions to be committed to the document.
 
@@ -207,5 +220,6 @@ class GuiCommandBase:
             that will be executed.
         """
         self.commit_list.append((name, func))
+
 
 ## @}

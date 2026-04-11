@@ -20,13 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <cassert>
 
 # include <QPainter>
 # include <QStyleOptionGraphicsItem>
-#endif
 
 #include "QGIDecoration.h"
 #include "QGICMark.h"

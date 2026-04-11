@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2024 Shai Seger <shaise at gmail>                       *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __mill_path_segment_h__
-#define __mill_path_segment_h__
+#pragma once
 
 
 #include "MillMotion.h"
@@ -95,5 +96,3 @@ protected:
     MotionType mMotionType;
 };
 }  // namespace MillSim
-
-#endif

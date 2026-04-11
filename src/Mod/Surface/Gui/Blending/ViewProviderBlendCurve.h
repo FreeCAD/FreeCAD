@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Matteo Grellier <matteogrellier@gmail.com>         *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SURFACEGUI_VIEWPROVIDERBLENDCURVE_H
-#define SURFACEGUI_VIEWPROVIDERBLENDCURVE_H
+#pragma once
 
 #include <Mod/Part/Gui/ViewProviderSpline.h>
 
@@ -42,5 +43,3 @@ protected:
 };
 
 }  // namespace SurfaceGui
-
-#endif  // SURFACEGUI_VIEWPROVIDEREXTEND_H

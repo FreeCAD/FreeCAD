@@ -21,11 +21,9 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <sstream>
-#endif
+
 
 #include <App/GeoFeature.h>
 #include <App/PropertyStandard.h>

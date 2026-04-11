@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2025 Samuel Abels <knipknap@gmail.com>                  *
 # *                                                                         *
@@ -21,6 +22,7 @@
 # ***************************************************************************
 import FreeCAD
 import Path
+from typing import Optional, Mapping
 from ...shape import ToolBitShapeThreadMill
 from ..mixins import RotaryToolBitMixin, CuttingToolMixin
 from .base import ToolBit
@@ -29,16 +31,18 @@ from .base import ToolBit
 class ToolBitThreadMill(ToolBit, CuttingToolMixin, RotaryToolBitMixin):
     SHAPE_CLASS = ToolBitShapeThreadMill
 
-    def __init__(self, shape: ToolBitShapeThreadMill, id: str | None = None):
-        Path.Log.track(f"ToolBitThreadMill __init__ called with shape: {shape}, id: {id}")
-        super().__init__(shape, id=id)
-        CuttingToolMixin.__init__(self, self.obj)
+    def __init__(
+        self, shape: ToolBitShapeThreadMill, id: str | None = None, attrs: Optional[Mapping] = None
+    ):
+        Path.Log.track(f"ToolBitThreadmill __init__ called with shape: {shape}, id: {id}")
+        super().__init__(shape, id=id, attrs=attrs)
+        self._init_cutting_properties(self.obj)
 
     @property
     def summary(self) -> str:
-        diameter = self.get_property_str("Diameter", "?")
+        diameter = self.get_property_str("Diameter", "?", precision=3)
         flutes = self.get_property("Flutes")
-        cutting_angle = self.get_property_str("cuttingAngle", "?")
+        cutting_angle = self.get_property_str("cuttingAngle", "?", precision=3)
 
         return FreeCAD.Qt.translate(
             "CAM", f"{diameter} thread mill, {flutes}-flute, {cutting_angle} cutting angle"

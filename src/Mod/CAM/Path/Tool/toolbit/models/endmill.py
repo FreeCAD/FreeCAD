@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2025 Samuel Abels <knipknap@gmail.com>                  *
 # *                                                                         *
@@ -21,6 +22,7 @@
 # ***************************************************************************
 import FreeCAD
 import Path
+from typing import Optional, Mapping
 from ...shape import ToolBitShapeEndmill
 from ..mixins import RotaryToolBitMixin, CuttingToolMixin
 from .base import ToolBit
@@ -29,16 +31,18 @@ from .base import ToolBit
 class ToolBitEndmill(ToolBit, CuttingToolMixin, RotaryToolBitMixin):
     SHAPE_CLASS = ToolBitShapeEndmill
 
-    def __init__(self, shape: ToolBitShapeEndmill, id: str | None = None):
+    def __init__(
+        self, shape: ToolBitShapeEndmill, id: str | None = None, attrs: Optional[Mapping] = None
+    ):
         Path.Log.track(f"ToolBitEndmill __init__ called with shape: {shape}, id: {id}")
-        super().__init__(shape, id=id)
-        CuttingToolMixin.__init__(self, self.obj)
+        super().__init__(shape, id=id, attrs=attrs)
+        self._init_cutting_properties(self.obj)
 
     @property
     def summary(self) -> str:
-        diameter = self.get_property_str("Diameter", "?")
+        diameter = self.get_property_str("Diameter", "?", precision=3)
         flutes = self.get_property("Flutes")
-        cutting_edge_height = self.get_property_str("CuttingEdgeHeight", "?")
+        cutting_edge_height = self.get_property_str("CuttingEdgeHeight", "?", precision=3)
 
         return FreeCAD.Qt.translate(
             "CAM", f"{diameter} {flutes}-flute endmill, {cutting_edge_height} cutting edge"

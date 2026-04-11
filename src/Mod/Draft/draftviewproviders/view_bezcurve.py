@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
 # *                                                                         *
@@ -24,6 +26,7 @@ At the moment this view provider subclasses the Wire view provider,
 and behaves the same as it. In the future this could change
 if another behavior is desired.
 """
+
 ## @package view_bezcurve
 # \ingroup draftviewproviders
 # \brief Provides the viewprovider code for the BezCurve object.

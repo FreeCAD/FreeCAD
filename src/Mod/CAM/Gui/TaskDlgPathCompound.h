@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PATHGUI_TaskDlgPathCompound_H
-#define PATHGUI_TaskDlgPathCompound_H
+#pragma once
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
@@ -41,8 +42,7 @@ class TaskWidgetPathCompound: public Gui::TaskView::TaskBox
     Q_OBJECT
 
 public:
-    explicit TaskWidgetPathCompound(ViewProviderPathCompound* CompoundView,
-                                    QWidget* parent = nullptr);
+    explicit TaskWidgetPathCompound(ViewProviderPathCompound* CompoundView, QWidget* parent = nullptr);
     ~TaskWidgetPathCompound() override;
 
     std::vector<std::string> getList() const;
@@ -89,5 +89,3 @@ protected:
 
 
 }  // namespace PathGui
-
-#endif  // PATHGUI_TASKDLGPATHCOMPOUND_H

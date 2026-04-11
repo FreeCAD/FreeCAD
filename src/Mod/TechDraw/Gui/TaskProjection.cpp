@@ -22,10 +22,8 @@
 //this file originally part of TechDraw workbench
 //migrated to TechDraw workbench 2022-01-26 by Wandererfan
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QMessageBox>
-#endif
+
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -61,13 +59,13 @@ bool TaskProjection::accept()
 {
     Gui::Document* document = Gui::Application::Instance->activeDocument();
     if (!document) {
-        QMessageBox::warning(Gui::getMainWindow(), tr("No active document"),
+        QMessageBox::warning(Gui::getMainWindow(), tr("No Active Document"),
             tr("There is currently no active document to complete the operation"));
         return true;
     }
     std::list<Gui::MDIView*> mdis = document->getMDIViewsOfType(Gui::View3DInventor::getClassTypeId());
     if (mdis.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), tr("No active view"),
+        QMessageBox::warning(Gui::getMainWindow(), tr("No Active View"),
             tr("There is currently no active view to complete the operation"));
         return false;
     }
@@ -79,7 +77,7 @@ bool TaskProjection::accept()
     dir.getValue(x, y,z);
 
     std::vector<Part::Feature*> shapes = Gui::Selection().getObjectsOfType<Part::Feature>();
-    Gui::Command::openCommand("Project shape");
+    int tid = Gui::Command::openActiveDocumentCommand("Project shape");
     Gui::Command::addModule(Gui::Command::Doc, "TechDraw");
     for (std::vector<Part::Feature*>::iterator it = shapes.begin(); it != shapes.end(); ++it) {
         const char* object = (*it)->getNameInDocument();
@@ -111,7 +109,7 @@ bool TaskProjection::accept()
             "FreeCAD.ActiveDocument.ActiveObject.IsoLineHCompound=%s", (ui->cbHidIso->isChecked() ? "True" : "False"));
     }
     Gui::Command::updateActive();
-    Gui::Command::commitCommand();
+    Gui::Command::commitCommand(tid);
     return true;
 }
 

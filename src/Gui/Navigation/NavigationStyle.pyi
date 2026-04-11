@@ -1,6 +1,7 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 from Base.Metadata import export
 from Base.BaseClass import BaseClass
-
 
 @export(
     Include="Gui/Navigation/NavigationStyle.h",
@@ -12,4 +13,5 @@ class NavigationStyle(BaseClass):
     Author: Werner Mayer (wmayer@users.sourceforge.net)
     Licence: LGPL
     """
+
     ...

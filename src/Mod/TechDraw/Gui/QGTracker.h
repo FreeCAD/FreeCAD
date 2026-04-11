@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_TRACKER_H
-#define DRAWINGGUI_TRACKER_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -68,8 +67,7 @@ public:
     };
 
     explicit QGTracker(QGSPage* scene = nullptr, TrackerMode m = TrackerMode::None);
-    ~QGTracker() override;
-
+    ~QGTracker() override = default;
 
     enum {Type = UserType::QGTracker};
 
@@ -96,6 +94,8 @@ public:
     void setTrackerMode(TrackerMode m) { m_trackerMode = m; }
     QPointF snapToAngle(QPointF pt);
 
+    void setOwnerQView(QGIView* owner) { m_qgParent = owner; }
+
 Q_SIGNALS:
     void drawingFinished(std::vector<QPointF> pts, TechDrawGui::QGIView* qgParent);
     void qViewPicked(QPointF pos, TechDrawGui::QGIView* qgParent);
@@ -113,18 +113,12 @@ protected:
     double getTrackerWeight();
 
 private:
-    QGraphicsPathItem* m_track;
-    QPointF m_segBegin;
-    QPointF m_segEnd;
     std::vector<QPointF> m_points;
     bool m_sleep;
     QGIView* m_qgParent;
     TrackerMode m_trackerMode;
-    QPen m_trackPen;
     QPen m_tailPen;
     QPointF m_lastClick;
 };
 
 } // namespace
-
-#endif // DRAWINGGUI_TRACKER_H

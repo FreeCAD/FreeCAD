@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -21,13 +23,12 @@
  ***************************************************************************/
 
 
-#ifndef APP_PROPERTY_H
-#define APP_PROPERTY_H
+#pragma once
 
 #include <Base/Exception.h>
 #include <Base/Persistence.h>
 #include <boost/any.hpp>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 #include <bitset>
 #include <string>
 #include <FCGlobal.h>
@@ -108,6 +109,8 @@ public:
         CopyOnChange = 16,
         /// Whether the property editor should create a button for user defined editing.
         UserEdit = 17,
+        /// Do not propagate changes of the property to its container
+        DisableNotify = 18,
 
         // The following bits are corresponding to PropertyType set when the
         // property added. These types are meant to be static, and cannot be
@@ -262,7 +265,7 @@ public:
      * This function sets the value of the property identified by the path.  It
      * is meant to be overridden for subclasses in which the `path` is
      * typically ignored.  The default implementation redirects setting a value
-     * to the the `path` ObjectIdentifier.
+     * to the `path` ObjectIdentifier.
      *
      * @param[in] path The path to the property.
      * @param[in] value The value to set.
@@ -354,11 +357,16 @@ public:
      */
     virtual void onContainerRestored() {}
 
-    /** @name Property status handling
-     * @{
+    /** Property status handling
      */
-
-    /// Set the property touched.
+    //@{
+    /// This method sets whether notification will be propagated on changing
+    /// the value of the property. The old value of the setting is returned.
+    bool enableNotify(bool on);
+    /// This method returns whether notification of changes to the property value
+    /// are propagated to the container.
+    bool isNotifyEnabled() const;
+    /// Set the property touched
     void touch();
 
     /**
@@ -599,7 +607,7 @@ private:
 
 public:
     /// Signal emitted when the property value has changed.
-    boost::signals2::signal<void(const App::Property&)> signalChanged;
+    fastsignals::signal<void(const App::Property&)> signalChanged;
 };
 
 
@@ -1089,6 +1097,16 @@ public:
         guard.tryInvoke();
     }
 
+    template<std::predicate<const T&> F>
+    int removeIf(F f) {
+        ListT vals = _lValueList;
+        size_t removed = std::erase_if(vals, f);
+        if (removed > 0) {
+            setValues(std::move(vals));
+        }
+        return static_cast<int>(removed);
+    }
+
 protected:
     void setPyValues(const std::vector<PyObject*>& vals, const std::vector<int>& indices) override
     {
@@ -1125,5 +1143,3 @@ protected:
 };
 
 }  // namespace App
-
-#endif  // APP_PROPERTY_H

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>642</width>
+    <width>736</width>
     <height>376</height>
    </rect>
   </property>
@@ -45,7 +45,7 @@
           </sizepolicy>
          </property>
          <property name="text">
-          <string>&amp;Category:</string>
+          <string>&amp;Category</string>
          </property>
          <property name="buddy">
           <cstring>categoryBox</cstring>
@@ -59,7 +59,7 @@
         <widget class="QTreeWidget" name="commandTreeWidget">
          <property name="minimumSize">
           <size>
-           <width>220</width>
+           <width>400</width>
            <height>0</height>
           </size>
          </property>
@@ -97,7 +97,7 @@
          <item row="1" column="1">
           <widget class="QLabel" name="textLabelShortcut">
            <property name="text">
-            <string>Current shortcut:</string>
+            <string>Current shortcut</string>
            </property>
           </widget>
          </item>
@@ -116,7 +116,7 @@
            <item>
             <widget class="QLabel" name="textLabelNewShortcut">
              <property name="text">
-              <string>&amp;New shortcut:</string>
+              <string>&amp;New shortcut</string>
              </property>
              <property name="buddy">
               <cstring>editShortcut</cstring>
@@ -134,7 +134,7 @@
             <string/>
            </property>
            <property name="text">
-            <string>Multi-key sequence delay:</string>
+            <string>Multi-key sequence delay</string>
            </property>
           </widget>
          </item>
@@ -188,7 +188,7 @@ to low. If more than one command with the same shortcut are active at the
 same time. The one with the highest priority will be triggered.</string>
            </property>
            <property name="text">
-            <string>Shortcut priority list:</string>
+            <string>Shortcut priority list</string>
            </property>
           </widget>
          </item>

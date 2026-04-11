@@ -10,7 +10,7 @@ COPY ubuntu.sh /tmp
 RUN apt-get update && \
     apt-get upgrade --yes && \
     sh /tmp/ubuntu.sh && \
-    mkdir /builds
+    mkdir -p /builds
 
 WORKDIR /builds
 

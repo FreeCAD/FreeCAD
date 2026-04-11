@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_ToolHandler_H
-#define GUI_ToolHandler_H
+#pragma once
 
 #include <QCursor>
 #include <QPixmap>
@@ -106,9 +105,13 @@ protected:
     virtual void setWidgetCursor(QCursor cursor);
 
 private:
-    void setSvgCursor(const QString& svgName, int x, int y,
-                      const std::map<unsigned long, unsigned long>& colorMapping =
-                          std::map<unsigned long, unsigned long>());
+    void setSvgCursor(
+        const QString& svgName,
+        int x,
+        int y,
+        const std::map<unsigned long, unsigned long>& colorMapping
+        = std::map<unsigned long, unsigned long>()
+    );
 
 
     void applyCursor(QCursor& newCursor);
@@ -117,7 +120,6 @@ private:
     void setCrosshairCursor(const char* svgName);
 
 protected:
-
     QCursor oldCursor;
     QCursor actCursor;
     QPixmap actCursorPixmap;
@@ -125,6 +127,3 @@ protected:
 
 
 }  // namespace Gui
-
-
-#endif  // GUI_ToolHandler_H

@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2019 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -27,7 +28,6 @@ import Path
 from Path.Tool.library.ui.dock import ToolBitLibraryDock
 from Path.Tool.library.ui.editor import LibraryEditor
 
-
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())
@@ -48,8 +48,10 @@ class CommandToolBitLibraryDockOpen:
     def GetResources(self):
         return {
             "Pixmap": "CAM_ToolTable",
-            "MenuText": QT_TRANSLATE_NOOP("CAM_ToolBitDock", "ToolBit Dock"),
-            "ToolTip": QT_TRANSLATE_NOOP("CAM_ToolBitDock", "Toggle the Toolbit Dock"),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_ToolBitSelection", "Add toolbit…"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "CAM_ToolBitSelection", "Opens the toolbit selection dialog"
+            ),
             "Accel": "P, T",
             "CmdType": "ForEdit",
         }
@@ -73,9 +75,9 @@ class CommandLibraryEditorOpen:
     def GetResources(self):
         return {
             "Pixmap": "CAM_ToolTable",
-            "MenuText": QT_TRANSLATE_NOOP("CAM_ToolBitLibraryOpen", "ToolBit Library editor"),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_ToolBitLibraryOpen", "Toolbit Library Manager"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "CAM_ToolBitLibraryOpen", "Open an editor to manage ToolBit libraries"
+                "CAM_ToolBitLibraryOpen", "Opens an editor to manage toolbit libraries"
             ),
             "CmdType": "ForEdit",
         }
@@ -84,7 +86,7 @@ class CommandLibraryEditorOpen:
         return True
 
     def Activated(self):
-        library = LibraryEditor()
+        library = LibraryEditor(parent=FreeCADGui.getMainWindow())
         library.open()
 
 
@@ -95,4 +97,4 @@ if FreeCAD.GuiUp:
 BarList = ["CAM_ToolBitDock"]
 MenuList = ["CAM_ToolBitLibraryOpen", "CAM_ToolBitDock"]
 
-FreeCAD.Console.PrintLog("Loading PathToolBitLibraryCmd... done\n")
+FreeCAD.Console.PrintLog("Loading PathToolBitLibraryCmd… done\n")

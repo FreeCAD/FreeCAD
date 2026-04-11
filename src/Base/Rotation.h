@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2006 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,13 +23,10 @@
  ***************************************************************************/
 
 
-#ifndef BASE_ROTATION_H
-#define BASE_ROTATION_H
+#pragma once
 
 #include "Vector3D.h"
-#ifndef FC_GLOBAL_H
 #include <FCGlobal.h>
-#endif
 
 namespace Base
 {
@@ -97,8 +96,7 @@ public:
     /// Z base vector is assumed to represent the normal vector
     static Rotation fromNormalVector(const Vector3d& normal);
     /// Utility function to create Rotation based on euler angles
-    static Rotation
-    fromEulerAngles(EulerSequence theOrder, double alpha, double beta, double gamma);
+    static Rotation fromEulerAngles(EulerSequence theOrder, double alpha, double beta, double gamma);
     //@}
 
     /** Methods to get or set rotations. */
@@ -182,10 +180,12 @@ public:
      *
      * If only one vector provided is nonzero, the other two directions are picked automatically.
      */
-    static Rotation makeRotationByAxes(Vector3d xdir,
-                                       Vector3d ydir,
-                                       Vector3d zdir,
-                                       const char* priorityOrder = "ZXY");
+    static Rotation makeRotationByAxes(
+        Vector3d xdir,
+        Vector3d ydir,
+        Vector3d zdir,
+        const char* priorityOrder = "ZXY"
+    );
 
 private:
     void normalize();
@@ -196,5 +196,3 @@ private:
 };
 
 }  // namespace Base
-
-#endif  // BASE_ROTATION_H

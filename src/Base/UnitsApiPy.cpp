@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) Jürgen Riegel <juergen.riegel@web.de>                   *
  *                                                                         *
@@ -20,10 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <memory>
-#endif
 
 #include <CXX/Objects.hxx>
 
@@ -161,8 +160,10 @@ PyObject* UnitsApi::sSchemaTranslate(PyObject* /*self*/, PyObject* args)
     }
 
     if (index < 0 || index >= static_cast<int>(count())) {
-        PyErr_SetString(PyExc_ValueError,
-                        std::string {"invalid schema index: " + std::to_string(index)}.c_str());
+        PyErr_SetString(
+            PyExc_ValueError,
+            std::string {"invalid schema index: " + std::to_string(index)}.c_str()
+        );
         return nullptr;
     }
 
@@ -208,14 +209,13 @@ PyObject* UnitsApi::sToNumber(PyObject* /*self*/, PyObject* args)
     }
 
     bool ok {};
-    QuantityFormat qf;
-    qf.format = QuantityFormat::toFormat(format[0], &ok);
-    qf.precision = decimals;
+    QuantityFormat qf {QuantityFormat::toFormat(format[0], &ok), decimals};
 
     if (!ok) {
         PyErr_SetString(PyExc_ValueError, "Invalid format string");
         return nullptr;
     }
 
-    return Py::new_reference_to(Py::String(toNumber(value, qf)));
+    const Quantity quantity {value};
+    return Py::new_reference_to(Py::String(quantity.toNumber(qf)));
 }

@@ -20,17 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEM_PRECOMPILED_H
-#define FEM_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
-
-#ifdef _MSC_VER
-#pragma warning(disable : 4290)
-#pragma warning(disable : 4275)
-#endif
-
-#ifdef _PreComp_
 
 // standard
 #include <algorithm>
@@ -61,7 +53,6 @@
 #include <SMDS_MeshElement.hxx>
 #include <SMDS_MeshGroup.hxx>
 #include <SMDS_MeshNode.hxx>
-#include <SMDS_PolyhedralVolumeOfNodes.hxx>
 #include <SMESHDS_Group.hxx>
 #include <SMESHDS_GroupBase.hxx>
 #include <SMESHDS_Mesh.hxx>
@@ -80,7 +71,7 @@
 #include <StdMeshers_LengthFromEdges.hxx>
 #include <StdMeshers_LocalLength.hxx>
 #if SMESH_VERSION_MAJOR <= 9 && SMESH_VERSION_MINOR < 10
-#include <StdMeshers_MEFISTO_2D.hxx>
+# include <StdMeshers_MEFISTO_2D.hxx>
 #endif
 #include <StdMeshers_MaxElementArea.hxx>
 #include <StdMeshers_MaxElementVolume.hxx>
@@ -106,13 +97,15 @@
 #include <StdMeshers_UseExisting_1D2D.hxx>
 
 // Opencascade
+#include <Standard_Version.hxx>
+
 #include <Adaptor3d_IsoCurve.hxx>
 #include <BRepAdaptor_CompCurve.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRep_Tool.hxx>
 #include <Bnd_Box.hxx>
 #if OCC_VERSION_HEX < 0x070600
-#include <BRepAdaptor_HSurface.hxx>
+# include <BRepAdaptor_HSurface.hxx>
 #endif
 #include <BRepAdaptor_Surface.hxx>
 #include <BRepBndLib.hxx>
@@ -138,7 +131,6 @@
 #include <ShapeAnalysis_ShapeTolerance.hxx>
 #include <ShapeAnalysis_Surface.hxx>
 #include <Standard_Real.hxx>
-#include <Standard_Version.hxx>
 #include <TColgp_Array2OfPnt.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
@@ -153,10 +145,14 @@
 #include <gp_Vec.hxx>
 
 // VTK
+#include <vtkVersionMacros.h>
 #include <vtkAlgorithmOutput.h>
 #include <vtkAppendFilter.h>
 #include <vtkArrayCalculator.h>
 #include <vtkCellArray.h>
+#if VTK_VERSION_NUMBER >= VTK_VERSION_CHECK(9, 2, 20230125)
+# include <vtkCleanUnstructuredGrid.h>
+#endif
 #include <vtkCompositeDataSet.h>
 #include <vtkDataArray.h>
 #include <vtkDataSetReader.h>
@@ -208,10 +204,7 @@
 
 // Netgen
 #ifdef FCWithNetgen
-#include <NETGENPlugin_Hypothesis.hxx>
-#include <NETGENPlugin_Mesher.hxx>
-#include <NETGENPlugin_SimpleHypothesis_3D.hxx>
-#endif
-
-#endif  // _PreComp_
+# include <NETGENPlugin_Hypothesis.hxx>
+# include <NETGENPlugin_Mesher.hxx>
+# include <NETGENPlugin_SimpleHypothesis_3D.hxx>
 #endif

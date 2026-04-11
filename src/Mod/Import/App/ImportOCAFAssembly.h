@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef IMPORT_ImportOCAFAssembly_H
-#define IMPORT_ImportOCAFAssembly_H
+#pragma once
 
 #include <map>
 #include <set>
@@ -53,10 +54,12 @@ namespace Import
 class ImportExport ImportOCAFAssembly
 {
 public:
-    ImportOCAFAssembly(Handle(TDocStd_Document) h,
-                       App::Document* d,
-                       const std::string& name,
-                       App::DocumentObject* target);
+    ImportOCAFAssembly(
+        Handle(TDocStd_Document) h,
+        App::Document* d,
+        const std::string& name,
+        App::DocumentObject* target
+    );
     virtual ~ImportOCAFAssembly();
     void loadShapes();
     void loadAssembly();
@@ -67,12 +70,14 @@ protected:
 
 
 private:
-    void loadShapes(const TDF_Label& label,
-                    const TopLoc_Location&,
-                    const std::string& partname,
-                    const std::string& assembly,
-                    bool isRef,
-                    int dep);
+    void loadShapes(
+        const TDF_Label& label,
+        const TopLoc_Location&,
+        const std::string& partname,
+        const std::string& assembly,
+        bool isRef,
+        int dep
+    );
     void createShape(const TDF_Label& label, const TopLoc_Location&, const std::string&);
     void createShape(const TopoDS_Shape& label, const TopLoc_Location&, const std::string&);
     virtual void applyColors(Part::Feature*, const std::vector<Base::Color>&)
@@ -89,5 +94,3 @@ private:
 
 
 }  // namespace Import
-
-#endif  // IMPORT_ImportOCAFAssembly_H

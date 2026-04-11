@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -21,11 +23,8 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+#include <QMenu>
 
-#ifndef _PreComp_
-# include <QMenu>
-#endif
 
 #include "TaskPocketParameters.h"
 #include "ViewProviderPocket.h"
@@ -45,12 +44,12 @@ ViewProviderPocket::~ViewProviderPocket() = default;
 
 void ViewProviderPocket::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    addDefaultAction(menu, QObject::tr("Edit pocket"));
+    addDefaultAction(menu, QObject::tr("Edit Pocket"));
     PartDesignGui::ViewProviderSketchBased::setupContextMenu(menu, receiver, member);
 }
 
 
-TaskDlgFeatureParameters *ViewProviderPocket::getEditDialog()
+TaskDlgFeatureParameters* ViewProviderPocket::getEditDialog()
 {
-    return new TaskDlgPocketParameters( this );
+    return new TaskDlgPocketParameters(this);
 }

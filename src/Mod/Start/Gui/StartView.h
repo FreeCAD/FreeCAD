@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef FREECAD_STARTVIEW_H
-#define FREECAD_STARTVIEW_H
+#pragma once
 
 #include <Mod/Start/StartGlobal.h>
 #include <Base/Type.h>
@@ -38,6 +37,7 @@ class QEvent;
 class QGridLayout;
 class QLabel;
 class QListView;
+class QMdiSubWindow;
 class QScrollArea;
 class QStackedWidget;
 class QPushButton;
@@ -64,12 +64,13 @@ public:
         return "StartView";
     }
 
-    void newEmptyFile() const;
-    void newPartDesignFile() const;
-    void openExistingFile() const;
-    void newAssemblyFile() const;
-    void newDraftFile() const;
-    void newArchFile() const;
+    void newEmptyFile();
+    void newPartDesignFile();
+    void openExistingFile();
+    void newAssemblyFile();
+    void newDraftFile();
+    void newArchFile();
+    void recentFileAdded(const QString& filename);
 
     bool onHasMsg(const char* pMsg) const override;
 
@@ -82,6 +83,7 @@ public:
 
 protected:
     void changeEvent(QEvent* e) override;
+    void showEvent(QShowEvent* event) override;
 
     void configureNewFileButtons(QLayout* layout) const;
     static void configureFileCardWidget(QListView* fileCardWidget);
@@ -89,7 +91,7 @@ protected:
     void configureExamplesListWidget(QListView* examplesListWidget);
     void configureCustomFolderListWidget(QListView* customFolderListWidget);
 
-    void postStart(PostStartBehavior behavior) const;
+    void postStart(PostStartBehavior behavior);
 
     void fileCardSelected(const QModelIndex& index);
     void showOnStartupChanged(bool checked);
@@ -98,8 +100,13 @@ protected:
 
     QString fileCardStyle() const;
 
+private Q_SLOTS:
+    void onMdiSubWindowActivated(QMdiSubWindow* subWindow);
+
 private:
     void retranslateUi();
+    void setListViewUpdatesEnabled(bool enabled);
+
     QStackedWidget* _contents = nullptr;
     Start::RecentFilesModel _recentFilesModel;
     Start::ExamplesModel _examplesModel;
@@ -111,9 +118,8 @@ private:
     QPushButton* _openFirstStart;
     QCheckBox* _showOnStartupCheckBox;
 
+    bool isInitialized = false;
 
 };  // namespace StartGui
 
 }  // namespace StartGui
-
-#endif  // FREECAD_STARTVIEW_H

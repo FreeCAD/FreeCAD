@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -21,22 +23,30 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskFilletParameters_H
-#define GUI_TASKVIEW_TaskFilletParameters_H
+#pragma once
+
+#include <Gui/Inventor/Draggers/Gizmo.h>
 
 #include "TaskDressUpParameters.h"
 #include "ViewProviderFillet.h"
 
 class Ui_TaskFilletParameters;
 
-namespace PartDesignGui {
+namespace Gui
+{
+class LinearGizmo;
+class GizmoContainer;
+}  // namespace Gui
 
-class TaskFilletParameters : public TaskDressUpParameters
+namespace PartDesignGui
+{
+
+class TaskFilletParameters: public TaskDressUpParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskFilletParameters(ViewProviderDressUp *DressUpView, QWidget *parent=nullptr);
+    explicit TaskFilletParameters(ViewProviderDressUp* DressUpView, QWidget* parent = nullptr);
     ~TaskFilletParameters() override;
 
     void apply() override;
@@ -55,15 +65,21 @@ protected:
 
 private:
     std::unique_ptr<Ui_TaskFilletParameters> ui;
+
+    std::unique_ptr<Gui::GizmoContainer> gizmoContainer;
+    Gui::LinearGizmo* radiusGizmo = nullptr;
+    Gui::LinearGizmo* radiusGizmo2 = nullptr;
+    void setupGizmos(ViewProviderDressUp* vp);
+    void setGizmoPositions();
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgFilletParameters : public TaskDlgDressUpParameters
+class TaskDlgFilletParameters: public TaskDlgDressUpParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgFilletParameters(ViewProviderFillet *DressUpView);
+    explicit TaskDlgFilletParameters(ViewProviderFillet* DressUpView);
     ~TaskDlgFilletParameters() override;
 
 public:
@@ -71,6 +87,4 @@ public:
     bool accept() override;
 };
 
-} //namespace PartDesignGui
-
-#endif // GUI_TASKVIEW_TaskFilletParameters_H
+}  // namespace PartDesignGui

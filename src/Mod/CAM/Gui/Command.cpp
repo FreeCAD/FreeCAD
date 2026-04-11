@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
@@ -20,10 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <TopExp_Explorer.hxx>
-#endif
+
 
 #include <Base/Console.h>
 #include <Gui/Application.h>
@@ -46,7 +46,7 @@ CmdPathArea::CmdPathArea()
     sAppModule = "Path";
     sGroup = QT_TR_NOOP("CAM");
     sMenuText = QT_TR_NOOP("Area");
-    sToolTipText = QT_TR_NOOP("Creates a feature area from selected objects");
+    sToolTipText = QT_TR_NOOP("Creates a feature area from the selected objects");
     sWhatsThis = "CAM_Area";
     sStatusTip = sToolTipText;
     sPixmap = "CAM_Area";
@@ -99,13 +99,17 @@ void CmdPathArea::activated(int iMsg)
     if (addView && !areaName.empty()) {
         std::string FeatName = getUniqueObjectName("FeatureAreaView");
         openCommand(QT_TRANSLATE_NOOP("Command", "Create Path Area View"));
-        doCommand(Doc,
-                  "FreeCAD.activeDocument().addObject('Path::FeatureAreaView','%s')",
-                  FeatName.c_str());
-        doCommand(Doc,
-                  "FreeCAD.activeDocument().%s.Source = FreeCAD.activeDocument().%s",
-                  FeatName.c_str(),
-                  areaName.c_str());
+        doCommand(
+            Doc,
+            "FreeCAD.activeDocument().addObject('Path::FeatureAreaView','%s')",
+            FeatName.c_str()
+        );
+        doCommand(
+            Doc,
+            "FreeCAD.activeDocument().%s.Source = FreeCAD.activeDocument().%s",
+            FeatName.c_str(),
+            areaName.c_str()
+        );
         commitCommand();
         updateActive();
         return;
@@ -116,13 +120,13 @@ void CmdPathArea::activated(int iMsg)
     for (const std::string& cmd : cmds) {
         doCommand(Doc, "%s", cmd.c_str());
     }
-    doCommand(Doc,
-              "FreeCAD.activeDocument().addObject('Path::FeatureArea','%s')",
-              FeatName.c_str());
-    doCommand(Doc,
-              "FreeCAD.activeDocument().%s.Sources = [ %s ]",
-              FeatName.c_str(),
-              sources.str().c_str());
+    doCommand(Doc, "FreeCAD.activeDocument().addObject('Path::FeatureArea','%s')", FeatName.c_str());
+    doCommand(
+        Doc,
+        "FreeCAD.activeDocument().%s.Sources = [ %s ]",
+        FeatName.c_str(),
+        sources.str().c_str()
+    );
     commitCommand();
     updateActive();
 }
@@ -140,8 +144,8 @@ CmdPathAreaWorkplane::CmdPathAreaWorkplane()
 {
     sAppModule = "Path";
     sGroup = QT_TR_NOOP("CAM");
-    sMenuText = QT_TR_NOOP("Area workplane");
-    sToolTipText = QT_TR_NOOP("Select a workplane for a FeatureArea");
+    sMenuText = QT_TR_NOOP("Area Workplane");
+    sToolTipText = QT_TR_NOOP("Selects a workplane for a feature area");
     sWhatsThis = "CAM_Area_Workplane";
     sStatusTip = sToolTipText;
     sPixmap = "CAM_Area_Workplane";
@@ -159,14 +163,14 @@ void CmdPathAreaWorkplane::activated(int iMsg)
          getSelection().getSelectionEx(nullptr, Part::Feature::getClassTypeId())) {
         const std::vector<std::string>& subnames = selObj.getSubNames();
         if (subnames.size() > 1) {
-            Base::Console().error("Please select one sub shape object for plane only\n");
+            Base::Console().error("Select one sub shape object for plane only\n");
             return;
         }
         const Part::Feature* pcObj = static_cast<Part::Feature*>(selObj.getObject());
         if (subnames.empty()) {
             if (pcObj->isDerivedFrom<Path::FeatureArea>()) {
                 if (!areaName.empty()) {
-                    Base::Console().error("Please select one FeatureArea only\n");
+                    Base::Console().error("Select one feature area only\n");
                     return;
                 }
                 areaName = pcObj->getNameInDocument();
@@ -179,7 +183,7 @@ void CmdPathAreaWorkplane::activated(int iMsg)
             }
         }
         if (!planeName.empty()) {
-            Base::Console().error("Please select one shape object for plane only\n");
+            Base::Console().error("Select one shape object for plane only\n");
             return;
         }
         else {
@@ -208,11 +212,13 @@ void CmdPathAreaWorkplane::activated(int iMsg)
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Select Workplane for Path Area"));
     doCommand(Doc, "import PathCommands");
-    doCommand(Doc,
-              "FreeCAD.activeDocument().%s.WorkPlane = PathCommands.findShape("
-              "FreeCAD.activeDocument().%s)",
-              areaName.c_str(),
-              planeSubname.c_str());
+    doCommand(
+        Doc,
+        "FreeCAD.activeDocument().%s.WorkPlane = PathCommands.findShape("
+        "FreeCAD.activeDocument().%s)",
+        areaName.c_str(),
+        planeSubname.c_str()
+    );
     doCommand(Doc, "FreeCAD.activeDocument().%s.ViewObject.Visibility = True", areaName.c_str());
     commitCommand();
     updateActive();
@@ -236,7 +242,7 @@ CmdPathCompound::CmdPathCompound()
     sAppModule = "Path";
     sGroup = QT_TR_NOOP("CAM");
     sMenuText = QT_TR_NOOP("Compound");
-    sToolTipText = QT_TR_NOOP("Creates a compound from selected toolpaths");
+    sToolTipText = QT_TR_NOOP("Creates a compound from the selected toolpaths");
     sWhatsThis = "CAM_Compound";
     sStatusTip = sToolTipText;
     sPixmap = "CAM_Compound";
@@ -259,25 +265,25 @@ void CmdPathCompound::activated(int iMsg)
             }
             else {
                 Base::Console().error(
-                    "Only Path objects must be selected before running this command\n");
+                    "Only path objects must be selected before running this command\n"
+                );
                 return;
             }
         }
         cmd << "]";
         std::string FeatName = getUniqueObjectName("PathCompound");
         openCommand(QT_TRANSLATE_NOOP("Command", "Create Path Compound"));
-        doCommand(Doc,
-                  "FreeCAD.activeDocument().addObject('Path::FeatureCompound','%s')",
-                  FeatName.c_str());
-        doCommand(Doc,
-                  "FreeCAD.activeDocument().%s.Group = %s",
-                  FeatName.c_str(),
-                  cmd.str().c_str());
+        doCommand(
+            Doc,
+            "FreeCAD.activeDocument().addObject('Path::FeatureCompound','%s')",
+            FeatName.c_str()
+        );
+        doCommand(Doc, "FreeCAD.activeDocument().%s.Group = %s", FeatName.c_str(), cmd.str().c_str());
         commitCommand();
         updateActive();
     }
     else {
-        Base::Console().error("At least one Path object must be selected\n");
+        Base::Console().error("At least one path object must be selected\n");
         return;
     }
 }
@@ -320,9 +326,8 @@ void CmdPathShape::activated(int iMsg)
         }
         for (const std::string& name : subnames) {
             if (name.compare(0, 4, "Face") && name.compare(0, 4, "Edge")) {
-                Base::Console().warning("Ignored shape %s %s\n",
-                                        pcObj->getNameInDocument(),
-                                        name.c_str());
+                Base::Console()
+                    .warning("Ignored shape %s %s\n", pcObj->getNameInDocument(), name.c_str());
                 continue;
             }
 
@@ -348,13 +353,13 @@ void CmdPathShape::activated(int iMsg)
     for (const std::string& cmd : cmds) {
         doCommand(Doc, "%s", cmd.c_str());
     }
-    doCommand(Doc,
-              "FreeCAD.activeDocument().addObject('Path::FeatureShape','%s')",
-              FeatName.c_str());
-    doCommand(Doc,
-              "FreeCAD.activeDocument().%s.Sources = [ %s ]",
-              FeatName.c_str(),
-              sources.str().c_str());
+    doCommand(Doc, "FreeCAD.activeDocument().addObject('Path::FeatureShape','%s')", FeatName.c_str());
+    doCommand(
+        Doc,
+        "FreeCAD.activeDocument().%s.Sources = [ %s ]",
+        FeatName.c_str(),
+        sources.str().c_str()
+    );
     commitCommand();
     updateActive();
 }

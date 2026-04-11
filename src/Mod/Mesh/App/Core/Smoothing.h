@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_SMOOTHING_H
-#define MESH_SMOOTHING_H
+#pragma once
 
 #include <limits>
 #include <vector>
@@ -108,10 +109,12 @@ public:
 
 protected:
     void Umbrella(const MeshRefPointToPoints&, const MeshRefPointToFacets&, double);
-    void Umbrella(const MeshRefPointToPoints&,
-                  const MeshRefPointToFacets&,
-                  double,
-                  const std::vector<PointIndex>&);
+    void Umbrella(
+        const MeshRefPointToPoints&,
+        const MeshRefPointToFacets&,
+        double,
+        const std::vector<PointIndex>&
+    );
 
 private:
     double lambda {0.6307};
@@ -149,15 +152,14 @@ public:
     void SmoothPoints(unsigned int, const std::vector<PointIndex>&) override;
 
 private:
-    void UpdatePoints(const MeshRefFacetToFacets&,
-                      const MeshRefPointToFacets&,
-                      const std::vector<PointIndex>&);
+    void UpdatePoints(
+        const MeshRefFacetToFacets&,
+        const MeshRefPointToFacets&,
+        const std::vector<PointIndex>&
+    );
 
 private:
     int weights {1};
 };
 
 }  // namespace MeshCore
-
-
-#endif  // MESH_SMOOTHING_H

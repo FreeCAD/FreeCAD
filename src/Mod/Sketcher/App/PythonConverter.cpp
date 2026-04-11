@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -20,11 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <boost/algorithm/string/regex.hpp>
 #include <boost/format.hpp>
-#endif  // #ifndef _PreComp_
 
 #include <Base/Exception.h>
 #include <Mod/Sketcher/App/Constraint.h>
@@ -43,8 +42,9 @@ std::string PythonConverter::convert(const Part::Geometry* geo, Mode mode)
     std::string command;
     auto sg = process(geo);
 
-    command = boost::str(boost::format("addGeometry(%s,%s)\n") % sg.creation
-                         % (sg.construction ? "True" : "False"));
+    command = boost::str(
+        boost::format("addGeometry(%s,%s)\n") % sg.creation % (sg.construction ? "True" : "False")
+    );
 
     // clang-format off: keep line breaks for readability
     if ((!geo->is<Part::GeomEllipse>()
@@ -71,9 +71,11 @@ std::string PythonConverter::convert(const Sketcher::Constraint* constraint, Geo
     return command;
 }
 
-std::string PythonConverter::convert(const std::string& doc,
-                                     const std::vector<Part::Geometry*>& geos,
-                                     Mode mode)
+std::string PythonConverter::convert(
+    const std::string& doc,
+    const std::vector<Part::Geometry*>& geos,
+    Mode mode
+)
 {
     if (geos.empty()) {
         return std::string();
@@ -86,14 +88,18 @@ std::string PythonConverter::convert(const std::string& doc,
         if (ngeos > 0) {
             if (construction) {
                 command = boost::str(
-                    boost::format("constrGeoList = []\n%s%s.addGeometry(constrGeoList,%s)\n"
-                                  "del constrGeoList\n")
-                    % geolist % doc % "True");
+                    boost::format(
+                        "constrGeoList = []\n%s%s.addGeometry(constrGeoList,%s)\n"
+                        "del constrGeoList\n"
+                    )
+                    % geolist % doc % "True"
+                );
             }
             else {
                 command = boost::str(
                     boost::format("geoList = []\n%s%s.addGeometry(geoList,%s)\ndel geoList\n")
-                    % geolist % doc % "False");
+                    % geolist % doc % "False"
+                );
             }
         }
 
@@ -134,8 +140,7 @@ std::string PythonConverter::convert(const std::string& doc,
         }
 
         if (sg.construction) {
-            geolist =
-                boost::str(boost::format("%sconstrGeoList.append(%s)\n") % geolist % sg.creation);
+            geolist = boost::str(boost::format("%sconstrGeoList.append(%s)\n") % geolist % sg.creation);
         }
         else {
             geolist = boost::str(boost::format("%sgeoList.append(%s)\n") % geolist % sg.creation);
@@ -167,9 +172,11 @@ std::string PythonConverter::convert(const std::string& doc,
     return command;
 }
 
-std::string PythonConverter::convert(const std::string& doc,
-                                     const std::vector<Sketcher::Constraint*>& constraints,
-                                     GeoIdMode geoIdMode)
+std::string PythonConverter::convert(
+    const std::string& doc,
+    const std::vector<Sketcher::Constraint*>& constraints,
+    GeoIdMode geoIdMode
+)
 {
     if (constraints.size() == 1) {
         auto cg = convert(constraints[0], geoIdMode);
@@ -182,14 +189,16 @@ std::string PythonConverter::convert(const std::string& doc,
     for (auto constraint : constraints) {
         auto cg = process(constraint, geoIdMode);
 
-        constraintlist =
-            boost::str(boost::format("%s\nconstraintList.append(%s)") % constraintlist % cg);
+        constraintlist = boost::str(
+            boost::format("%s\nconstraintList.append(%s)") % constraintlist % cg
+        );
     }
 
     if (!constraints.empty()) {
-        constraintlist =
-            boost::str(boost::format("%s\n%s.addConstraint(constraintList)\ndel constraintList\n")
-                       % constraintlist % doc);
+        constraintlist = boost::str(
+            boost::format("%s\n%s.addConstraint(constraintList)\ndel constraintList\n")
+            % constraintlist % doc
+        );
     }
 
     return constraintlist;
@@ -220,17 +229,17 @@ std::string makeSplineInfoArrayString(const std::vector<T>& rInfoVec)
 
 PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* geo)
 {
-    static std::map<const Base::Type, std::function<SingleGeometry(const Part::Geometry* geo)>>
-        converterMap = {
+    static std::map<const Base::Type, std::function<SingleGeometry(const Part::Geometry* geo)>> converterMap
+        = {
             {Part::GeomLineSegment::getClassTypeId(),
              [](const Part::Geometry* geo) {
                  auto sgeo = static_cast<const Part::GeomLineSegment*>(geo);
                  SingleGeometry sg;
                  sg.creation = boost::str(
-                     boost::format(
-                         "Part.LineSegment(App.Vector(%f, %f, %f),App.Vector(%f, %f, %f))")
+                     boost::format("Part.LineSegment(App.Vector(%f, %f, %f),App.Vector(%f, %f, %f))")
                      % sgeo->getStartPoint().x % sgeo->getStartPoint().y % sgeo->getStartPoint().z
-                     % sgeo->getEndPoint().x % sgeo->getEndPoint().y % sgeo->getEndPoint().z);
+                     % sgeo->getEndPoint().x % sgeo->getEndPoint().y % sgeo->getEndPoint().z
+                 );
                  sg.construction = Sketcher::GeometryFacade::getConstruction(geo);
                  return sg;
              }},
@@ -241,11 +250,14 @@ PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* g
                  arc->getRange(startAngle, endAngle, /*emulateCCWXY=*/true);
                  SingleGeometry sg;
                  sg.creation = boost::str(
-                     boost::format("Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, "
-                                   "%f), App.Vector(%f, %f, %f), %f), %f, %f)")
+                     boost::format(
+                         "Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, "
+                         "%f), App.Vector(%f, %f, %f), %f), %f, %f)"
+                     )
                      % arc->getCenter().x % arc->getCenter().y % arc->getCenter().z
                      % arc->getAxisDirection().x % arc->getAxisDirection().y
-                     % arc->getAxisDirection().z % arc->getRadius() % startAngle % endAngle);
+                     % arc->getAxisDirection().z % arc->getRadius() % startAngle % endAngle
+                 );
                  sg.construction = Sketcher::GeometryFacade::getConstruction(geo);
                  return sg;
              }},
@@ -253,9 +265,10 @@ PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* g
              [](const Part::Geometry* geo) {
                  auto sgeo = static_cast<const Part::GeomPoint*>(geo);
                  SingleGeometry sg;
-                 sg.creation =
-                     boost::str(boost::format("Part.Point(App.Vector(%f, %f, %f))")
-                                % sgeo->getPoint().x % sgeo->getPoint().y % sgeo->getPoint().z);
+                 sg.creation = boost::str(
+                     boost::format("Part.Point(App.Vector(%f, %f, %f))") % sgeo->getPoint().x
+                     % sgeo->getPoint().y % sgeo->getPoint().z
+                 );
                  sg.construction = Sketcher::GeometryFacade::getConstruction(geo);
                  return sg;
              }},
@@ -266,11 +279,14 @@ PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* g
                  auto center = ellipse->getCenter();
                  auto periapsis = center + ellipse->getMajorAxisDir() * ellipse->getMajorRadius();
                  auto positiveB = center + ellipse->getMinorAxisDir() * ellipse->getMinorRadius();
-                 sg.creation =
-                     boost::str(boost::format("Part.Ellipse(App.Vector(%f, %f, %f), App.Vector(%f, "
-                                              "%f, %f), App.Vector(%f, %f, %f))")
-                                % periapsis.x % periapsis.y % periapsis.z % positiveB.x
-                                % positiveB.y % positiveB.z % center.x % center.y % center.z);
+                 sg.creation = boost::str(
+                     boost::format(
+                         "Part.Ellipse(App.Vector(%f, %f, %f), App.Vector(%f, "
+                         "%f, %f), App.Vector(%f, %f, %f))"
+                     )
+                     % periapsis.x % periapsis.y % periapsis.z % positiveB.x % positiveB.y
+                     % positiveB.z % center.x % center.y % center.z
+                 );
                  sg.construction = Sketcher::GeometryFacade::getConstruction(geo);
                  return sg;
              }},
@@ -286,9 +302,11 @@ PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* g
                  sg.creation = boost::str(
                      boost::format(
                          "Part.ArcOfEllipse(Part.Ellipse(App.Vector(%f, %f, %f), App.Vector(%f, "
-                         "%f, %f), App.Vector(%f, %f, %f)), %f, %f)")
+                         "%f, %f), App.Vector(%f, %f, %f)), %f, %f)"
+                     )
                      % periapsis.x % periapsis.y % periapsis.z % positiveB.x % positiveB.y
-                     % positiveB.z % center.x % center.y % center.z % startAngle % endAngle);
+                     % positiveB.z % center.x % center.y % center.z % startAngle % endAngle
+                 );
                  sg.construction = Sketcher::GeometryFacade::getConstruction(geo);
                  return sg;
              }},
@@ -302,11 +320,14 @@ PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* g
                  auto majAxisPoint = center + aoh->getMajorAxisDir() * aoh->getMajorRadius();
                  auto minAxisPoint = center + aoh->getMinorAxisDir() * aoh->getMinorRadius();
                  sg.creation = boost::str(
-                     boost::format("Part.ArcOfHyperbola(Part.Hyperbola(App.Vector(%f, %f, %f), "
-                                   "App.Vector(%f, %f, %f), App.Vector(%f, %f, %f)), %f, %f)")
+                     boost::format(
+                         "Part.ArcOfHyperbola(Part.Hyperbola(App.Vector(%f, %f, %f), "
+                         "App.Vector(%f, %f, %f), App.Vector(%f, %f, %f)), %f, %f)"
+                     )
                      % majAxisPoint.x % majAxisPoint.y % majAxisPoint.z % minAxisPoint.x
                      % minAxisPoint.y % minAxisPoint.z % center.x % center.y % center.z % startAngle
-                     % endAngle);
+                     % endAngle
+                 );
                  sg.construction = Sketcher::GeometryFacade::getConstruction(geo);
                  return sg;
              }},
@@ -319,10 +340,13 @@ PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* g
                  auto focus = aop->getFocus();
                  auto axisPoint = aop->getCenter();
                  sg.creation = boost::str(
-                     boost::format("Part.ArcOfParabola(Part.Parabola(App.Vector(%f, %f, %f), "
-                                   "App.Vector(%f, %f, %f), App.Vector(0, 0, 1)), %f, %f)")
+                     boost::format(
+                         "Part.ArcOfParabola(Part.Parabola(App.Vector(%f, %f, %f), "
+                         "App.Vector(%f, %f, %f), App.Vector(0, 0, 1)), %f, %f)"
+                     )
                      % focus.x % focus.y % focus.z % axisPoint.x % axisPoint.y % axisPoint.z
-                     % startAngle % endAngle);
+                     % startAngle % endAngle
+                 );
                  sg.construction = Sketcher::GeometryFacade::getConstruction(geo);
                  return sg;
              }},
@@ -336,24 +360,24 @@ PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* g
                  std::string weights = makeSplineInfoArrayString(bSpline->getWeights());
 
                  SingleGeometry sg;
-                 sg.creation =
-                     boost::str(boost::format("Part.BSplineCurve(%s, %s, %s, %s, %d, %s, False)")
-                                % controlpoints.c_str() % mults.c_str() % knots.c_str()
-                                % (bSpline->isPeriodic() ? "True" : "False") % bSpline->getDegree()
-                                % weights.c_str());
+                 sg.creation = boost::str(
+                     boost::format("Part.BSplineCurve(%s, %s, %s, %s, %d, %s, False)")
+                     % controlpoints.c_str() % mults.c_str() % knots.c_str()
+                     % (bSpline->isPeriodic() ? "True" : "False") % bSpline->getDegree()
+                     % weights.c_str()
+                 );
                  sg.construction = Sketcher::GeometryFacade::getConstruction(geo);
                  return sg;
              }},
-            {Part::GeomCircle::getClassTypeId(),
-             [](const Part::Geometry* geo) {
+            {Part::GeomCircle::getClassTypeId(), [](const Part::Geometry* geo) {
                  auto circle = static_cast<const Part::GeomCircle*>(geo);
                  SingleGeometry sg;
                  sg.creation = boost::str(
-                     boost::format(
-                         "Part.Circle(App.Vector(%f, %f, %f), App.Vector(%f, %f, %f), %f)")
+                     boost::format("Part.Circle(App.Vector(%f, %f, %f), App.Vector(%f, %f, %f), %f)")
                      % circle->getCenter().x % circle->getCenter().y % circle->getCenter().z
                      % circle->getAxisDirection().x % circle->getAxisDirection().y
-                     % circle->getAxisDirection().z % circle->getRadius());
+                     % circle->getAxisDirection().z % circle->getRadius()
+                 );
                  sg.construction = Sketcher::GeometryFacade::getConstruction(geo);
                  return sg;
              }},
@@ -372,344 +396,245 @@ PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* g
 
 std::string PythonConverter::process(const Sketcher::Constraint* constraint, GeoIdMode geoIdMode)
 {
-    bool addLastIdVar = geoIdMode == GeoIdMode::AddLastGeoIdToGeoIds;
-    bool addLastIdVar1 = constraint->First >= 0 && addLastIdVar;
-    bool addLastIdVar2 = constraint->Second >= 0 && addLastIdVar;
-    bool addLastIdVar3 = constraint->Third >= 0 && addLastIdVar;
+    // Helper to format geometry IDs for Python (handles 'lastGeoId + X' logic)
+    auto formatGeoId = [&](int geoId) {
+        if (geoId >= 0 && geoIdMode == GeoIdMode::AddLastGeoIdToGeoIds) {
+            return "lastGeoId + " + std::to_string(geoId);
+        }
+        return std::to_string(geoId);
+    };
 
-    std::string geoId1 = (addLastIdVar1 ? "lastGeoId + " : "") + std::to_string(constraint->First);
-    std::string geoId2 = (addLastIdVar2 ? "lastGeoId + " : "") + std::to_string(constraint->Second);
-    std::string geoId3 = (addLastIdVar3 ? "lastGeoId + " : "") + std::to_string(constraint->Third);
+    // Pre-format elements and positions as strings
+    std::string id1 = formatGeoId(constraint->First);
+    std::string id2 = formatGeoId(constraint->Second);
+    std::string id3 = formatGeoId(constraint->Third);
 
+    std::string pos1 = std::to_string(static_cast<int>(constraint->FirstPos));
+    std::string pos2 = std::to_string(static_cast<int>(constraint->SecondPos));
+    std::string pos3 = std::to_string(static_cast<int>(constraint->ThirdPos));
 
-    static std::map<
-        const Sketcher::ConstraintType,
-        std::function<
-            std::string(const Sketcher::Constraint*, std::string&, std::string&, std::string&)>>
-        converterMap = {
-            {Sketcher::Coincident,
-             [](const Sketcher::Constraint* constr,
-                std::string& geoId1,
-                std::string& geoId2,
-                [[maybe_unused]] std::string& geoId3) {
-                 return boost::str(boost::format("Sketcher.Constraint('Coincident', %s, %i, %s, %i")
-                                   % geoId1 % static_cast<int>(constr->FirstPos) % geoId2
-                                   % static_cast<int>(constr->SecondPos));
-             }},
-            {Sketcher::Horizontal,
-             [](const Sketcher::Constraint* constr,
-                std::string& geoId1,
-                std::string& geoId2,
-                [[maybe_unused]] std::string& geoId3) {
-                 if (constr->Second == GeoEnum::GeoUndef) {
-                     return boost::str(boost::format("Sketcher.Constraint('Horizontal', %s")
-                                       % geoId1);
-                 }
-                 else {
-                     return boost::str(
-                         boost::format("Sketcher.Constraint('Horizontal', %s, %i, %s, %i") % geoId1
-                         % static_cast<int>(constr->FirstPos) % geoId2
-                         % static_cast<int>(constr->SecondPos));
-                 }
-             }},
-            {Sketcher::Vertical,
-             [](const Sketcher::Constraint* constr,
-                std::string& geoId1,
-                std::string& geoId2,
-                [[maybe_unused]] std::string& geoId3) {
-                 if (constr->Second == GeoEnum::GeoUndef) {
-                     return boost::str(boost::format("Sketcher.Constraint('Vertical', %s")
-                                       % geoId1);
-                 }
-                 else {
-                     return boost::str(
-                         boost::format("Sketcher.Constraint('Vertical', %s, %i, %s, %i") % geoId1
-                         % static_cast<int>(constr->FirstPos) % geoId2
-                         % static_cast<int>(constr->SecondPos));
-                 }
-             }},
-            {Sketcher::Block,
-             []([[maybe_unused]] const Sketcher::Constraint* constr,
-                std::string& geoId1,
-                [[maybe_unused]] std::string& geoId2,
-                [[maybe_unused]] std::string& geoId3) {
-                 return boost::str(boost::format("Sketcher.Constraint('Block', %s") % geoId1);
-             }},
-            {Sketcher::Tangent,
-             [](const Sketcher::Constraint* constr,
-                std::string& geoId1,
-                std::string& geoId2,
-                [[maybe_unused]] std::string& geoId3) {
-                 if (constr->FirstPos == Sketcher::PointPos::none) {
-                     return boost::str(boost::format("Sketcher.Constraint('Tangent', %s, %s")
-                                       % geoId1 % geoId2);
-                 }
-                 else if (constr->SecondPos == Sketcher::PointPos::none) {
-                     return boost::str(boost::format("Sketcher.Constraint('Tangent', %s, %i, %s")
-                                       % geoId1 % static_cast<int>(constr->FirstPos) % geoId2);
-                 }
-                 else {
-                     return boost::str(
-                         boost::format("Sketcher.Constraint('Tangent', %s, %i, %s, %i") % geoId1
-                         % static_cast<int>(constr->FirstPos) % geoId2
-                         % static_cast<int>(constr->SecondPos));
-                 }
-             }},
-            {Sketcher::Parallel,
-             []([[maybe_unused]] const Sketcher::Constraint* constr,
-                std::string& geoId1,
-                std::string& geoId2,
-                [[maybe_unused]] std::string& geoId3) {
-                 return boost::str(boost::format("Sketcher.Constraint('Parallel', %s, %s") % geoId1
-                                   % geoId2);
-             }},
-            {Sketcher::Perpendicular,
-             []([[maybe_unused]] const Sketcher::Constraint* constr,
-                std::string& geoId1,
-                std::string& geoId2,
-                [[maybe_unused]] std::string& geoId3) {
-                 if (constr->FirstPos == Sketcher::PointPos::none) {
-                     return boost::str(boost::format("Sketcher.Constraint('Perpendicular', %s, %s")
-                                       % geoId1 % geoId2);
-                 }
-                 else if (constr->SecondPos == Sketcher::PointPos::none) {
-                     return boost::str(
-                         boost::format("Sketcher.Constraint('Perpendicular', %s, %i, %s") % geoId1
-                         % static_cast<int>(constr->FirstPos) % geoId2);
-                 }
-                 else {
-                     return boost::str(
-                         boost::format("Sketcher.Constraint('Perpendicular', %s, %i, %s, %i")
-                         % geoId1 % static_cast<int>(constr->FirstPos) % geoId2
-                         % static_cast<int>(constr->SecondPos));
-                 }
-             }},
-            {Sketcher::Equal,
-             []([[maybe_unused]] const Sketcher::Constraint* constr,
-                std::string& geoId1,
-                std::string& geoId2,
-                [[maybe_unused]] std::string& geoId3) {
-                 return boost::str(boost::format("Sketcher.Constraint('Equal', %s, %s") % geoId1
-                                   % geoId2);
-             }},
-            {Sketcher::InternalAlignment,
-             [](const Sketcher::Constraint* constr,
-                std::string& geoId1,
-                std::string& geoId2,
-                [[maybe_unused]] std::string& geoId3) {
-                 if (constr->AlignmentType == EllipseMajorDiameter
-                     || constr->AlignmentType == EllipseMinorDiameter
-                     || constr->AlignmentType == HyperbolaMajor
-                     || constr->AlignmentType == HyperbolaMinor
-                     || constr->AlignmentType == ParabolaFocalAxis) {
-                     return boost::str(
-                         boost::format("Sketcher.Constraint('InternalAlignment:%s', %s, %s")
-                         % constr->internalAlignmentTypeToString() % geoId1 % geoId2);
-                 }
-                 else if (constr->AlignmentType == EllipseFocus1
-                          || constr->AlignmentType == EllipseFocus2
-                          || constr->AlignmentType == HyperbolaFocus
-                          || constr->AlignmentType == ParabolaFocus) {
-                     return boost::str(
-                         boost::format("Sketcher.Constraint('InternalAlignment:%s', %s, %i, %s")
-                         % constr->internalAlignmentTypeToString() % geoId1
-                         % static_cast<int>(constr->FirstPos) % geoId2);
-                 }
-                 else if (constr->AlignmentType == BSplineControlPoint) {
-                     return boost::str(
-                         boost::format("Sketcher.Constraint('InternalAlignment:%s', %s, %i, %s, %i")
-                         % constr->internalAlignmentTypeToString() % geoId1
-                         % static_cast<int>(constr->FirstPos) % geoId2
-                         % constr->InternalAlignmentIndex);
-                 }
-                 else if (constr->AlignmentType == BSplineKnotPoint) {
-                     return boost::str(
-                         boost::format("Sketcher.Constraint('InternalAlignment:%s', %s, 1, %s, %i")
-                         % constr->internalAlignmentTypeToString() % geoId1 % geoId2
-                         % constr->InternalAlignmentIndex);
-                 }
+    std::string id1pos1 = id1 + ", " + pos1;
+    std::string id2pos2 = id2 + ", " + pos2;
 
-                 THROWM(Base::ValueError,
-                        "PythonConverter: Constraint Alignment Type not supported")
-             }},
-            {Sketcher::Distance,
-             [](const Sketcher::Constraint* constr,
-                std::string& geoId1,
-                std::string& geoId2,
-                [[maybe_unused]] std::string& geoId3) {
-                 if (constr->Second == GeoEnum::GeoUndef) {
-                     return boost::str(boost::format("Sketcher.Constraint('Distance', %s, %f")
-                                       % geoId1 % constr->getValue());
-                 }
-                 else if (constr->FirstPos == Sketcher::PointPos::none) {
-                     return boost::str(boost::format("Sketcher.Constraint('Distance', %s, %s, %f")
-                                       % geoId1 % geoId2 % constr->getValue());
-                 }
-                 else if (constr->SecondPos == Sketcher::PointPos::none) {
-                     return boost::str(
-                         boost::format("Sketcher.Constraint('Distance', %s, %i, %s, %f") % geoId1
-                         % static_cast<int>(constr->FirstPos) % geoId2 % constr->getValue());
-                 }
-                 else {
-                     return boost::str(
-                         boost::format("Sketcher.Constraint('Distance', %s, %i, %s, %i, %f")
-                         % geoId1 % static_cast<int>(constr->FirstPos) % geoId2
-                         % static_cast<int>(constr->SecondPos) % constr->getValue());
-                 }
-             }},
-            {Sketcher::Angle,
-             [](const Sketcher::Constraint* constr,
-                std::string& geoId1,
-                std::string& geoId2,
-                std::string& geoId3) {
-                 if (constr->Second == GeoEnum::GeoUndef) {
-                     return boost::str(boost::format("Sketcher.Constraint('Angle', %s, %f") % geoId1
-                                       % constr->getValue());
-                 }
-                 else if (constr->Third == GeoEnum::GeoUndef) {
-                     if (constr->SecondPos == Sketcher::PointPos::none) {
-                         return boost::str(boost::format("Sketcher.Constraint('Angle', %s, %s, %f")
-                                           % geoId1 % geoId2 % constr->getValue());
-                     }
-                     else {
-                         return boost::str(
-                             boost::format("Sketcher.Constraint('Angle', %s, %i, %s, %i, %f")
-                             % geoId1 % static_cast<int>(constr->FirstPos) % geoId2
-                             % static_cast<int>(constr->SecondPos) % constr->getValue());
-                     }
-                 }
-                 else {
-                     return boost::str(
-                         boost::format("Sketcher.Constraint('AngleViaPoint', %s, %s, %s, %i, %f")
-                         % geoId1 % geoId2 % geoId3 % static_cast<int>(constr->ThirdPos)
-                         % constr->getValue());
-                 }
-             }},
-            {Sketcher::DistanceX,
-             [](const Sketcher::Constraint* constr,
-                std::string& geoId1,
-                std::string& geoId2,
-                [[maybe_unused]] std::string& geoId3) {
-                 if (constr->Second == GeoEnum::GeoUndef) {
-                     return boost::str(boost::format("Sketcher.Constraint('DistanceX', %s, %f")
-                                       % geoId1 % constr->getValue());
-                 }
-                 else if (constr->SecondPos == Sketcher::PointPos::none) {
-                     return boost::str(boost::format("Sketcher.Constraint('DistanceX', %s, %i, %f")
-                                       % geoId1 % static_cast<int>(constr->FirstPos)
-                                       % constr->getValue());
-                 }
-                 else {
-                     return boost::str(
-                         boost::format("Sketcher.Constraint('DistanceX', %s, %i, %s, %i, %f")
-                         % geoId1 % static_cast<int>(constr->FirstPos) % geoId2
-                         % static_cast<int>(constr->SecondPos) % constr->getValue());
-                 }
-             }},
-            {Sketcher::DistanceY,
-             [](const Sketcher::Constraint* constr,
-                std::string& geoId1,
-                std::string& geoId2,
-                [[maybe_unused]] std::string& geoId3) {
-                 if (constr->Second == GeoEnum::GeoUndef) {
-                     return boost::str(boost::format("Sketcher.Constraint('DistanceY', %s, %f")
-                                       % geoId1 % constr->getValue());
-                 }
-                 else if (constr->SecondPos == Sketcher::PointPos::none) {
-                     return boost::str(boost::format("Sketcher.Constraint('DistanceY', %s, %i, %f")
-                                       % geoId1 % static_cast<int>(constr->FirstPos)
-                                       % constr->getValue());
-                 }
-                 else {
-                     return boost::str(
-                         boost::format("Sketcher.Constraint('DistanceY', %s, %i, %s, %i, %f")
-                         % geoId1 % static_cast<int>(constr->FirstPos) % geoId2
-                         % static_cast<int>(constr->SecondPos) % constr->getValue());
-                 }
-             }},
-            {Sketcher::Radius,
-             [](const Sketcher::Constraint* constr,
-                std::string& geoId1,
-                [[maybe_unused]] std::string& geoId2,
-                [[maybe_unused]] std::string& geoId3) {
-                 return boost::str(boost::format("Sketcher.Constraint('Radius', %s, %f") % geoId1
-                                   % constr->getValue());
-             }},
-            {Sketcher::Diameter,
-             [](const Sketcher::Constraint* constr,
-                std::string& geoId1,
-                [[maybe_unused]] std::string& geoId2,
-                [[maybe_unused]] std::string& geoId3) {
-                 return boost::str(boost::format("Sketcher.Constraint('Diameter', %s, %f") % geoId1
-                                   % constr->getValue());
-             }},
-            {Sketcher::Weight,
-             [](const Sketcher::Constraint* constr,
-                std::string& geoId1,
-                [[maybe_unused]] std::string& geoId2,
-                [[maybe_unused]] std::string& geoId3) {
-                 return boost::str(boost::format("Sketcher.Constraint('Weight', %s, %f") % geoId1
-                                   % constr->getValue());
-             }},
-            {Sketcher::PointOnObject,
-             [](const Sketcher::Constraint* constr,
-                std::string& geoId1,
-                std::string& geoId2,
-                [[maybe_unused]] std::string& geoId3) {
-                 return boost::str(boost::format("Sketcher.Constraint('PointOnObject', %s, %i, %s")
-                                   % geoId1 % static_cast<int>(constr->FirstPos) % geoId2);
-             }},
-            {Sketcher::Symmetric,
-             [](const Sketcher::Constraint* constr,
-                std::string& geoId1,
-                std::string& geoId2,
-                std::string& geoId3) {
-                 if (constr->ThirdPos == Sketcher::PointPos::none) {
-                     return boost::str(
-                         boost::format("Sketcher.Constraint('Symmetric', %s, %i, %s, %i, %s")
-                         % geoId1 % static_cast<int>(constr->FirstPos) % geoId2
-                         % static_cast<int>(constr->SecondPos) % geoId3);
-                 }
-                 else {
-                     return boost::str(
-                         boost::format("Sketcher.Constraint('Symmetric', %s, %i, %s, %i, %s, %i")
-                         % geoId1 % static_cast<int>(constr->FirstPos) % geoId2
-                         % static_cast<int>(constr->SecondPos) % geoId3
-                         % static_cast<int>(constr->ThirdPos));
-                 }
-             }},
-            {Sketcher::SnellsLaw,
-             [](const Sketcher::Constraint* constr,
-                std::string& geoId1,
-                std::string& geoId2,
-                std::string& geoId3) {
-                 return boost::str(
-                     boost::format("Sketcher.Constraint('SnellsLaw', %s, %i, %s, %i, %s, %f")
-                     % geoId1 % static_cast<int>(constr->FirstPos) % geoId2
-                     % static_cast<int>(constr->SecondPos) % geoId3 % constr->getValue());
-             }},
-        };
+    std::string val = std::to_string(constraint->getValue());
 
-    auto result = converterMap.find(constraint->Type);
+    // Booleans to simplify the logic branches
+    bool secondUndef = (constraint->Second == GeoEnum::GeoUndef);
+    bool thirdUndef = (constraint->Third == GeoEnum::GeoUndef);
+    bool firstIsEdge = (constraint->FirstPos == Sketcher::PointPos::none);
+    bool secondIsEdge = (constraint->SecondPos == Sketcher::PointPos::none);
+    bool thirdIsEdge = (constraint->ThirdPos == Sketcher::PointPos::none);
 
-    if (result == converterMap.end()) {
-        THROWM(Base::ValueError, "PythonConverter: Constraint Type not supported")
+    std::string res;
+
+    switch (constraint->Type) {
+        case Sketcher::Coincident:
+            res = "Coincident', " + id1pos1 + ", " + id2pos2;
+            break;
+        case Sketcher::Horizontal:
+            if (secondUndef) {
+                res = "Horizontal', " + id1;
+            }
+            else {
+                res = "Horizontal', " + id1pos1 + ", " + id2pos2;
+            }
+            break;
+        case Sketcher::Vertical:
+            if (secondUndef) {
+                res = "Vertical', " + id1;
+            }
+            else {
+                res = "Vertical', " + id1pos1 + ", " + id2pos2;
+            }
+            break;
+        case Sketcher::Block:
+            res = "Block', " + id1;
+            break;
+        case Sketcher::Tangent:
+            if (firstIsEdge) {
+                res = "Tangent', " + id1 + ", " + id2;
+            }
+            else if (secondIsEdge) {
+                res = "Tangent', " + id1pos1 + ", " + id2;
+            }
+            else {
+                res = "Tangent', " + id1pos1 + ", " + id2pos2;
+            }
+            break;
+        case Sketcher::Parallel:
+            res = "Parallel', " + id1 + ", " + id2;
+            break;
+        case Sketcher::Perpendicular:
+            if (firstIsEdge) {
+                res = "Perpendicular', " + id1 + ", " + id2;
+            }
+            else if (secondIsEdge) {
+                res = "Perpendicular', " + id1pos1 + ", " + id2;
+            }
+            else {
+                res = "Perpendicular', " + id1pos1 + ", " + id2pos2;
+            }
+            break;
+        case Sketcher::Equal:
+            res = "Equal', " + id1 + ", " + id2;
+            break;
+        case Sketcher::Distance:
+            if (secondUndef) {
+                res = "Distance', " + id1 + ", " + val;
+            }
+            else if (firstIsEdge) {
+                res = "Distance', " + id1 + ", " + id2 + ", " + val;
+            }
+            else if (secondIsEdge) {
+                res = "Distance', " + id1pos1 + ", " + id2 + ", " + val;
+            }
+            else {
+                res = "Distance', " + id1pos1 + ", " + id2pos2 + ", " + val;
+            }
+            break;
+        case Sketcher::Angle:
+            if (secondUndef) {
+                res = "Angle', " + id1 + ", " + val;
+            }
+            else if (thirdUndef) {
+                if (secondIsEdge) {
+                    res = "Angle', " + id1 + ", " + id2 + ", " + val;
+                }
+                else {
+                    res = "Angle', " + id1pos1 + ", " + id2pos2 + ", " + val;
+                }
+            }
+            else {
+                res = "AngleViaPoint', " + id1 + ", " + id2 + ", " + id3 + ", " + pos3 + ", " + val;
+            }
+            break;
+        case Sketcher::DistanceX:
+            if (firstIsEdge && secondUndef) {
+                res = "DistanceX', " + id1 + ", " + val;
+            }
+            else if (secondIsEdge) {
+                res = "DistanceX', " + id1pos1 + ", " + val;
+            }
+            else {
+                res = "DistanceX', " + id1pos1 + ", " + id2pos2 + ", " + val;
+            }
+            break;
+        case Sketcher::DistanceY:
+            if (firstIsEdge && secondUndef) {
+                res = "DistanceY', " + id1 + ", " + val;
+            }
+            else if (secondIsEdge) {
+                res = "DistanceY', " + id1pos1 + ", " + val;
+            }
+            else {
+                res = "DistanceY', " + id1pos1 + ", " + id2pos2 + ", " + val;
+            }
+            break;
+        case Sketcher::Radius:
+            res = "Radius', " + id1 + ", " + val;
+            break;
+        case Sketcher::Diameter:
+            res = "Diameter', " + id1 + ", " + val;
+            break;
+        case Sketcher::Weight:
+            res = "Weight', " + id1 + ", " + val;
+            break;
+        case Sketcher::PointOnObject:
+            res = "PointOnObject', " + id1pos1 + ", " + id2;
+            break;
+        case Sketcher::Symmetric:
+            if (thirdIsEdge) {
+                res = "Symmetric', " + id1pos1 + ", " + id2pos2 + ", " + id3;
+            }
+            else {
+                res = "Symmetric', " + id1pos1 + ", " + id2pos2 + ", " + id3 + ", " + pos3;
+            }
+            break;
+        case Sketcher::SnellsLaw:
+            res = "SnellsLaw', " + id1pos1 + ", " + id2pos2 + ", " + id3 + ", " + val;
+            break;
+        case Sketcher::InternalAlignment: {
+            std::string alignType = constraint->internalAlignmentTypeToString();
+            if (constraint->AlignmentType == EllipseMajorDiameter
+                || constraint->AlignmentType == EllipseMinorDiameter
+                || constraint->AlignmentType == HyperbolaMajor
+                || constraint->AlignmentType == HyperbolaMinor
+                || constraint->AlignmentType == ParabolaFocalAxis) {
+                res = "InternalAlignment:" + alignType + "', " + id1 + ", " + id2;
+            }
+            else if (
+                constraint->AlignmentType == EllipseFocus1 || constraint->AlignmentType == EllipseFocus2
+                || constraint->AlignmentType == HyperbolaFocus
+                || constraint->AlignmentType == ParabolaFocus
+            ) {
+                res = "InternalAlignment:" + alignType + "', " + id1pos1 + ", " + id2;
+            }
+            else if (constraint->AlignmentType == BSplineControlPoint) {
+                res = "InternalAlignment:" + alignType + "', " + id1pos1 + ", " + id2 + ", "
+                    + std::to_string(constraint->InternalAlignmentIndex);
+            }
+            else if (constraint->AlignmentType == BSplineKnotPoint) {
+                res = "InternalAlignment:" + alignType + "', " + id1 + ", 1, " + id2 + ", "
+                    + std::to_string(constraint->InternalAlignmentIndex);
+            }
+            else {
+                THROWM(Base::ValueError, "PythonConverter: Constraint Alignment Type not supported")
+            }
+            break;
+        }
+        case Sketcher::Group:
+        case Sketcher::Text: {
+            std::string list = "[";
+            for (int i = 0; constraint->hasElement(i); ++i) {
+                if (i > 0) {
+                    list += ", ";
+                }
+                list += formatGeoId(constraint->getGeoId(i)) + ", "
+                    + std::to_string(constraint->getPosIdAsInt(i));
+            }
+            list += "]";
+
+            if (constraint->Type == Sketcher::Group) {
+                res = "Group', " + list;
+            }
+            else {
+                auto escapeForPython = [](const std::string& input) {
+                    std::string result;
+                    result.reserve(input.length());
+                    for (char c : input) {
+                        if (c == '\\') {
+                            result += "\\\\";
+                        }
+                        else if (c == '\'') {
+                            result += "\\'";
+                        }
+                        else {
+                            result += c;
+                        }
+                    }
+                    return result;
+                };
+
+                res = "Text', " + list + ", '" + escapeForPython(constraint->getText()) + "', '"
+                    + escapeForPython(constraint->getFont()) + "', "
+                    + (constraint->getIsTextHeight() ? "True" : "False");
+            }
+            break;
+        }
+        default:
+            THROWM(Base::ValueError, "PythonConverter: Constraint Type not supported")
     }
 
-    auto creator = result->second;
-    std::string resultStr = creator(constraint, geoId1, geoId2, geoId3);
-
+    // Append active/driving flags
     if (!constraint->isActive || !constraint->isDriving) {
-        std::string active = constraint->isActive ? "True" : "False";
-        resultStr += ", " + active;
+        res += constraint->isActive ? ", True" : ", False";
         if (constraint->isDimensional()) {
-            std::string driving = constraint->isDriving ? "True" : "False";
-            resultStr += ", " + driving;
+            res += constraint->isDriving ? ", True" : ", False";
         }
     }
-    resultStr += ")";
 
-    return resultStr;
+    // Encapsulate everything correctly
+    return "Sketcher.Constraint('" + res + ")";
 }
 
 std::vector<std::string> PythonConverter::multiLine(std::string&& singlestring)

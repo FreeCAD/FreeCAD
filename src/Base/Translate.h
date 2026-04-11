@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2018 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,16 +23,12 @@
  ***************************************************************************/
 
 
-#ifndef BASE_TRANSLATE_H
-#define BASE_TRANSLATE_H
+#pragma once
 
 #include <CXX/Extensions.hxx>
-#include <QTranslator>
-#include <memory>
-#include <list>
-#ifndef FC_GLOBAL_H
+#include <string>
+#include <vector>
 #include <FCGlobal.h>
-#endif
 
 namespace Py
 {
@@ -56,9 +54,7 @@ private:
     Py::Object removeTranslators(const Py::Tuple& args);
 
 private:
-    std::list<std::shared_ptr<QTranslator>> translators;
+    std::vector<std::string> translators;
 };
 
 }  // namespace Base
-
-#endif  // BASE_TRANSLATE_H

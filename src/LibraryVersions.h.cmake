@@ -1,5 +1,6 @@
-#ifndef LIBRARY_VERSIONS_H
-#define LIBRARY_VERSIONS_H
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
+#pragma once
 
 /* LibraryVersions.h.  Generated from LibraryVersions.h.cmake by cmake.  */
 
@@ -57,5 +58,3 @@ constexpr const char * fcXercescVersion = "${XercesC_VERSION}";
 // Pivy
 constexpr const char * fcPivyVersion = "${PIVY_VERSION}";
 
-
-#endif // LIBRARY_VERSIONS_H

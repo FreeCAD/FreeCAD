@@ -1,8 +1,9 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 from __future__ import annotations
 from dataclasses import dataclass, field
 from enum import Enum
 from typing import List, Optional
-
 
 #
 # Enums
@@ -24,6 +25,7 @@ class ParameterType(str, Enum):
     MODULE = "Module"
     CALLABLE = "Callable"
     SEQUENCE = "Sequence"
+    VECTOR = "Vector"
 
     def __str__(self):
         return self.value

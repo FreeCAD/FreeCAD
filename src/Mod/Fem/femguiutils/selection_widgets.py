@@ -254,6 +254,8 @@ class SmallListView(QtGui.QListView):
 
 class GeometryElementsSelection(QtGui.QWidget):
 
+    referencesUpdated = QtCore.Signal(object)
+
     def __init__(self, ref, eltypes, multigeom, showHintEmptyList):
         super().__init__()
         # init ui stuff
@@ -296,6 +298,13 @@ class GeometryElementsSelection(QtGui.QWidget):
         # button
         self.pushButton_Add = QtGui.QPushButton(self.tr("Add"))
         self.pushButton_Remove = QtGui.QPushButton(self.tr("Remove"))
+        # label
+        self.lb_help = QtGui.QLabel()
+        self.lb_help.setWordWrap(True)
+        selectHelpText = self.tr("Select geometry of type: {}{}{}").format(
+            "<b>", self.sel_elem_text, "</b>"
+        )
+        self.lb_help.setText(selectHelpText)
         # list
         self.list_References = QtGui.QListWidget()
         # radiobutton down the list
@@ -314,6 +323,7 @@ class GeometryElementsSelection(QtGui.QWidget):
         subLayout.addWidget(self.pushButton_Remove)
         # main layout
         mainLayout = QtGui.QVBoxLayout()
+        mainLayout.addWidget(self.lb_help)
         mainLayout.addLayout(subLayout)
         mainLayout.addWidget(self.list_References)
 
@@ -454,10 +464,12 @@ class GeometryElementsSelection(QtGui.QWidget):
         for ref in self.references:
             if self.get_item_text(ref) == currentItemName:
                 self.references.remove(ref)
+                self.referencesUpdated.emit(self.references)
         self.rebuild_list_References(currentRow)
 
     def remove_all_references(self):
         self.references = []
+        self.referencesUpdated.emit(self.references)
         self.rebuild_list_References()
 
     def choose_selection_mode_standard(self, state):
@@ -486,6 +498,14 @@ class GeometryElementsSelection(QtGui.QWidget):
             # on every click on addReference button
             # but close only one SelectionObserver on leaving the task panel
             self.sel_server = FemSelectionObserver(self.selectionParser, print_message)
+
+    def attachSelection(self):
+        if self.sel_server:
+            FreeCADGui.Selection.addObserver(self.sel_server)
+
+    def detachSelection(self):
+        if self.sel_server:
+            FreeCADGui.Selection.removeObserver(self.sel_server)
 
     def selectionParser(self, selection):
         if hasattr(selection[0], "Shape") and selection[1]:
@@ -538,6 +558,7 @@ class GeometryElementsSelection(QtGui.QWidget):
                         if self.allow_multiple_geom_types is False:
                             if self.has_equal_references_shape_types(ele_ShapeType):
                                 self.references.append(selection)
+                                self.referencesUpdated.emit(self.references)
                                 self.rebuild_list_References(
                                     self.get_allitems_text().index(self.get_item_text(selection))
                                 )
@@ -546,6 +567,7 @@ class GeometryElementsSelection(QtGui.QWidget):
                                 FreeCADGui.Selection.clearSelection()
                         else:  # multiple shape types are allowed to add
                             self.references.append(selection)
+                            self.referencesUpdated.emit(self.references)
                             self.rebuild_list_References(
                                 self.get_allitems_text().index(self.get_item_text(selection))
                             )
@@ -603,6 +625,13 @@ class FemSelectionObserver:
 
     def addSelection(self, docName, objName, sub, pos):
         selected_object = FreeCAD.getDocument(docName).getObject(objName)  # get the obj objName
+        if FreeCADGui.editDocument().getInEdit().Object.Document != selected_object.Document:
+            QtGui.QMessageBox.critical(
+                None, "Selection error", "External object selection is not supported"
+            )
+            FreeCADGui.Selection.clearSelection()
+            return
+
         self.added_obj = (selected_object, sub)
         # on double click on a vertex of a solid sub is None and obj is the solid
         self.parseSelectionFunction(self.added_obj)

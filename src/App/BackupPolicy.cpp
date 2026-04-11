@@ -21,13 +21,9 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/regex.hpp>
 #include <string>
-#endif
 
 #include <Base/TimeInfo.h>
 #include <Base/Console.h>
@@ -216,11 +212,50 @@ void BackupPolicy::applyTimeStamp(const std::string& sourcename, const std::stri
                     std::stringstream str;
                     Base::TimeInfo ti = fi.lastModified();
                     time_t s = ti.getTime_t();
-                    struct tm* timeinfo = localtime(&s);
-                    char buffer[100];
+                    std::tm local_tm {};
+#if defined(_WIN32)
+                    localtime_s(&local_tm, &s);  // Windows
+#else
+                    localtime_r(&s, &local_tm);  // POSIX
+#endif
+                    constexpr size_t bufferLength = 128;
+                    std::array<char, bufferLength> buffer {};
+                    if (size_t bytes = std::strftime(buffer.data(),
+                                                     bufferLength,
+                                                     saveBackupDateFormat.c_str(),
+                                                     &local_tm);
+                        bytes == 0) {
+                        // An error here is typically that we over-ran the maximum buffer length (
+                        // which should be a *very* unusual condition).
+                        Base::Console().error("Failed to create valid backup file name from format string:\n");
+                        Base::Console().error(saveBackupDateFormat.c_str());
+                        const auto knownGoodFormat {"%Y-%m-%d_%H-%M-%S"};
+                        std::strftime(buffer.data(), bufferLength, knownGoodFormat, &local_tm);
+                    }
+                    std::string timestamp = buffer.data();
 
-                    strftime(buffer, sizeof(buffer), saveBackupDateFormat.c_str(), timeinfo);
-                    str << bn << buffer;
+                    auto isInvalidChar = [](char ch) {
+#if defined(_WIN32)
+                        return std::string_view("<>:\"/\\|?*").find(ch) != std::string_view::npos;
+#else
+                        return ch == '/';
+#endif
+                    };
+
+                    if (std::ranges::any_of(timestamp, isInvalidChar)) {
+                        std::ranges::replace_if(timestamp, isInvalidChar, '-');
+
+                        static bool warned = false;
+                        if (!warned) {
+                            Base::Console().warning(
+                                "Backup filename contained invalid characters. "
+                                "Automatically replaced with '-'. "
+                                "Consider changing the date format in Preferences/Document.\n");
+                            warned = true;
+                        }
+                    }
+
+                    str << bn << timestamp;
 
                     fn = str.str();
                     bool done = false;

@@ -21,8 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <BRep_Builder.hxx>
 # include <BRepBuilderAPI_Transform.hxx>
 # include <gp_Trsf.hxx>
@@ -32,7 +30,7 @@
 # include <TopoDS_Edge.hxx>
 # include <TopoDS_Face.hxx>
 # include <TopoDS_Wire.hxx>
-#endif
+
 
 #include <boost_regex.hpp>
 
@@ -194,6 +192,10 @@ public:
         add_varargs_method("makeLeader", &Module::makeLeader,
             "makeLeader(parent - DrawViewPart, points - [Vector], startSymbol - int, endSymbol - int) - Creates a leader line attached to parent. Points are in page coordinates with (0, 0) at lowerleft.s"
         );
+        add_varargs_method("nearestFraction", &Module::nearestFraction,
+        "nearestFraction(float) - returns the numerator and denominator of the nearest fraction as a tuple."
+        );
+
         initialize("This is a module for making drawings"); // register with Python
     }
     ~Module() override {}
@@ -574,7 +576,7 @@ private:
         TopoDS_Shape shape = ShapeUtils::mirrorShape(gObj->getVisHard());
         double offX = 0.0;
         double offY = 0.0;
-        if (dvp->isDerivedFrom<TechDraw::DrawProjGroupItem>()) {
+        if (DrawView::isProjGroupItem(dvp)) {
             TechDraw::DrawProjGroupItem* dpgi = static_cast<TechDraw::DrawProjGroupItem*>(dvp);
             TechDraw::DrawProjGroup*      dpg = dpgi->getPGroup();
             if (dpg) {
@@ -631,7 +633,7 @@ private:
             shape = mkTrf.Shape();
             writer.exportShape(shape);
         }
-        //add the cosmetic edges also
+        //add the cosmetic edges also (centerlines, cosmetic lines, etc)
         std::vector<TechDraw::BaseGeomPtr> geoms = dvp->getEdgeGeometry();
         std::vector<TopoDS_Edge> cosmeticEdges;
         for (auto& g : geoms) {
@@ -640,9 +642,14 @@ private:
             }
         }
         if (!cosmeticEdges.empty()) {
-            shape = ShapeUtils::mirrorShape(DrawUtil::vectorToCompound(cosmeticEdges));
-            mkTrf.Perform(shape);
-            shape = mkTrf.Shape();
+            // cosmetic edges (centerlines, etc) are already in correct Y orientation
+            // so they only need translation, not mirroring like the regular geometry
+            // issue #22470
+            shape = DrawUtil::vectorToCompound(cosmeticEdges);
+            gp_Trsf xLateCosmetics;
+            xLateCosmetics.SetTranslation(gp_Vec(dvpX, dvpY, 0.0));
+            BRepBuilderAPI_Transform mkTrfCosmetics(shape, xLateCosmetics);
+            shape = mkTrfCosmetics.Shape();
             writer.exportShape(shape);
         }
     }
@@ -732,7 +739,7 @@ private:
                         }
                         double grandParentX = 0.0;
                         double grandParentY = 0.0;
-                        if (dvp->isDerivedFrom<TechDraw::DrawProjGroupItem>()) {
+                        if (DrawView::isProjGroupItem(dvp)) {
                             TechDraw::DrawProjGroupItem* dpgi = static_cast<TechDraw::DrawProjGroupItem*>(dvp);
                             TechDraw::DrawProjGroup* dpg = dpgi->getPGroup();
                             if (!dpg) {
@@ -1344,6 +1351,18 @@ private:
         // return the new leader as DrawLeaderPy
         return Py::asObject(new DrawLeaderLinePy(newLeader));
    }
+
+    Py::Object nearestFraction(const Py::Tuple& args)
+    {
+        double valueWithDecimals{0.0};
+        if (!PyArg_ParseTuple(args.ptr(), "d", &valueWithDecimals)) {
+            throw Py::TypeError("expected (valueWithDecimals)");
+        }
+
+        std::pair<int, int> numAndDen = DrawUtil::nearestFraction(valueWithDecimals);
+        PyObject* pyNumAndDen = Py_BuildValue("(ii)", numAndDen.first, numAndDen.second);
+        return Py::asObject(pyNumAndDen);
+    }
 
  };
 

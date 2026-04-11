@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
@@ -20,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PROPERTYPATH_H
-#define PROPERTYPATH_H
+#pragma once
 
 #include <App/Property.h>
 
@@ -72,6 +72,3 @@ private:
 
 
 }  // namespace Path
-
-
-#endif  // PROPERTYPATH_H

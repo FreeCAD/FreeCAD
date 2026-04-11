@@ -22,10 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <vector>
-#endif
+
 
 #include <Base/Tools.h>
 
@@ -228,7 +226,7 @@ int DlgPrefsTechDrawAnnotationImp::prefMattingStyle() const
 void DlgPrefsTechDrawAnnotationImp::onLineGroupChanged(int index)
 {
     if (index == -1) { // there is no valid index yet
-        ui->pcbLineGroup->setToolTip(QObject::tr("Please select a Line Group"));
+        ui->pcbLineGroup->setToolTip(QObject::tr("Select a line group"));
         return;
     }
     // get the definition of the selected LineGroup (includes the name)

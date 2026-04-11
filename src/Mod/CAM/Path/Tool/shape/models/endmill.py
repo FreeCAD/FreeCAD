@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2025 Samuel Abels <knipknap@gmail.com>                  *
 # *                                                                         *
@@ -27,7 +28,6 @@ from .base import ToolBitShape
 
 class ToolBitShapeEndmill(ToolBitShape):
     name = "Endmill"
-    aliases = ("endmill",)
 
     @classmethod
     def schema(cls) -> Mapping[str, Tuple[str, str]]:

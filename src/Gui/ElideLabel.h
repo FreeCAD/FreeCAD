@@ -23,32 +23,29 @@
 
 // This custom widget adds the missing ellipsize functionality in QT5
 
-#ifndef ELIDELABEL_H
-#define ELIDELABEL_H
+#pragma once
 
-#ifndef _PreComp_
 #include <QLabel>
 #include <QPainter>
 #include <QFontMetrics>
-#endif
 
 #include <FCGlobal.h>
 
-namespace Gui {
+namespace Gui
+{
 
-class GuiExport ElideLabel : public QLabel {
+class GuiExport ElideLabel: public QLabel
+{
     Q_OBJECT
 
 public:
-    explicit ElideLabel(QWidget *parent = nullptr);
+    explicit ElideLabel(QWidget* parent = nullptr);
     ~ElideLabel() override = default;
 
 protected:
-    void paintEvent(QPaintEvent *event) override;
+    void paintEvent(QPaintEvent* event) override;
     QSize sizeHint() const override;
     QSize minimumSizeHint() const override;
 };
 
 }  // namespace Gui
-
-#endif // ELIDELABEL_H

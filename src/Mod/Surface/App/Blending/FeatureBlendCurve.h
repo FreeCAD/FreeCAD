@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Matteo Grellier <matteogrellier@gmail.com>         *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEATURE_BLEND_CURVE_H
-#define FEATURE_BLEND_CURVE_H
+#pragma once
 
 #include <App/PropertyLinks.h>
 #include <App/PropertyStandard.h>
@@ -60,9 +61,11 @@ public:
     }
 
 private:
-    BlendPoint GetBlendPoint(App::PropertyLinkSub& link,
-                             App::PropertyFloatConstraint& param,
-                             App::PropertyIntegerConstraint& Continuity);
+    BlendPoint GetBlendPoint(
+        App::PropertyLinkSub& link,
+        App::PropertyFloatConstraint& param,
+        App::PropertyIntegerConstraint& Continuity
+    );
     double RelativeToRealParameters(double, double, double);
 
 protected:
@@ -70,5 +73,3 @@ protected:
 };
 
 }  // Namespace Surface
-
-#endif

@@ -36,9 +36,7 @@ class BIM_SetWPFront:
         return {
             "Pixmap": "view-front.svg",
             "MenuText": QT_TRANSLATE_NOOP("BIM_SetWPFront", "Working Plane Front"),
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "BIM_SetWPFront", "Set the working plane to Front"
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("BIM_SetWPFront", "Sets the working plane to Front"),
             "Accel": "W,P,1",
         }
 
@@ -53,9 +51,7 @@ class BIM_SetWPSide:
         return {
             "Pixmap": "view-right.svg",
             "MenuText": QT_TRANSLATE_NOOP("BIM_SetWPSide", "Working Plane Side"),
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "BIM_SetWPSide", "Set the working plane to Side"
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("BIM_SetWPSide", "Sets the working plane to Side"),
             "Accel": "W,P,3",
         }
 
@@ -70,9 +66,7 @@ class BIM_SetWPTop:
         return {
             "Pixmap": "view-top.svg",
             "MenuText": QT_TRANSLATE_NOOP("BIM_SetWPTop", "Working Plane Top"),
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "BIM_SetWPTop", "Set the working plane to Top"
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("BIM_SetWPTop", "Sets the working plane to Top"),
             "Accel": "W,P,2",
         }
 
@@ -89,7 +83,7 @@ class BIM_WPView:
             "MenuText": QT_TRANSLATE_NOOP("BIM_WPView", "Working Plane View"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_WPView",
-                "Aligns the view to the current item in BIM Views window or to the current working plane",
+                "Aligns the view to the current item in BIM Views Manager or to the current working plane",
             ),
             "Accel": "9",
         }

@@ -20,12 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <sstream>
 
 # include <Precision.hxx>
-#endif
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -56,7 +53,7 @@ App::PropertyFloatConstraint::Constraints DrawPage::scaleRange = {
 
 PROPERTY_SOURCE(TechDraw::DrawPage, App::DocumentObject)
 
-const char* DrawPage::ProjectionTypeEnums[] = {"First Angle", "Third Angle", nullptr};
+const char* DrawPage::ProjectionTypeEnums[] = {"First angle", "Third angle", nullptr};
 
 DrawPage::DrawPage(void)
 {

@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef GUI_NAVIGATIONANIMATOR_H
-#define GUI_NAVIGATIONANIMATOR_H
+#pragma once
 
 #include "Navigation/NavigationStyle.h"
 #include <QObject>
@@ -33,7 +32,7 @@ namespace Gui
 
 class NavigationAnimation;
 
-class GuiExport NavigationAnimator : public QObject
+class GuiExport NavigationAnimator: public QObject
 {
     Q_OBJECT
 public:
@@ -48,6 +47,4 @@ private:
     std::shared_ptr<NavigationAnimation> activeAnimation;
 };
 
-} // namespace Gui
-
-#endif // GUI_NAVIGATIONANIMATOR_H
+}  // namespace Gui

@@ -57,42 +57,42 @@
             <item row="0" column="0">
              <widget class="QLabel" name="TextLabel1_3">
               <property name="text">
-               <string>Macro:</string>
+               <string>Macro</string>
               </property>
              </widget>
             </item>
             <item row="1" column="0">
              <widget class="QLabel" name="TextLabel3">
               <property name="text">
-               <string>Menu text:</string>
+               <string>Menu text</string>
               </property>
              </widget>
             </item>
             <item row="2" column="0">
              <widget class="QLabel" name="TextLabel2_2">
               <property name="text">
-               <string>Tool tip:</string>
+               <string>Tooltip</string>
               </property>
              </widget>
             </item>
             <item row="3" column="0">
              <widget class="QLabel" name="TextLabel3_2">
               <property name="text">
-               <string>Status text:</string>
+               <string>Status text</string>
               </property>
              </widget>
             </item>
             <item row="4" column="0">
              <widget class="QLabel" name="TextLabel2">
               <property name="text">
-               <string>What's this:</string>
+               <string>What's this</string>
               </property>
              </widget>
             </item>
             <item row="5" column="0">
              <widget class="QLabel" name="TextLabel1">
               <property name="text">
-               <string>Accelerator:</string>
+               <string>Accelerator</string>
               </property>
              </widget>
             </item>
@@ -115,7 +115,7 @@
             <item row="6" column="0">
              <widget class="QLabel" name="TextLabel5_2">
               <property name="text">
-               <string>Pixmap</string>
+               <string>Icon</string>
               </property>
              </widget>
             </item>
@@ -141,8 +141,11 @@
                   <height>30</height>
                  </size>
                 </property>
+                <property name="toolTip">
+                 <string>Choose an icon</string>
+                </property>
                 <property name="text">
-                 <string notr="true">...</string>
+                 <string notr="true">…</string>
                 </property>
                </widget>
               </item>

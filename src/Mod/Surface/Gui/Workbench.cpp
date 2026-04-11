@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Nathan Miller <Nathan.A.Mill[at]gmail.com>         *
  *   Copyright (c) 2014 Balázs Bámer                                       *
@@ -21,7 +23,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Gui/MenuManager.h>
 #include <Gui/ToolBarManager.h>
@@ -45,7 +46,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     Gui::MenuItem* surface = new Gui::MenuItem;
     root->insertItem(item, surface);
-    surface->setCommand("Surface");
+    surface->setCommand("S&urface");
     *surface << "Surface_Filling"
              << "Surface_GeomFillSurface"
              << "Surface_Sections"

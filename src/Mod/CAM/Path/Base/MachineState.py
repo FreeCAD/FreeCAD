@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *   Copyright (c) 2021 sliptonic shopinthewoods@gmail.com                 *
 # *                                                                         *
@@ -28,7 +28,6 @@ __contributors__ = ""
 
 import Path
 import FreeCAD
-import Path
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -72,7 +71,8 @@ class MachineState:
         self.T = None  #: int = field(default=None)
 
     def addCommand(self, command):
-        """Processes a command and updates the internal state of the machine. Returns true if the command has alterned the machine state"""
+        """Processes a command and updates the internal state of the machine.
+        Returns true if the command has alterned the machine state"""
         oldstate = self.getState()
         if command.Name == "M6":
             self.T = int(command.Parameters["T"])
@@ -103,6 +103,16 @@ class MachineState:
             self.__setattr__(p, command.Parameters[p])
 
         return not oldstate == self.getState()
+
+    def addCommands(self, commands):
+        """Processes a command or list of commands and updates the internal state of the machine"""
+        if isinstance(commands, (list, tuple)):
+            for command in commands:
+                self.addCommand(command)
+        else:
+            return self.addCommand(commands)
+
+        return False
 
     def getState(self):
         """

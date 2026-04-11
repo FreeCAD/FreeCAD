@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef MESH_IO_READER_OBJ_H
-#define MESH_IO_READER_OBJ_H
+#pragma once
 
 #include <Mod/Mesh/App/Core/MeshKernel.h>
 #include <Mod/Mesh/MeshGlobal.h>
@@ -42,6 +43,11 @@ public:
      * \brief ReaderOBJ
      */
     explicit ReaderOBJ(MeshKernel& kernel, Material*);
+    /*!
+     * \brief Load the mesh from the file
+     * \return true on success and false otherwise
+     */
+    bool Load(const std::string& file);
     /*!
      * \brief Load the mesh from the input stream
      * \return true on success and false otherwise
@@ -68,6 +74,3 @@ private:
 };
 
 }  // namespace MeshCore
-
-
-#endif  // MESH_IO_READER_OBJ_H

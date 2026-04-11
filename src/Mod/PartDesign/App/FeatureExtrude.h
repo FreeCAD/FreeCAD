@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2020 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_FEATURE_EXTRUDE_H
-#define PARTDESIGN_FEATURE_EXTRUDE_H
+#pragma once
 
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
@@ -31,27 +32,31 @@
 class gp_Dir;
 class TopoDS_Face;
 class TopoDS_Shape;
+class TopLoc_Location;
 
 namespace PartDesign
 {
 
-class PartDesignExport FeatureExtrude : public ProfileBased
+class PartDesignExport FeatureExtrude: public ProfileBased
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::FeatureExtrude);
 
 public:
     FeatureExtrude();
 
+    App::PropertyEnumeration SideType;
     App::PropertyEnumeration Type;
-    App::PropertyLength      Length;
-    App::PropertyLength      Length2;
-    App::PropertyAngle       TaperAngle;
-    App::PropertyAngle       TaperAngle2;
-    App::PropertyBool        UseCustomVector;
-    App::PropertyVector      Direction;
-    App::PropertyBool        AlongSketchNormal;
-    App::PropertyLength      Offset;
-    App::PropertyLinkSub     ReferenceAxis;
+    App::PropertyEnumeration Type2;
+    App::PropertyLength Length;
+    App::PropertyLength Length2;
+    App::PropertyAngle TaperAngle;
+    App::PropertyAngle TaperAngle2;
+    App::PropertyBool UseCustomVector;
+    App::PropertyVector Direction;
+    App::PropertyBool AlongSketchNormal;
+    App::PropertyLength Offset;
+    App::PropertyLength Offset2;
+    App::PropertyLinkSub ReferenceAxis;
 
     static App::PropertyQuantityConstraint::Constraints signedLengthConstraint;
     static double maxAngle;
@@ -62,14 +67,19 @@ public:
     short mustExecute() const override;
     void setupObject() override;
 
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PartDesignGui::ViewProviderExtrude";
     }
     //@}
 
+    static const char* SideTypesEnums[];
+
 protected:
+    void onDocumentRestored() override;
     Base::Vector3d computeDirection(const Base::Vector3d& sketchVector, bool inverse);
     bool hasTaperedAngle() const;
+    void onChanged(const App::Property* prop) override;
 
 
     /// Options for buildExtrusion()
@@ -90,71 +100,28 @@ protected:
      * by removing the farthest face from the sketchshape in the direction
      * if farthest is nearest (circular) then return the initial shape
      */
-    TopoShape makeShellFromUpToShape(TopoShape shape, TopoShape sketchshape, gp_Dir dir);
+    TopoShape makeShellFromUpToShape(TopoShape shape, TopoShape sketchshape, gp_Dir& dir);
 
     /**
-      * Generates an extrusion of the input sketchshape and stores it in the given \a prism
-      */
-    void generatePrism(TopoDS_Shape& prism,
-                       const TopoDS_Shape& sketchshape,
-                       const std::string& method,
-                       const gp_Dir& direction,
-                       const double L,
-                       const double L2,
-                       const bool midplane,
-                       const bool reversed);
+     * Disables settings that are not valid for the current method
+     */
+    void updateProperties();
 
-    void generatePrism(TopoShape& prism,
-                       TopoShape sketchshape,
-                       const std::string& method,
-                       const gp_Dir& direction,
-                       const double L,
-                       const double L2,
-                       const bool midplane,
-                       const bool reversed);
-
-    // See BRepFeat_MakePrism
-    enum PrismMode {
-        CutFromBase = 0,
-        FuseWithBase = 1,
-        None = 2
-    };
-
-    /**
-      * Generates an extrusion of the input profileshape
-      * It will be a stand-alone solid created with BRepFeat_MakePrism
-      */
-    static void generatePrism(TopoDS_Shape& prism,
-                              const std::string& method,
-                              const TopoDS_Shape& baseshape,
-                              const TopoDS_Shape& profileshape,
-                              const TopoDS_Face& sketchface,
-                              const TopoDS_Shape& uptoface,
-                              const gp_Dir& direction,
-                              PrismMode Mode,
-                              Standard_Boolean Modify);
-
-    /**
-      * Generates a tapered prism of the input sketchshape and stores it in the given \a prism
-      */
-    void generateTaperedPrism(TopoDS_Shape& prism,
-                              const TopoDS_Shape& sketchshape,
-                              const std::string& method,
-                              const gp_Dir& direction,
-                              const double L,
-                              const double L2,
-                              const double angle,
-                              const double angle2,
-                              const bool midplane);
-
-    /**
-      * Disables settings that are not valid for the current method
-      */
-    void updateProperties(const std::string &method);
+    TopoShape generateSingleExtrusionSide(
+        const TopoShape& sketchShape,  // The base sketch for this side (global CS)
+        const std::string& method,
+        double length,
+        double taperAngleDeg,
+        App::PropertyLinkSub& upToFacePropHandle,       // e.g., &UpToFace or &UpToFace2
+        App::PropertyLinkSubList& upToShapePropHandle,  // e.g., &UpToShape or &UpToShape2
+        gp_Dir dir,
+        double offsetVal,
+        bool makeFace,
+        const TopoShape& base,      // The base shape for context (global CS)
+        TopLoc_Location& invObjLoc  // MUST be passed. Cannot be re-accessed, see #26677
+    );
 };
 
-} //namespace PartDesign
+}  // namespace PartDesign
 
 ENABLE_BITMASK_OPERATORS(PartDesign::FeatureExtrude::ExtrudeOption)
-
-#endif // PARTDESIGN_FEATURE_EXTRUDE_H

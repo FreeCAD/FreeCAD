@@ -20,11 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <cmath>
 # include <QStatusBar>
-#endif // #ifndef _PreComp_
 
 #include <Base/Console.h>
 #include <Base/UnitsApi.h>
@@ -134,14 +131,14 @@ void TaskCosVertex::updateUi()
 //! create the cv as entered, addCosmeticVertex will invert it
 void TaskCosVertex::addCosVertex(QPointF qPos)
 {
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Cosmetic Vertex"));
+    int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Add Cosmetic Vertex"));
 
 //    Base::Vector3d pos = DU::invertY(DU::toVector3d(qPos));
 //    int idx =
     (void) m_baseFeat->addCosmeticVertex(DU::toVector3d(qPos));
     m_baseFeat->requestPaint();
 
-    Gui::Command::commitCommand();
+    Gui::Command::commitCommand(tid);
 }
 
 
@@ -173,7 +170,7 @@ void TaskCosVertex::onTrackerClicked(bool clicked)
     QString msg = tr("Pick a point for cosmetic vertex");
     getMainWindow()->statusBar()->show();
     Gui::getMainWindow()->showMessage(msg, 3000);
-    ui->pbTracker->setText(tr("Escape picking"));
+    ui->pbTracker->setText(tr("Escape Picking"));
     ui->pbTracker->setEnabled(true);
     m_pbTrackerState = TrackerAction::CANCEL;
     enableTaskButtons(false);
@@ -188,6 +185,9 @@ void TaskCosVertex::startTracker()
 
     if (!m_tracker) {
         m_tracker = new QGTracker(m_vpp->getQGSPage(), m_trackerMode);
+        std::string parentName = m_baseFeat->getNameInDocument();
+        QGIView* parentView = m_vpp->getQGSPage()->getQGIVByName(parentName);
+        m_tracker->setOwnerQView(parentView);
         QObject::connect(
             m_tracker, &QGTracker::drawingFinished,
             this, &TaskCosVertex::onTrackerFinished

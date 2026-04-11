@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PATH_ViewProviderPathShape_H
-#define PATH_ViewProviderPathShape_H
+#pragma once
 
 #include "ViewProviderPath.h"
 
@@ -51,6 +52,3 @@ public:
 };
 
 }  // namespace PathGui
-
-
-#endif  // PATH_ViewProviderPathShape_H

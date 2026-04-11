@@ -1,5 +1,6 @@
-#ifndef SMESH_VERSION_H
-#define SMESH_VERSION_H
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
+#pragma once
 
 /* SMESH_Version.h.  Generated from SMESH_Version.h.cmake by cmake.  */
 
@@ -10,5 +11,3 @@
 #define SMESH_VERSION_TWEAK ${SMESH_VERSION_TWEAK}
 
 #define SMESH_VERSION_STR "${SMESH_VERSION_MAJOR}.${SMESH_VERSION_MINOR}.${SMESH_VERSION_PATCH}.${SMESH_VERSION_TWEAK}"
-
-#endif // SMESH_VERSION_H

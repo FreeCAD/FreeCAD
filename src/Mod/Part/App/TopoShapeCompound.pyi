@@ -1,6 +1,9 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, constmethod
 from TopoShape import TopoShape
-
 
 @export(
     Twin="TopoShape",
@@ -17,7 +20,7 @@ class TopoShapeCompound(TopoShape):
     Licence: LGPL
     """
 
-    def add(self, shape: TopoShape) -> None:
+    def add(self, shape: TopoShape, /) -> None:
         """
         Add a shape to the compound.
         add(shape)
@@ -25,7 +28,9 @@ class TopoShapeCompound(TopoShape):
         ...
 
     @constmethod
-    def connectEdgesToWires(self, Shared: bool = True, Tolerance: float = 1e-7) -> "TopoShapeCompound":
+    def connectEdgesToWires(
+        self, Shared: bool = True, Tolerance: float = 1e-7, /
+    ) -> "TopoShapeCompound":
         """
         Build a compound of wires out of the edges of this compound.
         connectEdgesToWires([Shared = True, Tolerance = 1e-7]) -> Compound

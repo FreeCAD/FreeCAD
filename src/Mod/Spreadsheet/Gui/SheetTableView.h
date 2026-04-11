@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SHEETTABLEVIEW_H
-#define SHEETTABLEVIEW_H
+#pragma once
 
 #include <QHeaderView>
 #include <QTableView>
@@ -76,32 +77,28 @@ public Q_SLOTS:
     void copySelection();
     void cutSelection();
     void pasteClipboard();
-    void finishEditWithMove(int keyPressed,
-                            Qt::KeyboardModifiers modifiers,
-                            bool handleTabMotion = false);
+    void finishEditWithMove(int keyPressed, Qt::KeyboardModifiers modifiers, bool handleTabMotion = false);
     void ModifyBlockSelection(int targetRow, int targetColumn);
 
 protected Q_SLOTS:
     void commitData(QWidget* editor) override;
     void updateCellSpan();
-    void insertRows();
-    void insertRowsAfter();
-    void removeRows();
-    void insertColumns();
-    void insertColumnsAfter();
-    void removeColumns();
     void cellProperties();
     void onRecompute();
     void onBind();
     void onConfSetup();
 
 protected:
+    void insertRows(bool after);
+    void insertColumns(bool after);
+    void removeRows();
+    void removeColumns();
+
     bool edit(const QModelIndex& index, EditTrigger trigger, QEvent* event) override;
     bool event(QEvent* event) override;
     void closeEditor(QWidget* editor, QAbstractItemDelegate::EndEditHint hint) override;
     void mousePressEvent(QMouseEvent* event) override;
-    void selectionChanged(const QItemSelection& selected,
-                          const QItemSelection& deselected) override;
+    void selectionChanged(const QItemSelection& selected, const QItemSelection& deselected) override;
 
     void contextMenuEvent(QContextMenuEvent* e) override;
 
@@ -126,10 +123,8 @@ protected:
 
     QTimer timer;
 
-    boost::signals2::scoped_connection cellSpanChangedConnection;
+    fastsignals::scoped_connection cellSpanChangedConnection;
     std::set<App::CellAddress> spanChanges;
 };
 
 }  // namespace SpreadsheetGui
-
-#endif  // SHEETTABLEVIEW_H

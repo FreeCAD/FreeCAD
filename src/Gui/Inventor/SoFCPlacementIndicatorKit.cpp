@@ -21,10 +21,6 @@
  *                                                                          *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <sstream>
 
 #include <Inventor/nodes/SoBaseColor.h>
@@ -40,7 +36,6 @@
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodes/SoTranslation.h>
 #include <Inventor/nodes/SoFontStyle.h>
-#endif
 
 #include "SoFCPlacementIndicatorKit.h"
 
@@ -186,8 +181,7 @@ SoSeparator* SoFCPlacementIndicatorKit::createAxes()
         auto sep = new SoSeparator;
 
         auto pcTranslate = new SoTransform();
-        pcTranslate->translation.setValue(
-            Base::convertTo<SbVec3f>((cylinderOffset + offset) * axis));
+        pcTranslate->translation.setValue(Base::convertTo<SbVec3f>((cylinderOffset + offset) * axis));
         pcTranslate->rotation.setValue(Base::convertTo<SbRotation>(rotation));
 
         auto pcArrowShaft = new SoCylinder();
@@ -252,28 +246,24 @@ SoSeparator* SoFCPlacementIndicatorKit::createAxes()
     auto sep = new SoSeparator;
 
     if (axes.getValue() & X) {
-        sep->addChild(createAxis("X",
-                                 Base::Vector3d::UnitX,
-                                 ViewParams::instance()->getAxisXColor(),
-                                 xyOffset));
+        sep->addChild(
+            createAxis("X", Base::Vector3d::UnitX, ViewParams::instance()->getAxisXColor(), xyOffset)
+        );
     }
 
     if (axes.getValue() & Y) {
-        sep->addChild(createAxis("Y",
-                                 Base::Vector3d::UnitY,
-                                 ViewParams::instance()->getAxisYColor(),
-                                 xyOffset));
+        sep->addChild(
+            createAxis("Y", Base::Vector3d::UnitY, ViewParams::instance()->getAxisYColor(), xyOffset)
+        );
     }
 
     if (axes.getValue() & Z) {
-        double zOffset = (parts.getValue() & PlaneIndicator)
-            ? planeIndicatorMargin
-            : axisMargin + additionalAxisMargin;
+        double zOffset = (parts.getValue() & PlaneIndicator) ? planeIndicatorMargin
+                                                             : axisMargin + additionalAxisMargin;
 
-        sep->addChild(createAxis("Z",
-                                 Base::Vector3d::UnitZ,
-                                 ViewParams::instance()->getAxisZColor(),
-                                 zOffset));
+        sep->addChild(
+            createAxis("Z", Base::Vector3d::UnitZ, ViewParams::instance()->getAxisZColor(), zOffset)
+        );
     }
 
     return sep;

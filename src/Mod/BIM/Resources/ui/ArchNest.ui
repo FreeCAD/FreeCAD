@@ -33,7 +33,7 @@
       <item>
        <widget class="QPushButton" name="ButtonContainer">
         <property name="text">
-         <string>Pick selected</string>
+         <string>Pick Selected</string>
         </property>
        </widget>
       </item>
@@ -54,7 +54,7 @@
         <item>
          <widget class="QPushButton" name="ButtonShapes">
           <property name="text">
-           <string>Add selected</string>
+           <string>Add Selected</string>
           </property>
          </widget>
         </item>
@@ -106,7 +106,7 @@
       <item row="1" column="1">
        <widget class="QSpinBox" name="Subdivisions">
         <property name="toolTip">
-         <string>The number of segments to divide non-linear edges into, for calculations. If curved shapes overlap, try raising this value</string>
+         <string>The number of segments to divide non-linear edges into for calculations. If curved shapes overlap, try raising this value</string>
         </property>
         <property name="statusTip">
          <string/>

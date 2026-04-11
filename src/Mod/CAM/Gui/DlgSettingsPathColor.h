@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PATHGUI_DIALOG_DLGSETTINGSPATHCOLOR_H
-#define PATHGUI_DIALOG_DLGSETTINGSPATHCOLOR_H
+#pragma once
 
 #include <Gui/PropertyPage.h>
 #include <memory>
@@ -50,5 +51,3 @@ private:
 };
 
 }  // namespace PathGui
-
-#endif  // PATHGUI_DIALOG_DLGSETTINGSPATHCOLOR_H

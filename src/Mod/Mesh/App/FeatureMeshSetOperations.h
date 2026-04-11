@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2005 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEATURE_MESH_SETOPERATIONS_H
-#define FEATURE_MESH_SETOPERATIONS_H
+#pragma once
 
 #include <App/PropertyLinks.h>
 
@@ -56,5 +57,3 @@ public:
 };
 
 }  // namespace Mesh
-
-#endif  // FEATURE_MESH_SEGMENT_H

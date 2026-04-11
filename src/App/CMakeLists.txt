@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 add_library(FreeCADApp SHARED)
 
 if(WIN32)
@@ -8,6 +10,10 @@ endif(WIN32)
 if(BUILD_TRACY_FRAME_PROFILER)
     add_definitions(-DBUILD_TRACY_FRAME_PROFILER)
 endif()
+
+if(CMAKE_BUILD_TYPE)
+    add_definitions(-DCMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE}")
+endif(CMAKE_BUILD_TYPE)
 
 if(FREECAD_RELEASE_SEH)
     add_definitions(-DHAVE_SEH)
@@ -54,11 +60,21 @@ fc_copy_file_if_different(
 
 # -----------------------------------------------------------------------------
 
-include_directories(
+target_include_directories(
+    FreeCADApp
+    PRIVATE
     ${CMAKE_BINARY_DIR}
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+target_include_directories(
+    FreeCADApp
+    SYSTEM
+    PUBLIC
+    ${QtCore_INCLUDE_DIRS}
+    ${QtXml_INCLUDE_DIRS}
 )
 
 set(FreeCADApp_LIBS
@@ -71,16 +87,12 @@ if(BUILD_TRACY_FRAME_PROFILER)
     list(APPEND FreeCADApp_LIBS TracyClient)
 endif()
 
-include_directories(
-    ${QtCore_INCLUDE_DIRS}
-    ${QtXml_INCLUDE_DIRS}
-    ${Coin_INCLUDE_DIR}
-)
 list(APPEND FreeCADApp_LIBS
         ${QtCore_LIBRARIES}
         ${QtXml_LIBRARIES}
 )
 
+generate_from_py(ApplicationDirectories)
 generate_from_py(Document)
 generate_from_py(DocumentObject)
 generate_from_py(Extension)
@@ -107,6 +119,7 @@ generate_embed_from_py(FreeCADInit InitScript.h)
 generate_embed_from_py(FreeCADTest TestScript.h)
 
 SET(FreeCADApp_Pyi_SRCS
+    ApplicationDirectories.pyi
     Extension.pyi
     ExtensionContainer.pyi
     DocumentObjectExtension.pyi
@@ -263,6 +276,7 @@ SET(Properties_HPP_SRCS
     PropertyStandard.h
     PropertyUnits.h
     PropertyExpressionEngine.h
+    PropertyOverrides.h
 )
 SET(Properties_SRCS
     ${Properties_CPP_SRCS}
@@ -274,6 +288,8 @@ SET(FreeCADApp_CPP_SRCS
     ${Document_CPP_SRCS}
     ${Properties_CPP_SRCS}
     Application.cpp
+    ApplicationDirectories.cpp
+    ApplicationDirectoriesPyImp.cpp
     ApplicationPy.cpp
     AutoTransaction.cpp
     Branding.cpp
@@ -281,6 +297,8 @@ SET(FreeCADApp_CPP_SRCS
     ColorModel.cpp
     ComplexGeoData.cpp
     ComplexGeoDataPyImp.cpp
+    ConsoleQtBridge.cpp
+    TranslationQtBridge.cpp
     ElementMap.cpp
     Enumeration.cpp
     IndexedName.cpp
@@ -293,6 +311,7 @@ SET(FreeCADApp_CPP_SRCS
     Metadata.cpp
     MetadataPyImp.cpp
     ElementNamingUtils.cpp
+    ProgramInformation.cpp
     SafeMode.cpp
     Services.cpp
     StringHasher.cpp
@@ -304,6 +323,7 @@ SET(FreeCADApp_HPP_SRCS
     ${Document_HPP_SRCS}
     ${Properties_HPP_SRCS}
     Application.h
+    ApplicationDirectories.h
     AutoTransaction.h
     Branding.h
     CleanupProcess.h
@@ -318,6 +338,7 @@ SET(FreeCADApp_HPP_SRCS
     MeasureManager.h
     Metadata.h
     ElementNamingUtils.h
+    ProgramInformation.h
     Services.h
     StringHasher.h
 )
@@ -325,6 +346,8 @@ SET(FreeCADApp_HPP_SRCS
 # auto-generate resource file with all available translations
 set (FreeCADApp_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/App_translation.qrc)
 qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
+    ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
+qt_find_and_add_translation(QM_SRCS "${CMAKE_SOURCE_DIR}/src/Base/Resources/translations/*_*.ts"
     ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
 qt_create_resource_file(${FreeCADApp_TR_QRC} ${QM_SRCS})
 qt_add_resources(FreeCADApp_QRC_SRCS ${FreeCADApp_TR_QRC})
@@ -336,17 +359,23 @@ SET(FreeCADApp_SRCS
     ${FreeCADApp_Pyi_SRCS}
     FreeCADInit.py
     FreeCADTest.py
-    PreCompiled.cpp
     PreCompiled.h
 )
 
 if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    ADD_MSVC_PRECOMPILED_HEADER(FreeCADApp PreCompiled.h PreCompiled.cpp FreeCADApp_CPP_SRCS)
+    target_precompile_headers(FreeCADApp PRIVATE
+        $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
 endif(FREECAD_USE_PCH)
 
 target_sources(FreeCADApp PRIVATE ${FreeCADApp_SRCS})
 target_link_libraries(FreeCADApp ${FreeCADApp_LIBS})
+
+if (MSVC)
+    target_compile_definitions(FreeCADApp PRIVATE WIN32_LEAN_AND_MEAN)
+    target_compile_options(FreeCADApp PRIVATE /wd4251 /wd4273 /wd4275)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(FreeCADApp)
 endif()

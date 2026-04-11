@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_DrawSketchHandlerExternal_H
-#define SKETCHERGUI_DrawSketchHandlerExternal_H
+#pragma once
 
 #include <App/Datums.h>
 #include <Mod/Part/App/DatumFeature.h>
@@ -41,6 +42,7 @@
 #include "Utils.h"
 #include "ViewProviderSketch.h"
 #include <Mod/Part/App/Datums.h>
+#include "SnapManager.h"
 
 
 namespace SketcherGui
@@ -67,19 +69,20 @@ public:
         if (!sketch->isExternalAllowed(pDoc, pObj, &msg)) {
             switch (msg) {
                 case Sketcher::SketchObject::rlCircularReference:
-                    this->notAllowedReason =
-                        QT_TR_NOOP("Linking this will cause circular dependency.");
+                    this->notAllowedReason = QT_TR_NOOP("Linking this will cause circular dependency.");
                     break;
                 case Sketcher::SketchObject::rlOtherDoc:
                     this->notAllowedReason = QT_TR_NOOP("This object is in another document.");
                     break;
                 case Sketcher::SketchObject::rlOtherBody:
-                    this->notAllowedReason =
-                        QT_TR_NOOP("This object belongs to another body, can't link.");
+                    this->notAllowedReason = QT_TR_NOOP(
+                        "This object belongs to another body, can't link."
+                    );
                     break;
                 case Sketcher::SketchObject::rlOtherPart:
-                    this->notAllowedReason =
-                        QT_TR_NOOP("This object belongs to another part, can't link.");
+                    this->notAllowedReason = QT_TR_NOOP(
+                        "This object belongs to another part, can't link."
+                    );
                     break;
                 default:
                     break;
@@ -98,7 +101,8 @@ public:
         // return false;
         //}
 
-        if (pObj->isDerivedFrom<Part::DatumLine>() || pObj->isDerivedFrom<Part::DatumPoint>()) {
+        if (pObj->isDerivedFrom<Part::DatumLine>() || pObj->isDerivedFrom<Part::DatumPoint>()
+            || pObj->isDerivedFrom<App::Line>() || pObj->isDerivedFrom<App::Point>()) {
             return true;
         }
 
@@ -123,6 +127,8 @@ public:
 
 class DrawSketchHandlerExternal: public DrawSketchHandler
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerExternal)
+
 public:
     DrawSketchHandlerExternal(bool alwaysReference, bool intersection)
         : alwaysReference {alwaysReference}
@@ -133,9 +139,9 @@ public:
         Gui::Selection().rmvSelectionGate();
     }
 
-    void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(SnapManager::SnapHandle snapHandle) override
     {
-        Q_UNUSED(onSketchPos);
+        Q_UNUSED(snapHandle);
         if (Gui::Selection().getPreselection().pObjectName) {
             applyCursor();
         }
@@ -160,29 +166,32 @@ public:
     bool onSelectionChanged(const Gui::SelectionChanges& msg) override
     {
         if (msg.Type == Gui::SelectionChanges::AddSelection) {
-            App::DocumentObject* obj =
-                sketchgui->getObject()->getDocument()->getObject(msg.pObjectName);
+            App::DocumentObject* obj = sketchgui->getObject()->getDocument()->getObject(
+                msg.pObjectName
+            );
             if (!obj) {
                 throw Base::ValueError("Sketcher: External geometry: Invalid object in selection");
             }
             std::string subName(msg.pSubName);
+
             if (obj->isDerivedFrom<App::Plane>() || obj->isDerivedFrom<Part::Datum>()
                 || obj->isDerivedFrom<Part::DatumLine>() || obj->isDerivedFrom<Part::DatumPoint>()
+                || obj->isDerivedFrom<App::Line>() || obj->isDerivedFrom<App::Point>()
                 || (subName.size() > 4 && subName.substr(0, 4) == "Edge")
                 || (subName.size() > 6 && subName.substr(0, 6) == "Vertex")
                 || (subName.size() > 4 && subName.substr(0, 4) == "Face")) {
                 try {
-                    Gui::Command::openCommand(
-                        QT_TRANSLATE_NOOP("Command", "Add external geometry"));
-                    Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                          "addExternal(\"%s\",\"%s\", %s, %s)",
-                                          msg.pObjectName,
-                                          msg.pSubName,
-                                          alwaysReference || isConstructionMode() ? "False"
-                                                                                  : "True",
-                                          intersection ? "True" : "False");
+                    openCommand(QT_TRANSLATE_NOOP("Command", "Add external geometry"));
+                    Gui::cmdAppObjectArgs(
+                        sketchgui->getObject(),
+                        "addExternal(\"%s\",\"%s\", %s, %s)",
+                        msg.pObjectName,
+                        msg.pSubName,
+                        alwaysReference || isConstructionMode() ? "False" : "True",
+                        intersection ? "True" : "False"
+                    );
 
-                    Gui::Command::commitCommand();
+                    commitCommand();
 
                     // adding external geometry does not require a solve() per se (the DoF is the
                     // same), however a solve is required to update the amount of solver geometry,
@@ -201,9 +210,10 @@ public:
                     Gui::NotifyError(
                         sketchgui,
                         QT_TRANSLATE_NOOP("Notifications", "Error"),
-                        QT_TRANSLATE_NOOP("Notifications", "Failed to add external geometry"));
+                        QT_TRANSLATE_NOOP("Notifications", "Failed to add external geometry")
+                    );
                     Gui::Selection().clearSelection();
-                    Gui::Command::abortCommand();
+                    abortCommand();
                 }
                 return true;
             }
@@ -256,6 +266,3 @@ public:
 };
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerExternal_H

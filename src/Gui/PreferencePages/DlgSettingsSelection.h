@@ -21,16 +21,17 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGSETTINGSSELECTION_H
-#define GUI_DIALOG_DLGSETTINGSSELECTION_H
+#pragma once
 
 #include <Gui/PropertyPage.h>
 #include <memory>
 
 class QDoubleSpinBox;
 
-namespace Gui {
-namespace Dialog {
+namespace Gui
+{
+namespace Dialog
+{
 class Ui_DlgSettingsSelection;
 
 /**
@@ -38,7 +39,7 @@ class Ui_DlgSettingsSelection;
  * for the selection.
  * \author Werner Mayer
  */
-class DlgSettingsSelection : public PreferencePage
+class DlgSettingsSelection: public PreferencePage
 {
     Q_OBJECT
 
@@ -50,13 +51,11 @@ public:
     void loadSettings() override;
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
 private:
     std::unique_ptr<Ui_DlgSettingsSelection> ui;
 };
 
-} // namespace Dialog
-} // namespace Gui
-
-#endif // GUI_DIALOG_DLGSETTINGSSELECTION_H
+}  // namespace Dialog
+}  // namespace Gui

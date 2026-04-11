@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
@@ -29,7 +30,6 @@ import json
 from FreeCAD import Units
 from PySide import QtCore, QtGui
 
-
 Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
@@ -38,18 +38,26 @@ class JobPreferencesPage:
         import FreeCADGui
 
         self.form = FreeCADGui.PySideUic.loadUi(":preferences/PathJob.ui")
-        self.form.toolBox.setCurrentIndex(0)  # Take that qt designer!
+        self.form.tabWidget.setCurrentIndex(0)  # Take that qt designer!
 
         self.postProcessorDefaultTooltip = self.form.defaultPostProcessor.toolTip()
         self.postProcessorArgsDefaultTooltip = self.form.defaultPostProcessorArgs.toolTip()
         self.processor = {}
 
     def saveSettings(self):
-        filePath = self.form.leDefaultFilePath.text()
         jobTemplate = self.form.leDefaultJobTemplate.text()
         geometryTolerance = Units.Quantity(self.form.geometryTolerance.text())
         curveAccuracy = Units.Quantity(self.form.curveAccuracy.text())
-        Path.Preferences.setJobDefaults(filePath, jobTemplate, geometryTolerance, curveAccuracy)
+
+        if not geometryTolerance:
+            geomTol = Units.Quantity(Path.Preferences.defaultGeometryTolerance(), Units.Length)
+            self.form.geometryTolerance.setText(geomTol.UserString)
+
+        if not curveAccuracy:
+            curveAcc = Units.Quantity(Path.Preferences.defaultLibAreaCurveAccuracy(), Units.Length)
+            self.form.curveAccuracy.setText(curveAcc.UserString)
+
+        Path.Preferences.setJobDefaults(jobTemplate, geometryTolerance, curveAccuracy)
 
         if curveAccuracy:
             Path.Area.setDefaultParams(Accuracy=curveAccuracy)
@@ -146,11 +154,10 @@ class JobPreferencesPage:
         )
 
     def loadSettings(self):
-        self.form.leDefaultFilePath.setText(Path.Preferences.defaultFilePath())
         self.form.leDefaultJobTemplate.setText(Path.Preferences.defaultJobTemplate())
 
         blacklist = Path.Preferences.postProcessorBlacklist()
-        for processor in Path.Preferences.allAvailablePostProcessors():
+        for processor in Path.Preferences.allAvailableLegacyPostProcessors():
             item = QtGui.QListWidgetItem(processor)
             if processor in blacklist:
                 item.setCheckState(QtCore.Qt.CheckState.Unchecked)
@@ -168,14 +175,12 @@ class JobPreferencesPage:
 
         geomTol = Units.Quantity(Path.Preferences.defaultGeometryTolerance(), Units.Length)
         self.form.geometryTolerance.setText(geomTol.UserString)
-        self.form.curveAccuracy.setText(
-            Units.Quantity(Path.Preferences.defaultLibAreaCurveAccuracy(), Units.Length).UserString
-        )
+        curveAcc = Units.Quantity(Path.Preferences.defaultLibAreaCurveAccuracy(), Units.Length)
+        self.form.curveAccuracy.setText(curveAcc.UserString)
 
         self.form.leOutputFile.setText(Path.Preferences.defaultOutputFile())
         self.selectComboEntry(self.form.cboOutputPolicy, Path.Preferences.defaultOutputPolicy())
 
-        self.form.tbDefaultFilePath.clicked.connect(self.browseDefaultFilePath)
         self.form.tbDefaultJobTemplate.clicked.connect(self.browseDefaultJobTemplate)
         self.form.postProcessorList.itemEntered.connect(self.setProcessorListTooltip)
         self.form.postProcessorList.itemChanged.connect(self.verifyAndUpdateDefaultPostProcessor)
@@ -279,7 +284,7 @@ class JobPreferencesPage:
             self.form.stockCreateCylinder.hide()
 
     def getPostProcessor(self, name):
-        if not name in self.processor:
+        if name not in self.processor:
             processor = PostProcessorFactory.get_post_processor(None, name)
             self.processor[name] = processor
             return processor
@@ -311,7 +316,8 @@ class JobPreferencesPage:
             self.form.defaultPostProcessorArgs.setToolTip(self.postProcessorArgsDefaultTooltip)
 
     def bestGuessForFilePath(self):
-        path = self.form.leDefaultFilePath.text()
+
+        path = Path.Preferences.defaultFilePath()
         if not path:
             path = Path.Preferences.filePath()
         return path
@@ -325,14 +331,6 @@ class JobPreferencesPage:
         )[0]
         if foo:
             self.form.leDefaultJobTemplate.setText(foo)
-
-    def browseDefaultFilePath(self):
-        path = self.bestGuessForFilePath()
-        foo = QtGui.QFileDialog.getExistingDirectory(
-            QtGui.QApplication.activeWindow(), "Path - External File Directory", path
-        )
-        if foo:
-            self.form.leDefaultFilePath.setText(foo)
 
     def browseOutputFile(self):
         path = self.form.leOutputFile.text()

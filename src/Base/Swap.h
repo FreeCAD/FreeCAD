@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2005 Imetric 3D GmbH                                    *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef BASE_SWAP_H
-#define BASE_SWAP_H
+#pragma once
 
 #define LOW_ENDIAN (unsigned short)0x4949
 #define HIGH_ENDIAN (unsigned short)0x4D4D
@@ -61,6 +62,3 @@ void SwapEndian(T& v)
 }
 
 }  // namespace Base
-
-
-#endif  // BASE_SWAP_H

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Werner Mayer <wmayer@users.sourceforge.net>        *
  *                                                                         *
@@ -21,8 +23,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QCoreApplication>
 # include <QObject>
 # include <QEvent>
@@ -31,7 +31,7 @@
 # include <QSemaphore>
 # include <QThread>
 # include <QWaitCondition>
-#endif
+
 
 #include "DocumentProtector.h"
 

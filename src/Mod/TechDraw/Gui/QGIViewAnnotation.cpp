@@ -21,8 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <cmath>
 #include <regex>
 #include <sstream>
@@ -35,7 +33,6 @@
 #include <QGraphicsTextItem>
 #include <QString>
 #include <QVBoxLayout>
-#endif
 
 #include "ViewProviderAnnotation.h"
 #include <App/Application.h>

@@ -24,16 +24,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <Inventor/SbMatrix.h>
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoTransform.h>
-#endif
+
 
 #include "Mod/Fem/App/FemConstraintTransform.h"
 #include "TaskFemConstraintTransform.h"
@@ -102,9 +100,11 @@ void ViewProviderFemConstraintTransform::updateData(const App::Property* prop)
     ViewProviderFemConstraint::updateData(prop);
 }
 
-void ViewProviderFemConstraintTransform::transformSymbol(const Base::Vector3d& point,
-                                                         const Base::Vector3d& normal,
-                                                         SbMatrix& mat) const
+void ViewProviderFemConstraintTransform::transformSymbol(
+    const Base::Vector3d& point,
+    const Base::Vector3d& normal,
+    SbMatrix& mat
+) const
 {
     auto obj = this->getObject<const Fem::ConstraintTransform>();
 
@@ -116,16 +116,20 @@ void ViewProviderFemConstraintTransform::transformSymbol(const Base::Vector3d& p
         rot.getValue(axis, angle);
         float s = obj->getScaleFactor();
 
-        mat.setTransform(SbVec3f(point.x, point.y, point.z),
-                         SbRotation(SbVec3f(axis.x, axis.y, axis.z), angle),
-                         SbVec3f(s, s, s));
+        mat.setTransform(
+            SbVec3f(point.x, point.y, point.z),
+            SbRotation(SbVec3f(axis.x, axis.y, axis.z), angle),
+            SbVec3f(s, s, s)
+        );
     }
     else if (transType == "Cylindrical") {
         float s = obj->getScaleFactor();
 
-        mat.setTransform(SbVec3f(point.x, point.y, point.z),
-                         SbRotation(SbVec3f(0, 1, 0), SbVec3f(normal.x, normal.y, normal.z)),
-                         SbVec3f(s, s, s));
+        mat.setTransform(
+            SbVec3f(point.x, point.y, point.z),
+            SbRotation(SbVec3f(0, 1, 0), SbVec3f(normal.x, normal.y, normal.z)),
+            SbVec3f(s, s, s)
+        );
     }
 }
 
@@ -140,9 +144,11 @@ void ViewProviderFemConstraintTransform::transformExtraSymbol() const
         float s = obj->getScaleFactor();
 
         SbMatrix mat;
-        mat.setTransform(SbVec3f(point.x, point.y, point.z),
-                         SbRotation(SbVec3f(0, 1, 0), SbVec3f(axis.x, axis.y, axis.z)),
-                         SbVec3f(s, s, s));
+        mat.setTransform(
+            SbVec3f(point.x, point.y, point.z),
+            SbRotation(SbVec3f(0, 1, 0), SbVec3f(axis.x, axis.y, axis.z)),
+            SbVec3f(s, s, s)
+        );
 
         trans->setMatrix(mat);
     }

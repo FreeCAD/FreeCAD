@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,11 +22,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ROBOTGUI_TaskDlgEdge2Trac_H
-#define ROBOTGUI_TaskDlgEdge2Trac_H
+#pragma once
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Mod/Robot/App/Edge2TracObject.h>
+
+#include <Mod/Robot/RobotGlobal.h>
 
 #include "TaskEdge2TracParameter.h"
 
@@ -75,5 +78,3 @@ protected:
 
 
 }  // namespace RobotGui
-
-#endif  // ROBOTGUI_TASKDLGSIMULATE_H

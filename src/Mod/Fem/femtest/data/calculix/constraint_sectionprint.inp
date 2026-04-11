@@ -3397,6 +3397,8 @@ Evolumes
 *MATERIAL, NAME=Material
 *ELASTIC
 210000,0.3
+*EXPANSION, ZERO=0
+0
 
 ***********************************************************
 ** Sections
@@ -3427,7 +3429,7 @@ SOF, SOM, SOAREA
 ** constraints pressure element face loads
 ** ConstraintPressure
 *DLOAD
-** ConstraintPressure: face load
+** BooleanFragments.Face1
 846,P3,100.0
 861,P1,100.0
 875,P4,100.0

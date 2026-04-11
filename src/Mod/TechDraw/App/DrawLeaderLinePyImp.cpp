@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "DrawLeaderLine.h"
 // inclusion of the generated files (generated out of DrawLeaderLinePy.xml)

@@ -1,9 +1,12 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export
 from Base.Vector import Vector
 from Conic import Conic
 from Point import Point
 from typing import overload
-
 
 @export(
     PythonName="Part.Circle",
@@ -39,15 +42,11 @@ class Circle(Conic):
 
     @overload
     def __init__(self) -> None: ...
-
     @overload
     def __init__(self, circle: "Circle") -> None: ...
-
     @overload
     def __init__(self, circle: "Circle", distance: float) -> None: ...
-
     @overload
     def __init__(self, center: Point, normal: Vector, radius: float) -> None: ...
-
     @overload
     def __init__(self, point1: Point, point2: Point, point3: Point) -> None: ...

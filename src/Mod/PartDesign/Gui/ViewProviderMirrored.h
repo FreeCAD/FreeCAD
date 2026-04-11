@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /******************************************************************************
  *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
@@ -21,34 +23,32 @@
  ******************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderMirrored_H
-#define PARTGUI_ViewProviderMirrored_H
+#pragma once
 
 #include "ViewProviderTransformed.h"
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
-class PartDesignGuiExport ViewProviderMirrored : public ViewProviderTransformed
+class PartDesignGuiExport ViewProviderMirrored: public ViewProviderTransformed
 {
     Q_DECLARE_TR_FUNCTIONS(PartDesignGuii::ViewProviderMirrored)
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderMirrored);
+
 public:
-    ViewProviderMirrored() {
-        menuName = tr("Mirrored parameters");
+    ViewProviderMirrored()
+    {
+        menuName = tr("Mirror Parameters");
         sPixmap = "PartDesign_Mirrored.svg";
     }
 
-    const std::string & featureName() const override;
+    const std::string& featureName() const override;
     void setupContextMenu(QMenu*, QObject*, const char*) override;
 
 protected:
-    /// Returns a newly create dialog for the part to be placed in the task view
-    TaskDlgFeatureParameters *getEditDialog() override;
-
+    /// Returns a newly created dialog for the part to be placed in the task view
+    TaskDlgFeatureParameters* getEditDialog() override;
 };
 
 
-} // namespace PartDesignGui
-
-
-#endif // PARTGUI_ViewProviderMirrored_H
+}  // namespace PartDesignGui

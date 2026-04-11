@@ -20,14 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QAction>
 #include <QCoreApplication>
 #include <QMenu>
 #include <QMessageBox>
-#endif
+
 
 #include <Gui/Control.h>
 #include <Gui/MainWindow.h>
@@ -51,9 +49,7 @@ ViewProviderFemMeshShapeNetgen::ViewProviderFemMeshShapeNetgen()
 
 ViewProviderFemMeshShapeNetgen::~ViewProviderFemMeshShapeNetgen() = default;
 
-void ViewProviderFemMeshShapeNetgen::setupContextMenu(QMenu* menu,
-                                                      QObject* receiver,
-                                                      const char* member)
+void ViewProviderFemMeshShapeNetgen::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     QAction* act = menu->addAction(QObject::tr("Meshing"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
@@ -70,11 +66,12 @@ bool ViewProviderFemMeshShapeNetgen::setEdit(int ModNum)
 #else
         QMessageBox::critical(
             Gui::getMainWindow(),
-            QCoreApplication::translate("FemGui::ViewProviderFemMeshShapeNetgen",
-                                        "Meshing failure"),
+            QCoreApplication::translate("FemGui::ViewProviderFemMeshShapeNetgen", "Meshing failure"),
             QCoreApplication::translate(
                 "FemGui::ViewProviderFemMeshShapeNetgen",
-                "The FEM module is built without NETGEN support. Meshing will not work!!!"));
+                "The FEM module is built without NETGEN support. Meshing will not work!!!"
+            )
+        );
         return false;
 #endif
     }

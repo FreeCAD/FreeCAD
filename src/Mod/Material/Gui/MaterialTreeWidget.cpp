@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
@@ -19,11 +21,9 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QContextMenuEvent>
 #include <QMenu>
-#endif
+
 
 #include <cstring>
 
@@ -31,7 +31,6 @@
 #include <QSpacerItem>
 #include <QVBoxLayout>
 
-#include <Base/Color.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>
 #include <Gui/Command.h>
@@ -137,7 +136,7 @@ void MaterialTreeWidget::createLayout()
     m_expand->setIcon(style()->standardIcon(QStyle::SP_TitleBarUnshadeButton));
     m_materialTree = new QTreeView(this);
     m_filterCombo = new QComboBox(this);
-    m_editor = new QPushButton(tr("Launch editor"), this);
+    m_editor = new QPushButton(tr("Launch Editor"), this);
 
     m_materialTree->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
     m_materialTree->setMinimumSize(m_treeSizeHint);
@@ -474,9 +473,6 @@ void MaterialTreeWidget::saveRecents()
 
 void MaterialTreeWidget::addRecent(const QString& uuid)
 {
-    if (uuid.isEmpty()) {
-        return;
-    }
     // Ensure it is a material. New, unsaved materials will not be
     try {
         auto material = Materials::MaterialManager::getManager().getMaterial(uuid);

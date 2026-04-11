@@ -37,11 +37,11 @@ class BIM_TDPage:
     def GetResources(self):
         return {
             "Pixmap": "BIM_PageDefault",
-            "MenuText": QT_TRANSLATE_NOOP("BIM_TDPage", "Page"),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_TDPage", "New Page"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_TDPage", "Creates a new TechDraw page from a template"
             ),
-            'Accel': "T, P",
+            "Accel": "T, P",
         }
 
     def IsActive(self):
@@ -52,14 +52,14 @@ class BIM_TDPage:
         from PySide import QtGui
         import TechDraw
 
-        templatedir = FreeCAD.ParamGet(
-            "User parameter:BaseApp/Preferences/Mod/BIM"
-        ).GetString("TDTemplateDir", "")
+        templatedir = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM").GetString(
+            "TDTemplateDir", ""
+        )
         if not templatedir:
             templatedir = None
         filename, _ = QtGui.QFileDialog.getOpenFileName(
             QtGui.QApplication.activeWindow(),
-            translate("BIM", "Select page template"),
+            translate("BIM", "Select Page Template"),
             templatedir,
             "SVG file (*.svg)",
         )
@@ -68,9 +68,7 @@ class BIM_TDPage:
             FreeCAD.ActiveDocument.openTransaction("Create page")
             page = FreeCAD.ActiveDocument.addObject("TechDraw::DrawPage", "Page")
             page.Label = name
-            template = FreeCAD.ActiveDocument.addObject(
-                "TechDraw::DrawSVGTemplate", "Template"
-            )
+            template = FreeCAD.ActiveDocument.addObject("TechDraw::DrawSVGTemplate", "Template")
             template.Template = filename
             template.Label = translate("BIM", "Template")
             page.Template = template
@@ -82,19 +80,19 @@ class BIM_TDPage:
                 if txt in page.Template.EditableTexts:
                     val = page.Template.EditableTexts[txt]
                     if val:
-                        if ":" in val:
-                            val.replace(":", "/")
+                        val = val.replace(":", "/")
                         if "/" in val:
                             try:
-                                page.Scale = eval(val)
-                            except:
+                                num, den = val.split("/", 1)
+                                page.Scale = float(num) / float(den)
+                            except (ValueError, ZeroDivisionError):
                                 pass
                             else:
                                 break
                         else:
                             try:
                                 page.Scale = float(val)
-                            except:
+                            except ValueError:
                                 pass
                             else:
                                 break

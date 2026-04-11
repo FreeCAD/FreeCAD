@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
@@ -147,4 +148,4 @@ if FreeCAD.GuiUp:
     # register the FreeCAD command
     FreeCADGui.addCommand("CAM_Copy", CommandPathCopy())
 
-FreeCAD.Console.PrintLog("Loading PathCopy... done\n")
+FreeCAD.Console.PrintLog("Loading PathCopy… done\n")

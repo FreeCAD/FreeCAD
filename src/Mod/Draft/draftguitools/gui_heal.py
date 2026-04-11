@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>                  *
 # *   (c) 2009, 2010 Ken Cline <cline@frii.com>                             *
@@ -23,6 +25,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides GUI tools to repair objects created with older versions."""
+
 ## @package gui_heal
 # \ingroup draftguitools
 # \brief Provides GUI tools to repair objects created with older versions.
@@ -32,8 +35,8 @@
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
-import Draft
-import draftguitools.gui_base as gui_base
+from draftfunctions import heal
+from draftguitools import gui_base
 
 from draftutils.translate import translate
 
@@ -48,29 +51,34 @@ class Heal(gui_base.GuiCommandSimplest):
     """
 
     def __init__(self):
-        super(Heal, self).__init__(name=translate("draft","Heal"))
+        super().__init__(name=translate("draft", "Heal"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
         _tip = ()
 
-        return {'Pixmap': 'Draft_Heal',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_Heal", "Heal"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Heal", "Heal faulty Draft objects saved with an earlier version of the program.\nIf an object is selected it will try to heal that object in particular,\notherwise it will try to heal all objects in the active document.")}
+        return {
+            "Pixmap": "Draft_Heal",
+            "MenuText": QT_TRANSLATE_NOOP("Draft_Heal", "Heal"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Draft_Heal",
+                "Heals faulty Draft objects saved with an earlier version of FreeCAD.\nIf an object is selected it tries to heal only that object,\notherwise it tries to heal all objects in the active document.",
+            ),
+        }
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Heal, self).Activated()
+        super().Activated()
 
         s = Gui.Selection.getSelection()
         self.doc.openTransaction("Heal")
         if s:
-            Draft.heal(s)
+            heal.heal(s)
         else:
-            Draft.heal()
+            heal.heal()
         self.doc.commitTransaction()
 
 
-Gui.addCommand('Draft_Heal', Heal())
+Gui.addCommand("Draft_Heal", Heal())
 
 ## @}

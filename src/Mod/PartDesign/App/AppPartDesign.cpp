@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
@@ -78,7 +79,7 @@ PyMOD_INIT_FUNC(_PartDesign)
     }
 
     PyObject* mod = PartDesign::initModule();
-    Base::Console().log("Loading PartDesign module... done\n");
+    Base::Console().log("Loading Part Design module… done\n");
 
 
     // NOTE: To finish the initialization of our own type objects we must
@@ -109,6 +110,7 @@ PyMOD_INIT_FUNC(_PartDesign)
     PartDesign::Pad                         ::init();
     PartDesign::Pocket                      ::init();
     PartDesign::Fillet                      ::init();
+    PartDesign::Revolved                    ::init();
     PartDesign::Revolution                  ::init();
     PartDesign::Groove                      ::init();
     PartDesign::Chamfer                     ::init();

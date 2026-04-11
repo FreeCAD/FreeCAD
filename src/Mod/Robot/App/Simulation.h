@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,10 +22,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _Simulation_h_
-#define _Simulation_h_
+#pragma once
 
 #include <Base/Placement.h>
+
+#include <Mod/Robot/RobotGlobal.h>
 
 #include "Robot6Axis.h"
 #include "Trajectory.h"
@@ -77,6 +80,3 @@ public:
 
 
 }  // namespace Robot
-
-
-#endif

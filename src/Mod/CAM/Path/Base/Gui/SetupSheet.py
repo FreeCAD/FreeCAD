@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -183,6 +183,7 @@ class OpTaskPanel:
         self.form.table.setModel(self.model)
         self.form.table.setItemDelegateForColumn(2, self.delegate)
         self.form.table.resizeColumnsToContents()
+        self.form.table.setMinimumHeight(300)
 
         self.model.dataChanged.connect(self.updateData)
 

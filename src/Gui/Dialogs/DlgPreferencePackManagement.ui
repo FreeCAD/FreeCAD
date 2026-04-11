@@ -53,7 +53,7 @@
      <item>
       <widget class="QPushButton" name="pushButtonOpenAddonManager">
        <property name="text">
-        <string>Open Addon Manager...</string>
+        <string>Open Addon Manager</string>
        </property>
       </widget>
      </item>

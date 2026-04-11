@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
 # *   Copyright (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
@@ -99,5 +101,6 @@ class DraftSVG(test_base.DraftTestCaseDoc):
             App.Console.PrintLog("Exception thrown, OK: {}".format(err))
         else:
             self.fail("no exception thrown")
+
 
 ## @}

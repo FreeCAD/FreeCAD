@@ -44,7 +44,7 @@
       <item row="0" column="1">
        <widget class="Gui::InputField" name="ifWidth">
         <property name="toolTip">
-         <string>Width of the resulting holding tag.</string>
+         <string>Width of the resulting holding tag</string>
         </property>
        </widget>
       </item>
@@ -58,7 +58,7 @@
       <item row="2" column="1">
        <widget class="QDoubleSpinBox" name="dsbAngle">
         <property name="toolTip">
-         <string>Plunge angle for ascent and descent of holding tag.</string>
+         <string>Plunge angle for ascent and descent of holding tag</string>
         </property>
         <property name="minimum">
          <double>5.000000000000000</double>
@@ -123,14 +123,14 @@
          <bool>false</bool>
         </property>
         <property name="text">
-         <string>Edit...</string>
+         <string>Edit</string>
         </property>
        </widget>
       </item>
      <item row="1" column="2">
        <widget class="QPushButton" name="pbAdd">
         <property name="text">
-         <string>Add...</string>
+         <string>Add</string>
         </property>
        </widget>
       </item>

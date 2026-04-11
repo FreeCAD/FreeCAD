@@ -20,14 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QGraphicsScene>
 # include <QGraphicsSceneHoverEvent>
 # include <QKeyEvent>
 # include <QPainterPath>
 # include <QPainterPathStroker>
-#endif
+
 
 #include <Base/Console.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
@@ -367,15 +365,11 @@ QPainterPath QGEPath::shape() const
 {
     QPainterPath outline;
     QPainterPathStroker stroker;
-    stroker.setWidth(getEdgeFuzz() * 2.0);
+    stroker.setWidth(this->m_edgeFuzz * 2.0);
     outline = stroker.createStroke(path()).simplified();
     return outline;
 }
 
- double QGEPath::getEdgeFuzz() const
-{
-    return PreferencesGui::edgeFuzz();
-}
 
 void QGEPath::dumpGhostPoints(const char* text)
 {

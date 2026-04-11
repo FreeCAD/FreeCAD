@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskFemConstraintFixed_H
-#define GUI_TASKVIEW_TaskFemConstraintFixed_H
+#pragma once
 
 #include <QObject>
 #include <memory>
@@ -40,8 +39,10 @@ class TaskFemConstraintFixed: public TaskFemConstraintOnBoundary
     Q_OBJECT
 
 public:
-    explicit TaskFemConstraintFixed(ViewProviderFemConstraintFixed* ConstraintView,
-                                    QWidget* parent = nullptr);
+    explicit TaskFemConstraintFixed(
+        ViewProviderFemConstraintFixed* ConstraintView,
+        QWidget* parent = nullptr
+    );
     ~TaskFemConstraintFixed() override;
     const std::string getReferences() const override;
 
@@ -69,5 +70,3 @@ public:
 };
 
 }  // namespace FemGui
-
-#endif  // GUI_TASKVIEW_TaskFemConstraintFixed_H

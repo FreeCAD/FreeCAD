@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -21,15 +23,15 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderRevolution_H
-#define PARTGUI_ViewProviderRevolution_H
+#pragma once
 
 #include "ViewProviderSketchBased.h"
 
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
-class PartDesignGuiExport ViewProviderRevolution : public ViewProviderSketchBased
+class PartDesignGuiExport ViewProviderRevolution: public ViewProviderSketchBased
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderRevolution);
 
@@ -43,13 +45,8 @@ public:
 
 protected:
     /// Returns a newly created TaskDlgRevolutionParameters
-    TaskDlgFeatureParameters *getEditDialog() override;
-
-
+    TaskDlgFeatureParameters* getEditDialog() override;
 };
 
 
-} // namespace PartDesignGui
-
-
-#endif // PARTGUI_ViewProviderRevolution_H
+}  // namespace PartDesignGui

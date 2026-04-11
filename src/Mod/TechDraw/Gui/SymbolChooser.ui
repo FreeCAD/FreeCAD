@@ -45,14 +45,14 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Symbol Dir</string>
+        <string>Symbol directory</string>
        </property>
       </widget>
      </item>
      <item row="0" column="1">
       <widget class="Gui::FileChooser" name="fcSymbolDir">
        <property name="toolTip">
-        <string>Directory to welding symbols.</string>
+        <string>Directory to welding symbols</string>
        </property>
        <property name="mode">
         <enum>Gui::FileChooser::Directory</enum>

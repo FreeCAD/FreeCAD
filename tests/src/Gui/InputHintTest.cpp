@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 #include <gtest/gtest.h>
 
 #include "Gui/InputHint.h"
@@ -45,8 +47,10 @@ TEST_F(InputHintTest, LookupHintsSimpleState)
     std::list<InputHint> hintsSeekFirst = {firstHint};
     std::list<InputHint> hintsSeekSecond = {secondHint};
 
-    HintTable<State> table = {{.state = State::SeekFirst, .hints = hintsSeekFirst},
-                              {.state = State::SeekSecond, .hints = hintsSeekSecond}};
+    HintTable<State> table = {
+        {.state = State::SeekFirst, .hints = hintsSeekFirst},
+        {.state = State::SeekSecond, .hints = hintsSeekSecond}
+    };
 
     // Act
     auto resultFirst = lookupHints(State::SeekFirst, table);
@@ -69,7 +73,8 @@ TEST_F(InputHintTest, LookupHintsPairState)
         {.state = {State::SeekFirst, Method::FirstMethod}, .hints = firstFirstHints},
         {.state = {State::SeekFirst, Method::SecondMethod}, .hints = firstSecondHints},
         {.state = {State::SeekSecond, Method::FirstMethod}, .hints = secondFirstHints},
-        {.state = {State::SeekSecond, Method::SecondMethod}, .hints = secondSecondHints}};
+        {.state = {State::SeekSecond, Method::SecondMethod}, .hints = secondSecondHints}
+    };
 
     // Act
     auto resultFirstFirst = lookupHints({State::SeekFirst, Method::FirstMethod}, table);

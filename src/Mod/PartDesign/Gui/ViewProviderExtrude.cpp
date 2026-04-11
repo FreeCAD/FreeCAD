@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -21,11 +23,8 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+#include <QMenu>
 
-#ifndef _PreComp_
-# include <QMenu>
-#endif
 
 #include <App/Document.h>
 #include <Gui/Application.h>
@@ -45,8 +44,9 @@ void PartDesignGui::ViewProviderExtrude::highlightShapeFaces(const std::vector<s
     auto extrude = getObject<PartDesign::FeatureExtrude>();
     auto base = static_cast<Part::Feature*>(extrude->UpToShape.getValue());
 
-    auto baseViewProvider =
-        dynamic_cast<PartGui::ViewProviderPart*>(Gui::Application::Instance->getViewProvider(base));
+    auto baseViewProvider = dynamic_cast<PartGui::ViewProviderPart*>(
+        Gui::Application::Instance->getViewProvider(base)
+    );
 
     if (!baseViewProvider) {
         return;

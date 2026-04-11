@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QApplication>
 #include <QEventLoop>
-#endif
+
 
 #include <Base/Exception.h>
 
@@ -49,9 +47,7 @@ void UnitTestDialogPy::init_type()
     add_varargs_method("setUnitTest", &UnitTestDialogPy::setUnitTest, "setUnitTest");
     add_varargs_method("getUnitTest", &UnitTestDialogPy::getUnitTest, "getUnitTest");
     add_varargs_method("setStatusText", &UnitTestDialogPy::setStatusText, "setStatusText");
-    add_varargs_method("setProgressFraction",
-                       &UnitTestDialogPy::setProgressFrac,
-                       "setProgressFraction");
+    add_varargs_method("setProgressFraction", &UnitTestDialogPy::setProgressFrac, "setProgressFraction");
     add_varargs_method("errorDialog", &UnitTestDialogPy::errorDialog, "errorDialog");
     add_varargs_method("setRunCount", &UnitTestDialogPy::setRunCount, "setRunCount");
     add_varargs_method("setFailCount", &UnitTestDialogPy::setFailCount, "setFailCount");
@@ -98,8 +94,7 @@ Py::Object UnitTestDialogPy::insertError(const Py::Tuple& args)
         throw Py::Exception();
     }
 
-    UnitTestDialog::instance()->insertError(QString::fromLatin1(failure),
-                                            QString::fromLatin1(details));
+    UnitTestDialog::instance()->insertError(QString::fromLatin1(failure), QString::fromLatin1(details));
     return Py::None();
 }
 

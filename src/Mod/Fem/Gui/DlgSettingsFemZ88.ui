@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>466</width>
+    <width>554</width>
     <height>218</height>
    </rect>
   </property>
@@ -23,44 +23,19 @@
       </sizepolicy>
      </property>
      <property name="layoutDirection">
-      <enum>Qt::LeftToRight</enum>
+      <enum>Qt::LayoutDirection::LeftToRight</enum>
      </property>
      <property name="title">
       <string>Z88 Binary</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <layout class="QGridLayout" name="gl_z88">
-        <item row="0" column="2">
-         <widget class="Gui::PrefCheckBox" name="cb_z88_binary_std">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Search in known binary directories</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>UseStandardZ88Location</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Fem/Z88</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
+        <item row="0" column="0">
          <widget class="QLabel" name="l_z88_binary_path">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -74,15 +49,12 @@
            </size>
           </property>
           <property name="text">
-           <string>z88r binary path</string>
+           <string>z88r path</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="2">
-         <widget class="Gui::PrefFileChooser" name="fc_z88_binary_path">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
+        <item row="0" column="1">
+         <widget class="Gui::PrefFileChooser" name="fc_z88_binary_path" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -92,7 +64,7 @@
           <property name="minimumSize">
            <size>
             <width>0</width>
-            <height>20</height>
+            <height>0</height>
            </size>
           </property>
           <property name="sizeIncrement">
@@ -108,7 +80,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Leave blank to use default Z88, z88r binary file</string>
+           <string>Leave blank to use default z88r binary file</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>z88BinaryPath</cstring>
@@ -132,13 +104,13 @@
       </sizepolicy>
      </property>
      <property name="layoutDirection">
-      <enum>Qt::LeftToRight</enum>
+      <enum>Qt::LayoutDirection::LeftToRight</enum>
      </property>
      <property name="title">
       <string>Solver Settings</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
@@ -173,27 +145,15 @@
           <property name="prefPath" stdset="0">
            <cstring>Mod/Fem/Z88</cstring>
           </property>
-          <item>
-           <property name="text">
-            <string>Iteration solver with SOR preconditioning (-sorcg)</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Iteration solver with SIC preconditioning (-siccg)</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Simple Cholesky solver (-choly)</string>
-           </property>
-          </item>
+          <property name="prefType" stdset="0">
+           <cstring></cstring>
+          </property>
          </widget>
         </item>
         <item row="2" column="0">
          <widget class="QLabel" name="l_max_stiffness">
           <property name="text">
-           <string>Max places in stiffness matrix</string>
+           <string>Stiffness matrix entries</string>
           </property>
          </widget>
         </item>
@@ -206,13 +166,13 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Maximal places in stiffnes matrix.
+           <string>Maximum places in the stiffness matrix.
 You might need to increase this when using the
-Cholesky solver and you get the error message
+Cholesky solver and getting the error message
 that &quot;MAXGS&quot; needs to be increased.</string>
           </property>
           <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
           </property>
           <property name="minimum">
            <number>6000000</number>
@@ -237,7 +197,7 @@ that &quot;MAXGS&quot; needs to be increased.</string>
         <item row="3" column="0">
          <widget class="QLabel" name="l_max_coincidence">
           <property name="text">
-           <string>Maximum places in coincidence vector</string>
+           <string>Coincidence vector entries</string>
           </property>
          </widget>
         </item>
@@ -253,13 +213,12 @@ that &quot;MAXGS&quot; needs to be increased.</string>
            <string>Maximal places in coincidence vector.
 (number of knots per element times
  number of finite elements)
-
 You might need to increase this when using an
 iterative solver and you get the error message
 that &quot;MAXKOI&quot; needs to be increased.</string>
           </property>
           <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
           </property>
           <property name="minimum">
            <number>50000</number>
@@ -289,7 +248,7 @@ that &quot;MAXKOI&quot; needs to be increased.</string>
    <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
-      <enum>Qt::Vertical</enum>
+      <enum>Qt::Orientation::Vertical</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
@@ -319,11 +278,6 @@ that &quot;MAXKOI&quot; needs to be increased.</string>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefCheckBox</class>
-   <extends>QCheckBox</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
    <class>Gui::PrefComboBox</class>
    <extends>QComboBox</extends>
    <header>Gui/PrefWidgets.h</header>
@@ -332,38 +286,5 @@ that &quot;MAXKOI&quot; needs to be increased.</string>
  <resources>
   <include location="Resources/Fem.qrc"/>
  </resources>
- <connections>
-  <connection>
-   <sender>cb_z88_binary_std</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>l_z88_binary_path</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>406</x>
-     <y>45</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>148</x>
-     <y>68</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cb_z88_binary_std</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>fc_z88_binary_path</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>406</x>
-     <y>45</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>406</x>
-     <y>68</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

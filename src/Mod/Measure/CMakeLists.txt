@@ -1,8 +1,11 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 
 add_subdirectory(App)
 
 set(Measure_Scripts
     Init.py
+    MassProperties.py
+    MassPropertiesGui.py
     UtilsMeasure.py
     MeasureCOM.py
 )

@@ -21,10 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef GUI_MANUALALIGNMENT_H
-#define GUI_MANUALALIGNMENT_H
+#pragma once
 
+#include <QObject>
 #include <QPointer>
+
 #include <Base/BoundBox.h>
 #include <Base/Placement.h>
 #include <Base/Vector3D.h>
@@ -35,15 +36,20 @@ class SbVec3f;
 class SoPickedPoint;
 class SoEventCallback;
 
-namespace Gui {
+namespace Gui
+{
 class Document;
 class AlignmentView;
 class View3DInventorViewer;
 
-class PickedPoint {
+class PickedPoint
+{
 public:
     PickedPoint() = default;
-    PickedPoint(const Base::Vector3d& p, const Base::Vector3d& n) : point(p), normal(n) {}
+    PickedPoint(const Base::Vector3d& p, const Base::Vector3d& n)
+        : point(p)
+        , normal(n)
+    {}
     Base::Vector3d point;
     Base::Vector3d normal;
 };
@@ -106,7 +112,8 @@ public:
      */
     void clearPoints();
     /**
-     * Set or unset the alignable mode for the added views. If a view is not alignable it also not pickable.
+     * Set or unset the alignable mode for the added views. If a view is not alignable it also not
+     * pickable.
      */
     void setAlignable(bool);
     void moveTo(AlignmentGroup&);
@@ -136,7 +143,7 @@ protected:
  * The FixedGroup class can be used for a fixed group of views.
  * @author Werner Mayer
  */
-class GuiExport MovableGroup : public AlignmentGroup
+class GuiExport MovableGroup: public AlignmentGroup
 {
 public:
     MovableGroup();
@@ -147,7 +154,7 @@ public:
  * The FixedGroup class can be used for a fixed group of views.
  * @author Werner Mayer
  */
-class GuiExport FixedGroup : public AlignmentGroup
+class GuiExport FixedGroup: public AlignmentGroup
 {
 public:
     FixedGroup();
@@ -185,7 +192,7 @@ private:
 /**
  * @author Werner Mayer
  */
-class GuiExport ManualAlignment : public QObject
+class GuiExport ManualAlignment: public QObject
 {
     Q_OBJECT
 
@@ -203,16 +210,22 @@ public:
     void setModel(const MovableGroupModel&);
     void clearAll();
 
-    void setViewingDirections(const Base::Vector3d& view1, const Base::Vector3d& up1,
-                              const Base::Vector3d& view2, const Base::Vector3d& up2);
+    void setViewingDirections(
+        const Base::Vector3d& view1,
+        const Base::Vector3d& up1,
+        const Base::Vector3d& view2,
+        const Base::Vector3d& up2
+    );
     void startAlignment(Base::Type mousemodel);
     void finish();
     void align();
     bool canAlign() const;
     void cancel();
 
-    const Base::Placement & getTransform() const
-    { return myTransform; }
+    const Base::Placement& getTransform() const
+    {
+        return myTransform;
+    }
     void alignObject(App::DocumentObject*);
 
     // Observer stuff
@@ -227,7 +240,7 @@ protected:
     void showInstructions();
     /** @name Probe picking */
     //@{
-    static void probePickedCallback(void * ud, SoEventCallback * n);
+    static void probePickedCallback(void* ud, SoEventCallback* n);
     bool applyPickedProbe(Gui::ViewProviderDocumentObject*, const SoPickedPoint* pnt);
     //@}
 
@@ -249,7 +262,7 @@ private:
 
     static ManualAlignment* _instance;
 
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::connection;
     Connection connectApplicationDeletedDocument;
     Connection connectDocumentDeletedObject;
 
@@ -260,12 +273,12 @@ private:
     int myPickPoints;
     Base::Placement myTransform;
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    Qt::WindowStates previousWindowState;
+#endif
+
     class Private;
     Private* d;
 };
 
-} // namespace Gui
-
-
-#endif // GUI_MANUALALIGNMENT_H
-
+}  // namespace Gui

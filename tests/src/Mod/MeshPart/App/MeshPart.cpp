@@ -1,9 +1,14 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 #include <gtest/gtest.h>
 #include <BRepPrimAPI_MakeBox.hxx>
 #include <TopoDS_Solid.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopAbs_ShapeEnum.hxx>
 #include <QObject>
+
+#include <src/App/InitApplication.h>
+
 
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_CLANG("-Wextra-semi")
@@ -17,8 +22,16 @@ QT_WARNING_DISABLE_CLANG("-Woverloaded-virtual")
 #include <StdMeshers_QuadranglePreference.hxx>
 QT_WARNING_POP
 
+class SMesh: public ::testing::Test
+{
+protected:
+    static void SetUpTestSuite()
+    {
+        tests::initApplication();
+    }
+};
 // NOLINTBEGIN
-TEST(SMesh, testMefisto)
+TEST_F(SMesh, testMefisto)
 {
     TopoDS_Solid box = BRepPrimAPI_MakeBox(10.0, 10.0, 10.0).Solid();
 
@@ -64,7 +77,7 @@ TEST(SMesh, testMefisto)
     delete gen;
 }
 
-TEST(SMesh, testStdMeshers)
+TEST_F(SMesh, testStdMeshers)
 {
     TopoDS_Solid box = BRepPrimAPI_MakeBox(10.0, 10.0, 10.0).Solid();
 

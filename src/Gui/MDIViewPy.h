@@ -21,27 +21,29 @@
  ***************************************************************************/
 
 
-#ifndef GUI_MDIVIEWPY_H
-#define GUI_MDIVIEWPY_H
+#pragma once
 
 #include <Base/PyObjectBase.h>
 #include <CXX/Extensions.hxx>
 #include <QPointer>
 #include <FCGlobal.h>
 
-namespace Gui {
+#include "MDIView.h"
+
+namespace Gui
+{
 class MDIView;
 
-class GuiExport MDIViewPy : public Py::PythonExtension<MDIViewPy>
+class GuiExport MDIViewPy: public Py::PythonExtension<MDIViewPy>
 {
 public:
-    static void init_type();    // announce properties and methods
-    static PyObject *extension_object_new( PyTypeObject *subtype, PyObject * /*args*/, PyObject * /*kwds*/ );
+    static void init_type();  // announce properties and methods
+    static PyObject* extension_object_new(PyTypeObject* subtype, PyObject* /*args*/, PyObject* /*kwds*/);
 
     static Py::Object type();
-    static Py::ExtensionObject<MDIViewPy> create(MDIView *mdi);
+    static Py::ExtensionObject<MDIViewPy> create(MDIView* mdi);
 
-    explicit MDIViewPy(MDIView *mdi);
+    explicit MDIViewPy(MDIView* mdi);
     ~MDIViewPy() override;
 
     Py::Object repr() override;
@@ -66,12 +68,13 @@ public:
     Py::Object getActiveObject(const Py::Tuple&);
     Py::Object cast_to_base(const Py::Tuple&);
 
-    MDIView* getMDIViewPtr() {return _view.data();}
+    MDIView* getMDIViewPtr()
+    {
+        return _view.data();
+    }
 
 private:
     QPointer<MDIView> _view;
 };
 
-} // namespace Gui
-
-#endif //GUI_MDIVIEWPY_H
+}  // namespace Gui

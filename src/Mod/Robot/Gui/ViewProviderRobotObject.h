@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ROBOT_VIEWPROVIDERROBOTOBJECT_H
-#define ROBOT_VIEWPROVIDERROBOTOBJECT_H
+#pragma once
 
 #include <Base/Placement.h>
 #include <Gui/Selection/SoFCSelection.h>
@@ -58,13 +59,7 @@ public:
     void onChanged(const App::Property* prop) override;
 
     /// for simulation without changing the document:
-    void setAxisTo(float A1,
-                   float A2,
-                   float A3,
-                   float A4,
-                   float A5,
-                   float A6,
-                   const Base::Placement& Tcp);
+    void setAxisTo(float A1, float A2, float A3, float A4, float A5, float A6, const Base::Placement& Tcp);
 
 protected:
     static void sDraggerMotionCallback(void* data, SoDragger* dragger);
@@ -96,6 +91,3 @@ protected:
 };
 
 }  // namespace RobotGui
-
-
-#endif  // ROBOT_VIEWPROVIDERROBOTOBJECT_H

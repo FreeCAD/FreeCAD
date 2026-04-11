@@ -1,6 +1,8 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
+# *   Copyright (c) 2025 Billy Huddleston <billy@ivdc.com>                  *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -36,7 +38,6 @@ import Path.Log
 import Path.Main.Sanity.ImageBuilder as ImageBuilder
 import Path.Main.Sanity.ReportGenerator as ReportGenerator
 import os
-import tempfile
 import Path.Dressup.Utils as PathDressup
 
 translate = FreeCAD.Qt.translate
@@ -49,6 +50,9 @@ else:
 
 
 class CAMSanity:
+    # Toggle: True = use thumbnail, False = always use fallback image
+    USE_TOOL_THUMBNAIL = False
+
     """
     This class has the functionality to harvest data from a CAM Job
     and export it in a format that is useful to the user.
@@ -102,8 +106,9 @@ class CAMSanity:
 
         path = f"{FreeCAD.getHomePath()}Mod/CAM/Path/Main/Sanity/{squawk_icon}.svg"
 
+        local_date_str = date.strftime("%c")
         squawk = {
-            "Date": str(date),
+            "Date": local_date_str,
             "Operator": operator,
             "Note": note,
             "squawkType": squawkType,
@@ -120,7 +125,9 @@ class CAMSanity:
             [obj.Proxy.baseObject(obj, o).Label for o in obj.Model.Group]
         ).items():
             bases[name] = str(count)
-        data["baseimage"] = self.image_builder.build_image(obj.Model, "baseimage")
+            data["baseimage"] = self.image_builder.build_image(
+                obj.Model, "baseimage", as_bytes=True
+            )
         data["bases"] = bases
 
         return data
@@ -146,7 +153,15 @@ class CAMSanity:
         data["FileName"] = obj.Document.FileName
         data["LastModifiedDate"] = str(obj.Document.LastModifiedDate)
         data["Customer"] = obj.Document.Company
-        data["Designer"] = obj.Document.LastModifiedBy
+        lastmod = obj.Document.LastModifiedDate
+        if lastmod:
+            try:
+                # Parse ISO 8601 string and format
+                data["LastModifiedDate"] = datetime.fromisoformat(str(lastmod)).strftime("%c")
+            except Exception:
+                data["LastModifiedDate"] = str(lastmod)
+        else:
+            data["LastModifiedDate"] = ""
         data["JobDescription"] = obj.Description
         data["JobLabel"] = obj.Label
 
@@ -170,7 +185,7 @@ class CAMSanity:
         data["fixtures"] = str(obj.Fixtures)
         data["orderBy"] = str(obj.OrderOutputBy)
 
-        data["datumImage"] = self.image_builder.build_image(obj, "datumImage")
+        data["datumImage"] = self.image_builder.build_image(obj, "datumImage", as_bytes=True)
 
         return data
 
@@ -337,7 +352,7 @@ class CAMSanity:
                 )
             )
 
-        data["stockImage"] = self.image_builder.build_image(obj.Stock, "stockImage")
+        data["stockImage"] = self.image_builder.build_image(obj.Stock, "stockImage", as_bytes=True)
 
         return data
 
@@ -368,7 +383,7 @@ class CAMSanity:
                 )
                 continue  # skip old-style tools
             tooldata = data.setdefault(str(TC.ToolNumber), {})
-            bitshape = tooldata.setdefault("ShapeType", "")
+            bitshape = tooldata.get("ShapeType", "")
             if bitshape not in ["", TC.Tool.ShapeType]:
                 data["squawkData"].append(
                     self.squawk(
@@ -379,39 +394,55 @@ class CAMSanity:
                         squawkType="CAUTION",
                     )
                 )
+            tooldata["ShapeType"] = TC.Tool.ShapeType
             tooldata["bitShape"] = TC.Tool.ShapeType
             tooldata["description"] = TC.Tool.Label
             tooldata["manufacturer"] = ""
             tooldata["url"] = ""
             tooldata["inspectionNotes"] = ""
-            tooldata["diameter"] = str(TC.Tool.Diameter)
+            tooldata["diameter"] = str(TC.Tool.Diameter.UserString)
             tooldata["shape"] = TC.Tool.ShapeType
 
             tooldata["partNumber"] = ""
 
-            if os.path.isfile(TC.Tool.ShapeType):
-                imagedata = TC.Tool.Proxy.get_thumbnail()
-            else:
-                imagedata = None
-                data["squawkData"].append(
-                    self.squawk(
-                        "CAMSanity",
-                        translate("CAM_Sanity", "Toolbit Shape for TC: {} not found").format(
-                            TC.ToolNumber
-                        ),
-                        squawkType="WARNING",
+            # Use the toggle to determine which image to use
+            imagebytes = None
+            if self.USE_TOOL_THUMBNAIL:
+                # Try to get the thumbnail
+                thumb_bytes = None
+                if hasattr(TC.Tool, "Proxy") and hasattr(TC.Tool.Proxy, "get_thumbnail"):
+                    try:
+                        thumb_bytes = TC.Tool.Proxy.get_thumbnail()
+                    except Exception:
+                        thumb_bytes = None
+                if thumb_bytes:
+                    imagebytes = thumb_bytes
+                else:
+                    # Warn and use fallback head-on image
+                    data["squawkData"].append(
+                        self.squawk(
+                            "CAMSanity",
+                            translate("CAM_Sanity", "Toolbit Shape for TC: {} not found").format(
+                                TC.ToolNumber
+                            ),
+                            squawkType="WARNING",
+                        )
                     )
+                    imagebytes = self.image_builder.build_image(
+                        TC.Tool, f"T{TC.ToolNumber}", as_bytes=True, view="headon"
+                    )
+            else:
+                # Always use fallback head-on image
+                imagebytes = self.image_builder.build_image(
+                    TC.Tool, f"T{TC.ToolNumber}", as_bytes=True, view="headon"
                 )
-            tooldata["image"] = ""
+            tooldata["imagebytes"] = imagebytes
             imagepath = os.path.join(self.filelocation, f"T{TC.ToolNumber}.png")
             tooldata["imagepath"] = imagepath
             Path.Log.debug(imagepath)
-            if imagedata is not None:
-                with open(imagepath, "wb") as fd:
-                    fd.write(imagedata)
-                    fd.close()
+            # No longer writing imagedata to disk; handled by imagebytes logic above
 
-            tooldata["feedrate"] = str(TC.HorizFeed)
+            tooldata["feedrate"] = str(TC.HorizFeed.UserString)
             if TC.HorizFeed.Value == 0.0:
                 data["squawkData"].append(
                     self.squawk(
@@ -423,7 +454,7 @@ class CAMSanity:
                     )
                 )
 
-            tooldata["spindlespeed"] = str(TC.SpindleSpeed)
+            tooldata["spindlespeed"] = f"{int(TC.SpindleSpeed)} rpm"
             if TC.SpindleSpeed == 0.0:
                 data["squawkData"].append(
                     self.squawk(
@@ -444,8 +475,8 @@ class CAMSanity:
                         {
                             "Operation": base_op.Label,
                             "ToolController": TC.Label,
-                            "Feed": str(TC.HorizFeed),
-                            "Speed": str(TC.SpindleSpeed),
+                            "Feed": str(TC.HorizFeed.UserString),
+                            "Speed": f"{int(TC.SpindleSpeed)} rpm",
                         }
                     )
 
@@ -475,6 +506,159 @@ class CAMSanity:
         Path.Log.debug("get_output_url")
 
         generator = ReportGenerator.ReportGenerator(self.data, embed_images=True)
-        html = generator.generate_html()
-        generator = None
-        return html
+        return generator.generate_html()
+
+    def get_all_squawks(self, overrides=None):
+        """Collect squawks from all validation sections without generating images or HTML.
+
+        Calls each _xxxData() method directly using the current image_builder (a
+        DummyImageBuilder when invoked via validate_job(), so no GUI or file I/O occurs).
+        Also runs _validate_job_structure() for structural checks.
+
+        Args:
+            overrides: Optional dict of postprocessor property overrides.
+                       Passed through to apply_configuration_bundle() so that
+                       callers (e.g. the dialog) can inject values without
+                       modifying the job.
+
+        Returns:
+            tuple: (all_squawks, critical_squawks) where critical = WARNING or CAUTION
+        """
+        all_squawks = []
+        for method in [
+            self._toolData,
+            self._outputData,
+            self._runData,
+            self._stockData,
+            self._fixtureData,
+            self._baseObjectData,
+            self._designData,
+        ]:
+            try:
+                all_squawks.extend(method().get("squawkData", []))
+            except Exception as e:
+                Path.Log.warning(f"get_all_squawks: {method.__name__} failed: {e}")
+        all_squawks.extend(self._validate_job_structure())
+
+        # Collect postprocessor-specific squawks
+        if hasattr(self.job, "Machine") and self.job.Machine:
+            try:
+                from Machine.models.machine import MachineFactory
+                from Path.Post.Processor import PostProcessorFactory
+
+                machine = MachineFactory.get_machine(self.job.Machine)
+                postprocessor_name = getattr(machine, "postprocessor_file_name", None)
+                if postprocessor_name:
+                    postprocessor = PostProcessorFactory.get_post_processor(
+                        self.job, postprocessor_name
+                    )
+                    if postprocessor and hasattr(postprocessor, "get_sanity_checks"):
+                        if hasattr(postprocessor, "apply_configuration_bundle"):
+                            postprocessor.apply_configuration_bundle(overrides=overrides)
+                        pp_squawks = postprocessor.get_sanity_checks(self.job)
+                        all_squawks.extend(pp_squawks)
+            except Exception as e:
+                Path.Log.warning(f"Failed to get postprocessor sanity checks: {e}")
+
+        critical = [s for s in all_squawks if s["squawkType"] in ("WARNING", "CAUTION")]
+        Path.Log.debug(f"get_all_squawks: {len(all_squawks)} squawks, {len(critical)} critical")
+        Path.Log.debug(f"Critical squawks: {critical}")
+        return all_squawks, critical
+
+    @staticmethod
+    def validate_job(job, overrides=None):
+        """Lightweight job validation without generating images or HTML.
+
+        Bypasses __init__ entirely to avoid calling summarize() or any image-generation
+        code. Sets up only the attributes needed by the _xxxData() methods, uses
+        DummyImageBuilder unconditionally, and calls get_all_squawks().
+
+        Args:
+            job: FreeCAD CAM job object
+            overrides: Optional dict of postprocessor property overrides.
+                       When provided these are passed to the postprocessor's
+                       apply_configuration_bundle() instead of reading from the job.
+
+        Returns:
+            tuple: (all_squawks, critical_squawks) where critical = WARNING or CAUTION
+        """
+        import tempfile
+        import os as _os
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            sanity = object.__new__(CAMSanity)
+            sanity.job = job
+            sanity.output_file = _os.path.join(tmpdir, "dummy.html")
+            sanity.filelocation = tmpdir
+            sanity.image_builder = ImageBuilder.DummyImageBuilder(tmpdir)
+            sanity.data = {}
+            return sanity.get_all_squawks(overrides=overrides)
+
+    def validate_for_postprocessing(self):
+        """
+        Lightweight validation for post-processing without full report generation.
+
+        Returns:
+            tuple: (has_critical_issues, all_squawks, critical_squawks)
+        """
+        all_squawks = []
+
+        # Collect squawks from key validation methods
+        all_squawks.extend(self._toolData().get("squawkData", []))
+
+        # Add basic job structure validation
+        job_squawks = self._validate_job_structure()
+        all_squawks.extend(job_squawks)
+
+        # Identify critical squawks that should block post-processing
+        critical_squawks = []
+        for squawk in all_squawks:
+            if squawk["squawkType"] in ("WARNING", "CAUTION"):
+                note = squawk["Note"].lower()
+                # Critical issues for post-processing
+                if any(
+                    keyword in note
+                    for keyword in [
+                        "no feedrate",
+                        "no spindlespeed",
+                        "no tool controllers",
+                        "no operations",
+                        "no model",
+                        "no base",
+                    ]
+                ):
+                    critical_squawks.append(squawk)
+
+        has_critical = len(critical_squawks) > 0
+        return has_critical, all_squawks, critical_squawks
+
+    def _validate_job_structure(self):
+        """
+        Validate basic job structure for post-processing.
+
+        Returns:
+            list: List of squawk dictionaries for job structure issues
+        """
+        job_squawks = []
+
+        # Check if job has operations
+        if not hasattr(self.job, "Operations") or not self.job.Operations:
+            job_squawks.append(
+                self.squawk(
+                    "CAMSanity",
+                    translate("CAM_Sanity", "No operations found in job"),
+                    squawkType="WARNING",
+                )
+            )
+
+        # Check if job has model
+        if not hasattr(self.job, "Model") or not self.job.Model:
+            job_squawks.append(
+                self.squawk(
+                    "CAMSanity",
+                    translate("CAM_Sanity", "No model/base geometry found in job"),
+                    squawkType="WARNING",
+                )
+            )
+
+        return job_squawks

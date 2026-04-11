@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-3.0-only
 /***************************************************************************
  *                                                                         *
  *   Copyright: https://code.google.com/p/qsint/                           *
@@ -5,8 +6,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ACTIONGROUP_H
-#define ACTIONGROUP_H
+#pragma once
 
 #include <QWidget>
 #include <QBoxLayout>
@@ -202,5 +202,3 @@ private:
     const int separatorHeight = 1;
 };
 } // namespace QSint
-
-#endif // ACTIONGROUP_H

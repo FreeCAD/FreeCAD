@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2004 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <Inventor/draggers/SoTrackballDragger.h>
 #include <Inventor/manips/SoTransformerManip.h>
 #include <Inventor/nodes/SoAntiSquish.h>
@@ -31,7 +31,7 @@
 #include <Inventor/nodes/SoMaterialBinding.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSurroundScale.h>
-#endif
+
 
 #include <Base/Console.h>
 #include <Gui/Selection/SoFCSelection.h>
@@ -153,14 +153,15 @@ void ViewProviderMeshTransformDemolding::calcMaterialIndex(const SbRotation& rot
     }
 }
 
-void ViewProviderMeshTransformDemolding::sValueChangedCallback(void* This,
-                                                               [[maybe_unused]] SoDragger* dragger)
+void ViewProviderMeshTransformDemolding::sValueChangedCallback(
+    void* This,
+    [[maybe_unused]] SoDragger* dragger
+)
 {
     static_cast<ViewProviderMeshTransformDemolding*>(This)->valueChangedCallback();
 }
 
-void ViewProviderMeshTransformDemolding::sDragEndCallback(void* This,
-                                                          [[maybe_unused]] SoDragger* dragger)
+void ViewProviderMeshTransformDemolding::sDragEndCallback(void* This, [[maybe_unused]] SoDragger* dragger)
 {
     static_cast<ViewProviderMeshTransformDemolding*>(This)->DragEndCallback();
 }
@@ -178,11 +179,13 @@ void ViewProviderMeshTransformDemolding::valueChangedCallback()
     SbMatrix temp;
     SbRotation rot = pcTrackballDragger->rotation.getValue();
 
-    temp.setTransform(SbVec3f(0, 0, 0),                        // no transformation
-                      rot,                                     // rotation from the dragger
-                      SbVec3f(1, 1, 1),                        // no scaling
-                      SbRotation(),                            // no scaling orientation
-                      SbVec3f(center.x, center.y, center.z));  // center of rotation
+    temp.setTransform(
+        SbVec3f(0, 0, 0),  // no transformation
+        rot,               // rotation from the dragger
+        SbVec3f(1, 1, 1),  // no scaling
+        SbRotation(),      // no scaling orientation
+        SbVec3f(center.x, center.y, center.z)
+    );  // center of rotation
     pcTransformDrag->setMatrix(temp);
 }
 

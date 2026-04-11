@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Juergen Riegel <juergen.riegel@web.de>             *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <boost/bind/bind.hpp>
 #include <boost/core/ignore_unused.hpp>
 #include <Inventor/SbBox3f.h>
 #include <Inventor/SbLine.h>
@@ -31,18 +32,25 @@
 #include <Inventor/details/SoPointDetail.h>
 #include <Inventor/events/SoKeyboardEvent.h>
 #include <Inventor/nodes/SoCamera.h>
+#include <Inventor/nodes/SoShapeHints.h>
 
 #include <QApplication>
 #include <QFontMetricsF>
+#include <QHelpEvent>
+#include <QListWidget>
 #include <QMenu>
 #include <QMessageBox>
 #include <QScreen>
 #include <QTextStream>
+#include <QToolTip>
+#include <QWindow>
 
 #include <limits>
-#endif
+
+#include <fmt/format.h>
 
 #include <Base/Console.h>
+#include <Base/ServiceProvider.h>
 #include <Base/Vector3D.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -54,6 +62,7 @@
 #include <Gui/Selection/Selection.h>
 #include <Gui/Selection/SelectionObject.h>
 #include <Gui/Selection/SoFCUnifiedSelection.h>
+// #include <Gui/Inventor/SoFCSwitch.h>
 #include <Gui/Utilities.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
@@ -65,14 +74,18 @@
 
 #include "DrawSketchHandler.h"
 #include "EditDatumDialog.h"
+#include "EditTextDialog.h"
 #include "EditModeCoinManager.h"
 #include "SnapManager.h"
+#include "StyleParameters.h"
 #include "TaskDlgEditSketch.h"
 #include "TaskSketcherValidation.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
 #include "ViewProviderSketchGeometryExtension.h"
 #include "Workbench.h"
+
+#include <Mod/Part/Gui/SoFCShapeObject.h>
 
 
 // clang-format off
@@ -148,6 +161,20 @@ void ViewProviderSketch::ParameterObserver::updateColorProperty(const std::strin
     color = hGrp->GetUnsigned(string.c_str(), color);
     elementAppColor.setPackedValue((uint32_t)color);
     colorprop->setValue(elementAppColor);
+}
+
+void ViewProviderSketch::ParameterObserver::updateShapeAppearanceProperty(const std::string& string, App::Property* property)
+{
+    auto matProp = static_cast<App::PropertyMaterialList*>(property);
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+    unsigned long shcol = hGrp->GetUnsigned(string.c_str(), 0x54abff40);
+    float r = ((shcol >> 24) & 0xff) / 255.0;
+    float g = ((shcol >> 16) & 0xff) / 255.0;
+    float b = ((shcol >> 8) & 0xff) / 255.0;
+    float a = (shcol & 0xff) / 255.0;
+    matProp->setDiffuseColor(r, g, b);
+    matProp->setTransparency(1 - a);
 }
 
 void ViewProviderSketch::ParameterObserver::updateGridSize(const std::string& string,
@@ -321,7 +348,7 @@ void ViewProviderSketch::ParameterObserver::initParameters()
           nullptr}},
         {"GridLinePattern",
          {[this](const std::string& string, [[maybe_unused]] App::Property* property) {
-              auto v = getSketcherGeneralParameter(string, 0x0f0f);
+              auto v = getSketcherGeneralParameter(string, 0xffff);
               Client.setGridLinePattern(v);
           },
           nullptr}},
@@ -359,6 +386,12 @@ void ViewProviderSketch::ParameterObserver::initParameters()
               Client.setGridDivLineColor(color);
           },
           nullptr}},
+        {"GridTransparency",
+         {[this](const std::string& string, [[maybe_unused]] App::Property* property) {
+              auto v = getSketcherGeneralParameter(string, 60);
+              Client.setGridTransparency(static_cast<float>(v) / 100.0f);
+          },
+          nullptr}},
         {"SegmentsPerGeometry",
          {[this](const std::string& string,
                                          [[maybe_unused]] App::Property* property) {
@@ -380,6 +413,13 @@ void ViewProviderSketch::ParameterObserver::initParameters()
               }
           },
           &Client.PointColor}},
+        {"SketchFaceColor",
+         {[this](const std::string& string, App::Property* property) {
+              if (Client.AutoColor.getValue()) {
+                  updateShapeAppearanceProperty(string, property);
+              }
+          },
+          &Client.ShapeAppearance}},
     };
 
     for (auto& val : parameterMap) {
@@ -392,7 +432,7 @@ void ViewProviderSketch::ParameterObserver::initParameters()
 
     // unsubscribed parameters which update a property on just once upon construction (and before
     // restore if properties are being restored from a file)
-    updateBoolProperty("ShowGrid", &Client.ShowGrid, false);
+    updateBoolProperty("ShowGrid", &Client.ShowGrid, true);
     updateBoolProperty("GridAuto", &Client.GridAuto, true);
     updateGridSize("GridSize", &Client.GridSize);
 }
@@ -463,7 +503,36 @@ QString ViewProviderSketch::ToolManager::getToolWidgetText() const
     }
 }
 
+/*************************** SoSketchFaces **************************/
 
+SO_NODE_SOURCE(SoSketchFaces);
+
+SoSketchFaces::SoSketchFaces(){
+    SO_NODE_CONSTRUCTOR(SoSketchFaces);
+
+    SO_NODE_ADD_FIELD(color, (SbColor(1.0f, 1.0f, 1.0f)));
+    SO_NODE_ADD_FIELD(transparency, (0.8));
+    //
+    auto* material = new SoMaterial;
+    material->diffuseColor.connectFrom(&color);
+    material->transparency.connectFrom(&transparency);
+
+    // Enable two-sided lighting so faces are visible from both sides
+    auto* shapeHints = new SoShapeHints;
+    shapeHints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
+    shapeHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
+
+    SoSeparator::addChild(material);
+    SoSeparator::addChild(shapeHints);
+    SoSeparator::addChild(coords);
+    SoSeparator::addChild(norm);
+    SoSeparator::addChild(faceset);
+}
+
+void SoSketchFaces::initClass()
+{
+    SO_NODE_INIT_CLASS(SoSketchFaces, SoFCShape, "FCShape");
+}
 
 /*************************** ViewProviderSketch **************************/
 
@@ -477,7 +546,6 @@ SbVec2s ViewProviderSketch::DoubleClick::newCursorPos;
 // Construction/Destruction
 
 /* TRANSLATOR SketcherGui::ViewProviderSketch */
-
 PROPERTY_SOURCE_WITH_EXTENSIONS(SketcherGui::ViewProviderSketch, PartGui::ViewProvider2DObject)
 
 
@@ -485,12 +553,15 @@ ViewProviderSketch::ViewProviderSketch()
     : SelectionObserver(false)
     , toolManager(this)
     , Mode(STATUS_NONE)
+    , pcSketchFaces(new SoSketchFaces)
+    , pcSketchFacesToggle(new SoToggleSwitch)
     , listener(nullptr)
     , editCoinManager(nullptr)
     , snapManager(nullptr)
     , pObserver(std::make_unique<ViewProviderSketch::ParameterObserver>(*this))
     , sketchHandler(nullptr)
     , viewOrientationFactor(1)
+    , blockContextMenu(false)
 {
     PartGui::ViewProviderAttachExtension::initExtension(this);
     PartGui::ViewProviderGridExtension::initExtension(this);
@@ -574,8 +645,12 @@ ViewProviderSketch::ViewProviderSketch()
 
     VisualLayerList.setValues(std::move(layers));
 
-    // Default values that will be overridden by preferences (if existing)
-    PointSize.setValue(4);
+    ParameterGrp::handle hGrp =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    const int defaultSketchVertexSize = 4;
+    auto psize = hGrp->GetInt("DefaultShapePointSize", defaultSketchVertexSize);
+
+    PointSize.setValue(psize);
 
     // visibility automation and other parameters: update parameter and property defaults to follow
     // preferences
@@ -588,6 +663,10 @@ ViewProviderSketch::ViewProviderSketch()
     rubberband = std::make_unique<Gui::Rubberband>();
 
     cameraSensor.setFunction(&ViewProviderSketch::camSensCB);
+
+    updateColorPropertiesVisibility();
+
+    pcSketchFacesToggle->addChild(pcSketchFaces);
 }
 
 ViewProviderSketch::~ViewProviderSketch()
@@ -597,6 +676,14 @@ ViewProviderSketch::~ViewProviderSketch()
 
 void ViewProviderSketch::slotUndoDocument(const Gui::Document& /*doc*/)
 {
+    // If undo is triggered during a drag operation, the drag must be canceled to avoid using
+    // stale geometry IDs, which would lead to a crash.
+    if (!drag.Dragged.empty() || !drag.DragConstraintSet.empty()) {
+        drag.reset();
+        setSketchMode(STATUS_NONE);
+        resetPositionText();
+    }
+
     // Note 1: this slot is only operative during edit mode (see signal connection/disconnection)
     // Note 2: ViewProviderSketch::UpdateData does not generate updates during undo/redo
     //         transactions as mid-transaction data may not be in a valid state (e.g. constraints
@@ -608,6 +695,14 @@ void ViewProviderSketch::slotUndoDocument(const Gui::Document& /*doc*/)
 
 void ViewProviderSketch::slotRedoDocument(const Gui::Document& /*doc*/)
 {
+    // If redo is triggered during a drag operation, the drag must be canceled to avoid using
+    // stale geometry IDs, which would lead to a crash.
+    if (!drag.Dragged.empty() || !drag.DragConstraintSet.empty()) {
+        drag.reset();
+        setSketchMode(STATUS_NONE);
+        resetPositionText();
+    }
+
     // Note 1: this slot is only operative during edit mode (see signal connection/disconnection)
     // Note 2: ViewProviderSketch::UpdateData does not generate updates during undo/redo
     //         transactions as mid-transaction data may not be in a valid state (e.g. constraints
@@ -659,7 +754,13 @@ void ViewProviderSketch::purgeHandler()
     Gui::Selection().clearSelection();
 
     // ensure that we are in sketch only selection mode
-    auto* view = dynamic_cast<Gui::View3DInventor*>(Gui::Application::Instance->editDocument()->getActiveView());
+    auto editDoc = Gui::Application::Instance->editDocument([this](Gui::Document* editdoc) {
+        return editdoc->getEditViewProvider() == this;
+    });
+    Gui::View3DInventor* view = nullptr;
+    if (editDoc) {
+        view = dynamic_cast<Gui::View3DInventor*>(editDoc->getActiveView());
+    }
 
     if(view) {
         Gui::View3DInventorViewer* viewer;
@@ -699,11 +800,6 @@ void ViewProviderSketch::moveCursorToSketchPoint(Base::Vector2d point)
 
     QPoint newPos = viewer->getGLWidget()->mapToGlobal(QPoint(x, height - y));
 
-
-    // QScreen *screen = view->windowHandle()->screen();
-    // QScreen *screen = QGuiApplication::primaryScreen();
-
-    // QCursor::setPos(screen, newPos);
     QCursor::setPos(newPos);
 }
 
@@ -744,7 +840,7 @@ void ViewProviderSketch::preselectAtPoint(Base::Vector2d point)
 
         std::unique_ptr<SoPickedPoint> Point(this->getPointOnRay(screencoords, viewer));
 
-        if (detectAndShowPreselection(Point.get(), screencoords) && sketchHandler) {
+        if (detectAndShowPreselection(Point.get()) && sketchHandler) {
             sketchHandler->applyCursor();
         }
     }
@@ -760,6 +856,10 @@ void ViewProviderSketch::setSketchMode(SketchMode mode)
 
 bool ViewProviderSketch::keyPressed(bool pressed, int key)
 {
+    if (getEditingMode() != ViewProviderSketch::Default) {
+        return ViewProvider2DObject::keyPressed(pressed, key);
+    }
+
     switch (key) {
         case SoKeyboardEvent::ESCAPE: {
             // make the handler quit but not the edit mode
@@ -844,12 +944,15 @@ void ViewProviderSketch::getProjectingLine(const SbVec2s& pnt,
 
 Base::Placement ViewProviderSketch::getEditingPlacement() const
 {
-    auto doc = Gui::Application::Instance->editDocument();
-    if (!doc || doc->getInEdit() != this)
+    auto editDoc = Gui::Application::Instance->editDocument([this](Gui::Document* editdoc) {
+        return editdoc->getInEdit() == this;
+    });
+    if (!editDoc) {
         return getSketchObject()->globalPlacement();
+    }
 
     // TODO: won't work if there is scale. Hmm... what to do...
-    return Base::Placement(doc->getEditingTransform());
+    return Base::Placement(editDoc->getEditingTransform());
 }
 
 void ViewProviderSketch::getCoordsOnSketchPlane(const SbVec3f& point, const SbVec3f& normal,
@@ -884,6 +987,9 @@ void ViewProviderSketch::getCoordsOnSketchPlane(const SbVec3f& point, const SbVe
 bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVec2s& cursorPos,
                                             const Gui::View3DInventorViewer* viewer)
 {
+    if (getEditingMode() != ViewProviderSketch::Default) {
+        return ViewProvider2DObject::mouseButtonPressed(Button, pressed, cursorPos, viewer);
+    }
     assert(isInEditMode());
 
     // Calculate 3d point to the mouse position
@@ -898,8 +1004,10 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
     // Radius maximum to allow double click event
     const int dblClickRadius = 5;
 
-    double x, y;
+    double x = std::numeric_limits<double>::quiet_NaN();
+    double y = std::numeric_limits<double>::quiet_NaN();
     SbVec3f pos = point;
+
     if (pp) {
         const SoDetail* detail = pp->getDetail();
         if (detail && detail->getTypeId() == SoPointDetail::getClassTypeId()) {
@@ -907,9 +1015,10 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
         }
     }
 
+    std::unique_ptr<SnapManager::SnapHandle> snapHandle;
     try {
         getCoordsOnSketchPlane(pos, normal, x, y);
-        snapManager->snap(x, y);
+        snapHandle = std::make_unique<SnapManager::SnapHandle>(snapManager.get(), Base::Vector2d(x, y));
     }
     catch (const Base::ZeroDivisionError&) {
         return false;
@@ -923,28 +1032,24 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                 case STATUS_NONE: {
                     bool done = false;
                     if (preselection.isPreselectPointValid()) {
-                        // Base::Console().log("start dragging, point:%d\n",this->DragPoint);
                         setSketchMode(STATUS_SELECT_Point);
                         done = true;
                     }
                     else if (preselection.isPreselectCurveValid()) {
-                        // Base::Console().log("start dragging, point:%d\n",this->DragPoint);
                         setSketchMode(STATUS_SELECT_Edge);
                         done = true;
                     }
                     else if (preselection.isCrossPreselected()) {
-                        // Base::Console().log("start dragging, point:%d\n",this->DragPoint);
                         setSketchMode(STATUS_SELECT_Cross);
                         done = true;
                     }
                     else if (!preselection.PreselectConstraintSet.empty()) {
-                        // Base::Console().log("start dragging, point:%d\n",this->DragPoint);
                         setSketchMode(STATUS_SELECT_Constraint);
                         done = true;
                     }
 
                     // Double click events variables
-                    float dci = (float)QApplication::doubleClickInterval() / 1000.0f;
+                    float dci = (float)QApplication::doubleClickInterval() / 1000.0F;
 
                     if (done
                         && SbVec2f(cursorPos - DoubleClick::prvClickPos).length() < dblClickRadius
@@ -967,14 +1072,17 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                         DoubleClick::prvClickPos = cursorPos;
                         DoubleClick::prvCursorPos = cursorPos;
                         DoubleClick::newCursorPos = cursorPos;
-                        if (!done)
+                        if (!done) {
                             setSketchMode(STATUS_SKETCH_StartRubberBand);
+                        }
                     }
 
                     return done;
                 }
-                case STATUS_SKETCH_UseHandler:
-                    return sketchHandler->pressButton(Base::Vector2d(x, y));
+                case STATUS_SKETCH_UseHandler: {
+                    Base::Vector2d snappedPos = snapHandle->compute();
+                    return sketchHandler->pressButton(snappedPos);
+                }
                 default:
                     return false;
             }
@@ -984,7 +1092,6 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
             switch (Mode) {
                 case STATUS_SELECT_Point:
                     if (pp) {
-                        // Base::Console().log("Select Point:%d\n",this->DragPoint);
                         //  Do selection
                         std::stringstream ss;
                         ss << "Vertex" << preselection.getPreselectionVertexIndex();
@@ -995,7 +1102,6 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     return true;
                 case STATUS_SELECT_Edge:
                     if (pp) {
-                        // Base::Console().log("Select Point:%d\n",this->DragPoint);
                         std::stringstream ss;
                         if (preselection.isEdge())
                             ss << "Edge" << preselection.getPreselectionEdgeIndex();
@@ -1008,7 +1114,6 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     return true;
                 case STATUS_SELECT_Cross:
                     if (pp) {
-                        // Base::Console().log("Select Point:%d\n",this->DragPoint);
                         std::stringstream ss;
                         switch (preselection.PreselectCross) {
                             case Preselection::Axes::RootPoint:
@@ -1029,11 +1134,11 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     setSketchMode(STATUS_NONE);
                     return true;
                 case STATUS_SELECT_Wire: {
-                    toggleWireSelelection(preselection.PreselectCurve);
+                    toggleWireSelection(preselection.PreselectCurve);
                     setSketchMode(STATUS_NONE);
                     return true;
                 }
-                case STATUS_SELECT_Constraint:
+                case STATUS_SELECT_Constraint: {
                     if (pp) {
                         auto sels = preselection.PreselectConstraintSet;
                         for (int id : sels) {
@@ -1045,11 +1150,14 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     }
                     setSketchMode(STATUS_NONE);
                     return true;
-                case STATUS_SKETCH_Drag:
-                    commitDragMove(x, y);
+                }
+                case STATUS_SKETCH_Drag: {
+                    Base::Vector2d snappedPos = snapHandle->compute();
+                    commitDragMove(snappedPos.x, snappedPos.y);
                     setSketchMode(STATUS_NONE);
                     return true;
-                case STATUS_SKETCH_DragConstraint:
+                }
+                case STATUS_SKETCH_DragConstraint: {
                     if (!drag.DragConstraintSet.empty()) {
                         auto idset = drag.DragConstraintSet;
                         // restore the old positions before opening the transaction and setting the new positions
@@ -1059,9 +1167,13 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
 
                         getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Drag Constraint"));
                         std::vector<Sketcher::Constraint*> constraints = getConstraints();
+
+                        // get snapped position
+                        Base::Vector2d snappedPos = snapHandle->compute();
+
                         for (int id : idset) {
                             Sketcher::Constraint* constr = constraints[id]->clone();
-                            moveConstraint(constr, id, Base::Vector2d(x, y));
+                            moveConstraint(constr, id, snappedPos);
                             constraints[id] = constr;
                         }
 
@@ -1075,6 +1187,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     }
                     setSketchMode(STATUS_NONE);
                     return true;
+                }
                 case STATUS_SKETCH_StartRubberBand:// a single click happened, so clear selection
                                                    // unless user hold control.
                     if (!(QApplication::keyboardModifiers() & Qt::ControlModifier)) {
@@ -1085,15 +1198,19 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                 case STATUS_SKETCH_UseRubberBand:
                     doBoxSelection(DoubleClick::prvCursorPos, cursorPos, viewer);
                     rubberband->setWorking(false);
+                    blockContextMenu = true;
+
+                    // use draw(false, false) to avoid solver geometry with outdated construction flags
+                    draw(false, false);
 
                     // a redraw is required in order to clear the rubberband
-                    draw(true, false);
                     const_cast<Gui::View3DInventorViewer*>(viewer)->redraw();
                     setSketchMode(STATUS_NONE);
                     return true;
                 case STATUS_SKETCH_UseHandler: {
                     sketchHandler->applyCursor();
-                    return sketchHandler->releaseButton(Base::Vector2d(x, y));
+                    Base::Vector2d snappedPos = snapHandle->compute();
+                    return sketchHandler->releaseButton(snappedPos);
                 }
                 case STATUS_NONE:
                 default:
@@ -1104,26 +1221,35 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
     // Right mouse button ****************************************************
     else if (Button == 2) {
         if (pressed) {
+            blockContextMenu = false;
+
             // Do things depending on the mode of the user interaction
             switch (Mode) {
                 case STATUS_NONE: {
                     if (preselection.isPreselectPointValid()) {
-                        // Base::Console().log("start dragging, point:%d\n",this->DragPoint);
                         setSketchMode(STATUS_SELECT_Point);
                     }
                     else if (preselection.isPreselectCurveValid()) {
-                        // Base::Console().log("start dragging, point:%d\n",this->DragPoint);
                         setSketchMode(STATUS_SELECT_Edge);
                     }
                     else if (preselection.isCrossPreselected()) {
-                        // Base::Console().log("start dragging, point:%d\n",this->DragPoint);
                         setSketchMode(STATUS_SELECT_Cross);
                     }
                     else if (!preselection.PreselectConstraintSet.empty()) {
-                        // Base::Console().log("start dragging, point:%d\n",this->DragPoint);
                         setSketchMode(STATUS_SELECT_Constraint);
                     }
+                    break;
                 }
+                case STATUS_SKETCH_UseRubberBand:
+                    // Cancel rubberband
+                    rubberband->setWorking(false);
+                    blockContextMenu = true;
+
+                    // a redraw is required in order to clear the rubberband
+                    draw(true, false);
+                    const_cast<Gui::View3DInventorViewer*>(viewer)->redraw();
+                    setSketchMode(STATUS_NONE);
+                    return true;
                 default:
                     break;
             }
@@ -1139,7 +1265,6 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     return true;
                 case STATUS_SELECT_Point:
                     if (pp) {
-                        // Base::Console().log("Select Point:%d\n",this->DragPoint);
                         //  Do selection
                         std::stringstream ss;
                         ss << "Vertex" << preselection.getPreselectionVertexIndex();
@@ -1151,7 +1276,6 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     return true;
                 case STATUS_SELECT_Edge:
                     if (pp) {
-                        // Base::Console().log("Select Point:%d\n",this->DragPoint);
                         std::stringstream ss;
                         if (preselection.isEdge()) {
                             ss << "Edge" << preselection.getPreselectionEdgeIndex();
@@ -1167,7 +1291,6 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     return true;
                 case STATUS_SELECT_Cross:
                     if (pp) {
-                        // Base::Console().log("Select Point:%d\n",this->DragPoint);
                         std::stringstream ss;
                         switch (preselection.PreselectCross) {
                             case Preselection::Axes::RootPoint:
@@ -1218,11 +1341,11 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
 bool ViewProviderSketch::mouseWheelEvent(int delta, const SbVec2s& cursorPos,
                                          const Gui::View3DInventorViewer* viewer)
 {
-    assert(isInEditMode());
+    if (getEditingMode() != ViewProviderSketch::Default) {
+        return ViewProvider2DObject::mouseWheelEvent(delta, cursorPos, viewer);
+    }
 
-    Q_UNUSED(delta);
-    Q_UNUSED(cursorPos);
-    Q_UNUSED(viewer);
+    assert(isInEditMode());
 
     editCoinManager->drawConstraintIcons();
 
@@ -1235,9 +1358,31 @@ void ViewProviderSketch::editDoubleClicked()
         Base::Console().log("double click point:%d\n", preselection.PreselectPoint);
     }
     else if (preselection.isPreselectCurveValid()) {
-        // We cannot do toggleWireSelelection directly here because the released event with
-        //STATUS_NONE return false which clears the selection.
-        setSketchMode(STATUS_SELECT_Wire);
+        int geoId = preselection.PreselectCurve;
+        Sketcher::SketchObject* sketch = getSketchObject();
+
+        // Check if the preselected edge is the handle of a Text constraint
+        int textConstrId = -1;
+        const auto& constraints = sketch->Constraints.getValues();
+        for (int i = 0; i < static_cast<int>(constraints.size()); ++i) {
+            if (constraints[i]->Type == Sketcher::Text && constraints[i]->hasElement(0)) {
+                if (constraints[i]->getGeoId(0) == geoId) {
+                    textConstrId = i;
+                    break;
+                }
+            }
+        }
+
+        if (textConstrId != -1) {
+            EditTextDialog editTextDialog(this, textConstrId);
+            editTextDialog.exec();
+            setSketchMode(STATUS_NONE);
+        }
+        else {
+            // We cannot do toggleWireSelection directly here because the released event with
+            //STATUS_NONE return false which clears the selection.
+            setSketchMode(STATUS_SELECT_Wire);
+        }
     }
     else if (preselection.isCrossPreselected()) {
         Base::Console().log("double click cross:%d\n",
@@ -1255,81 +1400,124 @@ void ViewProviderSketch::editDoubleClicked()
 
             // if its the right constraint
             if (Constr->isDimensional()) {
-                Gui::Command::openCommand(
+                int tid = getDocument()->openCommand(
                     QT_TRANSLATE_NOOP("Command", "Modify sketch constraints"));
-                EditDatumDialog editDatumDialog(this, id);
+                EditDatumDialog editDatumDialog(tid, this, id);
                 editDatumDialog.exec();
+            }
+            else if (Constr->Type == Sketcher::Text) {
+                EditTextDialog editTextDialog(this, id);
+                editTextDialog.exec();
             }
         }
     }
 }
 
-void ViewProviderSketch::toggleWireSelelection(int clickedGeoId)
+void ViewProviderSketch::toggleWireSelection(int clickedGeoId)
 {
     Sketcher::SketchObject* obj = getSketchObject();
 
     const Part::Geometry* geo1 = obj->getGeometry(clickedGeoId);
-    if (isPoint(*geo1) || isCircle(*geo1) || isEllipse(*geo1) || isPeriodicBSplineCurve(*geo1)) {
+    if (!geo1 || isPoint(*geo1) || isCircle(*geo1) || isEllipse(*geo1) || isPeriodicBSplineCurve(*geo1)) {
         return;
     }
 
-    const char* type1 = (clickedGeoId >= 0) ? "Edge" : "ExternalEdge";
-    std::stringstream ss1;
-    ss1 << type1 << clickedGeoId + 1;
-    bool selecting = isSelected(ss1.str());
+    auto getSelectionName = [](int id) {
+        std::stringstream ss;
+        if (id >= 0) {
+            ss << "Edge" << (id + 1);
+        }
+        else {
+            ss << "ExternalEdge" << (Sketcher::GeoEnum::RefExt - id + 1);
+        }
+        return ss.str();
+    };
 
-    std::vector<int> connectedEdges = { clickedGeoId };
+    bool selecting = isSelected(getSelectionName(clickedGeoId));
+
+    struct CandidateEdge {
+        int geoId;
+        Base::Vector3d pStart;
+        Base::Vector3d pEnd;
+    };
+    std::vector<CandidateEdge> candidateEdges;
+
+    auto addCandidate = [&obj, &candidateEdges](int geoId) {
+        const Part::Geometry* geo = obj->getGeometry(geoId);
+        if (!geo || isPoint(*geo) || isCircle(*geo) || isEllipse(*geo) || isPeriodicBSplineCurve(*geo)) {
+            return;
+        }
+        Base::Vector3d p1 = obj->getPoint(geoId, PointPos::start);
+        Base::Vector3d p2 = obj->getPoint(geoId, PointPos::end);
+        candidateEdges.push_back({geoId, p1, p2});
+    };
+
+    for (int geoId = 0; geoId <= obj->getHighestCurveIndex(); geoId++) {
+        addCandidate(geoId);
+    }
+    for (int extGeoId = 0; extGeoId < obj->getExternalGeometryCount(); extGeoId++) {
+        addCandidate(Sketcher::GeoEnum::RefExt - extGeoId);
+    }
+
+    std::vector<CandidateEdge> connectedEdges;
+    auto itClicked = candidateEdges.end();
+    for (auto it = candidateEdges.begin(); it != candidateEdges.end(); ++it) {
+        if (it->geoId == clickedGeoId) {
+            itClicked = it;
+            break;
+        }
+    }
+
+    if (itClicked != candidateEdges.end()) {
+        connectedEdges.push_back(*itClicked);
+        candidateEdges.erase(itClicked);
+    }
+    else {
+        return;
+    }
+
     bool partHasBeenAdded = true;
     while (partHasBeenAdded) {
         partHasBeenAdded = false;
-        for (int geoId = 0; geoId <= obj->getHighestCurveIndex(); geoId++) {
-            if (geoId == clickedGeoId || std::ranges::find(connectedEdges, geoId) != connectedEdges.end()) {
-                continue;
-            }
 
-            const Part::Geometry* geo = obj->getGeometry(geoId);
-            if (isPoint(*geo) || isCircle(*geo) || isEllipse(*geo) || isPeriodicBSplineCurve(*geo1)) {
-                continue;
-            }
-
-            Base::Vector3d p11 = obj->getPoint(geoId, PointPos::start);
-            Base::Vector3d p12 = obj->getPoint(geoId, PointPos::end);
+        for (auto it = candidateEdges.begin(); it != candidateEdges.end(); ++it) {
             bool connected = false;
-            for (auto conGeoId : connectedEdges) {
-                Base::Vector3d p21 = obj->getPoint(conGeoId, PointPos::start);
-                Base::Vector3d p22 = obj->getPoint(conGeoId, PointPos::end);
-                if ((p11 - p21).Length() < Precision::Confusion()
-                    || (p11 - p22).Length() < Precision::Confusion()
-                    || (p12 - p21).Length() < Precision::Confusion()
-                    || (p12 - p22).Length() < Precision::Confusion()) {
+            for (const auto& conEdge : connectedEdges) {
+                if ((it->pStart - conEdge.pStart).Length() < Precision::Confusion()
+                    || (it->pStart - conEdge.pEnd).Length() < Precision::Confusion()
+                    || (it->pEnd - conEdge.pStart).Length() < Precision::Confusion()
+                    || (it->pEnd - conEdge.pEnd).Length() < Precision::Confusion()) {
                     connected = true;
+                    break;
                 }
             }
 
             if (connected) {
-                connectedEdges.push_back(geoId);
+                connectedEdges.push_back(*it);
+                candidateEdges.erase(it);
                 partHasBeenAdded = true;
                 break;
             }
         }
     }
 
-    for (auto geoId : connectedEdges) {
-        std::stringstream ss;
-        const char* type = (geoId >= 0) ? "Edge" : "ExternalEdge";
-        ss << type << geoId + 1;
-        if (!selecting && isSelected(ss.str())) {
-            rmvSelection(ss.str());
+    for (const auto& edge : connectedEdges) {
+        std::string selName = getSelectionName(edge.geoId);
+        if (!selecting && isSelected(selName)) {
+            rmvSelection(selName);
         }
-        else if (selecting && !isSelected(ss.str())) {
-            addSelection2(ss.str());
+        else if (selecting && !isSelected(selName)) {
+            addSelection2(selName);
         }
     }
-
 }
 
 bool ViewProviderSketch::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer)
 {
+    if (getEditingMode() != ViewProviderSketch::Default) {
+        return ViewProvider2DObject::mouseMove(cursorPos, viewer);
+    }
+
     // maximum radius for mouse moves when selecting a geometry before switching to drag mode
     const int dragIgnoredDistance = 3;
 
@@ -1343,8 +1531,9 @@ bool ViewProviderSketch::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventor
         }
     }
 
-    if (!isInEditMode())
+    if (!isInEditMode()) {
         return false;
+    }
 
     // ignore small moves after selection
     switch (Mode) {
@@ -1354,8 +1543,9 @@ bool ViewProviderSketch::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventor
         case STATUS_SKETCH_StartRubberBand:
             short dx, dy;
             (cursorPos - DoubleClick::prvCursorPos).getValue(dx, dy);
-            if (std::abs(dx) < dragIgnoredDistance && std::abs(dy) < dragIgnoredDistance)
+            if (std::abs(dx) < dragIgnoredDistance && std::abs(dy) < dragIgnoredDistance) {
                 return false;
+            }
         default:
             break;
     }
@@ -1364,10 +1554,11 @@ bool ViewProviderSketch::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventor
     SbLine line;
     getProjectingLine(cursorPos, viewer, line);
 
-    double x, y;
+    std::unique_ptr<SnapManager::SnapHandle> snapHandle;
     try {
+        double x, y;
         getCoordsOnSketchPlane(line.getPosition(), line.getDirection(), x, y);
-        snapManager->snap(x, y);
+        snapHandle = std::make_unique<SnapManager::SnapHandle>(snapManager.get(), Base::Vector2d(x, y));
     }
     catch (const Base::ZeroDivisionError&) {
         return false;
@@ -1380,7 +1571,7 @@ bool ViewProviderSketch::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventor
 
         std::unique_ptr<SoPickedPoint> Point(this->getPointOnRay(cursorPos, viewer));
 
-        preselectChanged = detectAndShowPreselection(Point.get(), cursorPos);
+        preselectChanged = detectAndShowPreselection(Point.get());
     }
 
     switch (Mode) {
@@ -1416,27 +1607,31 @@ bool ViewProviderSketch::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventor
             }
             resetPreselectPoint();
             return true;
-        case STATUS_SELECT_Constraint:
+        case STATUS_SELECT_Constraint: {
             setSketchMode(STATUS_SKETCH_DragConstraint);
             drag.DragConstraintSet = preselection.PreselectConstraintSet;
-            drag.xInit = x;
-            drag.yInit = y;
+            Base::Vector2d selectionPos = snapHandle->compute();
+            drag.xInit = selectionPos.x;
+            drag.yInit = selectionPos.y;
             resetPreselectPoint();
             return true;
+        }
         case STATUS_SKETCH_Drag: {
-            doDragStep(x, y);
+            Base::Vector2d dragPos = snapHandle->compute();
+            doDragStep(dragPos.x, dragPos.y);
             return true;
         }
         case STATUS_SKETCH_DragConstraint:
             if (!drag.DragConstraintSet.empty()) {
+                Base::Vector2d dragPos = snapHandle->compute();
                 auto idset = drag.DragConstraintSet;
                 for (int id : idset) {
-                    moveConstraint(id, Base::Vector2d(x, y));
+                    moveConstraint(id, Base::Vector2d(dragPos.x, dragPos.y));
                 }
             }
             return true;
         case STATUS_SKETCH_UseHandler:
-            sketchHandler->mouseMove(Base::Vector2d(x, y));
+            sketchHandler->mouseMove(*snapHandle);
             if (preselectChanged) {
                 editCoinManager->drawConstraintIcons();
                 sketchHandler->applyCursor();
@@ -1453,6 +1648,22 @@ bool ViewProviderSketch::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventor
             // (#0003130)
             qreal dpr = viewer->getGLWidget()->devicePixelRatioF();
             DoubleClick::newCursorPos = cursorPos;
+
+            // depending on selection direction (touch selection (right to left) or window selection (left to right))
+            // set the appropriate color and line style using theme design tokens
+            bool isRightToLeft = DoubleClick::prvCursorPos.getValue()[0] > DoubleClick::newCursorPos.getValue()[0];
+
+            auto* styleParameterManager = Base::provideService<Gui::StyleParameters::ParameterManager>();
+
+            // try to get colors from theme tokens
+            auto touchColorValue = styleParameterManager->resolve(StyleParameters::SketcherRubberbandTouchSelectionColor).asValue<Base::Color>();
+            auto windowColorValue = styleParameterManager->resolve(StyleParameters::SketcherRubberbandWindowSelectionColor).asValue<Base::Color>();
+
+            auto color = isRightToLeft ? touchColorValue : windowColorValue;
+
+            rubberband->setColor(color.r, color.g, color.b, color.a);
+            rubberband->setLineStipple(isRightToLeft);  // dashed for touch, solid for window
+
             rubberband->setCoords(
                 DoubleClick::prvCursorPos.getValue()[0],
                 viewer->getGLWidget()->height() * dpr - DoubleClick::prvCursorPos.getValue()[1],
@@ -1474,33 +1685,51 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
         return; // don't drag externals
     }
 
+    // If we are trying to drag an edge that is in a group, we drag the group handle instead.
+    int oldgeoId = geoId;
+    geoId = getSketchObject()->getGroupHandleIfInGroup(geoId);
+    if (oldgeoId != geoId) {
+        // if replaced then we want to move the edge of the handle, not a point.
+        pos = PointPos::none;
+    }
+
     drag.reset();
     setSketchMode(STATUS_SKETCH_Drag);
-    drag.Dragged.push_back(GeoElementId(geoId, pos));
+    drag.Dragged.emplace_back(geoId, pos);
 
     // Adding selected geos that should be dragged as well.
-    for (auto& geoIdi : selection.SelCurvSet) {
+    for (auto geoIdi : selection.SelCurvSet) {
         if (geoIdi < 0) {
             continue; //skip externals
         }
+
+        // If in a group, we drag the group handle instead.
+        geoIdi = getSketchObject()->getGroupHandleIfInGroup(geoIdi);
 
         if (geoIdi == geoId) {
             // geoId is already added because it was the preselected.
             // 2 cases : either the edge was added or a point of it.
             // If its a point then we replace it by the edge.
             // If it's the edge it's replaced by itself so it's ok.
-            drag.Dragged[0].Pos = Sketcher::PointPos::none;
+
+            // for arcs preserve mid point drags for rigid movement
+            const Part::Geometry* geo = getSketchObject()->getGeometry(geoIdi);
+            bool isArcMidDrag = (pos == Sketcher::PointPos::mid) && isArcOfCircle(*geo);
+
+            if (!isArcMidDrag) {
+                drag.Dragged[0].Pos = Sketcher::PointPos::none;
+            }
         }
         else {
             // For group dragging, we skip the internal geos.
             const Part::Geometry* geo = getSketchObject()->getGeometry(geoId);
             if (!GeometryFacade::isInternalAligned(geo)) {
-                drag.Dragged.push_back(GeoElementId(geoIdi));
+                drag.Dragged.emplace_back(geoIdi);
             }
         }
     }
     for (auto& pointId : selection.SelPointSet) {
-        int geoIdi;
+        int geoIdi = 0;
         Sketcher::PointPos posi;
         getSketchObject()->getGeoVertexIndex(pointId, geoIdi, posi);
         if (geoIdi < 0) {
@@ -1517,7 +1746,7 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
             }
         }
         if (add) {
-            drag.Dragged.push_back(GeoElementId(geoIdi, posi));
+            drag.Dragged.emplace_back(geoIdi, posi);
         }
     }
 
@@ -1527,9 +1756,14 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
         // Calculate the click position and use it as the initial point
         SbLine line2;
         getProjectingLine(DoubleClick::prvCursorPos, viewer, line2);
-        getCoordsOnSketchPlane(
-            line2.getPosition(), line2.getDirection(), drag.xInit, drag.yInit);
-        snapManager->snap(drag.xInit, drag.yInit);
+
+        double x, y;
+        getCoordsOnSketchPlane(line2.getPosition(), line2.getDirection(), x, y);
+
+        auto snapHandle = std::make_unique<SnapManager::SnapHandle>(snapManager.get(), Base::Vector2d(x, y));
+        Base::Vector2d snappedPos = snapHandle->compute();
+        drag.xInit = snappedPos.x;
+        drag.yInit = snappedPos.y;
     };
 
     if (drag.Dragged.size() == 1 && pos == Sketcher::PointPos::none) {
@@ -1603,7 +1837,9 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
             }
         }
 
-        if (geo->is<Part::GeomLineSegment>() || geo->is<Part::GeomBSplineCurve>()) {
+        if (geo->is<Part::GeomLineSegment>() || geo->is<Part::GeomBSplineCurve>()
+            || isEllipse(*geo) || isArcOfEllipse(*geo)
+            || isArcOfHyperbola(*geo) || isArcOfParabola(*geo)) {
             setRelative();
         }
 
@@ -1766,47 +2002,20 @@ void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constN
     if (!isInEditMode())
         return;
 
-#ifdef FC_DEBUG
     Sketcher::SketchObject* obj = getSketchObject();
-    int intGeoCount = obj->getHighestCurveIndex() + 1;
-    int extGeoCount = obj->getExternalGeometryCount();
-#endif
-
-    // with memory allocation
-    const std::vector<Part::Geometry*> geomlist = getSolvedSketch().extractGeometry(true, true);
-
-    // lambda to finalize the move
-    auto cleanAndDraw = [this, geomlist](){
-        // delete the cloned objects
-        for (Part::Geometry* geomPtr : geomlist) {
-            if (geomPtr) {
-                delete geomPtr;
-            }
-        }
-
-        draw(true, false);
-    };
-
-#ifdef FC_DEBUG
-    assert(int(geomlist.size()) == extGeoCount + intGeoCount);
-    assert((Constr->First >= -extGeoCount && Constr->First < intGeoCount)
-           || Constr->First != GeoEnum::GeoUndef);
-    boost::ignore_unused(intGeoCount);
-    boost::ignore_unused(extGeoCount);
-#endif
 
     if (Constr->Type == Distance || Constr->Type == DistanceX || Constr->Type == DistanceY
         || Constr->Type == Radius || Constr->Type == Diameter || Constr->Type == Weight) {
 
         Base::Vector3d p1(0., 0., 0.), p2(0., 0., 0.);
         if (Constr->SecondPos != Sketcher::PointPos::none) {// point to point distance
-            p1 = getSolvedSketch().getPoint(Constr->First, Constr->FirstPos);
-            p2 = getSolvedSketch().getPoint(Constr->Second, Constr->SecondPos);
+            p1 = obj->getPoint(Constr->First, Constr->FirstPos);
+            p2 = obj->getPoint(Constr->Second, Constr->SecondPos);
         }
         else if (Constr->Second != GeoEnum::GeoUndef) {
-            p1 = getSolvedSketch().getPoint(Constr->First, Constr->FirstPos);
-            const Part::Geometry *geo1 = GeoList::getGeometryFromGeoId (geomlist, Constr->First);
-            const Part::Geometry *geo2 = GeoList::getGeometryFromGeoId (geomlist, Constr->Second);
+            p1 = obj->getPoint(Constr->First, Constr->FirstPos);
+            const Part::Geometry *geo1 = obj->getGeometry(Constr->First);
+            const Part::Geometry *geo2 = obj->getGeometry(Constr->Second);
 
             if (isLineSegment(*geo2)) {
                 if (isCircleOrArc(*geo1) && Constr->FirstPos == Sketcher::PointPos::none){
@@ -1850,10 +2059,10 @@ void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constN
             }
         }
         else if (Constr->FirstPos != Sketcher::PointPos::none) {
-            p2 = getSolvedSketch().getPoint(Constr->First, Constr->FirstPos);
+            p2 = obj->getPoint(Constr->First, Constr->FirstPos);
         }
         else if (Constr->First != GeoEnum::GeoUndef) {
-            const Part::Geometry* geo = GeoList::getGeometryFromGeoId(geomlist, Constr->First);
+            const Part::Geometry* geo = obj->getGeometry(Constr->First);
             if (geo->is<Part::GeomLineSegment>()) {
                 const Part::GeomLineSegment* lineSeg =
                     static_cast<const Part::GeomLineSegment*>(geo);
@@ -1862,17 +2071,18 @@ void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constN
             }
             else if (geo->is<Part::GeomArcOfCircle>()) {
                 auto* arc = static_cast<const Part::GeomArcOfCircle*>(geo);
-                double radius = arc->getRadius();
                 Base::Vector3d center = arc->getCenter();
                 double startangle, endangle;
                 arc->getRange(startangle, endangle, /*emulateCCW=*/true);
 
                 if (Constr->Type == Distance && Constr->Second == GeoEnum::GeoUndef){
-                    //arc length
-                    Base::Vector3d dir = Base::Vector3d(toPos.x, toPos.y, 0.) - arc->getCenter();
-                    Constr->LabelDistance = dir.Length();
+                    double arcAngle = (startangle + endangle) / 2.;
+                    Base::Vector2d arcDirection(std::cos(arcAngle), std::sin(arcAngle));
+                    Base::Vector2d centerToToPos = toPos - Base::Vector2d(center.x, center.y);
+                    Constr->LabelDistance = centerToToPos * arcDirection;
 
-                    cleanAndDraw();
+
+                    draw(true, false);
                     return;
                 }
                 else {
@@ -1886,8 +2096,10 @@ void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constN
                         Base::Vector3d tmpDir = Base::Vector3d(toPos.x, toPos.y, 0) - p1;
                         angle = atan2(tmpDir.y, tmpDir.x);
                     }
-                    if (Constr->Type == Sketcher::Diameter)
+                    double radius = arc->getRadius();
+                    if (Constr->Type == Sketcher::Diameter) {
                         p1 = center - radius * Base::Vector3d(cos(angle), sin(angle), 0.);
+                    }
 
                     p2 = center + radius * Base::Vector3d(cos(angle), sin(angle), 0.);
                 }
@@ -1976,7 +2188,7 @@ void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constN
         moveAngleConstraint(Constr, constNum, toPos);
     }
 
-    cleanAndDraw();
+    draw(true, false);
 }
 
 void ViewProviderSketch::moveAngleConstraint(Sketcher::Constraint* constr, int constNum, const Base::Vector2d& toPos)
@@ -2070,7 +2282,14 @@ void ViewProviderSketch::moveAngleConstraint(Sketcher::Constraint* constr, int c
         }
         else if (isArcOfCircle(*geo)) {
             const auto* arc = static_cast<const Part::GeomArcOfCircle*>(geo);
-            p0 = arc->getCenter();
+            Base::Vector3d center = arc->getCenter();
+            double startangle, endangle;
+            arc->getRange(startangle, endangle, /*emulateCCW=*/true);
+            double arcAngle = (startangle + endangle) / 2.;
+            Base::Vector2d arcDirection(std::cos(arcAngle), std::sin(arcAngle));
+            Base::Vector2d centerToToPos = toPos - Base::Vector2d(center.x, center.y);
+            constr->LabelDistance = factor * centerToToPos * arcDirection;
+            return;
         }
         else {
             return;
@@ -2103,11 +2322,11 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
 
         bool handled = false;
         if (Mode == STATUS_SKETCH_UseHandler) {
-            App::AutoTransaction committer;
             handled = sketchHandler->onSelectionChanged(msg);
         }
-        if (handled)
+        if (handled) {
             return;
+        }
 
         std::string temp;
         if (msg.Type == Gui::SelectionChanges::ClrSelection) {
@@ -2131,6 +2350,16 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
                     if (shapetype.size() > 4 && shapetype.substr(0, 4) == "Edge") {
                         int GeoId = std::atoi(&shapetype[4]) - 1;
                         selection.SelCurvSet.insert(GeoId);
+
+                        // Check if this is in a group.
+                        // If so we cancel this addition and select the group instead
+                        int handleId = getSketchObject()->getGroupHandleIfInGroup(GeoId);
+                        if (handleId != GeoId) {
+                            // Remove the selected edge
+                            Gui::Selection().rmvSelection(msg.pDocName, msg.pObjectName, msg.pSubName);
+                            std::string sub = "Edge" + std::to_string(handleId + 1);
+                            Gui::Selection().addSelection(msg.pDocName, msg.pObjectName, sub.c_str());
+                        }
                     }
                     else if (shapetype.size() > 12 && shapetype.substr(0, 12) == "ExternalEdge") {
                         int GeoId = std::atoi(&shapetype[12]) - 1;
@@ -2154,7 +2383,9 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
                         int ConstrId =
                             Sketcher::PropertyConstraintList::getIndexFromConstraintName(shapetype);
                         selection.SelConstraintSet.insert(ConstrId);
-                        editCoinManager->drawConstraintIcons();
+                        if (!selection.selectionBuffering) {
+                            editCoinManager->drawConstraintIcons();
+                        }
                     }
                     updateColor();
                 }
@@ -2251,14 +2482,55 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
     }
 }
 
-bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point, const SbVec2s& cursorPos)
+bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
 {
     assert(isInEditMode());
 
+    // Event filter to intercept the delayed tooltip event from Qt
+    class ToolTipFilter : public QObject {
+    public:
+        bool eventFilter(QObject *obj, QEvent *event) override {
+            if (event->type() == QEvent::ToolTip) {
+                // When Qt's idle timer fires, this event is sent.
+                // We intercept it to show the tooltip.
+                QHelpEvent *helpEvent = static_cast<QHelpEvent *>(event);
+                QWidget *widget = qobject_cast<QWidget *>(obj);
+                if (widget && !widget->toolTip().isEmpty()) {
+                    QToolTip::showText(helpEvent->globalPos(), widget->toolTip(), widget);
+                    return true; // Mark as handled so default processing doesn't hide it
+                }
+            }
+            return QObject::eventFilter(obj, event);
+        }
+    };
+    static ToolTipFilter filter;
+
+    auto updateToolTip = [this](const QString& text = QString()) {
+        auto* view = qobject_cast<Gui::View3DInventor*>(this->getActiveView());
+        QWidget* widget = view ? view->getViewer()->getGLWidget() : nullptr;
+
+        if (!widget) return;
+
+        if (text.isEmpty()) {
+            // Hide tooltip and cleanup
+            QToolTip::hideText();
+            widget->removeEventFilter(&filter);
+            widget->setToolTip(QString());
+        } else {
+            // 1. Set the tooltip text on the widget.
+            // This arm's Qt's internal timer to fire QEvent::ToolTip after the standard delay.
+            widget->setToolTip(text);
+
+            // 2. Install the filter to catch that event.
+            // We remove it first to ensure we don't install it multiple times.
+            widget->removeEventFilter(&filter);
+            widget->installEventFilter(&filter);
+        }
+    };
+
     if (Point) {
 
-        EditModeCoinManager::PreselectionResult result =
-            editCoinManager->detectPreselection(Point, cursorPos);
+        EditModeCoinManager::PreselectionResult result = editCoinManager->detectPreselection(Point);
 
         if (result.PointIndex != -1
             && result.PointIndex != preselection.PreselectPoint) {// if a new point is hit
@@ -2271,12 +2543,23 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point, const S
             preselection.blockedPreselection = !accepted;
             if (accepted) {
                 setPreselectPoint(result.PointIndex);
+                updateToolTip(); // Clear tooltip on point selection
 
                 return true;
             }
         }
         else if (result.GeoIndex != -1
                  && result.GeoIndex != preselection.PreselectCurve) {// if a new curve is hit
+
+            // If the picked edge is part of a text/group, treat the handle as the preselected item
+            int handleId = getSketchObject()->getGroupHandleIfInGroup(result.GeoIndex);
+            if (handleId != result.GeoIndex) {
+                if (handleId == preselection.PreselectCurve) {
+                    return false;
+                }
+                result.GeoIndex = handleId;
+            }
+
             std::stringstream ss;
             if (result.GeoIndex >= 0)
                 ss << "Edge" << result.GeoIndex + 1;
@@ -2292,6 +2575,7 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point, const S
             if (accepted) {
                 resetPreselectPoint();
                 preselection.PreselectCurve = result.GeoIndex;
+                updateToolTip(); // Clear tooltip on curve selection
 
                 return true;
             }
@@ -2325,6 +2609,7 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point, const S
                     resetPreselectPoint();
                 preselection.PreselectCross =
                     static_cast<Preselection::Axes>(static_cast<int>(result.Cross));
+                updateToolTip(); // Clear tooltip on axis selection
 
                 return true;
             }
@@ -2345,11 +2630,23 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point, const S
                     != 0;
 
                 preselection.blockedPreselection = !accepted;
-                // TODO: Should we clear preselections that went through, if one fails?
             }
             if (accepted) {
                 resetPreselectPoint();
                 preselection.PreselectConstraintSet = result.ConstrIndices;
+
+                // Build tooltip text for expressions
+                QString tooltipText;
+                for (int id : result.ConstrIndices) {
+                    if (constraintHasExpression(id)) {
+                        std::string expr = getSketchObject()->getConstraintExpression(id);
+                        if (!expr.empty()) {
+                            tooltipText = QString::fromUtf8("\U0001D453\U0001D465 = ") + QString::fromStdString(expr);
+                            break;
+                        }
+                    }
+                }
+                updateToolTip(tooltipText);
 
                 return true;// Preselection changed
             }
@@ -2364,6 +2661,7 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point, const S
             // we have just left a preselection
             resetPreselectPoint();
             preselection.blockedPreselection = false;
+            updateToolTip(); // Clear tooltip when leaving preselection
 
             return true;
         }
@@ -2375,6 +2673,7 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point, const S
              || preselection.blockedPreselection) {
         resetPreselectPoint();
         preselection.blockedPreselection = false;
+        updateToolTip(); // Clear tooltip when no point picked
 
         return true;
     }
@@ -2453,13 +2752,21 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s& startPos, const SbVec2s& 
     if (corners[0].getValue()[0] > corners[1].getValue()[0])
         touchMode = true;
 
-    auto selectVertex = [this](int vertexid) {
-        std::stringstream ss;
-        ss << "Vertex" << vertexid;
-        addSelection2(ss.str());
+    std::vector<std::string> batchSelection;
+    batchSelection.reserve(geomlist.size());
+
+    auto addConvertedName = [this, sketchObject, &batchSelection](const std::string& suffix) {
+        std::string finalName = editSubName + sketchObject->convertSubName(suffix);
+        batchSelection.push_back(finalName);
     };
 
-    auto selectEdge = [this](int edgeid) {
+    auto selectVertex = [&addConvertedName](int vertexid) {
+        std::stringstream ss;
+        ss << "Vertex" << vertexid;
+        addConvertedName(ss.str());
+    };
+
+    auto selectEdge = [&addConvertedName](int edgeid) {
         std::stringstream ss;
         if (edgeid >= 0) {
             ss << "Edge" << edgeid;
@@ -2467,7 +2774,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s& startPos, const SbVec2s& 
         else {
             ss << "ExternalEdge" << -edgeid - 1;
         }
-        addSelection2(ss.str());
+        addConvertedName(ss.str());
     };
 
     auto selectVertexIfInsideBox = [&polygon, &VertexId, &selectVertex](const Base::Vector3d & point) {
@@ -2509,6 +2816,8 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s& startPos, const SbVec2s& 
             selectEdge(GeoId+1);
         }
     };
+
+    selection.selectionBuffering = true;
 
     for (std::vector<Part::Geometry*>::const_iterator it = geomlist.begin();
          it != geomlist.end() - 2;
@@ -2612,22 +2921,176 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s& startPos, const SbVec2s& 
 
     Base::Vector3d pnt0 = proj(Plm.getPosition());
     if (polygon.Contains(Base::Vector2d(pnt0.x, pnt0.y))) {
-        std::stringstream ss;
-        ss << "RootPoint";
-        addSelection2(ss.str());
+        addConvertedName("RootPoint");
     }
+
+    if (!batchSelection.empty()) {
+        Gui::Selection().addSelections(
+            editDocName.c_str(),
+            editObjName.c_str(),
+            batchSelection
+        );
+    }
+
+    selection.selectionBuffering = false;
+    editCoinManager->drawConstraintIcons();
+    updateColor();
 }
 
 void ViewProviderSketch::updateColor()
 {
     assert(isInEditMode());
 
-    editCoinManager->updateColor();
+    if (!selection.selectionBuffering) {
+        editCoinManager->updateColor();
+    }
 }
 
 bool ViewProviderSketch::selectAll()
 {
-    // TODO: eventually implement "select all" logic
+    // logic of this func has been stolen partly from doBoxSelection()
+    if (!isInEditMode()) {
+        return false;
+    }
+
+    // Check if the focus is on the constraints or element list widget.
+    QWidget* focusedWidget = QApplication::focusWidget();
+    auto* focusedList = qobject_cast<QListWidget*>(focusedWidget);
+    bool focusOnConstraintWidget = false;
+    bool focusOnElementWidget = false;
+    if (focusedList) {
+        if (focusedWidget->objectName().toStdString() == "listWidgetConstraints") {
+            focusOnConstraintWidget = true;
+        }
+        else if (focusedWidget->objectName().toStdString() == "listWidgetElements") {
+            focusOnElementWidget = true;
+        }
+        else {
+            focusedList = nullptr;
+        }
+    }
+
+    std::vector<int> ids;
+    if (focusedList) {
+        for (int i = 0; i < focusedList->count(); ++i) {
+            QListWidgetItem* item = focusedList->item(i);
+            if (item && !item->isHidden()) {
+                ids.push_back(item->data(Qt::UserRole).toInt());
+            }
+        }
+    }
+
+    bool noWidgetSelected = !focusOnConstraintWidget && !focusOnElementWidget;
+
+    Sketcher::SketchObject* sketchObject = getSketchObject();
+    if (!sketchObject) {
+        return false;
+    }
+
+    Gui::Selection().clearSelection();
+
+    std::vector<std::string> batchSelection;
+    // Heuristic reservation: Geometry count * 3 (start/end/edge) + Constraint count
+    batchSelection.reserve(
+        sketchObject->Geometry.getValues().size() * 3 + sketchObject->Constraints.getSize()
+    );
+
+    auto addConvertedName = [this, sketchObject, &batchSelection](const std::string& suffix) {
+        std::string finalName = editSubName + sketchObject->convertSubName(suffix);
+        batchSelection.push_back(finalName);
+    };
+
+    selection.selectionBuffering = true;
+    if (focusOnElementWidget || noWidgetSelected) {
+        int intGeoCount = sketchObject->getHighestCurveIndex() + 1;
+        int extGeoCount = sketchObject->getExternalGeometryCount();
+
+        const std::vector<Part::Geometry*> geomlist = sketchObject->getCompleteGeometry();
+
+        int GeoId = 0;
+
+        auto selectVertex = [this, &addConvertedName](int geoId, Sketcher::PointPos pos) {
+            int vertexId = this->getSketchObject()->getVertexIndexGeoPos(geoId, pos);
+            addConvertedName(fmt::format("Vertex{}", vertexId + 1));
+        };
+
+        auto selectEdge = [&addConvertedName](int GeoId) {
+            if (GeoId >= 0) {
+                addConvertedName(fmt::format("Edge{}", GeoId + 1));
+            }
+            else {
+                addConvertedName(fmt::format("ExternalEdge{}", GeoEnum::RefExt - GeoId + 1));
+            }
+        };
+
+        bool hasUnselectedGeometry = false;
+
+        for (std::vector<Part::Geometry*>::const_iterator it = geomlist.begin();
+             it != geomlist.end() - 2; // -2 to exclude H_Axis and V_Axis
+             ++it, ++GeoId) {
+
+            if (GeoId >= intGeoCount) {
+                GeoId = -extGeoCount;
+            }
+
+            if (focusedList && std::ranges::find(ids, GeoId) == ids.end()) {
+                continue;
+            }
+
+            if ((*it)->is<Part::GeomPoint>()) {
+                selectVertex(GeoId, Sketcher::PointPos::start);
+            }
+            else if ((*it)->is<Part::GeomLineSegment>() || (*it)->is<Part::GeomBSplineCurve>()) {
+                selectVertex(GeoId, Sketcher::PointPos::start);
+                selectVertex(GeoId, Sketcher::PointPos::end);
+                selectEdge(GeoId);
+            }
+            else if ((*it)->isDerivedFrom<Part::GeomConic>()) {
+                selectVertex(GeoId, Sketcher::PointPos::mid);
+                selectEdge(GeoId);
+            }
+            else if ((*it)->isDerivedFrom<Part::GeomArcOfConic>()) {
+                selectVertex(GeoId, Sketcher::PointPos::start);
+                selectVertex(GeoId, Sketcher::PointPos::end);
+                selectVertex(GeoId, Sketcher::PointPos::mid);
+                selectEdge(GeoId);
+            }
+            else {
+                hasUnselectedGeometry = true;
+            }
+        }
+
+        if (!focusOnElementWidget) {
+            addConvertedName("RootPoint");
+        }
+
+        if (hasUnselectedGeometry) {
+            Base::Console().error("Select All: Not all geometry was selected");
+        }
+    }
+
+    if (focusOnConstraintWidget || noWidgetSelected) {
+        const std::vector<Sketcher::Constraint*>& constraints = sketchObject->Constraints.getValues();
+        for (size_t i = 0; i < constraints.size(); ++i) {
+            if (focusedList && std::ranges::find(ids, i) == ids.end()) {
+                continue;
+            }
+            addConvertedName(fmt::format("Constraint{}", i + 1));
+        }
+    }
+
+    if (!batchSelection.empty()) {
+        Gui::Selection().addSelections(
+            editDocName.c_str(),
+            editObjName.c_str(),
+            batchSelection
+        );
+    }
+
+    selection.selectionBuffering = false;
+    editCoinManager->drawConstraintIcons();
+    updateColor();
+
     return true;
 }
 
@@ -2870,12 +3333,12 @@ bool ViewProviderSketch::getIsShownVirtualSpace() const
 
 void ViewProviderSketch::drawEdit(const std::vector<Base::Vector2d>& EditCurve)
 {
-    editCoinManager->drawEdit(EditCurve);
+    editCoinManager->drawEdit(EditCurve, currentGeometryCreationMode());
 }
 
 void ViewProviderSketch::drawEdit(const std::list<std::vector<Base::Vector2d>>& list)
 {
-    editCoinManager->drawEdit(list);
+    editCoinManager->drawEdit(list, currentGeometryCreationMode());
 }
 
 void ViewProviderSketch::drawEditMarkers(const std::vector<Base::Vector2d>& EditMarkers,
@@ -2885,16 +3348,29 @@ void ViewProviderSketch::drawEditMarkers(const std::vector<Base::Vector2d>& Edit
 }
 
 void ViewProviderSketch::updateData(const App::Property* prop) {
-    ViewProvider2DObject::updateData(prop);
+    if (std::string(prop->getName()) != "ShapeMaterial") {
+        // We don't want material to override the colors of sketches.
+        ViewProvider2DObject::updateData(prop);
+    }
 
-    if (prop != &getSketchObject()->Constraints)
+    if (prop == &getSketchObject()->InternalShape) {
+        const auto& shape = getSketchObject()->InternalShape.getValue();
+        setupCoinGeometry(shape,
+                pcSketchFaces,
+                Deviation.getValue(),
+                AngularDeflection.getValue());
+    }
+
+    if (prop != &getSketchObject()->Constraints) {
         signalElementsChanged();
+    }
 }
 
 void ViewProviderSketch::slotSolverUpdate()
 {
-    if (!isInEditMode() )
+    if (!isInEditMode()) {
         return;
+    }
 
     // At this point, we do not need to solve the Sketch
     // If we are adding geometry an update can be triggered before the sketch is actually
@@ -2911,16 +3387,45 @@ void ViewProviderSketch::slotSolverUpdate()
     if (getSketchObject()->getExternalGeometryCount()
             + getSketchObject()->getHighestCurveIndex() + 1
         == getSolvedSketch().getGeometrySize()) {
-        Gui::MDIView* mdi = Gui::Application::Instance->editDocument()->getActiveView();
-        if (mdi->isDerivedFrom<Gui::View3DInventor>())
+
+        auto editDoc = Gui::Application::Instance->editDocument([this](Gui::Document* editdoc) {
+            return editdoc->getEditViewProvider() == this;
+        });
+
+        Gui::MDIView* mdi = nullptr;
+
+        if (editDoc) {
+            mdi = editDoc->getActiveView();
+        }
+        if (mdi && mdi->isDerivedFrom<Gui::View3DInventor>()) {
             draw(false, true);
+        }
 
         signalConstraintsChanged();
     }
 }
 
+void ViewProviderSketch::slotConstraintAdded(Sketcher::Constraint* constraint)
+{
+    if (!constraint) {
+        return;
+    }
+
+    // Auto-scale label distance for dimensional constraints
+    if (constraint->Type == Distance || constraint->Type == DistanceX || constraint->Type == DistanceY) {
+        // If label distance is default (10.0), scale it based on view.
+        // We use a small epsilon for float comparison.
+        if (std::abs(constraint->LabelDistance - 10.f) < 1e-5) {
+            float scale = getScaleFactor();
+            constraint->LabelDistance = 2.f * scale;
+        }
+    }
+}
+
 void ViewProviderSketch::onChanged(const App::Property* prop)
 {
+    ViewProvider2DObject::onChanged(prop);
+
     if (prop == &VisualLayerList) {
         if (isInEditMode()) {
             // Configure and rebuild Coin SceneGraph
@@ -2930,23 +3435,38 @@ void ViewProviderSketch::onChanged(const App::Property* prop)
     }
 
     if (prop == &AutoColor) {
-        auto usesAutomaticColors = AutoColor.getValue();
-
-        // when auto color is enabled don't save color information in the document
-        // so it does not cause unnecessary updates if multiple users use different colors
-        LineColor.setStatus(App::Property::Transient, usesAutomaticColors);
-        PointColor.setStatus(App::Property::Transient, usesAutomaticColors);
-
-        // and mark this property as read-only hidden so it's not possible to change manually
-        LineColor.setStatus(App::Property::ReadOnly, usesAutomaticColors);
-        LineColor.setStatus(App::Property::Hidden, usesAutomaticColors);
-        PointColor.setStatus(App::Property::ReadOnly, usesAutomaticColors);
-        PointColor.setStatus(App::Property::Hidden, usesAutomaticColors);
-
+        updateColorPropertiesVisibility();
         return;
     }
 
-    ViewProvider2DObject::onChanged(prop);
+    if (prop == &Visibility) {
+        pcSketchFacesToggle->on = Visibility.getValue();
+        return;
+    }
+
+    if (prop == &ShapeAppearance) {
+        pcSketchFaces->color.setValue(Base::convertTo<SbColor>(ShapeAppearance.getDiffuseColor()));
+        pcSketchFaces->transparency.setValue(ShapeAppearance.getTransparency());
+    }
+}
+
+void SketcherGui::ViewProviderSketch::updateColorPropertiesVisibility()
+{
+    auto usesAutomaticColors = AutoColor.getValue();
+
+    // when auto color is enabled don't save color information in the document
+    // so it does not cause unnecessary updates if multiple users use different colors
+    LineColor.setStatus(App::Property::Transient, usesAutomaticColors);
+    PointColor.setStatus(App::Property::Transient, usesAutomaticColors);
+    ShapeAppearance.setStatus(App::Property::Transient, usesAutomaticColors);
+
+    // and mark this property as read-only hidden so it's not possible to change manually
+    LineColor.setStatus(App::Property::ReadOnly, usesAutomaticColors);
+    LineColor.setStatus(App::Property::Hidden, usesAutomaticColors);
+    PointColor.setStatus(App::Property::ReadOnly, usesAutomaticColors);
+    PointColor.setStatus(App::Property::Hidden, usesAutomaticColors);
+    ShapeAppearance.setStatus(App::Property::ReadOnly, usesAutomaticColors);
+    ShapeAppearance.setStatus(App::Property::Hidden, usesAutomaticColors);
 }
 
 void SketcherGui::ViewProviderSketch::startRestoring()
@@ -2977,12 +3497,77 @@ void SketcherGui::ViewProviderSketch::finishRestoring()
         // update colors according to current user preferences
         pObserver->updateFromParameter("SketchEdgeColor");
         pObserver->updateFromParameter("SketchVertexColor");
+        pObserver->updateFromParameter("SketchFaceColor");
+
+        updateColorPropertiesVisibility();
+    }
+
+    if (getSketchObject()->MakeInternals.getValue()) {
+        updateVisual();
     }
 }
+
+// clang-format on
+bool ViewProviderSketch::getElementPicked(const SoPickedPoint* pp, std::string& subname) const
+{
+    if (pp->getPath()->containsNode(pcSketchFaces) && !isInEditMode()) {
+        if (ViewProvider2DObject::getElementPicked(pp, subname)) {
+            subname = SketchObject::internalPrefix() + subname;
+            auto& elementMap = getSketchObject()->getInternalElementMap();
+
+            if (auto it = elementMap.find(subname); it != elementMap.end()) {
+                subname = it->second;
+            }
+
+            return true;
+        }
+    }
+
+    return ViewProvider2DObject::getElementPicked(pp, subname);
+}
+
+bool ViewProviderSketch::getDetailPath(
+    const char* subname,
+    SoFullPath* pPath,
+    bool append,
+    SoDetail*& det
+) const
+{
+    const auto getLastPartOfName = [](const char* subname) -> const char* {
+        const char* realName = strrchr(subname, '.');
+
+        return realName ? realName + 1 : subname;
+    };
+
+    if (!isInEditMode() && subname) {
+        const char* realName = getLastPartOfName(subname);
+
+        realName = SketchObject::convertInternalName(realName);
+        if (realName) {
+            auto len = pPath->getLength();
+            if (append) {
+                pPath->append(pcRoot);
+                pPath->append(pcAnnotation);
+                pPath->append(pcSketchFacesToggle);
+            }
+
+            if (!ViewProvider2DObject::getDetailPath(realName, pPath, false, det)) {
+                pPath->truncate(len);
+                return false;
+            }
+            return true;
+        }
+    }
+
+    return ViewProvider2DObject::getDetailPath(subname, pPath, append, det);
+}
+// clang-format off
 
 void ViewProviderSketch::attach(App::DocumentObject* pcFeat)
 {
     ViewProvider2DObject::attach(pcFeat);
+
+    getAnnotation()->addChild(pcSketchFacesToggle);
 }
 
 void ViewProviderSketch::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
@@ -2994,14 +3579,18 @@ void ViewProviderSketch::setupContextMenu(QMenu* menu, QObject* receiver, const 
 
 bool ViewProviderSketch::setEdit(int ModNum)
 {
-    Q_UNUSED(ModNum)
+    if (ModNum != ViewProviderSketch::Default) {
+        return PartGui::ViewProvider2DObject::setEdit(ModNum);
+    }
+
     // When double-clicking on the item for this sketch the
     // object unsets and sets its edit mode without closing
     // the task panel
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     TaskDlgEditSketch* sketchDlg = qobject_cast<TaskDlgEditSketch*>(dlg);
-    if (sketchDlg && sketchDlg->getSketchView() != this)
+    if (sketchDlg && sketchDlg->getSketchView() != this) {
         sketchDlg = nullptr;// another sketch left open its task panel
+    }
     if (dlg && !sketchDlg) {
         QMessageBox msgBox(Gui::getMainWindow());
         msgBox.setText(tr("A dialog is already open in the task panel"));
@@ -3009,10 +3598,12 @@ bool ViewProviderSketch::setEdit(int ModNum)
         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox.setDefaultButton(QMessageBox::Yes);
         int ret = msgBox.exec();
-        if (ret == QMessageBox::Yes)
+        if (ret == QMessageBox::Yes) {
             Gui::Control().closeDialog();
-        else
+        }
+        else {
             return false;
+        }
     }
 
     Sketcher::SketchObject* sketch = getSketchObject();
@@ -3043,13 +3634,10 @@ bool ViewProviderSketch::setEdit(int ModNum)
     Gui::Selection().clearSelection();
     Gui::Selection().rmvPreselect();
 
-    this->attachSelection();
-
     auto gridnode = getGridNode();
     Base::Placement plm = getEditingPlacement();
     setGridOrientation(plm.getPosition(), plm.getRotation());
     addNodeToRoot(gridnode);
-    setGridEnabled(true);
 
     // create the container for the additional edit data
     assert(!isInEditMode());
@@ -3058,14 +3646,21 @@ bool ViewProviderSketch::setEdit(int ModNum)
     editCoinManager = std::make_unique<EditModeCoinManager>(*this);
     snapManager = std::make_unique<SnapManager>(*this);
 
-    auto editDoc = Gui::Application::Instance->editDocument();
+
     App::DocumentObject* editObj = getSketchObject();
     std::string editSubName;
     ViewProviderDocumentObject* editVp = nullptr;
+
+    auto editDoc = Gui::Application::Instance->editDocument([this](Gui::Document* editdoc) {
+        return editdoc->getEditViewProvider() == this;
+    });
+
     if (editDoc) {
         editDoc->getInEdit(&editVp, &editSubName);
-        if (editVp)
+        if (editVp) {
             editObj = editVp->getObject();
+        }
+        setGridEnabled(dynamic_cast<Gui::View3DInventor*>(editDoc->getActiveView()));
     }
 
     // visibility automation
@@ -3082,11 +3677,10 @@ bool ViewProviderSketch::setEdit(int ModNum)
                     "if ActiveSketch.ViewObject.HideDependent:\n"
                     "  tv.hide(tv.get_all_dependent(%3, '%4'))\n"
                     "if ActiveSketch.ViewObject.ShowSupport:\n"
-                    "  tv.show([ref[0] for ref in ActiveSketch.AttachmentSupport if not "
-                    "ref[0].isDerivedFrom(\"PartDesign::Plane\")])\n"
+                    "  tv.show([ref[0] for ref in ActiveSketch.AttachmentSupport if not (ref[0].isDerivedFrom(\"App::Plane\") or ref[0].isDerivedFrom(\"App::LocalCoordinateSystem\"))])\n"
                     "if ActiveSketch.ViewObject.ShowLinks:\n"
                     "  tv.show([ref[0] for ref in ActiveSketch.ExternalGeometry])\n"
-                    "tv.sketchClipPlane(ActiveSketch, ActiveSketch.ViewObject.SectionView)\n"
+                    "tv.sketchClipPlane(ActiveSketch, Gui.ActiveDocument, ActiveSketch.ViewObject.SectionView)\n"
                     "tv.hide(ActiveSketch)\n"
                     "del(tv)\n"
                     "del(ActiveSketch)\n")
@@ -3110,8 +3704,9 @@ bool ViewProviderSketch::setEdit(int ModNum)
     }
 
     // start the edit dialog
-    if (!sketchDlg)
+    if (!sketchDlg) {
         sketchDlg = new TaskDlgEditSketch(this);
+    }
 
     connectionToolWidget = sketchDlg->registerToolWidgetChanged(std::bind(&SketcherGui::ViewProviderSketch::slotToolWidgetChanged, this, sp::_1));
 
@@ -3127,6 +3722,8 @@ bool ViewProviderSketch::setEdit(int ModNum)
     }
 
     //NOLINTBEGIN
+    connectConstraintAdded = getSketchObject()->signalConstraintAdded.connect(
+        std::bind(&ViewProviderSketch::slotConstraintAdded, this, sp::_1));
     connectUndoDocument = getDocument()->signalUndoDocument.connect(
         std::bind(&ViewProviderSketch::slotUndoDocument, this, sp::_1));
     connectRedoDocument = getDocument()->signalRedoDocument.connect(
@@ -3155,17 +3752,49 @@ bool ViewProviderSketch::setEdit(int ModNum)
         viewProviderParameters.recalculateInitialSolutionWhileDragging);
 
     // intercept del key press from main app
-    listener = new ShortcutListener(this);
+    listener = std::make_unique<ShortcutListener>(this);
 
-    Gui::getMainWindow()->installEventFilter(listener);
+    Gui::getMainWindow()->installEventFilter(listener.get());
+    if (editDoc && editDoc->isActive()) {
+        setupActiveAndInEdit();
+    }
+
+    return true;
+}
+void ViewProviderSketch::setupActiveAndInEdit()
+{
+    if (!listener) {
+        // intercept del key press from main app
+        listener = std::make_unique<ShortcutListener>(this);
+
+        Gui::getMainWindow()->installEventFilter(listener.get());
+    }
+    attachSelection();
 
     Workbench::enterEditMode();
 
     // Give focus to the MDI so that keyboard events are caught after starting edit.
     // Else pressing ESC right after starting edit will not be caught to exit edit mode.
     ensureFocus();
+}
+void ViewProviderSketch::unsetupActiveAndInEdit()
+{
+    if (listener) {
+        Gui::getMainWindow()->removeEventFilter(listener.get());
+        listener.reset();
+    }
+    detachSelection();
 
-    return true;
+    Workbench::leaveEditMode();
+}
+void ViewProviderSketch::setActive(bool active)
+{
+    bool inEdit = isInEditMode();
+    if (active && inEdit) {
+        setupActiveAndInEdit();
+    } else {
+        unsetupActiveAndInEdit();
+    }
 }
 
 QString ViewProviderSketch::appendConflictMsg(const std::vector<int>& conflicting)
@@ -3249,8 +3878,9 @@ void ViewProviderSketch::UpdateSolverInformation()
     bool hasPartiallyRedundant = getSketchObject()->getLastHasPartialRedundancies();
     bool hasMalformed = getSketchObject()->getLastHasMalformedConstraints();
 
-    if (getSketchObject()->Geometry.getSize() == 0) {
-        signalSetUp(QStringLiteral("empty_sketch"), tr("Empty sketch"), QString(), QString());
+    if (getSketchObject()->Geometry.getSize() == 0 &&
+        getSketchObject()->ExternalGeo.getSize() <= 2) { // X- and Y-Axis
+        signalSetUp(QStringLiteral("empty"), tr("Empty sketch"), QString(), QString());
     }
     else if (dofs < 0 || hasConflicts) {// over-constrained sketch
         signalSetUp(
@@ -3300,30 +3930,30 @@ void ViewProviderSketch::UpdateSolverInformation()
 
 void ViewProviderSketch::unsetEdit(int ModNum)
 {
-    Q_UNUSED(ModNum);
+    if (ModNum != ViewProviderSketch::Default) {
+        return PartGui::ViewProvider2DObject::unsetEdit(ModNum);
+    }
 
-    setGridEnabled(false);
+    setGridEnabled(nullptr);
     auto gridnode = getGridNode();
     pcRoot->removeChild(gridnode);
 
-    Workbench::leaveEditMode();
-
     if (listener) {
-        Gui::getMainWindow()->removeEventFilter(listener);
-        delete listener;
+        Gui::getMainWindow()->removeEventFilter(listener.get());
+        listener.reset();
     }
 
     if (isInEditMode()) {
-        if (sketchHandler)
+        if (sketchHandler) {
             deactivateHandler();
+        }
 
         editCoinManager = nullptr;
         snapManager = nullptr;
         preselection.reset();
         selection.reset();
-        this->detachSelection();
 
-        App::AutoTransaction trans("Sketch recompute");
+        App::AutoTransaction trans(getDocument()->getDocument(), "Sketch recompute");
         try {
             // and update the sketch
             // getSketchObject()->getDocument()->recompute();
@@ -3340,9 +3970,11 @@ void ViewProviderSketch::unsetEdit(int ModNum)
     connectUndoDocument.disconnect();
     connectRedoDocument.disconnect();
     connectSolverUpdate.disconnect();
+    connectConstraintAdded.disconnect();
 
     // when pressing ESC make sure to close the dialog
     Gui::Control().closeDialog();
+    unsetupActiveAndInEdit();
 
     // visibility automation
     try {
@@ -3369,7 +4001,10 @@ void ViewProviderSketch::unsetEdit(int ModNum)
 
 void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
 {
-    Q_UNUSED(ModNum);
+    if (ModNum != ViewProviderSketch::Default) {
+        return PartGui::ViewProvider2DObject::setEditViewer(viewer, ModNum);
+    }
+
     Base::PyGILStateLocker lock;
     // visibility automation: save camera
     if (!this->TempoVis.getValue().isNone()) {
@@ -3395,7 +4030,9 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
         }
     }
 
-    auto editDoc = Gui::Application::Instance->editDocument();
+    auto editDoc = Gui::Application::Instance->editDocument([this](Gui::Document* editdoc) {
+        return editdoc->getEditViewProvider() == this;
+    });
     editDocName.clear();
     if (editDoc) {
         ViewProviderDocumentObject* parent = nullptr;
@@ -3454,10 +4091,25 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
     cameraSensor.setData(camSensorData);
     cameraSensor.setDeleteCallback(&ViewProviderSketch::camSensDeleteCB, camSensorData);
     cameraSensor.attach(viewer->getCamera());
+
+    blockContextMenu = false;
+
+    if (auto* window = viewer->window()->windowHandle()) {
+        screenChangeConnection = QObject::connect(window, &QWindow::screenChanged, [this](QScreen*) {
+            if (isInEditMode() && editCoinManager) {
+                editCoinManager->updateElementSizeParameters();
+                draw();
+            }
+        });
+    }
 }
 
 void ViewProviderSketch::unsetEditViewer(Gui::View3DInventorViewer* viewer)
 {
+    if (getEditingMode() != ViewProviderSketch::Default) {
+        return PartGui::ViewProvider2DObject::unsetEditViewer(viewer);
+    }
+
     auto dataPtr = static_cast<VPRender*>(cameraSensor.getData());
     delete dataPtr;
     cameraSensor.setData(nullptr);
@@ -3467,6 +4119,10 @@ void ViewProviderSketch::unsetEditViewer(Gui::View3DInventorViewer* viewer)
     viewer->removeGraphicsItem(rubberband.get());
     viewer->setEditing(false);
     viewer->setSelectionEnabled(true);
+
+    blockContextMenu = false;
+
+    QObject::disconnect(screenChangeConnection);
 }
 
 void ViewProviderSketch::camSensDeleteCB(void* data, SoSensor *s)
@@ -3521,7 +4177,7 @@ void ViewProviderSketch::onCameraChanged(SoCamera* cam)
         draw();
 
         QString cmdStr = QStringLiteral("ActiveSketch.ViewObject.TempoVis.sketchClipPlane("
-                                        "ActiveSketch, ActiveSketch.ViewObject.SectionView, %1)\n")
+                                        "ActiveSketch, Gui.ActiveDocument, ActiveSketch.ViewObject.SectionView, %1)\n")
                              .arg(tmpFactor < 0 ? QLatin1String("True") : QLatin1String("False"));
         Base::Interpreter().runStringObject(cmdStr.toLatin1());
     }
@@ -3606,6 +4262,8 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string>& subList)
         Gui::Selection().clearSelection();
         resetPreselectPoint();
 
+        const auto& constraints = getSketchObject()->Constraints.getValues();
+
         std::set<int> delInternalGeometries, delExternalGeometries, delCoincidents, delConstraints;
         // go through the selected subelements
         for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end();
@@ -3614,6 +4272,18 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string>& subList)
                 int GeoId = std::atoi(it->substr(4, 4000).c_str()) - 1;
                 if (GeoId >= 0) {
                     delInternalGeometries.insert(GeoId);
+
+                    // Handle group deletion
+                    for (const auto* c : constraints) {
+                        if ((c->Type == Sketcher::Text || c->Type == Sketcher::Group)
+                            && c->hasElement(0) && c->getGeoId(0) == GeoId) {
+                            // This is a group handle. Add all members to the delete list.
+                            for (int j = 1; c->hasElement(j); ++j) {
+                                delInternalGeometries.insert(c->getGeoId(j));
+                            }
+                            break; // A geo can only be a handle for one constraint.
+                        }
+                    }
                 }
                 else
                     delExternalGeometries.insert(Sketcher::GeoEnum::RefExt - GeoId);
@@ -3713,9 +4383,16 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string>& subList)
             stream.str(std::string());
         }
 
-        for (rit = delExternalGeometries.rbegin(); rit != delExternalGeometries.rend(); ++rit) {
+        if (!delExternalGeometries.empty()) {
+            std::stringstream stream;
+            auto endit = std::prev(delExternalGeometries.end());
+            for (auto it = delExternalGeometries.begin(); it != endit; ++it) {
+                stream << *it << ",";
+            }
+            stream << *endit;
+
             try {
-                Gui::cmdAppObjectArgs(getObject(), "delExternal(%d)", *rit);
+                Gui::cmdAppObjectArgs(getObject(), "delExternals([%s])", stream.str().c_str());
             }
             catch (const Base::Exception& e) {
                 Base::Console().developerError("ViewProviderSketch", "%s\n", e.what());
@@ -3899,6 +4576,11 @@ Sketcher::Constraint* ViewProviderSketch::getConstraint(int constid) const
     }
 
     return nullptr;
+}
+
+bool ViewProviderSketch::isConstraintActiveInSketch(const Sketcher::Constraint* cstr) const
+{
+    return getSketchObject()->isConstraintActiveInSketch(cstr);
 }
 
 const GeoList ViewProviderSketch::getGeoList() const
@@ -4105,6 +4787,8 @@ bool ViewProviderSketch::isInEditMode() const
 }
 void ViewProviderSketch::generateContextMenu()
 {
+    if (blockContextMenu) return;
+
     int selectedEdges = 0;
     int selectedLines = 0;
     int selectedConics = 0;
@@ -4126,6 +4810,7 @@ void ViewProviderSketch::generateContextMenu()
     if (selection.size() > 0) {
         const std::vector<std::string> SubNames = selection[0].getSubNames();
         const Sketcher::SketchObject* obj;
+        bool shouldAddChangeConstraintValue = false;
         if (selection[0].getObject()->isDerivedFrom<Sketcher::SketchObject>()) {
             obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
             for (auto& name : SubNames) {
@@ -4157,6 +4842,14 @@ void ViewProviderSketch::generateContextMenu()
                     ++selectedEndPoints;
                 }
                 else if (name.substr(0, 4) == "Cons") {
+                    if (selectedConstraints == 0) {
+                        int ConstrId = Sketcher::PropertyConstraintList::getIndexFromConstraintName(name);
+                        const Constraint *constraint = obj->Constraints[ConstrId];
+                        shouldAddChangeConstraintValue = constraint->isDimensional();
+                    }
+                    else {
+                        shouldAddChangeConstraintValue = false;
+                    }
                     ++selectedConstraints;
                 }
                 else if (name.substr(2, 5) == "Axis") {
@@ -4285,7 +4978,7 @@ void ViewProviderSketch::generateContextMenu()
 
         // context menu if only constraints are selected
         else if (selectedConstraints >= 1) {
-            if (selectedConstraints == 1) {
+            if (shouldAddChangeConstraintValue) {
                 menu << "Sketcher_ChangeDimensionConstraint";
             }
             menu << "Sketcher_ToggleDrivingConstraint"

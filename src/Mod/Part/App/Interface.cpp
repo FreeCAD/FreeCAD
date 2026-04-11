@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,10 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Interface_Static.hxx>
-#endif
+#include <Interface_Static.hxx>
+
 
 #include "Interface.h"
 
@@ -113,12 +113,12 @@ bool Interface::writeStepUnit(Standard_CString unit)
 bool Interface::writeStepUnit(Interface::Unit unit)
 {
     switch (unit) {
-    case Interface::Unit::Meter:
-        return Interface_Static::SetCVal("write.step.unit","M");
-    case Interface::Unit::Inch:
-        return Interface_Static::SetCVal("write.step.unit","INCH");
-    default:
-        return Interface_Static::SetCVal("write.step.unit","MM");
+        case Interface::Unit::Meter:
+            return Interface_Static::SetCVal("write.step.unit", "M");
+        case Interface::Unit::Inch:
+            return Interface_Static::SetCVal("write.step.unit", "INCH");
+        default:
+            return Interface_Static::SetCVal("write.step.unit", "MM");
     }
 }
 
@@ -175,12 +175,12 @@ bool Interface::writeIgesUnit(Standard_CString unit)
 bool Interface::writeIgesUnit(Interface::Unit unit)
 {
     switch (unit) {
-    case Unit::Meter:
-        return Interface_Static::SetCVal("write.iges.unit","M");
-    case Unit::Inch:
-        return Interface_Static::SetCVal("write.iges.unit","INCH");
-    default:
-        return Interface_Static::SetCVal("write.iges.unit","MM");
+        case Unit::Meter:
+            return Interface_Static::SetCVal("write.iges.unit", "M");
+        case Unit::Inch:
+            return Interface_Static::SetCVal("write.iges.unit", "INCH");
+        default:
+            return Interface_Static::SetCVal("write.iges.unit", "MM");
     }
 }
 

@@ -33,6 +33,7 @@ import ObjectsFem
 from . import manager
 from .manager import get_meshname
 from .manager import init_doc
+from .meshes import generate_mesh
 
 
 def get_information():
@@ -40,7 +41,7 @@ def get_information():
         "name": "Constraint Contact Shell Shell",
         "meshtype": "face",
         "meshelement": "Tria3",
-        "constraints": ["fixed", "force", "contact"],
+        "constraints": ["displacement", "force", "contact"],
         "solvers": ["ccxtools"],
         "material": "solid",
         "equations": ["mechanical"],
@@ -149,8 +150,8 @@ def setup(doc=None, solvertype="ccxtools"):
         )
     if solvertype == "ccxtools":
         solver_obj.AnalysisType = "static"
-        solver_obj.BeamShellResultOutput3D = True
-        solver_obj.GeometricalNonlinearity = "linear"  # really?
+        solver_obj.Output3d = True
+        solver_obj.GeometricalNonlinearity = False  # really?
         # TODO iterations parameter !!!
         solver_obj.ThermoMechSteadyState = False
         solver_obj.MatrixSolverType = "default"
@@ -171,13 +172,16 @@ def setup(doc=None, solvertype="ccxtools"):
     material_obj.Material = mat
     analysis.addObject(material_obj)
 
-    # constraint fixed
-    con_fixed = ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
-    con_fixed.References = [
+    # constraint displacement
+    con_displacement = ObjectsFem.makeConstraintDisplacement(doc, "ConstraintDisplacement")
+    con_displacement.References = [
         (lower_tube, "Edge2"),
         (upper_tube, "Edge3"),
     ]
-    analysis.addObject(con_fixed)
+    con_displacement.xFree = False
+    con_displacement.yFree = False
+    con_displacement.zFree = False
+    analysis.addObject(con_displacement)
 
     # constraint force
     con_force = ObjectsFem.makeConstraintForce(doc, "ConstraintForce")
@@ -201,13 +205,7 @@ def setup(doc=None, solvertype="ccxtools"):
     # mesh
     from .meshes.mesh_contact_tube_tube_tria3 import create_nodes, create_elements
 
-    fem_mesh = Fem.FemMesh()
-    control = create_nodes(fem_mesh)
-    if not control:
-        FreeCAD.Console.PrintError("Error on creating nodes.\n")
-    control = create_elements(fem_mesh)
-    if not control:
-        FreeCAD.Console.PrintError("Error on creating elements.\n")
+    fem_mesh = generate_mesh.mesh_from_existing(create_nodes, create_elements)
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
     femmesh_obj.FemMesh = fem_mesh
     femmesh_obj.Shape = geom_obj

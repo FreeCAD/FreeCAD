@@ -21,13 +21,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/nodes/SoSeparator.h>
-#endif
+
 
 #include "Gui/Control.h"
 #include "FemGuiTools.h"
@@ -88,9 +86,9 @@ void ViewProviderFemConstraintBearing::updateData(const App::Property* prop)
         SbRotation rot(SbVec3f(0, -1, 0), dir);
 
         GuiTools::createPlacement(pShapeSep, b, rot);
-        pShapeSep->addChild(GuiTools::createFixed(radius / 2,
-                                                  radius / 2 * 1.5,
-                                                  pcConstraint->AxialFree.getValue()));
+        pShapeSep->addChild(
+            GuiTools::createFixed(radius / 2, radius / 2 * 1.5, pcConstraint->AxialFree.getValue())
+        );
     }
     else if (prop == &pcConstraint->AxialFree) {
         if (pShapeSep->getNumChildren() > 0) {
@@ -106,11 +104,13 @@ void ViewProviderFemConstraintBearing::updateData(const App::Property* prop)
 
             GuiTools::updatePlacement(pShapeSep, 0, b, rot);
             const SoSeparator* sep = static_cast<SoSeparator*>(pShapeSep->getChild(2));
-            GuiTools::updateFixed(sep,
-                                  0,
-                                  radius / 2,
-                                  radius / 2 * 1.5,
-                                  pcConstraint->AxialFree.getValue());
+            GuiTools::updateFixed(
+                sep,
+                0,
+                radius / 2,
+                radius / 2 * 1.5,
+                pcConstraint->AxialFree.getValue()
+            );
         }
     }
 

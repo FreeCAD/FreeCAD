@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-3.0-only
 /***************************************************************************
  *                                                                         *
  *   Copyright: https://code.google.com/p/qsint/                           *
@@ -5,8 +6,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ACTIONBOX_H
-#define ACTIONBOX_H
+#pragma once
 
 #include "actionlabel.h"
 
@@ -155,5 +155,3 @@ protected:
     ActionLabel *headerLabel;      ///< Label for the header.
 };
 } // namespace
-
-#endif // ACTIONBOX_H

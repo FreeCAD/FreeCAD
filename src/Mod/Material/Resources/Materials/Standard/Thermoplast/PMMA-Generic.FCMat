@@ -1,0 +1,26 @@
+---
+General:
+  UUID: "476caec9-e24a-4af1-bec0-96feb0d29d5b"
+  Name: "PMMA-Generic"
+  Author: "FreeCAD"
+  License: "CC-BY-SA-4.0"
+  Description: "Poly(methyl methacrylate) (PMMA) is a synthetic polymer derived from methyl methacrylate. It is a transparent thermoplastic, used as an engineering plastic. If you need a more precise material definition use the more specialised PMMA-blend cards."
+  SourceURL: "https://www.matweb.com/search/DataSheet.aspx?MatGUID=3cb08da2a0054447a3790015b7214d07"
+Models:
+  Father:
+    UUID: "9cdda8b6-b606-4778-8f13-3934d8668e67"
+    Father: "Thermoplast"
+  LinearElastic:
+    UUID: "7b561d1d-fb9b-44f6-9da9-56a4f74d7536"
+    Density: "1170 kg/m^3"
+    UltimateTensileStrength: "64.6 MPa"
+    YieldStrength: "60.5 MPa"
+    YoungsModulus: "2930 MPa"
+  Thermal:
+    UUID: "9959d007-a970-4ea7-bae4-3eb1b8b883c7"
+    SpecificHeat: "1490 J/kg/K"
+    ThermalConductivity: "0.199 W/m/K"
+    ThermalExpansionCoefficient: "0.0000707 m/m/K"
+  Costs:
+    UUID: "881df808-8726-4c2e-be38-688bb6cce466"
+    ProductURL: "https://en.wikipedia.org/wiki/Poly(methyl_methacrylate)"

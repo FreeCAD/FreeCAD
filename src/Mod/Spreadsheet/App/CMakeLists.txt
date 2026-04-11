@@ -1,11 +1,8 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 if(WIN32)
     add_definitions(-DFCAppSpreadsheet)
 endif(WIN32)
-
-include_directories(
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
 
 set(Spreadsheet_LIBS
     FreeCADApp
@@ -15,23 +12,22 @@ set(Spreadsheet_SRCS
     Cell.cpp
     Cell.h
     DisplayUnit.h
-    PreCompiled.cpp
     PreCompiled.h
     PropertySheet.cpp
     PropertySheet.h
-    PropertySheetPy.xml
+    PropertySheet.pyi
     PropertySheetPyImp.cpp
     PropertyColumnWidths.cpp
     PropertyColumnWidths.h
-    PropertyColumnWidthsPy.xml
+    PropertyColumnWidths.pyi
     PropertyColumnWidthsPyImp.cpp
     PropertyRowHeights.cpp
     PropertyRowHeights.h
-    PropertyRowHeightsPy.xml
+    PropertyRowHeights.pyi
     PropertyRowHeightsPyImp.cpp
     Sheet.cpp
     Sheet.h
-    SheetPy.xml
+    Sheet.pyi
     SheetPyImp.cpp
     SheetObserver.cpp
     SheetObserver.h
@@ -40,19 +36,32 @@ set(Spreadsheet_SRCS
     AppSpreadsheet.cpp
 )
 
-generate_from_xml(SheetPy)
-generate_from_xml(PropertySheetPy)
-generate_from_xml(PropertyColumnWidthsPy)
-generate_from_xml(PropertyRowHeightsPy)
-
-if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${Spreadsheet_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(Spreadsheet PreCompiled.h PreCompiled.cpp PCH_SRCS)
-endif(FREECAD_USE_PCH)
+generate_from_py(Sheet)
+generate_from_py(PropertySheet)
+generate_from_py(PropertyColumnWidths)
+generate_from_py(PropertyRowHeights)
 
 add_library(Spreadsheet SHARED ${Spreadsheet_SRCS})
+
+if(FREECAD_USE_PCH)
+    target_precompile_headers(Spreadsheet PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
+endif(FREECAD_USE_PCH)
+
+target_include_directories(
+    Spreadsheet
+    PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
 target_link_libraries(Spreadsheet ${Spreadsheet_LIBS})
+
+if (MSVC)
+    target_compile_options(Spreadsheet PRIVATE /wd4251 /wd4275)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(Spreadsheet)
 endif()

@@ -21,8 +21,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-
 #include "BitmapFactory.h"
 #include "WidgetFactory.h"
 #include "Workbench.h"
@@ -53,8 +51,8 @@
 #include "Dialogs/DlgKeyboardImp.h"
 
 #if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
-#include "Dialogs/DlgCustomizeSpaceball.h"
-#include "Dialogs/DlgCustomizeSpNavSettings.h"
+# include "Dialogs/DlgCustomizeSpaceball.h"
+# include "Dialogs/DlgCustomizeSpNavSettings.h"
 #endif
 
 #include "InputField.h"
@@ -87,7 +85,6 @@ WidgetFactorySupplier::WidgetFactorySupplier()
     new PrefPageProducer<DlgSettingsNavigation>       ( QT_TRANSLATE_NOOP("QObject","Display") );
     new PrefPageProducer<DlgSettingsViewColor>        ( QT_TRANSLATE_NOOP("QObject","Display") );
     new PrefPageProducer<DlgSettingsAdvanced>         ( QT_TRANSLATE_NOOP("QObject","Display") );
-    DlgSettingsUI::attachObserver();
     new PrefPageProducer<DlgSettingsWorkbenchesImp>   ( QT_TRANSLATE_NOOP("QObject","Workbenches") );
     new PrefPageProducer<DlgSettingsPDF>              ( QT_TRANSLATE_NOOP("QObject","Import-Export") );
     new PrefPageProducer<DlgSettingsMacroImp>         ( QT_TRANSLATE_NOOP("QObject", "Python"));

@@ -24,6 +24,9 @@
 import re
 import os
 import time
+import tempfile
+from pathlib import Path
+
 import FreeCAD as App
 
 from pivy import coin
@@ -43,9 +46,11 @@ if App.GuiUp:
         QGridLayout,
         QLabel,
         QDialogButtonBox,
+        QFileDialog,
+        QProgressDialog,
     )
     from PySide.QtCore import Qt, QPoint
-    from PySide.QtGui import QCursor, QIcon, QGuiApplication
+    from PySide.QtGui import QCursor, QIcon, QGuiApplication, QMessageBox
 
 import UtilsAssembly
 import Preferences
@@ -64,22 +69,23 @@ class CommandCreateSimulation:
     def GetResources(self):
         return {
             "Pixmap": "Assembly_CreateSimulation",
-            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateSimulation", "Create Simulation"),
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateSimulation", "Simulation"),
             "Accel": "V",
-            "ToolTip": "<p>"
-            + QT_TRANSLATE_NOOP(
+            "ToolTip": QT_TRANSLATE_NOOP(
                 "Assembly_CreateSimulation",
-                "Create a simulation of the current assembly.",
-            )
-            + "</p>",
+                "Creates a new simulation of the current assembly",
+            ),
             "CmdType": "ForEdit",
         }
 
     def IsActive(self):
-        return (
-            UtilsAssembly.isAssemblyCommandActive()
-            and UtilsAssembly.assembly_has_at_least_n_parts(1)
-        )
+        if not UtilsAssembly.isAssemblyCommandActive():
+            return False
+
+        assembly = UtilsAssembly.activeAssembly()
+        joint_types = ["Revolute", "Slider", "Cylindrical"]
+        joints = UtilsAssembly.getJointsOfType(assembly, joint_types)
+        return len(joints) > 0
 
     def Activated(self):
         assembly = UtilsAssembly.activeAssembly()
@@ -87,7 +93,10 @@ class CommandCreateSimulation:
             return
 
         self.panel = TaskAssemblyCreateSimulation()
-        Gui.Control.showDialog(self.panel)
+        dialog = Gui.Control.showDialog(self.panel)
+        if dialog is not None:
+            dialog.setAutoCloseOnDeletedDocument(True)
+            dialog.setDocumentName(App.ActiveDocument.Name)
 
 
 ######### Simulation Object ###########
@@ -264,7 +273,10 @@ class ViewProviderSimulation:
             Gui.ActiveDocument.setEdit(assembly)
 
         panel = TaskAssemblyCreateSimulation(vpDoc.Object)
-        Gui.Control.showDialog(panel)
+        dialog = Gui.Control.showDialog(panel)
+        if dialog is not None:
+            dialog.setAutoCloseOnDeletedDocument(True)
+            dialog.setDocumentName(App.ActiveDocument.Name)
 
         return True
 
@@ -349,7 +361,7 @@ class Motion:
     def getAssembly(self, feaPy):
         simulation = self.getSimulation(feaPy)
         if simulation is not None:
-            return simulation.getAssembly()
+            return simulation.Proxy.getAssembly(simulation)
         return None
 
 
@@ -361,7 +373,6 @@ class ViewProviderMotion:
     def attach(self, vpDoc):
         """Setup the scene sub-graph of the view provider, this method is mandatory"""
         self.app_obj = vpDoc.Object
-        self.assembly = self.app_obj.Proxy.getAssembly(self.app_obj)
 
         self.display_mode = coin.SoType.fromName("SoFCSelection").createInstance()
 
@@ -402,22 +413,19 @@ class ViewProviderMotion:
         return None
 
     def doubleClicked(self, vpDoc):
-        if self.assembly is None:
-            return False
-
-        if UtilsAssembly.activeAssembly() != self.assembly:
-            Gui.ActiveDocument.setEdit(self.assembly)
-
         self.openEditDialog()
 
     def openEditDialog(self):
+        assembly = self.getAssembly()
+
+        if assembly is None:
+            return False
+
         joint = None
         if self.app_obj.Joint is not None:
             joint = self.app_obj.Joint[0]
 
-        dialog = MotionEditDialog(
-            self.assembly, self.app_obj.MotionType, joint, self.app_obj.Formula
-        )
+        dialog = MotionEditDialog(assembly, self.app_obj.MotionType, joint, self.app_obj.Formula)
         if dialog.exec_():
             self.app_obj.MotionType = dialog.motionType
             self.app_obj.Joint = dialog.joint
@@ -434,6 +442,17 @@ class ViewProviderMotion:
         self.app_obj.Label = "{label} ({type_})".format(
             label=self.app_obj.Joint[0].Label, type_=translate("Assembly", typeStr)
         )
+
+    def getAssembly(self):
+        assembly = self.app_obj.Proxy.getAssembly(self.app_obj)
+
+        if assembly is None:
+            return None
+
+        if UtilsAssembly.activeAssembly() != assembly:
+            Gui.ActiveDocument.setEdit(assembly)
+
+        return assembly
 
 
 class MotionEditDialog:
@@ -471,7 +490,7 @@ class MotionEditDialog:
         # Create the line edit for the formula
         formula_edit = QLineEdit(self.dialog)
         formula_edit.setText(self.formula)
-        formula_edit.setPlaceholderText(translate("Assembly", "Enter your formula..."))
+        formula_edit.setPlaceholderText(translate("Assembly", "Enter your formula…"))
 
         # Connect the line edit to update the Formula property
         def on_formula_changed(text):
@@ -492,13 +511,13 @@ class MotionEditDialog:
         layout = QGridLayout(self.dialog)
 
         # Add labels and widgets to the layout
-        layout.addWidget(QLabel("Joint:"), 0, 0)
+        layout.addWidget(QLabel("Joint"), 0, 0)
         layout.addWidget(self.joint_combo, 0, 1)
 
-        layout.addWidget(QLabel("Motion Type:"), 1, 0)
+        layout.addWidget(QLabel("Motion Type"), 1, 0)
         layout.addWidget(self.motion_type_combo, 1, 1)
 
-        layout.addWidget(QLabel("Formula:"), 2, 0)
+        layout.addWidget(QLabel("Formula"), 2, 0)
         layout.addWidget(formula_edit, 2, 1)
 
         # Add the help label above the buttons
@@ -523,7 +542,7 @@ class MotionEditDialog:
         self.help_label0 = QLabel(
             translate(
                 "Assembly",
-                "In capital are variables that you need to replace with actual values. More details about each example in it's tooltip.",
+                "In capital are variables that you need to replace with actual values. More details about each example in its tooltip.",
             ),
             self.dialog,
         )
@@ -804,13 +823,15 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
         self.form.AddButton.clicked.connect(self.addMotionClicked)
         self.form.RemoveButton.clicked.connect(self.deleteSelectedMotions)
         self.form.groupBox_player.hide()
+        self.form.SaveAnimationButton.clicked.connect(self.saveAnimation)
+        self.form.SaveAnimationButton.hide()
 
         if simFeaturePy:
             self.simFeaturePy = simFeaturePy
-            App.setActiveTransaction("Edit " + simFeaturePy.Label + " Simulation")
+            Gui.ActiveDocument.openCommand("Edit " + simFeaturePy.Label + " Simulation")
             self.onMotionsChanged()
         else:
-            App.setActiveTransaction("Create Simulation")
+            Gui.ActiveDocument.openCommand("Create Simulation")
             self.createSimulationObject()
 
         self.setUiInitialValues()
@@ -846,12 +867,12 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
     def accept(self):
         self.deactivate()
         UtilsAssembly.restoreAssemblyPartsPlacements(self.assembly, self.initialPlcs)
-        App.closeActiveTransaction()
+        Gui.ActiveDocument.commitCommand()
         return True
 
     def reject(self):
         self.deactivate()
-        App.closeActiveTransaction(True)
+        Gui.ActiveDocument.abortCommand()
         return True
 
     def deactivate(self):
@@ -907,6 +928,7 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
         self.form.frameSlider.setMaximum(nFrms - 1)
         self.setFrameValue(nFrms - 1)
         self.form.groupBox_player.show()
+        self.form.SaveAnimationButton.show()
 
     def onFrameChanged(self, val):
         self.assembly.updateForFrame(val)
@@ -1013,6 +1035,154 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
                 self.simFeaturePy.Group.remove(motion)
                 # Delete the object
                 motion.Document.removeObject(motion.Name)
+
+    def saveAnimation(self):
+        num_frames = self.assembly.numberOfFrames()
+        if num_frames <= 1:
+            QMessageBox.warning(
+                self.form,
+                translate("Assembly", "Animation"),
+                translate("Assembly", "Not enough frames to create an animation."),
+            )
+            return
+
+        # Prompt user for file location and type
+        file_path, selected_filter = QFileDialog.getSaveFileName(
+            self.form,
+            translate("Assembly", "Save Animation"),
+            "",
+            "MP4 Video (*.mp4);;Animated GIF (*.gif);;AVI Video (*.avi)",
+        )
+
+        if not file_path:
+            return  # User cancelled
+
+        # Get parameters
+        view = Gui.ActiveDocument.ActiveView
+        width, height = view.getSize()
+        # Ensure dimensions are even, as required by many video codecs
+        if width % 2 != 0:
+            width -= 1
+        if height % 2 != 0:
+            height -= 1
+        fps = self.form.FramesPerSecondSpinBox.value()
+
+        # Setup temporary directory and progress bar
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = Path(temp_dir)
+            progress = QProgressDialog(
+                translate("Assembly", "Generating Frames…"),
+                translate("Assembly", "Cancel"),
+                0,
+                num_frames,
+                self.form,
+            )
+            progress.setWindowModality(Qt.WindowModal)
+            progress.show()
+
+            original_frame = self.form.frameSlider.value()
+
+            try:
+                # Generate and save all frames as temporary images
+                frame_files = []
+                for i in range(num_frames):
+                    progress.setValue(i)
+                    if progress.wasCanceled():
+                        App.Console.PrintMessage("Animation save cancelled.\n")
+                        return
+
+                    self.assembly.updateForFrame(i)
+                    Gui.updateGui()  # Ensure the 3D view is redrawn
+
+                    frame_filename = temp_path / f"frame_{i:05d}.png"
+                    view.saveImage(str(frame_filename), width, height, "Current")
+                    frame_files.append(str(frame_filename))
+
+                # Assemble the final animation file
+                progress.setLabelText(translate("Assembly", "Assembling animation…"))
+                progress.setMaximum(0)  # Indeterminate progress
+
+                success = False
+                file_extension = Path(file_path).suffix.lower()
+                if file_extension == ".gif":
+                    success = self.create_gif(file_path, frame_files, fps)
+                elif file_extension in [".mp4", ".avi"]:
+                    success = self.create_video(file_path, frame_files, fps, (width, height))
+
+                if success:
+                    App.Console.PrintMessage(f"Animation successfully saved to {file_path}\n")
+
+            except Exception as e:
+                errMsg = (
+                    translate("Assembly", "An error occurred while saving the animation")
+                    + ": "
+                    + str(e)
+                )
+                QMessageBox.critical(self.form, "Error", errMsg)
+            finally:
+                progress.close()
+                # Restore original state
+                self.assembly.updateForFrame(original_frame)
+                self.form.frameSlider.setValue(original_frame)
+
+    def create_gif(self, output_path, frame_files, fps):
+        """Creates an animated GIF from a list of image files using Pillow."""
+        try:
+            from PIL import Image
+        except ImportError:
+            errMsg = translate(
+                "Assembly", "Pillow (PIL) is not installed. It is required for GIF export."
+            )
+            QMessageBox.critical(self.form, "Error", errMsg)
+            return False
+
+        pil_images = [Image.open(f) for f in frame_files]
+        duration_ms = int(1000 / fps)
+        pil_images[0].save(
+            output_path,
+            save_all=True,
+            append_images=pil_images[1:],
+            optimize=True,
+            duration=duration_ms,
+            loop=0,  # 0 means loop forever
+        )
+        return True
+
+    def create_video(self, output_path, frame_files, fps, size):
+        """Creates a video file from a list of image files using OpenCV."""
+        try:
+            import cv2
+        except ImportError:
+            errMsg = translate(
+                "Assembly", "OpenCV is not installed. It is required for video export."
+            )
+            QMessageBox.critical(self.form, "Error", errMsg)
+            return False
+
+        file_extension = Path(output_path).suffix.lower()
+
+        # Select codec based on file type
+        if file_extension == ".mp4":
+            fourcc = cv2.VideoWriter_fourcc(*"mp4v")  # or 'avc1'
+        elif file_extension == ".avi":
+            fourcc = cv2.VideoWriter_fourcc(*"XVID")
+        else:
+            # Fallback for other types, may not be supported
+            fourcc = cv2.VideoWriter_fourcc(*"mp4v")
+
+        video_writer = cv2.VideoWriter(output_path, fourcc, fps, size)
+        if not video_writer.isOpened():
+            errMsg = translate("Assembly", "Could not open video writer. Check codecs.")
+            QMessageBox.critical(self.form, "Error", errMsg)
+            return False
+
+        for filename in frame_files:
+            # OpenCV reads images in BGR format by default
+            frame = cv2.imread(str(filename))
+            video_writer.write(frame)
+
+        video_writer.release()
+        return True
 
 
 if App.GuiUp:

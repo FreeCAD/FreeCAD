@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
@@ -19,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATERIAL_MATERIALS_H
-#define MATERIAL_MATERIALS_H
+#pragma once
 
 #include <memory>
 
@@ -499,5 +500,3 @@ using MaterialTreeNode = FolderTreeNode<Material>;
 
 Q_DECLARE_METATYPE(Materials::Material*)
 Q_DECLARE_METATYPE(std::shared_ptr<Materials::Material>)
-
-#endif  // MATERIAL_MATERIALS_H

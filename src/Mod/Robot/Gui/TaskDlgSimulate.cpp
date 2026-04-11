@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "TaskDlgSimulate.h"
 
@@ -32,8 +33,10 @@ using namespace RobotGui;
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgSimulate::TaskDlgSimulate(Robot::RobotObject* pcRobotObject,
-                                 Robot::TrajectoryObject* pcTrajectoryObject)
+TaskDlgSimulate::TaskDlgSimulate(
+    Robot::RobotObject* pcRobotObject,
+    Robot::TrajectoryObject* pcTrajectoryObject
+)
     : TaskDialog()
 {
     rob = new TaskRobot6Axis(pcRobotObject);

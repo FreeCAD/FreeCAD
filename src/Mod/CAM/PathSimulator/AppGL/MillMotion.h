@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2024 Shai Seger <shaise at gmail>                       *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __mill_operation_h__
-#define __mill_operation_h__
+#pragma once
 
 #include "EndMill.h"
 #include "linmath.h"
@@ -53,8 +54,8 @@ struct MillMotion
     float x, y, z;
     float i, j, k;
     float r;
-    char retract_mode;
-    float retract_z;
+    char retract_mode = 0;
+    float retract_z = NAN;
 };
 
 static inline void MotionPosToVec(vec3 vec, const MillMotion* motion)
@@ -64,4 +65,3 @@ static inline void MotionPosToVec(vec3 vec, const MillMotion* motion)
     vec[2] = motion->z;
 }
 }  // namespace MillSim
-#endif

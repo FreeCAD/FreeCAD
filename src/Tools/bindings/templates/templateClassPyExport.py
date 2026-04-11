@@ -1,5 +1,6 @@
 #! python
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # (c) 2006 Juergen Riegel
 
 
@@ -35,20 +36,6 @@ def compareFiles(file1, file2):
 
 
 class TemplateClassPyExport(template.ModelTemplate):
-    # TODO: This is temporary, once all XML files are migrated, this can be removed.
-    def getPath(self, path):
-        if self.is_python and not self.export.ModuleName in [
-            "Base",
-            "App",
-            "Gui",
-            "Part",
-            "PartDesign",
-            "Material",
-            "Sketcher",
-        ]:
-            root, ext = os.path.splitext(path)
-            return f"{root}_{ext}"
-        return path
 
     def Generate(self):
         # self.ParentNamespace = "Base"
@@ -76,7 +63,7 @@ class TemplateClassPyExport(template.ModelTemplate):
             os.makedirs(subpath)
 
         # Imp.cpp must not exist, neither in outputDir nor in inputDir
-        outputImp = self.getPath(outputDir + exportName + "Imp.cpp")
+        outputImp = outputDir + exportName + "Imp.cpp"
         if not os.path.exists(outputImp):
             if not os.path.exists(inputDir + exportName + "Imp.cpp"):
                 file = open(outputImp, "wb")
@@ -84,12 +71,12 @@ class TemplateClassPyExport(template.ModelTemplate):
                 model.generateTools.replace(self.TemplateImplement, locals(), file)
                 file.close()
 
-        outputCpp = self.getPath(outputDir + exportName + ".cpp")
+        outputCpp = outputDir + exportName + ".cpp"
         with open(outputCpp, "wb") as file:
             print("TemplateClassPyExport", "TemplateModule", file.name)
             model.generateTools.replace(self.TemplateModule, locals(), file)
 
-        outputHeader = self.getPath(outputDir + exportName + ".h")
+        outputHeader = outputDir + exportName + ".h"
         with open(outputHeader, "wb") as file:
             print("TemplateClassPyExport", "TemplateHeader", file.name)
             model.generateTools.replace(self.TemplateHeader, locals(), file)
@@ -106,15 +93,15 @@ class TemplateClassPyExport(template.ModelTemplate):
 
         if not os.path.exists(inputDir + exportName + "Imp.cpp"):
             outputImpXml = outputDir + exportName + "Imp.cpp"
-            outputImpPy = self.getPath(outputDir + exportName + "Imp.cpp")
+            outputImpPy = outputDir + exportName + "Imp.cpp"
             compareFiles(outputImpXml, outputImpPy)
 
         outputHeaderXml = outputDir + exportName + ".h"
-        outputHeaderPy = self.getPath(outputDir + exportName + ".h")
+        outputHeaderPy = outputDir + exportName + ".h"
         compareFiles(outputHeaderXml, outputHeaderPy)
 
         outputCppXml = outputDir + exportName + ".cpp"
-        outputCppPy = self.getPath(outputDir + exportName + ".cpp")
+        outputCppPy = outputDir + exportName + ".cpp"
         compareFiles(outputCppXml, outputCppPy)
 
     TemplateHeader = """
@@ -348,6 +335,7 @@ public:
 
     /// getter for the object handled by this class
     @self.export.TwinPointer@ *get@self.export.Twin@Ptr() const;
+    @self.export.TwinPointer@ *getTwinPtr() const;
 
 + if(self.export.ClassDeclarations != ""):
     /** @name additional declarations and methods for the wrapper class */
@@ -905,6 +893,11 @@ int @self.export.Name@::_setattr(const char *attr, PyObject *value) // __setattr
     return static_cast<@self.export.TwinPointer@ *>(_pcTwinPointer);
 }
 
+@self.export.TwinPointer@ *@self.export.Name@::getTwinPtr() const
+{
+    return get@self.export.Twin@Ptr();
+}
+
 #if defined(__clang__)
 # pragma clang diagnostic pop
 #endif
@@ -1249,7 +1242,6 @@ int @self.export.Name@::descriptorSetter(PyObject* self, PyObject* obj, PyObject
 
     # Here's the template for the user part of the implementation. This does NOT get overridden if it already exists.
     TemplateImplement = """
-#include "PreCompiled.h"
 
 #include "@self.export.Include@"
 

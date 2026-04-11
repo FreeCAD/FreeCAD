@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>244</height>
+    <height>262</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -44,7 +44,7 @@ Angle, surface finish, root</string>
            </property>
           </widget>
          </item>
-        <item row="2" column="0">
+         <item row="2" column="0">
           <widget class="QLineEdit" name="leArrowTextL">
            <property name="toolTip">
             <string>Text before arrow side symbol
@@ -94,7 +94,7 @@ Number of welds × length, (gap)</string>
            </property>
           </widget>
          </item>
-         </layout>
+        </layout>
        </item>
       </layout>
      </item>
@@ -123,13 +123,45 @@ Preparation depth, (weld size)</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
-          <widget class="QPushButton" name="pbOtherSymbol">
+         <item row="1" column="0">
+          <widget class="QPushButton" name="pbOtherErase">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="baseSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="toolTip">
-            <string>Pick other side symbol</string>
+            <string>Remove other side symbol</string>
            </property>
            <property name="text">
-            <string>Symbol</string>
+            <string>Delete</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLineEdit" name="leOtherTextC">
+           <property name="toolTip">
+            <string>Text below arrow side symbol
+Angle, surface finish, root</string>
            </property>
           </widget>
          </item>
@@ -141,83 +173,54 @@ Number of welds × length, (gap)</string>
            </property>
           </widget>
          </item>
-         <item row="1" column="0">
-          <widget class="QPushButton" name="pbOtherErase">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>60</width>
-             <height>30</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>60</width>
-             <height>30</height>
-            </size>
-           </property>
-           <property name="baseSize">
-            <size>
-             <width>60</width>
-             <height>30</height>
-            </size>
-           </property>
+         <item row="0" column="1">
+          <widget class="QPushButton" name="pbOtherSymbol">
            <property name="toolTip">
-            <string>Remove other side symbol</string>
+            <string>Pick other side symbol</string>
            </property>
            <property name="text">
-            <string>Delete</string>
+            <string>Symbol</string>
            </property>
           </widget>
          </item>
-        <item row="1" column="1">
-          <widget class="QLineEdit" name="leOtherTextC">
-           <property name="toolTip">
-            <string>Text below arrow side symbol
-Angle, surface finish, root</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="2" alignment="Qt::AlignRight">
+         <item row="1" column="2">
           <widget class="QPushButton" name="pbFlipSides">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
            <property name="minimumSize">
             <size>
-             <width>60</width>
-             <height>30</height>
+             <width>0</width>
+             <height>0</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>60</width>
-             <height>30</height>
+             <width>16777215</width>
+             <height>16777215</height>
             </size>
            </property>
            <property name="baseSize">
             <size>
-             <width>60</width>
-             <height>30</height>
+             <width>0</width>
+             <height>0</height>
             </size>
            </property>
            <property name="toolTip">
             <string>Flips the sides</string>
            </property>
            <property name="text">
-            <string>Flip Sides</string>
+            <string>Flip sides</string>
            </property>
           </widget>
          </item>
-         </layout>
+        </layout>
        </item>
       </layout>
      </item>
@@ -235,22 +238,22 @@ Angle, surface finish, root</string>
      <item row="0" column="0">
       <widget class="QCheckBox" name="cbFieldWeld">
        <property name="toolTip">
-        <string>Adds the 'Field Weld' symbol (flag)
+        <string>Adds the 'Field weld' symbol (flag)
 at the kink in the leader line</string>
        </property>
        <property name="text">
-        <string>Field Weld</string>
+        <string>Field weld</string>
        </property>
       </widget>
      </item>
      <item row="0" column="1">
       <widget class="QCheckBox" name="cbAllAround">
        <property name="toolTip">
-        <string>Adds the 'All Around' symbol (circle)
+        <string>Adds the 'All around' symbol (circle)
 at the kink in the leader line</string>
        </property>
        <property name="text">
-        <string>All Around</string>
+        <string>All around</string>
        </property>
       </widget>
      </item>
@@ -271,11 +274,11 @@ at the kink in the leader line</string>
      <item row="0" column="0">
       <widget class="QLabel" name="label_5">
        <property name="text">
-        <string>Tail Text</string>
+        <string>Tail text</string>
        </property>
       </widget>
      </item>
-    <item row="0" column="1">
+     <item row="0" column="1">
       <widget class="QLineEdit" name="leTailText">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -291,25 +294,22 @@ at the kink in the leader line</string>
      <item row="1" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Symbol Directory</string>
+        <string>Symbol directory</string>
        </property>
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="Gui::FileChooser" name="fcSymbolDir">
+      <widget class="Gui::FileChooser" name="fcSymbolDir" native="true">
        <property name="toolTip">
         <string>Directory path for welding symbols.
 This directory will be used for the symbol selection.</string>
        </property>
-       <property name="mode">
-        <enum>Gui::FileChooser::Directory</enum>
-       </property>
-       <property name="filter">
+       <property name="filter" stdset="0">
         <string notr="true">*.svg</string>
        </property>
       </widget>
      </item>
-     </layout>
+    </layout>
    </item>
   </layout>
  </widget>

@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_TASKDETAIL_H
-#define TECHDRAWGUI_TASKDETAIL_H
+#pragma once
 
 #include <Base/Vector3D.h>
 #include <Gui/TaskView/TaskDialog.h>
@@ -65,6 +64,9 @@ public:
                      QPushButton* btnCancel);
     void enableTaskButtons(bool button);
 
+    TechDraw::DrawViewPart* getBaseFeat();
+    TechDraw::DrawViewDetail* getDetailFeat();
+
 public Q_SLOTS:
         void onDraggerClicked(bool clicked);
         void onHighlightMoved(QPointF dragEnd);
@@ -93,8 +95,6 @@ protected:
     void restoreDetailState();
     QPointF getAnchorScene();
 
-    TechDraw::DrawViewPart* getBaseFeat();
-    TechDraw::DrawViewDetail* getDetailFeat();
 
 private:
     std::unique_ptr<Ui_TaskDetail> ui;
@@ -152,11 +152,11 @@ public:
 
     void modifyStandardButtons(QDialogButtonBox* box) override;
 
+    std::string getDetailName() const;
+
 private:
     TaskDetail * widget;
     Gui::TaskView::TaskBox* taskbox;
 };
 
 } //namespace TechDrawGui
-
-#endif // #ifndef TECHDRAWGUI_TASKDETAIL_H

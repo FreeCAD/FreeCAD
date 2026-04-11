@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,12 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <cassert>
-#endif
 
 #include "BaseClass.h"
 #include "PyObjectBase.h"
@@ -77,10 +74,12 @@ Type BaseClass::getTypeId() const
 }
 
 
-void BaseClass::initSubclass(Base::Type& toInit,
-                             const char* ClassName,
-                             const char* ParentName,
-                             Type::instantiationMethod method)
+void BaseClass::initSubclass(
+    Base::Type& toInit,
+    const char* ClassName,
+    const char* ParentName,
+    Type::instantiationMethod method
+)
 {
     // don't init twice!
     assert(toInit.isBad());

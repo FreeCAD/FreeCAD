@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2007 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_SEGMENT_H
-#define MESH_SEGMENT_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -132,6 +133,3 @@ public:
 };
 
 }  // namespace Mesh
-
-
-#endif  // MESH_SEGMENT_H

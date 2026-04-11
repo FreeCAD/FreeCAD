@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
@@ -19,8 +21,6 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QColorDialog>
 #include <QDesktopServices>
 #include <QIODevice>
@@ -33,7 +33,7 @@
 #include <QTextStream>
 #include <QVariant>
 #include <limits>
-#endif
+
 
 #include <App/Application.h>
 #include <Base/Interpreter.h>
@@ -158,7 +158,7 @@ void MaterialDelegate::setValue(QAbstractItemModel* model,
                                 property->getUnits().toStdString().c_str());
 
             QMessageBox msgBox;
-            msgBox.setWindowTitle(QStringLiteral("Property units mismatch"));
+            msgBox.setWindowTitle(QStringLiteral("Property Units Mismatch"));
             msgBox.setText(QStringLiteral("Units mismatch '%1' = '%2', "
                            "setting to default property units '%3'\n")
                            .arg(propertyName)
@@ -259,8 +259,7 @@ bool MaterialDelegate::editorEvent(QEvent* event,
 
 void MaterialDelegate::showColorModal(const QString& propertyName, QStandardItem* item)
 {
-    QColor currentColor;  // = d->col;
-    currentColor.setRgba(parseColor(item->text()));
+    auto currentColor = parseColor(item->text()).asValue<QColor>();
     auto dlg = new QColorDialog(currentColor);
 
     dlg->setAttribute(Qt::WA_DeleteOnClose);

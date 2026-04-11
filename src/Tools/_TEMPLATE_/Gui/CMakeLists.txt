@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
@@ -14,7 +16,6 @@ SET(_TEMPLATE_Gui_SRCS
     ${_TEMPLATE__QRC_SRCS}
     App_TEMPLATE_Gui.cpp
     Command.cpp
-    PreCompiled.cpp
     PreCompiled.h
     Workbench.cpp
     Workbench.h

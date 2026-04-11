@@ -78,7 +78,24 @@ class ConstraintBodyHeatSource(base_fempythonobject.BaseFemPythonObject):
                 value=["Dissipation Rate", "Total Power"],
             )
         )
-
+        prop.append(
+            _PropHelper(
+                type="App::PropertyBool",
+                name="EnableAmplitude",
+                group="Constraint Body Heat Source",
+                doc="Amplitude of the body heat source",
+                value=False,
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyStringList",
+                name="AmplitudeValues",
+                group="Constraint Body Heat Source",
+                doc="Amplitude values",
+                value=["0, 0", "1, 1"],
+            )
+        )
         return prop
 
     def onDocumentRestored(self, obj):

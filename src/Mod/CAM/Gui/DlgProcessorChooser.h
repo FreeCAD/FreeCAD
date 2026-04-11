@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PATH_DlgProcessorChooser_H
-#define PATH_DlgProcessorChooser_H
+#pragma once
 
 #include <QDialog>
 
@@ -52,5 +53,3 @@ private:
 };
 
 }  // namespace PathGui
-
-#endif  // PATH_DlgProcessorChooser_H

@@ -24,10 +24,6 @@
 //! a class to perform common operations on subelement names.
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
-
 #include <boost_regex.hpp>
 
 #include <Base/Tools.h>

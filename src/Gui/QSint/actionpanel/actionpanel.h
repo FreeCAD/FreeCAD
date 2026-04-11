@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-3.0-only
 /***************************************************************************
  *                                                                         *
  *   Copyright: https://code.google.com/p/qsint/                           *
@@ -5,8 +6,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ACTIONPANEL_H
-#define ACTIONPANEL_H
+#pragma once
 
 #include <QFrame>
 #include <QSpacerItem>
@@ -89,12 +89,6 @@ public:
      */
     void setScheme(ActionPanelScheme *scheme);
 
-    /**
-     * @brief Returns the recommended minimum size for the panel.
-     * @return The minimum size hint.
-     */
-    QSize minimumSizeHint() const override;
-
 protected:
     /** @brief The color scheme used by the panel. */
     ActionPanelScheme *myScheme;
@@ -104,5 +98,3 @@ protected:
 };
 
 } // namespace
-
-#endif // ACTIONPANEL_H

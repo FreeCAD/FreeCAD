@@ -21,14 +21,11 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef INPUTHINTPY_H
-#define INPUTHINTPY_H
+#pragma once
 
 #include <Base/PyObjectBase.h>
 
 namespace Gui
 {
-    void registerUserInputEnumInPython(PyObject* module);
-} // Namespace Gui
-
-#endif //INPUTHINTPY_H
+void registerUserInputEnumInPython(PyObject* module);
+}  // Namespace Gui

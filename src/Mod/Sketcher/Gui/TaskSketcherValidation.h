@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_TASKSKETCHERVALIDATION_H
-#define SKETCHERGUI_TASKSKETCHERVALIDATION_H
+#pragma once
 
 #include <memory>
 #include <vector>
@@ -91,5 +92,3 @@ public:
 };
 
 }  // namespace SketcherGui
-
-#endif  // SKETCHERGUI_TASKSKETCHERVALIDATION_H

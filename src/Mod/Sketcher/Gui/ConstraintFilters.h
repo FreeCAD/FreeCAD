@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2021 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_ConstraintFilters_H
-#define SKETCHERGUI_ConstraintFilters_H
+#pragma once
 
 #include <array>
 #include <bitset>
@@ -53,33 +54,37 @@ enum class FilterValue
     Equality = 9,
     Symmetric = 10,
     Block = 11,
-    InternalAlignment = 12,
-    Datums = 13,
-    HorizontalDistance = 14,
-    VerticalDistance = 15,
-    Distance = 16,
-    Radius = 17,
-    Weight = 18,
-    Diameter = 19,
-    Angle = 20,
-    SnellsLaw = 21,
-    Named = 22,
-    NonDriving = 23,
+    Group = 12,
+    Text = 13,
+    InternalAlignment = 14,
+    Datums = 15,
+    HorizontalDistance = 16,
+    VerticalDistance = 17,
+    Distance = 18,
+    Radius = 19,
+    Weight = 20,
+    Diameter = 21,
+    Angle = 22,
+    SnellsLaw = 23,
+    Named = 24,
+    NonDriving = 25,
     NumFilterValue  // SpecialFilterValue shall start at the same index as this
 };
 
-constexpr auto FilterValueLength =
-    static_cast<std::underlying_type_t<FilterValue>>(FilterValue::NumFilterValue);
+constexpr auto FilterValueLength = static_cast<std::underlying_type_t<FilterValue>>(
+    FilterValue::NumFilterValue
+);
 
 enum class SpecialFilterValue
 {
-    Selection = FilterValueLength,  // = 24
-    AssociatedConstraints,          // = 25
+    Selection = FilterValueLength,  // = 26
+    AssociatedConstraints,          // = 27
     NumSpecialFilterValue
 };
 
-constexpr auto SpecialFilterValue =
-    static_cast<std::underlying_type_t<FilterValue>>(SpecialFilterValue::NumSpecialFilterValue);
+constexpr auto SpecialFilterValue = static_cast<std::underlying_type_t<FilterValue>>(
+    SpecialFilterValue::NumSpecialFilterValue
+);
 
 /// A std::bitset sized to provide one bit per FilterValue value
 using FilterValueBitset = std::bitset<FilterValueLength>;
@@ -111,42 +116,50 @@ constexpr decltype(auto) buildBitset(Args... args)
 /// FilterValue, which other FilterValues are comprised therein. It defines the dependencies between
 /// filters.
 constexpr std::array<FilterValueBitset, FilterValueLength> filterAggregates {
-    buildBitset(FilterValue::All,
-                FilterValue::Geometric,
-                FilterValue::Horizontal,
-                FilterValue::Vertical,
-                FilterValue::Coincident,
-                FilterValue::PointOnObject,
-                FilterValue::Parallel,
-                FilterValue::Perpendicular,
-                FilterValue::Tangent,
-                FilterValue::Equality,
-                FilterValue::Symmetric,
-                FilterValue::Block,
-                FilterValue::Datums,
-                FilterValue::Distance,
-                FilterValue::HorizontalDistance,
-                FilterValue::VerticalDistance,
-                FilterValue::Radius,
-                FilterValue::Weight,
-                FilterValue::Diameter,
-                FilterValue::Angle,
-                FilterValue::SnellsLaw,
-                FilterValue::Named,
-                FilterValue::NonDriving,
-                FilterValue::InternalAlignment),  // All = All other groups are covered (0)
-    buildBitset(FilterValue::Geometric,
-                FilterValue::Horizontal,
-                FilterValue::Vertical,
-                FilterValue::Coincident,
-                FilterValue::PointOnObject,
-                FilterValue::Parallel,
-                FilterValue::Perpendicular,
-                FilterValue::Tangent,
-                FilterValue::Equality,
-                FilterValue::Symmetric,
-                FilterValue::Block,
-                FilterValue::InternalAlignment),  // Geometric = All others not being datums (1)
+    buildBitset(
+        FilterValue::All,
+        FilterValue::Geometric,
+        FilterValue::Horizontal,
+        FilterValue::Vertical,
+        FilterValue::Coincident,
+        FilterValue::PointOnObject,
+        FilterValue::Parallel,
+        FilterValue::Perpendicular,
+        FilterValue::Tangent,
+        FilterValue::Equality,
+        FilterValue::Symmetric,
+        FilterValue::Block,
+        FilterValue::Group,
+        FilterValue::Text,
+        FilterValue::Datums,
+        FilterValue::Distance,
+        FilterValue::HorizontalDistance,
+        FilterValue::VerticalDistance,
+        FilterValue::Radius,
+        FilterValue::Weight,
+        FilterValue::Diameter,
+        FilterValue::Angle,
+        FilterValue::SnellsLaw,
+        FilterValue::Named,
+        FilterValue::NonDriving,
+        FilterValue::InternalAlignment
+    ),  // All = All other groups are covered (0)
+    buildBitset(
+        FilterValue::Geometric,
+        FilterValue::Horizontal,
+        FilterValue::Vertical,
+        FilterValue::Coincident,
+        FilterValue::PointOnObject,
+        FilterValue::Parallel,
+        FilterValue::Perpendicular,
+        FilterValue::Tangent,
+        FilterValue::Equality,
+        FilterValue::Symmetric,
+        FilterValue::Block,
+        FilterValue::Group,
+        FilterValue::Text,
+        FilterValue::InternalAlignment
+    ),  // Geometric = All others not being datums (1)
 
     buildBitset(FilterValue::Coincident),         // Coincident = Just this (2)
     buildBitset(FilterValue::PointOnObject),      // PointOnObject = Just this (3)
@@ -158,17 +171,21 @@ constexpr std::array<FilterValueBitset, FilterValueLength> filterAggregates {
     buildBitset(FilterValue::Equality),           // Equality = Just this (9)
     buildBitset(FilterValue::Symmetric),          // Symmetric = Just this (10)
     buildBitset(FilterValue::Block),              // Block = Just this (11)
+    buildBitset(FilterValue::Group),              // Group = Just this (11)
+    buildBitset(FilterValue::Text),               // Text = Just this (11)
     buildBitset(FilterValue::InternalAlignment),  // InternalAlignment = Just this (12)
 
-    buildBitset(FilterValue::Datums,
-                FilterValue::Distance,
-                FilterValue::HorizontalDistance,
-                FilterValue::VerticalDistance,
-                FilterValue::Radius,
-                FilterValue::Weight,
-                FilterValue::Diameter,
-                FilterValue::Angle,
-                FilterValue::SnellsLaw),  // Datum = all others not being geometric (13)
+    buildBitset(
+        FilterValue::Datums,
+        FilterValue::Distance,
+        FilterValue::HorizontalDistance,
+        FilterValue::VerticalDistance,
+        FilterValue::Radius,
+        FilterValue::Weight,
+        FilterValue::Diameter,
+        FilterValue::Angle,
+        FilterValue::SnellsLaw
+    ),  // Datum = all others not being geometric (13)
 
     buildBitset(FilterValue::HorizontalDistance),  // HorizontalDistance = Just this (14)
     buildBitset(FilterValue::VerticalDistance),    // VerticalDistance = Just this (15)
@@ -186,5 +203,3 @@ constexpr std::array<FilterValueBitset, FilterValueLength> filterAggregates {
 }  // namespace ConstraintFilter
 
 }  // namespace SketcherGui
-
-#endif  // SKETCHERGUI_ConstraintFilters_H

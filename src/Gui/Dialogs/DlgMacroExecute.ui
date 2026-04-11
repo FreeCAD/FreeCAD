@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Execute macro</string>
+   <string>Execute Macro</string>
   </property>
   <property name="modal">
    <bool>true</bool>
@@ -52,7 +52,7 @@
      <item row="0" column="0">
       <widget class="QGroupBox" name="MacroNameGroup">
        <property name="title">
-        <string>Macro name:</string>
+        <string>Macro Name</string>
        </property>
        <layout class="QGridLayout">
         <property name="leftMargin">
@@ -82,7 +82,7 @@
           <item>
            <widget class="QLabel" name="label">
             <property name="text">
-             <string>Find file:</string>
+             <string>Find file</string>
             </property>
            </widget>
           </item>
@@ -96,14 +96,14 @@
           <item>
            <widget class="QLabel" name="label1">
             <property name="text">
-             <string>Find in files:</string>
+             <string>Find in files</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QLineEdit" name="LineEditFindInFiles">
             <property name="toolTip">
-             <string>Filter by case-insensitive file content, regular expressions supported</string>
+             <string>Filter by file content, case-insensitive. Regular expressions are supported.</string>
             </property>
            </widget>
           </item>
@@ -278,7 +278,7 @@
           <bool>false</bool>
          </property>
          <property name="toolTip">
-          <string>Launch a guide on how to set up a macro in a custom global toolbar.</string>
+          <string>Launches a guide on how to set up a macro in a custom global toolbar</string>
          </property>
          <property name="text">
           <string>Toolbar</string>
@@ -304,7 +304,7 @@
           <bool>true</bool>
          </property>
          <property name="toolTip">
-          <string>Open Addon Manager where macros created by the community and other addons can be downloaded.</string>
+          <string>Opens the Addon Manager to download macros created by the community</string>
          </property>
          <property name="text">
           <string>Download</string>
@@ -318,7 +318,7 @@
    <item row="1" column="0">
     <widget class="QGroupBox" name="DestinationGroup">
      <property name="title">
-      <string>User macros location:</string>
+      <string>User Macros Location</string>
      </property>
      <layout class="QGridLayout">
       <property name="leftMargin">
@@ -352,10 +352,10 @@
          <bool>true</bool>
         </property>
         <property name="toolTip">
-         <string>Open folder with macros in system file manager.</string>
+         <string>Opens the macros folder in the system file manager</string>
         </property>
         <property name="text">
-         <string>Open folder</string>
+         <string>Open Folder</string>
         </property>
        </widget>
       </item>

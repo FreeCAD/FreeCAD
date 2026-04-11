@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskLoftParameters_H
-#define GUI_TASKVIEW_TaskLoftParameters_H
+#pragma once
 
 #include "TaskSketchBasedParameters.h"
 #include "ViewProviderLoft.h"
@@ -30,23 +31,30 @@
 class Ui_TaskLoftParameters;
 class QListWidget;
 
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace Gui {
+namespace Gui
+{
 class ViewProvider;
 }
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
 
-class TaskLoftParameters : public TaskSketchBasedParameters
+class TaskLoftParameters: public TaskSketchBasedParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskLoftParameters(ViewProviderLoft *LoftView, bool newObj=false, QWidget *parent = nullptr);
+    explicit TaskLoftParameters(
+        ViewProviderLoft* LoftView,
+        bool newObj = false,
+        QWidget* parent = nullptr
+    );
     ~TaskLoftParameters() override;
 
 private Q_SLOTS:
@@ -59,16 +67,22 @@ private Q_SLOTS:
     void indexesMoved();
 
 protected:
-    enum selectionModes { none, refAdd, refRemove, refProfile };
+    enum selectionModes
+    {
+        none,
+        refAdd,
+        refRemove,
+        refProfile
+    };
 
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
 private:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void updateUI();
     bool referenceSelected(const Gui::SelectionChanges& msg) const;
-    void removeFromListWidget(QListWidget*w, QString name);
-    void clearButtons(const selectionModes notThis=none);
+    void removeFromListWidget(QListWidget* w, QString name);
+    void clearButtons(const selectionModes notThis = none);
     void exitSelectionMode();
     void setSelectionMode(selectionModes mode, bool checked);
 
@@ -80,21 +94,19 @@ private:
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgLoftParameters : public TaskDlgSketchBasedParameters
+class TaskDlgLoftParameters: public TaskDlgSketchBasedParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgLoftParameters(ViewProviderLoft *LoftView,bool newObj=false);
+    explicit TaskDlgLoftParameters(ViewProviderLoft* LoftView, bool newObj = false);
     ~TaskDlgLoftParameters() override;
 
     /// is called by the framework if the dialog is accepted (Ok)
     bool accept() override;
 
 protected:
-    TaskLoftParameters  *parameter;
+    TaskLoftParameters* parameter;
 };
 
-} //namespace PartDesignGui
-
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+}  // namespace PartDesignGui

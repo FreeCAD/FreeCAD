@@ -4,52 +4,52 @@
   <context>
     <name>UnitsApi</name>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="85"/>
+      <location filename="../../UnitsSchemasData.h" line="93"/>
       <source>Standard (mm, kg, s, °)</source>
       <translation>Стандарт (мм, кг, с, градус)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="315"/>
+      <location filename="../../UnitsSchemasData.h" line="351"/>
       <source>MKS (m, kg, s, °)</source>
-      <translation>МКС (м, кг, с, градус)</translation>
+      <translation>МКС (м, кг, сек, градус)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="579"/>
+      <location filename="../../UnitsSchemasData.h" line="624"/>
       <source>US customary (in, lb)</source>
       <translation>Умовні позначення США (дюйми, фунти)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="70"/>
+      <location filename="../../UnitsSchemasData.h" line="679"/>
+      <source>Imperial for Civil Eng (ft, lb, mph)</source>
+      <translation>Імперська для цивільних інженерів (фути, фунти, милі/год)</translation>
+    </message>
+    <message>
+      <location filename="../../UnitsSchemasData.h" line="77"/>
       <source>Imperial decimal (in, lb)</source>
       <translation>Імперська десяткова система (дюйми, фунти)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="540"/>
+      <location filename="../../UnitsSchemasData.h" line="582"/>
       <source>Building Euro (cm, m², m³)</source>
       <translation>Будівництво Євро (см, м², м³)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="617"/>
+      <location filename="../../UnitsSchemasData.h" line="668"/>
       <source>Building US (ft-in, sqft, cft)</source>
-      <translation>Будівництво США (ft-in, sqft, cft)</translation>
+      <translation>Будівництво США (фути-дюйми, фути², фути³)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="48"/>
+      <location filename="../../UnitsSchemasData.h" line="54"/>
       <source>Metric small parts &amp; CNC (mm, mm/min)</source>
       <translation>Метричні дрібні деталі та ЧПК (мм, мм/хв)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="628"/>
-      <source>Imperial for Civil Eng (ft, ft/s)</source>
-      <translation>Імперська для цивільних (ft, ft/с)</translation>
-    </message>
-    <message>
-      <location filename="../../UnitsSchemasData.h" line="567"/>
+      <location filename="../../UnitsSchemasData.h" line="612"/>
       <source>FEM (mm, N, s)</source>
-      <translation>МСЕ (мм, Н, с)</translation>
+      <translation>Механічна система одиниць (мм, Н, сек)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="57"/>
+      <location filename="../../UnitsSchemasData.h" line="63"/>
       <source>Meter decimal (m, m², m³)</source>
       <translation>Метрична десяткова (м, м², м³)</translation>
     </message>

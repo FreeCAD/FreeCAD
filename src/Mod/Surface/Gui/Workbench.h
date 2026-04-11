@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Nathan Miller <Nathan.A.Mill[at]gmail.com>         *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef Surface_WORKBENCH_H
-#define Surface_WORKBENCH_H
+#pragma once
 
 #include <Gui/Workbench.h>
 
@@ -43,6 +44,3 @@ protected:
 };
 
 }  // namespace SurfaceGui
-
-
-#endif  // Surface_WORKBENCH_H

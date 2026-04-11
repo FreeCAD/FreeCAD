@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef FREECAD_FLOWLAYOUT_H
-#define FREECAD_FLOWLAYOUT_H
+#pragma once
 
 #include <QLayout>
 #include <QList>
@@ -41,10 +40,7 @@ class FlowLayout: public QLayout
     Q_OBJECT
 
 public:
-    explicit FlowLayout(QWidget* parent = nullptr,
-                        int margin = -1,
-                        int hSpacing = -1,
-                        int vSpacing = -1);
+    explicit FlowLayout(QWidget* parent = nullptr, int margin = -1, int hSpacing = -1, int vSpacing = -1);
     ~FlowLayout() override;
 
     void addItem(QLayoutItem* item) override;
@@ -71,5 +67,3 @@ private:
 };
 
 }  // namespace StartGui
-
-#endif  // FREECAD_FLOWLAYOUT_H

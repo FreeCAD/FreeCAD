@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMFACE_H
-#define DRAWINGGUI_QGRAPHICSITEMFACE_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -108,7 +107,6 @@ public:
     //PAT fill parms & methods
     void setLineWeight(double weight);
 
-    [[deprecated]] void clearLineSets();
     void addLineSet(TechDraw::LineSet& ls);
 
     void lineSetToFillItems(TechDraw::LineSet& ls);
@@ -177,4 +175,3 @@ private:
 };
 
 }
-#endif // DRAWINGGUI_QGRAPHICSITEMFACE_H

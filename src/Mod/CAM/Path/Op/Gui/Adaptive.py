@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2018 Kresimir Tusek <kresimir.tusek@gmail.com>          *
 # *                                                                         *
@@ -44,40 +45,39 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         return form
 
     def initPage(self, obj):
+        self.form.HelixMaxStepdown.setProperty("unit", obj.HelixMaxStepdown.getUserPreferred()[2])
+
         self.form.LiftDistance.setProperty("unit", obj.LiftDistance.getUserPreferred()[2])
-        self.form.HelixDiameterLimit.setProperty(
-            "unit", obj.HelixDiameterLimit.getUserPreferred()[2]
-        )
         self.form.KeepToolDownRatio.setProperty("unit", obj.KeepToolDownRatio.getUserPreferred()[2])
         self.form.StockToLeave.setProperty("unit", obj.StockToLeave.getUserPreferred()[2])
-        self.form.ZStockToLeave.setProperty("unit", obj.ZStockToLeave.getUserPreferred()[2])
 
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
         signals = []
         signals.append(self.form.Side.currentIndexChanged)
         signals.append(self.form.OperationType.currentIndexChanged)
-        signals.append(self.form.ToolController.currentIndexChanged)
+        signals.append(self.form.toolController.currentIndexChanged)
         signals.append(self.form.stepOverPercent.valueChanged)
         signals.append(self.form.Tolerance.valueChanged)
         signals.append(self.form.HelixAngle.valueChanged)
+        signals.append(self.form.HelixMaxStepdown.valueChanged)
         signals.append(self.form.HelixConeAngle.valueChanged)
-        signals.append(self.form.HelixDiameterLimit.valueChanged)
+        signals.append(self.form.HelixMaxDiameterPercent.valueChanged)
+        signals.append(self.form.HelixMinDiameterPercent.valueChanged)
         signals.append(self.form.LiftDistance.valueChanged)
         signals.append(self.form.KeepToolDownRatio.valueChanged)
         signals.append(self.form.StockToLeave.valueChanged)
-        signals.append(self.form.ZStockToLeave.valueChanged)
         signals.append(self.form.coolantController.currentIndexChanged)
         if hasattr(self.form.ForceInsideOut, "checkStateChanged"):  # Qt version >= 6.7.0
             signals.append(self.form.ForceInsideOut.checkStateChanged)
             signals.append(self.form.FinishingProfile.checkStateChanged)
             signals.append(self.form.useOutline.checkStateChanged)
-            signals.append(self.form.orderCutsByRegion.checkStateChanged)
+            signals.append(self.form.useRestMachining.checkStateChanged)
         else:  # Qt version < 6.7.0
             signals.append(self.form.ForceInsideOut.stateChanged)
             signals.append(self.form.FinishingProfile.stateChanged)
             signals.append(self.form.useOutline.stateChanged)
-            signals.append(self.form.orderCutsByRegion.stateChanged)
+            signals.append(self.form.useRestMachining.stateChanged)
         signals.append(self.form.StopButton.toggled)
         return signals
 
@@ -91,11 +91,14 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             FreeCAD.Units.Quantity(obj.HelixAngle, FreeCAD.Units.Angle).UserString
         )
 
+        self.form.HelixMaxStepdown.setProperty("rawValue", obj.HelixMaxStepdown.Value)
+
         self.form.HelixConeAngle.setText(
             FreeCAD.Units.Quantity(obj.HelixConeAngle, FreeCAD.Units.Angle).UserString
         )
 
-        self.form.HelixDiameterLimit.setProperty("rawValue", obj.HelixDiameterLimit.Value)
+        self.form.HelixMaxDiameterPercent.setValue(obj.HelixMaxDiameterPercent)
+        self.form.HelixMinDiameterPercent.setValue(obj.HelixMinDiameterPercent)
 
         self.form.LiftDistance.setProperty("rawValue", obj.LiftDistance.Value)
 
@@ -106,14 +109,11 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if hasattr(obj, "StockToLeave"):
             self.form.StockToLeave.setProperty("rawValue", obj.StockToLeave.Value)
 
-        if hasattr(obj, "ZStockToLeave"):
-            self.form.ZStockToLeave.setProperty("rawValue", obj.ZStockToLeave.Value)
-
         self.form.ForceInsideOut.setChecked(obj.ForceInsideOut)
         self.form.FinishingProfile.setChecked(obj.FinishingProfile)
         self.form.useOutline.setChecked(obj.UseOutline)
-        self.form.orderCutsByRegion.setChecked(obj.OrderCutsByRegion)
-        self.setupToolController(obj, self.form.ToolController)
+        self.form.useRestMachining.setChecked(obj.UseRestMachining)
+        self.setupToolController(obj, self.form.toolController)
         self.setupCoolant(obj, self.form.coolantController)
         self.form.StopButton.setChecked(obj.Stopped)
         obj.setEditorMode("AdaptiveInputState", 2)  # hide this property
@@ -131,10 +131,16 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if obj.StepOver != self.form.stepOverPercent.value():
             obj.StepOver = self.form.stepOverPercent.value()
 
+        if obj.HelixMaxDiameterPercent != self.form.HelixMaxDiameterPercent.value():
+            obj.HelixMaxDiameterPercent = self.form.HelixMaxDiameterPercent.value()
+
+        if obj.HelixMinDiameterPercent != self.form.HelixMinDiameterPercent.value():
+            obj.HelixMinDiameterPercent = self.form.HelixMinDiameterPercent.value()
+
         obj.Tolerance = 1.0 * self.form.Tolerance.value() / 100.0
         PathGuiUtil.updateInputField(obj, "HelixAngle", self.form.HelixAngle)
+        PathGuiUtil.updateInputField(obj, "HelixMaxStepdown", self.form.HelixMaxStepdown)
         PathGuiUtil.updateInputField(obj, "HelixConeAngle", self.form.HelixConeAngle)
-        PathGuiUtil.updateInputField(obj, "HelixDiameterLimit", self.form.HelixDiameterLimit)
         PathGuiUtil.updateInputField(obj, "LiftDistance", self.form.LiftDistance)
 
         if hasattr(obj, "KeepToolDownRatio"):
@@ -143,19 +149,16 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if hasattr(obj, "StockToLeave"):
             PathGuiUtil.updateInputField(obj, "StockToLeave", self.form.StockToLeave)
 
-        if hasattr(obj, "ZStockToLeave"):
-            PathGuiUtil.updateInputField(obj, "ZStockToLeave", self.form.ZStockToLeave)
-
         obj.ForceInsideOut = self.form.ForceInsideOut.isChecked()
         obj.FinishingProfile = self.form.FinishingProfile.isChecked()
         obj.UseOutline = self.form.useOutline.isChecked()
-        obj.OrderCutsByRegion = self.form.orderCutsByRegion.isChecked()
+        obj.UseRestMachining = self.form.useRestMachining.isChecked()
         obj.Stopped = self.form.StopButton.isChecked()
         if obj.Stopped:
             self.form.StopButton.setChecked(False)  # reset the button
             obj.StopProcessing = True
 
-        self.updateToolController(obj, self.form.ToolController)
+        self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
         obj.setEditorMode("AdaptiveInputState", 2)  # hide this property
         obj.setEditorMode("AdaptiveOutputState", 2)  # hide this property

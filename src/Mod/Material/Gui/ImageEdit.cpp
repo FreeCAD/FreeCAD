@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
@@ -19,8 +21,6 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QBuffer>
 #include <QFile>
 #include <QMenu>
@@ -30,7 +30,7 @@
 #include <QString>
 #include <QSvgRenderer>
 #include <QTextStream>
-#endif
+
 
 #include <Gui/FileDialog.h>
 #include <Gui/MainWindow.h>
@@ -183,7 +183,7 @@ void ImageEdit::onFileSelect(bool checked)
     }
 }
 
-QString ImageEdit::selectFile(const QString& filePatterns)
+QString ImageEdit::selectFile(const QStringList& filePatterns)
 {
     QFileDialog::Options dlgOpt;
     if (Gui::DialogOptions::dontUseNativeFileDialog()) {
@@ -203,7 +203,10 @@ QString ImageEdit::selectFile(const QString& filePatterns)
 
 void ImageEdit::onFileSelectImage()
 {
-    QString fn = selectFile(tr("Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)"));
+    QStringList filterList;
+    filterList << tr("Image files (*.jpg *.jpeg *.png *.bmp)");
+    filterList << tr("All files (*)");
+    QString fn = selectFile(filterList);
     if (!fn.isEmpty()) {
         fn = QDir::fromNativeSeparators(fn);
 
@@ -215,7 +218,10 @@ void ImageEdit::onFileSelectImage()
 
 void ImageEdit::onFileSelectSVG()
 {
-    QString fn = selectFile(tr("Image files (*.svg);;All files (*)"));
+    QStringList filterList;
+    filterList << tr("Image files (*.svg)");
+    filterList << tr("All files (*)");
+    QString fn = selectFile(filterList);
     if (!fn.isEmpty()) {
         fn = QDir::fromNativeSeparators(fn);
 

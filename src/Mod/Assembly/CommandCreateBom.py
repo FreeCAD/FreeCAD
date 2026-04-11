@@ -66,24 +66,14 @@ class CommandCreateBom:
     def GetResources(self):
         return {
             "Pixmap": "Assembly_BillOfMaterials",
-            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateBom", "Create Bill of Materials"),
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateBom", "Bill of Materials"),
             "Accel": "O",
-            "ToolTip": "<p>"
-            + QT_TRANSLATE_NOOP(
+            "ToolTip": QT_TRANSLATE_NOOP(
                 "Assembly_CreateBom",
-                "Create a bill of materials of the current assembly. If an assembly is active, it will be a BOM of this assembly. Else it will be a BOM of the whole document.",
-            )
-            + "</p><p>"
-            + QT_TRANSLATE_NOOP(
-                "Assembly_CreateBom",
-                "The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you don't need the BOM object to be saved as a document object, you can simply export and cancel the task.",
-            )
-            + "</p><p>"
-            + QT_TRANSLATE_NOOP(
-                "Assembly_CreateBom",
-                "The columns 'Index', 'Name', 'File Name' and 'Quantity' are automatically generated on recompute. The 'Description' and custom columns are not overwritten.",
-            )
-            + "</p>",
+                "<p>Creates a bill of materials of the current assembly. If an assembly is active, it will be a BOM of this assembly. Else it will be a BOM of the whole document.</p>"
+                "<p>The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you do not need the BOM object to be saved as a document object, you can simply export and cancel the task.</p>"
+                "<p>The columns 'Index', 'Name', 'File Name' and 'Quantity' are automatically generated on recompute. The 'Description' and custom columns are not overwritten.</p>",
+            ),
             "CmdType": "ForEdit",
         }
 
@@ -92,7 +82,10 @@ class CommandCreateBom:
 
     def Activated(self):
         self.panel = TaskAssemblyCreateBom()
-        Gui.Control.showDialog(self.panel)
+        dialog = Gui.Control.showDialog(self.panel)
+        if dialog is not None:
+            dialog.setAutoCloseOnDeletedDocument(True)
+            dialog.setDocumentName(App.ActiveDocument.Name)
 
 
 ######### Create Exploded View Task ###########
@@ -122,7 +115,7 @@ class TaskAssemblyCreateBom(QtCore.QObject):
         pref = Preferences.preferences()
 
         if bomObj:
-            App.setActiveTransaction("Edit Bill Of Materials")
+            Gui.ActiveDocument.openCommand("Edit Bill Of Materials")
 
             for name in bomObj.columnsNames:
                 if name in ColumnNames:
@@ -132,23 +125,21 @@ class TaskAssemblyCreateBom(QtCore.QObject):
                 self.addColItem(name)
 
             self.bomObj = bomObj
-            self.form.CheckBox_onlyParts.setChecked(bomObj.onlyParts)
-            self.form.CheckBox_detailParts.setChecked(bomObj.detailParts)
-            self.form.CheckBox_detailSubAssemblies.setChecked(bomObj.detailSubAssemblies)
-
         else:
-            App.setActiveTransaction("Create Bill Of Materials")
+            Gui.ActiveDocument.openCommand("Create Bill Of Materials")
 
             # Add the columns
             for name in TranslatedColumnNames:
                 self.addColItem(name)
 
             self.createBomObject()
-            self.form.CheckBox_onlyParts.setChecked(pref.GetBool("BOMOnlyParts", False))
-            self.form.CheckBox_detailParts.setChecked(pref.GetBool("BOMDetailParts", True))
-            self.form.CheckBox_detailSubAssemblies.setChecked(
-                pref.GetBool("BOMDetailSubAssemblies", True)
-            )
+            self.bomObj.onlyParts = pref.GetBool("BOMOnlyParts", False)
+            self.bomObj.detailParts = pref.GetBool("BOMDetailParts", True)
+            self.bomObj.detailSubAssemblies = pref.GetBool("BOMDetailSubAssemblies", True)
+
+        self.form.CheckBox_onlyParts.setChecked(self.bomObj.onlyParts)
+        self.form.CheckBox_detailParts.setChecked(self.bomObj.detailParts)
+        self.form.CheckBox_detailSubAssemblies.setChecked(self.bomObj.detailSubAssemblies)
 
         self.form.columnList.model().rowsMoved.connect(self.onItemsReordered)
         self.form.columnList.itemChanged.connect(self.itemUpdated)
@@ -161,7 +152,7 @@ class TaskAssemblyCreateBom(QtCore.QObject):
 
     def accept(self):
         self.deactivate()
-        App.closeActiveTransaction()
+        Gui.ActiveDocument.commitCommand()
 
         self.bomObj.recompute()
 
@@ -171,7 +162,7 @@ class TaskAssemblyCreateBom(QtCore.QObject):
 
     def reject(self):
         self.deactivate()
-        App.closeActiveTransaction(True)
+        Gui.ActiveDocument.abortCommand()
         return True
 
     def deactivate(self):
@@ -234,7 +225,7 @@ class TaskAssemblyCreateBom(QtCore.QObject):
         noneAdded = True
         for name in TranslatedColumnNames:
             if name not in current_columns:
-                action = QtWidgets.QAction(f"Add '{name}' column", self)
+                action = QtGui.QAction(f"Add '{name}' column", self)
                 action.triggered.connect(partial(self.addColItem, name))
                 menu.addAction(action)
                 noneAdded = False
@@ -244,7 +235,7 @@ class TaskAssemblyCreateBom(QtCore.QObject):
             return
 
         # Add the action for adding a custom column
-        action = QtWidgets.QAction("Add custom column", self)
+        action = QtGui.QAction("Add custom column", self)
         action.triggered.connect(self.addColumn)
         menu.addAction(action)
 
@@ -366,32 +357,33 @@ class TaskAssemblyCreateBom(QtCore.QObject):
         help_dialog.setWindowFlags(QtCore.Qt.Popup)
         help_dialog.setWindowModality(QtCore.Qt.NonModal)
         help_dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+        help_dialog.setFixedWidth(500)
 
         layout = QtWidgets.QVBoxLayout()
         layout.setContentsMargins(10, 10, 10, 10)
 
-        options_title = QtWidgets.QLabel("<b>" + translate("Assembly", "Options:") + "</b>")
+        options_title = QtWidgets.QLabel("<b>" + translate("Assembly", "Options") + "</b>")
         options_text = QtWidgets.QLabel(
             " - "
             + translate(
                 "Assembly",
-                "Sub-assemblies children : If checked, Sub assemblies children will be added to the bill of materials.",
+                "Sub-assembly children: the children of sub-assemblies will be included in the bill of materials",
             )
             + "\n"
             " - "
             + translate(
                 "Assembly",
-                "Parts children : If checked, Parts children will be added to the bill of materials.",
+                "Parts children: the children of parts will be added to the bill of materials",
             )
             + "\n"
             " - "
             + translate(
                 "Assembly",
-                "Only parts : If checked, only Part containers and sub-assemblies will be added to the bill of materials. Solids like PartDesign Bodies, fasteners or Part workbench primitives will be ignored.",
+                "Only parts: adds only part containers and sub-assemblies to the bill of materials. Solids like Part Design bodies, fasteners, or Part workbench primitives are ignored.",
             )
             + "\n"
         )
-        columns_title = QtWidgets.QLabel("<b>" + translate("Assembly", "Columns:") + "</b>")
+        columns_title = QtWidgets.QLabel("<b>" + translate("Assembly", "Columns") + "</b>")
         columns_text = QtWidgets.QLabel(
             " - "
             + translate(
@@ -402,29 +394,34 @@ class TaskAssemblyCreateBom(QtCore.QObject):
             " - "
             + translate(
                 "Assembly",
-                "Custom columns : 'Description' and other custom columns you add by clicking on 'Add column' will not have their data overwritten. If a column name starts with '.' followed by a property name (e.g. '.Length'), it will be auto-populated with that property value. These columns can be renamed by double-clicking or pressing F2 (Renaming a column will currently lose its data).",
+                "Custom columns : 'Description' and other custom columns you add by clicking on 'Add column' will not have their data overwritten. If a column name starts with '.' followed by a property name (e.g. '.Length'), it will be auto-populated with that property value. These columns can be renamed by double-clicking or pressing F2 (renaming a column will currently lose its data).",
             )
             + "\n"
             "\n"
             + translate(
                 "Assembly",
-                "Any column (custom or not) can be deleted by pressing Del.",
+                "Any column (custom or not), can be deleted by pressing the Delete key",
             )
             + "\n"
         )
-        export_title = QtWidgets.QLabel("<b>" + translate("Assembly", "Export:") + "</b>")
+        export_title = QtWidgets.QLabel("<b>" + translate("Assembly", "Export") + "</b>")
         export_text = QtWidgets.QLabel(
             " - "
             + translate(
                 "Assembly",
-                "The exported file format can be customized in the Spreadsheet workbench preferences.",
+                "The exported file format can be customized in the Spreadsheet workbench preferences",
             )
             + "\n"
         )
 
-        options_text.setWordWrap(True)
-        columns_text.setWordWrap(True)
-        export_text.setWordWrap(True)
+        layout_width = (
+            help_dialog.contentsRect().width()
+            - layout.contentsMargins().left()
+            - layout.contentsMargins().right()
+        )
+        for label in (options_text, columns_text, export_text):
+            label.setWordWrap(True)
+            label.setFixedWidth(layout_width)
 
         layout.addWidget(options_title)
         layout.addWidget(options_text)
@@ -434,7 +431,6 @@ class TaskAssemblyCreateBom(QtCore.QObject):
         layout.addWidget(export_text)
 
         help_dialog.setLayout(layout)
-        help_dialog.setFixedWidth(500)
 
         help_dialog.show()
 

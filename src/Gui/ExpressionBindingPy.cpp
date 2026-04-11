@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <App/DocumentObjectPy.h>
 
@@ -33,7 +32,7 @@
 using namespace Gui;
 
 ExpressionBindingPy::ExpressionBindingPy(Py::PythonClassInstance* self, Py::Tuple& args, Py::Dict& kwds)
-  : Py::PythonClass<ExpressionBindingPy>::PythonClass(self, args, kwds)
+    : Py::PythonClass<ExpressionBindingPy>::PythonClass(self, args, kwds)
 {
     PyObject* pyObj;
     if (!PyArg_ParseTuple(args.ptr(), "O", &pyObj)) {
@@ -88,8 +87,7 @@ ExpressionBinding* ExpressionBindingPy::asBinding(QWidget* obj)
                 expr = inp;
                 break;
             }
-        }
-        while (false);
+        } while (false);
     }
 
     return expr;

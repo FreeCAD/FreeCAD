@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Friedli <david[at]friedli-be.ch>             *
  *                                                                         *
@@ -20,8 +22,6 @@
  **************************************************************************/
 
 
-#include "PreCompiled.h"
-
 #include <App/PropertyContainer.h>
 #include <App/Application.h>
 #include <App/Document.h>
@@ -38,27 +38,27 @@ PROPERTY_SOURCE(Measure::MeasureAngle, Measure::MeasureBase)
 
 MeasureAngle::MeasureAngle()
 {
-    ADD_PROPERTY_TYPE(Element1,
-                      (nullptr),
-                      "Measurement",
-                      App::Prop_None,
-                      "First element of the measurement");
+    ADD_PROPERTY_TYPE(Element1, (nullptr), "Measurement", App::Prop_None, "First element of the measurement");
     Element1.setScope(App::LinkScope::Global);
     Element1.setAllowExternal(true);
 
-    ADD_PROPERTY_TYPE(Element2,
-                      (nullptr),
-                      "Measurement",
-                      App::Prop_None,
-                      "Second element of the measurement");
+    ADD_PROPERTY_TYPE(
+        Element2,
+        (nullptr),
+        "Measurement",
+        App::Prop_None,
+        "Second element of the measurement"
+    );
     Element2.setScope(App::LinkScope::Global);
     Element2.setAllowExternal(true);
 
-    ADD_PROPERTY_TYPE(Angle,
-                      (0.0),
-                      "Measurement",
-                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-                      "Angle between the two elements");
+    ADD_PROPERTY_TYPE(
+        Angle,
+        (0.0),
+        "Measurement",
+        App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
+        "Angle between the two elements"
+    );
     Angle.setUnit(Base::Unit::Angle);
 }
 
@@ -233,7 +233,28 @@ App::DocumentObjectExecReturn* MeasureAngle::execute()
     Base::Vector3d vec2;
     getVec(*ob2, subs2.at(0), vec2);
 
-    Angle.setValue(Base::toDegrees(vec1.GetAngle(vec2)));
+    if (vec1.IsParallel(vec2, Base::Precision::Angular())) {
+        // handle case when both vectors are parallel
+        Angle.setValue(0);
+    }
+    else {
+        // get oriented vectors based on common origin
+        Base::Vector3d loc1 = getLoc(*ob1, subs1.at(0));
+        Base::Vector3d loc2 = getLoc(*ob2, subs2.at(0));
+        Base::Vector3d origin = (loc1 + loc2) * 0.5;
+
+        // flip if needed, to make them point away from origin
+        if ((loc1 - origin).Dot(vec1) < 0) {
+            vec1 = -vec1;
+        }
+        if ((loc2 - origin).Dot(vec2) < 0) {
+            vec2 = -vec2;
+        }
+
+        // get oriented angle wrt normal axis
+        Base::Vector3d normalAxis = (vec1.Cross(vec2)).Normalize();
+        Angle.setValue(Base::toDegrees(vec1.GetAngleOriented(vec2, normalAxis)));
+    }
 
     return DocumentObject::StdReturn;
 }

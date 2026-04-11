@@ -21,7 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Gui/Application.h>
 #include "Mod/Fem/App/FemConstraint.h"
@@ -52,7 +51,8 @@ void ViewProviderFemConstraintOnBoundary::highlightReferences(const bool on)
             continue;
         }
         PartGui::ViewProviderPart* vp = dynamic_cast<PartGui::ViewProviderPart*>(
-            Gui::Application::Instance->getViewProvider(base));
+            Gui::Application::Instance->getViewProvider(base)
+        );
         if (!vp) {
             continue;
         }
@@ -73,7 +73,8 @@ void ViewProviderFemConstraintOnBoundary::highlightReferences(const bool on)
                 // TODO: Replace `ShapeAppearance` with anything more appropriate
                 PartGui::ReferenceHighlighter highlighter(
                     base->Shape.getValue(),
-                    colors.empty() ? ShapeAppearance.getDiffuseColor() : colors[0]);
+                    colors.empty() ? ShapeAppearance.getDiffuseColor() : colors[0]
+                );
                 highlighter.getVertexColors(subSet.second, colors);
                 vp->PointColorArray.setValues(colors);
             }
@@ -88,7 +89,8 @@ void ViewProviderFemConstraintOnBoundary::highlightReferences(const bool on)
                 // TODO: Replace `ShapeAppearance` with anything more appropriate
                 PartGui::ReferenceHighlighter highlighter(
                     base->Shape.getValue(),
-                    colors.empty() ? ShapeAppearance.getDiffuseColor() : colors[0]);
+                    colors.empty() ? ShapeAppearance.getDiffuseColor() : colors[0]
+                );
                 highlighter.getEdgeColors(subSet.second, colors);
                 vp->LineColorArray.setValues(colors);
             }
@@ -103,7 +105,8 @@ void ViewProviderFemConstraintOnBoundary::highlightReferences(const bool on)
                 // TODO: Replace shape DiffuseColor with anything more appropriate
                 PartGui::ReferenceHighlighter highlighter(
                     base->Shape.getValue(),
-                    colors.empty() ? ShapeAppearance.getDiffuseColor() : colors[0]);
+                    colors.empty() ? ShapeAppearance.getDiffuseColor() : colors[0]
+                );
                 highlighter.getFaceColors(subSet.second, colors);
                 vp->ShapeAppearance.setDiffuseColors(colors);
             }
@@ -132,7 +135,8 @@ void ViewProviderFemConstraintOnBoundary::highlightReferences(const bool on)
                 continue;
             }
             PartGui::ViewProviderPart* vp = dynamic_cast<PartGui::ViewProviderPart*>(
-                Gui::Application::Instance->getViewProvider(ogPair.first));
+                Gui::Application::Instance->getViewProvider(ogPair.first)
+            );
             if (!vp) {
                 continue;
             }
@@ -146,7 +150,8 @@ void ViewProviderFemConstraintOnBoundary::highlightReferences(const bool on)
                 continue;
             }
             PartGui::ViewProviderPart* vp = dynamic_cast<PartGui::ViewProviderPart*>(
-                Gui::Application::Instance->getViewProvider(ogPair.first));
+                Gui::Application::Instance->getViewProvider(ogPair.first)
+            );
             if (!vp) {
                 continue;
             }
@@ -160,7 +165,8 @@ void ViewProviderFemConstraintOnBoundary::highlightReferences(const bool on)
                 continue;
             }
             PartGui::ViewProviderPart* vp = dynamic_cast<PartGui::ViewProviderPart*>(
-                Gui::Application::Instance->getViewProvider(ogPair.first));
+                Gui::Application::Instance->getViewProvider(ogPair.first)
+            );
             if (!vp) {
                 continue;
             }

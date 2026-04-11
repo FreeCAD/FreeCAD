@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,16 +22,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_FEATURECHAMFER_H
-#define PART_FEATURECHAMFER_H
+#pragma once
 
 #include "PartFeature.h"
 
+#include <Mod/Part/PartGlobal.h>
 
 namespace Part
 {
 
-class PartExport Chamfer : public Part::FilletBase
+class PartExport Chamfer: public Part::FilletBase
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::Chamfer);
 
@@ -39,16 +41,13 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
     /// returns the type name of the view provider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PartGui::ViewProviderChamfer";
     }
     //@}
 };
 
-} //namespace Part
-
-
-#endif // PART_FEATURECHAMFER_H
-
+}  // namespace Part

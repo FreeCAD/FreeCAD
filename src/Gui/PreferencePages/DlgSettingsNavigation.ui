@@ -17,7 +17,7 @@
    <item>
     <widget class="QGroupBox" name="groupBoxNaviCube">
      <property name="title">
-      <string>Navigation cube</string>
+      <string>Navigation Cube</string>
      </property>
      <property name="checkable">
       <bool>true</bool>
@@ -81,7 +81,7 @@
       <item row="0" column="4">
        <widget class="Gui::PrefComboBox" name="naviCubeCorner">
         <property name="toolTip">
-         <string>Corner where navigation cube is shown</string>
+         <string>Corner where the navigation cube is displayed</string>
         </property>
         <property name="currentIndex">
          <number>1</number>
@@ -117,7 +117,7 @@
       <item row="1" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="naviCubeToNearest">
         <property name="toolTip">
-         <string>Rotates to nearest possible state when clicking a cube face</string>
+         <string>Rotates to nearest possible state when clicking a face of the cube</string>
         </property>
         <property name="text">
          <string>Rotate to nearest</string>
@@ -279,7 +279,7 @@
    <item>
     <widget class="QGroupBox" name="groupBoxRotationCenter">
      <property name="title">
-      <string>Rotation center indicator</string>
+      <string>Rotation Center Indicator</string>
      </property>
      <property name="checkable">
       <bool>true</bool>
@@ -381,7 +381,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="navigationLabel">
         <property name="text">
-         <string>3D Navigation</string>
+         <string>3D navigation</string>
         </property>
        </widget>
       </item>
@@ -418,11 +418,11 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>List the mouse button configs for each chosen navigation setting.
+           <string>Lists the mouse button configs for each chosen navigation setting.
 Select a set and then press the button to view said configurations.</string>
           </property>
           <property name="text">
-           <string>Mouse...</string>
+           <string>Mouse Configuration</string>
           </property>
          </widget>
         </item>
@@ -474,10 +474,10 @@ Select a set and then press the button to view said configurations.</string>
         <property name="toolTip">
          <string>Rotation orbit style.
 Rounded Arcball: moving the mouse in the corners of the screen will only roll the part.
-Trackball: moving the mouse horizontally will rotate the part around the y-axis.
+Trackball: moving the mouse horizontally will rotate the part around the Y-axis.
 Trackball Classic: moving the mouse will rotate the part allowing precession.
-Turntable: the part will be rotated around the z-axis (with constrained axes).
-Free Turntable: the part will be rotated around the z-axis.
+Turntable: the part will be rotated around the Z-axis (with constrained axes).
+Free Turntable: the part will be rotated around the Z-axis.
          </string>
         </property>
         <property name="currentIndex">
@@ -717,7 +717,7 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</string>
        <widget class="Gui::PrefCheckBox" name="checkBoxDisableTilt">
         <property name="toolTip">
          <string>Prevents view tilting when pinch-zooming.
-Affects only gesture navigation style.
+Affects only Gesture navigation style.
 Mouse tilting is not disabled by this setting.</string>
         </property>
         <property name="text">
@@ -740,13 +740,13 @@ Mouse tilting is not disabled by this setting.</string>
    <item>
     <widget class="QGroupBox" name="spaceMouseDevice">
      <property name="title">
-      <string>Space mouse</string>
+      <string>Space Mouse</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_5">
       <item row="0" column="0">
        <widget class="Gui::PrefCheckBox" name="legacySpaceMouseDevices">
         <property name="text">
-         <string>Enable support of legacy space mouse devices</string>
+         <string>Enable support of legacy SpaceMouse devices</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>LegacySpaceMouseDevices</cstring>
@@ -851,6 +851,99 @@ Mouse tilting is not disabled by this setting.</string>
     </widget>
    </item>
    <item>
+    <widget class="QGroupBox" name="groupBoxClarifySelection">
+     <property name="title">
+      <string>Clarify Selection</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_6">
+      <item row="0" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkBoxEnableLongPressClarifySelection">
+        <property name="toolTip">
+         <string>Enable Clarify Selection on long press of left mouse button.
+When enabled, holding left mouse button shows a menu to select overlapping objects.
+Some navigation styles (OpenInventor, Gesture, OpenSCAD) require Ctrl+LMB instead of just LMB.</string>
+        </property>
+        <property name="text">
+         <string>Enable long press clarify selection</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>EnableLongPressClarifySelection</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="labelLongPressTimeout">
+        <property name="toolTip">
+         <string>Time in seconds to hold left mouse button before showing clarify selection menu</string>
+        </property>
+        <property name="text">
+         <string>Long press timeout</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="Gui::PrefDoubleSpinBox" name="spinBoxLongPressTimeout">
+        <property name="maximumSize">
+         <size>
+          <width>80</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Duration in seconds to hold left mouse button before clarify selection is triggered</string>
+        </property>
+        <property name="suffix">
+         <string notr="true"> s</string>
+        </property>
+        <property name="decimals">
+         <number>1</number>
+        </property>
+        <property name="minimum">
+         <double>0.300000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>3.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+        <property name="value">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>LongPressTimeout</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <spacer name="horizontalSpacer_7">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -908,5 +1001,38 @@ Mouse tilting is not disabled by this setting.</string>
   </customwidget>
  </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>checkBoxEnableLongPressClarifySelection</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>spinBoxLongPressTimeout</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>274</x>
+     <y>867</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>274</x>
+     <y>897</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBoxEnableLongPressClarifySelection</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>labelLongPressTimeout</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>274</x>
+     <y>867</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>100</x>
+     <y>897</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

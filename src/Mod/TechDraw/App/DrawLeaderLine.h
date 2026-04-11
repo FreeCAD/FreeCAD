@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TechDraw_DrawLeaderLine_h_
-#define TechDraw_DrawLeaderLine_h_
+#pragma once
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
@@ -93,6 +92,8 @@ public:
 
     Base::Vector3d lastSegmentDirection() const;
 
+    bool snapsToPosition() const override { return false; }
+
 private:
 
 
@@ -101,4 +102,3 @@ private:
 using DrawLeaderLinePython = App::FeaturePythonT<DrawLeaderLine>;
 
 } //namespace TechDraw
-#endif

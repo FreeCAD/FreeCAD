@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -19,8 +21,6 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-
-#include "PreCompiled.h"
 
 #include "GeometryPyCXX.h"
 #include "PyWrapParseTupleAndKeywords.h"
@@ -44,9 +44,8 @@ std::string RotationPy::representation() const
     Py::Float q3(ptr->getValue()[3]);
     std::stringstream str;
     str << "Rotation (";
-    str << static_cast<std::string>(q0.repr()) << ", " << static_cast<std::string>(q1.repr())
-        << ", " << static_cast<std::string>(q2.repr()) << ", "
-        << static_cast<std::string>(q3.repr());
+    str << static_cast<std::string>(q0.repr()) << ", " << static_cast<std::string>(q1.repr()) << ", "
+        << static_cast<std::string>(q2.repr()) << ", " << static_cast<std::string>(q3.repr());
     str << ")";
 
     return str.str();
@@ -425,7 +424,7 @@ PyObject* RotationPy::toMatrix(PyObject* args) const
     return new MatrixPy(new Matrix4D(mat));
 }
 
-PyObject* RotationPy::isSame(PyObject* args)
+PyObject* RotationPy::isSame(PyObject* args) const
 {
     PyObject* rot {};
     double tol = 0.0;

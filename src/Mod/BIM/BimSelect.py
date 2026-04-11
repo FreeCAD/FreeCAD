@@ -57,10 +57,7 @@ class CyclicObjectSelector:
             return
         event = event_callback.getEvent()
 
-        if (
-            event.getState() != coin.SoMouseButtonEvent.DOWN
-            or not self.selectableObjects
-        ):
+        if event.getState() != coin.SoMouseButtonEvent.DOWN or not self.selectableObjects:
             return
 
         pos = event.getPosition().getValue()

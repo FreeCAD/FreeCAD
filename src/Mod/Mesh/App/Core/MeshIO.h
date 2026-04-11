@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2005 Imetric 3D GmbH                                    *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_IO_H
-#define MESH_IO_H
+#pragma once
 
 #include <App/Material.h>
 #include <Base/Matrix.h>
@@ -346,5 +347,3 @@ private:
 
 
 }  // namespace MeshCore
-
-#endif  // MESH_IO_H

@@ -21,16 +21,9 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef START_PRECOMPILED_H
-#define START_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
-
-#ifdef _MSC_VER
-#pragma warning(disable : 5208)
-#endif
-
-#ifdef _PreComp_
 
 // standard
 #include <cinttypes>
@@ -55,6 +48,7 @@
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
+#include <QLocale>
 #include <QMetaObject>
 #include <QMutexLocker>
 #include <QObject>
@@ -65,6 +59,3 @@
 #include <QTimeZone>
 #include <QTimer>
 #include <QUrl>
-
-#endif  // _PreComp_
-#endif  // START_PRECOMPILED_H

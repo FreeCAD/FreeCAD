@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 add_subdirectory(App)
 
 target_include_directories(Start_tests_run PUBLIC

@@ -21,8 +21,6 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
 #include "SoToggleSwitch.h"
 
 SO_NODE_SOURCE(SoToggleSwitch)
@@ -49,7 +47,7 @@ void SoToggleSwitch::notify(SoNotList* notList)
 {
     assert(notList);
     if (notList->getLastField() == &on) {
-        whichChild = on.getValue()? SO_SWITCH_ALL : SO_SWITCH_NONE;
+        whichChild = on.getValue() ? SO_SWITCH_ALL : SO_SWITCH_NONE;
     }
 
     inherited::notify(notList);

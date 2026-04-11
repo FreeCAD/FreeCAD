@@ -22,18 +22,18 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEWPROVIDER_ViewProviderGeoFeatureGroup_H
-#define GUI_VIEWPROVIDER_ViewProviderGeoFeatureGroup_H
+#pragma once
 
 
 #include "ViewProviderDocumentObject.h"
 #include "ViewProviderGeoFeatureGroupExtension.h"
 #include "ViewProviderFeaturePython.h"
 
-namespace Gui {
+namespace Gui
+{
 
-class GuiExport ViewProviderGeoFeatureGroup : public ViewProviderDocumentObject,
-                                              public ViewProviderGeoFeatureGroupExtension
+class GuiExport ViewProviderGeoFeatureGroup: public ViewProviderDocumentObject,
+                                             public ViewProviderGeoFeatureGroupExtension
 {
     PROPERTY_HEADER_WITH_EXTENSIONS(Gui::ViewProviderGeoFeatureGroup);
 
@@ -46,7 +46,4 @@ public:
 
 using ViewProviderGeoFeatureGroupPython = ViewProviderFeaturePythonT<ViewProviderGeoFeatureGroup>;
 
-} // namespace Gui
-
-#endif // GUI_VIEWPROVIDER_ViewProviderGeoFeatureGroup_H
-
+}  // namespace Gui

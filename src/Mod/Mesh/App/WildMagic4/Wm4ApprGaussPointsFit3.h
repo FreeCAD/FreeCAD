@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: BSL-1.0
+
 // Geometric Tools, LLC
 // Copyright (c) 1998-2010
 // Distributed under the Boost Software License, Version 1.0.
@@ -6,8 +8,7 @@
 //
 // File Version: 4.10.0 (2009/11/18)
 
-#ifndef WM4APPRGAUSSPOINTSFIT3_H
-#define WM4APPRGAUSSPOINTSFIT3_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4Box3.h"
@@ -24,5 +25,3 @@ template <class Real> WM4_FOUNDATION_ITEM
 Box3<Real> GaussPointsFit3 (int iQuantity, const Vector3<Real>* akPoint);
 
 }
-
-#endif

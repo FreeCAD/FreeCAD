@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2020 sliptonic <shopinthewoods@gmail.com>               *
  *                                                                         *
@@ -20,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PATH_VORONOIEDGE_H
-#define PATH_VORONOIEDGE_H
+#pragma once
 
 #include <Base/BaseClass.h>
 #include "Voronoi.h"
@@ -49,4 +49,3 @@ public:
 };
 
 }  // namespace Path
-#endif

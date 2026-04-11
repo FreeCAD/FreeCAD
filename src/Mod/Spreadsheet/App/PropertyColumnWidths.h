@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PROPERTYCOLUMNWIDTHS_H
-#define PROPERTYCOLUMNWIDTHS_H
+#pragma once
 
 #include <App/Property.h>
 #include <CXX/Objects.hxx>
@@ -95,5 +96,3 @@ private:
 };
 
 }  // namespace Spreadsheet
-
-#endif  // PROPERTYCOLUMNWIDTHS_H

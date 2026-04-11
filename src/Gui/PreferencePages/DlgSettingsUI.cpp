@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QPushButton>
-#endif
+#include <QPushButton>
+
 
 #include <Gui/Application.h>
 #include <Gui/ParamHandler.h>
@@ -50,9 +48,7 @@ DlgSettingsUI::DlgSettingsUI(QWidget* parent)
 {
     ui->setupUi(this);
 
-    connect(ui->themeEditorButton, &QPushButton::clicked, [this]() {
-        openThemeEditor();
-    });
+    connect(ui->themeEditorButton, &QPushButton::clicked, [this]() { openThemeEditor(); });
 }
 
 /**
@@ -70,8 +66,8 @@ void DlgSettingsUI::saveSettings()
     ui->OverlayStyleSheets->onSave();
 
     // Tree View
+    ui->fontSizeSpinBox->onSave();
     ui->iconSizeSpinBox->onSave();
-    ui->rowSpacingSpinBox->onSave();
     ui->resizableColumnsCheckBox->onSave();
     ui->showVisibilityIconCheckBox->onSave();
     ui->hideDescriptionCheckBox->onSave();
@@ -86,6 +82,9 @@ void DlgSettingsUI::saveSettings()
     ui->overlayAutoHideCheckBox->onSave();
     ui->mouseClickPassThroughCheckBox->onSave();
     ui->mouseWheelPassThroughCheckBox->onSave();
+
+    // TaskWatcher
+    ui->showTaskWatcherCheckBox->onSave();
 }
 
 void DlgSettingsUI::loadSettings()
@@ -96,8 +95,8 @@ void DlgSettingsUI::loadSettings()
     ui->ThemeAccentColor3->onRestore();
 
     // Tree View
+    ui->fontSizeSpinBox->onRestore();
     ui->iconSizeSpinBox->onRestore();
-    ui->rowSpacingSpinBox->onRestore();
     ui->resizableColumnsCheckBox->onRestore();
     ui->showVisibilityIconCheckBox->onRestore();
     ui->hideDescriptionCheckBox->onRestore();
@@ -113,23 +112,31 @@ void DlgSettingsUI::loadSettings()
     ui->mouseClickPassThroughCheckBox->onRestore();
     ui->mouseWheelPassThroughCheckBox->onRestore();
 
+    // TaskWatcher
+    ui->showTaskWatcherCheckBox->onRestore();
+
     loadStyleSheet();
 }
 
 void DlgSettingsUI::loadStyleSheet()
 {
-    populateStylesheets("StyleSheet", "qss", ui->StyleSheets, "No style sheet");
+    static std::string translatedString;  // Make sure the memory doesn't disappear on us
+    translatedString = tr("No style sheet").toStdString();
+    populateStylesheets("StyleSheet", "qss", ui->StyleSheets, translatedString.c_str());
     populateStylesheets("OverlayActiveStyleSheet", "overlay", ui->OverlayStyleSheets, "Auto");
 }
 
-void DlgSettingsUI::populateStylesheets(const char* key,
-                                        const char* path,
-                                        PrefComboBox* combo,
-                                        const char* def,
-                                        QStringList filter)
+void DlgSettingsUI::populateStylesheets(
+    const char* key,
+    const char* path,
+    PrefComboBox* combo,
+    const char* def,
+    QStringList filter
+)
 {
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/MainWindow");
+        "User parameter:BaseApp/Preferences/MainWindow"
+    );
     // List all .qss/.css files
     QMap<QString, QString> cssFiles;
     QDir dir;
@@ -190,7 +197,7 @@ void DlgSettingsUI::openThemeEditor()
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgSettingsUI::changeEvent(QEvent *e)
+void DlgSettingsUI::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
@@ -201,32 +208,4 @@ void DlgSettingsUI::changeEvent(QEvent *e)
     }
 }
 
-namespace {
-
-void applyStyleSheet(ParameterGrp *hGrp)
-{
-    if (auto parameterManager = Base::provideService<Gui::StyleParameters::ParameterManager>()) {
-        parameterManager->reload();
-    }
-
-    auto sheet = hGrp->GetASCII("StyleSheet");
-    bool tiledBG = hGrp->GetBool("TiledBackground", false);
-    Gui::Application::Instance->setStyleSheet(QString::fromUtf8(sheet.c_str()), tiledBG);
-}
-
-} // anonymous namespace
-
-void DlgSettingsUI::attachObserver()
-{
-    static ParamHandlers handlers;
-
-    auto handler = handlers.addDelayedHandler("BaseApp/Preferences/MainWindow",
-                               {"StyleSheet", "TiledBackground"},
-                               applyStyleSheet);
-    handlers.addHandler("BaseApp/Preferences/Themes",
-                        {"ThemeAccentColor1", "ThemeAccentColor2", "ThemeAccentColor2"},
-                        handler);
-}
-
 #include "moc_DlgSettingsUI.cpp"
-

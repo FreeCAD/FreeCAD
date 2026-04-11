@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Jan Rheinländer                                    *
  *                                   <jrheinlaender@users.sourceforge.net> *
@@ -22,8 +24,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_DATUMPLANE_H
-#define PARTDESIGN_DATUMPLANE_H
+#pragma once
 
 #include <Mod/Part/App/DatumFeature.h>
 #include <Mod/PartDesign/PartDesignGlobal.h>
@@ -32,7 +33,7 @@
 namespace PartDesign
 {
 
-class PartDesignExport Plane : public Part::Datum
+class PartDesignExport Plane: public Part::Datum
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Plane);
 
@@ -44,8 +45,9 @@ public:
     App::PropertyLength Length;
     App::PropertyLength Width;
 
-    void onChanged(const App::Property *prop) override;
-    const char* getViewProviderName() const override {
+    void onChanged(const App::Property* prop) override;
+    const char* getViewProviderName() const override
+    {
         return "PartDesignGui::ViewProviderDatumPlane";
     }
 
@@ -58,7 +60,4 @@ private:
     static const char* ResizeModeEnums[];
 };
 
-} //namespace PartDesign
-
-
-#endif // PARTDESIGN_DATUMPLANE_H
+}  // namespace PartDesign

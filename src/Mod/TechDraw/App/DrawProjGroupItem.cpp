@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <sstream>
 # include <gp_Ax2.hxx>
-#endif
+
 
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
@@ -154,7 +152,6 @@ void DrawProjGroupItem::autoPosition()
     if (!pGroup) {
         return;
     }
-//    Base::Console().message("DPGI::autoPosition(%s)\n", Label.getValue());
     if (LockPosition.getValue()) {
         return;
     }

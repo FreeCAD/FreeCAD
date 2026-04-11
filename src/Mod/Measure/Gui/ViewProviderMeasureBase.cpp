@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Friedli <david[at]friedli-be.ch>             *
  *                                                                         *
@@ -21,9 +23,7 @@
 
 #include "Gui/Application.h"
 #include "Gui/MDIView.h"
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/nodes/SoAnnotation.h>
 #include <Inventor/nodes/SoBaseColor.h>
@@ -38,10 +38,11 @@
 #include <Inventor/engines/SoTransformVec3f.h>
 #include <Inventor/engines/SoConcatenate.h>
 #include <Inventor/SbViewportRegion.h>
-#endif
+
 
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
+#include <Base/UnitsApi.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
 #include <Gui/ViewParams.h>
@@ -77,26 +78,34 @@ ViewProviderMeasureBase::ViewProviderMeasureBase()
 {
     static const char* agroup = "Appearance";
     // NOLINTBEGIN
-    ADD_PROPERTY_TYPE(TextColor,
-                      (Preferences::defaultTextColor()),
-                      agroup,
-                      App::Prop_None,
-                      "Color for the measurement text");
-    ADD_PROPERTY_TYPE(TextBackgroundColor,
-                      (Preferences::defaultTextBackgroundColor()),
-                      agroup,
-                      App::Prop_None,
-                      "Color for the measurement text background");
-    ADD_PROPERTY_TYPE(LineColor,
-                      (Preferences::defaultLineColor()),
-                      agroup,
-                      App::Prop_None,
-                      "Color for the measurement lines");
-    ADD_PROPERTY_TYPE(FontSize,
-                      (Preferences::defaultFontSize()),
-                      agroup,
-                      App::Prop_None,
-                      "Size of measurement text");
+    ADD_PROPERTY_TYPE(
+        TextColor,
+        (Preferences::defaultTextColor()),
+        agroup,
+        App::Prop_None,
+        "Color for the measurement text"
+    );
+    ADD_PROPERTY_TYPE(
+        TextBackgroundColor,
+        (Preferences::defaultTextBackgroundColor()),
+        agroup,
+        App::Prop_None,
+        "Color for the measurement text background"
+    );
+    ADD_PROPERTY_TYPE(
+        LineColor,
+        (Preferences::defaultLineColor()),
+        agroup,
+        App::Prop_None,
+        "Color for the measurement lines"
+    );
+    ADD_PROPERTY_TYPE(
+        FontSize,
+        (Preferences::defaultFontSize()),
+        agroup,
+        App::Prop_None,
+        "Size of measurement text"
+    );
     // NOLINTEND
 
     pGlobalSeparator = new SoSeparator();
@@ -135,8 +144,12 @@ ViewProviderMeasureBase::ViewProviderMeasureBase()
     transformEngine->matrix.connectFrom(&matrixEngine->matrix);
     pLabelTranslation->translation.connectFrom(&transformEngine->point);
 
+    auto pTextPickStyle = new SoPickStyle();
+    pTextPickStyle->style = SoPickStyle::SHAPE_ON_TOP;
+
     pTextSeparator = new SoSeparator();
     pTextSeparator->ref();
+    pTextSeparator->addChild(pTextPickStyle);
     pTextSeparator->addChild(dragSeparator);
     pTextSeparator->addChild(pLabelTranslation);
     pTextSeparator->addChild(pLabel);
@@ -199,6 +212,7 @@ ViewProviderMeasureBase::ViewProviderMeasureBase()
 
 ViewProviderMeasureBase::~ViewProviderMeasureBase()
 {
+    pDragger->removeValueChangedCallback(draggerChangedCallback, this);
     _mVisibilityChangedConnection.disconnect();
     pGlobalSeparator->unref();
     pLabel->unref();
@@ -230,8 +244,10 @@ void ViewProviderMeasureBase::setDisplayMode(const char* ModeName)
 
 void ViewProviderMeasureBase::finishRestoring()
 {
-    // Force measurement visibility when loading a document
-    show();
+    if (Visibility.getValue() && isSubjectVisible()) {
+        show();
+    }
+    ViewProviderDocumentObject::finishRestoring();
 }
 
 
@@ -254,6 +270,7 @@ void ViewProviderMeasureBase::onChanged(const App::Property* prop)
         pLabel->size = FontSize.getValue();
         fieldFontSize.setValue(FontSize.getValue());
     }
+
     ViewProviderDocumentObject::onChanged(prop);
 }
 
@@ -270,7 +287,8 @@ void ViewProviderMeasureBase::setLabelValue(const Base::Quantity& value)
 
 void ViewProviderMeasureBase::setLabelValue(const QString& value)
 {
-    auto lines = value.split(QStringLiteral("\n"));
+    const auto userString = Base::UnitsApi::toUnicodeSuperscript(value.toStdString());
+    const auto lines = QString::fromStdString(userString).split(QStringLiteral("\n"));
 
     int i = 0;
     for (auto& it : lines) {
@@ -329,11 +347,28 @@ void ViewProviderMeasureBase::updateIcon()
     pLabel->setIcon(Gui::BitmapFactory().pixmapFromSvg(sPixmap, QSize(20, 20), colorMap));
 }
 
+void ViewProviderMeasureBase::syncDraggerOrientationToView()
+{
+    Gui::View3DInventor* view = nullptr;
+    try {
+        view = dynamic_cast<Gui::View3DInventor*>(this->getActiveView());
+    }
+    catch (const Base::RuntimeError&) {
+        return;
+    }
+    if (view) {
+        auto* cam = view->getViewer()->getSoRenderManager()->getCamera();
+        if (cam) {
+            pDraggerOrientation->rotation.connectFrom(&cam->orientation);
+        }
+    }
+}
 
 void ViewProviderMeasureBase::attach(App::DocumentObject* pcObj)
 {
     ViewProviderDocumentObject::attach(pcObj);
     updateIcon();
+    syncDraggerOrientationToView();
 }
 
 
@@ -398,10 +433,12 @@ void ViewProviderMeasureBase::connectToSubject(App::DocumentObject* subject)
     }
 
     // NOLINTBEGIN
-    auto bndVisibility = std::bind(&ViewProviderMeasureBase::onSubjectVisibilityChanged,
-                                   this,
-                                   std::placeholders::_1,
-                                   std::placeholders::_2);
+    auto bndVisibility = std::bind(
+        &ViewProviderMeasureBase::onSubjectVisibilityChanged,
+        this,
+        std::placeholders::_1,
+        std::placeholders::_2
+    );
     // NOLINTEND
     _mVisibilityChangedConnection = subject->signalChanged.connect(bndVisibility);
 }
@@ -436,8 +473,7 @@ Measure::MeasureBase* ViewProviderMeasureBase::getMeasureObject()
 //! layout of the elements and relationship with the cardinal axes and the view direction.
 //! elementDirection is expected to be a normalized vector. an example of an elementDirection would
 //! be the vector from the start of a line to the end.
-Base::Vector3d ViewProviderMeasureBase::getTextDirection(Base::Vector3d elementDirection,
-                                                         double tolerance)
+Base::Vector3d ViewProviderMeasureBase::getTextDirection(Base::Vector3d elementDirection, double tolerance)
 {
     // TODO: this can fail if the active view is not a 3d view (spreadsheet, techdraw page) and
     // something causes a measure to try to update we need to search through the mdi views for a 3d
@@ -451,8 +487,7 @@ Base::Vector3d ViewProviderMeasureBase::getTextDirection(Base::Vector3d elementD
         view = dynamic_cast<Gui::View3DInventor*>(this->getActiveView());
     }
     catch (const Base::RuntimeError&) {
-        Base::Console().log(
-            "ViewProviderMeasureBase::getTextDirection: Could not get active view\n");
+        Base::Console().log("ViewProviderMeasureBase::getTextDirection: Could not get active view\n");
     }
 
     if (view) {
@@ -515,12 +550,15 @@ bool ViewProviderMeasureBase::isSubjectVisible()
 
 //! gets called when the subject object issues a signalChanged (ie a property change).  We are only
 //! interested in the subject's Visibility property
-void ViewProviderMeasureBase::onSubjectVisibilityChanged(const App::DocumentObject& docObj,
-                                                         const App::Property& prop)
+void ViewProviderMeasureBase::onSubjectVisibilityChanged(
+    const App::DocumentObject& docObj,
+    const App::Property& prop
+)
 {
     if (docObj.isRemoving()) {
         return;
     }
+
 
     std::string propName = prop.getName();
     if (propName == "Visibility") {
@@ -531,7 +569,7 @@ void ViewProviderMeasureBase::onSubjectVisibilityChanged(const App::DocumentObje
         else {
             // here, we don't know if we should be visible or not, so we have to check the whole
             // subject
-            setVisible(isSubjectVisible());
+            setVisible(isSubjectVisible() && Visibility.getValue());
         }
     }
 }
@@ -599,28 +637,14 @@ ViewProviderMeasure::ViewProviderMeasure()
     lineSep->addChild(pCoords);
     lineSep->addChild(pLines);
     auto points = new SoMarkerSet();
-    points->markerIndex =
-        Gui::Inventor::MarkerBitmaps::getMarkerIndex("CROSS",
-                                                     Gui::ViewParams::instance()->getMarkerSize());
+    points->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex(
+        "CROSS",
+        Gui::ViewParams::instance()->getMarkerSize()
+    );
     points->numPoints = 1;
     lineSep->addChild(points);
 
-    // Connect dragger local orientation to view orientation
-    Gui::View3DInventor* view = nullptr;
-    try {
-        view = dynamic_cast<Gui::View3DInventor*>(this->getActiveView());
-    }
-    catch (const Base::RuntimeError&) {
-        Base::Console().log(
-            "ViewProviderMeasure::ViewProviderMeasure: Could not get active view\n");
-    }
-
-    if (view) {
-        Gui::View3DInventorViewer* viewer = view->getViewer();
-        auto renderManager = viewer->getSoRenderManager();
-        auto cam = renderManager->getCamera();
-        pDraggerOrientation->rotation.connectFrom(&cam->orientation);
-    }
+    syncDraggerOrientationToView();
 }
 
 ViewProviderMeasure::~ViewProviderMeasure()
@@ -699,8 +723,7 @@ Base::Vector3d ViewProviderMeasure::getTextPosition()
 
     Gui::View3DInventor* view = dynamic_cast<Gui::View3DInventor*>(this->getActiveView());
     if (!view) {
-        Base::Console().log(
-            "ViewProviderMeasureBase::getTextPosition: Could not get active view\n");
+        Base::Console().log("ViewProviderMeasureBase::getTextPosition: Could not get active view\n");
         return Base::Vector3d();
     }
 
@@ -729,3 +752,5 @@ PROPERTY_SOURCE(MeasureGui::ViewProviderMeasureArea, MeasureGui::ViewProviderMea
 PROPERTY_SOURCE(MeasureGui::ViewProviderMeasureLength, MeasureGui::ViewProviderMeasure)
 PROPERTY_SOURCE(MeasureGui::ViewProviderMeasurePosition, MeasureGui::ViewProviderMeasure)
 PROPERTY_SOURCE(MeasureGui::ViewProviderMeasureRadius, MeasureGui::ViewProviderMeasure)
+PROPERTY_SOURCE(MeasureGui::ViewProviderMeasureDiameter, MeasureGui::ViewProviderMeasure)
+PROPERTY_SOURCE(MeasureGui::ViewProviderMeasureCOM, MeasureGui::ViewProviderMeasure)

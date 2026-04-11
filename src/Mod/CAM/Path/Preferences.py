@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
@@ -23,11 +24,11 @@
 import FreeCAD
 import Path
 import glob
+import importlib.util
 import os
 import pathlib
 from collections import defaultdict
 from typing import Optional
-
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -50,10 +51,12 @@ PostProcessorDefaultArgs = "PostProcessorDefaultArgs"
 PostProcessorBlacklist = "PostProcessorBlacklist"
 PostProcessorOutputFile = "PostProcessorOutputFile"
 PostProcessorOutputPolicy = "PostProcessorOutputPolicy"
+PostProcessorShowEditor = "PostProcessorShowEditor"
 
 ToolGroup = PreferencesGroup + "/Tools"
 ToolPath = "ToolPath"
 LastToolLibrary = "LastToolLibrary"
+LastToolLibrarySortKey = "LastToolLibrarySortKey"
 
 # Linear tolerance to use when generating Paths, eg when tessellating geometry
 GeometryTolerance = "GeometryTolerance"
@@ -114,27 +117,63 @@ def getBuiltinToolBitPath() -> pathlib.Path:
     return getBuiltinAssetPath() / "Bit"
 
 
-def getDefaultAssetPath():
-    config = pathlib.Path(FreeCAD.ConfigGet("UserConfigPath"))
-    return config / "CamAssets"
+def getDefaultAssetPath() -> Path:
+    data_dir = pathlib.Path(FreeCAD.getUserAppDataDir())
+    asset_path = data_dir / "CamAssets"
+    asset_path.mkdir(parents=True, exist_ok=True)
+    return asset_path
 
 
 def getAssetPath() -> pathlib.Path:
     pref = tool_preferences()
+
+    # Check if we have a CamAssets path already set
+    cam_assets_path = pref.GetString(ToolPath, "")
+    if cam_assets_path:
+        # Use mostRecentConfigFromBase to get the most recent versioned path
+        most_recent_path = FreeCAD.ApplicationDirectories.mostRecentConfigFromBase(cam_assets_path)
+        return pathlib.Path(most_recent_path)
+
+    # Migration: Check for legacy DefaultFilePath and use it for CamAssets
+    legacy_path = defaultFilePath()
+    if legacy_path:
+        legacy_path_obj = pathlib.Path(legacy_path)
+        if legacy_path_obj.exists() and legacy_path_obj.is_dir():
+            # Migrate: Set the legacy path as the new CamAssets path
+            setAssetPath(legacy_path_obj)
+            # Return the most recent version of the legacy path
+            most_recent_legacy = FreeCAD.ApplicationDirectories.mostRecentConfigFromBase(
+                str(legacy_path_obj)
+            )
+            return pathlib.Path(most_recent_legacy)
+
+    # Fallback to default if no legacy path found
     default = getDefaultAssetPath()
-    path = pref.GetString(ToolPath, str(default))
-    return pathlib.Path(path or default)
+    # Return the most recent version of the default path
+    most_recent_default = FreeCAD.ApplicationDirectories.mostRecentConfigFromBase(str(default))
+    return pathlib.Path(most_recent_default)
 
 
 def setAssetPath(path: pathlib.Path):
+    Path.Log.debug(f"Setting asset path to {path}")
     assert path.is_dir(), f"Cannot put a non-initialized asset directory into preferences: {path}"
     pref = tool_preferences()
+    current_path = pref.GetString(ToolPath, "")
+    if str(path) == current_path:
+        return
     pref.SetString(ToolPath, str(path))
     _emit_change(ToolGroup, ToolPath, path)
 
 
 def getToolBitPath() -> pathlib.Path:
-    return getAssetPath() / "Bit"
+    return getAssetPath() / "Tools" / "Bit"
+
+
+def getTemplateDirectory() -> pathlib.Path:
+    """Returns the directory where job templates should be saved."""
+    template_path = getAssetPath() / "Templates"
+    template_path.mkdir(parents=True, exist_ok=True)
+    return template_path
 
 
 def getLastToolLibrary() -> Optional[str]:
@@ -146,6 +185,16 @@ def setLastToolLibrary(name: str):
     assert isinstance(name, str), f"Library name '{name}' is not a string"
     pref = tool_preferences()
     pref.SetString(LastToolLibrary, name)
+
+
+def getLastToolLibrarySortKey() -> Optional[str]:
+    pref = tool_preferences()
+    return pref.GetString(LastToolLibrarySortKey) or None
+
+
+def setLastToolLibrarySortKey(name: str):
+    pref = tool_preferences()
+    pref.SetString(LastToolLibrarySortKey, name)
 
 
 def allAvailablePostProcessors():
@@ -172,6 +221,82 @@ def allEnabledPostProcessors(include=None):
     return enabled
 
 
+_post_type_cache = {}
+_post_type_cache_keys = None
+_extra_post_paths: list = []
+
+
+def classifyPostProcessor(name):
+    """Classify a postprocessor as 'machine', 'legacy', or 'unknown'.
+
+    Checks for a POST_TYPE module-level constant in the post's .py file.
+    Returns 'machine' for new-style posts, 'legacy' for old-style,
+    'unknown' if the file cannot be found or loaded.
+    """
+    global _post_type_cache, _post_type_cache_keys
+
+    # Invalidate cache if the available post list has changed
+    current_keys = tuple(allAvailablePostProcessors())
+    if current_keys != _post_type_cache_keys:
+        _post_type_cache = {}
+        _post_type_cache_keys = current_keys
+
+    if name in _post_type_cache:
+        return _post_type_cache[name]
+
+    module_name = f"{name}_post"
+    for search_path in searchPathsPost():
+        module_path = os.path.join(search_path, f"{module_name}.py")
+        if not os.path.isfile(module_path):
+            continue
+        try:
+            spec = importlib.util.spec_from_file_location(module_name, module_path)
+            if spec and spec.loader:
+                module = importlib.util.module_from_spec(spec)
+                spec.loader.exec_module(module)
+                post_type = getattr(module, "POST_TYPE", "legacy")
+                _post_type_cache[name] = post_type
+                return post_type
+        except Exception:
+            continue
+    _post_type_cache[name] = "unknown"
+    return "unknown"
+
+
+def allAvailableLegacyPostProcessors():
+    """Return only legacy postprocessors."""
+    return [p for p in allAvailablePostProcessors() if classifyPostProcessor(p) == "legacy"]
+
+
+def allAvailableMachinePostProcessors():
+    """Return only new-style machine postprocessors."""
+    return [p for p in allAvailablePostProcessors() if classifyPostProcessor(p) == "machine"]
+
+
+def allEnabledLegacyPostProcessors(include=None):
+    """Return enabled legacy postprocessors (for Job context)."""
+    blacklist = postProcessorBlacklist()
+    enabled = [p for p in allAvailableLegacyPostProcessors() if p not in blacklist]
+    if include:
+        legacy_include = [p for p in include if p == "" or classifyPostProcessor(p) == "legacy"]
+        postlist = list(set(legacy_include + enabled))
+        postlist.sort()
+        return postlist
+    return enabled
+
+
+def allEnabledMachinePostProcessors(include=None):
+    """Return enabled machine postprocessors (for Machine editor context)."""
+    blacklist = postProcessorBlacklist()
+    enabled = [p for p in allAvailableMachinePostProcessors() if p not in blacklist]
+    if include:
+        machine_include = [p for p in include if p == "" or classifyPostProcessor(p) == "machine"]
+        postlist = list(set(machine_include + enabled))
+        postlist.sort()
+        return postlist
+    return enabled
+
+
 def defaultPostProcessor():
     pref = preferences()
     return pref.GetString(PostProcessorDefault, "")
@@ -183,11 +308,11 @@ def defaultPostProcessorArgs():
 
 
 def defaultGeometryTolerance():
-    return preferences().GetFloat(GeometryTolerance, 0.01)
+    return preferences().GetFloat(GeometryTolerance, 0.01) or 0.01
 
 
 def defaultLibAreaCurveAccuracy():
-    return preferences().GetFloat(LibAreaCurveAccuracy, 0.01)
+    return preferences().GetFloat(LibAreaCurveAccuracy, 0.01) or 0.01
 
 
 def defaultFilePath():
@@ -197,7 +322,7 @@ def defaultFilePath():
 def filePath():
     path = defaultFilePath()
     if not path:
-        path = macroFilePath()
+        path = str(getAssetPath())
     return path
 
 
@@ -208,6 +333,9 @@ def macroFilePath():
 
 def searchPaths():
     paths = []
+    # Add new CamAssets/Templates directory first (highest priority)
+    paths.append(str(getTemplateDirectory()))
+    # Add legacy locations for backward compatibility
     p = defaultFilePath()
     if p:
         paths.append(p)
@@ -221,9 +349,52 @@ def searchPathsPost():
     if p:
         paths.append(p)
     paths.append(macroFilePath())
+    paths.extend(_extra_post_paths)  # addon post directories
     paths.append(os.path.join(pathPostSourcePath(), "scripts/"))
     paths.append(pathPostSourcePath())
     return paths
+
+
+def addAddonPostPath(path: str) -> None:
+    """Register an additional directory to search for post-processors.
+
+    Called by addon Init.py at FreeCAD startup. Each call adds one
+    directory. Duplicate registrations are silently ignored. Invalidates
+    the post-type cache so newly registered posts are classified correctly.
+    """
+    global _extra_post_paths, _post_type_cache, _post_type_cache_keys
+    if path not in _extra_post_paths:
+        _extra_post_paths.append(path)
+        _post_type_cache = {}
+        _post_type_cache_keys = None
+
+
+def addAddonAssetPath(addon_dir: str) -> None:
+    """Register all assets provided by an addon directory.
+
+    Convenience function for addon Init.py files. Discovers the standard
+    subdirectory layout of a Machines-style addon and registers each type:
+      - ``<addon_dir>/posts/``     → post-processor search path
+      - ``<addon_dir>/machines/``  → machine definition templates
+
+    Duplicate registrations are silently ignored.
+
+    Args:
+        addon_dir: Root directory of the installed addon.
+    """
+    posts_dir = os.path.join(addon_dir, "posts")
+    if os.path.isdir(posts_dir):
+        addAddonPostPath(posts_dir)
+
+    machines_dir = os.path.join(addon_dir, "machines")
+    if os.path.isdir(machines_dir):
+        try:
+            from Machine.models.machine import MachineFactory
+
+            MachineFactory.register_addon_machine_dir(machines_dir)
+        except ImportError:
+            # fail silently if the machine module is not available
+            pass
 
 
 def defaultJobTemplate():
@@ -233,13 +404,9 @@ def defaultJobTemplate():
     return ""
 
 
-def setJobDefaults(fileName, jobTemplate, geometryTolerance, curveAccuracy):
-    Path.Log.track(
-        "(%s='%s', %s, %s, %s)"
-        % (DefaultFilePath, fileName, jobTemplate, geometryTolerance, curveAccuracy)
-    )
+def setJobDefaults(jobTemplate, geometryTolerance, curveAccuracy):
+    Path.Log.track("(%s, %s, %s)" % (jobTemplate, geometryTolerance, curveAccuracy))
     pref = preferences()
-    pref.SetString(DefaultFilePath, fileName)
     pref.SetString(DefaultJobTemplate, jobTemplate)
     pref.SetFloat(GeometryTolerance, geometryTolerance)
     pref.SetFloat(LibAreaCurveAccuracy, curveAccuracy)
@@ -274,6 +441,26 @@ def defaultOutputFile():
 def defaultOutputPolicy():
     pref = preferences()
     return pref.GetString(PostProcessorOutputPolicy, "")
+
+
+def showEditorOnPostProcess():
+    """Get user preference for showing editor before writing G-code.
+
+    Returns:
+        bool: True to show editor, False to skip it (default: True)
+    """
+    pref = preferences()
+    return pref.GetBool(PostProcessorShowEditor, True)
+
+
+def setShowEditorOnPostProcess(show: bool):
+    """Set user preference for showing editor before writing G-code.
+
+    Args:
+        show: True to show editor, False to skip it
+    """
+    pref = preferences()
+    pref.SetBool(PostProcessorShowEditor, show)
 
 
 def defaultStockTemplate():

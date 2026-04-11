@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -21,10 +23,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <utility>
-#endif
+
+#include <FCConfig.h>
 
 #include "Console.h"
 #include "PyObjectBase.h"
@@ -589,9 +590,9 @@ PyObject* RestoreError::getPyExceptionType() const
 // ---------------------------------------------------------
 
 #if defined(__GNUC__) && defined(FC_OS_LINUX)
-#include <stdexcept>
-#include <iostream>
-#include <csignal>
+# include <stdexcept>
+# include <iostream>
+# include <csignal>
 
 SignalException::SignalException()
 {
@@ -600,17 +601,17 @@ SignalException::SignalException()
     sigemptyset(&new_action.sa_mask);
     new_action.sa_flags = 0;
     ok = (sigaction(SIGSEGV, &new_action, &old_action) < 0);
-#ifdef _DEBUG
+# ifdef _DEBUG
     std::cout << "Set new signal handler" << std::endl;
-#endif
+# endif
 }
 
 SignalException::~SignalException()
 {
     sigaction(SIGSEGV, &old_action, nullptr);
-#ifdef _DEBUG
+# ifdef _DEBUG
     std::cout << "Restore old signal handler" << std::endl;
-#endif
+# endif
 }
 
 void SignalException::throw_signal(const int signum)

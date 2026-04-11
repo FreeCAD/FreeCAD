@@ -222,7 +222,7 @@
          <item>
           <widget class="QPushButton" name="copyButton">
            <property name="text">
-            <string>Copy to clipboard</string>
+            <string>Copy to Clipboard</string>
            </property>
           </widget>
          </item>

@@ -1,5 +1,8 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_SOURCE_DIR}/src/Gui
 )
 
@@ -9,7 +12,6 @@ if(BUILD_QT5)
         ${Qt5Core_INCLUDE_DIRS}
     )
 else()
-    SYSTEM
     include_directories(
         SYSTEM
         ${QT_INCLUDE_DIR}
@@ -42,7 +44,6 @@ SET(SandboxGui_SRCS
     GLGraphicsView.h
     Overlay.cpp
     Overlay.h
-    PreCompiled.cpp
     PreCompiled.h
     TaskPanelView.cpp
     TaskPanelView.h
@@ -57,6 +58,16 @@ set (SandboxGui_Scripts
 add_library(SandboxGui SHARED ${SandboxGui_SRCS} ${SandboxGui_Scripts})
 target_link_libraries(SandboxGui ${SandboxGui_LIBS})
 
+if (MSVC)
+    target_compile_definitions(SandboxGui PRIVATE WIN32_LEAN_AND_MEAN)
+endif()
+
+
+if(FREECAD_USE_PCH)
+    target_precompile_headers(SandboxGui PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
+endif(FREECAD_USE_PCH)
 
 fc_target_copy_resource_flat(SandboxGui
     ${CMAKE_CURRENT_SOURCE_DIR}

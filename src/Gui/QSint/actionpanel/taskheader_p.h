@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-3.0-only
 /***************************************************************************
  *                                                                         *
  *   Copyright: https://code.google.com/p/qsint/                           *
@@ -5,8 +6,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TASKHEADER_P_H
-#define TASKHEADER_P_H
+#pragma once
 
 #include "actionlabel.h"
 #include "actionpanelscheme.h"
@@ -63,5 +63,3 @@ protected:
 
 
 }
-
-#endif // TASKHEADER_P_H

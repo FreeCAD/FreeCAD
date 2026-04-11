@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PY_GEOMETRYPY_H
-#define PY_GEOMETRYPY_H
+#pragma once
 
 #include <CXX/Extensions.hxx>
 #include <FCGlobal.h>
@@ -282,13 +283,9 @@ private:
 };
 
 // PyCXX wrapper classes Py::Matrix, Py::Rotation, Py::Placement, ...
-using BoundingBox =
-    GeometryT<Base::BoundBox3d, Base::BoundBoxPy, &Base::BoundBoxPy::getBoundBoxPtr>;
+using BoundingBox = GeometryT<Base::BoundBox3d, Base::BoundBoxPy, &Base::BoundBoxPy::getBoundBoxPtr>;
 using Matrix = GeometryT<Base::Matrix4D, Base::MatrixPy, &Base::MatrixPy::getMatrixPtr>;
 using Rotation = GeometryT<Base::Rotation, Base::RotationPy, &Base::RotationPy::getRotationPtr>;
-using Placement =
-    GeometryT<Base::Placement, Base::PlacementPy, &Base::PlacementPy::getPlacementPtr>;
+using Placement = GeometryT<Base::Placement, Base::PlacementPy, &Base::PlacementPy::getPlacementPtr>;
 
 }  // namespace Py
-
-#endif  // PY_GEOMETRYPY_H

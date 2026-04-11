@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -21,23 +23,24 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DlgActivateWindowImp_H
-#define GUI_DIALOG_DlgActivateWindowImp_H
+#pragma once
 
 #include <QDialog>
 #include <memory>
 #include <Base/Quantity.h>
 #include <Base/Unit.h>
 
-namespace Gui {
-namespace Dialog {
+namespace Gui
+{
+namespace Dialog
+{
 class Ui_DlgUnitCalculator;
 
 /**
  * The DlgUnitsCalculator provides a unit conversion dialog
  * \author Juergen Riegel
  */
-class DlgUnitsCalculator : public QDialog
+class DlgUnitsCalculator: public QDialog
 {
     Q_OBJECT
 
@@ -67,7 +70,5 @@ private:
     QList<Base::Unit> units;
 };
 
-} // namespace Dialog
-} // namespace Gui
-
-#endif // GUI_DIALOG_DlgActivateWindowImp_H
+}  // namespace Dialog
+}  // namespace Gui

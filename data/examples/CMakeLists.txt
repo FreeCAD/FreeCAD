@@ -8,6 +8,9 @@ SET(Examples_Files
     FEMExample.FCStd
     AssemblyExample.FCStd
     ArchDetail.FCStd
+    FCPAT.pat
+    osifont.license
+    osifont-lgpl3fe.ttf
 )
 
 ADD_CUSTOM_TARGET(Example_data ALL
@@ -132,4 +135,3 @@ INSTALL(
     DESTINATION
         ${CMAKE_INSTALL_DATADIR}/examples
 )
-

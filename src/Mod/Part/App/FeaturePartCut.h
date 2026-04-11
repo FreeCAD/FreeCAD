@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_FEATUREPARTCUT_H
-#define PART_FEATUREPARTCUT_H
+#pragma once
 
 #include "FeaturePartBoolean.h"
 
@@ -29,7 +30,7 @@
 namespace Part
 {
 
-class Cut : public Boolean
+class Cut: public Boolean
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::Cut);
 
@@ -41,10 +42,8 @@ public:
     /// recalculate the Feature
 protected:
     BRepAlgoAPI_BooleanOperation* makeOperation(const TopoDS_Shape&, const TopoDS_Shape&) const override;
-    const char *opCode() const override;
+    const char* opCode() const override;
     //@}
 };
 
-}
-
-#endif // PART_FEATUREPARTCUT_H
+}  // namespace Part

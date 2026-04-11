@@ -25,8 +25,7 @@
 //! DrawBrokenView produces a view of the Source shapes after a portion of the shapes
 //! has been removed.
 
-#ifndef DRAWBROKENVIEW_H_
-#define DRAWBROKENVIEW_H_
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -149,6 +148,10 @@ private:
                                             const bool descend = false) const;
 
     static std::vector<TopoDS_Shape> getPieces(const TopoDS_Shape& brokenShape);
+    static std::vector<TopoDS_Shape> getPiecesByType(const TopoDS_Shape& shapeToSearch,
+                                                     TopAbs_ShapeEnum desiredShapeType,
+                                                     TopAbs_ShapeEnum avoidShapeType = TopAbs_SHAPE);
+
     static BreakList sortBreaks(BreakList& inList, bool descend = false);
     static bool breakLess(const BreakListEntry& entry0, const BreakListEntry& entry1);
 
@@ -171,6 +174,3 @@ private:
 using DrawBrokenViewPython = App::FeaturePythonT<DrawBrokenView>;
 
 }//namespace TechDraw
-
-#endif
-

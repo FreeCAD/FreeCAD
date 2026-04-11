@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2024 Kacper Donat <kacper@kadet.net>                    *
  *                                                                         *
@@ -21,15 +23,15 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderExtrude_H
-#define PARTGUI_ViewProviderExtrude_H
+#pragma once
 
 #include "ViewProviderSketchBased.h"
 
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
-class PartDesignGuiExport ViewProviderExtrude : public ViewProviderSketchBased
+class PartDesignGuiExport ViewProviderExtrude: public ViewProviderSketchBased
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderExtrude);
 
@@ -41,8 +43,4 @@ public:
 };
 
 
-
-} // namespace PartDesignGui
-
-
-#endif // PARTGUI_ViewProviderExtrude_H
+}  // namespace PartDesignGui

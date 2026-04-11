@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2006 Werner Mayer <werner.wm.mayer@gmx.de>              *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_CUSTOMWIDGETS_H
-#define GUI_CUSTOMWIDGETS_H
+#pragma once
 
 #include <QButtonGroup>
 #include <QCheckBox>
@@ -920,5 +921,3 @@ private:
     QByteArray m_sPrefGrp;
 };
 }  // namespace Gui
-
-#endif  // GUI_CUSTOMWIDGETS_H

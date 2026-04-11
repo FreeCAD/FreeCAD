@@ -65,9 +65,7 @@ class BIM_Text:
             pagescale = page.Scale
             if not pagescale:
                 pagescale = 1
-            anno = FreeCAD.ActiveDocument.addObject(
-                "TechDraw::DrawViewAnnotation", "Annotation"
-            )
+            anno = FreeCAD.ActiveDocument.addObject("TechDraw::DrawViewAnnotation", "Annotation")
             anno.Text = self.text
             page.addView(anno)
             param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
@@ -80,7 +78,7 @@ class BIM_Text:
             anno.TextColor = (r, g, b)
             self.finish()
 
-    def finish(self, arg=False):
+    def finish(self, cont=False):
         FreeCADGui.draftToolBar.sourceCmd = None
         FreeCADGui.draftToolBar.offUi()
 

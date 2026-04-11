@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Werner Mayer <wmayer@users.sourceforge.net>        *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef Sandbox_WORKBENCH_H
-#define Sandbox_WORKBENCH_H
+#pragma once
 
 #include <Gui/Workbench.h>
 #include <Inventor/nodes/SoShape.h>
@@ -69,6 +70,3 @@ private:
 };
 
 } // namespace SandboxGui
-
-
-#endif // Sandbox_WORKBENCH_H 

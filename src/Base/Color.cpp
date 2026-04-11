@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2005 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,13 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <iomanip>
 #include <sstream>
-#endif
 
 #include "Color.h"
 
@@ -34,13 +31,6 @@ using namespace Base;
 
 
 // NOLINTNEXTLINE(bugprone-easily-swappable-parameters)
-Color::Color(float red, float green, float blue, float alpha)
-    : r(red)
-    , g(green)
-    , b(blue)
-    , a(alpha)
-{}
-
 Color::Color(uint32_t rgba)
     : Color {}
 {

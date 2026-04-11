@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEM_ViewProviderAnalysis_H
-#define FEM_ViewProviderAnalysis_H
+#pragma once
 
 #include <Gui/ViewProviderDocumentObjectGroup.h>
 #include <Gui/ViewProviderFeaturePython.h>
@@ -67,14 +66,18 @@ public:
     /// handling when object is deleted
     bool onDelete(const std::vector<std::string>&) override;
     /// warning on deletion when there are children
-    static bool checkSelectedChildren(const std::vector<App::DocumentObject*> objs,
-                                      Gui::Document* docGui,
-                                      std::string objectName);
+    static bool checkSelectedChildren(
+        const std::vector<App::DocumentObject*> objs,
+        Gui::Document* docGui,
+        std::string objectName
+    );
     /// asks the view provider if the given object can be deleted
     bool canDelete(App::DocumentObject* obj) const override;
 
     void setupContextMenu(QMenu*, QObject*, const char*) override;
 
+    /// list of all possible display modes
+    std::vector<std::string> getDisplayModes() const override;
     /// shows solid in the tree
     bool isShow() const override
     {
@@ -116,6 +119,3 @@ private:
 using ViewProviderFemAnalysisPython = Gui::ViewProviderFeaturePythonT<ViewProviderFemAnalysis>;
 
 }  // namespace FemGui
-
-
-#endif  // FEM_ViewProviderAnalysis_H

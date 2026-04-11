@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-only OR GPL-3.0-only
+
 /****************************************************************************
 **
 ** This file is part of a Qt Solutions component.
@@ -45,8 +47,7 @@
 ****************************************************************************/
 
 // clang-format off
-#ifndef QTCOLORPICKER_H
-#define QTCOLORPICKER_H
+#pragma once
 #include <QPushButton>
 #include <QtCore/QString>
 #include <QtGui/QColor>
@@ -120,5 +121,4 @@ private:
     bool firstInserted;
 };
 
-#endif
 // clang-format on

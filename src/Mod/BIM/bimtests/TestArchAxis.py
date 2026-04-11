@@ -24,7 +24,9 @@
 
 import FreeCAD as App
 import Arch
+import ArchAxis
 from bimtests import TestArchBase
+
 
 class TestArchAxis(TestArchBase.TestArchBase):
 

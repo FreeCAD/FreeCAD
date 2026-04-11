@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2006 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGMATERIALPROPERTIES_IMP_H
-#define GUI_DIALOG_DLGMATERIALPROPERTIES_IMP_H
+#pragma once
 
 #include <QDialog>
 #include <memory>
@@ -52,8 +53,7 @@ class GuiExport DlgMaterialPropertiesImp: public QDialog
     Q_OBJECT
 
 public:
-    explicit DlgMaterialPropertiesImp(QWidget* parent = nullptr,
-                                      Qt::WindowFlags fl = Qt::WindowFlags());
+    explicit DlgMaterialPropertiesImp(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgMaterialPropertiesImp() override;
     App::Material getCustomMaterial() const;
     void setCustomMaterial(const App::Material& mat);
@@ -80,5 +80,3 @@ private:
 
 }  // namespace Dialog
 }  // namespace Gui
-
-#endif  // GUI_DIALOG_DLGMATERIALPROPERTIES_IMP_H

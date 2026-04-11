@@ -38,7 +38,7 @@
      <item row="0" column="1">
       <widget class="Gui::QuantitySpinBox" name="sbX">
        <property name="toolTip">
-        <string>Enter coordinates or select point with mouse.</string>
+        <string>Enter coordinates or pick a point with the mouse</string>
        </property>
        <property name="unit" stdset="0">
         <string notr="true">mm</string>
@@ -55,7 +55,7 @@
      <item row="1" column="1">
       <widget class="Gui::QuantitySpinBox" name="sbY">
        <property name="toolTip">
-        <string>Enter coordinates or select point with mouse.</string>
+        <string>Enter coordinates or pick a point with the mouse</string>
        </property>
        <property name="unit" stdset="0">
         <string notr="true">mm</string>
@@ -72,7 +72,7 @@
      <item row="2" column="1">
       <widget class="Gui::QuantitySpinBox" name="sbZ">
        <property name="toolTip">
-        <string>Enter coordinates or select point with mouse.</string>
+        <string>Enter coordinates or pick a point with the mouse</string>
        </property>
        <property name="unit" stdset="0">
         <string notr="true">mm</string>
@@ -93,13 +93,13 @@ Uncheck to use working plane coordinate system</string>
      <item row="3" column="1">
       <widget class="QPushButton" name="pbReset">
        <property name="toolTip">
-        <string>Reset 3D point selection</string>
+        <string>Resets the picked point</string>
        </property>
        <property name="statusTip">
         <string/>
        </property>
        <property name="text">
-        <string>Reset point</string>
+        <string>Reset Point</string>
        </property>
       </widget>
      </item>

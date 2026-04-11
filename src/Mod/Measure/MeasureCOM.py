@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # /***************************************************************************
 #  *   Copyright (c) 2023 David Friedli <david[at]friedli-be.ch>             *
 #  *                                                                         *
@@ -23,7 +25,6 @@ import FreeCAD
 from FreeCAD import Units, Placement
 from UtilsMeasure import MeasureBasePython
 from PySide.QtCore import QT_TRANSLATE_NOOP
-
 
 __title__ = "Measure Center of Mass Object"
 __author__ = "David Friedli"

@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ARROWENUMS_H_
-#define ARROWENUMS_H_
+#pragma once
 
 #include <string>
 #include <vector>
@@ -58,4 +57,3 @@ private:
 };
 
 } //end namespace TechDraw
-#endif

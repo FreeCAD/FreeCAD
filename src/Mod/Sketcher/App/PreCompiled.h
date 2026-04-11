@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,16 +22,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __PRECOMPILED__
-#define __PRECOMPILED__
+#pragma once
 
 #include <FCConfig.h>
 
-#ifdef _MSC_VER
-#pragma warning(disable : 4251)
-#endif
-
-#ifdef _PreComp_
 
 // standard
 #include <algorithm>
@@ -78,6 +74,7 @@
 #include <GC_MakeCircle.hxx>
 #include <GeomAPI_ProjectPointOnCurve.hxx>
 #include <GeomAPI_ProjectPointOnSurf.hxx>
+#include <GeomConvert.hxx>
 #include <GeomConvert_BSplineCurveKnotSplitting.hxx>
 #include <GeomLProp_CLProps.hxx>
 #include <Geom_BSplineCurve.hxx>
@@ -110,11 +107,6 @@
 #include <gp_Pln.hxx>
 #include <gp_Pnt.hxx>
 
-#elif defined(FC_OS_WIN32)
-#ifndef NOMINMAX
-#define NOMINMAX
-#endif
-#include <windows.h>
-#endif  // _PreComp_
-
+#ifdef FC_OS_WIN32
+# include <windows.h>
 #endif

@@ -21,94 +21,93 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
 #include "ParameterManager.h"
 #include "Parser.h"
 
-#ifndef _PreComp_
-#include <QColor>
+#include <QFile>
+#include <fstream>
+#include <yaml-cpp/yaml.h>
+#include <fmt/ranges.h>
+
 #include <QRegularExpression>
 #include <QString>
 #include <ranges>
+#include <utility>
 #include <variant>
-#endif
+
+#include <Base/Console.h>
+
+FC_LOG_LEVEL_INIT("Gui", true, true)
 
 namespace Gui::StyleParameters
 {
 
-Length Length::operator+(const Length& rhs) const
+namespace
 {
-    ensureEqualUnits(rhs);
-    return {value + rhs.value, unit};
-}
 
-Length Length::operator-(const Length& rhs) const
+/// Converts a YAML node to a StyleParameters expression string.
+/// Scalars are returned as-is; sequences become unnamed tuples "(a, b, ...)";
+/// maps become named tuples "(key1: val1, key2: val2, ...)". Recursive.
+std::string yamlNodeToExpression(const YAML::Node& node)
 {
-    ensureEqualUnits(rhs);
-    return {value - rhs.value, unit};
-}
-
-Length Length::operator-() const
-{
-    return {-value, unit};
-}
-
-Length Length::operator/(const Length& rhs) const
-{
-    if (rhs.value == 0) {
-        THROWM(Base::RuntimeError, "Division by zero");
+    if (node.IsScalar()) {
+        return node.as<std::string>();
     }
 
-    if (rhs.unit.empty() || unit.empty()) {
-        return {value / rhs.value, unit};
+    if (node.IsSequence()) {
+        std::vector<std::string> parts;
+        parts.reserve(node.size());
+        for (const auto& element : node) {
+            parts.push_back(yamlNodeToExpression(element));
+        }
+        return fmt::format("({})", fmt::join(parts, ", "));
     }
 
-    ensureEqualUnits(rhs);
-    return {value / rhs.value, unit};
+    if (node.IsMap()) {
+        std::vector<std::string> parts;
+        parts.reserve(node.size());
+        for (auto it = node.begin(); it != node.end(); ++it) {
+            parts.push_back(
+                fmt::format("{}: {}", it->first.as<std::string>(), yamlNodeToExpression(it->second))
+            );
+        }
+        return fmt::format("({})", fmt::join(parts, ", "));
+    }
+
+    return "";
 }
 
-Length Length::operator*(const Length& rhs) const
+/// Formats a Value for QSS output.
+/// Tuples become space-separated values (e.g. "10px 5px 10px 5px"),
+/// all other types delegate to toString().
+std::string toQss(const Value& value)
 {
-    if (rhs.unit.empty() || unit.empty()) {
-        return {value * rhs.value, unit};
+    if (value.holds<Tuple>()) {
+        const auto& tuple = value.get<Tuple>();
+
+        std::vector<std::string> parts;
+        parts.reserve(tuple.elements.size());
+
+        for (const auto& [name, elem] : tuple.elements) {
+            parts.push_back(toQss(*elem));
+        }
+
+        return fmt::format("{}", fmt::join(parts, " "));
     }
 
-    ensureEqualUnits(rhs);
-    return {value * rhs.value, unit};
+    return value.toString();
 }
 
-void Length::ensureEqualUnits(const Length& rhs) const
-{
-    if (unit != rhs.unit) {
-        THROWM(Base::RuntimeError,
-               fmt::format("Units mismatch left expression is '{}', right expression is '{}'",
-                           unit,
-                           rhs.unit));
-    }
-}
-
-std::string Value::toString() const
-{
-    if (std::holds_alternative<Length>(*this)) {
-        auto [value, unit] = std::get<Length>(*this);
-        return fmt::format("{}{}", value, unit);
-    }
-
-    if (std::holds_alternative<QColor>(*this)) {
-        auto color = std::get<QColor>(*this);
-        return fmt::format("#{:0>6x}", 0xFFFFFF & color.rgb());  // NOLINT(*-magic-numbers)
-    }
-
-    return std::get<std::string>(*this);
-}
+}  // namespace
 
 ParameterSource::ParameterSource(const Metadata& metadata)
     : metadata(metadata)
 {}
 
-InMemoryParameterSource::InMemoryParameterSource(const std::list<Parameter>& parameters,
-                                                 const Metadata& metadata)
+InMemoryParameterSource::InMemoryParameterSource(
+    const std::list<Parameter>& parameters,
+    const Metadata& metadata
+)
     : ParameterSource(metadata)
 {
     for (const auto& parameter : parameters) {
@@ -214,6 +213,92 @@ void UserParameterSource::remove(const std::string& name)
     hGrp->RemoveASCII(name.c_str());
 }
 
+YamlParameterSource::YamlParameterSource(const std::string& filePath, const Metadata& metadata)
+    : ParameterSource(metadata)
+{
+    changeFilePath(filePath);
+}
+
+void YamlParameterSource::changeFilePath(const std::string& path)
+{
+    this->filePath = path;
+    reload();
+}
+
+void YamlParameterSource::reload()
+{
+    QFile file(QString::fromStdString(filePath));
+
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        FC_TRACE("StyleParameters: Unable to open file " << filePath);
+        return;
+    }
+
+    if (filePath.starts_with(":/")) {
+        this->metadata.options |= ReadOnly;
+    }
+
+    QTextStream in(&file);
+    std::string content = in.readAll().toStdString();
+
+    YAML::Node root = YAML::Load(content);
+    parameters.clear();
+    for (auto it = root.begin(); it != root.end(); ++it) {
+        const auto key = it->first.as<std::string>();
+        const auto value = yamlNodeToExpression(it->second);
+
+        parameters[key] = Parameter {
+            .name = key,
+            .value = value,
+        };
+    }
+}
+
+std::list<Parameter> YamlParameterSource::all() const
+{
+    std::list<Parameter> result;
+    for (const auto& param : parameters | std::views::values) {
+        result.push_back(param);
+    }
+    return result;
+}
+
+std::optional<Parameter> YamlParameterSource::get(const std::string& name) const
+{
+    if (auto it = parameters.find(name); it != parameters.end()) {
+        return it->second;
+    }
+
+    return std::nullopt;
+}
+
+void YamlParameterSource::define(const Parameter& param)
+{
+    parameters[param.name] = param;
+}
+
+void YamlParameterSource::remove(const std::string& name)
+{
+    parameters.erase(name);
+}
+
+void YamlParameterSource::flush()
+{
+    YAML::Node root;
+    for (const auto& [name, param] : parameters) {
+        root[name] = param.value;
+    }
+
+    QFile file(QString::fromStdString(filePath));
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
+        FC_WARN("StyleParameters: Unable to open file " << filePath);
+        return;
+    }
+
+    QTextStream out(&file);
+    out << QString::fromStdString(YAML::Dump(root));
+}
+
 ParameterManager::ParameterManager() = default;
 
 void ParameterManager::reload()
@@ -221,10 +306,13 @@ void ParameterManager::reload()
     _resolved.clear();
 }
 
-std::string ParameterManager::replacePlaceholders(const std::string& expression,
-                                                  ResolveContext context) const
+std::string ParameterManager::replacePlaceholders(
+    const std::string& expression,
+    ResolveContext context
+) const
 {
-    static const QRegularExpression regex(QStringLiteral("@(\\w+)"));
+    // Matches @TokenName (group name) or @{expression} (group expression)
+    static const QRegularExpression regex("@(?:(?P<name>\\w+)|({(?P<expression>(?>[^{}]+|(?2))+)}))");
 
     auto substituteWithCallback =
         [](const QRegularExpression& regex,
@@ -257,14 +345,36 @@ std::string ParameterManager::replacePlaceholders(const std::string& expression,
     return substituteWithCallback(
         regex,
         QString::fromStdString(expression),
-        [&](const QRegularExpressionMatch& match) {
-            auto tokenName = match.captured(1).toStdString();
+        [&](const QRegularExpressionMatch& match) -> QString {
+            // Group 1: @TokenName
+            if (!match.captured("name").isEmpty()) {
+                auto tokenName = match.captured(1).toStdString();
+                auto tokenValue = resolve(tokenName, context);
 
-            auto tokenValue = resolve(tokenName, context);
-            context.visited.erase(tokenName);
+                if (!tokenValue) {
+                    Base::Console().warning("Requested non-existent style parameter token '%s'.\n", tokenName);
+                    return QStringLiteral("");
+                }
 
-            return QString::fromStdString(tokenValue.toString());
-        }
+                context.visited.erase(tokenName);
+                return QString::fromStdString(toQss(*tokenValue));
+            }
+
+            // Group 2: @{expression}
+            auto exprBody = match.captured("expression").toStdString();
+            try {
+                Value result = evaluate(exprBody, context);
+                return QString::fromStdString(toQss(result));
+            }
+            catch (Base::Exception& e) {
+                Base::Console().warning(
+                    "Failed to evaluate inline expression '@{%s}': %s\n",
+                    exprBody,
+                    e.what()
+                );
+                return QStringLiteral("");
+            }
+    }
     ).toStdString();
     // clang-format on
 }
@@ -292,18 +402,17 @@ std::optional<std::string> ParameterManager::expression(const std::string& name)
     return {};
 }
 
-Value ParameterManager::resolve(const std::string& name, ResolveContext context) const
+std::optional<Value> ParameterManager::resolve(const std::string& name, ResolveContext context) const
 {
     std::optional<Parameter> maybeParameter = this->parameter(name);
 
     if (!maybeParameter) {
-        Base::Console().warning("Requested non-existent design token '%s'.", name);
-        return std::string {};
+        return std::nullopt;
     }
 
     if (context.visited.contains(name)) {
-        Base::Console().warning("The design token '%s' contains circular-reference.", name);
-        return expression(name).value_or(std::string {});
+        Base::Console().warning("The style parameter '%s' contains circular-reference.\n", name);
+        return expression(name);
     }
 
     const Parameter& token = *maybeParameter;

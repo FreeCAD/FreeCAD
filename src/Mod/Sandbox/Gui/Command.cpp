@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Werner Mayer <wmayer@users.sourceforge.net>        *
  *                                                                         *
@@ -20,12 +22,9 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <FCConfig.h>
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # ifdef FC_OS_WIN32
-# define WIN32_LEAN_AND_MEAN
-# define NOMINMAX
 # include <windows.h>
 # endif
 # include <QApplication>
@@ -57,7 +56,6 @@
 # include <boost/thread/future.hpp>
 # include <boost/bind/bind.hpp>
 # include <memory>
-#endif
 
 #include <Base/Console.h>
 #include <Base/Sequencer.h>

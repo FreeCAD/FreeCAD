@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Yorik van Havre (yorik@uncreated.net)              *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef IMPEXPDXF_H
-#define IMPEXPDXF_H
+#pragma once
 
 #include <set>
 #include <gp_Pnt.hxx>
@@ -40,6 +41,15 @@ class BRepAdaptor_Curve;
 
 namespace Import
 {
+
+enum class ImportMode
+{
+    EditableDraft,
+    EditablePrimitives,
+    IndividualShapes,
+    FusedShapes
+};
+
 class ImportExport ImpExpDxfRead: public CDxfRead
 {
 public:
@@ -52,7 +62,7 @@ public:
     {
         Py_XDECREF(DraftModule);
     }
-
+    static std::map<std::string, int> PreScan(const std::string& filepath);
     void StartImport() override;
 
     Py::Object getStatsAsPyObject();
@@ -63,35 +73,48 @@ public:
     bool OnReadBlock(const std::string& name, int flags) override;
     void OnReadLine(const Base::Vector3d& start, const Base::Vector3d& end, bool hidden) override;
     void OnReadPoint(const Base::Vector3d& start) override;
-    void OnReadText(const Base::Vector3d& point,
-                    double height,
-                    const std::string& text,
-                    double rotation) override;
-    void OnReadArc(const Base::Vector3d& start,
-                   const Base::Vector3d& end,
-                   const Base::Vector3d& center,
-                   bool dir,
-                   bool hidden) override;
-    void OnReadCircle(const Base::Vector3d& start,
-                      const Base::Vector3d& center,
-                      bool dir,
-                      bool hidden) override;
-    void OnReadEllipse(const Base::Vector3d& center,
-                       double major_radius,
-                       double minor_radius,
-                       double rotation,
-                       double start_angle,
-                       double end_angle,
-                       bool dir) override;
+    void OnReadText(
+        const Base::Vector3d& point,
+        double height,
+        const std::string& text,
+        double rotation
+    ) override;
+    void OnReadArc(
+        const Base::Vector3d& start,
+        const Base::Vector3d& end,
+        const Base::Vector3d& center,
+        bool dir,
+        bool hidden
+    ) override;
+    void OnReadCircle(
+        const Base::Vector3d& start,
+        const Base::Vector3d& center,
+        bool dir,
+        bool hidden
+    ) override;
+    void OnReadEllipse(
+        const Base::Vector3d& center,
+        double major_radius,
+        double minor_radius,
+        double rotation,
+        double start_angle,
+        double end_angle,
+        bool dir
+    ) override;
     void OnReadSpline(struct SplineData& sd) override;
-    void OnReadInsert(const Base::Vector3d& point,
-                      const Base::Vector3d& scale,
-                      const std::string& name,
-                      double rotation) override;
-    void OnReadDimension(const Base::Vector3d& start,
-                         const Base::Vector3d& end,
-                         const Base::Vector3d& point,
-                         double rotation) override;
+    void OnReadInsert(
+        const Base::Vector3d& point,
+        const Base::Vector3d& scale,
+        const std::string& name,
+        double rotation
+    ) override;
+    void OnReadDimension(
+        const Base::Vector3d& start,
+        const Base::Vector3d& end,
+        const Base::Vector3d& point,
+        int dimensionType,
+        double rotation
+    ) override;
     void OnReadPolyline(std::list<VertexInfo>& /*vertices*/, int flags) override;
 
     std::string Deformat(const char* text);  // Removes DXF formatting from texts
@@ -108,6 +131,31 @@ public:
     void FinishImport() override;
 
 private:
+    class GeometryBuilder
+    {
+    public:
+        // The type of primitive that a shape represents. 'None' is used for
+        // non-parametric modes.
+        enum class PrimitiveType
+        {
+            None,
+            Point,
+            Line,
+            Circle,
+            Arc,
+            Ellipse,
+            Spline,
+            PolylineFlattened,  // Polyline imported as a simple Part::Feature with a TopoDS_Wire
+            PolylineParametric  // Polyline imported as a Part::Compound of Part primitives
+        };
+
+        // The raw geometric shape.
+        TopoDS_Shape shape;
+        // The intended parametric type for the shape.
+        PrimitiveType type = PrimitiveType::None;
+    };
+
+    ImportMode m_importMode = ImportMode::IndividualShapes;
     bool shouldSkipEntity() const
     {
         // This entity is in paper space, and the user setting says to ignore it.
@@ -127,6 +175,8 @@ private:
     void ComposeBlocks();
     void ComposeParametricBlock(const std::string& blockName, std::set<std::string>& composed);
     void ComposeFlattenedBlock(const std::string& blockName, std::set<std::string>& composed);
+    Part::Compound* createParametricPolylineCompound(const TopoDS_Wire& wire, const char* name);
+    Part::Feature* createFlattenedPolylineFeature(const TopoDS_Wire& wire, const char* name);
 
 protected:
     PyObject* getDraftModule()
@@ -140,18 +190,18 @@ protected:
         }
         return DraftModule;
     }
-    CDxfRead::Layer*
-    MakeLayer(const std::string& name, ColorIndex_t color, std::string&& lineType) override;
+    CDxfRead::Layer* MakeLayer(const std::string& name, ColorIndex_t color, std::string&& lineType) override;
+
+    TopoDS_Wire BuildWireFromPolyline(std::list<VertexInfo>& vertices, int flags);
+    void CreateFlattenedPolyline(const TopoDS_Wire& wire, const char* name);
+    void CreateParametricPolyline(const TopoDS_Wire& wire, const char* name);
 
     // Overrides for layer management so we can record the layer objects in the FreeCAD drawing that
     // are associated with the layers in the DXF.
     class Layer: public CDxfRead::Layer
     {
     public:
-        Layer(const std::string& name,
-              ColorIndex_t color,
-              std::string&& lineType,
-              PyObject* drawingLayer);
+        Layer(const std::string& name, ColorIndex_t color, std::string&& lineType, PyObject* drawingLayer);
         Layer(const Layer&) = delete;
         Layer(Layer&&) = delete;
         void operator=(const Layer&) = delete;
@@ -164,8 +214,7 @@ protected:
         App::PropertyLinkListHidden* GroupContents;
     };
 
-    using FeaturePythonBuilder =
-        std::function<App::FeaturePython*(const Base::Matrix4D& transform)>;
+    using FeaturePythonBuilder = std::function<App::FeaturePython*(const Base::Matrix4D& transform)>;
     // Block management
     class Block
     {
@@ -179,10 +228,12 @@ protected:
 
             // NOLINTNEXTLINE(readability/nolint)
             // NOLINTNEXTLINE(modernize-pass-by-value) Pass by value adds unwarranted complexity
-            Insert(const std::string& Name,
-                   const Base::Vector3d& Point,
-                   double Rotation,
-                   const Base::Vector3d& Scale)
+            Insert(
+                const std::string& Name,
+                const Base::Vector3d& Point,
+                double Rotation,
+                const Base::Vector3d& Scale
+            )
                 : Point(Point)
                 , Scale(Scale)
                 , Name(Name)
@@ -197,9 +248,7 @@ protected:
         {}
         const std::string Name;
         const int Flags;
-        std::map<CDxfRead::CommonEntityAttributes, std::list<TopoDS_Shape>> Shapes;
-        std::map<CDxfRead::CommonEntityAttributes, std::list<FeaturePythonBuilder>>
-            FeatureBuildersList;
+        std::map<CDxfRead::CommonEntityAttributes, std::list<GeometryBuilder>> GeometryBuilders;
         std::map<CDxfRead::CommonEntityAttributes, std::list<Insert>> Inserts;
     };
 
@@ -211,6 +260,7 @@ private:
     App::DocumentObjectGroup* m_unreferencedBlocksGroup = nullptr;
     App::Document* document;
     std::string m_optionSource;
+    void _addOriginalLayerProperty(App::DocumentObject* obj);
 
 protected:
     friend class DrawingEntityCollector;
@@ -249,6 +299,8 @@ protected:
 
         // Called by OnReadXxxx functions to add Part objects
         virtual void AddObject(const TopoDS_Shape& shape, const char* nameBase) = 0;
+        // Generic method to add a new geometry builder
+        virtual void AddGeometry(const GeometryBuilder& builder) = 0;
         // Called by OnReadInsert to add App::Link or other C++-created objects
         virtual void AddObject(App::DocumentObject* obj, const char* nameBase) = 0;
         // Called by OnReadXxxx functions to add FeaturePython (draft) objects.
@@ -258,10 +310,12 @@ protected:
         // Called by OnReadInsert to either remember in a nested block or expand the block into the
         // drawing
         // This method is now obsolete with the App::Link implementation
-        virtual void AddInsert(const Base::Vector3d& point,
-                               const Base::Vector3d& scale,
-                               const std::string& name,
-                               double rotation) = 0;
+        virtual void AddInsert(
+            const Base::Vector3d& point,
+            const Base::Vector3d& scale,
+            const std::string& name,
+            double rotation
+        ) = 0;
 
     protected:
         ImpExpDxfRead& Reader;
@@ -278,12 +332,15 @@ protected:
         {}
 
         void AddObject(const TopoDS_Shape& shape, const char* nameBase) override;
+        void AddGeometry(const GeometryBuilder& builder) override;
         void AddObject(App::DocumentObject* obj, const char* nameBase) override;
         void AddObject(FeaturePythonBuilder shapeBuilder) override;
-        void AddInsert(const Base::Vector3d& point,
-                       const Base::Vector3d& scale,
-                       const std::string& name,
-                       double rotation) override
+        void AddInsert(
+            const Base::Vector3d& point,
+            const Base::Vector3d& scale,
+            const std::string& name,
+            double rotation
+        ) override
         {
             // This is the correct place to create top-level App::Link objects for INSERTs.
 
@@ -331,7 +388,8 @@ protected:
     public:
         ShapeSavingEntityCollector(
             ImpExpDxfRead& reader,
-            std::map<CDxfRead::CommonEntityAttributes, std::list<TopoDS_Shape>>& shapesList)
+            std::map<CDxfRead::CommonEntityAttributes, std::list<TopoDS_Shape>>& shapesList
+        )
             : DrawingEntityCollector(reader)
             , ShapesList(shapesList)
         {}
@@ -339,6 +397,11 @@ protected:
         void AddObject(const TopoDS_Shape& shape, const char* /*nameBase*/) override
         {
             ShapesList[Reader.m_entityAttributes].push_back(shape);
+        }
+
+        void AddGeometry(const GeometryBuilder& builder) override
+        {
+            ShapesList[Reader.m_entityAttributes].push_back(builder.shape);
         }
 
         void AddObject(App::DocumentObject* obj, const char* nameBase) override
@@ -370,7 +433,6 @@ protected:
 
     private:
         const EntityCollector* previousEntityCollector;
-        const eEntityMergeType_t previousMmergeOption;
     };
 #endif
     class BlockDefinitionCollector: public EntityCollector
@@ -379,48 +441,58 @@ protected:
     public:
         BlockDefinitionCollector(
             ImpExpDxfRead& reader,
-            std::map<CDxfRead::CommonEntityAttributes, std::list<TopoDS_Shape>>& shapesList,
-            std::map<CDxfRead::CommonEntityAttributes, std::list<FeaturePythonBuilder>>&
-                featureBuildersList,
-            std::map<CDxfRead::CommonEntityAttributes, std::list<Block::Insert>>& insertsList)
+            std::map<CDxfRead::CommonEntityAttributes, std::list<GeometryBuilder>>& buildersList,
+            std::map<CDxfRead::CommonEntityAttributes, std::list<Block::Insert>>& insertsList
+        )
             : EntityCollector(reader)
-            , ShapesList(shapesList)
-            , FeatureBuildersList(featureBuildersList)
+            , BuildersList(buildersList)
             , InsertsList(insertsList)
         {}
 
         // TODO: We will want AddAttributeDefinition as well.
         void AddObject(const TopoDS_Shape& shape, const char* /*nameBase*/) override
         {
-            ShapesList[Reader.m_entityAttributes].push_back(shape);
-        }
-        void AddObject(FeaturePythonBuilder shapeBuilder) override
-        {
-            FeatureBuildersList[Reader.m_entityAttributes].push_back(shapeBuilder);
+            // This path should no longer be taken, but is kept for compatibility.
+            BuildersList[Reader.m_entityAttributes].emplace_back(GeometryBuilder(shape));
         }
 
-        void AddObject(App::DocumentObject* /*obj*/, const char* /*nameBase*/) override
+        void AddGeometry(const GeometryBuilder& builder) override
+        {
+            BuildersList[Reader.m_entityAttributes].push_back(builder);
+        }
+
+        void AddObject(App::DocumentObject* /*obj*/, const char* nameBase) override
         {
             // This path should never be executed. Links and other fully-formed DocumentObjects
             // are created from INSERT entities, not as part of a BLOCK *definition*. If this
             // warning ever appears, it indicates a logic error in the importer.
             Reader.ImportError(
-                "Internal logic error: Attempted to add a DocumentObject to a block definition.");
+                "Internal logic error: Attempted to add a DocumentObject ('%s') to a block "
+                "definition.\n",
+                nameBase
+            );
         }
 
-        void AddInsert(const Base::Vector3d& point,
-                       const Base::Vector3d& scale,
-                       const std::string& name,
-                       double rotation) override
+        void AddObject(FeaturePythonBuilder /*shapeBuilder*/) override
+        {
+            // This path is for Draft/FeaturePython objects and is not used by the
+            // primitives or shapes modes.
+        }
+
+        void AddInsert(
+            const Base::Vector3d& point,
+            const Base::Vector3d& scale,
+            const std::string& name,
+            double rotation
+        ) override
         {
             InsertsList[Reader.m_entityAttributes].emplace_back(
-                Block::Insert(name, point, rotation, scale));
+                Block::Insert(name, point, rotation, scale)
+            );
         }
 
     private:
-        std::map<CDxfRead::CommonEntityAttributes, std::list<TopoDS_Shape>>& ShapesList;
-        std::map<CDxfRead::CommonEntityAttributes, std::list<FeaturePythonBuilder>>&
-            FeatureBuildersList;
+        std::map<CDxfRead::CommonEntityAttributes, std::list<GeometryBuilder>>& BuildersList;
         std::map<CDxfRead::CommonEntityAttributes, std::list<Block::Insert>>& InsertsList;
     };
 
@@ -449,31 +521,41 @@ public:
     }
     void setOptions();
 
-    void exportText(const char* text,
-                    Base::Vector3d position1,
-                    Base::Vector3d position2,
-                    double size,
-                    int just);
-    void exportLinearDim(Base::Vector3d textLocn,
-                         Base::Vector3d lineLocn,
-                         Base::Vector3d extLine1Start,
-                         Base::Vector3d extLine2Start,
-                         char* dimText,
-                         int type);
-    void exportAngularDim(Base::Vector3d textLocn,
-                          Base::Vector3d lineLocn,
-                          Base::Vector3d extLine1End,
-                          Base::Vector3d extLine2End,
-                          Base::Vector3d apexPoint,
-                          char* dimText);
-    void exportRadialDim(Base::Vector3d centerPoint,
-                         Base::Vector3d textLocn,
-                         Base::Vector3d arcPoint,
-                         char* dimText);
-    void exportDiametricDim(Base::Vector3d textLocn,
-                            Base::Vector3d arcPoint1,
-                            Base::Vector3d arcPoint2,
-                            char* dimText);
+    void exportText(
+        const char* text,
+        Base::Vector3d position1,
+        Base::Vector3d position2,
+        double size,
+        int just
+    );
+    void exportLinearDim(
+        Base::Vector3d textLocn,
+        Base::Vector3d lineLocn,
+        Base::Vector3d extLine1Start,
+        Base::Vector3d extLine2Start,
+        char* dimText,
+        int type
+    );
+    void exportAngularDim(
+        Base::Vector3d textLocn,
+        Base::Vector3d lineLocn,
+        Base::Vector3d extLine1End,
+        Base::Vector3d extLine2End,
+        Base::Vector3d apexPoint,
+        char* dimText
+    );
+    void exportRadialDim(
+        Base::Vector3d centerPoint,
+        Base::Vector3d textLocn,
+        Base::Vector3d arcPoint,
+        char* dimText
+    );
+    void exportDiametricDim(
+        Base::Vector3d textLocn,
+        Base::Vector3d arcPoint1,
+        Base::Vector3d arcPoint2,
+        char* dimText
+    );
 
 
     static bool gp_PntEqual(gp_Pnt p1, gp_Pnt p2);
@@ -490,6 +572,9 @@ protected:
     void exportLWPoly(BRepAdaptor_Curve& c);  // LWPolyline not supported in R12?
     void exportPolyline(BRepAdaptor_Curve& c);
 
+    // helper function to discretize a curve into polyline vertices
+    bool discretizeCurveToPolyline(BRepAdaptor_Curve& c, LWPolyDataOut& pd) const;
+
     //        std::string m_optionSource;
     double optionMaxLength;
     bool optionPolyLine;
@@ -497,5 +582,3 @@ protected:
 };
 
 }  // namespace Import
-
-#endif  // IMPEXPDXF_H

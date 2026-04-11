@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
 # *   Copyright (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
@@ -62,5 +64,6 @@ class DraftGuiImport(test_base.DraftTestCaseNoDoc):
         module = "draftguitools.gui_trackers"
         imported = aux.import_test(module)
         self.assertTrue(imported, "Problem importing '{}'".format(module))
+
 
 ## @}

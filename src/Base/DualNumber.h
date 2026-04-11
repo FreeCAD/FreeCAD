@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2019 Viktor Titov (DeepSOIC) <vv.titov@gmail.com>       *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FREECAD_BASE_DUAL_NUMBER_H
-#define FREECAD_BASE_DUAL_NUMBER_H
+#pragma once
 
 #include <cmath>
 
@@ -109,6 +110,3 @@ inline DualNumber pow(DualNumber a, double pw)
 }
 }  // namespace Base
 // NOLINTEND(readability-identifier-length)
-
-
-#endif

@@ -20,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 #include <qpainter.h>
-#ifndef _PreComp_
 # include <cmath>
 # include <QGraphicsScene>
 # include <QPainterPath>
-#endif
+
 
 #include <Base/Console.h>
 #include <Base/Tools.h>

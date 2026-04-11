@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # -*- coding: utf8 -*-
 # Import gui init module
 # (c) 2003 Juergen Riegel
@@ -31,6 +33,8 @@
 
 
 # Registered in Part's Init.py file
+FreeCAD.changeImportModule("IGES format (*.iges *.IGES *.igs *.IGS)", "Part", "ImportGui")
+FreeCAD.changeExportModule("IGES format (*.iges *.igs)", "Part", "ImportGui")
 FreeCAD.changeImportModule("STEP with colors (*.step *.STEP *.stp *.STP)", "Import", "ImportGui")
 FreeCAD.changeExportModule("STEP with colors (*.step *.stp)", "Import", "ImportGui")
 FreeCAD.changeExportModule("glTF (*.gltf *.glb)", "Import", "ImportGui")

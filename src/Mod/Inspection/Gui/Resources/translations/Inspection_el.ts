@@ -10,13 +10,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="75"/>
-      <source>Inspection...</source>
-      <translation>Επιθεώρηση...</translation>
+      <source>Inspection…</source>
+      <translation>Επιθεώρηση…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="76"/>
-      <source>Get distance information</source>
-      <translation>Λάβετε πληροφορίες απόστασης</translation>
+      <source>Inspects distance information</source>
+      <translation>Επιθεωρεί πληροφορίες απόστασης</translation>
     </message>
   </context>
   <context>
@@ -28,22 +28,21 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="49"/>
-      <source>Visual inspection...</source>
-      <translation>Οπτική επιθεώρηση...</translation>
+      <source>Visual Inspection…</source>
+      <translation>Οπτική Επιθεώρηση…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="50"/>
-      <location filename="../../Command.cpp" line="51"/>
-      <source>Visual inspection</source>
-      <translation>Οπτική επιθεώρηση</translation>
+      <source>Inspects the objects visually</source>
+      <translation>Επιθεωρεί τα αντικείμενα οπτικά</translation>
     </message>
   </context>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../VisualInspection.cpp" line="237"/>
+      <location filename="../../VisualInspection.cpp" line="234"/>
       <source>Visual Inspection</source>
-      <translation>Οπτική επιθεώρηση</translation>
+      <translation>Οπτική Επιθεώρηση</translation>
     </message>
   </context>
   <context>
@@ -51,7 +50,7 @@
     <message>
       <location filename="../../VisualInspection.ui" line="14"/>
       <source>Visual Inspection</source>
-      <translation>Οπτική επιθεώρηση</translation>
+      <translation>Οπτική Επιθεώρηση</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="23"/>
@@ -67,7 +66,7 @@
     <message>
       <location filename="../../VisualInspection.ui" line="50"/>
       <source>Nominal</source>
-      <translation>Ονομαστική</translation>
+      <translation>Ονομαστικό</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="77"/>
@@ -77,7 +76,7 @@
     <message>
       <location filename="../../VisualInspection.ui" line="97"/>
       <source>Search distance</source>
-      <translation>Αναζήτηση απόστασης</translation>
+      <translation>Απόσταση αναζήτησης</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="129"/>
@@ -94,40 +93,40 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="502"/>
+      <location filename="../../ViewProviderInspection.cpp" line="510"/>
       <source>Remove annotations</source>
       <translation>Αφαίρεση σχολιασμών</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="503"/>
+      <location filename="../../ViewProviderInspection.cpp" line="511"/>
       <source>Do you want to remove all annotations?</source>
-      <translation>Θέλετε να αφαιρέσετε όλες τις σημειώσεις;</translation>
+      <translation>Θέλετε να αφαιρέσετε όλους τους σχολιασμούς;</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="561"/>
+      <location filename="../../ViewProviderInspection.cpp" line="569"/>
       <source>Annotation</source>
       <translation>Σχολιασμός</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="564"/>
-      <source>Leave info mode</source>
-      <translation>Έξοδος από τη λειτουργία πληροφοριών</translation>
+      <location filename="../../ViewProviderInspection.cpp" line="572"/>
+      <source>Leave Info Mode</source>
+      <translation>Έξοδος από τη Λειτουργία Πληροφοριών</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="695"/>
+      <location filename="../../ViewProviderInspection.cpp" line="708"/>
       <source>Distance: &gt; %1</source>
       <translation>Απόσταση: &gt; %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="699"/>
+      <location filename="../../ViewProviderInspection.cpp" line="711"/>
       <source>Distance: &lt; %1</source>
       <translation>Απόσταση: &lt; %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="719"/>
-      <location filename="../../ViewProviderInspection.cpp" line="736"/>
+      <location filename="../../ViewProviderInspection.cpp" line="730"/>
+      <location filename="../../ViewProviderInspection.cpp" line="748"/>
       <source>Distance: %1</source>
-      <translation>Απόσταση:  %1</translation>
+      <translation>Απόσταση: %1</translation>
     </message>
   </context>
 </TS>

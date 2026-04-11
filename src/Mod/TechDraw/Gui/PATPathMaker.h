@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_PATPATHMAKER_H
-#define TECHDRAWGUI_PATPATHMAKER_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -45,7 +44,7 @@ public:
     void setPen(QPen pen) { m_pen = pen; }
     QPen getPen()  { return m_pen; }
     void setParent(QGraphicsItem* parent) { m_parent = parent; }
-   
+
     void lineSetToFillItems(TechDraw::LineSet& ls);
 
 protected:
@@ -73,5 +72,3 @@ private:
 };
 
 }
-#endif // TECHDRAWGUI_PATPATHMAKER_H
-

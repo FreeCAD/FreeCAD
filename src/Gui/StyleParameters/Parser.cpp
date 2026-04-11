@@ -21,27 +21,22 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
 #include "Parser.h"
 #include "ParameterManager.h"
 
+#include <Utilities.h>
 #include <Base/Tools.h>
 
-#ifndef _PreComp_
 #include <QColor>
-#include <QRegularExpression>
-#include <QString>
-#include <ranges>
+#include <algorithm>
 #include <variant>
-#endif
 
 namespace Gui::StyleParameters
 {
 
 Value ParameterReference::evaluate(const EvaluationContext& context) const
 {
-    return context.manager->resolve(name, context.context);
+    return context.manager->resolve(name, context.context).value_or("@" + name);
 }
 
 Value Number::evaluate([[maybe_unused]] const EvaluationContext& context) const
@@ -56,85 +51,54 @@ Value Color::evaluate([[maybe_unused]] const EvaluationContext& context) const
 
 Value FunctionCall::evaluate(const EvaluationContext& context) const
 {
-    const auto lightenOrDarken = [this](const EvaluationContext& context) -> Value {
-        if (arguments.size() != 2) {
-            THROWM(Base::ExpressionError,
-                   fmt::format("Function '{}' expects 2 arguments, got {}",
-                               functionName,
-                               arguments.size()));
-        }
+    auto argsValue = arguments.evaluate(context);
+    const auto& args = argsValue.get<Tuple>();
 
-        auto colorArg = arguments[0]->evaluate(context);
-        auto amountArg = arguments[1]->evaluate(context);
+    const auto lightenOrDarken = [this, &args]() -> Value {
+        auto resolved = ArgumentParser {{"color"}, {"amount"}}.resolve(args);
 
-        if (!std::holds_alternative<QColor>(colorArg)) {
-            THROWM(Base::ExpressionError,
-                   fmt::format("'{}' is not supported for colors", functionName));
-        }
-
-        auto color = std::get<QColor>(colorArg);
+        auto color = resolved.get<Base::Color>("color").asValue<QColor>();
 
         // In Qt if you want to make color 20% darker or lighter, you need to pass 120 as the value
         // we, however, want users to pass only the relative difference, hence we need to add the
         // 100 required by Qt.
         //
         // NOLINTNEXTLINE(*-magic-numbers)
-        auto amount = 100 + static_cast<int>(std::get<Length>(amountArg).value);
+        auto amount = 100 + static_cast<int>(resolved.get<Numeric>("amount").value);
 
         if (functionName == "lighten") {
-            return color.lighter(amount);
+            return Base::Color::fromValue(color.lighter(amount));
         }
 
         if (functionName == "darken") {
-            return color.darker(amount);
+            return Base::Color::fromValue(color.darker(amount));
         }
 
         return {};
     };
 
-    const auto blend = [this](const EvaluationContext& context) -> Value {
-        if (arguments.size() != 3) {
-            THROWM(Base::ExpressionError,
-                   fmt::format("Function '{}' expects 3 arguments, got {}",
-                               functionName,
-                               arguments.size()));
-        }
+    const auto blend = [&args]() -> Value {
+        auto resolved = ArgumentParser {{"from"}, {"to"}, {"amount"}}.resolve(args);
 
-        auto firstColorArg = arguments[0]->evaluate(context);
-        auto secondColorArg = arguments[1]->evaluate(context);
-        auto amountArg = arguments[2]->evaluate(context);
+        auto firstColor = resolved.get<Base::Color>("from");
+        auto secondColor = resolved.get<Base::Color>("to");
+        auto amount = Base::fromPercent(static_cast<long>(resolved.get<Numeric>("amount").value));
 
-        if (!std::holds_alternative<QColor>(firstColorArg)) {
-            THROWM(Base::ExpressionError,
-                   fmt::format("first argument of '{}' must be color", functionName));
-        }
-
-        if (!std::holds_alternative<QColor>(secondColorArg)) {
-            THROWM(Base::ExpressionError,
-                   fmt::format("second argument of '{}' must be color", functionName));
-        }
-
-        auto firstColor = std::get<QColor>(firstColorArg);
-        auto secondColor = std::get<QColor>(secondColorArg);
-
-        auto amount = Base::fromPercent(std::get<Length>(amountArg).value);
-
-        return QColor::fromRgbF(
-            (1 - amount) * firstColor.redF() + amount * secondColor.redF(),
-            (1 - amount) * firstColor.greenF() + amount * secondColor.greenF(),
-            (1 - amount) * firstColor.blueF() + amount * secondColor.blueF()
+        return Base::Color(
+            (1 - amount) * firstColor.r + amount * secondColor.r,
+            (1 - amount) * firstColor.g + amount * secondColor.g,
+            (1 - amount) * firstColor.b + amount * secondColor.b
         );
     };
 
-    std::map<std::string, std::function<Value(const EvaluationContext&)>> functions = {
+    std::map<std::string, std::function<Value()>> functions = {
         {"lighten", lightenOrDarken},
         {"darken", lightenOrDarken},
         {"blend", blend},
     };
 
     if (functions.contains(functionName)) {
-        auto function = functions.at(functionName);
-        return function(context);
+        return functions.at(functionName)();
     }
 
     THROWM(Base::ExpressionError, fmt::format("Unknown function '{}'", functionName));
@@ -145,43 +109,63 @@ Value BinaryOp::evaluate(const EvaluationContext& context) const
     Value lval = left->evaluate(context);
     Value rval = right->evaluate(context);
 
-    if (!std::holds_alternative<Length>(lval) || !std::holds_alternative<Length>(rval)) {
-        THROWM(Base::ExpressionError, "Math operations are supported only on lengths");
-    }
-
-    auto lhs = std::get<Length>(lval);
-    auto rhs = std::get<Length>(rval);
-
     switch (op) {
         case Operator::Add:
-            return lhs + rhs;
+            return lval + rval;
         case Operator::Subtract:
-            return lhs - rhs;
+            return lval - rval;
         case Operator::Multiply:
-            return lhs * rhs;
+            return lval * rval;
         case Operator::Divide:
-            return lhs / rhs;
+            return lval / rval;
         default:
             THROWM(Base::ExpressionError, "Unknown operator");
     }
 }
 
+Value TupleLiteral::evaluate(const EvaluationContext& context) const
+{
+    Tuple tuple;
+    for (const auto& elem : elements) {
+        tuple.elements.push_back(
+            {elem.name, std::make_shared<const Value>(elem.expression->evaluate(context))}
+        );
+    }
+    return tuple;
+}
+
 Value UnaryOp::evaluate(const EvaluationContext& context) const
 {
     Value val = operand->evaluate(context);
-    if (std::holds_alternative<QColor>(val)) {
-        THROWM(Base::ExpressionError, "Unary operations on colors are not supported");
-    }
 
-    auto v = std::get<Length>(val);
     switch (op) {
         case Operator::Add:
-            return v;
+            return val;
         case Operator::Subtract:
-            return -v;
+            return -val;
         default:
             THROWM(Base::ExpressionError, "Unknown unary operator");
     }
+}
+
+Value MemberAccess::evaluate(const EvaluationContext& context) const
+{
+    Value val = object->evaluate(context);
+    if (!val.holds<Tuple>()) {
+        THROWM(Base::ExpressionError, "Member access requires a tuple");
+    }
+
+    const auto& tuple = val.get<Tuple>();
+
+    if (const Value* found = tuple.find(member)) {
+        return *found;
+    }
+
+    if (std::ranges::all_of(member, ::isdigit)) {
+        return tuple.at(std::stoul(member));
+    }
+
+    THROWM(Base::ExpressionError, fmt::format("Tuple has no member '{}'", member));
 }
 
 std::unique_ptr<Expr> Parser::parse()
@@ -189,8 +173,10 @@ std::unique_ptr<Expr> Parser::parse()
     auto expr = parseExpression();
     skipWhitespace();
     if (pos != input.size()) {
-        THROWM(Base::ParserError,
-               fmt::format("Unexpected characters at end of input: {}", input.substr(pos)));
+        THROWM(
+            Base::ParserError,
+            fmt::format("Unexpected characters at end of input: {}", input.substr(pos))
+        );
     }
     return expr;
 }
@@ -243,23 +229,54 @@ std::unique_ptr<Expr> Parser::parseFactor()
         Operator op = (input[pos - 1] == '+') ? Operator::Add : Operator::Subtract;
         return std::make_unique<UnaryOp>(op, parseFactor());
     }
+
+    std::unique_ptr<Expr> expr;
+
     if (match('(')) {
-        auto expr = parseExpression();
-        if (!match(')')) {
-            THROWM(Base::ParserError, fmt::format("Expected ')', got '{}'", input[pos]));
+        // Disambiguation: tuple vs grouped expression
+        // 1. If we see `identifier:` pattern → definitely a tuple
+        if (peekNamedElement()) {
+            expr = parseTuple();
         }
-        return expr;
+        else {
+            // 2. Otherwise parse first expression
+            expr = parseExpression();
+            skipWhitespace();
+
+            // If followed by `,` → reinterpret as tuple with this as first element
+            if (pos < input.size() && input[pos] == ',') {
+                ++pos;
+                TupleLiteral::Element first;
+                first.expression = std::move(expr);
+                expr = parseTuple(std::move(first));
+            }
+            else {
+                // If followed by `)` → grouped expression (backward compatible)
+                if (!match(')')) {
+                    THROWM(Base::ParserError, fmt::format("Expected ')', got '{}'", input[pos]));
+                }
+            }
+        }
     }
-    if (peekColor()) {
-        return parseColor();
+    else if (peekColor()) {
+        expr = parseColor();
     }
-    if (peekParameter()) {
-        return parseParameter();
+    else if (peekParameter()) {
+        expr = parseParameter();
     }
-    if (peekFunction()) {
-        return parseFunctionCall();
+    else if (peekFunction()) {
+        expr = parseFunctionCall();
     }
-    return parseNumber();
+    else {
+        expr = parseNumber();
+    }
+
+    while (pos < input.size() && input[pos] == '.') {
+        ++pos;
+        expr = std::make_unique<MemberAccess>(std::move(expr), parseMember());
+    }
+
+    return expr;
 }
 
 bool Parser::peekColor()
@@ -277,16 +294,16 @@ std::unique_ptr<Expr> Parser::parseColor()
     const auto parseHexadecimalColor = [&]() {
         constexpr int hexadecimalBase = 16;
 
-            // Format is #RRGGBB
-            pos++;
-            int r = std::stoi(input.substr(pos, 2), nullptr, hexadecimalBase);
-            pos += 2;
-            int g = std::stoi(input.substr(pos, 2), nullptr, hexadecimalBase);
-            pos += 2;
-            int b = std::stoi(input.substr(pos, 2), nullptr, hexadecimalBase);
-            pos += 2;
+        // Format is #RRGGBB
+        pos++;
+        int r = std::stoi(input.substr(pos, 2), nullptr, hexadecimalBase);
+        pos += 2;
+        int g = std::stoi(input.substr(pos, 2), nullptr, hexadecimalBase);
+        pos += 2;
+        int b = std::stoi(input.substr(pos, 2), nullptr, hexadecimalBase);
+        pos += 2;
 
-            return std::make_unique<Color>(QColor(r, g, b));
+        return std::make_unique<Color>(Base::Color(r / 255.0, g / 255.0, b / 255.0));
     };
 
     const auto parseFunctionStyleColor = [&]() {
@@ -296,11 +313,11 @@ std::unique_ptr<Expr> Parser::parseColor()
 
         int r = parseInt();
         if (!match(',')) {
-                THROWM(Base::ParserError, fmt::format("Expected ',' after red, got '{}'", input[pos]));
+            THROWM(Base::ParserError, fmt::format("Expected ',' after red, got '{}'", input[pos]));
         }
         int g = parseInt();
         if (!match(',')) {
-                THROWM(Base::ParserError, fmt::format("Expected ',' after green, got '{}'", input[pos]));
+            THROWM(Base::ParserError, fmt::format("Expected ',' after green, got '{}'", input[pos]));
         }
         int b = parseInt();
         int a = 255;  // NOLINT(*-magic-numbers)
@@ -311,9 +328,12 @@ std::unique_ptr<Expr> Parser::parseColor()
             a = parseInt();
         }
         if (!match(')')) {
-            THROWM(Base::ParserError, fmt::format("Expected ')' after color arguments, got '{}'", input[pos]));
+            THROWM(
+                Base::ParserError,
+                fmt::format("Expected ')' after color arguments, got '{}'", input[pos])
+            );
         }
-        return std::make_unique<Color>(QColor(r, g, b, a));
+        return std::make_unique<Color>(Base::Color(r / 255.0, g / 255.0, b / 255.0, a / 255.0));
     };
 
     skipWhitespace();
@@ -326,8 +346,12 @@ std::unique_ptr<Expr> Parser::parseColor()
         if (peekString(rgbFunction) || peekString(rgbaFunction)) {
             return parseFunctionStyleColor();
         }
-    } catch (std::invalid_argument&) {
-        THROWM(Base::ParserError, "Invalid color format, expected #RRGGBB or rgb(r,g,b) or rgba(r,g,b,a)");
+    }
+    catch (std::invalid_argument&) {
+        THROWM(
+            Base::ParserError,
+            "Invalid color format, expected #RRGGBB or rgb(r,g,b) or rgba(r,g,b,a)"
+        );
     }
 
     THROWM(Base::ParserError, "Unknown color format");
@@ -350,8 +374,10 @@ std::unique_ptr<Expr> Parser::parseParameter()
         ++pos;
     }
     if (start == pos) {
-        THROWM(Base::ParserError,
-               fmt::format("Expected parameter name after '@', got '{}'", input[pos]));
+        THROWM(
+            Base::ParserError,
+            fmt::format("Expected parameter name after '@', got '{}'", input[pos])
+        );
     }
     return std::make_unique<ParameterReference>(input.substr(start, pos - start));
 }
@@ -372,23 +398,87 @@ std::unique_ptr<Expr> Parser::parseFunctionCall()
     std::string functionName = input.substr(start, pos - start);
 
     if (!match('(')) {
-        THROWM(Base::ParserError,
-               fmt::format("Expected '(' after function name, got '{}'", input[pos]));
+        THROWM(Base::ParserError, fmt::format("Expected '(' after function name, got '{}'", input[pos]));
     }
 
-    std::vector<std::unique_ptr<Expr>> arguments;
-    if (!match(')')) {
-        do {  // NOLINT(*-avoid-do-while)
-            arguments.push_back(parseExpression());
-        } while (match(','));
+    auto arguments = parseTuple();
+    return std::make_unique<FunctionCall>(functionName, std::move(*arguments));
+}
 
-        if (!match(')')) {
-            THROWM(Base::ParserError,
-                   fmt::format("Expected ')' after function arguments, got '{}'", input[pos]));
+bool Parser::peekNamedElement()
+{
+    size_t saved = pos;
+    skipWhitespace();
+
+    // Check for `identifier :` pattern (identifiers may start with digits, e.g. shade names like 050)
+    if (pos >= input.size() || !isalnum(input[pos])) {
+        pos = saved;
+        return false;
+    }
+
+    // Skip identifier characters
+    while (pos < input.size() && (isalnum(input[pos]) || input[pos] == '_')) {
+        ++pos;
+    }
+
+    // Skip whitespace between identifier and colon
+    while (pos < input.size() && isspace(input[pos])) {
+        ++pos;
+    }
+
+    // Check for colon
+    bool found = pos < input.size() && input[pos] == ':';
+    pos = saved;
+    return found;
+}
+
+std::unique_ptr<TupleLiteral> Parser::parseTuple(std::optional<TupleLiteral::Element> firstElement)
+{
+    auto tuple = std::make_unique<TupleLiteral>();
+
+    const auto parseElement = [this]() {
+        TupleLiteral::Element elem;
+
+        // Check if this element has a name
+        if (peekNamedElement()) {
+            skipWhitespace();
+            size_t start = pos;
+            while (pos < input.size() && (isalnum(input[pos]) || input[pos] == '_')) {
+                ++pos;
+            }
+            elem.name = input.substr(start, pos - start);
+            skipWhitespace();
+            ++pos;  // consume ':'
         }
+
+        elem.expression = parseExpression();
+        return elem;
+    };
+
+    if (firstElement) {
+        // Called from unnamed-element path: first element already parsed, comma already consumed
+        tuple->elements.push_back(std::move(*firstElement));
+        // Parse the second element immediately (comma was already consumed by caller)
+        tuple->elements.push_back(parseElement());
     }
 
-    return std::make_unique<FunctionCall>(functionName, std::move(arguments));
+    // Parse remaining elements
+    while (true) {
+        skipWhitespace();
+        if (pos < input.size() && input[pos] == ')') {
+            ++pos;
+            return tuple;
+        }
+
+        if (!tuple->elements.empty() && !match(',')) {
+            if (pos >= input.size()) {
+                THROWM(Base::ParserError, "Expected ')' to close tuple");
+            }
+            THROWM(Base::ParserError, fmt::format("Expected ',' or ')' in tuple, got '{}'", input[pos]));
+        }
+
+        tuple->elements.push_back(parseElement());
+    }
 }
 
 int Parser::parseInt()
@@ -430,6 +520,18 @@ std::string Parser::parseUnit()
     }
     if (start == pos) {
         return "";
+    }
+    return input.substr(start, pos - start);
+}
+
+std::string Parser::parseMember()
+{
+    size_t start = pos;
+    while (pos < input.size() && (isalnum(input[pos]) || input[pos] == '_')) {
+        ++pos;
+    }
+    if (start == pos) {
+        THROWM(Base::ParserError, "Expected member name after '.'");
     }
     return input.substr(start, pos - start);
 }

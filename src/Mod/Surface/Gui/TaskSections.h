@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2020 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SURFACEGUI_TASKSECTIONS_H
-#define SURFACEGUI_TASKSECTIONS_H
+#pragma once
 
 #include <memory>
 
@@ -93,6 +94,7 @@ public:
     bool accept();
     bool reject();
     void setEditedObject(Surface::Sections* obj);
+    void setSelectionGate();
 
 protected:
     void changeEvent(QEvent* e) override;
@@ -138,8 +140,7 @@ public:
 
 private:
     SectionsPanel* widget1;
+    Surface::Sections* editedObj;
 };
 
 }  // namespace SurfaceGui
-
-#endif  // SURFACEGUI_TASKSECTIONS_H

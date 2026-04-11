@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   (c) 2009 Yorik van Havre <yorik@uncreated.net>                        *
 # *   (c) 2010 Ken Cline <cline@frii.com>                                   *
@@ -27,6 +29,7 @@
 The highlighting can be used to manipulate shapes with other tools
 such as Move, Rotate, and Scale.
 """
+
 ## @package gui_subelements
 # \ingroup draftguitools
 # \brief Provides GUI tools to highlight subelements of objects.
@@ -57,10 +60,15 @@ class SubelementHighlight(gui_base_original.Modifier):
     def GetResources(self):
         """Set icon, menu and tooltip."""
 
-        return {'Pixmap': 'Draft_SubelementHighlight',
-                'Accel': "H, S",
-                'MenuText': QT_TRANSLATE_NOOP("Draft_SubelementHighlight","Subelement highlight"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_SubelementHighlight","Highlight the subelements of the selected objects, so that they can then be edited with the move, rotate, and scale tools.")}
+        return {
+            "Pixmap": "Draft_SubelementHighlight",
+            "Accel": "H, S",
+            "MenuText": QT_TRANSLATE_NOOP("Draft_SubelementHighlight", "Highlight Subelements"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Draft_SubelementHighlight",
+                "Highlights the subelements of the selected objects, to be able to move, rotate, and scale them",
+            ),
+        }
 
     def Activated(self):
         """Execute when the command is called."""
@@ -108,20 +116,23 @@ class SubelementHighlight(gui_base_original.Modifier):
         """Get the selection."""
         if not Gui.Selection.getSelection() and self.ui:
             _msg(translate("draft", "Select an object to edit"))
-            self.call = self.view.addEventCallback("SoEvent",
-                                                   gui_tool_utils.selectObject)
+            self.call = self.view.addEventCallback("SoEvent", gui_tool_utils.selectObject)
         else:
             self.proceed()
 
     def get_editable_objects_from_selection(self):
         """Get editable Draft objects for the selection."""
         for obj in Gui.Selection.getSelection():
-            if (obj.isDerivedFrom("Part::Part2DObject")
-                or utils.get_type(obj) in ["BezCurve", "BSpline", "Wire"]):
+            if obj.isDerivedFrom("Part::Part2DObject") or utils.get_type(obj) in [
+                "BezCurve",
+                "BSpline",
+                "Wire",
+            ]:
                 self.editable_objects.append(obj)
-            elif (hasattr(obj, "Base")
-                  and (obj.Base.isDerivedFrom("Part::Part2DObject")
-                       or utils.get_type(obj.Base) in ["BezCurve", "BSpline", "Wire"])):
+            elif hasattr(obj, "Base") and (
+                obj.Base.isDerivedFrom("Part::Part2DObject")
+                or utils.get_type(obj.Base) in ["BezCurve", "BSpline", "Wire"]
+            ):
                 self.editable_objects.append(obj.Base)
 
     def highlight_editable_objects(self):
@@ -129,10 +140,11 @@ class SubelementHighlight(gui_base_original.Modifier):
         for obj in self.editable_objects:
             vobj = obj.ViewObject
             self.original_view_settings[obj.Name] = {
-                'Visibility': vobj.Visibility,
-                'PointSize': vobj.PointSize,
-                'PointColor': vobj.PointColor,
-                'LineColor': vobj.LineColor}
+                "Visibility": vobj.Visibility,
+                "PointSize": vobj.PointSize,
+                "PointColor": vobj.PointColor,
+                "LineColor": vobj.LineColor,
+            }
             vobj.Visibility = True
             vobj.PointSize = 10
             vobj.PointColor = (1.0, 0.0, 0.0)
@@ -157,6 +169,6 @@ class SubelementHighlight(gui_base_original.Modifier):
                 pass
 
 
-Gui.addCommand('Draft_SubelementHighlight', SubelementHighlight())
+Gui.addCommand("Draft_SubelementHighlight", SubelementHighlight())
 
 ## @}

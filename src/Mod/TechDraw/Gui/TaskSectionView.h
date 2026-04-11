@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TASKSECTIONVIEW_H
-#define GUI_TASKVIEW_TASKSECTIONVIEW_H
+#pragma once
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
@@ -156,8 +155,6 @@ public:
     QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
 
-    void update();
-
     bool isAllowedAlterSelection() const override
     { return false; }
     bool isAllowedAlterDocument() const override
@@ -169,5 +166,3 @@ private:
 };
 
 } //namespace TechDrawGui
-
-#endif // #ifndef GUI_TASKVIEW_TASKSECTIONVIEW_H

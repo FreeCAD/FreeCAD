@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2025 Samuel Abels <knipknap@gmail.com>                  *
 # *                                                                         *
@@ -21,6 +22,7 @@
 # ***************************************************************************
 import FreeCAD
 import Path
+from typing import Optional, Mapping
 from ...shape import ToolBitShapeBullnose
 from ..mixins import RotaryToolBitMixin, CuttingToolMixin
 from .base import ToolBit
@@ -29,19 +31,25 @@ from .base import ToolBit
 class ToolBitBullnose(ToolBit, CuttingToolMixin, RotaryToolBitMixin):
     SHAPE_CLASS = ToolBitShapeBullnose
 
-    def __init__(self, tool_bit_shape: ToolBitShapeBullnose, id: str | None = None):
+    def __init__(
+        self,
+        tool_bit_shape: ToolBitShapeBullnose,
+        id: str | None = None,
+        attrs: Optional[Mapping] = None,
+    ):
         Path.Log.track(f"ToolBitBullnose __init__ called with id: {id}")
-        super().__init__(tool_bit_shape, id=id)
-        CuttingToolMixin.__init__(self, self.obj)
+        super().__init__(tool_bit_shape, id=id, attrs=attrs)
+        self._init_cutting_properties(self.obj)
 
     @property
     def summary(self) -> str:
-        diameter = self.get_property_str("Diameter", "?")
+        diameter = self.get_property_str("Diameter", "?", precision=3)
         flutes = self.get_property("Flutes")
-        cutting_edge_height = self.get_property_str("CuttingEdgeHeight", "?")
-        flat_radius = self.get_property_str("FlatRadius", "?")
+        cutting_edge_height = self.get_property_str("CuttingEdgeHeight", "?", precision=3)
+        # flat_radius = self.get_property_str("FlatRadius", "?", precision=3)
+        corner_radius = self.get_property_str("CornerRadius", "?", precision=3)
 
         return FreeCAD.Qt.translate(
             "CAM",
-            f"{diameter} {flutes}-flute bullnose, {cutting_edge_height} cutting edge, {flat_radius} flat radius",
+            f"{diameter} {flutes}-flute bullnose, {cutting_edge_height} cutting edge, {corner_radius} corner radius",
         )

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VIEWPROVIDERFEMCONSTRAINT_H
-#define GUI_VIEWPROVIDERFEMCONSTRAINT_H
+#pragma once
 
 #include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/ViewProviderFeaturePython.h>
@@ -87,13 +86,18 @@ protected:
     void onChanged(const App::Property* prop) override;
     bool setEdit(int ModNum) override;
     void unsetEdit(int ModNum) override;
-    void handleChangedPropertyName(Base::XMLReader& reader,
-                                   const char* typeName,
-                                   const char* propName) override;
+    void handleChangedPropertyName(
+        Base::XMLReader& reader,
+        const char* typeName,
+        const char* propName
+    ) override;
 
     void updateSymbol();
-    virtual void
-    transformSymbol(const Base::Vector3d& point, const Base::Vector3d& normal, SbMatrix& mat) const;
+    virtual void transformSymbol(
+        const Base::Vector3d& point,
+        const Base::Vector3d& normal,
+        SbMatrix& mat
+    ) const;
     virtual void transformExtraSymbol() const;
 
 private:
@@ -135,6 +139,3 @@ using ViewProviderFemConstraintPython = Gui::ViewProviderFeaturePythonT<ViewProv
 
 
 }  // namespace FemGui
-
-
-#endif  // GUI_VIEWPROVIDERFEMCONSTRAINT_H

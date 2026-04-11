@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEM_VIEWPROVIDERFEMPOSTFILTER_H
-#define FEM_VIEWPROVIDERFEMPOSTFILTER_H
+#pragma once
 
 #include <Gui/ViewProviderFeaturePython.h>
 #include "ViewProviderFemPostObject.h"
@@ -50,8 +49,8 @@ public:
 
 
 // Viewprovider for the python filters
-using ViewProviderPostFilterPython =
-    Gui::ViewProviderFeaturePythonT<ViewProviderFemPostFilterPythonBase>;
+using ViewProviderPostFilterPython
+    = Gui::ViewProviderFeaturePythonT<ViewProviderFemPostFilterPythonBase>;
 
 
 // ***************************************************************************
@@ -198,6 +197,3 @@ protected:
 };
 
 }  // namespace FemGui
-
-
-#endif  // FEM_VIEWPROVIDERFEMPOSTFILTER_H

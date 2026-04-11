@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef IMPORT_IMPORTOCAF_H
-#define IMPORT_IMPORTOCAF_H
+#pragma once
 
 #include <map>
 #include <set>
@@ -64,21 +65,27 @@ public:
     void setMerge(bool);
 
 private:
-    void loadShapes(const TDF_Label& label,
-                    const TopLoc_Location&,
-                    const std::string& partname,
-                    const std::string& assembly,
-                    bool isRef,
-                    std::vector<App::DocumentObject*>&);
-    void createShape(const TDF_Label& label,
-                     const TopLoc_Location&,
-                     const std::string&,
-                     std::vector<App::DocumentObject*>&,
-                     bool);
-    void createShape(const TopoDS_Shape& label,
-                     const TopLoc_Location&,
-                     const std::string&,
-                     std::vector<App::DocumentObject*>&);
+    void loadShapes(
+        const TDF_Label& label,
+        const TopLoc_Location&,
+        const std::string& partname,
+        const std::string& assembly,
+        bool isRef,
+        std::vector<App::DocumentObject*>&
+    );
+    void createShape(
+        const TDF_Label& label,
+        const TopLoc_Location&,
+        const std::string&,
+        std::vector<App::DocumentObject*>&,
+        bool
+    );
+    void createShape(
+        const TopoDS_Shape& label,
+        const TopLoc_Location&,
+        const std::string&,
+        std::vector<App::DocumentObject*>&
+    );
     void loadColors(Part::Feature* part, const TopoDS_Shape& aShape);
     virtual void applyColors(Part::Feature*, const std::vector<Base::Color>&)
     {}
@@ -139,5 +146,3 @@ private:
 };
 
 }  // namespace Import
-
-#endif  // IMPORT_IMPORTOCAF_H

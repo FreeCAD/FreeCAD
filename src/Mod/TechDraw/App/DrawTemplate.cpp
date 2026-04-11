@@ -20,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <sstream>
 # include <QCollator>
 # include <QDateTime>
-#endif
+
 
 #include <Base/Console.h>
 

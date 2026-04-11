@@ -14,7 +14,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Choose a CAM Job</string>
+   <string>CAM Job Selection</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

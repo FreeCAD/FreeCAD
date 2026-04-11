@@ -52,7 +52,7 @@
      <item>
       <widget class="QToolButton" name="toolButtonPlay">
        <property name="toolTip">
-        <string>Activate / resume simulation</string>
+        <string>Activate/resume simulation</string>
        </property>
        <property name="text">
         <string>Play</string>
@@ -112,7 +112,7 @@
      <item>
       <widget class="QToolButton" name="toolButtonFF">
        <property name="toolTip">
-        <string>Run simulation till end without animation</string>
+        <string>Run the simulation until it ends without an animation</string>
        </property>
        <property name="text">
         <string>Fast Forward</string>
@@ -177,7 +177,7 @@
         </size>
        </property>
        <property name="text">
-        <string>Speed:</string>
+        <string>Speed</string>
        </property>
       </widget>
      </item>
@@ -226,7 +226,7 @@
         </size>
        </property>
        <property name="text">
-        <string>Accuracy:</string>
+        <string>Accuracy</string>
        </property>
       </widget>
      </item>
@@ -275,7 +275,7 @@
         </size>
        </property>
        <property name="text">
-        <string>Job:</string>
+        <string>Job</string>
        </property>
       </widget>
      </item>

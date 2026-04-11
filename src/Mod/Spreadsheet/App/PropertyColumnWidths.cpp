@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
@@ -20,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <App/Range.h>
 #include <Base/Reader.h>
@@ -132,10 +133,10 @@ void PropertyColumnWidths::Restore(Base::XMLReader& reader)
     Cnt = reader.hasAttribute("Count") ? reader.getAttribute<long>("Count") : 0;
     for (int i = 0; i < Cnt; i++) {
         reader.readElement("Column");
-        const char* name =
-            reader.hasAttribute("name") ? reader.getAttribute<const char*>("name") : nullptr;
-        const char* width =
-            reader.hasAttribute("width") ? reader.getAttribute<const char*>("width") : nullptr;
+        const char* name = reader.hasAttribute("name") ? reader.getAttribute<const char*>("name")
+                                                       : nullptr;
+        const char* width = reader.hasAttribute("width") ? reader.getAttribute<const char*>("width")
+                                                         : nullptr;
 
         try {
             if (name && width) {

@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEM_CONSTRAINT_H
-#define FEM_CONSTRAINT_H
+#pragma once
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
@@ -156,9 +155,11 @@ protected:
     void onDocumentRestored() override;
     void onSettingDocument() override;
     void unsetupObject() override;
-    void handleChangedPropertyType(Base::XMLReader& reader,
-                                   const char* TypeName,
-                                   App::Property* prop) override;
+    void handleChangedPropertyType(
+        Base::XMLReader& reader,
+        const char* TypeName,
+        App::Property* prop
+    ) override;
 
     /**
      * @brief Returns data based on References relevant for rendering widgets.
@@ -194,9 +195,11 @@ protected:
      *  returns true. If an error occurred and the data couldn't be extracted
      *  properly false is returned.
      */
-    bool getPoints(std::vector<Base::Vector3d>& points,
-                   std::vector<Base::Vector3d>& normals,
-                   double* scale) const;
+    bool getPoints(
+        std::vector<Base::Vector3d>& points,
+        std::vector<Base::Vector3d>& normals,
+        double* scale
+    ) const;
 
     /**
      * @brief Calculate point of cylindrical face where to render widget.
@@ -205,10 +208,12 @@ protected:
      *  This method is very specific and doesn't require access to member
      *  variables. It should be rewritten at a different place.
      */
-    Base::Vector3d getBasePoint(const Base::Vector3d& base,
-                                const Base::Vector3d& axis,
-                                const App::PropertyLinkSub& location,
-                                const double& dist);
+    Base::Vector3d getBasePoint(
+        const Base::Vector3d& base,
+        const Base::Vector3d& axis,
+        const App::PropertyLinkSub& location,
+        const double& dist
+    );
     /**
      * @brief Get normal vector of point calculated by @ref getBasePoint.
      *
@@ -225,13 +230,10 @@ private:
     double sizeFactor;
 
     void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop);
-    boost::signals2::connection connDocChangedObject;
+    fastsignals::connection connDocChangedObject;
 };
 
 using ConstraintPython = App::FeaturePythonT<Constraint>;
 
 
 }  // namespace Fem
-
-
-#endif  // FEM_CONSTRAINT_H

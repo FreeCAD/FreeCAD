@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef TESTGUI_UNITTESTIMP_H
-#define TESTGUI_UNITTESTIMP_H
+#pragma once
 
 #include <QDialog>
 #include <memory>
@@ -70,6 +69,7 @@ private:
     void onTreeViewFailureItemDoubleClicked(QTreeWidgetItem* item, int column);
     void onHelpButtonClicked();
     void onAboutButtonClicked();
+    void onCopyButtonClicked();
     void onStartButtonClicked();
     void setupConnections();
 
@@ -79,6 +79,3 @@ private:
 };
 
 }  // namespace TestGui
-
-
-#endif  // TESTGUI_UNITTESTIMP_H

@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Base/Console.h>
 #include <Base/UnitsApi.h>
@@ -115,7 +114,7 @@ TaskCenterLine::TaskCenterLine(TechDraw::DrawViewPart* partFeat,
     } else if (geomType == "Vertex") {
         m_type = Type::VERTEX;
     } else {
-        Base::Console().error("TaskCenterLine - unknown geometry type: %s.  Can not proceed.\n", geomType.c_str());
+        Base::Console().error("TaskCenterLine - unknown geometry type: %s.  Cannot proceed.\n", geomType.c_str());
         return;
     }
 
@@ -163,7 +162,7 @@ void TaskCenterLine::setUiConnect()
 
 void TaskCenterLine::setUiPrimary()
 {
-    setWindowTitle(QObject::tr("Create Center Line"));
+    setWindowTitle(QObject::tr("Centerline"));
 
     if (m_partFeat) {
         std::string baseName = m_partFeat->getNameInDocument();
@@ -206,7 +205,7 @@ void TaskCenterLine::setUiPrimary()
 
 void TaskCenterLine::setUiEdit()
 {
-    setWindowTitle(QObject::tr("Edit Center Line"));
+    setWindowTitle(QObject::tr("Edit Centerline"));
     if (m_partFeat) {
         std::string baseName = m_partFeat->getNameInDocument();
         ui->leBaseView->setText(QString::fromStdString(baseName));
@@ -399,7 +398,7 @@ Mode TaskCenterLine::checkPathologicalVertices(Mode inMode)
 //******************************************************************************
 void TaskCenterLine::createCenterLine()
 {
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Centerline"));
+    int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Create Centerline"));
 
     // check for illogical parameters
     if (m_type == Type::EDGE) {
@@ -413,7 +412,7 @@ void TaskCenterLine::createCenterLine()
     CenterLine* cl = CenterLine::CenterLineBuilder(m_partFeat, m_subNames, m_mode, false);
 
     if (!cl) {
-        Gui::Command::abortCommand();
+        Gui::Command::abortCommand(tid);
         return;
     }
 
@@ -435,7 +434,7 @@ void TaskCenterLine::createCenterLine()
 
     m_partFeat->recomputeFeature();
     Gui::Command::updateActive();
-    Gui::Command::commitCommand();
+    Gui::Command::commitCommand(tid);
 
     // entering the edit mode
     m_editMode = true;
@@ -533,7 +532,7 @@ bool TaskCenterLine::accept()
         return false;
 
     Gui::Command::updateActive();
-    Gui::Command::commitCommand();
+    doc->commitCommand();
     doc->resetEdit();
 
     return true;

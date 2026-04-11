@@ -19,8 +19,44 @@
      <property name="title">
       <string>Sketch Editing</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_1">
-      <item row="1" column="0">
+        <layout class="QGridLayout" name="gridLayout_1">
+         <!-- Constraint symbol size -->
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_ConstraintSymbolSize">
+           <property name="text">
+            <string>Constraint symbol size</string>
+           </property>
+           <property name="buddy">
+            <cstring>ConstraintSymbolSize</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="Gui::PrefSpinBox" name="ConstraintSymbolSize">
+           <property name="toolTip">
+            <string>Pixel size used to render constraint symbols</string>
+           </property>
+           <property name="suffix">
+            <string>px</string>
+           </property>
+           <property name="minimum">
+            <number>6</number>
+           </property>
+           <property name="maximum">
+            <number>96</number>
+           </property>
+           <property name="value">
+            <number>15</number>
+           </property>
+           <property name="prefEntry" stdset="0">
+            <cstring>ConstraintSymbolSize</cstring>
+           </property>
+           <property name="prefPath" stdset="0">
+            <cstring>View</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
        <widget class="QLabel" name="label_1">
         <property name="minimumSize">
          <size>
@@ -36,7 +72,7 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
+         <item row="2" column="1">
        <widget class="Gui::PrefDoubleSpinBox" name="viewScalingFactor">
         <property name="toolTip">
          <string>Scales the 3D view based on this factor</string>
@@ -67,7 +103,7 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
+         <item row="3" column="1">
        <widget class="Gui::PrefSpinBox" name="SegmentsPerGeometry">
         <property name="toolTip">
          <string>The number of polygons used for geometry approximation</string>
@@ -86,10 +122,10 @@
         </property>
        </widget>
       </item>
-      <item row="9" column="0">
+  <item row="10" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBoxShowDimensionalName">
         <property name="toolTip">
-         <string>Displays names of dimensional constraints, if they exist</string>
+         <string>Shows names of dimensional constraints, if they exist</string>
         </property>
         <property name="text">
          <string>Show dimensional constraint name with format</string>
@@ -105,7 +141,7 @@
         </property>
        </widget>
       </item>
-      <item row="9" column="1">
+  <item row="10" column="1">
        <widget class="Gui::PrefLineEdit" name="prefDimensionalStringFormat">
         <property name="toolTip">
          <string>The format of the dimensional constraint string presentation.
@@ -128,7 +164,7 @@ Defaults to: %N = %V
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
+  <item row="3" column="0">
        <widget class="QLabel" name="label_3">
         <property name="text">
          <string>Segments per geometry</string>
@@ -138,7 +174,7 @@ Defaults to: %N = %V
         </property>
        </widget>
       </item>
-      <item row="4" column="0" colspan="2">
+  <item row="5" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="continueMode">
         <property name="toolTip">
          <string>Keeps the current Sketcher tool active after creating geometry</string>
@@ -182,7 +218,8 @@ Defaults to: %N = %V
         </property>
        </widget>
       </item>
-      <item row="6" column="0" colspan="2">
+        <!-- removed custom checkbox + dependent spin; replaced above with standalone PrefSpinBox -->
+  <item row="7" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="checkBoxHideUnits">
         <property name="toolTip">
          <string>Base length units will not be displayed in constraints or cursor coordinates.
@@ -215,7 +252,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
         </property>
        </widget>
       </item>
-      <item row="5" column="0" colspan="2">
+  <item row="6" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="constraintMode">
         <property name="toolTip">
          <string>Keeps the current Sketcher constraint tool active after creating geometry</string>
@@ -234,13 +271,13 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
         </property>
        </widget>
       </item>
-      <item row="7" column="0">
+  <item row="8" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBoxShowCursorCoords">
         <property name="toolTip">
-         <string>Displays cursor position coordinates next to the cursor while editing a sketch</string>
+         <string>Shows cursor position coordinates next to the cursor while editing a sketch</string>
         </property>
         <property name="text">
-         <string>Displays coordinates next to the cursor while editing</string>
+         <string>Show coordinates next to the cursor while editing</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -253,7 +290,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="0" colspan="2">
+  <item row="4" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="dialogOnDistanceConstraint">
         <property name="toolTip">
          <string>Opens a dialog to input a value for new dimensional constraints after creation</string>
@@ -272,7 +309,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
         </property>
        </widget>
       </item>
-      <item row="8" column="0">
+  <item row="9" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBoxUseSystemDecimals">
         <property name="toolTip">
          <string>Cursor coordinates will use the system decimals setting instead of the short form</string>
@@ -516,12 +553,15 @@ Works only when &quot;Restore camera position after editing&quot; is enabled.</s
  </customwidgets>
  <tabstops>
   <tabstop>EditSketcherFontSize</tabstop>
+  <tabstop>ConstraintSymbolSize</tabstop>
   <tabstop>viewScalingFactor</tabstop>
   <tabstop>SegmentsPerGeometry</tabstop>
   <tabstop>dialogOnDistanceConstraint</tabstop>
   <tabstop>continueMode</tabstop>
   <tabstop>constraintMode</tabstop>
   <tabstop>checkBoxHideUnits</tabstop>
+  <tabstop>checkBoxShowCursorCoords</tabstop>
+  <tabstop>checkBoxUseSystemDecimals</tabstop>
   <tabstop>checkBoxShowDimensionalName</tabstop>
   <tabstop>prefDimensionalStringFormat</tabstop>
   <tabstop>checkBoxTVHideDependent</tabstop>
@@ -547,6 +587,22 @@ Works only when &quot;Restore camera position after editing&quot; is enabled.</s
     <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBoxUseConstraintSymbolSize</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>ConstraintSymbolSize</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>0</x>
+     <y>0</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>0</x>
+     <y>0</y>
     </hint>
    </hints>
   </connection>

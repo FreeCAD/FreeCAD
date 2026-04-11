@@ -22,9 +22,9 @@
 # ***************************************************************************
 
 # This is a build and test workflow for CI of FreeCAD.
-# This workflow aims at building and testing FreeCAD on Ubuntu 22.04 using GCC.
+# This workflow aims at building and testing FreeCAD on Ubuntu 24.04 using GCC.
 
-name: Build Ubuntu 22.04
+name: Build Ubuntu 24.04
 
 on:
   workflow_call:
@@ -34,6 +34,10 @@ on:
         required: true
       testOnBuildDir:
         default: false
+        type: boolean
+        required: false
+      testCoinNodeSnapshots:
+        default: true
         type: boolean
         required: false
       allowedToFail:
@@ -47,20 +51,25 @@ on:
 jobs:
 
   Build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     continue-on-error: ${{ inputs.allowedToFail }}
     env:
-      CCACHE_DIR: ${{ github.workspace }}/ccache
-      CCACHE_CONFIGPATH: ${{ github.workspace }}/ccache/config
-      CCACHE_MAXSIZE: 1G
       CCACHE_COMPILERCHECK: "%compiler% -dumpfullversion -dumpversion" # default:mtime
       CCACHE_COMPRESS: true
-      CCACHE_COMPRESSLEVEL: 1
+      CCACHE_COMPRESSLEVEL: 5
+      CCACHE_CONFIGPATH: ${{ github.workspace }}/ccache/config
+      CCACHE_DIR: ${{ github.workspace }}/ccache
+      CCACHE_MAXSIZE: 1G
+      CCACHE_NODIRECT: true
+      CCACHE_NOHASHDIR: true
+      CCACHE_NOINODECACHE: true
+      CCACHE_SLOPPINESS: "include_file_ctime,include_file_mtime,pch_defines,time_macros"
       CC: /usr/bin/gcc
       CXX: /usr/bin/g++
       #CC: /usr/bin/clang
       #CXX: /usr/bin/clang++
       builddir: ${{ github.workspace }}/build/release/
+      config: release
       logdir: /tmp/logs/
       reportdir: /tmp/report/
       reportfilename: ${{ inputs.artifactBasename }}-report.md
@@ -72,12 +81,12 @@ jobs:
 
     steps:
       - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
+        uses: step-security/harden-runner@fe104658747b27e96e4f7e80cd0a94068e53901d # v2.16.1
         with:
           egress-policy: audit
 
       - name: Checking out source code
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           submodules: true
 
@@ -89,7 +98,7 @@ jobs:
           sudo apt-get update -y -qq
           sudo apt-get install -y -qq python3-pip
           python3 -m pip install --upgrade pip
-          python3 -m pip install ifcopenshell==0.8.2
+          python3 -m pip install ifcopenshell==0.8.2 --break-system-packages
 
       - name: Make needed directories, files and initializations
         id: Init
@@ -100,38 +109,45 @@ jobs:
           mkdir -p ${{ env.logdir }}
           mkdir -p ${{ env.reportdir }}
           echo "reportFile=${{ env.reportfilename }}" >> $GITHUB_OUTPUT
+
       - name: Generate cache key
         id: genCacheKey
         uses: ./.github/workflows/actions/linux/generateCacheKey
         with:
           compiler: ${{ env.CXX }}
           qt_major_version: 5
+
       - name: Restore Compiler Cache
-        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        id: cache-restore
+        if: always()
+        uses: actions/cache/restore@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
         with:
-          save-always: true
           path: ${{ env.CCACHE_DIR }}
           key: FC-${{ steps.genCacheKey.outputs.cacheKey }}-${{ github.ref }}-${{ github.run_id }}
           restore-keys: |
             FC-${{ steps.genCacheKey.outputs.cacheKey }}-${{ github.ref }}-
             FC-${{ steps.genCacheKey.outputs.cacheKey }}-
+
       - name: Print CCache statistics before build, reset stats and print config
         run: |
           ccache -s
           ccache -z
           ccache -p
+
       - name: Install cmake
-        uses: jwlawson/actions-setup-cmake@802fa1a2c4e212495c05bf94dba2704a92a472be # v2.0.2
+        uses: jwlawson/actions-setup-cmake@0d6a7d60b009d01c9e7523be22153ff8f19460d3 # v2.2.0
         with:
           cmake-version: '3.31.6'
+
       - name: CMake Configure
         uses: ./.github/workflows/actions/linux/configure
         with:
-          extraParameters: -G Ninja --preset release
+          extraParameters: -G Ninja --preset ${{ env.config }}
           builddir: ${{ env.builddir }}
           logFile: ${{ env.logdir }}Cmake.log
           errorFile: ${{ env.logdir }}CmakeErrors.log
           reportFile: ${{env.reportdir}}${{ env.reportfilename }}
+
       - name: CMake Build
         uses: ./.github/workflows/actions/linux/build
         with:
@@ -139,9 +155,12 @@ jobs:
           logFile: ${{ env.logdir }}Build.log
           errorFile: ${{ env.logdir }}BuildErrors.log
           reportFile: ${{env.reportdir}}${{ env.reportfilename }}
+
       - name: Print ccache statistics after Build
+        if: always()
         run: |
           ccache -s
+
       - name: FreeCAD CLI tests on build dir
         if: inputs.testOnBuildDir
         timeout-minutes: 10
@@ -151,15 +170,38 @@ jobs:
           testCommand: ${{ env.builddir }}/bin/FreeCADCmd -t 0
           logFile: ${{ env.logdir }}TestCLIBuild.log
           reportFile: ${{env.reportdir}}${{ env.reportfilename }}
+
       - name: FreeCAD GUI tests on build dir
         if: inputs.testOnBuildDir
         timeout-minutes: 15
         uses: ./.github/workflows/actions/runPythonTests
         with:
           testDescription: "GUI tests on build dir"
-          testCommand: xvfb-run ${{ env.builddir }}/bin/FreeCAD -t 0
+          # Use Python wrapper to run only GUI-registered tests with the built FreeCAD executable
+          testCommand: xvfb-run python3 ./.github/scripts/run_gui_tests.py "${{ env.builddir }}"
           logFile: ${{ env.logdir }}TestGUIBuild.log
           reportFile: ${{env.reportdir}}${{ env.reportfilename }}
+
+      - name: Coin node snapshot visual tests on build dir
+        if: inputs.testCoinNodeSnapshots
+        timeout-minutes: 15
+        uses: ./.github/workflows/actions/runPythonTests
+        with:
+          testDescription: "Coin node snapshot visual tests on build dir"
+          testCommand: |
+            FC_VISUAL_OUT_DIR="/tmp/FreeCADTesting/CoinNodeSnapshots" \
+            xvfb-run -a -s "-screen 0 1024x768x24" \
+              "${{ env.builddir }}/bin/FreeCAD" -t TestCoinNodeSnapshots
+          logFile: ${{ env.logdir }}TestCoinNodeSnapshotsBuild.log
+          reportFile: ${{env.reportdir}}${{ env.reportfilename }}
+
+      - name: Upload Coin node snapshot artifacts (on failure)
+        if: failure() && inputs.testCoinNodeSnapshots
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: ${{ inputs.artifactBasename }}-CoinNodeSnapshots
+          path: /tmp/FreeCADTesting/CoinNodeSnapshots
+
       - name: C++ tests
         timeout-minutes: 1
         uses: ./.github/workflows/actions/runCPPTests/runAllTests
@@ -167,6 +209,7 @@ jobs:
           reportdir: ${{ env.reportdir }}
           builddir: ${{ env.builddir }}
           reportFile: ${{ env.reportdir }}${{ env.reportfilename }}
+
       - name: CMake Install
         uses: ./.github/workflows/actions/linux/install
         with:
@@ -174,6 +217,7 @@ jobs:
           logFile: ${{ env.logdir }}Install.log
           errorFile: ${{ env.logdir }}InstallErrors.log
           reportFile: ${{env.reportdir}}${{ env.reportfilename }}
+
       - name: FreeCAD CLI tests on install
         timeout-minutes: 10
         uses: ./.github/workflows/actions/runPythonTests
@@ -182,25 +226,37 @@ jobs:
           testCommand: FreeCADCmd -t 0
           logFile: ${{ env.logdir }}TestCLIInstall.log
           reportFile: ${{env.reportdir}}${{ env.reportfilename }}
+
       - name: FreeCAD GUI tests on install
         timeout-minutes: 15
         uses: ./.github/workflows/actions/runPythonTests
         with:
           testDescription: "GUI tests on install"
-          testCommand: xvfb-run FreeCAD -t 0
+          # Use Python wrapper to run only GUI-registered tests using the installed FreeCAD
+          testCommand: xvfb-run python3 ./.github/scripts/run_gui_tests.py "FreeCAD"
           logFile: ${{ env.logdir }}TestGUIInstall.log
           reportFile: ${{env.reportdir}}${{ env.reportfilename }}
+
+      - name: Save Compiler Cache
+        id: cache-save
+        if: always()
+        uses: actions/cache/save@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
+        with:
+          path: ${{ env.CCACHE_DIR }}
+          key: FC-${{ steps.genCacheKey.outputs.cacheKey }}-${{ github.ref }}-${{ github.run_id }}
+
       - name: Upload logs
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
           name: ${{ inputs.artifactBasename }}-Logs
           path: |
             ${{ env.logdir }}
             /var/crash/*FreeCAD*
+
       - name: Upload report
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
           name: ${{ env.reportfilename }}
           path: |

@@ -1,6 +1,9 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Jan Rheinländer                                    *
  *                                   <jrheinlaender@users.sourceforge.net> *
+ *   Copyright (c) 2025 Kacper Donat <kacper@kadet.net>                    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -22,17 +25,18 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderBoolean_H
-#define PARTGUI_ViewProviderBoolean_H
+#pragma once
 
 #include "ViewProvider.h"
 #include <Gui/ViewProviderGeoFeatureGroupExtension.h>
+#include <Gui/Inventor/SoToggleSwitch.h>
 
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
-class PartDesignGuiExport ViewProviderBoolean : public ViewProvider,
-                                                public Gui::ViewProviderGeoFeatureGroupExtension
+class PartDesignGuiExport ViewProviderBoolean: public ViewProvider,
+                                               public Gui::ViewProviderGeoFeatureGroupExtension
 {
     PROPERTY_HEADER_WITH_EXTENSIONS(PartDesignGui::ViewProviderBoolean);
 
@@ -47,19 +51,25 @@ public:
     /// grouping handling
     void setupContextMenu(QMenu*, QObject*, const char*) override;
 
-    bool onDelete(const std::vector<std::string> &) override;
-    void attach(App::DocumentObject*) override;
+    bool onDelete(const std::vector<std::string>&) override;
     const char* getDefaultDisplayMode() const override;
     void onChanged(const App::Property* prop) override;
 
 protected:
-    bool setEdit(int ModNum) override;
+    void updateData(const App::Property* prop) override;
+
+    void attachPreview() override;
+    void updatePreview() override;
+
+    TaskDlgFeatureParameters* getEditDialog() override;
 
     static const char* DisplayEnum[];
 
+private:
+    void updateBasePreviewVisibility();
+
+    Gui::CoinPtr<SoGroup> pcToolsPreview;
+    Gui::CoinPtr<SoToggleSwitch> pcBasePreviewToggle;
 };
 
-} // namespace PartDesignGui
-
-
-#endif // PARTGUI_ViewProviderBoolean_H
+}  // namespace PartDesignGui

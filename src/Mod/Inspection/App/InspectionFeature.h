@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef INSPECTION_FEATURE_H
-#define INSPECTION_FEATURE_H
+#pragma once
 
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
@@ -288,6 +289,3 @@ public:
 };
 
 }  // namespace Inspection
-
-
-#endif  // INSPECTION_FEATURE_H

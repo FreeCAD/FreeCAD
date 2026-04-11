@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2017 Shai Seger <shaise at gmail>                       *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PATHSIMULATOR_PathSim_H
-#define PATHSIMULATOR_PathSim_H
+#pragma once
 
 #include <memory>
 #include <TopoDS_Shape.hxx>
@@ -58,6 +59,3 @@ public:
 };
 
 }  // namespace PathSimulator
-
-
-#endif  // PATHSIMULATOR_PathSim_H

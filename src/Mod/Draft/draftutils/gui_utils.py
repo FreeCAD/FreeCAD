@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   (c) 2009, 2010                                                        *
 # *   Yorik van Havre <yorik@uncreated.net>, Ken Cline <cline@frii.com>     *
@@ -30,6 +32,7 @@ in other modules of the workbench, and which require
 the graphical user interface (GUI), as they access the view providers
 of the objects or the 3D view.
 """
+
 ## @package gui_utils
 # \ingroup draftutils
 # \brief Provides utility functions that deal with GUI interactions.
@@ -51,6 +54,7 @@ if App.GuiUp:
     from pivy import coin
     from PySide import QtCore
     from PySide import QtGui
+
     # from PySide import QtSvg  # for load_texture
 
 
@@ -66,7 +70,7 @@ def get_3d_view():
         return None
 
     # FIXME The following two imports were added as part of PR4926
-    # Also see discussion https://forum.freecadweb.org/viewtopic.php?f=3&t=60251
+    # Also see discussion https://forum.freecad.org/viewtopic.php?f=3&t=60251
     import FreeCADGui as Gui
     from pivy import coin
 
@@ -105,9 +109,9 @@ def autogroup(obj):
     # check for required conditions for autogroup to work
     if not App.GuiUp:
         return
-    if not hasattr(Gui,"draftToolBar"):
+    if not hasattr(Gui, "draftToolBar"):
         return
-    if not hasattr(Gui.draftToolBar,"autogroup"):
+    if not hasattr(Gui.draftToolBar, "autogroup"):
         return
     if Gui.draftToolBar.isConstructionMode():
         return
@@ -115,22 +119,36 @@ def autogroup(obj):
     # check first for objects that do autogroup themselves
     # at the moment only Arch_BuildingPart, which is an App::GeometryPython
     for par in App.ActiveDocument.findObjects(Type="App::GeometryPython"):
-        if hasattr(par.Proxy,"autogroup"):
-            if par.Proxy.autogroup(par,obj):
+        if hasattr(par.Proxy, "autogroup"):
+            if par.Proxy.autogroup(par, obj):
                 return
 
     # autogroup code
     if Gui.draftToolBar.autogroup is not None:
         active_group = App.ActiveDocument.getObject(Gui.draftToolBar.autogroup)
-        if obj in active_group.InListRecursive:
+        if active_group is None:
+            # Layer/group does not exist (anymore)
+            Gui.draftToolBar.setAutoGroup()  # Change active layer/group in Tray to None.
+        elif utils.get_type(active_group) == "Layer":
+            if not obj in active_group.Group:
+                active_group.Group += [obj]
+            # No return statement here as objects can be in a layer and in
+            # a normal group or group-like BIM object at the same time.
+        elif obj in active_group.InListRecursive:
             return
-        if not obj in active_group.Group:
-            active_group.Group += [obj]
+        else:
+            if not obj in active_group.Group:
+                if hasattr(active_group, "addObject"):
+                    active_group.addObject(obj)
+                else:
+                    active_group.Group += [obj]
+            return
 
-    elif Gui.ActiveDocument.ActiveView.getActiveObject("NativeIFC") is not None:
+    if Gui.ActiveDocument.ActiveView.getActiveObject("NativeIFC") is not None:
         # NativeIFC handling
         try:
             from nativeifc import ifc_tools
+
             parent = Gui.ActiveDocument.ActiveView.getActiveObject("NativeIFC")
             ifc_tools.aggregate(obj, parent)
         except:
@@ -154,13 +172,11 @@ def autogroup(obj):
             return
         matrix = parent.getSubObject(sub, retType=4)
         if matrix.hasScale() == App.ScaleType.Uniform:
-            err = translate("draft",
-                            "Unable to insert new object into "
-                            "a scaled part")
+            err = translate("draft", "Unable to insert new object into " "a scaled part")
             App.Console.PrintMessage(err)
             return
         inverse_placement = App.Placement(matrix.inverse())
-        if utils.get_type(obj) == 'Point':
+        if utils.get_type(obj) == "Point":
             point_vector = App.Vector(obj.X, obj.Y, obj.Z)
             real_point = inverse_placement.multVec(point_vector)
             obj.X = real_point.x
@@ -175,7 +191,7 @@ def autogroup(obj):
         elif utils.get_type(obj) in ["Label"]:
             obj.Placement = App.Placement(inverse_placement.multiply(obj.Placement))
             obj.TargetPoint = inverse_placement.multVec(obj.TargetPoint)
-        elif hasattr(obj,"Placement"):
+        elif hasattr(obj, "Placement"):
             # every object that have a placement is processed here
             obj.Placement = App.Placement(inverse_placement.multiply(obj.Placement))
 
@@ -189,7 +205,7 @@ def dim_symbol(symbol=None, invert=False):
     ----------
     symbol: int, optional
         It defaults to `None`, in which it gets the value from the parameter
-        database, `get_param("dimsymbol")`.
+        database, `get_param("dimsymbolend")`.
 
         A numerical value defines different markers
          * 0, `SoSphere`
@@ -197,6 +213,7 @@ def dim_symbol(symbol=None, invert=False):
          * 2, `SoSeparator` with a `soCone`
          * 3, `SoSeparator` with a `SoFaceSet`
          * 4, `SoSeparator` with a `SoLineSet`, calling `dim_dash`
+         * 5, Nothing
          * Otherwise, `SoSphere`
 
     invert: bool, optional
@@ -212,7 +229,7 @@ def dim_symbol(symbol=None, invert=False):
         that will be used as a dimension symbol.
     """
     if symbol is None:
-        symbol = params.get_param("dimsymbol")
+        symbol = params.get_param("dimsymbolend")
 
     if symbol == 0:
         # marker = coin.SoMarkerSet()
@@ -239,9 +256,9 @@ def dim_symbol(symbol=None, invert=False):
         t.translation.setValue((0, -2, 0))
         t.center.setValue((0, 2, 0))
         if invert:
-            t.rotation.setValue(coin.SbVec3f((0, 0, 1)), -math.pi/2)
+            t.rotation.setValue(coin.SbVec3f((0, 0, 1)), -math.pi / 2)
         else:
-            t.rotation.setValue(coin.SbVec3f((0, 0, 1)), math.pi/2)
+            t.rotation.setValue(coin.SbVec3f((0, 0, 1)), math.pi / 2)
         c = coin.SoCone()
         c.height.setValue(4)
         marker.addChild(t)
@@ -253,8 +270,7 @@ def dim_symbol(symbol=None, invert=False):
         h = coin.SoShapeHints()
         h.vertexOrdering = h.COUNTERCLOCKWISE
         c = coin.SoCoordinate3()
-        c.point.setValues([(-1, -2, 0), (0, 2, 0),
-                           (1, 2, 0), (0, -2, 0)])
+        c.point.setValues([(-1, -2, 0), (0, 2, 0), (1, 2, 0), (0, -2, 0)])
         f = coin.SoFaceSet()
         marker.addChild(h)
         marker.addChild(c)
@@ -262,6 +278,8 @@ def dim_symbol(symbol=None, invert=False):
         return marker
     elif symbol == 4:
         return dim_dash((-1.5, -1.5, 0), (1.5, 1.5, 0))
+    elif symbol == 5:
+        return coin.SoSeparator()
     else:
         _wrn(translate("draft", "Symbol not implemented. Using a default symbol."))
         return coin.SoSphere()
@@ -352,6 +370,7 @@ def get_diffuse_color(objs):
     list of tuples
         The list will be empty if no valid object is found.
     """
+
     def _get_color(obj):
         if hasattr(obj, "ColoredElements"):
             if hasattr(obj, "Count") or hasattr(obj, "ElementCount"):
@@ -369,7 +388,9 @@ def get_diffuse_color(objs):
                     return cols
                 face_num = len(base.Shape.Faces)
                 for elm, override in zip(obj.ColoredElements[1], obj.ViewObject.OverrideColorList):
-                    if "Face" in elm: # Examples: "Face3" and "1.Face6". Int before "." is zero-based, other int is 1-based.
+                    if (
+                        "Face" in elm
+                    ):  # Examples: "Face3" and "1.Face6". Int before "." is zero-based, other int is 1-based.
                         if "." in elm:
                             elm0, elm1 = elm.split(".")
                             i = (int(elm0) * face_num) + int(elm1[4:]) - 1
@@ -387,9 +408,11 @@ def get_diffuse_color(objs):
                     if obj.ColoredElements is None:
                         cols += sub_cols
                     else:
-                        for elm, override in zip(obj.ColoredElements[1], obj.ViewObject.OverrideColorList):
+                        for elm, override in zip(
+                            obj.ColoredElements[1], obj.ViewObject.OverrideColorList
+                        ):
                             if sub.Name + ".Face" in elm:
-                                i = int(elm[(len(sub.Name) + 5):]) - 1
+                                i = int(elm[(len(sub.Name) + 5) :]) - 1
                                 sub_cols[i] = override
                         cols += sub_cols
                 return cols
@@ -413,10 +436,14 @@ def get_diffuse_color(objs):
     if not isinstance(objs, list):
         # Quick check to avoid processing a single object:
         obj = objs
-        if not hasattr(obj, "ColoredElements") \
-                and hasattr(obj.ViewObject, "DiffuseColor") \
-                and (len(obj.ViewObject.DiffuseColor) == 1 \
-                        or len(obj.ViewObject.DiffuseColor) == len(obj.Shape.Faces)):
+        if (
+            not hasattr(obj, "ColoredElements")
+            and hasattr(obj.ViewObject, "DiffuseColor")
+            and (
+                len(obj.ViewObject.DiffuseColor) == 1
+                or len(obj.ViewObject.DiffuseColor) == len(obj.Shape.Faces)
+            )
+        ):
             return obj.ViewObject.DiffuseColor
         # Create a list for further processing:
         objs = [objs]
@@ -447,7 +474,7 @@ def apply_current_style(objs):
     anno_style = utils.get_default_annotation_style()
     shape_style = utils.get_default_shape_style()
     for obj in objs:
-        if not hasattr(obj, 'ViewObject'):
+        if not hasattr(obj, "ViewObject"):
             continue
         vobj = obj.ViewObject
         props = vobj.PropertiesList
@@ -547,7 +574,7 @@ def format_object(target, origin=None, ignore_construction=False):
             val = getattr(matchrep, p)
             if isinstance(val, tuple):
                 if len(val) != len_faces:
-                    val = (val[0], )
+                    val = (val[0],)
             elif hasattr(val, "Value"):
                 val = val.Value
             try:
@@ -771,11 +798,14 @@ def load_texture(filename, size=None, gui=App.GuiUp):
                 _wrn("load_texture: " + translate("draft", "image is Null"))
 
                 if not os.path.exists(filename):
-                    raise FileNotFoundError(-1,
-                                            translate("draft", "filename does not exist "
-                                                               "on the system or "
-                                                               "in the resource file"),
-                                            filename)
+                    raise FileNotFoundError(
+                        -1,
+                        translate(
+                            "draft",
+                            "filename does not exist " "on the system or " "in the resource file",
+                        ),
+                        filename,
+                    )
 
             # This is buggy so it was de-activated.
             #
@@ -828,8 +858,7 @@ def load_texture(filename, size=None, gui=App.GuiUp):
             _bytes = bytes(byteList)
             img.setValue(size, numcomponents, _bytes)
         except FileNotFoundError as exc:
-            _wrn("load_texture: {0}, {1}".format(exc.strerror,
-                                                 exc.filename))
+            _wrn("load_texture: {0}, {1}".format(exc.strerror, exc.filename))
             return None
         except Exception as exc:
             _wrn(str(exc))
@@ -895,9 +924,11 @@ def get_bbox(obj, debug=False):
         _err(translate("draft", "Wrong input: object {} not in document.").format(obj_str))
         return None
 
-    if (not hasattr(obj, "ViewObject")
-            or not obj.ViewObject
-            or not hasattr(obj.ViewObject, "RootNode")):
+    if (
+        not hasattr(obj, "ViewObject")
+        or not obj.ViewObject
+        or not hasattr(obj.ViewObject, "RootNode")
+    ):
         _err(translate("draft", "Does not have 'ViewObject.RootNode'."))
 
     # For Draft Dimensions
@@ -918,37 +949,124 @@ def get_bbox(obj, debug=False):
     return App.BoundBox(xmin, ymin, zmin, xmax, ymax, zmax)
 
 
-# Code by Yorik van Havre.
+# Code by Yorik van Havre (adapted).
 def find_coin_node(parent, nodetype):
+    if not hasattr(parent, "getNumChildren"):
+        return None
     for i in range(parent.getNumChildren()):
         if isinstance(parent.getChild(i), nodetype):
             return parent.getChild(i)
     return None
 
 
+def find_coin_node_by_name(parent, name):
+    if not hasattr(parent, "getNumChildren"):
+        return None
+    for i in range(parent.getNumChildren()):
+        if parent.getChild(i).getName() == name:
+            return parent.getChild(i)
+    return None
+
+
 # Code by Chris Hennes (chennes).
-# See https://forum.freecadweb.org/viewtopic.php?p=656362#p656362.
+# See https://forum.freecad.org/viewtopic.php?p=656362#p656362.
 # Used to fix https://github.com/FreeCAD/FreeCAD/issues/10469.
 def end_all_events():
     view = get_3d_view()
     if view is None:
         return
     if view.getNavigationType() in (
-            "Gui::GestureNavigationStyle", "Gui::MayaGestureNavigationStyle"
+        "Gui::GestureNavigationStyle",
+        "Gui::MayaGestureNavigationStyle",
     ):
         return
 
     class DelayEnder:
         def __init__(self):
             self.delay_is_done = False
+
         def stop(self):
             self.delay_is_done = True
+
     ender = DelayEnder()
     timer = QtCore.QTimer()
     timer.timeout.connect(ender.stop)
     timer.setSingleShot(True)
-    timer.start(100)  # 100ms (50ms is too short) timer guarantees the loop below runs at least that long
+    timer.start(
+        100
+    )  # 100ms (50ms is too short) timer guarantees the loop below runs at least that long
     while not ender.delay_is_done:
         QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents)
+
+
+def toggle_working_plane(obj, action=None, restore=False, dialog=None):
+    """Toggle the active state of a working plane object.
+
+    This function handles the common logic for activating and deactivating
+    working plane objects like BuildingParts and WorkingPlaneProxies.
+    It can be used by different modules that need to implement similar
+    working plane activation behavior.
+
+    Parameters
+    ----------
+    obj : App::DocumentObject
+        The object to activate or deactivate as a working plane.
+    action : QAction, optional
+        The action button that triggered this function, to update its checked state.
+    restore : bool, optional
+        If True, will restore the previous working plane when deactivating.
+        Defaults to False.
+    dialog : QDialog, optional
+        If provided, will update the checked state of the activate button in the dialog.
+
+    Returns
+    -------
+    bool
+        True if the object was activated, False if it was deactivated.
+    """
+
+    # Determine the appropriate context based on object type
+    context = "Arch"
+    obj_type = utils.get_type(obj)
+    if obj_type == "IfcBuildingStorey":
+        context = "NativeIFC"
+
+    # Check if the object is already active in its context
+    is_active_arch = Gui.ActiveDocument.ActiveView.getActiveObject("Arch") == obj
+    is_active_ifc = Gui.ActiveDocument.ActiveView.getActiveObject("NativeIFC") == obj
+    is_active = is_active_arch or is_active_ifc
+    if is_active:
+        # Deactivate the object
+        if is_active_arch:
+            Gui.ActiveDocument.ActiveView.setActiveObject("Arch", None)
+        if is_active_ifc:
+            Gui.ActiveDocument.ActiveView.setActiveObject("NativeIFC", None)
+
+        if (
+            hasattr(obj, "ViewObject")
+            and hasattr(obj.ViewObject, "Proxy")
+            and hasattr(obj.ViewObject.Proxy, "setWorkingPlane")
+        ):
+            obj.ViewObject.Proxy.setWorkingPlane(restore=True)
+        if action:
+            action.setChecked(False)
+        if dialog and hasattr(dialog, "buttonActive"):
+            dialog.buttonActive.setChecked(False)
+        return False
+    else:
+        # Activate the object
+        Gui.ActiveDocument.ActiveView.setActiveObject(context, obj)
+        if (
+            hasattr(obj, "ViewObject")
+            and hasattr(obj.ViewObject, "Proxy")
+            and hasattr(obj.ViewObject.Proxy, "setWorkingPlane")
+        ):
+            obj.ViewObject.Proxy.setWorkingPlane()
+        if action:
+            action.setChecked(True)
+        if dialog and hasattr(dialog, "buttonActive"):
+            dialog.buttonActive.setChecked(True)
+        return True
+
 
 ## @}

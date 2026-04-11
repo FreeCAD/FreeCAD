@@ -20,11 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_WAIT_CURSOR_H
-#define GUI_WAIT_CURSOR_H
+#pragma once
 
+#include <FCGlobal.h>
 
-namespace Gui {
+namespace Gui
+{
 
 /**
  * This class sets a waitcursor automatically while a slow operation is running.
@@ -59,7 +60,8 @@ namespace Gui {
 class GuiExport WaitCursor
 {
 public:
-    enum FilterEventsFlag {
+    enum FilterEventsFlag
+    {
         NoEvents = 0x00,
         KeyEvents = 0x01,
         MouseEvents = 0x02,
@@ -75,12 +77,22 @@ public:
     FilterEventsFlags ignoreEvents() const;
     void setIgnoreEvents(FilterEventsFlags flags = AllEvents);
 
+    /**
+     * @brief Suspends the wait cursor state by restoring the normal cursor
+     * and removing the event filter. To be used before showing an interactive
+     * dialog during a long operation.
+     */
+    static void suspend();
+
+    /**
+     * @brief Resumes the wait cursor state by setting the wait cursor
+     * and reinstalling the event filter, if a WaitCursor is active.
+     */
+    static void resume();
+
 private:
     FilterEventsFlags filter;
     static int instances;
 };
 
-} // namespace Gui
-
-#endif // GUI_WAIT_CURSOR_H
-
+}  // namespace Gui

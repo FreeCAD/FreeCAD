@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef FEMGUI_TaskDlgMeshShapeNetgen_H
-#define FEMGUI_TaskDlgMeshShapeNetgen_H
+#pragma once
 
 #include <Gui/TaskView/TaskDialog.h>
 
@@ -74,5 +73,3 @@ protected:
 
 
 }  // namespace FemGui
-
-#endif  // FEMGUI_TaskDlgMeshShapeNetgen_H

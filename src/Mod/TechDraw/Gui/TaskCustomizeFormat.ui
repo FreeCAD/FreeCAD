@@ -133,7 +133,7 @@
      <item row="2" column="4">
       <widget class="QPushButton" name="pbA10">
        <property name="toolTip">
-        <string>Circular runout</string>
+        <string>Circular run-out</string>
        </property>
        <property name="text">
         <string notr="true">↗</string>
@@ -143,7 +143,7 @@
      <item row="3" column="0">
       <widget class="QPushButton" name="pbA11">
        <property name="toolTip">
-        <string>Total runout</string>
+        <string>Total run-out</string>
        </property>
        <property name="text">
         <string notr="true">⌰</string>
@@ -199,7 +199,7 @@
         </font>
        </property>
        <property name="toolTip">
-        <string>derived geometry element</string>
+        <string>Derived geometry element</string>
        </property>
        <property name="text">
         <string notr="true">Ⓐ</string>
@@ -214,7 +214,7 @@
         </font>
        </property>
        <property name="toolTip">
-        <string>Minimax (Tschebyschew)</string>
+        <string>Minimax (Chebychev)</string>
        </property>
        <property name="text">
         <string notr="true">Ⓒ</string>
@@ -304,7 +304,7 @@
         </font>
        </property>
        <property name="toolTip">
-        <string>least inscribed geometry element</string>
+        <string>Least inscribed geometry element</string>
        </property>
        <property name="text">
         <string notr="true">Ⓝ</string>
@@ -379,7 +379,7 @@
         </font>
        </property>
        <property name="toolTip">
-        <string>Unequal Bilateral</string>
+        <string>Unequal bilateral</string>
        </property>
        <property name="text">
         <string notr="true">Ⓤ</string>
@@ -394,7 +394,7 @@
         </font>
        </property>
        <property name="toolTip">
-        <string>most inscribed geometry element</string>
+        <string>Most inscribed geometry element</string>
        </property>
        <property name="text">
         <string notr="true">Ⓧ</string>
@@ -486,7 +486,7 @@
      <item row="0" column="1">
       <widget class="QPushButton" name="pbD02">
        <property name="toolTip">
-        <string>(Arc) Minute</string>
+        <string>(Arc) minute</string>
        </property>
        <property name="text">
         <string notr="true">′</string>
@@ -496,7 +496,7 @@
      <item row="0" column="2">
       <widget class="QPushButton" name="pbD03">
        <property name="toolTip">
-        <string>(Arc) Second</string>
+        <string>(Arc) second</string>
        </property>
        <property name="text">
         <string notr="true">″</string>
@@ -506,7 +506,7 @@
      <item row="0" column="3">
       <widget class="QPushButton" name="pbD04">
        <property name="toolTip">
-        <string>(Arc) Tertie</string>
+        <string>(Arc) tertie</string>
        </property>
        <property name="text">
         <string notr="true">‴</string>
@@ -570,7 +570,7 @@
      <item row="0" column="4">
       <widget class="QPushButton" name="pbE05">
        <property name="toolTip">
-        <string>Plus - Minus</string>
+        <string>Plus - minus</string>
        </property>
        <property name="text">
         <string notr="true">±</string>
@@ -622,7 +622,7 @@
    <item>
     <widget class="QLabel" name="label_6">
      <property name="text">
-      <string>Greek Letters</string>
+      <string>Greek letters</string>
      </property>
     </widget>
    </item>
@@ -705,7 +705,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="lbFormat">
        <property name="text">
-        <string>Format:</string>
+        <string>Format</string>
        </property>
       </widget>
      </item>
@@ -715,7 +715,7 @@
      <item row="1" column="0">
       <widget class="QLabel" name="lbPreview">
        <property name="text">
-        <string>Preview:</string>
+        <string>Preview</string>
        </property>
       </widget>
      </item>

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2020 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -20,10 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <boost/uuid/uuid_io.hpp>
-#endif
+
 
 #include <Base/Console.h>
 
@@ -63,8 +63,9 @@ std::unique_ptr<ExternalGeometryFacade> ExternalGeometryFacade::getFacade(Part::
     }
 }
 
-std::unique_ptr<const ExternalGeometryFacade>
-ExternalGeometryFacade::getFacade(const Part::Geometry* geometry)
+std::unique_ptr<const ExternalGeometryFacade> ExternalGeometryFacade::getFacade(
+    const Part::Geometry* geometry
+)
 {
     if (geometry) {
         return std::unique_ptr<const ExternalGeometryFacade>(new ExternalGeometryFacade(geometry));
@@ -101,8 +102,7 @@ void ExternalGeometryFacade::initExtensions()
 
     if (!Geo->hasExtension(ExternalGeometryExtension::getClassTypeId())) {
 
-        getGeo()->setExtension(
-            std::make_unique<ExternalGeometryExtension>());  // Create getExtension
+        getGeo()->setExtension(std::make_unique<ExternalGeometryExtension>());  // Create getExtension
 
         // The following warning was commented out as part of the Toponaming problem mitigation, and
         // left for potential usefulness to future developers making a custom build for debugging.
@@ -112,31 +112,39 @@ void ExternalGeometryFacade::initExtensions()
     }
 
     SketchGeoExtension = std::static_pointer_cast<const SketchGeometryExtension>(
-        (Geo->getExtension(SketchGeometryExtension::getClassTypeId())).lock());
+        (Geo->getExtension(SketchGeometryExtension::getClassTypeId())).lock()
+    );
 
     ExternalGeoExtension = std::static_pointer_cast<const ExternalGeometryExtension>(
-        (Geo->getExtension(ExternalGeometryExtension::getClassTypeId())).lock());
+        (Geo->getExtension(ExternalGeometryExtension::getClassTypeId())).lock()
+    );
 }
 
 void ExternalGeometryFacade::initExtensions() const
 {
     if (!Geo->hasExtension(SketchGeometryExtension::getClassTypeId())) {
-        THROWM(Base::ValueError,
-               "ExternalGeometryFacade for const::Geometry without SketchGeometryExtension");
+        THROWM(
+            Base::ValueError,
+            "ExternalGeometryFacade for const::Geometry without SketchGeometryExtension"
+        );
     }
 
     if (!Geo->hasExtension(ExternalGeometryExtension::getClassTypeId())) {
-        THROWM(Base::ValueError,
-               "ExternalGeometryFacade for const::Geometry without ExternalGeometryExtension");
+        THROWM(
+            Base::ValueError,
+            "ExternalGeometryFacade for const::Geometry without ExternalGeometryExtension"
+        );
     }
 
     auto ext = std::static_pointer_cast<const SketchGeometryExtension>(
-        Geo->getExtension(SketchGeometryExtension::getClassTypeId()).lock());
+        Geo->getExtension(SketchGeometryExtension::getClassTypeId()).lock()
+    );
 
     const_cast<ExternalGeometryFacade*>(this)->SketchGeoExtension = ext;
 
     auto extext = std::static_pointer_cast<const ExternalGeometryExtension>(
-        Geo->getExtension(ExternalGeometryExtension::getClassTypeId()).lock());
+        Geo->getExtension(ExternalGeometryExtension::getClassTypeId()).lock()
+    );
 
     const_cast<ExternalGeometryFacade*>(this)->ExternalGeoExtension = extext;
 }

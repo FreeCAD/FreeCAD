@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2019 Russell Johnson (russ4262) <russ4262@gmail.com>    *
 # *   Copyright (c) 2019 sliptonic <shopinthewoods@gmail.com>               *
@@ -94,6 +95,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         enums = {
             "Algorithm": [
                 (translate("path_waterline", "OCL Dropcutter"), "OCL Dropcutter"),
+                (translate("path_waterline", "OCL Adaptive"), "OCL Adaptive"),
                 (translate("path_waterline", "Experimental"), "Experimental"),
             ],
             "BoundBox": [
@@ -288,7 +290,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                 "Clearing Options",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Select the algorithm to use: OCL Dropcutter*, or Experimental (Not OCL based).",
+                    "Select the algorithm to use: OCL Dropcutter*, OCL Adaptive or Experimental (Not OCL based).",
                 ),
             ),
             (
@@ -392,6 +394,15 @@ class ObjectWaterline(PathOp.ObjectOp):
                 ),
             ),
             (
+                "App::PropertyDistance",
+                "MinSampleInterval",
+                "Clearing Options",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Set the minimum sampling resolution. Smaller values quickly increase processing time.",
+                ),
+            ),
+            (
                 "App::PropertyFloat",
                 "StepOver",
                 "Clearing Options",
@@ -478,6 +489,7 @@ class ObjectWaterline(PathOp.ObjectOp):
             "CutPatternAngle": 0.0,
             "DepthOffset": 0.0,
             "SampleInterval": 1.0,
+            "MinSampleInterval": 0.005,
             "BoundaryAdjustment": 0.0,
             "InternalFeaturesAdjustment": 0.0,
             "AvoidLastX_Faces": 0,
@@ -504,7 +516,7 @@ class ObjectWaterline(PathOp.ObjectOp):
     def setEditorProperties(self, obj):
         # Used to hide inputs in properties list
         expMode = G = 0
-        show = hide = A = B = C = 2
+        show = hide = A = B = C = D = 2
 
         obj.setEditorMode("BoundaryEnforcement", hide)
         obj.setEditorMode("InternalFeaturesAdjustment", hide)
@@ -520,9 +532,12 @@ class ObjectWaterline(PathOp.ObjectOp):
 
         if obj.Algorithm == "OCL Dropcutter":
             pass
+        elif obj.Algorithm == "OCL Adaptive":
+            D = 0
+            expMode = 2
         elif obj.Algorithm == "Experimental":
             A = B = C = 0
-            expMode = G = show = hide = 2
+            expMode = G = D = show = hide = 2
 
             cutPattern = obj.CutPattern
             if obj.ClearLastLayer != "Off":
@@ -548,6 +563,8 @@ class ObjectWaterline(PathOp.ObjectOp):
         obj.setEditorMode("IgnoreOuterAbove", B)
         obj.setEditorMode("CutPattern", C)
         obj.setEditorMode("SampleInterval", G)
+        obj.setEditorMode("MinSampleInterval", D)
+        obj.setEditorMode("OptimizeLinearPaths", D)
         obj.setEditorMode("LinearDeflection", expMode)
         obj.setEditorMode("AngularDeflection", expMode)
 
@@ -556,6 +573,9 @@ class ObjectWaterline(PathOp.ObjectOp):
             if self.propertiesReady:
                 if prop in ["Algorithm", "CutPattern"]:
                     self.setEditorProperties(obj)
+
+        if prop == "Active" and obj.ViewObject:
+            obj.ViewObject.signalChangeIcon()
 
     def opOnDocumentRestored(self, obj):
         self.propertiesReady = False
@@ -642,6 +662,24 @@ class ObjectWaterline(PathOp.ObjectOp):
                 translate(
                     "PathWaterline",
                     "Sample interval limits are 0.0001 to 25.4 millimeters.",
+                )
+            )
+
+        # Limit min sample interval
+        if obj.MinSampleInterval.Value < 0.0001:
+            obj.MinSampleInterval.Value = 0.0001
+            Path.Log.error(
+                translate(
+                    "PathWaterline",
+                    "Min Sample interval limits are 0.0001 to 25.4 millimeters.",
+                )
+            )
+        if obj.MinSampleInterval.Value > 25.4:
+            obj.MinSampleInterval.Value = 25.4
+            Path.Log.error(
+                translate(
+                    "PathWaterline",
+                    "Min Sample interval limits are 0.0001 to 25.4 millimeters.",
                 )
             )
 
@@ -902,13 +940,13 @@ class ObjectWaterline(PathOp.ObjectOp):
         if pPM is False:
             Path.Log.error("Unable to pre-process obj.Base.")
         else:
-            (FACES, VOIDS) = pPM
+            FACES, VOIDS = pPM
             self.modelSTLs = PSF.modelSTLs
             self.profileShapes = PSF.profileShapes
 
             for m in range(0, len(JOB.Model.Group)):
                 # Create OCL.stl model objects
-                if obj.Algorithm == "OCL Dropcutter":
+                if obj.Algorithm == "OCL Dropcutter" or obj.Algorithm == "OCL Adaptive":
                     PathSurfaceSupport._prepareModelSTLs(self, JOB, obj, m, ocl)
 
                 Mdl = JOB.Model.Group[m]
@@ -926,7 +964,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                         )
                         Path.Log.info("Working on Model.Group[{}]: {}".format(m, Mdl.Label))
                     # make stock-model-voidShapes STL model for avoidance detection on transitions
-                    if obj.Algorithm == "OCL Dropcutter":
+                    if obj.Algorithm == "OCL Dropcutter" or obj.Algorithm == "OCL Adaptive":
                         PathSurfaceSupport._makeSafeSTL(self, JOB, obj, m, FACES[m], VOIDS[m], ocl)
                     # Process model/faces - OCL objects must be ready
                     CMDS.extend(self._processWaterlineAreas(JOB, obj, m, FACES[m], VOIDS[m]))
@@ -1023,7 +1061,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                     COMP = ADD
 
             final.append(Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid}))
-            if obj.Algorithm == "OCL Dropcutter":
+            if obj.Algorithm == "OCL Dropcutter" or obj.Algorithm == "OCL Adaptive":
                 final.extend(
                     self._oclWaterlineOp(JOB, obj, mdlIdx, COMP)
                 )  # independent method set for Waterline
@@ -1049,7 +1087,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                         COMP = ADD
 
                 final.append(Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid}))
-                if obj.Algorithm == "OCL Dropcutter":
+                if obj.Algorithm == "OCL Dropcutter" or obj.Algorithm == "OCL Adaptive":
                     final.extend(
                         self._oclWaterlineOp(JOB, obj, mdlIdx, COMP)
                     )  # independent method set for Waterline
@@ -1077,7 +1115,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                     if SEG == "BRK":
                         stpOvr.append(SEG)
                     else:
-                        (A, B) = SEG  # format is ((p1, p2), (p3, p4))
+                        A, B = SEG  # format is ((p1, p2), (p3, p4))
                         P1 = FreeCAD.Vector(A[0], A[1], csHght)
                         P2 = FreeCAD.Vector(B[0], B[1], csHght)
                         stpOvr.append((P1, P2))
@@ -1088,7 +1126,7 @@ class ObjectWaterline(PathOp.ObjectOp):
             for so in range(0, len(PNTSET)):
                 stpOvr = list()
                 erFlg = False
-                (aTyp, dirFlg, ARCS) = PNTSET[so]
+                aTyp, dirFlg, ARCS = PNTSET[so]
 
                 if dirFlg == 1:  # 1
                     cMode = True  # Climb mode
@@ -1100,7 +1138,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                     if Arc == "BRK":
                         stpOvr.append("BRK")
                     else:
-                        (sp, ep, cp) = Arc
+                        sp, ep, cp = Arc
                         S = FreeCAD.Vector(sp[0], sp[1], csHght)
                         E = FreeCAD.Vector(ep[0], ep[1], csHght)
                         C = FreeCAD.Vector(cp[0], cp[1], csHght)
@@ -1180,7 +1218,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         pdc.setSampling(SampleInterval)  # set sampling size
         return pdc
 
-    # OCL Dropcutter waterline functions
+    # OCL Dropcutter - OCL Adaptive waterline functions
     def _oclWaterlineOp(self, JOB, obj, mdlIdx, subShp=None):
         """_oclWaterlineOp(obj, base) ... Main waterline function to perform waterline extraction from model."""
         commands = []
@@ -1189,6 +1227,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         bb = self.boundBoxes[mdlIdx]
         stl = self.modelSTLs[mdlIdx]
         depOfst = obj.DepthOffset.Value
+        optimizeLinear = obj.OptimizeLinearPaths
 
         # Prepare global holdpoint and layerEndPnt containers
         if self.holdPoint is None:
@@ -1196,35 +1235,10 @@ class ObjectWaterline(PathOp.ObjectOp):
         if self.layerEndPnt is None:
             self.layerEndPnt = FreeCAD.Vector(0.0, 0.0, 0.0)
 
-        # Set extra offset to diameter of cutter to allow cutter to move around perimeter of model
-
-        if subShp is None:
-            # Get correct boundbox
-            if obj.BoundBox == "Stock":
-                BS = JOB.Stock
-                bb = BS.Shape.BoundBox
-            elif obj.BoundBox == "BaseBoundBox":
-                BS = base
-                bb = base.Shape.BoundBox
-
-            xmin = bb.XMin
-            xmax = bb.XMax
-            ymin = bb.YMin
-            ymax = bb.YMax
-        else:
-            xmin = subShp.BoundBox.XMin
-            xmax = subShp.BoundBox.XMax
-            ymin = subShp.BoundBox.YMin
-            ymax = subShp.BoundBox.YMax
-
         smplInt = obj.SampleInterval.Value
-        minSampInt = 0.001  # value is mm
-        if smplInt < minSampInt:
-            smplInt = minSampInt
-
-        # Determine bounding box length for the OCL scan
-        bbLength = math.fabs(ymax - ymin)
-        numScanLines = int(math.ceil(bbLength / smplInt) + 1)  # Number of lines
+        minSmplInt = obj.MinSampleInterval.Value
+        if minSmplInt > smplInt:
+            minSmplInt = smplInt
 
         # Compute number and size of stepdowns, and final depth
         if obj.LayerMode == "Single-pass":
@@ -1234,37 +1248,109 @@ class ObjectWaterline(PathOp.ObjectOp):
         lenDP = len(depthparams)
 
         # Scan the piece to depth at smplInt
-        oclScan = []
-        oclScan = self._waterlineDropCutScan(
-            stl, smplInt, xmin, xmax, ymin, depthparams[lenDP - 1], numScanLines
-        )
-        oclScan = [FreeCAD.Vector(P.x, P.y, P.z + depOfst) for P in oclScan]
-        lenOS = len(oclScan)
-        ptPrLn = int(lenOS / numScanLines)
+        if obj.Algorithm == "OCL Adaptive":
+            # Get Stock Bounding Box
+            BS = JOB.Stock
+            stock_bb = BS.Shape.BoundBox
 
-        # Convert oclScan list of points to multi-dimensional list
-        scanLines = []
-        for L in range(0, numScanLines):
-            scanLines.append([])
-            for P in range(0, ptPrLn):
-                pi = L * ptPrLn + P
-                scanLines[L].append(oclScan[pi])
-        lenSL = len(scanLines)
-        pntsPerLine = len(scanLines[0])
-        msg = "--OCL scan: " + str(lenSL * pntsPerLine) + " points, with "
-        msg += str(numScanLines) + " lines and " + str(pntsPerLine) + " pts/line"
-        Path.Log.debug(msg)
+            # Stock Limits
+            s_xmin = stock_bb.XMin
+            s_xmax = stock_bb.XMax
+            s_ymin = stock_bb.YMin
+            s_ymax = stock_bb.YMax
 
-        # Extract Wl layers per depthparams
-        lyr = 0
-        cmds = []
-        layTime = time.time()
-        self.topoMap = []
-        for layDep in depthparams:
-            cmds = self._getWaterline(obj, scanLines, layDep, lyr, lenSL, pntsPerLine)
-            commands.extend(cmds)
-            lyr += 1
-        Path.Log.debug("--All layer scans combined took " + str(time.time() - layTime) + " s")
+            # Calculate Tool Path Limits based on OCL STL
+            path_min_x = stl.bb.minpt.x - self.radius
+            path_min_y = stl.bb.minpt.y - self.radius
+            path_max_x = stl.bb.maxpt.x + self.radius
+            path_max_y = stl.bb.maxpt.y + self.radius
+
+            # Compare with a tiny tolerance
+            tol = 0.001
+            if (
+                (path_min_x < s_xmin - tol)
+                or (path_min_y < s_ymin - tol)
+                or (path_max_x > s_xmax + tol)
+                or (path_max_y > s_ymax + tol)
+            ):
+
+                newPropMsg = translate(
+                    "PathWaterline",
+                    "The toolpath has exceeded the stock bounding box limits. Consider using a Boundary Dressup.",
+                )
+                FreeCAD.Console.PrintWarning(newPropMsg + "\n")
+
+            # Run the Scan (Processing ALL depths at once)
+            scanLines = self._waterlineAdaptiveScan(stl, smplInt, minSmplInt, depthparams, depOfst)
+
+            # Generate G-Code
+            layTime = time.time()
+            for loop in scanLines:
+                if optimizeLinear:
+                    loop = PathUtils.simplify3dLine(loop, tolerance=self.geoTlrnc)
+                # We pass '0.0' as layDep because Adaptive loops have their own Z embedded
+                cmds = self._loopToGcode(obj, 0.0, loop)
+                commands.extend(cmds)
+
+            Path.Log.debug("--Adaptive generation took " + str(time.time() - layTime) + " s")
+
+        else:
+            # Setup BoundBox for Dropcutter grid
+            if subShp is None:
+                # Get correct boundbox
+                if obj.BoundBox == "Stock":
+                    BS = JOB.Stock
+                    bb = BS.Shape.BoundBox
+                elif obj.BoundBox == "BaseBoundBox":
+                    BS = base
+                    bb = BS.Shape.BoundBox
+
+                xmin = bb.XMin
+                xmax = bb.XMax
+                ymin = bb.YMin
+                ymax = bb.YMax
+            else:
+                xmin = subShp.BoundBox.XMin
+                xmax = subShp.BoundBox.XMax
+                ymin = subShp.BoundBox.YMin
+                ymax = subShp.BoundBox.YMax
+
+            # Determine bounding box length for the OCL scan
+            bbLength = math.fabs(ymax - ymin)
+            numScanLines = int(math.ceil(bbLength / smplInt) + 1)
+
+            # Run Scan (Grid  based)
+            fd = depthparams[-1]
+            oclScan = self._waterlineDropCutScan(stl, smplInt, xmin, xmax, ymin, fd, numScanLines)
+            oclScan = [FreeCAD.Vector(P.x, P.y, P.z + depOfst) for P in oclScan]
+
+            # Convert point list to grid (scanLines)
+            lenOS = len(oclScan)
+            ptPrLn = int(lenOS / numScanLines)
+            scanLines = []
+            for L in range(0, numScanLines):
+                scanLines.append([])
+                for P in range(0, ptPrLn):
+                    pi = L * ptPrLn + P
+                    scanLines[L].append(oclScan[pi])
+
+            # Extract Waterline Layers Iteratively
+            lenSL = len(scanLines)
+            pntsPerLine = len(scanLines[0])
+            msg = "--OCL scan: " + str(lenSL * pntsPerLine) + " points, with "
+            msg += str(numScanLines) + " lines and " + str(pntsPerLine) + " pts/line"
+            Path.Log.debug(msg)
+
+            lyr = 0
+            cmds = []
+            layTime = time.time()
+            self.topoMap = []
+            for layDep in depthparams:
+                cmds = self._getWaterline(obj, scanLines, layDep, lyr, lenSL, pntsPerLine)
+                commands.extend(cmds)
+                lyr += 1
+            Path.Log.debug("--All layer scans combined took " + str(time.time() - layTime) + " s")
+
         return commands
 
     def _waterlineDropCutScan(self, stl, smplInt, xmin, xmax, ymin, fd, numScanLines):
@@ -1290,20 +1376,66 @@ class ObjectWaterline(PathOp.ObjectOp):
         # return the list of points
         return pdc.getCLPoints()
 
+    def _waterlineAdaptiveScan(self, stl, smplInt, minSmplInt, zheights, depOfst):
+        """Perform OCL Adaptive scan for waterline purpose."""
+
+        msg = translate(
+            "Waterline", ": Steps below the model's top Face will be the only ones processed."
+        )
+        Path.Log.info("Waterline " + msg)
+
+        # Setup OCL AdaptiveWaterline
+        awl = ocl.AdaptiveWaterline()
+        awl.setSTL(stl)
+        awl.setCutter(self.cutter)
+        awl.setSampling(smplInt)
+        awl.setMinSampling(minSmplInt)
+
+        adapt_loops = []
+
+        # Iterate through each Z-depth
+        for zh in zheights:
+            awl.setZ(zh)
+            awl.run()
+
+            # OCL returns a list of separate loops (list of lists of Points)
+            # Example: [[PerimeterPoints], [HolePoints]]
+            temp_loops = awl.getLoops()
+
+            if not temp_loops:
+                # Warn if the step is outside the model bounds
+                newPropMsg = translate("PathWaterline", "Step Down above model. Skipping height : ")
+                newPropMsg += "{} mm".format(zh)
+                FreeCAD.Console.PrintWarning(newPropMsg + "\n")
+                continue
+
+            # Process each loop separately.
+            # This ensures that islands (holes) remain distinct from perimeters.
+            for loop in temp_loops:
+                # Convert OCL Points to FreeCAD Vectors and apply Z offset
+                fc_loop = [FreeCAD.Vector(P.x, P.y, P.z + depOfst) for P in loop]
+                adapt_loops.append(fc_loop)
+
+        return adapt_loops
+
     def _getWaterline(self, obj, scanLines, layDep, lyr, lenSL, pntsPerLine):
         """_getWaterline(obj, scanLines, layDep, lyr, lenSL, pntsPerLine) ... Get waterline."""
         commands = []
         cmds = []
         loopList = []
         self.topoMap = []
-        # Create topo map from scanLines (highs and lows)
-        self.topoMap = self._createTopoMap(scanLines, layDep, lenSL, pntsPerLine)
-        # Add buffer lines and columns to topo map
-        self._bufferTopoMap(lenSL, pntsPerLine)
-        # Identify layer waterline from OCL scan
-        self._highlightWaterline(4, 9)
-        # Extract waterline and convert to gcode
-        loopList = self._extractWaterlines(obj, scanLines, lyr, layDep)
+        if obj.Algorithm == "OCL Adaptive":
+            loopList = scanLines
+        else:
+            # Create topo map from scanLines (highs and lows)
+            self.topoMap = self._createTopoMap(scanLines, layDep, lenSL, pntsPerLine)
+            # Add buffer lines and columns to topo map
+            self._bufferTopoMap(lenSL, pntsPerLine)
+            # Identify layer waterline from OCL scan
+            self._highlightWaterline(4, 9)
+            # Extract waterline and convert to gcode
+            loopList = self._extractWaterlines(obj, scanLines, lyr, layDep)
+
         # save commands
         for loop in loopList:
             cmds = self._loopToGcode(obj, layDep, loop)
@@ -1634,14 +1766,27 @@ class ObjectWaterline(PathOp.ObjectOp):
         # generate the path commands
         output = []
 
-        # prev = FreeCAD.Vector(2135984513.165, -58351896873.17455, 13838638431.861)
+        # Safety check for empty loops
+        if not loop:
+            return output
+
         nxt = FreeCAD.Vector(0.0, 0.0, 0.0)
 
-        # Create first point
-        pnt = FreeCAD.Vector(loop[0].x, loop[0].y, layDep)
+        # Create (first and last) point
+        if obj.Algorithm == "OCL Adaptive":
+            if obj.CutMode == "Climb":
+                # Reverse loop for Climb Milling
+                loop.reverse()
+            pnt = pnt1 = FreeCAD.Vector(loop[0].x, loop[0].y, loop[0].z)
+        else:
+            pnt = FreeCAD.Vector(loop[0].x, loop[0].y, layDep)
 
         # Position cutter to begin loop
-        output.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid}))
+        if self.layerEndPnt.x == 0 and self.layerEndPnt.y == 0:  # First to Clearance Height
+            output.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid}))
+        else:
+            output.append(Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid}))
+
         output.append(Path.Command("G0", {"X": pnt.x, "Y": pnt.y, "F": self.horizRapid}))
         output.append(Path.Command("G1", {"Z": pnt.z, "F": self.vertFeed}))
 
@@ -1652,12 +1797,18 @@ class ObjectWaterline(PathOp.ObjectOp):
             if i < lastIdx:
                 nxt.x = loop[i + 1].x
                 nxt.y = loop[i + 1].y
-                nxt.z = layDep
-
+                if obj.Algorithm == "OCL Adaptive":
+                    nxt.z = loop[i + 1].z
+                else:
+                    nxt.z = layDep
             output.append(Path.Command("G1", {"X": pnt.x, "Y": pnt.y, "F": self.horizFeed}))
 
             # Rotate point data
             pnt = nxt
+
+        # Connect first and last points for Adaptive
+        if obj.Algorithm == "OCL Adaptive":
+            output.append(Path.Command("G1", {"X": pnt1.x, "Y": pnt1.y, "F": self.horizFeed}))
 
         # Save layer end point for use in transitioning to next layer
         self.layerEndPnt = pnt
@@ -1750,7 +1901,7 @@ class ObjectWaterline(PathOp.ObjectOp):
             if cont:
                 # Identify solid areas in the offset data
                 if obj.CutPattern == "Offset" or obj.CutPattern == "None":
-                    ofstSolidFacesList = self._getSolidAreasFromPlanarFaces(ofstArea)
+                    ofstSolidFacesList = self._getSolidAreasFromPlanarFaces(ofstArea.Faces)
                     if ofstSolidFacesList:
                         clearArea = Part.makeCompound(ofstSolidFacesList)
                         self.showDebugObject(clearArea, "ClearArea_{}".format(caCnt))
@@ -1771,7 +1922,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                 lastCsHght = csHght
 
                 # Clear layer as needed
-                (clrLyr, clearLastLayer) = self._clearLayer(obj, ca, lastCA, clearLastLayer)
+                clrLyr, clearLastLayer = self._clearLayer(obj, ca, lastCA, clearLastLayer)
                 if clrLyr == "Offset":
                     commands.extend(self._makeOffsetLayerPaths(obj, clearArea, csHght))
                 elif clrLyr:
@@ -1785,7 +1936,7 @@ class ObjectWaterline(PathOp.ObjectOp):
 
         if clearLastLayer and obj.ClearLastLayer != "Off":
             Path.Log.debug("... Clearning last layer")
-            (clrLyr, cLL) = self._clearLayer(obj, 1, 1, False)
+            clrLyr, cLL = self._clearLayer(obj, 1, 1, False)
             lastClearArea.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - lastClearArea.BoundBox.ZMin))
             if clrLyr == "Offset":
                 commands.extend(self._makeOffsetLayerPaths(obj, lastClearArea, lastCsHght))
@@ -1867,7 +2018,13 @@ class ObjectWaterline(PathOp.ObjectOp):
                 startVect = FreeCAD.Vector(V[0].X, V[0].Y, V[0].Z)
 
             commands.append(Path.Command("N (Wire {}.)".format(w)))
-            (cmds, endVect) = self._wireToPath(obj, wire, startVect)
+
+            # This ensures the tool is directly above the entry point before plunging,
+            # preventing diagonal moves through the material.
+            commands.append(
+                Path.Command("G0", {"X": startVect.x, "Y": startVect.y, "F": self.horizRapid})
+            )
+            cmds, endVect = self._wireToPath(obj, wire, startVect)
             commands.extend(cmds)
             commands.append(Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid}))
 
@@ -2156,14 +2313,13 @@ class ObjectWaterline(PathOp.ObjectOp):
         pathParams["feedrate"] = self.horizFeed
         pathParams["feedrate_v"] = self.vertFeed
         pathParams["verbose"] = True
-        pathParams["resume_height"] = obj.SafeHeight.Value
-        pathParams["retraction"] = obj.ClearanceHeight.Value
+        pathParams["retraction"] = obj.SafeHeight.Value
         pathParams["return_end"] = True
         # Note that emitting preambles between moves breaks some dressups and prevents path optimization on some controllers
         pathParams["preamble"] = False
         pathParams["start"] = startVect
 
-        (pp, end_vector) = Path.fromShapes(**pathParams)
+        pp, end_vector = Path.fromShapes(**pathParams)
         paths.extend(pp.Commands)
 
         self.endVector = end_vector

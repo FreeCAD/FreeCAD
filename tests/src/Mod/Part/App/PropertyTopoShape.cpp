@@ -160,8 +160,8 @@ TEST_F(PropertyTopoShapeTest, testPropertyPartShapeGetPyObject)
     partShape.setValue(topoDsShapeIn2);
     auto pyObj2 = partShape.getPyObject();
     // Assert the shape is no longer a compound
-    EXPECT_FALSE(
-        PyObject_TypeCheck(pyObj2, &TopoShapeCompoundPy::Type));  // _boxes[3] is not a compound.
+    EXPECT_FALSE(PyObject_TypeCheck(pyObj2, &TopoShapeCompoundPy::Type));  // _boxes[3] is not a
+                                                                           // compound.
     Py_XDECREF(pyObj2);
     // Act
     partShape.setPyObject(pyObj);

@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_VIEWPROVIDERCLIP_H
-#define DRAWINGGUI_VIEWPROVIDERCLIP_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -43,10 +42,14 @@ public:
     /// destructor
     ~ViewProviderViewClip() override;
 
+    App::PropertyBool   ClipChildren;
+
     bool useNewSelectionModel() const override {return false;}
 
     TechDraw::DrawViewClip* getViewObject() const override;
     TechDraw::DrawViewClip* getObject() const;
+
+    void onChanged(const App::Property *prop) override;
 
     /// Hide the object in the view
     void hide() override;
@@ -60,5 +63,3 @@ public:
     void dropObject(App::DocumentObject* docObj) override;
 };
 } // namespace TechDrawGui
-
-#endif // DRAWINGGUI_VIEWPROVIDERCLIP_H

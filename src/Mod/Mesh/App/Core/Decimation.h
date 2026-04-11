@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef MESH_DECIMATION_H
-#define MESH_DECIMATION_H
+#pragma once
 
 #include <Mod/Mesh/MeshGlobal.h>
 
@@ -42,6 +43,3 @@ private:
 };
 
 }  // namespace MeshCore
-
-
-#endif  // MESH_DECIMATION_H

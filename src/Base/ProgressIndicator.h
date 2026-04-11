@@ -20,8 +20,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef BASE_PROGRESSINDICATOR_H
-#define BASE_PROGRESSINDICATOR_H
+#pragma once
 
 #include "FCGlobal.h"
 
@@ -87,11 +86,8 @@ public:
      * @param isForce  If true, indicates a forced update even if the change threshold (≈1%) hasn’t
      * been met.
      */
-    virtual void show([[maybe_unused]] float position,
-                      [[maybe_unused]] ShowFlags flags = ShowFlags::None)
+    virtual void show([[maybe_unused]] float position, [[maybe_unused]] ShowFlags flags = ShowFlags::None)
     {}
 };
 
 }  // namespace Base
-
-#endif

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "CustomFeature.h"
 
@@ -40,22 +41,24 @@ short CustomFeature::mustExecute() const
     return Part::Feature::mustExecute();
 }
 
-App::DocumentObjectExecReturn *CustomFeature::execute()
+App::DocumentObjectExecReturn* CustomFeature::execute()
 {
     return App::DocumentObject::StdReturn;
 }
 
 // ---------------------------------------------------------
 
-namespace App {
+namespace App
+{
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Part::CustomFeaturePython, Part::CustomFeature)
-template<> const char* Part::CustomFeaturePython::getViewProviderName() const {
+template<>
+const char* Part::CustomFeaturePython::getViewProviderName() const
+{
     return "PartGui::ViewProviderCustomPython";
 }
 /// @endcond
 
 // explicit template instantiation
 template class PartExport FeaturePythonT<Part::CustomFeature>;
-}
-
+}  // namespace App

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /******************************************************************************
  *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
@@ -20,8 +22,7 @@
  *                                                                            *
  ******************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskScaledParameters_H
-#define GUI_TASKVIEW_TaskScaledParameters_H
+#pragma once
 
 #include "TaskTransformedParameters.h"
 #include "ViewProviderScaled.h"
@@ -50,8 +51,7 @@ class TaskScaledParameters: public TaskTransformedParameters
 
 public:
     /// Constructor for task with ViewProvider
-    explicit TaskScaledParameters(ViewProviderTransformed* TransformedView,
-                                  QWidget* parent = nullptr);
+    explicit TaskScaledParameters(ViewProviderTransformed* TransformedView, QWidget* parent = nullptr);
     /// Constructor for task with parent task (MultiTransform mode)
     TaskScaledParameters(TaskMultiTransformParameters* parentTask, QWidget* parameterWidget);
 
@@ -86,5 +86,3 @@ public:
 };
 
 }  // namespace PartDesignGui
-
-#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

@@ -21,16 +21,14 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Inventor/nodes/SoSphere.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoIndexedLineSet.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoTranslation.h>
-#endif
+#include <Inventor/nodes/SoSphere.h>
+#include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoIndexedLineSet.h>
+#include <Inventor/nodes/SoPickStyle.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoTranslation.h>
+
 
 #include "ViewProviderPoint.h"
 #include "ViewProviderCoordinateSystem.h"
@@ -46,7 +44,8 @@ ViewProviderPoint::ViewProviderPoint()
 
 ViewProviderPoint::~ViewProviderPoint() = default;
 
-void ViewProviderPoint::attach(App::DocumentObject * obj) {
+void ViewProviderPoint::attach(App::DocumentObject* obj)
+{
     ViewProviderDatum::attach(obj);
 
     // The coordinates for the point (single vertex at the origin)
@@ -59,7 +58,9 @@ void ViewProviderPoint::attach(App::DocumentObject * obj) {
     pCoords->point.setValue(point);
     sep->addChild(pCoords);
 
-    static const float size = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")->GetFloat("DatumPointSize", 2.5);
+    static const float size = App::GetApplication()
+                                  .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
+                                  ->GetFloat("DatumPointSize", 2.5);
     auto sphere = new SoSphere();
     sphere->radius.setValue(size);
     sep->addChild(sphere);

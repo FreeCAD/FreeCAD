@@ -25,6 +25,7 @@
 import Arch
 from bimtests import TestArchBase
 
+
 class TestArchTruss(TestArchBase.TestArchBase):
 
     def test_makeTruss(self):

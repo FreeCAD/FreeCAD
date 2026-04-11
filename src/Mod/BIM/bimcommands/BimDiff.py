@@ -65,7 +65,7 @@ class BIM_Diff:
                 "",
                 translate(
                     "BIM",
-                    "The document currently viewed must be your main one. The other contains newer objects that you wish to merge into this one. Make sure only the objects you wish to compare are visible in both. Proceed?",
+                    "The current document must be the main one. The other contains newer objects to merge into it. Ensure that only the objects intended for comparison are visible in both documents. Proceed?",
                 ),
                 QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
                 QtGui.QMessageBox.No,
@@ -86,9 +86,7 @@ class BIM_Diff:
                     if hasattr(obj, "IfcData") and obj.ViewObject.Visibility:
                         if "IfcUID" in obj.IfcData:
                             activedocids[obj.IfcData["IfcUID"]] = obj
-                        elif obj.isDerivedFrom(
-                            "Part::Feature"
-                        ):  # discard BuildingParts
+                        elif obj.isDerivedFrom("Part::Feature"):  # discard BuildingParts
                             objswithoutid.append(obj)
 
                 otherdocids = {}  # other doc to be merged to the main one
@@ -116,9 +114,7 @@ class BIM_Diff:
                         if obj.Label != mainobj.Label:
                             # object has a different name
                             renamed[mainobj.Name] = obj.Label
-                        if obj.IfcProperties and (
-                            obj.IfcProperties != mainobj.IfcProperties
-                        ):
+                        if obj.IfcProperties and (obj.IfcProperties != mainobj.IfcProperties):
                             # properties have changed
                             propertieschanged[id] = obj.IfcProperties
                         if hasattr(obj, "Shape") and hasattr(mainobj, "Shape"):
@@ -126,26 +122,19 @@ class BIM_Diff:
                             if v < VOL_TOLERANCE:
                                 # identical volume
                                 l = (
-                                    obj.Shape.BoundBox.Center.sub(
-                                        mainobj.Shape.BoundBox.Center
-                                    )
+                                    obj.Shape.BoundBox.Center.sub(mainobj.Shape.BoundBox.Center)
                                 ).Length
                                 if l < MOVE_TOLERANCE:
                                     # identical position
                                     if (
-                                        abs(
-                                            obj.Shape.BoundBox.XMin
-                                            - mainobj.Shape.BoundBox.XMin
+                                        abs(obj.Shape.BoundBox.XMin - mainobj.Shape.BoundBox.XMin)
+                                        < MOVE_TOLERANCE
+                                        and abs(
+                                            obj.Shape.BoundBox.YMin - mainobj.Shape.BoundBox.YMin
                                         )
                                         < MOVE_TOLERANCE
                                         and abs(
-                                            obj.Shape.BoundBox.YMin
-                                            - mainobj.Shape.BoundBox.YMin
-                                        )
-                                        < MOVE_TOLERANCE
-                                        and abs(
-                                            obj.Shape.BoundBox.YMin
-                                            - mainobj.Shape.BoundBox.YMin
+                                            obj.Shape.BoundBox.YMin - mainobj.Shape.BoundBox.YMin
                                         )
                                         < MOVE_TOLERANCE
                                     ):
@@ -156,10 +145,7 @@ class BIM_Diff:
                                             and (
                                                 obj.Material
                                                 and mainobj.Material
-                                                and (
-                                                    obj.Material.Label
-                                                    == mainobj.Material.Label
-                                                )
+                                                and (obj.Material.Label == mainobj.Material.Label)
                                             )
                                             or (obj.Material == mainobj.Material)
                                         ):
@@ -210,18 +196,14 @@ class BIM_Diff:
                             )
                             toselect.append(obj)
                     else:
-                        print("Object", obj.Label, "doesn't exist yet in main doc")
+                        print("Object", obj.Label, "does not exist yet in main document")
                         toselect.append(obj)
                         additions.append(obj)
 
                 for id, obj in activedocids.items():
                     if not id in otherdocids:
-                        if obj.isDerivedFrom(
-                            "Part::Feature"
-                        ):  # don't count building parts
-                            print(
-                                "Object", obj.Label, "doesn't exist anymore in new doc"
-                            )
+                        if obj.isDerivedFrom("Part::Feature"):  # don't count building parts
+                            print("Object", obj.Label, "does not exist anymore in new document")
                             subtractions.append(obj)
 
                 # try to find our objects without ID
@@ -229,29 +211,19 @@ class BIM_Diff:
                 for obj in objswithoutid:
                     for id, otherobj in otherdocids.items():
                         if not id in activedocids:
-                            if (
-                                abs(otherobj.Shape.Volume - obj.Shape.Volume)
-                                < VOL_TOLERANCE
-                            ):
+                            if abs(otherobj.Shape.Volume - obj.Shape.Volume) < VOL_TOLERANCE:
                                 if (
-                                    otherobj.Shape.BoundBox.Center.sub(
-                                        obj.Shape.BoundBox.Center
-                                    )
+                                    otherobj.Shape.BoundBox.Center.sub(obj.Shape.BoundBox.Center)
                                 ).Length < MOVE_TOLERANCE:
                                     if (
-                                        abs(
-                                            obj.Shape.BoundBox.XMin
-                                            - otherobj.Shape.BoundBox.XMin
+                                        abs(obj.Shape.BoundBox.XMin - otherobj.Shape.BoundBox.XMin)
+                                        < MOVE_TOLERANCE
+                                        and abs(
+                                            obj.Shape.BoundBox.YMin - otherobj.Shape.BoundBox.YMin
                                         )
                                         < MOVE_TOLERANCE
                                         and abs(
-                                            obj.Shape.BoundBox.YMin
-                                            - otherobj.Shape.BoundBox.YMin
-                                        )
-                                        < MOVE_TOLERANCE
-                                        and abs(
-                                            obj.Shape.BoundBox.YMin
-                                            - otherobj.Shape.BoundBox.YMin
+                                            obj.Shape.BoundBox.YMin - otherobj.Shape.BoundBox.YMin
                                         )
                                         < MOVE_TOLERANCE
                                     ):
@@ -262,7 +234,7 @@ class BIM_Diff:
                         print(
                             "Object",
                             obj.Label,
-                            "has no ID and wasn't found in the new doc",
+                            "has no ID and was not found in the new document",
                         )
                         subtractions.append(obj)
 
@@ -275,14 +247,12 @@ class BIM_Diff:
                 for obj in otherdoc.Objects:
                     if Draft.getType(obj) == "Material":
                         if not obj.Label in matnames:
-                            print("Material", obj.Label, "doesn't exist in main doc")
+                            print("Material", obj.Label, "does not exist in main document")
                             toselect.append(obj)
                             newmats[obj.Label] = obj
 
                 if newmats:
-                    group = otherdoc.addObject(
-                        "App::DocumentObjectGroup", "New_materials"
-                    )
+                    group = otherdoc.addObject("App::DocumentObjectGroup", "New_materials")
                     for newmat in newmats.values():
                         group.addObject(newmat)
 
@@ -347,7 +317,7 @@ class BIM_Diff:
                         + " "
                         + translate(
                             "BIM",
-                            "objects still have the same shape but have a different material. Do you wish to update them in the main document?",
+                            "objects still have the same shape but have a different material. Update them in the main document?",
                         ),
                         QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
                         QtGui.QMessageBox.No,
@@ -381,9 +351,7 @@ class BIM_Diff:
                                     import ArchMaterial
 
                                     ArchMaterial._ArchMaterial(newmat)
-                                    ArchMaterial._ViewProviderArchMaterial(
-                                        newmat.ViewObject
-                                    )
+                                    ArchMaterial._ViewProviderArchMaterial(newmat.ViewObject)
                                     newmat.Material = mat.Material
                                     print(
                                         "Changing material of",
@@ -413,7 +381,7 @@ class BIM_Diff:
                         for name, id in newids.items():
                             obj = activedoc.getObject(name)
                             if obj:
-                                print("Transferring new id to object", obj.Label)
+                                print("Transferring new ID to object", obj.Label)
                                 a = obj.IfcData
                                 a["IfcUID"] = id
                                 obj.IfcData = a
@@ -424,9 +392,7 @@ class BIM_Diff:
                         "",
                         str(len(renamed))
                         + " "
-                        + translate(
-                            "BIM", "objects had their name changed. Rename them?"
-                        ),
+                        + translate("BIM", "objects had their name changed. Rename them?"),
                         QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
                         QtGui.QMessageBox.No,
                     )
@@ -443,9 +409,7 @@ class BIM_Diff:
                         "",
                         str(len(propertieschanged))
                         + " "
-                        + translate(
-                            "BIM", "objects had their properties changed. Update?"
-                        ),
+                        + translate("BIM", "objects had their properties changed. Update?"),
                         QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
                         QtGui.QMessageBox.No,
                     )
@@ -482,7 +446,7 @@ class BIM_Diff:
                         "",
                         translate(
                             "BIM",
-                            "Do you wish to colorize the objects that have moved in yellow in the other file (to serve as a diff)?",
+                            "Colorize the objects that have moved in yellow in the other file (to serve as a diff)?",
                         ),
                         QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
                         QtGui.QMessageBox.No,
@@ -503,7 +467,7 @@ class BIM_Diff:
                         "",
                         translate(
                             "BIM",
-                            "Do you wish to colorize the objects that have been modified in orange in the other file (to serve as a diff)?",
+                            "Colorize the objects that have been modified in orange in the other file (to serve as a diff)?",
                         ),
                         QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
                         QtGui.QMessageBox.No,
@@ -526,15 +490,13 @@ class BIM_Diff:
                         + " "
                         + translate(
                             "BIM",
-                            "objects don't exist anymore in the new document. Move them to a 'To Delete' group?",
+                            "objects do not exist anymore in the new document. Move them to a 'To Delete' group?",
                         ),
                         QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
                         QtGui.QMessageBox.No,
                     )
                     if reply == QtGui.QMessageBox.Yes:
-                        group = activedoc.addObject(
-                            "App::DocumentObjectGroup", "ToDelete"
-                        )
+                        group = activedoc.addObject("App::DocumentObjectGroup", "ToDelete")
                         group.Label = "To Delete"
                         for obj in subtractions:
                             group.addObject(obj)
@@ -543,7 +505,7 @@ class BIM_Diff:
                         "",
                         translate(
                             "BIM",
-                            "Do you wish to colorize the objects that have been removed in red in the other file (to serve as a diff)?",
+                            "Colorize the objects that have been removed in red in the other file (to serve as a diff)?",
                         ),
                         QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
                         QtGui.QMessageBox.No,
@@ -562,7 +524,7 @@ class BIM_Diff:
                         "",
                         translate(
                             "BIM",
-                            "Do you wish to colorize the objects that have been added in green in the other file (to serve as a diff)?",
+                            "Colorize the objects that have been added in green in the other file (to serve as a diff)?",
                         ),
                         QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
                         QtGui.QMessageBox.No,
@@ -583,7 +545,7 @@ class BIM_Diff:
                 "",
                 translate(
                     "BIM",
-                    "You need two documents open to run this tool. One which is your main document, and one that contains new objects that you wish to compare against the existing one. Make sure only the objects you wish to compare in both documents are visible.",
+                    "Two documents are required to be open to run this tool. One which is the main document, and one that contains new objects to compare against the existing one. Make sure only the objects to compare in both documents are visible.",
                 ),
             )
 

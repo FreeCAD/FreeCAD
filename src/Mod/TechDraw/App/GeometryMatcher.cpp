@@ -24,11 +24,9 @@
 // detects changes in reference geometry (2d & 3d) that would invalidate a dimension
 // identifies replacement view/model geometry
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <BRepGProp.hxx>
 #include <GProp_GProps.hxx>
-#endif
+
 
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepLProp_CLProps.hxx>

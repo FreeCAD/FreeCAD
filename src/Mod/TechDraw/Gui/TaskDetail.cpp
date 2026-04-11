@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <App/Document.h>
 #include <Base/Console.h>
@@ -77,7 +76,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewPart* baseFeat):
     m_basePage = m_baseFeat->findParentPage();
     //it is possible that the basePage could be unparented and have no corresponding Page
     if (!m_basePage) {
-        Base::Console().error("TaskDetail - bad parameters - base page.  Can not proceed.\n");
+        Base::Console().error("TaskDetail - bad parameters - base page.  Cannot proceed.\n");
         return;
     }
 
@@ -141,7 +140,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
 {
     if (!m_detailFeat)  {
         //should be caught in CMD caller
-        Base::Console().error("TaskDetail - bad parameters.  Can not proceed.\n");
+        Base::Console().error("TaskDetail - bad parameters.  Cannot proceed.\n");
         return;
     }
 
@@ -156,7 +155,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
     App::DocumentObject* baseObj = m_detailFeat->BaseView.getValue();
     m_baseFeat = dynamic_cast<TechDraw::DrawViewPart*>(baseObj);
     if (!m_baseFeat) {
-        Base::Console().error("TaskDetail - no BaseView.  Can not proceed.\n");
+        Base::Console().error("TaskDetail - no base view.  Cannot proceed.\n");
         return;
     }
     m_baseName = m_baseFeat->getNameInDocument();
@@ -431,7 +430,7 @@ void TaskDetail::enableTaskButtons(bool button)
 //***** Feature create & edit stuff *******************************************
 void TaskDetail::createDetail()
 {
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Detail View"));
+    int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Create Detail view"));
 
     const std::string objectName{"Detail"};
     m_detailName = m_doc->getUniqueObjectName(objectName.c_str());
@@ -463,7 +462,7 @@ void TaskDetail::createDetail()
                             m_pageName.c_str(), m_detailName.c_str());
 
     Gui::Command::updateActive();
-    Gui::Command::commitCommand();
+    Gui::Command::commitCommand(tid);
 
     getBaseFeat()->requestPaint();
     m_created = true;
@@ -473,7 +472,7 @@ void TaskDetail::updateDetail()
 {
     TechDraw::DrawViewDetail* detailFeat = getDetailFeat();
     try {
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update Detail"));
+        int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Update Detail"));
         double x = ui->qsbX->rawValue();
         double y = ui->qsbY->rawValue();
         Base::Vector3d temp(x, y, 0.0);
@@ -489,11 +488,11 @@ void TaskDetail::updateDetail()
         detailFeat->Reference.setValue(ref);
 
         Gui::Command::updateActive();
-        Gui::Command::commitCommand();
+        Gui::Command::commitCommand(tid);
     }
     catch (...) {
         //this is probably due to appl closing while dialog is still open
-        Base::Console().error("Task Detail - detail feature update failed.\n");
+        Base::Console().error("Task detail - detail feature update failed.\n");
     }
 
     detailFeat->recomputeFeature();
@@ -650,6 +649,17 @@ void TaskDlgDetail::modifyStandardButtons(QDialogButtonBox* box)
     QPushButton* btnCancel = box->button(QDialogButtonBox::Cancel);
     widget->saveButtons(btnOK, btnCancel);
 }
+
+std::string TaskDlgDetail::getDetailName() const
+{
+    DrawViewDetail* detailObj = widget->getDetailFeat();
+    if (!detailObj) {
+        return {"not found"};
+    }
+
+    return detailObj->getNameInDocument();
+}
+
 
 //==== calls from the TaskView ===============================================================
 void TaskDlgDetail::open()

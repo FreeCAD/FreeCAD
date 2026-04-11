@@ -21,16 +21,9 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef ASSEMBLY_PRECOMPILED_H
-#define ASSEMBLY_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
-
-#ifdef _MSC_VER
-#pragma warning(disable : 5208)
-#endif
-
-#ifdef _PreComp_
 
 // standard
 #include <cinttypes>
@@ -51,6 +44,3 @@
 #include <gp_Sphere.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Face.hxx>
-
-#endif  // _PreComp_
-#endif  // ASSEMBLY_PRECOMPILED_H

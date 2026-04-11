@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
@@ -20,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "DlgSettingsPathColor.h"
 #include "ui_DlgSettingsPathColor.h"
@@ -62,6 +63,8 @@ void DlgSettingsPathColor::saveSettings()
     ui->DefaultBBoxNormalColor->onSave();
     ui->DefaultSelectionStyle->onSave();
     ui->DefaultTaskPanelLayout->onSave();
+    ui->HideFirstRapid->onSave();
+    ui->PostProcessorShowEditor->onSave();
 }
 
 void DlgSettingsPathColor::loadSettings()
@@ -77,6 +80,8 @@ void DlgSettingsPathColor::loadSettings()
     ui->DefaultBBoxNormalColor->onRestore();
     ui->DefaultSelectionStyle->onRestore();
     ui->DefaultTaskPanelLayout->onRestore();
+    ui->HideFirstRapid->onRestore();
+    ui->PostProcessorShowEditor->onRestore();
 }
 
 /**

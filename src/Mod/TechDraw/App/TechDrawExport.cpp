@@ -22,9 +22,7 @@
 //this file originally part of TechDraw workbench
 //migrated to TechDraw workbench 2022-01-26 by Wandererfan
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <cmath>
 # include <sstream>
 # include <Approx_Curve3d.hxx>
@@ -53,7 +51,6 @@
 # if OCC_VERSION_HEX < 0x070600
 #  include <BRepAdaptor_HCurve.hxx>
 # endif
-#endif
 
 #include <Base/Tools.h>
 

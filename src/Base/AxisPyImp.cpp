@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -19,8 +21,6 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-
-#include "PreCompiled.h"
 
 #include "GeometryPyCXX.h"
 
@@ -72,8 +72,7 @@ int AxisPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyObject* d {};
     if (PyArg_ParseTuple(args, "O!O!", &(VectorPy::Type), &o, &(VectorPy::Type), &d)) {
         // NOTE: The first parameter defines the base (origin) and the second the direction.
-        *getAxisPtr() =
-            Axis(static_cast<VectorPy*>(o)->value(), static_cast<VectorPy*>(d)->value());
+        *getAxisPtr() = Axis(static_cast<VectorPy*>(o)->value(), static_cast<VectorPy*>(d)->value());
         return 0;
     }
 

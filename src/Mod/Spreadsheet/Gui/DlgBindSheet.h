@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /****************************************************************************
  *   Copyright (c) 2019 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
  *                                                                          *
@@ -20,8 +22,7 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef DLG_BINDSHEET_H
-#define DLG_BINDSHEET_H
+#pragma once
 
 #include <Mod/Spreadsheet/App/Sheet.h>
 #include <QDialog>
@@ -39,9 +40,11 @@ class DlgBindSheet: public QDialog
     Q_OBJECT
 
 public:
-    explicit DlgBindSheet(Spreadsheet::Sheet* sheet,
-                          const std::vector<App::Range>& range,
-                          QWidget* parent = nullptr);
+    explicit DlgBindSheet(
+        Spreadsheet::Sheet* sheet,
+        const std::vector<App::Range>& range,
+        QWidget* parent = nullptr
+    );
     ~DlgBindSheet() override;
 
     void accept() override;
@@ -56,5 +59,3 @@ private:
 };
 
 }  // namespace SpreadsheetGui
-
-#endif  // DLG_BINDSHEET_H

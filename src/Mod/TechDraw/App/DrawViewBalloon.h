@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TechDraw_DrawViewBalloon_h_
-#define TechDraw_DrawViewBalloon_h_
+#pragma once
 
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
@@ -82,6 +81,8 @@ public:
 
     Base::Vector3d getOriginOffset() const;
 
+    App::PropertyLink *getOwnerProperty() override { return &SourceView; }
+
 protected:
     void onChanged(const App::Property* prop) override;
     void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName,
@@ -94,4 +95,3 @@ private:
 };
 
 }//namespace TechDraw
-#endif

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2004 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,9 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <cstdlib>
 #include <QApplication>
 #include <QClipboard>
@@ -31,8 +30,6 @@
 #include <QFileInfo>
 #include <QLocale>
 #include <QProcessEnvironment>
-#include <QRegularExpression>
-#include <QRegularExpressionMatch>
 #include <QScreen>
 #include <QSettings>
 #include <QSysInfo>
@@ -40,9 +37,10 @@
 #include <QTextStream>
 #include <QTimer>
 #include <Inventor/C/basic.h>
-#endif
 
 #include <App/Application.h>
+#include <App/ProgramInformation.h>
+#include <Gui/ProgramInformation.h>
 #include <App/Metadata.h>
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
@@ -164,7 +162,7 @@ QPixmap AboutDialog::aboutImage() const
         about_image.load(fi.filePath(), "PNG");
     }
 
-    std::string about_path = App::Application::Config()["AboutImage"];
+    const std::string about_path = App::Application::Config()["AboutImage"];
     if (!about_path.empty() && about_image.isNull()) {
         QString path = QString::fromStdString(about_path);
         if (QDir(path).isRelative()) {
@@ -199,8 +197,9 @@ void AboutDialog::setupLabels()
 #endif
     // avoid overriding user set style sheet
     if (qApp->styleSheet().isEmpty()) {
-        setStyleSheet(QStringLiteral("Gui--Dialog--AboutDialog QLabel {font-size: %1pt;}")
-                          .arg(fontSize));
+        setStyleSheet(
+            QStringLiteral("Gui--Dialog--AboutDialog QLabel {font-size: %1pt;}").arg(fontSize)
+        );
     }
 
     QString exeName = qApp->applicationName();
@@ -227,12 +226,15 @@ void AboutDialog::setupLabels()
 
     if (qApp->styleSheet().isEmpty()) {
         ui->labelAuthor->setStyleSheet(QStringLiteral(
-            "Gui--UrlLabel {color: #0000FF;text-decoration: underline;font-weight: 600;}"));
+            "Gui--UrlLabel {color: #0000FF;text-decoration: underline;font-weight: 600;}"
+        ));
     }
 
     QString version = ui->labelBuildVersion->text();
-    version.replace(QStringLiteral("Unknown"),
-                    QStringLiteral("%1.%2.%3%4").arg(major, minor, point, suffix));
+    version.replace(
+        QStringLiteral("Unknown"),
+        QStringLiteral("%1.%2.%3%4").arg(major, minor, point, suffix)
+    );
     ui->labelBuildVersion->setText(version);
 
     QString revision = ui->labelBuildRevision->text();
@@ -244,7 +246,10 @@ void AboutDialog::setupLabels()
     ui->labelBuildDate->setText(date);
 
     QString os = ui->labelBuildOS->text();
-    os.replace(QStringLiteral("Unknown"), App::Application::prettyProductInfoWrapper());
+    os.replace(
+        QStringLiteral("Unknown"),
+        QString::fromStdString(App::ProgramInformation::prettyProductInfoWrapper())
+    );
     ui->labelBuildOS->setText(os);
 
     QString architecture = ui->labelBuildRunArchitecture->text();
@@ -255,7 +260,8 @@ void AboutDialog::setupLabels()
         architecture.replace(
             QStringLiteral("Unknown"),
             QStringLiteral("%1 (running on: %2)")
-                .arg(QSysInfo::buildCpuArchitecture(), QSysInfo::currentCpuArchitecture()));
+                .arg(QSysInfo::buildCpuArchitecture(), QSysInfo::currentCpuArchitecture())
+        );
     }
     ui->labelBuildRunArchitecture->setText(architecture);
 
@@ -277,7 +283,8 @@ void AboutDialog::setupLabels()
         QString hash = ui->labelBuildHash->text();
         hash.replace(
             QStringLiteral("Unknown"),
-            QString::fromStdString(it->second).left(7));  // Use the 7-char abbreviated hash
+            QString::fromStdString(it->second).left(7)
+        );  // Use the 7-char abbreviated hash
         ui->labelBuildHash->setText(hash);
         if (auto url_itr = config.find("BuildRepositoryURL"); url_itr != config.end()) {
             auto url = QString::fromStdString(url_itr->second);
@@ -294,8 +301,9 @@ void AboutDialog::setupLabels()
             // so give it a shot...
             auto https = url.replace(QStringLiteral("git://"), QStringLiteral("https://"));
             https.replace(QStringLiteral(".git"), QStringLiteral(""));
-            ui->labelBuildHash->setUrl(https + QStringLiteral("/commit/")
-                                       + QString::fromStdString(it->second));
+            ui->labelBuildHash->setUrl(
+                https + QStringLiteral("/commit/") + QString::fromStdString(it->second)
+            );
         }
     }
     else {
@@ -321,19 +329,12 @@ void AboutDialog::showCredits()
     textField->setOpenLinks(false);
     hlayout->addWidget(textField);
 
-    QString creditsHTML = QStringLiteral("<html><body><p>");
-    //: Header for bgbsww
-    creditsHTML +=
-        tr("This version of FreeCAD is dedicated to the memory of Brad McLean, aka bgbsww.");
     //: Header for the Credits tab of the About screen
-    creditsHTML += QStringLiteral("</p><h1>");
-    creditsHTML += tr("Credits");
-    creditsHTML += QStringLiteral("</h1><p>");
-    creditsHTML += tr("FreeCAD would not be possible without the contributions of");
-    creditsHTML += QStringLiteral(":</p><h2>");
-    //: Header for the list of individual people in the Credits list.
-    creditsHTML += tr("Individuals");
-    creditsHTML += QStringLiteral("</h2><ul>");
+    QString creditsHTML
+        = QStringLiteral("<html><body><h1>%1</h1><p>%2</p><h2>%3</h2><ul>")
+              .arg(tr("Credits", "Header for the Credits tab of the About screen"))
+              .arg(tr("FreeCAD would not be possible without the contributions of:"))
+              .arg(tr("Individuals", "Header for the list of individual people in the Credits list."));
 
     QTextStream stream(&creditsFile);
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
@@ -365,8 +366,9 @@ void AboutDialog::showLicenseInformation()
 
     if (licenseFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
         QString licenseHTML = QString::fromUtf8(licenseFile.readAll());
-        const auto placeholder =
-            QStringLiteral("<!--PLACEHOLDER_FOR_ADDITIONAL_LICENSE_INFORMATION-->");
+        const auto placeholder = QStringLiteral(
+            "<!--PLACEHOLDER_FOR_ADDITIONAL_LICENSE_INFORMATION-->"
+        );
         licenseHTML.replace(placeholder, getAdditionalLicenseInformation());
 
         ui->tabWidget->removeTab(1);  // Hide the license placeholder widget
@@ -401,7 +403,8 @@ QString AboutDialog::getAdditionalLicenseInformation() const
         "<h2>3D Mouse Support</h2>"
         "<p>Development tools and related technology provided under license from 3Dconnexion.<br/>"
         "Copyright &#169; 1992&ndash;2012 3Dconnexion. All rights reserved.</p>"
-        "<hr/>");
+        "<hr/>"
+    );
 #endif
     return info;
 }
@@ -477,12 +480,14 @@ void AboutDialog::linkActivated(const QUrl& link)
 
 void AboutDialog::copyToClipboard()
 {
-    QString data;
-    QTextStream str(&data);
-    std::map<std::string, std::string>& config = App::Application::Config();
-    App::Application::getVerboseCommonInfo(str, config);
-    Gui::Application::getVerboseDPIStyleInfo(str);
-    App::Application::getVerboseAddOnsInfo(str, config);
+    const auto& config = App::Application::Config();
+    std::stringstream str;
+    App::ProgramInformation::getVerboseCommonInfo(str, config);
+    Gui::ProgramInformation::getStyleInformation(str);
+    Gui::ProgramInformation::getNavigationStyleInformation(str);
+    Gui::ProgramInformation::getDpiInformation(str);
+    App::ProgramInformation::getVerboseAddOnsInfo(str, config);
+    QString data = QString::fromStdString(str.str());
 
     QClipboard* cb = QApplication::clipboard();
     cb->setText(data);
@@ -490,9 +495,7 @@ void AboutDialog::copyToClipboard()
     auto copytext = ui->copyButton->text();
     ui->copyButton->setText(tr("Copied!"));
     const int timeout = 2000;
-    QTimer::singleShot(timeout, this, [this, copytext]() {
-        ui->copyButton->setText(copytext);
-    });
+    QTimer::singleShot(timeout, this, [this, copytext]() { ui->copyButton->setText(copytext); });
 }
 
 // ----------------------------------------------------------------------------

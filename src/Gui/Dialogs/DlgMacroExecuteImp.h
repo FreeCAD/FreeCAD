@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGMACROEXECUTEIMP_H
-#define GUI_DIALOG_DLGMACROEXECUTEIMP_H
+#pragma once
 
 #include <QDialog>
 #include <memory>
@@ -31,8 +32,10 @@
 
 class QTreeWidgetItem;
 
-namespace Gui {
-namespace Dialog {
+namespace Gui
+{
+namespace Dialog
+{
 class Ui_DlgMacroExecute;
 
 /**
@@ -40,7 +43,7 @@ class Ui_DlgMacroExecute;
  * recorded macro.
  * \author Jürgen Riegel
  */
-class DlgMacroExecuteImp : public QDialog, public Gui::WindowParameter
+class DlgMacroExecuteImp: public QDialog, public Gui::WindowParameter
 {
     Q_OBJECT
 
@@ -81,7 +84,5 @@ private:
     std::unique_ptr<Ui_DlgMacroExecute> ui;
 };
 
-} // namespace Dialog
-} // namespace Gui
-
-#endif // GUI_DIALOG_DLGMACROEXECUTEIMP_H
+}  // namespace Dialog
+}  // namespace Gui

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2020 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,13 +22,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QElapsedTimer>
 #include <QMessageBox>
 #include <QPointer>
 #include <QTextCursor>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -54,8 +54,9 @@ public:
 
     void appendText(const QString& text, bool error)
     {
-        syntax->setParagraphType(error ? Gui::DockWnd::ReportHighlighter::Error
-                                       : Gui::DockWnd::ReportHighlighter::Message);
+        syntax->setParagraphType(
+            error ? Gui::DockWnd::ReportHighlighter::Error : Gui::DockWnd::ReportHighlighter::Message
+        );
         QTextCursor cursor(ui.outputWindow->document());
         cursor.beginEditBlock();
         cursor.movePosition(QTextCursor::End);
@@ -101,9 +102,9 @@ GmshWidget::GmshWidget(QWidget* parent, Qt::WindowFlags fl)
     d->ui.method->addItem(QStringLiteral("Delaunay"), static_cast<int>(Delaunay));
     d->ui.method->addItem(tr("Frontal"), static_cast<int>(FrontalDelaunay));
     d->ui.method->addItem(QStringLiteral("BAMG"), static_cast<int>(BAMG));
-    d->ui.method->addItem(tr("Frontal Quad"), static_cast<int>(FrontalDelaunayForQuads));
+    d->ui.method->addItem(tr("Frontal quad"), static_cast<int>(FrontalDelaunayForQuads));
     d->ui.method->addItem(tr("Parallelograms"), static_cast<int>(PackingOfParallelograms));
-    d->ui.method->addItem(tr("Quasi-structured Quad"), static_cast<int>(QuasiStructuredQuad));
+    d->ui.method->addItem(tr("Quasi-structured quad"), static_cast<int>(QuasiStructuredQuad));
 }
 
 GmshWidget::~GmshWidget()
@@ -184,6 +185,9 @@ void GmshWidget::accept()
     if (writeProject(inpFile, outFile)) {
         // ./gmsh - -bin -2 /tmp/mesh.geo -o /tmp/best.stl
         QString proc = d->ui.fileChooser->fileName();
+        if (proc.isEmpty()) {
+            proc = QLatin1String("gmsh");
+        }
         QStringList args;
         args << QLatin1String("-")
              << QLatin1String("-bin")

@@ -21,21 +21,27 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef STYLEPARAMETERS_PARAMETERMANAGER_H
-#define STYLEPARAMETERS_PARAMETERMANAGER_H
+#pragma once
 
 #include <list>
 #include <map>
 #include <optional>
 #include <set>
 #include <string>
-#include <vector>
-
-#include <QColor>
 
 #include <App/Application.h>
 #include <Base/Bitmask.h>
 #include <Base/Parameter.h>
+
+#include "Value.h"
+
+// That macro uses inline const because some older compilers to not properly support constexpr
+// for std::string. It should be changed into static constepxr once we migrate to newer compiler.
+#define DEFINE_STYLE_PARAMETER(_name_, _defaultValue_) \
+    static inline const Gui::StyleParameters::ParameterDefinition _name_ \
+    { \
+        .name = #_name_, .defaultValue = (_defaultValue_), \
+    }
 
 namespace Gui::StyleParameters
 {
@@ -44,79 +50,30 @@ namespace Gui::StyleParameters
 class Parser;
 
 /**
- * @brief Represents a length in a specified unit.
+ * @brief A structure to define parameters which can be referenced in the code.
  *
- * This struct is a very simplified representation of lengths that can be used as parameters for
- * styling purposes. The length basically consists of value and unit. Unit is optional, empty unit
- * represents a dimensionless length that can be used as a scalar. This struct does not care about
- * unit conversions as its uses do not require it.
+ * @tparam T The type of the parameter.
+ *
+ * This structure allows defining parameters which encapsulate a name and a corresponding
+ * default value. Parameters defined this way can be reused across the codebase for consistency.
+ * The supported value types include:
+ *  - Numeric types.
+ *  - Colors using `Base::Color`.
+ *  - Strings.
+ *
+ * Example Usage:
+ * @code{.cpp}
+ * DEFINE_STYLE_PARAMETER(SomeParameter, Numeric { 10 });
+ * DEFINE_STYLE_PARAMETER(TextColor, Base::Color(0.5F, 0.2F, 0.8F));
+ * @endcode
  */
-struct Length
+template<typename T>
+struct ParameterDefinition
 {
-    /// Numeric value of the length.
-    double value;
-    /// Unit of the length, empty if the value is dimensionless.
-    std::string unit;
-
-    /**
-     * @name Operators
-     *
-     * This struct supports basic operations on Length. Each operation requires for operands to be
-     * the same unit. Multiplication and division additionally allow one operand to be dimensionless
-     * and hence act as a scalar.
-     *
-     * @code{c++}
-     * Length a { 10, "px" };
-     * Length b { 5, "px" };
-     *
-     * Length differentUnit { 3, "rem" }
-     * Length scalar { 2, "" };
-     *
-     * // basic operations with the same unit are allowed
-     * auto sum = a + b; // 15 px
-     * auto difference = a - 5; // 10 px
-     *
-     * // basic operations with mixed units are NOT allowed
-     * auto sumOfIncompatibleUnits = a + differentUnit; // will throw
-     * auto productOfIncompatibleUnits = a * differentUnit; // will throw
-     *
-     * // exception is that for multiplication and division dimensionless units are allowed
-     * auto productWithScalar = a * scalar; // 20 px
-     * @endcode
-     * @{
-     */
-    Length operator+(const Length& rhs) const;
-    Length operator-(const Length& rhs) const;
-    Length operator-() const;
-
-    Length operator/(const Length& rhs) const;
-    Length operator*(const Length& rhs) const;
-    /// @}
-
-private:
-    void ensureEqualUnits(const Length& rhs) const;
-};
-
-/**
- * @brief This struct represents any valid value that can be used as the parameter value.
- *
- * The value can be one of three basic types:
- *  - Numbers / Lengths (so any length with optional unit) (Length)
- *  - Colors (QColor)
- *  - Any other generic expression. (std::string)
- *
- * As a rule, operations can be only performed over values of the same type.
- */
-struct Value : std::variant<Length, QColor, std::string>
-{
-    using std::variant<Length, QColor, std::string>::variant;
-
-    /**
-     * Converts the object into its string representation.
-     *
-     * @return A string representation of the object that can later be used in QSS.
-     */
-    std::string toString() const;
+    /// The name of the parameter, must be unique.
+    const char* name;
+    /// The default value of the parameter.
+    T defaultValue;
 };
 
 /**
@@ -125,8 +82,8 @@ struct Value : std::variant<Length, QColor, std::string>
  * @brief Represents a named, dynamic expression-based parameter.
  *
  * The Parameter structure is used to define reusable named variables in styling or layout systems.
- * Each parameter consists of a `name` and a `value` string, where the value is a CSS-like expression
- * that supports numbers, units, arithmetic, colors, functions, and parameter references.
+ * Each parameter consists of a `name` and a `value` string, where the value is a CSS-like
+ * expression that supports numbers, units, arithmetic, colors, functions, and parameter references.
  *
  * ### Naming Convention
  * Parameter names must be unique and follow **CamelCase**.
@@ -260,7 +217,8 @@ public:
      *
      * @param[in] parameter The `Parameter` object to define or update in the source.
      */
-    virtual void define([[maybe_unused]] const Parameter& parameter) {}
+    virtual void define([[maybe_unused]] const Parameter& parameter)
+    {}
 
     /**
      * @brief Removes a parameter from the source by its name.
@@ -270,7 +228,14 @@ public:
      *
      * @param[in] name The name of the parameter to remove.
      */
-    virtual void remove([[maybe_unused]] const std::string& name) {}
+    virtual void remove([[maybe_unused]] const std::string& name)
+    {}
+
+    /**
+     * @brief Flushes buffered changes into more persistent storage.
+     */
+    virtual void flush()
+    {}
 };
 
 /**
@@ -279,7 +244,7 @@ public:
  * This source is useful for temporary parameter storage or when you need to
  * define parameters programmatically without persisting them to disk.
  */
-class GuiExport InMemoryParameterSource : public ParameterSource
+class GuiExport InMemoryParameterSource: public ParameterSource
 {
     std::map<std::string, Parameter> parameters;
 
@@ -299,7 +264,7 @@ public:
  * FreeCAD's global parameter system. These parameters are typically defined
  * by the application and are read-only.
  */
-class GuiExport BuiltInParameterSource : public ParameterSource
+class GuiExport BuiltInParameterSource: public ParameterSource
 {
 public:
     explicit BuiltInParameterSource(const Metadata& metadata = {});
@@ -308,10 +273,12 @@ public:
     std::optional<Parameter> get(const std::string& name) const override;
 
 private:
-    ParameterGrp::handle hGrpThemes =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Themes");
-    ParameterGrp::handle hGrpView =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    ParameterGrp::handle hGrpThemes = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Themes"
+    );
+    ParameterGrp::handle hGrpView = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View"
+    );
 
     std::map<std::string, ParameterGrp::handle> params = {
         {"ThemeAccentColor1", hGrpThemes},
@@ -328,7 +295,7 @@ private:
  * in the user's preference file. These parameters can be modified by the
  * user and persist across application sessions.
  */
-class GuiExport UserParameterSource : public ParameterSource
+class GuiExport UserParameterSource: public ParameterSource
 {
     ParameterGrp::handle hGrp;
 
@@ -339,6 +306,43 @@ public:
     std::optional<Parameter> get(const std::string& name) const override;
     void define(const Parameter& parameter) override;
     void remove(const std::string& name) override;
+};
+
+/**
+ * @class YamlParameterSource
+ * @brief A ParameterSource implementation that loads and saves parameters
+ *        from a YAML file using yaml-cpp.
+ *
+ * This class maintains an in-memory map of parameters loaded from a YAML file.
+ * Any changes through define() or remove() will also update the file.
+ */
+class GuiExport YamlParameterSource: public ParameterSource
+{
+public:
+    /**
+     * @brief Constructs a YamlParameterSource that reads parameters from the given YAML file.
+     *
+     * If the file exists, all key-value pairs are loaded into memory.
+     * If the file does not exist, an empty parameter set is initialized.
+     *
+     * @param filePath Path to the YAML file used for persistence.
+     * @param metadata Optional metadata describing this source.
+     */
+    explicit YamlParameterSource(const std::string& filePath, const Metadata& metadata = {});
+
+    void changeFilePath(const std::string& path);
+    void reload();
+
+    std::list<Parameter> all() const override;
+    std::optional<Parameter> get(const std::string& name) const override;
+    void define(const Parameter& param) override;
+    void remove(const std::string& name) override;
+
+    void flush() override;
+
+private:
+    std::string filePath;
+    std::map<std::string, Parameter> parameters;
 };
 
 /**
@@ -413,7 +417,29 @@ public:
      * @param context Resolution context for handling circular references
      * @return The resolved value
      */
-    Value resolve(const std::string& name, ResolveContext context = {}) const;
+    std::optional<Value> resolve(const std::string& name, ResolveContext context = {}) const;
+
+    /**
+     * @brief Resolves a parameter to its final value, based on definition.
+     *
+     * This method evaluates the parameter's expression and returns the computed
+     * value or default one from definition if the parameter is not available.
+     *
+     * @param definition Definition of the parameter to resolve
+     * @param context Resolution context for handling circular references
+     * @return The resolved value
+     */
+    template<typename T>
+    T resolve(const ParameterDefinition<T>& definition, ResolveContext context = {}) const
+    {
+        auto value = resolve(definition.name, std::move(context));
+
+        if (!value || !std::holds_alternative<T>(*value)) {
+            return definition.defaultValue;
+        }
+
+        return std::get<T>(*value);
+    }
 
     /**
      * @brief Evaluates an expression string and returns the result.
@@ -453,5 +479,3 @@ public:
 }  // namespace Gui::StyleParameters
 
 ENABLE_BITMASK_OPERATORS(Gui::StyleParameters::ParameterSourceOption);
-
-#endif  // STYLEPARAMETERS_PARAMETERMANAGER_H 

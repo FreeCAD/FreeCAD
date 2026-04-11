@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -25,10 +26,10 @@ from PathScripts.PathUtils import waiting_effects
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import Path
 import Path.Base.Util as PathUtil
+import Path.Geom
 import PathScripts.PathUtils as PathUtils
 import math
 import time
-
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -168,6 +169,14 @@ class ObjectOp(object):
             ),
         )
         obj.addProperty(
+            "App::PropertyBool",
+            "BlockDelete",
+            "Path",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Enable post processor to add block delete commands"
+            ),
+        )
+        obj.addProperty(
             "App::PropertyString",
             "Comment",
             "Path",
@@ -186,6 +195,12 @@ class ObjectOp(object):
             QT_TRANSLATE_NOOP("App::Property", "Operations Cycle Time Estimation"),
         )
         obj.setEditorMode("CycleTime", 1)  # read-only
+
+        # Add attachment extension to enable attaching operations to geometry
+        # This allows operations to automatically position/orient based on attached faces
+        # Only add to real objects, not OpPrototypes
+        if hasattr(obj, "hasExtension") and not obj.hasExtension("Part::AttachExtension"):
+            obj.addExtension("Part::AttachExtensionPython")
 
         features = self.opFeatures(obj)
 
@@ -335,7 +350,10 @@ class ObjectOp(object):
 
         if not hasattr(obj, "DoNotSetDefaultValues") or not obj.DoNotSetDefaultValues:
             if parentJob:
-                self.job = PathUtils.addToJob(obj, jobname=parentJob.Name)
+                self.job = parentJob
+                self.model = parentJob.Model.Group if parentJob.Model else []
+                self.stock = parentJob.Stock if hasattr(parentJob, "Stock") else None
+                PathUtils.addToJob(obj, jobname=parentJob.Name)
             job = self.setDefaultValues(obj)
             if job:
                 job.SetupSheet.Proxy.setOperationProperties(obj, name)
@@ -439,6 +457,15 @@ class ObjectOp(object):
                 "Path",
                 QT_TRANSLATE_NOOP("App::Property", "Operations Cycle Time Estimation"),
             )
+        if not hasattr(obj, "BlockDelete"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "BlockDelete",
+                "Path",
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "Enable post processor to add block delete commands"
+                ),
+            )
 
         if FeatureStepDown & features and not hasattr(obj, "StepDown"):
             obj.addProperty(
@@ -532,6 +559,9 @@ class ObjectOp(object):
 
         self.opOnChanged(obj, prop)
 
+        if prop == "Active" and obj.ViewObject:
+            obj.ViewObject.signalChangeIcon()
+
     def applyExpression(self, obj, prop, expr):
         """applyExpression(obj, prop, expr) ... set expression expr on obj.prop if expr is set"""
         if expr:
@@ -546,14 +576,19 @@ class ObjectOp(object):
             job = self.job
         else:
             job = PathUtils.addToJob(obj)
-
+        if not job:
+            raise ValueError(
+                "No job associated with the operation. Please ensure the operation is part of a job."
+            )
         obj.Active = True
 
         features = self.opFeatures(obj)
 
         if FeatureTool & features:
-            if 1 < len(job.Operations.Group):
-                obj.ToolController = PathUtil.toolControllerForOp(job.Operations.Group[-2])
+            for op in job.Operations.Group[-2::-1]:
+                obj.ToolController = PathUtil.toolControllerForOp(op)
+                if obj.ToolController:
+                    break
             else:
                 obj.ToolController = PathUtils.findToolController(obj, self)
             if not obj.ToolController:
@@ -791,7 +826,50 @@ class ObjectOp(object):
             # Let's finish by rapid to clearance...just for safety
             self.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
 
+        # Add block delete annotations if enabled
+        if hasattr(obj, "BlockDelete") and obj.BlockDelete:
+            for command in self.commandlist:
+                annotations = command.Annotations
+                annotations["BlockDelete"] = True
+                command.Annotations = annotations
+
+        # Add handling of coolant commands.
+        # if the coolant mode is not None, add the command to turn it on right before the first non-rapid
+        # move in the command list.
+        # Add the command to turn it off right after the last non-rapid move in the command list.
+        if hasattr(obj, "CoolantMode") and obj.CoolantMode != "None":
+            # Find the first and last cutting moves (includes G1, G2, G3, and canned drill cycles)
+            # Use Path.Geom.CmdMove which includes: G1, G2, G3, G73, G81, G82, G83, G85
+            first_feed_index = None
+            last_feed_index = None
+
+            for i, cmd in enumerate(self.commandlist):
+                if cmd.Name in Path.Geom.CmdMove:
+                    if first_feed_index is None:
+                        first_feed_index = i
+                    last_feed_index = i
+
+            # Insert coolant commands if we found cutting moves
+            if first_feed_index is not None:
+                # Insert coolant on command before first cutting move
+                if obj.CoolantMode == "Flood":
+                    coolant_on = Path.Command("M8", {})
+                elif obj.CoolantMode == "Mist":
+                    coolant_on = Path.Command("M7", {})
+                else:
+                    coolant_on = None
+
+                if coolant_on:
+                    self.commandlist.insert(first_feed_index, coolant_on)
+                    # Adjust last_feed_index since we inserted a command
+                    last_feed_index += 1
+
+                    # Insert coolant off command after last cutting move
+                    coolant_off = Path.Command("M9", {})
+                    self.commandlist.insert(last_feed_index + 1, coolant_off)
+
         path = Path.Path(self.commandlist)
+
         obj.Path = path
         obj.CycleTime = getCycleTimeEstimate(obj)
         self.job.Proxy.getCycleTime()
@@ -833,6 +911,219 @@ class ObjectOp(object):
         This function can safely be overwritten by subclasses."""
 
         return True
+
+
+class Compass:
+    """
+    A compass is a tool to help with direction so the Compass is a helper
+    class to manage settings that affect tool and spindle direction.
+
+    Settings managed:
+        - Spindle Direction: Forward / Reverse / None
+        - Cut Side: Inside / Outside (for perimeter operations)
+        - Cut Mode: Climb / Conventional
+        - Path Direction: CW / CCW (derived for perimeter operations)
+        - Operation Type: Perimeter / Area (for facing/pocketing operations)
+
+    This class allows the user to set and get any of these properties and the rest will update accordingly.
+    Supports both perimeter operations (profiling) and area operations (facing, pocketing).
+
+    Args:
+        spindle_direction: "Forward", "Reverse", or "None"
+        operation_type: "Perimeter" or "Area" (defaults to "Perimeter")
+    """
+
+    FORWARD = "Forward"
+    REVERSE = "Reverse"
+    NONE = "None"
+    CW = "CW"
+    CCW = "CCW"
+    CLIMB = "Climb"
+    CONVENTIONAL = "Conventional"
+    INSIDE = "Inside"
+    OUTSIDE = "Outside"
+    PERIMETER = "Perimeter"
+    AREA = "Area"
+
+    def __init__(self, spindle_direction, operation_type=None):
+        self._spindle_dir = (
+            spindle_direction
+            if spindle_direction in (self.FORWARD, self.REVERSE, self.NONE)
+            else self.NONE
+        )
+        self._cut_side = self.OUTSIDE
+        self._cut_mode = self.CLIMB
+        self._operation_type = (
+            operation_type or self.PERIMETER
+        )  # Default to perimeter for backward compatibility
+        self._path_dir = self._calculate_path_dir()
+
+    @property
+    def spindle_dir(self):
+        return self._spindle_dir
+
+    @spindle_dir.setter
+    def spindle_dir(self, value):
+        if value in (self.FORWARD, self.REVERSE, self.NONE):
+            self._spindle_dir = value
+            self._path_dir = self._calculate_path_dir()
+        else:
+            self._spindle_dir = self.NONE
+            self._path_dir = self._calculate_path_dir()
+
+    @property
+    def cut_side(self):
+        return self._cut_side
+
+    @cut_side.setter
+    def cut_side(self, value):
+        self._cut_side = value.capitalize()
+        self._path_dir = self._calculate_path_dir()
+
+    @property
+    def cut_mode(self):
+        return self._cut_mode
+
+    @cut_mode.setter
+    def cut_mode(self, value):
+        self._cut_mode = value.capitalize()
+        self._path_dir = self._calculate_path_dir()
+
+    @property
+    def operation_type(self):
+        return self._operation_type
+
+    @operation_type.setter
+    def operation_type(self, value):
+        self._operation_type = value.capitalize()
+        self._path_dir = self._calculate_path_dir()
+
+    @property
+    def path_dir(self):
+        return self._path_dir
+
+    def _calculate_path_dir(self):
+        if self.spindle_dir == self.NONE:
+            return "UNKNOWN"
+
+        # For area operations (facing, pocketing), path direction is not applicable
+        if self._operation_type == self.AREA:
+            return "N/A"
+
+        spindle_rotation = self._rotation_from_spindle(self.spindle_dir)
+
+        for candidate in (self.CW, self.CCW):
+            mode = self._expected_cut_mode(self._cut_side, spindle_rotation, candidate)
+            if mode == self._cut_mode:
+                return candidate
+
+        return "UNKNOWN"
+
+    def _rotation_from_spindle(self, direction):
+        return self.CW if direction == self.FORWARD else self.CCW
+
+    def _expected_cut_mode(self, cut_side, spindle_rotation, path_dir):
+        lookup = {
+            (self.INSIDE, self.CW, self.CCW): self.CLIMB,
+            (self.INSIDE, self.CCW, self.CW): self.CLIMB,
+            (self.OUTSIDE, self.CW, self.CW): self.CLIMB,
+            (self.OUTSIDE, self.CCW, self.CCW): self.CLIMB,
+        }
+        return lookup.get((cut_side, spindle_rotation, path_dir), self.CONVENTIONAL)
+
+    def get_step_direction(self, approach_direction):
+        """
+        For area operations, determine the step direction for climb/conventional milling.
+
+        Args:
+            approach_direction: "X+", "X-", "Y+", "Y-" - the primary cutting direction
+
+        Returns:
+            True if steps should be in positive direction, False for negative direction
+        """
+        if self._operation_type != self.AREA:
+            raise ValueError("Step direction is only applicable for area operations")
+
+        if self.spindle_dir == self.NONE:
+            return True  # Default to positive direction
+
+        spindle_rotation = self._rotation_from_spindle(self.spindle_dir)
+
+        # For area operations, climb/conventional depends on relationship between
+        # spindle rotation, approach direction, and step direction
+        if approach_direction in ["X-", "X+"]:
+            # Stepping in Y direction
+            if self._cut_mode == self.CLIMB:
+                # Climb: step direction matches spindle for X- approach
+                return (approach_direction == "X-") == (spindle_rotation == self.CW)
+            else:  # Conventional
+                # Conventional: step direction opposite to spindle for X- approach
+                return (approach_direction == "X-") != (spindle_rotation == self.CW)
+        else:  # Y approach
+            # Stepping in X direction
+            if self._cut_mode == self.CLIMB:
+                # Climb: step direction matches spindle for Y- approach
+                return (approach_direction == "Y-") == (spindle_rotation == self.CW)
+            else:  # Conventional
+                # Conventional: step direction opposite to spindle for Y- approach
+                return (approach_direction == "Y-") != (spindle_rotation == self.CW)
+
+    def get_cutting_direction(self, approach_direction, pass_index=0, pattern="zigzag"):
+        """
+        For area operations, determine the cutting direction for each pass.
+
+        Args:
+            approach_direction: "X+", "X-", "Y+", "Y-" - the primary cutting direction
+            pass_index: Index of the current pass (0-based)
+            pattern: "zigzag", "unidirectional", "spiral"
+
+        Returns:
+            True if cutting should be in forward direction, False for reverse
+        """
+        if self._operation_type != self.AREA:
+            raise ValueError("Cutting direction is only applicable for area operations")
+
+        if self.spindle_dir == self.NONE:
+            return True  # Default to forward direction
+
+        spindle_rotation = self._rotation_from_spindle(self.spindle_dir)
+
+        # Determine base cutting direction for climb/conventional
+        if approach_direction in ["X-", "X+"]:
+            # Cutting along Y axis
+            if self._cut_mode == self.CLIMB:
+                base_forward = (approach_direction == "X-") == (spindle_rotation == self.CW)
+            else:  # Conventional
+                base_forward = (approach_direction == "X-") != (spindle_rotation == self.CW)
+        else:  # Y approach
+            # Cutting along X axis
+            if self._cut_mode == self.CLIMB:
+                base_forward = (approach_direction == "Y-") == (spindle_rotation == self.CW)
+            else:  # Conventional
+                base_forward = (approach_direction == "Y-") != (spindle_rotation == self.CW)
+
+        # Apply pattern modifications
+        if pattern == "zigzag" and pass_index % 2 == 1:
+            base_forward = not base_forward
+        elif pattern == "unidirectional":
+            # Always same direction
+            pass
+
+        return base_forward
+
+    def report(self):
+        report_data = {
+            "spindle_dir": self.spindle_dir,
+            "cut_side": self.cut_side,
+            "cut_mode": self.cut_mode,
+            "operation_type": self.operation_type,
+            "path_dir": self.path_dir,
+        }
+
+        Path.Log.debug("Machining Compass config:")
+        for k, v in report_data.items():
+            Path.Log.debug(f"  {k:15s}: {v}")
+        return report_data
 
 
 def getCycleTimeEstimate(obj):

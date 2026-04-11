@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef UTILS_H
-#define UTILS_H
+#pragma once
 
 #include <map>
 #include <memory>
@@ -37,12 +38,11 @@ namespace Spreadsheet
 SpreadsheetExport std::string columnName(int col);
 SpreadsheetExport std::string rowName(int row);
 
-SpreadsheetExport void
-createRectangles(std::set<std::pair<int, int>>& cells,
-                 std::map<std::pair<int, int>, std::pair<int, int>>& rectangles);
+SpreadsheetExport void createRectangles(
+    std::set<std::pair<int, int>>& cells,
+    std::map<std::pair<int, int>, std::pair<int, int>>& rectangles
+);
 SpreadsheetExport std::string quote(const std::string& input);
 SpreadsheetExport std::string unquote(const std::string& input);
 
 }  // namespace Spreadsheet
-
-#endif  // UTILS_H

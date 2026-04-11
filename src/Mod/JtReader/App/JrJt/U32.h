@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /**************************************************************************
  *   Copyright (c) 2014 Juergen Riegel <juergen.riegel@web.de>             *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef U32_HEADER
-#define U32_HEADER
+#pragma once
 
 #include "Context.h"
 #include <istream>
@@ -54,6 +55,3 @@ struct U32
 
     uint32_t _U32;
 };
-
-
-#endif

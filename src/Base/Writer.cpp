@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -21,13 +23,10 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <memory>
 #include <set>
 #include <vector>
 #include <string>
-#endif
 
 #include <limits>
 #include <locale>
@@ -92,6 +91,31 @@ Writer::Writer()
 }
 
 Writer::~Writer() = default;
+
+void Writer::clear()
+{
+    Stream().clear();
+}
+
+bool Writer::isGood() const
+{
+    return Stream().good();
+}
+
+bool Writer::hasFailed() const
+{
+    return Stream().fail();
+}
+
+bool Writer::isBad() const
+{
+    return Stream().bad();
+}
+
+bool Writer::isEof() const
+{
+    return Stream().eof();
+}
 
 std::ostream& Writer::beginCharStream(CharStreamFormat format)
 {
@@ -270,7 +294,8 @@ std::vector<std::string> Writer::getErrors() const
 std::string Writer::addFile(const char* Name, const Base::Persistence* Object)
 {
     // always check isForceXML() before requesting a file!
-    assert(!isForceXML());
+    // assert(!isForceXML()); Changes introduced in 1.0 differ from LS3 (TNP), so this assertion is
+    // not valid anymore.
 
     FileEntry temp;
     temp.FileName = Name ? Name : "";
@@ -319,11 +344,7 @@ void Writer::putNextEntry(const char* file, const char* obj)
 ZipWriter::ZipWriter(const char* FileName)
     : ZipStream(FileName)
 {
-#ifdef _MSC_VER
-    ZipStream.imbue(std::locale::empty());
-#else
     ZipStream.imbue(std::locale::classic());
-#endif
     ZipStream.precision(std::numeric_limits<double>::digits10 + 1);
     ZipStream.setf(std::ios::fixed, std::ios::floatfield);
 }
@@ -331,11 +352,7 @@ ZipWriter::ZipWriter(const char* FileName)
 ZipWriter::ZipWriter(std::ostream& os)
     : ZipStream(os)
 {
-#ifdef _MSC_VER
-    ZipStream.imbue(std::locale::empty());
-#else
     ZipStream.imbue(std::locale::classic());
-#endif
     ZipStream.precision(std::numeric_limits<double>::digits10 + 1);
     ZipStream.setf(std::ios::fixed, std::ios::floatfield);
 }

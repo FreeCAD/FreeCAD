@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_FEATUREPARTIMPORTIGES_H
-#define PART_FEATUREPARTIMPORTIGES_H
+#pragma once
 
 #include "PartFeature.h"
 
@@ -29,7 +30,7 @@
 namespace Part
 {
 
-class ImportIges :public Part::Feature
+class ImportIges: public Part::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::ImportIges);
 
@@ -41,16 +42,14 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PartGui::ViewProviderImport";
     }
     //@}
 };
 
-}
-
-
-#endif // PART_FEATUREPARTIMPORTIGES_H
+}  // namespace Part

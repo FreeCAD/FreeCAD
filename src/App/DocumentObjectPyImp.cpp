@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2007 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,11 +22,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/MatrixPy.h>
+#include <Base/PlacementPy.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
+#include <Base/ServiceProvider.h>
 
 #include "DocumentObject.h"
 #include "Document.h"
@@ -32,6 +35,7 @@
 #include "GeoFeature.h"
 #include "GeoFeatureGroupExtension.h"
 #include "GroupExtension.h"
+#include "Services.h"
 
 
 // inclusion of the generated files (generated out of DocumentObjectPy.xml)
@@ -887,11 +891,23 @@ PyObject* DocumentObjectPy::getElementMapVersion(PyObject* args) const
         Py::String(getDocumentObjectPtr()->getElementMapVersion(prop, Base::asBoolean(restored))));
 }
 
-PyObject* DocumentObjectPy::getCustomAttributes(const char*) const
+PyObject* DocumentObjectPy::getCustomAttributes(const char* attr) const
 {
+    // Must call PropertyContainerPy here, not ExtensionContainerPy
+    if (PyObject* py = PropertyContainerPy::getCustomAttributes(attr)) {  // NOLINT
+        return py;
+    }
+
+    if (auto customProvider = Base::provideService<App::CustomAttributeProvider>()) {
+        auto opt = customProvider->getAttribute(getDocumentObjectPtr(), attr);
+        if (opt.has_value()) {
+            return opt.value();
+        }
+    }
+
     return nullptr;
 }
-// remove
+
 int DocumentObjectPy::setCustomAttributes(const char*, PyObject*)
 {
     return 0;
@@ -1003,4 +1019,33 @@ Py::Boolean DocumentObjectPy::getNoTouch() const
 void DocumentObjectPy::setNoTouch(Py::Boolean value)
 {
     getDocumentObjectPtr()->setStatus(ObjectStatus::NoTouch, value.isTrue());
+}
+
+PyObject* DocumentObjectPy::getPlacementOf(PyObject* args)
+{
+    char* subname;
+    PyObject* target = Py_None;  // Initialize to None
+
+    if (!PyArg_ParseTuple(args, "s|O", &subname, &target)) {
+        return nullptr;
+    }
+
+    App::DocumentObject* targetObj = nullptr;
+
+    // Check if a target was provided and is not None
+    if (target && target != Py_None) {
+        // Now perform the type check manually
+        if (!PyObject_TypeCheck(target, &DocumentObjectPy::Type)) {
+            PyErr_SetString(PyExc_TypeError, "Target argument must be a DocumentObject or None");
+            return nullptr;
+        }
+        targetObj = static_cast<DocumentObjectPy*>(target)->getDocumentObjectPtr();
+    }
+
+    PY_TRY
+    {
+        Base::Placement p = getDocumentObjectPtr()->getPlacementOf(subname, targetObj);
+        return new Base::PlacementPy(new Base::Placement(p));
+    }
+    PY_CATCH
 }

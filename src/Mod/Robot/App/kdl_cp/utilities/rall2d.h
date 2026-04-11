@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 
 /*****************************************************************************
  * \file  
@@ -23,8 +24,7 @@
  *      $Name:  $ 
  ****************************************************************************/
 
-#ifndef Rall2D_H
-#define Rall2D_H
+#pragma once
 
 #include <cmath>
 #include <assert.h>
@@ -533,6 +533,3 @@ INLINE  bool Equal(const Rall2d<T,V,S>& y,const Rall2d<T,V,S>& x,double eps=epsi
 
 
 }
-
-
-#endif

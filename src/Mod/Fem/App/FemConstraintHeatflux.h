@@ -24,8 +24,7 @@
  ***************************************************************************/
 
 
-#ifndef FEM_CONSTRAINTHEATFLUX_H
-#define FEM_CONSTRAINTHEATFLUX_H
+#pragma once
 
 #include "FemConstraint.h"
 
@@ -39,11 +38,14 @@ class FemExport ConstraintHeatflux: public Fem::Constraint
 public:
     ConstraintHeatflux();
 
+    App::PropertyBool EnableAmplitude;
+    App::PropertyStringList AmplitudeValues;
+
     App::PropertyTemperature AmbientTemp;
     /*App::PropertyFloat FaceTemp;*/
     App::PropertyThermalTransferCoefficient FilmCoef;
     App::PropertyFloat Emissivity;
-    App::PropertyHeatFlux DFlux;
+    App::PropertyHeatFlux DistributedHeatFlux;
     App::PropertyEnumeration ConstraintType;
     App::PropertyBool CavityRadiation;
     App::PropertyString CavityName;
@@ -55,12 +57,17 @@ public:
     const char* getViewProviderName() const override;
 
 protected:
-    void handleChangedPropertyType(Base::XMLReader& reader,
-                                   const char* typeName,
-                                   App::Property* prop) override;
+    void handleChangedPropertyType(
+        Base::XMLReader& reader,
+        const char* typeName,
+        App::Property* prop
+    ) override;
+    void handleChangedPropertyName(
+        Base::XMLReader& reader,
+        const char* typeName,
+        const char* propName
+    ) override;
     void onChanged(const App::Property* prop) override;
 };
 
 }  // namespace Fem
-
-#endif  // FEM_CONSTRAINTHEATFLUX_H

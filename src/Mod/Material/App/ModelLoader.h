@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
@@ -19,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATERIAL_MODELLOADER_H
-#define MATERIAL_MODELLOADER_H
+#pragma once
 
 #include <memory>
 
@@ -131,5 +132,3 @@ private:
 };
 
 }  // namespace Materials
-
-#endif  // MATERIAL_MODELLOADER_H

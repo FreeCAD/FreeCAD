@@ -23,11 +23,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
-#endif
-
 #include "Mod/Fem/App/FemConstraintTemperature.h"
 #include "TaskFemConstraintTemperature.h"
 #include "ViewProviderFemConstraintTemperature.h"
@@ -36,8 +31,7 @@
 
 using namespace FemGui;
 
-PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintTemperature,
-                FemGui::ViewProviderFemConstraintOnBoundary)
+PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintTemperature, FemGui::ViewProviderFemConstraintOnBoundary)
 
 ViewProviderFemConstraintTemperature::ViewProviderFemConstraintTemperature()
 {

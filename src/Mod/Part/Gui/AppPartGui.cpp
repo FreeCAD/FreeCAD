@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Juergen Riegel <juergen.riegel@web.de>             *
  *                                                                         *
@@ -21,25 +23,25 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
-
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>
+#include <Base/ServiceProvider.h>
+
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Dialogs/DlgPreferencesImp.h>
 #include <Gui/WidgetFactory.h>
 #include <Gui/Language/Translator.h>
 
+#include <Mod/Part/App/PreviewExtension.h>
+
 #include "AttacherTexts.h"
 #include "PropertyEnumAttacherItem.h"
 #include "DlgSettings3DViewPartImp.h"
 #include "DlgSettingsGeneral.h"
 #include "DlgSettingsObjectColor.h"
+#include "PreviewUpdateScheduler.h"
 #include "SoBrepEdgeSet.h"
 #include "SoBrepFaceSet.h"
 #include "SoBrepPointSet.h"
@@ -68,6 +70,7 @@
 #include "ViewProviderMirror.h"
 #include "ViewProviderPlaneParametric.h"
 #include "ViewProviderPointParametric.h"
+#include "ViewProviderPreviewExtension.h"
 #include "ViewProviderPrism.h"
 #include "ViewProviderProjectOnSurface.h"
 #include "ViewProviderRegularPolygon.h"
@@ -133,7 +136,7 @@ PyMOD_INIT_FUNC(PartGui)
 
     PyObject* partGuiModule = PartGui::initModule();
 
-    Base::Console().log("Loading GUI of Part module... done\n");
+    Base::Console().log("Loading GUI of Part module… done\n");
 
     Gui::BitmapFactory().addPath(QStringLiteral(":/icons/booleans"));
     Gui::BitmapFactory().addPath(QStringLiteral(":/icons/create"));
@@ -162,10 +165,14 @@ PyMOD_INIT_FUNC(PartGui)
     PartGui::SoBrepEdgeSet                          ::initClass();
     PartGui::SoBrepPointSet                         ::initClass();
     PartGui::SoFCControlPoints                      ::initClass();
+    PartGui::SoFCShape                              ::initClass();
+    PartGui::SoPreviewShape                         ::initClass();
     PartGui::ViewProviderAttachExtension            ::init();
     PartGui::ViewProviderAttachExtensionPython      ::init();
     PartGui::ViewProviderGridExtension              ::init();
     PartGui::ViewProviderGridExtensionPython        ::init();
+    PartGui::ViewProviderPreviewExtension           ::init();
+    PartGui::ViewProviderPreviewExtensionPython     ::init();
     PartGui::ViewProviderSplineExtension            ::init();
     PartGui::ViewProviderSplineExtensionPython      ::init();
     PartGui::ViewProviderLine                       ::init();
@@ -224,6 +231,8 @@ PyMOD_INIT_FUNC(PartGui)
     PartGui::Workbench                              ::init();
     auto manip = std::make_shared<PartGui::WorkbenchManipulator>();
     Gui::WorkbenchManipulator::installManipulator(manip);
+
+    Base::registerServiceImplementation<Part::PreviewUpdateScheduler>(new PartGui::QtPreviewUpdateScheduler);
 
     // instantiating the commands
     CreatePartCommands();

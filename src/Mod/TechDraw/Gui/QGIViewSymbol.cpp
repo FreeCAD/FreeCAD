@@ -21,8 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <cmath>
 
 # include <QGraphicsColorizeEffect>
@@ -30,7 +28,6 @@
 # include <QRectF>
 # include <QRegularExpression>
 # include <QRegularExpressionMatch>
-#endif
 
 #include <Base/Console.h>
 #include <Mod/TechDraw/App/DrawViewArch.h>

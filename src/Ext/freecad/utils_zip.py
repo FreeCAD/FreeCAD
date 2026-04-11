@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # (c) 2024 Werner Mayer LGPL
 
 __author__ = "Werner Mayer"

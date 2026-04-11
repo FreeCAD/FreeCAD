@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Juergen Riegel <juergen.riegel@web.de>             *
  *                                                                         *
@@ -20,13 +22,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_VIEWPROVIDERSKETCH_H
-#define SKETCHERGUI_VIEWPROVIDERSKETCH_H
+#pragma once
+
+#include <boost/smart_ptr/scoped_ptr.hpp>
 
 #include <Inventor/SoRenderManager.h>
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <QCoreApplication>
-#include <boost/signals2.hpp>
+#include <QMetaObject>
+#include <fastsignals/signal.h>
 #include <memory>
 
 #include <Base/Parameter.h>
@@ -44,6 +48,9 @@
 
 #include "ShortcutListener.h"
 #include "Utils.h"
+
+#include <Gui/Inventor/SoToggleSwitch.h>
+#include <Mod/Part/Gui/ViewProviderPreviewExtension.h>
 
 
 class TopoDS_Shape;
@@ -96,6 +103,20 @@ class DrawSketchHandler;
 
 using GeoList = Sketcher::GeoList;
 using GeoListFacade = Sketcher::GeoListFacade;
+
+class SketcherGuiExport SoSketchFaces: public PartGui::SoFCShape
+{
+    using inherited = SoFCShape;
+    SO_NODE_HEADER(SoSketchFaces);
+
+public:
+    SoSketchFaces();
+
+    static void initClass();
+
+    SoSFColor color;
+    SoSFFloat transparency;
+};
 
 /** @brief The Sketch ViewProvider
  *
@@ -179,30 +200,35 @@ private:
         void updateFromParameter(const char* property);
 
     private:
-        void
-        updateBoolProperty(const std::string& string, App::Property* property, bool defaultvalue);
+        void updateBoolProperty(const std::string& string, App::Property* property, bool defaultvalue);
         void updateGridSize(const std::string& string, App::Property* property);
 
         // Only for colors outside of edit mode, edit mode colors are handled by
         // EditModeCoinManager.
-        void updateColorProperty(const std::string& string,
-                                 App::Property* property,
-                                 float r,
-                                 float g,
-                                 float b);
+        void updateColorProperty(
+            const std::string& string,
+            App::Property* property,
+            float r,
+            float g,
+            float b
+        );
+
+        void updateShapeAppearanceProperty(const std::string& string, App::Property* property);
 
         void updateEscapeKeyBehaviour(const std::string& string, App::Property* property);
 
         void updateAutoRecompute(const std::string& string, App::Property* property);
 
-        void updateRecalculateInitialSolutionWhileDragging(const std::string& string,
-                                                           App::Property* property);
+        void updateRecalculateInitialSolutionWhileDragging(
+            const std::string& string,
+            App::Property* property
+        );
 
     private:
         ViewProviderSketch& Client;
-        std::map<std::string,
-                 std::tuple<std::function<void(const std::string& string, App::Property*)>,
-                            App::Property*>>
+        std::map<
+            std::string,
+            std::tuple<std::function<void(const std::string& string, App::Property*)>, App::Property*>>
             parameterMap;
     };
 
@@ -426,6 +452,7 @@ private:
         std::set<int> SelPointSet;       // Indices as PreselectPoint (and -1 for rootpoint)
         std::set<int> SelCurvSet;        // also holds cross axes at -1 and -2
         std::set<int> SelConstraintSet;  // ConstraintN, N = index + 1.
+        bool selectionBuffering {false};
     };
     //@}
 
@@ -447,13 +474,11 @@ private:
         bool autoRecompute = false;
         bool recalculateInitialSolutionWhileDragging = false;
 
-        bool isShownVirtualSpace =
-            false;  // indicates whether the present virtual space view is the
-                    // Real Space or the Virtual Space (virtual space 1 or 2)
+        bool isShownVirtualSpace = false;  // indicates whether the present virtual space view is the
+                                           // Real Space or the Virtual Space (virtual space 1 or 2)
         bool buttonPress = false;
 
-        int stdCountSegments =
-            50;  // preferences controlled default geometry sampling for selection
+        int stdCountSegments = 50;  // preferences controlled default geometry sampling for selection
     };
 
     /** @brief Private struct grouping ViewProvider and RenderManager node, to be used as SoNode
@@ -557,6 +582,10 @@ public:
         return Mode;
     }
 
+    /// returns whether the sketch is in edit mode.
+    bool isInEditMode() const;
+    //@}
+
     // create right click context menu based on selection in the 3D view
     void generateContextMenu();
 
@@ -634,6 +663,8 @@ public:
     void attach(App::DocumentObject*) override;
     void updateData(const App::Property*) override;
 
+    void setActive(bool active) override;
+
     void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
     /// is called when the Provider is in edit and a deletion request occurs
     bool onDelete(const std::vector<std::string>&) override;
@@ -654,16 +685,25 @@ public:
     /// is called when the Provider is in edit and a key event ocours. Only ESC ends edit.
     bool keyPressed(bool pressed, int key) override;
     /// is called when the Provider is in edit and the mouse is clicked
-    bool mouseButtonPressed(int Button,
-                            bool pressed,
-                            const SbVec2s& cursorPos,
-                            const Gui::View3DInventorViewer* viewer) override;
-    bool mouseWheelEvent(int delta,
-                         const SbVec2s& cursorPos,
-                         const Gui::View3DInventorViewer* viewer) override;
+    bool mouseButtonPressed(
+        int Button,
+        bool pressed,
+        const SbVec2s& cursorPos,
+        const Gui::View3DInventorViewer* viewer
+    ) override;
+    bool mouseWheelEvent(
+        int delta,
+        const SbVec2s& cursorPos,
+        const Gui::View3DInventorViewer* viewer
+    ) override;
     //@}
 
     void deleteSelected();
+
+    bool isSelected(const std::string& ss) const;
+    void rmvSelection(const std::string& subNameSuffix);
+    bool addSelection(const std::string& subNameSuffix, float x = 0, float y = 0, float z = 0);
+    bool addSelection2(const std::string& subNameSuffix, float x = 0, float y = 0, float z = 0);
 
     /// Control the overlays appearing on the Tree and reflecting different sketcher states
     QIcon mergeColorfulOverlayIcons(const QIcon& orig) const override;
@@ -671,19 +711,19 @@ public:
     /** @name Signals for controlling information in Task dialogs */
     //@{
     /// signals if the constraints list has changed
-    boost::signals2::signal<void()> signalConstraintsChanged;
+    fastsignals::signal<void()> signalConstraintsChanged;
     /// signals if the sketch has been set up
-    boost::signals2::signal<
+    fastsignals::signal<
         void(const QString& state, const QString& msg, const QString& url, const QString& linkText)>
         signalSetUp;
     /// signals if the elements list has changed
-    boost::signals2::signal<void()> signalElementsChanged;
+    fastsignals::signal<void()> signalElementsChanged;
     //@}
 
     /** @name Register slot for signal */
     //@{
     template<typename F>
-    boost::signals2::connection registerToolChanged(F&& f)
+    fastsignals::connection registerToolChanged(F&& f)
     {
         return signalToolChanged.connect(std::forward<F>(f));
     }
@@ -714,7 +754,7 @@ protected:
     /// get called if a subelement is double clicked while editing
     void editDoubleClicked();
     /// get called when an edge is double clicked to select/unselect the whole wire
-    void toggleWireSelelection(int geoId);
+    void toggleWireSelection(int geoId);
     //@}
 
     /** @name Solver Information */
@@ -724,9 +764,11 @@ protected:
 
     /// Auxiliary function to generate messages about conflicting, redundant and malformed
     /// constraints
-    static QString appendConstraintMsg(const QString& singularmsg,
-                                       const QString& pluralmsg,
-                                       const std::vector<int>& vector);
+    static QString appendConstraintMsg(
+        const QString& singularmsg,
+        const QString& pluralmsg,
+        const std::vector<int>& vector
+    );
     //@}
 
     /** @name manage updates during undo/redo operations */
@@ -734,6 +776,7 @@ protected:
     void slotUndoDocument(const Gui::Document&);
     void slotRedoDocument(const Gui::Document&);
     void slotSolverUpdate();
+    void slotConstraintAdded(Sketcher::Constraint* constraint);
     void forceUpdateData();
     //@}
 
@@ -747,17 +790,20 @@ protected:
     void startRestoring() override;
     void finishRestoring() override;
 
+    bool getElementPicked(const SoPickedPoint* pp, std::string& subname) const override;
+    bool getDetailPath(const char* subname, SoFullPath* pPath, bool append, SoDetail*& det) const override;
+
 private:
     /// function to handle OCCT BSpline weight calculation singularities and representation
     void scaleBSplinePoleCirclesAndUpdateSolverAndSketchObjectGeometry(
         GeoListFacade& geolist,
-        bool geometrywithmemoryallocation);
+        bool geometrywithmemoryallocation
+    );
 
     /** @name geometry and coordinates auxiliary functions */
     //@{
     /// give the coordinates of a line on the sketch plane in sketcher (2D) coordinates
-    void
-    getCoordsOnSketchPlane(const SbVec3f& point, const SbVec3f& normal, double& u, double& v) const;
+    void getCoordsOnSketchPlane(const SbVec3f& point, const SbVec3f& normal, double& u, double& v) const;
 
     /// give projecting line of position
     void getProjectingLine(const SbVec2s&, const Gui::View3DInventorViewer* viewer, SbLine&) const;
@@ -766,7 +812,7 @@ private:
     /** @name preselection functions */
     //@{
     /// helper to detect preselection
-    bool detectAndShowPreselection(SoPickedPoint* Point, const SbVec2s& cursorPos);
+    bool detectAndShowPreselection(SoPickedPoint* Point);
     int getPreselectPoint() const;
     int getPreselectCurve() const;
     int getPreselectCross() const;
@@ -789,44 +835,48 @@ private:
     /** @name Selection functions */
     //@{
     /// box selection method
-    void doBoxSelection(const SbVec2s& startPos,
-                        const SbVec2s& endPos,
-                        const Gui::View3DInventorViewer* viewer);
+    void doBoxSelection(
+        const SbVec2s& startPos,
+        const SbVec2s& endPos,
+        const Gui::View3DInventorViewer* viewer
+    );
 
     void addSelectPoint(int SelectPoint);
     void removeSelectPoint(int SelectPoint);
     void clearSelectPoints();
 
-    bool isSelected(const std::string& ss) const;
-    void rmvSelection(const std::string& subNameSuffix);
-    bool addSelection(const std::string& subNameSuffix, float x = 0, float y = 0, float z = 0);
-    bool addSelection2(const std::string& subNameSuffix, float x = 0, float y = 0, float z = 0);
-    void preselectToSelection(const std::stringstream& ss,
-                              boost::scoped_ptr<SoPickedPoint>& pp,
-                              bool toggle);
+    void preselectToSelection(
+        const std::stringstream& ss,
+        boost::scoped_ptr<SoPickedPoint>& pp,
+        bool toggle
+    );
     //@}
 
     /** @name miscelanea utilities */
     //@{
     /// moves a selected constraint
     void moveConstraint(int constNum, const Base::Vector2d& toPos, OffsetMode offset = NoOffset);
-    void moveConstraint(Sketcher::Constraint*,
-                        int constNum,
-                        const Base::Vector2d& toPos,
-                        OffsetMode offset = NoOffset);
+    void moveConstraint(
+        Sketcher::Constraint*,
+        int constNum,
+        const Base::Vector2d& toPos,
+        OffsetMode offset = NoOffset
+    );
     void moveAngleConstraint(Sketcher::Constraint*, int constNum, const Base::Vector2d& toPos);
-
-    /// returns whether the sketch is in edit mode.
-    bool isInEditMode() const;
     //@}
+
+    void setupActiveAndInEdit();
+    void unsetupActiveAndInEdit();
 
     /** @name signals*/
     //@{
     /// signals a tool change
-    boost::signals2::signal<void(const std::string& toolname)> signalToolChanged;
+    fastsignals::signal<void(const std::string& toolname)> signalToolChanged;
     //@}
 
     void slotToolWidgetChanged(QWidget* newwidget);
+
+    void updateColorPropertiesVisibility();
 
     /** @name Attorney functions*/
     //@{
@@ -843,6 +893,9 @@ private:
     /// gets the corresponding constraint to the given \a constid
     /// or null if it doesn't exist.
     Sketcher::Constraint* getConstraint(int constid) const;
+
+    // Return true if the constraint is active, includes checking if it's not in a group
+    bool isConstraintActiveInSketch(const Sketcher::Constraint* cstr) const;
 
     // gets the list of geometry of the sketchobject or of the solver instance
     const GeoList getGeoList() const;
@@ -895,8 +948,10 @@ private:
     void drawEdit(const std::vector<Base::Vector2d>& EditCurve);
     void drawEdit(const std::list<std::vector<Base::Vector2d>>& list);
     /// draw the edit markers
-    void drawEditMarkers(const std::vector<Base::Vector2d>& EditMarkers,
-                         unsigned int augmentationlevel = 0);
+    void drawEditMarkers(
+        const std::vector<Base::Vector2d>& EditMarkers,
+        unsigned int augmentationlevel = 0
+    );
     /// set the pick style of the sketch coordinate axes
     void setAxisPickStyle(bool on);
 
@@ -925,9 +980,12 @@ private:
     //@}
 
 private:
-    boost::signals2::connection connectUndoDocument;
-    boost::signals2::connection connectRedoDocument;
-    boost::signals2::connection connectSolverUpdate;
+    fastsignals::connection connectUndoDocument;
+    fastsignals::connection connectRedoDocument;
+    fastsignals::connection connectSolverUpdate;
+    fastsignals::connection connectConstraintAdded;
+
+    QMetaObject::Connection screenChangeConnection;
 
     // modes while sketching
     SketchMode Mode;
@@ -944,7 +1002,10 @@ private:
     std::string editObjName;
     std::string editSubName;
 
-    ShortcutListener* listener;
+    Gui::CoinPtr<SoSketchFaces> pcSketchFaces;
+    Gui::CoinPtr<SoToggleSwitch> pcSketchFacesToggle;
+
+    std::unique_ptr<ShortcutListener> listener;
 
     std::unique_ptr<EditModeCoinManager> editCoinManager;
 
@@ -956,14 +1017,13 @@ private:
 
     ViewProviderParameters viewProviderParameters;
 
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::connection;
     Connection connectionToolWidget;
 
     SoNodeSensor cameraSensor;
     int viewOrientationFactor;  // stores if sketch viewed from front or back
+
+    bool blockContextMenu;
 };
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_VIEWPROVIDERSKETCH_H

@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -188,6 +188,7 @@ class OpPrototype(object):
         "App::PropertyFloatConstraint": Property,
         "App::PropertyFloatList": Property,
         "App::PropertyInteger": PropertyInteger,
+        "App::PropertyIntegerConstraint": PropertyInteger,
         "App::PropertyIntegerList": PropertyInteger,
         "App::PropertyLength": PropertyLength,
         "App::PropertyLink": Property,
@@ -195,8 +196,10 @@ class OpPrototype(object):
         "App::PropertyLinkSubListGlobal": Property,
         "App::PropertyMap": PropertyMap,
         "App::PropertyPercent": PropertyPercent,
+        "App::PropertyPlacement": Property,
         "App::PropertyString": PropertyString,
         "App::PropertyStringList": Property,
+        "App::PropertyVector": Property,
         "App::PropertyVectorDistance": Property,
         "App::PropertyVectorList": Property,
         "Part::PropertyPartShape": Property,

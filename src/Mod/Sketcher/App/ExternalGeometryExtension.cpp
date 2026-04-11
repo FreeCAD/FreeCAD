@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2019 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -20,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Base/Reader.h>
 #include <Base/Writer.h>
@@ -90,14 +91,13 @@ PyObject* ExternalGeometryExtension::getPyObject()
     return new ExternalGeometryExtensionPy(new ExternalGeometryExtension(*this));
 }
 
-bool ExternalGeometryExtension::getFlagsFromName(std::string str,
-                                                 ExternalGeometryExtension::Flag& flag)
+bool ExternalGeometryExtension::getFlagsFromName(std::string str, ExternalGeometryExtension::Flag& flag)
 {
-    auto pos = std::find_if(ExternalGeometryExtension::flag2str.begin(),
-                            ExternalGeometryExtension::flag2str.end(),
-                            [str](const char* val) {
-                                return strcmp(val, str.c_str()) == 0;
-                            });
+    auto pos = std::find_if(
+        ExternalGeometryExtension::flag2str.begin(),
+        ExternalGeometryExtension::flag2str.end(),
+        [str](const char* val) { return strcmp(val, str.c_str()) == 0; }
+    );
 
     if (pos != ExternalGeometryExtension::flag2str.end()) {
         int index = std::distance(ExternalGeometryExtension::flag2str.begin(), pos);

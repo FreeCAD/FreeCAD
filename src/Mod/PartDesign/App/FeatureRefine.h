@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_FeatureRefine_H
-#define PARTDESIGN_FeatureRefine_H
+#pragma once
 
 #include "Feature.h"
 
@@ -31,13 +30,13 @@
 namespace PartDesign
 {
 
-class PartDesignExport FeatureRefine : public PartDesign::Feature
+class PartDesignExport FeatureRefine: public PartDesign::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::FeatureRefine);
 
 public:
-
-    enum class RefineErrorPolicy {
+    enum class RefineErrorPolicy
+    {
         Raise = 0,
         Warn
     };
@@ -47,7 +46,7 @@ public:
     App::PropertyBool Refine;
 
 protected:
-    //store the shape before refinement
+    // store the shape before refinement
     TopoShape rawShape;
 
 
@@ -61,12 +60,12 @@ protected:
      * computation is necessary.
      */
     bool onlyHaveRefined();
-    TopoShape refineShapeIfActive(const TopoShape& oldShape, const RefineErrorPolicy onError = RefineErrorPolicy::Raise) const;
+    TopoShape refineShapeIfActive(
+        const TopoShape& oldShape,
+        const RefineErrorPolicy onError = RefineErrorPolicy::Warn
+    ) const;
 };
 
 using FeatureRefinePython = App::FeaturePythonT<FeatureRefine>;
 
-} //namespace PartDesign
-
-
-#endif // PARTDESIGN_FeatureRefine_H
+}  // namespace PartDesign

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /****************************************************************************
  *   Copyright (c) 2024 Werner Mayer <wmayer[at]users.sourceforge.net>      *
  *   Copyright (c) 2025 Pieter Hijma <info@pieterhijma.net>                 *
@@ -23,12 +25,13 @@
 
 #include <gtest/gtest.h>
 
+#include <FCConfig.h>
+
 #include <Base/Writer.h>
 #include <Base/Reader.h>
 #include <Base/Interpreter.h>
 
 #include <App/Application.h>
-#include <App/AutoTransaction.h>
 #include <App/Document.h>
 #include <App/Expression.h>
 #include <App/ObjectIdentifier.h>
@@ -109,7 +112,8 @@ TEST_F(RenameProperty, renamePropertyPython)
 {
     // Act
     Base::Interpreter().runString(
-        "App.ActiveDocument.getObject('VarSet').renameProperty('Variable', 'NewName')");
+        "App.ActiveDocument.getObject('VarSet').renameProperty('Variable', 'NewName')"
+    );
 
     // Assert
     EXPECT_STREQ(varSet->getPropertyName(prop), "NewName");
@@ -166,8 +170,10 @@ TEST_F(RenameProperty, renameStaticPropertyPython)
     // Act / Assert
     EXPECT_THROW(
         Base::Interpreter().runString(
-            "App.ActiveDocument.getObject('VarSet006').renameProperty('Label', 'NewName')"),
-        Base::Exception);
+            "App.ActiveDocument.getObject('VarSet006').renameProperty('Label', 'NewName')"
+        ),
+        Base::Exception
+    );
 
     // Assert
     EXPECT_STREQ(varSet->getPropertyName(prop), "Label");
@@ -194,8 +200,7 @@ TEST_F(RenameProperty, renameLockedProperty)
 TEST_F(RenameProperty, renameToExistingProperty)
 {
     // Arrange
-    App::Property* prop2 =
-        varSet->addDynamicProperty("App::PropertyInteger", "Variable2", "Variables");
+    App::Property* prop2 = varSet->addDynamicProperty("App::PropertyInteger", "Variable2", "Variables");
 
     // Act / Assert
     EXPECT_THROW(varSet->renameDynamicProperty(prop2, "Variable"), Base::NameError);
@@ -226,7 +231,8 @@ TEST_F(RenameProperty, updateExpressionSameContainer)
 {
     // Arrange
     const auto* prop2 = freecad_cast<App::PropertyInteger*>(
-        varSet->addDynamicProperty("App::PropertyInteger", "Variable2", "Variables"));
+        varSet->addDynamicProperty("App::PropertyInteger", "Variable2", "Variables")
+    );
 
     App::ObjectIdentifier path(*prop2);
     std::shared_ptr<App::Expression> expr(App::Expression::parse(varSet, "Variable"));
@@ -256,7 +262,8 @@ TEST_F(RenameProperty, updateExpressionDifferentContainer)
     // Arrange
     auto* varSet2 = freecad_cast<App::VarSet*>(_doc->addObject("App::VarSet", "VarSet2"));
     const auto* prop2 = freecad_cast<App::PropertyInteger*>(
-        varSet2->addDynamicProperty("App::PropertyInteger", "Variable2", "Variables"));
+        varSet2->addDynamicProperty("App::PropertyInteger", "Variable2", "Variables")
+    );
 
     App::ObjectIdentifier path(*prop2);
     std::shared_ptr<App::Expression> expr(App::Expression::parse(varSet, "VarSet.Variable"));
@@ -292,7 +299,8 @@ TEST_F(RenameProperty, updateExpressionDifferentDocument)
 
     auto* varSet2 = freecad_cast<App::VarSet*>(doc->addObject("App::VarSet", "VarSet2"));
     const auto* prop2 = freecad_cast<App::PropertyInteger*>(
-        varSet2->addDynamicProperty("App::PropertyInteger", "Variable2", "Variables"));
+        varSet2->addDynamicProperty("App::PropertyInteger", "Variable2", "Variables")
+    );
 
     App::ObjectIdentifier path(*prop2);
     std::shared_ptr<App::Expression> expr(App::Expression::parse(varSet, "test#VarSet.Variable"));
@@ -321,6 +329,44 @@ TEST_F(RenameProperty, updateExpressionDifferentDocument)
     doc->removeObject(varSet2->getNameInDocument());
 }
 
+// Test if we can rename a property which value is the result of an expression
+TEST_F(RenameProperty, renamePropertyWithExpression)
+{
+    // Arrange
+    auto* prop2 = freecad_cast<App::PropertyInteger*>(
+        varSet->addDynamicProperty("App::PropertyInteger", "Variable2", "Variables")
+    );
+    prop2->setValue(Value);
+
+    App::ObjectIdentifier path(*prop);
+    std::shared_ptr<App::Expression> expr(App::Expression::parse(varSet, "Variable2"));
+    varSet->setExpression(path, expr);
+    varSet->ExpressionEngine.execute();
+
+    // Assert before the rename
+    EXPECT_EQ(prop2->getValue(), Value);
+    EXPECT_EQ(prop->getValue(), Value);
+
+    // Act
+    bool isRenamed = varSet->renameDynamicProperty(prop, "NewName");
+    varSet->ExpressionEngine.execute();
+
+    // Assert after the rename
+    EXPECT_TRUE(isRenamed);
+    EXPECT_STREQ(varSet->getPropertyName(prop), "NewName");
+    EXPECT_EQ(prop->getValue(), Value);
+    EXPECT_EQ(varSet->getDynamicPropertyByName("Variable"), nullptr);
+    EXPECT_EQ(varSet->getDynamicPropertyByName("NewName"), prop);
+
+    // Act
+    prop2->setValue(Value + 1);
+    varSet->ExpressionEngine.execute();
+
+    // Assert
+    EXPECT_EQ(prop2->getValue(), Value + 1);
+    EXPECT_EQ(prop->getValue(), Value + 1);
+}
+
 // Tests whether we can rename a property and undo it
 TEST_F(RenameProperty, undoRenameProperty)
 {
@@ -330,8 +376,9 @@ TEST_F(RenameProperty, undoRenameProperty)
     // Act
     bool isRenamed = false;
     {
-        App::AutoTransaction transaction("Rename Property");
+        _doc->openTransaction("Rename Property");
         isRenamed = varSet->renameDynamicProperty(prop, "NewName");
+        _doc->commitTransaction();
     }
 
     // Assert
@@ -362,8 +409,9 @@ TEST_F(RenameProperty, redoRenameProperty)
     // Act
     bool isRenamed = false;
     {
-        App::AutoTransaction transaction("Rename Property");
+        _doc->openTransaction("Rename Property");
         isRenamed = varSet->renameDynamicProperty(prop, "NewName");
+        _doc->commitTransaction();
     }
 
     // Assert

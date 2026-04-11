@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2025 Samuel Abels <knipknap@gmail.com>                  *
 # *                                                                         *
@@ -30,11 +31,12 @@ class CuttingToolMixin:
     It is used to determine if the tool bit can be used for chip removal.
     """
 
-    def __init__(self, obj, *args, **kwargs):
+    def _init_cutting_properties(self, obj):
+        """Initialize cutting tool properties. Must be called explicitly after obj is created."""
         obj.addProperty(
             "App::PropertyLength",
             "Chipload",
-            "Base",
+            "Attributes",
             QT_TRANSLATE_NOOP("App::Property", "Chipload per tooth"),
         )
         obj.Chipload = FreeCAD.Units.Quantity("0.0 mm")

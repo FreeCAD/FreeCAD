@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,30 +23,22 @@
  ***************************************************************************/
 
 
-#ifndef SRC_BASE_TOOLS_H_
-#define SRC_BASE_TOOLS_H_
+#pragma once
 
-#ifndef FC_GLOBAL_H
 #include <FCGlobal.h>
-#endif
+#include <algorithm>
 #include <cmath>
 #include <numbers>
 #include <ostream>
 #include <string>
 #include <vector>
-
-#include <boost/signals2/shared_connection_block.hpp>
-
-namespace boost
-{
-namespace signals2
-{
-class connection;
-}
-}  // namespace boost
-
+#include <fastsignals/signal.h>
 
 class QString;
+
+#include <string_view>
+#include <vector>
+#include <fastsignals/signal.h>
 
 namespace Base
 {
@@ -180,6 +174,49 @@ inline T fmod(T numerator, T denominator)
     return (modulo >= T(0)) ? modulo : modulo + denominator;
 }
 
+template<std::floating_point T>
+inline T angularDist(T v1, T v2)
+{
+    return std::min(std::fabs(v1 - v2), 360 - std::fabs(v1 - v2));
+}
+
+// Returns a value between [0, 360) or (-180, 180] depending on if the
+// minimum value was positive or negetive. This is done because the taper angle
+// values in FreeCAD usually treat values like -10 and 350 differently
+template<std::floating_point T>
+inline double clampAngle(T value, T min, T max, T precision)
+{
+    // Normalize the angles between 0 and 360
+    value = Base::fmod(value, 360.0);
+    T nMin = Base::fmod(min, 360.0);
+    T nMax = Base::fmod(max, 360.0);
+
+    if (std::abs(nMax - nMin) > precision) {
+        if (nMax > nMin) {
+            if (value < nMin || value > nMax) {
+                value = angularDist(value, nMin) > angularDist(value, nMax) ? nMax : nMin;
+            }
+        }
+        else {
+            if (value < nMin && value > nMax) {
+                value = angularDist(value, nMin) > angularDist(value, nMax) ? nMax : nMin;
+            }
+        }
+    }
+
+    if (min >= 0.0) {
+        // Return in [0, 360)
+        return value;
+    }
+
+    // Map to (-180, 180]
+    if (value > 180.0) {
+        value = value - 360;
+    }
+    return value;
+}
+
+
 // ----------------------------------------------------------------------------
 
 // NOLINTBEGIN
@@ -287,12 +324,10 @@ private:
 
 class ConnectionBlocker
 {
-    using Connection = boost::signals2::connection;
-    using ConnectionBlock = boost::signals2::shared_connection_block;
-    ConnectionBlock blocker;
+    fastsignals::shared_connection_block blocker;
 
 public:
-    ConnectionBlocker(Connection& c)
+    ConnectionBlocker(fastsignals::advanced_connection& c)
         : blocker(c)
     {}
     ~ConnectionBlocker() = default;
@@ -303,16 +338,37 @@ public:
 
 struct BaseExport Tools
 {
-    static std::string getIdentifier(const std::string&);
+    /**
+     * Given an arbitrary string, ensure that it conforms to Python3 identifier rules, replacing
+     * invalid characters with an underscore. If the first character is invalid, prepends an
+     * underscore to the name. See https://unicode.org/reports/tr31/ for complete naming rules.
+     * @param String to be checked and sanitized.
+     * @return A std::string that is a valid Python 3 identifier.
+     */
+    static std::string getIdentifier(const std::string& name);
     static std::wstring widen(const std::string& str);
+
+    /**
+     * Locale-dependent, per-character "narrowing" of a std::wstring into a std::string using the
+     * C++ locale facet std::ctype<char>. Characters outside the locale's representable set get
+     * replaced with 0, producing embedded NULs (and corrupt the string). Use with caution! Most
+     * code should prefer wstringToString().
+     */
     static std::string narrow(const std::wstring& str);
+
+#ifdef FC_OS_WIN32
+    /**
+     * True UTF-16 to UTF-8 conversion. Handles full Unicode range, including surrogate pairs. Only
+     * needed on Windows, and internally uses a Win32 API call to do its work.
+     */
+    static std::string wstringToString(const std::wstring& str);
+#endif
+
     static std::string escapedUnicodeFromUtf8(const char* s);
     static std::string escapedUnicodeToUtf8(const std::string& s);
     static std::string escapeQuotesFromString(const std::string& s);
 
-    static QString escapeEncodeString(const QString& s);
     static std::string escapeEncodeString(const std::string& s);
-    static QString escapeEncodeFilename(const QString& s);
     static std::string escapeEncodeFilename(const std::string& s);
 
     /**
@@ -342,7 +398,16 @@ struct BaseExport Tools
      */
     static std::string joinList(const std::vector<std::string>& vec, const std::string& sep = ", ");
 
+    /**
+     * @brief currentDateTimeString
+     * @return Current time formatted as an ISO 8601 UTC timestamp, ending in 'Z'.
+     */
     static std::string currentDateTimeString();
+
+    static bool isCLocaleName(std::string_view localeName);
+    static void setOperatingSystemNumericLocale(std::string_view localeName);
+    static std::string getOperatingSystemNumericLocale();
+    static void setIcuDefaultLocale(std::string_view icuLocaleId);
 
     static std::vector<std::string> splitSubName(const std::string& subname);
 };
@@ -383,6 +448,7 @@ struct Overloads: Ts...
     using Ts::operator()...;
 };
 
-}  // namespace Base
+template<class... Ts>
+Overloads(Ts...) -> Overloads<Ts...>;
 
-#endif  // SRC_BASE_TOOLS_H_
+}  // namespace Base

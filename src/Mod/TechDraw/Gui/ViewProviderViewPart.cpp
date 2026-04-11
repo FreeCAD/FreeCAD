@@ -20,15 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <QMessageBox>
 #include <QTextStream>
+
+#include <FCConfig.h>
+
 # ifdef FC_OS_WIN32
 #  include <windows.h>
 # endif
-#endif
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -103,12 +102,11 @@ ViewProviderViewPart::ViewProviderViewPart()
     ADD_PROPERTY_TYPE(ExtraWidth, (weight), group, App::Prop_None, "The thickness of LineGroup Extra lines, if enabled");
 
     double defScale = Preferences::getPreferenceGroup("Decorations")->GetFloat("CenterMarkScale", 0.50);
-    bool   defShowCenters = Preferences::getPreferenceGroup("Decorations")->GetBool("ShowCenterMarks", false);
 
     //decorations
     ADD_PROPERTY_TYPE(HorizCenterLine ,(false), dgroup, App::Prop_None, "Show a horizontal centerline through view");
     ADD_PROPERTY_TYPE(VertCenterLine ,(false), dgroup, App::Prop_None, "Show a vertical centerline through view");
-    ADD_PROPERTY_TYPE(ArcCenterMarks ,(defShowCenters), dgroup, App::Prop_None, "Center marks on/off");
+    ADD_PROPERTY_TYPE(ArcCenterMarks ,(Preferences::showCenterMarks()), dgroup, App::Prop_None, "Center marks on/off");
     ADD_PROPERTY_TYPE(CenterScale, (defScale), dgroup, App::Prop_None, "Center mark size adjustment, if enabled");
 
     //properties that affect Section Line
@@ -365,11 +363,27 @@ void ViewProviderViewPart::handleChangedPropertyType(Base::XMLReader &reader, co
 
 bool ViewProviderViewPart::onDelete(const std::vector<std::string> & subNames)
 {
-    // Base::Console().message("VPVP::onDelete(%d subNames)\n", subNames.size());
     // we cannot delete if the view has a section or detail view
     (void) subNames;
     QString bodyMessage;
     QTextStream bodyMessageStream(&bodyMessage);
+
+    // this code should be in a ViewProviderDetail if we had one.  Since we do not, we have to deal
+    // with a derived class here in the parent
+    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
+    auto* dlgDetail = dynamic_cast<TaskDlgDetail*>(dlg);
+    if (dlgDetail) {
+        std::string dlgDetailTarget = dlgDetail->getDetailName();   //new method
+        if (getViewObject()->getNameInDocument() == dlgDetailTarget) {
+            bodyMessageStream << qApp->translate("Std_Delete",
+            "Close open dialog before deleting detail object");
+            bodyMessage = bodyMessageStream.readLine();
+            QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
+            QMessageBox::Ok);
+            return false;
+        }
+    }
 
     // get child views
     auto viewSection = getViewObject()->getSectionRefs();
@@ -378,6 +392,7 @@ bool ViewProviderViewPart::onDelete(const std::vector<std::string> & subNames)
     if (!viewSection.empty() || !viewDetail.empty()) {
         bodyMessageStream << qApp->translate("Std_Delete",
             "You cannot delete this view because it has one or more dependent views that would become broken.");
+        bodyMessage = bodyMessageStream.readLine();
         QMessageBox::warning(Gui::getMainWindow(),
             qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
             QMessageBox::Ok);

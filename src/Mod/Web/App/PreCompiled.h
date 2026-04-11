@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,12 +22,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef APP_PRECOMPILED_H
-#define APP_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
-
-#ifdef _PreComp_
 
 // standard
 #include <stdexcept>
@@ -37,7 +36,3 @@
 // Qt
 #include <QCoreApplication>
 #include <QTcpSocket>
-
-#endif  //_PreComp_
-
-#endif

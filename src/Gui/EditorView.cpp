@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QApplication>
 #include <QCheckBox>
 #include <QClipboard>
@@ -42,7 +39,6 @@
 #include <QTextStream>
 #include <QTimer>
 #include <QToolButton>
-#endif
 
 #include "EditorView.h"
 #include "Application.h"
@@ -160,7 +156,7 @@ EditorView::~EditorView()
 {
     d->activityTimer->stop();
     // to avoid the assert introduced a debug version of Qt >6.3. See QTBUG-105473
-    for (auto conn : connectionList) { // NOLINT(performance-for-range-copy)
+    for (auto conn : connectionList) {  // NOLINT(performance-for-range-copy)
         disconnect(conn);
     }
     delete d->activityTimer;
@@ -209,13 +205,15 @@ void EditorView::checkTimestamp()
     QFileInfo fi(d->fileName);
     qint64 timeStamp = fi.lastModified().toSecsSinceEpoch();
     if (timeStamp != d->timeStamp) {
-        switch (QMessageBox::question(this,
-                                      tr("Modified file"),
-                                      tr("%1.\n\nThis has been modified outside of the source "
-                                         "editor. Do you want to reload it?")
-                                          .arg(d->fileName),
-                                      QMessageBox::Yes | QMessageBox::No,
-                                      QMessageBox::Yes)) {
+        switch (QMessageBox::question(
+            this,
+            tr("Modified file"),
+            tr("%1.\n\nThis has been modified outside of the source "
+               "editor. Reload it?")
+                .arg(d->fileName),
+            QMessageBox::Yes | QMessageBox::No,
+            QMessageBox::Yes
+        )) {
             case QMessageBox::Yes:
                 // updates time stamp and timer
                 open(d->fileName);
@@ -235,7 +233,7 @@ void EditorView::checkTimestamp()
 /**
  * Runs the action specified by \a pMsg.
  */
-bool EditorView::onMsg(const char* pMsg, const char** /*ppReturn*/)
+bool EditorView::onMsg(const char* pMsg)
 {
     // don't allow any actions if the editor is being closed
     if (d->aboutToClose) {
@@ -346,12 +344,14 @@ bool EditorView::canClose()
         return true;
     }
     this->setFocus();  // raises the view to front
-    switch (QMessageBox::question(this,
-                                  tr("Unsaved document"),
-                                  tr("The document has been modified.\n"
-                                     "Do you want to save your changes?"),
-                                  QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel,
-                                  QMessageBox::Cancel)) {
+    switch (QMessageBox::question(
+        this,
+        tr("Unsaved document"),
+        tr("The document has been modified.\n"
+           "Save all changes?"),
+        QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel,
+        QMessageBox::Cancel
+    )) {
         case QMessageBox::Yes:
             return saveFile();
         case QMessageBox::No:
@@ -377,7 +377,8 @@ bool EditorView::saveAs()
         this,
         QObject::tr("Save Macro"),
         QString(),
-        QStringLiteral("%1 (*.FCMacro);;Python (*.py)").arg(tr("FreeCAD macro")));
+        QStringList(QStringLiteral("%1 (*.FCMacro);;Python (*.py)").arg(tr("FreeCAD macro")))
+    );
     if (fn.isEmpty()) {
         return false;
     }
@@ -489,10 +490,7 @@ void EditorView::printPreview()
 {
     QPrinter printer(QPrinter::ScreenResolution);
     QPrintPreviewDialog dlg(&printer, this);
-    connect(&dlg,
-            &QPrintPreviewDialog::paintRequested,
-            this,
-            qOverload<QPrinter*>(&EditorView::print));
+    connect(&dlg, &QPrintPreviewDialog::paintRequested, this, qOverload<QPrinter*>(&EditorView::print));
     dlg.exec();
 }
 
@@ -506,11 +504,12 @@ void EditorView::print(QPrinter* printer)
  */
 void EditorView::printPdf()
 {
-    QString filename =
-        FileDialog::getSaveFileName(this,
-                                    tr("Export PDF"),
-                                    QString(),
-                                    QStringLiteral("%1 (*.pdf)").arg(tr("PDF file")));
+    QString filename = FileDialog::getSaveFileName(
+        this,
+        tr("Export PDF"),
+        QString(),
+        QStringLiteral("%1 (*.pdf)").arg(tr("PDF file"))
+    );
     if (!filename.isEmpty()) {
         QPrinter printer(QPrinter::ScreenResolution);
         // setPdfVersion sets the printed PDF Version to what is chosen in
@@ -664,7 +663,7 @@ PythonEditorView::~PythonEditorView()
 /**
  * Runs the action specified by \a pMsg.
  */
-bool PythonEditorView::onMsg(const char* pMsg, const char** ppReturn)
+bool PythonEditorView::onMsg(const char* pMsg)
 {
     if (strcmp(pMsg, "Run") == 0) {
         executeScript();
@@ -678,7 +677,7 @@ bool PythonEditorView::onMsg(const char* pMsg, const char** ppReturn)
         toggleBreakpoint();
         return true;
     }
-    return EditorView::onMsg(pMsg, ppReturn);
+    return EditorView::onMsg(pMsg);
 }
 
 /**
@@ -706,7 +705,7 @@ void PythonEditorView::executeScript()
 {
     // always save the macro when it is modified
     if (EditorView::onHasMsg("Save")) {
-        EditorView::onMsg("Save", nullptr);
+        EditorView::onMsg("Save");
     }
     try {
         getMainWindow()->setCursor(Qt::WaitCursor);
@@ -821,11 +820,21 @@ void SearchBar::retranslateUi()
     matchWord->setText(tr("Whole words"));
 }
 
-void SearchBar::activate()
+/**
+ * Show the search bar with optional prefilled text from selection.
+ */
+void SearchBar::activate(const QString& prefill)
 {
     show();
+
+    if (!prefill.isEmpty()) {
+        QSignalBlocker blocker(searchText);  // block auto-search jump to next match after prefill
+        searchText->setText(prefill);
+    }
+
     searchText->selectAll();
     searchText->setFocus(Qt::ShortcutFocusReason);
+    updateButtons();
 }
 
 void SearchBar::deactivate()
@@ -884,8 +893,9 @@ void SearchBar::findText(bool skip, bool next, const QString& str)
         newCursor = doc->find(str, cursor, options);
         if (newCursor.isNull()) {
             QTextCursor ac(doc);
-            ac.movePosition(options & QTextDocument::FindBackward ? QTextCursor::End
-                                                                  : QTextCursor::Start);
+            ac.movePosition(
+                options & QTextDocument::FindBackward ? QTextCursor::End : QTextCursor::Start
+            );
             newCursor = doc->find(str, ac, options);
             if (newCursor.isNull()) {
                 found = false;
@@ -902,9 +912,11 @@ void SearchBar::findText(bool skip, bool next, const QString& str)
 
     QString styleSheet;
     if (!found) {
-        styleSheet = QStringLiteral(" QLineEdit {\n"
-                                         "     background-color: rgb(221,144,161);\n"
-                                         " }\n");
+        styleSheet = QStringLiteral(
+            " QLineEdit {\n"
+            "     background-color: rgb(221,144,161);\n"
+            " }\n"
+        );
     }
 
     searchText->setStyleSheet(styleSheet);

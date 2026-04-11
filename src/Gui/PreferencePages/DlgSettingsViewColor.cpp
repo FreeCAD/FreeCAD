@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QPushButton>
-#endif
+
 
 #include "DlgSettingsViewColor.h"
 #include "ui_DlgSettingsViewColor.h"

@@ -1,4 +1,5 @@
- 
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /*****************************************************************************
  * \file  
  *      class for automatic differentiation on scalar values and 1st 
@@ -23,8 +24,7 @@
  *      $Name:  $ 
  ****************************************************************************/
  
-#ifndef Rall1D_H
-#define Rall1D_H
+#pragma once
 #include <assert.h>
 #include "utility.h"
 
@@ -472,7 +472,3 @@ INLINE  bool Equal(const Rall1d<T,V,S>& y,const Rall1d<T,V,S>& x,double eps=epsi
 }
 
 }
-
-
-
-#endif

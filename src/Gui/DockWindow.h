@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DOCKWINDOW_H
-#define GUI_DOCKWINDOW_H
+#pragma once
 
 #include <Gui/View.h>
 #include <QWidget>
 
 
-namespace Gui {
+namespace Gui
+{
 class MDIView;
 class Application;
 
@@ -43,42 +43,53 @@ class Application;
  *  @see Application
  *  @author Jürgen Riegel
  */
-class GuiExport DockWindow : public QWidget, public BaseView
+class GuiExport DockWindow: public QWidget, public BaseView
 {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-  /** View constructor
-   * Attach the view to the given document. If the document is 0
-   * the view will attach to the active document. Be aware there isn't
-   * always an active document available!
-   */
-  explicit DockWindow ( Gui::Document* pcDocument=nullptr, QWidget *parent=nullptr );
-  /** View destructor
-   * Detach the view from the document, if attached.
-   */
-  ~DockWindow() override;
+    /** View constructor
+     * Attach the view to the given document. If the document is 0
+     * the view will attach to the active document. Be aware there isn't
+     * always an active document available!
+     */
+    explicit DockWindow(Gui::Document* pcDocument = nullptr, QWidget* parent = nullptr);
+    /** View destructor
+     * Detach the view from the document, if attached.
+     */
+    ~DockWindow() override;
 
-  /** @name methods to override
-   */
-  //@{
-  /// get called when the document is updated
-  void onUpdate() override{}
-  /// returns the name of the view (important for messages)
-  const char *getName() const override { return "DockWindow"; }
-  /// Message handler
-  bool onMsg(const char* ,const char** ) override{ return false; }
-  /// Message handler test
-  bool onHasMsg(const char*) const override { return false; }
-  /// overwrite when checking on close state
-  bool canClose() override{return true;}
-  //@}
+    /** @name methods to override
+     */
+    //@{
+    /// get called when the document is updated
+    void onUpdate() override
+    {}
+    /// returns the name of the view (important for messages)
+    const char* getName() const override
+    {
+        return "DockWindow";
+    }
+    /// Message handler
+    bool onMsg(const char*) override
+    {
+        return false;
+    }
+    /// Message handler test
+    bool onHasMsg(const char*) const override
+    {
+        return false;
+    }
+    /// overwrite when checking on close state
+    bool canClose() override
+    {
+        return true;
+    }
+    //@}
 
 Q_SIGNALS:
-  /// sends a message to the document
-  void sendCloseView(Gui::MDIView* theView);
+    /// sends a message to the document
+    void sendCloseView(Gui::MDIView* theView);
 };
 
-} // namespace Gui
-
-#endif // GUI_DOCKWINDOW_H
+}  // namespace Gui

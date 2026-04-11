@@ -43,7 +43,6 @@ from PySide import QtWidgets
 
 
 class ViewProvider:
-
     """A simple view provider to gather children"""
 
     def __init__(self, vobj):

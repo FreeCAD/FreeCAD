@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2007 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_FACET_H
-#define MESH_FACET_H
+#pragma once
 
 #include "Edge.h"
 
@@ -39,9 +40,11 @@ class MeshObject;
 class MeshExport Facet: public MeshCore::MeshGeomFacet
 {
 public:
-    explicit Facet(const MeshCore::MeshFacet& face = MeshCore::MeshFacet(),
-                   const MeshObject* obj = nullptr,
-                   MeshCore::FacetIndex index = MeshCore::FACET_INDEX_MAX);
+    explicit Facet(
+        const MeshCore::MeshFacet& face = MeshCore::MeshFacet(),
+        const MeshObject* obj = nullptr,
+        MeshCore::FacetIndex index = MeshCore::FACET_INDEX_MAX
+    );
     Facet(const Facet& f);
     Facet(Facet&& f);
     ~Facet();
@@ -61,6 +64,3 @@ public:
 };
 
 }  // namespace Mesh
-
-
-#endif  // MESH_FACET_H

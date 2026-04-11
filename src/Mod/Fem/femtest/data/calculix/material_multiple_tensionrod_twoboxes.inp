@@ -1221,11 +1221,15 @@ Evolumes
 *MATERIAL, NAME=MechanicalMaterialLow
 *ELASTIC
 70000,0.35
+*EXPANSION, ZERO=0
+0
 ** FreeCAD material name: Steel-Generic
 ** MechanicalMaterialUpp
 *MATERIAL, NAME=MechanicalMaterialUpp
 *ELASTIC
 200000,0.3
+*EXPANSION, ZERO=0
+0
 
 ***********************************************************
 ** Sections
@@ -1251,7 +1255,7 @@ ConstraintFixed,3
 ** constraints pressure element face loads
 ** ConstraintPressure
 *DLOAD
-** ConstraintPressure: face load
+** MultiMatCompSolid.Face11
 61,P3,1000.0
 74,P3,1000.0
 75,P3,1000.0

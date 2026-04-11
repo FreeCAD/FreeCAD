@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -19,9 +21,6 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-
-
-#include "PreCompiled.h"
 
 #include <QDir>
 #include <QFileInfo>
@@ -299,6 +298,27 @@ void PropertyLinkBase::updateElementReferences(DocumentObject* feature, bool rev
     }
 }
 
+void PropertyLinkBase::updateAllElementReferences(bool reverse)
+{
+    for (auto reference : _ElementRefMap) {
+        for (auto prop : reference.second) {
+            if (prop->getContainer()) {
+                try {
+                    prop->updateElementReference(reference.first, reverse, true);
+                }
+                catch (Base::Exception& e) {
+                    e.reportException();
+                    FC_ERR("Failed to update element reference of " << propertyName(prop));
+                }
+                catch (std::exception& e) {
+                    FC_ERR("Failed to update element reference of " << propertyName(prop) << ": "
+                                                                    << e.what());
+                }
+            }
+        }
+    }
+}
+
 void PropertyLinkBase::_registerElementReference(App::DocumentObject* obj,
                                                  std::string& sub,
                                                  ShadowSub& shadow)
@@ -454,7 +474,11 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject* feature,
         // to version change, i.e. 'reverse', try search by geometry first
         const char* oldElement = Data::findElementName(shadow.oldName.c_str());
         if (!Data::hasMissingElement(oldElement)) {
-            const auto& names = geo->searchElementCache(oldElement);
+            auto names = geo->searchElementCache(oldElement);
+            if (names.empty()) {
+                // try floating point tolerance
+                names = geo->searchElementCache(oldElement, Data::SearchOptions());
+            }
             if (names.size()) {
                 missing = false;
                 std::string newsub(subname, strlen(subname) - strlen(element));
@@ -2061,6 +2085,10 @@ void PropertyLinkSub::getLinks(std::vector<App::DocumentObject*>& objs,
 {
     if (all || _pcScope != LinkScope::Hidden) {
         if (_pcLinkSub && _pcLinkSub->isAttachedToDocument()) {
+            // we use to run this method everytime the program needed to access the sub-elements in
+            // a property link, but it caused multiple issues (#23441 and #23402) so it has been
+            // commented out.
+            // updateElementReferences(_pcLinkSub);
             objs.push_back(_pcLinkSub);
             if (subs) {
                 *subs = getSubValues(newStyle);
@@ -3132,6 +3160,10 @@ void PropertyLinkSubList::getLinks(std::vector<App::DocumentObject*>& objs,
         objs.reserve(objs.size() + _lValueList.size());
         for (auto obj : _lValueList) {
             if (obj && obj->isAttachedToDocument()) {
+                // we use to run this method everytime the program needed to access the sub-elements in
+                // a property link, but it caused multiple issues (#23441 and #23402) so it has been
+                // commented out.
+                // updateElementReferences(obj);
                 objs.push_back(obj);
             }
         }
@@ -3272,7 +3304,7 @@ DocInfoMap _DocInfoMap;
 class App::DocInfo: public std::enable_shared_from_this<App::DocInfo>
 {
 public:
-    using Connection = boost::signals2::scoped_connection;
+    using Connection = fastsignals::scoped_connection;
     Connection connFinishRestoreDocument;
     Connection connPendingReloadDocument;
     Connection connDeleteDocument;
@@ -3317,7 +3349,8 @@ public:
             throw Base::RuntimeError("Owner document not saved");
         }
 
-        QDir docDir(QFileInfo(QString::fromUtf8(docPath)).absoluteDir());
+        QFileInfo docFileInfo{QString::fromUtf8(docPath)};
+        QDir docDir(docFileInfo.canonicalPath());
         if (!absolute) {
             path = QDir::cleanPath(docDir.absoluteFilePath(path));
             if (fullPath) {
@@ -4067,6 +4100,7 @@ void PropertyXLink::afterRestore()
     if (!testFlag(LinkRestoreLabel) || !_pcLink || !_pcLink->isAttachedToDocument()) {
         return;
     }
+
     setFlag(LinkRestoreLabel, false);
     for (size_t i = 0; i < _SubList.size(); ++i) {
         restoreLabelReference(_pcLink, _SubList[i], &_ShadowSubList[i]);
@@ -4248,14 +4282,12 @@ void PropertyXLink::Restore(Base::XMLReader& reader)
         name = reader.getAttribute<const char*>("name");
     }
 
-    assert(getContainer()->isDerivedFrom<App::DocumentObject>());
     DocumentObject* object = nullptr;
     if (!name.empty() && file.empty()) {
-        DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
-        Document* document = parent->getDocument();
-        object = document ? document->getObject(name.c_str()) : nullptr;
-        if (!object) {
-            if (reader.isVerbose()) {
+        if (auto parent = freecad_cast<DocumentObject*>(getContainer())) {
+            Document* document = parent->getDocument();
+            object = document ? document->getObject(name.c_str()) : nullptr;
+            if (!object && reader.isVerbose()) {
                 FC_WARN("Lost link to '" << name
                                          << "' while loading, maybe "
                                             "an object was not loaded correctly");
@@ -4519,7 +4551,7 @@ PropertyXLink::getDocumentInList(App::Document* doc)
 {
     std::map<App::Document*, std::set<App::Document*>> ret;
     for (auto& v : _DocInfoMap) {
-        if (!v.second->pcDoc || (doc && doc != v.second->pcDoc)) {
+        if (!v.second->pcDoc || (doc && doc != v.second->pcDoc) || v.second->links.empty()) {
             continue;
         }
         auto& docs = ret[v.second->pcDoc];
@@ -4633,6 +4665,10 @@ void PropertyXLink::getLinks(std::vector<App::DocumentObject*>& objs,
                              bool newStyle) const
 {
     if ((all || _pcScope != LinkScope::Hidden) && _pcLink && _pcLink->isAttachedToDocument()) {
+        // we use to run this method everytime the program needed to access the sub-elements in
+        // a property link, but it caused multiple issues (#23441 and #23402) so it has been
+        // commented out.
+        // updateElementReferences(_pcLink, false);
         objs.push_back(_pcLink);
         if (subs && _SubList.size() == _ShadowSubList.size()) {
             *subs = getSubValues(newStyle);
@@ -5367,6 +5403,11 @@ void PropertyXLinkSubList::getLinks(std::vector<App::DocumentObject*>& objs,
         for (auto& l : _Links) {
             auto obj = l.getValue();
             if (obj && obj->isAttachedToDocument()) {
+                // we use to run this method everytime the program needed to access the sub-elements in
+                // a property link, but it caused multiple issues (#23441 and #23402) so it has been
+                // commented out.
+                // updateElementReferences(obj);
+
                 auto subnames = l.getSubValues(newStyle);
                 if (subnames.empty()) {
                     subnames.emplace_back("");

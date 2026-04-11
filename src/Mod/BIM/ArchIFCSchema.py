@@ -39,14 +39,23 @@ from draftutils import params
 ifcVersions = ["IFC4", "IFC2X3"]
 IfcVersion = ifcVersions[params.get_param_arch("IfcVersion")]
 
-with open(os.path.join(FreeCAD.getResourceDir(), "Mod", "BIM", "Presets",
-"ifc_contexts_" + IfcVersion + ".json")) as f:
+with open(
+    os.path.join(
+        FreeCAD.getResourceDir(), "Mod", "BIM", "Presets", "ifc_contexts_" + IfcVersion + ".json"
+    )
+) as f:
     IfcContexts = json.load(f)
 
-with open(os.path.join(FreeCAD.getResourceDir(), "Mod", "BIM", "Presets",
-"ifc_products_" + IfcVersion + ".json")) as f:
+with open(
+    os.path.join(
+        FreeCAD.getResourceDir(), "Mod", "BIM", "Presets", "ifc_products_" + IfcVersion + ".json"
+    )
+) as f:
     IfcProducts = json.load(f)
 
-with open(os.path.join(FreeCAD.getResourceDir(), "Mod", "BIM", "Presets",
-"ifc_types_" + IfcVersion + ".json")) as f:
+with open(
+    os.path.join(
+        FreeCAD.getResourceDir(), "Mod", "BIM", "Presets", "ifc_types_" + IfcVersion + ".json"
+    )
+) as f:
     IfcTypes = json.load(f)

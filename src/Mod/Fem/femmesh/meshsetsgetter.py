@@ -37,13 +37,7 @@ from femtools.femutils import type_of_obj
 
 
 class MeshSetsGetter:
-    def __init__(
-        self,
-        analysis_obj,
-        solver_obj,
-        mesh_obj,
-        member,
-    ):
+    def __init__(self, analysis_obj, solver_obj, mesh_obj, member):
         # class attributes from parameter values
         self.analysis = analysis_obj
         self.solver_obj = solver_obj  # TODO without _obj
@@ -101,6 +95,114 @@ class MeshSetsGetter:
         self.femelement_count_test = True
         self.mat_geo_sets = []
 
+        # subelements masks
+        self.edge_masks = {
+            "mask_tria3": {},
+            "mask_tria6": {},
+            "mask_quad4": {},
+            "mask_quad8": {},
+        }
+        self.face_masks = {
+            "mask_tetra4": {},
+            "mask_tetra10": {},
+            "mask_hexa8": {},
+            "mask_hexa20": {},
+            "mask_penta6": {},
+            "mask_penta15": {},
+        }
+        self._load_tables()
+
+    def _load_tables(self):
+        if self.mesh_object:
+            if not self.femnodes_mesh:
+                self.femnodes_mesh = self.femmesh.Nodes
+            if not self.femelement_table:
+                self.femelement_table = meshtools.get_femelement_table(self.femmesh)
+            if not self.femnodes_ele_table:
+                self.femnodes_ele_table = meshtools.get_femnodes_ele_table(
+                    self.femnodes_mesh, self.femelement_table
+                )
+
+    @property
+    def mask_tria3(self):
+        self.edge_masks["mask_tria3"]
+
+    @mask_tria3.setter
+    def mask_tria3(self, value):
+        self.edge_masks["mask_tria3"] = value
+
+    @property
+    def mask_tria6(self):
+        self.edge_masks["mask_tria6"]
+
+    @mask_tria6.setter
+    def mask_tria6(self, value):
+        self.edge_masks["mask_tria6"] = value
+
+    @property
+    def mask_quad4(self):
+        self.edge_masks["mask_quad4"]
+
+    @mask_quad4.setter
+    def mask_quad4(self, value):
+        self.edge_masks["mask_quad4"] = value
+
+    @property
+    def mask_quad8(self):
+        self.edge_masks["mask_quad8"]
+
+    @mask_quad8.setter
+    def mask_quad8(self, value):
+        self.edge_masks["mask_quad8"] = value
+
+    @property
+    def mask_tetra4(self):
+        self.face_masks["mask_tetra4"]
+
+    @mask_tetra4.setter
+    def mask_tetra4(self, value):
+        self.face_masks["mask_tetra4"] = value
+
+    @property
+    def mask_tetra10(self):
+        self.face_masks["mask_tetra10"]
+
+    @mask_tetra10.setter
+    def mask_tetra10(self, value):
+        self.face_masks["mask_tetra10"] = value
+
+    @property
+    def mask_hexa8(self):
+        self.face_masks["mask_hexa8"]
+
+    @mask_hexa8.setter
+    def mask_hexa8(self, value):
+        self.face_masks["mask_hexa8"] = value
+
+    @property
+    def mask_hexa20(self):
+        self.face_masks["mask_hexa20"]
+
+    @mask_hexa20.setter
+    def mask_hexa20(self, value):
+        self.face_masks["mask_hexa20"] = value
+
+    @property
+    def mask_penta6(self):
+        self.face_masks["mask_penta6"]
+
+    @mask_penta6.setter
+    def mask_penta6(self, value):
+        self.face_masks["mask_penta6"] = value
+
+    @property
+    def mask_penta15(self):
+        self.face_masks["mask_penta15"]
+
+    @mask_penta15.setter
+    def mask_penta15(self, value):
+        self.face_masks["mask_penta15"] = value
+
     # ********************************************************************************************
     # ********************************************************************************************
     # use set for node sets to be sure all nodes are unique
@@ -112,6 +214,7 @@ class MeshSetsGetter:
     # ********************************************************************************************
     # ********************************************************************************************
     # get all known sets
+
     def get_mesh_sets(self):
 
         FreeCAD.Console.PrintMessage("\n")  # because of time print in separate line
@@ -127,6 +230,10 @@ class MeshSetsGetter:
 
         # materials and element geometry element sets getter
         self.get_element_sets_material_and_femelement_geometry()
+        self.get_materials_elements()
+        self.get_shell_elements()
+        self.get_beam_elements()
+        self.get_rotation1D_elements()
 
         # constraints element sets getter
         self.get_constraints_centrif_elements()
@@ -144,7 +251,9 @@ class MeshSetsGetter:
         self.get_constraints_sectionprint_faces()
         self.get_constraints_transform_nodes()
         self.get_constraints_temperature_nodes()
+        self.get_constraints_initialtemperature_nodes()
         self.get_constraints_electrostatic_nodes()
+        self.get_constraints_electricchargedensity_nodes()
 
         # constraints sets with constraint data
         self.get_constraints_force_nodeloads()
@@ -245,6 +354,15 @@ class MeshSetsGetter:
             print_obj_info(femobj["Object"])
             femobj["Nodes"] = meshtools.get_femnodes_by_femobj_with_references(self.femmesh, femobj)
 
+    def get_constraints_initialtemperature_nodes(self):
+        if not self.member.cons_initialtemperature:
+            return
+        # get nodes
+        for femobj in self.member.cons_initialtemperature:
+            # femobj --> dict, FreeCAD document object is femobj["Object"]
+            print_obj_info(femobj["Object"])
+            femobj["Nodes"] = meshtools.get_femnodes_by_femobj_with_references(self.femmesh, femobj)
+
     def get_constraints_fluidsection_nodes(self):
         if not self.member.geos_fluidsection:
             return
@@ -261,6 +379,18 @@ class MeshSetsGetter:
         for femobj in self.member.cons_electrostatic:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
             if femobj["Object"].BoundaryCondition == "Dirichlet":
+                print_obj_info(femobj["Object"])
+                femobj["Nodes"] = meshtools.get_femnodes_by_femobj_with_references(
+                    self.femmesh, femobj
+                )
+
+    def get_constraints_electricchargedensity_nodes(self):
+        if not self.member.cons_electricchargedensity:
+            return
+        # get nodes
+        for femobj in self.member.cons_electricchargedensity:
+            # femobj --> dict, FreeCAD document object is femobj["Object"]
+            if femobj["Object"].Concentrated:
                 print_obj_info(femobj["Object"])
                 femobj["Nodes"] = meshtools.get_femnodes_by_femobj_with_references(
                     self.femmesh, femobj
@@ -328,130 +458,48 @@ class MeshSetsGetter:
 
     # ********************************************************************************************
     # ********************************************************************************************
+    def _get_elements(self, obj):
+        print_obj_info(obj)
+        result = []
+        ref_data = meshtools.pair_obj_reference(obj.References)
+        for ref_pair in ref_data:
+            result.append(meshtools.get_elements(self, ref_pair, self.face_masks, self.edge_masks))
+
+        return result
+
     # faces sets
     def get_constraints_pressure_faces(self):
-        if not self.member.cons_pressure:
-            return
-        # TODO see comments in get_constraints_force_nodeloads()
-        # it applies here too. Mhh it applies to all constraints ...
-
-        """
-        # deprecated version
-        # get the faces and face numbers
         for femobj in self.member.cons_pressure:
-            # femobj --> dict, FreeCAD document object is femobj["Object"]
-            femobj["PressureFaces"] = meshtools.get_pressure_obj_faces_depreciated(
-                self.femmesh,
-                femobj
-            )
-            # print(femobj["PressureFaces"])
-        """
+            obj = femobj["Object"]
+            result = self._get_elements(obj)
 
-        if not self.femnodes_mesh:
-            self.femnodes_mesh = self.femmesh.Nodes
-        if not self.femelement_table:
-            self.femelement_table = meshtools.get_femelement_table(self.femmesh)
-        if not self.femnodes_ele_table:
-            self.femnodes_ele_table = meshtools.get_femnodes_ele_table(
-                self.femnodes_mesh, self.femelement_table
-            )
-
-        for femobj in self.member.cons_pressure:
-            # femobj --> dict, FreeCAD document object is femobj["Object"]
-            print_obj_info(femobj["Object"])
-            pressure_faces = meshtools.get_pressure_obj_faces(
-                self.femmesh, self.femelement_table, self.femnodes_ele_table, femobj
-            )
-            # the data model is for compatibility reason with deprecated version
-            # get_pressure_obj_faces_depreciated returns the face ids in a tuple per ref_shape
-            # some_string was the reference_shape_element_string in deprecated method
-            # [(some_string, [ele_id, ele_face_id], [ele_id, ele_face_id], ...])]
-            some_string = "{}: face load".format(femobj["Object"].Name)
-            femobj["PressureFaces"] = [(some_string, pressure_faces)]
-            FreeCAD.Console.PrintLog("{}\n".format(femobj["PressureFaces"]))
+            femobj["PressureFaces"] = result
 
     def get_constraints_electrostatic_faces(self):
-        if not self.member.cons_electrostatic:
-            return
-        if not self.femnodes_mesh:
-            self.femnodes_mesh = self.femmesh.Nodes
-        if not self.femelement_table:
-            self.femelement_table = meshtools.get_femelement_table(self.femmesh)
-        if not self.femnodes_ele_table:
-            self.femnodes_ele_table = meshtools.get_femnodes_ele_table(
-                self.femnodes_mesh, self.femelement_table
-            )
-
         for femobj in self.member.cons_electrostatic:
-            if femobj["Object"].BoundaryCondition == "Neumann":
-                print_obj_info(femobj["Object"])
+            obj = femobj["Object"]
+            if obj.BoundaryCondition == "Neumann":
+                result = self._get_elements(obj)
 
-                charged_faces = meshtools.get_charge_density_obj_faces(
-                    self.femmesh, self.femelement_table, self.femnodes_ele_table, femobj
-                )
-                some_string = "{}: face electric flux".format(femobj["Object"].Name)
-                femobj["ElectricFluxFaces"] = [(some_string, charged_faces)]
-                FreeCAD.Console.PrintLog("{}\n".format(femobj["ElectricFluxFaces"]))
+                femobj["ElectricFluxFaces"] = result
 
     def get_constraints_electricchargedensity_faces(self):
-        if not self.member.cons_electricchargedensity:
-            return
-        if not self.femnodes_mesh:
-            self.femnodes_mesh = self.femmesh.Nodes
-        if not self.femelement_table:
-            self.femelement_table = meshtools.get_femelement_table(self.femmesh)
-        if not self.femnodes_ele_table:
-            self.femnodes_ele_table = meshtools.get_femnodes_ele_table(
-                self.femnodes_mesh, self.femelement_table
-            )
-
         for femobj in self.member.cons_electricchargedensity:
-            if femobj["Object"].Mode in ["Interface", "Total Interface"]:
-                print_obj_info(femobj["Object"])
+            obj = femobj["Object"]
+            result = self._get_elements(obj)
 
-                charged_faces = meshtools.get_charge_density_obj_faces(
-                    self.femmesh, self.femelement_table, self.femnodes_ele_table, femobj
-                )
-                some_string = "{}: face electric charge density".format(femobj["Object"].Name)
-                femobj["ChargeDensityFaces"] = [(some_string, charged_faces)]
-                FreeCAD.Console.PrintLog("{}\n".format(femobj["ChargeDensityFaces"]))
-
-            elif femobj["Object"].Mode in ["Source", "Total Source"]:
-                print_obj_info(femobj["Object"])
-
-                charged_volumes = meshtools.get_charge_density_obj_elements(
-                    self.femmesh, self.femelement_table, self.femnodes_ele_table, femobj
-                )
-                some_string = "{}: Elements with electric charge density".format(
-                    femobj["Object"].Name
-                )
-                femobj["ChargeDensityElements"] = (some_string, charged_volumes)
-                FreeCAD.Console.PrintLog("{}\n".format(femobj["ChargeDensityElements"]))
+            if obj.Mode in ["Interface", "Total Interface"]:
+                femobj["ChargeDensityFaces"] = result
+            elif obj.Mode in ["Source", "Total Source"]:
+                femobj["ChargeDensityElements"] = result
 
     def get_constraints_contact_faces(self):
-        if not self.member.cons_contact:
-            return
-        if not self.femnodes_mesh:
-            self.femnodes_mesh = self.femmesh.Nodes
-        if not self.femelement_table:
-            self.femelement_table = meshtools.get_femelement_table(self.femmesh)
-        if not self.femnodes_ele_table:
-            self.femnodes_ele_table = meshtools.get_femnodes_ele_table(
-                self.femnodes_mesh, self.femelement_table
-            )
-
         for femobj in self.member.cons_contact:
-            # femobj --> dict, FreeCAD document object is femobj["Object"]
-            print_obj_info(femobj["Object"])
-            contact_slave_faces, contact_master_faces = meshtools.get_contact_obj_faces(
-                self.femmesh, self.femelement_table, self.femnodes_ele_table, femobj
-            )
-            # [ele_id, ele_face_id], [ele_id, ele_face_id], ...]
-            # whereas the ele_face_id might be ccx specific
-            femobj["ContactSlaveFaces"] = contact_slave_faces
-            femobj["ContactMasterFaces"] = contact_master_faces
-            # FreeCAD.Console.PrintLog("{}\n".format(femobj["ContactSlaveFaces"]))
-            # FreeCAD.Console.PrintLog("{}\n".format(femobj["ContactMasterFaces"]))
+            obj = femobj["Object"]
+            result = self._get_elements(obj)
+
+            femobj["ContactSlaveFaces"] = result[:-1]
+            femobj["ContactMasterFaces"] = result[-1:]
 
     # information in the regard of element faces constraints
     # forum post: https://forum.freecad.org/viewtopic.php?f=18&t=42783&p=370286#p366723
@@ -461,126 +509,74 @@ class MeshSetsGetter:
     #                from one side of the geometric face are needed
 
     def get_constraints_tie_faces(self):
-        if not self.member.cons_tie:
-            return
-        if not self.femnodes_mesh:
-            self.femnodes_mesh = self.femmesh.Nodes
-        if not self.femelement_table:
-            self.femelement_table = meshtools.get_femelement_table(self.femmesh)
-        if not self.femnodes_ele_table:
-            self.femnodes_ele_table = meshtools.get_femnodes_ele_table(
-                self.femnodes_mesh, self.femelement_table
-            )
-
         for femobj in self.member.cons_tie:
-            # femobj --> dict, FreeCAD document object is femobj["Object"]
-            print_obj_info(femobj["Object"])
-            slave_faces, master_faces = meshtools.get_tie_obj_faces(
-                self.femmesh, self.femelement_table, self.femnodes_ele_table, femobj
-            )
-            # [ele_id, ele_face_id], [ele_id, ele_face_id], ...]
-            # whereas the ele_face_id might be ccx specific
-            femobj["TieSlaveFaces"] = slave_faces
-            femobj["TieMasterFaces"] = master_faces
-            # FreeCAD.Console.PrintLog("{}\n".format(femobj["ContactSlaveFaces"]))
-            # FreeCAD.Console.PrintLog("{}\n".format(femobj["ContactMasterFaces"]))
+            obj = femobj["Object"]
+            result = self._get_elements(obj)
+
+            femobj["TieSlaveFaces"] = result[:-1]
+            femobj["TieMasterFaces"] = result[-1:]
 
     def get_constraints_sectionprint_faces(self):
-        if not self.member.cons_sectionprint:
-            return
-        # TODO: use meshtools to get the surfaces
-        # see constraint contact or constraint tie
         for femobj in self.member.cons_sectionprint:
-            # femobj --> dict, FreeCAD document object is femobj["Object"]
-            sectionprint_obj = femobj["Object"]
-            if len(sectionprint_obj.References) > 1:
-                FreeCAD.Console.PrintError(
-                    "Only one reference shape allowed for a section print "
-                    "but {} found: {}\n".format(
-                        len(sectionprint_obj.References), sectionprint_obj.References
-                    )
-                )
-            for o, elem_tup in sectionprint_obj.References:
-                for elem in elem_tup:
-                    # there should only be one reference for each section print object
-                    # in the gui this is checked
-                    ref_shape = o.Shape.getElement(elem)
-                    if ref_shape.ShapeType == "Face":
-                        v = self.mesh_object.FemMesh.getccxVolumesByFace(ref_shape)
-                        if len(v) > 0:
-                            femobj["SectionPrintFaces"] = v
-                            # volume elements found
-                            FreeCAD.Console.PrintLog(
-                                "{}, surface {}, {} touching volume elements found\n".format(
-                                    sectionprint_obj.Label, sectionprint_obj.Name, len(v)
-                                )
-                            )
-                        else:
-                            # no volume elements found, shell elements not allowed
-                            FreeCAD.Console.PrintError(
-                                "{}, surface {}, Error: "
-                                "No volume elements found!\n".format(
-                                    sectionprint_obj.Label, sectionprint_obj.Name
-                                )
-                            )
-                    else:
-                        # in Gui only Faces can be added
-                        FreeCAD.Console.PrintError(
-                            "Wrong reference shape type for {} "
-                            "Only Faces are allowed, but a {} was found.\n".format(
-                                sectionprint_obj.Name, ref_shape.ShapeType
-                            )
-                        )
+            obj = femobj["Object"]
+            result = self._get_elements(obj)
+
+            femobj["SectionPrintFaces"] = result
 
     def get_constraints_heatflux_faces(self):
-        if not self.member.cons_heatflux:
-            return
-        # TODO: use meshtools to get the surfaces (or move to mesh tools)
-        # see constraint contact or constraint tie and constraint force
-        # heatflux_obj_face_table: see force_obj_node_load_table
-        #     [
-        #         ("refshape_name:elemname", face_table),
-        #         ...,
-        #         ("refshape_name:elemname", face_table)
-        #     ]
         for femobj in self.member.cons_heatflux:
-            # femobj --> dict, FreeCAD document object is femobj["Object"]
-            heatflux_obj = femobj["Object"]
-            femobj["HeatFluxFaceTable"] = []
-            for o, elem_tup in heatflux_obj.References:
-                for elem in elem_tup:
-                    ho = o.Shape.getElement(elem)
-                    if ho.ShapeType == "Face":
-                        elem_info = f"{o.Name}:{elem}"
-                        face_table = self.mesh_object.FemMesh.getccxVolumesByFace(ho)
-                        femobj["HeatFluxFaceTable"].append((elem_info, face_table))
+            obj = femobj["Object"]
+            result = self._get_elements(obj)
+
+            femobj["HeatFluxFaces"] = result
 
     # ********************************************************************************************
     # ********************************************************************************************
     # element sets constraints
     def get_constraints_centrif_elements(self):
-        # get element ids and write them into the femobj
-        if not self.member.cons_centrif:
-            return
-        if (
-            len(self.member.cons_centrif) == 1
-            and not self.member.cons_centrif[0]["Object"].References
-        ):
-            self.member.cons_centrif[0]["FEMElements"] = self.ccx_evolumes
-        else:
-            self.get_solid_element_sets(self.member.cons_centrif)
+        for femobj in self.member.cons_centrif:
+            obj = femobj["Object"]
+            result = self._get_elements(obj)
+
+            femobj["CentrifElements"] = result
 
     def get_constraints_bodyheatsource_elements(self):
-        # get element ids and write them into the femobj
-        if not self.member.cons_bodyheatsource:
-            return
-        if (
-            len(self.member.cons_bodyheatsource) == 1
-            and not self.member.cons_bodyheatsource[0]["Object"].References
-        ):
-            self.member.cons_bodyheatsource[0]["FEMElements"] = self.ccx_evolumes
-        else:
-            self.get_solid_element_sets(self.member.cons_bodyheatsource)
+        for femobj in self.member.cons_bodyheatsource:
+            obj = femobj["Object"]
+            result = self._get_elements(obj)
+
+            femobj["BodyHeatSourceElements"] = result
+
+    def get_beam_elements(self):
+        for femobj in self.member.geos_beamsection:
+            obj = femobj["Object"]
+            result = self._get_elements(obj)
+
+            femobj["BeamElements"] = result
+
+    def get_shell_elements(self):
+        for femobj in self.member.geos_shellthickness:
+            obj = femobj["Object"]
+            result = self._get_elements(obj)
+
+            femobj["ShellElements"] = result
+
+    def get_rotation1D_elements(self):
+        for femobj in self.member.geos_beamrotation:
+            # geos_beamrotation is overriden by another function in meshtools and the key
+            # "Object" might be removed. Check the key until the other function is fixed.
+            if "Object" in femobj:
+                obj = femobj["Object"]
+                result = self._get_elements(obj)
+
+                femobj["Rotation1DElements"] = result
+
+    def get_materials_elements(self):
+        for femobj in self.member.mats_linear:
+            obj = femobj["Object"]
+            result = self._get_elements(obj)
+
+            femobj["MaterialElements"] = result
 
     # ********************************************************************************************
     # ********************************************************************************************

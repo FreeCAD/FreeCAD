@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # Persistent toolbars for FreeCAD
 # Copyright (C) 2016, 2017  triplus @ FreeCAD
 #
@@ -27,21 +29,6 @@ from PySide import QtGui
 conectedToolbars = []
 timer = QtCore.QTimer()
 mw = Gui.getMainWindow()
-
-
-def pythonToolbars():
-    """Manage Python based toolbar in BIM workbench."""
-
-    active = Gui.activeWorkbench().__class__.__name__
-
-    if active == "BIMWorkbench" and hasattr(Gui, "Snapper"):
-        try:
-            Gui.Snapper.show()
-        except Exception:
-            m = "Persistent toolbars: Snapper toolbar not managed.\n"
-            App.Console.PrintMessage(m)
-    else:
-        pass
 
 
 def isConnected(i):
@@ -228,7 +215,6 @@ def onWorkbenchActivated():
     active = Gui.activeWorkbench().__class__.__name__
 
     if active:
-        pythonToolbars()
         onRestore(active)
     else:
         pass

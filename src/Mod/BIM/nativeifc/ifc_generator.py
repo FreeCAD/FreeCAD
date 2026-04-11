@@ -107,7 +107,7 @@ def generate_geometry(obj, cached=False):
         node, placement = generate_coin(ifcfile, elements, cached)
         if node:
             # TODO this still needs to be fixed
-            #QtCore.QTimer.singleShot(0, lambda: set_representation(obj.ViewObject, node))
+            # QtCore.QTimer.singleShot(0, lambda: set_representation(obj.ViewObject, node))
             set_representation(obj.ViewObject, node)
             colors = node[0]
         else:
@@ -203,9 +203,7 @@ def generate_shape(ifcfile, elements, cached=False):
                         )
                 if len(colors) < len(shape.Faces):
                     for i in range(len(shape.Faces) - len(colors)):
-                        scolors.append(
-                            (sstyle[0], sstyle[1], sstyle[2], 1.0 - sstyle[3])
-                        )
+                        scolors.append((sstyle[0], sstyle[1], sstyle[2], 1.0 - sstyle[3]))
             else:
                 color = (sstyle[0], sstyle[1], sstyle[2], 1.0 - sstyle[3])
                 for f in shape.Faces:
@@ -311,15 +309,11 @@ def generate_coin(ifcfile, elements, cached=False):
 
             # faces
             faces = list(item.geometry.faces)
-            faces = [
-                f for i in range(0, len(faces), 3) for f in faces[i : i + 3] + [-1]
-            ]
+            faces = [f for i in range(0, len(faces), 3) for f in faces[i : i + 3] + [-1]]
 
             # edges
             edges = list(item.geometry.edges)
-            edges = [
-                e for i in range(0, len(edges), 2) for e in edges[i : i + 2] + [-1]
-            ]
+            edges = [e for i in range(0, len(edges), 2) for e in edges[i : i + 2] + [-1]]
 
             # update cache
             node = [color, verts, faces, edges]
@@ -491,8 +485,8 @@ def set_representation(vobj, node):
     # the number of display modes under switch can vary.
     # the last 4 ones are the ones that are defined for
     # Part features
-    faces = switch.getChild(num_modes-3)
-    edges = switch.getChild(num_modes-2)
+    faces = switch.getChild(num_modes - 3)
+    edges = switch.getChild(num_modes - 2)
     fset = None
     if faces.getNumChildren() >= 7:
         fset = faces.getChild(6)  # SoBrepFaceSet
@@ -614,8 +608,8 @@ def get_annotation_shape(annotation, ifcfile, coin=False):
         if coin:
             iv = shape.writeInventor()
             iv = iv.replace("\n", "")
-            segs = re.findall(r"point \[.*?\]",iv)
-            segs = [s.replace("point [","").replace("]","").strip() for s in segs]
+            segs = re.findall(r"point \[.*?\]", iv)
+            segs = [s.replace("point [", "").replace("]", "").strip() for s in segs]
             segs = [s.split("    ") for s in segs]
             verts = []
             edges = []

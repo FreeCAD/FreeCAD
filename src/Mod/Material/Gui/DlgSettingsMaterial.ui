@@ -20,7 +20,7 @@
    <item>
     <widget class="QGroupBox" name="gb_4_materials">
      <property name="title">
-      <string>Card resources</string>
+      <string>Card Resources</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
@@ -28,7 +28,7 @@
         <item>
          <widget class="Gui::PrefCheckBox" name="cb_use_built_in_materials">
           <property name="toolTip">
-           <string>The cards built-in to FreeCAD will be listed as available.</string>
+           <string>The cards built-in to FreeCAD will be listed as available</string>
           </property>
           <property name="text">
            <string>Use built-in materials</string>
@@ -47,7 +47,7 @@
         <item>
          <widget class="Gui::PrefCheckBox" name="cb_use_mat_from_workbenches">
           <property name="toolTip">
-           <string>Use materials added by external workbenches.</string>
+           <string>Use materials added by external workbenches</string>
           </property>
           <property name="text">
            <string>Use materials from external workbenches</string>
@@ -66,10 +66,10 @@
         <item>
          <widget class="Gui::PrefCheckBox" name="cb_use_mat_from_config_dir">
           <property name="toolTip">
-           <string>Also cards from FreeCAD's preferences directory will be listed as available.</string>
+           <string>Cards from FreeCAD’s preferences directory are also listed as available</string>
           </property>
           <property name="text">
-           <string>Use materials from Materials directory in user's FreeCAD preference directory</string>
+           <string>Use materials from the Materials preference directory</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -85,11 +85,10 @@
         <item>
          <widget class="Gui::PrefCheckBox" name="cb_use_mat_from_custom_dir">
           <property name="toolTip">
-           <string>Also material cards also from the specified directory
-will be listed as available.</string>
+           <string>Material cards from the specified directory will also be listed as available</string>
           </property>
           <property name="text">
-           <string>Use materials from user defined directory</string>
+           <string>Use materials from user-defined directory</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -152,13 +151,13 @@ will be listed as available.</string>
    <item>
     <widget class="QGroupBox" name="gb_4_materials_2">
      <property name="title">
-      <string>Card sorting and duplicates</string>
+      <string>Card Sorting and Duplicates</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
        <widget class="Gui::PrefCheckBox" name="cb_delete_duplicates">
         <property name="toolTip">
-         <string>Duplicate cards will be deleted from the displayed material card list.</string>
+         <string>Duplicate cards will be deleted from the displayed material card list</string>
         </property>
         <property name="text">
          <string>Delete card duplicates</string>

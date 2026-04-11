@@ -25,7 +25,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label_7">
        <property name="text">
-        <string>BaseView</string>
+        <string>Base view</string>
        </property>
       </widget>
      </item>
@@ -78,7 +78,7 @@
      <item row="2" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>Scale Type</string>
+        <string>Scale type</string>
        </property>
       </widget>
      </item>
@@ -164,7 +164,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Preset view direction looking up.</string>
+           <string>Preset view direction looking up</string>
           </property>
           <property name="statusTip">
            <string/>
@@ -200,7 +200,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Preset view direction looking down.</string>
+           <string>Preset view direction looking down</string>
           </property>
           <property name="text">
            <string/>
@@ -230,7 +230,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Preset view direction looking left.</string>
+           <string>Preset view direction looking left</string>
           </property>
           <property name="text">
            <string/>
@@ -260,7 +260,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Preset view direction looking right.</string>
+           <string>Preset view direction looking right</string>
           </property>
           <property name="text">
            <string/>
@@ -292,7 +292,7 @@
    <item>
     <widget class="QGroupBox" name="gbPlane">
      <property name="toolTip">
-      <string>Position from the 3D origin of the object in the view</string>
+      <string>Global 3D coordinates defining the shortest distance from the 3D origin to the section plane</string>
      </property>
      <property name="title">
       <string>Section Plane Location</string>
@@ -452,7 +452,7 @@
         <item row="0" column="1">
          <widget class="QPushButton" name="pbUpdateNow">
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rebuild display now.  May be slow for complex models.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rebuild display now. May be slow for complex models.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Update Now</string>
@@ -462,10 +462,10 @@
         <item row="0" column="0">
          <widget class="QCheckBox" name="cbLiveUpdate">
           <property name="toolTip">
-           <string>Check to update display after every property change.</string>
+           <string>Check to update display after every property change</string>
           </property>
           <property name="text">
-           <string>Live Update</string>
+           <string>Live update</string>
           </property>
          </widget>
         </item>

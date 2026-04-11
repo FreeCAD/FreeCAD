@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,26 +22,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __PRECOMPILED__
-#define __PRECOMPILED__
+#pragma once
 
 #include <FCConfig.h>
-
-#ifdef _MSC_VER
-// disable warning triggered by use of Part::FaceMaker
-// see forum thread "Warning C4275 non-dll class used as base for dll class"
-// https://forum.freecad.org/viewtopic.php?f=10&t=17542
-#   pragma warning( disable : 4275)
-#endif
-
-#ifdef _PreComp_
 
 // stl
 #include <limits>
 
 // OpenCasCade
 #include <Mod/Part/App/OpenCascadeAll.h>
-
-#endif // _PreComp_
-#endif
-

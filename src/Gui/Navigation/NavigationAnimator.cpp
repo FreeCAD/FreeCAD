@@ -21,7 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+
 #include "NavigationAnimator.h"
 #include "NavigationAnimation.h"
 #include <QEventLoop>
@@ -96,7 +96,7 @@ void NavigationAnimator::stop()
  */
 bool NavigationAnimator::isAnimating() const
 {
-    if (activeAnimation != nullptr) {
+    if (activeAnimation) {
         return activeAnimation->state() == QAbstractAnimation::State::Running;
     }
 

@@ -22,9 +22,9 @@
  ***************************************************************************/
 
 
-#ifndef ASSEMBLY_AssemblyObject_H
-#define ASSEMBLY_AssemblyObject_H
+#pragma once
 
+#include <boost/signals2.hpp>
 
 #include <Mod/Assembly/AssemblyGlobal.h>
 
@@ -87,7 +87,7 @@ public:
     }
 
     App::DocumentObjectExecReturn* execute() override;
-
+    void onChanged(const App::Property* prop) override;
     /* Solve the assembly. It will update first the joints, solve, update placements of the parts
     and redraw the joints Args : enableRedo : This store initial positions to enable undo while
     being in an active transaction (joint creation).*/
@@ -107,7 +107,6 @@ public:
     Base::Placement getMbdPlacement(std::shared_ptr<MbD::ASMTPart> mbdPart);
     bool validateNewPlacements();
     void setNewPlacements();
-    static void recomputeJointPlacements(std::vector<App::DocumentObject*> joints);
     static void redrawJointPlacements(std::vector<App::DocumentObject*> joints);
     static void redrawJointPlacement(App::DocumentObject* joint);
 
@@ -117,8 +116,11 @@ public:
     // Ondsel Solver interface
     std::shared_ptr<MbD::ASMTAssembly> makeMbdAssembly();
     void create_mbdSimulationParameters(App::DocumentObject* sim);
-    std::shared_ptr<MbD::ASMTPart>
-    makeMbdPart(std::string& name, Base::Placement plc = Base::Placement(), double mass = 1.0);
+    std::shared_ptr<MbD::ASMTPart> makeMbdPart(
+        std::string& name,
+        Base::Placement plc = Base::Placement(),
+        double mass = 1.0
+    );
     std::shared_ptr<MbD::ASMTPart> getMbDPart(App::DocumentObject* obj);
     // To help the solver, during dragging, we are bundling parts connected by a fixed joint.
     // So several assembly components are bundled in a single ASMTPart.
@@ -132,15 +134,18 @@ public:
     MbDPartData getMbDData(App::DocumentObject* part);
     std::shared_ptr<MbD::ASMTMarker> makeMbdMarker(std::string& name, Base::Placement& plc);
     std::vector<std::shared_ptr<MbD::ASMTJoint>> makeMbdJoint(App::DocumentObject* joint);
-    std::shared_ptr<MbD::ASMTJoint> makeMbdJointOfType(App::DocumentObject* joint,
-                                                       JointType jointType);
+    std::shared_ptr<MbD::ASMTJoint> makeMbdJointOfType(App::DocumentObject* joint, JointType jointType);
     std::shared_ptr<MbD::ASMTJoint> makeMbdJointDistance(App::DocumentObject* joint);
-    std::string handleOneSideOfJoint(App::DocumentObject* joint,
-                                     const char* propRefName,
-                                     const char* propPlcName);
-    void getRackPinionMarkers(App::DocumentObject* joint,
-                              std::string& markerNameI,
-                              std::string& markerNameJ);
+    std::string handleOneSideOfJoint(
+        App::DocumentObject* joint,
+        const char* propRefName,
+        const char* propPlcName
+    );
+    void getRackPinionMarkers(
+        App::DocumentObject* joint,
+        std::string& markerNameI,
+        std::string& markerNameJ
+    );
     int slidingPartIndex(App::DocumentObject* joint);
 
     void jointParts(std::vector<App::DocumentObject*> joints);
@@ -149,13 +154,19 @@ public:
     template<typename T>
     T* getGroup();
 
-    std::vector<App::DocumentObject*>
-    getJoints(bool updateJCS = true, bool delBadJoints = false, bool subJoints = true);
+    std::vector<App::DocumentObject*> getJoints(
+        bool updateJCS = true,
+        bool delBadJoints = false,
+        bool subJoints = true
+    );
     std::vector<App::DocumentObject*> getGroundedJoints();
     std::vector<App::DocumentObject*> getJointsOfObj(App::DocumentObject* obj);
     std::vector<App::DocumentObject*> getJointsOfPart(App::DocumentObject* part);
-    App::DocumentObject* getJointOfPartConnectingToGround(App::DocumentObject* part,
-                                                          std::string& name);
+    App::DocumentObject* getJointOfPartConnectingToGround(
+        App::DocumentObject* part,
+        std::string& name,
+        const std::vector<App::DocumentObject*>& excludeJoints = {}
+    );
     std::unordered_set<App::DocumentObject*> getGroundedParts();
     std::unordered_set<App::DocumentObject*> fixGroundedParts();
     void fixGroundedPart(App::DocumentObject* obj, Base::Placement& plc, std::string& jointName);
@@ -164,22 +175,32 @@ public:
     bool isJointTypeConnecting(App::DocumentObject* joint);
 
     bool isObjInSetOfObjRefs(App::DocumentObject* obj, const std::vector<ObjRef>& pairs);
-    void removeUnconnectedJoints(std::vector<App::DocumentObject*>& joints,
-                                 std::unordered_set<App::DocumentObject*> groundedObjs);
-    void traverseAndMarkConnectedParts(App::DocumentObject* currentPart,
-                                       std::vector<ObjRef>& connectedParts,
-                                       const std::vector<App::DocumentObject*>& joints);
-    std::vector<ObjRef> getConnectedParts(App::DocumentObject* part,
-                                          const std::vector<App::DocumentObject*>& joints);
+    void removeUnconnectedJoints(
+        std::vector<App::DocumentObject*>& joints,
+        std::unordered_set<App::DocumentObject*> groundedObjs
+    );
+    void traverseAndMarkConnectedParts(
+        App::DocumentObject* currentPart,
+        std::vector<ObjRef>& connectedParts,
+        const std::vector<App::DocumentObject*>& joints
+    );
+    std::vector<ObjRef> getConnectedParts(
+        App::DocumentObject* part,
+        const std::vector<App::DocumentObject*>& joints
+    );
     bool isPartGrounded(App::DocumentObject* part);
     bool isPartConnected(App::DocumentObject* part);
 
-    std::vector<ObjRef> getDownstreamParts(App::DocumentObject* part,
-                                           App::DocumentObject* joint = nullptr);
-    std::vector<App::DocumentObject*> getUpstreamParts(App::DocumentObject* part, int limit = 0);
-    App::DocumentObject* getUpstreamMovingPart(App::DocumentObject* part,
-                                               App::DocumentObject*& joint,
-                                               std::string& name);
+    std::vector<ObjRef> getDownstreamParts(
+        App::DocumentObject* part,
+        App::DocumentObject* joint = nullptr
+    );
+    App::DocumentObject* getUpstreamMovingPart(
+        App::DocumentObject* part,
+        App::DocumentObject*& joint,
+        std::string& name,
+        std::vector<App::DocumentObject*> excludeJoints = {}
+    );
 
     double getObjMass(App::DocumentObject* obj);
     void setObjMasses(std::vector<std::pair<App::DocumentObject*, double>> objectMasses);
@@ -189,6 +210,52 @@ public:
     std::vector<App::DocumentObject*> getMotionsFromSimulation(App::DocumentObject* sim);
 
     bool isMbDJointValid(App::DocumentObject* joint);
+
+    bool isEmpty() const;
+    int numberOfComponents() const;
+
+    void updateSolveStatus();
+    inline int getLastDoF() const
+    {
+        return lastDoF;
+    }
+    inline bool getLastHasConflicts() const
+    {
+        return lastHasConflict;
+    }
+    inline bool getLastHasRedundancies() const
+    {
+        return lastHasRedundancies;
+    }
+    inline bool getLastHasPartialRedundancies() const
+    {
+        return lastHasPartialRedundancies;
+    }
+    inline bool getLastHasMalformedConstraints() const
+    {
+        return lastHasMalformedConstraints;
+    }
+    inline int getLastSolverStatus() const
+    {
+        return lastSolverStatus;
+    }
+    inline const std::vector<std::string>& getLastConflicting() const
+    {
+        return lastConflictingJoints;
+    }
+    inline const std::vector<std::string>& getLastRedundant() const
+    {
+        return lastRedundantJoints;
+    }
+    inline const std::vector<std::string>& getLastPartiallyRedundant() const
+    {
+        return lastPartialRedundantJoints;
+    }
+    inline const std::vector<std::string>& getLastMalformed() const
+    {
+        return lastMalformedJoints;
+    }
+    fastsignals::signal<void()> signalSolverUpdate;
 
 private:
     std::shared_ptr<MbD::ASMTAssembly> mbdAssembly;
@@ -201,9 +268,18 @@ private:
     std::vector<std::pair<App::DocumentObject*, Base::Placement>> previousPositions;
 
     bool bundleFixed;
+
+    int lastDoF;
+    bool lastHasConflict;
+    bool lastHasRedundancies;
+    bool lastHasPartialRedundancies;
+    bool lastHasMalformedConstraints;
+    int lastSolverStatus;
+
+    std::vector<std::string> lastRedundantJoints;
+    std::vector<std::string> lastConflictingJoints;
+    std::vector<std::string> lastPartialRedundantJoints;
+    std::vector<std::string> lastMalformedJoints;
 };
 
 }  // namespace Assembly
-
-
-#endif  // ASSEMBLY_AssemblyObject_H

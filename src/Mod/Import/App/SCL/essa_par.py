@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: BSD-3-Clause
+
 def process_nested_parent_str(attr_str):
     """
     The first letter should be a parenthesis

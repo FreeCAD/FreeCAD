@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Nathan Miller <Nathan.A.Mill[at]gmail.com>         *
  *                                                                         *
@@ -20,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
@@ -36,6 +37,8 @@
 #include "FeatureGeomFillSurface.h"
 #include "FeatureSections.h"
 #include "FeatureSewing.h"
+
+#include "Measure.h"
 
 
 namespace Surface
@@ -85,6 +88,9 @@ PyMOD_INIT_FUNC(Surface)
     Surface::FeatureBlendCurve ::init();
     Surface::Sections          ::init();
     // clang-format on
+
+    // connect to unified measurement facility
+    Surface::Measure ::initialize();
 
     PyMOD_Return(mod);
 }

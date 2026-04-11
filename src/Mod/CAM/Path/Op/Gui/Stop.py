@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2015 Dan Falck <ddfalck@gmail.com>                      *
 # *                                                                         *
@@ -37,7 +38,7 @@ class Stop:
             "App::PropertyEnumeration",
             "Stop",
             "Path",
-            QT_TRANSLATE_NOOP("App::Property", "Add Optional or Mandatory Stop to the program"),
+            QT_TRANSLATE_NOOP("App::Property", "Add an optional or mandatory stop to the program"),
         )
         obj.Stop = ["Optional", "Mandatory"]
         obj.Proxy = self
@@ -107,7 +108,7 @@ class CommandPathStop:
             "Pixmap": "CAM_Stop",
             "MenuText": QT_TRANSLATE_NOOP("CAM_Stop", "Stop"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "CAM_Stop", "Add Optional or Mandatory Stop to the program"
+                "CAM_Stop", "Adds an optional or mandatory stop to the program"
             ),
         }
 
@@ -142,4 +143,4 @@ if FreeCAD.GuiUp:
     FreeCADGui.addCommand("CAM_Stop", CommandPathStop())
 
 
-FreeCAD.Console.PrintLog("Loading PathStop... done\n")
+FreeCAD.Console.PrintLog("Loading PathStop… done\n")

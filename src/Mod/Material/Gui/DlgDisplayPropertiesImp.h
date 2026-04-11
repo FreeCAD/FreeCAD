@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef MATGUI_DIALOG_DLGDISPLAYPROPERTIES_IMP_H
-#define MATGUI_DIALOG_DLGDISPLAYPROPERTIES_IMP_H
+#pragma once
 
 #include <QDialog>
 #include <memory>
@@ -132,5 +133,3 @@ private:
 };
 
 }  // namespace MatGui
-
-#endif  // MATGUI_DIALOG_DLGDISPLAYPROPERTIES_IMP_H

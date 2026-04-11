@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef ZIPIOS_ZIP_HEADER_H
-#define ZIPIOS_ZIP_HEADER_H
+#pragma once
 
 #include <FCGlobal.h>
 #include <zipios++/ziphead.h>
@@ -76,6 +77,3 @@ private:
 };
 
 }  // namespace zipios
-
-
-#endif  // ZIPIOS_ZIP_HEADER_H

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskSketcherSolverAdvanced_H
-#define GUI_TASKVIEW_TaskSketcherSolverAdvanced_H
+#pragma once
 
 #include <Gui/TaskView/TaskView.h>
 
@@ -51,6 +52,8 @@ private:
     void onComboBoxDefaultSolverCurrentIndexChanged(int index);
     void onComboBoxDogLegGaussStepCurrentIndexChanged(int index);
     void onSpinBoxMaxIterValueChanged(int i);
+    void onSpinBoxAutoQRAlgoChanged(int i);
+    void onCheckBoxAutoQRAlgoStateChanged(int state);
     void onCheckBoxSketchSizeMultiplierStateChanged(int state);
     void onLineEditConvergenceEditingFinished();
     void onComboBoxQRMethodCurrentIndexChanged(int index);
@@ -83,5 +86,3 @@ private:
 };
 
 }  // namespace SketcherGui
-
-#endif  // GUI_TASKVIEW_TaskSketcherSolverAdvanced_H

@@ -22,8 +22,7 @@
  **************************************************************************/
 
 
-#ifndef GUI_NAVIGATIONSTATECHART_H
-#define GUI_NAVIGATIONSTATECHART_H
+#pragma once
 
 #include <boost/statechart/event.hpp>
 #include <Gui/Navigation/NavigationStyle.h>
@@ -34,7 +33,8 @@ namespace Gui
 
 class NaviStateMachine;
 
-class GuiExport NavigationStateChart : public UserNavigationStyle {
+class GuiExport NavigationStateChart: public UserNavigationStyle
+{
     using inherited = UserNavigationStyle;
 
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
@@ -67,24 +67,32 @@ public:
         bool isDownShift() const;
         bool isDownAlt() const;
 
-        enum {
+        enum
+        {
             // bits: 0-shift-ctrl-alt-0-lmb-mmb-rmb
             BUTTON1DOWN = 0x00000100,
             BUTTON2DOWN = 0x00000001,
             BUTTON3DOWN = 0x00000010,
-            CTRLDOWN =    0x00100000,
-            SHIFTDOWN =   0x01000000,
-            ALTDOWN =     0x00010000,
+            CTRLDOWN = 0x00100000,
+            SHIFTDOWN = 0x01000000,
+            ALTDOWN = 0x00010000,
             MASKBUTTONS = BUTTON1DOWN | BUTTON2DOWN | BUTTON3DOWN,
             MASKMODIFIERS = CTRLDOWN | SHIFTDOWN | ALTDOWN
         };
 
-        const SoEvent* inventor_event{nullptr};
-        unsigned int modifiers{0};
-        unsigned int mbstate() const {return modifiers & MASKBUTTONS;}
-        unsigned int kbstate() const {return modifiers & MASKMODIFIERS;}
+        const SoEvent* inventor_event {nullptr};
+        unsigned int modifiers {0};
+        unsigned int mbstate() const
+        {
+            return modifiers & MASKBUTTONS;
+        }
+        unsigned int kbstate() const
+        {
+            return modifiers & MASKMODIFIERS;
+        }
 
-        struct Flags{
+        struct Flags
+        {
             bool processed = false;
             bool propagated = false;
         };
@@ -95,7 +103,7 @@ public:
     ~NavigationStateChart() override;
 
 protected:
-    SbBool processSoEvent(const SoEvent * const ev) override;
+    SbBool processSoEvent(const SoEvent* const ev) override;
     std::unique_ptr<NaviStateMachine> naviMachine;  // NOLINT
 };
 
@@ -104,8 +112,8 @@ class GuiExport NaviStateMachine
 public:
     NaviStateMachine(const NaviStateMachine&) = delete;
     NaviStateMachine(NaviStateMachine&&) = delete;
-    NaviStateMachine& operator= (const NaviStateMachine&) = delete;
-    NaviStateMachine& operator= (NaviStateMachine&&) = delete;
+    NaviStateMachine& operator=(const NaviStateMachine&) = delete;
+    NaviStateMachine& operator=(NaviStateMachine&&) = delete;
 
     NaviStateMachine() = default;
     virtual ~NaviStateMachine() = default;
@@ -113,30 +121,29 @@ public:
     virtual void process_event(const NavigationStateChart::Event&) = 0;
 };
 
-template< typename T >
-class NaviStateMachineT : public NaviStateMachine
+template<typename T>
+class NaviStateMachineT: public NaviStateMachine
 {
 public:
-     explicit NaviStateMachineT(T* t) : object(t)
-     {
-         object->initiate();
-     }
+    explicit NaviStateMachineT(T* t)
+        : object(t)
+    {
+        object->initiate();
+    }
 
-     ~NaviStateMachineT() override
-     {
-         object.reset();
-     }
+    ~NaviStateMachineT() override
+    {
+        object.reset();
+    }
 
-     void process_event(const NavigationStateChart::Event& ev) override
-     {
-         object->process_event(ev);
-     }
+    void process_event(const NavigationStateChart::Event& ev) override
+    {
+        object->process_event(ev);
+    }
 
 private:
-     std::unique_ptr<T> object;
+    std::unique_ptr<T> object;
 };
 
 }  // namespace Gui
 // NOLINTEND(cppcoreguidelines-avoid*, readability-avoid-const-params-in-decls)
-
-#endif  // GUI_NAVIGATIONSTATECHART_H

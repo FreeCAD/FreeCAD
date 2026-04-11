@@ -17,7 +17,7 @@
    <item row="0" column="0">
     <widget class="QGroupBox" name="groupBoxMeshingOptions">
      <property name="title">
-      <string>Meshing options</string>
+      <string>Meshing Options</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_6">
       <item row="0" column="0" colspan="3">
@@ -38,7 +38,7 @@
             <item row="0" column="0">
              <widget class="QLabel" name="labelSurfaceDeviation">
               <property name="text">
-               <string>Surface deviation:</string>
+               <string>Surface deviation</string>
               </property>
              </widget>
             </item>
@@ -64,7 +64,7 @@
             <item row="1" column="0">
              <widget class="QLabel" name="labelAngularDeviation">
               <property name="text">
-               <string>Angular deviation:</string>
+               <string>Angular deviation</string>
               </property>
              </widget>
             </item>
@@ -96,7 +96,7 @@
            <widget class="QCheckBox" name="relativeDeviation">
             <property name="toolTip">
              <string>The maximal linear deviation of a mesh segment will be the specified
-Surface deviation multiplied by the length of the current mesh segment (edge)</string>
+surface deviation multiplied by the length of the current mesh segment (edge)</string>
             </property>
             <property name="text">
              <string>Relative surface deviation</string>
@@ -153,7 +153,7 @@ this feature (e.g. the format OBJ).</string>
             <item>
              <widget class="QCheckBox" name="checkMaximumEdgeLength">
               <property name="text">
-               <string>Maximum edge length:</string>
+               <string>Maximum edge length</string>
               </property>
               <property name="checked">
                <bool>true</bool>
@@ -266,7 +266,7 @@ The smallest value is 0.</string>
               <item row="0" column="0">
                <widget class="QLabel" name="labelGrading">
                 <property name="text">
-                 <string>Mesh size grading:</string>
+                 <string>Mesh size grading</string>
                 </property>
                </widget>
               </item>
@@ -299,7 +299,7 @@ A value in the range of 0.1-1.</string>
               <item row="1" column="0">
                <widget class="QLabel" name="labelEdgeElements">
                 <property name="text">
-                 <string>Elements per edge:</string>
+                 <string>Elements per edge</string>
                 </property>
                </widget>
               </item>
@@ -332,7 +332,7 @@ A value in the range of 0.2-10.</string>
               <item row="2" column="0">
                <widget class="QLabel" name="labelCurvatureElements">
                 <property name="text">
-                 <string>Elements per curvature radius:</string>
+                 <string>Elements per curvature radius</string>
                 </property>
                </widget>
               </item>

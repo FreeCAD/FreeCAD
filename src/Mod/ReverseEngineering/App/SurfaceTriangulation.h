@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2012 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef REEN_SURFACETRIANGULATION_H
-#define REEN_SURFACETRIANGULATION_H
+#pragma once
 
 #include <vector>
 
@@ -209,5 +210,3 @@ private:
 };
 
 }  // namespace Reen
-
-#endif  // REEN_SURFACETRIANGULATION_H

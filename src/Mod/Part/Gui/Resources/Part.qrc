@@ -82,5 +82,7 @@
         <file>icons/PartWorkbench.svg</file>
         <file>icons/preferences-part_design.svg</file>
         <file>icons/Part_Detached.svg</file>
+        <file>icons/Part_LinearPattern_extent.svg</file>
+        <file>icons/Part_LinearPattern_spacing.svg</file>
     </qresource>
 </RCC>

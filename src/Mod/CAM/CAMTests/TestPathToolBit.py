@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2019 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -29,7 +30,6 @@ from CAMTests.PathTestUtils import PathTestWithAssets
 from Path.Tool.library import Library
 from Path.Tool.shape import ToolBitShapeBullnose
 from Path.Tool.toolbit import ToolBitEndmill, ToolBitBullnose
-
 
 TOOL_DIR = pathlib.Path(os.path.realpath(__file__)).parent.parent / "Tools"
 SHAPE_DIR = TOOL_DIR / "Shape"
@@ -62,7 +62,7 @@ class TestPathToolBit(PathTestWithAssets):
 
         # Parameters should be loaded from the shape file and set on the tool bit's object
         self.assertEqual(bullnose_bit.obj.Diameter, FreeCAD.Units.Quantity("5.0 mm"))
-        self.assertEqual(bullnose_bit.obj.FlatRadius, FreeCAD.Units.Quantity("1.5 mm"))
+        self.assertEqual(bullnose_bit.obj.CornerRadius, FreeCAD.Units.Quantity("1.5 mm"))
 
     def testToolBitPickle(self):
         """Test if ToolBit is picklable"""

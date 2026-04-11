@@ -41,9 +41,7 @@ class BIM_Door(BimWindow.Arch_Window):
         return {
             "Pixmap": "BIM_Door",
             "MenuText": QT_TRANSLATE_NOOP("BIM_Door", "Door"),
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "BIM_Door", "Places a door at a given location"
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("BIM_Door", "Places a door at a given location"),
             "Accel": "D,O",
         }
 

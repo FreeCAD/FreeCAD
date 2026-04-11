@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="lbl_info_2">
      <property name="text">
-      <string>Select master face, click Add or Remove</string>
+      <string>Select master geometry of type: Face; click Add or Remove</string>
      </property>
     </widget>
    </item>
@@ -76,7 +76,7 @@
    <item>
     <widget class="QLabel" name="lbl_info">
      <property name="text">
-      <string>Select slave face, click Add or Remove</string>
+      <string>Select slave geometry of type: Face; click Add or Remove</string>
      </property>
     </widget>
    </item>

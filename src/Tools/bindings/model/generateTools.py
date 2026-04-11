@@ -1,5 +1,6 @@
 #! python
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # (c) 2007 Jürgen Riegel
 
 import os
@@ -162,9 +163,7 @@ if __name__ == "__main__":
     rco = re.compile(r"= ")
     x = 23  # just a variable to try substitution
     cop = copier(rex, globals(), rbe, ren, rco)
-    lines_block = [
-        line + "\n"
-        for line in """
+    lines_block = [line + "\n" for line in """
 A first, plain line -- it just gets copied.
 A second line, with @x@ substitutions.
 + x+=1   # non-block statements MUST end with comments
@@ -178,10 +177,7 @@ After all, @x@ is rather small!
 + for i in range(3):
   Also, @i@ times @x@ is @i*x@.
 -
-One last, plain line at the end.""".split(
-            "\n"
-        )
-    ]
+One last, plain line at the end.""".split("\n")]
     print("*** input:")
     print("".join(lines_block))
     print("*** output:")

@@ -6,33 +6,18 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1000</width>
-    <height>900</height>
+    <width>775</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Tool Parameter Editor</string>
+   <string>Toolbit Parameter Editor</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QScrollArea" name="scrollArea">
-     <property name="widgetResizable">
-      <bool>true</bool>
-     </property>
-     <widget class="QWidget" name="scrollAreaWidgetContents_6">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>980</width>
-        <height>849</height>
-       </rect>
-      </property>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
-       <item>
-        <layout class="QVBoxLayout" name="vBox">
-         <item>
-          <widget class="QTabWidget" name="tabWidget">
+    <layout class="QVBoxLayout" name="vBox">
+     <item>
+      <widget class="QTabWidget" name="tabWidget">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
              <horstretch>0</horstretch>
@@ -41,14 +26,14 @@
            </property>
            <property name="sizeIncrement">
             <size>
-             <width>1000</width>
-             <height>1000</height>
+             <width>775</width>
+             <height>600</height>
             </size>
            </property>
            <property name="baseSize">
             <size>
-             <width>1000</width>
-             <height>1000</height>
+             <width>775</width>
+             <height>600</height>
             </size>
            </property>
            <property name="currentIndex">
@@ -62,7 +47,7 @@
              </sizepolicy>
             </property>
             <attribute name="title">
-             <string>Tool</string>
+             <string>Toolbit</string>
             </attribute>
             <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,1">
              <item>
@@ -104,7 +89,7 @@
                <item row="1" column="0">
                 <widget class="QLabel" name="label_4">
                  <property name="text">
-                  <string>Coating:</string>
+                  <string>Coating</string>
                  </property>
                 </widget>
                </item>
@@ -114,7 +99,7 @@
                <item row="3" column="0">
                 <widget class="QLabel" name="label_3">
                  <property name="text">
-                  <string>Hardness:</string>
+                  <string>Hardness</string>
                  </property>
                 </widget>
                </item>
@@ -124,7 +109,7 @@
                <item row="2" column="0">
                 <widget class="QLabel" name="label_2">
                  <property name="text">
-                  <string>Materials:</string>
+                  <string>Materials</string>
                  </property>
                 </widget>
                </item>
@@ -137,7 +122,7 @@
                <item row="4" column="0">
                 <widget class="QLabel" name="label">
                  <property name="text">
-                  <string>Supplier:</string>
+                  <string>Supplier</string>
                  </property>
                 </widget>
                </item>
@@ -170,10 +155,6 @@
           </widget>
          </item>
         </layout>
-       </item>
-      </layout>
-     </widget>
-    </widget>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">

@@ -20,10 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DrawView_h_
-#define DrawView_h_
+#pragma once
 
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 #include <QCoreApplication>
 #include <QRectF>
 
@@ -52,7 +51,7 @@ class TechDrawExport DrawView : public App::DocumentObject
 public:
     /// Constructor
     DrawView();
-    ~DrawView() override;
+    ~DrawView() override = default;
 
     App::PropertyDistance X;
     App::PropertyDistance Y;
@@ -65,6 +64,7 @@ public:
 
     /** @name methods override Feature */
     //@{
+    App::DocumentObjectExecReturn* recompute() override;
     /// recalculate the Feature
     App::DocumentObjectExecReturn *execute() override;
     void onDocumentRestored() override;
@@ -100,8 +100,8 @@ public:
     virtual Base::Vector3d getPosition() const { return Base::Vector3d(X.getValue(), Y.getValue(), 0.0); }
     virtual bool keepUpdated(void);
 
-    boost::signals2::signal<void (const DrawView*)> signalGuiPaint;
-    boost::signals2::signal<void (const DrawView*, std::string, std::string)> signalProgressMessage;
+    fastsignals::signal<void (const DrawView*)> signalGuiPaint;
+    fastsignals::signal<void (const DrawView*, std::string, std::string)> signalProgressMessage;
     void requestPaint(void);
     void showProgressMessage(std::string featureName, std::string text);
 
@@ -126,6 +126,8 @@ public:
 
     static bool isProjGroupItem(DrawViewPart* item);
 
+    virtual bool snapsToPosition() const { return true; }
+
 protected:
     void onBeforeChange(const App::Property *prop) override;
     void onChanged(const App::Property* prop) override;
@@ -149,5 +151,3 @@ private:
 using DrawViewPython = App::FeaturePythonT<DrawView>;
 
 } //namespace TechDraw
-
-#endif

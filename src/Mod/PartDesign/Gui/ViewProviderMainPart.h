@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -21,15 +23,15 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderMainPart_H
-#define PARTGUI_ViewProviderMainPart_H
+#pragma once
 
 #include <Mod/Part/Gui/ViewProvider.h>
 
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
-class PartDesignGuiExport ViewProviderMainPart : public PartGui::ViewProviderPart
+class PartDesignGuiExport ViewProviderMainPart: public PartGui::ViewProviderPart
 {
     PROPERTY_HEADER(PartDesignGui::ViewProviderMainPart);
 
@@ -40,11 +42,8 @@ public:
     virtual ~ViewProviderMainPart();
 
     /// grouping handling
-    std::vector<App::DocumentObject*> claimChildren(void)const;
+    std::vector<App::DocumentObject*> claimChildren(void) const;
 };
 
 
-} // namespace PartDesignGui
-
-
-#endif // PARTGUI_ViewProviderMainPart_H
+}  // namespace PartDesignGui

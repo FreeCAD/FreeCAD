@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef STDLINEENUMS_H_
-#define STDLINEENUMS_H_
+#pragma once
 
 #include <string>
 #include <vector>
@@ -126,5 +125,3 @@ private:
 
 };
 } //end namespace TechDraw
-#endif
-

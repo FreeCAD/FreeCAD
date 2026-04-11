@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SURFACEGUI_VIEWPROVIDEREXTEND_H
-#define SURFACEGUI_VIEWPROVIDEREXTEND_H
+#pragma once
 
 #include <Mod/Part/Gui/ViewProviderSpline.h>
 
@@ -38,5 +39,3 @@ public:
 };
 
 }  // namespace SurfaceGui
-
-#endif  // SURFACEGUI_VIEWPROVIDEREXTEND_H

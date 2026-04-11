@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2025 Samuel Abels <knipknap@gmail.com>                  *
 # *                                                                         *
@@ -26,6 +27,13 @@ import Path
 from Path import Preferences
 from Path.Preferences import addToolPreferenceObserver
 from .assets import AssetManager, AssetUri, Asset, FileStore
+from .toolbit.migration import ParameterAccessor, migrate_parameters
+
+if False:
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
+else:
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 def ensure_library_assets_initialized(asset_manager: AssetManager, store_name: str = "local"):
@@ -51,28 +59,40 @@ def ensure_toolbits_have_shape_type(asset_manager: AssetManager, store_name: str
     for uri in toolbit_uris:
         data = asset_manager.get_raw(uri, store=store_name)
         attrs = json.loads(data)
-        if "shape-type" in attrs:
-            continue
+        changed = False
 
-        shape_id = pathlib.Path(
-            str(attrs.get("shape", ""))
-        ).stem  # backward compatibility. used to be a filename
-        if not shape_id:
-            Path.Log.error(f"ToolBit {uri} missing shape ID")
-            continue
+        # --- Step 1: Ensure shape-type exists (migrate if needed) ---
+        if "shape-type" not in attrs:
+            shape_id = pathlib.Path(
+                str(attrs.get("shape", ""))
+            ).stem  # backward compatibility. used to be a filename
+            if not shape_id:
+                Path.Log.error(f"ToolBit {uri} missing shape ID")
+                continue
 
-        try:
-            shape_class = ToolBitShape.get_shape_class_from_id(shape_id)
-        except Exception as e:
-            Path.Log.error(f"Failed to load toolbit {uri}: {e}. Skipping")
-            continue
-        if not shape_class:
-            Path.Log.error(f"Toolbit {uri} has no shape-type attribute, and failed to infer it")
-            continue
-        attrs["shape-type"] = shape_class.name
-        Path.Log.info(f"Migrating toolbit {uri}: Adding shape-type attribute '{shape_class.name}'")
-        data = json.dumps(attrs, sort_keys=True, indent=2).encode("utf-8")
-        asset_manager.add_raw("toolbit", uri.asset_id, data, store=store_name)
+            try:
+                shape_class = ToolBitShape.get_shape_class_from_id(shape_id)
+            except Exception as e:
+                Path.Log.error(f"Failed to load toolbit {uri}: {e}. Skipping")
+                continue
+            if not shape_class:
+                Path.Log.error(f"Toolbit {uri} has no shape-type attribute, and failed to infer it")
+                continue
+            attrs["shape-type"] = shape_class.name
+            Path.Log.info(
+                f"Migrating toolbit {uri}: Adding shape-type attribute '{shape_class.name}'"
+            )
+            changed = True
+
+        # --- Step 2: Migrate legacy parameters (now that shape-type is set) ---
+        if "parameter" in attrs and isinstance(attrs["parameter"], dict):
+            if migrate_parameters(ParameterAccessor(attrs)):
+                changed = True
+
+        # --- Step 3: Write changes if any occurred ---
+        if changed:
+            data = json.dumps(attrs, sort_keys=True, indent=2).encode("utf-8")
+            asset_manager.add_raw("toolbit", uri.asset_id, data, store=store_name)
 
 
 def ensure_toolbit_assets_initialized(asset_manager: AssetManager, store_name: str = "local"):
@@ -131,13 +151,13 @@ def ensure_toolbitshape_assets_present(asset_manager: AssetManager, store_name: 
 
 def ensure_toolbitshape_assets_initialized(asset_manager: AssetManager, store_name: str = "local"):
     """
-    Copies an example shape to the given store if it is currently empty.
+    Ensures the toolbitshape directory structure exists without adding any files.
     """
-    builtin_shape_path = Preferences.getBuiltinShapePath()
+    from pathlib import Path
 
-    if asset_manager.is_empty("toolbitshape", store=store_name):
-        path = builtin_shape_path / "endmill.fcstd"
-        asset_manager.add_file("toolbitshape", path, store=store_name, asset_id="example")
+    # Get the shape directory path and ensure it exists
+    shape_path = Preferences.getAssetPath() / "Tools" / "Shape"
+    shape_path.mkdir(parents=True, exist_ok=True)
 
 
 def ensure_assets_initialized(asset_manager: AssetManager, store="local"):
@@ -151,12 +171,22 @@ def ensure_assets_initialized(asset_manager: AssetManager, store="local"):
 
 def _on_asset_path_changed(group, key, value):
     Path.Log.info(f"CAM asset directory changed in preferences: {group} {key} {value}")
-    user_asset_store.set_dir(Preferences.getAssetPath())
+    user_asset_store.set_dir(value)
     ensure_assets_initialized(cam_assets)
 
 
 # Set up the local CAM asset storage.
 asset_mapping = {
+    "toolbitlibrary": "Tools/Library/{asset_id}.fctl",
+    "toolbit": "Tools/Bit/{asset_id}.fctb",
+    "toolbitshape": "Tools/Shape/{asset_id}.fcstd",
+    "toolbitshapesvg": "Tools/Shape/{asset_id}",  # Asset ID has ".svg" included
+    "toolbitshapepng": "Tools/Shape/{asset_id}",  # Asset ID has ".png" included
+    "machine": "Machine/{asset_id}.fcm",
+}
+
+# Separate mapping for builtin assets (maintains original structure)
+builtin_asset_mapping = {
     "toolbitlibrary": "Library/{asset_id}.fctl",
     "toolbit": "Bit/{asset_id}.fctb",
     "toolbitshape": "Shape/{asset_id}.fcstd",
@@ -174,7 +204,7 @@ user_asset_store = FileStore(
 builtin_asset_store = FileStore(
     name="builtin",
     base_dir=Preferences.getBuiltinAssetPath(),
-    mapping=asset_mapping,
+    mapping=builtin_asset_mapping,
 )
 
 

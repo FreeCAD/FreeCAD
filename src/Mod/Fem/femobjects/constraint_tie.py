@@ -102,7 +102,7 @@ class ConstraintTie(base_fempythonobject.BaseFemPythonObject):
                 type="App::PropertyInteger",
                 name="ConnectedSectors",
                 group="Geometry",
-                doc="Number of connected sectors",
+                doc="Number of connected sectors used for results display",
                 value=1,
             )
         )

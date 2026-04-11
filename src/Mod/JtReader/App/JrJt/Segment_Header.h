@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /**************************************************************************
  *   Copyright (c) 2014 Juergen Riegel <juergen.riegel@web.de>             *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef Segment_Header_HEADER
-#define Segment_Header_HEADER
+#pragma once
 
 #include <istream>
 #include <stdint.h>
@@ -56,6 +57,3 @@ struct Segment_Header
     I32 Segment_Type;
     I32 Segment_Length;
 };
-
-
-#endif

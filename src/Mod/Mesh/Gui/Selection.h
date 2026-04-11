@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHGUI_SELECTION_H
-#define MESHGUI_SELECTION_H
+#pragma once
+
+#include <Mod/Mesh/MeshGlobal.h>
 
 #include <vector>
 #include <QWidget>
@@ -61,5 +64,3 @@ private:
 };
 
 }  // namespace MeshGui
-
-#endif  // MESHGUI_SELECTION_H

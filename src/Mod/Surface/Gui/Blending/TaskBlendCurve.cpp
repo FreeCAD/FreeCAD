@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2025 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -19,13 +21,10 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QAction>
 #include <QMenu>
 #include <QMessageBox>
 #include <QTimer>
-#endif
 
 #include <App/Document.h>
 #include <Base/Tools.h>
@@ -33,6 +32,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
 #include <Gui/Control.h>
+#include <Gui/Document.h>
 #include <Gui/Selection/SelectionObject.h>
 #include <Gui/Tools.h>
 #include <Gui/Widgets.h>
@@ -209,8 +209,8 @@ void BlendCurvePanel::bindProperties()
 void BlendCurvePanel::onFirstEdgeButton(bool checked)
 {
     if (checked) {
-        onStartSelection();
         selectionMode = StartEdge;
+        setSelectionGate();
         onUncheckSecondEdgeButton();
     }
     else {
@@ -221,8 +221,8 @@ void BlendCurvePanel::onFirstEdgeButton(bool checked)
 void BlendCurvePanel::onSecondEdgeButton(bool checked)
 {
     if (checked) {
-        onStartSelection();
         selectionMode = EndEdge;
+        setSelectionGate();
         onUncheckFirstEdgeButton();
     }
     else {
@@ -308,9 +308,9 @@ void BlendCurvePanel::onSecondEdgeSizeChanged(double value)
     fea->recomputeFeature();
 }
 
-void BlendCurvePanel::onStartSelection()
+void BlendCurvePanel::setSelectionGate()
 {
-    if (vp.expired()) {
+    if (vp.expired() || selectionMode == None) {
         return;
     }
 
@@ -353,8 +353,10 @@ QString BlendCurvePanel::linkToString(const App::PropertyLinkSub& link)
     const auto& sub = link.getSubValues();
     std::string name = sub.empty() ? "" : sub.front();
 
-    return QString::fromLatin1("%1 [%2]").arg(QString::fromLatin1(obj->Label.getValue()),
-                                              QString::fromStdString(name));
+    return QString::fromLatin1("%1 [%2]").arg(
+        QString::fromLatin1(obj->Label.getValue()),
+        QString::fromStdString(name)
+    );
 }
 
 void BlendCurvePanel::setStartEdge(App::DocumentObject* obj, const std::string& subname)
@@ -404,22 +406,22 @@ void BlendCurvePanel::clearSelection()
 
 void BlendCurvePanel::checkOpenCommand()
 {
-    if (!Gui::Command::hasPendingCommand()) {
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit blending curve"));
+    if (!vp->getDocument()->hasPendingCommand()) {
+        vp->getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Edit blending curve"));
     }
 }
 
 bool BlendCurvePanel::accept()
 {
     Gui::cmdGuiDocument(vp->getObject(), "resetEdit()");
-    Gui::Command::commitCommand();
+    vp->getDocument()->commitCommand();
     Gui::Command::updateActive();
     return true;
 }
 
 bool BlendCurvePanel::reject()
 {
-    Gui::Command::abortCommand();
+    vp->getDocument()->abortCommand();
     Gui::cmdGuiDocument(vp->getObject(), "resetEdit()");
     Gui::Command::updateActive();
     return true;
@@ -446,4 +448,13 @@ bool TaskBlendCurve::accept()
 bool TaskBlendCurve::reject()
 {
     return widget->reject();
+}
+void TaskBlendCurve::activate()
+{
+    widget->setSelectionGate();
+    widget->attachSelection();
+}
+void TaskBlendCurve::deactivate()
+{
+    widget->detachSelection();
 }

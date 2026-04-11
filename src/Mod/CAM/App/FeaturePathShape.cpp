@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *   Copyright (c) 2017 Lei Zheng <realthunder.dev@gmail.com>             *
@@ -21,11 +22,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <Standard_Version.hxx>
 #include <TopoDS_Shape.hxx>
-#endif
+
 
 #include "FeaturePathShape.h"
 
@@ -39,11 +38,7 @@ PARAM_ENUM_STRING_DECLARE(static const char* Enums, AREA_PARAMS_PATH)
 FeatureShape::FeatureShape()
 {
     ADD_PROPERTY(Sources, (nullptr));
-    ADD_PROPERTY_TYPE(StartPoint,
-                      (Base::Vector3d()),
-                      "Path",
-                      App::Prop_None,
-                      "Feed start position");
+    ADD_PROPERTY_TYPE(StartPoint, (Base::Vector3d()), "Path", App::Prop_None, "Feed start position");
     ADD_PROPERTY_TYPE(UseStartPoint, (false), "Path", App::Prop_None, "Enable feed start position");
     PARAM_PROP_ADD("Path", AREA_PARAMS_PATH);
     PARAM_PROP_SET_ENUM(Enums, AREA_PARAMS_PATH);
@@ -76,11 +71,13 @@ App::DocumentObjectExecReturn* FeatureShape::execute()
         shapes.push_back(shape);
     }
 
-    Area::toPath(path,
-                 shapes,
-                 UseStartPoint.getValue() ? &pstart : nullptr,
-                 nullptr,
-                 PARAM_PROP_ARGS(AREA_PARAMS_PATH));
+    Area::toPath(
+        path,
+        shapes,
+        UseStartPoint.getValue() ? &pstart : nullptr,
+        nullptr,
+        PARAM_PROP_ARGS(AREA_PARAMS_PATH)
+    );
 
     Path.setValue(path);
     return App::DocumentObject::StdReturn;

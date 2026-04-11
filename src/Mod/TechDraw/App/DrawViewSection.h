@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DrawViewSection_h_
-#define DrawViewSection_h_
+#pragma once
 
 #include <TopoDS_Compound.hxx>
 #include <TopoDS_Shape.hxx>
@@ -196,7 +195,7 @@ protected:
     bool trimAfterCut() const;
 
     TopoDS_Shape m_cutShape;        // centered, scaled, rotated result of cut
-    TopoDS_Shape m_cutShapeRaw;     // raw result of cut w/o center/scale/rotate
+    TopoDS_Shape m_cutShapeRaw;     // copy of input to prepare shape
 
     void onDocumentRestored() override;
     void setupObject() override;
@@ -221,5 +220,3 @@ protected:
 using DrawViewSectionPython = App::FeaturePythonT<DrawViewSection>;
 
 }//namespace TechDraw
-
-#endif

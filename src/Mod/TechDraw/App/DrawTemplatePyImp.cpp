@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <sstream>
-#endif
+
 
 #include "DrawTemplate.h"
 // inclusion of the generated files (generated out of DrawTemplateSFPy.xml)

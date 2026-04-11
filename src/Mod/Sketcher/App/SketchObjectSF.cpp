@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Base/Console.h>
 
@@ -33,11 +34,13 @@ PROPERTY_SOURCE(Sketcher::SketchObjectSF, Part::Part2DObject)
 
 SketchObjectSF::SketchObjectSF()
 {
-    ADD_PROPERTY_TYPE(SketchFlatFile,
-                      (nullptr),
-                      "",
-                      (App::PropertyType)(App::Prop_None),
-                      "SketchFlat file (*.skf) which defines this sketch");
+    ADD_PROPERTY_TYPE(
+        SketchFlatFile,
+        (nullptr),
+        "",
+        (App::PropertyType)(App::Prop_None),
+        "SketchFlat file (*.skf) which defines this sketch"
+    );
 }
 
 short SketchObjectSF::mustExecute() const
@@ -52,7 +55,8 @@ App::DocumentObjectExecReturn* SketchObjectSF::execute()
 {
     Base::Console().warning(
         "%s: This feature is deprecated and won't be longer supported in future FreeCAD versions\n",
-        this->getNameInDocument());
+        this->getNameInDocument()
+    );
     // do nothing
     return App::DocumentObject::StdReturn;
 }

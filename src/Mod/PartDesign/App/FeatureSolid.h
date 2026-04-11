@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_FeatureSolid_H
-#define PARTDESIGN_FeatureSolid_H
+#pragma once
 
 #include "Feature.h"
 
@@ -31,11 +32,11 @@
 namespace PartDesign
 {
 
- /** PartDesign feature
+/** PartDesign feature
  *   Base class of all PartDesign features.
  *   This kind of features only produce solids or fail.
  */
-class PartDesignExport Solid : public Feature
+class PartDesignExport Solid: public Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Solid);
 
@@ -43,10 +44,6 @@ public:
     Solid();
 
 protected:
-
 };
 
-} //namespace PartDesign
-
-
-#endif // PARTDESIGN_Feature_H
+}  // namespace PartDesign

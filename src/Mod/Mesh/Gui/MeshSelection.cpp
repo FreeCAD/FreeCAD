@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <algorithm>
 #include <QBitmap>
 
@@ -30,7 +30,6 @@
 #include <Inventor/details/SoFaceDetail.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/nodes/SoCamera.h>
-#endif
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -171,8 +170,7 @@ Gui::View3DInventorViewer* MeshSelection::getViewer() const
     return nullptr;
 }
 
-void MeshSelection::startInteractiveCallback(Gui::View3DInventorViewer* viewer,
-                                             SoEventCallbackCB* cb)
+void MeshSelection::startInteractiveCallback(Gui::View3DInventorViewer* viewer, SoEventCallbackCB* cb)
 {
     if (this->activeCB) {
         return;
@@ -222,9 +220,7 @@ void MeshSelection::prepareFreehandSelection(bool add, SoEventCallbackCB* cb)
             viewer->setComponentCursor(custom);
         };
 
-        QObject::connect(viewer,
-                         &Gui::View3DInventorViewer::devicePixelRatioChanged,
-                         setComponentCursor);
+        QObject::connect(viewer, &Gui::View3DInventorViewer::devicePixelRatioChanged, setComponentCursor);
         setComponentCursor();
         this->addToSelection = add;
     }
@@ -503,10 +499,11 @@ void MeshSelection::selectGLCallback(void* ud, SoEventCallback* n)
             }
             std::vector<Mesh::FacetIndex> rf;
             rf.swap(faces);
-            std::vector<Mesh::FacetIndex> vf =
-                vp->getVisibleFacetsAfterZoom(rect,
-                                              view->getSoRenderManager()->getViewportRegion(),
-                                              view->getSoRenderManager()->getCamera());
+            std::vector<Mesh::FacetIndex> vf = vp->getVisibleFacetsAfterZoom(
+                rect,
+                view->getSoRenderManager()->getViewportRegion(),
+                view->getSoRenderManager()->getCamera()
+            );
 
             // get common facets of the viewport and the visible one
             std::sort(vf.begin(), vf.end());

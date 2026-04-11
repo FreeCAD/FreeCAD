@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2019 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHER_SKETCHGEOMETRYEXTENSION_H
-#define SKETCHER_SKETCHGEOMETRYEXTENSION_H
+#pragma once
 
 #include <array>
 #include <atomic>
@@ -53,7 +54,7 @@ enum InternalType
     ParabolaFocalAxis = 11,
     NumInternalGeometryType  // Must be the last
 };
-}
+}  // namespace InternalType
 
 namespace GeometryMode
 {
@@ -63,7 +64,7 @@ enum GeometryMode
     Construction = 1,
     NumGeometryMode  // Must be the last
 };
-}
+}  // namespace GeometryMode
 
 class ISketchGeometryExtension
 {
@@ -135,22 +136,24 @@ public:
         GeometryLayer = geolayer;
     }
 
-    constexpr static std::array<const char*, InternalType::NumInternalGeometryType>
-        internaltype2str {{"None",
-                           "EllipseMajorDiameter",
-                           "EllipseMinorDiameter",
-                           "EllipseFocus1",
-                           "EllipseFocus2",
-                           "HyperbolaMajor",
-                           "HyperbolaMinor",
-                           "HyperbolaFocus",
-                           "ParabolaFocus",
-                           "BSplineControlPoint",
-                           "BSplineKnotPoint",
-                           "ParabolaFocalAxis"}};
+    constexpr static std::array<const char*, InternalType::NumInternalGeometryType> internaltype2str {
+        {"None",
+         "EllipseMajorDiameter",
+         "EllipseMinorDiameter",
+         "EllipseFocus1",
+         "EllipseFocus2",
+         "HyperbolaMajor",
+         "HyperbolaMinor",
+         "HyperbolaFocus",
+         "ParabolaFocus",
+         "BSplineControlPoint",
+         "BSplineKnotPoint",
+         "ParabolaFocalAxis"}
+    };
 
     constexpr static std::array<const char*, GeometryMode::NumGeometryMode> geometrymode2str {
-        {"Blocked", "Construction"}};
+        {"Blocked", "Construction"}
+    };
 
     static bool getInternalTypeFromName(std::string str, InternalType::InternalType& type);
 
@@ -178,6 +181,3 @@ private:
 };
 
 }  // namespace Sketcher
-
-
-#endif  // SKETCHER_SKETCHGEOMETRYEXTENSION_H

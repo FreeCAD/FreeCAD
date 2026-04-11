@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -260,6 +261,9 @@ class ViewProvider:
 
     def editObject(self, obj):
         if obj:
+            # Block editing for Boundary objects
+            if hasattr(obj, "IsBoundary") and getattr(obj, "IsBoundary", False):
+                return False
             if obj in self.obj.Model.Group:
                 return self.openTaskPanel("Model")
             if obj == self.obj.Stock:
@@ -301,7 +305,7 @@ class ViewProvider:
         # make sure the resource view providers are setup properly
         if prop == "Model" and self.obj.Model:
             for base in self.obj.Model.Group:
-                if base.ViewObject and base.ViewObject.Proxy:
+                if base.ViewObject and hasattr(base.ViewObject, "Proxy") and base.ViewObject.Proxy:
                     base.ViewObject.Proxy.onEdit(_OpenCloseResourceEditor)
         if (
             prop == "Stock"
@@ -677,6 +681,28 @@ class StockFromExistingEdit(StockEdit):
         if job.Stock in solids:
             # regardless, what stock is/was, it's not a valid choice
             solids.remove(job.Stock)
+        excludeIndexes = []
+        for index, model in enumerate(solids):
+            if [ob.Name for ob in model.InListRecursive if "Tools" in ob.Name]:
+                excludeIndexes.append(index)
+            elif hasattr(model, "PathResource"):
+                excludeIndexes.append(index)
+            elif model.InList and hasattr(model.InList[0], "ToolBitID"):
+                excludeIndexes.append(index)
+            elif hasattr(model, "ToolBitID"):
+                excludeIndexes.append(index)
+            elif model.TypeId == "App::DocumentObjectGroup":
+                excludeIndexes.append(index)
+            elif hasattr(model, "StockType"):
+                excludeIndexes.append(index)
+            elif not model.ViewObject.ShowInTree:
+                excludeIndexes.append(index)
+            elif model.isDerivedFrom("PartDesign::Feature"):
+                excludeIndexes.append(index)
+
+        for i in sorted(excludeIndexes, reverse=True):
+            del solids[i]
+
         return sorted(solids, key=lambda c: c.Label)
 
     def setFields(self, obj):
@@ -685,7 +711,8 @@ class StockFromExistingEdit(StockEdit):
         # dropdown list. This is important because the `currentIndexChanged` signal
         # will in the end result in the stock object being recreated in `getFields`
         # method, discarding any changes made (like position in respect to origin).
-        with QtCore.QSignalBlocker(self.form.stockExisting):
+        try:
+            self.form.stockExisting.blockSignals(True)
             self.form.stockExisting.clear()
             stockName = obj.Stock.Label if obj.Stock else None
             index = -1
@@ -693,9 +720,17 @@ class StockFromExistingEdit(StockEdit):
                 self.form.stockExisting.addItem(solid.Label, solid)
                 label = "{}-{}".format(self.StockLabelPrefix, solid.Label)
 
-                if label == stockName:
+                # stockName has index suffix (since cloned), label has no index
+                # => ridgid string comparison fails
+                # Instead of ridgid string comparison use partial (needle in haystack)
+                # string comparison
+                # if label == stockName: # ridgid string comparison
+                if label in stockName:  # partial string comparison
                     index = i
+
             self.form.stockExisting.setCurrentIndex(index if index != -1 else 0)
+        finally:
+            self.form.stockExisting.blockSignals(False)
 
         if not self.IsStock(obj):
             self.getFields(obj)
@@ -747,7 +782,7 @@ class TaskPanel:
         self.form.toolControllerList.resizeColumnsToContents()
 
         currentPostProcessor = self.obj.PostProcessor
-        postProcessors = Path.Preferences.allEnabledPostProcessors(["", currentPostProcessor])
+        postProcessors = Path.Preferences.allEnabledLegacyPostProcessors(["", currentPostProcessor])
         for post in postProcessors:
             self.form.postProcessor.addItem(post)
         # update the enumeration values, just to make sure all selections are valid
@@ -1110,14 +1145,31 @@ class TaskPanel:
         self.toolControllerSelect()
 
     def toolControllerAdd(self):
-        selector = ToolBitSelector(compact=True)
+        selector = ToolBitSelector(compact=True, show_all_tools=True)
         if not selector.exec_():
             return
-        toolbit = selector.get_selected_tool()
-        toolbit.attach_to_doc(FreeCAD.ActiveDocument)
-        toolNum = self.obj.Proxy.nextToolNumber()
-        tc = PathToolControllerGui.Create(name=toolbit.label, tool=toolbit.obj, toolNumber=toolNum)
-        self.obj.Proxy.addToolController(tc)
+
+        toolbits = selector.get_selected_tools()
+        if not toolbits:
+            return
+
+        # Get tool numbers mapping (from library or empty for auto-increment)
+        tool_numbers = selector.get_tool_numbers()
+
+        # Add each selected tool
+        for toolbit in toolbits:
+            toolbit.attach_to_doc(FreeCAD.ActiveDocument)
+
+            # Get tool number: use library number if available, otherwise auto-increment
+            toolbit_uri = str(toolbit.get_uri())
+            toolNum = tool_numbers.get(toolbit_uri)
+            if toolNum is None:
+                toolNum = self.obj.Proxy.nextToolNumber()
+
+            tc = PathToolControllerGui.Create(
+                name=f"TC: {toolbit.label}", tool=toolbit.obj, toolNumber=toolNum
+            )
+            self.obj.Proxy.addToolController(tc)
 
         FreeCAD.ActiveDocument.recompute()
         self.updateToolController()
@@ -1296,7 +1348,7 @@ class TaskPanel:
                     Draft.rotate(sel.Object, angle, sel.Object.Shape.BoundBox.Center, axis)
 
     def alignSetOrigin(self):
-        (obj, by) = self.alignMoveToOrigin()
+        obj, by = self.alignMoveToOrigin()
 
         for base in self.obj.Model.Group:
             if base != obj:
@@ -1415,7 +1467,7 @@ class TaskPanel:
 
     def isValidDatumSelection(self, sel):
         if sel.ShapeType in ["Vertex", "Edge", "Face"]:
-            if hasattr(sel, "Curve") and type(sel.Curve) not in [Part.Circle]:
+            if hasattr(sel, "Curve") and not isinstance(sel.Curve, Part.Circle):
                 return False
             return True
 
@@ -1424,7 +1476,7 @@ class TaskPanel:
 
     def isValidAxisSelection(self, sel):
         if sel.ShapeType in ["Vertex", "Edge", "Face"]:
-            if hasattr(sel, "Curve") and type(sel.Curve) in [Part.Circle]:
+            if hasattr(sel, "Curve") and isinstance(sel.Curve, Part.Circle):
                 return False
             if hasattr(sel, "Surface") and sel.Surface.curvature(0, 0, "Max") != 0:
                 return False
@@ -1604,11 +1656,11 @@ class TaskPanel:
         self.updateSelection()
 
         # set active page
-        if activate in ["General", "Model"]:
-            self.form.setCurrentIndex(0)
-        if activate in ["Output", "Post Processor"]:
-            self.form.setCurrentIndex(1)
         if activate in ["Layout", "Stock"]:
+            self.form.setCurrentIndex(0)
+        if activate in ["General", "Model"]:
+            self.form.setCurrentIndex(1)
+        if activate in ["Output", "Post Processor"]:
             self.form.setCurrentIndex(2)
         if activate in ["Tools", "Tool Controller"]:
             self.form.setCurrentIndex(3)
@@ -1647,7 +1699,7 @@ class TaskPanel:
 
         # Check if at least on base model is present
         if len(self.obj.Model.Group) == 0:
-            self.form.setCurrentIndex(0)  # Change tab to General tab
+            self.form.setCurrentIndex(1)  # Change tab to General tab
             no_model_txt = translate("CAM_Job", "This job has no base model.")
             if _displayWarningWindow(no_model_txt) == 1:
                 self.jobModelEdit()

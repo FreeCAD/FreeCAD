@@ -20,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <limits>
+
 #include <BRepAdaptor_Curve.hxx>
 #include <BRep_Tool.hxx>
 #include <TopExp.hxx>
-#endif//#ifndef _PreComp_
 
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
@@ -73,16 +71,27 @@ TechDraw::DrawViewPart* TechDraw::getReferencesFromSelection(ReferenceVector& re
             }
             for (auto& sub : selItem.getSubNames()) {
                 // plain ordinary 2d view + geometry reference
-
                 ReferenceEntry ref(dvp, ShapeFinder::getLastTerm(sub));
                 references2d.push_back(ref);
             }
         } else if (!selItem.getObject()->isDerivedFrom<TechDraw::DrawView>()) {
             App::DocumentObject* obj3d = selItem.getObject();
-            // this is a regular 3d reference in form obj + long subelement
-            for (auto& sub3d : selItem.getSubNames()) {
-                ReferenceEntry ref(obj3d, sub3d);
+            // obj3d is a point object, in which case the sub will be empty instead of
+            // containing Vertex1.  Inserting "Vertex1" here gets us through
+            // validation, but doesn't work in Measure::shapefinder.
+            if (ShapeExtractor::isPointType(obj3d)) {
+                ReferenceEntry ref(obj3d, "Vertex1");
                 references3d.push_back(ref);
+            } else {
+                // this is a regular 3d reference in form obj + long subelement
+                for (auto& sub3d : selItem.getSubNames()) {
+                    if (!isValidSubElement(sub3d)) {
+                        // sub is not a vertex, edge or face.
+                        continue;
+                    }
+                    ReferenceEntry ref(obj3d, sub3d);
+                    references3d.push_back(ref);
+                }
             }
         }
     }
@@ -93,6 +102,7 @@ TechDraw::DrawViewPart* TechDraw::getReferencesFromSelection(ReferenceVector& re
             return dim->getViewPart();
         }
     }
+
     return dvp;
 }
 
@@ -211,6 +221,8 @@ DimensionGeometry TechDraw::validateDimSelection3d(
 
     return DimensionGeometry::isInvalid;
 }
+
+
 bool TechDraw::validateSubnameList(const StringVector& subNames, const GeometrySet& acceptableGeometrySet)
 {
     for (auto& sub : subNames) {    // NOLINT (std::ranges::all_of())
@@ -386,14 +398,7 @@ DimensionGeometry TechDraw::isValidSingleEdge(const ReferenceEntry& ref)
         if (gen1->points.size() < 2) {
             return DimensionGeometry::isInvalid;
         }
-        Base::Vector3d line = gen1->points.at(1) - gen1->points.at(0);
-        if (fabs(line.y) < std::numeric_limits<float>::epsilon()) {
-            return DimensionGeometry::isVertical;
-        }
-        if (fabs(line.x) < std::numeric_limits<float>::epsilon()) {
-            return DimensionGeometry::isHorizontal;
-        }
-        return DimensionGeometry::isDiagonal;
+        return lineOrientation(gen1->points.at(0), gen1->points.at(1));
     }
 
     if (geom->getGeomType() == GeomType::CIRCLE || geom->getGeomType() == GeomType::ARCOFCIRCLE) {
@@ -437,21 +442,7 @@ DimensionGeometry TechDraw::isValidSingleEdge3d(DrawViewPart* dvp, const Referen
         point0 = dvp->projectPoint(point0);
         auto point1 = Base::convertTo<Base::Vector3d>(BRep_Tool::Pnt(TopExp::LastVertex(occEdge)));
         point1 = dvp->projectPoint(point1);
-        Base::Vector3d line = point1 - point0;
-        if (fabs(line.y) < std::numeric_limits<float>::epsilon()) {
-            return DimensionGeometry::isVertical;
-        }
-
-        if (fabs(line.x) < std::numeric_limits<float>::epsilon()) {
-            return DimensionGeometry::isHorizontal;
-        }
-
-        // we don't support Z direction dimensions
-        //        else if (fabs(line.z) < std::numeric_limits<float>::epsilon()) {
-        //            return TechDraw::isZLimited;
-        //        }
-
-        return DimensionGeometry::isDiagonal;
+        return lineOrientation(point0, point1);
     }
 
     if (adapt.GetType() == GeomAbs_Circle) {
@@ -461,7 +452,8 @@ DimensionGeometry TechDraw::isValidSingleEdge3d(DrawViewPart* dvp, const Referen
     if (adapt.GetType() == GeomAbs_Ellipse) {
         return DimensionGeometry::isEllipse;
     }
-     else if (adapt.GetType() == GeomAbs_BSplineCurve) {
+
+    if (adapt.GetType() == GeomAbs_BSplineCurve) {
         if (GeometryUtils::isCircle(occEdge)) {
             return DimensionGeometry::isBSplineCircle;
         }
@@ -497,7 +489,7 @@ DimensionGeometry TechDraw::isValidSingleFace(const ReferenceEntry& ref)
 DimensionGeometry TechDraw::isValidSingleFace3d(DrawViewPart* dvp, const ReferenceEntry& ref)
 {
     (void)dvp;
-    //the Name starts with "Edge"
+    //the Name starts with "Face"
     std::string geomName = DrawUtil::getGeomTypeFromName(ref.getSubName());
     if (geomName != "Face") {
         return DimensionGeometry::isInvalid;
@@ -649,16 +641,7 @@ DimensionGeometry TechDraw::isValidVertexes(const ReferenceVector& refs)
         //2 vertices can only make a distance dimension
         TechDraw::VertexPtr v0 = dvp->getVertex(refs.at(0).getSubName());
         TechDraw::VertexPtr v1 = dvp->getVertex(refs.at(1).getSubName());
-        Base::Vector3d line = v1->point() - v0->point();
-        if (fabs(line.y) < std::numeric_limits<float>::epsilon()) {
-            return DimensionGeometry::isHorizontal;
-        }
-
-        if (fabs(line.x) < std::numeric_limits<float>::epsilon()) {
-            return DimensionGeometry::isVertical;
-        }
-        return DimensionGeometry::isDiagonal;
-
+        return lineOrientation(v0->point(), v1->point());
     } else if (refs.size() == 3) {
         //three vertices make an angle dimension
         return DimensionGeometry::isAngle3Pt;
@@ -689,18 +672,10 @@ DimensionGeometry TechDraw::isValidVertexes3d(DrawViewPart* dvp, const Reference
         point0 = dvp->projectPoint(point0);
         auto point1 = Base::convertTo<Base::Vector3d>(BRep_Tool::Pnt(TopoDS::Vertex(geometry1)));
         point1 = dvp->projectPoint(point1);
-        Base::Vector3d line = point1 - point0;
-        if (fabs(line.y) < std::numeric_limits<float>::epsilon()) {
-            return DimensionGeometry::isVertical;
-        }
-        if (fabs(line.x) < std::numeric_limits<float>::epsilon()) {
-            return DimensionGeometry::isHorizontal;
-            //        } else if(fabs(line.z) < std::numeric_limits<float>::epsilon()) {
-            //            return isZLimited;
-        }
-        return DimensionGeometry::isDiagonal;
+        return lineOrientation(point0, point1);
+    }
 
-    } else if (refs.size() == 3) {
+    if (refs.size() == 3) {
         //three vertices make an angle dimension
         //we could check here that all the geometries are Vertex
         return DimensionGeometry::isAngle3Pt;
@@ -801,4 +776,48 @@ bool  TechDraw::refsMatchToken(const ReferenceVector& refs, const std::string& m
         }
     }
     return true;
+}
+
+
+DimensionGeometry TechDraw::lineOrientation(const Base::Vector3d& point0,
+                                            const Base::Vector3d& point1)
+{
+    Base::Vector3d line = point1 - point0;
+    if (fabs(line.y) < std::numeric_limits<float>::epsilon()) {
+        return DimensionGeometry::isHorizontal;
+    }
+
+    if (fabs(line.x) < std::numeric_limits<float>::epsilon()) {
+        return DimensionGeometry::isVertical;
+    }
+
+    // we don't support Z direction dimensions
+    //        else if (fabs(line.z) < std::numeric_limits<float>::epsilon()) {
+    //            return TechDraw::isZLimited;
+    //        }
+
+    return DimensionGeometry::isDiagonal;
+}
+
+
+bool TechDraw::isValidSubElement(const std::string& subElementName)
+{
+    if (subElementName.empty()) {
+        return false;
+    }
+
+    std::string last = ShapeFinder::getLastTerm(subElementName);
+
+    if (last.empty()) {
+        return false;
+    }
+
+    std::string lastGeom = DrawUtil::getGeomTypeFromName(last);
+    if (lastGeom == "Vertex" ||
+        lastGeom == "Edge" ||
+        lastGeom == "Face") {
+        return true;
+    }
+
+    return false;
 }

@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_QGIVBALLOON_H
-#define TECHDRAWGUI_QGIVBALLOON_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -207,6 +206,9 @@ public:
         return dvBalloon;
     }
 
+    // balloons handle their own dragging
+    void dragFinished() override { };
+
 public Q_SLOTS:
     void balloonLabelDragged(bool ctrl);
     void balloonLabelDragFinished();
@@ -250,5 +252,3 @@ private:
 };
 
 }// namespace TechDrawGui
-
-#endif// TECHDRAWGUI_QGIVBALLOON_H

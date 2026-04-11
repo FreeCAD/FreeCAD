@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
  *   Copyright (c) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
@@ -21,8 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DATUMS_H
-#define DATUMS_H
+#pragma once
 
 #include "GeoFeature.h"
 #include "GeoFeatureGroupExtension.h"
@@ -252,5 +253,3 @@ private:
 };
 
 }  // namespace App
-
-#endif /* end of include guard: DATUMS_H */

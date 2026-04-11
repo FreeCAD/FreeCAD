@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -20,27 +22,32 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskHelixParameters_H
-#define GUI_TASKVIEW_TaskHelixParameters_H
+#pragma once
+
+#include <Gui/Inventor/Draggers/Gizmo.h>
 
 #include "TaskSketchBasedParameters.h"
 #include "ViewProviderHelix.h"
 
 
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace Gui {
+namespace Gui
+{
+class LinearGizmo;
+class GizmoContainer;
 class ViewProvider;
-}
+}  // namespace Gui
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 class Ui_TaskHelixParameters;
 
 
-
-class TaskHelixParameters : public TaskSketchBasedParameters
+class TaskHelixParameters: public TaskSketchBasedParameters
 {
     Q_OBJECT
 
@@ -89,17 +96,17 @@ protected:
     void startReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base) override;
     void finishReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base) override;
 
-    //mirrors of helixes's properties
-    App::PropertyLength*      propPitch;
-    App::PropertyLength*      propHeight;
-    App::PropertyFloatConstraint*       propTurns;
-    App::PropertyBool*        propLeftHanded;
-    App::PropertyBool*        propReversed;
-    App::PropertyLinkSub*     propReferenceAxis;
-    App::PropertyAngle*       propAngle;
-    App::PropertyDistance*    propGrowth;
+    // mirrors of helixes's properties
+    App::PropertyLength* propPitch;
+    App::PropertyLength* propHeight;
+    App::PropertyFloatConstraint* propTurns;
+    App::PropertyBool* propLeftHanded;
+    App::PropertyBool* propReversed;
+    App::PropertyLinkSub* propReferenceAxis;
+    App::PropertyAngle* propAngle;
+    App::PropertyDistance* propGrowth;
     App::PropertyEnumeration* propMode;
-    App::PropertyBool*        propOutside;
+    App::PropertyBool* propOutside;
 
 
 private:
@@ -125,10 +132,15 @@ private:
      * when adding stuff, and delete when removing stuff.
      */
     std::vector<std::unique_ptr<App::PropertyLinkSub>> axesInList;
+
+    std::unique_ptr<Gui::GizmoContainer> gizmoContainer;
+    Gui::LinearGizmo* heightGizmo = nullptr;
+    void setupGizmos(ViewProviderHelix* vp);
+    void setGizmoPositions();
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgHelixParameters : public TaskDlgSketchBasedParameters
+class TaskDlgHelixParameters: public TaskDlgSketchBasedParameters
 {
     Q_OBJECT
 
@@ -136,6 +148,4 @@ public:
     explicit TaskDlgHelixParameters(ViewProviderHelix* HelixView);
 };
 
-} //namespace PartDesignGui
-
-#endif // GUI_TASKVIEW_TaskHelixParameters_H
+}  // namespace PartDesignGui

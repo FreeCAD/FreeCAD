@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef Fem_FemPostFilter_H
-#define Fem_FemPostFilter_H
+#pragma once
 
 #include <vtkArrayCalculator.h>
 #include <vtkContourFilter.h>
@@ -62,6 +61,7 @@ class FemExport FemPostFilter: public Fem::FemPostObject
     PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostFilter);
 
 protected:
+    bool dataIsAvailable();
     vtkSmartPointer<vtkDataSet> getInputData();
     std::vector<std::string> getInputVectorFields();
     std::vector<std::string> getInputScalarFields();
@@ -176,9 +176,11 @@ public:
 protected:
     App::DocumentObjectExecReturn* execute() override;
     void onChanged(const App::Property* prop) override;
-    void handleChangedPropertyType(Base::XMLReader& reader,
-                                   const char* TypeName,
-                                   App::Property* prop) override;
+    void handleChangedPropertyType(
+        Base::XMLReader& reader,
+        const char* TypeName,
+        App::Property* prop
+    ) override;
 
 private:
     vtkSmartPointer<vtkLineSource> m_line;
@@ -423,6 +425,3 @@ private:
 };
 
 }  // namespace Fem
-
-
-#endif  // Fem_FemPostFilter_H

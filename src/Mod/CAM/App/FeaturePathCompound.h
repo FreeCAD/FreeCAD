@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
@@ -20,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PATH_FeatureCompound_H
-#define PATH_FeatureCompound_H
+#pragma once
 
 #include <App/PropertyLinks.h>
 
@@ -62,6 +62,3 @@ public:
 using FeatureCompoundPython = App::FeaturePythonT<FeatureCompound>;
 
 }  // namespace Path
-
-
-#endif  // PATH_FeatureCompound_H

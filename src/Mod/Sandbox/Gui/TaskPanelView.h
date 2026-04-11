@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -22,8 +24,7 @@
 
 
 
-#ifndef SANDBOXGUI_TASKPANELVIEW_H
-#define SANDBOXGUI_TASKPANELVIEW_H
+#pragma once
 
 #include <QWidget>
 
@@ -61,5 +62,3 @@ private:
 };
 
 } // namespace SandboxGui
-
-#endif // SANDBOXGUI_TASKPANELVIEW_H

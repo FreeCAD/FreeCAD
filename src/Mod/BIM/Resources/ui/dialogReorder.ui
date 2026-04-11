@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Drag items to reorder then press OK to accept</string>
+      <string>Drag items to reorder them</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -34,7 +34,7 @@
    <item>
     <widget class="QPushButton" name="pushButton">
      <property name="text">
-      <string>Order alphabetically</string>
+      <string>Order Alphabetically</string>
      </property>
      <property name="icon">
       <iconset theme="reload"/>

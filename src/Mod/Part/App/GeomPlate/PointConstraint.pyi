@@ -1,6 +1,10 @@
-from Base.Metadata import export, constmethod
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
+from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase
-from typing import Final, overload
+from typing import Tuple
 
 @export(
     PythonName="Part.GeomPlate.PointConstraintPy",
@@ -18,7 +22,7 @@ class PointConstraint(PyObjectBase):
     Licence: LGPL
     """
 
-    def setOrder(self, order: str) -> None:
+    def setOrder(self, order: str, /) -> None:
         """
         Allows you to set the order of continuity required for
         the constraints: G0, G1, and G2, controlled
@@ -32,7 +36,7 @@ class PointConstraint(PyObjectBase):
         """
         ...
 
-    def G0Criterion(self, U: float) -> float:
+    def G0Criterion(self, U: float, /) -> float:
         """
         Returns the G0 criterion at the parametric point U on
         the curve. This is the greatest distance allowed between
@@ -40,7 +44,7 @@ class PointConstraint(PyObjectBase):
         """
         ...
 
-    def G1Criterion(self, U: float) -> float:
+    def G1Criterion(self, U: float, /) -> float:
         """
         Returns the G1 criterion at the parametric point U on
         the curve. This is the greatest angle allowed between
@@ -49,7 +53,7 @@ class PointConstraint(PyObjectBase):
         """
         ...
 
-    def G2Criterion(self, U: float) -> float:
+    def G2Criterion(self, U: float, /) -> float:
         """
         Returns the G2 criterion at the parametric point U on
         the curve. This is the greatest difference in curvature
@@ -58,7 +62,7 @@ class PointConstraint(PyObjectBase):
         """
         ...
 
-    def setG0Criterion(self, value: float) -> None:
+    def setG0Criterion(self, value: float, /) -> None:
         """
         Allows you to set the G0 criterion. This is the law
         defining the greatest distance allowed between the
@@ -68,7 +72,7 @@ class PointConstraint(PyObjectBase):
         """
         ...
 
-    def setG1Criterion(self, value: float) -> None:
+    def setG1Criterion(self, value: float, /) -> None:
         """
         Allows you to set the G1 criterion. This is the law
         defining the greatest angle allowed between the
@@ -78,7 +82,7 @@ class PointConstraint(PyObjectBase):
         """
         ...
 
-    def setG2Criterion(self, value: float) -> None:
+    def setG2Criterion(self, value: float, /) -> None:
         """
         Allows you to set the G2 criterion. This is the law
         defining the greatest difference in curvature  allowed between the
@@ -94,13 +98,13 @@ class PointConstraint(PyObjectBase):
         """
         ...
 
-    def setPnt2dOnSurf(self, p: "gp_Pnt2d") -> None:
+    def setPnt2dOnSurf(self, x: float, y: float, /) -> None:
         """
         Allows you to set a 2D point on the surface. It takes a gp_Pnt2d as an argument, representing the 2D point to be associated with the surface.
         """
         ...
 
-    def pnt2dOnSurf(self) -> "gp_Pnt2d":
+    def pnt2dOnSurf(self) -> Tuple[float, float]:
         """
         Returns the 2D point on the surface. It returns a gp_Pnt2d representing the associated 2D point.
         """

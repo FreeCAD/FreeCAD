@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_MaterialObject_H
-#define APP_MaterialObject_H
+#pragma once
 
 #include "DocumentObject.h"
 #include "FeaturePython.h"
@@ -53,6 +54,3 @@ using MaterialObjectPython = App::FeaturePythonT<MaterialObject>;
 
 
 }  // namespace App
-
-
-#endif  // APP_MaterialObject_H

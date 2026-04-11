@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2007 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,18 +22,18 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <memory>
+#include <FCConfig.h>
 
-# include <Mod/Part/App/FCBRepAlgoAPI_BooleanOperation.h>
-# include <BRepCheck_Analyzer.hxx>
-# include <Standard_Failure.hxx>
-#endif
+#include <memory>
+
+#include <Mod/Part/App/FCBRepAlgoAPI_BooleanOperation.h>
+#include <BRepCheck_Analyzer.hxx>
+#include <Standard_Failure.hxx>
 
 #include <App/Application.h>
 #include <Base/Exception.h>
 #include <Base/Parameter.h>
+#include <Base/ProgramVersion.h>
 
 #include "FeaturePartBoolean.h"
 #include "TopoShapeOpCode.h"
@@ -60,25 +62,39 @@ void throwIfInvalidIfCheckModel(const TopoDS_Shape& shape)
 
 bool getRefineModelParameter()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
-    return hGrp->GetBool("RefineModel", false);
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
+                                             .GetUserParameter()
+                                             .GetGroup("BaseApp")
+                                             ->GetGroup("Preferences")
+                                             ->GetGroup("Mod/Part/Boolean");
+    return hGrp->GetBool("RefineModel", true);
 }
 
-}
+}  // namespace Part
 
 PROPERTY_SOURCE_ABSTRACT(Part::Boolean, Part::Feature)
 
 
 Boolean::Boolean()
 {
-    ADD_PROPERTY(Base,(nullptr));
-    ADD_PROPERTY(Tool,(nullptr));
-    ADD_PROPERTY_TYPE(History,(ShapeHistory()), "Boolean", (App::PropertyType)
-        (App::Prop_Output|App::Prop_Transient|App::Prop_Hidden), "Shape history");
+    ADD_PROPERTY(Base, (nullptr));
+    ADD_PROPERTY(Tool, (nullptr));
+    ADD_PROPERTY_TYPE(
+        History,
+        (ShapeHistory()),
+        "Boolean",
+        (App::PropertyType)(App::Prop_Output | App::Prop_Transient | App::Prop_Hidden),
+        "Shape history"
+    );
     History.setSize(0);
 
-    ADD_PROPERTY_TYPE(Refine,(0),"Boolean",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after this boolean operation");
+    ADD_PROPERTY_TYPE(
+        Refine,
+        (0),
+        "Boolean",
+        (App::PropertyType)(App::Prop_None),
+        "Refine shape (clean up redundant edges) after this boolean operation"
+    );
 
     this->Refine.setValue(getRefineModelParameter());
 }
@@ -96,7 +112,7 @@ short Boolean::mustExecute() const
     return 0;
 }
 
-const char *Boolean::opCode() const
+const char* Boolean::opCode() const
 {
     return Part::OpCodes::Boolean;
 }
@@ -116,12 +132,16 @@ App::DocumentObjectExecReturn* Boolean::execute()
         std::vector<TopoShape> shapes;
         shapes.reserve(2);
         // Now, let's get the TopoDS_Shape
-        shapes.push_back(Feature::getTopoShape(Base.getValue(), ShapeOption::ResolveLink | ShapeOption::Transform));
+        shapes.push_back(
+            Feature::getTopoShape(Base.getValue(), ShapeOption::ResolveLink | ShapeOption::Transform)
+        );
         auto BaseShape = shapes[0].getShape();
         if (BaseShape.IsNull()) {
             throw NullShapeException("Base shape is null");
         }
-        shapes.push_back(Feature::getTopoShape(Tool.getValue(), ShapeOption::ResolveLink | ShapeOption::Transform));
+        shapes.push_back(
+            Feature::getTopoShape(Tool.getValue(), ShapeOption::ResolveLink | ShapeOption::Transform)
+        );
         auto ToolShape = shapes[1].getShape();
         if (ToolShape.IsNull()) {
             throw NullShapeException("Tool shape is null");
@@ -160,6 +180,18 @@ App::DocumentObjectExecReturn* Boolean::execute()
     }
     catch (...) {
         return new App::DocumentObjectExecReturn(
-            "A fatal error occurred when running boolean operation");
+            "A fatal error occurred when running boolean operation"
+        );
+    }
+}
+
+void Boolean::Restore(Base::XMLReader& reader)
+{
+    ExtensionContainer::Restore(reader);
+
+    // The Refine property was added in FreeCAD 0.17, so any file before that will not have it set.
+    // For these files, the appropriate default value is false.
+    if (Base::getVersion(reader.ProgramVersion) < Base::Version::v0_17) {
+        Refine.setValue(false);
     }
 }

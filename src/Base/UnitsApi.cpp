@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
  *                                                                         *
@@ -20,14 +22,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <iomanip>
-#include <sstream>
-#endif
 
 #include <CXX/WrapPython.h>
-#include <fmt/format.h>
 
 #include "Exception.h"
 #include "UnitsApi.h"
@@ -38,11 +35,6 @@
 using Base::UnitsApi;
 using Base::UnitsSchema;
 using Base::UnitsSchemas;
-
-void UnitsApi::init()
-{
-    schemas = std::make_unique<UnitsSchemas>(UnitsSchemasData::unitSchemasDataPack);
-}
 
 std::vector<std::string> UnitsApi::getDescriptions()
 {
@@ -74,9 +66,24 @@ std::string UnitsApi::getBasicLengthUnit()
     return schemas->currentSchema()->getBasicLengthUnit();
 }
 
-std::size_t UnitsApi::getFractDenominator()
+void UnitsApi::setDecimals(const int prec)
 {
-    return schemas->defFractDenominator();
+    decimals = prec;
+}
+
+int UnitsApi::getDecimals()
+{
+    return decimals < 0 ? schemas->getDecimals() : decimals;
+}
+
+void UnitsApi::setDenominator(int frac)
+{
+    denominator = frac;
+}
+
+int UnitsApi::getDenominator()
+{
+    return denominator < 0 ? schemas->defFractDenominator() : denominator;
 }
 
 std::unique_ptr<UnitsSchema> UnitsApi::createSchema(const std::size_t num)
@@ -92,35 +99,6 @@ void UnitsApi::setSchema(const std::string& name)
 void UnitsApi::setSchema(const size_t num)
 {
     schemas->select(num);
-}
-
-std::string UnitsApi::toString(const Quantity& quantity, const QuantityFormat& format)
-{
-    return fmt::format("'{} {}'", toNumber(quantity, format), quantity.getUnit().getString());
-}
-
-std::string UnitsApi::toNumber(const Quantity& quantity, const QuantityFormat& format)
-{
-    return toNumber(quantity.getValue(), format);
-}
-
-std::string UnitsApi::toNumber(const double value, const QuantityFormat& format)
-{
-    std::stringstream ss;
-
-    switch (format.format) {
-        case QuantityFormat::Fixed:
-            ss << std::fixed;
-            break;
-        case QuantityFormat::Scientific:
-            ss << std::scientific;
-            break;
-        default:
-            break;
-    }
-    ss << std::setprecision(format.precision) << value;
-
-    return ss.str();
 }
 
 double UnitsApi::toDouble(PyObject* args, const Base::Unit& u)
@@ -145,8 +123,7 @@ double UnitsApi::toDouble(PyObject* args, const Base::Unit& u)
     throw Base::UnitsMismatchError("Wrong parameter type!");
 }
 
-std::string
-UnitsApi::schemaTranslate(const Quantity& quant, double& factor, std::string& unitString)
+std::string UnitsApi::schemaTranslate(const Quantity& quant, double& factor, std::string& unitString)
 {
     return schemas->currentSchema()->translate(quant, factor, unitString);
 }
@@ -158,17 +135,102 @@ std::string UnitsApi::schemaTranslate(const Quantity& quant)
     return schemas->currentSchema()->translate(quant, dummy1, dummy2);
 }
 
-void UnitsApi::setDecimals(const std::size_t prec)
+std::string UnitsApi::toUnicodeSuperscript(const std::string& str)
 {
-    decimals = prec;
-}
+    static constexpr auto superscripts = std::to_array<std::string_view>({
+        "\xe2\x81\xb0",  // ⁰ U+2070
+        "\xc2\xb9",      // ¹ U+00B9
+        "\xc2\xb2",      // ² U+00B2
+        "\xc2\xb3",      // ³ U+00B3
+        "\xe2\x81\xb4",  // ⁴ U+2074
+        "\xe2\x81\xb5",  // ⁵ U+2075
+        "\xe2\x81\xb6",  // ⁶ U+2076
+        "\xe2\x81\xb7",  // ⁷ U+2077
+        "\xe2\x81\xb8",  // ⁸ U+2078
+        "\xe2\x81\xb9",  // ⁹ U+2079
+    });
+    static const char* superscriptMinus = "\xe2\x81\xbb";  // ⁻ U+207B
 
-size_t UnitsApi::getDecimals()
-{
-    return decimals;
-}
+    std::string result;
 
-size_t UnitsApi::getDefDecimals()
-{
-    return schemas->getDecimals();
+    enum State
+    {
+        Normal,
+        AfterCaret,
+        AfterCaretMinus,
+        InExponent
+    } state = Normal;
+
+    for (char ch : str) {
+        switch (state) {
+            case Normal:
+                if (ch == '^') {
+                    state = AfterCaret;
+                }
+                else {
+                    result += ch;
+                }
+                break;
+
+            case AfterCaret:
+                if (ch == '^') {
+                    result += '^';
+                }
+                else if (ch == '-') {
+                    state = AfterCaretMinus;
+                }
+                else if (ch >= '0' && ch <= '9') {
+                    result += superscripts[ch - '0'];
+                    state = InExponent;
+                }
+                else {
+                    result += '^';
+                    result += ch;
+                    state = Normal;
+                }
+                break;
+
+            case AfterCaretMinus:
+                if (ch >= '0' && ch <= '9') {
+                    result += superscriptMinus;
+                    result += superscripts[ch - '0'];
+                    state = InExponent;
+                }
+                else if (ch == '^') {
+                    result += '^';
+                    result += '-';
+                    state = AfterCaret;
+                }
+                else {
+                    result += '^';
+                    result += '-';
+                    result += ch;
+                    state = Normal;
+                }
+                break;
+
+            case InExponent:
+                if (ch >= '0' && ch <= '9') {
+                    result += superscripts[ch - '0'];
+                }
+                else if (ch == '^') {
+                    state = AfterCaret;
+                }
+                else {
+                    result += ch;
+                    state = Normal;
+                }
+                break;
+        }
+    }
+
+    if (state == AfterCaret) {
+        result += '^';
+    }
+    else if (state == AfterCaretMinus) {
+        result += '^';
+        result += '-';
+    }
+
+    return result;
 }

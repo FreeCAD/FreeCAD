@@ -26,25 +26,38 @@
 
 import FreeCAD
 
+
 class ifc_vp_object:
     """NativeIFC class placeholder"""
+
     def __init__(self):
         pass
+
 
 class ifc_vp_document:
     """NativeIFC class placeholder"""
+
     def __init__(self):
         pass
+
     def attach(self, vobj):
-        FreeCAD.Console.PrintWarning("Warning: Object "+vobj.Object.Label+" depends on the NativeIFC addon which is not installed, and might not display correctly in the 3D view\n")
+        FreeCAD.Console.PrintWarning(
+            "Warning: Object "
+            + vobj.Object.Label
+            + " depends on the NativeIFC addon which is not installed, and might not display correctly in the 3D view\n"
+        )
         return
+
 
 class ifc_vp_group:
     """NativeIFC class placeholder"""
+
     def __init__(self):
         pass
 
+
 class ifc_vp_material:
     """NativeIFC class placeholder"""
+
     def __init__(self):
         pass

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2021 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -20,11 +22,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHER_GeoEnum_H
-#define SKETCHER_GeoEnum_H
+#pragma once
+
+#include <functional>
+
+#include <FCConfig.h>
 
 #include <Mod/Sketcher/SketcherGlobal.h>
-#include <functional>
 
 namespace Sketcher
 {
@@ -173,5 +177,3 @@ struct less<Sketcher::GeoElementId>
     }
 };
 }  // namespace std
-
-#endif  // SKETCHER_GeoEnum_H

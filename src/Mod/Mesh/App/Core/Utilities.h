@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2019 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_UTILITIES_H
-#define MESH_UTILITIES_H
+#pragma once
 
 #include <Base/Converter.h>
 #include <Mod/Mesh/App/WildMagic4/Wm4Vector3.h>
@@ -64,6 +65,3 @@ private:
     const vec_type& v;
 };
 }  // namespace Base
-
-
-#endif  // MESH_UTILITIES_H

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2024 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
@@ -19,10 +21,6 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
 #include <QFlags>
 
@@ -74,7 +72,7 @@ void DlgMigrateExternal::showLibraries()
 void DlgMigrateExternal::migrate()
 {
     try {
-        statusUpdate(tr("Migrating Models..."));
+        statusUpdate(tr("Migrating models…"));
         for (int row = 0; row < ui->listModelLibraries->count(); row++) {
             auto item = ui->listModelLibraries->item(row);
             if (item->checkState() == Qt::Checked) {
@@ -86,7 +84,7 @@ void DlgMigrateExternal::migrate()
         }
         statusUpdate(tr("done"));
 
-        statusUpdate(tr("Validating Models..."));
+        statusUpdate(tr("Validating models…"));
         for (int row = 0; row < ui->listModelLibraries->count(); row++) {
             auto item = ui->listModelLibraries->item(row);
             if (item->checkState() == Qt::Checked) {
@@ -98,7 +96,7 @@ void DlgMigrateExternal::migrate()
         }
         statusUpdate(tr("done"));
 
-        statusUpdate(tr("Migrating Materials..."));
+        statusUpdate(tr("Migrating materials…"));
         for (int row = 0; row < ui->listMaterialLibraries->count(); row++) {
             auto item = ui->listMaterialLibraries->item(row);
             if (item->checkState() == Qt::Checked) {
@@ -110,7 +108,7 @@ void DlgMigrateExternal::migrate()
         }
         statusUpdate(tr("done"));
 
-        statusUpdate(tr("Validating Materials..."));
+        statusUpdate(tr("Validating materials…"));
         for (int row = 0; row < ui->listMaterialLibraries->count(); row++) {
             auto item = ui->listMaterialLibraries->item(row);
             if (item->checkState() == Qt::Checked) {
@@ -144,10 +142,10 @@ void DlgMigrateExternal::migrate()
     }
     catch (const Base::Exception& e) {
         statusUpdate(QString::fromStdString(e.what()));
-        statusUpdate(tr("Unknown exception - Aborted"));
+        statusUpdate(tr("Unknown exception - aborted"));
     }
     catch (...) {
-        statusUpdate(tr("Unknown exception - Aborted"));
+        statusUpdate(tr("Unknown exception - aborted"));
     }
 }
 

@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_MDIVIEWPAGE_H
-#define TECHDRAWGUI_MDIVIEWPAGE_H
+#pragma once
 
 #include <QPrinter>
 
@@ -73,8 +72,9 @@ public:
     void clearSceneSelection();
     void blockSceneSelection(bool isBlocked);
 
-    bool onMsg(const char* pMsg, const char** ppReturn) override;
+    bool onMsg(const char* pMsg) override;
     bool onHasMsg(const char* pMsg) const override;
+    void onRelabel(Gui::Document* pDoc) override;
 
     void print() override;
     void print(QPrinter* printer) override;
@@ -89,7 +89,7 @@ public:
 
     void saveSVG(std::string fileName);
     void saveDXF(std::string fileName);
-    void savePDF(std::string fileName);
+    void savePDF(const std::string& fileName) const;
 
     void zoomIn();
     void zoomOut();
@@ -99,7 +99,7 @@ public:
 
     PyObject* getPyObject() override;
     TechDraw::DrawPage * getPage() { return m_vpPage->getDrawPage(); }
-    ViewProviderPage* getViewProviderPage() {return m_vpPage;}
+    ViewProviderPage* getViewProviderPage() const {return m_vpPage;}
 
     void setTabText(std::string tabText);
 
@@ -111,12 +111,18 @@ public:
     void setDimensionsSelectability(bool val);
     void enableContextualMenu(bool val) { isContextualMenuEnabled = val; }
 
+    QString getPdfFileName() const;     // static?
+    static bool isFileWritable(const QString& filename);
+    void exportAsPdf() const;
+
+
 public Q_SLOTS:
     void viewAll() override;
     void saveSVG();
     void saveDXF();
-    void savePDF();
+    void slotContextExportPdf();
     void toggleFrame();
+    void toggleGrid();
     void toggleKeepUpdated();
     void sceneSelectionChanged();
     void printAll();
@@ -136,10 +142,11 @@ protected:
     void sceneSelectionManager();
 
 private:
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::connection;
     Connection connectDeletedObject;
 
     QAction *m_toggleFrameAction;
+    QAction *m_toggleGridAction;
     QAction *m_toggleKeepUpdatedAction;
     QAction *m_exportSVGAction;
     QAction *m_exportDXFAction;
@@ -158,6 +165,8 @@ private:
     QList<QGraphicsItem*> m_orderedSceneSelection;        //items in selection order
 
     QString defaultFileName();
+
+    bool m_previewState{false};
 };
 
 class MDIViewPagePy : public Py::PythonExtension<MDIViewPagePy>
@@ -182,5 +191,3 @@ protected:
 
 
 } // namespace MDIViewPageGui
-
-#endif // TECHDRAWGUI_MDIVIEWPAGE_H

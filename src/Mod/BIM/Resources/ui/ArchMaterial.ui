@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>BIM material</string>
+   <string>BIM Material</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -27,7 +27,7 @@
      </property>
      <item>
       <property name="text">
-       <string>Choose preset...</string>
+       <string>Choose preset</string>
       </property>
      </item>
     </widget>
@@ -45,7 +45,7 @@
      </property>
      <item>
       <property name="text">
-       <string>Copy existing...</string>
+       <string>Copy existing…</string>
       </property>
      </item>
     </widget>
@@ -136,7 +136,7 @@
      <item>
       <widget class="QLabel" name="label_8">
        <property name="text">
-        <string>Section Color</string>
+        <string>Section color</string>
        </property>
       </widget>
      </item>
@@ -188,7 +188,7 @@
      <item>
       <widget class="QLineEdit" name="FieldCode">
        <property name="toolTip">
-        <string>A standard (MasterFormat, Omniclass...) code for this material</string>
+        <string>A standard (MasterFormat, Omniclass…) code for this material</string>
        </property>
       </widget>
      </item>

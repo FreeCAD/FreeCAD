@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2021 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -22,44 +24,41 @@
 
 #include <FCGlobal.h>
 
-#ifndef PATH_GLOBAL_H
-#define PATH_GLOBAL_H
+#pragma once
 
 
 // Path
 #ifndef PathExport
-#ifdef Path_EXPORTS
-#define PathExport FREECAD_DECL_EXPORT
-#else
-#define PathExport FREECAD_DECL_IMPORT
-#endif
+# ifdef Path_EXPORTS
+#  define PathExport FREECAD_DECL_EXPORT
+# else
+#  define PathExport FREECAD_DECL_IMPORT
+# endif
 #endif
 
 // PathGui
 #ifndef PathGuiExport
-#ifdef PathGui_EXPORTS
-#define PathGuiExport FREECAD_DECL_EXPORT
-#else
-#define PathGuiExport FREECAD_DECL_IMPORT
-#endif
+# ifdef PathGui_EXPORTS
+#  define PathGuiExport FREECAD_DECL_EXPORT
+# else
+#  define PathGuiExport FREECAD_DECL_IMPORT
+# endif
 #endif
 
 // PathSimulator
 #ifndef PathSimulatorExport
-#ifdef PathSimulator_EXPORTS
-#define PathSimulatorExport FREECAD_DECL_EXPORT
-#else
-#define PathSimulatorExport FREECAD_DECL_IMPORT
-#endif
+# ifdef PathSimulator_EXPORTS
+#  define PathSimulatorExport FREECAD_DECL_EXPORT
+# else
+#  define PathSimulatorExport FREECAD_DECL_IMPORT
+# endif
 #endif
 
 // CAMSimulator (new GL simulator)
 #ifndef CAMSimulatorExport
-#ifdef CAMSimulator_EXPORTS
-#define CAMSimulatorExport FREECAD_DECL_EXPORT
-#else
-#define CAMSimulatorExport FREECAD_DECL_IMPORT
+# ifdef CAMSimulator_EXPORTS
+#  define CAMSimulatorExport FREECAD_DECL_EXPORT
+# else
+#  define CAMSimulatorExport FREECAD_DECL_IMPORT
+# endif
 #endif
-#endif
-
-#endif  // PATH_GLOBAL_H

@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGIProjGroup_H
-#define DRAWINGGUI_QGIProjGroup_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -41,6 +40,7 @@ namespace TechDraw {
 
 namespace TechDrawGui
 {
+class QGIViewPart;
 
 class TechDrawGuiExport QGIProjGroup : public QGIViewCollection
 {
@@ -59,6 +59,11 @@ public:
 
     void drawBorder() override;
 
+    bool isMember(App::DocumentObject* dvpObj) const;
+    QGIView* getAnchorQItem() const;
+    TechDraw::DrawProjGroup* getPGroupFeature() const;
+    QList<QGIViewPart*> secondaryQViews() const;
+
 protected:
     bool sceneEventFilter(QGraphicsItem* watched, QEvent *event) override;
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
@@ -66,16 +71,15 @@ protected:
     void mouseMoveEvent(QGraphicsSceneMouseEvent * event ) override;
     void mousePressEvent(QGraphicsSceneMouseEvent * event) override;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent * event) override;
-    QGIView * getAnchorQItem() const;
+
+    void mouseReleaseEvent(QGIView* originator, QGraphicsSceneMouseEvent* event);
 
 private:
     /// Convenience function
-    TechDraw::DrawProjGroup* getDrawView() const;
+    bool autoDistributeEnabled() const;
 
     QGraphicsItem* m_origin;
     QPoint mousePos;
 };
 
 } // namespace MDIViewPageGui
-
-#endif // DRAWINGGUI_QGIProjGroup_H

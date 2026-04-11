@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEMGUI_DLGSETTINGSFEMGMSHIMP_H
-#define FEMGUI_DLGSETTINGSFEMGMSHIMP_H
+#pragma once
 
 #include <Gui/PropertyPage.h>
 #include <memory>
@@ -41,7 +40,7 @@ public:
     ~DlgSettingsFemGmshImp() override;
 
 protected Q_SLOTS:
-    void onfileNameChanged(QString FileName);
+    void onfileNameSelected(const QString& fileName);
 
 protected:
     void saveSettings() override;
@@ -54,5 +53,3 @@ private:
 };
 
 }  // namespace FemGui
-
-#endif  // FEMGUI_DLGSETTINGSFEMGMSHIMP_H

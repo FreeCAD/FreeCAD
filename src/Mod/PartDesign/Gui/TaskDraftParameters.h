@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2012 Jan Rheinländer                                    *
  *                                   <jrheinlaender@users.sourceforge.net> *
@@ -22,22 +24,28 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskDraftParameters_H
-#define GUI_TASKVIEW_TaskDraftParameters_H
+#pragma once
 
 #include "TaskDressUpParameters.h"
 #include "ViewProviderDraft.h"
 
 class Ui_TaskDraftParameters;
 
-namespace PartDesignGui {
+namespace Gui
+{
+class RotationGizmo;
+class GizmoContainer;
+}  // namespace Gui
 
-class TaskDraftParameters : public TaskDressUpParameters
+namespace PartDesignGui
+{
+
+class TaskDraftParameters: public TaskDressUpParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskDraftParameters(ViewProviderDressUp *DressUpView, QWidget *parent=nullptr);
+    explicit TaskDraftParameters(ViewProviderDressUp* DressUpView, QWidget* parent = nullptr);
     ~TaskDraftParameters() override;
 
     void apply() override;
@@ -51,26 +59,31 @@ public:
 private Q_SLOTS:
     void onAngleChanged(double angle);
     void onReversedChanged(bool reversed);
-    void onButtonPlane(const bool checked);
-    void onButtonLine(const bool checked);
+    void onButtonPlane(bool checked);
+    void onButtonLine(bool checked);
     void onRefDeleted() override;
 
 protected:
-    void setButtons(const selectionModes mode) override;
-    void changeEvent(QEvent *e) override;
+    void setButtons(selectionModes mode) override;
+    void changeEvent(QEvent* e) override;
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
 private:
     std::unique_ptr<Ui_TaskDraftParameters> ui;
+
+    std::unique_ptr<Gui::GizmoContainer> gizmoContainer;
+    Gui::RotationGizmo* angleGizmo = nullptr;
+    void setupGizmos(ViewProvider* vp);
+    void setGizmoPositions();
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgDraftParameters : public TaskDlgDressUpParameters
+class TaskDlgDraftParameters: public TaskDlgDressUpParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgDraftParameters(ViewProviderDraft *DraftView);
+    explicit TaskDlgDraftParameters(ViewProviderDraft* DraftView);
     ~TaskDlgDraftParameters() override;
 
 public:
@@ -78,6 +91,4 @@ public:
     bool accept() override;
 };
 
-} //namespace PartDesignGui
-
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+}  // namespace PartDesignGui

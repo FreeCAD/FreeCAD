@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -58,7 +59,6 @@ private:
         std::string EncodedName = std::string(Name);
         PyMem_Free(Name);
 
-        // Base::Console().log("Open in Part with %s",Name);
         Base::FileInfo file(EncodedName.c_str());
 
         // extract extension
@@ -81,7 +81,6 @@ private:
         PyMem_Free(Name);
 
         try {
-            // Base::Console().log("Insert in Part with %s",Name);
             Base::FileInfo file(EncodedName.c_str());
 
             // extract extension

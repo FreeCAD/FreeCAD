@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2019 Jean-Marie Verdun        jmverdun3@gmail.com       *
  *                                                                         *
@@ -21,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef Cloud_WORKBENCH_H
-#define Cloud_WORKBENCH_H
+#pragma once
 
 #include <Gui/Workbench.h>
 
@@ -43,6 +43,3 @@ protected:
 };
 
 }  // namespace CloudGui
-
-
-#endif  // Cloud_WORKBENCH_H

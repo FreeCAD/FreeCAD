@@ -21,9 +21,6 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -65,8 +62,8 @@ std::vector<App::DocumentObject*> JointGroup::getJoints()
             continue;
         }
 
-        auto* prop = dynamic_cast<App::PropertyBool*>(joint->getPropertyByName("Activated"));
-        if (!prop || !prop->getValue()) {
+        auto* prop = dynamic_cast<App::PropertyBool*>(joint->getPropertyByName("Suppressed"));
+        if (!prop || prop->getValue()) {
             // Filter grounded joints and deactivated joints.
             continue;
         }

@@ -27,6 +27,7 @@
 import FreeCAD
 import FreeCADGui
 import ArchStructure
+from ArchStructure import StructureMode
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 
@@ -35,7 +36,7 @@ class BIM_Column(ArchStructure._CommandStructure):
 
     def __init__(self):
         super().__init__()
-        self.beammode = False
+        self.mode = StructureMode.COLUMN
         self.featureName = "Column"
 
     def IsActive(self):
@@ -46,9 +47,7 @@ class BIM_Column(ArchStructure._CommandStructure):
         return {
             "Pixmap": "BIM_Column",
             "MenuText": QT_TRANSLATE_NOOP("BIM_Column", "Column"),
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "BIM_Column", "Creates a column at a specified location"
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("BIM_Column", "Creates a column at a specified location"),
             "Accel": "C,O",
         }
 

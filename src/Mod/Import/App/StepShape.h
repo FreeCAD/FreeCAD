@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef IMPORT_STEPSHAPE_H
-#define IMPORT_STEPSHAPE_H
+#pragma once
 
 #include <Mod/Import/ImportGlobal.h>
 
@@ -44,6 +45,3 @@ public:
 };
 
 }  // namespace Import
-
-
-#endif  // IMPORT_STEPSHAPE_H

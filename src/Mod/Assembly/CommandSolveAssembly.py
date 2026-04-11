@@ -33,7 +33,6 @@ if App.GuiUp:
 import UtilsAssembly
 import Assembly_rc
 
-
 __title__ = "Assembly Command to Solve Assembly"
 __author__ = "Ondsel"
 __url__ = "https://www.freecad.org"
@@ -49,12 +48,10 @@ class CommandSolveAssembly:
             "Pixmap": "Assembly_SolveAssembly",
             "MenuText": QT_TRANSLATE_NOOP("Assembly_SolveAssembly", "Solve Assembly"),
             "Accel": "Z",
-            "ToolTip": "<p>"
-            + QT_TRANSLATE_NOOP(
+            "ToolTip": QT_TRANSLATE_NOOP(
                 "Assembly_SolveAssembly",
-                "Solve the currently active assembly.",
-            )
-            + "</p>",
+                "Solves the currently active assembly.",
+            ),
             "CmdType": "ForEdit",
         }
 
@@ -66,10 +63,9 @@ class CommandSolveAssembly:
         if not assembly:
             return
 
-        Gui.addModule("UtilsAssembly")
         App.setActiveTransaction("Solve assembly")
-        Gui.doCommand("UtilsAssembly.activeAssembly().solve()")
-        App.closeActiveTransaction()
+        assembly.recompute(True)
+        Gui.ActiveDocument.commitCommand()
 
 
 if App.GuiUp:

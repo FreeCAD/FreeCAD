@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef APP_PROJECTFILE_H
-#define APP_PROJECTFILE_H
+#pragma once
 
 #include <Base/Type.h>
 #include <zipios++/zipfile.h>
@@ -32,22 +31,12 @@
 #include <string>
 #include <xercesc/util/XercesDefs.hpp>
 
-#ifndef XERCES_CPP_NAMESPACE_BEGIN
-#define XERCES_CPP_NAMESPACE_QUALIFIER
-using namespace XERCES_CPP_NAMESPACE;
 namespace XERCES_CPP_NAMESPACE
 {
 class DOMNode;
 class DOMElement;
 class DOMDocument;
 }  // namespace XERCES_CPP_NAMESPACE
-#else
-XERCES_CPP_NAMESPACE_BEGIN
-class DOMDocument;
-class DOMElement;
-class DOMNode;
-XERCES_CPP_NAMESPACE_END
-#endif
 
 namespace App
 {
@@ -206,15 +195,13 @@ public:
     bool replaceProjectFile(const std::string& name, bool keepfile = false);
 
 private:
-    void findFiles(XERCES_CPP_NAMESPACE_QUALIFIER DOMNode*, std::list<std::string>&) const;
-    void findFiles(XERCES_CPP_NAMESPACE_QUALIFIER DOMNode*, std::list<PropertyFile>&) const;
+    void findFiles(XERCES_CPP_NAMESPACE::DOMNode*, std::list<std::string>&) const;
+    void findFiles(XERCES_CPP_NAMESPACE::DOMNode*, std::list<PropertyFile>&) const;
 
 private:
     std::string stdFile;
-    XERCES_CPP_NAMESPACE_QUALIFIER DOMDocument* xmlDocument;
+    XERCES_CPP_NAMESPACE::DOMDocument* xmlDocument;
 };
 
 
 }  // namespace App
-
-#endif  // APP_PROJECTFILE_H

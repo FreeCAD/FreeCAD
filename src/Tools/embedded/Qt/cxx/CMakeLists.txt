@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 project(MyPlugin)
 cmake_minimum_required(VERSION 3.5)
 
@@ -35,6 +37,7 @@ include_directories(
 
 include_directories(
     SYSTEM
+    ${FastSignals_INCLUDE_DIRS}
     ${Boost_INCLUDE_DIRS}
     #${COIN3D_INCLUDE_DIRS}
     ${PYCXX_INCLUDE_DIR}
@@ -105,3 +108,7 @@ endif()
 
 add_library(FreeCADPlugin SHARED ${FreeCADPlugin_SRCS})
 target_link_libraries(FreeCADPlugin ${FreeCADPlugin_LIBS})
+
+if (MSVC)
+    target_compile_options(FreeCADPlugin PRIVATE /wd4251)
+endif()

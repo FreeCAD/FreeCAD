@@ -21,17 +21,18 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef GUI_FILE_HANDLER_H
-#define GUI_FILE_HANDLER_H
+#pragma once
 
 #include <QString>
 #include <string>
 
-namespace App {
+namespace App
+{
 class Document;
 }
 
-namespace Gui {
+namespace Gui
+{
 
 class FileHandler
 {
@@ -58,6 +59,4 @@ private:
     std::string docname;
 };
 
-}
-
-#endif //GUI_FILE_HANDLER_H
+}  // namespace Gui

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # Navigation indicator for FreeCAD
 # Copyright (C) 2016, 2017, 2018 triplus @ FreeCAD
 #
@@ -666,7 +668,7 @@ indicator.adjustSize()
 indicator.setObjectName("NavigationIndicator")
 text = QtGui.QApplication.translate(
     "NavigationIndicator",
-    "Navigation indicator",
+    "Navigation Indicator",
     "A context menu action used to show or hide the 'Navigation indicator' toolbar widget",
 )
 indicator.setWindowTitle(text)

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
@@ -20,7 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <App/DocumentObjectPy.h>
 
@@ -34,11 +34,7 @@ PROPERTY_SOURCE(Path::Feature, App::GeoFeature)
 
 Feature::Feature()
 {
-    ADD_PROPERTY_TYPE(Path,
-                      (Path::Toolpath()),
-                      "Base",
-                      App::Prop_None,
-                      "The path data of this feature");
+    ADD_PROPERTY_TYPE(Path, (Path::Toolpath()), "Base", App::Prop_None, "The path data of this feature");
 }
 
 Feature::~Feature()

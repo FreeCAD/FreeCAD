@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Friedli <david[at]friedli-be.ch>             *
  *   Copyright (c) 2013 Thomas Anderson <blobfish[at]gmx.com>              *
@@ -21,8 +23,7 @@
  **************************************************************************/
 
 
-#ifndef MEASUREGUI_VIEWPROVIDERMEASUREDISTANCE_H
-#define MEASUREGUI_VIEWPROVIDERMEASUREDISTANCE_H
+#pragma once
 
 #include <QObject>
 
@@ -97,8 +98,10 @@ public:
     void positionAnno(const Measure::MeasureBase* measureObject) override;
 
 protected:
-    Base::Vector3d getTextDirection(Base::Vector3d elementDirection,
-                                    double tolerance = defaultTolerance) override;
+    Base::Vector3d getTextDirection(
+        Base::Vector3d elementDirection,
+        double tolerance = defaultTolerance
+    ) override;
     void onChanged(const App::Property* prop) override;
 
 private:
@@ -116,6 +119,3 @@ private:
 };
 
 }  // namespace MeasureGui
-
-
-#endif  // MEASUREGUI_VIEWPROVIDERMEASUREDISTANCE_H

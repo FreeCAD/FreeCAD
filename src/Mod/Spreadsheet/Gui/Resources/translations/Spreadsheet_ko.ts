@@ -4,277 +4,277 @@
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
-      <location filename="../../Command.cpp" line="946"/>
+      <location filename="../../Command.cpp" line="954"/>
       <source>Spreadsheet</source>
       <translation>스프레드시트</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="947"/>
-      <source>&amp;Create spreadsheet</source>
-      <translation type="unfinished">&amp;Create spreadsheet</translation>
+      <location filename="../../Command.cpp" line="955"/>
+      <source>&amp;New Spreadsheet</source>
+      <translation>새 스프레드시트(&amp;N)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="948"/>
-      <source>Create a new spreadsheet</source>
-      <translation>새로운 스프레드시트 만들기</translation>
+      <location filename="../../Command.cpp" line="956"/>
+      <source>Creates a new spreadsheet</source>
+      <translation>새 스프레드시트를 생성합니다</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignBottom</name>
     <message>
-      <location filename="../../Command.cpp" line="509"/>
+      <location filename="../../Command.cpp" line="513"/>
       <source>Spreadsheet</source>
       <translation>스프레드시트</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="510"/>
-      <source>Align &amp;bottom</source>
-      <translation type="unfinished">Align &amp;bottom</translation>
+      <location filename="../../Command.cpp" line="514"/>
+      <source>Align &amp;Bottom</source>
+      <translation>아래쪽 정렬(&amp;B)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="511"/>
-      <source>Bottom-align contents of selected cells</source>
-      <translation>선택한 셀의 내용을 하단 정렬</translation>
+      <location filename="../../Command.cpp" line="515"/>
+      <source>Aligns cell contents to the bottom</source>
+      <translation>셀 내용을 아래쪽으로 정렬합니다</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignCenter</name>
     <message>
-      <location filename="../../Command.cpp" line="338"/>
+      <location filename="../../Command.cpp" line="342"/>
       <source>Spreadsheet</source>
       <translation>스프레드시트</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="339"/>
-      <source>Align &amp;center</source>
-      <translation type="unfinished">Align &amp;center</translation>
+      <location filename="../../Command.cpp" line="343"/>
+      <source>Align Horizontal &amp;Center</source>
+      <translation>가로 가운데 정렬(&amp;C)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="340"/>
-      <source>Center-align contents of selected cells</source>
-      <translation>선택한 셀의 내용을 중앙 정렬</translation>
+      <location filename="../../Command.cpp" line="344"/>
+      <source>Aligns cell contents to the horizontal center</source>
+      <translation>셀 내용을 가로 가운데로 정렬합니다</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignLeft</name>
     <message>
-      <location filename="../../Command.cpp" line="281"/>
+      <location filename="../../Command.cpp" line="285"/>
       <source>Spreadsheet</source>
       <translation>스프레드시트</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="282"/>
-      <source>Align &amp;left</source>
-      <translation type="unfinished">Align &amp;left</translation>
+      <location filename="../../Command.cpp" line="286"/>
+      <source>Align &amp;Left</source>
+      <translation>왼쪽 정렬(&amp;L)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="283"/>
-      <source>Left-align contents of selected cells</source>
-      <translation>선택한 셀의 내용을 왼쪽 정렬</translation>
+      <location filename="../../Command.cpp" line="287"/>
+      <source>Aligns cell contents to the left</source>
+      <translation>셀 내용을 왼쪽으로 정렬합니다</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignRight</name>
     <message>
-      <location filename="../../Command.cpp" line="395"/>
+      <location filename="../../Command.cpp" line="399"/>
       <source>Spreadsheet</source>
       <translation>스프레드시트</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="396"/>
-      <source>Align &amp;right</source>
-      <translation type="unfinished">Align &amp;right</translation>
+      <location filename="../../Command.cpp" line="400"/>
+      <source>Align &amp;Right</source>
+      <translation>오른쪽 정렬(&amp;R)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="397"/>
-      <source>Right-align contents of selected cells</source>
-      <translation>선택한 셀의 내용을 오른쪽 정렬</translation>
+      <location filename="../../Command.cpp" line="401"/>
+      <source>Aligns cell contents to the right</source>
+      <translation>셀 내용을 오른쪽으로 정렬합니다</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignTop</name>
     <message>
-      <location filename="../../Command.cpp" line="452"/>
+      <location filename="../../Command.cpp" line="456"/>
       <source>Spreadsheet</source>
       <translation>스프레드시트</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="453"/>
-      <source>Align &amp;top</source>
-      <translation type="unfinished">Align &amp;top</translation>
+      <location filename="../../Command.cpp" line="457"/>
+      <source>Align &amp;Top</source>
+      <translation>위쪽 정렬(&amp;T)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="454"/>
-      <source>Top-align contents of selected cells</source>
-      <translation>선택한 셀의 내용을 상단 정렬</translation>
+      <location filename="../../Command.cpp" line="458"/>
+      <source>Aligns cell contents to the top</source>
+      <translation>셀 내용을 위쪽으로 정렬합니다</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignVCenter</name>
     <message>
-      <location filename="../../Command.cpp" line="566"/>
+      <location filename="../../Command.cpp" line="570"/>
       <source>Spreadsheet</source>
       <translation>스프레드시트</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="567"/>
-      <source>&amp;Vertically center-align</source>
-      <translation type="unfinished">&amp;Vertically center-align</translation>
+      <location filename="../../Command.cpp" line="571"/>
+      <source>Align &amp;Vertical Center</source>
+      <translation>세로 가운데 정렬(&amp;V)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="568"/>
-      <source>Vertically center-align contents of selected cells</source>
-      <translation>선택한 셀의 내용을 중앙 정렬</translation>
+      <location filename="../../Command.cpp" line="572"/>
+      <source>Aligns cell contents to the vertical center</source>
+      <translation>셀 내용을 세로 가운데로 정렬합니다</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetExport</name>
     <message>
-      <location filename="../../Command.cpp" line="235"/>
+      <location filename="../../Command.cpp" line="240"/>
       <source>Spreadsheet</source>
       <translation>스프레드시트</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="236"/>
-      <source>&amp;Export spreadsheet</source>
-      <translation type="unfinished">&amp;Export spreadsheet</translation>
+      <location filename="../../Command.cpp" line="241"/>
+      <source>&amp;Export Spreadsheet</source>
+      <translation>스프레드시트 내보내기(&amp;E)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="237"/>
-      <source>Export spreadsheet to CSV file</source>
-      <translation>CSV 파일로 스프레드시트 내보내기</translation>
+      <location filename="../../Command.cpp" line="242"/>
+      <source>Exports the spreadsheet to a CSV file</source>
+      <translation>스프레드시트를 CSV 파일로 내보냅니다</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetImport</name>
     <message>
-      <location filename="../../Command.cpp" line="183"/>
+      <location filename="../../Command.cpp" line="186"/>
       <source>Spreadsheet</source>
       <translation>스프레드시트</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="184"/>
-      <source>&amp;Import spreadsheet</source>
-      <translation type="unfinished">&amp;Import spreadsheet</translation>
+      <location filename="../../Command.cpp" line="187"/>
+      <source>&amp;Import Spreadsheet</source>
+      <translation>스프레드시트 가져오기(&amp;I)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="185"/>
-      <source>Import CSV file into spreadsheet</source>
-      <translation>CSV 파일에서 스프레드시트로 가져오기</translation>
+      <location filename="../../Command.cpp" line="188"/>
+      <source>Imports a CSV file into a new spreadsheet</source>
+      <translation>CSV 파일을 새 스프레드시트로 가져옵니다</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetMergeCells</name>
     <message>
-      <location filename="../../Command.cpp" line="60"/>
+      <location filename="../../Command.cpp" line="61"/>
       <source>Spreadsheet</source>
       <translation>스프레드시트</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="61"/>
-      <source>&amp;Merge cells</source>
-      <translation type="unfinished">&amp;Merge cells</translation>
+      <location filename="../../Command.cpp" line="62"/>
+      <source>&amp;Merge Cells</source>
+      <translation>셀 병합(&amp;M)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="62"/>
-      <source>Merge selected cells</source>
-      <translation>선택한 셀 합치기</translation>
+      <location filename="../../Command.cpp" line="63"/>
+      <source>Merges the selected cells</source>
+      <translation>선택한 셀을 병합합니다</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetSetAlias</name>
     <message>
-      <location filename="../../Command.cpp" line="875"/>
+      <location filename="../../Command.cpp" line="882"/>
       <source>Spreadsheet</source>
       <translation>스프레드시트</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="876"/>
-      <source>Set alias</source>
-      <translation>별칭 설정하기</translation>
+      <location filename="../../Command.cpp" line="883"/>
+      <source>Set Alias</source>
+      <translation>별칭 설정</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="877"/>
-      <source>Set alias for selected cell</source>
-      <translation>선택한 셀의 별칭 설정</translation>
+      <location filename="../../Command.cpp" line="884"/>
+      <source>Sets an alias for the selected cell</source>
+      <translation>선택한 셀에 별칭을 설정합니다</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetSplitCell</name>
     <message>
-      <location filename="../../Command.cpp" line="121"/>
+      <location filename="../../Command.cpp" line="122"/>
       <source>Spreadsheet</source>
       <translation>스프레드시트</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="122"/>
-      <source>Sp&amp;lit cell</source>
-      <translation type="unfinished">Sp&amp;lit cell</translation>
+      <location filename="../../Command.cpp" line="123"/>
+      <source>Sp&amp;lit Cell</source>
+      <translation>셀 분할(&amp;L)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="123"/>
-      <source>Split previously merged cells</source>
-      <translation>이전에 병합된 셀 분할</translation>
+      <location filename="../../Command.cpp" line="124"/>
+      <source>Splits a previously merged cell</source>
+      <translation>이전에 병합된 셀을 분할합니다</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetStyleBold</name>
     <message>
-      <location filename="../../Command.cpp" line="623"/>
+      <location filename="../../Command.cpp" line="627"/>
       <source>Spreadsheet</source>
       <translation>스프레드시트</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="624"/>
-      <source>&amp;Bold text</source>
-      <translation type="unfinished">&amp;Bold text</translation>
+      <location filename="../../Command.cpp" line="628"/>
+      <source>&amp;Bold Text</source>
+      <translation>굵은 텍스트(&amp;B)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="625"/>
-      <source>Set text in selected cells bold</source>
-      <translation>선택한 셀의 텍스트를 굵게 설정</translation>
+      <location filename="../../Command.cpp" line="629"/>
+      <source>Sets the text in the selected cells bold</source>
+      <translation>선택한 셀의 텍스트를 굵게 설정합니다</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetStyleItalic</name>
     <message>
-      <location filename="../../Command.cpp" line="707"/>
+      <location filename="../../Command.cpp" line="712"/>
       <source>Spreadsheet</source>
       <translation>스프레드시트</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="708"/>
-      <source>&amp;Italic text</source>
-      <translation type="unfinished">&amp;Italic text</translation>
+      <location filename="../../Command.cpp" line="713"/>
+      <source>&amp;Italic Text</source>
+      <translation>기울임꼴 텍스트(&amp;I)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="709"/>
-      <source>Set text in selected cells italic</source>
-      <translation>선택한 셀의 텍스트를 기울임 꼴로 설정</translation>
+      <location filename="../../Command.cpp" line="714"/>
+      <source>Sets the text in the selected cells italic</source>
+      <translation>선택한 셀의 텍스트를 기울임꼴로 설정합니다</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetStyleUnderline</name>
     <message>
-      <location filename="../../Command.cpp" line="791"/>
+      <location filename="../../Command.cpp" line="797"/>
       <source>Spreadsheet</source>
       <translation>스프레드시트</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="792"/>
-      <source>&amp;Underline text</source>
-      <translation type="unfinished">&amp;Underline text</translation>
+      <location filename="../../Command.cpp" line="798"/>
+      <source>&amp;Underline Text</source>
+      <translation>밑줄 텍스트(&amp;U)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="793"/>
-      <source>Underline text in selected cells</source>
-      <translation>선택한 셀의 텍스트에 밑줄 적용</translation>
+      <location filename="../../Command.cpp" line="799"/>
+      <source>Underlines the text in the selected cells</source>
+      <translation>선택한 셀의 텍스트에 밑줄을 적용합니다</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="920"/>
+      <location filename="../../qtcolorpicker.cpp" line="919"/>
       <source>Custom Color</source>
       <translation>사용자 지정 색상</translation>
     </message>
@@ -289,101 +289,101 @@
     <message>
       <location filename="../../Command.cpp" line="143"/>
       <source>Sp&amp;lit cell</source>
-      <translation type="unfinished">Sp&amp;lit cell</translation>
+      <translation>셀 분할(&amp;L)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="304"/>
+      <location filename="../../Command.cpp" line="307"/>
       <source>Left-align cell</source>
       <translation>셀 왼쪽 정렬</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="361"/>
+      <location filename="../../Command.cpp" line="364"/>
       <source>Center cell</source>
       <translation>셀 가운데 정렬</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="418"/>
+      <location filename="../../Command.cpp" line="421"/>
       <source>Right-align cell</source>
       <translation>셀 오른쪽 정렬</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="475"/>
+      <location filename="../../Command.cpp" line="478"/>
       <source>Top-align cell</source>
       <translation>셀 위쪽 정렬</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="532"/>
+      <location filename="../../Command.cpp" line="535"/>
       <source>Bottom-align cell</source>
       <translation>셀 아래쪽 정렬</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="589"/>
+      <location filename="../../Command.cpp" line="592"/>
       <source>Vertically center cells</source>
-      <translation>셀 내용을 세로로 중앙 정렬</translation>
+      <translation>셀 세로 가운데 정렬</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="664"/>
+      <location filename="../../Command.cpp" line="667"/>
       <source>Set bold text</source>
-      <translation>글자 굵게</translation>
+      <translation>굵은 텍스트 설정</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="748"/>
+      <location filename="../../Command.cpp" line="752"/>
       <source>Set italic text</source>
-      <translation>기울임꼴 텍스트 설정하기</translation>
+      <translation>기울임꼴 텍스트 설정</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="832"/>
+      <location filename="../../Command.cpp" line="837"/>
       <source>Set underline text</source>
-      <translation>밑줄 텍스트 설정하기</translation>
+      <translation>밑줄 텍스트 설정</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="959"/>
+      <location filename="../../Command.cpp" line="967"/>
       <source>Create Spreadsheet</source>
       <translation>스프레드시트 만들기</translation>
     </message>
     <message>
-      <location filename="../../PropertiesDialog.cpp" line="260"/>
+      <location filename="../../PropertiesDialog.cpp" line="269"/>
       <source>Set cell properties</source>
-      <translation>셀 속성 설정하기</translation>
+      <translation>셀 속성 설정</translation>
     </message>
     <message>
-      <location filename="../../SheetModel.cpp" line="556"/>
+      <location filename="../../SheetModel.cpp" line="573"/>
       <source>Edit cell</source>
-      <translation>셀 편집하기</translation>
+      <translation>셀 편집</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="354"/>
-      <location filename="../../SheetTableView.cpp" line="387"/>
-      <source>Insert rows</source>
+      <location filename="../../Workbench.cpp" line="147"/>
+      <source>Set text color</source>
+      <translation>텍스트 색상 설정</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="182"/>
+      <source>Set background color</source>
+      <translation>배경색 설정</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="347"/>
+      <location filename="../../SheetTableView.cpp" line="380"/>
+      <source>Insert Rows</source>
       <translation>행 삽입</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="407"/>
-      <location filename="../../SheetTableView.cpp" line="485"/>
-      <source>Remove rows</source>
+      <location filename="../../SheetTableView.cpp" line="400"/>
+      <location filename="../../SheetTableView.cpp" line="475"/>
+      <source>Remove Rows</source>
       <translation>행 삭제</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="429"/>
-      <location filename="../../SheetTableView.cpp" line="462"/>
-      <source>Insert columns</source>
+      <location filename="../../SheetTableView.cpp" line="422"/>
+      <location filename="../../SheetTableView.cpp" line="455"/>
+      <source>Insert Columns</source>
       <translation>열 삽입</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="689"/>
-      <location filename="../../SpreadsheetView.cpp" line="190"/>
-      <source>Clear cell(s)</source>
-      <translation>셀 비우기</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="142"/>
-      <source>Set text color</source>
-      <translation type="unfinished">Set text color</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="176"/>
-      <source>Set background color</source>
-      <translation>배경색 설정하기</translation>
+      <location filename="../../SpreadsheetView.cpp" line="193"/>
+      <location filename="../../SheetTableView.cpp" line="679"/>
+      <source>Clear Cells</source>
+      <translation>셀 지우기</translation>
     </message>
   </context>
   <context>
@@ -394,29 +394,14 @@
       <translation>스프레드시트 셀 바인딩</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="69"/>
-      <source>To cells:</source>
-      <translation>셀:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBindSheet.ui" line="117"/>
-      <source>Sheet:</source>
-      <translation>시트:</translation>
-    </message>
-    <message>
       <location filename="../../DlgBindSheet.ui" line="22"/>
       <source>First cell in range</source>
-      <translation>범위에서 첫 번째 셀</translation>
+      <translation>범위의 첫 번째 셀</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="29"/>
       <source>Last cell in range</source>
-      <translation>범위에서 마지막 셀</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBindSheet.ui" line="36"/>
-      <source>Bind cells:</source>
-      <translation>셀 바인딩:</translation>
+      <translation>범위의 마지막 셀</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="49"/>
@@ -433,31 +418,52 @@
       <source>Start cell address to bind to.
 Type '=' if you want to use an expression.
 The expression must evaluate to a string of some cell address.</source>
-      <translation>셀 주소 바인딩을 시작합니다.  수식을 사용하시려면 '='을 입력해 주세요. 수식은 셀 주소의 문자열로 평가합니다.</translation>
+      <translation>바인딩할 시작 셀 주소입니다.
+수식을 사용하려면 '='을 입력하십시오.
+수식은 셀 주소 문자열로 평가되어야 합니다.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="36"/>
+      <source>Bind cells</source>
+      <translation>셀 바인딩</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="69"/>
+      <source>To cells</source>
+      <translation>대상 셀</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="97"/>
       <source>End cell address to bind to.
-Type '=' if you want to use an expression.
+Type '=' to use an expression.
 The expression must evaluate to a string of some cell address.</source>
-      <translation>셀 주소 바인딩을 종료합니다. 수식을 사용하시려면 '='을 입력해 주세요. 수식은 셀 주소의 문자열로 평가합니다.</translation>
+      <translation>바인딩할 끝 셀 주소입니다.
+수식을 사용하려면 '='을 입력하십시오.
+수식은 셀 주소 문자열로 평가되어야 합니다.</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="110"/>
       <source>Which spread sheet to bind to</source>
-      <translation>어떤 스프레드 시트를 바인딩하시나요?</translation>
+      <translation>바인딩할 스프레드시트</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="117"/>
+      <source>Sheet</source>
+      <translation>시트</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="126"/>
       <source>The dependency with the referenced spreadsheet will
 be hidden to the dependency checking.
 Useful to avoid cyclic dependencies, but use with caution!</source>
-      <translation>참조한 스프레드 시트의 의존성은 의존성 체크에 의해 숨겨집니다. 수환 의존성을 피하는데 유용하지만, 사용에 주의하세요!</translation>
+      <translation>참조된 스프레드시트와의 의존성이
+의존성 검사에서 숨겨집니다.
+순환 의존성을 피하는 데 유용하지만 주의해서 사용하십시오!</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="131"/>
       <source>Hide dependency of binding</source>
-      <translation>바인딩의 의존성을 숨김</translation>
+      <translation>바인딩 의존성 숨기기</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="140"/>
@@ -467,7 +473,7 @@ Useful to avoid cyclic dependencies, but use with caution!</source>
     <message>
       <location filename="../../DlgBindSheet.ui" line="147"/>
       <source>Cancel</source>
-      <translation>취소하기</translation>
+      <translation>취소</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="154"/>
@@ -483,11 +489,6 @@ Useful to avoid cyclic dependencies, but use with caution!</source>
       <translation>구성 테이블 설정</translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.ui" line="20"/>
-      <source>Cell range:</source>
-      <translation>셀 범위:</translation>
-    </message>
-    <message>
       <location filename="../../DlgSheetConf.ui" line="27"/>
       <source>Starting cell address.
 
@@ -498,11 +499,14 @@ property for user to dynamically switch configuration.
 The first row of the range will be bound to whatever row (indirectly) selected
 by that property.
 </source>
-      <translation>시작 셀 주소.
+      <translation>시작 셀 주소입니다.
 
-첫번째 열의 범위는 구성 이름 목록을 포함하는 것으로 설정하고, 문자열 목록을 생성하고 주어진 속성에 바인딩되어 사용자가 동적으로 구성을 전환할 수 있도록 한다.
+범위의 첫 번째 열은 구성 이름 목록을 포함하는 것으로 가정하며,
+이를 사용하여 문자열 목록을 생성하고 주어진 속성에 바인딩하여
+사용자가 동적으로 구성을 전환할 수 있습니다.
 
-범위의 첫 번째 행은 선택된 속성에 의해 간접적으로 선택된 행에 바인딩 됩니다.</translation>
+범위의 첫 번째 행은 해당 속성에 의해 (간접적으로) 선택된 행에
+바인딩됩니다.</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="42"/>
@@ -515,32 +519,41 @@ property for user to dynamically switch configuration.
 The first row of the range will be bound to whatever row (indirectly) selected
 by that property.
 </source>
-      <translation>종료 셀 주소.
+      <translation>끝 셀 주소입니다.
 
-첫번째 열의 범위는 구성 이름 목록을 포함하는 것으로 설정하고, 문자열 목록을 생성하고 주어진 속성에 바인딩되어 사용자가 동적으로 구성을 전환할 수 있도록 한다.
+범위의 첫 번째 열은 구성 이름 목록을 포함하는 것으로 가정하며,
+이를 사용하여 문자열 목록을 생성하고 주어진 속성에 바인딩하여
+사용자가 동적으로 구성을 전환할 수 있습니다.
 
-범위의 첫 번째 행은 선택된 속성에 의해 간접적으로 선택된 행에 바인딩 됩니다.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSheetConf.ui" line="57"/>
-      <source>Property:</source>
-      <translation>속성:</translation>
+범위의 첫 번째 행은 해당 속성에 의해 (간접적으로) 선택된 행에
+바인딩됩니다.</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="64"/>
       <source>Type in an expression to specify the object and property name to dynamically
 switch the design configuration. The property will be created if not exist.</source>
-      <translation>디자인 구성을 동적으로 전환할 객체와 속성 이름을 특정하는 표현을 입력하세요.해당 속성이 존재하지 않으면 해당 속성이 생성됩니다.</translation>
+      <translation>디자인 구성을 동적으로 전환할 객체와 속성 이름을 지정하는 수식을 입력하십시오.
+해당 속성이 없으면 생성됩니다.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.ui" line="20"/>
+      <source>Cell range</source>
+      <translation>셀 범위</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.ui" line="57"/>
+      <source>Property</source>
+      <translation>속성</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="72"/>
-      <source>Group:</source>
-      <translation>모둠:</translation>
+      <source>Group</source>
+      <translation>그룹</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="79"/>
-      <source>Optional property group name.</source>
-      <translation>선택 속성 그룹 이름</translation>
+      <source>Optional property group name</source>
+      <translation>선택적 속성 그룹 이름</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="88"/>
@@ -550,7 +563,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../DlgSheetConf.ui" line="95"/>
       <source>Cancel</source>
-      <translation>취소하기</translation>
+      <translation>취소</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="102"/>
@@ -562,7 +575,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <name>PropertiesDialog</name>
     <message>
       <location filename="../../PropertiesDialog.ui" line="14"/>
-      <source>Cell properties</source>
+      <source>Cell Properties</source>
       <translation>셀 속성</translation>
     </message>
     <message>
@@ -593,18 +606,18 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="95"/>
       <source>Left</source>
-      <translation>좌측면</translation>
+      <translation>왼쪽</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="102"/>
       <location filename="../../PropertiesDialog.ui" line="155"/>
       <source>Center</source>
-      <translation>중심</translation>
+      <translation>가운데</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="109"/>
       <source>Right</source>
-      <translation>우측면</translation>
+      <translation>오른쪽</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="141"/>
@@ -614,12 +627,12 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="148"/>
       <source>Top</source>
-      <translation>평면</translation>
+      <translation>위쪽</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="162"/>
       <source>Bottom</source>
-      <translation>저면</translation>
+      <translation>아래쪽</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="188"/>
@@ -634,7 +647,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="203"/>
       <source>Italic</source>
-      <translation>기울임</translation>
+      <translation>기울임꼴</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="210"/>
@@ -644,17 +657,17 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="233"/>
       <source>&amp;Display unit</source>
-      <translation>디스플레이 장치(&amp;D)</translation>
+      <translation>표시 단위(&amp;D)</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="239"/>
       <source>Text for the unit</source>
-      <translation>단위를 위한 텍스트</translation>
+      <translation>단위 표시 텍스트</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="263"/>
       <source>A&amp;lias</source>
-      <translation>별칭(A&amp;)</translation>
+      <translation>별칭(&amp;L)</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="269"/>
@@ -666,176 +679,176 @@ switch the design configuration. The property will be created if not exist.</sou
     <name>QObject</name>
     <message>
       <location filename="../../ViewProviderSpreadsheet.cpp" line="107"/>
-      <location filename="../../Command.cpp" line="195"/>
+      <location filename="../../Command.cpp" line="198"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
-      <translation>CSV (*.csv *.CSV);;모두(*)</translation>
+      <translation>CSV (*.csv *.CSV);;모든 파일 (*)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="197"/>
+      <location filename="../../Command.cpp" line="201"/>
       <source>Import file</source>
-      <translation>가져오기</translation>
+      <translation>파일 가져오기</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="109"/>
-      <source>Export file</source>
-      <translation>파일로 내보내기</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="134"/>
-      <source>Show spreadsheet</source>
-      <translation>스프레드시트 표시</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="94"/>
-      <location filename="../../Workbench.cpp" line="96"/>
-      <source>Set cell(s) text color</source>
-      <translation type="unfinished">Set cell(s) text color</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="95"/>
-      <source>Sets the Spreadsheet cell(s) text color</source>
-      <translation type="unfinished">Sets the Spreadsheet cell(s) text color</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="114"/>
-      <location filename="../../Workbench.cpp" line="117"/>
-      <source>Set cell(s) background color</source>
-      <translation>셀 배경색 설정</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="116"/>
-      <source>Sets the Spreadsheet cell(s) background color</source>
-      <translation>스프레드 시트의 셀 배경색 설정</translation>
-    </message>
-    <message>
-      <location filename="../../SheetTableView.cpp" line="822"/>
-      <source>Copy &amp; Paste failed</source>
-      <translation>복사 및 붙여넣기 실패함</translation>
-    </message>
-    <message>
-      <location filename="../../SpreadsheetView.cpp" line="493"/>
+      <location filename="../../SpreadsheetView.cpp" line="491"/>
       <source>Alias contains invalid characters!</source>
       <translation>별칭에 유효하지 않은 문자가 포함되어 있습니다!</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="499"/>
+      <location filename="../../SpreadsheetView.cpp" line="497"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation>예를 들어,  Spreadsheet.B1대신 Spreadsheet.my_alias_name 라는 별명으로 셀을 참조합니다.</translation>
+      <translation>예를 들어 Spreadsheet.B1 대신 Spreadsheet.my_alias_name과 같은 별칭으로 셀을 참조합니다.</translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="149"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="151"/>
       <source>Spreadsheet</source>
       <translation>스프레드시트</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="110"/>
+      <source>Export File</source>
+      <translation>파일 내보내기</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="136"/>
+      <source>Show Spreadsheet</source>
+      <translation>스프레드시트 표시</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="98"/>
+      <source>Sets the text color of cells</source>
+      <translation>셀의 텍스트 색상을 설정합니다</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="99"/>
+      <location filename="../../Workbench.cpp" line="100"/>
+      <source>Sets the text color of spreadsheet cells</source>
+      <translation>스프레드시트 셀의 텍스트 색상을 설정합니다</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="121"/>
+      <location filename="../../Workbench.cpp" line="123"/>
+      <source>Sets the background color of cells</source>
+      <translation>셀의 배경색을 설정합니다</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="122"/>
+      <source>Sets the spreadsheet cells background color</source>
+      <translation>스프레드시트 셀의 배경색을 설정합니다</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="815"/>
+      <source>Copy &amp; Paste Failed</source>
+      <translation>복사 및 붙여넣기 실패</translation>
     </message>
   </context>
   <context>
     <name>QtColorPicker</name>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="286"/>
-      <location filename="../../qtcolorpicker.cpp" line="412"/>
-      <location filename="../../qtcolorpicker.cpp" line="522"/>
+      <location filename="../../qtcolorpicker.cpp" line="285"/>
+      <location filename="../../qtcolorpicker.cpp" line="411"/>
+      <location filename="../../qtcolorpicker.cpp" line="521"/>
       <source>Black</source>
-      <translation>검정색</translation>
+      <translation>검정</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="413"/>
-      <location filename="../../qtcolorpicker.cpp" line="523"/>
+      <location filename="../../qtcolorpicker.cpp" line="412"/>
+      <location filename="../../qtcolorpicker.cpp" line="522"/>
       <source>White</source>
       <translation>흰색</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="414"/>
-      <location filename="../../qtcolorpicker.cpp" line="524"/>
+      <location filename="../../qtcolorpicker.cpp" line="413"/>
+      <location filename="../../qtcolorpicker.cpp" line="523"/>
       <source>Red</source>
       <translation>빨간색</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="415"/>
-      <location filename="../../qtcolorpicker.cpp" line="525"/>
+      <location filename="../../qtcolorpicker.cpp" line="414"/>
+      <location filename="../../qtcolorpicker.cpp" line="524"/>
       <source>Dark red</source>
-      <translation>진한빨간색</translation>
+      <translation>어두운 빨간색</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="416"/>
-      <location filename="../../qtcolorpicker.cpp" line="526"/>
+      <location filename="../../qtcolorpicker.cpp" line="415"/>
+      <location filename="../../qtcolorpicker.cpp" line="525"/>
       <source>Green</source>
       <translation>초록색</translation>
     </message>
     <message>
+      <location filename="../../qtcolorpicker.cpp" line="416"/>
+      <location filename="../../qtcolorpicker.cpp" line="526"/>
+      <source>Dark green</source>
+      <translation>어두운 초록색</translation>
+    </message>
+    <message>
       <location filename="../../qtcolorpicker.cpp" line="417"/>
       <location filename="../../qtcolorpicker.cpp" line="527"/>
-      <source>Dark green</source>
-      <translation>진한초록색</translation>
+      <source>Blue</source>
+      <translation>파란색</translation>
     </message>
     <message>
       <location filename="../../qtcolorpicker.cpp" line="418"/>
       <location filename="../../qtcolorpicker.cpp" line="528"/>
-      <source>Blue</source>
-      <translation>파랑색</translation>
+      <source>Dark blue</source>
+      <translation>어두운 파란색</translation>
     </message>
     <message>
       <location filename="../../qtcolorpicker.cpp" line="419"/>
       <location filename="../../qtcolorpicker.cpp" line="529"/>
-      <source>Dark blue</source>
-      <translation>군청색</translation>
+      <source>Cyan</source>
+      <translation>청록색</translation>
     </message>
     <message>
       <location filename="../../qtcolorpicker.cpp" line="420"/>
       <location filename="../../qtcolorpicker.cpp" line="530"/>
-      <source>Cyan</source>
-      <translation>하늘색</translation>
+      <source>Dark cyan</source>
+      <translation>어두운 청록색</translation>
     </message>
     <message>
       <location filename="../../qtcolorpicker.cpp" line="421"/>
       <location filename="../../qtcolorpicker.cpp" line="531"/>
-      <source>Dark cyan</source>
-      <translation>진한청록색</translation>
+      <source>Magenta</source>
+      <translation>자홍색</translation>
     </message>
     <message>
       <location filename="../../qtcolorpicker.cpp" line="422"/>
       <location filename="../../qtcolorpicker.cpp" line="532"/>
-      <source>Magenta</source>
-      <translation>진홍색</translation>
+      <source>Dark magenta</source>
+      <translation>어두운 자홍색</translation>
     </message>
     <message>
       <location filename="../../qtcolorpicker.cpp" line="423"/>
       <location filename="../../qtcolorpicker.cpp" line="533"/>
-      <source>Dark magenta</source>
-      <translation>진한진홍색</translation>
+      <source>Yellow</source>
+      <translation>노란색</translation>
     </message>
     <message>
       <location filename="../../qtcolorpicker.cpp" line="424"/>
       <location filename="../../qtcolorpicker.cpp" line="534"/>
-      <source>Yellow</source>
-      <translation>노랑색</translation>
+      <source>Dark yellow</source>
+      <translation>어두운 노란색</translation>
     </message>
     <message>
       <location filename="../../qtcolorpicker.cpp" line="425"/>
       <location filename="../../qtcolorpicker.cpp" line="535"/>
-      <source>Dark yellow</source>
-      <translation>진한노랑색</translation>
-    </message>
-    <message>
-      <location filename="../../qtcolorpicker.cpp" line="426"/>
-      <location filename="../../qtcolorpicker.cpp" line="536"/>
       <source>Gray</source>
       <translation>회색</translation>
     </message>
     <message>
+      <location filename="../../qtcolorpicker.cpp" line="426"/>
+      <location filename="../../qtcolorpicker.cpp" line="536"/>
+      <source>Dark gray</source>
+      <translation>어두운 회색</translation>
+    </message>
+    <message>
       <location filename="../../qtcolorpicker.cpp" line="427"/>
       <location filename="../../qtcolorpicker.cpp" line="537"/>
-      <source>Dark gray</source>
-      <translation>진한회색</translation>
-    </message>
-    <message>
-      <location filename="../../qtcolorpicker.cpp" line="428"/>
-      <location filename="../../qtcolorpicker.cpp" line="538"/>
       <source>Light gray</source>
-      <translation>밝은회색</translation>
+      <translation>밝은 회색</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="450"/>
+      <location filename="../../qtcolorpicker.cpp" line="449"/>
       <source>Custom Color</source>
       <translation>사용자 지정 색상</translation>
     </message>
@@ -844,19 +857,19 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
     <name>Sheet</name>
     <message>
       <location filename="../../Sheet.ui" line="22"/>
-      <source>&amp;Content:</source>
-      <translation>내용(&amp;C):</translation>
+      <source>&amp;Content</source>
+      <translation>내용(&amp;C)</translation>
     </message>
     <message>
       <location filename="../../Sheet.ui" line="39"/>
-      <source>&amp;Alias:</source>
-      <translation>별칭(&amp;A):</translation>
+      <source>&amp;Alias</source>
+      <translation>별칭(&amp;A)</translation>
     </message>
     <message>
       <location filename="../../Sheet.ui" line="52"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation>예를 들어,  Spreadsheet.B1대신 Spreadsheet.my_alias_name 라는 별명으로 셀을 참조합니다.</translation>
+      <translation>예를 들어 Spreadsheet.B1 대신 Spreadsheet.my_alias_name과 같은 별칭으로 셀을 참조합니다.</translation>
     </message>
     <message>
       <location filename="../../Sheet.ui" line="131"/>
@@ -866,46 +879,46 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
     <message>
       <location filename="../../Sheet.ui" line="147"/>
       <source>-</source>
-      <translation type="unfinished">-</translation>
+      <translation>-</translation>
     </message>
     <message>
       <location filename="../../Sheet.ui" line="197"/>
       <source>+</source>
-      <translation type="unfinished">+</translation>
+      <translation>+</translation>
     </message>
   </context>
   <context>
     <name>SpreadsheetGui::DlgBindSheet</name>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="223"/>
-      <source>Bind cells</source>
+      <location filename="../../DlgBindSheet.cpp" line="231"/>
+      <source>Bind Cells</source>
       <translation>셀 바인딩</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="224"/>
+      <location filename="../../DlgBindSheet.cpp" line="232"/>
       <source>Source and target cell count mismatch. Partial binding may still work.
 
-Do you want to continue?</source>
-      <translation>원본과 대상 셀의 수가 일치하지 않습니다. 일부 바인딩은 여전히 작동하 수도 있습니다.
+Continue?</source>
+      <translation>원본 셀 수와 대상 셀 수가 일치하지 않습니다. 일부 바인딩은 계속 작동할 수 있습니다.
 
-계속 진행하시겠습니까?</translation>
+계속하시겠습니까?</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="272"/>
+      <location filename="../../DlgBindSheet.cpp" line="284"/>
       <source>Bind Spreadsheet Cells</source>
       <translation>스프레드시트 셀 바인딩</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="273"/>
+      <location filename="../../DlgBindSheet.cpp" line="285"/>
       <source>Error:
 </source>
       <translation>오류:
 </translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="300"/>
-      <source>Unbind cells</source>
-      <translation>바인딩 안 된 셀</translation>
+      <location filename="../../DlgBindSheet.cpp" line="312"/>
+      <source>Unbind Cells</source>
+      <translation>셀 바인딩 해제</translation>
     </message>
   </context>
   <context>
@@ -918,32 +931,17 @@ Do you want to continue?</source>
     <message>
       <location filename="../../DlgSettings.ui" line="26"/>
       <source>Display Settings</source>
-      <translation>디스플레이 설정</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="32"/>
-      <source>If checked, use the custom presentation to display cell string.</source>
-      <translation>체크하면, 셀 문자열을 표시하기 위해 사용자 정의 프레젠테이션을 사용합니다.</translation>
+      <translation>표시 설정</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="35"/>
       <source>Show alias in cell with format</source>
-      <translation>셀에 별칭을 서식과 함께 표시</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="48"/>
-      <source>Set a zoom level for table view from 60% to 160%.</source>
-      <translation type="unfinished">Set a zoom level for table view from 60% to 160%.</translation>
+      <translation>셀에 지정한 형식으로 별칭 표시</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="51"/>
       <source>%</source>
-      <translation type="unfinished">%</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="76"/>
-      <source>Default zoom level:</source>
-      <translation type="unfinished">Default zoom level:</translation>
+      <translation>%</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="83"/>
@@ -952,10 +950,10 @@ Defaults to: %V = %A
 
 %A - alias name
 %V - cell value</source>
-      <translation>사용자 지정 셀 문자열의 표현 형식입니다.
-기본 값: %V = %A
+      <translation>사용자 지정 셀 문자열 표시 형식입니다.
+기본값: %V = %A
 
-%A - 별명
+%A - 별칭 이름
 %V - 셀 값</translation>
     </message>
     <message>
@@ -964,24 +962,29 @@ Defaults to: %V = %A
       <translation>가져오기/내보내기 설정</translation>
     </message>
     <message>
+      <location filename="../../DlgSettings.ui" line="32"/>
+      <source>Uses the custom presentation to display cell string</source>
+      <translation>셀 문자열을 표시할 때 사용자 지정 형식을 사용합니다</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="48"/>
+      <source>Defines a default zoom level for table view from 60% to 160%</source>
+      <translation>테이블 보기의 기본 확대/축소 수준을 60%~160% 범위에서 설정합니다</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="76"/>
+      <source>Default zoom level</source>
+      <translation>기본 확대/축소 수준</translation>
+    </message>
+    <message>
       <location filename="../../DlgSettings.ui" line="131"/>
-      <source>Delimiter Character:</source>
-      <translation>구분 문자:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="191"/>
-      <source>Quote Character:</source>
-      <translation>인용 문자</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="223"/>
-      <source>Escape Character:</source>
-      <translation>탈출 문자:</translation>
+      <source>Delimiter character</source>
+      <translation>구분 문자</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="151"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>필드를 구분하는 용도로 사용될 문자입니다. 기본은 tab이지만 쉼표(,)와 세미콜론(;)도 흔히 유지됩니다. 목록에서 선택하거나 직접 입력할 수 있습니다. 하나의 문자 혹은 tab, 쉼표, 세미콜론이어야 합니다.</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;필드 구분자로 사용할 문자입니다. 기본값은 탭이며, 쉼표(,)와 세미콜론(;)도 자주 사용됩니다. 목록에서 선택하거나 입력란에 직접 입력하십시오. 단일 문자이거나 &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, 또는 &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt; 중 하나여야 합니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="167"/>
@@ -989,144 +992,141 @@ Defaults to: %V = %A
       <translation>탭</translation>
     </message>
     <message>
+      <location filename="../../DlgSettings.ui" line="191"/>
+      <source>Quote character</source>
+      <translation>인용 부호</translation>
+    </message>
+    <message>
       <location filename="../../DlgSettings.ui" line="198"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>문자열을 구분하는 용도로 사용될 문자입니다. 일반 적으로는 단일 인용 부호 (') 또는 이중 인용 부호(")를 사용 합니다. 반드시 하나의 문자여야 합니다.</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;문자열을 구분하는 데 사용하는 문자입니다. 일반적으로 작은따옴표(') 또는 큰따옴표(&amp;quot;)를 사용합니다. 단일 문자여야 합니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="223"/>
+      <source>Escape character</source>
+      <translation>이스케이프 문자</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="230"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>탈출 문자는, 일반적으로 백슬래쉬(\)를 사용합니다. 이 문자는 특수한 출력 불가한 문자들을 나타내는데 사용 됩니다. 예시) \t= tab, 반드시 하나의 문자여야 합니다.</translation>
-    </message>
-  </context>
-  <context>
-    <name>SpreadsheetGui::DlgSheetConf</name>
-    <message>
-      <location filename="../../DlgSheetConf.cpp" line="280"/>
-      <source>Setup configuration table</source>
-      <translation>구성 테이블 설정 활성화</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSheetConf.cpp" line="338"/>
-      <source>Unsetup configuration table</source>
-      <translation>구성 테이블 설정 비활성화</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;이스케이프 문자로, 일반적으로 백슬래시(\)를 사용합니다. \t = tab과 같은 특수 제어 문자를 나타내는 데 사용됩니다. 단일 문자여야 합니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
-    <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="142"/>
-      <source>Insert %n row(s) above</source>
-      <translation>
-        <numerusform>%n행을 위쪽에 삽입</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="147"/>
-      <source>Insert %n row(s) below</source>
-      <translation>
-        <numerusform>%n행을 아래쪽에 삽입</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="152"/>
-      <source>Insert %n non-contiguous rows</source>
-      <translation>
-        <numerusform>%n개의 비연속적인 행을 삽입</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="155"/>
-      <source>Remove row(s)</source>
-      <translation>
-        <numerusform>행 삭제(s)</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="169"/>
-      <source>Insert %n column(s) left</source>
-      <translation>
-        <numerusform>%n열을 왼쪽에 삽입</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="174"/>
-      <source>Insert %n column(s) right</source>
-      <translation>
-        <numerusform>%n열을 오른쪽에 삽입</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="183"/>
-      <source>Insert %n non-contiguous columns</source>
-      <translation>
-        <numerusform>%n개의 비연속적인 열을 삽입</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="186"/>
-      <source>Remove column(s)</source>
-      <translation>
-        <numerusform>열 삭제(s)</numerusform>
-      </translation>
-    </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="191"/>
-      <location filename="../../SheetTableView.cpp" line="670"/>
-      <source>Properties...</source>
-      <translation>속성...</translation>
-    </message>
-    <message>
-      <location filename="../../SheetTableView.cpp" line="203"/>
-      <location filename="../../SheetTableView.cpp" line="671"/>
+      <location filename="../../SheetTableView.cpp" line="197"/>
+      <location filename="../../SheetTableView.cpp" line="661"/>
       <source>Recompute</source>
       <translation>재계산</translation>
     </message>
-    <message>
-      <location filename="../../SheetTableView.cpp" line="207"/>
-      <location filename="../../SheetTableView.cpp" line="679"/>
-      <source>Bind...</source>
-      <translation>바인딩...</translation>
+    <message numerus="yes">
+      <location filename="../../SheetTableView.cpp" line="141"/>
+      <source>Insert %n Row(s) Above</source>
+      <translation>
+        <numerusform>위에 %n개 행 삽입</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <location filename="../../SheetTableView.cpp" line="145"/>
+      <source>Insert %n Row(s) Below</source>
+      <translation>
+        <numerusform>아래에 %n개 행 삽입</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <location filename="../../SheetTableView.cpp" line="150"/>
+      <source>Insert %n Non-Contiguous Rows</source>
+      <translation>
+        <numerusform>비연속 %n개 행 삽입</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <location filename="../../SheetTableView.cpp" line="153"/>
+      <source>Remove Rows</source>
+      <translation>
+        <numerusform>행 삭제</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <location filename="../../SheetTableView.cpp" line="167"/>
+      <source>Insert %n Column(s) Left</source>
+      <translation>
+        <numerusform>왼쪽에 %n개 열 삽입</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <location filename="../../SheetTableView.cpp" line="172"/>
+      <source>Insert %n Column(s) Right</source>
+      <translation>
+        <numerusform>오른쪽에 %n개 열 삽입</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <location filename="../../SheetTableView.cpp" line="178"/>
+      <source>Insert %n Non-Contiguous Columns</source>
+      <translation>
+        <numerusform>비연속 %n개 열 삽입</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <location filename="../../SheetTableView.cpp" line="181"/>
+      <source>Remove Column(s)</source>
+      <translation>
+        <numerusform>열 삭제</numerusform>
+      </translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="211"/>
-      <location filename="../../SheetTableView.cpp" line="672"/>
-      <source>Configuration table...</source>
-      <translation>구성표...</translation>
+      <location filename="../../SheetTableView.cpp" line="194"/>
+      <location filename="../../SheetTableView.cpp" line="660"/>
+      <source>Properties…</source>
+      <translation>속성…</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="219"/>
-      <location filename="../../SheetTableView.cpp" line="673"/>
-      <source>Merge cells</source>
-      <translation>셀 합치기</translation>
+      <location filename="../../SheetTableView.cpp" line="198"/>
+      <location filename="../../SheetTableView.cpp" line="669"/>
+      <source>Bind…</source>
+      <translation>바인딩…</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="221"/>
-      <location filename="../../SheetTableView.cpp" line="674"/>
-      <source>Split cells</source>
-      <translation>셀 나누기</translation>
+      <location filename="../../SheetTableView.cpp" line="199"/>
+      <location filename="../../SheetTableView.cpp" line="662"/>
+      <source>Configuration Table…</source>
+      <translation>구성 테이블…</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="225"/>
-      <location filename="../../SheetTableView.cpp" line="677"/>
+      <location filename="../../SheetTableView.cpp" line="203"/>
+      <location filename="../../SheetTableView.cpp" line="663"/>
+      <source>Merge Cells</source>
+      <translation>셀 병합</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="208"/>
+      <location filename="../../SheetTableView.cpp" line="664"/>
+      <source>Split Cell</source>
+      <translation>셀 분할</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="212"/>
+      <location filename="../../SheetTableView.cpp" line="667"/>
       <source>Cut</source>
-      <translation>자르기</translation>
+      <translation>잘라내기</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="227"/>
-      <location filename="../../SheetTableView.cpp" line="675"/>
+      <location filename="../../SheetTableView.cpp" line="213"/>
+      <location filename="../../SheetTableView.cpp" line="665"/>
       <source>Copy</source>
-      <translation>복사하기</translation>
+      <translation>복사</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="229"/>
-      <location filename="../../SheetTableView.cpp" line="676"/>
+      <location filename="../../SheetTableView.cpp" line="214"/>
+      <location filename="../../SheetTableView.cpp" line="666"/>
       <source>Paste</source>
       <translation>붙여넣기</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="231"/>
-      <location filename="../../SheetTableView.cpp" line="678"/>
+      <location filename="../../SheetTableView.cpp" line="215"/>
+      <location filename="../../SheetTableView.cpp" line="668"/>
       <source>Delete</source>
       <translation>삭제</translation>
     </message>
@@ -1134,12 +1134,12 @@ Defaults to: %V = %A
   <context>
     <name>SpreadsheetGui::SheetView</name>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="301"/>
+      <location filename="../../SpreadsheetView.cpp" line="298"/>
       <source>Export PDF</source>
       <translation>PDF 내보내기</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="303"/>
+      <location filename="../../SpreadsheetView.cpp" line="300"/>
       <source>PDF file</source>
       <translation>PDF 파일</translation>
     </message>
@@ -1170,23 +1170,36 @@ Defaults to: %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="93"/>
-      <location filename="../../AppSpreadsheetGui.cpp" line="111"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="94"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="113"/>
       <source>Unnamed</source>
-      <translation>이름없음</translation>
+      <translation>이름 없음</translation>
     </message>
   </context>
   <context>
     <name>ZoomableView</name>
     <message>
-      <location filename="../../ZoomableView.cpp" line="112"/>
-      <source>Zoom level</source>
-      <translation type="unfinished">Zoom level</translation>
+      <location filename="../../ZoomableView.cpp" line="116"/>
+      <source>New zoom level:</source>
+      <translation>새 확대/축소 수준:</translation>
     </message>
     <message>
-      <location filename="../../ZoomableView.cpp" line="112"/>
-      <source>New zoom level:</source>
-      <translation type="unfinished">New zoom level:</translation>
+      <location filename="../../ZoomableView.cpp" line="116"/>
+      <source>Zoom Level</source>
+      <translation>확대/축소 수준</translation>
+    </message>
+  </context>
+  <context>
+    <name>SpreadsheetGui::DlgSheetConf</name>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="292"/>
+      <source>Setup Configuration Table</source>
+      <translation>구성 테이블 설정</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="349"/>
+      <source>Unsetup Configuration Table</source>
+      <translation>구성 테이블 설정 해제</translation>
     </message>
   </context>
 </TS>

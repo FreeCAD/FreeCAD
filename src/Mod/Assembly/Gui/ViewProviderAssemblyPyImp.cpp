@@ -20,11 +20,11 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Base/Interpreter.h>
 #include <Base/PlacementPy.h>
 #include <Base/GeometryPyCXX.h>
+#include <App/DocumentObjectPy.h>
 
 // inclusion of the generated files (generated out of ViewProviderAssemblyPy.xml)
 #include "ViewProviderAssemblyPy.h"
@@ -130,4 +130,53 @@ PyObject* ViewProviderAssemblyPy::getCustomAttributes(const char* /*attr*/) cons
 int ViewProviderAssemblyPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0;
+}
+
+PyObject* ViewProviderAssemblyPy::isolateComponents(PyObject* args)
+{
+    PyObject* pyList = nullptr;
+    int modeInt = 0;
+    if (!PyArg_ParseTuple(args, "Oi", &pyList, &modeInt)) {
+        return nullptr;
+    }
+
+    if (!PySequence_Check(pyList)) {
+        PyErr_SetString(PyExc_TypeError, "First argument must be a sequence of DocumentObjects");
+        return nullptr;
+    }
+
+    if (modeInt < 0 || modeInt > 2) {
+        PyErr_SetString(PyExc_ValueError, "Mode must be an integer between 0 and 2");
+        return nullptr;
+    }
+
+    std::set<App::DocumentObject*> partsSet;
+    Py_ssize_t size = PySequence_Size(pyList);
+    for (Py_ssize_t i = 0; i < size; ++i) {
+        PyObject* item = PySequence_GetItem(pyList, i);
+        if (item && PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
+            auto* pyObj = static_cast<App::DocumentObjectPy*>(item);
+            App::DocumentObject* docObj = pyObj->getDocumentObjectPtr();
+            if (docObj) {
+                partsSet.insert(docObj);
+            }
+        }
+        Py_XDECREF(item);
+    }
+
+    auto mode = static_cast<ViewProviderAssembly::IsolateMode>(modeInt);
+    getViewProviderAssemblyPtr()->isolateComponents(partsSet, mode);
+
+    Py_DECREF(Py_None);
+    return Py_None;
+}
+
+PyObject* ViewProviderAssemblyPy::clearIsolate(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    getViewProviderAssemblyPtr()->clearIsolate();
+    return Py::new_reference_to(Py::None());
 }

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>                  *
 # *   (c) 2009, 2010 Ken Cline <cline@frii.com>                             *
@@ -23,6 +25,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides GUI tools to split line and wire objects."""
+
 ## @package gui_split
 # \ingroup draftguitools
 # \brief Provides GUI tools to split line and wire objects.
@@ -46,17 +49,21 @@ class Split(gui_base_original.Modifier):
     def GetResources(self):
         """Set icon, menu and tooltip."""
 
-        return {"Pixmap": "Draft_Split",
-                "Accel": "S, P",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_Split", "Split"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_Split", "Splits the selected line or polyline into two independent lines\nor polylines by clicking anywhere along the original object.\nIt works best when choosing a point on a straight segment and not a corner vertex.")}
+        return {
+            "Pixmap": "Draft_Split",
+            "Accel": "S, P",
+            "MenuText": QT_TRANSLATE_NOOP("Draft_Split", "Split"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Draft_Split", "Splits the selected line or polyline at a specified point"
+            ),
+        }
 
     def Activated(self):
         """Execute when the command is called."""
         super().Activated(name="Split")
         if not self.ui:
             return
-        _toolmsg(translate("draft", "Click anywhere on a line to split it."))
+        _toolmsg(translate("draft", "Click anywhere on a line to split it"))
         self.view.graphicsView().setFocus()  # Make sure using Esc works.
         self.call = self.view.addEventCallback("SoEvent", self.action)
 
@@ -77,9 +84,11 @@ class Split(gui_base_original.Modifier):
         elif arg["Type"] == "SoLocation2Event":
             gui_tool_utils.getPoint(self, arg)
             gui_tool_utils.redraw3DView()
-        elif (arg["Type"] == "SoMouseButtonEvent"
-              and arg["Button"] == "BUTTON1"
-              and arg["State"] == "DOWN"):
+        elif (
+            arg["Type"] == "SoMouseButtonEvent"
+            and arg["Button"] == "BUTTON1"
+            and arg["State"] == "DOWN"
+        ):
             self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg)
             if info is not None and "Edge" in info["Component"]:
                 return self.proceed(info)
@@ -95,11 +104,10 @@ class Split(gui_base_original.Modifier):
         cmd_list = [
             "obj = FreeCAD.ActiveDocument." + wire,
             "new = Draft.split(obj, " + point + ", " + index + ")",
-            "Draft.format_object(new, obj)",
-            "FreeCAD.ActiveDocument.recompute()"
+            "if new is not None: FreeCAD.ActiveDocument.recompute()",
         ]
 
-        self.commit(translate("draft", "Split line"), cmd_list)
+        self.commit(translate("draft", "Split Line"), cmd_list)
         self.finish()
 
     def finish(self, cont=False):
@@ -108,6 +116,6 @@ class Split(gui_base_original.Modifier):
         super().finish()
 
 
-Gui.addCommand('Draft_Split', Split())
+Gui.addCommand("Draft_Split", Split())
 
 ## @}

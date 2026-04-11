@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Jan Rheinländer                                    *
  *                                   <jrheinlaender@users.sourceforge.net> *
@@ -22,8 +24,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_DATUMLINE_H
-#define PARTDESIGN_DATUMLINE_H
+#pragma once
 
 #include <Mod/Part/App/DatumFeature.h>
 #include <Mod/PartDesign/PartDesignGlobal.h>
@@ -32,7 +33,7 @@
 namespace PartDesign
 {
 
-class PartDesignExport Line : public Part::Datum
+class PartDesignExport Line: public Part::Datum
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Line);
 
@@ -42,9 +43,10 @@ public:
 
     App::PropertyEnumeration ResizeMode;
     App::PropertyLength Length;
-    void onChanged(const App::Property *prop) override;
+    void onChanged(const App::Property* prop) override;
 
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PartDesignGui::ViewProviderDatumLine";
     }
 
@@ -54,7 +56,4 @@ private:
     static const char* ResizeModeEnums[];
 };
 
-} //namespace PartDesign
-
-
-#endif // PARTDESIGN_DATUMLINE_H
+}  // namespace PartDesign

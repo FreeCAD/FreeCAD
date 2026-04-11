@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2009 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
  *                                                                         *
@@ -21,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_SelectionFilter_H
-#define GUI_SelectionFilter_H
+#pragma once
 
 #include <limits>
 #include <memory>
@@ -30,13 +30,15 @@
 #include <CXX/Extensions.hxx>
 #include "Selection.h"
 
-namespace App {
-    class DocumentObject;
+namespace App
+{
+class DocumentObject;
 }
 
-namespace Gui {
-    struct Node_Block;
-    class SelectionFilterPy;
+namespace Gui
+{
+struct Node_Block;
+class SelectionFilterPy;
 
 /** Selection filter definition
  *  This class builds up a type/count tree out of a string
@@ -59,7 +61,8 @@ public:
 
     /// Set a new filter string
     void setFilter(const char* filter);
-    const std::string& getFilter() const {
+    const std::string& getFilter() const
+    {
         return Filter;
     }
     /** Test to current selection
@@ -73,16 +76,19 @@ public:
      *  filter. If SubName is not NULL the Subelement gets also
      *  tested.
      */
-    bool test(App::DocumentObject*pObj, const char*sSubName);
+    bool test(App::DocumentObject* pObj, const char* sSubName);
 
     void addError(const char* e);
 
     friend class SelectionSingleton;
 
-    std::vector<std::vector<SelectionObject> > Result;
+    std::vector<std::vector<SelectionObject>> Result;
 
     /// true if a valid filter is set
-    bool isValid() const {return Ast ? true : false;}
+    bool isValid() const
+    {
+        return Ast ? true : false;
+    }
 
 protected:
     std::string Filter;
@@ -108,24 +114,25 @@ public:
     explicit SelectionFilterGate(const char* filter);
     explicit SelectionFilterGate(SelectionFilter* filter);
     ~SelectionFilterGate() override;
-    bool allow(App::Document*,App::DocumentObject*, const char*) override;
+    bool allow(App::Document*, App::DocumentObject*, const char*) override;
 
 protected:
-    static SelectionFilter* nullPointer() {
+    static SelectionFilter* nullPointer()
+    {
         return nullptr;
     }
 
     SelectionFilterGate();
 
 protected:
-    SelectionFilter *Filter;
+    SelectionFilter* Filter;
 };
 
 /**
  * A wrapper around a Python class that implements the SelectionGate interface
  * @author Werner Mayer
  */
-class SelectionGatePython : public SelectionGate
+class SelectionGatePython: public SelectionGate
 {
 public:
     /// Constructor
@@ -154,7 +161,7 @@ private:
  * \endcode
  * @author Werner Mayer
  */
-class SelectionFilterGatePython : public SelectionGate
+class SelectionFilterGatePython: public SelectionGate
 {
 public:
     /// Constructor
@@ -172,42 +179,41 @@ private:
 struct Node_Slice
 {
     explicit Node_Slice(int min = 1, int max = std::numeric_limits<int>::max())
-        : Min(min), Max(max) {}
+        : Min(min)
+        , Max(max)
+    {}
     int Min, Max;
-
 };
 
 
 struct Node_Object
 {
-    Node_Object(std::string *type,std::string *subname,Node_Slice* slc )
-        :Slice(slc)
+    Node_Object(std::string* type, std::string* subname, Node_Slice* slc)
+        : Slice(slc)
     {
         ObjectType = Base::Type::fromName(type->c_str());
         if (subname) {
             SubName = *subname;
         }
     }
-    ~Node_Object(){
+    ~Node_Object()
+    {
         delete Slice;
     }
     Base::Type ObjectType;
-    Node_Slice  *Slice;
+    Node_Slice* Slice;
     std::string SubName;
 };
 using Node_ObjectPtr = std::shared_ptr<Node_Object>;
 
 struct Node_Block
 {
-    explicit Node_Block(Node_Object* obj){
+    explicit Node_Block(Node_Object* obj)
+    {
         Objects.emplace_back(obj);
     }
     std::vector<Node_ObjectPtr> Objects;
 };
 
 
-} // namespace Gui
-
-
-#endif // GUI_SelectionFilter_H
-
+}  // namespace Gui

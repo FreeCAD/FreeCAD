@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Friedli <david[at]friedli-be.ch>             *
  *                                                                         *
@@ -19,11 +21,9 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef PARTDESIGN_MEASURE_H
-#define PARTDESIGN_MEASURE_H
+#pragma once
 
 #include <Mod/PartDesign/PartDesignGlobal.h>
-
 
 
 namespace PartDesign
@@ -33,12 +33,8 @@ namespace PartDesign
 class PartDesignExport Measure
 {
 public:
-
     static void initialize();
-
 };
 
 
-} //namespace PartDesign
-
-#endif
+}  // namespace PartDesign

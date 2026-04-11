@@ -19996,6 +19996,8 @@ Evolumes
 *MATERIAL, NAME=Material_lin
 *ELASTIC
 210000,0.3
+*EXPANSION, ZERO=0
+0
 *PLASTIC
 240.0, 0.0
 270.0, 0.025
@@ -20024,7 +20026,7 @@ ConstraintFixed,3
 ** constraints pressure element face loads
 ** ConstraintPressure
 *DLOAD
-** ConstraintPressure: face load
+** Hole_Plate.Face2
 4796,P3,-130.0
 4799,P4,-130.0
 4872,P4,-130.0

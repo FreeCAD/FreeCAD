@@ -21,13 +21,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_VIEWPROVIDERPAGE_H
-#define DRAWINGGUI_VIEWPROVIDERPAGE_H
+#pragma once
 
 #include <QObject>
 #include <QPointer>
 
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 
 #include <App/PropertyUnits.h>
 #include <Gui/ViewProviderDocumentObject.h>
@@ -110,7 +109,7 @@ public:
     void onGuiRepaint(const TechDraw::DrawPage* dp);
 
 // NOLINTBEGIN
-    using Connection = boost::signals2::scoped_connection;
+    using Connection = fastsignals::scoped_connection;
     Connection connectGuiRepaint;
 // NOLINTEND
 
@@ -125,14 +124,15 @@ public:
     bool getFrameState() const;
     void setFrameState(bool state);
     void toggleFrameState();
+
     void setTemplateMarkers(bool state) const;
 
     bool canDelete(App::DocumentObject* obj) const override;
 
     void setGrid();
 
-    QGSPage* getQGSPage() const { return m_graphicsScene; }
-    QGVPage* getQGVPage() const { return m_graphicsView; }
+    QGSPage* getQGSPage() const;
+    QGVPage* getQGVPage() const;
 
     ViewProviderPageExtension* getVPPExtension() const;
 
@@ -149,11 +149,10 @@ protected:
 private:
     QPointer<MDIViewPage> m_mdiView;
     std::string m_pageName;
-    QGVPage* m_graphicsView;
+    QPointer<QGVPage> m_graphicsView;
     QGSPage* m_graphicsScene;
+
+    bool m_frameToggle{false};      // replacement for ShowFrame property to avoid marking document changed
 };
 
 }// namespace TechDrawGui
-
-
-#endif// DRAWINGGUI_VIEWPROVIDERPAGE_H

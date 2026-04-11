@@ -20,15 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <cmath>
 # include <QPainter>
 # include <QPainterPath>
 # include <QPointF>
 # include <QRectF>
 # include <QTransform>
-#endif
+
 #include <QByteArrayMatcher>
 
 #include <Base/Console.h>

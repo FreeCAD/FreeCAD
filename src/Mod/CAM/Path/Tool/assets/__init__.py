@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 from .asset import Asset
 from .manager import AssetManager
 from .uri import AssetUri

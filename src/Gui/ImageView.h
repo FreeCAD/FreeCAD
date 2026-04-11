@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef GUI_IMAGE_VIEW_H
-#define GUI_IMAGE_VIEW_H
+#pragma once
 
 #include <Gui/MDIView.h>
 
@@ -32,22 +31,24 @@ class QScrollArea;
 class QScrollBar;
 class QUrl;
 
-namespace Gui {
+namespace Gui
+{
 
-class GuiExport ImageView : public MDIView
+class GuiExport ImageView: public MDIView
 {
     Q_OBJECT
 
 public:
     explicit ImageView(QWidget* parent);
-    bool loadFile(const QString &);
+    bool loadFile(const QString&);
 
-    const char *getName() const override {
+    const char* getName() const override
+    {
         return "ImageView";
     }
 
     /// Message handler
-    bool onMsg(const char* pMsg, const char** ppReturn) override;
+    bool onMsg(const char* pMsg) override;
     /// Message handler test
     bool onHasMsg(const char* pMsg) const override;
 
@@ -68,7 +69,7 @@ protected:
 private:
     void setImage(const QImage& image);
     void scaleImage(double factor);
-    static void adjustScrollBar(QScrollBar *scrollBar, double factor);
+    static void adjustScrollBar(QScrollBar* scrollBar, double factor);
     bool canZoomIn() const;
     bool canZoomOut() const;
     void zoomIn();
@@ -88,13 +89,11 @@ private:
 
 private:
     QImage rawImage;
-    QLabel *imageLabel;
-    QScrollArea *scrollArea;
+    QLabel* imageLabel;
+    QScrollArea* scrollArea;
     double scaleFactor;
     bool dragging;
     QPoint dragPos;
 };
 
-}
-
-#endif //GUI_IMAGE_VIEW_H
+}  // namespace Gui

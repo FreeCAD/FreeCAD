@@ -35,10 +35,10 @@ class BIM_Windows:
     def GetResources(self):
         return {
             "Pixmap": "BIM_Windows",
-            "MenuText": QT_TRANSLATE_NOOP("BIM_Windows", "Manage doors and windows..."),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_Windows", "Manage Doors and Windows"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_Windows",
-                "Manage the different doors and windows of your BIM project",
+                "Manages the different doors and windows of the BIM project",
             ),
         }
 
@@ -84,9 +84,7 @@ class BIM_Windows_TaskPanel:
         from PySide import QtGui
 
         self.form.windows.clear()
-        windows = [
-            o for o in FreeCAD.ActiveDocument.Objects if Draft.getType(o) == "Window"
-        ]
+        windows = [o for o in FreeCAD.ActiveDocument.Objects if Draft.getType(o) == "Window"]
         if self.form.groupMode.currentIndex() == 0:
             for window in windows:
                 s1 = window.Label
@@ -222,12 +220,8 @@ class BIM_Windows_TaskPanel:
 
         form = FreeCADGui.PySideUic.loadUi(":/ui/dialogMaterialChooser.ui")
         mw = FreeCADGui.getMainWindow()
-        form.move(
-            mw.frameGeometry().topLeft() + mw.rect().center() - form.rect().center()
-        )
-        materials = [
-            o for o in FreeCAD.ActiveDocument.Objects if Draft.getType(o) == "Material"
-        ]
+        form.move(mw.frameGeometry().topLeft() + mw.rect().center() - form.rect().center())
+        materials = [o for o in FreeCAD.ActiveDocument.Objects if Draft.getType(o) == "Material"]
         it = QtGui.QListWidgetItem(translate("BIM", "None"))
         it.setIcon(QtGui.QIcon(":/icons/button_invalid.svg"))
         it.setToolTip("__None__")

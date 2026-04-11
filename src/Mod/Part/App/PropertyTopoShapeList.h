@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 Wandererfan <WandererFan@gmail.com>                *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PropertyTopoShapeList_H
-#define PropertyTopoShapeList_H
+#pragma once
 
 #include <Mod/Part/PartGlobal.h>
 
@@ -30,13 +31,14 @@
 #include <App/Property.h>
 
 
-#include  "TopoShape.h"
+#include "TopoShape.h"
 
 
-namespace Base {
+namespace Base
+{
 class Writer;
 class XMLReader;
-}
+}  // namespace Base
 
 namespace Part
 {
@@ -70,25 +72,27 @@ public:
     void clear();
 
     /// index operator
-    const TopoShape& operator[] (const int idx) const {
+    const TopoShape& operator[](const int idx) const
+    {
         return _lValueList[idx];
     }
 
-    const std::vector<TopoShape>& getValues() const {
+    const std::vector<TopoShape>& getValues() const
+    {
         return _lValueList;
     }
 
-    PyObject *getPyObject() override;
-    void setPyObject(PyObject *) override;
+    PyObject* getPyObject() override;
+    void setPyObject(PyObject*) override;
 
-    void Save(Base::Writer &writer) const override;
-    void Restore(Base::XMLReader &reader) override;
+    void Save(Base::Writer& writer) const override;
+    void Restore(Base::XMLReader& reader) override;
 
-    void SaveDocFile (Base::Writer &writer) const override;
-    void RestoreDocFile(Base::Reader &reader) override;
+    void SaveDocFile(Base::Writer& writer) const override;
+    void RestoreDocFile(Base::Reader& reader) override;
 
-    App::Property *Copy() const override;
-    void Paste(const App::Property &from) override;
+    App::Property* Copy() const override;
+    void Paste(const App::Property& from) override;
 
     unsigned int getMemSize() const override;
 
@@ -104,9 +108,4 @@ private:
     std::vector<TopoShapePtr> m_restorePointers;
 };
 
-} // namespace Part
-
-
-#endif // APP_PropertyTopoShapeList_H
-
-
+}  // namespace Part

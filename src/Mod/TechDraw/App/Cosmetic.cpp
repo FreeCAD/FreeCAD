@@ -21,10 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <BRepBuilderAPI_MakeEdge.hxx>
-#endif
 
 #include <App/Application.h>
 #include <Base/Converter.h>

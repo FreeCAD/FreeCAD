@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <PreCompiled.h>
 #include "NavlibInterface.h"
 
 #include <QScrollBar>
@@ -42,6 +41,8 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/Workbench.h>
 #include <Gui/WorkbenchManager.h>
+
+#include <gsl/pointers>
 
 constexpr uint8_t LCD_ICON_SIZE = 24u;
 
@@ -131,8 +132,11 @@ TDxCommand NavlibInterface::getCCommand(const Gui::Command& command,
     if (commandName.empty() || commandId.empty())
         return TDxCommand();
 
+    gsl::not_null<const char*> commandToolTip =
+        command.getToolTipText() ? command.getToolTipText() : "";
+
     std::string commandDescription =
-        parameter == -1 ? command.getToolTipText() : qAction.toolTip().toStdString();
+        parameter == -1 ? std::string(commandToolTip) : qAction.toolTip().toStdString();
 
     auto newEnd = std::remove(commandName.begin(), commandName.end(), '&');
     commandName.erase(newEnd, commandName.end());
@@ -153,7 +157,7 @@ long NavlibInterface::SetActiveCommand(std::string commandId)
             if (!std::string(command->getName()).compare(parsedData.commandName)) {
                 if (parsedData.actionIndex == -1) {
                     Gui::Action* pAction = command->getAction();
-                    if (pAction != nullptr) {
+                    if (pAction) {
                         pAction->action()->trigger();
                     }
                 }
@@ -163,8 +167,12 @@ long NavlibInterface::SetActiveCommand(std::string commandId)
             }
         }
     }
-    else
-        commandManager.runCommandByName(parsedData.commandName.c_str());
+    else {
+        Gui::Command* cmd = commandManager.getCommandByName(parsedData.commandName.c_str());
+        if (cmd) {
+            cmd->invoke(1);
+        }
+    }
 
     return 0;
 }
@@ -173,7 +181,7 @@ void NavlibInterface::unpackCommands(Gui::Command& command,
                                      TDxCategory& category,
                                      std::vector<TDx::CImage>& images)
 {
-    if (command.getAction() == nullptr)
+    if (!command.getAction())
         return;
 
     QList<QAction*> pQActions;
@@ -181,7 +189,7 @@ void NavlibInterface::unpackCommands(Gui::Command& command,
     int32_t index = -1;
     auto actionGroup = qobject_cast<Gui::ActionGroup*>(command.getAction());
 
-    if (actionGroup != nullptr) {
+    if (actionGroup) {
         pQActions = actionGroup->actions();
         std::string subCategoryName = actionGroup->text().toStdString();
         subCategory = TDxCategory(subCategoryName, subCategoryName);

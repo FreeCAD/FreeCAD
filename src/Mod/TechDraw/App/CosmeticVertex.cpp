@@ -23,8 +23,6 @@
 
 //! CosmeticVertex point is stored in unscaled, unrotated form
 
-#include "PreCompiled.h"
-
 #include <App/Application.h>
 #include <Base/Persistence.h>
 #include <Base/Vector3D.h>

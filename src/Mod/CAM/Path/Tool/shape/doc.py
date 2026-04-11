@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2025 Samuel Abels <knipknap@gmail.com>                  *
 # *                                                                         *
@@ -23,7 +24,7 @@
 import FreeCAD
 import Path
 import Path.Base.Util as PathUtil
-from typing import Dict, List, Any, Optional
+from typing import Dict, List, Any, Optional, Tuple
 import tempfile
 import os
 
@@ -67,35 +68,43 @@ def get_unset_value_for(attribute_type: str):
 
 def get_object_properties(
     obj: "FreeCAD.DocumentObject",
-    props: List[str] | None = None,
+    props: Optional[List[str]] = None,
     group: Optional[str] = None,
-) -> Dict[str, Any]:
+    exclude_groups: Optional[List[str]] = None,
+) -> Dict[str, Tuple[Any, str]]:
     """
-    Extract properties matching expected_params from a FreeCAD PropertyBag.
+    Extract properties from a FreeCAD PropertyBag, including their types.
 
     Issues warnings for missing parameters but does not raise an error.
 
     Args:
         obj: The PropertyBag to extract properties from.
-        expected_params (List[str]): A list of property names to look for.
+        props (List[str], optional): A list of property names to look for.
+                                     If None, all properties in obj.PropertiesList are considered.
+        group (str, optional): If provided, only properties belonging to this group are extracted.
 
     Returns:
-        Dict[str, Any]: A dictionary mapping property names to their values.
-                        Values are FreeCAD native types.
+        Dict[str, Tuple[Any, str]]: A dictionary mapping property names to a tuple
+                                    (value, type_id). Values are FreeCAD native types.
+                                    If a property is missing, its value will be None.
     """
     properties = {}
     for name in props or obj.PropertiesList:
         if group and not obj.getGroupOfProperty(name) == group:
             continue
+        if exclude_groups and obj.getGroupOfProperty(name) in exclude_groups:
+            continue
         if hasattr(obj, name):
-            properties[name] = getattr(obj, name)
+            value = getattr(obj, name)
+            type_id = obj.getTypeIdOfProperty(name)
+            properties[name] = value, type_id
         else:
             # Log a warning if a parameter expected by the shape class is missing
             Path.Log.debug(
                 f"Parameter '{name}' not found on object '{obj.Label}' "
                 f"({obj.Name}). Default value will be used by the shape class."
             )
-            properties[name] = None  # Indicate missing value
+            properties[name] = None, "App::PropertyString"
     return properties
 
 
@@ -119,7 +128,8 @@ def update_shape_object_properties(
                     f" ({obj.Name}) with value '{value}': {e}"
                 )
         else:
-            Path.Log.warning(
+            # This simply means that the Shape File doesn't have this property in it.
+            Path.Log.debug(
                 f"Property '{name}' not found on object '{obj.Label}' ({obj.Name}). Skipping."
             )
 

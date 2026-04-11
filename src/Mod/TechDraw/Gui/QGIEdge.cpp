@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <QPainterPath>
 # include <QPainterPathStroker>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Material.h>
@@ -84,13 +82,6 @@ QColor QGIEdge::getHiddenColor()
     return PreferencesGui::getAccessibleQColor(fcColor.asValue<QColor>());
 }
 
-
- double QGIEdge::getEdgeFuzz() const
-{
-    return PreferencesGui::edgeFuzz();
-}
-
-
 QRectF QGIEdge::boundingRect() const
 {
     return shape().controlPointRect();
@@ -100,7 +91,7 @@ QPainterPath QGIEdge::shape() const
 {
     QPainterPath outline;
     QPainterPathStroker stroker;
-    stroker.setWidth(getEdgeFuzz());
+    stroker.setWidth(this->m_edgeFuzz);
     outline = stroker.createStroke(path());
     return outline;
 }

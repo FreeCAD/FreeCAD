@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 import sys
 from lazy_loader.lazy_loader import LazyLoader
 from . import toolbit
@@ -9,7 +10,6 @@ from .library.serializers import FCTLSerializer
 from .toolbit import ToolBit
 from .toolbit.serializers import FCTBSerializer
 from .shape import ToolBitShape, ToolBitShapePngIcon, ToolBitShapeSvgIcon
-from .machine import Machine
 
 # Register asset classes and serializers.
 cam_assets.register_asset(Library, FCTLSerializer)
@@ -17,8 +17,6 @@ cam_assets.register_asset(ToolBit, FCTBSerializer)
 cam_assets.register_asset(ToolBitShape, DummyAssetSerializer)
 cam_assets.register_asset(ToolBitShapePngIcon, DummyAssetSerializer)
 cam_assets.register_asset(ToolBitShapeSvgIcon, DummyAssetSerializer)
-cam_assets.register_asset(Machine, DummyAssetSerializer)
-cam_assets.setup()
 
 # For backward compatibility with files saved before the toolbit rename
 # This makes the Path.Tool.toolbit.base module available as Path.Tool.Bit.

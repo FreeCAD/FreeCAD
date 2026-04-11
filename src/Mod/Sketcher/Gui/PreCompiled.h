@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,16 +22,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __PRECOMPILED_GUI__
-#define __PRECOMPILED_GUI__
+#pragma once
 
 #include <FCConfig.h>
-
-#ifdef _MSC_VER
-#pragma warning(disable : 4005)
-#endif
-
-#ifdef _PreComp_
 
 // standard
 #include <cmath>
@@ -49,10 +44,7 @@
 #include <boost/math/special_functions/fpclassify.hpp>
 
 #ifdef FC_OS_WIN32
-#ifndef NOMINMAX
-#define NOMINMAX
-#endif
-#include <windows.h>
+# include <windows.h>
 #endif
 
 // OpenCasCade
@@ -77,7 +69,3 @@
 
 // all of Inventor
 #include <Gui/InventorAll.h>
-
-#endif  //_PreComp_
-
-#endif  // __PRECOMPILED_GUI__

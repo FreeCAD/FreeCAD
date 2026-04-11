@@ -41,6 +41,9 @@ class FemMigrateApp:
         if fullname in {
             "femsolver.elmer.equations",
             "femsolver.elmer.equations.fluxsolver",
+            "femsolver.elmer.solver",
+            "femsolver.calculix.solver",
+            "femsolver.z88.solver",
             "femobjects",
             "femobjects._FemConstraintBodyHeatSource",
             "femobjects._FemConstraintElectrostaticPotential",
@@ -62,6 +65,7 @@ class FemMigrateApp:
             "femobjects._FemMeshResult",
             "femobjects._FemResultMechanical",
             "femobjects._FemSolverCalculix",
+            "femobjects.constraint_electrostaticpotential",
             "PyObjects",
             "PyObjects._FemConstraintBodyHeatSource",
             "PyObjects._FemConstraintElectrostaticPotential",
@@ -114,7 +118,6 @@ class FemMigrateApp:
         return self.load_module(module)
 
     def load_module(self, module):
-
         if module.__name__ == "femsolver.elmer.equations":
             return self
         if module.__name__ == "femsolver.elmer.equations.fluxsolver":
@@ -124,6 +127,33 @@ class FemMigrateApp:
             if FreeCAD.GuiUp:
                 module.ViewProxy = femsolver.elmer.equations.flux.ViewProxy
 
+        if module.__name__ == "femsolver.elmer.solver":
+            from femobjects.solver_elmer import SolverElmer
+
+            module.Proxy = SolverElmer
+            if FreeCAD.GuiUp:
+                from femviewprovider.view_solver_elmer import VPSolverElmer
+
+                module.ViewProxy = VPSolverElmer
+
+        if module.__name__ == "femsolver.calculix.solver":
+            from femobjects.solver_calculix import SolverCalculiX
+
+            module.Proxy = SolverCalculiX
+            if FreeCAD.GuiUp:
+                from femviewprovider.view_solver_calculix import VPSolverCalculiX
+
+                module.ViewProxy = VPSolverCalculiX
+
+        if module.__name__ == "femsolver.z88.solver":
+            from femobjects.solver_z88 import SolverZ88
+
+            module.Proxy = SolverZ88
+            if FreeCAD.GuiUp:
+                from femviewprovider.view_solver_z88 import VPSolverZ88
+
+                module.ViewProxy = VPSolverZ88
+
         if module.__name__ == "femobjects":
             module.__path__ = "femobjects"
         if module.__name__ == "femobjects._FemConstraintBodyHeatSource":
@@ -131,11 +161,9 @@ class FemMigrateApp:
 
             module.Proxy = femobjects.constraint_bodyheatsource.ConstraintBodyHeatSource
         if module.__name__ == "femobjects._FemConstraintElectrostaticPotential":
-            import femobjects.constraint_electrostaticpotential
+            import femobjects.constraint_electromagnetic
 
-            module.Proxy = (
-                femobjects.constraint_electrostaticpotential.ConstraintElectrostaticPotential
-            )
+            module.Proxy = femobjects.constraint_electromagnetic.ConstraintElectromagnetic
         if module.__name__ == "femobjects._FemConstraintFlowVelocity":
             import femobjects.constraint_flowvelocity
 
@@ -210,6 +238,12 @@ class FemMigrateApp:
             import femobjects.solver_ccxtools
 
             module._FemSolverCalculix = femobjects.solver_ccxtools.SolverCcxTools
+        if module.__name__ == "femobjects.constraint_electrostaticpotential":
+            import femobjects.constraint_electromagnetic
+
+            module.ConstraintElectrostaticPotential = (
+                femobjects.constraint_electromagnetic.ConstraintElectromagnetic
+            )
 
         if module.__name__ == "PyObjects":
             module.__path__ = "PyObjects"
@@ -218,11 +252,9 @@ class FemMigrateApp:
 
             module.Proxy = femobjects.constraint_bodyheatsource.ConstraintBodyHeatSource
         if module.__name__ == "PyObjects._FemConstraintElectrostaticPotential":
-            import femobjects.constraint_electrostaticpotential
+            import femobjects.constraint_electromagnetic
 
-            module.Proxy = (
-                femobjects.constraint_electrostaticpotential.ConstraintElectrostaticPotential
-            )
+            module.Proxy = femobjects.constraint_electromagnetic.ConstraintElectromagnetic
         if module.__name__ == "PyObjects._FemConstraintFlowVelocity":
             import femobjects.constraint_flowvelocity
 

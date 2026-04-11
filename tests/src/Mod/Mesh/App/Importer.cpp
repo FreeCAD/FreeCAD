@@ -1,6 +1,9 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 #include <gtest/gtest.h>
 #include <Base/FileInfo.h>
 #include <Mod/Mesh/App/Core/IO/Reader3MF.h>
+#include <Mod/Mesh/App/Core/IO/ReaderOBJ.h>
 #include <xercesc/util/PlatformUtils.hpp>
 #include <zipios++/fcoll.h>
 
@@ -36,5 +39,18 @@ TEST_F(ImporterTest, Test3MF)
     EXPECT_EQ(mesh2.CountPoints(), 652);
     EXPECT_EQ(mesh2.CountEdges(), 1950);
     EXPECT_EQ(mesh2.CountFacets(), 1300);
+}
+
+TEST_F(ImporterTest, TestOBJ)
+{
+    std::string file(DATADIR);
+    file.append("/tests/mesh.obj");
+
+    MeshCore::MeshKernel kernel;
+    MeshCore::ReaderOBJ reader(kernel, nullptr);
+    EXPECT_EQ(reader.Load(file), true);
+
+    EXPECT_EQ(kernel.CountPoints(), 8);
+    EXPECT_EQ(kernel.CountFacets(), 12);
 }
 // NOLINTEND(cppcoreguidelines-*,readability-*)

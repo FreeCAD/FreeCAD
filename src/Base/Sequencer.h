@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2004 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,9 +23,11 @@
  ***************************************************************************/
 
 
-#ifndef BASE_SEQUENCER_H
-#define BASE_SEQUENCER_H
+#pragma once
 
+#include <cstddef>
+
+#include <FCGlobal.h>
 
 namespace Base
 {
@@ -387,5 +391,3 @@ inline SequencerBase& Sequencer()
 }
 
 }  // namespace Base
-
-#endif  // BASE_SEQUENCER_H

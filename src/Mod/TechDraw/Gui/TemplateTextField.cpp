@@ -20,14 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
   #include <QGraphicsSceneMouseEvent>
   #include <QInputDialog>
   #include <QLineEdit>
   #include <QTextDocument>
-#endif // #ifndef _PreCmp_
 
 #include <Base/Console.h>
 #include <Gui/MainWindow.h>
@@ -46,17 +43,24 @@ TemplateTextField::TemplateTextField(QGraphicsItem *parent,
                                      const std::string &myFieldName)
     : QGraphicsItemGroup(parent),
       tmplte(myTmplte),
-      fieldNameStr(myFieldName)
+      fieldNameStr(myFieldName),
+      m_rect(new QGraphicsRectItem()),
+      m_line(new QGraphicsPathItem())
 {
+    setFlag(QGraphicsItem::ItemIsFocusable, true);
+    setAcceptHoverEvents(true);
+    setFiltersChildEvents(true);
+
     setToolTip(QObject::tr("Click to update text"));
-    m_rect = new QGraphicsRectItem();
+
     addToGroup(m_rect);
     QPen rectPen(Qt::transparent);
     QBrush rectBrush(Qt::NoBrush);
     m_rect->setPen(rectPen);
     m_rect->setBrush(rectBrush);
+    m_rect->setAcceptHoverEvents(true);
 
-    m_line = new QGraphicsPathItem();
+    m_line->hide();
     addToGroup(m_line);
  }
 
@@ -109,7 +113,7 @@ void TemplateTextField::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 }
 
 //void setAutofill(std::string autofillString);
-void TemplateTextField::setAutofill(QString autofillString)
+void TemplateTextField::setAutofill(const QString& autofillString)
 {
     m_autofillString = autofillString;
 }
@@ -130,6 +134,21 @@ void TemplateTextField::setLine(QPointF from, QPointF to)
 void TemplateTextField::setLineColor(QColor color)
 {
     QPen pen(color);
-    pen.setWidth(5);
+    constexpr int LineWidth{5};
+    pen.setWidth(LineWidth);
     m_line->setPen(pen);
 }
+
+void TemplateTextField::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+{
+    showLine();
+    QGraphicsItemGroup::hoverEnterEvent(event);
+}
+
+void TemplateTextField::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+{
+    hideLine();
+    QGraphicsItemGroup::hoverLeaveEvent(event);
+}
+
+

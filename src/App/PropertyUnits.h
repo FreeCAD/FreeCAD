@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef APP_PROPERTYUNITS_H
-#define APP_PROPERTYUNITS_H
+#pragma once
 
 #include <Base/Quantity.h>
 #include <Base/Unit.h>
@@ -515,6 +516,8 @@ class AppExport PropertyLength: public PropertyQuantityConstraint
 public:
     PropertyLength();
     ~PropertyLength() override = default;
+
+    void enableNegative(bool on);
 };
 
 /** LuminousIntensity property
@@ -921,5 +924,3 @@ public:
 };
 
 }  // namespace App
-
-#endif  // APP_PROPERTYUNITS_H

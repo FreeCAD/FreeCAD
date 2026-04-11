@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,12 +22,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QApplication>
 #include <QMessageBox>
 #include <QPushButton>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -56,7 +56,8 @@ CmdMeshPartMesher::CmdMeshPartMesher()
 {
     sAppModule = "MeshPart";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Create mesh from shape...");
+    sMenuText = QT_TR_NOOP("Mesh From Shape");
+
     sToolTipText = QT_TR_NOOP("Tessellate shape");
     sWhatsThis = "MeshPart_Mesher";
     sStatusTip = sToolTipText;
@@ -81,9 +82,9 @@ CmdMeshPartTrimByPlane::CmdMeshPartTrimByPlane()
 {
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Trim mesh with a plane");
+    sMenuText = QT_TR_NOOP("Trim Mesh");
     sToolTipText = QT_TR_NOOP("Trims a mesh with a plane");
-    sStatusTip = QT_TR_NOOP("Trims a mesh with a plane");
+    sStatusTip = sToolTipText;
 }
 
 void CmdMeshPartTrimByPlane::activated(int)
@@ -91,23 +92,24 @@ void CmdMeshPartTrimByPlane::activated(int)
     Base::Type partType = Base::Type::fromName("Part::Plane");
     std::vector<App::DocumentObject*> plane = getSelection().getObjectsOfType(partType);
     if (plane.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             qApp->translate("MeshPart_TrimByPlane", "Select plane"),
-                             qApp->translate("MeshPart_TrimByPlane",
-                                             "Please select a plane at which you trim the mesh."));
+        QMessageBox::warning(
+            Gui::getMainWindow(),
+            qApp->translate("MeshPart_TrimByPlane", "Select plane"),
+            qApp->translate("MeshPart_TrimByPlane", "Select a plane to trim the mesh with.")
+        );
         return;
     }
 
     QMessageBox msgBox(Gui::getMainWindow());
     msgBox.setIcon(QMessageBox::Question);
-    msgBox.setWindowTitle(qApp->translate("MeshPart_TrimByPlane", "Trim by plane"));
-    msgBox.setText(qApp->translate("MeshPart_TrimByPlane", "Select the side you want to keep."));
-    QPushButton* inner =
-        msgBox.addButton(qApp->translate("MeshPart_TrimByPlane", "Below"), QMessageBox::ActionRole);
-    QPushButton* outer =
-        msgBox.addButton(qApp->translate("MeshPart_TrimByPlane", "Above"), QMessageBox::ActionRole);
-    QPushButton* split =
-        msgBox.addButton(qApp->translate("MeshPart_TrimByPlane", "Split"), QMessageBox::ActionRole);
+    msgBox.setWindowTitle(qApp->translate("MeshPart_TrimByPlane", "Trim With Plane"));
+    msgBox.setText(qApp->translate("MeshPart_TrimByPlane", "Select the side to keep"));
+    QPushButton* inner
+        = msgBox.addButton(qApp->translate("MeshPart_TrimByPlane", "Below"), QMessageBox::ActionRole);
+    QPushButton* outer
+        = msgBox.addButton(qApp->translate("MeshPart_TrimByPlane", "Above"), QMessageBox::ActionRole);
+    QPushButton* split
+        = msgBox.addButton(qApp->translate("MeshPart_TrimByPlane", "Split"), QMessageBox::ActionRole);
     msgBox.addButton(QMessageBox::Cancel);
     msgBox.setDefaultButton(inner);
     msgBox.exec();
@@ -128,12 +130,12 @@ void CmdMeshPartTrimByPlane::activated(int)
         return;
     }
 
-    Base::Placement plnPlacement =
-        static_cast<App::GeoFeature*>(plane.front())->Placement.getValue();
+    Base::Placement plnPlacement = static_cast<App::GeoFeature*>(plane.front())->Placement.getValue();
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Trim with plane"));
-    std::vector<App::DocumentObject*> docObj =
-        Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
+    std::vector<App::DocumentObject*> docObj = Gui::Selection().getObjectsOfType(
+        Mesh::Feature::getClassTypeId()
+    );
     for (auto it : docObj) {
         Base::Vector3d normal(0, 0, 1);
         plnPlacement.getRotation().multVec(normal, normal);
@@ -186,8 +188,8 @@ CmdMeshPartSection::CmdMeshPartSection()
 {
     sAppModule = "MeshPart";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Create section from mesh and plane");
-    sToolTipText = QT_TR_NOOP("Section");
+    sMenuText = QT_TR_NOOP("Section");
+    sToolTipText = QT_TR_NOOP("Creates a section from a mesh and plane");
     sWhatsThis = "MeshPart_Section";
     sStatusTip = sToolTipText;
 }
@@ -200,8 +202,8 @@ void CmdMeshPartSection::activated(int)
         QMessageBox::warning(
             Gui::getMainWindow(),
             qApp->translate("MeshPart_Section", "Select plane"),
-            qApp->translate("MeshPart_Section",
-                            "Please select a plane at which you section the mesh."));
+            qApp->translate("MeshPart_Section", "Select a plane to section the mesh with.")
+        );
         return;
     }
 
@@ -211,8 +213,9 @@ void CmdMeshPartSection::activated(int)
     Base::Vector3d base = plm.getPosition();
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Section with plane"));
-    std::vector<App::DocumentObject*> docObj =
-        Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
+    std::vector<App::DocumentObject*> docObj = Gui::Selection().getObjectsOfType(
+        Mesh::Feature::getClassTypeId()
+    );
     Mesh::MeshObject::TPlane tplane;
     tplane.first = Base::convertTo<Base::Vector3f>(base);
     tplane.second = Base::convertTo<Base::Vector3f>(normal);
@@ -271,8 +274,8 @@ CmdMeshPartCrossSections::CmdMeshPartCrossSections()
 {
     sAppModule = "MeshPart";
     sGroup = QT_TR_NOOP("MeshPart");
-    sMenuText = QT_TR_NOOP("Cross-sections...");
-    sToolTipText = QT_TR_NOOP("Cross-sections");
+    sMenuText = QT_TR_NOOP("Cross-Sections");
+    sToolTipText = QT_TR_NOOP("Applies cross-sections to the mesh");
     sWhatsThis = "MeshPart_CrossSections";
     sStatusTip = sToolTipText;
     // sPixmap       = "MeshPart_CrossSections";
@@ -283,8 +286,9 @@ void CmdMeshPartCrossSections::activated(int iMsg)
     Q_UNUSED(iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (!dlg) {
-        std::vector<App::DocumentObject*> obj =
-            Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
+        std::vector<App::DocumentObject*> obj = Gui::Selection().getObjectsOfType(
+            Mesh::Feature::getClassTypeId()
+        );
         Base::BoundBox3d bbox;
         for (auto it : obj) {
             bbox.Add(static_cast<Mesh::Feature*>(it)->Mesh.getBoundingBox());
@@ -296,8 +300,7 @@ void CmdMeshPartCrossSections::activated(int iMsg)
 
 bool CmdMeshPartCrossSections::isActive()
 {
-    return (Gui::Selection().countObjectsOfType<Mesh::Feature>() > 0
-            && !Gui::Control().activeDialog());
+    return (Gui::Selection().countObjectsOfType<Mesh::Feature>() > 0 && !Gui::Control().activeDialog());
 }
 
 DEF_STD_CMD_A(CmdMeshPartCurveOnMesh)
@@ -307,9 +310,8 @@ CmdMeshPartCurveOnMesh::CmdMeshPartCurveOnMesh()
 {
     sAppModule = "MeshPart";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Curve on mesh...");
-    sToolTipText = QT_TR_NOOP("Creates an approximated curve on top of a mesh.\n"
-                              "This command only works with a 'mesh' object.");
+    sMenuText = QT_TR_NOOP("Curve on Mesh");
+    sToolTipText = QT_TR_NOOP("Creates an approximated curve on top of a mesh object");
     sWhatsThis = "MeshPart_CurveOnMesh";
     sStatusTip = sToolTipText;
     sPixmap = "MeshPart_CurveOnMesh";
@@ -324,7 +326,8 @@ void CmdMeshPartCurveOnMesh::activated(int)
     }
 
     Gui::Control().showDialog(
-        new MeshPartGui::TaskCurveOnMesh(static_cast<Gui::View3DInventor*>(mdis.front())));
+        new MeshPartGui::TaskCurveOnMesh(static_cast<Gui::View3DInventor*>(mdis.front()))
+    );
 }
 
 bool CmdMeshPartCurveOnMesh::isActive()

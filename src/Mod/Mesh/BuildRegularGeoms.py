@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # Copyright (c) 2005 Berthold Grupp
 # License: LGPL
 
@@ -11,7 +13,6 @@ Sample code for creating a mesh:
         m = Mesh.newMesh()
         m.addFacets(facets)
 """
-
 
 import math
 

@@ -21,17 +21,19 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef SO_TOGGLE_SWITCH
-#define SO_TOGGLE_SWITCH
+#pragma once
+
+#include <FCGlobal.h>
 
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/nodes/SoSwitch.h>
 
+#include <FCGlobal.h>
 
 /**
  * A switch that can be used to show or hide all child nodes
  */
-class SoToggleSwitch: public SoSwitch
+class GuiExport SoToggleSwitch: public SoSwitch
 {
     SO_NODE_HEADER(SoToggleSwitch);
 
@@ -52,5 +54,3 @@ protected:
 private:
     using inherited = SoSwitch;
 };
-
-#endif /* SO_TOGGLE_SWITCH */

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -29,25 +31,26 @@
  * 3rd party Xerces-C++ XML parser is used to parse and write the XML.
  */
 
-#ifndef BASE_PARAMETER_H
-#define BASE_PARAMETER_H
+#pragma once
 
 // Python stuff
 using PyObject = struct _object;
 
+#include <FCConfig.h>
+
 #ifdef FC_OS_MACOSX
-#undef toupper
-#undef tolower
-#undef isupper
-#undef islower
-#undef isspace
-#undef isalpha
-#undef isalnum
+# undef toupper
+# undef tolower
+# undef isupper
+# undef islower
+# undef isspace
+# undef isalpha
+# undef isalnum
 #endif
 
 #include <map>
 #include <vector>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 #include <xercesc/util/XercesDefs.hpp>
 
 #include "Handle.h"
@@ -55,15 +58,13 @@ using PyObject = struct _object;
 #include "Color.h"
 
 #ifdef _MSC_VER
-#pragma warning(disable : 4251)
-#pragma warning(disable : 4503)
-#pragma warning(disable : 4786)  // specifier longer then 255 chars
-#pragma warning(disable : 4290)  // not implemented throw specification
-#pragma warning(disable : 4275)
+# pragma warning(disable : 4251)
+# pragma warning(disable : 4503)
+# pragma warning(disable : 4786)  // specifier longer then 255 chars
+# pragma warning(disable : 4290)  // not implemented throw specification
+# pragma warning(disable : 4275)
 #endif
 
-#ifndef XERCES_CPP_NAMESPACE_BEGIN
-#define XERCES_CPP_NAMESPACE_QUALIFIER
 namespace XERCES_CPP_NAMESPACE
 {
 class DOMNode;
@@ -72,15 +73,6 @@ class DOMDocument;
 class XMLFormatTarget;
 class InputSource;
 }  // namespace XERCES_CPP_NAMESPACE
-#else
-XERCES_CPP_NAMESPACE_BEGIN
-class DOMNode;
-class DOMElement;
-class DOMDocument;
-class XMLFormatTarget;
-class InputSource;
-XERCES_CPP_NAMESPACE_END
-#endif
 
 class ParameterManager;
 
@@ -276,8 +268,7 @@ public:
      *  @param[out] Value The value of attribute or the fallback value.
      *  @param[in] Default The fallback value.
      */
-    const char*
-    GetAttribute(ParamType Type, const char* Name, std::string& Value, const char* Default) const;
+    const char* GetAttribute(ParamType Type, const char* Name, std::string& Value, const char* Default) const;
 
     /**
      *  Returns all attributes with the given type.
@@ -289,8 +280,10 @@ public:
      *  @param[in] sFilter String that has to be present in the names of the attributes.
      *  @returns Vector of attribute name & value pairs.
      */
-    std::vector<std::pair<std::string, std::string>>
-    GetAttributeMap(ParamType Type, const char* sFilter = nullptr) const;
+    std::vector<std::pair<std::string, std::string>> GetAttributeMap(
+        ParamType Type,
+        const char* sFilter = nullptr
+    ) const;
 
 
     /**
@@ -302,8 +295,9 @@ public:
      *  @param[in] sFilter String that has to be present in the names of the attributes.
      *  @returns Vector of attribute type & name pairs.
      */
-    std::vector<std::pair<ParamType, std::string>>
-    GetParameterNames(const char* sFilter = nullptr) const;
+    std::vector<std::pair<ParamType, std::string>> GetParameterNames(
+        const char* sFilter = nullptr
+    ) const;
 
     //@}
 
@@ -344,8 +338,9 @@ public:
     /// get a vector of all uint values in this group
     std::vector<unsigned long> GetUnsigneds(const char* sFilter = nullptr) const;
     /// get a map with all uint values and the keys of this group
-    std::vector<std::pair<std::string, unsigned long>>
-    GetUnsignedMap(const char* sFilter = nullptr) const;
+    std::vector<std::pair<std::string, unsigned long>> GetUnsignedMap(
+        const char* sFilter = nullptr
+    ) const;
     /// remove a uint value from this group
     void RemoveUnsigned(const char* Name);
     //@}
@@ -359,8 +354,7 @@ public:
     /// get a vector of all color values in this group
     std::vector<Base::Color> GetColors(const char* sFilter = nullptr) const;
     /// get a map with all color values and the keys of this group
-    std::vector<std::pair<std::string, Base::Color>>
-    GetColorMap(const char* sFilter = nullptr) const;
+    std::vector<std::pair<std::string, Base::Color>> GetColorMap(const char* sFilter = nullptr) const;
     /// remove a color value from this group
     void RemoveColor(const char* Name);
     //@}
@@ -401,8 +395,7 @@ public:
      */
     std::vector<std::string> GetASCIIs(const char* sFilter = nullptr) const;
     /// Same as GetASCIIs() but with key,value map
-    std::vector<std::pair<std::string, std::string>>
-    GetASCIIMap(const char* sFilter = nullptr) const;
+    std::vector<std::pair<std::string, std::string>> GetASCIIMap(const char* sFilter = nullptr) const;
     //@}
 
     friend class ParameterManager;
@@ -432,9 +425,11 @@ public:
 
 protected:
     /// constructor is protected (handle concept)
-    ParameterGrp(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement* GroupNode = nullptr,
-                 const char* sName = nullptr,
-                 ParameterGrp* Parent = nullptr);
+    ParameterGrp(
+        XERCES_CPP_NAMESPACE::DOMElement* GroupNode = nullptr,
+        const char* sName = nullptr,
+        ParameterGrp* Parent = nullptr
+    );
     /// destructor is protected (handle concept)
     ~ParameterGrp() override;
     /// helper function for GetGroup
@@ -446,8 +441,10 @@ protected:
     void _SetAttribute(ParamType Type, const char* Name, const char* Value);
     void _Notify(ParamType Type, const char* Name, const char* Value);
 
-    XERCES_CPP_NAMESPACE_QUALIFIER DOMElement*
-    FindNextElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMNode* Prev, const char* Type) const;
+    XERCES_CPP_NAMESPACE::DOMElement* FindNextElement(
+        XERCES_CPP_NAMESPACE::DOMNode* Prev,
+        const char* Type
+    ) const;
 
     /** Find an element specified by Type and Name
      *  Search in the parent element Start for the first occurrence of an
@@ -455,33 +452,38 @@ protected:
      *  the pointer to that element, otherwise NULL
      *  If the names not given it returns the first occurrence of Type.
      */
-    XERCES_CPP_NAMESPACE_QUALIFIER DOMElement*
-    FindElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement* Start,
-                const char* Type,
-                const char* Name = nullptr) const;
+    XERCES_CPP_NAMESPACE::DOMElement* FindElement(
+        XERCES_CPP_NAMESPACE::DOMElement* Start,
+        const char* Type,
+        const char* Name = nullptr
+    ) const;
 
     /** Find an element specified by Type and Name or create it if not found
      *  Search in the parent element Start for the first occurrence of an
      *  element of Type and with the attribute Name=Name. On success it returns
      *  the pointer to that element, otherwise it creates the element and returns the pointer.
      */
-    XERCES_CPP_NAMESPACE_QUALIFIER DOMElement*
-    FindOrCreateElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement* Start,
-                        const char* Type,
-                        const char* Name);
+    XERCES_CPP_NAMESPACE::DOMElement* FindOrCreateElement(
+        XERCES_CPP_NAMESPACE::DOMElement* Start,
+        const char* Type,
+        const char* Name
+    );
 
-    XERCES_CPP_NAMESPACE_QUALIFIER DOMElement*
-    CreateElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement* Start,
-                  const char* Type,
-                  const char* Name);
+    XERCES_CPP_NAMESPACE::DOMElement* CreateElement(
+        XERCES_CPP_NAMESPACE::DOMElement* Start,
+        const char* Type,
+        const char* Name
+    );
 
     /** Find an attribute specified by Name
      */
-    XERCES_CPP_NAMESPACE_QUALIFIER DOMNode*
-    FindAttribute(XERCES_CPP_NAMESPACE_QUALIFIER DOMNode* Node, const char* Name) const;
+    XERCES_CPP_NAMESPACE::DOMNode* FindAttribute(
+        XERCES_CPP_NAMESPACE::DOMNode* Node,
+        const char* Name
+    ) const;
 
     /// DOM Node of the Base node of this group
-    XERCES_CPP_NAMESPACE_QUALIFIER DOMElement* _pGroupNode;
+    XERCES_CPP_NAMESPACE::DOMElement* _pGroupNode;
     /// the own name
     std::string _cName;
     /// map of already exported groups
@@ -562,17 +564,15 @@ public:
      *  - Group removal: both 'name' and 'value' are empty
      *  - Group rename: 'name' is the new name, and 'value' is the old name
      */
-    boost::signals2::signal<void(ParameterGrp* /*param*/,
-                                 ParamType /*type*/,
-                                 const char* /*name*/,
-                                 const char* /*value*/)>
+    fastsignals::signal<
+        void(ParameterGrp* /*param*/, ParamType /*type*/, const char* /*name*/, const char* /*value*/)>
         signalParamChanged;
 
     int LoadDocument(const char* sFileName);
-    int LoadDocument(const XERCES_CPP_NAMESPACE_QUALIFIER InputSource&);
+    int LoadDocument(const XERCES_CPP_NAMESPACE::InputSource&);
     bool LoadOrCreateDocument(const char* sFileName);
     void SaveDocument(const char* sFileName) const;
-    void SaveDocument(XERCES_CPP_NAMESPACE_QUALIFIER XMLFormatTarget* pFormatTarget) const;
+    void SaveDocument(XERCES_CPP_NAMESPACE::XMLFormatTarget* pFormatTarget) const;
     void CreateDocument();
     void CheckDocument() const;
 
@@ -595,7 +595,7 @@ public:
     //@}
 
 private:
-    XERCES_CPP_NAMESPACE_QUALIFIER DOMDocument* _pDocument {nullptr};
+    XERCES_CPP_NAMESPACE::DOMDocument* _pDocument {nullptr};
     ParameterSerializer* paramSerializer {nullptr};
 
     bool gIgnoreSave;
@@ -628,6 +628,3 @@ public:
 /** python wrapper function
  */
 BaseExport PyObject* GetPyObject(const Base::Reference<ParameterGrp>& hcParamGrp);
-
-
-#endif  // BASE_PARAMETER_H

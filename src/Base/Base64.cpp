@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Zlib
+
 /*
 base64.cpp and base64.h
 
@@ -28,11 +30,8 @@ rather than returning a new string for each call.
 These modifications are Copyright (c) 2019 Zheng Lei (realthunder.dev@gmail.com)
 
 */
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <array>
-#endif
 
 #include "Base64.h"
 
@@ -114,8 +113,7 @@ std::size_t Base::base64_encode(char* out, void const* in, std::size_t in_len)
     return ret - out;
 }
 
-std::pair<std::size_t, std::size_t>
-Base::base64_decode(void* _out, char const* in, std::size_t in_len)
+std::pair<std::size_t, std::size_t> Base::base64_decode(void* _out, char const* in, std::size_t in_len)
 {
     auto* out = reinterpret_cast<unsigned char*>(_out);  // NOLINT
     unsigned char* ret = out;

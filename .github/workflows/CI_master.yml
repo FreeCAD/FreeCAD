@@ -26,14 +26,22 @@
 
 name: FreeCAD master CI
 
-on: [workflow_dispatch, push, pull_request, merge_group]
+on:
+  workflow_dispatch: ~
+  push:
+    branches:
+      - main
+      - releases/**
+  pull_request:
+    types: [opened, synchronize, reopened, labeled]
+  merge_group: ~
+
 
 concurrency:
   group: FC-CI-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 
 jobs:
-
   Prepare:
     uses: ./.github/workflows/sub_prepare.yml
     with:
@@ -41,24 +49,36 @@ jobs:
 
   Pixi:
     needs: [Prepare]
+    if: >-
+      github.event_name != 'pull_request'
+      || contains(toJSON(github.event.pull_request.labels.*.name), 'Approved:')
     uses: ./.github/workflows/sub_buildPixi.yml
     with:
       artifactBasename: Pixi-${{ github.run_id }}
 
   Ubuntu:
     needs: [Prepare]
+    if: "!startsWith(github.head_ref, 'refs/heads/backport-')"
     uses: ./.github/workflows/sub_buildUbuntu.yml
     with:
       artifactBasename: Ubuntu-${{ github.run_id }}
 
   Windows:
     needs: [Prepare]
+    if: >-
+      !startsWith(github.head_ref, 'refs/heads/backport-')
+      && (github.event_name != 'pull_request'
+          || contains(toJSON(github.event.pull_request.labels.*.name), 'Approved:'))
     uses: ./.github/workflows/sub_buildWindows.yml
     with:
       artifactBasename: Windows-${{ github.run_id }}
 
   Lint:
     needs: [Prepare]
+    if: >-
+      !startsWith(github.head_ref, 'refs/heads/backport-')
+      && (github.event_name != 'pull_request'
+          || contains(toJSON(github.event.pull_request.labels.*.name), 'Approved:'))
     uses: ./.github/workflows/sub_lint.yml
     with:
       artifactBasename: Lint-${{ github.run_id }}

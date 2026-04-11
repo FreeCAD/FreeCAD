@@ -27,6 +27,7 @@
 import FreeCAD
 import FreeCADGui
 import ArchStructure
+from ArchStructure import StructureMode
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 
@@ -35,7 +36,7 @@ class BIM_Beam(ArchStructure._CommandStructure):
 
     def __init__(self):
         super().__init__()
-        self.beammode = True
+        self.mode = StructureMode.BEAM
         self.featureName = "Beam"
 
     def IsActive(self):
@@ -46,9 +47,7 @@ class BIM_Beam(ArchStructure._CommandStructure):
         return {
             "Pixmap": "BIM_Beam",
             "MenuText": QT_TRANSLATE_NOOP("BIM_Beam", "Beam"),
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "BIM_Beam", "Creates a beam between two points"
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("BIM_Beam", "Creates a beam between two points"),
             "Accel": "B,M",
         }
 

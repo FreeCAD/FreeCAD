@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,11 +22,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PROPERTYTRAJECTORY_H
-#define PROPERTYTRAJECTORY_H
+#pragma once
 
 #include <App/Property.h>
 #include <Base/BoundBox.h>
+
+#include <Mod/Robot/RobotGlobal.h>
 
 #include "Trajectory.h"
 
@@ -80,6 +83,3 @@ private:
 
 
 }  // namespace Robot
-
-
-#endif  // PROPERTYTOPOSHAPE_H

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,21 +22,19 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_IMPORT_IGES_H
-#define PART_IMPORT_IGES_H
+#pragma once
 
 #include <Mod/Part/PartGlobal.h>
 
 
-namespace App {
+namespace App
+{
 class Document;
 }
 
 namespace Part
 {
 
-PartExport int ImportIgesParts(App::Document *pcDoc, const char* Name);
+PartExport int ImportIgesParts(App::Document* pcDoc, const char* Name);
 
-} //namespace Part
-
-#endif // PART_IMPORT_IGES_H
+}  // namespace Part

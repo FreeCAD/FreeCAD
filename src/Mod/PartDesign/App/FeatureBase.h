@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2017 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_FeatureBase_H
-#define PARTDESIGN_FeatureBase_H
+#pragma once
 
 #include "Feature.h"
 
@@ -30,7 +31,7 @@
 namespace PartDesign
 {
 
-class PartDesignExport FeatureBase : public PartDesign::Feature
+class PartDesignExport FeatureBase: public PartDesign::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::FeatureBase);
 
@@ -39,9 +40,10 @@ public:
 
     short int mustExecute() const override;
 
-    Part::Feature* getBaseObject(bool silent=false) const override;
+    Part::Feature* getBaseObject(bool silent = false) const override;
 
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PartDesignGui::ViewProviderBase";
     }
 
@@ -53,7 +55,4 @@ private:
     void trySetBaseFeatureOfBody();
 };
 
-} //namespace PartDesign
-
-
-#endif // PARTDESIGN_FeatureBase_H
+}  // namespace PartDesign

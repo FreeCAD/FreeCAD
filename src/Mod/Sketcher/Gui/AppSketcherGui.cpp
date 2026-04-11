@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
@@ -105,7 +106,6 @@ PyMOD_INIT_FUNC(SketcherGui)
     Gui::BitmapFactory().addPath(QStringLiteral(":/icons/elements"));
     Gui::BitmapFactory().addPath(QStringLiteral(":/icons/general"));
     Gui::BitmapFactory().addPath(QStringLiteral(":/icons/geometry"));
-    // Gui::BitmapFactory().addPath(QStringLiteral(":/icons/obsolete"));
     Gui::BitmapFactory().addPath(QStringLiteral(":/icons/pointers"));
     Gui::BitmapFactory().addPath(QStringLiteral(":/icons/splines"));
     Gui::BitmapFactory().addPath(QStringLiteral(":/icons/tools"));
@@ -124,9 +124,11 @@ PyMOD_INIT_FUNC(SketcherGui)
     SketcherGui::Workbench::init();
 
     // Add Types to module
-    Base::Interpreter().addType(&SketcherGui::ViewProviderSketchGeometryExtensionPy ::Type,
-                                sketcherGuiModule,
-                                "ViewProviderSketchGeometryExtension");
+    Base::Interpreter().addType(
+        &SketcherGui::ViewProviderSketchGeometryExtensionPy ::Type,
+        sketcherGuiModule,
+        "ViewProviderSketchGeometryExtension"
+    );
 
     // init objects
     SketcherGui::ViewProviderSketch ::init();
@@ -134,17 +136,22 @@ PyMOD_INIT_FUNC(SketcherGui)
     SketcherGui::ViewProviderCustom ::init();
     SketcherGui::ViewProviderCustomPython ::init();
     SketcherGui::SoZoomTranslation ::initClass();
+    SketcherGui::SoSketchFaces ::initClass();
     SketcherGui::PropertyConstraintListItem ::init();
     SketcherGui::ViewProviderSketchGeometryExtension ::init();
 
     (void)new Gui::PrefPageProducer<SketcherGui::SketcherSettings>(
-        QT_TRANSLATE_NOOP("QObject", "Sketcher"));
+        QT_TRANSLATE_NOOP("QObject", "Sketcher")
+    );
     (void)new Gui::PrefPageProducer<SketcherGui::SketcherSettingsGrid>(
-        QT_TRANSLATE_NOOP("QObject", "Sketcher"));
+        QT_TRANSLATE_NOOP("QObject", "Sketcher")
+    );
     (void)new Gui::PrefPageProducer<SketcherGui::SketcherSettingsDisplay>(
-        QT_TRANSLATE_NOOP("QObject", "Sketcher"));
+        QT_TRANSLATE_NOOP("QObject", "Sketcher")
+    );
     (void)new Gui::PrefPageProducer<SketcherGui::SketcherSettingsAppearance>(
-        QT_TRANSLATE_NOOP("QObject", "Sketcher"));
+        QT_TRANSLATE_NOOP("QObject", "Sketcher")
+    );
 
     // add resources and reloads the translators
     loadSketcherResource();

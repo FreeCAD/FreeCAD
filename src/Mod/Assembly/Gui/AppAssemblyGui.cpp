@@ -21,12 +21,12 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>
 
+#include "Commands.h"
 #include "ViewProviderAssembly.h"
 #include "ViewProviderAssemblyLink.h"
 #include "ViewProviderBom.h"
@@ -34,7 +34,6 @@
 #include "ViewProviderJointGroup.h"
 #include "ViewProviderViewGroup.h"
 #include "ViewProviderSimulationGroup.h"
-
 
 namespace AssemblyGui
 {
@@ -56,6 +55,7 @@ PyMOD_INIT_FUNC(AssemblyGui)
     PyObject* mod = AssemblyGui::initModule();
     Base::Console().log("Loading AssemblyGui module... done\n");
 
+    AssemblyGui::CreateAssemblyCommands();
 
     // NOTE: To finish the initialization of our own type objects we must
     // call PyType_Ready, otherwise we run into a segmentation fault, later on.

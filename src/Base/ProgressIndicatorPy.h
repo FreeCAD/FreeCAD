@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef BASE_PROGRESSINDICATORPY_H
-#define BASE_PROGRESSINDICATORPY_H
+#pragma once
 
 #include <memory>
 #include <CXX/Extensions.hxx>
@@ -56,5 +57,3 @@ private:
 };
 
 }  // namespace Base
-
-#endif  // BASE_PROGRESSINDICATORPY_H

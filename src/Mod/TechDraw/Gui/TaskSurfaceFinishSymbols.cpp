@@ -20,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <boost/algorithm/string/predicate.hpp>
 # include <QComboBox>
 # include <QGraphicsProxyWidget>
 # include <QLineEdit>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -399,7 +397,7 @@ void TaskSurfaceFinishSymbols::onASME()
 bool TaskSurfaceFinishSymbols::accept()
 // Slot: dialog finished using OK
 {
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Surface Finish Symbols"));
+    int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Surface Finish Symbols"));
     App::Document *doc = Application::Instance->activeDocument()->getDocument();
     auto* surfaceSymbol = doc->addObject<TechDraw::DrawViewSymbol>("SurfaceSymbol");
     surfaceSymbol->Symbol.setValue(completeSymbol());
@@ -423,7 +421,7 @@ bool TaskSurfaceFinishSymbols::accept()
         page->addView(surfaceSymbol);
     }
 
-    Gui::Command::commitCommand();
+    Gui::Command::commitCommand(tid);
     return true;
 }
 

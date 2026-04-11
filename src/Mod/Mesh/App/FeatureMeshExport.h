@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2005 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,15 +22,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_FEATUREMESHEXPORT_H
-#define MESH_FEATUREMESHEXPORT_H
+#pragma once
 
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
 
-#ifndef MESH_GLOBAL_H
 #include <Mod/Mesh/MeshGlobal.h>
-#endif
 
 namespace Mesh
 {
@@ -61,5 +60,3 @@ public:
 };
 
 }  // namespace Mesh
-
-#endif  // MESH_FEATUREMESHEXPORT_H

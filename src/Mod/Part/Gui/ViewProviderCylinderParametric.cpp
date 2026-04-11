@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "ViewProviderCylinderParametric.h"
 
@@ -36,25 +37,24 @@ PROPERTY_SOURCE(PartGui::ViewProviderCylinderParametric, PartGui::ViewProviderPr
 
 ViewProviderCylinderParametric::ViewProviderCylinderParametric()
 {
-  sPixmap = "Part_Cylinder_Parametric";
+    sPixmap = "Part_Cylinder_Parametric";
 }
 
 ViewProviderCylinderParametric::~ViewProviderCylinderParametric() = default;
-
 
 
 // **********************************************************************************
 
 std::vector<std::string> ViewProviderCylinderParametric::getDisplayModes() const
 {
-  // get the modes of the father
-  std::vector<std::string> StrList;
+    // get the modes of the father
+    std::vector<std::string> StrList;
 
-  // add your own modes
-  StrList.emplace_back("Flat Lines");
-  StrList.emplace_back("Shaded");
-  StrList.emplace_back("Wireframe");
-  StrList.emplace_back("Points");
+    // add your own modes
+    StrList.emplace_back("Flat Lines");
+    StrList.emplace_back("Shaded");
+    StrList.emplace_back("Wireframe");
+    StrList.emplace_back("Points");
 
-  return StrList;
+    return StrList;
 }

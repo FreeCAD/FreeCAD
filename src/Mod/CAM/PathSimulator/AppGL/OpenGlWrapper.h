@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2024 Shai Seger <shaise at gmail>                       *
  *                                                                         *
@@ -20,12 +22,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __openglwrapper_h__
-#define __openglwrapper_h__
+#pragma once
 
 #include "DlgCAMSimulator.h"
-extern QOpenGLContext* gOpenGlContext;
-#define gSimWindow CAMSimulator::DlgCAMSimulator::GetInstance()
+
+#define gSimWindow CAMSimulator::DlgCAMSimulator::instance()
 #define glClearColor gSimWindow->glClearColor
 #define glBlendFunc gSimWindow->glBlendFunc
 #define glClear gSimWindow->glClear
@@ -36,6 +37,8 @@ extern QOpenGLContext* gOpenGlContext;
 #define glBindVertexArray gSimWindow->glBindVertexArray
 #define glEnableVertexAttribArray gSimWindow->glEnableVertexAttribArray
 #define glVertexAttribPointer gSimWindow->glVertexAttribPointer
+#define glBindAttribLocation gSimWindow->glBindAttribLocation
+#define glGetAttribLocation gSimWindow->glGetAttribLocation
 #define glShaderSource gSimWindow->glShaderSource
 #define glCompileShader gSimWindow->glCompileShader
 #define glDeleteShader gSimWindow->glDeleteShader
@@ -44,7 +47,7 @@ extern QOpenGLContext* gOpenGlContext;
 #define glLinkProgram gSimWindow->glLinkProgram
 #define glGetProgramiv gSimWindow->glGetProgramiv
 #define glGetUniformLocation gSimWindow->glGetUniformLocation
-#define glGetError gSimWindow->glGetError
+#define glGetError(...) /* GL( */ gSimWindow->glGetError(__VA_ARGS__) /* ) */
 #define glEnable gSimWindow->glEnable
 #define glColorMask gSimWindow->glColorMask
 #define glCullFace gSimWindow->glCullFace
@@ -88,5 +91,3 @@ extern QOpenGLContext* gOpenGlContext;
 #define glLineWidth gSimWindow->glLineWidth
 #define glGetShaderiv gSimWindow->glGetShaderiv
 #define glGetShaderInfoLog gSimWindow->glGetShaderInfoLog
-
-#endif  // !__openglwrapper_h__

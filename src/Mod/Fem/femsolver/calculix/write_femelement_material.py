@@ -93,6 +93,20 @@ def write_femelement_material(f, ccxwriter):
                 KV = FreeCAD.Units.Quantity(mat_obj.Material["KinematicViscosity"])
                 KV_in_mm2s = KV.getValueAs("mm^2/s").Value
                 DV_in_tmms = KV_in_mm2s * density_in_tonne_per_mm3
+        if ccxwriter.analysis_type == "static":
+            if mat_obj.Category == "Solid":
+                if "ThermalExpansionCoefficient" in mat_obj.Material:
+                    TEC = FreeCAD.Units.Quantity(mat_obj.Material["ThermalExpansionCoefficient"])
+                    TEC_in_mmK = TEC.getValueAs("mm/mm/K").Value
+                else:
+                    TEC_in_mmK = 0.0
+                if "ThermalExpansionReferenceTemperature" in mat_obj.Material:
+                    RT = FreeCAD.Units.Quantity(
+                        mat_obj.Material["ThermalExpansionReferenceTemperature"]
+                    )
+                else:
+                    RT = FreeCAD.Units.Quantity("0 K")
+                RT_in_K = RT.getValueAs("K").Value
         if (
             ccxwriter.analysis_type == "electromagnetic"
             and ccxwriter.solver_obj.ElectromagneticMode == "electrostatic"
@@ -121,6 +135,10 @@ def write_femelement_material(f, ccxwriter):
             elif mat_obj.Category == "Fluid":
                 f.write("*FLUID CONSTANTS\n")
                 f.write(f"{SH_in_JkgK:.13G},{DV_in_tmms:.13G}\n")
+        if ccxwriter.analysis_type == "static":
+            if mat_obj.Category == "Solid":
+                f.write(f"*EXPANSION, ZERO={RT_in_K:.13G}\n")
+                f.write(f"{TEC_in_mmK:.13G}\n")
         if (
             ccxwriter.analysis_type == "electromagnetic"
             and ccxwriter.solver_obj.ElectromagneticMode == "electrostatic"
@@ -129,16 +147,14 @@ def write_femelement_material(f, ccxwriter):
             f.write(f"{abs_perm:.13G}\n")
 
         # nonlinear material properties
-        if ccxwriter.solver_obj.MaterialNonlinearity == "nonlinear":
-
-            for nlfemobj in ccxwriter.member.mats_nonlinear:
-                # femobj --> dict, FreeCAD document object is nlfemobj["Object"]
-                nl_mat_obj = nlfemobj["Object"]
-                if nl_mat_obj.LinearBaseMaterial == mat_obj:
-                    if nl_mat_obj.MaterialModelNonlinearity == "isotropic hardening":
+        nl_mat_obj = mat_obj.Nonlinear
+        if ccxwriter.solver_obj.MaterialNonlinearity:
+            if nl_mat_obj and not nl_mat_obj.Suppressed:
+                match nl_mat_obj.MaterialModelNonlinearity:
+                    case "isotropic hardening":
                         f.write("*PLASTIC\n")
-                    else:
+                    case "kinematic hardening":
                         f.write("*PLASTIC, HARDENING=KINEMATIC\n")
-                    for yield_point in nl_mat_obj.YieldPoints:
-                        f.write(f"{yield_point}\n")
+                for yield_point in nl_mat_obj.YieldPoints:
+                    f.write(f"{yield_point}\n")
                 f.write("\n")

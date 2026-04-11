@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TEXTDOCUMENTEDITORVIEW_H
-#define GUI_TEXTDOCUMENTEDITORVIEW_H
+#pragma once
 
 #include <QPlainTextEdit>
 
@@ -39,15 +38,13 @@ class GuiExport TextDocumentEditorView: public MDIView
     TYPESYSTEM_HEADER_WITH_OVERRIDE();  // NOLINT
 
 public:
-    TextDocumentEditorView(App::TextDocument* textDocument,
-                           QPlainTextEdit* editor,
-                           QWidget* parent);
+    TextDocumentEditorView(App::TextDocument* textDocument, QPlainTextEdit* editor, QWidget* parent);
     ~TextDocumentEditorView() override;
     const char* getName() const override
     {
         return "TextDocumentEditorView";
     }
-    bool onMsg(const char* msg, const char** output) override;
+    bool onMsg(const char* msg) override;
     bool onHasMsg(const char* msg) const override;
 
     QPlainTextEdit* getEditor() const
@@ -77,11 +74,9 @@ private:
 private:
     QPlainTextEdit* const editor;
     App::TextDocument* const textDocument;
-    boost::signals2::connection textConnection;
-    boost::signals2::connection labelConnection;
+    fastsignals::advanced_connection textConnection;
+    fastsignals::connection labelConnection;
     bool aboutToClose = false;
 };
 
 }  // namespace Gui
-
-#endif

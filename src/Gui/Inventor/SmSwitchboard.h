@@ -1,5 +1,6 @@
-#ifndef SMALLCHANGE_SWITCHBOARD_H
-#define SMALLCHANGE_SWITCHBOARD_H
+// SPDX-License-Identifier: BSD-3-Clause
+
+#pragma once
 
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
@@ -38,29 +39,27 @@
 #include <FCGlobal.h>
 
 
-class GuiExport SmSwitchboard : public SoGroup {
-  using inherited = SoGroup;
-  SO_NODE_HEADER(SmSwitchboard);
+class GuiExport SmSwitchboard: public SoGroup
+{
+    using inherited = SoGroup;
+    SO_NODE_HEADER(SmSwitchboard);
 
 public:
-  static void initClass();
-  SmSwitchboard();
-  SmSwitchboard(int numchildren);
+    static void initClass();
+    SmSwitchboard();
+    SmSwitchboard(int numchildren);
 
-  SoMFBool enable;
+    SoMFBool enable;
 
-  void doAction(SoAction * action) override;
-  void callback(SoCallbackAction * action) override;
-  void GLRender(SoGLRenderAction * action) override;
-  void pick(SoPickAction * action) override;
-  void getBoundingBox(SoGetBoundingBoxAction * action) override;
-  void handleEvent(SoHandleEventAction * action) override;
-  void getMatrix(SoGetMatrixAction * action) override;
-  void search(SoSearchAction * action) override;
+    void doAction(SoAction* action) override;
+    void callback(SoCallbackAction* action) override;
+    void GLRender(SoGLRenderAction* action) override;
+    void pick(SoPickAction* action) override;
+    void getBoundingBox(SoGetBoundingBoxAction* action) override;
+    void handleEvent(SoHandleEventAction* action) override;
+    void getMatrix(SoGetMatrixAction* action) override;
+    void search(SoSearchAction* action) override;
 
 protected:
-  ~SmSwitchboard() override;
-
+    ~SmSwitchboard() override;
 };
-
-#endif // !SMALLCHANGE_SWITCHBOARD_H

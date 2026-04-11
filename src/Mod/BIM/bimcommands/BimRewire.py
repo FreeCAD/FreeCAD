@@ -27,7 +27,6 @@
 import FreeCAD
 import FreeCADGui
 
-
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 
 
@@ -37,9 +36,7 @@ class BIM_Rewire:
         return {
             "Pixmap": "BIM_Rewire",
             "MenuText": QT_TRANSLATE_NOOP("BIM_Rewire", "Rewire"),
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "BIM_Rewire", "Recreates wires from selected objects"
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("BIM_Rewire", "Recreates wires from selected objects"),
             "Accel": "R,W",
         }
 
@@ -56,11 +53,7 @@ class BIM_Rewire:
         names = []
         edges = []
         for obj in objs:
-            if (
-                hasattr(obj, "Shape")
-                and hasattr(obj.Shape, "Edges")
-                and obj.Shape.Edges
-            ):
+            if hasattr(obj, "Shape") and hasattr(obj.Shape, "Edges") and obj.Shape.Edges:
                 edges.extend(obj.Shape.Edges)
                 names.append(obj.Name)
         wires = DraftGeomUtils.findWires(edges)
@@ -72,9 +65,7 @@ class BIM_Rewire:
                 nobj.shape = wire
                 selectlist.append(nobj)
             else:
-                selectlist.append(
-                    Draft.makeWire([v.Point for v in wire.OrderedVertexes])
-                )
+                selectlist.append(Draft.makeWire([v.Point for v in wire.OrderedVertexes]))
         for name in names:
             FreeCAD.ActiveDocument.removeObject(name)
         FreeCAD.ActiveDocument.commitTransaction()

@@ -22,8 +22,7 @@
  **************************************************************************/
 
 
-#ifndef GUI_SIEMENSNXNAVIGATIONSTYLE_H
-#define GUI_SIEMENSNXNAVIGATIONSTYLE_H
+#pragma once
 
 #include <Gui/Navigation/NavigationStateChart.h>
 
@@ -31,7 +30,8 @@
 namespace Gui
 {
 
-class GuiExport SiemensNXNavigationStyle : public NavigationStateChart {
+class GuiExport SiemensNXNavigationStyle: public NavigationStateChart
+{
     using inherited = NavigationStateChart;
 
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
@@ -43,7 +43,7 @@ public:
     std::string userFriendlyName() const override;
 
 protected:
-    SbBool processKeyboardEvent(const SoKeyboardEvent * const event) override;
+    SbBool processKeyboardEvent(const SoKeyboardEvent* const event) override;
 
 private:
     struct NaviMachine;
@@ -59,5 +59,3 @@ private:
 
 }  // namespace Gui
 // NOLINTEND(cppcoreguidelines-avoid*, readability-avoid-const-params-in-decls)
-
-#endif  // GUI_SIEMENSNXNAVIGATIONSTYLE_H

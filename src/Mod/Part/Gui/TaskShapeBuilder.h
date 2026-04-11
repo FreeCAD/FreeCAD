@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,18 +22,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_TASKSHAPEBUILDER_H
-#define PARTGUI_TASKSHAPEBUILDER_H
+#pragma once
 
 #include <Gui/Selection/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 
 
-namespace PartGui {
+namespace PartGui
+{
 
-class ShapeBuilderWidget : public QWidget,
-                           public Gui::SelectionObserver
+class ShapeBuilderWidget: public QWidget, public Gui::SelectionObserver
 {
     Q_OBJECT
 
@@ -41,6 +42,7 @@ public:
 
     bool accept();
     bool reject();
+    void setSelectionGate();
 
 private:
     void onCreateButtonClicked();
@@ -57,14 +59,14 @@ private:
     void createFaceFromEdge();
     void createShellFromFace();
     void createSolidFromShell();
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
 private:
     class Private;
     Private* d;
 };
 
-class TaskShapeBuilder : public Gui::TaskView::TaskDialog
+class TaskShapeBuilder: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
@@ -79,12 +81,12 @@ public:
     void clicked(int) override;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
-    { return QDialogButtonBox::Close; }
+    {
+        return QDialogButtonBox::Close;
+    }
 
 private:
     ShapeBuilderWidget* widget;
 };
 
-} //namespace PartGui
-
-#endif // PARTGUI_TASKSHAPEBUILDER_H
+}  // namespace PartGui

@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <cmath>
 
 # include <QFileInfo>
@@ -31,7 +29,6 @@
 # include <QPointF>
 # include <QRectF>
 # include <QTransform>
-#endif
 
 #include <App/Application.h>
 #include <Base/Console.h>
@@ -104,8 +101,6 @@ QColor QGIFace::getDefaultFillColor()
 /// redraw this face
 void QGIFace::draw()
 {
-//    Base::Console().message("QGIF::draw - pen style: %d\n", m_pen.style());
-
     m_svgHatchArea->hide();
     m_imageSvgHatchArea->hide();
 
@@ -147,8 +142,8 @@ void QGIFace::draw()
 }
 
 /// show the face style & colour in normal configuration
-void QGIFace::setPrettyNormal() {
-//    Base::Console().message("QGIF::setPrettyNormal() - hatched: %d\n", isHatched());
+void QGIFace::setPrettyNormal() 
+{
     if (isHatched()  &&
         (m_mode == FillMode::BitmapFill) ) {                               //hatch with bitmap fill
         m_brush.setStyle(Qt::TexturePattern);
@@ -161,21 +156,18 @@ void QGIFace::setPrettyNormal() {
 
 /// show the face style & colour in preselect configuration
 void QGIFace::setPrettyPre() {
-//    Base::Console().message("QGIF::setPrettyPre()\n");
     m_brush.setStyle(Qt::SolidPattern);
     QGIPrimPath::setPrettyPre();
 }
 
 /// show the face style & colour in selected configuration
 void QGIFace::setPrettySel() {
-//    Base::Console().message("QGIF::setPrettySel()\n");
     m_brush.setStyle(Qt::SolidPattern);
     QGIPrimPath::setPrettySel();
 }
 
 /// show or hide the edges of this face.  Usually just for debugging
 void QGIFace::setDrawEdges(bool state) {
-//    Base::Console().message("QGIF::setDrawEdges(%d)\n", b);
     if (state) {
         setStyle(Qt::DashLine);
     } else {
@@ -226,12 +218,6 @@ void QGIFace::setFillMode(FillMode mode)
 void QGIFace::setOutline(const QPainterPath & path)
 {
     setPath(path);
-}
-
-/// remove the PAT hatch lines
-void QGIFace::clearLineSets()
-{
-    return;
 }
 
 /// add PAT hatch line set

@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAW_GEOMETRYOBJECT_H
-#define TECHDRAW_GEOMETRYOBJECT_H
+#pragma once
 
 //! a class to the projection of shapes, removal/identifying hidden lines and
 //  converting the output for OCC HLR into the BaseGeom intermediate representation.
@@ -82,7 +81,7 @@ public:
 
     void projectShape(const TopoDS_Shape& input, const gp_Ax2& viewAxis);
     void projectShapeWithPolygonAlgo(const TopoDS_Shape& input, const gp_Ax2& viewAxis);
-    static TopoDS_Shape projectSimpleShape(const TopoDS_Shape& shape, const gp_Ax2& CS);
+    static TopoDS_Shape projectSimpleShape(const TopoDS_Shape& shape, const gp_Ax2& CS, bool invertYRequired = true);
     static TopoDS_Shape simpleProjection(const TopoDS_Shape& shape, const gp_Ax2& projCS);
     static TopoDS_Shape projectFace(const TopoDS_Shape& face, const gp_Ax2& CS);
     void makeTDGeometry();
@@ -170,6 +169,3 @@ protected:
 using GeometryObjectPtr = std::shared_ptr<GeometryObject>;
 
 }//namespace TechDraw
-
-#endif
-

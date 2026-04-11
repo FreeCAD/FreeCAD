@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
@@ -21,8 +23,7 @@
 
 #include <FCGlobal.h>
 
-#ifndef MATERIAL_GLOBAL_H
-#define MATERIAL_GLOBAL_H
+#pragma once
 
 // Material
 #ifndef MaterialsExport
@@ -41,5 +42,3 @@
 #define MatGuiExport FREECAD_DECL_IMPORT
 #endif
 #endif
-
-#endif  // MATERIAL_GLOBAL_H

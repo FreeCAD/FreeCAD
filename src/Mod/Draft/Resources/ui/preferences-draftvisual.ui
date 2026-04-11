@@ -17,7 +17,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox_1">
      <property name="title">
-      <string>SVG patterns</string>
+      <string>SVG Patterns</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_1">
       <item row="0" column="0">
@@ -89,7 +89,7 @@ pattern definitions to be added to the standard patterns</string>
    <item>
     <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
-      <string>Drawing view line definitions</string>
+      <string>Drawing View Line Definitions</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">

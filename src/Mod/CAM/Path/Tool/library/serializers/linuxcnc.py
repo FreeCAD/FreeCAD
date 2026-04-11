@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2025 Samuel Abels <knipknap@gmail.com>                  *
 # *                                                                         *
@@ -50,18 +51,30 @@ class LinuxCNCSerializer(AssetSerializer):
 
         output = io.BytesIO()
         for bit_no, bit in sorted(asset._bit_nos.items()):
-            assert isinstance(bit, ToolBit)
-            if not isinstance(bit, RotaryToolBitMixin):
-                Path.Log.warning(
-                    f"Skipping too {bit.label} (bit.id) because it is not a rotary tool"
-                )
-                continue
-            diameter = bit.get_diameter()
+            # Connor: assert isinstance(bit, ToolBit)
+            # if not isinstance(bit, RotaryToolBitMixin):
+            #     Path.Log.warning(
+            #         f"Skipping too {bit.label} (bit.id) because it is not a rotary tool"
+            #     )
+            #     continue
+            # Commenting this out. Why did we skip because it is not a rotary tool?
+            diameter = bit.get_diameter().getUserPreferred()[0]
             pocket = "P0"  # TODO: is there a better way?
-            # Format diameter to one decimal place and remove units
-            diameter_value = diameter.Value if hasattr(diameter, "Value") else diameter
-            line = f"T{bit_no} {pocket} D{diameter_value:.3f} ;{bit.label}\n"
-            output.write(line.encode("ascii", "ignore"))
+            # TODO: Strip units by splitting at the first space if diameter is a string
+            # This is where we need a machine definition so we can export these out correctly
+            # for a metric or imperial machine
+            # Using user preferred for now
+            if hasattr(diameter, "Value"):
+                diameter_value = str(diameter.Value).replace(",", ".")
+            elif isinstance(diameter, str):
+                diameter_value = diameter.split(" ")[0].replace(",", ".")
+            else:
+                diameter_value = str(diameter).replace(",", ".")
+            line = (
+                f"T{bit_no} {pocket} X0 Y0 Z0 A0 B0 C0 U0 V0 W0 "
+                f"D{diameter_value} I0 J0 Q0 ;{bit.label}\n"
+            )
+            output.write(line.encode("utf-8"))
 
         return output.getvalue()
 

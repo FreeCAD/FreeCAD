@@ -34,15 +34,16 @@ PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
 
 class Arch_Stairs:
-
     "the Arch Stairs command definition"
 
     def GetResources(self):
 
-        return {'Pixmap'  : 'Arch_Stairs',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Stairs","Stairs"),
-                'Accel': "S, R",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Stairs","Creates a flight of stairs")}
+        return {
+            "Pixmap": "Arch_Stairs",
+            "MenuText": QT_TRANSLATE_NOOP("Arch_Stairs", "Stairs"),
+            "Accel": "S, R",
+            "ToolTip": QT_TRANSLATE_NOOP("Arch_Stairs", "Creates a flight of stairs"),
+        }
 
     def IsActive(self):
 
@@ -53,7 +54,8 @@ class Arch_Stairs:
 
         import Draft
         from draftutils import params
-        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Stairs"))
+
+        FreeCAD.ActiveDocument.openTransaction(translate("Arch", "Create Stairs"))
         FreeCADGui.addModule("Arch")
         sel = FreeCADGui.Selection.getSelection()
         if sel:
@@ -65,13 +67,19 @@ class Arch_Stairs:
                 nStr += "FreeCAD.ActiveDocument." + obj.Name
             #'obj' in GUI not the same as obj in script,
             # make it 'stairs' to distinguish one from another
-            #Create Stairs object with steps numbers in user preference
-            FreeCADGui.doCommand("stairs = Arch.makeStairs(baseobj=["+nStr+"],steps="+str(params.get_param_arch("StairsSteps"))+")")
+            # Create Stairs object with steps numbers in user preference
+            FreeCADGui.doCommand(
+                "stairs = Arch.makeStairs(baseobj=["
+                + nStr
+                + "],steps="
+                + str(params.get_param_arch("StairsSteps"))
+                + ")"
+            )
             FreeCADGui.Selection.clearSelection()
             FreeCADGui.doCommand("FreeCADGui.Selection.addSelection(stairs)")
 
-            #ArchSketch Support
-            if len(sel)==1 and Draft.getType(obj)=="ArchSketch":
+            # ArchSketch Support
+            if len(sel) == 1 and Draft.getType(obj) == "ArchSketch":
                 # Get ArchSketch.FloorHeight as default and assign to Stairs
                 try:
                     height = str(obj.FloorHeight.Value)  # vs obj.FloorHeight
@@ -79,18 +87,20 @@ class Arch_Stairs:
                     FreeCADGui.doCommand("stairs.Height = " + height)
                 except:
                     pass
-                #If base is ArchSketch, ArchSketchObject is already loaded, no
-                #need to load again : FreeCADGui.addModule("ArchSketchObject")
+                # If base is ArchSketch, ArchSketchObject is already loaded, no
+                # need to load again : FreeCADGui.addModule("ArchSketchObject")
                 try:
                     FreeCADGui.runCommand("EditStairs")
                 except:
                     pass
 
         else:
-            FreeCADGui.doCommand("stairs = Arch.makeStairs(steps="+str(params.get_param_arch("StairsSteps"))+")")
+            FreeCADGui.doCommand(
+                "stairs = Arch.makeStairs(steps=" + str(params.get_param_arch("StairsSteps")) + ")"
+            )
         FreeCADGui.addModule("Draft")
 
-        #FreeCADGui.doCommand("Draft.autogroup(obj)")
+        # FreeCADGui.doCommand("Draft.autogroup(obj)")
         FreeCADGui.doCommand("Draft.autogroup(stairs)")
 
         FreeCAD.ActiveDocument.commitTransaction()
@@ -98,4 +108,4 @@ class Arch_Stairs:
         print(" ActiveDocument.recompute, done ")
 
 
-FreeCADGui.addCommand('Arch_Stairs', Arch_Stairs())
+FreeCADGui.addCommand("Arch_Stairs", Arch_Stairs())

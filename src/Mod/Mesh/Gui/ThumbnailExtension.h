@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHGUI_THUMBNAIL_EXTENSION_H
-#define MESHGUI_THUMBNAIL_EXTENSION_H
+#pragma once
 
 #include <Mod/Mesh/App/Exporter.h>
 #include <Mod/Mesh/MeshGlobal.h>
@@ -53,6 +54,3 @@ public:
 };
 
 }  // namespace MeshGui
-
-
-#endif  // MESHGUI_THUMBNAIL_EXTENSION_H

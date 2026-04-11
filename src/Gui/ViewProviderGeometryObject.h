@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEWPROVIDER_GEOMETRYOBJECT_H
-#define GUI_VIEWPROVIDER_GEOMETRYOBJECT_H
+#pragma once
 
 #include "ViewProviderDragger.h"
 #include <Inventor/lists/SoPickedPointList.h>
@@ -79,9 +78,11 @@ public:
      * If \a pickAll is false (the default) only the intersection point closest to the camera will
      * be picked, otherwise all intersection points will be picked.
      */
-    SoPickedPointList getPickedPoints(const SbVec2s& pos,
-                                      const View3DInventorViewer& viewer,
-                                      bool pickAll = false) const;
+    SoPickedPointList getPickedPoints(
+        const SbVec2s& pos,
+        const View3DInventorViewer& viewer,
+        bool pickAll = false
+    ) const;
     /**
      * This method is provided for convenience and does basically the same as getPickedPoints()
      * unless that only the closest point to the camera will be picked. \note It is in the response
@@ -94,6 +95,9 @@ public:
     virtual void showBoundingBox(bool);
     //@}
 
+    void hide() override;
+    void show() override;
+
     /// Get the python wrapper for that ViewProvider
     PyObject* getPyObject() override;
 
@@ -104,9 +108,11 @@ protected:
 
     virtual unsigned long getBoundColor() const;
 
-    void handleChangedPropertyName(Base::XMLReader& reader,
-                                   const char* TypeName,
-                                   const char* PropName) override;
+    void handleChangedPropertyName(
+        Base::XMLReader& reader,
+        const char* TypeName,
+        const char* PropName
+    ) override;
     void setCoinAppearance(const App::Material& source);
 
 private:
@@ -123,6 +129,3 @@ protected:
 };
 
 }  // namespace Gui
-
-
-#endif  // GUI_VIEWPROVIDER_GEOMETRYOBJECT_H

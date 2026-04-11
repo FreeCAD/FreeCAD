@@ -20,14 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <cassert>
 
 # include <QPainter>
 # include <QPainterPath>
 # include <QStyleOptionGraphicsItem>
-#endif
 
 #include <App/Material.h>
 #include <Base/Parameter.h>
@@ -41,6 +38,7 @@ using namespace TechDrawGui;
 
 QGICMark::QGICMark(int index) : QGIVertex(index)
 {
+    m_markFuzz = PreferencesGui::markFuzz();
     m_size = 3.0;
     setThick(0.75);
     draw();
@@ -94,13 +92,7 @@ QPainterPath QGICMark::shape() const
 {
     QPainterPath outline;
     QPainterPathStroker stroker;
-    stroker.setWidth(getMarkFuzz());
+    stroker.setWidth(this->m_markFuzz);
     outline = stroker.createStroke(path());
     return outline;
 }
-
- double QGICMark::getMarkFuzz() const
-{
-    return Preferences::getPreferenceGroup("General")->GetFloat("MarkFuzz", 5.0);
-}
-

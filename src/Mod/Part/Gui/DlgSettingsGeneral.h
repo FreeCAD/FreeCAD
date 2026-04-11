@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2007 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,17 +23,17 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_DLGSETTINGSGENERAL_H
-#define PARTGUI_DLGSETTINGSGENERAL_H
+#pragma once
 
 #include <Gui/PropertyPage.h>
 
 class QButtonGroup;
 
-namespace PartGui {
+namespace PartGui
+{
 
 class Ui_DlgSettingsGeneral;
-class DlgSettingsGeneral : public Gui::Dialog::PreferencePage
+class DlgSettingsGeneral: public Gui::Dialog::PreferencePage
 {
     Q_OBJECT
 
@@ -42,14 +44,14 @@ public:
 protected:
     void saveSettings() override;
     void loadSettings() override;
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
 private:
     std::unique_ptr<Ui_DlgSettingsGeneral> ui;
 };
 
 class Ui_DlgImportExportIges;
-class DlgImportExportIges : public Gui::Dialog::PreferencePage
+class DlgImportExportIges: public Gui::Dialog::PreferencePage
 {
     Q_OBJECT
 
@@ -60,7 +62,7 @@ public:
 protected:
     void saveSettings() override;
     void loadSettings() override;
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
 private:
     std::unique_ptr<Ui_DlgImportExportIges> ui;
@@ -70,7 +72,7 @@ private:
 class DlgExportStep;
 class DlgImportStep;
 class DlgExportHeaderStep;
-class DlgImportExportStep : public Gui::Dialog::PreferencePage
+class DlgImportExportStep: public Gui::Dialog::PreferencePage
 {
     Q_OBJECT
 
@@ -81,7 +83,7 @@ public:
 protected:
     void saveSettings() override;
     void loadSettings() override;
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
 private:
     DlgExportStep* exportStep;
@@ -89,6 +91,4 @@ private:
     DlgExportHeaderStep* headerStep;
 };
 
-} // namespace Gui
-
-#endif // PARTGUI_DLGSETTINGSGENERAL_H
+}  // namespace PartGui

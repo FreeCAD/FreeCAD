@@ -20,20 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <cassert>
 
 # include <QPainterPath>
 # include <QPainterPathStroker>
-#endif
 
 #include "QGIDimLines.h"
-#include "PreferencesGui.h"
 
 
 using namespace TechDrawGui;
-using namespace TechDraw;
 
 QGIDimLines::QGIDimLines()
 {
@@ -52,16 +47,10 @@ QPainterPath QGIDimLines::shape() const
 {
     QPainterPath outline;
     QPainterPathStroker stroker;
-    stroker.setWidth(getEdgeFuzz());
+    stroker.setWidth(this->m_edgeFuzz);
     outline = stroker.createStroke(path());
     return outline;
 }
-
-double QGIDimLines::getEdgeFuzz() const
-{
-    return PreferencesGui::edgeFuzz();
-}
-
 
 QRectF QGIDimLines::boundingRect() const
 {

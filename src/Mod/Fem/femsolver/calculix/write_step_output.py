@@ -35,10 +35,10 @@ def write_step_output(f, ccxwriter):
         or ccxwriter.member.geos_shellthickness
         or ccxwriter.member.geos_fluidsection
     ):
-        if ccxwriter.solver_obj.BeamShellResultOutput3D is False:
-            f.write("*NODE FILE, OUTPUT=2d\n")
-        else:
+        if ccxwriter.solver_obj.Output3d:
             f.write("*NODE FILE, OUTPUT=3d\n")
+        else:
+            f.write("*NODE FILE, OUTPUT=2d\n")
     else:
         f.write("*NODE FILE\n")
     # MPH write out nodal temperatures if thermomechanical
@@ -56,8 +56,15 @@ def write_step_output(f, ccxwriter):
         variables = "S, E"
         if ccxwriter.analysis_type == "thermomech":
             variables += ", HFL"
-        if ccxwriter.solver_obj.MaterialNonlinearity == "nonlinear":
-            variables += ", PEEQ"
+
+        # plastic strain only if some material has nonlinear properties
+        if ccxwriter.solver_obj.MaterialNonlinearity:
+            for mat in ccxwriter.member.mats_linear:
+                mat_nonlin = mat["Object"].Nonlinear
+                if mat_nonlin and not mat_nonlin.Suppressed:
+                    variables += ", PEEQ"
+                    break
+
         if ccxwriter.analysis_type == "electromagnetic":
             variables = "HFL"
 
@@ -86,10 +93,14 @@ def write_step_output(f, ccxwriter):
                     f.write("*NODE PRINT, NSET={}, TOTALS=ONLY\n".format(femobj["Object"].Name))
                     f.write("RF\n")
         if ccxwriter.member.cons_rigidbody:
-            # reaction forces/moments for Constraint rigid body
-            f.write("** reaction forces/moments for Constraint rigid body\n")
+            # displacements and reaction forces/moments for Constraint rigid body
+            f.write("** displacements and reaction forces/moments for Constraint rigid body\n")
             for femobj in ccxwriter.member.cons_rigidbody:
                 # femobj --> dict, FreeCAD document object is femobj["Object"]
+                f.write("*NODE PRINT, NSET={}_RefNode\n".format(femobj["Object"].Name))
+                f.write("U\n")
+                f.write("*NODE PRINT, NSET={}_RotNode\n".format(femobj["Object"].Name))
+                f.write("U\n")
                 if (
                     femobj["Object"].TranslationalModeX != "Free"
                     or femobj["Object"].TranslationalModeY != "Free"

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de>           *
 # *                                                                         *
@@ -53,6 +55,7 @@ Individual task panel classes and `.ui` files are more maintainable
 because changes can be done to a single tool without affecting the rest,
 and the module size is kept small.
 """
+
 ## \defgroup drafttaskpanels drafttaskpanels
 # \ingroup DRAFT
 # \brief Modules with classes that handle task panels of the GuiCommands.

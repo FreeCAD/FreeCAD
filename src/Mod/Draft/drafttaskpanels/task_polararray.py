@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de>           *
 # *                                                                         *
@@ -21,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the task panel code for the Draft PolarArray tool."""
+
 ## @package task_polararray
 # \ingroup drafttaskpanels
 # \brief Provides the task panel code for the Draft PolarArray tool.
@@ -32,6 +35,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import FreeCADGui as Gui
+import WorkingPlane
 import Draft_rc  # include resources, icons, ui files
 import DraftVecUtils
 from FreeCAD import Units as U
@@ -41,6 +45,13 @@ from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
 bool(Draft_rc.__name__)
+
+
+def _quantity(st):
+    # workaround for improper handling of plus sign
+    # in Building US unit system
+    # https://github.com/FreeCAD/FreeCAD/issues/11345
+    return U.Quantity(st.replace("+", "--")).Value
 
 
 class TaskPanelPolarArray:
@@ -80,21 +91,24 @@ class TaskPanelPolarArray:
     def __init__(self):
 
         self.form = Gui.PySideUic.loadUi(":/ui/TaskPanel_PolarArray.ui")
-        self.form.setWindowTitle(translate("draft", "Polar array"))
+        self.form.setWindowTitle(translate("draft", "Polar Array"))
         self.form.setWindowIcon(QtGui.QIcon(":/icons/Draft_PolarArray.svg"))
 
         # -------------------------------------------------------------------
         # Default values for the internal function, and for the task panel interface
         self.center = App.Vector()
+        # TODO: the axis is currently fixed, it should be editable
+        # or selectable from the task panel
+        self.axis = WorkingPlane.get_working_plane(update=False).axis
         self.angle = 360
         self.number = 5
         self.fuse = params.get_param("Draft_array_fuse")
         self.use_link = params.get_param("Draft_array_Link")
 
-        self.form.input_c_x.setProperty('rawValue', self.center.x)
-        self.form.input_c_y.setProperty('rawValue', self.center.y)
-        self.form.input_c_z.setProperty('rawValue', self.center.z)
-        self.form.spinbox_angle.setProperty('rawValue', self.angle)
+        self.form.input_c_x.setProperty("rawValue", self.center.x)
+        self.form.input_c_y.setProperty("rawValue", self.center.y)
+        self.form.input_c_z.setProperty("rawValue", self.center.z)
+        self.form.spinbox_angle.setProperty("rawValue", self.angle)
         self.form.spinbox_number.setValue(self.number)
         self.form.checkbox_fuse.setChecked(self.fuse)
         self.form.checkbox_link.setChecked(self.use_link)
@@ -122,65 +136,70 @@ class TaskPanelPolarArray:
         self.form.button_reset.clicked.connect(self.reset_point)
 
         # When the checkbox changes, change the internal value
-        if hasattr(self.form.checkbox_fuse, "checkStateChanged"): # Qt version >= 6.7.0
+        if hasattr(self.form.checkbox_fuse, "checkStateChanged"):  # Qt version >= 6.7.0
             self.form.checkbox_fuse.checkStateChanged.connect(self.set_fuse)
             self.form.checkbox_link.checkStateChanged.connect(self.set_link)
-        else: # Qt version < 6.7.0
+        else:  # Qt version < 6.7.0
             self.form.checkbox_fuse.stateChanged.connect(self.set_fuse)
             self.form.checkbox_link.stateChanged.connect(self.set_link)
-
 
     def accept(self):
         """Execute when clicking the OK button or Enter key."""
         self.selection = Gui.Selection.getSelection()
 
-        (self.number,
-         self.angle) = self.get_number_angle()
+        self.number, self.angle = self.get_number_angle()
 
+        self.axis = self.get_axis()
         self.center = self.get_center()
 
-        self.valid_input = self.validate_input(self.selection,
-                                               self.number,
-                                               self.angle,
-                                               self.center)
+        self.valid_input = self.validate_input(
+            self.selection, self.number, self.angle, self.axis, self.center
+        )
         if self.valid_input:
             self.create_object()
             # The internal function already displays messages
             # self.print_messages()
             self.finish()
 
-    def validate_input(self, selection,
-                       number, angle, center):
+    def validate_input(self, selection, number, angle, axis, center):
         """Check that the input is valid.
 
         Some values may not need to be checked because
         the interface may not allow one to input wrong data.
         """
         if not selection:
-            _err(translate("draft","At least one element must be selected."))
+            _err(translate("draft", "At least 1 element must be selected"))
             return False
 
         # TODO: this should handle multiple objects.
         # Each of the elements of the selection should be tested.
         obj = selection[0]
         if obj.isDerivedFrom("App::FeaturePython"):
-            _err(translate("draft","Selection is not suitable for array."))
-            _err(translate("draft","Object:") + " {}".format(selection[0].Label))
+            _err(translate("draft", "Selection is not suitable for array"))
+            _err(translate("draft", "Object:") + " {}".format(selection[0].Label))
             return False
 
         if number < 2:
-            _err(translate("draft","Number of elements must be at least 2."))
+            _err(translate("draft", "Number of elements must be at least 2"))
             return False
 
         if angle > 360:
-            _wrn(translate("draft","The angle is above 360 degrees. It is set to this value to proceed."))
+            _wrn(
+                translate(
+                    "draft", "The angle is above 360 degrees. It is set to this value to proceed."
+                )
+            )
             self.angle = 360
         elif angle < -360:
-            _wrn(translate("draft","The angle is below -360 degrees. It is set to this value to proceed."))
+            _wrn(
+                translate(
+                    "draft", "The angle is below -360 degrees. It is set to this value to proceed."
+                )
+            )
             self.angle = -360
 
         # The other arguments are not tested but they should be present.
-        if center:
+        if axis and center:
             pass
 
         self.fuse = self.form.checkbox_fuse.isChecked()
@@ -205,7 +224,7 @@ class TaskPanelPolarArray:
         # This creates the object immediately
         # obj = Draft.make_polar_array(sel_obj,
         #                              self.number, self.angle, self.center,
-        #                              self.use_link)
+        #                              self.axis, self.use_link)
 
         # Instead, we build the commands to execute through the caller
         # of this class, the GuiCommand.
@@ -217,25 +236,28 @@ class TaskPanelPolarArray:
         _cmd += "number=" + str(self.number) + ", "
         _cmd += "angle=" + str(self.angle) + ", "
         _cmd += "center=" + DraftVecUtils.toString(self.center) + ", "
+        _cmd += "axis=" + DraftVecUtils.toString(self.axis) + ", "
         _cmd += "use_link=" + str(self.use_link)
         _cmd += ")"
 
-        Gui.addModule('Draft')
+        Gui.addModule("Draft")
 
-        _cmd_list = ["_obj_ = " + _cmd,
-                     "_obj_.Fuse = " + str(self.fuse),
-                     "Draft.autogroup(_obj_)",
-                     "App.ActiveDocument.recompute()"]
+        _cmd_list = [
+            "_obj_ = " + _cmd,
+            "_obj_.Fuse = " + str(self.fuse),
+            "Draft.autogroup(_obj_)",
+            "App.ActiveDocument.recompute()",
+        ]
 
         # We commit the command list through the parent command
-        self.source_command.commit(translate("draft","Polar array"), _cmd_list)
+        self.source_command.commit(translate("draft", "Create Polar Array"), _cmd_list)
 
     def get_number_angle(self):
         """Get the number and angle parameters from the widgets."""
         number = self.form.spinbox_number.value()
 
         angle_str = self.form.spinbox_angle.text()
-        angle = U.Quantity(angle_str).Value
+        angle = _quantity(angle_str)
         return number, angle
 
     def get_center(self):
@@ -243,16 +265,22 @@ class TaskPanelPolarArray:
         c_x_str = self.form.input_c_x.text()
         c_y_str = self.form.input_c_y.text()
         c_z_str = self.form.input_c_z.text()
-        center = App.Vector(U.Quantity(c_x_str).Value,
-                            U.Quantity(c_y_str).Value,
-                            U.Quantity(c_z_str).Value)
+        center = App.Vector(_quantity(c_x_str), _quantity(c_y_str), _quantity(c_z_str))
         return center
+
+    def get_axis(self):
+        """Get the axis that will be used for the array. NOT IMPLEMENTED.
+
+        It should consider a second selection of an edge or wire to use
+        as an axis.
+        """
+        return self.axis
 
     def reset_point(self):
         """Reset the center point to the original distance."""
-        self.form.input_c_x.setProperty('rawValue', 0)
-        self.form.input_c_y.setProperty('rawValue', 0)
-        self.form.input_c_z.setProperty('rawValue', 0)
+        self.form.input_c_x.setProperty("rawValue", 0)
+        self.form.input_c_y.setProperty("rawValue", 0)
+        self.form.input_c_z.setProperty("rawValue", 0)
 
         self.center = self.get_center()
 
@@ -262,7 +290,7 @@ class TaskPanelPolarArray:
             state = self.tr_true
         else:
             state = self.tr_false
-        _msg(translate("draft","Fuse:") + " {}".format(state))
+        _msg(translate("draft", "Fuse:") + " {}".format(state))
 
     def set_fuse(self):
         """Execute as a callback when the fuse checkbox changes."""
@@ -275,7 +303,7 @@ class TaskPanelPolarArray:
             state = self.tr_true
         else:
             state = self.tr_false
-        _msg(translate("draft","Create Link array:") + " {}".format(state))
+        _msg(translate("draft", "Create link array:") + " {}".format(state))
 
     def set_link(self):
         """Execute as a callback when the link checkbox changes."""
@@ -291,13 +319,13 @@ class TaskPanelPolarArray:
             # For example, it could take the shapes of all objects,
             # make a compound and then use it as input for the array function.
             sel_obj = self.selection[0]
-        _msg(translate("draft","Object:") + " {}".format(sel_obj.Label))
-        _msg(translate("draft","Number of elements:") + " {}".format(self.number))
-        _msg(translate("draft","Polar angle:") + " {}".format(self.angle))
-        _msg(translate("draft","Center of rotation:")
-             + " ({0}, {1}, {2})".format(self.center.x,
-                                         self.center.y,
-                                         self.center.z))
+        _msg(translate("draft", "Object:") + " {}".format(sel_obj.Label))
+        _msg(translate("draft", "Number of elements:") + " {}".format(self.number))
+        _msg(translate("draft", "Polar angle:") + " {}".format(self.angle))
+        _msg(
+            translate("draft", "Center of rotation:")
+            + " ({0}, {1}, {2})".format(self.center.x, self.center.y, self.center.z)
+        )
         self.print_fuse_state(self.fuse)
         self.print_link_state(self.use_link)
 
@@ -338,24 +366,24 @@ class TaskPanelPolarArray:
         # sby = self.form.spinbox_c_y
         # sbz = self.form.spinbox_c_z
         if dp:
-            if self.mask in ('y', 'z'):
+            if self.mask in ("y", "z"):
                 # sbx.setText(displayExternal(dp.x, None, 'Length'))
-                self.form.input_c_x.setProperty('rawValue', dp.x)
+                self.form.input_c_x.setProperty("rawValue", dp.x)
             else:
                 # sbx.setText(displayExternal(dp.x, None, 'Length'))
-                self.form.input_c_x.setProperty('rawValue', dp.x)
-            if self.mask in ('x', 'z'):
+                self.form.input_c_x.setProperty("rawValue", dp.x)
+            if self.mask in ("x", "z"):
                 # sby.setText(displayExternal(dp.y, None, 'Length'))
-                self.form.input_c_y.setProperty('rawValue', dp.y)
+                self.form.input_c_y.setProperty("rawValue", dp.y)
             else:
                 # sby.setText(displayExternal(dp.y, None, 'Length'))
-                self.form.input_c_y.setProperty('rawValue', dp.y)
-            if self.mask in ('x', 'y'):
+                self.form.input_c_y.setProperty("rawValue", dp.y)
+            if self.mask in ("x", "y"):
                 # sbz.setText(displayExternal(dp.z, None, 'Length'))
-                self.form.input_c_z.setProperty('rawValue', dp.z)
+                self.form.input_c_z.setProperty("rawValue", dp.z)
             else:
                 # sbz.setText(displayExternal(dp.z, None, 'Length'))
-                self.form.input_c_z.setProperty('rawValue', dp.z)
+                self.form.input_c_z.setProperty("rawValue", dp.z)
 
         if plane:
             pass
@@ -409,5 +437,6 @@ class TaskPanelPolarArray:
             Gui.ActiveDocument.resetEdit()
         # Runs the parent command to complete the call
         self.source_command.completed()
+
 
 ## @}

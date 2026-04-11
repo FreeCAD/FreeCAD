@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -22,7 +24,6 @@
 
 
 // clang-format off
-#include "PreCompiled.h"
 #include "ViewProviderPython.h"
 // clang-format on
 

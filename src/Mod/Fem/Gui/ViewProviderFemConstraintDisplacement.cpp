@@ -23,12 +23,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
-#endif
+
 
 #include "Mod/Fem/App/FemConstraintDisplacement.h"
 #include "TaskFemConstraintDisplacement.h"
@@ -38,8 +36,7 @@
 
 using namespace FemGui;
 
-PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintDisplacement,
-                FemGui::ViewProviderFemConstraintOnBoundary)
+PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintDisplacement, FemGui::ViewProviderFemConstraintOnBoundary)
 
 ViewProviderFemConstraintDisplacement::ViewProviderFemConstraintDisplacement()
 {

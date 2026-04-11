@@ -20,15 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <FCConfig.h>
+
 # ifdef FC_OS_WIN32
 #  include <windows.h>
 # endif
 # include <QMenu>
 # include <QMessageBox>
 # include <QTextStream>
-#endif
 
 #include <App/DocumentObject.h>
 #include <Gui/Control.h>
@@ -44,6 +43,7 @@
 
 #include "TaskProjGroup.h"
 #include "QGIViewPart.h"
+#include "QGIProjGroup.h"
 #include "QGSPage.h"
 #include "ViewProviderPage.h"
 #include "ViewProviderProjGroup.h"
@@ -240,4 +240,34 @@ void ViewProviderProjGroup::regroupSubViews()
         }
     }
 }
+
+void ViewProviderProjGroup::updateData(const App::Property* prop)
+{
+    TechDraw::DrawProjGroup* group = getViewObject();
+    if (prop == &group->AutoDistribute) {
+        onChangeAutoDistribute();
+        return;
+    }
+
+    ViewProviderDrawingView::updateData(prop);
+}
+
+void ViewProviderProjGroup::onChangeAutoDistribute()
+{
+    auto* groupQGI = static_cast<QGIProjGroup*>(getQView());
+    if (!groupQGI) {
+        // our QGItem does not exist yet
+        return;
+    }
+
+    QList<QGIViewPart*> secondaryQViews = groupQGI->secondaryQViews();
+    for (auto& secondary : secondaryQViews) {
+        if (secondary == groupQGI->getAnchorQItem()) {
+            // do not touch the anchor
+            continue;
+        }
+        secondary->updateView(false);
+    }
+}
+
 

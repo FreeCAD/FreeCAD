@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Test results</string>
+   <string>Test Results</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -40,7 +40,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Results of test:</string>
+      <string>Results of test</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -88,7 +88,7 @@
      <item>
       <widget class="QPushButton" name="buttonReport">
        <property name="text">
-        <string>to Report panel</string>
+        <string>To Report Panel</string>
        </property>
        <property name="icon">
         <iconset theme="edit-copy">

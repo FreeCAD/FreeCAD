@@ -24,8 +24,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskFemConstraintTransform_H
-#define GUI_TASKVIEW_TaskFemConstraintTransform_H
+#pragma once
 
 #include <QObject>
 #include <memory>
@@ -43,8 +42,10 @@ class TaskFemConstraintTransform: public TaskFemConstraint
     Q_OBJECT
 
 public:
-    explicit TaskFemConstraintTransform(ViewProviderFemConstraintTransform* ConstraintView,
-                                        QWidget* parent = nullptr);
+    explicit TaskFemConstraintTransform(
+        ViewProviderFemConstraintTransform* ConstraintView,
+        QWidget* parent = nullptr
+    );
     ~TaskFemConstraintTransform() override;
     const std::string getReferences() const override;
     Base::Rotation getRotation() const;
@@ -81,5 +82,3 @@ public:
 };
 
 }  // namespace FemGui
-
-#endif  // GUI_TASKVIEW_TaskFemConstraintTransform_H

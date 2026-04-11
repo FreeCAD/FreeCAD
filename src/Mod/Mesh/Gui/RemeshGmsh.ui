@@ -137,6 +137,9 @@
         </item>
         <item>
          <widget class="Gui::PrefFileChooser" name="fileChooser">
+          <property name="toolTip">
+           <string>Leave empty to use default gmsh executable</string>
+          </property>
           <property name="prefEntry" stdset="0">
            <cstring>gmshExe</cstring>
           </property>

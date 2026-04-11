@@ -1,7 +1,10 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, constmethod
 from Base.BaseClass import BaseClass
 from typing import Any, Final, Tuple, Dict
-
 
 @export(
     Constructor=True,
@@ -18,10 +21,8 @@ class AxisOrigin(BaseClass):
     """
 
     @constmethod
-    def getElementPicked(self, pickedPoint: Any) -> str:
+    def getElementPicked(self, pickedPoint: Any, /) -> str:
         """
-        getElementPicked(pickedPoint) -> str
-
         Returns the picked element name.
 
         pickedPoint : coin.SoPickedPoint
@@ -29,10 +30,8 @@ class AxisOrigin(BaseClass):
         ...
 
     @constmethod
-    def getDetailPath(self, subname: str, path: Any) -> Any:
+    def getDetailPath(self, subname: str, path: Any, /) -> Any:
         """
-        getDetailPath(subname, path) -> coin.SoDetail or None
-
         Returns Coin detail of a subelement.
         Note: Not fully implemented. Currently only returns None.
 
@@ -42,7 +41,6 @@ class AxisOrigin(BaseClass):
             Output Coin path leading to the returned element detail.
         """
         ...
-
     AxisLength: float = 0.0
     """Get/set the axis length."""
 

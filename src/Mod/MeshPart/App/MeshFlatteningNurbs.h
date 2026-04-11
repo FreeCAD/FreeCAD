@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2017 Lorenz Lechner                                     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 // clang-format off
-#ifndef NURBS_H
-#define NURBS_H
+#pragma once
 
 #include <tuple>
 
@@ -115,5 +116,4 @@ struct NurbsBase1D
 
 }
 
-#endif
 // clang-format on

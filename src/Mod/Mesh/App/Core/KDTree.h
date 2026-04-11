@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef MESH_KDTREE_H
-#define MESH_KDTREE_H
+#pragma once
 
 #include "Elements.h"
 
@@ -46,8 +47,7 @@ public:
     void Optimize();
 
     PointIndex FindNearest(const Base::Vector3f& p, Base::Vector3f& n, float&) const;
-    PointIndex
-    FindNearest(const Base::Vector3f& p, float max_dist, Base::Vector3f& n, float&) const;
+    PointIndex FindNearest(const Base::Vector3f& p, float max_dist, Base::Vector3f& n, float&) const;
     PointIndex FindExact(const Base::Vector3f& p) const;
     void FindInRange(const Base::Vector3f&, float, std::vector<PointIndex>&) const;
 
@@ -62,6 +62,3 @@ private:
 };
 
 }  // namespace MeshCore
-
-
-#endif  // MESH_KDTREE_H

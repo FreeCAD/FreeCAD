@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskFemConstraintBearing_H
-#define GUI_TASKVIEW_TaskFemConstraintBearing_H
+#pragma once
 
 #include <QObject>
 #include <memory>
@@ -51,9 +50,11 @@ class TaskFemConstraintBearing: public TaskFemConstraint
     Q_OBJECT
 
 public:
-    explicit TaskFemConstraintBearing(ViewProviderFemConstraint* ConstraintView,
-                                      QWidget* parent = nullptr,
-                                      const char* pixmapname = "FEM_ConstraintBearing");
+    explicit TaskFemConstraintBearing(
+        ViewProviderFemConstraint* ConstraintView,
+        QWidget* parent = nullptr,
+        const char* pixmapname = "FEM_ConstraintBearing"
+    );
     ~TaskFemConstraintBearing() override;
 
     double getDistance() const;
@@ -90,5 +91,3 @@ public:
 };
 
 }  // namespace FemGui
-
-#endif  // GUI_TASKVIEW_TaskFemConstraintBearing_H

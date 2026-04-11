@@ -47,7 +47,7 @@
           <item row="0" column="0">
            <widget class="QLabel" name="label">
             <property name="text">
-             <string>Document Name</string>
+             <string>Document name</string>
             </property>
            </widget>
           </item>
@@ -61,7 +61,7 @@
           <item row="1" column="0">
            <widget class="QLabel" name="label_2">
             <property name="text">
-             <string>Label / Internal Name</string>
+             <string>Label / internal name</string>
             </property>
            </widget>
           </item>
@@ -125,7 +125,7 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Copy to clipboard</string>
+               <string>Copy to Clipboard</string>
               </property>
              </widget>
             </item>

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com      *
  *                                                                         *
@@ -20,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Base/Reader.h>
 #include <Base/Writer.h>
@@ -70,8 +71,7 @@ void VisualLayer::setVisible(bool show)
 void VisualLayer::Save(Base::Writer& writer) const
 {
     writer.Stream() << writer.ind() << "<VisualLayer "
-                    << "visible=\""
-                    << (visible ? std::string("true") : std::string("false")).c_str()
+                    << "visible=\"" << (visible ? std::string("true") : std::string("false")).c_str()
                     << "\" linePattern=\"" << linePattern << "\" lineWidth=\"" << lineWidth
                     << "\"/>" << std::endl;
 }

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,11 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <sstream>
-#endif
 
 #include "GeometryPyCXX.h"
 #include "VectorPy.h"
@@ -119,8 +117,9 @@ Py::PythonClassObject<Vector2dPy> Vector2dPy::create(double vx, double vy)
     Py::Tuple arg(2);
     arg.setItem(0, Py::Float(vx));
     arg.setItem(1, Py::Float(vy));
-    Py::PythonClassObject<Vector2dPy> py =
-        Py::PythonClassObject<Vector2dPy>(class_type.apply(arg, Py::Dict()));
+    Py::PythonClassObject<Vector2dPy> py = Py::PythonClassObject<Vector2dPy>(
+        class_type.apply(arg, Py::Dict())
+    );
     return py;
 }
 

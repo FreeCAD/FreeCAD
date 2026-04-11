@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2017 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHPART_GUI_TASKCURVEONMESH_H
-#define MESHPART_GUI_TASKCURVEONMESH_H
+#pragma once
 
 #include <QPointer>
 
@@ -83,5 +84,3 @@ private:
 };
 
 }  // namespace MeshPartGui
-
-#endif  // MESHPART_GUI_TASKCURVEONMESH_H

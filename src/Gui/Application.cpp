@@ -20,9 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#include <FCConfig.h>
 
-#ifndef _PreComp_
 #include <boost/interprocess/sync/file_lock.hpp>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoError.h>
@@ -38,13 +37,16 @@
 #include <QScreen>
 #include <QStatusBar>
 #include <QStyle>
+#include <QSurfaceFormat>
 #include <QTextStream>
 #include <QTimer>
 #include <QWindow>
-#endif
+#include <QStyleFactory>
 
 #include <QLoggingCategory>
 #include <fmt/format.h>
+#include <list>
+#include <ranges>
 
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
@@ -140,11 +142,13 @@
 #include "Inventor/SoFCPlacementIndicatorKit.h"
 #include "QtWidgets.h"
 
+#include <FreeCADStyle.h>
 #include <OverlayManager.h>
+#include <ParamHandler.h>
 #include <Base/ServiceProvider.h>
 
 #ifdef BUILD_TRACY_FRAME_PROFILER
-#include <tracy/Tracy.hpp>
+# include <tracy/Tracy.hpp>
 #endif
 
 using namespace Gui;
@@ -152,8 +156,15 @@ using namespace Gui::DockWnd;
 using namespace std;
 namespace sp = std::placeholders;
 
+FC_LOG_LEVEL_INIT("Gui")
 
 Application* Application::Instance = nullptr;
+
+#ifdef USE_3DCONNEXION_NAVLIB
+extern "C" {
+extern const long NlErrorCode;  // initialized before main() by navlib_load.cpp
+}
+#endif
 
 namespace Gui
 {
@@ -165,16 +176,14 @@ class ViewProviderMap
 public:
     void newObject(const ViewProvider& vp)
     {
-        auto vpd =
-            freecad_cast<ViewProviderDocumentObject*>(const_cast<ViewProvider*>(&vp));
+        auto vpd = freecad_cast<ViewProviderDocumentObject*>(const_cast<ViewProvider*>(&vp));
         if (vpd && vpd->getObject()) {
             map[vpd->getObject()] = vpd;
         }
     }
     void deleteObject(const ViewProvider& vp)
     {
-        auto vpd =
-            freecad_cast<ViewProviderDocumentObject*>(const_cast<ViewProvider*>(&vp));
+        auto vpd = freecad_cast<ViewProviderDocumentObject*>(const_cast<ViewProvider*>(&vp));
         if (vpd && vpd->getObject()) {
             map.erase(vpd->getObject());
         }
@@ -224,7 +233,7 @@ struct ApplicationP
     std::map<const App::Document*, Gui::Document*> documents;
     /// Active document
     Gui::Document* activeDocument {nullptr};
-    Gui::Document* editDocument {nullptr};
+    std::vector<Gui::Document*> editDocuments;
 
     MacroManager* macroMngr;
     PreferencePackManager* prefPackManager;
@@ -250,11 +259,11 @@ static PyObject* FreeCADGui_subgraphFromObject(PyObject* /*self*/, PyObject* arg
     std::string vp = obj->getViewProviderName();
     SoNode* node = nullptr;
     try {
-        auto base =
-            static_cast<Base::BaseClass*>(Base::Type::createInstanceByName(vp.c_str(), true));
+        auto base = static_cast<Base::BaseClass*>(Base::Type::createInstanceByName(vp.c_str(), true));
         if (base && base->isDerivedFrom<Gui::ViewProviderDocumentObject>()) {
             std::unique_ptr<Gui::ViewProviderDocumentObject> vp(
-                static_cast<Gui::ViewProviderDocumentObject*>(base));
+                static_cast<Gui::ViewProviderDocumentObject*>(base)
+            );
             std::map<std::string, App::Property*> Map;
             obj->getPropertyMap(Map);
             vp->attach(obj);
@@ -287,10 +296,8 @@ static PyObject* FreeCADGui_subgraphFromObject(PyObject* /*self*/, PyObject* arg
 
             type += " *";
             PyObject* proxy = nullptr;
-            proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin",
-                                                             type.c_str(),
-                                                             static_cast<void*>(node),
-                                                             1);
+            proxy = Base::Interpreter()
+                        .createSWIGPointerObj("pivy.coin", type.c_str(), static_cast<void*>(node), 1);
             return Py::new_reference_to(Py::Object(proxy, true));
         }
     }
@@ -381,24 +388,76 @@ struct PyMethodDef FreeCADGui_methods[] = {
 
 void Application::initStyleParameterManager()
 {
+    static ParamHandlers handlers;
+
+    const auto deduceParametersFilePath = []() -> std::string {
+        const auto hMainWindowGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/MainWindow"
+        );
+
+        if (const std::string& path = hMainWindowGrp->GetASCII("ThemeStyleParametersFile");
+            !path.empty()) {
+            return path;
+        }
+
+        return fmt::format("qss:parameters/{}.yaml", hMainWindowGrp->GetASCII("Theme", "Classic"));
+    };
+
+    auto themeParametersSource = new StyleParameters::YamlParameterSource(
+        deduceParametersFilePath(),
+        {.name = QT_TR_NOOP("Theme Parameters"),
+         .options = StyleParameters::ParameterSourceOption::UserEditable}
+    );
+
+    auto reloadStylesheetHandler = handlers.addDelayedHandler(
+        "BaseApp/Preferences/MainWindow",
+        {"ThemeStyleParametersFiles", "Theme", "StyleSheet"},
+        [themeParametersSource, deduceParametersFilePath, this](ParameterGrp::handle hGrp) {
+            themeParametersSource->changeFilePath(deduceParametersFilePath());
+            styleParameterManager()->reload();
+
+            std::string sheet = hGrp->GetASCII("StyleSheet");
+            bool tiledBG = hGrp->GetBool("TiledBackground", false);
+
+            setStyleSheet(QString::fromStdString(sheet), tiledBG);
+        }
+    );
+
+    handlers.addHandler(
+        "BaseApp/Preferences/Themes",
+        {"ThemeAccentColor1", "ThemeAccentColor2", "ThemeAccentColor2"},
+        reloadStylesheetHandler
+    );
+
     Base::registerServiceImplementation<StyleParameters::ParameterSource>(
-        new StyleParameters::BuiltInParameterSource({.name = QT_TR_NOOP("Built-in Parameters")}));
+        new StyleParameters::BuiltInParameterSource({.name = QT_TR_NOOP("Built-in Parameters")})
+    );
+
+    // todo: left for compatibility with older theme versions, to be removed before release
+    Base::registerServiceImplementation<StyleParameters::ParameterSource>(
+        new StyleParameters::UserParameterSource(
+            App::GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/Themes/UserTokens"
+            ),
+            {.name = QT_TR_NOOP("Theme Parameters - Fallback"),
+             .options = StyleParameters::ParameterSourceOption::ReadOnly}
+        )
+    );
+
+    Base::registerServiceImplementation<StyleParameters::ParameterSource>(themeParametersSource);
 
     Base::registerServiceImplementation<StyleParameters::ParameterSource>(
         new StyleParameters::UserParameterSource(
             App::GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Preferences/Themes/Tokens"),
-            {.name = QT_TR_NOOP("Theme Parameters"),
-             .options = StyleParameters::ParameterSourceOption::UserEditable}));
-
-    Base::registerServiceImplementation<StyleParameters::ParameterSource>(
-        new StyleParameters::UserParameterSource(
-            App::GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Preferences/Themes/UserTokens"),
+                "User parameter:BaseApp/Preferences/Themes/UserParameters"
+            ),
             {.name = QT_TR_NOOP("User Parameters"),
-             .options = StyleParameters::ParameterSource::UserEditable}));
+             .options = StyleParameters::ParameterSource::UserEditable}
+        )
+    );
 
-    for (auto* source : Base::provideServiceImplementations<StyleParameters::ParameterSource>()) {
+    const auto sources = Base::provideServiceImplementations<StyleParameters::ParameterSource>();
+    for (auto* source : std::views::all(sources) | std::views::reverse) {
         d->styleParameterManager->addSource(source);
     }
 
@@ -447,10 +506,9 @@ Application::Application(bool GUIenabled)
                 0,
                 QLatin1String("Invalid system settings"),
                 QLatin1String(
-                    "Your system uses the same symbol for decimal point and group separator.\n\n"
-                    "This causes serious problems and makes the application fail to work "
-                    "properly.\n"
-                    "Go to the system configuration panel of the OS and fix this issue, please."));
+                    "The system locale uses the same symbol for the decimal point and the thousands separator.\n\n"
+                    "This may prevent the application from functioning correctly."
+                    "Go to the system configuration panel of the OS and fix this issue."));
             throw Base::RuntimeError("Invalid system settings");
         }
 #endif
@@ -551,6 +609,13 @@ Application::Application(bool GUIenabled)
             {"AxisCross", SoFCPlacementIndicatorKit::AxisCross},
         });
 
+        Base::PyRegisterEnum<Gui::BitmapFactoryInst::Position>(module, "IconPosition", {
+            {"TopLeft",     Gui::BitmapFactoryInst::TopLeft},
+            {"TopRight",    Gui::BitmapFactoryInst::TopRight},
+            {"BottomLeft",  Gui::BitmapFactoryInst::BottomLeft},
+            {"BottomRight", Gui::BitmapFactoryInst::BottomRight}
+        });
+
         CommandActionPy::init_type();
         Base::Interpreter().addType(CommandActionPy::type_object(), module, "CommandAction");
 
@@ -572,7 +637,7 @@ Application::Application(bool GUIenabled)
     PyObject* module = PyImport_AddModule("FreeCADGui");
     PyMethodDef* meth = FreeCADGui_methods;
     PyObject* dict = PyModule_GetDict(module);
-    for (; meth->ml_name != nullptr; meth++) {
+    for (; meth->ml_name; meth++) {
         PyObject* descr;
         descr = PyCFunction_NewEx(meth, nullptr, nullptr);
         if (!descr) {
@@ -616,18 +681,6 @@ Application::Application(bool GUIenabled)
     // instantiate the workbench dictionary
     _pcWorkbenchDictionary = PyDict_New();
 
-#ifdef USE_3DCONNEXION_NAVLIB
-    ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/View");
-    if (!hViewGrp->GetBool("LegacySpaceMouseDevices", false)) {
-        // Instantiate the 3Dconnexion controller
-        pNavlibInterface = new NavlibInterface();
-    }
-    else {
-        pNavlibInterface = nullptr;
-    }
-#endif
-
     if (GUIenabled) {
         createStandardOperations();
         MacroCommand::load();
@@ -639,7 +692,9 @@ Application::~Application()
 {
     Base::Console().log("Destruct Gui::Application\n");
 #ifdef USE_3DCONNEXION_NAVLIB
-    delete pNavlibInterface;
+    if (pNavlibInterface) {
+        delete pNavlibInterface;
+    }
 #endif
     WorkbenchManager::destruct();
     WorkbenchManipulator::removeAll();
@@ -703,22 +758,25 @@ void Application::open(const char* FileName, const char* Module)
                 }
 
                 if (!handled) {
-                    Command::doCommand(Command::App,
-                                       "FreeCAD.openDocument('%s')",
-                                       unicodepath.c_str());
+                    Command::doCommand(Command::App, "FreeCAD.openDocument('%s')", unicodepath.c_str());
                     Gui::Application::checkForRecomputes();
                 }
             }
             else {
-                std::string code = fmt::format("from freecad import module_io\n"
-                                               "module_io.OpenInsertObject(\"{}\", \"{}\", \"{}\")\n",
-                                               Module, unicodepath, "open");
+                std::string code = fmt::format(
+                    "from freecad import module_io\n"
+                    "module_io.OpenInsertObject(\"{}\", \"{}\", \"{}\")\n",
+                    Module,
+                    unicodepath,
+                    "open"
+                );
                 Gui::Command::runCommand(Gui::Command::App, code.c_str());
 
                 // ViewFit
                 if (sendHasMsgToActiveView("ViewFit")) {
                     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-                        "User parameter:BaseApp/Preferences/View");
+                        "User parameter:BaseApp/Preferences/View"
+                    );
                     if (hGrp->GetBool("AutoFitToView", true)) {
                         Command::doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
                     }
@@ -740,7 +798,8 @@ void Application::open(const char* FileName, const char* Module)
         QMessageBox::warning(
             getMainWindow(),
             QObject::tr("Unknown filetype"),
-            QObject::tr("Cannot open unknown filetype: %1").arg(QLatin1String(te.c_str())));
+            QObject::tr("Cannot open unknown filetype: %1").arg(QLatin1String(te.c_str()))
+        );
         wc.setWaitCursor();
         return;
     }
@@ -783,9 +842,14 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
                     }
                 }
 
-                std::string code = fmt::format("from freecad import module_io\n"
-                                               "module_io.OpenInsertObject(\"{}\", \"{}\", \"{}\", \"{}\")\n",
-                                               Module, unicodepath, "insert", DocName);
+                std::string code = fmt::format(
+                    "from freecad import module_io\n"
+                    "module_io.OpenInsertObject(\"{}\", \"{}\", \"{}\", \"{}\")\n",
+                    Module,
+                    unicodepath,
+                    "insert",
+                    DocName
+                );
                 Gui::Command::runCommand(Gui::Command::App, code.c_str());
 
                 // Commit the transaction
@@ -804,12 +868,11 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
                     doc->setModified(true);
 
                     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-                        "User parameter:BaseApp/Preferences/View");
+                        "User parameter:BaseApp/Preferences/View"
+                    );
                     if (hGrp->GetBool("AutoFitToView", true)) {
-                        MDIView* view = doc->getActiveView();
-                        if (view) {
-                            const char* ret = nullptr;
-                            if (view->onMsg("ViewFit", &ret)) {
+                        if (MDIView* view = doc->getActiveView()) {
+                            if (view->onMsg("ViewFit")) {
                                 updateActions(true);
                             }
                         }
@@ -820,10 +883,13 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
             // the original file name is required
             QString filename = QString::fromUtf8(File.filePath().c_str());
             auto parameterGroup = App::GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Preferences/General");
+                "User parameter:BaseApp/Preferences/General"
+            );
             bool addToRecent = parameterGroup->GetBool("RecentIncludesImported", true);
-            parameterGroup->SetBool("RecentIncludesImported",
-                                    addToRecent);  // Make sure it gets added to the parameter list
+            parameterGroup->SetBool(
+                "RecentIncludesImported",
+                addToRecent
+            );  // Make sure it gets added to the parameter list
             if (addToRecent) {
                 getMainWindow()->appendRecentFile(filename);
             }
@@ -839,7 +905,8 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
         QMessageBox::warning(
             getMainWindow(),
             QObject::tr("Unknown filetype"),
-            QObject::tr("Cannot open unknown filetype: %1").arg(QLatin1String(te.c_str())));
+            QObject::tr("Cannot open unknown filetype: %1").arg(QLatin1String(te.c_str()))
+        );
         wc.setWaitCursor();
     }
 }
@@ -853,10 +920,14 @@ void Application::exportTo(const char* FileName, const char* DocName, const char
     string unicodepath = Base::Tools::escapedUnicodeFromUtf8(File.filePath().c_str());
     unicodepath = Base::Tools::escapeEncodeFilename(unicodepath);
 
+    if (strcmp(Module, "Part") == 0) {
+        FC_WARN("Exporting with 'Part' is deprecated, use 'ImportGui' instead");
+    }
+
     if (Module) {
         try {
-            std::vector<App::DocumentObject*> sel =
-                Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId(), DocName);
+            std::vector<App::DocumentObject*> sel
+                = Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId(), DocName);
             if (sel.empty()) {
                 App::Document* doc = App::GetApplication().getDocument(DocName);
                 sel = doc->getObjectsOfType(App::DocumentObject::getClassTypeId());
@@ -885,15 +956,18 @@ void Application::exportTo(const char* FileName, const char* DocName, const char
             Gui::Command::runCommand(Gui::Command::App, code.c_str());
 
             auto parameterGroup = App::GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Preferences/General");
+                "User parameter:BaseApp/Preferences/General"
+            );
             bool addToRecent = parameterGroup->GetBool("RecentIncludesExported", false);
-            parameterGroup->SetBool("RecentIncludesExported",
-                                    addToRecent);  // Make sure it gets added to the parameter list
+            parameterGroup->SetBool(
+                "RecentIncludesExported",
+                addToRecent
+            );  // Make sure it gets added to the parameter list
             if (addToRecent) {
                 // search for a module that is able to open the exported file because otherwise
                 // it doesn't need to be added to the recent files list (#0002047)
-                std::map<std::string, std::string> importMap =
-                    App::GetApplication().getImportFilters(te.c_str());
+                std::map<std::string, std::string> importMap
+                    = App::GetApplication().getImportFilters(te.c_str());
                 if (!importMap.empty()) {
                     getMainWindow()->appendRecentFile(QString::fromUtf8(File.filePath().c_str()));
                 }
@@ -905,9 +979,11 @@ void Application::exportTo(const char* FileName, const char* DocName, const char
             // Usually thrown if the file is invalid somehow
             e.reportException();
             wc.restoreCursor();
-            QMessageBox::critical(getMainWindow(),
-                                  QObject::tr("Export failed"),
-                                  QString::fromUtf8(e.what()));
+            QMessageBox::critical(
+                getMainWindow(),
+                QObject::tr("Export failed"),
+                QString::fromUtf8(e.what())
+            );
             wc.setWaitCursor();
         }
     }
@@ -916,7 +992,8 @@ void Application::exportTo(const char* FileName, const char* DocName, const char
         QMessageBox::warning(
             getMainWindow(),
             QObject::tr("Unknown filetype"),
-            QObject::tr("Cannot save to unknown filetype: %1").arg(QLatin1String(te.c_str())));
+            QObject::tr("Cannot save to unknown filetype: %1").arg(QLatin1String(te.c_str()))
+        );
         wc.setWaitCursor();
     }
 }
@@ -946,14 +1023,14 @@ void Application::slotNewDocument(const App::Document& Doc, bool isMainDoc)
     // NOLINTBEGIN
     //  connect the signals to the application for the new document
     pDoc->signalNewObject.connect(std::bind(&Gui::Application::slotNewObject, this, sp::_1));
-    pDoc->signalDeletedObject.connect(
-        std::bind(&Gui::Application::slotDeletedObject, this, sp::_1));
+    pDoc->signalDeletedObject.connect(std::bind(&Gui::Application::slotDeletedObject, this, sp::_1));
     pDoc->signalChangedObject.connect(
-        std::bind(&Gui::Application::slotChangedObject, this, sp::_1, sp::_2));
-    pDoc->signalRelabelObject.connect(
-        std::bind(&Gui::Application::slotRelabelObject, this, sp::_1));
+        std::bind(&Gui::Application::slotChangedObject, this, sp::_1, sp::_2)
+    );
+    pDoc->signalRelabelObject.connect(std::bind(&Gui::Application::slotRelabelObject, this, sp::_1));
     pDoc->signalActivatedObject.connect(
-        std::bind(&Gui::Application::slotActivatedObject, this, sp::_1));
+        std::bind(&Gui::Application::slotActivatedObject, this, sp::_1)
+    );
     pDoc->signalInEdit.connect(std::bind(&Gui::Application::slotInEdit, this, sp::_1));
     pDoc->signalResetEdit.connect(std::bind(&Gui::Application::slotResetEdit, this, sp::_1));
     // NOLINTEND
@@ -966,6 +1043,33 @@ void Application::slotNewDocument(const App::Document& Doc, bool isMainDoc)
 
 void Application::slotDeleteDocument(const App::Document& Doc)
 {
+    // Capture dependencies and their CURRENT view state before the document is destroyed.
+    struct Candidate
+    {
+        std::string name;
+        bool hadViews;
+    };
+    std::vector<Candidate> candidates;
+
+    try {
+        std::vector<App::Document*> deps = const_cast<App::Document&>(Doc).getDependentDocuments();
+
+        for (auto d : deps) {
+            if (d == &Doc) {  // Skip self
+                continue;
+            }
+
+            // Check if this dependency currently has a visible tab/view
+            Gui::Document* gDoc = getDocument(d);
+            bool hasViews = (gDoc && !gDoc->getMDIViews().empty());
+
+            candidates.push_back({d->getName(), hasViews});
+        }
+    }
+    catch (Base::Exception& e) {
+        e.reportException();
+    }
+
     std::map<const App::Document*, Gui::Document*>::iterator doc = d->documents.find(&Doc);
     if (doc == d->documents.end()) {
         Base::Console().log("GUI document '%s' already deleted\n", Doc.getName());
@@ -995,6 +1099,43 @@ void Application::slotDeleteDocument(const App::Document& Doc)
     // For exception-safety use a smart pointer
     unique_ptr<Document> delDoc(doc->second);
     d->documents.erase(doc);
+
+    if (!candidates.empty()) {
+        QTimer::singleShot(0, [candidates]() {
+            for (const auto& cand : candidates) {
+                App::Document* child = App::GetApplication().getDocument(cand.name.c_str());
+                if (!child || child->isTouched() || cand.hadViews) {
+                    continue;
+                }
+
+                // Reference Check: Is it used by any OTHER open document?
+                bool isStillReferenced = false;
+                std::vector<App::Document*> openDocs = App::GetApplication().getDocuments();
+                for (App::Document* openDoc : openDocs) {
+                    if (openDoc == child) {
+                        continue;  // Don't check self-reference
+                    }
+
+                    try {
+                        std::vector<App::Document*> otherDeps = openDoc->getDependentDocuments();
+                        if (std::find(otherDeps.begin(), otherDeps.end(), child) != otherDeps.end()) {
+                            isStillReferenced = true;
+                            break;
+                        }
+                    }
+                    catch (Base::Exception& e) {
+                        e.reportException();
+                        continue;
+                    }
+                }
+
+                // 5. Close if truly orphan
+                if (!isStillReferenced) {
+                    App::GetApplication().closeDocument(cand.name.c_str());
+                }
+            }
+        });
+    }
 }
 
 void Application::slotRelabelDocument(const App::Document& Doc)
@@ -1028,44 +1169,60 @@ void Application::slotShowHidden(const App::Document& Doc)
     signalShowHidden(*doc->second);
 }
 
-void Application::checkForRecomputes() {
-    std::vector<App::Document *> docs;
-    for (auto doc: App::GetApplication().getDocuments()) {
+void Application::checkForRecomputes()
+{
+    std::vector<App::Document*> docs;
+    for (auto doc : App::GetApplication().getDocuments()) {
         if (doc->testStatus(App::Document::RecomputeOnRestore)) {
             docs.push_back(doc);
             doc->setStatus(App::Document::RecomputeOnRestore, false);
         }
     }
-    // Certain tests want to use very old .FCStd files.  We should not prompt during those tests, so this
-    // allows them to 'FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")`
+    // Certain tests want to use very old .FCStd files.  We should not prompt during those tests, so
+    // this allows them to 'FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")`
     const std::map<std::string, std::string>& Map = App::Application::Config();
     auto value = Map.find("SuppressRecomputeRequiredDialog");
-    bool skip = value != Map.end() && ! value->second.empty();   // Any non empty string is true.
-    if (docs.empty() || skip )
+    bool skip = value != Map.end() && !value->second.empty();  // Any non empty string is true.
+    if (docs.empty() || skip) {
         return;
+    }
     WaitCursor wc;
     wc.restoreCursor();
-    auto res = QMessageBox::warning(getMainWindow(), QObject::tr("Recomputation required"),
-                                    QObject::tr("Some document(s) require recomputation for migration purposes. "
-                                                "It is highly recommended to perform a recomputation before "
-                                                "any modification to avoid compatibility problems.\n\n"
-                                                "Do you want to recompute now?"),
-                                    QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
-    if (res != QMessageBox::Yes)
+    auto res = QMessageBox::warning(
+        getMainWindow(),
+        QObject::tr("Recomputation required"),
+        QObject::tr(
+            "Some documents require recomputation for migration purposes. "
+            "It is highly recommended to perform a recomputation before "
+            "any modification to avoid compatibility problems.\n\n"
+            "Recompute now?"
+        ),
+        QMessageBox::Yes | QMessageBox::No,
+        QMessageBox::Yes
+    );
+    if (res != QMessageBox::Yes) {
         return;
+    }
     bool hasError = false;
-    for (auto doc: App::Document::getDependentDocuments(docs, true)) {
+    for (auto doc : App::Document::getDependentDocuments(docs, true)) {
         try {
             doc->recompute({}, false, &hasError);
-        } catch (Base::Exception &e) {
+        }
+        catch (Base::Exception& e) {
             e.reportException();
             hasError = true;
         }
     }
-    if (hasError)
-        QMessageBox::critical(getMainWindow(), QObject::tr("Recompute error"),
-                              QObject::tr("Failed to recompute some document(s).\n"
-                                          "Please check report view for more details."));
+    if (hasError) {
+        QMessageBox::critical(
+            getMainWindow(),
+            QObject::tr("Recompute error"),
+            QObject::tr(
+                "Failed to recompute some documents.\n"
+                "Check the report view for more details."
+            )
+        );
+    }
 }
 
 void Application::checkPartialRestore(App::Document* doc)
@@ -1074,9 +1231,12 @@ void Application::checkPartialRestore(App::Document* doc)
         QMessageBox::critical(
             getMainWindow(),
             QObject::tr("Error"),
-            QObject::tr("There were errors while loading the file. Some data might have been "
-                        "modified or not recovered at all. Look in the report view for more "
-                        "specific information about the objects involved."));
+            QObject::tr(
+                "There were errors while loading the file. Some data might have been "
+                "modified or not recovered at all. Look in the report view for more "
+                "specific information about the objects involved."
+            )
+        );
     }
 }
 
@@ -1086,9 +1246,12 @@ void Application::checkRestoreError(App::Document* doc)
         QMessageBox::critical(
             getMainWindow(),
             QObject::tr("Error"),
-            QObject::tr("There were serious errors while loading the file. Some data might have "
-                        "been modified or not recovered at all. Saving the project will most "
-                        "likely result in loss of data."));
+            QObject::tr(
+                "There were serious errors while loading the file. Some data might have "
+                "been modified or not recovered at all. Saving the project will most "
+                "likely result in loss of data."
+            )
+        );
     }
 }
 
@@ -1117,10 +1280,14 @@ void Application::slotActiveDocument(const App::Document& Doc)
                 Py::Module("FreeCADGui").setAttr(std::string("ActiveDocument"), Py::None());
             }
         }
+        if (!d->activeDocument->workbench().empty()) {
+            activateWorkbench(d->activeDocument->workbench().c_str());
+        }
 
         // Update the application to show the unit change
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Units");
+            "User parameter:BaseApp/Preferences/Units"
+        );
         if (!hGrp->GetBool("IgnoreProjectSchema")) {
             int userSchema = Doc.UnitSystem.getValue();
             Base::UnitsApi::setSchema(userSchema);
@@ -1181,9 +1348,11 @@ void Application::onLastWindowClosed(Gui::Document* pcDoc)
         if (!d->isClosing && pcDoc) {
             // Call the closing mechanism from Python. This also checks whether pcDoc is the last
             // open document.
-            Command::doCommand(Command::Doc,
-                               "App.closeDocument(\"%s\")",
-                               pcDoc->getDocument()->getName());
+            Command::doCommand(
+                Command::Doc,
+                "App.closeDocument(\"%s\")",
+                pcDoc->getDocument()->getName()
+            );
             if (!d->activeDocument && !d->documents.empty()) {
                 Document* gdoc = nullptr;
                 for (auto& v : d->documents) {
@@ -1220,19 +1389,21 @@ void Application::onLastWindowClosed(Gui::Document* pcDoc)
         Base::Console().error(
             "Unhandled std::exception caught in Application::onLastWindowClosed.\n"
             "The error message is: %s\n",
-            e.what());
+            e.what()
+        );
     }
     catch (...) {
         Base::Console().error(
-            "Unhandled unknown exception caught in Application::onLastWindowClosed.\n");
+            "Unhandled unknown exception caught in Application::onLastWindowClosed.\n"
+        );
     }
 }
 
 /// send Messages to the active view
-bool Application::sendMsgToActiveView(const char* pMsg, const char** ppReturn)
+bool Application::sendMsgToActiveView(const char* pMsg)
 {
     MDIView* pView = getMainWindow()->activeWindow();
-    bool res = pView ? pView->onMsg(pMsg, ppReturn) : false;
+    bool res = pView ? pView->onMsg(pMsg) : false;
     updateActions(true);
     return res;
 }
@@ -1244,7 +1415,7 @@ bool Application::sendHasMsgToActiveView(const char* pMsg)
 }
 
 /// send Messages to the active view
-bool Application::sendMsgToFocusView(const char* pMsg, const char** ppReturn)
+bool Application::sendMsgToFocusView(const char* pMsg)
 {
     MDIView* pView = getMainWindow()->activeWindow();
     if (!pView) {
@@ -1252,7 +1423,7 @@ bool Application::sendMsgToFocusView(const char* pMsg, const char** ppReturn)
     }
     for (auto focus = qApp->focusWidget(); focus; focus = focus->parentWidget()) {
         if (focus == pView) {
-            bool res = pView->onMsg(pMsg, ppReturn);
+            bool res = pView->onMsg(pMsg);
             updateActions(true);
             return res;
         }
@@ -1318,26 +1489,65 @@ Gui::Document* Application::activeDocument() const
 
 Gui::Document* Application::editDocument() const
 {
-    return d->editDocument;
+    if (d->editDocuments.empty()) {
+        return nullptr;
+    }
+    return d->editDocuments[0];
 }
-
-Gui::MDIView* Application::editViewOfNode(SoNode* node) const
+Gui::Document* Application::editDocument(const std::function<bool(Gui::Document*)>& eval)
 {
-    return d->editDocument ? d->editDocument->getViewOfNode(node) : nullptr;
+    auto found = std::ranges::find_if(d->editDocuments, eval);
+
+    return found == d->editDocuments.end() ? nullptr : *found;
 }
-
-void Application::setEditDocument(Gui::Document* doc)
+std::vector<Gui::Document*> Application::editDocuments() const
 {
-    if (doc == d->editDocument) {
+    return d->editDocuments;
+}
+bool Application::isInEdit(Gui::Document* pcDocument) const
+{
+    return std::ranges::find(d->editDocuments, pcDocument) != d->editDocuments.end();
+}
+void Application::unsetEditDocument(Gui::Document* pcDocument)
+{
+    if (std::erase(d->editDocuments, pcDocument) == 0) {
         return;
     }
-    if (!doc) {
-        d->editDocument = nullptr;
+
+    pcDocument->_resetEdit();
+    updateActions();
+}
+void Application::unsetEditDocumentIf(const std::function<bool(Gui::Document*)>& eval)
+{
+    std::erase_if(d->editDocuments, [&](Gui::Document* doc) {
+        if (eval(doc)) {
+            doc->_resetEdit();
+            return true;
+        }
+        return false;
+    });
+    updateActions();
+}
+Gui::MDIView* Application::editViewOfNode(SoNode* node) const
+{
+    for (auto editDoc : d->editDocuments) {
+        if (Gui::MDIView* view = editDoc->getViewOfNode(node)) {
+            return view;
+        }
     }
-    for (auto& v : d->documents) {
-        v.second->_resetEdit();
+    return nullptr;
+}
+
+void Application::setEditDocument(Gui::Document* pcDocument)
+{
+    if (pcDocument == nullptr) {
+        return;
     }
-    d->editDocument = doc;
+    if (std::ranges::find(d->editDocuments, pcDocument) != d->editDocuments.end()) {
+        return;
+    }
+    d->editDocuments.push_back(pcDocument);
+
     updateActions();
 }
 
@@ -1358,12 +1568,18 @@ void Application::setActiveDocument(Gui::Document* pcDocument)
             return;
         }
     }
+    if (d->activeDocument) {
+        d->activeDocument->setIsActive(false);
+    }
     d->activeDocument = pcDocument;
+
     std::string nameApp, nameGui;
 
     // This adds just a line to the macro file but does not set the active document
     // Macro recording of this is problematic, thus it's written out as comment.
     if (pcDocument) {
+        pcDocument->setIsActive(true);
+
         nameApp += "App.setActiveDocument(\"";
         nameApp += pcDocument->getDocument()->getName();
         nameApp += "\")\n";
@@ -1398,9 +1614,7 @@ void Application::setActiveDocument(Gui::Document* pcDocument)
     // May be useful for error detection
     if (d->activeDocument) {
         App::Document* doc = d->activeDocument->getDocument();
-        Base::Console().log("Active document is %s (at %p)\n",
-                            doc->getName(),
-                            static_cast<void*>(doc));
+        Base::Console().log("Active document is %s (at %p)\n", doc->getName(), static_cast<void*>(doc));
     }
     else {
         Base::Console().log("No active document\n");
@@ -1486,9 +1700,11 @@ void Application::viewActivated(MDIView* pcView)
 {
 #ifdef FC_DEBUG
     // May be useful for error detection
-    Base::Console().log("Active view is %s (at %p)\n",
-                        (const char*)pcView->windowTitle().toUtf8(),
-                        static_cast<void*>(pcView));
+    Base::Console().log(
+        "Active view is %s (at %p)\n",
+        (const char*)pcView->windowTitle().toUtf8(),
+        static_cast<void*>(pcView)
+    );
 #endif
 
     signalActivateView(pcView);
@@ -1529,8 +1745,7 @@ void Application::tryClose(QCloseEvent* e)
     }
 
     // ask all passive views if closable
-    for (std::list<Gui::BaseView*>::iterator It = d->passive.begin(); It != d->passive.end();
-         ++It) {
+    for (std::list<Gui::BaseView*>::iterator It = d->passive.begin(); It != d->passive.end(); ++It) {
         e->setAccepted((*It)->canClose());
         if (!e->isAccepted()) {
             return;
@@ -1721,6 +1936,9 @@ bool Application::activateWorkbench(const char* name)
             }
             newWb->activated();
         }
+        if (activeDocument()) {
+            activeDocument()->setWorkbench(name);
+        }
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
@@ -1744,9 +1962,11 @@ bool Application::activateWorkbench(const char* name)
 
         if (!d->startingUp) {
             wc.restoreCursor();
-            QMessageBox::critical(getMainWindow(),
-                                  QObject::tr("Workbench failure"),
-                                  QObject::tr("%1").arg(msg));
+            QMessageBox::critical(
+                getMainWindow(),
+                QObject::tr("Workbench failure"),
+                QObject::tr("%1").arg(msg)
+            );
             wc.setWaitCursor();
         }
     }
@@ -1956,13 +2176,7 @@ void Application::setupContextMenu(const char* recipient, MenuItem* items) const
                 method.apply(args);
             }
             catch (Py::Exception& e) {
-                Py::Object o = Py::type(e);
-                e.clear();
-                if (o.isString()) {
-                    Py::String s(o);
-                    std::clog << "Application::setupContextMenu: " << s.as_std_string("utf-8")
-                              << std::endl;
-                }
+                PyErr_Print();
             }
         }
         actWb->createContextMenu(recipient, items);
@@ -2075,11 +2289,11 @@ void messageHandlerCoin(const SoError* error, void* /*userdata*/)
                 Base::Console().error("%s\n", msg);
                 break;
         }
-#ifdef FC_OS_WIN32
+# ifdef FC_OS_WIN32
         if (old_qtmsg_handler) {
             (*old_qtmsg_handler)(QtDebugMsg, QMessageLogContext(), QString::fromLatin1(msg));
         }
-#endif
+# endif
     }
     else if (error) {
         const char* msg = error->getDebugString().getString();
@@ -2255,29 +2469,25 @@ void setAppNameAndIcon()
         QApplication::setApplicationName(QString::fromUtf8(it->second.c_str()));
     }
     else {
-        QApplication::setApplicationName(
-            QString::fromStdString(App::Application::getExecutableName()));
+        QApplication::setApplicationName(QString::fromStdString(App::Application::getExecutableName()));
     }
 #ifndef Q_OS_MACOS
     QApplication::setWindowIcon(
-        Gui::BitmapFactory().pixmap(App::Application::Config()["AppIcon"].c_str()));
+        Gui::BitmapFactory().pixmap(App::Application::Config()["AppIcon"].c_str())
+    );
 #endif
 }
 
 void tryRunEventLoop(GUISingleApplication& mainApp)
 {
     std::stringstream out;
-    out << App::Application::getUserCachePath()
-        << App::Application::getExecutableName()
-        << "_"
-        << App::Application::applicationPid()
-        << ".lock";
+    out << App::Application::getUserCachePath() << App::Application::getExecutableName() << "_"
+        << App::Application::applicationPid() << ".lock";
 
     // open a lock file with the PID
     Base::FileInfo fi(out.str());
     Base::ofstream lock(fi);
 
-    // In case the file_lock cannot be created start FreeCAD without IPC support.
 #if !defined(FC_OS_WIN32) || (BOOST_VERSION < 107600)
     std::string filename = out.str();
 #else
@@ -2286,7 +2496,7 @@ void tryRunEventLoop(GUISingleApplication& mainApp)
     try {
         boost::interprocess::file_lock flock(filename.c_str());
         if (flock.try_lock()) {
-            Base::Console().log("Init: Executing event loop...\n");
+            Base::Console().log("Init: Executing event loop…\n");
             QApplication::exec();
 
             // Qt can't handle exceptions thrown from event handlers, so we need
@@ -2302,14 +2512,22 @@ void tryRunEventLoop(GUISingleApplication& mainApp)
             fi.deleteFile();
         }
         else {
-            Base::Console().warning("Failed to create a file lock for the IPC.\n"
-                                    "The application will be terminated\n");
+            Base::Console().error(
+                "Failed to create a file lock for the IPC.\n"
+                "The application will be terminated.\n"
+                "Attempted lock file: %s",
+                fi.filePath().c_str()
+            );
         }
     }
     catch (const boost::interprocess::interprocess_exception& e) {
         QString msg = QString::fromLocal8Bit(e.what());
-        Base::Console().warning("Failed to create a file lock for the IPC: %s\n",
-                                msg.toUtf8().constData());
+        Base::Console().error(
+            "Failed to create a file lock for the IPC: %s\n"
+            "Attempted lock file: %s\n",
+            msg.toUtf8().constData(),
+            fi.filePath().c_str()
+        );
     }
 }
 
@@ -2341,13 +2559,39 @@ void Application::runApplication()
 {
     StartupProcess::setupApplication();
 
+    {
+        QSurfaceFormat defaultFormat;
+        defaultFormat.setRenderableType(QSurfaceFormat::OpenGL);
+        defaultFormat.setProfile(QSurfaceFormat::CompatibilityProfile);
+        defaultFormat.setOption(QSurfaceFormat::DeprecatedFunctions, true);
+#if defined(FC_OS_LINUX) || defined(FC_OS_BSD)
+        // QGuiApplication::platformName() doesn't yet work at this point, so we use the env var
+        if (getenv("WAYLAND_DISPLAY")) {
+            // In some settings (at least EGL on Wayland) we get RGB565 by default.
+            // Request something better.
+            defaultFormat.setRedBufferSize(8);
+            defaultFormat.setGreenBufferSize(8);
+            defaultFormat.setBlueBufferSize(8);
+            // Qt's behavior with format requests seems opaque, underdocumented and,
+            // unfortunately, inconsistent between platforms. Requesting an alpha
+            // channel tends to steer it away from weird legacy choices like RGB565.
+            defaultFormat.setAlphaBufferSize(8);
+            // And a depth/stencil buffer is generally useful if we can have it.
+            defaultFormat.setDepthBufferSize(24);
+            defaultFormat.setStencilBufferSize(8);
+        }
+#endif
+        QSurfaceFormat::setDefaultFormat(defaultFormat);
+    }
+
     // A new QApplication
     Base::Console().log("Init: Creating Gui::Application and QApplication\n");
 
     int argc = App::Application::GetARGC();
     GUISingleApplication mainApp(argc, App::Application::GetARGV());
 
-#if defined(FC_OS_LINUX) || defined(FC_OS_BSD)
+#if (COIN_MAJOR_VERSION * 100 + COIN_MINOR_VERSION * 10 + COIN_MICRO_VERSION < 406) \
+    && (defined(FC_OS_LINUX) || defined(FC_OS_BSD))
     // If QT is running with native Wayland then inform Coin to use EGL
     if (QGuiApplication::platformName() == QString::fromStdString("wayland")) {
         setenv("COIN_EGL", "1", 1);
@@ -2385,6 +2629,8 @@ void Application::runApplication()
     StartupPostProcess postProcess(&mw, app, &mainApp);
     postProcess.execute();
 
+    init3DMouse(&mw, &mainApp);
+
     Instance->d->startingUp = false;
 
     // gets called once we start the event loop
@@ -2397,20 +2643,48 @@ void Application::runApplication()
     // https://forum.freecad.org/viewtopic.php?f=10&t=21665
     Gui::getMainWindow()->setProperty("eventLoop", true);
 
-#ifdef USE_3DCONNEXION_NAVLIB
-    if (Instance->pNavlibInterface) {
-        Instance->pNavlibInterface->enableNavigation();
-    }
-#endif
-
     runEventLoop(mainApp);
 
     Base::Console().log("Finish: Event loop left\n");
 }
 
+void Application::init3DMouse(MainWindow* mainWindow, QApplication* qtApp)
+{
+    Instance->pNavlibInterface = nullptr;
+#ifdef USE_3DCONNEXION_NAVLIB
+    ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View"
+    );
+    if (NlErrorCode) {
+        Base::Console().log("Init: 3Dconnexion driver not installed\n");
+    }
+    else {
+        Base::Console().log("Init: 3Dconnexion Navigation Framework present\n");
+    }
+    if (!hViewGrp->GetBool("LegacySpaceMouseDevices", false)) {
+        if (!NlErrorCode) {
+            // Instantiate the 3Dconnexion controller
+            Instance->pNavlibInterface = new NavlibInterface();
+            Base::Console().log("Init: Enabling 3Dconnexion Navigation Framework\n");
+            Instance->pNavlibInterface->enableNavigation();
+        }
+    }
+    else {
+        Base::Console().log("Init: Using legacy SpaceMouse support\n");
+    }
+#endif
+    if (!Instance->pNavlibInterface) {
+        // initialize spaceball.
+        if (auto fcApp = qobject_cast<GUIApplicationNativeEventAware*>(qtApp)) {
+            Base::Console().log("Init: Initializing 3D mouse event handling\n");
+            fcApp->initSpaceball(mainWindow);
+        }
+    }
+}
+
 bool Application::hiddenMainWindow()
 {
-    const std::map<std::string,std::string>& cfg = App::Application::Config();
+    const std::map<std::string, std::string>& cfg = App::Application::Config();
     auto it = cfg.find("StartHidden");
 
     return it != cfg.end();
@@ -2466,6 +2740,18 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
     mw->setProperty("fc_currentStyleSheet", qssFile);
     mw->setProperty("fc_tiledBackground", tiledBackground);
 
+    QString defaultStyleSheet = [this]() {
+        QFile f(QLatin1String("qss:defaults.qss"));
+
+        if (!f.open(QFile::ReadOnly)) {
+            return QString();
+        }
+
+        QTextStream in(&f);
+
+        return replaceVariablesInQss(in.readAll());
+    }();
+
     if (!qssFile.isEmpty()) {
         // Search for stylesheet in user-defined search paths.
         // For qss they are set-up in runApplication() with the prefix "qss"
@@ -2485,7 +2771,7 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
 
             QString styleSheetContent = replaceVariablesInQss(str.readAll());
 
-            qApp->setStyleSheet(styleSheetContent);
+            qApp->setStyleSheet(defaultStyleSheet + QStringLiteral("\n") + styleSheetContent);
 
             ActionStyleEvent e(ActionStyleEvent::Clear);
             qApp->sendEvent(mw, &e);
@@ -2513,13 +2799,13 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
     }
     else {
         if (tiledBackground) {
-            qApp->setStyleSheet(QString());
+            qApp->setStyleSheet(defaultStyleSheet);
             ActionStyleEvent e(ActionStyleEvent::Restore);
             qApp->sendEvent(getMainWindow(), &e);
             mdi->setBackground(QPixmap(QLatin1String("images:background.png")));
         }
         else {
-            qApp->setStyleSheet(QString());
+            qApp->setStyleSheet(defaultStyleSheet);
             ActionStyleEvent e(ActionStyleEvent::Restore);
             qApp->sendEvent(getMainWindow(), &e);
             mdi->setBackground(QBrush(QColor(160, 160, 160)));
@@ -2555,6 +2841,38 @@ QString Application::replaceVariablesInQss(const QString& qssText)
     return QString::fromStdString(d->styleParameterManager->replacePlaceholders(qssText.toStdString()));
 }
 
+void Application::setStyle(const QString& name)
+{
+    const auto createStyleFromName = [](const QString& name) -> QStyle* {
+        if (name == QStringLiteral("FreeCAD")) {
+            return new FreeCADStyle();
+        }
+
+        if (name.compare(QStringLiteral("System"), Qt::CaseInsensitive) == 0) {
+            return nullptr;
+        }
+
+        return QStyleFactory::create(name);
+    };
+
+    const auto requiresEventFilter = [](QStyle* style) {
+        // for now only FreeCAD style requires additional event processing
+        return qobject_cast<FreeCADStyle*>(style) != nullptr;
+    };
+
+    if (auto* current = qApp->style(); current && requiresEventFilter(current)) {
+        qApp->removeEventFilter(current);
+    }
+
+    if (auto* style = createStyleFromName(name)) {
+        qApp->setStyle(style);
+
+        if (requiresEventFilter(style)) {
+            qApp->installEventFilter(style);
+        }
+    }
+}
+
 void Application::checkForDeprecatedSettings()
 {
     // From 0.21, `FCBak` will be the intended default backup format
@@ -2562,16 +2880,19 @@ void Application::checkForDeprecatedSettings()
                            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
                            ->GetBool("CreateBackupFiles", true);
     if (makeBackups) {
-        bool useFCBakExtension =
-            App::GetApplication()
-                .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
-                ->GetBool("UseFCBakExtension", true);
+        bool useFCBakExtension = App::GetApplication()
+                                     .GetParameterGroupByPath(
+                                         "User parameter:BaseApp/Preferences/Document"
+                                     )
+                                     ->GetBool("UseFCBakExtension", true);
         if (!useFCBakExtension) {
             // TODO: This should be translated
-            Base::Console().warning("The `.FCStd#` backup format is deprecated and may "
-                                    "be removed in future versions.\n"
-                                    "To update, check the 'Preferences->General->Document->Use "
-                                    "date and FCBak extension' option.\n");
+            Base::Console().warning(
+                "The `.FCStd#` backup format is deprecated and may "
+                "be removed in future versions.\n"
+                "To update, check the 'Preferences->General->Document->Use "
+                "date and FCBak extension' option.\n"
+            );
         }
     }
 }
@@ -2593,8 +2914,10 @@ void Application::checkForPreviousCrashes()
     }
     catch (const boost::interprocess::interprocess_exception& e) {
         QString msg = QString::fromLocal8Bit(e.what());
-        Base::Console().warning("Failed check for previous crashes because of IPC error: %s\n",
-                                msg.toUtf8().constData());
+        Base::Console().warning(
+            "Failed check for previous crashes because of IPC error: %s\n",
+            msg.toUtf8().constData()
+        );
     }
 }
 
@@ -2614,8 +2937,7 @@ App::Document* Application::reopen(App::Document* doc)
     WaitCursor wc;
     wc.setIgnoreEvents(WaitCursor::NoEvents);
 
-    if (doc->testStatus(App::Document::PartialDoc)
-        || doc->testStatus(App::Document::PartialRestore)) {
+    if (doc->testStatus(App::Document::PartialDoc) || doc->testStatus(App::Document::PartialRestore)) {
         App::GetApplication().openDocument(name.c_str());
     }
     else {
@@ -2639,9 +2961,7 @@ App::Document* Application::reopen(App::Document* doc)
         }
 
         for (auto& file : docs) {
-            App::DocumentInitFlags initFlags {
-                .createView = false
-            };
+            App::DocumentInitFlags initFlags {.createView = false};
             App::GetApplication().openDocument(file.c_str(), initFlags);
         }
     }
@@ -2680,45 +3000,4 @@ App::Document* Application::reopen(App::Document* doc)
         }
     }
     return doc;
-}
-
-void Application::getVerboseDPIStyleInfo(QTextStream& str) {
-    // Add Stylesheet/Theme/Qtstyle information
-    std::string styleSheet =
-        App::GetApplication()
-            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
-            ->GetASCII("StyleSheet");
-    std::string theme =
-        App::GetApplication()
-            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
-            ->GetASCII("Theme");
-#if QT_VERSION >= QT_VERSION_CHECK(6, 1, 0)
-    std::string style = qApp->style()->name().toStdString();
-#else
-    std::string style =
-        App::GetApplication()
-            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
-            ->GetASCII("QtStyle");
-    if (style.empty()) {
-        style = "Qt default";
-    }
-#endif
-    if (styleSheet.empty()) {
-        styleSheet = "unset";
-    }
-    if (theme.empty()) {
-        theme = "unset";
-    }
-
-    str << "Stylesheet/Theme/QtStyle: " << QString::fromStdString(styleSheet) << "/"
-        << QString::fromStdString(theme) << "/" << QString::fromStdString(style) << "\n";
-
-    // Add DPI information
-    str << "Logical DPI/Physical DPI/Pixel Ratio: "
-        << QApplication::primaryScreen()->logicalDotsPerInch()
-        << "/"
-        << QApplication::primaryScreen()->physicalDotsPerInch()
-        << "/"
-        << QApplication::primaryScreen()->devicePixelRatio()
-        << "\n";
 }

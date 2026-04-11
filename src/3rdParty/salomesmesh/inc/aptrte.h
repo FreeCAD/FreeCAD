@@ -153,7 +153,7 @@ MEFISTO2D_EXPORT
 #endif
 
 
-extern "C" { void
+extern "C" { int
 #ifdef WIN32
 #ifdef F2C_BUILD
 #else
@@ -294,7 +294,7 @@ extern "C" {void
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 //initialisation du tableau letree et ajout dans letree des sommets 1 a nbsomm
-extern "C" {void
+extern "C" { int
 #ifdef WIN32
 #ifdef F2C_BUILD
 #else
@@ -306,7 +306,7 @@ extern "C" {void
                             Z & ierr );
 }
 
-extern "C" {void
+extern "C" { int
 #ifdef WIN32
 #ifdef F2C_BUILD
 #else
@@ -321,7 +321,7 @@ extern "C" {void
 // homogeneisation de l'arbre des te a un saut de taille au plus
 // prise en compte des tailles d'aretes souhaitees autour des sommets initiaux
 
-extern "C" {void
+extern "C" { int
 #ifdef WIN32
 #ifdef F2C_BUILD
 #else
@@ -337,7 +337,7 @@ extern "C" {void
 // trianguler les triangles equilateraux feuilles a partir de leurs 3 sommets
 // et des points de la frontiere, des points internes imposes interieurs
 
-extern "C" {void
+extern "C" { int
 #ifdef WIN32
 #ifdef F2C_BUILD
 #else
@@ -348,7 +348,7 @@ extern "C" {void
 }
 // formation du chainage 6 des aretes internes a echanger eventuellement
 
-extern "C" {void
+extern "C" { int
 #ifdef WIN32
 #ifdef F2C_BUILD
 #else
@@ -362,7 +362,7 @@ extern "C" {void
 // boucle sur les aretes internes (non sur une ligne de la frontiere)
 // avec echange des 2 diagonales afin de rendre la triangulation delaunay
  
-extern "C" {void
+extern "C" { int
 #ifdef WIN32
 #ifdef F2C_BUILD
 #else
@@ -379,7 +379,7 @@ extern "C" {void
 // detection des aretes frontalieres initiales perdues
 // triangulation frontale pour les restaurer
 
-extern "C" {void
+extern "C" { int
 #ifdef WIN32
 #ifdef F2C_BUILD
 #else
@@ -394,7 +394,7 @@ extern "C" {void
 }
 // suppression des triangles externes a la surface
 
-extern "C" {void
+extern "C" { int
 #ifdef WIN32
 #ifdef F2C_BUILD
 #else
@@ -427,7 +427,7 @@ extern "C" {void
 }
 //retrouver les numero des 3 sommets du triangle nt
 
-extern "C" {void
+extern "C" { int
 #ifdef WIN32
 #ifdef F2C_BUILD
 #else

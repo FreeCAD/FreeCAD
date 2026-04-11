@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>BimServer</string>
+   <string>BIM Server</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -25,7 +25,7 @@
         <item>
          <widget class="QLabel" name="labelServerName">
           <property name="toolTip">
-           <string>The name of the BIM Server you are currently connecting to. Change settings in the BIM preferences</string>
+           <string>Name of the currently connected BIM Server. Settings can be adjusted in BIM preferences.</string>
           </property>
           <property name="text">
            <string>BIM Server</string>
@@ -76,7 +76,7 @@
         <item>
          <widget class="QPushButton" name="buttonBrowser">
           <property name="text">
-           <string>Open in browser</string>
+           <string>Open in Browser</string>
           </property>
          </widget>
         </item>
@@ -112,7 +112,7 @@
       <item>
        <widget class="QLabel" name="label_3">
         <property name="text">
-         <string>Available revisions:</string>
+         <string>Available revisions</string>
         </property>
        </widget>
       </item>
@@ -161,7 +161,7 @@
         <item>
          <widget class="QLabel" name="label_5">
           <property name="text">
-           <string>Root object:</string>
+           <string>Root object</string>
           </property>
          </widget>
         </item>

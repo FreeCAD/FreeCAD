@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
@@ -20,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PATH_FeaturePath_H
-#define PATH_FeaturePath_H
+#pragma once
 
 #include <App/DocumentObject.h>
 #include <App/GeoFeature.h>
@@ -65,6 +65,3 @@ protected:
 using FeaturePython = App::FeaturePythonT<Feature>;
 
 }  // namespace Path
-
-
-#endif  // PATH_FeaturePath_H

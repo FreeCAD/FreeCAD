@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2024 Shai Seger <shaise at gmail>                       *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __solid_object_h__
-#define __solid_object_h__
+#pragma once
 #include "SimShapes.h"
 #include "linmath.h"
 #include <vector>
@@ -39,7 +40,7 @@ public:
     /// Calls the display list.
     virtual void render();
     Shape shape;
-    void GenerateSolid(std::vector<Vertex>& verts, std::vector<GLushort>& indices);
+    void GenerateSolid(const std::vector<Vertex>& verts, const std::vector<GLushort>& indices);
     vec3 center = {};
     vec3 size = {};
     vec3 position = {};
@@ -49,5 +50,3 @@ protected:
     mat4x4 mModelMat;
 };
 }  // namespace MillSim
-
-#endif

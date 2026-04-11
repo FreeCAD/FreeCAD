@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 // Copyright  (C)  2007  Ruben Smits <ruben dot smits at mech dot kuleuven dot be>
 
 // Version: 1.0
@@ -21,8 +23,7 @@
 
 
 //Based on the svd of the KDL-0.2 library by Erwin Aertbelien
-#ifndef SVD_EIGEN_HH_HPP
-#define SVD_EIGEN_HH_HPP
+#pragma once
 
 
 #include <Eigen/Core>
@@ -68,4 +69,3 @@ namespace KDL
      */
     int svd_eigen_HH(const MatrixXd& A,MatrixXd& U,VectorXd& S,MatrixXd& V,VectorXd& tmp,int maxiter=150,double epsilon=1e-300);
 }
-#endif

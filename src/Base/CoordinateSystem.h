@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef BASE_COORDINATESYSTEM_H
-#define BASE_COORDINATESYSTEM_H
+#pragma once
 
 #include "Axis.h"
 
@@ -120,5 +121,3 @@ private:
 };
 
 }  // namespace Base
-
-#endif  // BASE_COORDINATESYSTEM_H

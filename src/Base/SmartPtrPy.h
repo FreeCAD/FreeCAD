@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2020 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PY_SMARTPTRPY_H
-#define PY_SMARTPTRPY_H
+#pragma once
 
 #include <FCGlobal.h>
 
@@ -86,5 +87,3 @@ public:
 BaseExport PyObject* new_reference_to(const SmartPtr&);
 
 }  // namespace Py
-
-#endif  // PY_SMARTPTRPY_H

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "DlgPartBoxImp.h"
 #include "ui_DlgPartBox.h"
@@ -37,8 +38,7 @@ using namespace PartGui;
  */
 DlgPartBoxImp::DlgPartBoxImp(QWidget* parent, Qt::WindowFlags fl)
     : Gui::LocationDialogUiImp(new Ui_DlgPartBox, parent, fl)
-{
-}
+{}
 
 /*
  *  Destroys the object and frees any allocated resources

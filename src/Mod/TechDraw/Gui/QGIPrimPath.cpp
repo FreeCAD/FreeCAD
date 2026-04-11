@@ -20,15 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <cassert>
 
 # include <QGraphicsScene>
 # include <QGraphicsSceneHoverEvent>
 # include <QPainter>
 # include <QStyleOptionGraphicsItem>
-#endif
 
 #include <App/Application.h>
 
@@ -60,6 +57,7 @@ QGIPrimPath::QGIPrimPath():
 
     multiselectActivated = false;
 
+    m_edgeFuzz = PreferencesGui::edgeFuzz();
     m_colNormal = getNormalColor();
     m_pen.setColor(m_colNormal);
     m_styleNormal = Qt::SolidLine;
@@ -175,7 +173,6 @@ QColor QGIPrimPath::getSelectColor()
 
 void QGIPrimPath::setWidth(double w)
 {
-//    Base::Console().message("QGIPP::setWidth(%.3f)\n", w);
     m_pen.setWidthF(w);
 }
 

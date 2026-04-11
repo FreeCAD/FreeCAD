@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
@@ -20,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "PropertySheet.h"
 #include "SheetObserver.h"
@@ -70,7 +71,8 @@ void SheetObserver::slotDeletedObject(const DocumentObject& Obj)
 
 void SheetObserver::slotChangedObject(const DocumentObject& Obj, const Property& Prop)
 {
-    if (&Prop == &Obj.Label) {}
+    if (&Prop == &Obj.Label) {
+    }
     else {
         const char* name = Obj.getPropertyName(&Prop);
 

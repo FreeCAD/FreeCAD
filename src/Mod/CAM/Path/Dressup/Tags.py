@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -29,7 +30,6 @@ import Path.Dressup.Utils as PathDressup
 import PathScripts.PathUtils as PathUtils
 import copy
 import math
-
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -271,13 +271,13 @@ class Tag:
 
 
 class MapWireToTag:
-    def __init__(self, edge, tag, i, segm, maxZ, hSpeed, vSpeed):
+    def __init__(self, edge, tag, i, maxZ, hSpeed, vSpeed, tolerance):
         debugEdge(edge, "MapWireToTag(%.2f, %.2f, %.2f)" % (i.x, i.y, i.z))
         self.tag = tag
-        self.segm = segm
         self.maxZ = maxZ
         self.hSpeed = hSpeed
         self.vSpeed = vSpeed
+        self.tolerance = tolerance
         if Path.Geom.pointsCoincide(edge.valueAt(edge.FirstParameter), i):
             tail = edge
             self.commands = []
@@ -285,14 +285,20 @@ class MapWireToTag:
         elif Path.Geom.pointsCoincide(edge.valueAt(edge.LastParameter), i):
             debugEdge(edge, "++++++++ .")
             self.commands = Path.Geom.cmdsForEdge(
-                edge, segm=segm, hSpeed=self.hSpeed, vSpeed=self.vSpeed
+                edge,
+                hSpeed=self.hSpeed,
+                vSpeed=self.vSpeed,
+                tol=tolerance,
             )
             tail = None
         else:
             e, tail = Path.Geom.splitEdgeAt(edge, i)
             debugEdge(e, "++++++++ .")
             self.commands = Path.Geom.cmdsForEdge(
-                e, segm=segm, hSpeed=self.hSpeed, vSpeed=self.vSpeed
+                e,
+                hSpeed=self.hSpeed,
+                vSpeed=self.vSpeed,
+                tol=tolerance,
             )
             debugEdge(tail, ".........-")
             self.initialEdge = edge
@@ -380,7 +386,7 @@ class MapWireToTag:
         # if there are no edges connected to entry/exit, it means the plunge in/out is vertical
         # we need to add in the missing segment and collect the new entry/exit edges.
         if not self.entryEdges:
-            Path.Log.debug("fill entryEdges ...")
+            Path.Log.debug("fill entryEdges…")
             self.realEntry = sorted(self.edgePoints, key=lambda p: (p - self.entry).Length)[0]
             self.entryEdges = list(
                 [e for e in edges if Path.Geom.edgeConnectsTo(e, self.realEntry)]
@@ -389,7 +395,7 @@ class MapWireToTag:
         else:
             self.realEntry = None
         if not self.exitEdges:
-            Path.Log.debug("fill exitEdges ...")
+            Path.Log.debug("fill exitEdges…")
             self.realExit = sorted(self.edgePoints, key=lambda p: (p - self.exit).Length)[0]
             self.exitEdges = list([e for e in edges if Path.Geom.edgeConnectsTo(e, self.realExit)])
             edges.append(Part.Edge(Part.LineSegment(self.realExit, self.exit)))
@@ -559,11 +565,9 @@ class MapWireToTag:
                         commands.extend(
                             Path.Geom.cmdsForEdge(
                                 e,
-                                False,
-                                False,
-                                self.segm,
                                 hSpeed=self.hSpeed,
                                 vSpeed=self.vSpeed,
+                                tol=self.tolerance,
                             )
                         )
                 if rapid:
@@ -579,7 +583,12 @@ class MapWireToTag:
                 commands = []
                 for e in self.edges:
                     commands.extend(
-                        Path.Geom.cmdsForEdge(e, hSpeed=self.hSpeed, vSpeed=self.vSpeed)
+                        Path.Geom.cmdsForEdge(
+                            e,
+                            hSpeed=self.hSpeed,
+                            vSpeed=self.vSpeed,
+                            tol=self.tolerance,
+                        )
                     )
                 return commands
         return []
@@ -642,7 +651,7 @@ class PathData:
         Path.Log.track(obj.Base.Name)
         self.obj = obj
         path = PathUtils.getPathWithPlacement(obj.Base)
-        self.wire, rapid = Path.Geom.wireForPath(path)
+        self.wire, rapid, rapid_indexes = Path.Geom.wireForPath(path)
         self.rapid = _RapidEdges(rapid)
         if self.wire:
             self.edges = self.wire.Edges
@@ -651,7 +660,7 @@ class PathData:
         self.baseWire = self.findBottomWire(self.edges)
 
     def findBottomWire(self, edges):
-        (minZ, maxZ) = self.findZLimits(edges)
+        minZ, maxZ = self.findZLimits(edges)
         self.minZ = minZ
         self.maxZ = maxZ
         bottom = [
@@ -707,7 +716,7 @@ class PathData:
         R = radius if radius else self.defaultTagRadius()
 
         # start assigning tags on the longest segment
-        (shortestEdge, longestEdge) = self.shortestAndLongestPathEdge()
+        shortestEdge, longestEdge = self.shortestAndLongestPathEdge()
         startIndex = 0
         for i in range(0, len(self.baseWire.Edges)):
             edge = self.baseWire.Edges[i]
@@ -748,12 +757,12 @@ class PathData:
 
         for i in range(startIndex + 1, len(self.baseWire.Edges)):
             edge = self.baseWire.Edges[i]
-            (currentLength, lastTagLength) = self.processEdge(
+            currentLength, lastTagLength = self.processEdge(
                 i, edge, currentLength, lastTagLength, tagDistance, minLength, edgeDict
             )
         for i in range(0, startIndex):
             edge = self.baseWire.Edges[i]
-            (currentLength, lastTagLength) = self.processEdge(
+            currentLength, lastTagLength = self.processEdge(
                 i, edge, currentLength, lastTagLength, tagDistance, minLength, edgeDict
             )
 
@@ -940,14 +949,15 @@ class ObjectTagDressup:
             QT_TRANSLATE_NOOP("App::Property", "IDs of disabled holding tags"),
         )
         obj.addProperty(
-            "App::PropertyInteger",
-            "SegmentationFactor",
-            "Tag",
+            "App::PropertyBool",
+            "Approximation",
+            "Path",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Factor determining the # of segments used to approximate rounded tags.",
+                "Split B-Spline by arcs and ignore not vertical arcs axis (experimental).",
             ),
         )
+        obj.setEditorMode("Approximation", 2)  # hide
 
         self.obj = obj
         self.solids = []
@@ -971,8 +981,23 @@ class ObjectTagDressup:
         self.mappers = []
         return None
 
+    def onChanged(self, obj, prop):
+        if prop == "Path" and obj.ViewObject:
+            obj.ViewObject.signalChangeIcon()
+
     def onDocumentRestored(self, obj):
         self.obj = obj
+        if not hasattr(obj, "Approximation"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "Approximation",
+                "Path",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Split B-Spline by arcs and ignore not vertical arcs axis (experimental).",
+                ),
+            )
+            obj.setEditorMode("Approximation", 2)  # hide
 
     def supportsTagGeneration(self, obj):
         if not self.pathData:
@@ -1009,7 +1034,6 @@ class ObjectTagDressup:
         obj.Height = fromObj.Height
         obj.Angle = fromObj.Angle
         obj.Radius = fromObj.Radius
-        obj.SegmentationFactor = fromObj.SegmentationFactor
 
         self.tags = self.pathData.copyTags(
             obj, fromObj, obj.Width.Value, obj.Height.Value, obj.Angle, obj.Radius.Value
@@ -1037,16 +1061,11 @@ class ObjectTagDressup:
         t = 0
         edge = None
 
-        segm = 50
-        if hasattr(obj, "SegmentationFactor"):
-            segm = obj.SegmentationFactor
-            if segm <= 0:
-                segm = 50
-                obj.SegmentationFactor = 50
-
         self.mappers = []
         mapper = None
 
+        job = PathUtils.findParentJob(obj)
+        tol = job.GeometryTolerance.Value
         tc = PathDressup.toolController(obj.Base)
         horizFeed = tc.HorizFeed.Value
         vertFeed = tc.VertFeed.Value
@@ -1078,10 +1097,10 @@ class ObjectTagDressup:
                         edge,
                         tags[tIndex],
                         i,
-                        segm,
                         pathData.maxZ,
                         hSpeed=horizFeed,
                         vSpeed=vertFeed,
+                        tolerance=tol,
                     )
                     self.mappers.append(mapper)
                     edge = mapper.tail
@@ -1107,7 +1126,11 @@ class ObjectTagDressup:
                     else:
                         commands.extend(
                             Path.Geom.cmdsForEdge(
-                                edge, segm=segm, hSpeed=horizFeed, vSpeed=vertFeed
+                                edge,
+                                approximation=obj.Approximation,
+                                hSpeed=horizFeed,
+                                vSpeed=vertFeed,
+                                tol=tol,
                             )
                         )
                 edge = None
@@ -1206,7 +1229,7 @@ class ObjectTagDressup:
         try:
             self.processTags(obj)
         except Exception as e:
-            Path.Log.error("processing tags failed clearing all tags ... '%s'" % (e.args[0]))
+            Path.Log.error("processing tags failed clearing all tags… '%s'" % (e.args[0]))
             obj.Path = PathUtils.getPathWithPlacement(obj.Base)
 
         # update disabled in case there are some additional ones
@@ -1245,7 +1268,7 @@ class ObjectTagDressup:
             Path.Log.error(
                 translate(
                     "CAM_DressupTag",
-                    "Cannot insert holding tags for this path - please select a Profile path",
+                    "Cannot insert holding tags for this path - select a profile path",
                 )
                 + "\n"
             )
@@ -1293,14 +1316,14 @@ class ObjectTagDressup:
 
 def Create(baseObject, name="DressupTag"):
     """
-    Create(basePath, name='DressupTag') ... create tag dressup object for the given base path.
+    Create(basePath, name='DressupTag') … create tag dressup object for the given base path.
     """
     if not baseObject.isDerivedFrom("Path::Feature"):
         Path.Log.error(translate("CAM_DressupTag", "The selected object is not a path") + "\n")
         return None
 
     if baseObject.isDerivedFrom("Path::FeatureCompoundPython"):
-        Path.Log.error(translate("CAM_DressupTag", "Please select a Profile object"))
+        Path.Log.error(translate("CAM_DressupTag", "Select a profile object"))
         return None
 
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
@@ -1311,4 +1334,4 @@ def Create(baseObject, name="DressupTag"):
     return obj
 
 
-Path.Log.notice("Loading CAM_DressupTag... done\n")
+Path.Log.notice("Loading CAM_DressupTag… done\n")

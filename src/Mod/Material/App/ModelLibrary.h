@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
@@ -19,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATERIAL_MODELLIBRARY_H
-#define MATERIAL_MODELLIBRARY_H
+#pragma once
 
 #include <memory>
 
@@ -99,5 +100,3 @@ private:
 
 Q_DECLARE_METATYPE(std::shared_ptr<Materials::ModelLibrary>)
 Q_DECLARE_METATYPE(std::shared_ptr<Materials::ModelLibraryLocal>)
-
-#endif  // MATERIAL_MODELLIBRARY_H

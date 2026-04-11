@@ -19,6 +19,9 @@
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
     <widget class="QComboBox" name="PrimitiveTypeCB">
+     <property name="toolTip">
+      <string>Select the type of geometric primitive to create</string>
+     </property>
      <property name="sizePolicy">
       <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
        <horstretch>0</horstretch>
@@ -237,12 +240,15 @@
             <item row="0" column="0">
              <widget class="QLabel" name="textLabel2_2">
               <property name="text">
-               <string>Length:</string>
+               <string>Length</string>
               </property>
              </widget>
             </item>
             <item row="0" column="2">
              <widget class="Gui::QuantitySpinBox" name="planeLength">
+              <property name="toolTip">
+               <string>Length of the plane in the local X direction</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -257,12 +263,15 @@
             <item row="1" column="0">
              <widget class="QLabel" name="textLabel3_2">
               <property name="text">
-               <string>Width:</string>
+               <string>Width</string>
               </property>
              </widget>
             </item>
             <item row="1" column="2">
              <widget class="Gui::QuantitySpinBox" name="planeWidth">
+              <property name="toolTip">
+               <string>Width of the plane in the local Y direction</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -328,12 +337,15 @@
             <item row="0" column="0">
              <widget class="QLabel" name="textLabel2">
               <property name="text">
-               <string>Length:</string>
+               <string>Length</string>
               </property>
              </widget>
             </item>
             <item row="0" column="2">
              <widget class="Gui::QuantitySpinBox" name="boxLength">
+              <property name="toolTip">
+               <string>Length of the box in the local X direction</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -348,12 +360,15 @@
            <item row="1" column="0">
              <widget class="QLabel" name="textLabel3">
               <property name="text">
-               <string>Width:</string>
+               <string>Width</string>
               </property>
              </widget>
             </item>
             <item row="1" column="2">
              <widget class="Gui::QuantitySpinBox" name="boxWidth">
+              <property name="toolTip">
+               <string>Width of the box in the local Y direction</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -368,12 +383,15 @@
             <item row="2" column="0">
              <widget class="QLabel" name="textLabel4">
               <property name="text">
-               <string>Height:</string>
+               <string>Height</string>
               </property>
              </widget>
             </item>
             <item row="2" column="2">
              <widget class="Gui::QuantitySpinBox" name="boxHeight">
+              <property name="toolTip">
+               <string>Height of the box in the local Z direction</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -442,12 +460,15 @@
             <item row="0" column="0">
              <widget class="QLabel" name="textLabel5">
               <property name="text">
-               <string>Radius:</string>
+               <string>Radius</string>
               </property>
              </widget>
             </item>
             <item row="0" column="1">
              <widget class="Gui::QuantitySpinBox" name="cylinderRadius">
+              <property name="toolTip">
+               <string>Radius of the cylinder</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -462,12 +483,15 @@
             <item row="1" column="0">
              <widget class="QLabel" name="textLabel6">
               <property name="text">
-               <string>Height:</string>
+               <string>Height</string>
               </property>
              </widget>
             </item>
             <item row="1" column="1">
              <widget class="Gui::QuantitySpinBox" name="cylinderHeight">
+              <property name="toolTip">
+               <string>Height of the cylinder along the local Z axis</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -482,14 +506,14 @@
             <item row="2" column="0">
              <widget class="QLabel" name="labelCylinderXSkew">
               <property name="text">
-               <string>Angle in first direction:</string>
+               <string>Angle in first direction</string>
               </property>
              </widget>
             </item>
             <item row="2" column="1">
              <widget class="Gui::QuantitySpinBox" name="cylinderXSkew">
               <property name="toolTip">
-               <string>Angle in first direction</string>
+               <string>Skew angle of the cylinder in the first direction</string>
               </property>
               <property name="keyboardTracking">
                <bool>false</bool>
@@ -508,14 +532,14 @@
             <item row="3" column="0">
              <widget class="QLabel" name="labelCylinderYSkew">
               <property name="text">
-               <string>Angle in second direction:</string>
+               <string>Angle in second direction</string>
               </property>
              </widget>
             </item>
             <item row="3" column="1">
              <widget class="Gui::QuantitySpinBox" name="cylinderYSkew">
               <property name="toolTip">
-               <string>Angle in second direction</string>
+               <string>Skew angle of the cylinder in the second direction</string>
               </property>
               <property name="keyboardTracking">
                <bool>false</bool>
@@ -566,12 +590,15 @@
                </size>
               </property>
               <property name="text">
-               <string>Rotation angle:</string>
+               <string>Rotation angle</string>
               </property>
              </widget>
             </item>
             <item row="0" column="1">
              <widget class="Gui::QuantitySpinBox" name="cylinderAngle">
+              <property name="toolTip">
+               <string>Rotation angle of the cylinder cross-section</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -640,12 +667,15 @@
             <item row="0" column="0">
              <widget class="QLabel" name="textLabel9">
               <property name="text">
-               <string>Radius 1:</string>
+               <string>Radius 1</string>
               </property>
              </widget>
             </item>
             <item row="0" column="2">
              <widget class="Gui::QuantitySpinBox" name="coneRadius1">
+              <property name="toolTip">
+               <string>Radius of the cone at the bottom</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -660,12 +690,15 @@
             <item row="1" column="0">
              <widget class="QLabel" name="textLabel10">
               <property name="text">
-               <string>Radius 2:</string>
+               <string>Radius 2</string>
               </property>
              </widget>
             </item>
             <item row="1" column="2">
              <widget class="Gui::QuantitySpinBox" name="coneRadius2">
+              <property name="toolTip">
+               <string>Radius of the cone at the top</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -680,12 +713,15 @@
            <item row="2" column="0" rowspan="2">
              <widget class="QLabel" name="textLabel11">
               <property name="text">
-               <string>Height:</string>
+               <string>Height</string>
               </property>
              </widget>
             </item>
             <item row="3" column="2">
              <widget class="Gui::QuantitySpinBox" name="coneHeight">
+              <property name="toolTip">
+               <string>Height of the cone along the local Z axis</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -726,12 +762,15 @@
             <item row="0" column="0">
              <widget class="QLabel" name="label_4">
               <property name="text">
-               <string>Angle:</string>
+               <string>Angle</string>
               </property>
              </widget>
             </item>
             <item row="0" column="1">
              <widget class="Gui::QuantitySpinBox" name="coneAngle">
+              <property name="toolTip">
+               <string>Rotation angle of the cone cross-section</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -800,12 +839,15 @@
             <item>
              <widget class="QLabel" name="textLabel14">
               <property name="text">
-               <string>Radius:</string>
+               <string>Radius</string>
               </property>
              </widget>
             </item>
             <item>
              <widget class="Gui::QuantitySpinBox" name="sphereRadius">
+              <property name="toolTip">
+               <string>Radius of the sphere</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -849,12 +891,15 @@
             <item row="0" column="0">
              <widget class="QLabel" name="label_3">
               <property name="text">
-               <string>U parameter:</string>
+               <string>U parameter</string>
               </property>
              </widget>
             </item>
             <item row="0" column="2">
              <widget class="Gui::QuantitySpinBox" name="sphereAngle3">
+              <property name="toolTip">
+               <string>Rotation angle of the sphere cross-section around the local Z axis</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -869,12 +914,15 @@
            <item row="1" column="0">
              <widget class="QLabel" name="label_2">
               <property name="text">
-               <string>V parameters:</string>
+               <string>V parameters</string>
               </property>
              </widget>
             </item>
             <item row="1" column="2">
              <widget class="Gui::QuantitySpinBox" name="sphereAngle1">
+              <property name="toolTip">
+               <string>Start angle of the sphere along the local Z axis</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -904,6 +952,9 @@
             </item>
             <item row="2" column="2">
              <widget class="Gui::QuantitySpinBox" name="sphereAngle2">
+              <property name="toolTip">
+               <string>End angle of the sphere along the local Z axis</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -972,12 +1023,15 @@
             <item row="0" column="0">
              <widget class="QLabel" name="textLabel21">
               <property name="text">
-               <string>Radius 1:</string>
+               <string>Radius 1</string>
               </property>
              </widget>
             </item>
             <item row="0" column="1">
              <widget class="Gui::QuantitySpinBox" name="ellipsoidRadius1">
+              <property name="toolTip">
+               <string>Radius of the ellipsoid along the local Z axis</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -992,12 +1046,15 @@
             <item row="1" column="0">
              <widget class="QLabel" name="textLabel22">
               <property name="text">
-               <string>Radius 2:</string>
+               <string>Radius 2</string>
               </property>
              </widget>
             </item>
             <item row="1" column="1">
              <widget class="Gui::QuantitySpinBox" name="ellipsoidRadius2">
+              <property name="toolTip">
+               <string>Radius of the ellipsoid along the local X axis</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -1012,12 +1069,15 @@
             <item row="2" column="0">
              <widget class="QLabel" name="textLabel23">
               <property name="text">
-               <string>Radius 3:</string>
+               <string>Radius 3</string>
               </property>
              </widget>
             </item>
             <item row="2" column="1">
              <widget class="Gui::QuantitySpinBox" name="ellipsoidRadius3">
+              <property name="toolTip">
+               <string>Radius of the ellipsoid along the local Y axis</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -1061,12 +1121,15 @@
             <item row="0" column="0">
              <widget class="QLabel" name="label23">
               <property name="text">
-               <string>U parameter:</string>
+               <string>U parameter</string>
               </property>
              </widget>
             </item>
             <item row="0" column="1">
              <widget class="Gui::QuantitySpinBox" name="ellipsoidAngle3">
+              <property name="toolTip">
+               <string>Rotation angle of the ellipsoid cross-section around the local Z axis</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -1081,12 +1144,15 @@
             <item row="1" column="0">
              <widget class="QLabel" name="label24">
               <property name="text">
-               <string>V parameter:</string>
+               <string>V parameter</string>
               </property>
              </widget>
             </item>
             <item row="1" column="1">
              <widget class="Gui::QuantitySpinBox" name="ellipsoidAngle1">
+              <property name="toolTip">
+               <string>Start angle of the ellipsoid along the local Z axis</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -1116,6 +1182,9 @@
             </item>
             <item row="2" column="1">
              <widget class="Gui::QuantitySpinBox" name="ellipsoidAngle2">
+              <property name="toolTip">
+               <string>End angle of the ellipsoid along the local Z axis</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -1181,12 +1250,15 @@
             <item row="0" column="0">
              <widget class="QLabel" name="textLabel19">
               <property name="text">
-               <string>Radius 1:</string>
+               <string>Radius 1</string>
               </property>
              </widget>
             </item>
             <item row="0" column="2">
              <widget class="Gui::QuantitySpinBox" name="torusRadius1">
+              <property name="toolTip">
+               <string>Radius from the center of the torus to the center of the cross-section</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -1201,12 +1273,15 @@
             <item row="1" column="0">
              <widget class="QLabel" name="textLabel20">
               <property name="text">
-               <string>Radius 2:</string>
+               <string>Radius 2</string>
               </property>
              </widget>
             </item>
             <item row="1" column="2">
              <widget class="Gui::QuantitySpinBox" name="torusRadius2">
+              <property name="toolTip">
+               <string>Radius of the torus cross-section</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -1250,12 +1325,15 @@
             <item row="0" column="0">
              <widget class="QLabel" name="label_5">
               <property name="text">
-               <string>U Parameter:</string>
+               <string>U parameter</string>
               </property>
              </widget>
             </item>
             <item row="0" column="1">
              <widget class="Gui::QuantitySpinBox" name="torusAngle3">
+              <property name="toolTip">
+               <string>Rotation angle of the torus cross-section around the local Z axis</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -1270,12 +1348,15 @@
             <item row="1" column="0">
              <widget class="QLabel" name="label_6">
               <property name="text">
-               <string>V parameter:</string>
+               <string>V parameter</string>
               </property>
              </widget>
             </item>
             <item row="1" column="1">
              <widget class="Gui::QuantitySpinBox" name="torusAngle1">
+              <property name="toolTip">
+               <string>Start angle of the torus cross-section</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -1305,6 +1386,9 @@
             </item>
             <item row="2" column="1">
              <widget class="Gui::QuantitySpinBox" name="torusAngle2">
+              <property name="toolTip">
+               <string>End angle of the torus cross-section</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -1373,12 +1457,15 @@
             <item row="0" column="0">
              <widget class="QLabel" name="labelPrismPolygon">
               <property name="text">
-               <string>Polygon:</string>
+               <string>Polygon</string>
               </property>
              </widget>
             </item>
             <item row="0" column="2">
              <widget class="QSpinBox" name="prismPolygon">
+              <property name="toolTip">
+               <string>Number of sides of the polygon cross-section</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -1396,12 +1483,15 @@
             <item row="1" column="0">
              <widget class="QLabel" name="labelPrismCircumradius">
               <property name="text">
-               <string>Circumradius:</string>
+               <string>Circumradius</string>
               </property>
              </widget>
             </item>
             <item row="1" column="2">
              <widget class="Gui::QuantitySpinBox" name="prismCircumradius">
+              <property name="toolTip">
+               <string>Circumradius of the polygon cross-section</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -1416,12 +1506,15 @@
             <item row="2" column="0">
              <widget class="QLabel" name="labelPrismHeight">
               <property name="text">
-               <string>Height:</string>
+               <string>Height</string>
               </property>
              </widget>
             </item>
             <item row="2" column="2">
              <widget class="Gui::QuantitySpinBox" name="prismHeight">
+              <property name="toolTip">
+               <string>Height of the prism along the local Z axis</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -1436,14 +1529,14 @@
             <item row="3" column="0">
              <widget class="QLabel" name="labelPrismXSkew">
               <property name="text">
-               <string>Angle in first direction:</string>
+               <string>Angle in first direction</string>
               </property>
              </widget>
             </item>
             <item row="3" column="2">
              <widget class="Gui::QuantitySpinBox" name="prismXSkew">
               <property name="toolTip">
-               <string>Angle in first direction</string>
+               <string>Skew angle of the prism in the first direction</string>
               </property>
               <property name="keyboardTracking">
                <bool>false</bool>
@@ -1462,14 +1555,14 @@
             <item row="4" column="0">
              <widget class="QLabel" name="labelPrismYSkew">
               <property name="text">
-               <string>Angle in second direction:</string>
+               <string>Angle in second direction</string>
               </property>
              </widget>
             </item>
             <item row="4" column="2">
              <widget class="Gui::QuantitySpinBox" name="prismYSkew">
               <property name="toolTip">
-               <string>Angle in second direction</string>
+               <string>Skew angle of the prism in the second direction</string>
               </property>
               <property name="keyboardTracking">
                <bool>false</bool>
@@ -1515,12 +1608,15 @@
             <item row="0" column="0">
              <widget class="QLabel" name="label_10">
               <property name="text">
-               <string>X min/max:</string>
+               <string>X min/max</string>
               </property>
              </widget>
             </item>
             <item row="0" column="1">
              <widget class="Gui::QuantitySpinBox" name="wedgeXmin">
+              <property name="toolTip">
+               <string>Minimum X value of the base face</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -1531,6 +1627,9 @@
             </item>
             <item row="0" column="2">
              <widget class="Gui::QuantitySpinBox" name="wedgeXmax">
+              <property name="toolTip">
+               <string>Maximum X value of the base face</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -1545,12 +1644,15 @@
             <item row="1" column="0">
              <widget class="QLabel" name="label_11">
               <property name="text">
-               <string>Y min/max:</string>
+               <string>Y min/max</string>
               </property>
              </widget>
             </item>
             <item row="1" column="1">
              <widget class="Gui::QuantitySpinBox" name="wedgeYmin">
+              <property name="toolTip">
+               <string>Minimum Y value (height start)</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -1561,6 +1663,9 @@
             </item>
             <item row="1" column="2">
              <widget class="Gui::QuantitySpinBox" name="wedgeYmax">
+              <property name="toolTip">
+               <string>Maximum Y value (height end)</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -1575,12 +1680,15 @@
             <item row="2" column="0">
              <widget class="QLabel" name="label_12">
               <property name="text">
-               <string>Z min/max:</string>
+               <string>Z min/max</string>
               </property>
              </widget>
             </item>
             <item row="2" column="1">
              <widget class="Gui::QuantitySpinBox" name="wedgeZmin">
+              <property name="toolTip">
+               <string>Minimum Z value of the base face</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -1591,6 +1699,9 @@
             </item>
             <item row="2" column="2">
              <widget class="Gui::QuantitySpinBox" name="wedgeZmax">
+              <property name="toolTip">
+               <string>Maximum Z value of the base face</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -1605,12 +1716,15 @@
             <item row="3" column="0">
              <widget class="QLabel" name="label_13">
               <property name="text">
-               <string>X2 min/max:</string>
+               <string>X2 min/max</string>
               </property>
              </widget>
             </item>
             <item row="3" column="1">
              <widget class="Gui::QuantitySpinBox" name="wedgeX2min">
+              <property name="toolTip">
+               <string>Minimum X value of the top face</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -1624,6 +1738,9 @@
             </item>
             <item row="3" column="2">
              <widget class="Gui::QuantitySpinBox" name="wedgeX2max">
+              <property name="toolTip">
+               <string>Maximum X value of the top face</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -1638,12 +1755,15 @@
             <item row="4" column="0">
              <widget class="QLabel" name="label_14">
               <property name="text">
-               <string>Z2 min/max:</string>
+               <string>Z2 min/max</string>
               </property>
              </widget>
             </item>
             <item row="4" column="1">
              <widget class="Gui::QuantitySpinBox" name="wedgeZ2min">
+              <property name="toolTip">
+               <string>Minimum Z value of the top face</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -1657,6 +1777,9 @@
             </item>
             <item row="4" column="2">
              <widget class="Gui::QuantitySpinBox" name="wedgeZ2max">
+              <property name="toolTip">
+               <string>Maximum Z value of the top face</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -1722,12 +1845,15 @@
             <item row="0" column="0">
              <widget class="QLabel" name="label_7">
               <property name="text">
-               <string>Pitch:</string>
+               <string>Pitch</string>
               </property>
              </widget>
             </item>
             <item row="0" column="1">
              <widget class="Gui::QuantitySpinBox" name="helixPitch">
+              <property name="toolTip">
+               <string>Distance between consecutive turns of the helix</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -1742,12 +1868,15 @@
             <item row="1" column="0">
              <widget class="QLabel" name="label_8">
               <property name="text">
-               <string>Height:</string>
+               <string>Height</string>
               </property>
              </widget>
             </item>
             <item row="1" column="1">
              <widget class="Gui::QuantitySpinBox" name="helixHeight">
+              <property name="toolTip">
+               <string>Total height of the helix</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -1762,12 +1891,15 @@
             <item row="2" column="0">
              <widget class="QLabel" name="label_9">
               <property name="text">
-               <string>Radius:</string>
+               <string>Radius</string>
               </property>
              </widget>
             </item>
             <item row="2" column="1">
              <widget class="Gui::QuantitySpinBox" name="helixRadius">
+              <property name="toolTip">
+               <string>Radius of the helix</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -1782,12 +1914,15 @@
            <item row="3" column="0">
              <widget class="QLabel" name="label_20">
               <property name="text">
-               <string>Angle:</string>
+               <string>Angle</string>
               </property>
              </widget>
             </item>
             <item row="3" column="1">
              <widget class="Gui::QuantitySpinBox" name="helixAngle">
+              <property name="toolTip">
+               <string>Taper angle of the helix</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -1799,12 +1934,15 @@
             <item row="4" column="0">
              <widget class="QLabel" name="label_15">
               <property name="text">
-               <string>Coordinate system:</string>
+               <string>Coordinate system</string>
               </property>
              </widget>
             </item>
             <item row="4" column="1">
              <widget class="QComboBox" name="helixLocalCS">
+              <property name="toolTip">
+               <string>Handedness of the helix: right-handed or left-handed</string>
+              </property>
               <item>
                <property name="text">
                 <string>Right-handed</string>
@@ -1871,12 +2009,15 @@
             <item row="0" column="0">
              <widget class="QLabel" name="label_spiral_growth">
               <property name="text">
-               <string>Growth:</string>
+               <string>Growth</string>
               </property>
              </widget>
             </item>
             <item row="0" column="1">
              <widget class="Gui::QuantitySpinBox" name="spiralGrowth">
+              <property name="toolTip">
+               <string>Radial growth per rotation of the spiral</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -1891,12 +2032,15 @@
             <item row="1" column="0">
              <widget class="QLabel" name="label_spiral_rotation">
               <property name="text">
-               <string>Number of rotations:</string>
+               <string>Number of rotations</string>
               </property>
              </widget>
             </item>
             <item row="1" column="1">
              <widget class="QDoubleSpinBox" name="spiralRotation">
+              <property name="toolTip">
+               <string>Total number of rotations of the spiral</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -1911,12 +2055,15 @@
             <item row="2" column="0">
              <widget class="QLabel" name="label_spiral_radius">
               <property name="text">
-               <string>Radius:</string>
+               <string>Radius</string>
               </property>
              </widget>
             </item>
             <item row="2" column="1">
              <widget class="Gui::QuantitySpinBox" name="spiralRadius">
+              <property name="toolTip">
+               <string>Starting radius of the spiral</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -1967,12 +2114,15 @@
             <item row="0" column="0">
              <widget class="QLabel" name="Radius">
               <property name="text">
-               <string>Radius:</string>
+               <string>Radius</string>
               </property>
              </widget>
             </item>
             <item row="0" column="1">
              <widget class="Gui::QuantitySpinBox" name="circleRadius">
+              <property name="toolTip">
+               <string>Radius of the circle</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -1987,12 +2137,15 @@
            <item row="1" column="0">
              <widget class="QLabel" name="Angle1">
               <property name="text">
-               <string>Angle 1:</string>
+               <string>Angle 1</string>
               </property>
              </widget>
             </item>
             <item row="1" column="1">
              <widget class="Gui::QuantitySpinBox" name="circleAngle1">
+              <property name="toolTip">
+               <string>Start angle of the circular arc</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -2004,12 +2157,15 @@
             <item row="2" column="0">
              <widget class="QLabel" name="Angle2">
               <property name="text">
-               <string>Angle 2:</string>
+               <string>Angle 2</string>
               </property>
              </widget>
             </item>
             <item row="2" column="1">
              <widget class="Gui::QuantitySpinBox" name="circleAngle2">
+              <property name="toolTip">
+               <string>End angle of the circular arc</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -2040,8 +2196,11 @@
             </item>
             <item>
              <widget class="QPushButton" name="buttonCircleFromThreePoints">
+              <property name="toolTip">
+               <string>Define the circle by selecting 3 points in the 3D view</string>
+              </property>
               <property name="text">
-               <string>From three points</string>
+               <string>From 3 Points</string>
               </property>
              </widget>
             </item>
@@ -2069,12 +2228,15 @@
             <item row="0" column="0">
              <widget class="QLabel" name="labelEllMajorRadius">
               <property name="text">
-               <string>Major radius:</string>
+               <string>Major radius</string>
               </property>
              </widget>
             </item>
             <item row="0" column="1">
              <widget class="Gui::QuantitySpinBox" name="ellipseMajorRadius">
+              <property name="toolTip">
+               <string>Major radius of the ellipse</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -2089,12 +2251,15 @@
             <item row="1" column="0">
              <widget class="QLabel" name="labelEllMinorRadius">
               <property name="text">
-               <string>Minor radius:</string>
+               <string>Minor radius</string>
               </property>
              </widget>
             </item>
             <item row="1" column="1">
              <widget class="Gui::QuantitySpinBox" name="ellipseMinorRadius">
+              <property name="toolTip">
+               <string>Minor radius of the ellipse</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -2109,12 +2274,15 @@
             <item row="2" column="0">
              <widget class="QLabel" name="labelEllAngle1">
               <property name="text">
-               <string>Angle 1:</string>
+               <string>Angle 1</string>
               </property>
              </widget>
             </item>
             <item row="2" column="1">
              <widget class="Gui::QuantitySpinBox" name="ellipseAngle1">
+              <property name="toolTip">
+               <string>Start angle of the elliptical arc</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -2126,12 +2294,15 @@
             <item row="3" column="0">
              <widget class="QLabel" name="labelEllAngle2">
               <property name="text">
-               <string>Angle 2:</string>
+               <string>Angle 2</string>
               </property>
              </widget>
             </item>
             <item row="3" column="1">
              <widget class="Gui::QuantitySpinBox" name="ellipseAngle2">
+              <property name="toolTip">
+               <string>End angle of the elliptical arc</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -2167,7 +2338,7 @@
             <item row="0" column="0">
              <widget class="QLabel" name="label_X_Axis">
               <property name="text">
-               <string>X:</string>
+               <string>X</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -2176,6 +2347,9 @@
             </item>
             <item row="0" column="1">
              <widget class="Gui::QuantitySpinBox" name="vertexX">
+              <property name="toolTip">
+               <string>X coordinate of the point</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -2187,7 +2361,7 @@
             <item row="1" column="0">
              <widget class="QLabel" name="label_Y_Axis">
               <property name="text">
-               <string>Y:</string>
+               <string>Y</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -2196,6 +2370,9 @@
             </item>
             <item row="1" column="1">
              <widget class="Gui::QuantitySpinBox" name="vertexY">
+              <property name="toolTip">
+               <string>Y coordinate of the point</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -2207,7 +2384,7 @@
             <item row="2" column="0">
              <widget class="QLabel" name="label_Z_Axis">
               <property name="text">
-               <string>Z:</string>
+               <string>Z</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -2216,6 +2393,9 @@
             </item>
             <item row="2" column="1">
              <widget class="Gui::QuantitySpinBox" name="vertexZ">
+              <property name="toolTip">
+               <string>Z coordinate of the point</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -2265,7 +2445,7 @@
             <item row="1" column="0">
              <widget class="QLabel" name="X1">
               <property name="text">
-               <string>X:</string>
+               <string>X</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -2274,6 +2454,9 @@
             </item>
             <item row="1" column="1">
              <widget class="Gui::QuantitySpinBox" name="edgeX1">
+              <property name="toolTip">
+               <string>X coordinate of the start point</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -2284,6 +2467,9 @@
             </item>
             <item row="1" column="2">
              <widget class="Gui::QuantitySpinBox" name="edgeX2">
+              <property name="toolTip">
+               <string>X coordinate of the end point</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -2298,7 +2484,7 @@
             <item row="2" column="0">
              <widget class="QLabel" name="Y1">
               <property name="text">
-               <string>Y:</string>
+               <string>Y</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -2307,6 +2493,9 @@
             </item>
             <item row="2" column="1">
              <widget class="Gui::QuantitySpinBox" name="edgeY1">
+              <property name="toolTip">
+               <string>Y coordinate of the start point</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -2317,6 +2506,9 @@
             </item>
             <item row="2" column="2">
              <widget class="Gui::QuantitySpinBox" name="edgeY2">
+              <property name="toolTip">
+               <string>Y coordinate of the end point</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -2331,7 +2523,7 @@
             <item row="3" column="0">
              <widget class="QLabel" name="Z1">
               <property name="text">
-               <string>Z:</string>
+               <string>Z</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -2340,6 +2532,9 @@
             </item>
             <item row="3" column="1">
              <widget class="Gui::QuantitySpinBox" name="edgeZ1">
+              <property name="toolTip">
+               <string>Z coordinate of the start point</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -2350,6 +2545,9 @@
             </item>
             <item row="3" column="2">
              <widget class="Gui::QuantitySpinBox" name="edgeZ2">
+              <property name="toolTip">
+               <string>Z coordinate of the end point</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -2415,12 +2613,15 @@
             <item row="0" column="0">
              <widget class="QLabel" name="labelRegularPolygonPolygon">
               <property name="text">
-               <string>Polygon:</string>
+               <string>Polygon</string>
               </property>
              </widget>
             </item>
             <item row="0" column="1">
              <widget class="QSpinBox" name="regularPolygonPolygon">
+              <property name="toolTip">
+               <string>Number of sides of the regular polygon</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -2438,12 +2639,15 @@
             <item row="1" column="0">
              <widget class="QLabel" name="labelRegularPolygonCircumradius">
               <property name="text">
-               <string>Circumradius:</string>
+               <string>Circumradius</string>
               </property>
              </widget>
             </item>
             <item row="1" column="1">
              <widget class="Gui::QuantitySpinBox" name="regularPolygonCircumradius">
+              <property name="toolTip">
+               <string>Circumradius of the regular polygon</string>
+              </property>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>

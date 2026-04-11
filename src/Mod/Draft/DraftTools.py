@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # -*- coding: utf8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
@@ -27,6 +29,7 @@ that is, those actions that can be called from menus and buttons.
 This module must be imported only when the graphical user interface
 is available, for example, during the workbench definition in `IntiGui.py`.
 """
+
 ## @package DraftTools
 #  \ingroup DRAFT
 #  \brief Provide GUI commands of the Draft workbench.
@@ -61,8 +64,7 @@ True if Draft_rc.__name__ else False
 True if DraftGui.__name__ else False
 
 __title__ = "FreeCAD Draft Workbench GUI Tools"
-__author__ = ("Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, "
-              "Dmitry Chigrin")
+__author__ = "Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, " "Dmitry Chigrin"
 __url__ = "https://www.freecad.org"
 
 if not hasattr(FreeCADGui, "Snapper"):

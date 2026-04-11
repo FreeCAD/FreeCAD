@@ -30,7 +30,6 @@ __url__ = "https://www.freecad.org"
 
 import FreeCAD
 
-
 # PythonFeatures from package femobjects
 # standard object name == class name == type without 'Fem::'
 
@@ -146,17 +145,17 @@ def makeConstraintElectricChargeDensity(doc, name="ElectricChargeDensity"):
     return obj
 
 
-def makeConstraintElectrostaticPotential(doc, name="ConstraintElectrostaticPotential"):
-    """makeConstraintElectrostaticPotential(document, [name]):
-    makes a Fem ElectrostaticPotential object"""
+def makeConstraintElectromagnetic(doc, name="ConstraintElectromagnetic"):
+    """makeConstraintElectromagnetic(document, [name]):
+    makes a Fem Electromagnetic object"""
     obj = doc.addObject("Fem::ConstraintPython", name)
-    from femobjects import constraint_electrostaticpotential
+    from femobjects import constraint_electromagnetic
 
-    constraint_electrostaticpotential.ConstraintElectrostaticPotential(obj)
+    constraint_electromagnetic.ConstraintElectromagnetic(obj)
     if FreeCAD.GuiUp:
-        from femviewprovider import view_constraint_electrostaticpotential
+        from femviewprovider import view_constraint_electromagnetic
 
-        view_constraint_electrostaticpotential.VPConstraintElectroStaticPotential(obj.ViewObject)
+        view_constraint_electromagnetic.VPConstraintElectromagnetic(obj.ViewObject)
     return obj
 
 
@@ -448,7 +447,7 @@ def makeMaterialMechanicalNonlinear(doc, base_material, name="MaterialMechanical
     from femobjects import material_mechanicalnonlinear
 
     material_mechanicalnonlinear.MaterialMechanicalNonlinear(obj)
-    obj.LinearBaseMaterial = base_material
+    base_material.Nonlinear = obj
     if FreeCAD.GuiUp:
         from femviewprovider import view_material_mechanicalnonlinear
 
@@ -496,9 +495,9 @@ def makeMeshBoundaryLayer(doc, base_mesh, name="MeshBoundaryLayer"):
     # obj.BaseMesh = base_mesh
     # App::PropertyLinkList does not support append
     # we will use a temporary list to append the mesh BoundaryLayer obj. to the list
-    tmplist = base_mesh.MeshBoundaryLayerList
+    tmplist = base_mesh.MeshRefinementList
     tmplist.append(obj)
-    base_mesh.MeshBoundaryLayerList = tmplist
+    base_mesh.MeshRefinementList = tmplist
     if FreeCAD.GuiUp:
         from femviewprovider import view_mesh_boundarylayer
 
@@ -575,13 +574,150 @@ def makeMeshRegion(doc, base_mesh, element_length=0.0, name="MeshRegion"):
     # obj.BaseMesh = base_mesh
     # App::PropertyLinkList does not support append
     # we will use a temporary list to append the mesh region obj. to the list
-    tmplist = base_mesh.MeshRegionList
+    tmplist = base_mesh.MeshRefinementList
     tmplist.append(obj)
-    base_mesh.MeshRegionList = tmplist
+    base_mesh.MeshRefinementList = tmplist
     if FreeCAD.GuiUp:
         from femviewprovider import view_mesh_region
 
         view_mesh_region.VPMeshRegion(obj.ViewObject)
+    return obj
+
+
+def makeMeshDistance(doc, base_mesh, name="Distance"):
+    """makeMeshDistance(document, base_mesh, [name]):
+    creates a FEM mesh refinement object to define properties for a refinement of a FEM mesh
+    """
+    obj = doc.addObject("Fem::FeaturePython", name)
+    from femobjects import mesh_distance
+
+    mesh_distance.MeshDistance(obj)
+
+    tmplist = base_mesh.MeshRefinementList
+    tmplist.append(obj)
+    base_mesh.MeshRefinementList = tmplist
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_mesh_distance
+
+        view_mesh_distance.VPMeshDistance(obj.ViewObject)
+    return obj
+
+
+def makeMeshManipulate(doc, base_mesh, name="Manipulate"):
+    """makeMeshManipulate(document, base_mesh, [name]):
+    creates a FEM mesh refinement object to manipulate the output of refinements
+    """
+    obj = doc.addObject("Fem::FeaturePython", name)
+    from femobjects import mesh_manipulate
+
+    mesh_manipulate.MeshManipulate(obj)
+
+    tmplist = base_mesh.MeshRefinementList
+    tmplist.append(obj)
+    base_mesh.MeshRefinementList = tmplist
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_mesh_manipulate
+
+        view_mesh_manipulate.VPMeshManipulate(obj.ViewObject)
+
+    return obj
+
+
+def makeMeshAdvanced(doc, base_mesh, name="Advanced"):
+    """makeMeshAdvanced(document, base_mesh, [name]):
+    creates a FEM mesh refinement with various advanced methods
+    """
+    obj = doc.addObject("Fem::FeaturePython", name)
+    from femobjects import mesh_advanced
+
+    mesh_advanced.MeshAdvanced(obj)
+
+    tmplist = base_mesh.MeshRefinementList
+    tmplist.append(obj)
+    base_mesh.MeshRefinementList = tmplist
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_mesh_advanced
+
+        view_mesh_advanced.VPMeshAdvanced(obj.ViewObject)
+    return obj
+
+
+def makeMeshShape(doc, base_mesh, name="Shape"):
+    """makeMeshShape(document, base_mesh [name]):
+    creates a FEM mesh refinement object to define properties for a refinement of a FEM mesh
+    """
+    obj = doc.addObject("Fem::FeaturePython", name)
+    from femobjects import mesh_shape
+
+    mesh_shape.MeshShape(obj)
+
+    tmplist = base_mesh.MeshRefinementList
+    tmplist.append(obj)
+    base_mesh.MeshRefinementList = tmplist
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_mesh_shape
+
+        view_mesh_shape.VPMeshShape(obj.ViewObject)
+    return obj
+
+
+def makeMeshTransfiniteCurve(doc, base_mesh, name="TransfiniteCurve"):
+    """makeMeshTransfiniteCurve(document, base_mesh, [name]):
+    creates a FEM mesh refinement for transfinite curves
+    """
+    obj = doc.addObject("Fem::FeaturePython", name)
+    from femobjects import mesh_tfcurve
+
+    mesh_tfcurve.MeshTransfiniteCurve(obj)
+
+    tmplist = base_mesh.MeshRefinementList
+    tmplist.append(obj)
+    base_mesh.MeshRefinementList = tmplist
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_mesh_tfcurve
+
+        view_mesh_tfcurve.VPMeshTransfiniteCurve(obj.ViewObject)
+
+    return obj
+
+
+def makeMeshTransfiniteSurface(doc, base_mesh, name="TransfiniteSurface"):
+    """makeMeshTransfiniteSurface(document, base_mesh, [name]):
+    creates a FEM mesh refinement for transfinite surfaces
+    """
+    obj = doc.addObject("Fem::FeaturePython", name)
+    from femobjects import mesh_tfsurface
+
+    mesh_tfsurface.MeshTransfiniteSurface(obj)
+
+    tmplist = base_mesh.MeshRefinementList
+    tmplist.append(obj)
+    base_mesh.MeshRefinementList = tmplist
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_mesh_tfsurface
+
+        view_mesh_tfsurface.VPMeshTransfiniteSurface(obj.ViewObject)
+
+    return obj
+
+
+def makeMeshTransfiniteVolume(doc, base_mesh, name="TransfiniteVolume"):
+    """makeMeshTransfiniteVolume(document, base_mesh, [name]):
+    creates a FEM mesh refinement for transfinite volumes
+    """
+    obj = doc.addObject("Fem::FeaturePython", name)
+    from femobjects import mesh_tfvolume
+
+    mesh_tfvolume.MeshTransfiniteVolume(obj)
+
+    tmplist = base_mesh.MeshRefinementList
+    tmplist.append(obj)
+    base_mesh.MeshRefinementList = tmplist
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_mesh_tfvolume
+
+        view_mesh_tfvolume.VPMeshTransfiniteVolume(obj.ViewObject)
+
     return obj
 
 
@@ -822,15 +958,20 @@ def makePostTableIndexOverFrames(doc, name="IndexOverFrames1D"):
 
 
 # ********* solver objects ***********************************************************************
+def _equation_creator(creator, base_solver, doc, name):
+    eq = creator.create(doc, name)
+    if base_solver:
+        eq.Priority = 255 - len(base_solver.Group)
+        base_solver.addObject(eq)
+    return eq
+
+
 def makeEquationDeformation(doc, base_solver=None, name="Deformation"):
     """makeEquationDeformation(document, [base_solver], [name]):
     creates a FEM deformation (nonlinear elasticity) equation for a solver"""
     from femsolver.elmer.equations import deformation
 
-    obj = deformation.create(doc, name)
-    if base_solver:
-        base_solver.addObject(obj)
-    return obj
+    return _equation_creator(deformation, base_solver, doc, name)
 
 
 def makeEquationElasticity(doc, base_solver=None, name="Elasticity"):
@@ -838,10 +979,7 @@ def makeEquationElasticity(doc, base_solver=None, name="Elasticity"):
     creates a FEM elasticity equation for a solver"""
     from femsolver.elmer.equations import elasticity
 
-    obj = elasticity.create(doc, name)
-    if base_solver:
-        base_solver.addObject(obj)
-    return obj
+    return _equation_creator(elasticity, base_solver, doc, name)
 
 
 def makeEquationElectricforce(doc, base_solver=None, name="Electricforce"):
@@ -849,10 +987,7 @@ def makeEquationElectricforce(doc, base_solver=None, name="Electricforce"):
     creates a FEM Electricforce equation for a solver"""
     from femsolver.elmer.equations import electricforce
 
-    obj = electricforce.create(doc, name)
-    if base_solver:
-        base_solver.addObject(obj)
-    return obj
+    return _equation_creator(electricforce, base_solver, doc, name)
 
 
 def makeEquationElectrostatic(doc, base_solver=None, name="Electrostatic"):
@@ -860,10 +995,7 @@ def makeEquationElectrostatic(doc, base_solver=None, name="Electrostatic"):
     creates a FEM electrostatic equation for a solver"""
     from femsolver.elmer.equations import electrostatic
 
-    obj = electrostatic.create(doc, name)
-    if base_solver:
-        base_solver.addObject(obj)
-    return obj
+    return _equation_creator(electrostatic, base_solver, doc, name)
 
 
 def makeEquationFlow(doc, base_solver=None, name="Flow"):
@@ -871,10 +1003,7 @@ def makeEquationFlow(doc, base_solver=None, name="Flow"):
     creates a FEM flow equation for a solver"""
     from femsolver.elmer.equations import flow
 
-    obj = flow.create(doc, name)
-    if base_solver:
-        base_solver.addObject(obj)
-    return obj
+    return _equation_creator(flow, base_solver, doc, name)
 
 
 def makeEquationFlux(doc, base_solver=None, name="Flux"):
@@ -882,10 +1011,7 @@ def makeEquationFlux(doc, base_solver=None, name="Flux"):
     creates a FEM flux equation for a solver"""
     from femsolver.elmer.equations import flux
 
-    obj = flux.create(doc, name)
-    if base_solver:
-        base_solver.addObject(obj)
-    return obj
+    return _equation_creator(flux, base_solver, doc, name)
 
 
 def makeEquationHeat(doc, base_solver=None, name="Heat"):
@@ -893,10 +1019,7 @@ def makeEquationHeat(doc, base_solver=None, name="Heat"):
     creates a FEM heat equation for a solver"""
     from femsolver.elmer.equations import heat
 
-    obj = heat.create(doc, name)
-    if base_solver:
-        base_solver.addObject(obj)
-    return obj
+    return _equation_creator(heat, base_solver, doc, name)
 
 
 def makeEquationMagnetodynamic(doc, base_solver=None, name="Magnetodynamic"):
@@ -904,10 +1027,7 @@ def makeEquationMagnetodynamic(doc, base_solver=None, name="Magnetodynamic"):
     creates a FEM magnetodynamic equation for a solver"""
     from femsolver.elmer.equations import magnetodynamic
 
-    obj = magnetodynamic.create(doc, name)
-    if base_solver:
-        base_solver.addObject(obj)
-    return obj
+    return _equation_creator(magnetodynamic, base_solver, doc, name)
 
 
 def makeEquationMagnetodynamic2D(doc, base_solver=None, name="Magnetodynamic2D"):
@@ -915,10 +1035,7 @@ def makeEquationMagnetodynamic2D(doc, base_solver=None, name="Magnetodynamic2D")
     creates a FEM magnetodynamic2D equation for a solver"""
     from femsolver.elmer.equations import magnetodynamic2D
 
-    obj = magnetodynamic2D.create(doc, name)
-    if base_solver:
-        base_solver.addObject(obj)
-    return obj
+    return _equation_creator(magnetodynamic2D, base_solver, doc, name)
 
 
 def makeEquationStaticCurrent(doc, base_solver=None, name="StaticCurrent"):
@@ -926,10 +1043,7 @@ def makeEquationStaticCurrent(doc, base_solver=None, name="StaticCurrent"):
     creates a FEM static current equation for a solver"""
     from femsolver.elmer.equations import staticcurrent
 
-    obj = staticcurrent.create(doc, name)
-    if base_solver:
-        base_solver.addObject(obj)
-    return obj
+    return _equation_creator(staticcurrent, base_solver, doc, name)
 
 
 def makeSolverCalculiXCcxTools(doc, name="SolverCcxTools"):
@@ -963,9 +1077,15 @@ def makeSolverCalculiX(doc, name="SolverCalculiX"):
 def makeSolverElmer(doc, name="SolverElmer"):
     """makeSolverElmer(document, [name]):
     makes a Elmer solver object"""
-    import femsolver.elmer.solver
+    obj = doc.addObject("Fem::FemSolverObjectPython", name)
+    from femobjects import solver_elmer
 
-    obj = femsolver.elmer.solver.create(doc, name)
+    solver_elmer.SolverElmer(obj)
+    obj.SimulationType = "Steady State"
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_solver_elmer
+
+        view_solver_elmer.VPSolverElmer(obj.ViewObject)
     return obj
 
 
@@ -981,9 +1101,22 @@ def makeSolverMystran(doc, name="SolverMystran"):
 def makeSolverZ88(doc, name="SolverZ88"):
     """makeSolverZ88(document, [name]):
     makes a Z88 solver object"""
-    import femsolver.z88.solver
+    obj = doc.addObject("Fem::FemSolverObjectPython", name)
+    from femobjects import solver_z88
 
-    obj = femsolver.z88.solver.create(doc, name)
+    solver_z88.SolverZ88(obj)
+
+    # some default values
+    obj.IntegrationOrderHexa = "3"
+    obj.IntegrationOrderQuad = "3"
+    obj.IntegrationOrderTetra = "4"
+    obj.IntegrationOrderTria = "7"
+    obj.ShellFlag = 3
+
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_solver_z88
+
+        view_solver_z88.VPSolverZ88(obj.ViewObject)
     return obj
 
 

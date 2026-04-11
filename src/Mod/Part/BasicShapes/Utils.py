@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2023 Werner Mayer <wmayer[at]users.sourceforge.net>     *
@@ -28,7 +30,8 @@ __doc__ = "Utilities for shapes"
 
 import Part
 
-def makeCompoundFromPoints(geometry, distance = 1.0):
+
+def makeCompoundFromPoints(geometry, distance=1.0):
     """Get sampled points from geometry and create a compound."""
     try:
         points = geometry.getPropertyOfGeometry().getPoints(distance)[0]
@@ -36,7 +39,8 @@ def makeCompoundFromPoints(geometry, distance = 1.0):
     except AttributeError:
         return None
 
-def showCompoundFromPoints(geometry, distance = 1.0):
+
+def showCompoundFromPoints(geometry, distance=1.0):
     """Create a compound from geometry and show it."""
     try:
         compound = makeCompoundFromPoints(geometry, distance)

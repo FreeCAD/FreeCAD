@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2024 Shai Seger <shaise at gmail>                       *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __texture_h__
-#define __texture_h__
+#pragma once
 #include "OpenGlWrapper.h"
 
 namespace MillSim
@@ -57,5 +58,3 @@ protected:
 
 
 }  // namespace MillSim
-
-#endif  // !__texture_h__

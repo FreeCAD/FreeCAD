@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_DLGIMPORTSTEP_H
-#define PARTGUI_DLGIMPORTSTEP_H
+#pragma once
 
 #include <Mod/Part/PartGlobal.h>
 #include <Gui/PropertyPage.h>
@@ -31,7 +32,8 @@
 class QButtonGroup;
 class QCheckBox;
 
-namespace PartGui {
+namespace PartGui
+{
 
 struct StepImportSettings
 {
@@ -47,7 +49,7 @@ struct StepImportSettings
 };
 
 class Ui_DlgImportStep;
-class DlgImportStep : public Gui::Dialog::PreferencePage
+class DlgImportStep: public Gui::Dialog::PreferencePage
 {
     Q_OBJECT
 
@@ -61,7 +63,7 @@ public:
     StepImportSettings getSettings() const;
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
 private:
     std::unique_ptr<Ui_DlgImportStep> ui;
@@ -69,7 +71,7 @@ private:
 
 // ----------------------------------------------------------------------------
 
-class PartGuiExport TaskImportStep : public QDialog
+class PartGuiExport TaskImportStep: public QDialog
 {
     Q_OBJECT
 
@@ -86,6 +88,4 @@ private:
     std::unique_ptr<DlgImportStep> ui;
 };
 
-} // namespace PartGui
-
-#endif // PARTGUI_DLGIMPORTSTEP_H
+}  // namespace PartGui

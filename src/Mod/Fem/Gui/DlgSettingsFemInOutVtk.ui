@@ -111,7 +111,7 @@ exported from FreeCAD.</string>
          <cstring>Mod/Fem/InOutVtk</cstring>
         </property>
         <property name="prefType" stdset="0">
-         <string></string>
+         <cstring></cstring>
         </property>
        </widget>
       </item>

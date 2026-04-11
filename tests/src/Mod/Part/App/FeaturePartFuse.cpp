@@ -240,12 +240,12 @@ TEST_F(FeaturePartFuseTest, testRefine)
     // Arrange
     _fuse->Base.setValue(_boxes[0]);
     _fuse->Tool.setValue(_boxes[1]);
-
+    _fuse->Refine.setValue(false);
     // Act
     _fuse->execute();
     Part::TopoShape ts = _fuse->Shape.getValue();
-    std::vector<Part::TopoShape> subs =
-        ts.getSubTopoShapes(TopAbs_FACE);  // TopAbs_WIRE alternate approach
+    std::vector<Part::TopoShape> subs = ts.getSubTopoShapes(TopAbs_FACE);  // TopAbs_WIRE alternate
+                                                                           // approach
     // Assert two boxes, plus redundant faces at the joint.
     EXPECT_EQ(subs.size(), 14);
     // 14 Faces

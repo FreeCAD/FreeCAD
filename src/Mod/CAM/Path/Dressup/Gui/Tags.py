@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -29,7 +30,7 @@ import Path
 import Path.Base.Gui.GetPoint as PathGetPoint
 import Path.Dressup.Tags as PathDressupTag
 import PathScripts.PathUtils as PathUtils
-
+import Path.Dressup.Utils as PathDressup
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -529,6 +530,12 @@ class PathDressupTagViewProvider:
             self.panel.selectTagWithId(i)
         FreeCADGui.updateGui()
 
+    def getIcon(self):
+        if getattr(PathDressup.baseOp(self.obj), "Active", True):
+            return ":/icons/CAM_Dressup.svg"
+        else:
+            return ":/icons/CAM_OpActive.svg"
+
 
 def Create(baseObject, name="DressupTag"):
     """
@@ -549,31 +556,23 @@ class CommandPathDressupTag:
             "Pixmap": "CAM_Dressup",
             "MenuText": QT_TRANSLATE_NOOP("CAM_DressupTag", "Tag"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "CAM_DressupTag", "Creates a Tag Dress-up object from a selected toolpath"
+                "CAM_DressupTag", "Creates a tag dress-up object from a selected toolpath"
             ),
         }
 
     def IsActive(self):
-        if FreeCAD.ActiveDocument is not None:
-            for o in FreeCAD.ActiveDocument.Objects:
-                if o.Name[:3] == "Job":
-                    return True
-        return False
+        return bool(PathDressup.selection())
 
     def Activated(self):
         # check that the selection contains exactly what we want
-        selection = FreeCADGui.Selection.getSelection()
-        if len(selection) != 1:
-            Path.Log.error(translate("CAM_DressupTag", "Please select one toolpath object") + "\n")
+        op = PathDressup.selection(verbose=True)
+        if not op:
             return
-        baseObject = selection[0]
 
         # everything ok!
         FreeCAD.ActiveDocument.openTransaction("Create Tag Dress-up")
         FreeCADGui.addModule("Path.Dressup.Gui.Tags")
-        FreeCADGui.doCommand(
-            "Path.Dressup.Gui.Tags.Create(App.ActiveDocument.%s)" % baseObject.Name
-        )
+        FreeCADGui.doCommand("Path.Dressup.Gui.Tags.Create(App.ActiveDocument.%s)" % op.Name)
         # FreeCAD.ActiveDocument.commitTransaction()  # Final `commitTransaction()` called via TaskPanel.accept()
         FreeCAD.ActiveDocument.recompute()
 

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2016 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SRC_APP_EXTENSIONCONTAINER_H_
-#define SRC_APP_EXTENSIONCONTAINER_H_
+#pragma once
 
 #include <vector>
 #include <string>
@@ -350,5 +351,3 @@ private:
     PROPERTY_SOURCE_ABSTRACT(_class_, _parentclass_)
 
 }  // namespace App
-
-#endif  // SRC_APP_EXTENSIONCONTAINER_H_

@@ -22,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Mod/TechDraw/App/Preferences.h>
 #include "DlgPrefsTechDrawAdvancedImp.h"

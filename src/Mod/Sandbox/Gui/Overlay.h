@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Werner Mayer <wmayer@users.sourceforge.net>        *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SANDBOXGUI_OVERLAY_H
-#define SANDBOXGUI_OVERLAY_H
+#pragma once
 
 #include <Gui/MouseSelection.h>
 #include <QColor>
@@ -58,5 +59,3 @@ private:
 };
 
 } // SandboxGui
-
-#endif // SANDBOXGUI_OVERLAY_H

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2005 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,13 +22,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_WORKBENCH_H
-#define MESH_WORKBENCH_H
+#pragma once
 
 #include <Gui/Workbench.h>
-#ifndef MESH_GLOBAL_H
 #include <Mod/Mesh/MeshGlobal.h>
-#endif
 
 
 namespace MeshGui
@@ -53,6 +52,3 @@ protected:
 };
 
 }  // namespace MeshGui
-
-
-#endif  // MESH_WORKBENCH_H

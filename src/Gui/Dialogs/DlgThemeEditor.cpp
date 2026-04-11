@@ -21,8 +21,6 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
 #include "Tools.h"
 #include "Application.h"
 #include "OverlayManager.h"
@@ -30,28 +28,27 @@
 #include "ui_DlgThemeEditor.h"
 #include "BitmapFactory.h"
 
+#include <Utilities.h>
 #include <Base/ServiceProvider.h>
 #include <Base/Tools.h>
 
-#ifndef _PreComp_
-# include <ranges>
-# include <QImageReader>
-# include <QPainter>
-# include <QStyledItemDelegate>
-# include <QTimer>
-#endif
+#include <ranges>
+#include <QImageReader>
+#include <QPainter>
+#include <QStyledItemDelegate>
+#include <QTimer>
 
 QPixmap colorPreview(const QColor& color)
 {
     constexpr qsizetype size = 16;
 
-    QPixmap preview = Gui::BitmapFactory().empty({ size, size });
+    QPixmap preview = Gui::BitmapFactory().empty({size, size});
 
     QPainter painter(&preview);
     painter.setRenderHint(QPainter::Antialiasing);
     painter.setPen(Qt::NoPen);
     painter.setBrush(color);
-    painter.drawEllipse(QRect { 0, 0, size, size });
+    painter.drawEllipse(QRect {0, 0, size, size});
 
     return preview;
 }
@@ -64,11 +61,14 @@ QString typeOfTokenValue(const Gui::StyleParameters::Value& value)
             [](const std::string&) {
                 return QWidget::tr("Generic");
             },
-            [](const Gui::StyleParameters::Length&) {
-                return QWidget::tr("Length");
+            [](const Gui::StyleParameters::Numeric&) {
+                return QWidget::tr("Numeric");
             },
-            [](const QColor&) {
+            [](const Base::Color&) {
                 return QWidget::tr("Color");
+            },
+            [](const Gui::StyleParameters::Tuple&) {
+                return QWidget::tr("Tuple");
             }
         },
         value
@@ -207,7 +207,7 @@ class DlgThemeEditor::Delegate: public QStyledItemDelegate
 {
     Q_OBJECT
 
-    QRegularExpression validNameRegExp { QStringLiteral("^[A-Z][a-zA-Z0-9]*$") };
+    QRegularExpression validNameRegExp {QStringLiteral("^[A-Z][a-zA-Z0-9]*$")};
     QRegularExpressionValidator* nameValidator;
 
 public:
@@ -216,9 +216,11 @@ public:
         , nameValidator(new QRegularExpressionValidator(validNameRegExp, this))
     {}
 
-    QWidget* createEditor(QWidget* parent,
-                          [[maybe_unused]] const QStyleOptionViewItem& option,
-                          const QModelIndex& index) const override
+    QWidget* createEditor(
+        QWidget* parent,
+        [[maybe_unused]] const QStyleOptionViewItem& option,
+        const QModelIndex& index
+    ) const override
     {
         auto model = dynamic_cast<const StyleParametersModel*>(index.model());
         if (!model) {
@@ -246,18 +248,18 @@ public:
         }
     }
 
-    void setModelData(QWidget* editor,
-                      QAbstractItemModel* model,
-                      const QModelIndex& index) const override
+    void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const override
     {
         if (auto* lineEdit = qobject_cast<QLineEdit*>(editor)) {
             model->setData(index, lineEdit->text(), Qt::EditRole);
         }
     }
 
-    void updateEditorGeometry(QWidget* editor,
-                              const QStyleOptionViewItem& option,
-                              [[maybe_unused]] const QModelIndex& index) const override
+    void updateEditorGeometry(
+        QWidget* editor,
+        const QStyleOptionViewItem& option,
+        [[maybe_unused]] const QModelIndex& index
+    ) const override
     {
         editor->setGeometry(option.rect);
     }
@@ -282,9 +284,7 @@ public:
         painter->drawText(rect, Qt::AlignLeft | Qt::AlignVCenter, tr("New parameter..."));
     }
 
-    void paint(QPainter* painter,
-               const QStyleOptionViewItem& option,
-               const QModelIndex& index) const override
+    void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override
     {
         auto model = dynamic_cast<const StyleParametersModel*>(index.model());
 
@@ -305,9 +305,8 @@ public:
 
             const QColor headerBackgroundColor = QtTools::valueOr(
                 option.widget->property("headerBackgroundColor"),
-                isLightTheme
-                    ? option.palette.color(QPalette::AlternateBase).darker(headerContrast)
-                    : option.palette.color(QPalette::AlternateBase).lighter(headerContrast)
+                isLightTheme ? option.palette.color(QPalette::AlternateBase).darker(headerContrast)
+                             : option.palette.color(QPalette::AlternateBase).lighter(headerContrast)
             );
 
             painter->fillRect(option.rect, headerBackgroundColor);
@@ -323,11 +322,13 @@ public:
 
 void TokenTreeView::keyPressEvent(QKeyEvent* event)
 {
-    static constexpr auto expressionEditKeys = { Qt::Key_Return, Qt::Key_Enter, Qt::Key_Space };
-    static constexpr auto nameEditKeys = { Qt::Key_F2 };
-    static constexpr auto deleteKeys = { Qt::Key_Delete };
+    static constexpr auto expressionEditKeys = {Qt::Key_Return, Qt::Key_Enter, Qt::Key_Space};
+    static constexpr auto nameEditKeys = {Qt::Key_F2};
+    static constexpr auto deleteKeys = {Qt::Key_Delete};
 
-    const auto isCorrectKey = [&event](auto key) { return event->key() == key; };
+    const auto isCorrectKey = [&event](auto key) {
+        return event->key() == key;
+    };
 
     if (QModelIndex index = currentIndex(); index.isValid()) {
         if (std::ranges::any_of(expressionEditKeys, isCorrectKey)) {
@@ -351,9 +352,10 @@ void TokenTreeView::keyPressEvent(QKeyEvent* event)
 
 StyleParametersModel::StyleParametersModel(
     const std::list<StyleParameters::ParameterSource*>& sources,
-    QObject* parent)
+    QObject* parent
+)
     : QAbstractItemModel(parent)
-    , ParameterSource({ .name = QT_TR_NOOP("All Theme Editor Parameters") })
+    , ParameterSource({.name = QT_TR_NOOP("All Theme Editor Parameters")})
     , sources(sources)
     , manager(new StyleParameters::ParameterManager())
 {
@@ -427,11 +429,13 @@ void StyleParametersModel::reset()
 
     for (auto* source : sources) {
         auto groupNode = std::make_unique<Node>(
-            std::make_unique<GroupItem>(tr(source->metadata.name.c_str()), source));
+            std::make_unique<GroupItem>(tr(source->metadata.name.c_str()), source)
+        );
 
         for (const auto& parameter : source->all()) {
             auto item = std::make_unique<Node>(
-                std::make_unique<ParameterItem>(QString::fromStdString(parameter.name), parameter));
+                std::make_unique<ParameterItem>(QString::fromStdString(parameter.name), parameter)
+            );
 
             if (source->metadata.options.testFlag(ReadOnly)) {
                 item->data<ParameterItem>()->flags = Qt::ItemIsEnabled | Qt::ItemIsSelectable;
@@ -463,6 +467,10 @@ void StyleParametersModel::flush()
             groupItem->source->define(parameterItem->token);
         }
     });
+
+    for (auto* source : sources) {
+        source->flush();
+    }
 
     reset();
 }
@@ -513,6 +521,10 @@ QVariant StyleParametersModel::data(const QModelIndex& index, int role) const
         const auto& [name, token, _] = *parameterItem;
         const auto& value = manager->resolve(name.toStdString());
 
+        if (!value) {
+            return {};
+        }
+
         if (role == Qt::DisplayRole) {
             if (index.column() == ParameterName) {
                 return name;
@@ -521,16 +533,16 @@ QVariant StyleParametersModel::data(const QModelIndex& index, int role) const
                 return QString::fromStdString(token.value);
             }
             if (index.column() == ParameterType) {
-                return typeOfTokenValue(value);
+                return typeOfTokenValue(*value);
             }
             if (index.column() == ParameterPreview) {
-                return QString::fromStdString(value.toString());
+                return QString::fromStdString(value->toString());
             }
         }
 
         if (role == Qt::DecorationRole) {
-            if (index.column() == ParameterPreview && std::holds_alternative<QColor>(value)) {
-                return colorPreview(std::get<QColor>(value));
+            if (index.column() == ParameterPreview && std::holds_alternative<Base::Color>(*value)) {
+                return colorPreview(std::get<Base::Color>(*value).asValue<QColor>());
             }
         }
     }
@@ -544,9 +556,11 @@ QVariant StyleParametersModel::data(const QModelIndex& index, int role) const
     return {};
 }
 
-bool StyleParametersModel::setData(const QModelIndex& index,
-                                   const QVariant& value,
-                                   [[maybe_unused]] int role)
+bool StyleParametersModel::setData(
+    const QModelIndex& index,
+    const QVariant& value,
+    [[maybe_unused]] int role
+)
 {
     if (auto parameterItem = item<ParameterItem>(index)) {
         auto groupItem = item<GroupItem>(index.parent());
@@ -582,20 +596,17 @@ bool StyleParametersModel::setData(const QModelIndex& index,
                 return false;
             }
 
-            StyleParameters::Parameter token { .name = newName.toStdString(), .value = "" };
+            StyleParameters::Parameter token {.name = newName.toStdString(), .value = ""};
 
             int start = rowCount(index.parent());
 
             beginInsertRows(index.parent(), start, start + 1);
-            auto item = std::make_unique<Node>(
-                std::make_unique<ParameterItem>(newName, token));
+            auto item = std::make_unique<Node>(std::make_unique<ParameterItem>(newName, token));
             node(index.parent())->appendChild(std::move(item));
             endInsertRows();
 
             // this must be queued to basically next frame so widget has a chance to update
-            QTimer::singleShot(0, [this, index]() {
-                this->newParameterAdded(index);
-            });
+            QTimer::singleShot(0, [this, index]() { this->newParameterAdded(index); });
         }
     }
 
@@ -674,9 +685,12 @@ StyleParametersModel::Item* StyleParametersModel::item(const QModelIndex& index)
 DlgThemeEditor::DlgThemeEditor(QWidget* parent)
     : QDialog(parent)
     , ui(new Ui::DlgThemeEditor)
-    , model(std::make_unique<StyleParametersModel>(
-          Base::provideServiceImplementations<StyleParameters::ParameterSource>(),
-          this))
+    , model(
+          std::make_unique<StyleParametersModel>(
+              Base::provideServiceImplementations<StyleParameters::ParameterSource>(),
+              this
+          )
+      )
 {
     ui->setupUi(this);
 
@@ -717,25 +731,25 @@ DlgThemeEditor::DlgThemeEditor(QWidget* parent)
 
     connect(ui->buttonBox, &QDialogButtonBox::clicked, this, &DlgThemeEditor::handleButtonClick);
 
-    connect(ui->tokensTreeView,
-            &TokenTreeView::requestRemove,
-            model.get(),
-            qOverload<const QModelIndex&>(&StyleParametersModel::removeItem));
+    connect(
+        ui->tokensTreeView,
+        &TokenTreeView::requestRemove,
+        model.get(),
+        qOverload<const QModelIndex&>(&StyleParametersModel::removeItem)
+    );
 
     connect(model.get(), &StyleParametersModel::modelReset, ui->tokensTreeView, [this] {
         ui->tokensTreeView->expandAll();
     });
-    connect(model.get(),
-            &StyleParametersModel::newParameterAdded,
-            this,
-            [this](const QModelIndex& index) {
-                const auto newParameterExpressionIndex =
-                    index.siblingAtColumn(StyleParametersModel::ParameterExpression);
+    connect(model.get(), &StyleParametersModel::newParameterAdded, this, [this](const QModelIndex& index) {
+        const auto newParameterExpressionIndex = index.siblingAtColumn(
+            StyleParametersModel::ParameterExpression
+        );
 
-                ui->tokensTreeView->scrollTo(newParameterExpressionIndex);
-                ui->tokensTreeView->setCurrentIndex(newParameterExpressionIndex);
-                ui->tokensTreeView->edit(newParameterExpressionIndex);
-            });
+        ui->tokensTreeView->scrollTo(newParameterExpressionIndex);
+        ui->tokensTreeView->setCurrentIndex(newParameterExpressionIndex);
+        ui->tokensTreeView->edit(newParameterExpressionIndex);
+    });
 }
 
 DlgThemeEditor::~DlgThemeEditor() = default;

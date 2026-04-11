@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEM_VIEWPROVIDERFEMPOSTBRANCHFILTER_H
-#define FEM_VIEWPROVIDERFEMPOSTBRANCHFILTER_H
+#pragma once
 
 #include "ViewProviderFemPostObject.h"
 #include <Gui/ViewProviderGroupExtension.h>
@@ -52,8 +51,7 @@ protected:
 
     // change default group drag/drop behaviour slightly
     bool acceptReorderingObjects() const override;
-    bool canDragObjectToTarget(App::DocumentObject* obj,
-                               App::DocumentObject* target) const override;
+    bool canDragObjectToTarget(App::DocumentObject* obj, App::DocumentObject* target) const override;
 
     // override, to not show/hide children as the parent is shown/hidden like normal groups
     void extensionHide() override {};
@@ -61,6 +59,3 @@ protected:
 };
 
 }  // namespace FemGui
-
-
-#endif  // FEM_VIEWPROVIDERFEMPOSTBRANCHFILTER_H

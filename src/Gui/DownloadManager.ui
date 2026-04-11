@@ -31,7 +31,7 @@
         <bool>false</bool>
        </property>
        <property name="text">
-        <string>Clean up</string>
+        <string>Clean Up</string>
        </property>
       </widget>
      </item>

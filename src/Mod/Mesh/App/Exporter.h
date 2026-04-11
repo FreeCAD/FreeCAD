@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2017 Ian Rees <ian.rees@gmail.com>                      *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_EXPORTER_H
-#define MESH_EXPORTER_H
+#pragma once
 
 #include <map>
 #include <ostream>
@@ -67,8 +68,6 @@ public:
     Exporter& operator=(Exporter&&) = delete;
 
 protected:
-    /// Does some simple escaping of characters for XML-type exports
-    static std::string xmlEscape(const std::string& input);
     void throwIfNoPermission(const std::string&);
 
     std::map<const App::DocumentObject*, std::vector<std::string>> subObjectNameCache;
@@ -242,9 +241,11 @@ public:
     /*!
      * meta information passed in is applied at the <amf> tag level
      */
-    ExporterAMF(std::string fileName,
-                const std::map<std::string, std::string>& meta,
-                bool compress = true);
+    ExporterAMF(
+        std::string fileName,
+        const std::map<std::string, std::string>& meta,
+        bool compress = true
+    );
 
     /// Writes AMF footer
     ~ExporterAMF() override;
@@ -269,5 +270,3 @@ private:
 };  // class ExporterAMF
 
 }  // namespace Mesh
-
-#endif  // MESH_EXPORTER_H

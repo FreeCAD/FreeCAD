@@ -21,19 +21,20 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef GUI_CAMERA_H
-#define GUI_CAMERA_H
+#pragma once
 
 #include <Inventor/SbRotation.h>
 #include <Base/Rotation.h>
 #include <FCGlobal.h>
 
-namespace Gui {
+namespace Gui
+{
 
 class GuiExport Camera
 {
 public:
-    enum Orientation {
+    enum Orientation
+    {
         Top,
         Bottom,
         Front,
@@ -61,6 +62,4 @@ public:
     static SbRotation convert(const Base::Rotation&);
 };
 
-}
-
-#endif // GUI_CAMERA_H
+}  // namespace Gui

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 if(BUILD_ASSEMBLY)
   add_subdirectory(Assembly)
 endif(BUILD_ASSEMBLY)
@@ -31,3 +33,6 @@ endif()
 if(BUILD_START)
     add_subdirectory(Start)
 endif()
+if(BUILD_TECHDRAW)
+    add_subdirectory(TechDraw)
+endif(BUILD_TECHDRAW)

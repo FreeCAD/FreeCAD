@@ -21,12 +21,10 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <BRep_Tool.hxx>
 #include <TopoDS_Edge.hxx>
-#endif
+
 
 #include "TopoShapeMapper.h"
 #include "Geometry.h"
@@ -50,18 +48,18 @@ void ShapeMapper::expand(const TopoDS_Shape& d, std::vector<TopoDS_Shape>& shape
     }
 }
 
-void ShapeMapper::populate(MappingStatus status,
-                           const TopTools_ListOfShape& src,
-                           const TopTools_ListOfShape& dst)
+void ShapeMapper::populate(
+    MappingStatus status,
+    const TopTools_ListOfShape& src,
+    const TopTools_ListOfShape& dst
+)
 {
     for (TopTools_ListIteratorOfListOfShape it(src); it.More(); it.Next()) {
         populate(status, it.Value(), dst);
     }
 }
 
-void ShapeMapper::populate(MappingStatus status,
-                           const TopoShape& src,
-                           const TopTools_ListOfShape& dst)
+void ShapeMapper::populate(MappingStatus status, const TopoShape& src, const TopTools_ListOfShape& dst)
 {
     if (src.isNull()) {
         return;
@@ -100,9 +98,7 @@ void ShapeMapper::insert(MappingStatus status, const TopoDS_Shape& s, const Topo
     }
 };
 
-void ShapeMapper::insert(MappingStatus status,
-                         const TopoDS_Shape& s,
-                         const std::vector<TopoDS_Shape>& d)
+void ShapeMapper::insert(MappingStatus status, const TopoDS_Shape& s, const std::vector<TopoDS_Shape>& d)
 {
     if (s.IsNull() || d.empty()) {
         return;
@@ -160,8 +156,8 @@ void GenericShapeMapper::init(const TopoShape& src, const TopoDS_Shape& dst)
             TopoDS_Edge e = TopoDS::Edge(it.Current());
             if (BRep_Tool::IsClosed(e)) {
                 // closed edge, one face is enough
-                TopoDS_Shape face =
-                    src.findAncestorShape(src.getSubShape(TopAbs_EDGE, idx), TopAbs_FACE);
+                TopoDS_Shape face
+                    = src.findAncestorShape(src.getSubShape(TopAbs_EDGE, idx), TopAbs_FACE);
                 if (!face.IsNull()) {
                     this->insert(MappingStatus::Generated, face, dstFace);
                     found = true;

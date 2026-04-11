@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 
 include_directories(
     ${CMAKE_SOURCE_DIR}/src
@@ -15,7 +16,6 @@ SET(CloudGui_SRCS
     ${Cloud_QRC_SRCS}
     AppCloudGui.cpp
     Command.cpp
-    PreCompiled.cpp
     PreCompiled.h
     Workbench.cpp
     Workbench.h
@@ -27,6 +27,12 @@ SET(Cloud_SVG
 
 add_library(CloudGui SHARED ${CloudGui_SRCS} ${Cloud_SVG})
 target_link_libraries(CloudGui ${CloudGui_LIBS})
+
+if(FREECAD_USE_PCH)
+    target_precompile_headers(CloudGui PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
+endif(FREECAD_USE_PCH)
 
 fc_copy_sources(CloudGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Cloud" ${Cloud_SVG})
 

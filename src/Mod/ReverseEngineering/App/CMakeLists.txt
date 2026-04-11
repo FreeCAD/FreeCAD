@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 if (PCL_SURFACE_FOUND AND PCL_FEATURES_FOUND)
     add_definitions(-DHAVE_PCL_SURFACE)
 
@@ -17,16 +19,6 @@ endif ()
 if (PCL_SAMPLE_CONSENSUS_FOUND)
     add_definitions(-DHAVE_PCL_SAMPLE_CONSENSUS)
 endif ()
-
-include_directories(
-    ${CMAKE_SOURCE_DIR}/src
-)
-
-include_directories(
-    SYSTEM
-    ${PCL_INCLUDE_DIRS}
-    ${FLANN_INCLUDE_DIRS}
-)
 
 set(Reen_LIBS
     Part
@@ -58,18 +50,36 @@ SET(Reen_SRCS
     Segmentation.h
     SurfaceTriangulation.cpp
     SurfaceTriangulation.h
-    PreCompiled.cpp
     PreCompiled.h
 )
 
+add_library(ReverseEngineering SHARED ${Reen_SRCS})
+
 if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${Reen_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(ReverseEngineering PreCompiled.h PreCompiled.cpp PCH_SRCS)
+    target_precompile_headers(ReverseEngineering PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
 endif(FREECAD_USE_PCH)
 
-add_library(ReverseEngineering SHARED ${Reen_SRCS})
+target_include_directories(
+    ReverseEngineering
+    PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+)
+
+target_include_directories(
+    ReverseEngineering
+    SYSTEM
+    PUBLIC
+    ${PCL_INCLUDE_DIRS}
+    ${FLANN_INCLUDE_DIRS}
+)
 target_link_libraries(ReverseEngineering ${Reen_LIBS})
+
+if (MSVC)
+    target_compile_options(ReverseEngineering PRIVATE /wd4275)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(ReverseEngineering)
 endif()

@@ -17,8 +17,7 @@
    <item>
     <widget class="QToolButton" name="buttonRefSel">
      <property name="toolTip">
-      <string>Click button to enter selection mode,
-click again to end selection</string>
+      <string>Toggles between selection and preview mode</string>
      </property>
      <property name="text">
       <string>Select</string>
@@ -77,7 +76,7 @@ click again to end selection</string>
      <item>
       <widget class="QToolButton" name="buttonPlane">
        <property name="text">
-        <string>Neutral plane</string>
+        <string>Neutral Plane</string>
        </property>
        <property name="checkable">
         <bool>true</bool>
@@ -94,7 +93,7 @@ click again to end selection</string>
      <item>
       <widget class="QToolButton" name="buttonLine">
        <property name="text">
-        <string>Pull direction</string>
+        <string>Pull Direction</string>
        </property>
        <property name="checkable">
         <bool>true</bool>

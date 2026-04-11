@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Werner Mayer <wmayer@users.sourceforge.net>        *
  *                                                                         *
@@ -21,27 +23,9 @@
  ***************************************************************************/
 
 
-#ifndef GUI_PRECOMPILED_H
-#define GUI_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
-
-// Importing of App classes
-#ifdef FC_OS_WIN32
-# define SandboxAppExport __declspec(dllimport)
-# define SandboxGuiExport __declspec(dllexport)
-# define MeshExport       __declspec(dllimport)
-# define PartExport       __declspec(dllimport)
-# define AppPartExport    __declspec(dllimport)
-#else // for Linux
-# define SandboxAppExport
-# define SandboxGuiExport
-# define MeshExport
-# define PartExport
-# define AppPartExport
-#endif
-
-#ifdef _PreComp_
 
 // standard
 #include <cstdio>
@@ -71,7 +55,3 @@
 #include <qapplication.h>
 #include <qmainwindow.h>
 #include <qworkspace.h>
-
-#endif  //_PreComp_
-
-#endif // GUI_PRECOMPILED_H 

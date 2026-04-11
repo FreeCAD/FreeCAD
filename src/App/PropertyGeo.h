@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_PROPERTYGEO_H
-#define APP_PROPERTYGEO_H
+#pragma once
 
 #include <Base/BoundBox.h>
 #include <Base/Matrix.h>
@@ -577,6 +578,3 @@ public:
 };
 
 }  // namespace App
-
-
-#endif  // APP_PROPERTYGEO_H

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2006 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,14 +22,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHGUI_PROPERTYEDITOR_MESH_H
-#define MESHGUI_PROPERTYEDITOR_MESH_H
+#pragma once
 
 #include <Gui/propertyeditor/PropertyItem.h>
-#ifndef MESH_GLOBAL_H
 #include <Mod/Mesh/MeshGlobal.h>
-#endif
-
 
 namespace MeshGui
 {
@@ -74,6 +72,3 @@ private:
 };
 
 }  // namespace MeshGui
-
-
-#endif  // MESHGUI_PROPERTYEDITOR_MESH_H

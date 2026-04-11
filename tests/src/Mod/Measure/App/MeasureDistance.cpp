@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 #include <src/App/InitApplication.h>
 #include <App/Document.h>
 #include <Mod/Measure/App/MeasureDistance.h>

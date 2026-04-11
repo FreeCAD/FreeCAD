@@ -1,4 +1,6 @@
-#**************************************************************************
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+# **************************************************************************
 #   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
 #                                                                         *
 #   This file is part of the FreeCAD CAx development system.              *
@@ -18,11 +20,11 @@
 #   License along with FreeCAD; if not, write to the Free Software        *
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 #   USA                                                                   *
-#**************************************************************************
+# **************************************************************************
 
-#---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # define the test cases to test the FreeCAD PartDesign module
-#---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 # datum tools
 from PartDesignTests.TestDatum import TestDatumPoint, TestDatumLine, TestDatumPlane

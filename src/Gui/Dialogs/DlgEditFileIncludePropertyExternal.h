@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -21,25 +23,30 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DlgEditFileIncludePropertyExternal_H
-#define GUI_DIALOG_DlgEditFileIncludePropertyExternal_H
+#pragma once
 
 #include "Dialogs/DlgRunExternal.h"
 #include <App/PropertyFile.h>
 
-namespace Gui {
-namespace Dialog {
+namespace Gui
+{
+namespace Dialog
+{
 
 /**
  *
  * \author Jürgen Riegel
  */
-class GuiExport DlgEditFileIncludePropertyExternal : public DlgRunExternal
+class GuiExport DlgEditFileIncludePropertyExternal: public DlgRunExternal
 {
     Q_OBJECT
 
 public:
-    DlgEditFileIncludePropertyExternal(App::PropertyFileIncluded& Prop, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    DlgEditFileIncludePropertyExternal(
+        App::PropertyFileIncluded& Prop,
+        QWidget* parent = nullptr,
+        Qt::WindowFlags fl = Qt::WindowFlags()
+    );
     ~DlgEditFileIncludePropertyExternal() override;
 
     int processFile();
@@ -48,7 +55,5 @@ private:
     App::PropertyFileIncluded& Prop;
 };
 
-} // namespace Dialog
-} // namespace Gui
-
-#endif // GUI_DIALOG_DlgEditFileIncludePropertyExternal_H
+}  // namespace Dialog
+}  // namespace Gui

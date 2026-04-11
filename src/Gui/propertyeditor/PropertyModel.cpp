@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2004 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,12 +21,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <limits>
 #include <boost/algorithm/string/predicate.hpp>
-#endif
 
 #include <Base/Tools.h>
 
@@ -243,7 +240,7 @@ QModelIndex PropertyModel::propertyIndexFromPath(const QStringList& path) const
 
 static void setPropertyItemName(PropertyItem* item, const char* propName, QString groupName)
 {
-    QString name = QString::fromLatin1(propName);
+    QString name = QString::fromUtf8(propName);
     QString realName = name;
     if (name.size() > groupName.size() + 1 && name.startsWith(groupName + QLatin1Char('_'))) {
         name = name.right(name.size() - groupName.size() - 1);
@@ -263,8 +260,7 @@ static PropertyItem* createPropertyItem(App::Property* prop)
             return nullptr;
         }
     }
-    auto item =
-        static_cast<PropertyItem*>(PropertyItemFactory::instance().createPropertyItem(editor));
+    auto item = static_cast<PropertyItem*>(PropertyItemFactory::instance().createPropertyItem(editor));
     if (!item) {
         qWarning("No property item for type %s found\n", editor);
     }
@@ -275,8 +271,7 @@ PropertyModel::GroupInfo& PropertyModel::getGroupInfo(App::Property* prop)
 {
     const char* group = prop->getGroup();
     bool isEmpty = Base::Tools::isNullOrEmpty(group);
-    QString groupName =
-        QString::fromLatin1(isEmpty ? QT_TRANSLATE_NOOP("App::Property", "Base") : group);
+    QString groupName = QString::fromUtf8(isEmpty ? QT_TRANSLATE_NOOP("App::Property", "Base") : group);
 
     auto res = groupItems.insert(std::make_pair(groupName, GroupInfo()));
     if (res.second) {
@@ -457,11 +452,7 @@ void PropertyModel::insertOrMoveChildren()
                 }
                 else {
                     flushChanges();
-                    beginMoveRows(createIndex(groupItem->row(), 0, groupItem),
-                                  oldRow,
-                                  oldRow,
-                                  midx,
-                                  row);
+                    beginMoveRows(createIndex(groupItem->row(), 0, groupItem), oldRow, oldRow, midx, row);
                     if (groupItem == groupInfo.groupItem) {
                         groupInfo.groupItem->moveChild(oldRow, row);
                     }
@@ -570,6 +561,24 @@ void PropertyModel::removeProperty(const App::Property& _prop)
         parent->removeChildren(row, row);
         endRemoveRows();
     }
+}
+
+void PropertyModel::renameProperty(const App::Property& _prop)
+{
+    auto prop = const_cast<App::Property*>(&_prop);
+    auto it = itemMap.find(prop);
+    if (it == itemMap.end() || !it->second) {
+        return;
+    }
+
+    PropertyItem* item = it->second;
+    item->renameProperty(prop);
+    QModelIndex parent = this->index(item->parent()->row(), 0, QModelIndex());
+    QModelIndex nameIndex = this->index(item->row(), 0, parent);
+    QModelIndex dataIndex = this->index(item->row(), 1, parent);
+    QVector<int> roles;
+    roles << Qt::DisplayRole;
+    Q_EMIT dataChanged(nameIndex, dataIndex, roles);
 }
 
 void PropertyModel::updateChildren(PropertyItem* item, int column, const QModelIndex& parent)

@@ -22,16 +22,15 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <QAction>
 # include <QColor>
 # include <QMenu>
-#endif
+
 
 #include <QMessageBox>
 
+#include <Base/ProgramVersion.h>
 #include <Base/Parameter.h>
 #include <App/Application.h>
 #include <App/DocumentObject.h>
@@ -51,6 +50,7 @@
 #include "ZVALUE.h"
 #include "TaskDimension.h"
 #include "QGIViewDimension.h"
+#include "ViewProviderPage.h"
 #include "ViewProviderDimension.h"
 
 using namespace TechDrawGui;
@@ -180,13 +180,23 @@ void ViewProviderDimension::updateData(const App::Property* prop)
         prop == &(getViewObject()->EqualTolerance) ||
         prop == &(getViewObject()->OverTolerance) ||
         prop == &(getViewObject()->UnderTolerance) ||
-        prop == &(getViewObject()->Inverted)) {
+        prop == &(getViewObject()->Inverted) ||
+        prop == &(getViewObject()->ShowSupplementary)) {
 
         QGIView* qgiv = getQView();
         if (qgiv) {
             qgiv->updateView(true);
         }
         return;
+    }
+
+    // This properties is changed when creating then on redo (or undo deletion)
+    // so does Reference3d, but using || would call fixSceneDependencies() twice
+    if (prop == &(getViewObject()->References2D)) {
+        // Ensure the QGraphicsItems hierarchy matches the DocumentObject's
+        if (ViewProviderPage* vpp = getViewProviderPage()) {
+            vpp->fixSceneDependencies();
+        }
     }
 
     //Skip QGIView X, Y processing - do not call ViewProviderDrawingView
@@ -340,4 +350,42 @@ std::vector<App::DocumentObject*> ViewProviderDimension::claimChildren() const
    return temp;
 }
 
+
+void ViewProviderDimension::finishRestoring()
+{
+    fixTextSize();
+    fixArrowSize();
+
+    ViewProviderDrawingView::finishRestoring();
+}
+
+
+void ViewProviderDimension::fixTextSize()
+{
+    App::Document* ourDoc = getDocument()->getDocument();
+    if (checkMinimumDocumentVersion(ourDoc, Base::Version::v1_1)) {
+        return;
+    }
+
+    double size = Fontsize.getValue();
+    if (size == 0.0) {
+        size = Preferences::dimFontSizeMM();
+        Fontsize.setValue(size);
+    }
+}
+
+
+void ViewProviderDimension::fixArrowSize()
+{
+    App::Document* ourDoc = getDocument()->getDocument();
+    if (checkMinimumDocumentVersion(ourDoc, Base::Version::v1_1)) {
+        return;
+    }
+
+    double size = Arrowsize.getValue();
+    if (size == 0.0) {
+        size = Preferences::dimFontSizeMM();
+        Arrowsize.setValue(size);
+    }
+}
 

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2024 Shai Seger <shaise at gmail>                       *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __end_mill_h__
-#define __end_mill_h__
+#pragma once
 
 #include "SimShapes.h"
 #include <vector>
@@ -55,5 +56,3 @@ protected:
     void MirrorPointBuffer();
 };
 }  // namespace MillSim
-
-#endif

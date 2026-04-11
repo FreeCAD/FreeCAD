@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *   Copyright (c) 2017 Zheng, Lei <realthunder.dev@gmail.com>             *
@@ -21,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PATH_FeaturePathShape_H
-#define PATH_FeaturePathShape_H
+#pragma once
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
@@ -69,6 +69,3 @@ protected:
 using FeatureShapePython = App::FeaturePythonT<FeatureShape>;
 
 }  // namespace Path
-
-
-#endif  // PATH_FeaturePathShape_H

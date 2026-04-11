@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /****************************************************************************
  *   Copyright (c) 2017 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
@@ -20,8 +22,7 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef PATH_ViewProviderArea_H
-#define PATH_ViewProviderArea_H
+#pragma once
 
 #include <Gui/ViewProviderFeaturePython.h>
 #include <Mod/Part/Gui/ViewProviderPlaneParametric.h>
@@ -78,6 +79,3 @@ public:
 using ViewProviderAreaViewPython = Gui::ViewProviderFeaturePythonT<ViewProviderAreaView>;
 
 }  // namespace PathGui
-
-
-#endif  // PATH_ViewProviderArea_H

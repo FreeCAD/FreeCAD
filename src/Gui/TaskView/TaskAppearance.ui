@@ -34,7 +34,7 @@
      <item>
       <widget class="QLabel" name="textLabel1">
        <property name="text">
-        <string>Document window:</string>
+        <string>Document window</string>
        </property>
       </widget>
      </item>
@@ -57,7 +57,7 @@
         <bool>false</bool>
        </property>
        <property name="text">
-        <string>Plot mode:</string>
+        <string>Plot mode</string>
        </property>
       </widget>
      </item>
@@ -81,7 +81,7 @@
      <item>
       <widget class="QLabel" name="textLabel2">
        <property name="text">
-        <string>Point size:</string>
+        <string>Point size</string>
        </property>
       </widget>
      </item>
@@ -127,7 +127,7 @@
      <item>
       <widget class="QLabel" name="textLabel3">
        <property name="text">
-        <string>Line width:</string>
+        <string>Line width</string>
        </property>
       </widget>
      </item>
@@ -165,7 +165,7 @@
    <item>
     <widget class="QLabel" name="textLabel1_2">
      <property name="text">
-      <string>Transparency:</string>
+      <string>Transparency</string>
      </property>
     </widget>
    </item>

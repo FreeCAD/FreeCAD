@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: BSD-3-Clause
+
 // Arc.cpp
 
 // Copyright 2011, Dan Heeks
@@ -5,6 +7,7 @@
 
 #include "Arc.h"
 #include "Curve.h"
+#include "Area.h"
 
 void CArc::SetDirWithPoint(const Point& p)
 {
@@ -48,14 +51,8 @@ double CArc::IncludedAngle() const
 bool CArc::AlmostALine() const
 {
     Point mid_point = MidParam(0.5);
-    if (Line(m_s, m_e - m_s).Dist(mid_point) <= Point::tolerance) {
+    if (Line(m_s, m_e - m_s).Dist(mid_point) <= CArea::get_accuracy()) {
         return true;
-    }
-
-    const double max_arc_radius = 1.0 / Point::tolerance;
-    double radius = m_c.dist(m_s);
-    if (radius > max_arc_radius) {
-        return true;  // We don't want to produce an arc whose radius is too large.
     }
 
     return false;

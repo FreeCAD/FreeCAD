@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2004 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef PROPERTYEDITOR_H
-#define PROPERTYEDITOR_H
+#pragma once
 
 #include <unordered_set>
 
@@ -70,16 +70,25 @@ class GuiExport PropertyEditor: public QTreeView
     // clang-format on
 
 public:
+    enum class ExpansionMode
+    {
+        DefaultExpand,
+        AutoExpand,
+        AutoCollapse
+    };
+
     PropertyEditor(QWidget* parent = nullptr);
     ~PropertyEditor() override;
 
     /** Builds up the list view with the properties. */
-    void buildUp(PropertyModel::PropertyList&& props = PropertyModel::PropertyList(),
-                 bool checkDocument = false);
+    void buildUp(
+        PropertyModel::PropertyList&& props = PropertyModel::PropertyList(),
+        bool checkDocument = false
+    );
+    void blockCollapseAll();
     void updateProperty(const App::Property&);
     void removeProperty(const App::Property&);
-    void setAutomaticExpand(bool);
-    bool isAutomaticExpand(bool) const;
+    void renameProperty(const App::Property&);
     void setAutomaticDocumentUpdate(bool);
     bool isAutomaticDocumentUpdate(bool) const;
     /*! Reset the internal state of the view. */
@@ -103,8 +112,7 @@ protected Q_SLOTS:
     void onItemActivated(const QModelIndex& index);
     void onItemExpanded(const QModelIndex& index);
     void onItemCollapsed(const QModelIndex& index);
-    void
-    onRowsMoved(const QModelIndex& parent, int start, int end, const QModelIndex& dst, int row);
+    void onRowsMoved(const QModelIndex& parent, int start, int end, const QModelIndex& dst, int row);
     void onRowsRemoved(const QModelIndex& parent, int start, int end);
 
 protected:
@@ -115,11 +123,12 @@ protected:
     void currentChanged(const QModelIndex& current, const QModelIndex& previous) override;
     void rowsInserted(const QModelIndex& parent, int start, int end) override;
     void rowsAboutToBeRemoved(const QModelIndex& parent, int start, int end) override;
-    void
-    drawBranches(QPainter* painter, const QRect& rect, const QModelIndex& index) const override;
-    void drawRow(QPainter* painter,
-                 const QStyleOptionViewItem& options,
-                 const QModelIndex& index) const override;
+    void drawBranches(QPainter* painter, const QRect& rect, const QModelIndex& index) const override;
+    void drawRow(
+        QPainter* painter,
+        const QStyleOptionViewItem& options,
+        const QModelIndex& index
+    ) const override;
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QStyleOptionViewItem viewOptions() const override;
 #else
@@ -127,15 +136,25 @@ protected:
 #endif
     void contextMenuEvent(QContextMenuEvent* event) override;
     bool event(QEvent*) override;
+    void keyPressEvent(QKeyEvent* event) override;
 
 private:
+    void setFirstLevelExpanded(bool doExpand);
+    void expandToDefault();
+    QMenu* setupExpansionSubmenu(QWidget* parent);
+    void collapseAll();
     void setEditorMode(const QModelIndex& parent, int start, int end);
     void closeTransaction();
     void recomputeDocument(App::Document*);
+    std::unordered_set<App::Property*> acquireSelectedProperties() const;
+    void removeProperties(const std::unordered_set<App::Property*>& props);
+    bool removeSelectedDynamicProperties();
 
     // check if mouse_pos is around right or bottom side of a cell
     // and return the index of that cell if found
     QModelIndex indexResizable(QPoint mouse_pos);
+
+    App::Document* propertyDocument(App::PropertyContainer* cont) const;
 
 private:
     PropertyItemDelegate* delegate;
@@ -143,10 +162,11 @@ private:
     QStringList selectedProperty;
     PropertyModel::PropertyList propList;
     std::unordered_set<const App::PropertyContainer*> propOwners;
-    bool autoexpand;
+    ExpansionMode expansionMode;
     bool autoupdate;
     bool committing;
     bool delaybuild;
+    bool blockCollapse;
     bool binding;
     bool checkDocument;
     bool closingEditor;
@@ -173,5 +193,3 @@ private:
 
 }  // namespace PropertyEditor
 }  // namespace Gui
-
-#endif  // PROPERTYEDITOR_H

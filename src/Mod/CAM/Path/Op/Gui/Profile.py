@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -27,7 +28,6 @@ import Path.Op.Gui.Base as PathOpGui
 import Path.Op.Profile as PathProfile
 import PathGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
-
 
 __title__ = "CAM Profile Operation UI"
 __author__ = "sliptonic (Brad Collette)"

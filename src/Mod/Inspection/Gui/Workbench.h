@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef Inspection_WORKBENCH_H
-#define Inspection_WORKBENCH_H
+#pragma once
 
 #include <Gui/Workbench.h>
 
@@ -43,6 +44,3 @@ protected:
 };
 
 }  // namespace InspectionGui
-
-
-#endif  // Inspection_WORKBENCH_H

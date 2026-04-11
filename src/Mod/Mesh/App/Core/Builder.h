@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2005 Berthold Grupp                                     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_BUILDER_H
-#define MESH_BUILDER_H
+#pragma once
 
 #include <set>
 #include <vector>
@@ -146,12 +147,14 @@ public:
     void AddFacet(const MeshGeomFacet& facet, bool takeFlag = false, bool takeProperty = false);
     /** Add new facet
      */
-    void AddFacet(const Base::Vector3f& pt1,
-                  const Base::Vector3f& pt2,
-                  const Base::Vector3f& pt3,
-                  const Base::Vector3f& normal,
-                  unsigned char flag = 0,
-                  unsigned long prop = 0);
+    void AddFacet(
+        const Base::Vector3f& pt1,
+        const Base::Vector3f& pt2,
+        const Base::Vector3f& pt3,
+        const Base::Vector3f& normal,
+        unsigned char flag = 0,
+        unsigned long prop = 0
+    );
     /** Add new facet
      * @param facetPoints Array of vectors (size 4) in order of vec1, vec2,
      *                    vec3, normal
@@ -229,5 +232,3 @@ private:
 };
 
 }  // namespace MeshCore
-
-#endif
