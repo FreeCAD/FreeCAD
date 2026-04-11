@@ -1332,36 +1332,28 @@ TEST_F(SchemaTest, sweep_imperial_building)
 
 TEST_F(SchemaTest, imperial_building_density_uses_lb_ft3)
 {
-    const auto result = set("ImperialBuilding",
-                            Unit::Density,
-                            Quantity::parse("1 lb/ft^3").getValue());
+    const auto result = set("ImperialBuilding", Unit::Density, Quantity::parse("1 lb/ft^3").getValue());
 
     EXPECT_EQ(result, "1.00 lb/ft^3");
 }
 
 TEST_F(SchemaTest, imperial_building_stress_uses_psi)
 {
-    const auto result = set("ImperialBuilding",
-                            Unit::Stress,
-                            Quantity::parse("1 psi").getValue());
+    const auto result = set("ImperialBuilding", Unit::Stress, Quantity::parse("1 psi").getValue());
 
     EXPECT_EQ(result, "1.00 psi");
 }
 
 TEST_F(SchemaTest, imperial_density_uses_lb_in3)
 {
-    const auto result = set("Imperial",
-                            Unit::Density,
-                            Quantity::parse("1 lb/in^3").getValue());
+    const auto result = set("Imperial", Unit::Density, Quantity::parse("1 lb/in^3").getValue());
 
     EXPECT_EQ(result, "1.00 lb/in^3");
 }
 
 TEST_F(SchemaTest, imperial_civil_density_uses_lb_ft3)
 {
-    const auto result = set("ImperialCivil",
-                            Unit::Density,
-                            Quantity::parse("1 lb/ft^3").getValue());
+    const auto result = set("ImperialCivil", Unit::Density, Quantity::parse("1 lb/ft^3").getValue());
 
     EXPECT_EQ(result, "1.00 lb/ft^3");
 }
