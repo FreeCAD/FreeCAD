@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<package format="1" xmlns="https://wiki.freecad.org/Package_Metadata">
+  <name>FreeCadHatch</name>
+  <description>Parametric surface hatch generator with 70+ patterns for BIM/Architecture.</description>
+  <version>2.0</version>
+  <date>2026-04-10</date>
+  <maintainer>Your Name</maintainer>
+  <license>LGPL-2.1-or-later</license>
+  <url type="repository" branch="main">https://github.com/yourusername/FreeCadHatch</url>
+  <freecad min="0.20" max="1.0" />
+</package>
