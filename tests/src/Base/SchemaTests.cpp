@@ -1360,12 +1360,8 @@ TEST_F(SchemaTest, imperial_density_uses_lb_in3)
 
 TEST_F(SchemaTest, imperial_civil_density_uses_lb_ft3)
 {
-    const auto result = setWithPrecision(
-        "ImperialCivil",
-        Quantity::parse("1 lb/ft^3").getValue(),
-        Unit::Density,
-        6
-    );
+    const auto result
+        = setWithPrecision("ImperialCivil", Quantity::parse("1 lb/ft^3").getValue(), Unit::Density, 6);
 
     EXPECT_EQ(result, "1.000000 lb/ft^3");
 }
