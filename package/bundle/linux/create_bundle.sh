@@ -155,6 +155,7 @@ if [ "${UPLOAD_RELEASE}" == "true" ]; then
         mv "${version_name}.AppImage" "${generic_name}.AppImage"
         mv "${version_name}.AppImage.zsync" "${generic_name}.AppImage.zsync"
         mv "${version_name}.AppImage-SHA256.txt" "${generic_name}.AppImage-SHA256.txt"
+        sed -i "s/URL: ${version_name}/URL: ${generic_name}/g" "${generic_name}.AppImage.zsync"
         gh release create weeklies --prerelease | true
         gh release upload --clobber weeklies "${generic_name}.AppImage" "${generic_name}.AppImage.zsync" "${generic_name}.AppImage-SHA256.txt"
     fi
