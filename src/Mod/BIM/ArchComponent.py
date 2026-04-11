@@ -345,6 +345,42 @@ class Component(ArchIFC.IfcProduct):
                 locked=True,
             )
 
+        # ======================================================================
+        # NEW V3 PROPERTIES: HatchSurfaces and HatchCaps
+        # ======================================================================
+        if "HatchSurfaces" not in pl:
+            obj.addProperty(
+                "App::PropertyBool",
+                "HatchSurfaces",
+                "Hatch",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "When True, apply hatch patterns to the large visible surface faces "
+                    "(inside/outside of walls, top/bottom of slabs). "
+                    "Pattern source: Material.Hatch or MultiMaterial.Hatches[layer]. "
+                    "Two objects can share the same material but have independent "
+                    "hatch visibility by toggling this property.",
+                ),
+                locked=True,
+            )
+            obj.HatchSurfaces = False   # default off — no change to existing files
+
+        if "HatchCaps" not in pl:
+            obj.addProperty(
+                "App::PropertyBool",
+                "HatchCaps",
+                "Hatch",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "When True, apply hatch patterns to the narrow cap/edge faces "
+                    "(wall ends, slab edges). "
+                    "Useful for section cut representation. "
+                    "Independent of HatchSurfaces — both can be on or off at the same time.",
+                ),
+                locked=True,
+            )
+            obj.HatchCaps = False   # default off
+
         self.Subvolume = None
         # self.MoveWithHost = False
 
@@ -1374,187 +1410,367 @@ class Component(ArchIFC.IfcProduct):
 
 
 # ============================================================================
-# NEW FUNCTION: Per-face hatch application (called after recompute)
+# HATCH APPLICATION FUNCTIONS (called after recompute)
 # ============================================================================
 def _apply_material_hatches_now(doc, obj):
+    """Entry point for hatch application. Routes to MultiMaterial or single material path."""
+    mat = getattr(obj, "Material", None)
+    if not mat:
+        return
+
+    is_multimaterial = hasattr(mat, "Materials")
+
+    if is_multimaterial:
+        _apply_multimaterial_hatches(doc, obj, mat)
+    else:
+        _apply_single_material_hatch(doc, obj, mat)
+
+
+def _classify_faces(solid, area_threshold=0.15):
     """
-    Apply per-layer, per-face hatch patterns from a MultiMaterial.
-    Called AFTER the document recompute is complete (deferred by QTimer).
- 
-    Face selection — area threshold approach
-    ----------------------------------------
-    The previous bounding-box direction approach had two fatal bugs:
-      1. Logic inversion: selected caps instead of main surfaces
-      2. Bounding box fails for zigzag/angled walls (minimum dim = height,
-         not thickness)
- 
-    The correct approach: the main visible surfaces of ANY architectural
-    element are ALWAYS the largest faces. End caps and edge faces are
-    always a small fraction of the main face area.
- 
-    Threshold: faces with area >= 15% of the largest face in that solid.
- 
+    Split a solid's faces into 'surface' faces and 'cap' faces using
+    an area threshold.
+
+    Surface faces  = faces whose area >= threshold * max_face_area
+    Cap faces      = all other faces (small edge/end faces)
+
+    This is orientation-agnostic — works for vertical walls, horizontal
+    slabs, angled roofs, zigzag walls, L-shapes, any geometry.
+
+    Why area threshold beats bounding-box direction:
+      - Bounding box direction: fails for zigzag walls (diagonal bbox
+        makes Z the minimum dimension instead of wall thickness)
+      - Area threshold: the visible surfaces of ANY architectural element
+        are always the dominant faces by area. Caps are always a small
+        fraction. 15% cleanly separates them for all standard proportions.
+
     Verification:
-      Standard wall (200mm × 4000mm × 3000mm):
-        Main faces: 4000×3000 = 12,000,000 mm²  → included (100%)
-        End caps:   200×3000  =    600,000 mm²  → 5.0%  → excluded ✓
-        Top/bottom: 200×4000  =    800,000 mm²  → 6.7%  → excluded ✓
- 
-      Zigzag wall (3 segments × 2000mm, 200mm thick, 3000mm high):
-        Each main face: 2000×3000 = 6,000,000 mm² → included (100%)
-        Between-segment caps: 200×3000 = 600,000 mm² → 10% → excluded ✓
-        (Works regardless of plan orientation — no bounding box needed)
- 
-      Slab (5000mm × 4000mm × 200mm):
-        Top/bottom faces: 5000×4000 = 20,000,000 mm² → included (100%)
-        Edge faces: 200×4000 = 800,000 mm² → 4% → excluded ✓
- 
-      Very thin narrow panel (100mm × 500mm × 3000mm):
-        Main faces: 500×3000 = 1,500,000 mm²  → included (100%)
-        Edge faces: 100×3000 = 300,000 mm²    → 20%  → excluded ✓
- 
-    Naming convention
-    -----------------
-      {obj.Name}_HF{i}_{j}   hidden Part::Feature for layer i, face j
-      {obj.Name}_HI{i}_{j}   CustomHatch instance  for layer i, face j
+      Wall  200mm × 4000mm × 3000mm:
+        Main:  4000×3000 = 12,000,000 mm²  (100%)
+        End:    200×3000  =    600,000 mm²  (5.0%)  excluded ✓
+        Top:    200×4000  =    800,000 mm²  (6.7%)  excluded ✓
+
+      Slab  5000mm × 4000mm × 200mm:
+        Main:  5000×4000 = 20,000,000 mm²  (100%)
+        Edge:   200×4000  =    800,000 mm²  (4.0%)  excluded ✓
+
+      Zigzag wall (3 × 2000mm segments, 200mm thick, 3000mm high):
+        Main each: 2000×3000 = 6,000,000 mm² (100% relative to largest)
+        Caps:       200×3000  =   600,000 mm² (10%)  excluded ✓
+        Works regardless of plan orientation — no bounding box needed.
+
+    Parameters
+    ----------
+    solid          : Part.Solid or any shape with .Faces
+    area_threshold : float, default 0.15 (15%)
+
+    Returns
+    -------
+    (surface_faces, cap_faces) — two lists of Part.Face
+    """
+    try:
+        faces_by_area = sorted(solid.Faces, key=lambda f: f.Area, reverse=True)
+    except Exception:
+        return [], []
+
+    if not faces_by_area:
+        return [], []
+
+    max_area = faces_by_area[0].Area
+    if max_area < 1e-6:
+        return [], []
+
+    surface_faces = []
+    cap_faces     = []
+
+    for face in faces_by_area:
+        if face.Area >= max_area * area_threshold:
+            surface_faces.append(face)
+        else:
+            cap_faces.append(face)
+
+    return surface_faces, cap_faces
+
+
+def _sync_face_hatch_objects(doc, obj_name, hatch_pattern, faces,
+                              name_prefix, needs_recompute_ref):
+    """
+    Create / update / clean up face features and hatch instances for one
+    set of faces under a given naming prefix.
+
+    Parameters
+    ----------
+    doc                 : FreeCAD document
+    obj_name            : str, parent object name (for naming children)
+    hatch_pattern       : CustomHatch object or None
+    faces               : list of Part.Face to create hatches for
+    name_prefix         : str, e.g. "Wall001_HS0" (surface, layer 0)
+                          or "Wall001_HC0" (cap, layer 0)
+    needs_recompute_ref : list with one bool element [False] — mutated
+                          to [True] if any doc modification was made
+
+    Returns
+    -------
+    None
     """
     import Part
- 
     try:
         from HatchGenerator import makeCustomHatch
     except ImportError:
-        FreeCAD.Console.PrintWarning(
-            "apply_material_hatches: HatchGenerator addon not found.\n"
-        )
         return
- 
-    proxy    = obj.Material.Proxy
-    solids   = obj.Shape.Solids
-    n_layers = len(getattr(obj.Material, "Materials", []))
-    needs_recompute = False
- 
-    for i in range(n_layers):
-        hatch_pattern = proxy.get_hatch_for_layer(obj.Material, i)
- 
-        # No hatch assigned for this layer — remove any previously created objects
-        if hatch_pattern is None:
-            j = 0
-            while True:
-                hf = doc.getObject(f"{obj.Name}_HF{i}_{j}")
-                hi = doc.getObject(f"{obj.Name}_HI{i}_{j}")
-                if not hf and not hi:
-                    break
-                for stale in (hi, hf):   # remove hatch first, then face
-                    if stale:
-                        doc.removeObject(stale.Name)
-                        needs_recompute = True
-                j += 1
-            continue
- 
-        if i >= len(solids):
-            continue
- 
-        solid = solids[i]
- 
-        # ── Select exposed surface faces by area threshold ─────────────────
-        # Sort all faces of this solid by area, largest first.
+
+    # Create / update objects for each face in the list
+    for j, face in enumerate(faces):
+        face_feat_name = f"{name_prefix}_HF{j}"
+        inst_name      = f"{name_prefix}_HI{j}"
+
+        face_feat = doc.getObject(face_feat_name)
+        if face_feat is None:
+            face_feat = doc.addObject("Part::Feature", face_feat_name)
+            needs_recompute_ref[0] = True
         try:
-            faces_by_area = sorted(solid.Faces, key=lambda f: f.Area, reverse=True)
+            face_feat.Shape = Part.Shell([face])
         except Exception:
+            face_feat.Shape = face
+        if FreeCAD.GuiUp:
+            face_feat.ViewObject.Visibility = False
+
+        inst = doc.getObject(inst_name)
+        if inst is None:
+            inst = makeCustomHatch(name=inst_name)
+            needs_recompute_ref[0] = True
+        inst.BaseObject           = face_feat
+        inst.PatternType          = "CustomObject"
+        inst.PatternObject        = hatch_pattern
+        inst.UseSurfaceProjection = True
+        inst.ForceXYPlane         = False
+        if not getattr(inst, "PatternScale", 0):
+            inst.PatternScale = 1.0
+
+    # Clean up stale objects from previous runs (fewer faces now)
+    j = len(faces)
+    while True:
+        hf = doc.getObject(f"{name_prefix}_HF{j}")
+        hi = doc.getObject(f"{name_prefix}_HI{j}")
+        if not hf and not hi:
+            break
+        for stale in (hi, hf):
+            if stale:
+                doc.removeObject(stale.Name)
+                needs_recompute_ref[0] = True
+        j += 1
+
+
+def _remove_prefix_objects(doc, name_prefix, needs_recompute_ref):
+    """Remove all face feature and hatch instance objects under name_prefix."""
+    j = 0
+    while True:
+        hf = doc.getObject(f"{name_prefix}_HF{j}")
+        hi = doc.getObject(f"{name_prefix}_HI{j}")
+        if not hf and not hi:
+            break
+        for stale in (hi, hf):
+            if stale:
+                doc.removeObject(stale.Name)
+                needs_recompute_ref[0] = True
+        j += 1
+
+
+def _apply_multimaterial_hatches(doc, obj, mat):
+    """
+    Apply per-layer hatch patterns from a MultiMaterial.
+
+    Reads obj.HatchSurfaces and obj.HatchCaps to decide which face
+    categories to generate. Both default False so nothing runs unless
+    the user explicitly enables at least one.
+
+    Naming:
+      {obj.Name}_HS{i}_HF{j}  face feature,  surface, layer i, face j
+      {obj.Name}_HS{i}_HI{j}  hatch instance, surface, layer i, face j
+      {obj.Name}_HC{i}_HF{j}  face feature,  cap,     layer i, face j
+      {obj.Name}_HC{i}_HI{j}  hatch instance, cap,     layer i, face j
+    """
+    # Read toggles — if both are off, nothing to do
+    do_surfaces = bool(getattr(obj, "HatchSurfaces", False))
+    do_caps     = bool(getattr(obj, "HatchCaps",     False))
+
+    if not do_surfaces and not do_caps:
+        # Clean up any previously generated objects if both are now off
+        needs = [False]
+        for i in range(len(getattr(mat, "Materials", []))):
+            _remove_prefix_objects(doc, f"{obj.Name}_HS{i}", needs)
+            _remove_prefix_objects(doc, f"{obj.Name}_HC{i}", needs)
+        if needs[0]:
+            doc.recompute()
+        return
+
+    proxy    = mat.Proxy
+    solids   = obj.Shape.Solids
+    n_layers = len(getattr(mat, "Materials", []))
+    needs    = [False]
+
+    for i in range(n_layers):
+        hatch_pattern = proxy.get_hatch_for_layer(mat, i)
+        surf_prefix = f"{obj.Name}_HS{i}"
+        cap_prefix  = f"{obj.Name}_HC{i}"
+
+        if hatch_pattern is None or i >= len(solids):
+            # No hatch for this layer — remove both surface and cap objects
+            _remove_prefix_objects(doc, surf_prefix, needs)
+            _remove_prefix_objects(doc, cap_prefix,  needs)
             continue
- 
-        if not faces_by_area:
-            continue
- 
-        max_area = faces_by_area[0].Area
- 
-        if max_area < 1e-6:
-            # Degenerate solid — skip
-            continue
- 
-        # Include every face whose area is at least 15% of the largest face.
-        # This threshold reliably separates main visible surfaces from edge
-        # caps for all standard architectural proportions.
-        AREA_THRESHOLD = 0.15
-        exposed_faces = [
-            f for f in faces_by_area
-            if f.Area >= max_area * AREA_THRESHOLD
-        ]
- 
-        # Safety fallback: always include at least the top 2 faces even if
-        # all faces happen to be similar in area (unusual but possible).
-        if not exposed_faces:
-            exposed_faces = faces_by_area[:min(2, len(faces_by_area))]
- 
-        # ── Create or update one face feature + hatch instance per face ────
-        for j, face in enumerate(exposed_faces):
-            face_feat_name = f"{obj.Name}_HF{i}_{j}"
-            inst_name      = f"{obj.Name}_HI{i}_{j}"
- 
-            # Hidden face feature — stores exactly this one face
-            face_feat = doc.getObject(face_feat_name)
-            if face_feat is None:
-                face_feat = doc.addObject("Part::Feature", face_feat_name)
-                needs_recompute = True
-            try:
-                face_feat.Shape = Part.Shell([face])
-            except Exception:
-                face_feat.Shape = face
-            if FreeCAD.GuiUp:
-                face_feat.ViewObject.Visibility = False
- 
-            # Hatch instance — one per face, correct surface normal per face
-            inst = doc.getObject(inst_name)
-            if inst is None:
-                inst = makeCustomHatch(name=inst_name)
-                needs_recompute = True
-            inst.BaseObject           = face_feat
-            inst.PatternType          = "CustomObject"
-            inst.PatternObject        = hatch_pattern
-            inst.UseSurfaceProjection = True
-            inst.ForceXYPlane         = False
-            if not getattr(inst, "PatternScale", 0):
-                inst.PatternScale = 1.0
- 
-        # ── Remove stale objects from previous runs ────────────────────────
-        # If the wall was simplified (fewer exposed faces now), delete extras.
-        j = len(exposed_faces)
-        while True:
-            hf = doc.getObject(f"{obj.Name}_HF{i}_{j}")
-            hi = doc.getObject(f"{obj.Name}_HI{i}_{j}")
-            if not hf and not hi:
-                break
-            for stale in (hi, hf):
-                if stale:
-                    doc.removeObject(stale.Name)
-                    needs_recompute = True
-            j += 1
- 
-    # ── Remove objects for layers beyond current n_layers ─────────────────
-    # Handles the case where the user deleted a material layer.
+
+        solid = solids[i]
+        surface_faces, cap_faces = _classify_faces(solid)
+
+        # Surface faces
+        if do_surfaces and surface_faces:
+            _sync_face_hatch_objects(
+                doc, obj.Name, hatch_pattern, surface_faces,
+                surf_prefix, needs
+            )
+        else:
+            # Surfaces toggled off — clean up
+            _remove_prefix_objects(doc, surf_prefix, needs)
+
+        # Cap faces
+        if do_caps and cap_faces:
+            _sync_face_hatch_objects(
+                doc, obj.Name, hatch_pattern, cap_faces,
+                cap_prefix, needs
+            )
+        else:
+            # Caps toggled off — clean up
+            _remove_prefix_objects(doc, cap_prefix, needs)
+
+    # Clean up layers beyond current n_layers (user deleted a layer)
     i = n_layers
     while True:
-        found_any = False
-        j = 0
-        while True:
-            hf = doc.getObject(f"{obj.Name}_HF{i}_{j}")
-            hi = doc.getObject(f"{obj.Name}_HI{i}_{j}")
-            if not hf and not hi:
-                break
-            for stale in (hi, hf):
-                if stale:
-                    doc.removeObject(stale.Name)
-                    needs_recompute = True
-                    found_any = True
-            j += 1
-        if not found_any:
+        found = [False]
+        _remove_prefix_objects(doc, f"{obj.Name}_HS{i}", found)
+        _remove_prefix_objects(doc, f"{obj.Name}_HC{i}", found)
+        if not found[0]:
             break
+        needs[0] = True
         i += 1
- 
-    # One recompute to render the newly created/updated hatch instances.
-    # The wall/slab/panel itself is NOT touched so it will NOT recompute again.
-    if needs_recompute:
+
+    if needs[0]:
         doc.recompute()
+
+
+def _apply_single_material_hatch(doc, obj, mat):
+    """
+    Apply one hatch pattern from a plain Material to obj.Shape faces.
+    Respects HatchSurfaces and HatchCaps toggles exactly like the
+    multi-material path — same face classification, same naming convention
+    (_SM prefix instead of _HS/_HC to avoid collision with MultiMaterial names).
+    """
+    do_surfaces = bool(getattr(obj, "HatchSurfaces", False))
+    do_caps     = bool(getattr(obj, "HatchCaps",     False))
+
+    surf_prefix = f"{obj.Name}_SM_HS0"
+    cap_prefix  = f"{obj.Name}_SM_HC0"
+
+    if not do_surfaces and not do_caps:
+        needs = [False]
+        _remove_prefix_objects(doc, surf_prefix, needs)
+        _remove_prefix_objects(doc, cap_prefix,  needs)
+        if needs[0]:
+            doc.recompute()
+        return
+
+    hatch_pattern = getattr(mat, "Hatch", None)
+
+    if hatch_pattern is None:
+        needs = [False]
+        _remove_prefix_objects(doc, surf_prefix, needs)
+        _remove_prefix_objects(doc, cap_prefix,  needs)
+        if needs[0]:
+            doc.recompute()
+        return
+
+    if not obj.Shape or obj.Shape.isNull():
+        return
+
+    # Collect faces across all solids in the shape
+    all_surface_faces = []
+    all_cap_faces     = []
+    for solid in obj.Shape.Solids:
+        sf, cf = _classify_faces(solid)
+        all_surface_faces.extend(sf)
+        all_cap_faces.extend(cf)
+
+    needs = [False]
+
+    if do_surfaces and all_surface_faces:
+        _sync_face_hatch_objects(
+            doc, obj.Name, hatch_pattern, all_surface_faces,
+            surf_prefix, needs
+        )
+    else:
+        _remove_prefix_objects(doc, surf_prefix, needs)
+
+    if do_caps and all_cap_faces:
+        _sync_face_hatch_objects(
+            doc, obj.Name, hatch_pattern, all_cap_faces,
+            cap_prefix, needs
+        )
+    else:
+        _remove_prefix_objects(doc, cap_prefix, needs)
+
+    if needs[0]:
+        doc.recompute()
+
+
+def _migrate_hatch_naming(doc):
+    """
+    Remove objects created by previous versions of the hatch system.
+    Old naming patterns:
+      {obj}_HF{i}_{j}     (pre-toggle, bounding-box era)
+      {obj}_HI{i}_{j}
+      {obj}_SM_HF0_{j}
+      {obj}_SM_HI0_{j}
+      {obj}_HatchLayer{i} (very first version)
+      {obj}_FaceLayer{i}
+    New naming:
+      {obj}_HS{i}_HF{j}   (surface hatch face)
+      {obj}_HS{i}_HI{j}
+      {obj}_HC{i}_HF{j}   (cap hatch face)
+      {obj}_HC{i}_HI{j}
+      {obj}_SM_HS0_HF{j}  (single material surface)
+      {obj}_SM_HC0_HF{j}  (single material cap)
+    """
+    import re
+    old_patterns = [
+        r"_HF\d+_\d+$",
+        r"_HI\d+_\d+$",
+        r"_SM_HF0_\d+$",
+        r"_SM_HI0_\d+$",
+        r"_HatchLayer\d+$",
+        r"_FaceLayer\d+$",
+    ]
+    removed = []
+    for obj in list(doc.Objects):
+        for pat in old_patterns:
+            if re.search(pat, obj.Name):
+                try:
+                    doc.removeObject(obj.Name)
+                    removed.append(obj.Name)
+                except Exception as e:
+                    FreeCAD.Console.PrintWarning(
+                        f"Migration: could not remove '{obj.Name}': {e}\n"
+                    )
+                break
+    if removed:
+        FreeCAD.Console.PrintMessage(
+            f"Migration: removed {len(removed)} old hatch objects.\n"
+            "Run doc.recompute() then enable HatchSurfaces/HatchCaps on "
+            "your walls and slabs to regenerate.\n"
+        )
+    else:
+        FreeCAD.Console.PrintMessage("Migration: no old hatch objects found.\n")
+    return removed
+
 
 class AreaCalculator:
     """Helper class to compute vertical area, horizontal area, and perimeter length.

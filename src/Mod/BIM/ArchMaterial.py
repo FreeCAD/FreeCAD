@@ -242,6 +242,22 @@ class _ArchMaterial:
                 QT_TRANSLATE_NOOP("App::Property", "The color of this material when cut"),
                 locked=True,
             )
+        # ======================================================================
+        # NEW: Hatch property for single materials
+        # ======================================================================
+        if not "Hatch" in obj.PropertiesList:
+            obj.addProperty(
+                "App::PropertyLink",
+                "Hatch",
+                "Material",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Optional hatch pattern (CustomHatch) to apply to surfaces "
+                    "of objects using this material. Only used when no "
+                    "MultiMaterial is assigned to the object."
+                ),
+                locked=True,
+            )
 
     def isSameColor(self, c1, c2):
 
