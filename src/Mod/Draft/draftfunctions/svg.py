@@ -37,6 +37,7 @@ import DraftVecUtils
 import WorkingPlane
 from draftfunctions import svgtext
 from draftfunctions.svgshapes import get_proj, get_circle, get_path
+
 # from draftgeoutils import fillets as geo_fillets
 from draftobjects import layer
 from draftutils import params

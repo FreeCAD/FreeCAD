@@ -174,9 +174,7 @@ class Offset(gui_base_original.Modifier):
                 gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_constrain_key())
                 and self.constrainSeg
             ):
-                dist = geo_geometry.findPerpendicular(
-                    self.point, self.shape, self.constrainSeg[1]
-                )
+                dist = geo_geometry.findPerpendicular(self.point, self.shape, self.constrainSeg[1])
             else:
                 dist = geo_geometry.findPerpendicular(self.point, self.shape.Edges)
             if dist:

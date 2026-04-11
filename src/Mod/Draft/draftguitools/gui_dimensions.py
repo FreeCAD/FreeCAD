@@ -179,9 +179,7 @@ class Dimension(gui_base_original.Creator):
         super().finish()
 
     def angle_dimension_normal(self, edge1, edge2):
-        rot = App.Rotation(
-            geo_general.vec(edge1), geo_general.vec(edge2), self.wp.axis, "XYZ"
-        )
+        rot = App.Rotation(geo_general.vec(edge1), geo_general.vec(edge2), self.wp.axis, "XYZ")
         norm = rot.multVec(App.Vector(0, 0, 1))
         vnorm = gui_utils.get_3d_view().getViewDirection()
         if vnorm.getAngle(norm) < math.pi / 2:

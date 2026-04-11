@@ -655,20 +655,14 @@ class Snapper:
                                     if len(self.lastExtensions) == 0:
                                         self.lastExtensions.append(ne)
                                     elif len(self.lastExtensions) == 1:
-                                        if not geo_general.areColinear(
-                                            ne, self.lastExtensions[0]
-                                        ):
+                                        if not geo_general.areColinear(ne, self.lastExtensions[0]):
                                             self.lastExtensions.append(self.lastExtensions[0])
                                             self.lastExtensions[0] = ne
                                     else:
                                         if (
-                                            not geo_general.areColinear(
-                                                ne, self.lastExtensions[0]
-                                            )
+                                            not geo_general.areColinear(ne, self.lastExtensions[0])
                                         ) and (
-                                            not geo_general.areColinear(
-                                                ne, self.lastExtensions[1]
-                                            )
+                                            not geo_general.areColinear(ne, self.lastExtensions[1])
                                         ):
                                             self.lastExtensions[1] = self.lastExtensions[0]
                                             self.lastExtensions[0] = ne
@@ -943,10 +937,14 @@ class Snapper:
             while len(l) > 1:
                 p1 = l.pop()
                 for p2 in l:
-                    i1 = geo_intersections.findIntersection(p1, p1.add(u), p2, p2.add(v), True, True)
+                    i1 = geo_intersections.findIntersection(
+                        p1, p1.add(u), p2, p2.add(v), True, True
+                    )
                     if i1:
                         ipoints.append([p1, i1[0]])
-                    i2 = geo_intersections.findIntersection(p1, p1.add(v), p2, p2.add(u), True, True)
+                    i2 = geo_intersections.findIntersection(
+                        p1, p1.add(v), p2, p2.add(u), True, True
+                    )
                     if i2:
                         ipoints.append([p1, i2[0]])
             for p in ipoints:

@@ -144,11 +144,15 @@ class Polygon(gui_base_original.Creator):
                         self.ui.switchUi(False)
             else:  # choose radius
                 if len(self.tangents) == 2:
-                    cir = geo_circles_incomplete.circleFrom2tan1pt(self.tangents[0], self.tangents[1], self.point)
+                    cir = geo_circles_incomplete.circleFrom2tan1pt(
+                        self.tangents[0], self.tangents[1], self.point
+                    )
                     _c = geo_circles.findClosestCircle(self.point, cir)
                     self.center = _c.Center
                 elif self.tangents and self.tanpoints:
-                    cir = geo_circles_incomplete.circleFrom1tan2pt(self.tangents[0], self.tanpoints[0], self.point)
+                    cir = geo_circles_incomplete.circleFrom1tan2pt(
+                        self.tangents[0], self.tanpoints[0], self.point
+                    )
                     _c = geo_circles.findClosestCircle(self.point, cir)
                     self.center = _c.Center
                 if gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()):
@@ -160,7 +164,9 @@ class Polygon(gui_base_original.Creator):
                         num = int(snapped["Component"].lstrip("Edge")) - 1
                         ed = ob.Shape.Edges[num]
                         if len(self.tangents) == 2:
-                            cir = geo_circles_incomplete.circleFrom3tan(self.tangents[0], self.tangents[1], ed)
+                            cir = geo_circles_incomplete.circleFrom3tan(
+                                self.tangents[0], self.tangents[1], ed
+                            )
                             cl = geo_circles.findClosestCircle(self.point, cir)
                             self.center = cl.Center
                             self.rad = cl.Radius
@@ -291,7 +297,9 @@ class Polygon(gui_base_original.Creator):
             else:
                 self.center = cir[-1].Center
         elif self.tangents and self.tanpoints:
-            cir = geo_circles_incomplete.circleFrom1tan1pt1rad(self.tangents[0], self.tanpoints[0], rad)
+            cir = geo_circles_incomplete.circleFrom1tan1pt1rad(
+                self.tangents[0], self.tanpoints[0], rad
+            )
             if self.center:
                 _c = geo_circles.findClosestCircle(self.center, cir)
                 self.center = _c.Center
