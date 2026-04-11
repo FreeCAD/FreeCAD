@@ -564,6 +564,142 @@ class _Wall(ArchComponent.Component):
 
         return lateral + align_offset_val
 
+    # ========================================================================
+    # NEW: _precompute_wire_slices - pre-slice per-edge property lists
+    # ========================================================================
+    @staticmethod
+    def _precompute_wire_slices(basewires, widths, aligns, offsets,
+                                default_width, default_align, default_offset):
+        """Pre-slice per-edge property lists into one dict per wire.
+
+        Reads widths/aligns/offsets once, non-destructively.
+        Each wire's dict is reused for every layer — no list mutation.
+
+        Returns list of dict, one per wire:
+            edgeNum, first_edge, widths[], aligns[], offsets[]
+        """
+        import Part
+        slices = []
+        pos = 0  # running edge index in the flat lists
+
+        for wire in basewires:
+            if isinstance(wire, Part.Wire):
+                edgeNum = len(wire.Edges)
+                first_edge = wire.Edges[0]
+            else:
+                edgeNum = len(wire)
+                first_edge = wire[0]
+
+            w_sl, a_sl, o_sl = [], [], []
+            for n in range(edgeNum):
+                idx = pos + n
+                try:
+                    v = widths[idx]
+                    w_sl.append(v if v else default_width)
+                except IndexError:
+                    w_sl.append(default_width)
+                try:
+                    v = aligns[idx]
+                    a_sl.append(v if v in ("Left", "Right", "Center") else default_align)
+                except IndexError:
+                    a_sl.append(default_align)
+                try:
+                    v = offsets[idx]
+                    o_sl.append(v if v else default_offset)
+                except IndexError:
+                    o_sl.append(default_offset)
+
+            slices.append(dict(edgeNum=edgeNum, first_edge=first_edge,
+                               widths=w_sl, aligns=a_sl, offsets=o_sl))
+            pos += edgeNum
+
+        return slices
+
+    # ========================================================================
+    # NEW: _generate_face_for_wire_layer - generate one 2D face per (wire, layer)
+    # ========================================================================
+    def _generate_face_for_wire_layer(self, wire, layer_width, layeroffset,
+                                      slc, normal, cur_align, total_width):
+        """Generate one 2D face for a (wire, layer) pair.
+
+        Parameters
+        ----------
+        wire        : Part.Wire or list[Part.Edge]
+        layer_width : float   — absolute thickness of this layer
+        layeroffset : float   — cumulative lateral offset to start of this layer
+        slc         : dict    — pre-sliced wire properties
+        normal      : Vector  — sketch/working-plane normal
+        cur_align   : str     — "Left", "Right", or "Center"
+        total_width : float   — sum of all layer thicknesses (for Center)
+
+        Returns (face, connect_edges_list) or (None, [])
+        """
+        import Part, DraftGeomUtils, DraftVecUtils
+
+        e = slc['first_edge']
+        edgeNum = slc['edgeNum']
+
+        if isinstance(e.Curve, (Part.Circle, Part.Ellipse)):
+            dvec = e.Vertexes[0].Point.sub(e.Curve.Center)
+        else:
+            dvec = DraftGeomUtils.vec(e).cross(normal)
+
+        if DraftVecUtils.isNull(dvec):
+            return None, []
+        dvec.normalize()
+
+        curWidth = [abs(layer_width)] * edgeNum
+        # Apply layeroffset to this wire's offsets — fresh list, no mutation
+        eff_offsets = [x + layeroffset for x in slc['offsets']]
+
+        if cur_align == "Left":
+            dvec.multiply(layer_width)
+            wNe2 = DraftGeomUtils.offsetWire(
+                wire, dvec, bind=False, occ=False,
+                widthList=curWidth, offsetMode=None,
+                alignList=slc['aligns'], normal=normal,
+                basewireOffset=eff_offsets, wireNedge=True)
+            wNe1 = DraftGeomUtils.offsetWire(
+                wire, dvec, bind=False, occ=False,
+                widthList=curWidth, offsetMode="BasewireMode",
+                alignList=slc['aligns'], normal=normal,
+                basewireOffset=eff_offsets, wireNedge=True)
+
+        elif cur_align == "Right":
+            dvec = dvec.negative()
+            dvec.multiply(layer_width)
+            wNe2 = DraftGeomUtils.offsetWire(
+                wire, dvec, bind=False, occ=False,
+                widthList=curWidth, offsetMode=None,
+                alignList=slc['aligns'], normal=normal,
+                basewireOffset=eff_offsets, wireNedge=True)
+            wNe1 = DraftGeomUtils.offsetWire(
+                wire, dvec, bind=False, occ=False,
+                widthList=curWidth, offsetMode="BasewireMode",
+                alignList=slc['aligns'], normal=normal,
+                basewireOffset=eff_offsets, wireNedge=True)
+
+        elif cur_align == "Center":
+            dvec = dvec.negative()
+            off = -(total_width / 2 - layeroffset)
+            c_aligns = ["Right"] * edgeNum
+            c_offsets = [off] * edgeNum
+            wNe1 = DraftGeomUtils.offsetWire(
+                wire, dvec, widthList=curWidth, offsetMode="BasewireMode",
+                alignList=c_aligns, normal=normal,
+                basewireOffset=c_offsets, wireNedge=True)
+            wNe2 = DraftGeomUtils.offsetWire(
+                wire, dvec, widthList=curWidth, offsetMode=None,
+                alignList=c_aligns, normal=normal,
+                basewireOffset=c_offsets, wireNedge=True)
+        else:
+            return None, []
+
+        face = DraftGeomUtils.bind(wNe1[0], wNe2[0], per_segment=True)
+        # Connect edges needed for length calculation (baseline wires only)
+        connect_edges = list(wNe2[2]) + list(wNe1[2])
+        return face, connect_edges
+
     def dumps(self):
         dump = super().dumps()
         if not isinstance(dump, tuple):
@@ -745,20 +881,36 @@ class _Wall(ArchComponent.Component):
                 if not is_multi_layer:
                     should_fuse_solids = True
 
-            # Generate solids
-            solids = []
+            # ====================================================================
+            # NEW: Generate and fuse per-layer solids (incorporates paullee v2)
+            # ====================================================================
+            # Each element of base_faces is either a single face (single wire,
+            # one layer) or a Part.Compound of N faces (N wires, one layer).
+            # We fuse the N sub-solids of each layer into one solid; if they
+            # are disconnected (non-touching segments) the fuse result has
+            # multiple Solids, which is fine — material coloring uses
+            # self.solidsNumLst to handle this.
+            self.solidsNumLst = []
+            layer_solids = []
             for face in base_faces:
                 face.Placement = extdata[2].multiply(face.Placement)
-                solids.append(face.extrude(extv))
+                extruded = face.extrude(extv)
+                # Fuse all sub-solids within this layer
+                sub_solids = extruded.Solids if hasattr(extruded, 'Solids') else [extruded]
+                fused = None
+                for s in sub_solids:
+                    try:
+                        fused = fused.fuse(s) if fused else s
+                    except Exception:
+                        # Fusion can fail for non-manifold geometry;
+                        # fall back to compound
+                        fused = Part.makeCompound([fused, s]) if fused else s
+                if fused is None:
+                    fused = extruded
+                layer_solids.append(fused)
+                self.solidsNumLst.append(len(fused.Solids) if fused.Solids else 1)
 
-            # Apply the fusion strategy
-            if should_fuse_solids:
-                fused_shape = None
-                for solid in solids:
-                    fused_shape = fused_shape.fuse(solid) if fused_shape else solid
-                base = fused_shape
-            else:
-                base = Part.makeCompound(solids)
+            base = Part.makeCompound(layer_solids)
         if obj.Base:
             if hasattr(obj.Base, "Shape"):
                 if obj.Base.Shape.isNull():
@@ -784,9 +936,11 @@ class _Wall(ArchComponent.Component):
         # Blocks calculation
         if hasattr(obj, "MakeBlocks") and hasattr(self, "basewires"):
             if obj.MakeBlocks and self.basewires and extdata and obj.Width and obj.Height:
-                blocks = self._make_blocks(obj, base_faces[0], extv)
-                if blocks is not None:
-                    base = blocks
+                # base_faces is defined from extdata above
+                if base_faces:
+                    blocks = self._make_blocks(obj, base_faces[0], extv)
+                    if blocks is not None:
+                        base = blocks
         if not base:
             # FreeCAD.Console.PrintError(translate("Arch","Error: Invalid base object")+"\n")
             # return
@@ -822,19 +976,25 @@ class _Wall(ArchComponent.Component):
                     obj.CountEntire = 0
                     obj.CountBroken = 0
 
-        # set the length property
-        if hasattr(self, "connectEdges") and self.connectEdges:
-            l = float(0)
-            for e in self.connectEdges:
-                l += e.Length
-            l = l / 2
-            if self.layersNum:
-                l = l / self.layersNum
-            if obj.Length.Value != l:
-                obj.Length = l
-                self.oldLength = (
-                    None  # delete the stored value to prevent triggering base change below
-                )
+        # ====================================================================
+        # NEW: Length = total length of all baseline wires in the sketch.
+        # This is always correct because basewires are the original sketch
+        # edges, unchanged by layer processing.
+        # ====================================================================
+        if hasattr(self, 'basewires') and self.basewires:
+            total_len = 0.0
+            for wire in self.basewires:
+                try:
+                    if isinstance(wire, Part.Wire):
+                        total_len += wire.Length
+                    else:  # list of edges
+                        for e in wire:
+                            total_len += e.Length
+                except Exception:
+                    pass
+            if total_len > 0 and obj.Length.Value != total_len:
+                obj.Length = total_len
+                self.oldLength = None
 
         # set the Area property
         obj.Area = obj.Length.Value * obj.Height.Value
@@ -1345,298 +1505,77 @@ class _Wall(ArchComponent.Component):
                         # normal = obj.Base.getGlobalPlacement().Rotation.multVec(FreeCAD.Vector(0,0,1))
                         # normal = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))
 
+                    # ========================================================================
+                    # NEW: Replace the entire basewires expansion + loop block
+                    # ========================================================================
                     if self.basewires:
-                        if (len(self.basewires) == 1) and layers:
-                            self.basewires = [self.basewires[0] for l in layers]
-                            self.layersNum = len(layers)
-                        else:
-                            self.layersNum = 0
-                        if layers:
-                            layeroffset = self._compute_lateral_offset(obj, layers)
-                        else:
-                            layeroffset = 0
-                        baseface = None
                         self.connectEdges = []
-                        for i, wire in enumerate(self.basewires):
+                        self.wiresNum = len(self.basewires)
+                        self.layersNum = len(layers) if layers else 0
 
-                            # Check number of edges per 'wire' and get the 1st edge
-                            if isinstance(wire, Part.Wire):
-                                edgeNum = len(wire.Edges)
-                                e = wire.Edges[0]
-                            elif isinstance(wire[0], Part.Edge):
-                                edgeNum = len(wire)
-                                e = wire[0]
+                        # ── Phase 1: pre-slice per-wire properties ─────────
+                        # Done once, before any layer loop.
+                        # Every layer sees the correct per-edge override values.
+                        wire_slices = _Wall._precompute_wire_slices(
+                            self.basewires,
+                            widths, aligns, offsets,
+                            width, align, offset,
+                        )
 
-                            for n in range(
-                                0, edgeNum, 1
-                            ):  # why these not work - range(edgeNum), range(0,edgeNum) ...
+                        # Global alignment mode (governs the whole stack)
+                        cur_align = wire_slices[0]['aligns'][0] if wire_slices else align
 
-                                # Fill the aligns list with ArchWall's default
-                                # align entry and with same number of items as
-                                # number of edges
-                                try:
-                                    if aligns[n] not in ["Left", "Right", "Center"]:
-                                        aligns[n] = align
-                                except Exception:
-                                    aligns.append(align)
+                        # Total width for Center alignment offset calculation
+                        total_width = sum(abs(l) for l in layers) if layers else width
 
-                                # Fill the widths List with ArchWall's default
-                                # width entry and with same number of items as
-                                # number of edges
-                                try:
-                                    if not widths[n]:
-                                        widths[n] = width
-                                except Exception:
-                                    widths.append(width)
-                                # Fill the offsets List with ArchWall's default
-                                # offset entry and with same number of items as
-                                # number of edges
-                                try:
-                                    if not offsets[n]:
-                                        offsets[n] = offset
-                                except Exception:
-                                    offsets.append(offset)
+                        # ── Phase 2: initial layeroffset ───────────────────
+                        # Returns 0 for standard walls.
+                        # Returns the pin-offset when AlignLayer is active.
+                        layeroffset = (self._compute_lateral_offset(obj, layers)
+                                       if layers else 0)
 
-                            # Get a direction vector orthogonal to both the
-                            # normal of the face/sketch and the direction the
-                            # wire was drawn in. IE: along the width direction
-                            # of the wall.
-                            if isinstance(e.Curve, (Part.Circle, Part.Ellipse)):
-                                dvec = e.Vertexes[0].Point.sub(e.Curve.Center)
-                            else:
-                                dvec = DraftGeomUtils.vec(e).cross(normal)
+                        # ── Phase 3: nested loop — outer=layers, inner=wires
+                        basefaces_per_layer = []
 
-                            if not DraftVecUtils.isNull(dvec):
-                                dvec.normalize()
-                            face = None
-
-                            curAligns = aligns[0]
-                            # off = obj.Offset.Value  # off is no longer used
-
-                            if curAligns == "Left":
-
-                                if layers:
-                                    curWidth = []
-                                    for n in range(edgeNum):
-                                        curWidth.append(abs(layers[i]))
-                                    # off = off+layeroffset  # off is no longer used
-                                    offsets = [x + layeroffset for x in offsets]
-                                    dvec.multiply(curWidth[0])
-                                    layeroffset += abs(curWidth[0])
-                                else:
-                                    curWidth = widths
-                                    dvec.multiply(width)
-
-                                # Now DraftGeomUtils.offsetWire() support
-                                # similar effect as ArchWall Offset
-                                #
-                                # if off:
-                                #    dvec2 = DraftVecUtils.scaleTo(dvec,off)
-                                #    wire = DraftGeomUtils.offsetWire(wire,dvec2)
-
-                                # Get the 'offseted' wire taking into account
-                                # of Width and Align of each edge, and overall
-                                # Offset
-                                wNe2 = DraftGeomUtils.offsetWire(
-                                    wire,
-                                    dvec,
-                                    bind=False,
-                                    occ=False,
-                                    widthList=curWidth,
-                                    offsetMode=None,
-                                    alignList=aligns,
-                                    normal=normal,
-                                    basewireOffset=offsets,
-                                    wireNedge=True,
-                                )
-                                # Get the 'base' wire taking into account of
-                                # width and align of each edge
-                                wNe1 = DraftGeomUtils.offsetWire(
-                                    wire,
-                                    dvec,
-                                    bind=False,
-                                    occ=False,
-                                    widthList=curWidth,
-                                    offsetMode="BasewireMode",
-                                    alignList=aligns,
-                                    normal=normal,
-                                    basewireOffset=offsets,
-                                    wireNedge=True,
-                                )
-                            elif curAligns == "Right":
-                                dvec = dvec.negative()
-
-                                if layers:
-                                    curWidth = []
-                                    for n in range(edgeNum):
-                                        curWidth.append(abs(layers[i]))
-                                    # off = off+layeroffset  # off is no longer used
-                                    offsets = [x + layeroffset for x in offsets]
-                                    dvec.multiply(curWidth[0])
-                                    layeroffset += abs(curWidth[0])
-                                else:
-                                    curWidth = widths
-                                    dvec.multiply(width)
-
-                                # Now DraftGeomUtils.offsetWire() support similar effect as ArchWall Offset
-                                #
-                                # if off:
-                                #    dvec2 = DraftVecUtils.scaleTo(dvec,off)
-                                #    wire = DraftGeomUtils.offsetWire(wire,dvec2)
-                                wNe2 = DraftGeomUtils.offsetWire(
-                                    wire,
-                                    dvec,
-                                    bind=False,
-                                    occ=False,
-                                    widthList=curWidth,
-                                    offsetMode=None,
-                                    alignList=aligns,
-                                    normal=normal,
-                                    basewireOffset=offsets,
-                                    wireNedge=True,
-                                )
-                                wNe1 = DraftGeomUtils.offsetWire(
-                                    wire,
-                                    dvec,
-                                    bind=False,
-                                    occ=False,
-                                    widthList=curWidth,
-                                    offsetMode="BasewireMode",
-                                    alignList=aligns,
-                                    normal=normal,
-                                    basewireOffset=offsets,
-                                    wireNedge=True,
-                                )
-                            elif curAligns == "Center":
-                                if layers:
-                                    # TODO Current, the order of layers follow
-                                    # "Right" align.  Option for the order of
-                                    # layers follow "Left" align should be
-                                    # provided for users.
-                                    dvec = dvec.negative()
-                                    totalwidth = sum([abs(l) for l in layers])
-                                    off = totalwidth / 2 - layeroffset
-                                    # TODO To consider offset per edge?
-                                    #
-                                    # Offset follows direction of align "Right".
-                                    # Needs to be reversed in this case.
-                                    off = -off
-                                    # d1 = Vector(dvec).multiply(off)
-                                    curWidth = []
-                                    alignListC = []
-                                    offsetListC = []
-                                    for n in range(edgeNum):
-                                        curWidth.append(abs(layers[i]))
-                                        alignListC.append("Right")  # ("Left")
-                                        offsetListC.append(off)
-                                    # wNe1 = DraftGeomUtils.offsetWire(wire, d1, wireNedge=True)
-                                    # See https://github.com/FreeCAD/FreeCAD/issues/25485#issuecomment-3566734050
-                                    # d1 may be Vector (0,0,0), offsetWire()
-                                    # in draftgeoutils\offsets.py:-
-                                    # v1 = App.Vector(dvec).normalize() return
-                                    # error.  Provide widthList, alignList etc.
-                                    # so no need to run above code to deduce
-                                    # v1 in offsetWire()
-                                    wNe1 = DraftGeomUtils.offsetWire(
-                                        wire,
-                                        dvec,
-                                        widthList=curWidth,
-                                        offsetMode="BasewireMode",
-                                        alignList=alignListC,
-                                        normal=normal,
-                                        basewireOffset=offsetListC,
-                                        wireNedge=True,
-                                    )
-                                    wNe2 = DraftGeomUtils.offsetWire(
-                                        wire,
-                                        dvec,
-                                        widthList=curWidth,
-                                        offsetMode=None,
-                                        alignList=alignListC,
-                                        normal=normal,
-                                        basewireOffset=offsetListC,
-                                        wireNedge=True,
-                                    )
-                                    layeroffset += abs(curWidth[0])
-                                else:
-                                    dvec.multiply(width)
-                                    wNe2 = DraftGeomUtils.offsetWire(
-                                        wire,
-                                        dvec,
-                                        bind=False,
-                                        occ=False,
-                                        widthList=widths,
-                                        offsetMode=None,
-                                        alignList=aligns,
-                                        normal=normal,
-                                        basewireOffset=offsets,
-                                        wireNedge=True,
-                                    )
-                                    wNe1 = DraftGeomUtils.offsetWire(
-                                        wire,
-                                        dvec,
-                                        bind=False,
-                                        occ=False,
-                                        widthList=widths,
-                                        offsetMode="BasewireMode",
-                                        alignList=aligns,
-                                        normal=normal,
-                                        basewireOffset=offsets,
-                                        wireNedge=True,
-                                    )
-                            w2 = wNe2[0]
-                            w1 = wNe1[0]
-                            face = DraftGeomUtils.bind(w1, w2, per_segment=True)
-                            cEdgesF2 = wNe2[1]
-                            cEdges2 = wNe2[2]
-                            oEdges2 = wNe2[3]
-                            cEdgesF1 = wNe1[1]
-                            cEdges1 = wNe1[2]
-                            oEdges1 = wNe1[3]
-                            self.connectEdges.extend(cEdges2)
-                            self.connectEdges.extend(cEdges1)
-
-                            del widths[0:edgeNum]
-                            del aligns[0:edgeNum]
-                            del offsets[0:edgeNum]
-
-                            if face:
-
-                                if layers and (layers[i] < 0):
-                                    # layers with negative values are not drawn
+                        if layers:
+                            for layer in layers:
+                                layer_faces = []
+                                if layer < 0:
+                                    # Negative thickness = air gap, skip entire layer
+                                    layeroffset += abs(layer)
                                     continue
+                                for wire, slc in zip(self.basewires, wire_slices):
+                                    face, ce = self._generate_face_for_wire_layer(
+                                        wire, abs(layer), layeroffset,
+                                        slc, normal, cur_align, total_width,
+                                    )
+                                    if face:
+                                        layer_faces.append(face)
+                                    self.connectEdges.extend(ce)
 
-                                if baseface:
+                                if layer_faces:
+                                    if len(layer_faces) == 1:
+                                        basefaces_per_layer.append(layer_faces[0])
+                                    else:
+                                        import Part as _Part
+                                        basefaces_per_layer.append(
+                                            _Part.Compound(layer_faces)
+                                        )
+                                # Advance ONCE per layer — no modulo, no gating
+                                layeroffset += abs(layer)
+                        else:
+                            # No multi-material: single pass, standard behaviour
+                            for wire, slc in zip(self.basewires, wire_slices):
+                                face, ce = self._generate_face_for_wire_layer(
+                                    wire, width, 0,
+                                    slc, normal, cur_align, total_width,
+                                )
+                                if face:
+                                    basefaces_per_layer.append(face)
+                                self.connectEdges.extend(ce)
 
-                                    # To allow exportIFC.py to work properly on
-                                    # sketch, which use only 1st face / wire,
-                                    # do not fuse baseface here So for a sketch
-                                    # with multiple wires, each returns
-                                    # individual face (rather than fusing
-                                    # together) for exportIFC.py to work
-                                    # properly
-                                    # "ArchWall - Based on Sketch Issues" - https://forum.freecad.org/viewtopic.php?f=39&t=31235
-
-                                    # "Bug #2408: [PartDesign] .fuse is splitting edges it should not"
-                                    # - https://forum.freecad.org/viewtopic.php?f=10&t=20349&p=346237#p346237
-                                    # - bugtracker - https://freecad.org/tracker/view.php?id=2408
-
-                                    # Try Part.Shell before removeSplitter
-                                    # - https://forum.freecad.org/viewtopic.php?f=10&t=20349&start=10
-                                    # - 1st finding : if a rectangle + 1 line, can't removesSplitter properly...
-                                    # - 2nd finding : if 2 faces do not touch, can't form a shell; then, subsequently for remaining faces even though touch each faces, can't form a shell
-
-                                    baseface.append(face)
-                                    # The above make Refine methods below (in else) useless, regardless removeSpitters yet to be improved for cases do not work well
-                                    """  Whether layers or not, all baseface.append(face) """
-
-                                else:
-                                    baseface = [face]
-
-                                    """  Whether layers or not, all baseface = [face] """
-
-                        if baseface:
-                            base, placement = self.rebase(baseface)
+                        if basefaces_per_layer:
+                            base, placement = self.rebase(basefaces_per_layer)
 
         # Build Wall from scratch if there is no obj.Base or even obj.Base is not valid
         else:
@@ -2143,34 +2082,40 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
             if hasattr(obj, "Material"):
                 if obj.Material and obj.Shape:
                     if hasattr(obj.Material, "Materials"):
+                        # ================================================================
+                        # NEW: Expand active materials to match per-layer solid counts.
+                        # For each layer that produced k fused solids (k>1 means
+                        # non-touching wire segments), repeat that material k times.
+                        # ================================================================
                         activematerials = [
                             obj.Material.Materials[i]
                             for i in range(len(obj.Material.Materials))
                             if obj.Material.Thicknesses[i] >= 0
                         ]
+
+                        # Expand active materials to match per-layer solid counts.
+                        if hasattr(obj.Proxy, 'solidsNumLst'):
+                            expanded = []
+                            for mat, count in zip(activematerials,
+                                                  obj.Proxy.solidsNumLst):
+                                expanded.extend([mat] * count)
+                            activematerials = expanded
+
                         if len(activematerials) == len(obj.Shape.Solids):
                             cols = []
                             for i, mat in enumerate(activematerials):
                                 c = obj.ViewObject.ShapeColor
-                                c = (c[0], c[1], c[2], 1.0 - obj.ViewObject.Transparency / 100.0)
+                                c = (c[0], c[1], c[2],
+                                     1.0 - obj.ViewObject.Transparency / 100.0)
                                 if "DiffuseColor" in mat.Material:
                                     if "(" in mat.Material["DiffuseColor"]:
-                                        c = tuple(
-                                            [
-                                                float(f)
-                                                for f in mat.Material["DiffuseColor"]
-                                                .strip("()")
-                                                .split(",")
-                                            ]
-                                        )
+                                        c = tuple(float(f) for f in
+                                                  mat.Material["DiffuseColor"]
+                                                  .strip("()").split(","))
                                 if "Transparency" in mat.Material:
-                                    c = (
-                                        c[0],
-                                        c[1],
-                                        c[2],
-                                        1.0 - float(mat.Material["Transparency"]),
-                                    )
-                                cols.extend([c for j in range(len(obj.Shape.Solids[i].Faces))])
+                                    c = (c[0], c[1], c[2],
+                                         1.0 - float(mat.Material["Transparency"]))
+                                cols.extend([c] * len(obj.Shape.Solids[i].Faces))
                             obj.ViewObject.DiffuseColor = cols
         ArchComponent.ViewProviderComponent.updateData(self, obj, prop)
         if len(obj.ViewObject.DiffuseColor) > 1:
