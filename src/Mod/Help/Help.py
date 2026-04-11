@@ -287,6 +287,22 @@ def can_open_external_browser(url):
     if policy == ALWAYS_OPEN_EXTERNAL_BROWSER_POLICY:
         return True
     if policy == NEVER_OPEN_EXTERNAL_BROWSER_POLICY:
+        if FreeCAD.GuiUp:
+            try:
+                import FreeCADGui
+                from PySide import QtWidgets
+
+                QtWidgets.QMessageBox.warning(
+                    FreeCADGui.getMainWindow(),
+                    translate("Help", "External links are disabled"),
+                    translate(
+                        "Help",
+                        "Opening web pages in the default browser is disabled.\n"
+                        "Change this in Preferences > General > Help > External browser links.",
+                    ),
+                )
+            except Exception:
+                pass
         return False
 
     if not FreeCAD.GuiUp:

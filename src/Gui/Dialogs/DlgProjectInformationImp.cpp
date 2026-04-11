@@ -25,7 +25,6 @@
 #include <QApplication>
 #include <QByteArray>
 #include <QDateTime>
-#include <QDesktopServices>
 #include <QLocale>
 #include <QUrl>
 
@@ -34,6 +33,7 @@
 #include <Base/UnitsApi.h>
 
 #include "Dialogs/DlgProjectInformationImp.h"
+#include "OnlineDocumentation.h"
 #include "ui_DlgProjectInformation.h"
 
 #include "MainWindow.h"
@@ -191,7 +191,8 @@ void DlgProjectInformationImp::onLicenseTypeChanged(int index)
 void DlgProjectInformationImp::open_url()
 {
     QString url = ui->lineEditLicenseURL->text();
-    QDesktopServices::openUrl(QUrl(url, QUrl::TolerantMode));
+    const auto encoded = QUrl(url, QUrl::TolerantMode).toEncoded();
+    Gui::OpenURLInBrowser(encoded.constData());
 }
 
 #include "moc_DlgProjectInformationImp.cpp"
