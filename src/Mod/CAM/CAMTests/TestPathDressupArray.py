@@ -130,9 +130,7 @@ class TestDressupArray(PathTestBase):
     def test03(self):
         """Verify array execution accepts drilling commands with semicolon annotations."""
 
-        drill = Path.Command(
-            "G81", {"F": 6.666667, "R": 0.0, "X": 7.0, "Y": 9.5, "Z": -3.505}
-        )
+        drill = Path.Command("G81", {"F": 6.666667, "R": 0.0, "X": 7.0, "Y": 9.5, "Z": -3.505})
         drill.Annotations = {"RetractMode": "G98"}
 
         base = TestEngrave([drill])
