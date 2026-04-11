@@ -29,6 +29,9 @@ from Machine.models.machine import Machine
 import Path.Tool.Controller as PathToolController
 from Path.Tool.toolbit import ToolBit
 import Path.Main.Job as PathJob
+import CAMTests.PostTestMocks as PostTestMocks
+from Path.Post.Processor import PostProcessorFactory
+
 
 
 class TestToolLengthOffset(unittest.TestCase):
@@ -48,22 +51,24 @@ class TestToolLengthOffset(unittest.TestCase):
         machine = Machine("Test Machine")
         machine.output.output_tool_length_offset = False
 
-        # Create a simple path with G43 command
-        path = Path.Path()
-        g43_cmd = Path.Command("G43", {"H": 1})
-        path.addCommands(g43_cmd)
+        job, profile_op, tool_controller = (
+            PostTestMocks.create_default_job_with_operation()
+        )
 
         # Create post processor
-        processor = PostProcessor(None, tooltip=None, tooltipargs=None, units=None)
+        processor = PostProcessorFactory.get_post_processor(job, "test")
         processor._machine = machine
-        processor.values["OUTPUT_TOOL_LENGTH_OFFSET"] = False
+
+        # Create a simple path with G43 command
+        profile_op.Path = Path.Path( [ Path.Command("G43", {"H": 1}) ] )
 
         # Convert G43 command
-        result = processor.convert_command_to_gcode(g43_cmd)
+        processor._machine.output.output_tool_length_offset = False
+        result = processor.export2()[0][1]
 
         # Should return None (suppressed)
-        self.assertIsNone(
-            result, "G43 command should be suppressed when output_tool_length_offset is False"
+        self.assertNotIn(
+            "G43", result, f"G43 command should be suppressed when output_tool_length_offset is False in\n{result}"
         )
 
     def test_g43_output_enabled(self):
@@ -72,23 +77,20 @@ class TestToolLengthOffset(unittest.TestCase):
         machine = Machine("Test Machine")
         machine.output.output_tool_length_offset = True
 
-        # Create a simple path with G43 command
-        path = Path.Path()
-        g43_cmd = Path.Command("G43", {"H": 1})
-        path.addCommands(g43_cmd)
+        job, profile_op, tool_controller = (
+            PostTestMocks.create_default_job_with_operation()
+        )
 
         # Create post processor
-        processor = PostProcessor(None, tooltip=None, tooltipargs=None, units=None)
+        processor = PostProcessorFactory.get_post_processor(job, "test")
         processor._machine = machine
-        processor.values["OUTPUT_TOOL_LENGTH_OFFSET"] = True
+
+        # Create a simple path with G43 command
+        profile_op.Path = Path.Path( [ Path.Command("G43", {"H": 1}) ] )
 
         # Convert G43 command
-        result = processor.convert_command_to_gcode(g43_cmd)
+        result = processor.export2()[0][1]
 
-        # Should return the G43 command
-        self.assertIsNotNone(
-            result, "G43 command should be output when output_tool_length_offset is True"
-        )
         self.assertIn("G43", result, "Result should contain G43 command")
         self.assertIn("H1", result, "Result should contain H parameter")
 

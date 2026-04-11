@@ -9,6 +9,8 @@ This module contains centralized constants used throughout the CAM workbench,
 including G-code commands, M-codes, and other standardized values.
 """
 
+PARAMETER_ORDER = ["X", "Y", "Z", "F", "I", "J", "K", "R", "Q", "P", "S"]
+
 # =============================================================================
 # G-Code Motion Commands
 # =============================================================================
@@ -32,7 +34,8 @@ GCODE_MOVE_CCW = ["G3", "G03"]
 GCODE_MOVE_ARC = GCODE_MOVE_CW + GCODE_MOVE_CCW
 
 # Canned drilling cycles
-GCODE_MOVE_DRILL = ["G73", "G81", "G82", "G83", "G85"]
+GCODE_MOVE_DRILL = ["G73", "G81", "G82", "G83", "G85"] # FIXME: G85 not supported in Post/Processor.py
+GCODE_EXPANDABLE_DRILL = [ "G73", "G81", "G82", "G83" ]
 
 # Cutting moves (feed moves and arcs)
 GCODE_MOVE_MILL = GCODE_MOVE_STRAIGHT + GCODE_MOVE_ARC
@@ -48,9 +51,9 @@ GCODE_MOVE_ALL = GCODE_MOVE_LINE + GCODE_MOVE_ARC + GCODE_MOVE_DRILL
 # =============================================================================
 
 # Units mode
-GCODE_UNITS = ["G20", "G21"]
 GCODE_UNITS_METRIC = ["G21"]
 GCODE_UNITS_INCHES = ["G20"]
+GCODE_UNITS = GCODE_UNITS_METRIC + GCODE_UNITS_INCHES
 
 # Dwell
 GCODE_DWELL = ["G4", "G04"]
@@ -61,7 +64,7 @@ GCODE_CUTTER_COMPENSATION = ["G40", "G41", "G42"]
 GCODE_CYCLE_CANCEL = ["G80"]
 
 # Additional drilling cycles
-GCODE_DRILL_EXTENDED = ["G74", "G84", "G88", "G89"]
+GCODE_DRILL_EXTENDED = ["G74", "G84", "G88", "G89"] # FIXME: G86 G87 are mentioned in other code
 
 # Probing
 GCODE_PROBE = ["G38.2"]
@@ -76,13 +79,17 @@ GCODE_OFFSET = ["G92"]
 
 # Tool length offset
 GCODE_TOOL_LENGTH_OFFSET = ["G43"]
+GCODE_TOOL_LENGTH_OFFSET_CANCEL = ["G49"]
 
 # Feed rate modes
+# FIXME: are these ever used?
 GCODE_FEED_INVERSE_TIME = ["G93"]
 GCODE_FEED_UNITS_PER_MIN = ["G94"]
 GCODE_FEED_UNITS_PER_REV = ["G95"]
 
 # Spindle control modes
+# FIXME: are these ever used?
+GCODE_FEED_INVERSE_TIME = ["G93"]
 GCODE_SPINDLE_CSS = ["G96"]  # Constant surface speed
 GCODE_SPINDLE_RPM = ["G97"]  # RPM mode
 
@@ -163,6 +170,8 @@ GCODE_SUPPORTED = (
     + GCODE_RETURN_INITIAL
     + GCODE_RETURN_R
     + GCODE_TOOL_LENGTH_OFFSET
+    + GCODE_FIXTURES
+    # FIXME: MCODE_END_RESET & MCODE_END?
 )
 
 # All supported M-codes for generic post processor
@@ -175,6 +184,8 @@ MCODE_SUPPORTED = (
     + MCODE_COOLANT_MIST
     + MCODE_COOLANT_FLOOD
     + MCODE_COOLANT_OFF
+    + MCODE_SPINDLE_ON
+    + MCODE_SPINDLE_OFF
 )
 
 # All coolant M-codes
