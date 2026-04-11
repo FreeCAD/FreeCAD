@@ -30,7 +30,6 @@ from SketcherTests.TestSketchExpression import TestSketchExpression
 from SketcherTests.TestSketchValidateCoincidents import TestSketchValidateCoincidents
 from SketcherTests.TestSketchCarbonCopyReverseMapping import TestSketchCarbonCopyReverseMapping
 from SketcherTests.TestSketchInternalFaces import TestSketchInternalFaces
-from SketcherTests.TestSketcherGuiModelTreeWidget import TestSketcherGuiModelTreeWidget
 
 # GUI-dependent tests - only import if GUI is available
 try:
@@ -38,6 +37,7 @@ try:
 
     if FreeCADGui.getMainWindow() is not None:
         from SketcherTests.TestPlacementUpdate import TestSketchPlacementUpdate
+        from SketcherTests.TestSketcherGuiModelTreeWidget import TestSketcherGuiModelTreeWidget
 except (ImportError, AttributeError):
     pass  # GUI not available, skip GUI tests
 
