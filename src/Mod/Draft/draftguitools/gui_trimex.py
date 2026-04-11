@@ -47,6 +47,8 @@ import FreeCAD as App
 import FreeCADGui as Gui
 import DraftVecUtils
 from draftfunctions import extrude
+from draftgeoutils import general as geo_general
+from draftgeoutils import intersections as geo_intersections
 from draftguitools import gui_base_original
 from draftguitools import gui_tool_utils
 from draftguitools import gui_trackers as trackers
@@ -108,7 +110,6 @@ class Trimex(gui_base_original.Modifier):
         self.ui.trimUi(title=translate("draft", self.featureName))
         self.linetrack = trackers.lineTracker()
 
-        import DraftGeomUtils
         import Part
 
         if not hasattr(self.obj, "Shape"):
@@ -160,7 +161,7 @@ class Trimex(gui_base_original.Modifier):
             sc = (lc[0], lc[1], lc[2])
             sw = self.width
             for e in self.edges:
-                if DraftGeomUtils.geomType(e) == "Line":
+                if geo_general.geomType(e) == "Line":
                     self.ghost.append(trackers.lineTracker(scolor=sc, swidth=sw))
                 else:
                     self.ghost.append(trackers.arcTracker(scolor=sc, swidth=sw))
@@ -279,7 +280,6 @@ class Trimex(gui_base_original.Modifier):
         if real:
             newedges = []
 
-        import DraftGeomUtils
         import Part
 
         # finding the active point
@@ -290,7 +290,7 @@ class Trimex(gui_base_original.Modifier):
         if shift:
             npoint = self.activePoint
         else:
-            npoint = DraftGeomUtils.findClosest(point, vlist)
+            npoint = geo_general.findClosest(point, vlist)
         if npoint > len(self.edges) / 2:
             reverse = True
         if alt:
@@ -325,16 +325,16 @@ class Trimex(gui_base_original.Modifier):
             if shape.Edges:
                 pts = []
                 for e in shape.Edges:
-                    int = DraftGeomUtils.findIntersection(edge, e, True, True)
+                    int = geo_intersections.findIntersection(edge, e, True, True)
                     if int:
                         pts.extend(int)
                 if pts:
-                    point = pts[DraftGeomUtils.findClosest(point, pts)]
+                    point = pts[geo_general.findClosest(point, pts)]
 
         # modifying active edge
-        if DraftGeomUtils.geomType(edge) == "Line":
+        if geo_general.geomType(edge) == "Line":
             ang = None
-            ve = DraftGeomUtils.vec(edge)
+            ve = geo_general.vec(edge)
             chord = v1.sub(point)
             n = ve.cross(chord)
             if n.Length == 0:
@@ -392,7 +392,7 @@ class Trimex(gui_base_original.Modifier):
         for i in li:
             edge = self.edges[i]
             ghost = self.ghost[i]
-            if DraftGeomUtils.geomType(edge) == "Line":
+            if geo_general.geomType(edge) == "Line":
                 ghost.p1(edge.Vertexes[0].Point)
                 ghost.p2(edge.Vertexes[-1].Point)
             else:
@@ -489,7 +489,6 @@ class Trimex(gui_base_original.Modifier):
     def trimObjects(self, objectslist):
         """Attempt to trim two objects together."""
         import Part
-        import DraftGeomUtils
 
         wires = []
         for obj in objectslist:
@@ -513,7 +512,7 @@ class Trimex(gui_base_original.Modifier):
         edge2 = None
         for i1, e1 in enumerate(wires[0].Edges):
             for i2, e2 in enumerate(wires[1].Edges):
-                i = DraftGeomUtils.findIntersection(e1, e2, dts=False)
+                i = geo_intersections.findIntersection(e1, e2, dts=False)
                 if len(i) == 1:
                     ints.append(i[0])
                     edge1 = i1
