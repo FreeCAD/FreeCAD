@@ -38,8 +38,8 @@ from draftgeoutils import general as geo_general
 from draftmake import make_block
 from draftmake import make_wire
 from draftmake import make_circle
-from draftmake import make_bspline
-from draftmake import make_bezcurve
+# from draftmake import make_bspline
+# from draftmake import make_bezcurve
 from draftmake import make_arc_3points
 from draftutils import gui_utils
 
