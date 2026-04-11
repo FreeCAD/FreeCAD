@@ -37,7 +37,6 @@ import FreeCAD as App
 from draftgeoutils import fillets as geo_fillets
 from draftobjects import fillet
 from draftutils import gui_utils
-from draftutils import utils
 from draftutils.messages import _err
 from draftutils.translate import translate
 
