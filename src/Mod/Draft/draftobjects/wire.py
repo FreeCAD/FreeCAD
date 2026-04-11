@@ -178,12 +178,12 @@ class Wire(DraftObject):
                 shape = Part.makePolygon(pts + [pts[0]])
                 if "ChamferSize" in obj.PropertiesList:
                     if obj.ChamferSize.Value != 0:
-                        w = geo_geo_fillets.filletWire(shape, obj.ChamferSize.Value, chamfer=True)
+                        w = geo_fillets.filletWire(shape, obj.ChamferSize.Value, chamfer=True)
                         if w:
                             shape = w
                 if "FilletRadius" in obj.PropertiesList:
                     if obj.FilletRadius.Value != 0:
-                        w = geo_geo_fillets.filletWire(shape, obj.FilletRadius.Value)
+                        w = geo_fillets.filletWire(shape, obj.FilletRadius.Value)
                         if w:
                             shape = w
                 try:
@@ -216,12 +216,12 @@ class Wire(DraftObject):
                     shape = None
                 if "ChamferSize" in obj.PropertiesList:
                     if obj.ChamferSize.Value != 0:
-                        w = geo_geo_fillets.filletWire(shape, obj.ChamferSize.Value, chamfer=True)
+                        w = geo_fillets.filletWire(shape, obj.ChamferSize.Value, chamfer=True)
                         if w:
                             shape = w
                 if "FilletRadius" in obj.PropertiesList:
                     if obj.FilletRadius.Value != 0:
-                        w = geo_geo_fillets.filletWire(shape, obj.FilletRadius.Value)
+                        w = geo_fillets.filletWire(shape, obj.FilletRadius.Value)
                         if w:
                             shape = w
             if shape:
