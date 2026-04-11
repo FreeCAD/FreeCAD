@@ -332,4 +332,16 @@ def track(*args):
 
     deprecated - use logger.track(format, *args) instead
     """
-    return getModuleLogger(_caller()[0]).track(*args)
+    module, line, func = _caller()
+
+    if getModuleLogger(module).isTrackingEnabled():
+
+        formattedArgs = ", ".join([str(arg) for arg in args])
+
+        message = f"{module}({line}).{func}({formattedArgs})"
+        if _useConsole:
+            FreeCAD.Console.PrintMessage(message + "\n")
+        else:
+            print(message)
+        return message
+    return None
