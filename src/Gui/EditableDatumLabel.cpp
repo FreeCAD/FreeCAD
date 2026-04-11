@@ -223,7 +223,7 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
 
     connect(spinBox, qOverload<double>(&QuantitySpinBox::valueChanged), this, validateAndFinish);
     if (auto* edit = spinBox->findChild<QLineEdit*>()) {
-        connect(edit, &QLineEdit::textChanged, this, [this, edit](const QString &text) {
+        connect(edit, &QLineEdit::textChanged, this, [this, edit](const QString& text) {
             this->updateGeometry(edit);
         });
     }
