@@ -104,6 +104,156 @@ class WorkbenchTestCase(unittest.TestCase):
             FreeCADGui.activateWorkbench("MyExtWorkbench")
         FreeCADGui.removeWorkbench("MyExtWorkbench")
 
+    def testResetClearsStaleWorkbenchBinding(self):
+        import __main__
+
+        class UnitResetWorkbench(__main__.Workbench):
+            MenuText = "Reset Unittest"
+            ToolTip = "Reset Unittest"
+
+            def Initialize(self):
+                pass
+
+            def GetClassName(self):
+                return "Gui::PythonWorkbench"
+
+        handler = UnitResetWorkbench()
+        FreeCADGui.addWorkbench(handler)
+        self.assertFalse(hasattr(handler, "__Workbench__"))
+        self.assertTrue(FreeCADGui.activateWorkbench("UnitResetWorkbench"))
+        self.assertTrue(hasattr(handler, "__Workbench__"))
+        self.assertTrue(FreeCADGui.resetWorkbench("UnitResetWorkbench"))
+        self.assertFalse(hasattr(handler, "__Workbench__"))
+        self.assertNotIn("UnitResetWorkbench", FreeCADGui.listWorkbenches())
+
+    def testResetAfterPythonCommandReplacementDoesNotCrash(self):
+        import __main__
+
+        class UnitReplaceResetWorkbench(__main__.Workbench):
+            MenuText = "Replace Reset Unittest"
+            ToolTip = "Replace Reset Unittest"
+
+            def Initialize(self):
+                pass
+
+            def GetClassName(self):
+                return "Gui::PythonWorkbench"
+
+        class WorkingCommand:
+            def __init__(self, label):
+                self.label = label
+
+            def GetResources(self):
+                return {"MenuText": self.label}
+
+            def Activated(self):
+                pass
+
+        command_name = "Test_CommandReplacementReset"
+        handler = UnitReplaceResetWorkbench()
+        FreeCADGui.addWorkbench(handler)
+        self.assertTrue(FreeCADGui.activateWorkbench("UnitReplaceResetWorkbench"))
+        FreeCADGui.addCommand(command_name, WorkingCommand("Initial label"))
+        FreeCADGui.addCommand(command_name, WorkingCommand("Updated label"))
+        self.assertTrue(FreeCADGui.resetWorkbench("UnitReplaceResetWorkbench"))
+        self.assertFalse(hasattr(handler, "__Workbench__"))
+        self.assertNotIn("UnitReplaceResetWorkbench", FreeCADGui.listWorkbenches())
+
+    def testDisposedWorkbenchRuntimeRejectsMutation(self):
+        import __main__
+
+        class UnitRuntimeWorkbench(__main__.Workbench):
+            MenuText = "Runtime Unittest"
+            ToolTip = "Runtime Unittest"
+
+            def Initialize(self):
+                pass
+
+            def GetClassName(self):
+                return "Gui::PythonWorkbench"
+
+        handler = UnitRuntimeWorkbench()
+        session_name = "reload_test"
+        FreeCADGui.addWorkbench(handler)
+        self.assertTrue(FreeCADGui.activateWorkbench("UnitRuntimeWorkbench"))
+
+        runtime = FreeCADGui.workbenchRuntime("UnitRuntimeWorkbench")
+        session = FreeCADGui.sessionRuntime(session_name)
+        self.assertEqual(session.workbench_name, "UnitRuntimeWorkbench")
+        self.assertIs(session, FreeCADGui.findSessionRuntime(session_name))
+        self.assertIs(
+            session,
+            FreeCADGui.findSessionRuntime("UnitRuntimeWorkbench:reload_test"),
+        )
+
+        self.assertTrue(FreeCADGui.disposeSessionRuntime(session_name))
+        self.assertTrue(FreeCADGui.disposeWorkbenchRuntime("UnitRuntimeWorkbench"))
+
+        with self.assertRaises(RuntimeError):
+            session.own("session_key", object())
+        with self.assertRaises(RuntimeError):
+            runtime.own("workbench_key", object())
+
+        self.assertTrue(FreeCADGui.resetWorkbench("UnitRuntimeWorkbench"))
+
+    def testDisposedAppRuntimeRejectsMutation(self):
+        runtime_name = "Test_DisposedAppRuntime"
+        runtime = FreeCAD.appRuntime(runtime_name)
+        self.assertTrue(FreeCAD.disposeAppRuntime(runtime_name))
+
+        with self.assertRaises(RuntimeError):
+            runtime.own("runtime_key", object())
+        with self.assertRaises(RuntimeError):
+            runtime.onDispose(lambda: None)
+
+    def testAppRuntimeLookupAndDisposeRoundTrip(self):
+        runtime_name = "Test_AppRuntimeLookup"
+        self.assertIsNone(FreeCAD.findAppRuntime(runtime_name))
+
+        runtime = FreeCAD.appRuntime(runtime_name)
+        self.assertIs(runtime, FreeCAD.findAppRuntime(runtime_name))
+
+        self.assertTrue(FreeCAD.disposeAppRuntime(runtime_name))
+        self.assertIsNone(FreeCAD.findAppRuntime(runtime_name))
+
+    def testRuntimeApiResolvesWorkbenchAliasNames(self):
+        import __main__
+
+        class UnitAliasWorkbench(__main__.Workbench):
+            MenuText = "Runtime Alias"
+            ToolTip = "Runtime Alias"
+
+            def Initialize(self):
+                pass
+
+            def GetClassName(self):
+                return "Gui::PythonWorkbench"
+
+        handler = UnitAliasWorkbench()
+        FreeCADGui.addWorkbench(handler)
+        self.assertTrue(FreeCADGui.activateWorkbench("UnitAliasWorkbench"))
+
+        runtime = FreeCADGui.workbenchRuntime("Runtime Alias")
+        self.assertEqual(runtime.name, "UnitAliasWorkbench")
+        self.assertIs(runtime, FreeCADGui.findWorkbenchRuntime("Runtime Alias"))
+
+        session = FreeCADGui.sessionRuntime("alias_session", workbench_name="Runtime Alias")
+        self.assertEqual(session.workbench_name, "UnitAliasWorkbench")
+        self.assertIs(
+            session,
+            FreeCADGui.findSessionRuntime("alias_session", workbench_name="Runtime Alias"),
+        )
+        self.assertIs(
+            session,
+            FreeCADGui.findSessionRuntime("UnitAliasWorkbench:alias_session"),
+        )
+
+        self.assertTrue(
+            FreeCADGui.disposeSessionRuntime("alias_session", workbench_name="Runtime Alias")
+        )
+        self.assertTrue(FreeCADGui.disposeWorkbenchRuntime("Runtime Alias"))
+        self.assertTrue(FreeCADGui.resetWorkbench("UnitAliasWorkbench"))
+
     def tearDown(self):
         FreeCADGui.activateWorkbench(self.Active.name())
         FreeCAD.Console.PrintLog(self.Active.name())
@@ -121,6 +271,33 @@ class CommandTestCase(unittest.TestCase):
         name = FreeCADGui.Command.createCustomCommand(macroName)
         cmd = FreeCADGui.Command.get(name)
         cmd.run()
+
+    def testPythonCommandReplacementPreservesWorkingCommandOnFailure(self):
+        command_name = "Test_CommandReplacementFailure"
+
+        class WorkingCommand:
+            def GetResources(self):
+                return {"MenuText": "Stable label"}
+
+            def Activated(self):
+                pass
+
+        class BrokenCommand:
+            def GetResources(self):
+                return []
+
+            def Activated(self):
+                pass
+
+        FreeCADGui.addCommand(command_name, WorkingCommand())
+        initial_info = FreeCADGui.Command.get(command_name).getInfo()
+        self.assertEqual(initial_info["menuText"], "Stable label")
+
+        with self.assertRaises(TypeError):
+            FreeCADGui.addCommand(command_name, BrokenCommand())
+
+        updated_info = FreeCADGui.Command.get(command_name).getInfo()
+        self.assertEqual(updated_info["menuText"], "Stable label")
 
 
 class TestNavigationStyle(unittest.TestCase):

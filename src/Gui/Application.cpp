@@ -79,6 +79,7 @@
 #include "FileDialog.h"
 #include "GuiApplication.h"
 #include "GuiInitScript.h"
+#include "GuiTestScript.h"
 #include "InputHintPy.h"
 #include "LinkViewPy.h"
 #include "MainWindow.h"
@@ -168,6 +169,28 @@ extern const long NlErrorCode;  // initialized before main() by navlib_load.cpp
 
 namespace Gui
 {
+
+namespace
+{
+
+void invalidateWorkbenchBinding(PyObject* handlerObject)
+{
+    if (!handlerObject) {
+        return;
+    }
+
+    try {
+        Py::Object handler(handlerObject);
+        if (handler.hasAttr(std::string("__Workbench__"))) {
+            handler.delAttr(std::string("__Workbench__"));
+        }
+    }
+    catch (Py::Exception& e) {
+        e.clear();
+    }
+}
+
+}  // namespace
 
 class ViewProviderMap
 {
@@ -1974,6 +1997,43 @@ bool Application::activateWorkbench(const char* name)
     return ok;
 }
 
+bool Application::removeWorkbench(const char* name)
+{
+    Base::PyGILStateLocker lock;
+
+    Workbench* active = WorkbenchManager::instance()->active();
+    if (active && active->name() == name) {
+        return false;
+    }
+
+    PyObject* wb = PyDict_GetItemString(_pcWorkbenchDictionary, name);
+    if (!wb) {
+        return false;
+    }
+
+    invalidateWorkbenchBinding(wb);
+    WorkbenchManager::instance()->removeWorkbench(name);
+    PyDict_DelItemString(_pcWorkbenchDictionary, name);
+    signalRefreshWorkbenches();
+    return true;
+}
+
+bool Application::resetWorkbench(const char* name)
+{
+    if (qstrcmp(name, "NoneWorkbench") == 0) {
+        return false;
+    }
+
+    Workbench* active = WorkbenchManager::instance()->active();
+    bool wasActive = active && active->name() == name;
+
+    if (wasActive && !activateWorkbench("NoneWorkbench")) {
+        return false;
+    }
+
+    return removeWorkbench(name);
+}
+
 QPixmap Application::workbenchIcon(const QString& wb) const
 {
     Base::PyGILStateLocker lock;
@@ -2323,6 +2383,7 @@ void Application::initApplication()
     try {
         initTypes();
         new Base::ScriptProducer("FreeCADGuiInit", FreeCADGuiInit);
+        new Base::ScriptProducer("FreeCADGuiTest", FreeCADGuiTest);
         init_resources();
         setCategoryFilterRules();
         old_qtmsg_handler = qInstallMessageHandler(messageHandler);

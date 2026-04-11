@@ -32,6 +32,7 @@ import FreeCAD
 import Arch
 import ArchBuildingPart
 import Draft
+from . import report_missing_ifcopenshell
 
 from draftviewproviders import view_layer
 
@@ -50,15 +51,7 @@ try:
     import ifcopenshell.util.unit
     import ifcopenshell.entity_instance
 except ImportError as e:
-    import FreeCAD
-
-    FreeCAD.Console.PrintError(
-        translate(
-            "BIM",
-            "IfcOpenShell was not found on this system. IFC support is disabled",
-        )
-        + "\n"
-    )
+    report_missing_ifcopenshell()
     raise e
 
 from . import ifc_objects

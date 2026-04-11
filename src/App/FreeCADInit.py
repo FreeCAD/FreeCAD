@@ -68,6 +68,22 @@ except ImportError:
     App.Console.PrintError("\n\nSeems the python standard libs are not installed, bailing out!\n\n")
     raise
 
+try:
+    from FreeCADInitTools import (
+        DIR_MOD_APP_COMPAT_GLOBAL_NAMES,
+        dir_mod_base_path,
+        dir_mod_compat_globals,
+        exec_dir_mod_file,
+    )
+except ModuleNotFoundError:
+    sys.path.append(App.getLibraryDir())
+    from FreeCADInitTools import (
+        DIR_MOD_APP_COMPAT_GLOBAL_NAMES,
+        dir_mod_base_path,
+        dir_mod_compat_globals,
+        exec_dir_mod_file,
+    )
+
 # ┌────────────────────────────────────────────────┐
 # │ Logging Frameworks                             │
 # └────────────────────────────────────────────────┘
@@ -1105,6 +1121,7 @@ class DirMod(Mod):
         self.state = ModState.Discovered
         self._path = collections.deque()
         self._path.append(path)
+        self._source_root: Path | None = None
 
     @property
     def kind(self) -> str:
@@ -1166,9 +1183,18 @@ class DirMod(Mod):
         return self._path[0]
 
     @property
+    def source_root(self) -> Path:
+        """Canonical filesystem root backing the active mod."""
+        return self._source_root or self.path.resolve()
+
+    @property
     def alternative_paths(self) -> list[Path]:
         """Alternative paths in priority order"""
         return list(self._path)[1:]
+
+    def remember_source_root(self, script_path: Path) -> Path:
+        self._source_root = dir_mod_base_path(script_path, self.path)
+        return self._source_root
 
     def check_disabled(self) -> bool:
         name = self.path.name
@@ -1208,9 +1234,13 @@ class DirMod(Mod):
             return
 
         try:
-            source = init_py.read_text(encoding="utf-8")
-            code = compile(source, init_py, 'exec')
-            exec(code)
+            self.remember_source_root(init_py)
+            exec_dir_mod_file(
+                self.name,
+                init_py,
+                self.path,
+                dir_mod_app_compat_globals(globals()),
+            )
         except Exception as ex:
             Log(f"Init:      Initializing {self.path!s}... failed")
             Log(utils.HLine)
@@ -1443,6 +1473,10 @@ class InitPipeline:
         search_paths = self.search_paths
         search_paths.commit()
 
+        # Dir mods live under the synthetic `freecad._dir_mods` namespace, so the
+        # real top-level `freecad` package must exist before any legacy mod runs.
+        import freecad
+
         # Dir Mods first
         for mod in self.dir_mod_scanner.iter():
             if mod.state == ModState.Resolved:
@@ -1537,6 +1571,173 @@ class InitPipeline:
         self.post()
         self.report()
         self.setup_tty()
+
+
+def dir_mod_app_compat_globals(source_globals: dict) -> dict:
+    return dir_mod_compat_globals(source_globals, DIR_MOD_APP_COMPAT_GLOBAL_NAMES)
+
+
+@transient
+class ApplicationRuntime:
+    def __init__(self, name: str):
+        self.name = name
+        self._cleanup: list[coll_abc.Callable[[], None]] = []
+        self._owned: dict[str, tuple[object, coll_abc.Callable[[], None] | None]] = {}
+        self.data: dict[str, object] = {}
+        self._disposed = False
+
+    def _run_cleanup(self, cleanup: coll_abc.Callable[[], None]) -> None:
+        try:
+            cleanup()
+        except Exception:
+            Err(f"Application runtime cleanup failed for {self.name}")
+            Log(traceback.format_exc())
+
+    def _ensure_active(self) -> None:
+        if self._disposed:
+            raise RuntimeError(f"Application runtime '{self.name}' is disposed")
+
+    def onDispose(self, callback: coll_abc.Callable[[], None]):
+        self._ensure_active()
+        self._cleanup.append(callback)
+        return callback
+
+    def remember(self, key: str, value):
+        self._ensure_active()
+        self.data[key] = value
+        return value
+
+    def own(self, key: str, value, cleanup: coll_abc.Callable[[], None] | None = None):
+        self._ensure_active()
+        self.release(key)
+        self._owned[key] = (value, cleanup)
+        return value
+
+    def getOwned(self, key: str, default=None):
+        entry = self._owned.get(key)
+        if entry is None:
+            return default
+        return entry[0]
+
+    def owns(self, key: str) -> bool:
+        return key in self._owned
+
+    def release(self, key: str) -> bool:
+        self._ensure_active()
+        entry = self._owned.pop(key, None)
+        if entry is None:
+            return False
+
+        _value, cleanup = entry
+        if cleanup is not None:
+            self._run_cleanup(cleanup)
+        return True
+
+    def addDocumentObserver(self, observer, key: str | None = None):
+        self._ensure_active()
+        App.addDocumentObserver(observer)
+
+        def cleanup():
+            try:
+                App.removeDocumentObserver(observer)
+            except Exception:
+                # Best-effort cleanup: the observer may already be detached.
+                pass
+
+        if key is not None:
+            self.own(key, observer, cleanup)
+        else:
+            self.onDispose(cleanup)
+        return observer
+
+    def addTimer(self, timer, *, stop: bool = True, delete: bool = False):
+        self._ensure_active()
+        def cleanup():
+            if stop and hasattr(timer, "stop"):
+                try:
+                    timer.stop()
+                except Exception:
+                    # Best-effort cleanup: the timer may already be stopped.
+                    pass
+            if delete and hasattr(timer, "deleteLater"):
+                try:
+                    timer.deleteLater()
+                except Exception:
+                    # Best-effort cleanup: the timer may already be deleted.
+                    pass
+
+        self.onDispose(cleanup)
+        return timer
+
+    def dispose(self) -> None:
+        if self._disposed:
+            return
+
+        self._disposed = True
+        while self._owned:
+            _, (_value, cleanup) = self._owned.popitem()
+            if cleanup is not None:
+                self._run_cleanup(cleanup)
+
+        while self._cleanup:
+            cleanup = self._cleanup.pop()
+            self._run_cleanup(cleanup)
+
+        self.data.clear()
+
+
+@transient
+def _app_runtime_table(_app=App) -> dict[str, ApplicationRuntime]:
+    return _app._pythonAppRuntimes
+
+
+@transient
+def appRuntime(
+    name: str,
+    _table_getter=_app_runtime_table,
+    _runtime_cls=ApplicationRuntime,
+) -> ApplicationRuntime:
+    if not name:
+        raise RuntimeError("Application runtime name is required")
+
+    runtimes = _table_getter()
+    runtime = runtimes.get(name)
+    if runtime is None or runtime._disposed:
+        runtime = _runtime_cls(name)
+        runtimes[name] = runtime
+    return runtime
+
+
+@transient
+def findAppRuntime(name: str, _table_getter=_app_runtime_table) -> ApplicationRuntime | None:
+    if not name:
+        return None
+
+    runtime = _table_getter().get(name)
+    if runtime is None or runtime._disposed:
+        return None
+    return runtime
+
+
+@transient
+def disposeAppRuntime(name: str, _table_getter=_app_runtime_table) -> bool:
+    if not name:
+        return False
+
+    runtime = _table_getter().pop(name, None)
+    if runtime is None:
+        return False
+
+    runtime.dispose()
+    return True
+
+
+if not hasattr(App, "_pythonAppRuntimes"):
+    App._pythonAppRuntimes = {}
+
+App.appRuntime = appRuntime
+App.findAppRuntime = findAppRuntime
+App.disposeAppRuntime = disposeAppRuntime
 
 
 # ┌────────────────────────────────────────────────┐

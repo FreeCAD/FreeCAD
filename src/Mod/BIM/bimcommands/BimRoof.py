@@ -92,8 +92,9 @@ class Arch_Roof:
         else:
             FreeCAD.Console.PrintMessage(translate("Arch", "Please select a base object") + "\n")
             FreeCADGui.Control.showDialog(ArchComponent.SelectionTaskPanel())
-            FreeCAD.ArchObserver = ArchComponent.ArchSelectionObserver(nextCommand="Arch_Roof")
-            FreeCADGui.Selection.addObserver(FreeCAD.ArchObserver)
+            ArchComponent.startSelectionSession(
+                ArchComponent.ArchSelectionObserver(nextCommand="Arch_Roof")
+            )
 
 
 FreeCADGui.addCommand("Arch_Roof", Arch_Roof())

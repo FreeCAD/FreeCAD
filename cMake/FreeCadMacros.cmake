@@ -54,6 +54,28 @@ MACRO (fc_copy_file_if_different inputfile outputfile)
     endif()
 ENDMACRO(fc_copy_file_if_different)
 
+MACRO (fc_mirror_file inputfile outputfile)
+    if(BUILD_VERBOSE_GENERATION)
+        set(fc_details " (fc_mirror_file called from ${CMAKE_CURRENT_SOURCE_DIR})")
+    else()
+        set(fc_details "")
+    endif()
+
+    get_filename_component(infile "${inputfile}" ABSOLUTE)
+    get_filename_component(outfile "${outputfile}" ABSOLUTE)
+    add_file_dependencies("${infile}" "${outfile}")
+    ADD_CUSTOM_COMMAND(
+        COMMAND "${CMAKE_COMMAND}"
+            -DINPUTFILE="${infile}"
+            -DOUTPUTFILE="${outfile}"
+            -P "${CMAKE_SOURCE_DIR}/cMake/MirrorFile.cmake"
+        OUTPUT "${outfile}"
+        COMMENT "Mirroring ${infile} to ${outfile}${fc_details}"
+        MAIN_DEPENDENCY "${infile}"
+        DEPENDS "${CMAKE_SOURCE_DIR}/cMake/MirrorFile.cmake"
+    )
+ENDMACRO(fc_mirror_file)
+
 MACRO (fc_target_copy_resource target_name inpath outpath)
 # Macro to copy a list of files into a nested directory structure
 # Arguments -

@@ -91,9 +91,11 @@ def setStatusIcons(show=True):
         statuswidget = st.findChild(QtGui.QToolBar, "BIMStatusWidget")
         if show:
             if statuswidget:
-                statuswidget.show()
                 if hasattr(statuswidget, "propertybuttons"):
-                    statuswidget.propertybuttons.show()
+                    statuswidget.propertybuttons.hide()
+                    statuswidget.propertybuttons.deleteLater()
+                    del statuswidget.propertybuttons
+                statuswidget.clear()
             else:
                 statuswidget = FreeCADGui.UiLoader().createWidget("Gui::ToolBar")
                 statuswidget.setObjectName("BIMStatusWidget")
@@ -109,71 +111,72 @@ def setStatusIcons(show=True):
                 statuswidget.setIconSize(QtCore.QSize(s, s))
                 st.insertPermanentWidget(2, statuswidget)
 
-                # bim views widget toggle button
-                from bimcommands import BimViews
+            # bim views widget toggle button
+            from bimcommands import BimViews
 
-                bimviewsbutton = QtGui.QAction()
-                bimviewsbutton.setIcon(QtGui.QIcon(":/icons/BIM_Views.svg"))
+            bimviewsbutton = QtGui.QAction()
+            bimviewsbutton.setIcon(QtGui.QIcon(":/icons/BIM_Views.svg"))
 
-                bimviewsbutton.setText("")
-                bimviewsbutton.setToolTip(
-                    translate("BIM", "Toggles the BIM Views Manager on/off (Ctrl+9)")
+            bimviewsbutton.setText("")
+            bimviewsbutton.setToolTip(
+                translate("BIM", "Toggles the BIM Views Manager on/off (Ctrl+9)")
+            )
+            bimviewsbutton.setCheckable(True)
+            if BimViews.findWidget():
+                bimviewsbutton.setChecked(True)
+            statuswidget.bimviewsbutton = bimviewsbutton
+            bimviewsbutton.triggered.connect(toggleBimViews)
+            statuswidget.addAction(bimviewsbutton)
+
+            # background toggle button
+            bgbutton = QtGui.QAction()
+            # bwidth = bgbutton.fontMetrics().boundingRect("AAAA").width()
+            # bgbutton.setMaximumWidth(bwidth)
+            bgbutton.setIcon(QtGui.QIcon(":/icons/BIM_Background.svg"))
+            bgbutton.setText("")
+            bgbutton.setToolTip(
+                translate("BIM", "Toggles the 3D View background between simple and gradient")
+            )
+            statuswidget.bgbutton = bgbutton
+            bgbutton.triggered.connect(toggleBackground)
+            statuswidget.addAction(bgbutton)
+
+            # ifc widgets
+            try:
+                from nativeifc import ifc_status
+            except ImportError:
+                # NativeIFC remains optional when ifcopenshell is unavailable.
+                pass
+            else:
+                ifc_status.set_status_widget(statuswidget)
+
+            # nudge button
+            nudge = QtGui.QPushButton(nudgeLabelsM[-1])
+            nudge.setIcon(QtGui.QIcon(":/icons/BIM_Nudge.svg"))
+            nudge.setFlat(True)
+            nudge.setToolTip(
+                translate(
+                    "BIM",
+                    "The value of the nudge movement (rotation is always 45°)."
+                    "Alt+arrows to move\nAlt+, to rotate left"
+                    "Alt+. to rotate right\nAlt+PgUp to extend extrusion"
+                    "Alt+PgDown to shrink extrusion"
+                    "Alt+/ to switch between auto and manual mode",
                 )
-                bimviewsbutton.setCheckable(True)
-                if BimViews.findWidget():
-                    bimviewsbutton.setChecked(True)
-                statuswidget.bimviewsbutton = bimviewsbutton
-                bimviewsbutton.triggered.connect(toggleBimViews)
-                statuswidget.addAction(bimviewsbutton)
-
-                # background toggle button
-                bgbutton = QtGui.QAction()
-                # bwidth = bgbutton.fontMetrics().boundingRect("AAAA").width()
-                # bgbutton.setMaximumWidth(bwidth)
-                bgbutton.setIcon(QtGui.QIcon(":/icons/BIM_Background.svg"))
-                bgbutton.setText("")
-                bgbutton.setToolTip(
-                    translate("BIM", "Toggles the 3D View background between simple and gradient")
-                )
-                statuswidget.bgbutton = bgbutton
-                bgbutton.triggered.connect(toggleBackground)
-                statuswidget.addAction(bgbutton)
-
-                # ifc widgets
-                try:
-                    from nativeifc import ifc_status
-                except:
-                    pass
-                else:
-                    ifc_status.set_status_widget(statuswidget)
-
-                # nudge button
-                nudge = QtGui.QPushButton(nudgeLabelsM[-1])
-                nudge.setIcon(QtGui.QIcon(":/icons/BIM_Nudge.svg"))
-                nudge.setFlat(True)
-                nudge.setToolTip(
-                    translate(
-                        "BIM",
-                        "The value of the nudge movement (rotation is always 45°)."
-                        "Alt+arrows to move\nAlt+, to rotate left"
-                        "Alt+. to rotate right\nAlt+PgUp to extend extrusion"
-                        "Alt+PgDown to shrink extrusion"
-                        "Alt+/ to switch between auto and manual mode",
-                    )
-                )
-                statuswidget.addWidget(nudge)
-                statuswidget.nudge = nudge
-                menu = QtGui.QMenu(nudge)
-                gnudge = QtGui.QActionGroup(menu)
-                for u in nudgeLabelsM:
-                    a = QtGui.QAction(gnudge)
-                    a.setText(u)
-                    menu.addAction(a)
-                nudge.setMenu(menu)
-                gnudge.triggered.connect(setNudge)
-                statuswidget.nudgeLabelsI = nudgeLabelsI
-                statuswidget.nudgeLabelsM = nudgeLabelsM
-                statuswidget.show()
+            )
+            statuswidget.addWidget(nudge)
+            statuswidget.nudge = nudge
+            menu = QtGui.QMenu(nudge)
+            gnudge = QtGui.QActionGroup(menu)
+            for u in nudgeLabelsM:
+                a = QtGui.QAction(gnudge)
+                a.setText(u)
+                menu.addAction(a)
+            nudge.setMenu(menu)
+            gnudge.triggered.connect(setNudge)
+            statuswidget.nudgeLabelsI = nudgeLabelsI
+            statuswidget.nudgeLabelsM = nudgeLabelsM
+            statuswidget.show()
 
         else:
             if statuswidget is None:

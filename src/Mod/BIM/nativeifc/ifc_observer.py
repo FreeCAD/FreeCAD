@@ -25,23 +25,59 @@
 """Document observer to act on documents containing NativeIFC objects"""
 
 import FreeCAD
+from . import has_ifcopenshell
 
 params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/NativeIFC")
+WORKBENCH_NAME = "BIMWorkbench"
+LEGACY_APP_RUNTIME_NAME = "nativeifc"
+OBSERVER_KEY = "nativeifc_document_observer"
+
+
+def _get_observer_runtime(create=False):
+    if not FreeCAD.GuiUp:
+        return None
+
+    import FreeCADGui
+
+    try:
+        if create:
+            return FreeCADGui.workbenchRuntime(WORKBENCH_NAME)
+        return FreeCADGui.findWorkbenchRuntime(WORKBENCH_NAME)
+    except RuntimeError:
+        return None
+
+
+def _remove_document_observer(observer):
+    try:
+        FreeCAD.removeDocumentObserver(observer)
+    except Exception:
+        # Best-effort cleanup: the observer may already be detached.
+        pass
 
 
 def add_observer():
     """Adds this observer to the running FreeCAD instance"""
 
-    FreeCAD.BIMobserver = ifc_observer()
-    FreeCAD.addDocumentObserver(FreeCAD.BIMobserver)
+    if not has_ifcopenshell(report=True):
+        return
+
+    runtime = _get_observer_runtime(create=True)
+    if runtime is None:
+        return
+
+    runtime.release(OBSERVER_KEY)
+    observer = ifc_observer()
+    FreeCAD.addDocumentObserver(observer)
+    runtime.own(OBSERVER_KEY, observer, lambda: _remove_document_observer(observer))
 
 
 def remove_observer():
     """Removes this observer if present"""
 
-    if hasattr(FreeCAD, "BIMobserver"):
-        FreeCAD.removeDocumentObserver(FreeCAD.BIMobserver)
-        del FreeCAD.BIMobserver
+    runtime = _get_observer_runtime(create=False)
+    if runtime is not None:
+        runtime.release(OBSERVER_KEY)
+    FreeCAD.disposeAppRuntime(LEGACY_APP_RUNTIME_NAME)
 
 
 class ifc_observer:
@@ -55,6 +91,8 @@ class ifc_observer:
 
     def slotStartSaveDocument(self, doc, value):
         """Save all IFC documents in this doc"""
+        if not has_ifcopenshell():
+            return
 
         from PySide import QtCore  # lazy loading
 
@@ -66,6 +104,8 @@ class ifc_observer:
 
     def slotDeletedObject(self, obj):
         """Deletes the corresponding object in the IFC document"""
+        if not has_ifcopenshell():
+            return
 
         from . import ifc_tools  # lazy loading
 
@@ -80,6 +120,8 @@ class ifc_observer:
 
     def slotChangedDocument(self, doc, prop):
         """Watch document IFC properties"""
+        if not has_ifcopenshell():
+            return
 
         # only look at locked IFC documents
         if "IfcFilePath" not in doc.PropertiesList:
@@ -107,6 +149,8 @@ class ifc_observer:
 
     def slotCreatedObject(self, obj):
         """If this is an IFC document, turn the object into IFC"""
+        if not has_ifcopenshell():
+            return
 
         doc = getattr(obj, "Document", None)
         if doc:
@@ -120,12 +164,16 @@ class ifc_observer:
 
     def slotActivateDocument(self, doc):
         """Check if we need to lock"""
+        if not has_ifcopenshell():
+            return
 
         from . import ifc_status
 
         ifc_status.on_activate()
 
     def slotRemoveDynamicProperty(self, obj, prop):
+        if not has_ifcopenshell():
+            return
 
         from . import ifc_psets
 
@@ -143,6 +191,8 @@ class ifc_observer:
 
     def save(self):
         """Saves all IFC documents contained in self.docname Document"""
+        if not has_ifcopenshell():
+            return
 
         if not hasattr(self, "docname"):
             return
@@ -185,6 +235,8 @@ class ifc_observer:
 
     def convert(self):
         """Converts an object to IFC"""
+        if not has_ifcopenshell():
+            return
 
         if not hasattr(self, "objname") or not hasattr(self, "docname"):
             return
