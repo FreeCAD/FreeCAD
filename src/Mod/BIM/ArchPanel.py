@@ -71,6 +71,7 @@ class _Panel(ArchComponent.Component):
         self.Type = "Panel"
         self.setProperties(obj)
         obj.IfcType = "Plate"
+        self._sheetsCount = 1  # Track number of sheet copies for color mapping
 
     def setProperties(self, obj):
 
@@ -541,6 +542,9 @@ class _Panel(ArchComponent.Component):
                 b.translate(n)
                 bases.append(b)
             base = Part.makeCompound(bases)
+            # Track how many sheet copies exist so updateData can expand
+            # activematerials correctly: each layer repeats Sheets times.
+            self._sheetsCount = obj.Sheets
 
         if base and normal and hasattr(obj, "Offset"):
             if obj.Offset.Value:
@@ -566,6 +570,9 @@ class _Panel(ArchComponent.Component):
                     obj.Shape = base
                     if not pl.isNull():
                         obj.Placement = pl
+
+        # Apply per-layer hatches from MultiMaterial (if any)
+        self.apply_material_hatches(obj)
 
 
 class PanelTaskPanel(ArchComponent.ComponentOptionsTaskPanel):
@@ -613,6 +620,17 @@ class _ViewProviderPanel(ArchComponent.ViewProviderComponent):
                             for i in range(len(obj.Material.Materials))
                             if obj.Material.Thicknesses[i] >= 0
                         ]
+                        # Expand for fused multi-solid layers (consistent with Wall)
+                        if hasattr(obj.Proxy, "solidsNumLst"):
+                            expanded = []
+                            for mat, count in zip(activematerials,
+                                                  obj.Proxy.solidsNumLst):
+                                expanded.extend([mat] * count)
+                            activematerials = expanded
+                        # Handle Sheets > 1: each layer's solid is repeated
+                        sheets = getattr(obj.Proxy, "_sheetsCount", 1)
+                        if sheets > 1:
+                            activematerials = activematerials * sheets
                         if len(activematerials) == len(obj.Shape.Solids):
                             cols = []
                             for i, mat in enumerate(activematerials):

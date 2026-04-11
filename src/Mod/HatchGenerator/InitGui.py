@@ -3,7 +3,42 @@
 
 import FreeCAD
 import FreeCADGui
-import os
+import os as _os
+import sys as _sys
+
+# ============================================================================
+# PATCH: Robust module directory detection using a helper function
+# FreeCAD addon loader does not set __file__, causing NameError in os.path.
+# We scan sys.path and standard Mod directories for the HatchGenerator module.
+# ============================================================================
+
+def _get_hatch_mod_dir():
+    """Locate the HatchGenerator addon directory in any FreeCAD load context."""
+    # Standard Python context: __file__ is defined
+    try:
+        return _os.path.dirname(_os.path.abspath(__file__))
+    except NameError:
+        pass
+    
+    # FreeCAD addon context: __file__ not defined — scan sys.path
+    for _p in _sys.path:
+        if _os.path.isfile(_os.path.join(_p, "HatchGenerator.py")):
+            return _p
+            
+    # Fallback: check standard FreeCAD addon locations
+    for _base in (
+        _os.path.join(FreeCAD.getUserAppDataDir(), "Mod"),
+        _os.path.join(FreeCAD.getResourceDir(), "Mod"),
+    ):
+        for _candidate_name in ("FreeCadHatch", "HatchGenerator", "hatch_generator"):
+            _candidate = _os.path.join(_base, _candidate_name)
+            if _os.path.isdir(_candidate):
+                return _candidate
+                
+    return ""   # last resort — icon simply won't load, but no crash
+
+_HATCH_MOD_DIR = _get_hatch_mod_dir()
+
 
 class HatchGeneratorWorkbench(FreeCADGui.Workbench):
     """
@@ -11,7 +46,8 @@ class HatchGeneratorWorkbench(FreeCADGui.Workbench):
     """
     MenuText = "Hatch Generator"
     ToolTip = "Parametric hatch patterns for surfaces, walls, and roofs"
-    Icon = os.path.join(os.path.dirname(__file__), "Resources", "icons", "HatchGenerator.svg")
+    # PATCH: Use the calculated _HATCH_MOD_DIR variable
+    Icon = _os.path.join(_HATCH_MOD_DIR, "Resources", "icons", "HatchGenerator.svg")
     
     def Initialize(self):
         """This is called when the workbench is first activated"""

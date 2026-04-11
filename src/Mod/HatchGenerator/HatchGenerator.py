@@ -1222,6 +1222,14 @@ class HatchTaskPanel:
         self.pickSubBtn = QtWidgets.QPushButton("Pick Subtractions from Selection")
         self.pickSubBtn.clicked.connect(self.pickSubtractions)
 
+        # --- PREVIEW BUTTON ON MAIN TAB (NEW) ---
+        self.previewBtnMain = QtWidgets.QPushButton("Preview (quick test)")
+        self.previewBtnMain.setToolTip(
+            "Generate a quick preview of the hatch with current settings. "
+            "Use MaxTilesAllowed to limit compute time."
+        )
+        self.previewBtnMain.clicked.connect(self.onPreview)
+
         # Advanced Tab Elements
         self.tileLabel = QtWidgets.QLabel("Base Tile (Optional):")
         self.tileCombo = QtWidgets.QComboBox()
@@ -1300,9 +1308,20 @@ class HatchTaskPanel:
         self.surfaceProjectionLayout.addRow(self.useSurfaceProjectionCheck)
         self.surfaceProjectionLayout.addRow(self.forceXYPlaneCheck)
 
-        # Preview Button
+        # Preview Button on Advanced Tab
         self.previewBtn = QtWidgets.QPushButton("Preview")
         self.previewBtn.clicked.connect(self.onPreview)
+        
+        # --- KEEP PREVIEW CHECKBOX (NEW) ---
+        self.keepPreviewCheck = QtWidgets.QCheckBox(
+            "Keep preview shape (non-parametric)"
+        )
+        self.keepPreviewCheck.setToolTip(
+            "When checked, the preview shape is kept as a static Part::Feature "
+            "after preview generation. Useful when you want to work with a "
+            "simplified non-parametric shape without committing to a full hatch."
+        )
+        self.keepPreviewCheck.setChecked(False)
 
         # --- Populate Main Tab Layout ---
         baseRowLayout = QtWidgets.QHBoxLayout()
@@ -1344,6 +1363,9 @@ class HatchTaskPanel:
         self.mainTabLayout.addRow(self.showFacesCheck)
         self.mainTabLayout.addRow(self.subtractionsLabel, self.subtractionsList)
         self.mainTabLayout.addRow("", self.pickSubBtn)
+        
+        # --- ADD PREVIEW BUTTON TO MAIN TAB (NEW) ---
+        self.mainTabLayout.addRow(self.previewBtnMain)
 
         # PATCH 3: FIXED Advanced Tab Layout - use scroll area with VBoxLayout instead of QFormLayout
         # --- Advanced Tab: use a scroll area containing a plain VBoxLayout ---
@@ -1411,8 +1433,10 @@ class HatchTaskPanel:
         # --- Surface Projection ---
         advVBox.addWidget(self.surfaceProjectionGroup)
 
-        # --- Preview ---
+        # --- Preview and Keep Checkbox ---
         advVBox.addWidget(self.previewBtn)
+        advVBox.addWidget(self.keepPreviewCheck)   # ← ADD THIS LINE
+        
         advVBox.addStretch(1)  # pushes groups to top, leaves space at bottom
 
         advScrollArea.setWidget(advScrollContent)
@@ -1685,9 +1709,141 @@ class HatchTaskPanel:
         q = self.spacingInput.property("quantity")
         return q.Value if q else 0.0
 
+    # ============================================================================
+    # PATCH 4: REAL PREVIEW IMPLEMENTATION
+    # ============================================================================
     def onPreview(self):
-        FreeCAD.Console.PrintMessage("Generating preview...\n")
-        QtWidgets.QMessageBox.information(self.form, "Preview", "Preview generation would run here.\n\n(Preview logic identical to original script)")
+        """
+        Generate a fast preview hatch using current settings.
+
+        Strategy for speed:
+        - Creates a temporary CustomHatch param object
+        - Calls recompute() (MaxTilesAllowed limits tile count)
+        - Copies the resulting shape to a HatchPreview Part::Feature
+        - Removes the temp param object immediately
+        - Colors the preview green + 50% transparent so it's visually distinct
+        - If keepPreviewCheck is checked, leaves the feature in the document
+          so the user can use it as a static non-parametric shape
+        """
+        doc = self.doc
+        if not doc:
+            return
+
+        baseName = self.baseCombo.currentText()
+        base_obj = doc.getObject(baseName)
+        if not base_obj or not hasattr(base_obj, "Shape"):
+            QtWidgets.QMessageBox.warning(
+                self.form, "Preview Error",
+                "Select a valid base shape before previewing."
+            )
+            return
+
+        # Remove any existing preview from a previous run
+        if self.current_temp_preview_name:
+            old = doc.getObject(self.current_temp_preview_name)
+            if old:
+                doc.removeObject(self.current_temp_preview_name)
+            self.current_temp_preview_name = None
+
+        temp_name = None
+        preview_name = None
+        
+        try:
+            # 1. Create a temporary param object (not shown in tree)
+            temp_name = doc.getUniqueObjectName("_HatchPreviewTemp")
+            tempHatch = makeCustomHatch(name=temp_name)
+
+            # 2. Wire all current UI values onto it
+            if not self._apply_properties_to(tempHatch):
+                doc.removeObject(temp_name)
+                return
+
+            # Clamp tiles for speed — use at most 100 for preview
+            tempHatch.MaxTilesAllowed = min(
+                int(self.maxTilesSpin.value()), 100
+            )
+
+            # 3. Recompute so execute() runs and Shape is populated
+            doc.recompute()
+
+            # 4. Copy the shape
+            if tempHatch.Shape and not tempHatch.Shape.isNull():
+                preview_shape = tempHatch.Shape.copy()
+            else:
+                doc.removeObject(temp_name)
+                QtWidgets.QMessageBox.warning(
+                    self.form, "Preview", "Preview generated an empty shape. "
+                    "Check base object and pattern settings."
+                )
+                return
+
+            show_faces = tempHatch.ShowFaces
+
+            # 5. Remove the temp param object immediately
+            doc.removeObject(temp_name)
+            temp_name = None
+
+            # 6. Create the preview feature
+            preview_name = doc.getUniqueObjectName("HatchPreview")
+            preview_feat = doc.addObject("Part::Feature", preview_name)
+            preview_feat.Shape = preview_shape
+
+            if FreeCAD.GuiUp:
+                if show_faces:
+                    preview_feat.ViewObject.DisplayMode = "Flat Lines"
+                    preview_feat.ViewObject.ShapeColor = (0.0, 0.8, 0.2)
+                    preview_feat.ViewObject.Transparency = 50
+                else:
+                    preview_feat.ViewObject.DisplayMode = "Wireframe"
+                    preview_feat.ViewObject.ShapeColor = (0.0, 0.8, 0.2)
+                    preview_feat.ViewObject.LineWidth = 2.0
+
+            doc.recompute()
+
+            keep = self.keepPreviewCheck.isChecked()
+            if keep:
+                # Rename to something clean without the temp suffix
+                preview_feat.Label = "HatchPreview_Kept"
+                FreeCAD.Console.PrintMessage(
+                    f"Preview shape kept as '{preview_name}'. "
+                    "It is a static non-parametric shape — "
+                    "it will NOT update if you change settings.\n"
+                )
+                self.current_temp_preview_name = None  # don't auto-delete next time
+            else:
+                self.current_temp_preview_name = preview_name
+
+            # Report stats from the completed shape
+            num_edges = len(preview_shape.Edges)
+            num_faces = len(preview_shape.Faces)
+            QtWidgets.QMessageBox.information(
+                self.form, "Preview Generated",
+                f"Preview complete (≤100 tiles for speed).\n"
+                f"Edges: {num_edges}  Faces: {num_faces}\n\n"
+                f"{'Shape kept as non-parametric feature.' if keep else 'Shape will be removed on next preview or on Create.'}\n\n"
+                "Tip: Adjust MaxTilesAllowed in Advanced tab\n"
+                "and Base Spacing / Scale to tune density."
+            )
+
+        except Exception as e:
+            FreeCAD.Console.PrintError(f"Preview failed: {e}\n")
+            QtWidgets.QMessageBox.critical(
+                self.form, "Preview Error", f"Preview failed:\n{str(e)}"
+            )
+            # Clean up any temp objects if something went wrong
+            for name in [temp_name, preview_name]:
+                if name:
+                    obj = doc.getObject(name)
+                    if obj:
+                        doc.removeObject(name)
+
+    def _cleanup_preview(self):
+        """Remove any temporary preview shape."""
+        if self.current_temp_preview_name:
+            obj = self.doc.getObject(self.current_temp_preview_name)
+            if obj:
+                self.doc.removeObject(self.current_temp_preview_name)
+            self.current_temp_preview_name = None
 
     # PATCH 2b: _load_from_object method for populating UI from existing hatch
     def _load_from_object(self, obj):
@@ -1785,6 +1941,9 @@ class HatchTaskPanel:
     # PATCH 2c: Replaced accept with create/edit branching logic
     def accept(self):
         """OK pressed — create a new hatch OR update the one being edited."""
+        # Clean up preview before closing
+        self._cleanup_preview()
+        
         if self.editing_obj is not None:
             self._accept_edit()
         else:
@@ -1899,6 +2058,9 @@ class HatchTaskPanel:
 
     def reject(self):
         """Called when user presses Cancel or closes the Task panel."""
+        # Clean up any preview shape left from onPreview()
+        self._cleanup_preview()
+        
         FreeCAD.Console.PrintMessage("Hatch creation cancelled.\n")
         FreeCADGui.Control.closeDialog()
         return True

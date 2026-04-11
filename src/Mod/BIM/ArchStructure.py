@@ -883,6 +883,93 @@ class _Structure(ArchComponent.Component):
                 locked=True,
             )
             obj.ArchSketchPropertySet = ["Default"]
+
+        # Slab multi-material properties
+        if not "Align" in pl:
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "Align",
+                "Structure",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Global vertical alignment of the slab stack relative to its base "
+                    "face. Bottom/Center/Top. Used when Align Layer is None. "
+                    "Only active when IfcType is Slab.",
+                ),
+                locked=True,
+            )
+            obj.Align = ["Bottom", "Center", "Top"]
+
+        if not "AlignLayer" in pl:
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "AlignLayer",
+                "Structure",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Reference layer: select a specific material layer to pin the slab "
+                    "to. When set to a layer name, overrides the global Align. "
+                    "Only active when IfcType is Slab and a multi-material is assigned.",
+                ),
+                locked=True,
+            )
+            obj.AlignLayer = ["None (use Align)"]
+
+        if not "AlignLayerMode" in pl:
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "AlignLayerMode",
+                "Structure",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Which face of the Reference Layer to pin to the base sketch: "
+                    "Bottom, Center, or Top of that specific layer. "
+                    "Only active when Align Layer is set to a layer name.",
+                ),
+                locked=True,
+            )
+            obj.AlignLayerMode = ["Bottom", "Center", "Top"]
+
+        if not "Slope" in pl:
+            obj.addProperty(
+                "App::PropertyAngle",
+                "Slope",
+                "Structure",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Drainage slope angle applied to the slab along its local X axis. "
+                    "Only used when IfcType is Slab. Keep 0 for flat.",
+                ),
+                locked=True,
+            )
+
+        if not "Offset" in pl:
+            obj.addProperty(
+                "App::PropertyDistance",
+                "Offset",
+                "Structure",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Vertical offset of the slab from its base face along the extrusion "
+                    "normal. Applied after Align / AlignLayer. Only used when IfcType is Slab.",
+                ),
+                locked=True,
+            )
+
+        if not "SlopeEdge" in pl:
+            obj.addProperty(
+                "App::PropertyLinkSub",
+                "SlopeEdge",
+                "Structure",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Edge to use as the slope direction pivot. If not set, the first "
+                    "edge of the base face is used. Only active when Slope != 0 and "
+                    "IfcType is Slab.",
+                ),
+                locked=True,
+            )
+
         if not hasattr(self, "ArchSkPropSetPickedUuid"):
             self.ArchSkPropSetPickedUuid = ""
         if not hasattr(self, "ArchSkPropSetListPrev"):
@@ -928,7 +1015,34 @@ class _Structure(ArchComponent.Component):
             if hasattr(obj, "ArchSketchPropertySet"):
                 obj.setEditorMode("ArchSketchPropertySet", ["ReadOnly"])
 
-        # set a flag to indicate onDocumentRestored() is run
+        # Restore slab-only property visibility and rebuild AlignLayer enum
+        self._update_align_layer_enum(obj)
+        is_slab = getattr(obj, "IfcType", "") == "Slab"
+
+        for p in ["Align", "AlignLayer", "AlignLayerMode", "Offset", "Slope", "SlopeEdge"]:
+            if hasattr(obj, p):
+                obj.setEditorMode(p, 0 if is_slab else 2)
+
+        if is_slab:
+            align_layer = getattr(obj, "AlignLayer", "None (use Align)")
+            layer_active = bool(align_layer and align_layer != "None (use Align)")
+
+            if hasattr(obj, "Align"):
+                obj.setEditorMode("Align", ["ReadOnly"] if layer_active else 0)
+            if hasattr(obj, "AlignLayerMode"):
+                obj.setEditorMode("AlignLayerMode", 0 if layer_active else 2)
+            if hasattr(obj, "Slope") and hasattr(obj, "SlopeEdge"):
+                slope_val = obj.Slope.Value if hasattr(obj.Slope, "Value") else 0.0
+                obj.setEditorMode("SlopeEdge", 0 if abs(slope_val) > 1e-6 else 2)
+            # Restore Height read-only state
+            layers = self.get_layers(obj)
+            if layers:
+                if hasattr(obj, "Material") and obj.Material:
+                    if hasattr(obj.Material, "Thicknesses"):
+                        if 0 not in obj.Material.Thicknesses:
+                            obj.setEditorMode("Height", ["ReadOnly"])
+                        else:
+                            obj.setEditorMode("Height", 0)
 
     def execute(self, obj):
         "creates the structure shape"
@@ -940,6 +1054,25 @@ class _Structure(ArchComponent.Component):
             return
         if obj.Base and not self.ensureBase(obj):
             return
+
+        # --- Slab: sync Height with multi-material total, manage read-only,
+        #     and keep AlignLayer enum up to date ---
+        if getattr(obj, "IfcType", "") == "Slab":
+            self._update_align_layer_enum(obj)
+            layers = self.get_layers(obj)
+            if layers:
+                total = sum([abs(l) for l in layers])
+                if obj.Height.Value != total:
+                    obj.Height = total
+                if hasattr(obj, "Material") and obj.Material:
+                    if hasattr(obj.Material, "Thicknesses"):
+                        if 0 not in obj.Material.Thicknesses:
+                            obj.setEditorMode("Height", ["ReadOnly"])
+                        else:
+                            obj.setEditorMode("Height", 0)
+            else:
+                obj.setEditorMode("Height", 0)
+        # --- End slab Height sync ---
 
         base = None
         pl = obj.Placement
@@ -1055,6 +1188,138 @@ class _Structure(ArchComponent.Component):
 
         base = self.processSubShapes(obj, base, pl)
         self.applyShape(obj, base, pl)
+
+        if getattr(obj, "IfcType", "") == "Slab":
+            self.apply_material_hatches(obj)
+
+    def get_layers(self, obj):
+        """Returns a list of layer thicknesses for multi-material slab support.
+        Only active when IfcType is Slab and a multi-material is assigned.
+        """
+        layers = []
+        if not (getattr(obj, "IfcType", "") == "Slab"):
+            return layers
+        height = obj.Height.Value
+        if hasattr(obj, "Material") and obj.Material:
+            if hasattr(obj.Material, "Materials"):
+                thicknesses = [abs(t) for t in obj.Material.Thicknesses]
+                restwidth = height - sum(thicknesses)
+                varwidth = 0
+                if restwidth > 0:
+                    varcount = [t for t in thicknesses if t == 0]
+                    if varcount:
+                        varwidth = restwidth / len(varcount)
+                for t in obj.Material.Thicknesses:
+                    if t:
+                        layers.append(t)
+                    elif varwidth:
+                        layers.append(varwidth)
+        return layers
+
+    def _update_align_layer_enum(self, obj):
+        """Rebuild the AlignLayer enumeration from the current multi-material.
+        Guarded against re-entrancy. Preserves selection if name still exists.
+        """
+        if getattr(self, "_updating_align_layer", False):
+            return
+        if not hasattr(obj, "AlignLayer"):
+            return
+        if getattr(obj, "IfcType", "") != "Slab":
+            return
+        self._updating_align_layer = True
+        try:
+            entries = ["None (use Align)"]
+            layers = self.get_layers(obj)
+            if layers and hasattr(obj, "Material") and obj.Material:
+                if hasattr(obj.Material, "Materials"):
+                    for i, mat in enumerate(obj.Material.Materials):
+                        if (
+                            hasattr(obj.Material, "Names")
+                            and i < len(obj.Material.Names)
+                            and obj.Material.Names[i]
+                        ):
+                            name = obj.Material.Names[i]
+                        elif hasattr(mat, "Label"):
+                            name = mat.Label
+                        else:
+                            name = "Layer {}".format(i + 1)
+                        entries.append(name)
+            try:
+                current = obj.AlignLayer
+            except Exception:
+                current = entries[0]
+            if current not in entries:
+                current = entries[0]
+            try:
+                existing = list(obj.getEnumerationsOfProperty("AlignLayer"))
+            except Exception:
+                existing = []
+            if existing != entries:
+                obj.AlignLayer = entries
+            obj.AlignLayer = current
+        finally:
+            self._updating_align_layer = False
+
+    def _align_to_z_offset(self, obj, total):
+        """Convert the global Align enum to a raw z_offset for the full stack."""
+        align = getattr(obj, "Align", "Bottom")
+        if align == "Center":
+            return -total / 2.0
+        elif align == "Top":
+            return -total
+        else:  # Bottom
+            return 0.0
+
+    def _compute_z_offset(self, obj, layers):
+        """Return the full z_offset for slab layer stacking.
+
+        Priority:
+        1. AlignLayer + AlignLayerMode (layer-specific pin)
+        2. Align (global Bottom/Center/Top)
+        3. Offset (manual shift) — always added on top
+        """
+        total = sum(abs(l) for l in layers)
+        align_layer = getattr(obj, "AlignLayer", "None (use Align)")
+
+        if align_layer and align_layer != "None (use Align)":
+            layer_idx = None
+            if hasattr(obj, "Material") and obj.Material:
+                if hasattr(obj.Material, "Materials"):
+                    for i, mat in enumerate(obj.Material.Materials):
+                        if (
+                            hasattr(obj.Material, "Names")
+                            and i < len(obj.Material.Names)
+                            and obj.Material.Names[i]
+                        ):
+                            name = obj.Material.Names[i]
+                        elif hasattr(mat, "Label"):
+                            name = mat.Label
+                        else:
+                            name = "Layer {}".format(i + 1)
+                        if name == align_layer:
+                            layer_idx = i
+                            break
+
+            if layer_idx is not None:
+                layer_mode = getattr(obj, "AlignLayerMode", "Bottom")
+                cum = sum(abs(l) for l in layers[:layer_idx])
+                if layer_mode == "Bottom":
+                    z_offset = -cum
+                elif layer_mode == "Center":
+                    z_offset = -(cum + abs(layers[layer_idx]) / 2.0)
+                else:  # Top
+                    z_offset = -(cum + abs(layers[layer_idx]))
+            else:
+                z_offset = self._align_to_z_offset(obj, total)
+        else:
+            z_offset = self._align_to_z_offset(obj, total)
+
+        manual_offset = getattr(obj, "Offset", None)
+        if manual_offset is not None:
+            val = manual_offset.Value if hasattr(manual_offset, "Value") else 0.0
+            z_offset += val
+
+        return z_offset
 
     def getExtrusionData(self, obj):
         """returns (shape,extrusion vector or path,placement) or None"""
@@ -1287,6 +1552,88 @@ class _Structure(ArchComponent.Component):
                     if height:
                         extrusion = normal.multiply(height)
             if extrusion:
+                # --- Multi-material layer support for slabs ---
+                if (
+                    getattr(obj, "IfcType", "") == "Slab"
+                    and not isinstance(base, list)
+                    and isinstance(extrusion, FreeCAD.Vector)
+                    and not (hasattr(obj, "Tool") and obj.Tool)
+                ):
+                    layers = self.get_layers(obj)
+                    if layers:
+                        unit_n = FreeCAD.Vector(extrusion).normalize()
+
+                        # Resolve z_offset via AlignLayer > Align > Offset
+                        z_offset = self._compute_z_offset(obj, layers)
+
+                        # --- Slope with SlopeEdge direction ---
+                        slope_angle = getattr(obj, "Slope", 0)
+                        if hasattr(slope_angle, "Value"):
+                            slope_angle = slope_angle.Value
+                        slope_base = None
+                        if abs(slope_angle) > 1e-6:
+                            import math
+
+                            x_axis = None
+                            slope_edge_link = getattr(obj, "SlopeEdge", None)
+                            if (
+                                slope_edge_link
+                                and len(slope_edge_link) >= 2
+                                and slope_edge_link[0]
+                                and slope_edge_link[1]
+                            ):
+                                try:
+                                    linked_obj = slope_edge_link[0]
+                                    sub_names = slope_edge_link[1]
+                                    sub_name = sub_names[0] if sub_names else None
+                                    if sub_name and hasattr(linked_obj, "Shape"):
+                                        edge = linked_obj.Shape.getElement(sub_name)
+                                        x_axis = edge.tangentAt(
+                                            edge.FirstParameter
+                                        ).normalize()
+                                except Exception:
+                                    x_axis = None
+
+                            if x_axis is None:
+                                try:
+                                    outer_wire = base.Wires[0]
+                                    x_axis = outer_wire.Edges[0].tangentAt(
+                                        outer_wire.Edges[0].FirstParameter
+                                    ).normalize()
+                                except Exception:
+                                    x_axis = FreeCAD.Vector(1, 0, 0)
+
+                            try:
+                                pivot = base.CenterOfMass
+                                rot = FreeCAD.Rotation(x_axis, slope_angle)
+                                t1 = FreeCAD.Matrix()
+                                t1.move(-pivot)
+                                r = rot.toMatrix()
+                                t2 = FreeCAD.Matrix()
+                                t2.move(pivot)
+                                slope_mat = t2.multiply(r.multiply(t1))
+                                slope_base = base.transformGeometry(slope_mat)
+                            except Exception:
+                                slope_base = None
+
+                        working_base = slope_base if slope_base is not None else base
+
+                        bases_list, extrusions_list, placements_list = [], [], []
+                        cum_offset = z_offset
+
+                        for layer in layers:
+                            if layer > 0:
+                                layer_face = working_base.copy()
+                                layer_face.translate(unit_n * cum_offset)
+                                bases_list.append(layer_face)
+                                extrusions_list.append(unit_n * layer)
+                                placements_list.append(placement)
+                            cum_offset += abs(layer)
+
+                        if bases_list:
+                            return (bases_list, extrusions_list, placements_list)
+                # --- End multi-material layer block ---
+
                 return (base, extrusion, placement)
         return None
 
@@ -1340,6 +1687,32 @@ class _Structure(ArchComponent.Component):
             if nodes:
                 self.nodes = [v.Point.add(offset) for v in nodes.Vertexes]
                 obj.Nodes = self.nodes
+
+        # --- Update AlignLayer enum when material or type changes ---
+        if prop in ["Material", "IfcType"]:
+            self._update_align_layer_enum(obj)
+
+        # --- Slab-only property visibility ---
+        is_slab = getattr(obj, "IfcType", "") == "Slab"
+
+        for p in ["Align", "AlignLayer", "AlignLayerMode", "Offset", "Slope", "SlopeEdge"]:
+            if hasattr(obj, p):
+                obj.setEditorMode(p, 0 if is_slab else 2)
+
+        if is_slab:
+            align_layer = getattr(obj, "AlignLayer", "None (use Align)")
+            layer_active = bool(align_layer and align_layer != "None (use Align)")
+
+            if hasattr(obj, "Align"):
+                obj.setEditorMode("Align", ["ReadOnly"] if layer_active else 0)
+            if hasattr(obj, "AlignLayerMode"):
+                obj.setEditorMode("AlignLayerMode", 0 if layer_active else 2)
+
+            if hasattr(obj, "Slope") and hasattr(obj, "SlopeEdge"):
+                slope_val = obj.Slope.Value if hasattr(obj.Slope, "Value") else 0.0
+                obj.setEditorMode("SlopeEdge", 0 if abs(slope_val) > 1e-6 else 2)
+        # --- End slab-only visibility ---
+
         ArchComponent.Component.onChanged(self, obj, prop)
 
         if prop == "ArchSketchPropertySet" and Draft.getType(obj.Base) == "ArchSketch":
@@ -1496,7 +1869,47 @@ class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
                 else:
                     obj.ViewObject.NodeType = "Linear"
         else:
+            # Per-layer material colors for slabs (mirrors _ViewProviderWall)
+            if prop in ["Placement", "Shape", "Material"]:
+                if hasattr(obj, "Material") and obj.Material and obj.Shape:
+                    if hasattr(obj.Material, "Materials"):
+                        activematerials = [
+                            obj.Material.Materials[i]
+                            for i in range(len(obj.Material.Materials))
+                            if obj.Material.Thicknesses[i] >= 0
+                        ]
+                        if len(activematerials) == len(obj.Shape.Solids):
+                            cols = []
+                            for i, mat in enumerate(activematerials):
+                                c = obj.ViewObject.ShapeColor
+                                c = (
+                                    c[0],
+                                    c[1],
+                                    c[2],
+                                    1.0 - obj.ViewObject.Transparency / 100.0,
+                                )
+                                if "DiffuseColor" in mat.Material:
+                                    if "(" in mat.Material["DiffuseColor"]:
+                                        c = tuple(
+                                            float(f)
+                                            for f in mat.Material["DiffuseColor"]
+                                            .strip("()")
+                                            .split(",")
+                                        )
+                                if "Transparency" in mat.Material:
+                                    c = (
+                                        c[0],
+                                        c[1],
+                                        c[2],
+                                        1.0 - float(mat.Material["Transparency"]),
+                                    )
+                                cols.extend(
+                                    [c for _ in range(len(obj.Shape.Solids[i].Faces))]
+                                )
+                            obj.ViewObject.DiffuseColor = cols
             ArchComponent.ViewProviderComponent.updateData(self, obj, prop)
+            if len(obj.ViewObject.DiffuseColor) > 1:
+                obj.ViewObject.DiffuseColor = obj.ViewObject.DiffuseColor
 
     def onChanged(self, vobj, prop):
 

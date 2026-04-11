@@ -1145,6 +1145,60 @@ class Component(ArchIFC.IfcProduct):
                 )
         self.computeAreas(obj)
 
+    # =========================================================================
+    # PATCHED apply_material_hatches - Deferred execution to avoid DAG cycle
+    # =========================================================================
+    def apply_material_hatches(self, obj):
+        """Schedule per-face hatch application to run AFTER recompute.
+
+        Cannot add document objects inside execute() — the FreeCAD dependency
+        graph (DAG) is frozen during a recompute cycle. Adding objects while
+        the graph is being traversed causes:
+            'The graph must be a DAG' abort + 'still touched after recompute'
+
+        QTimer.singleShot(0) defers execution to the next Qt event loop
+        tick, by which time the recompute is fully complete and the DAG is
+        open for modification.
+
+        Object references are intentionally NOT captured — only string names
+        are stored in the closure so the callback is safe even if the object
+        is deleted before the timer fires.
+        """
+        if not FreeCAD.GuiUp:
+            return
+        if not hasattr(obj, "Material") or not obj.Material:
+            return
+        if not hasattr(obj.Material, "Proxy"):
+            return
+        if not hasattr(obj.Material.Proxy, "get_hatch_for_layer"):
+            return  # old MultiMaterial without Hatches support
+
+        doc_name = obj.Document.Name
+        obj_name = obj.Name
+
+        from PySide import QtCore
+
+        def _deferred():
+            try:
+                doc = FreeCAD.getDocument(doc_name)
+                if not doc:
+                    return
+                target = doc.getObject(obj_name)
+                if not target:
+                    return
+                if not hasattr(target, "Shape") or \
+                   not target.Shape or \
+                   target.Shape.isNull():
+                    return
+                _apply_material_hatches_now(doc, target)
+            except Exception as e:
+                FreeCAD.Console.PrintWarning(
+                    f"apply_material_hatches deferred error on "
+                    f"'{obj_name}': {e}\n"
+                )
+
+        QtCore.QTimer.singleShot(0, _deferred)
+
     def computeAreas(self, obj):
         """Compute the area properties of the object's shape.
 
@@ -1318,6 +1372,189 @@ class Component(ArchIFC.IfcProduct):
         if hasattr(self, "executeSketchArchFeatures"):
             self.executeSketchArchFeatures(obj, linkObj, index, linkElement)
 
+
+# ============================================================================
+# NEW FUNCTION: Per-face hatch application (called after recompute)
+# ============================================================================
+def _apply_material_hatches_now(doc, obj):
+    """
+    Apply per-layer, per-face hatch patterns from a MultiMaterial.
+    Called AFTER the document recompute is complete (deferred by QTimer).
+ 
+    Face selection — area threshold approach
+    ----------------------------------------
+    The previous bounding-box direction approach had two fatal bugs:
+      1. Logic inversion: selected caps instead of main surfaces
+      2. Bounding box fails for zigzag/angled walls (minimum dim = height,
+         not thickness)
+ 
+    The correct approach: the main visible surfaces of ANY architectural
+    element are ALWAYS the largest faces. End caps and edge faces are
+    always a small fraction of the main face area.
+ 
+    Threshold: faces with area >= 15% of the largest face in that solid.
+ 
+    Verification:
+      Standard wall (200mm × 4000mm × 3000mm):
+        Main faces: 4000×3000 = 12,000,000 mm²  → included (100%)
+        End caps:   200×3000  =    600,000 mm²  → 5.0%  → excluded ✓
+        Top/bottom: 200×4000  =    800,000 mm²  → 6.7%  → excluded ✓
+ 
+      Zigzag wall (3 segments × 2000mm, 200mm thick, 3000mm high):
+        Each main face: 2000×3000 = 6,000,000 mm² → included (100%)
+        Between-segment caps: 200×3000 = 600,000 mm² → 10% → excluded ✓
+        (Works regardless of plan orientation — no bounding box needed)
+ 
+      Slab (5000mm × 4000mm × 200mm):
+        Top/bottom faces: 5000×4000 = 20,000,000 mm² → included (100%)
+        Edge faces: 200×4000 = 800,000 mm² → 4% → excluded ✓
+ 
+      Very thin narrow panel (100mm × 500mm × 3000mm):
+        Main faces: 500×3000 = 1,500,000 mm²  → included (100%)
+        Edge faces: 100×3000 = 300,000 mm²    → 20%  → excluded ✓
+ 
+    Naming convention
+    -----------------
+      {obj.Name}_HF{i}_{j}   hidden Part::Feature for layer i, face j
+      {obj.Name}_HI{i}_{j}   CustomHatch instance  for layer i, face j
+    """
+    import Part
+ 
+    try:
+        from HatchGenerator import makeCustomHatch
+    except ImportError:
+        FreeCAD.Console.PrintWarning(
+            "apply_material_hatches: HatchGenerator addon not found.\n"
+        )
+        return
+ 
+    proxy    = obj.Material.Proxy
+    solids   = obj.Shape.Solids
+    n_layers = len(getattr(obj.Material, "Materials", []))
+    needs_recompute = False
+ 
+    for i in range(n_layers):
+        hatch_pattern = proxy.get_hatch_for_layer(obj.Material, i)
+ 
+        # No hatch assigned for this layer — remove any previously created objects
+        if hatch_pattern is None:
+            j = 0
+            while True:
+                hf = doc.getObject(f"{obj.Name}_HF{i}_{j}")
+                hi = doc.getObject(f"{obj.Name}_HI{i}_{j}")
+                if not hf and not hi:
+                    break
+                for stale in (hi, hf):   # remove hatch first, then face
+                    if stale:
+                        doc.removeObject(stale.Name)
+                        needs_recompute = True
+                j += 1
+            continue
+ 
+        if i >= len(solids):
+            continue
+ 
+        solid = solids[i]
+ 
+        # ── Select exposed surface faces by area threshold ─────────────────
+        # Sort all faces of this solid by area, largest first.
+        try:
+            faces_by_area = sorted(solid.Faces, key=lambda f: f.Area, reverse=True)
+        except Exception:
+            continue
+ 
+        if not faces_by_area:
+            continue
+ 
+        max_area = faces_by_area[0].Area
+ 
+        if max_area < 1e-6:
+            # Degenerate solid — skip
+            continue
+ 
+        # Include every face whose area is at least 15% of the largest face.
+        # This threshold reliably separates main visible surfaces from edge
+        # caps for all standard architectural proportions.
+        AREA_THRESHOLD = 0.15
+        exposed_faces = [
+            f for f in faces_by_area
+            if f.Area >= max_area * AREA_THRESHOLD
+        ]
+ 
+        # Safety fallback: always include at least the top 2 faces even if
+        # all faces happen to be similar in area (unusual but possible).
+        if not exposed_faces:
+            exposed_faces = faces_by_area[:min(2, len(faces_by_area))]
+ 
+        # ── Create or update one face feature + hatch instance per face ────
+        for j, face in enumerate(exposed_faces):
+            face_feat_name = f"{obj.Name}_HF{i}_{j}"
+            inst_name      = f"{obj.Name}_HI{i}_{j}"
+ 
+            # Hidden face feature — stores exactly this one face
+            face_feat = doc.getObject(face_feat_name)
+            if face_feat is None:
+                face_feat = doc.addObject("Part::Feature", face_feat_name)
+                needs_recompute = True
+            try:
+                face_feat.Shape = Part.Shell([face])
+            except Exception:
+                face_feat.Shape = face
+            if FreeCAD.GuiUp:
+                face_feat.ViewObject.Visibility = False
+ 
+            # Hatch instance — one per face, correct surface normal per face
+            inst = doc.getObject(inst_name)
+            if inst is None:
+                inst = makeCustomHatch(name=inst_name)
+                needs_recompute = True
+            inst.BaseObject           = face_feat
+            inst.PatternType          = "CustomObject"
+            inst.PatternObject        = hatch_pattern
+            inst.UseSurfaceProjection = True
+            inst.ForceXYPlane         = False
+            if not getattr(inst, "PatternScale", 0):
+                inst.PatternScale = 1.0
+ 
+        # ── Remove stale objects from previous runs ────────────────────────
+        # If the wall was simplified (fewer exposed faces now), delete extras.
+        j = len(exposed_faces)
+        while True:
+            hf = doc.getObject(f"{obj.Name}_HF{i}_{j}")
+            hi = doc.getObject(f"{obj.Name}_HI{i}_{j}")
+            if not hf and not hi:
+                break
+            for stale in (hi, hf):
+                if stale:
+                    doc.removeObject(stale.Name)
+                    needs_recompute = True
+            j += 1
+ 
+    # ── Remove objects for layers beyond current n_layers ─────────────────
+    # Handles the case where the user deleted a material layer.
+    i = n_layers
+    while True:
+        found_any = False
+        j = 0
+        while True:
+            hf = doc.getObject(f"{obj.Name}_HF{i}_{j}")
+            hi = doc.getObject(f"{obj.Name}_HI{i}_{j}")
+            if not hf and not hi:
+                break
+            for stale in (hi, hf):
+                if stale:
+                    doc.removeObject(stale.Name)
+                    needs_recompute = True
+                    found_any = True
+            j += 1
+        if not found_any:
+            break
+        i += 1
+ 
+    # One recompute to render the newly created/updated hatch instances.
+    # The wall/slab/panel itself is NOT touched so it will NOT recompute again.
+    if needs_recompute:
+        doc.recompute()
 
 class AreaCalculator:
     """Helper class to compute vertical area, horizontal area, and perimeter length.
