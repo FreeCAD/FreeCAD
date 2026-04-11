@@ -100,8 +100,7 @@ jobs:
              tar -A -f \$toplevel/freecad_source_${BUILD_TAG}.tar \$sha1.tar && \
              rm \$sha1.tar"
           gzip freecad_source_${BUILD_TAG}.tar
-          sha256sum freecad_source_${BUILD_TAG}.tar.gz > freecad_source_${BUILD_TAG}.tar.gz-SHA256.txt
-          gh release upload --clobber ${BUILD_TAG} "freecad_source_${BUILD_TAG}.tar.gz" "freecad_source_${BUILD_TAG}.tar.gz-SHA256.txt"
+          gh release upload --clobber ${BUILD_TAG} "freecad_source_${BUILD_TAG}.tar.gz"
 
   build:
     needs: upload_src

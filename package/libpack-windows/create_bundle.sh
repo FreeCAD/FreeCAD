@@ -226,14 +226,13 @@ fi
 
 # --- Portable 7z archive ----------------------------------------------------------------------
 7z a -t7z -mx9 -mmt="${NUMBER_OF_PROCESSORS:-4}" "${version_name}.7z" "${version_name}" -bb
-sha256sum "${version_name}.7z" > "${version_name}.7z-SHA256.txt"
 
 # Upload the portable bundle right away so it is published even if a later step (e.g. the
 # installer) fails. The installer is a best-effort extra on top of the portable artifact.
 if [ "${UPLOAD_RELEASE}" == "true" ]; then
     echo "Uploading portable bundle to release ${BUILD_TAG}..."
     gh release upload --clobber "${BUILD_TAG}" \
-        "${version_name}.7z" "${version_name}.7z-SHA256.txt"
+        "${version_name}.7z"
 fi
 
 # --- Installer (x64 only for now) -------------------------------------------------------------
@@ -275,12 +274,11 @@ if [ "${MAKE_INSTALLER}" == "true" ]; then
     else
         echo "No code signing available, leaving the installer unsigned."
     fi
-    sha256sum "${version_name}-installer.exe" > "${version_name}-installer.exe-SHA256.txt"
 
     if [ "${UPLOAD_RELEASE}" == "true" ]; then
         echo "Uploading installer to release ${BUILD_TAG}..."
         gh release upload --clobber "${BUILD_TAG}" \
-            "${version_name}-installer.exe" "${version_name}-installer.exe-SHA256.txt"
+            "${version_name}-installer.exe"
     fi
 fi
 

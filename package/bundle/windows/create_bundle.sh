@@ -156,8 +156,6 @@ if ! "$SIGN_DIR/bin/freecadcmd.exe" --safe-mode --console "import pivy; from piv
 fi
 
 7z a -t7z -mx9 -mmt=${NUMBER_OF_PROCESSORS} ${version_name}.7z ${version_name} -bb
-# create hash
-sha256sum ${version_name}.7z > ${version_name}.7z-SHA256.txt
 
 if [ "${MAKE_INSTALLER}" == "true" ]; then
     FILES_FREECAD="$(cygpath -w $(pwd))\\${version_name}"
@@ -188,14 +186,13 @@ if [ "${MAKE_INSTALLER}" == "true" ]; then
     else
       echo "No code signing available, leaving the installer unsigned"
     fi
-    sha256sum ${version_name}-installer.exe > ${version_name}-installer.exe-SHA256.txt
 fi
 
 if [ "${UPLOAD_RELEASE}" == "true" ]; then
     echo "Uploading the release..."
-    gh release upload --clobber ${BUILD_TAG} "${version_name}.7z" "${version_name}.7z-SHA256.txt"
+    gh release upload --clobber ${BUILD_TAG} "${version_name}.7z"
     if [ "${MAKE_INSTALLER}" == "true" ]; then
-        gh release upload --clobber ${BUILD_TAG} "${version_name}-installer.exe" "${version_name}-installer.exe-SHA256.txt"
+        gh release upload --clobber ${BUILD_TAG} "${version_name}-installer.exe"
     fi
     echo "Done uploading"
 fi
