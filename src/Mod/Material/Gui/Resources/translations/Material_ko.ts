@@ -6,17 +6,17 @@
     <message>
       <location filename="../../Command.cpp" line="146"/>
       <source>Inspect Appearance</source>
-      <translation>형상의 외관</translation>
+      <translation>외관 검사</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="147"/>
       <source>Inspects the appearance properties of the selected object</source>
-      <translation>선택된 객체의 외관을 검토</translation>
+      <translation>선택한 객체의 외관 속성을 검사합니다</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="149"/>
       <source>Inspect the appearance properties of the selected object</source>
-      <translation>선택된 대상체의 외관 속성을 검토</translation>
+      <translation>선택한 객체의 외관 속성을 검사</translation>
     </message>
   </context>
   <context>
@@ -24,17 +24,17 @@
     <message>
       <location filename="../../Command.cpp" line="173"/>
       <source>Inspect Material</source>
-      <translation type="unfinished">Inspect Material</translation>
+      <translation>재료 검사</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="174"/>
       <source>Inspects the material properties of the selected object</source>
-      <translation type="unfinished">Inspects the material properties of the selected object</translation>
+      <translation>선택한 객체의 재료 속성을 검사합니다</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="176"/>
       <source>Inspect the material properties of the selected object</source>
-      <translation>선택된 대상체의 재료 속성을 검토</translation>
+      <translation>선택한 객체의 재료 속성을 검사</translation>
     </message>
   </context>
   <context>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../Array2D.cpp" line="138"/>
       <source>Context Menu</source>
-      <translation type="unfinished">Context Menu</translation>
+      <translation>컨텍스트 메뉴</translation>
     </message>
   </context>
   <context>
@@ -72,24 +72,24 @@
       <location filename="../../Array3D.cpp" line="231"/>
       <location filename="../../Array3D.cpp" line="302"/>
       <source>Context Menu</source>
-      <translation type="unfinished">Context Menu</translation>
+      <translation>컨텍스트 메뉴</translation>
     </message>
     <message>
       <location filename="../../Array3D.cpp" line="263"/>
       <location filename="../../Array3D.cpp" line="335"/>
       <source>Confirm Delete</source>
-      <translation>삭제 여부 확인</translation>
+      <translation>삭제 확인</translation>
     </message>
     <message>
       <location filename="../../Array3D.cpp" line="265"/>
       <location filename="../../Array3D.cpp" line="337"/>
       <source>Delete the row?</source>
-      <translation type="unfinished">Delete the row?</translation>
+      <translation>행을 삭제할까요?</translation>
     </message>
     <message>
       <location filename="../../Array3D.cpp" line="267"/>
       <source>Removing this will also remove all 2D contents.</source>
-      <translation>이 항목을 지울 시 해당 항목과 관련된 2차원 콘텐츠가 삭제됩니다</translation>
+      <translation>이를 제거하면 모든 2D 내용도 함께 제거됩니다.</translation>
     </message>
   </context>
   <context>
@@ -123,27 +123,27 @@
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="14"/>
       <source>Display Properties</source>
-      <translation type="unfinished">Display Properties</translation>
+      <translation>표시 속성</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="20"/>
       <source>Viewing Mode</source>
-      <translation type="unfinished">Viewing Mode</translation>
+      <translation>보기 모드</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="55"/>
       <source>Document window</source>
-      <translation type="unfinished">Document window</translation>
+      <translation>문서 창</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="87"/>
       <source>Plot mode</source>
-      <translation type="unfinished">Plot mode</translation>
+      <translation>플롯 모드</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="106"/>
       <source>Display</source>
-      <translation>화면</translation>
+      <translation>표시</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="144"/>
@@ -168,12 +168,12 @@
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="365"/>
       <source>Color plot</source>
-      <translation type="unfinished">Color plot</translation>
+      <translation>컬러 플롯</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="372"/>
       <source>Custom appearance</source>
-      <translation type="unfinished">Custom appearance</translation>
+      <translation>사용자 정의 외관</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="382"/>
@@ -183,7 +183,7 @@
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="389"/>
       <source>Line color</source>
-      <translation>선 색</translation>
+      <translation>선 색상</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="338"/>
@@ -196,7 +196,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="14"/>
       <source>Form</source>
-      <translation>양식</translation>
+      <translation>폼</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="35"/>
@@ -216,17 +216,17 @@
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="64"/>
       <source>Label / internal name</source>
-      <translation type="unfinished">Label / internal name</translation>
+      <translation>레이블 / 내부 이름</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="74"/>
       <source>Sub.Shape / Type</source>
-      <translation>하위. 모양/ 타입</translation>
+      <translation>하위 형상 / 유형</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="81"/>
       <source>Shape.TypeID / TypeID</source>
-      <translation>모양. 타입ID / 타입ID</translation>
+      <translation>형상 TypeID / TypeID</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="100"/>
@@ -246,22 +246,22 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="202"/>
       <source>Diffuse color</source>
-      <translation type="unfinished">Diffuse color</translation>
+      <translation>디퓨즈 색상</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="211"/>
       <source>Ambient color</source>
-      <translation type="unfinished">Ambient color</translation>
+      <translation>앰비언트 색상</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="220"/>
       <source>Emissive color</source>
-      <translation type="unfinished">Emissive color</translation>
+      <translation>발광 색상</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="229"/>
       <source>Specular color</source>
-      <translation type="unfinished">Specular color</translation>
+      <translation>스페큘러 색상</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="238"/>
@@ -279,7 +279,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="14"/>
       <source>Form</source>
-      <translation>양식</translation>
+      <translation>폼</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="35"/>
@@ -299,17 +299,17 @@
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="64"/>
       <source>Label / internal name</source>
-      <translation type="unfinished">Label / internal name</translation>
+      <translation>레이블 / 내부 이름</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="74"/>
       <source>Sub.Shape / Type</source>
-      <translation>하위. 모양/ 타입</translation>
+      <translation>하위 형상 / 유형</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="81"/>
       <source>Shape.TypeID / TypeID</source>
-      <translation>모양. 타입ID / 타입ID</translation>
+      <translation>형상 TypeID / TypeID</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="94"/>
@@ -319,7 +319,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="128"/>
       <source>Copy to Clipboard</source>
-      <translation>오림판에 복사</translation>
+      <translation>클립보드에 복사</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="151"/>
@@ -329,18 +329,18 @@
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="166"/>
       <source>Label: </source>
-      <translation>라벨: </translation>
+      <translation>레이블: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="172"/>
       <source>Internal name: </source>
-      <translation type="unfinished">Internal name: </translation>
+      <translation>내부 이름: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="190"/>
       <location filename="../../DlgInspectMaterial.cpp" line="331"/>
       <source>Type: </source>
-      <translation>타입:</translation>
+      <translation>유형: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="192"/>
@@ -380,37 +380,37 @@
       <location filename="../../DlgInspectMaterial.cpp" line="273"/>
       <location filename="../../DlgInspectMaterial.cpp" line="346"/>
       <source>Library directory: </source>
-      <translation type="unfinished">Library directory: </translation>
+      <translation>라이브러리 디렉터리: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="276"/>
       <source>Subdirectory: </source>
-      <translation type="unfinished">Subdirectory: </translation>
+      <translation>하위 디렉터리: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="348"/>
       <source>Sub directory: </source>
-      <translation type="unfinished">Sub directory: </translation>
+      <translation>하위 디렉터리: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="365"/>
       <source>Appearance models:</source>
-      <translation type="unfinished">Appearance models:</translation>
+      <translation>외관 모델:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="371"/>
       <source>Physical models:</source>
-      <translation type="unfinished">Physical models:</translation>
+      <translation>물성 모델:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="377"/>
       <source>Appearance properties:</source>
-      <translation type="unfinished">Appearance properties:</translation>
+      <translation>외관 속성:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="383"/>
       <source>Physical properties:</source>
-      <translation type="unfinished">Physical properties:</translation>
+      <translation>물성 속성:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="279"/>
@@ -421,12 +421,12 @@
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="329"/>
       <source>Model UUID: </source>
-      <translation>모형의 범용 고유 식별자:</translation>
+      <translation>모델 UUID: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="333"/>
       <source>Has value: </source>
-      <translation>보유 값:</translation>
+      <translation>값 있음: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="333"/>
@@ -436,7 +436,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="333"/>
       <source>Yes</source>
-      <translation>네</translation>
+      <translation>예</translation>
     </message>
   </context>
   <context>
@@ -458,7 +458,7 @@
     <message>
       <location filename="../../DlgSettingsDefaultMaterial.cpp" line="52"/>
       <source>Physical</source>
-      <translation>물리적인</translation>
+      <translation>물성</translation>
     </message>
   </context>
   <context>
@@ -471,7 +471,7 @@
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="34"/>
       <source>Use built-in materials</source>
-      <translation>내장되 있는 재료를 사용</translation>
+      <translation>내장 재료 사용</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="53"/>
@@ -481,68 +481,69 @@
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="118"/>
       <source>User directory</source>
-      <translation>사용자 디렉토리:</translation>
+      <translation>사용자 디렉터리</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="23"/>
       <source>Card Resources</source>
-      <translation type="unfinished">Card Resources</translation>
+      <translation>카드 리소스</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="31"/>
       <source>The cards built-in to FreeCAD will be listed as available</source>
-      <translation type="unfinished">The cards built-in to FreeCAD will be listed as available</translation>
+      <translation>FreeCAD에 내장된 카드가 사용 가능한 항목으로 표시됩니다</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="50"/>
       <source>Use materials added by external workbenches</source>
-      <translation type="unfinished">Use materials added by external workbenches</translation>
+      <translation>외부 작업대에서 추가한 재료 사용</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="69"/>
       <source>Cards from FreeCAD’s preferences directory are also listed as available</source>
-      <translation type="unfinished">Cards from FreeCAD’s preferences directory are also listed as available</translation>
+      <translation>FreeCAD 환경설정 디렉터리의 카드도 사용 가능한 항목으로 표시됩니다</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="72"/>
       <source>Use materials from the Materials preference directory</source>
-      <translation type="unfinished">Use materials from the Materials preference directory</translation>
+      <translation>재료 환경설정 디렉터리의 재료 사용</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="88"/>
       <source>Material cards from the specified directory will also be listed as available</source>
-      <translation type="unfinished">Material cards from the specified directory will also be listed as available</translation>
+      <translation>지정한 디렉터리의 재료 카드도 사용 가능한 항목으로 표시됩니다</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="91"/>
       <source>Use materials from user-defined directory</source>
-      <translation type="unfinished">Use materials from user-defined directory</translation>
+      <translation>사용자 지정 디렉터리의 재료 사용</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="154"/>
       <source>Card Sorting and Duplicates</source>
-      <translation type="unfinished">Card Sorting and Duplicates</translation>
+      <translation>카드 정렬 및 중복</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="160"/>
       <source>Duplicate cards will be deleted from the displayed material card list</source>
-      <translation type="unfinished">Duplicate cards will be deleted from the displayed material card list</translation>
+      <translation>중복 카드는 표시되는 재료 카드 목록에서 삭제됩니다</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="163"/>
       <source>Delete card duplicates</source>
-      <translation>중복되는 카드 제거</translation>
+      <translation>중복 카드 제거</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="179"/>
       <source>Material cards appear sorted by their resources (locations).
 If unchecked, they will be sorted by their name.</source>
-      <translation>재료 카드는 리소스(위치)에 따라 정렬됩니다. 만약 항목이 체크되어 있지 않다면 이름에 따라 정렬됩니다.</translation>
+      <translation>재료 카드는 리소스(위치)별로 정렬되어 표시됩니다.
+이 옵션을 끄면 이름순으로 정렬됩니다.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="183"/>
       <source>Sort by resources</source>
-      <translation>리소스를 기준으로 정렬</translation>
+      <translation>리소스별 정렬</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="202"/>
@@ -553,31 +554,31 @@ If unchecked, they will be sorted by their name.</source>
       <location filename="../../DlgSettingsMaterial.ui" line="208"/>
       <location filename="../../DlgSettingsMaterial.ui" line="291"/>
       <source>Show favorites</source>
-      <translation>즐겨찾기 목록 보기</translation>
+      <translation>즐겨찾기 표시</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="224"/>
       <location filename="../../DlgSettingsMaterial.ui" line="307"/>
       <source>Show recent</source>
-      <translation>최근 항목 보기</translation>
+      <translation>최근 항목 표시</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="240"/>
       <location filename="../../DlgSettingsMaterial.ui" line="323"/>
       <source>Show empty libraries</source>
-      <translation>빈 라이브러리 목록 보기</translation>
+      <translation>빈 라이브러리 표시</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="256"/>
       <location filename="../../DlgSettingsMaterial.ui" line="339"/>
       <source>Show empty folders</source>
-      <translation>빈 폴더 목록 보기</translation>
+      <translation>빈 폴더 표시</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="269"/>
       <location filename="../../DlgSettingsMaterial.ui" line="352"/>
       <source>Show legacy files</source>
-      <translation>레거시 파일 목록 보기</translation>
+      <translation>레거시 파일 표시</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="285"/>
@@ -590,12 +591,12 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../ImageEdit.ui" line="14"/>
       <source>Image</source>
-      <translation>화상</translation>
+      <translation>이미지</translation>
     </message>
     <message>
       <location filename="../../ImageEdit.ui" line="30"/>
       <source>Thumbnail</source>
-      <translation>미리보기</translation>
+      <translation>썸네일</translation>
     </message>
     <message>
       <location filename="../../ImageEdit.ui" line="95"/>
@@ -620,12 +621,12 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../ImageEdit.cpp" line="206"/>
       <source>Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</source>
-      <translation>이미지 파일 형식(*.jpg  *.jpeg *.png *.bmp);;모든 형식(*)</translation>
+      <translation>이미지 파일 (*.jpg *.jpeg *.png *.bmp);;모든 파일 (*)</translation>
     </message>
     <message>
       <location filename="../../ImageEdit.cpp" line="218"/>
       <source>Image files (*.svg);;All files (*)</source>
-      <translation>화상 파일 (*.svg);;모든 파일 (*)</translation>
+      <translation>이미지 파일 (*.svg);;모든 파일 (*)</translation>
     </message>
   </context>
   <context>
@@ -664,17 +665,17 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../MaterialSave.ui" line="22"/>
       <source>Library</source>
-      <translation type="unfinished">Library</translation>
+      <translation>라이브러리</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.ui" line="70"/>
       <source>Filename</source>
-      <translation>파일이름</translation>
+      <translation>파일 이름</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.ui" line="104"/>
       <source>Save as inherited</source>
-      <translation type="unfinished">Save as inherited</translation>
+      <translation>상속형으로 저장</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.ui" line="59"/>
@@ -689,42 +690,42 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../MaterialSave.cpp" line="198"/>
       <source>Saving over the original file may cause other documents to break. This is not recommended.</source>
-      <translation>원본파일에 덮어쓰기 하면 다른 문서가 손상을 입을 수 있으므로 추천하지 않습니다. </translation>
+      <translation>원본 파일에 덮어쓰면 다른 문서가 손상될 수 있으므로 권장하지 않습니다.</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="222"/>
       <source>Save as new material</source>
-      <translation>새로운 재료로 저장</translation>
+      <translation>새 재료로 저장</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="195"/>
       <source>Save over &apos;%1&apos;?</source>
-      <translation type="unfinished">Save over &apos;%1&apos;?</translation>
+      <translation>'%1'에 덮어쓸까요?</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="220"/>
       <source>Confirm Save as New Material</source>
-      <translation type="unfinished">Confirm Save as New Material</translation>
+      <translation>새 재료로 저장 확인</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="225"/>
       <source>This material already exists in this library. Save as a new material?</source>
-      <translation type="unfinished">This material already exists in this library. Save as a new material?</translation>
+      <translation>이 재료는 이미 이 라이브러리에 있습니다. 새 재료로 저장할까요?</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="247"/>
       <source>Confirm Save as Copy</source>
-      <translation type="unfinished">Confirm Save as Copy</translation>
+      <translation>사본 저장 확인</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="249"/>
       <source>Save as copy</source>
-      <translation type="unfinished">Save as copy</translation>
+      <translation>사본으로 저장</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="252"/>
       <source>Saving a copy is not recommended as it can break other documents. It is recommended to save as a new material.</source>
-      <translation type="unfinished">Saving a copy is not recommended as it can break other documents. It is recommended to save as a new material.</translation>
+      <translation>사본으로 저장하면 다른 문서가 손상될 수 있으므로 권장하지 않습니다. 새 재료로 저장하는 것을 권장합니다.</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="255"/>
@@ -734,18 +735,18 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../MaterialSave.cpp" line="256"/>
       <source>Save As New</source>
-      <translation>새로운 이름으로 저장</translation>
+      <translation>새 재료로 저장</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="488"/>
       <location filename="../../MaterialSave.cpp" line="498"/>
       <source>New folder</source>
-      <translation type="unfinished">New folder</translation>
+      <translation>새 폴더</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="538"/>
       <source>Context Menu</source>
-      <translation type="unfinished">Context Menu</translation>
+      <translation>컨텍스트 메뉴</translation>
     </message>
   </context>
   <context>
@@ -753,7 +754,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../MaterialTreeWidget.cpp" line="139"/>
       <source>Launch Editor</source>
-      <translation type="unfinished">Launch Editor</translation>
+      <translation>편집기 실행</translation>
     </message>
     <message>
       <location filename="../../MaterialTreeWidget.cpp" line="312"/>
@@ -793,7 +794,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../MaterialsEditor.ui" line="91"/>
       <source>Source URL</source>
-      <translation>소스 URL</translation>
+      <translation>출처 URL</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="101"/>
@@ -808,27 +809,27 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../MaterialsEditor.ui" line="141"/>
       <source>Author</source>
-      <translation>작성자: </translation>
+      <translation>작성자</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="151"/>
       <source>Source reference</source>
-      <translation type="unfinished">Source reference</translation>
+      <translation>출처 참조</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="202"/>
       <source>Adds or removes to/from favorites</source>
-      <translation type="unfinished">Adds or removes to/from favorites</translation>
+      <translation>즐겨찾기에 추가하거나 제거합니다.</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="205"/>
       <source>Toggle Favorite</source>
-      <translation type="unfinished">Toggle Favorite</translation>
+      <translation>즐겨찾기 설정/해제</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="164"/>
       <source>License</source>
-      <translation>면허</translation>
+      <translation>라이선스</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="188"/>
@@ -838,22 +839,22 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../MaterialsEditor.ui" line="195"/>
       <source>Inherit New</source>
-      <translation>새로 상속</translation>
+      <translation>상속하여 새로 만들기</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="215"/>
       <source>Physical</source>
-      <translation>물리적인</translation>
+      <translation>물성</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="236"/>
       <source>Add physical model</source>
-      <translation>물리적인 모형 추가</translation>
+      <translation>물성 모델 추가</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="246"/>
       <source>Delete physical model</source>
-      <translation>물리적인 모형 삭제</translation>
+      <translation>물성 모델 삭제</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="262"/>
@@ -863,32 +864,32 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../MaterialsEditor.ui" line="286"/>
       <source>Add appearance model</source>
-      <translation>외형 모형 추가</translation>
+      <translation>외관 모델 추가</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="296"/>
       <source>Delete appearance model</source>
-      <translation>외형 모형 삭제</translation>
+      <translation>외관 모델 삭제</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="484"/>
       <source>Unnamed</source>
-      <translation>이름없음</translation>
+      <translation>이름 없음</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="606"/>
       <source>Old Format Material</source>
-      <translation>오래된 형식의 재료</translation>
+      <translation>구형 형식 재료</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="608"/>
       <source>This file is in the old material card format.</source>
-      <translation>이 파일은 오래된 재료 카드 형식입니다.</translation>
+      <translation>이 파일은 구형 재료 카드 형식입니다.</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="694"/>
       <source>This card uses the old format and must be saved before use</source>
-      <translation>이 카드는 오래된 형식을 사용하고 있으므로 사용 전 반드시 저장해야 합니다</translation>
+      <translation>이 카드는 구형 형식을 사용하므로 사용하기 전에 저장해야 합니다</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="754"/>
@@ -932,17 +933,17 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1318"/>
       <source>Context Menu</source>
-      <translation type="unfinished">Context Menu</translation>
+      <translation>컨텍스트 메뉴</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1320"/>
       <source>Inherit From</source>
-      <translation type="unfinished">Inherit From</translation>
+      <translation>다음에서 상속</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1324"/>
       <source>Inherit New Material</source>
-      <translation type="unfinished">Inherit New Material</translation>
+      <translation>상속하여 새 재료 만들기</translation>
     </message>
   </context>
   <context>
@@ -950,7 +951,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../ModelSelect.ui" line="14"/>
       <source>Material Models</source>
-      <translation>재료 모형</translation>
+      <translation>재료 모델</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="41"/>
@@ -982,19 +983,19 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../ModelSelect.ui" line="159"/>
       <source>Adds or removes to/from favorites</source>
-      <translation type="unfinished">Adds or removes to/from favorites</translation>
+      <translation>즐겨찾기에 추가하거나 제거합니다.</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="162"/>
       <source>Toggle Favorites</source>
-      <translation type="unfinished">Toggle Favorites</translation>
+      <translation>즐겨찾기 설정/해제</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="172"/>
       <location filename="../../ModelSelect.cpp" line="443"/>
       <location filename="../../ModelSelect.cpp" line="459"/>
       <source>Properties</source>
-      <translation> 속성</translation>
+      <translation>속성</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.cpp" line="337"/>
@@ -1009,7 +1010,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../ModelSelect.cpp" line="361"/>
       <source>Inherited</source>
-      <translation>상속된</translation>
+      <translation>상속됨</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.cpp" line="362"/>
@@ -1032,7 +1033,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../TextEdit.ui" line="14"/>
       <source>Text Edit</source>
-      <translation>텍스트 생성</translation>
+      <translation>텍스트 편집</translation>
     </message>
   </context>
   <context>
@@ -1045,27 +1046,27 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../ui/materials-editor.ui" line="22"/>
       <source>Material Card</source>
-      <translation type="unfinished">Material Card</translation>
+      <translation>재료 카드</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="40"/>
       <source>Opens the Product URL of this material in an external browser</source>
-      <translation>이 재료의 상품 URL을 외부 브라우저에서 열기</translation>
+      <translation>이 재료의 제품 URL을 외부 브라우저에서 엽니다</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="56"/>
       <source>Existing material cards</source>
-      <translation>현재 존재하는 재료 카드</translation>
+      <translation>기존 재료 카드</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="67"/>
       <source>Opens an existing material card</source>
-      <translation>현재 존재하는 재료 카드들을 엽니다.</translation>
+      <translation>기존 재료 카드를 엽니다</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="70"/>
       <source>Open…</source>
-      <translation type="unfinished">Open…</translation>
+      <translation>열기…</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="80"/>
@@ -1075,12 +1076,12 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../ui/materials-editor.ui" line="96"/>
       <source>Material Parameter</source>
-      <translation type="unfinished">Material Parameter</translation>
+      <translation>재료 매개변수</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="115"/>
       <source>Add/Remove Parameter</source>
-      <translation type="unfinished">Add/Remove Parameter</translation>
+      <translation>매개변수 추가/제거</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="126"/>
@@ -1090,12 +1091,12 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../ui/materials-editor.ui" line="133"/>
       <source>Delete Property</source>
-      <translation type="unfinished">Delete Property</translation>
+      <translation>속성 삭제</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="77"/>
       <source>Saves this material as a card</source>
-      <translation>이 재료를 카드로 저장</translation>
+      <translation>이 재료를 카드로 저장합니다</translation>
     </message>
   </context>
   <context>
@@ -1111,7 +1112,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../AppMatGui.cpp" line="108"/>
       <source>Material Workbench</source>
-      <translation type="unfinished">Material Workbench</translation>
+      <translation>재료 작업대</translation>
     </message>
     <message>
       <location filename="../../AppMatGui.cpp" line="110"/>
@@ -1134,17 +1135,17 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../MaterialSave.cpp" line="570"/>
       <source>Delete &apos;%1&apos;?</source>
-      <translation type="unfinished">Delete &apos;%1&apos;?</translation>
+      <translation>'%1'을(를) 삭제할까요?</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="574"/>
       <source>Removing this will also remove all contents.</source>
-      <translation>이것을 지우면 관련된 모든 컨텐츠들이 제거됩니다.</translation>
+      <translation>이를 제거하면 모든 내용도 함께 제거됩니다.</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="609"/>
       <source>Save the material before using it.</source>
-      <translation type="unfinished">Save the material before using it.</translation>
+      <translation>사용하기 전에 재료를 저장하세요.</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1345"/>
@@ -1154,25 +1155,25 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1346"/>
       <source>Save changes to the material before closing?</source>
-      <translation type="unfinished">Save changes to the material before closing?</translation>
+      <translation>닫기 전에 재료 변경 사항을 저장할까요?</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1347"/>
       <source>Otherwise, all changes will be lost.</source>
-      <translation>그렇지 않으면, 모든 변경사항을 잃게 됩니다.</translation>
+      <translation>그렇지 않으면 모든 변경 사항이 손실됩니다.</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="170"/>
       <location filename="../../ListEdit.cpp" line="142"/>
+      <location filename="../../Array2D.cpp" line="170"/>
       <location filename="../../MaterialSave.cpp" line="567"/>
       <source>Confirm Delete</source>
-      <translation>삭제 여부 확인</translation>
+      <translation>삭제 확인</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="172"/>
       <location filename="../../ListEdit.cpp" line="144"/>
+      <location filename="../../Array2D.cpp" line="172"/>
       <source>Delete the row?</source>
-      <translation type="unfinished">Delete the row?</translation>
+      <translation>행을 삭제할까요?</translation>
     </message>
   </context>
   <context>
@@ -1180,13 +1181,13 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../Command.cpp" line="88"/>
       <source>&amp;Appearance</source>
-      <translation type="unfinished">&amp;Appearance</translation>
+      <translation>외관(&amp;A)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="89"/>
       <location filename="../../Command.cpp" line="91"/>
       <source>Sets the display properties of the selected object</source>
-      <translation>선택한 대상체의 표시 속성 설정</translation>
+      <translation>선택한 객체의 표시 속성을 설정합니다</translation>
     </message>
   </context>
   <context>
@@ -1194,13 +1195,13 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../Command.cpp" line="117"/>
       <source>&amp;Material</source>
-      <translation type="unfinished">&amp;Material</translation>
+      <translation>재료(&amp;M)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="118"/>
       <location filename="../../Command.cpp" line="120"/>
       <source>Sets the material of the selected object</source>
-      <translation>선택한 대상체의 재료 설정</translation>
+      <translation>선택한 객체의 재료를 설정합니다</translation>
     </message>
   </context>
   <context>
@@ -1221,27 +1222,27 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="14"/>
       <source>Materials Migration</source>
-      <translation type="unfinished">Materials Migration</translation>
+      <translation>재료 마이그레이션</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="27"/>
       <source>Select material libraries to migrate. Existing materials will not be overwritten.</source>
-      <translation type="unfinished">Select material libraries to migrate. Existing materials will not be overwritten.</translation>
+      <translation>이전할 재료 라이브러리를 선택하세요. 기존 재료는 덮어쓰지 않습니다.</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="20"/>
       <source>Select material libraries</source>
-      <translation type="unfinished">Select material libraries</translation>
+      <translation>재료 라이브러리 선택</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="34"/>
       <source>Select model libraries</source>
-      <translation type="unfinished">Select model libraries</translation>
+      <translation>모델 라이브러리 선택</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="41"/>
       <source>Select model libraries to migrate. Existing models will not be overwritten.</source>
-      <translation type="unfinished">Select model libraries to migrate. Existing models will not be overwritten.</translation>
+      <translation>이전할 모델 라이브러리를 선택하세요. 기존 모델은 덮어쓰지 않습니다.</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="48"/>
@@ -1251,7 +1252,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="178"/>
       <source>&amp;Migrate</source>
-      <translation type="unfinished">&amp;Migrate</translation>
+      <translation>마이그레이션(&amp;M)</translation>
     </message>
   </context>
   <context>
@@ -1259,17 +1260,17 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="14"/>
       <source>External Interface</source>
-      <translation type="unfinished">External Interface</translation>
+      <translation>외부 인터페이스</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="20"/>
       <source>Use External Interface</source>
-      <translation type="unfinished">Use External Interface</translation>
+      <translation>외부 인터페이스 사용</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="29"/>
       <source>External interface</source>
-      <translation type="unfinished">External interface</translation>
+      <translation>외부 인터페이스</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="65"/>
@@ -1279,18 +1280,18 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="91"/>
       <source>Model cache size</source>
-      <translation type="unfinished">Model cache size</translation>
+      <translation>모델 캐시 크기</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="98"/>
       <location filename="../../DlgSettingsExternal.ui" line="124"/>
       <source>Hit rate</source>
-      <translation type="unfinished">Hit rate</translation>
+      <translation>적중률</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="134"/>
       <source>Material cache size</source>
-      <translation type="unfinished">Material cache size</translation>
+      <translation>재료 캐시 크기</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.cpp" line="95"/>
@@ -1303,7 +1304,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="75"/>
       <source>Migrating models…</source>
-      <translation type="unfinished">Migrating models…</translation>
+      <translation>모델 이전 중…</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="81"/>
@@ -1311,7 +1312,7 @@ If unchecked, they will be sorted by their name.</source>
       <location filename="../../TaskMigrateExternal.cpp" line="105"/>
       <location filename="../../TaskMigrateExternal.cpp" line="117"/>
       <source>  Library: </source>
-      <translation type="unfinished">  Library: </translation>
+      <translation>  라이브러리: </translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="85"/>
@@ -1319,28 +1320,28 @@ If unchecked, they will be sorted by their name.</source>
       <location filename="../../TaskMigrateExternal.cpp" line="109"/>
       <location filename="../../TaskMigrateExternal.cpp" line="121"/>
       <source>done</source>
-      <translation type="unfinished">done</translation>
+      <translation>완료</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="87"/>
       <source>Validating models…</source>
-      <translation type="unfinished">Validating models…</translation>
+      <translation>모델 검증 중…</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="99"/>
       <source>Migrating materials…</source>
-      <translation type="unfinished">Migrating materials…</translation>
+      <translation>재료 이전 중…</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="111"/>
       <source>Validating materials…</source>
-      <translation type="unfinished">Validating materials…</translation>
+      <translation>재료 검증 중…</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="145"/>
       <location filename="../../TaskMigrateExternal.cpp" line="148"/>
       <source>Unknown exception - aborted</source>
-      <translation type="unfinished">Unknown exception - aborted</translation>
+      <translation>알 수 없는 예외 - 중단됨</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="125"/>
@@ -1349,7 +1350,7 @@ If unchecked, they will be sorted by their name.</source>
       <location filename="../../TaskMigrateExternal.cpp" line="137"/>
       <location filename="../../TaskMigrateExternal.cpp" line="141"/>
       <source>Aborted</source>
-      <translation type="unfinished">Aborted</translation>
+      <translation>중단됨</translation>
     </message>
   </context>
   <context>
@@ -1367,7 +1368,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../Command.cpp" line="55"/>
       <source>Edits material properties</source>
-      <translation type="unfinished">Edits material properties</translation>
+      <translation>재료 속성을 편집합니다</translation>
     </message>
   </context>
   <context>
@@ -1375,17 +1376,17 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../Command.cpp" line="202"/>
       <source>Migrate</source>
-      <translation>이전하기</translation>
+      <translation>마이그레이션</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="203"/>
       <source>Migrates the materials to the external materials manager</source>
-      <translation type="unfinished">Migrates the materials to the external materials manager</translation>
+      <translation>재료를 외부 재료 관리자에 마이그레이션합니다</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="205"/>
       <source>Migrate existing materials to the external materials manager</source>
-      <translation type="unfinished">Migrate existing materials to the external materials manager</translation>
+      <translation>기존 재료를 외부 재료 관리자에 마이그레이션</translation>
     </message>
   </context>
   <context>
@@ -1393,17 +1394,17 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../DlgDisplayPropertiesImp.cpp" line="180"/>
       <source>Basic appearance</source>
-      <translation type="unfinished">Basic appearance</translation>
+      <translation>기본 외관</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayPropertiesImp.cpp" line="185"/>
       <source>Texture appearance</source>
-      <translation type="unfinished">Texture appearance</translation>
+      <translation>텍스처 외관</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayPropertiesImp.cpp" line="190"/>
       <source>All materials</source>
-      <translation type="unfinished">All materials</translation>
+      <translation>모든 재료</translation>
     </message>
   </context>
 </TS>

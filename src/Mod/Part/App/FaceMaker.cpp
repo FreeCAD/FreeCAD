@@ -210,6 +210,18 @@ void Part::FaceMaker::postBuild()
     this->myTopoShape.setShape(this->myShape);
     this->myTopoShape.Hasher = this->MyHasher;
     this->myTopoShape.mapSubElement(this->mySourceShapes);
+
+    // some makers (FaceMakerBuildFace) modify the source shapes by splitting edges apart,
+    // so we need to run makeShapeWithElementMap for proper history tracking. if we don't,
+    // the face mapper loop below will make unstable names.
+    if (this->mySplitter.IsDone()) {
+        MapperMaker mapper(this->mySplitter);
+        TopoShape splitInputShape(this->myTopoShape.Tag);
+
+        splitInputShape.makeShapeWithElementMap(mySplitter.Shape(), mapper, mySourceShapes);
+
+        this->myTopoShape.mapSubElement(splitInputShape);
+    }
     int index = 0;
     const char* op = this->MyOp;
     if (!op) {

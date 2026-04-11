@@ -25,8 +25,8 @@
 
 #include "DlgCAMSimulator.h"
 #include "ViewCAMSimulator.h"
-#include "MillSimulation.h"
 #include "Gui/View3DInventorViewer.h"
+#include "MillSimulation.h"  // Must be *after* View3DInventorViewer.h -- See PR #28950
 #include <Mod/Part/App/BRepMesh.h>
 #include <QDateTime>
 #include <QSurfaceFormat>

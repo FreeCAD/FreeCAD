@@ -130,6 +130,8 @@ SET(FemBase_SRCS
     FemMeshProperty.h
     WorkerExtension.cpp
     WorkerExtension.h
+    FemShapeExtension.h
+    FemShapeExtension.cpp
     )
 SOURCE_GROUP("Base types" FILES ${FemBase_SRCS})
 

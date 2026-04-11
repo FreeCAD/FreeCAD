@@ -185,7 +185,7 @@ class ObjectOp(PathOp.ObjectOp):
                     center = shape.Edges[0].Curve.Center
                     if all(Path.Geom.pointsCoincide(center, e.Curve.Center) for e in shape.Edges):
                         return FreeCAD.Vector(center.x, center.y, 0)
-
+            return FreeCAD.Vector(shape.CenterOfMass.x, shape.CenterOfMass.y, 0)
         except Part.OCCError as e:
             Path.Log.error(e)
 

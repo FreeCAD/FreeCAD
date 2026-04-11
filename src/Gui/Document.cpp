@@ -1656,7 +1656,7 @@ bool Document::saveAs()
         getMainWindow(),
         QObject::tr("Save %1 Document").arg(exe),
         name,
-        QStringLiteral("%1 %2 (*.FCStd)").arg(exe, QObject::tr("Document"))
+        QStringList(QStringLiteral("%1 %2 (*.FCStd)").arg(exe, QObject::tr("Document")))
     );
 
     if (!fn.isEmpty()) {
@@ -1786,7 +1786,7 @@ bool Document::saveCopy()
         getMainWindow(),
         QObject::tr("Save %1 Document").arg(exe),
         name,
-        QObject::tr("%1 document (*.FCStd)").arg(exe)
+        QStringList(QObject::tr("%1 document (*.FCStd)").arg(exe))
     );
     if (!fn.isEmpty()) {
         const char* DocName = App::GetApplication().getDocumentName(getDocument());

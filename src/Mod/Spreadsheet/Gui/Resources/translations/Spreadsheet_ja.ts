@@ -380,8 +380,8 @@
       <translation>列を挿入</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="679"/>
       <location filename="../../SpreadsheetView.cpp" line="193"/>
+      <location filename="../../SheetTableView.cpp" line="679"/>
       <source>Clear Cells</source>
       <translation>セルをクリア</translation>
     </message>
@@ -673,8 +673,8 @@ switch the design configuration. The property will be created if not exist.</sou
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="198"/>
       <location filename="../../ViewProviderSpreadsheet.cpp" line="107"/>
+      <location filename="../../Command.cpp" line="198"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
       <translation>CSV (*.csv *.CSV);;すべて (*)</translation>
     </message>
@@ -684,12 +684,12 @@ switch the design configuration. The property will be created if not exist.</sou
       <translation>ファイルをインポート</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="494"/>
+      <location filename="../../SpreadsheetView.cpp" line="491"/>
       <source>Alias contains invalid characters!</source>
       <translation>エイリアスに無効な文字が含まれています！</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="500"/>
+      <location filename="../../SpreadsheetView.cpp" line="497"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Spreadsheet.B1 の代わりに
@@ -1131,12 +1131,12 @@ Defaults to: %V = %A
   <context>
     <name>SpreadsheetGui::SheetView</name>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="301"/>
+      <location filename="../../SpreadsheetView.cpp" line="298"/>
       <source>Export PDF</source>
       <translation>PDFファイル形式でエクスポート</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="303"/>
+      <location filename="../../SpreadsheetView.cpp" line="300"/>
       <source>PDF file</source>
       <translation>PDFファイル</translation>
     </message>

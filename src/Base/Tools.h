@@ -405,6 +405,8 @@ struct BaseExport Tools
     static std::string currentDateTimeString();
 
     static bool isCLocaleName(std::string_view localeName);
+    static void setOperatingSystemNumericLocale(std::string_view localeName);
+    static std::string getOperatingSystemNumericLocale();
     static void setIcuDefaultLocale(std::string_view icuLocaleId);
 
     static std::vector<std::string> splitSubName(const std::string& subname);

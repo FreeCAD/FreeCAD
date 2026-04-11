@@ -82,7 +82,7 @@
       <location filename="../../VisualInspection.ui" line="129"/>
       <location filename="../../VisualInspection.ui" line="174"/>
       <source> mm</source>
-      <translation>mm</translation>
+      <translation> mm</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="145"/>
@@ -100,7 +100,7 @@
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="511"/>
       <source>Do you want to remove all annotations?</source>
-      <translation>Vols eliminar totes les anotacions?</translation>
+      <translation>Voleu eliminar totes les anotacions?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="569"/>

@@ -157,7 +157,7 @@
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="48"/>
       <source>Coons</source>
-      <translation type="unfinished">Coons</translation>
+      <translation>Coons</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="55"/>
@@ -469,9 +469,9 @@ Questo comando funziona solo con un oggetto mesh.</translation>
     <message numerus="yes">
       <location filename="../../TaskFillingEdge.cpp" line="406"/>
       <source>Edge has %n adjacent face(s)</source>
-      <translation type="unfinished">
+      <translation>
         <numerusform>Il bordo ha %n faccia(e) adiacenti</numerusform>
-        <numerusform>Edge has %n adjacent face(s)</numerusform>
+        <numerusform>Il bordo ha una %n facce adiacenti</numerusform>
       </translation>
     </message>
     <message>
@@ -488,8 +488,8 @@ Questo comando funziona solo con un oggetto mesh.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../TaskFilling.cpp" line="64"/>
       <location filename="../../TaskGeomFillSurface.cpp" line="61"/>
+      <location filename="../../TaskFilling.cpp" line="64"/>
       <source>Edit Filling</source>
       <translation>Modifica riempimento</translation>
     </message>
@@ -524,9 +524,9 @@ Questo comando funziona solo con un oggetto mesh.</translation>
     <message numerus="yes">
       <location filename="../../TaskFilling.cpp" line="615"/>
       <source>Edge has %n adjacent faces</source>
-      <translation type="unfinished">
+      <translation>
         <numerusform>Il bordo ha %n facce adiacenti</numerusform>
-        <numerusform>Edge has %n adjacent faces</numerusform>
+        <numerusform>Il bordo ha %n facce adiacenti</numerusform>
       </translation>
     </message>
     <message>

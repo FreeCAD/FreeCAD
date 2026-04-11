@@ -489,8 +489,8 @@ Ova naredba radi samo s mrežnim objektom.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../TaskFilling.cpp" line="64"/>
       <location filename="../../TaskGeomFillSurface.cpp" line="61"/>
+      <location filename="../../TaskFilling.cpp" line="64"/>
       <source>Edit Filling</source>
       <translation>Uredi ispunjavanje</translation>
     </message>

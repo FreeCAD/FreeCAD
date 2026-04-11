@@ -16,7 +16,7 @@
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="142"/>
       <source>Text color</source>
-      <translation>Szöveg szín</translation>
+      <translation>Betűszín</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="59"/>

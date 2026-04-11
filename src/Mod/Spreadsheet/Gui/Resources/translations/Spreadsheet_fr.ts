@@ -380,8 +380,8 @@
       <translation>Insérer des colonnes</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="679"/>
       <location filename="../../SpreadsheetView.cpp" line="193"/>
+      <location filename="../../SheetTableView.cpp" line="679"/>
       <source>Clear Cells</source>
       <translation>Effacer des cellules</translation>
     </message>
@@ -679,8 +679,8 @@ créée si elle n'existe pas.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="198"/>
       <location filename="../../ViewProviderSpreadsheet.cpp" line="107"/>
+      <location filename="../../Command.cpp" line="198"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
       <translation>CSV (*.csv *.CSV);;Tout (*)</translation>
     </message>
@@ -690,12 +690,12 @@ créée si elle n'existe pas.</translation>
       <translation>Importer un fichier</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="494"/>
+      <location filename="../../SpreadsheetView.cpp" line="491"/>
       <source>Alias contains invalid characters!</source>
       <translation>L'alias contient des caractères invalides !</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="500"/>
+      <location filename="../../SpreadsheetView.cpp" line="497"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>La cellule est désignée par un alias, par exemple
@@ -1144,12 +1144,12 @@ caractère est autorisé.</translation>
   <context>
     <name>SpreadsheetGui::SheetView</name>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="301"/>
+      <location filename="../../SpreadsheetView.cpp" line="298"/>
       <source>Export PDF</source>
       <translation>Exporter au format PDF</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="303"/>
+      <location filename="../../SpreadsheetView.cpp" line="300"/>
       <source>PDF file</source>
       <translation>Fichier PDF</translation>
     </message>

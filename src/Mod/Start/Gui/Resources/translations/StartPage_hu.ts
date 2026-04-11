@@ -153,7 +153,7 @@
     <message>
       <location filename="../../StartView.cpp" line="503"/>
       <source>Start</source>
-      <translation>Kezdő időpont</translation>
+      <translation>Kezdés</translation>
     </message>
   </context>
   <context>
@@ -263,7 +263,7 @@ Több mappa is hozzáadható a mappák elérési útjainak pontosvesszővel ";;"
     <message>
       <location filename="../../AppStartGui.cpp" line="125"/>
       <source>Start</source>
-      <translation>Kezdő időpont</translation>
+      <translation>Kezdés</translation>
     </message>
   </context>
 </TS>

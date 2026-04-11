@@ -380,8 +380,8 @@
       <translation>Oszlopok beszúrása</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="679"/>
       <location filename="../../SpreadsheetView.cpp" line="193"/>
+      <location filename="../../SheetTableView.cpp" line="679"/>
       <source>Clear Cells</source>
       <translation>Cellák törlése</translation>
     </message>
@@ -680,8 +680,8 @@ változtassa a tervezési konfigurációt. A tulajdonság létrejön, ha nem lé
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="198"/>
       <location filename="../../ViewProviderSpreadsheet.cpp" line="107"/>
+      <location filename="../../Command.cpp" line="198"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
       <translation>CSV (*.csv *.CSV);;Összes (*)</translation>
     </message>
@@ -691,12 +691,12 @@ változtassa a tervezési konfigurációt. A tulajdonság létrejön, ha nem lé
       <translation>Fájl importálása</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="494"/>
+      <location filename="../../SpreadsheetView.cpp" line="491"/>
       <source>Alias contains invalid characters!</source>
       <translation>Álnév érvénytelen karaktereket tartalmaz!</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="500"/>
+      <location filename="../../SpreadsheetView.cpp" line="497"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Cella hivatkozás álnévvel, például
@@ -1144,12 +1144,12 @@ Alapértelmezett értéke: %V = %A
   <context>
     <name>SpreadsheetGui::SheetView</name>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="301"/>
+      <location filename="../../SpreadsheetView.cpp" line="298"/>
       <source>Export PDF</source>
       <translation>Exportálás PDF-be</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="303"/>
+      <location filename="../../SpreadsheetView.cpp" line="300"/>
       <source>PDF file</source>
       <translation>PDF-fájl</translation>
     </message>

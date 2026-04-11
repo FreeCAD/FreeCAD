@@ -58,6 +58,7 @@
 #include "FemSetGeometryObject.h"
 #include "FemSetNodesObject.h"
 #include "FemSolverObject.h"
+#include "FemShapeExtension.h"
 #include "HypothesisPy.h"
 #include "WorkerExtension.h"
 
@@ -183,6 +184,14 @@ PyMOD_INIT_FUNC(Fem)
 
     Fem::WorkerExtension                      ::init();
     Fem::WorkerExtensionPython                ::init();
+    Fem::BoxExtension                         ::init();
+    Fem::BoxExtensionPython                   ::init();
+    Fem::CylinderExtension                    ::init();
+    Fem::CylinderExtensionPython              ::init();
+    Fem::SphereExtension                      ::init();
+    Fem::SphereExtensionPython                ::init();
+    Fem::PlaneExtension                       ::init();
+    Fem::PlaneExtensionPython                 ::init();
 
 #ifdef FC_USE_VTK
     Fem::FemPostSmoothFilterExtension         ::init();

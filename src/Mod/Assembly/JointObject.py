@@ -583,7 +583,13 @@ class Joint:
                 if hasattr(joint, reference_attr):
                     ref = getattr(joint, reference_attr)
 
-                    doc_name = ref[0].Document.Name
+                    refObj = ref[0]
+                    if refObj is None:
+                        return
+
+                    refObj = refObj.getLinkedObject(False)
+
+                    doc_name = refObj.Document.Name
                     sub1 = UtilsAssembly.fixBodyExtraFeatureInSub(doc_name, ref[1][0])
                     sub2 = UtilsAssembly.fixBodyExtraFeatureInSub(doc_name, ref[1][1])
 

@@ -16,7 +16,7 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="46"/>
       <source>Adds a tool shape to the robot</source>
-      <translation type="unfinished">Adds a tool shape to the robot</translation>
+      <translation>Ajoute une forme d'outil au robot</translation>
     </message>
   </context>
   <context>
@@ -65,12 +65,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="378"/>
       <source>Edge to Trajectory</source>
-      <translation type="unfinished">Edge to Trajectory</translation>
+      <translation>Arête vers la Trajectoire</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="379"/>
       <source>Generates a trajectory from the selected edges</source>
-      <translation type="unfinished">Generates a trajectory from the selected edges</translation>
+      <translation>Génère une trajectoire à partir des bords sélectionnés</translation>
     </message>
   </context>
   <context>
@@ -83,12 +83,12 @@
     <message>
       <location filename="../../CommandExport.cpp" line="45"/>
       <source>Kuka Compact Subroutine</source>
-      <translation type="unfinished">Kuka Compact Subroutine</translation>
+      <translation>Sous-routine de Kuka Compact</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="46"/>
       <source>Exports the trajectory as a compact KRL subroutine</source>
-      <translation type="unfinished">Exports the trajectory as a compact KRL subroutine</translation>
+      <translation>Exporte la trajectoire comme une sous-routine KRL compacte</translation>
     </message>
   </context>
   <context>
@@ -101,7 +101,7 @@
     <message>
       <location filename="../../CommandExport.cpp" line="126"/>
       <source>Kuka Full Subroutine</source>
-      <translation type="unfinished">Kuka Full Subroutine</translation>
+      <translation>Sous-routine de Kuka Full</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="127"/>
@@ -191,7 +191,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="289"/>
       <source>Set Default Values</source>
-      <translation>Définir les valeurs par défaut</translation>
+      <translation>Définir les Valeurs par défaut</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="290"/>
@@ -292,6 +292,20 @@
   <context>
     <name>QObject</name>
     <message>
+      <location filename="../../CommandTrajectory.cpp" line="107"/>
+      <location filename="../../CommandTrajectory.cpp" line="178"/>
+      <location filename="../../CommandTrajectory.cpp" line="199"/>
+      <location filename="../../CommandTrajectory.cpp" line="484"/>
+      <location filename="../../Command.cpp" line="102"/>
+      <location filename="../../Command.cpp" line="165"/>
+      <location filename="../../Command.cpp" line="267"/>
+      <location filename="../../CommandInsertRobot.cpp" line="68"/>
+      <location filename="../../CommandExport.cpp" line="61"/>
+      <location filename="../../CommandExport.cpp" line="142"/>
+      <source>Wrong selection</source>
+      <translation>Mauvaise sélection</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="52"/>
       <source>Select VRML file for Robot</source>
       <translation>Sélectionnez le fichier VRML pour Robot</translation>
@@ -312,20 +326,6 @@
       <translation>Fichiers CSV (*.csv)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="102"/>
-      <location filename="../../Command.cpp" line="165"/>
-      <location filename="../../Command.cpp" line="267"/>
-      <location filename="../../CommandTrajectory.cpp" line="107"/>
-      <location filename="../../CommandTrajectory.cpp" line="178"/>
-      <location filename="../../CommandTrajectory.cpp" line="199"/>
-      <location filename="../../CommandTrajectory.cpp" line="484"/>
-      <location filename="../../CommandInsertRobot.cpp" line="68"/>
-      <location filename="../../CommandExport.cpp" line="61"/>
-      <location filename="../../CommandExport.cpp" line="142"/>
-      <source>Wrong selection</source>
-      <translation>Mauvaise sélection</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="103"/>
       <source>Select one Robot to set home position</source>
       <translation>Sélectionner un robot pour lui donner sa position d'origine</translation>
@@ -336,8 +336,8 @@
       <translation>Sélectionnez un robot</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="268"/>
       <location filename="../../CommandTrajectory.cpp" line="108"/>
+      <location filename="../../Command.cpp" line="268"/>
       <location filename="../../CommandExport.cpp" line="62"/>
       <location filename="../../CommandExport.cpp" line="143"/>
       <source>Select one Robot and one Trajectory object.</source>
