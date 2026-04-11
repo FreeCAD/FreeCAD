@@ -385,8 +385,10 @@ bool Gui::OpenURLInBrowser(const char* URL)
         QMessageBox::warning(
             Gui::getMainWindow(),
             QObject::tr("External links are disabled"),
-            QObject::tr("Opening web pages in the default browser is disabled.\n"
-                        "Change this in Preferences > General > Help > External browser links.")
+            QObject::tr(
+                "Opening web pages in the default browser is disabled.\n"
+                "Change this in Preferences > General > Help > External browser links."
+            )
         );
         return false;
     }

@@ -139,14 +139,19 @@ AboutDialog::AboutDialog(QWidget* parent)
     setupLabels();
 
     ui->textBrowserLicense->setOpenExternalLinks(false);
-    connect(ui->textBrowserLicense, &QTextBrowser::anchorClicked, ui->textBrowserLicense, [this](const QUrl& url) {
-        if (url.scheme().startsWith(QLatin1String("http"))) {
-            const auto encoded = url.toEncoded();
-            Gui::OpenURLInBrowser(encoded.constData());
-            return;
+    connect(
+        ui->textBrowserLicense,
+        &QTextBrowser::anchorClicked,
+        ui->textBrowserLicense,
+        [this](const QUrl& url) {
+            if (url.scheme().startsWith(QLatin1String("http"))) {
+                const auto encoded = url.toEncoded();
+                Gui::OpenURLInBrowser(encoded.constData());
+                return;
+            }
+            ui->textBrowserLicense->setSource(url);
         }
-        ui->textBrowserLicense->setSource(url);
-    });
+    );
 
     showCredits();
     showLicenseInformation();
