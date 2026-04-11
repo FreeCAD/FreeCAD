@@ -123,9 +123,7 @@ class Rectangle(DraftObject):
                         p = Part.makePolygon([p1, p2, p3, p4, p1])
                         if "ChamferSize" in obj.PropertiesList:
                             if obj.ChamferSize.Value != 0:
-                                w = geo_fillets.filletWire(
-                                    p, obj.ChamferSize.Value, chamfer=True
-                                )
+                                w = geo_fillets.filletWire(p, obj.ChamferSize.Value, chamfer=True)
                                 if w:
                                     p = w
                         if "FilletRadius" in obj.PropertiesList:
