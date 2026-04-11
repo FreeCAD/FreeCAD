@@ -225,7 +225,7 @@ SbBool SolidWorksNavigationStyle::processSoEvent(const SoEvent* const ev)
                 SbVec2f d = posn - prevnormalized;
 
                 float cross = r[0] * d[1] - r[1] * d[0];
-                float angle = 6.0f * cross;
+                float angle = 10.0f * cross;
 
                 doRotate(viewer->getSoRenderManager()->getCamera(), angle, center);
             }
@@ -307,6 +307,11 @@ SbBool SolidWorksNavigationStyle::processSoEvent(const SoEvent* const ev)
                 saveCursorPosition(ev);
             }
             newmode = NavigationStyle::DRAGGING;
+            break;
+        case ALTDOWN:
+            this->rollingWithAlt = false;
+            newmode = NavigationStyle::IDLE;
+            processed = true;
             break;
         case CTRLDOWN | BUTTON3DOWN:
             newmode = NavigationStyle::PANNING;
