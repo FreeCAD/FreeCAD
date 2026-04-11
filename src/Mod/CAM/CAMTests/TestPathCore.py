@@ -127,6 +127,24 @@ G0 Z0.500000
         p.setFromGCode(lines)
         self.assertEqual(p.toGCode(), output)
 
+    def test20(self):
+        """Test Path object parsing with semicolon annotations on drill cycles."""
+
+        gcode = "G81 F6.666667 R0.000000 X7.000000 Y9.500000 Z-3.505000 ; RetractMode:'G98'"
+
+        path = Path.Path(gcode)
+
+        self.assertEqual(len(path.Commands), 1)
+
+        command = path.Commands[0]
+        self.assertEqual(command.Name, "G81")
+        self.assertEqual(command.Annotations["RetractMode"], "G98")
+        self.assertRoughly(command.Parameters["F"], 6.666667)
+        self.assertRoughly(command.Parameters["R"], 0.0)
+        self.assertRoughly(command.Parameters["X"], 7.0)
+        self.assertRoughly(command.Parameters["Y"], 9.5)
+        self.assertRoughly(command.Parameters["Z"], -3.505)
+
     def test50(self):
         """Test Path.Length calculation"""
         commands = []

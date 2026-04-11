@@ -342,47 +342,67 @@ void Toolpath::setFromGCode(const std::string instr)
     // std::string str = boost::regex_replace(instr, e, "");
     std::string str(instr);
 
-    // split input string by () or G or M commands
-    std::string mode = "command";
-    std::size_t found = str.find_first_of("(gGmM");
-    int last = -1;
+    // Split input string by () or G/M commands, but keep semicolon comments attached to the
+    // current line so annotation comments do not get mistaken for new commands.
+    enum class ParseMode
+    {
+        Command,
+        Comment,
+        LineComment
+    };
+
+    ParseMode mode = ParseMode::Command;
+    std::size_t last = std::string::npos;
     bool inches = false;
-    while (found != std::string::npos) {
-        if (str[found] == '(') {
-            // start of comment
-            if ((last > -1) && (mode == "command")) {
-                // before opening a comment, add the last found command
-                std::string gcodestr = str.substr(last, found - last);
+
+    for (std::size_t i = 0; i < str.size(); ++i) {
+        char ch = str[i];
+
+        if (mode == ParseMode::LineComment) {
+            if ((ch == '\n') || (ch == '\r')) {
+                mode = ParseMode::Command;
+            }
+            continue;
+        }
+
+        if (mode == ParseMode::Comment) {
+            if (ch == ')') {
+                std::string gcodestr = str.substr(last, i - last + 1);
+                bulkAddCommand(gcodestr, vpcCommands, inches);
+                last = std::string::npos;
+                mode = ParseMode::Command;
+            }
+            continue;
+        }
+
+        if (ch == ';') {
+            mode = ParseMode::LineComment;
+            continue;
+        }
+
+        if (ch == '(') {
+            if (last != std::string::npos) {
+                std::string gcodestr = str.substr(last, i - last);
                 bulkAddCommand(gcodestr, vpcCommands, inches);
             }
-            mode = "comment";
-            last = found;
-            found = str.find_first_of(')', found + 1);
+            last = i;
+            mode = ParseMode::Comment;
+            continue;
         }
-        else if (str[found] == ')') {
-            // end of comment
-            std::string gcodestr = str.substr(last, found - last + 1);
-            bulkAddCommand(gcodestr, vpcCommands, inches);
-            last = -1;
-            found = str.find_first_of("(gGmM", found + 1);
-            mode = "command";
-        }
-        else if (mode == "command") {
-            // command
-            if (last > -1) {
-                std::string gcodestr = str.substr(last, found - last);
+
+        if ((ch == 'g') || (ch == 'G') || (ch == 'm') || (ch == 'M')) {
+            if (last != std::string::npos) {
+                std::string gcodestr = str.substr(last, i - last);
                 bulkAddCommand(gcodestr, vpcCommands, inches);
             }
-            last = found;
-            found = str.find_first_of("(gGmM", found + 1);
+            last = i;
         }
     }
+
     // add the last command found, if any
-    if (last > -1) {
-        if (mode == "command") {
-            std::string gcodestr = str.substr(last, std::string::npos);
-            bulkAddCommand(gcodestr, vpcCommands, inches);
-        }
+    if ((last != std::string::npos) && (mode != ParseMode::Comment)) {
+        std::string gcodestr = str.substr(last, std::string::npos);
+        bulkAddCommand(gcodestr, vpcCommands, inches);
     }
     recalculate();
 }

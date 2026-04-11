@@ -36,6 +36,7 @@ class TestEngrave:
         self.Path = Path.Path(path)
         self.ToolController = None  # default tool 5mm
         self.CoolantMode = "None"
+        self.Active = True
         self.Name = "Engrave"
 
     def isDerivedFrom(self, type):
@@ -125,3 +126,27 @@ class TestDressupArray(PathTestBase):
 
         da.execute(obj)
         self.assertTrue(obj.Path.toGCode() == expected_gcode, "Incorrect g-code generated")
+
+    def test03(self):
+        """Verify array execution accepts drilling commands with semicolon annotations."""
+
+        drill = Path.Command(
+            "G81", {"F": 6.666667, "R": 0.0, "X": 7.0, "Y": 9.5, "Z": -3.505}
+        )
+        drill.Annotations = {"RetractMode": "G98"}
+
+        base = TestEngrave([drill])
+        obj = TestFeature()
+        da = DressupArray(obj, base, None)
+        obj.Copies = 1
+        obj.Offset = FreeCAD.Vector(21, 0, 0)
+
+        da.execute(obj)
+
+        self.assertEqual(len(obj.Path.Commands), 2)
+        self.assertEqual(obj.Path.Commands[0].Name, "G81")
+        self.assertEqual(obj.Path.Commands[1].Name, "G81")
+        self.assertEqual(obj.Path.Commands[0].Annotations["RetractMode"], "G98")
+        self.assertEqual(obj.Path.Commands[1].Annotations["RetractMode"], "G98")
+        self.assertRoughly(obj.Path.Commands[0].Parameters["X"], 7.0)
+        self.assertRoughly(obj.Path.Commands[1].Parameters["X"], 28.0)
