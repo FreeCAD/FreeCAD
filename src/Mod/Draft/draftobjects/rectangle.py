@@ -123,14 +123,14 @@ class Rectangle(DraftObject):
                         p = Part.makePolygon([p1, p2, p3, p4, p1])
                         if "ChamferSize" in obj.PropertiesList:
                             if obj.ChamferSize.Value != 0:
-                                w = geo_geo_fillets.filletWire(
+                                w = geo_fillets.filletWire(
                                     p, obj.ChamferSize.Value, chamfer=True
                                 )
                                 if w:
                                     p = w
                         if "FilletRadius" in obj.PropertiesList:
                             if obj.FilletRadius.Value != 0:
-                                w = geo_geo_fillets.filletWire(p, obj.FilletRadius.Value)
+                                w = geo_fillets.filletWire(p, obj.FilletRadius.Value)
                                 if w:
                                     p = w
                         if hasattr(obj, "MakeFace"):
@@ -148,12 +148,12 @@ class Rectangle(DraftObject):
             shape = Part.makePolygon([p1, p2, p3, p4, p1])
             if "ChamferSize" in obj.PropertiesList:
                 if obj.ChamferSize.Value != 0:
-                    w = geo_geo_fillets.filletWire(shape, obj.ChamferSize.Value, chamfer=True)
+                    w = geo_fillets.filletWire(shape, obj.ChamferSize.Value, chamfer=True)
                     if w:
                         shape = w
             if "FilletRadius" in obj.PropertiesList:
                 if obj.FilletRadius.Value != 0:
-                    w = geo_geo_fillets.filletWire(shape, obj.FilletRadius.Value)
+                    w = geo_fillets.filletWire(shape, obj.FilletRadius.Value)
                     if w:
                         shape = w
             if hasattr(obj, "MakeFace"):
