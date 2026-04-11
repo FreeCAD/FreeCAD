@@ -15,14 +15,14 @@ class HatchGeneratorWorkbench(FreeCADGui.Workbench):
     
     def Initialize(self):
         """This is called when the workbench is first activated"""
-        # Import the commands
+        # Import the commands (this registers them)
         import HatchGenerator
         
-        # Define toolbar
-        self.appendToolbar("Hatch Tools", ["BIM_Hatch_Dialog"])
+        # Define toolbar with both commands
+        self.appendToolbar("Hatch Tools", ["BIM_Hatch_Dialog", "BIM_FaceExtractor"])
         
-        # Define menu
-        self.appendMenu("Hatch", ["BIM_Hatch_Dialog"])
+        # Define menu with both commands
+        self.appendMenu("Hatch", ["BIM_Hatch_Dialog", "BIM_FaceExtractor"])
         
         FreeCAD.Console.PrintMessage("Hatch Generator Workbench initialized\n")
     
@@ -40,15 +40,15 @@ class HatchGeneratorWorkbench(FreeCADGui.Workbench):
 
 
 # ============================================================================
-# Add the command to other workbenches (BIM, Draft, Part, etc.)
+# Add the commands to other workbenches (BIM, Draft, Part, etc.)
 # ============================================================================
-def addCommandToOtherWorkbenches():
+def addCommandsToOtherWorkbenches():
     """
-    Inject the Hatch Generator command into existing workbenches
-    so users don't have to switch workbenches to use it.
+    Inject the Hatch Generator commands into existing workbenches
+    so users don't have to switch workbenches to use them.
     """
     try:
-        # Import the module to ensure command is registered
+        # Import the module to ensure commands are registered
         import HatchGenerator
         
         # List of workbenches to inject into
@@ -59,6 +59,9 @@ def addCommandToOtherWorkbenches():
             "ArchWorkbench",
             "CompleteWorkbench"
         ]
+        
+        # List of commands to add
+        commands = ["BIM_Hatch_Dialog", "BIM_FaceExtractor"]
         
         # Try to add to each workbench if it exists
         for wb_name in target_workbenches:
@@ -76,13 +79,14 @@ def addCommandToOtherWorkbenches():
                                 break
                         
                         if target_toolbar:
-                            FreeCADGui.addCommandToToolbar('BIM_Hatch_Dialog', target_toolbar, wb_name)
-                            FreeCAD.Console.PrintMessage(f"Added Hatch Generator to {wb_name} toolbar\n")
+                            for cmd in commands:
+                                FreeCADGui.addCommandToToolbar(cmd, target_toolbar, wb_name)
+                            FreeCAD.Console.PrintMessage(f"Added Hatch Generator commands to {wb_name} toolbar\n")
             except:
                 pass  # Workbench might not be loaded yet
                 
     except Exception as e:
-        FreeCAD.Console.PrintWarning(f"Could not inject command into workbenches: {str(e)}\n")
+        FreeCAD.Console.PrintWarning(f"Could not inject commands into workbenches: {str(e)}\n")
 
 
 # ============================================================================
@@ -91,11 +95,11 @@ def addCommandToOtherWorkbenches():
 # Register the workbench
 FreeCADGui.addWorkbench(HatchGeneratorWorkbench)
 
-# Also try to add the command to existing workbenches
+# Also try to add the commands to existing workbenches
 # Use a timer to delay injection until workbenches are fully loaded
 from PySide import QtCore
-QtCore.QTimer.singleShot(1000, addCommandToOtherWorkbenches)
+QtCore.QTimer.singleShot(1000, addCommandsToOtherWorkbenches)
 
 FreeCAD.Console.PrintMessage("Hatch Generator GUI integration complete\n")
 FreeCAD.Console.PrintMessage("Access via: Workbench dropdown → Hatch Generator\n")
-FreeCAD.Console.PrintMessage("Or find 'Create Hatch' in BIM/Draft/Part toolbars\n")
+FreeCAD.Console.PrintMessage("Or find 'Create Hatch' and 'Extract Face' in BIM/Draft/Part toolbars\n")
