@@ -410,7 +410,7 @@ class Component(ArchIFC.IfcProduct):
                 ),
                 locked=True,
             )
-            obj.setEditorMode("HatchContainer", 2)   # hidden in Data panel
+            obj.setEditorMode("HatchContainer", 2)  # hidden in Data panel
 
         self.Subvolume = None
 
@@ -1219,18 +1219,20 @@ class Component(ArchIFC.IfcProduct):
     # =========================================================================
     def apply_material_hatches(self, obj):
         """Schedule hatch application to run after recompute completes.
-        
+
         Works with or without material. If toggles are on but no material,
         prints a helpful message.
         """
         if not FreeCAD.GuiUp:
             return
         # Exit early if all toggles are off — avoids unnecessary deferred call
-        if not any([
-            getattr(obj, "HatchSurfaces", False),
-            getattr(obj, "HatchCaps",     False),
-            getattr(obj, "HatchAllFaces",  False),
-        ]):
+        if not any(
+            [
+                getattr(obj, "HatchSurfaces", False),
+                getattr(obj, "HatchCaps", False),
+                getattr(obj, "HatchAllFaces", False),
+            ]
+        ):
             return
 
         doc_name = obj.Document.Name
@@ -1246,14 +1248,11 @@ class Component(ArchIFC.IfcProduct):
                 target = doc.getObject(obj_name)
                 if not target:
                     return
-                if not hasattr(target, "Shape") or \
-                   not target.Shape or target.Shape.isNull():
+                if not hasattr(target, "Shape") or not target.Shape or target.Shape.isNull():
                     return
                 _apply_material_hatches_now(doc, target)
             except Exception as e:
-                FreeCAD.Console.PrintWarning(
-                    f"apply_material_hatches '{obj_name}': {e}\n"
-                )
+                FreeCAD.Console.PrintWarning(f"apply_material_hatches '{obj_name}': {e}\n")
 
         QtCore.QTimer.singleShot(0, _deferred)
 
@@ -1435,17 +1434,22 @@ class Component(ArchIFC.IfcProduct):
 # HATCH APPLICATION FUNCTIONS (v6 - FIXED)
 # ============================================================================
 
+
 def _apply_material_hatches_now(doc, obj):
     """Route to multi-material or single-material path.
-    
+
     If toggles are on but no material, prints a helpful message.
     """
     mat = getattr(obj, "Material", None)
     if not mat:
         # No material at all — check if toggles are on for material-less objects
-        if any([getattr(obj, "HatchSurfaces", False),
-                getattr(obj, "HatchCaps",     False),
-                getattr(obj, "HatchAllFaces",  False)]):
+        if any(
+            [
+                getattr(obj, "HatchSurfaces", False),
+                getattr(obj, "HatchCaps", False),
+                getattr(obj, "HatchAllFaces", False),
+            ]
+        ):
             FreeCAD.Console.PrintMessage(
                 f"Hatch: '{obj.Label}' has hatch toggle on but no Material "
                 f"assigned. Assign a Material with a Hatch property set.\n"
@@ -1514,7 +1518,7 @@ def _classify_faces(solid, area_threshold=0.15):
     if max_area < 1e-6:
         return [], []
     surface_faces = [f for f in faces_by_area if f.Area >= max_area * area_threshold]
-    cap_faces     = [f for f in faces_by_area if f.Area <  max_area * area_threshold]
+    cap_faces = [f for f in faces_by_area if f.Area < max_area * area_threshold]
     return surface_faces, cap_faces
 
 
@@ -1549,14 +1553,12 @@ def _sync_face_hatch_objects(doc, container, hatch_pattern, faces, name_prefix):
     try:
         from HatchGenerator import makeCustomHatch
     except ImportError:
-        FreeCAD.Console.PrintWarning(
-            "apply_material_hatches: HatchGenerator not found.\n"
-        )
+        FreeCAD.Console.PrintWarning("apply_material_hatches: HatchGenerator not found.\n")
         return
 
     for j, face in enumerate(faces):
         face_feat_name = f"{name_prefix}_HF{j}"
-        inst_name      = f"{name_prefix}_HI{j}"
+        inst_name = f"{name_prefix}_HI{j}"
 
         face_feat = doc.getObject(face_feat_name)
         if face_feat is None:
@@ -1582,11 +1584,11 @@ def _sync_face_hatch_objects(doc, container, hatch_pattern, faces, name_prefix):
                 except Exception:
                     pass
 
-        inst.BaseObject           = face_feat
-        inst.PatternType          = "CustomObject"
-        inst.PatternObject        = hatch_pattern
+        inst.BaseObject = face_feat
+        inst.PatternType = "CustomObject"
+        inst.PatternObject = hatch_pattern
         inst.UseSurfaceProjection = True
-        inst.ForceXYPlane         = False
+        inst.ForceXYPlane = False
         if not getattr(inst, "PatternScale", 0):
             inst.PatternScale = 1.0
 
@@ -1623,9 +1625,9 @@ def _remove_prefix_objects(doc, name_prefix):
 def _apply_multimaterial_hatches(doc, obj, mat):
     """Apply per-layer hatches from MultiMaterial. No doc.recompute()."""
     do_surfaces = bool(getattr(obj, "HatchSurfaces", False))
-    do_caps     = bool(getattr(obj, "HatchCaps",     False))
-    do_all      = bool(getattr(obj, "HatchAllFaces",  False))
-    n_layers    = len(getattr(mat, "Materials", []))
+    do_caps = bool(getattr(obj, "HatchCaps", False))
+    do_all = bool(getattr(obj, "HatchAllFaces", False))
+    n_layers = len(getattr(mat, "Materials", []))
 
     if not do_surfaces and not do_caps and not do_all:
         for i in range(n_layers):
@@ -1636,15 +1638,15 @@ def _apply_multimaterial_hatches(doc, obj, mat):
     if not hasattr(mat, "Proxy") or not hasattr(mat.Proxy, "get_hatch_for_layer"):
         return
 
-    proxy  = mat.Proxy
-    shape  = obj.Shape if (obj.Shape and not obj.Shape.isNull()) else None
+    proxy = mat.Proxy
+    shape = obj.Shape if (obj.Shape and not obj.Shape.isNull()) else None
     solids = shape.Solids if shape else []
     container = _get_or_create_hatch_container(doc, obj)
 
     for i in range(n_layers):
         hatch_pattern = proxy.get_hatch_for_layer(mat, i)
-        surf_prefix   = f"{obj.Name}_HS{i}"
-        cap_prefix    = f"{obj.Name}_HC{i}"
+        surf_prefix = f"{obj.Name}_HS{i}"
+        cap_prefix = f"{obj.Name}_HC{i}"
 
         if hatch_pattern is None or i >= len(solids):
             _remove_prefix_objects(doc, surf_prefix)
@@ -1654,19 +1656,16 @@ def _apply_multimaterial_hatches(doc, obj, mat):
         solid = solids[i]
 
         if do_all:
-            _sync_face_hatch_objects(
-                doc, container, hatch_pattern, solid.Faces, surf_prefix)
+            _sync_face_hatch_objects(doc, container, hatch_pattern, solid.Faces, surf_prefix)
             _remove_prefix_objects(doc, cap_prefix)
         else:
             surface_faces, cap_faces = _classify_faces(solid)
             if do_surfaces and surface_faces:
-                _sync_face_hatch_objects(
-                    doc, container, hatch_pattern, surface_faces, surf_prefix)
+                _sync_face_hatch_objects(doc, container, hatch_pattern, surface_faces, surf_prefix)
             else:
                 _remove_prefix_objects(doc, surf_prefix)
             if do_caps and cap_faces:
-                _sync_face_hatch_objects(
-                    doc, container, hatch_pattern, cap_faces, cap_prefix)
+                _sync_face_hatch_objects(doc, container, hatch_pattern, cap_faces, cap_prefix)
             else:
                 _remove_prefix_objects(doc, cap_prefix)
 
@@ -1696,11 +1695,11 @@ def _apply_single_material_hatch(doc, obj, mat):
          by hasattr(mat, 'Materials') — if true, this function is never called.
     """
     do_surfaces = bool(getattr(obj, "HatchSurfaces", False))
-    do_caps     = bool(getattr(obj, "HatchCaps",     False))
-    do_all      = bool(getattr(obj, "HatchAllFaces",  False))
+    do_caps = bool(getattr(obj, "HatchCaps", False))
+    do_all = bool(getattr(obj, "HatchAllFaces", False))
 
     surf_prefix = f"{obj.Name}_SM_HS0"
-    cap_prefix  = f"{obj.Name}_SM_HC0"
+    cap_prefix = f"{obj.Name}_SM_HC0"
 
     if not do_surfaces and not do_caps and not do_all:
         _remove_prefix_objects(doc, surf_prefix)
@@ -1738,8 +1737,7 @@ def _apply_single_material_hatch(doc, obj, mat):
             all_faces = list(shape.Faces)
 
         if all_faces:
-            _sync_face_hatch_objects(
-                doc, container, hatch_pattern, all_faces, surf_prefix)
+            _sync_face_hatch_objects(doc, container, hatch_pattern, all_faces, surf_prefix)
         _remove_prefix_objects(doc, cap_prefix)
         return
 
@@ -1755,14 +1753,12 @@ def _apply_single_material_hatch(doc, obj, mat):
         all_surface = list(shape.Faces)
 
     if do_surfaces and all_surface:
-        _sync_face_hatch_objects(
-            doc, container, hatch_pattern, all_surface, surf_prefix)
+        _sync_face_hatch_objects(doc, container, hatch_pattern, all_surface, surf_prefix)
     else:
         _remove_prefix_objects(doc, surf_prefix)
 
     if do_caps and all_caps:
-        _sync_face_hatch_objects(
-            doc, container, hatch_pattern, all_caps, cap_prefix)
+        _sync_face_hatch_objects(doc, container, hatch_pattern, all_caps, cap_prefix)
     else:
         _remove_prefix_objects(doc, cap_prefix)
 
@@ -1770,14 +1766,22 @@ def _apply_single_material_hatch(doc, obj, mat):
 def _migrate_hatch_naming(doc):
     """Remove objects from all previous naming conventions."""
     import re
+
     patterns = [
-        r"_HF\d+_\d+$", r"_HI\d+_\d+$",
-        r"_SM_HF0_\d+$", r"_SM_HI0_\d+$",
-        r"_HatchLayer\d+$", r"_FaceLayer\d+$",
-        r"_SM_HS\d+_HF\d+$", r"_SM_HS\d+_HI\d+$",
-        r"_SM_HC\d+_HF\d+$", r"_SM_HC\d+_HI\d+$",
-        r"_HS\d+_HF\d+$", r"_HS\d+_HI\d+$",
-        r"_HC\d+_HF\d+$", r"_HC\d+_HI\d+$",
+        r"_HF\d+_\d+$",
+        r"_HI\d+_\d+$",
+        r"_SM_HF0_\d+$",
+        r"_SM_HI0_\d+$",
+        r"_HatchLayer\d+$",
+        r"_FaceLayer\d+$",
+        r"_SM_HS\d+_HF\d+$",
+        r"_SM_HS\d+_HI\d+$",
+        r"_SM_HC\d+_HF\d+$",
+        r"_SM_HC\d+_HI\d+$",
+        r"_HS\d+_HF\d+$",
+        r"_HS\d+_HI\d+$",
+        r"_HC\d+_HF\d+$",
+        r"_HC\d+_HI\d+$",
     ]
     removed = []
     for obj in list(doc.Objects):
@@ -1791,8 +1795,7 @@ def _migrate_hatch_naming(doc):
                 break
     # Also remove any stale _Hatches groups
     for obj in list(doc.Objects):
-        if obj.Name.endswith("_Hatches") and \
-           obj.isDerivedFrom("App::DocumentObjectGroup"):
+        if obj.Name.endswith("_Hatches") and obj.isDerivedFrom("App::DocumentObjectGroup"):
             if not obj.Group:
                 try:
                     doc.removeObject(obj.Name)

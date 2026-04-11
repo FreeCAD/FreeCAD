@@ -1588,18 +1588,18 @@ class _Structure(ArchComponent.Component):
                                     sub_name = sub_names[0] if sub_names else None
                                     if sub_name and hasattr(linked_obj, "Shape"):
                                         edge = linked_obj.Shape.getElement(sub_name)
-                                        x_axis = edge.tangentAt(
-                                            edge.FirstParameter
-                                        ).normalize()
+                                        x_axis = edge.tangentAt(edge.FirstParameter).normalize()
                                 except Exception:
                                     x_axis = None
 
                             if x_axis is None:
                                 try:
                                     outer_wire = base.Wires[0]
-                                    x_axis = outer_wire.Edges[0].tangentAt(
-                                        outer_wire.Edges[0].FirstParameter
-                                    ).normalize()
+                                    x_axis = (
+                                        outer_wire.Edges[0]
+                                        .tangentAt(outer_wire.Edges[0].FirstParameter)
+                                        .normalize()
+                                    )
                                 except Exception:
                                     x_axis = FreeCAD.Vector(1, 0, 0)
 
@@ -1903,9 +1903,7 @@ class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
                                         c[2],
                                         1.0 - float(mat.Material["Transparency"]),
                                     )
-                                cols.extend(
-                                    [c for _ in range(len(obj.Shape.Solids[i].Faces))]
-                                )
+                                cols.extend([c for _ in range(len(obj.Shape.Solids[i].Faces))])
                             obj.ViewObject.DiffuseColor = cols
             ArchComponent.ViewProviderComponent.updateData(self, obj, prop)
             if len(obj.ViewObject.DiffuseColor) > 1:

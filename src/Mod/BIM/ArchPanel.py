@@ -623,8 +623,7 @@ class _ViewProviderPanel(ArchComponent.ViewProviderComponent):
                         # Expand for fused multi-solid layers (consistent with Wall)
                         if hasattr(obj.Proxy, "solidsNumLst"):
                             expanded = []
-                            for mat, count in zip(activematerials,
-                                                  obj.Proxy.solidsNumLst):
+                            for mat, count in zip(activematerials, obj.Proxy.solidsNumLst):
                                 expanded.extend([mat] * count)
                             activematerials = expanded
                         # Handle Sheets > 1: each layer's solid is repeated
