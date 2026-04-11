@@ -7,7 +7,7 @@
 # Filename: HatchGenerator.py
 # Description: A parametric hatch generator for 3D surfaces, walls, and roofs.
 # Author: Regis Benoit Brice Nde Tene
-# Version: 2.0
+# Version: 2.0 (Fixed: Edit mode, double-click, advanced tab layout)
 # ============================================================================
 
 import FreeCAD
@@ -980,8 +980,10 @@ class CustomHatchViewProvider:
         except Exception as e:
             FreeCAD.Console.PrintError(f"Remove failed: {str(e)}\n")
 
+    # PATCH 1: FIXED doubleClicked - opens edit panel for the clicked hatch
     def doubleClicked(self, vobj):
-        FreeCADGui.runCommand('BIM_Hatch_Dialog')
+        panel = HatchTaskPanel(hatch_obj=vobj.Object)
+        FreeCADGui.Control.showDialog(panel)
         return True
 
     def attach(self, vobj):
@@ -1029,8 +1031,12 @@ class HatchTaskPanel:
     This class creates the UI widget and handles the creation logic.
     It replaces the old QDialog.
     """
-    def __init__(self):
-        FreeCAD.Console.PrintMessage("Initializing Hatch Generator Task Panel...\n")
+    # PATCH 2a: ADDED edit mode support with hatch_obj parameter
+    def __init__(self, hatch_obj=None):
+        self.editing_obj = hatch_obj   # None = create mode, object = edit mode
+        FreeCAD.Console.PrintMessage(
+            f"Hatch Task Panel: {'Edit' if hatch_obj else 'Create'} mode\n"
+        )
         self.doc = FreeCAD.ActiveDocument
         if not self.doc:
             QtWidgets.QMessageBox.warning(None, "Error", "No active document found.")
@@ -1045,6 +1051,10 @@ class HatchTaskPanel:
         
         # Initial setup
         self.initialPatternSetup()
+        
+        # If editing, load the existing object's values into the UI
+        if self.editing_obj is not None:
+            self._load_from_object(self.editing_obj)
         
     # ------------------------------------------------------------------------
     # UI Creation
@@ -1335,51 +1345,79 @@ class HatchTaskPanel:
         self.mainTabLayout.addRow(self.subtractionsLabel, self.subtractionsList)
         self.mainTabLayout.addRow("", self.pickSubBtn)
 
-        # --- Populate Advanced Tab Layout ---
-        advForm = QtWidgets.QFormLayout()
-        self.advancedTabLayout.addLayout(advForm)
-        
+        # PATCH 3: FIXED Advanced Tab Layout - use scroll area with VBoxLayout instead of QFormLayout
+        # --- Advanced Tab: use a scroll area containing a plain VBoxLayout ---
+        # This prevents groups from being squashed into label/widget columns.
+
+        advScrollArea = QtWidgets.QScrollArea()
+        advScrollArea.setWidgetResizable(True)
+        advScrollArea.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        advScrollArea.setFrameShape(QtWidgets.QFrame.NoFrame)
+
+        advScrollContent = QtWidgets.QWidget()
+        advVBox = QtWidgets.QVBoxLayout(advScrollContent)
+        advVBox.setSpacing(8)
+        advVBox.setContentsMargins(4, 4, 4, 4)
+
+        # --- Tile Settings ---
         tileGroup = QtWidgets.QGroupBox("Tile Settings")
         tileForm = QtWidgets.QFormLayout(tileGroup)
+        tileForm.setFieldGrowthPolicy(QtWidgets.QFormLayout.ExpandingFieldsGrow)
         tileForm.addRow(self.tileLabel, self.tileCombo)
         tileForm.addRow("", self.pickTileBtn)
         tileForm.addRow(self.tileVisibilityCheck)
-        advForm.addRow(tileGroup)
-        
+        advVBox.addWidget(tileGroup)
+
+        # --- Placement ---
         placementGroup = QtWidgets.QGroupBox("Placement")
         placementForm = QtWidgets.QFormLayout(placementGroup)
+        placementForm.setFieldGrowthPolicy(QtWidgets.QFormLayout.ExpandingFieldsGrow)
         placementForm.addRow(self.placementModeLabel, self.placementModeCombo)
         placementForm.addRow(self.lockCheck)
         placementForm.addRow(self.offsetXLabel, self.offsetXSpin)
         placementForm.addRow(self.offsetYLabel, self.offsetYSpin)
         placementForm.addRow(self.scaleModeLabel, self.scaleModeCombo)
-        advForm.addRow(placementGroup)
-        
+        advVBox.addWidget(placementGroup)
+
+        # --- Randomization ---
         randGroup = QtWidgets.QGroupBox("Randomization")
         randForm = QtWidgets.QFormLayout(randGroup)
+        randForm.setFieldGrowthPolicy(QtWidgets.QFormLayout.ExpandingFieldsGrow)
         randForm.addRow(self.randomCheck)
         randForm.addRow(self.offRangeLabel, self.offRangeSpin)
         randForm.addRow(self.rotRangeLabel, self.rotRangeSpin)
         randForm.addRow(self.scaleMinLabel, self.scaleMinSpin)
         randForm.addRow(self.scaleMaxLabel, self.scaleMaxSpin)
-        advForm.addRow(randGroup)
-        
+        advVBox.addWidget(randGroup)
+
+        # --- Rendering & Performance ---
         renderGroup = QtWidgets.QGroupBox("Rendering & Performance")
         renderForm = QtWidgets.QFormLayout(renderGroup)
+        renderForm.setFieldGrowthPolicy(QtWidgets.QFormLayout.ExpandingFieldsGrow)
         renderForm.addRow(self.clipModeLabel, self.clipModeCombo)
         renderForm.addRow(self.apply3DCheck)
         renderForm.addRow(self.maxTilesLabel, self.maxTilesSpin)
-        advForm.addRow(renderGroup)
-        
+        advVBox.addWidget(renderGroup)
+
+        # --- Variation ---
         variationGroup = QtWidgets.QGroupBox("Variation")
         variationForm = QtWidgets.QFormLayout(variationGroup)
+        variationForm.setFieldGrowthPolicy(QtWidgets.QFormLayout.ExpandingFieldsGrow)
         variationForm.addRow(self.densityLabel, self.densitySpin)
         variationForm.addRow(self.enableColorVarCheck)
         variationForm.addRow(self.colorVarLabel, self.colorVarSpin)
-        advForm.addRow(variationGroup)
-        
-        advForm.addRow(self.surfaceProjectionGroup)
-        advForm.addRow(self.previewBtn)
+        advVBox.addWidget(variationGroup)
+
+        # --- Surface Projection ---
+        advVBox.addWidget(self.surfaceProjectionGroup)
+
+        # --- Preview ---
+        advVBox.addWidget(self.previewBtn)
+        advVBox.addStretch(1)  # pushes groups to top, leaves space at bottom
+
+        advScrollArea.setWidget(advScrollContent)
+        # Replace the advancedTab's default layout content with the scroll area
+        self.advancedTabLayout.addWidget(advScrollArea)
 
         # Set scroll area widget and add to main layout
         scroll_area.setWidget(scroll_content)
@@ -1651,106 +1689,213 @@ class HatchTaskPanel:
         FreeCAD.Console.PrintMessage("Generating preview...\n")
         QtWidgets.QMessageBox.information(self.form, "Preview", "Preview generation would run here.\n\n(Preview logic identical to original script)")
 
-    # ------------------------------------------------------------------------
-    # Task Panel Interface
-    # ------------------------------------------------------------------------
+    # PATCH 2b: _load_from_object method for populating UI from existing hatch
+    def _load_from_object(self, obj):
+        """Populate all UI widgets from an existing hatch object's properties."""
+        try:
+            # Base object
+            if obj.BaseObject:
+                name = obj.BaseObject.Name
+                idx = self.baseCombo.findText(name)
+                if idx == -1:
+                    self.baseCombo.addItem(name)
+                    idx = self.baseCombo.findText(name)
+                self.baseCombo.setCurrentIndex(max(idx, 0))
+
+            # Pattern type
+            pt = getattr(obj, "PatternType", "CustomObject")
+            if pt == "CustomObject":
+                self.patternSourceCombo.setCurrentIndex(1)
+                if obj.PatternObject:
+                    pname = obj.PatternObject.Name
+                    pidx = self.customPatternCombo.findText(pname)
+                    if pidx == -1:
+                        self.customPatternCombo.addItem(pname)
+                        pidx = self.customPatternCombo.findText(pname)
+                    self.customPatternCombo.setCurrentIndex(max(pidx, 0))
+            else:
+                self.patternSourceCombo.setCurrentIndex(0)
+                bidx = self.builtinPatternCombo.findText(pt)
+                if bidx >= 0:
+                    self.builtinPatternCombo.setCurrentIndex(bidx)
+
+            # Distribution / Scale / Rotation / Spacing
+            didx = self.distCombo.findText(getattr(obj, "DistributionMode", "SeamlessTiling"))
+            if didx >= 0:
+                self.distCombo.setCurrentIndex(didx)
+            self.autoScaleCheck.setChecked(bool(getattr(obj, "AutoScaleToFitBase", False)))
+            self.scaleSpin.setValue(float(getattr(obj, "PatternScale", 1.0)))
+            self.rotSpin.setValue(float(getattr(obj, "RotationDeg", 0.0)))
+            spacing = getattr(obj, "BaseSpacing", 10.0)
+            self.spacingInput.setProperty("quantity",
+                FreeCAD.Units.Quantity(spacing, FreeCAD.Units.Length))
+            self.repXSpin.setValue(int(getattr(obj, "RepetitionsX", 5)))
+            self.repYSpin.setValue(int(getattr(obj, "RepetitionsY", 5)))
+
+            # Placement / offsets
+            smidx = self.scaleModeCombo.findText(getattr(obj, "ScaleMode", "Absolute"))
+            if smidx >= 0:
+                self.scaleModeCombo.setCurrentIndex(smidx)
+            self.lockCheck.setChecked(bool(getattr(obj, "LockToBase", False)))
+            self.offsetXSpin.setValue(float(getattr(obj, "PatternOffsetX", 0.0)))
+            self.offsetYSpin.setValue(float(getattr(obj, "PatternOffsetY", 0.0)))
+            pmidx = self.placementModeCombo.findText(
+                getattr(obj, "PatternPlacementMode", "Origin"))
+            if pmidx >= 0:
+                self.placementModeCombo.setCurrentIndex(pmidx)
+
+            # Random
+            self.randomCheck.setChecked(bool(getattr(obj, "RandomizePlacement", False)))
+            self.offRangeSpin.setValue(float(getattr(obj, "RandomOffsetRange", 0.0)))
+            self.rotRangeSpin.setValue(float(getattr(obj, "RandomRotationRange", 0.0)))
+            self.scaleMinSpin.setValue(float(getattr(obj, "RandomScaleMin", 1.0)))
+            self.scaleMaxSpin.setValue(float(getattr(obj, "RandomScaleMax", 1.0)))
+
+            # Rendering
+            self.showFacesCheck.setChecked(bool(getattr(obj, "ShowFaces", False)))
+            self.apply3DCheck.setChecked(bool(getattr(obj, "ApplyTo3DSurface", False)))
+            self.maxTilesSpin.setValue(int(getattr(obj, "MaxTilesAllowed", 1000)))
+            cmidx = self.clipModeCombo.findText(getattr(obj, "ClipMode", "BooleanOnly"))
+            if cmidx >= 0:
+                self.clipModeCombo.setCurrentIndex(cmidx)
+
+            # Variation
+            self.densitySpin.setValue(float(getattr(obj, "DensityFactor", 1.0)))
+            self.enableColorVarCheck.setChecked(bool(getattr(obj, "EnableColorVariation", False)))
+            self.colorVarSpin.setValue(float(getattr(obj, "ColorVariationIntensity", 0.5)))
+
+            # Surface projection
+            self.useSurfaceProjectionCheck.setChecked(
+                bool(getattr(obj, "UseSurfaceProjection", True)))
+            self.forceXYPlaneCheck.setChecked(bool(getattr(obj, "ForceXYPlane", False)))
+
+            # Tile
+            if getattr(obj, "BaseTileObject", None):
+                tname = obj.BaseTileObject.Name
+                tidx = self.tileCombo.findText(tname)
+                if tidx == -1:
+                    self.tileCombo.addItem(tname)
+                    tidx = self.tileCombo.findText(tname)
+                self.tileCombo.setCurrentIndex(tidx)
+            self.tileVisibilityCheck.setChecked(bool(getattr(obj, "TileVisibility", True)))
+
+        except Exception as e:
+            FreeCAD.Console.PrintWarning(f"_load_from_object partial failure: {e}\n")
+
+    # PATCH 2c: Replaced accept with create/edit branching logic
     def accept(self):
-        """Called when user presses OK in the Task panel."""
-        FreeCAD.Console.PrintMessage("Creating Hatch...\n")
+        """OK pressed — create a new hatch OR update the one being edited."""
+        if self.editing_obj is not None:
+            self._accept_edit()
+        else:
+            self._accept_create()
+        return True
+
+    def _apply_properties_to(self, hatchObj):
+        """Write all UI values onto hatchObj (shared by create and edit paths)."""
+        baseName = self.baseCombo.currentText()
+        base_obj = self.doc.getObject(baseName)
+        if not base_obj or not hasattr(base_obj, "Shape"):
+            QtWidgets.QMessageBox.warning(
+                self.form, "Error", "Invalid base object selection")
+            return False
+
+        if self.patternSourceCombo.currentIndex() == 0:
+            hatchObj.PatternType = self.builtinPatternCombo.currentText()
+        else:
+            hatchObj.PatternType = "CustomObject"
+            pname = self.customPatternCombo.currentText()
+            if pname:
+                po = self.doc.getObject(pname)
+                if po:
+                    hatchObj.PatternObject = po
+
+        hatchObj.BaseObject = base_obj
+        hatchObj.ClipMode = self.clipModeCombo.currentText()
+        hatchObj.UseSurfaceProjection = self.useSurfaceProjectionCheck.isChecked()
+        hatchObj.ForceXYPlane = self.forceXYPlaneCheck.isChecked()
+        hatchObj.BaseObjects = self.getSelectedObjectsFromList(self.baseObjectsList)
+        hatchObj.PatternObjects = self.getSelectedObjectsFromList(self.patternObjectsList)
+        hatchObj.Subtractions = self.getSelectedObjectsFromList(self.subtractionsList)
+        hatchObj.DistributionMode = self.distCombo.currentText()
+        hatchObj.AutoScaleToFitBase = self.autoScaleCheck.isChecked()
+        hatchObj.PatternScale = float(self.scaleSpin.value())
+        hatchObj.RotationDeg = float(self.rotSpin.value())
+        hatchObj.BaseSpacing = float(self.getBaseSpacingInMM())
+        hatchObj.RepetitionsX = int(self.repXSpin.value())
+        hatchObj.RepetitionsY = int(self.repYSpin.value())
+        hatchObj.RandomizePlacement = self.randomCheck.isChecked()
+        hatchObj.RandomOffsetRange = float(self.offRangeSpin.value())
+        hatchObj.RandomRotationRange = float(self.rotRangeSpin.value())
+        hatchObj.RandomScaleMin = float(self.scaleMinSpin.value())
+        hatchObj.RandomScaleMax = float(self.scaleMaxSpin.value())
+        hatchObj.LockToBase = self.lockCheck.isChecked()
+        hatchObj.PatternOffsetX = float(self.offsetXSpin.value())
+        hatchObj.PatternOffsetY = float(self.offsetYSpin.value())
+        hatchObj.ScaleMode = self.scaleModeCombo.currentText()
+        hatchObj.ShowFaces = self.showFacesCheck.isChecked()
+        hatchObj.ApplyTo3DSurface = self.apply3DCheck.isChecked()
+        hatchObj.MaxTilesAllowed = int(self.maxTilesSpin.value())
+        hatchObj.DensityFactor = float(self.densitySpin.value())
+        hatchObj.EnableColorVariation = self.enableColorVarCheck.isChecked()
+        hatchObj.ColorVariationIntensity = float(self.colorVarSpin.value())
+        hatchObj.PatternPlacementMode = self.placementModeCombo.currentText()
+        tname = self.tileCombo.currentText().strip()
+        if tname:
+            to = self.doc.getObject(tname)
+            if to:
+                hatchObj.BaseTileObject = to
+        hatchObj.TileVisibility = self.tileVisibilityCheck.isChecked()
+        return True
+
+    def _accept_create(self):
+        """Create a new hatch object."""
         try:
             FreeCAD.ActiveDocument.openTransaction("Create Hatch")
-            hatch_objects = [obj for obj in self.doc.Objects if obj.Name.startswith("CustomHatch")]
-            if not hatch_objects:
-                hatch_name = "CustomHatch"
-            else:
-                max_num = 0
-                for obj in hatch_objects:
-                    suffix = obj.Name[len("CustomHatch"):]
-                    if suffix.isdigit():
-                        max_num = max(max_num, int(suffix))
-                hatch_name = f"CustomHatch{max_num + 1:03d}"
-
-            baseName = self.baseCombo.currentText()
-            base_obj = self.doc.getObject(baseName)
-            if not base_obj or not hasattr(base_obj, "Shape"):
-                QtWidgets.QMessageBox.warning(self.form, "Error", "Invalid base object selection")
+            hatch_objects = [o for o in self.doc.Objects if o.Name.startswith("CustomHatch")]
+            max_num = 0
+            for o in hatch_objects:
+                suffix = o.Name[len("CustomHatch"):]
+                if suffix.isdigit():
+                    max_num = max(max_num, int(suffix))
+            hatch_name = "CustomHatch" if max_num == 0 else f"CustomHatch{max_num + 1:03d}"
+            hatchObj = makeCustomHatch(name=hatch_name)
+            if not self._apply_properties_to(hatchObj):
+                self.doc.removeObject(hatchObj.Name)
                 FreeCAD.ActiveDocument.abortTransaction()
                 FreeCADGui.Control.closeDialog()
-                return True
-
-            hatchObj = makeCustomHatch(name=hatch_name)
-
-            if self.patternSourceCombo.currentIndex() == 0:
-                pattern_type = self.builtinPatternCombo.currentText()
-                hatchObj.PatternType = pattern_type
-            else:
-                hatchObj.PatternType = "CustomObject"
-                custom_pattern_name = self.customPatternCombo.currentText()
-                if custom_pattern_name:
-                    custom_pattern = self.doc.getObject(custom_pattern_name)
-                    if custom_pattern:
-                        hatchObj.PatternObject = custom_pattern
-
-            hatchObj.BaseObject = base_obj
-            hatchObj.ClipMode = self.clipModeCombo.currentText()
-            hatchObj.UseSurfaceProjection = self.useSurfaceProjectionCheck.isChecked()
-            hatchObj.ForceXYPlane = self.forceXYPlaneCheck.isChecked()
-            
-            selectedBaseObjs = self.getSelectedObjectsFromList(self.baseObjectsList)
-            hatchObj.BaseObjects = selectedBaseObjs
-            selectedPatternObjs = self.getSelectedObjectsFromList(self.patternObjectsList)
-            hatchObj.PatternObjects = selectedPatternObjs
-            selectedSubs = self.getSelectedObjectsFromList(self.subtractionsList)
-            hatchObj.Subtractions = selectedSubs
-
-            hatchObj.DistributionMode = self.distCombo.currentText()
-            hatchObj.AutoScaleToFitBase = self.autoScaleCheck.isChecked()
-            hatchObj.PatternScale = float(self.scaleSpin.value())
-            hatchObj.RotationDeg = float(self.rotSpin.value())
-            hatchObj.BaseSpacing = float(self.getBaseSpacingInMM())
-            hatchObj.RepetitionsX = int(self.repXSpin.value())
-            hatchObj.RepetitionsY = int(self.repYSpin.value())
-            hatchObj.RandomizePlacement = bool(self.randomCheck.isChecked())
-            hatchObj.RandomOffsetRange = float(self.offRangeSpin.value())
-            hatchObj.RandomRotationRange = float(self.rotRangeSpin.value())
-            hatchObj.RandomScaleMin = float(self.scaleMinSpin.value())
-            hatchObj.RandomScaleMax = float(self.scaleMaxSpin.value())
-            hatchObj.LockToBase = bool(self.lockCheck.isChecked())
-            hatchObj.PatternOffsetX = float(self.offsetXSpin.value())
-            hatchObj.PatternOffsetY = float(self.offsetYSpin.value())
-            hatchObj.ScaleMode = self.scaleModeCombo.currentText()
-            hatchObj.ShowFaces = bool(self.showFacesCheck.isChecked())
-            hatchObj.ApplyTo3DSurface = bool(self.apply3DCheck.isChecked())
-            hatchObj.MaxTilesAllowed = int(self.maxTilesSpin.value())
-            hatchObj.DensityFactor = float(self.densitySpin.value())
-            hatchObj.EnableColorVariation = bool(self.enableColorVarCheck.isChecked())
-            hatchObj.ColorVariationIntensity = float(self.colorVarSpin.value())
-            hatchObj.PatternPlacementMode = self.placementModeCombo.currentText()
-
-            tileObjName = self.tileCombo.currentText().strip()
-            if tileObjName:
-                tileObj = self.doc.getObject(tileObjName)
-                if tileObj:
-                    hatchObj.BaseTileObject = tileObj
-            hatchObj.TileVisibility = bool(self.tileVisibilityCheck.isChecked())
-
+                return
             self.doc.recompute()
             FreeCAD.ActiveDocument.commitTransaction()
-            
             QtWidgets.QMessageBox.information(
-                self.form,
-                "Success",
-                f"Hatch created successfully!\n"
-                f"Time: {hatchObj.GenerationTime:.2f}s\n"
-                f"Tiles: {hatchObj.TileCount}"
-            )
-            FreeCADGui.Control.closeDialog()
-            
+                self.form, "Success",
+                f"Hatch created!\nTime: {hatchObj.GenerationTime:.2f}s\n"
+                f"Tiles: {hatchObj.TileCount}")
         except Exception as e:
             FreeCAD.ActiveDocument.abortTransaction()
-            QtWidgets.QMessageBox.critical(self.form, "Error", f"Hatch creation failed:\n{str(e)}")
-            FreeCADGui.Control.closeDialog()
-        return True
+            QtWidgets.QMessageBox.critical(self.form, "Error",
+                f"Hatch creation failed:\n{str(e)}")
+        FreeCADGui.Control.closeDialog()
+
+    def _accept_edit(self):
+        """Update the existing hatch object in place."""
+        try:
+            FreeCAD.ActiveDocument.openTransaction("Edit Hatch")
+            if not self._apply_properties_to(self.editing_obj):
+                FreeCAD.ActiveDocument.abortTransaction()
+                FreeCADGui.Control.closeDialog()
+                return
+            self.doc.recompute()
+            FreeCAD.ActiveDocument.commitTransaction()
+            QtWidgets.QMessageBox.information(
+                self.form, "Updated",
+                f"Hatch updated!\nTime: {self.editing_obj.GenerationTime:.2f}s\n"
+                f"Tiles: {self.editing_obj.TileCount}")
+        except Exception as e:
+            FreeCAD.ActiveDocument.abortTransaction()
+            QtWidgets.QMessageBox.critical(self.form, "Error",
+                f"Hatch update failed:\n{str(e)}")
+        FreeCADGui.Control.closeDialog()
 
     def reject(self):
         """Called when user presses Cancel or closes the Task panel."""
