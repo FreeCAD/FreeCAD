@@ -23,7 +23,8 @@
  ***************************************************************************/
 
 #pragma once
-#include "OpenGlWrapper.h"
+
+#include <QOpenGLFunctions>
 #include "linmath.h"
 
 #define SET_DUAL(var, idx, y, z) \

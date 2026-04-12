@@ -30,11 +30,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "GlUtils.h"
 #include "Shader.h"
 #include <iostream>
 #include <regex>
 #include <Base/Console.h>
+
+// include this last as the defines can mess up other includes
+#include "OpenGlWrapper.h"
 
 namespace MillSim
 {

@@ -22,12 +22,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "OpenGlWrapper.h"
 #include "MillPathSegment.h"
+
+#include "GlUtils.h"
 #include "SimShapes.h"
 #include "linmath.h"
-#include "GlUtils.h"
 #include <iostream>
+#include <numbers>
 
 constexpr auto pi = std::numbers::pi_v<float>;
 
