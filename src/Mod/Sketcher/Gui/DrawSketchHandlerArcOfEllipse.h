@@ -52,7 +52,7 @@
 #include <algorithm>
 
 // Ellipse governing equation:
-// point(t) = origin + a * cos(angle) * aDir.x + b * sin(angle) * bDir.x;
+// point(t) = origin + majorRad * cos(t) * majorDir + minorRad * sin(t) * minorDir
 
 namespace SketcherGui
 {
@@ -84,7 +84,7 @@ public:
         , startAngle(0)
         , arcAngle(0)
         , valid(true)
-        , secondSet(false)
+        , secondRadiusSet(false)
         , ellipseGeoId(Sketcher::GeoEnum::GeoUndef)
     {}
 
@@ -157,7 +157,7 @@ private:
                     delta13.x * bDir.x + delta13.y * bDir.y
                 );
 
-                if (!secondSet) {
+                if (!secondRadiusSet) {
                     double cosT = std::max(-1.0, std::min(1.0, delta13Prime.x / a));
                     double sinT = std::sqrt(std::max(0.0, 1 - cosT * cosT));
 
@@ -211,7 +211,7 @@ private:
     void executeCommands() override
     {
         try {
-            openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc of hyperbola"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc of ellipse"));
 
             ellipseGeoId = getHighestCurveIndex() + 1;
 
@@ -227,7 +227,7 @@ private:
             Gui::NotifyError(
                 sketchgui,
                 QT_TRANSLATE_NOOP("Notifications", "Error"),
-                QT_TRANSLATE_NOOP("Notifications", "Failed to add arc of hyperbola")
+                QT_TRANSLATE_NOOP("Notifications", "Failed to add arc of ellipse")
             );
 
             abortCommand();
@@ -364,20 +364,20 @@ private:
 private:
     Base::Vector2d centerPoint, axisPoint;
     double secondRadius, startAngle, arcAngle;
-    bool valid, secondSet;
+    bool valid, secondRadiusSet;
     int ellipseGeoId;
 
-    double firstRadius()
+    double firstRadius() const
     {
         return (centerPoint - axisPoint).Length();
     }
 
-    Base::Vector2d firstAxis()
+    Base::Vector2d firstAxis() const
     {
         return (axisPoint - centerPoint).Normalize();
     }
 
-    Base::Vector2d secondAxis()
+    Base::Vector2d secondAxis() const
     {
         return firstAxis().Rotate(std::numbers::pi / 2);
     }
@@ -392,7 +392,7 @@ private:
         double endAngle;
     };
 
-    Ellipse getEllipse()
+    Ellipse getEllipse() const
     {
         double ellipseStartAngle = (firstRadius() >= secondRadius)
             ? startAngle
@@ -520,9 +520,9 @@ void DSHArcOfEllipseController::doEnforceControlParameters(Base::Vector2d& onSke
 
             if (secondRadiusParam->isSet) {
                 secondRadius = secondRadiusParam->getValue();
-                handler->secondSet = true;
+                handler->secondRadiusSet = true;
                 if (secondRadius < Precision::Confusion() && secondRadiusParam->hasFinishedEditing) {
-                    handler->secondSet = false;
+                    handler->secondRadiusSet = false;
                     unsetOnViewParameter(secondRadiusParam.get());
                     return;
                 }

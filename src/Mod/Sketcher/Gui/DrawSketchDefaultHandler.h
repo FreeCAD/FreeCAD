@@ -1217,6 +1217,25 @@ protected:
         return static_cast<Part::GeomArcOfHyperbola*>(ShapeGeometry.emplace_back(std::move(arc)).get());
     }
 
+    /** @brief Function to add an arc of parabola to the ShapeGeometry vector.*/
+    auto addArcOfParabolaToShapeGeometry(
+        Base::Vector3d axisDirection,
+        Base::Vector3d centerPoint,
+        double focal,
+        double start,
+        double end,
+        bool constructionMode
+    )
+    {
+        auto arc = std::make_unique<Part::GeomArcOfParabola>();
+        arc->setXAxisDir(axisDirection);
+        arc->setCenter(centerPoint);
+        arc->setFocal(focal);
+        arc->setRange(start, end, true);
+        Sketcher::GeometryFacade::setConstruction(arc.get(), constructionMode);
+        return static_cast<Part::GeomArcOfParabola*>(ShapeGeometry.emplace_back(std::move(arc)).get());
+    }
+
     /** @brief Function to add a point to the ShapeGeometry vector.*/
     auto addPointToShapeGeometry(Base::Vector3d p1, bool constructionMode)
     {
