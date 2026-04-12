@@ -2960,8 +2960,12 @@ void ViewProviderSketch::centerSelection()
     }
 }
 
-void ViewProviderSketch::doBoxSelection(const SbVec2s& startPos, const SbVec2s& endPos,
-                                        const Gui::View3DInventorViewer* viewer)
+// clang-format on
+void ViewProviderSketch::doBoxSelection(
+    const SbVec2s& startPos,
+    const SbVec2s& endPos,
+    const Gui::View3DInventorViewer* viewer
+)
 {
     std::vector<SbVec2s> corners0;
     corners0.push_back(startPos);
@@ -2984,27 +2988,25 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s& startPos, const SbVec2s& 
     int intGeoCount = sketchObject->getHighestCurveIndex() + 1;
     int extGeoCount = sketchObject->getExternalGeometryCount();
 
-    const std::vector<Part::Geometry*> geomlist =
-        sketchObject->getCompleteGeometry();// without memory allocation
+    const std::vector<Part::Geometry*> geomlist
+        = sketchObject->getCompleteGeometry();  // without memory allocation
     assert(int(geomlist.size()) == extGeoCount + intGeoCount);
     assert(int(geomlist.size()) >= 2);
 
-    auto inBBCoords = [&Plm, &proj](const Base::Vector3d & point) {
+    auto inBBCoords = [&Plm, &proj](const Base::Vector3d& point) {
         Base::Vector3d pnt;
         Plm.multVec(point, pnt);
         return proj(pnt);
     };
 
-    int VertexId = -1; // the loop below should be in sync with the main loop in
-                       // ViewProviderSketch::draw so that the vertex indices are calculated
-                       // correctly
+    int VertexId = -1;  // the loop below should be in sync with the main loop in
+                        // ViewProviderSketch::draw so that the vertex indices are calculated
+                        // correctly
     int GeoId = 0;
 
-    bool touchMode = false;
     // check if selection goes from the right to the left side (for touch-selection where even
     // partially boxed objects get selected)
-    if (corners[0].getValue()[0] > corners[1].getValue()[0])
-        touchMode = true;
+    bool touchMode = (corners[0].getValue()[0] > corners[1].getValue()[0]);
 
     std::vector<std::string> batchSelection;
     batchSelection.reserve(geomlist.size());
@@ -3031,18 +3033,21 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s& startPos, const SbVec2s& 
         addConvertedName(ss.str());
     };
 
-    auto selectVertexIfInsideBox = [&polygon, &VertexId, &selectVertex](const Base::Vector3d & point) {
+    auto selectVertexIfInsideBox = [&polygon, &VertexId, &selectVertex](const Base::Vector3d& point) {
         if (polygon.Contains(Base::Vector2d(point.x, point.y))) {
-            selectVertex( VertexId + 1);
-            return true; // inside
+            selectVertex(VertexId + 1);
+            return true;  // inside
         }
 
-        return false; // outside
+        return false;  // outside
     };
 
-    auto selectEdgeIfInsideBox = [&touchMode, &polygon, &GeoId, &inBBCoords, &selectEdge,
-                                  numSegments = viewProviderParameters.stdCountSegments](auto geo){
-
+    auto selectEdgeIfInsideBox = [&touchMode,
+                                  &polygon,
+                                  &GeoId,
+                                  &inBBCoords,
+                                  &selectEdge,
+                                  numSegments = viewProviderParameters.stdCountSegments](auto geo) {
         if constexpr (std::is_same<decltype(geo), Part::GeomBSplineCurve>::value) {
             numSegments *= geo->countKnots();  // one less segments than knots
         }
@@ -3055,42 +3060,38 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s& startPos, const SbVec2s& 
             Base::Vector3d pnt = geo->value(geo->getFirstParameter() + i * segment);
             pnt = inBBCoords(pnt);
             if (!polygon.Contains(Base::Vector2d(pnt.x, pnt.y))) {
-                    bpolyInside = false;
-                    if (!touchMode) {
-                        break;
-                    }
-                }
-                else if (touchMode) {
-                    bpolyInside = true;
+                bpolyInside = false;
+                if (!touchMode) {
                     break;
+                }
+            }
+            else if (touchMode) {
+                bpolyInside = true;
+                break;
             }
         }
 
         if (bpolyInside) {
-            selectEdge(GeoId+1);
+            selectEdge(GeoId + 1);
         }
     };
 
     selection.selectionBuffering = true;
 
-    for (std::vector<Part::Geometry*>::const_iterator it = geomlist.begin();
-         it != geomlist.end() - 2;
-         ++it, ++GeoId) {
-
-        if (GeoId >= intGeoCount)
+    for (auto it = geomlist.cbegin(); it != geomlist.cend() - 2; ++it, ++GeoId) {
+        if (GeoId >= intGeoCount) {
             GeoId = -extGeoCount;
+        }
 
-        if ((*it)->is<Part::GeomPoint>()) {
+        if (auto* point = freecad_cast<const Part::GeomPoint*>(*it)) {
             // ----- Check if single point lies inside box selection -----/
-            const Part::GeomPoint* point = static_cast<const Part::GeomPoint*>(*it);
             Base::Vector3d pnt0 = inBBCoords(point->getPoint());
             VertexId++;
 
             selectVertexIfInsideBox(pnt0);
         }
-        else if ((*it)->is<Part::GeomLineSegment>()) {
+        else if (auto* lineSeg = freecad_cast<const Part::GeomLineSegment*>(*it)) {
             // ----- Check if line segment lies inside box selection -----/
-            const Part::GeomLineSegment* lineSeg = static_cast<const Part::GeomLineSegment*>(*it);
             Base::Vector3d pnt1 = inBBCoords(lineSeg->getStartPoint());
             Base::Vector3d pnt2 = inBBCoords(lineSeg->getEndPoint());
 
@@ -3104,7 +3105,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s& startPos, const SbVec2s& 
 
 
             if ((pnt1Inside && pnt2Inside) && !touchMode) {
-                selectEdge(GeoId+1);
+                selectEdge(GeoId + 1);
             }
             // check if line intersects with polygon
             else if (touchMode) {
@@ -3114,22 +3115,22 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s& startPos, const SbVec2s& 
                 std::list<Base::Polygon2d> resultList;
                 polygon.Intersect(lineAsPolygon, resultList);
                 if (!resultList.empty()) {
-                    selectEdge(GeoId+1);
+                    selectEdge(GeoId + 1);
                 }
             }
         }
         else if ((*it)->isDerivedFrom<Part::GeomConic>()) {
-            // ----- Check if circle lies inside box selection -----/
+            // ----- Check if conic lies inside box selection -----/
             /// TODO: Make it impossible to miss the conic if it's big and the selection pretty
             /// thin.
-            const Part::GeomConic* circle = static_cast<const Part::GeomConic*>(*it);
-            Base::Vector3d pnt0 = inBBCoords(circle->getCenter());
+            const Part::GeomConic* conic = static_cast<const Part::GeomConic*>(*it);
+            Base::Vector3d pnt0 = inBBCoords(conic->getCenter());
             VertexId++;
 
             bool pnt0Inside = selectVertexIfInsideBox(pnt0);
 
             if (pnt0Inside || touchMode) {
-                selectEdgeIfInsideBox(circle);
+                selectEdgeIfInsideBox(conic);
             }
         }
         else if ((*it)->isDerivedFrom<Part::GeomArcOfConic>()) {
@@ -3152,9 +3153,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s& startPos, const SbVec2s& 
                 selectEdgeIfInsideBox(aoc);
             }
         }
-        else if ((*it)->is<Part::GeomBSplineCurve>()) {
-            const Part::GeomBSplineCurve* spline = static_cast<const Part::GeomBSplineCurve*>(*it);
-
+        else if (auto* spline = freecad_cast<const Part::GeomBSplineCurve*>(*it)) {
             Base::Vector3d pnt1 = inBBCoords(spline->getStartPoint());
             VertexId++;
             bool pnt1Inside = selectVertexIfInsideBox(pnt1);
@@ -3167,9 +3166,37 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s& startPos, const SbVec2s& 
                 selectEdgeIfInsideBox(spline);
             }
         }
+        else if (auto* offsetCurve = freecad_cast<const Part::GeomOffsetCurve*>(*it)) {
+            Base::Vector3d pnt1 = inBBCoords(offsetCurve->getStartPoint());
+            VertexId++;
+            bool pnt1Inside = selectVertexIfInsideBox(pnt1);
+
+            Base::Vector3d pnt2 = inBBCoords(offsetCurve->getEndPoint());
+            VertexId++;
+            bool pnt2Inside = selectVertexIfInsideBox(pnt2);
+
+            if ((pnt1Inside && pnt2Inside) || touchMode) {
+                selectEdgeIfInsideBox(offsetCurve);
+            }
+        }
+        else if (auto* restrictedCurve = freecad_cast<const Part::GeomRestrictedCurve*>(*it)) {
+            Base::Vector3d pnt1 = inBBCoords(restrictedCurve->getStartPoint());
+            VertexId++;
+            bool pnt1Inside = selectVertexIfInsideBox(pnt1);
+
+            Base::Vector3d pnt2 = inBBCoords(restrictedCurve->getEndPoint());
+            VertexId++;
+            bool pnt2Inside = selectVertexIfInsideBox(pnt2);
+
+            if ((pnt1Inside && pnt2Inside) || touchMode) {
+                selectEdgeIfInsideBox(restrictedCurve);
+            }
+        }
         else {
-            Base::Console().developerError("ViewProviderSketch::doBoxSelection",
-                                           "Geometry type is unsupported. Selection may be unsynchronised and fail.");
+            Base::Console().developerError(
+                "ViewProviderSketch::doBoxSelection",
+                "Geometry type is unsupported. Selection may be unsynchronised and fail."
+            );
         }
     }
 
@@ -3179,17 +3206,14 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s& startPos, const SbVec2s& 
     }
 
     if (!batchSelection.empty()) {
-        Gui::Selection().addSelections(
-            editDocName.c_str(),
-            editObjName.c_str(),
-            batchSelection
-        );
+        Gui::Selection().addSelections(editDocName.c_str(), editObjName.c_str(), batchSelection);
     }
 
     selection.selectionBuffering = false;
     editCoinManager->drawConstraintIcons();
     updateColor();
 }
+// clang-format off
 
 void ViewProviderSketch::updateColor()
 {
