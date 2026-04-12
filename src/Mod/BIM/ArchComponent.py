@@ -55,6 +55,7 @@ if FreeCAD.GuiUp:
     from PySide.QtCore import QT_TRANSLATE_NOOP
     import FreeCADGui
     from draftutils.translate import translate
+
     try:
         from GhostHatchRenderer import GhostHatchRenderer
     except ImportError:
@@ -67,6 +68,7 @@ else:
 
     def QT_TRANSLATE_NOOP(ctxt, txt):
         return txt
+
     # \endcond
 
 
@@ -293,7 +295,7 @@ class Component(ArchIFC.IfcProduct):
                 "Component",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Specifies if this object must move together when its host is moved"
+                    "Specifies if this object must move together when its host is moved",
                 ),
                 locked=True,
             )
@@ -344,7 +346,7 @@ class Component(ArchIFC.IfcProduct):
                 "Component",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "An optional axis or axis system on which this object should be duplicated"
+                    "An optional axis or axis system on which this object should be duplicated",
                 ),
                 locked=True,
             )
@@ -363,7 +365,7 @@ class Component(ArchIFC.IfcProduct):
                     "(outside of walls, top/bottom of slabs). "
                     "Pattern source: Material.Hatch or MultiMaterial.Hatches[layer]. "
                     "Two objects can share the same material but have independent "
-                    "hatch visibility by toggling this property."
+                    "hatch visibility by toggling this property.",
                 ),
                 locked=True,
             )
@@ -379,7 +381,7 @@ class Component(ArchIFC.IfcProduct):
                     "When True, apply hatch patterns to the narrow cap/edge faces "
                     "(wall ends, slab edges). "
                     "Useful for section cut representation. "
-                    "Independent of HatchSurfaces — both can be on or off at the same time."
+                    "Independent of HatchSurfaces — both can be on or off at the same time.",
                 ),
                 locked=True,
             )
@@ -395,7 +397,7 @@ class Component(ArchIFC.IfcProduct):
                     "When True, apply hatch to ALL faces regardless of size. "
                     "Use for columns, round pillars, or any object where the "
                     "area threshold does not correctly identify the target faces. "
-                    "Overrides HatchSurfaces and HatchCaps when enabled."
+                    "Overrides HatchSurfaces and HatchCaps when enabled.",
                 ),
                 locked=True,
             )
@@ -410,11 +412,11 @@ class Component(ArchIFC.IfcProduct):
                     "App::Property",
                     "Internal link to the DocumentObjectGroup that holds all "
                     "generated hatch face features and hatch instances for this "
-                    "object. Do not set manually."
+                    "object. Do not set manually.",
                 ),
                 locked=True,
             )
-            obj.setEditorMode("HatchContainer", 2)   # hidden in Data panel
+            obj.setEditorMode("HatchContainer", 2)  # hidden in Data panel
 
         if "HatchGhost" not in pl:
             obj.addProperty(
@@ -431,7 +433,7 @@ class Component(ArchIFC.IfcProduct):
                 ),
                 locked=True,
             )
-            obj.HatchGhost = True   # default ON — fast preview while working
+            obj.HatchGhost = True  # default ON — fast preview while working
 
         self.Subvolume = None
 
@@ -1250,11 +1252,13 @@ class Component(ArchIFC.IfcProduct):
         if not FreeCAD.GuiUp:
             return
 
-        any_on = any([
-            getattr(obj, "HatchSurfaces", False),
-            getattr(obj, "HatchCaps",     False),
-            getattr(obj, "HatchAllFaces",  False),
-        ])
+        any_on = any(
+            [
+                getattr(obj, "HatchSurfaces", False),
+                getattr(obj, "HatchCaps", False),
+                getattr(obj, "HatchAllFaces", False),
+            ]
+        )
 
         ghost_mode = bool(getattr(obj, "HatchGhost", True))
 
@@ -1291,13 +1295,15 @@ class Component(ArchIFC.IfcProduct):
                         if any_on:
                             vp_proxy._render_ghost(target)
                         else:
-                            if hasattr(vp_proxy, "_ghost_renderer") and \
-                               vp_proxy._ghost_renderer:
+                            if hasattr(vp_proxy, "_ghost_renderer") and vp_proxy._ghost_renderer:
                                 vp_proxy._ghost_renderer.clear()
                 else:
                     # Clear ghost
-                    if vp_proxy and hasattr(vp_proxy, "_ghost_renderer") and \
-                       vp_proxy._ghost_renderer:
+                    if (
+                        vp_proxy
+                        and hasattr(vp_proxy, "_ghost_renderer")
+                        and vp_proxy._ghost_renderer
+                    ):
                         vp_proxy._ghost_renderer.clear()
                     # Show container
                     hc = getattr(target, "HatchContainer", None)
@@ -1312,9 +1318,7 @@ class Component(ArchIFC.IfcProduct):
                     _apply_material_hatches_now(doc, target)
 
             except Exception as e:
-                FreeCAD.Console.PrintWarning(
-                    f"apply_material_hatches '{obj_name}': {e}\n"
-                )
+                FreeCAD.Console.PrintWarning(f"apply_material_hatches '{obj_name}': {e}\n")
 
         QtCore.QTimer.singleShot(0, _deferred)
 
@@ -1496,13 +1500,14 @@ class Component(ArchIFC.IfcProduct):
 # HATCH APPLICATION FUNCTIONS (v6 - FIXED)
 # ============================================================================
 
+
 def _clear_all_hatch_objects(doc, obj):
     """Remove all HF/HI objects for obj regardless of naming convention."""
     prefix = obj.Name
     to_remove = [
-        o for o in doc.Objects
-        if o.Name.startswith(prefix + "_") and
-           ("_HF" in o.Name or "_HI" in o.Name)
+        o
+        for o in doc.Objects
+        if o.Name.startswith(prefix + "_") and ("_HF" in o.Name or "_HI" in o.Name)
     ]
     for o in to_remove:
         try:
@@ -1515,9 +1520,13 @@ def _apply_material_hatches_now(doc, obj):
     """Create/update hard parametric hatch objects. Ghost mode already handled."""
     mat = getattr(obj, "Material", None)
     if not mat:
-        if any([getattr(obj, "HatchSurfaces", False),
-                getattr(obj, "HatchCaps",     False),
-                getattr(obj, "HatchAllFaces",  False)]):
+        if any(
+            [
+                getattr(obj, "HatchSurfaces", False),
+                getattr(obj, "HatchCaps", False),
+                getattr(obj, "HatchAllFaces", False),
+            ]
+        ):
             FreeCAD.Console.PrintMessage(
                 f"Hatch: '{obj.Label}' toggle on but no Material assigned. "
                 f"Assign a Material with a Hatch property set.\n"
@@ -1559,13 +1568,14 @@ def _classify_faces(solid, area_threshold=0.15):
     if max_area < 1e-6:
         return [], []
     surface_faces = [f for f in faces_by_area if f.Area >= max_area * area_threshold]
-    cap_faces     = [f for f in faces_by_area if f.Area <  max_area * area_threshold]
+    cap_faces = [f for f in faces_by_area if f.Area < max_area * area_threshold]
     return surface_faces, cap_faces
 
 
 def _prepare_face(face):
     """Return a clean copy of face with normalised wire orientation."""
     import Part
+
     try:
         ow = face.OuterWire
         ow.fix(1e-7, 0, 1)
@@ -1591,14 +1601,12 @@ def _sync_face_hatch_objects(doc, container, hatch_pattern, faces, name_prefix):
     try:
         from HatchGenerator import makeCustomHatch
     except ImportError:
-        FreeCAD.Console.PrintWarning(
-            "apply_material_hatches: HatchGenerator not found.\n"
-        )
+        FreeCAD.Console.PrintWarning("apply_material_hatches: HatchGenerator not found.\n")
         return
 
     for j, face in enumerate(faces):
         face_feat_name = f"{name_prefix}_HF{j}"
-        inst_name      = f"{name_prefix}_HI{j}"
+        inst_name = f"{name_prefix}_HI{j}"
 
         # ── Face feature ──────────────────────────────────────────────────
         face_feat = doc.getObject(face_feat_name)
@@ -1633,11 +1641,11 @@ def _sync_face_hatch_objects(doc, container, hatch_pattern, faces, name_prefix):
                 except Exception:
                     pass
 
-        inst.BaseObject           = face_feat
-        inst.PatternType          = "CustomObject"
-        inst.PatternObject        = hatch_pattern
+        inst.BaseObject = face_feat
+        inst.PatternType = "CustomObject"
+        inst.PatternObject = hatch_pattern
         inst.UseSurfaceProjection = True
-        inst.ForceXYPlane         = False
+        inst.ForceXYPlane = False
         if not getattr(inst, "PatternScale", 0):
             inst.PatternScale = 1.0
         # Property assignments auto-mark inst as touched.
@@ -1674,9 +1682,9 @@ def _remove_prefix_objects(doc, name_prefix):
 def _apply_multimaterial_hatches(doc, obj, mat):
     """Apply per-layer hard hatches from MultiMaterial."""
     do_surfaces = bool(getattr(obj, "HatchSurfaces", False))
-    do_caps     = bool(getattr(obj, "HatchCaps",     False))
-    do_all      = bool(getattr(obj, "HatchAllFaces",  False))
-    n_layers    = len(getattr(mat, "Materials", []))
+    do_caps = bool(getattr(obj, "HatchCaps", False))
+    do_all = bool(getattr(obj, "HatchAllFaces", False))
+    n_layers = len(getattr(mat, "Materials", []))
 
     if not do_surfaces and not do_caps and not do_all:
         for i in range(n_layers):
@@ -1687,15 +1695,15 @@ def _apply_multimaterial_hatches(doc, obj, mat):
     if not hasattr(mat, "Proxy") or not hasattr(mat.Proxy, "get_hatch_for_layer"):
         return
 
-    proxy     = mat.Proxy
-    shape     = obj.Shape if (obj.Shape and not obj.Shape.isNull()) else None
-    solids    = shape.Solids if shape else []
+    proxy = mat.Proxy
+    shape = obj.Shape if (obj.Shape and not obj.Shape.isNull()) else None
+    solids = shape.Solids if shape else []
     container = _get_or_create_hatch_container(doc, obj)
 
     for i in range(n_layers):
         hatch_pattern = proxy.get_hatch_for_layer(mat, i)
-        surf_prefix   = f"{obj.Name}_HS{i}"
-        cap_prefix    = f"{obj.Name}_HC{i}"
+        surf_prefix = f"{obj.Name}_HS{i}"
+        cap_prefix = f"{obj.Name}_HC{i}"
 
         if hatch_pattern is None or i >= len(solids):
             _remove_prefix_objects(doc, surf_prefix)
@@ -1721,8 +1729,9 @@ def _apply_multimaterial_hatches(doc, obj, mat):
     # Clean up layers beyond n_layers
     i = n_layers
     while True:
-        if not doc.getObject(f"{obj.Name}_HS{i}_HF0") and \
-           not doc.getObject(f"{obj.Name}_HS{i}_HI0"):
+        if not doc.getObject(f"{obj.Name}_HS{i}_HF0") and not doc.getObject(
+            f"{obj.Name}_HS{i}_HI0"
+        ):
             break
         _remove_prefix_objects(doc, f"{obj.Name}_HS{i}")
         _remove_prefix_objects(doc, f"{obj.Name}_HC{i}")
@@ -1732,11 +1741,11 @@ def _apply_multimaterial_hatches(doc, obj, mat):
 def _apply_single_material_hatch(doc, obj, mat):
     """Apply hard hatch from plain Material."""
     do_surfaces = bool(getattr(obj, "HatchSurfaces", False))
-    do_caps     = bool(getattr(obj, "HatchCaps",     False))
-    do_all      = bool(getattr(obj, "HatchAllFaces",  False))
+    do_caps = bool(getattr(obj, "HatchCaps", False))
+    do_all = bool(getattr(obj, "HatchAllFaces", False))
 
     surf_prefix = f"{obj.Name}_SM_HS0"
-    cap_prefix  = f"{obj.Name}_SM_HC0"
+    cap_prefix = f"{obj.Name}_SM_HC0"
 
     if not do_surfaces and not do_caps and not do_all:
         _remove_prefix_objects(doc, surf_prefix)
@@ -1753,12 +1762,12 @@ def _apply_single_material_hatch(doc, obj, mat):
         )
         return
 
-    shape  = obj.Shape if (obj.Shape and not obj.Shape.isNull()) else None
+    shape = obj.Shape if (obj.Shape and not obj.Shape.isNull()) else None
     if not shape:
         return
 
     container = _get_or_create_hatch_container(doc, obj)
-    solids    = shape.Solids
+    solids = shape.Solids
 
     if do_all:
         all_faces = []
@@ -2057,7 +2066,7 @@ class ViewProviderComponent:
                 "Component",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Use the material color as this object's shape color, if available"
+                    "Use the material color as this object's shape color, if available",
                 ),
                 locked=True,
             )
@@ -2119,12 +2128,18 @@ class ViewProviderComponent:
                         if len(obj.CloneOf.ViewObject.DiffuseColor) > 1:
                             obj.ViewObject.DiffuseColor = obj.CloneOf.ViewObject.DiffuseColor
                             obj.ViewObject.update()
-        
+
         # Handle hatch property changes for ghost mode
-        if prop in ("Shape", "Material",
-                    "HatchSurfaces", "HatchCaps", "HatchAllFaces", "HatchGhost"):
+        if prop in (
+            "Shape",
+            "Material",
+            "HatchSurfaces",
+            "HatchCaps",
+            "HatchAllFaces",
+            "HatchGhost",
+        ):
             self._update_hatch_display(obj)
-            
+
         return
 
     def getIcon(self):
@@ -2220,7 +2235,7 @@ class ViewProviderComponent:
         self.hiresgroup.addChild(self.meshcolor)
         self.hiresgroup.setName("HiRes")
         vobj.addDisplayMode(self.hiresgroup, "HiRes")
-        
+
         # Initialize ghost hatch renderer
         if GhostHatchRenderer is not None:
             try:
@@ -2230,7 +2245,7 @@ class ViewProviderComponent:
                 self._ghost_renderer = None
         else:
             self._ghost_renderer = None
-            
+
         return
 
     def onDocumentRestored(self, obj):
@@ -2527,11 +2542,13 @@ class ViewProviderComponent:
             return
 
         ghost_mode = bool(getattr(obj, "HatchGhost", True))
-        any_hatch = any([
-            getattr(obj, "HatchSurfaces", False),
-            getattr(obj, "HatchCaps",     False),
-            getattr(obj, "HatchAllFaces",  False),
-        ])
+        any_hatch = any(
+            [
+                getattr(obj, "HatchSurfaces", False),
+                getattr(obj, "HatchCaps", False),
+                getattr(obj, "HatchAllFaces", False),
+            ]
+        )
 
         if ghost_mode:
             # Hide hard hatch container if it exists
@@ -2586,18 +2603,18 @@ class ViewProviderComponent:
             self._ghost_renderer.clear()
             return
 
-        do_all      = bool(getattr(obj, "HatchAllFaces",  False))
-        do_surfaces = bool(getattr(obj, "HatchSurfaces",  False))
-        do_caps     = bool(getattr(obj, "HatchCaps",      False))
+        do_all = bool(getattr(obj, "HatchAllFaces", False))
+        do_surfaces = bool(getattr(obj, "HatchSurfaces", False))
+        do_caps = bool(getattr(obj, "HatchCaps", False))
 
         # Collect (faces, hatch_pattern) pairs — one per material layer
         # For single material: one pair covering the relevant faces
         # For multi-material: one pair per layer that has a hatch assigned
-        render_pairs = []   # list of (face_list, hatch_pattern_obj)
+        render_pairs = []  # list of (face_list, hatch_pattern_obj)
 
         if hasattr(mat, "Proxy") and hasattr(mat.Proxy, "get_hatch_for_layer"):
             # Multi-material path
-            solids   = shape.Solids if shape else []
+            solids = shape.Solids if shape else []
             n_layers = len(getattr(mat, "Materials", []))
             for i in range(n_layers):
                 hatch_pattern = mat.Proxy.get_hatch_for_layer(mat, i)
@@ -2626,7 +2643,7 @@ class ViewProviderComponent:
             solids = shape.Solids if shape else []
             if do_all:
                 all_faces = []
-                for s in (solids or [shape]):
+                for s in solids or [shape]:
                     all_faces.extend(s.Faces if hasattr(s, "Faces") else [])
                 if not solids:
                     all_faces = list(shape.Faces)
