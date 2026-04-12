@@ -2316,7 +2316,13 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent* event)
     auto items = selectedItems();
 
     auto da = getDropAction(items.size(), targetItem->type());
-    event->setDropAction(da);
+    auto visualDa = da;
+    if (targetItem->type() == TreeWidget::ObjectType) {
+        if (auto* vp = static_cast<DocumentObjectItem*>(targetItem)->object()) {
+            visualDa = vp->getDropActionForTarget(da);
+        }
+    }
+    event->setDropAction(visualDa);
 
     if (targetItem->type() == TreeWidget::DocumentType) {
         leaveEvent(nullptr);
