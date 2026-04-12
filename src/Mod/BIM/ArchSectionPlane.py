@@ -1141,14 +1141,6 @@ class _ViewProviderSectionPlane:
                 locked=True,
             )
             vobj.LineWidth = 1
-        if not "CutDistance" in pl:
-            vobj.addProperty(
-                "App::PropertyLength",
-                "CutDistance",
-                "SectionPlane",
-                QT_TRANSLATE_NOOP("App::Property", "Show the cut in the 3D view"),
-                locked=True,
-            )
         if not "LineColor" in pl:
             vobj.addProperty(
                 "App::PropertyColor",
