@@ -77,6 +77,18 @@ LineFormat::LineFormat(const int style,
     m_lineNumber(LineGenerator::fromQtStyle((Qt::PenStyle)m_style))
 {
 }
+LineFormat::LineFormat(const int style,
+           const double weight,
+           const Base::Color& color,
+           const bool visible,
+           const int lineNumber) :
+    m_style(style),
+    m_weight(weight),
+    m_color(color),
+    m_visible(visible),
+    m_lineNumber(lineNumber)
+{
+}
 
 void LineFormat::dump(const char* title)
 {
