@@ -23,6 +23,7 @@
 # ***************************************************************************
 
 # Modified 2016-01-03 JAndersM
+# Modified with fixes for slab slope, align, offset, and hatches
 
 __title__ = "FreeCAD Structure"
 __author__ = "Yorik van Havre"
@@ -1189,8 +1190,10 @@ class _Structure(ArchComponent.Component):
         base = self.processSubShapes(obj, base, pl)
         self.applyShape(obj, base, pl)
 
-        if getattr(obj, "IfcType", "") == "Slab":
-            self.apply_material_hatches(obj)
+        # FIX 3: apply_material_hatches not gated on IfcType == "Slab"
+        # Removed IfcType == "Slab" gate — columns, beams, and slabs all
+        # support HatchSurfaces / HatchCaps / HatchAllFaces toggles.
+        self.apply_material_hatches(obj)
 
     def get_layers(self, obj):
         """Returns a list of layer thicknesses for multi-material slab support.
@@ -1553,71 +1556,73 @@ class _Structure(ArchComponent.Component):
                         extrusion = normal.multiply(height)
             if extrusion:
                 # --- Multi-material layer support for slabs ---
+                # FIX 1+2: Slope + Align + Offset for single-material slabs
                 if (
                     getattr(obj, "IfcType", "") == "Slab"
                     and not isinstance(base, list)
                     and isinstance(extrusion, FreeCAD.Vector)
                     and not (hasattr(obj, "Tool") and obj.Tool)
                 ):
+                    import math
+
                     layers = self.get_layers(obj)
-                    if layers:
-                        unit_n = FreeCAD.Vector(extrusion).normalize()
+                    unit_n = FreeCAD.Vector(extrusion).normalize()
 
-                        # Resolve z_offset via AlignLayer > Align > Offset
-                        z_offset = self._compute_z_offset(obj, layers)
+                    # ── Resolve slope ──────────────────────────────────────────
+                    # Works for both multi-material AND single-material slabs.
+                    slope_angle = getattr(obj, "Slope", 0)
+                    if hasattr(slope_angle, "Value"):
+                        slope_angle = slope_angle.Value
 
-                        # --- Slope with SlopeEdge direction ---
-                        slope_angle = getattr(obj, "Slope", 0)
-                        if hasattr(slope_angle, "Value"):
-                            slope_angle = slope_angle.Value
-                        slope_base = None
-                        if abs(slope_angle) > 1e-6:
-                            import math
-
-                            x_axis = None
-                            slope_edge_link = getattr(obj, "SlopeEdge", None)
-                            if (
-                                slope_edge_link
-                                and len(slope_edge_link) >= 2
-                                and slope_edge_link[0]
-                                and slope_edge_link[1]
-                            ):
-                                try:
-                                    linked_obj = slope_edge_link[0]
-                                    sub_names = slope_edge_link[1]
-                                    sub_name = sub_names[0] if sub_names else None
-                                    if sub_name and hasattr(linked_obj, "Shape"):
-                                        edge = linked_obj.Shape.getElement(sub_name)
-                                        x_axis = edge.tangentAt(
-                                            edge.FirstParameter
-                                        ).normalize()
-                                except Exception:
-                                    x_axis = None
-
-                            if x_axis is None:
-                                try:
-                                    outer_wire = base.Wires[0]
-                                    x_axis = outer_wire.Edges[0].tangentAt(
-                                        outer_wire.Edges[0].FirstParameter
-                                    ).normalize()
-                                except Exception:
-                                    x_axis = FreeCAD.Vector(1, 0, 0)
-
+                    slope_base = None
+                    if abs(slope_angle) > 1e-6:
+                        x_axis = None
+                        slope_edge_link = getattr(obj, "SlopeEdge", None)
+                        if (
+                            slope_edge_link
+                            and len(slope_edge_link) >= 2
+                            and slope_edge_link[0]
+                            and slope_edge_link[1]
+                        ):
                             try:
-                                pivot = base.CenterOfMass
-                                rot = FreeCAD.Rotation(x_axis, slope_angle)
-                                t1 = FreeCAD.Matrix()
-                                t1.move(-pivot)
-                                r = rot.toMatrix()
-                                t2 = FreeCAD.Matrix()
-                                t2.move(pivot)
-                                slope_mat = t2.multiply(r.multiply(t1))
-                                slope_base = base.transformGeometry(slope_mat)
+                                linked_obj = slope_edge_link[0]
+                                sub_names = slope_edge_link[1]
+                                sub_name = sub_names[0] if sub_names else None
+                                if sub_name and hasattr(linked_obj, "Shape"):
+                                    edge = linked_obj.Shape.getElement(sub_name)
+                                    x_axis = edge.tangentAt(
+                                        edge.FirstParameter
+                                    ).normalize()
                             except Exception:
-                                slope_base = None
+                                x_axis = None
 
-                        working_base = slope_base if slope_base is not None else base
+                        if x_axis is None:
+                            try:
+                                outer_wire = base.Wires[0]
+                                x_axis = outer_wire.Edges[0].tangentAt(
+                                    outer_wire.Edges[0].FirstParameter
+                                ).normalize()
+                            except Exception:
+                                x_axis = FreeCAD.Vector(1, 0, 0)
 
+                        try:
+                            pivot = base.CenterOfMass
+                            rot = FreeCAD.Rotation(x_axis, slope_angle)
+                            t1 = FreeCAD.Matrix()
+                            t1.move(-pivot)
+                            r = rot.toMatrix()
+                            t2 = FreeCAD.Matrix()
+                            t2.move(pivot)
+                            slope_mat = t2.multiply(r.multiply(t1))
+                            slope_base = base.transformGeometry(slope_mat)
+                        except Exception:
+                            slope_base = None
+
+                    working_base = slope_base if slope_base is not None else base
+
+                    # ── Multi-material path ────────────────────────────────────
+                    if layers:
+                        z_offset = self._compute_z_offset(obj, layers)
                         bases_list, extrusions_list, placements_list = [], [], []
                         cum_offset = z_offset
 
@@ -1632,6 +1637,32 @@ class _Structure(ArchComponent.Component):
 
                         if bases_list:
                             return (bases_list, extrusions_list, placements_list)
+
+                    # ── Single-material path ───────────────────────────────────
+                    # Apply Align and Offset even without layers.
+                    else:
+                        total = extrusion.Length   # = obj.Height for a slab
+                        z_offset = 0.0
+
+                        # Global alignment (Bottom/Center/Top)
+                        align = getattr(obj, "Align", "Bottom")
+                        if align == "Center":
+                            z_offset = -total / 2.0
+                        elif align == "Top":
+                            z_offset = -total
+
+                        # Manual offset added on top
+                        manual_offset = getattr(obj, "Offset", None)
+                        if manual_offset is not None:
+                            val = manual_offset.Value if hasattr(manual_offset, "Value") else 0.0
+                            z_offset += val
+
+                        if abs(z_offset) > 1e-6 or slope_base is not None:
+                            # Apply z_offset translation to working_base
+                            final_base = working_base.copy()
+                            if abs(z_offset) > 1e-6:
+                                final_base.translate(unit_n * z_offset)
+                            return (final_base, extrusion, placement)
                 # --- End multi-material layer block ---
 
                 return (base, extrusion, placement)
@@ -1985,20 +2016,22 @@ class StructureTaskPanel(ArchComponent.ComponentOptionsTaskPanel):
     """A task panel for Arch Structures that combines generic dimensions with node tools"""
 
     def __init__(self, obj):
+        # FIX 5: Slab task panel shows Slope + Align controls
         # Define properties based on the IfcType
         if getattr(obj, "IfcType", "Beam") == "Slab":
             property_definitions = [
                 {"prop": "Height", "label": translate("Arch", "Thickness")},
+                {"prop": "Slope",  "label": translate("Arch", "Slope (°)")},
             ]
         else:
             # For Beams and Columns
             property_definitions = [
                 {"prop": "Length", "label": translate("Arch", "Length")},
-                {"prop": "Width", "label": translate("Arch", "Width")},
+                {"prop": "Width",  "label": translate("Arch", "Width")},
                 {"prop": "Height", "label": translate("Arch", "Height")},
             ]
 
-        #  Initialize generic parent (creates self.options_widget and self.baseform)
+        # Initialize generic parent (creates self.options_widget and self.baseform)
         super().__init__(obj, property_definitions)
 
         # Alias for compatibility with node/tool methods
@@ -2072,11 +2105,111 @@ class StructureTaskPanel(ArchComponent.ComponentOptionsTaskPanel):
         lay.addWidget(self.selectToolButton)
         self.selectToolButton.clicked.connect(self.setSelectionFromTool)
 
-        # Build the final form list: Options box, Node Tools box, Extrusion box, Components box
-        self.form = [self.options_widget, self.nodes_widget, self.extrusion_widget, self.baseform]
+        # FIX 4: Slab-specific widget: Slope Edge picker
+        form_widgets = [self.options_widget, self.nodes_widget,
+                        self.extrusion_widget, self.baseform]
+
+        if getattr(obj, "IfcType", "Beam") == "Slab":
+            self.slab_widget = QtGui.QWidget()
+            self.slab_widget.setWindowTitle(
+                QtGui.QApplication.translate("Arch", "Slab Tools", None))
+            slab_lay = QtGui.QVBoxLayout(self.slab_widget)
+
+            # Label explaining how SlopeEdge works
+            info = QtGui.QLabel(
+                QtGui.QApplication.translate(
+                    "Arch",
+                    "Select an edge in the 3D view, then click\n"
+                    "'Set Slope Edge' to define the drainage pivot.",
+                    None))
+            info.setWordWrap(True)
+            slab_lay.addWidget(info)
+
+            self.setSlopeEdgeButton = QtGui.QPushButton(self.slab_widget)
+            self.setSlopeEdgeButton.setIcon(QtGui.QIcon(":/icons/Snap_Endpoint.svg"))
+            self.setSlopeEdgeButton.setText(
+                QtGui.QApplication.translate("Arch", "Set Slope Edge", None))
+            self.setSlopeEdgeButton.setToolTip(
+                QtGui.QApplication.translate(
+                    "Arch",
+                    "Select an edge in the 3D view first, then click here "
+                    "to use it as the drainage slope pivot axis.",
+                    None))
+            slab_lay.addWidget(self.setSlopeEdgeButton)
+            self.setSlopeEdgeButton.clicked.connect(self.setSlopeEdge)
+
+            self.clearSlopeEdgeButton = QtGui.QPushButton(self.slab_widget)
+            self.clearSlopeEdgeButton.setIcon(QtGui.QIcon(":/icons/edit-cleartext.svg"))
+            self.clearSlopeEdgeButton.setText(
+                QtGui.QApplication.translate("Arch", "Clear Slope Edge", None))
+            self.clearSlopeEdgeButton.setToolTip(
+                QtGui.QApplication.translate(
+                    "Arch",
+                    "Remove the slope edge reference. The first edge of the "
+                    "base face will be used as the default pivot.",
+                    None))
+            slab_lay.addWidget(self.clearSlopeEdgeButton)
+            self.clearSlopeEdgeButton.clicked.connect(self.clearSlopeEdge)
+
+            # Current slope edge display
+            self.slopeEdgeLabel = QtGui.QLabel("")
+            self._update_slope_edge_label()
+            slab_lay.addWidget(self.slopeEdgeLabel)
+
+            form_widgets.insert(0, self.slab_widget)
+
+        self.form = form_widgets
 
         self.observer = None
         self.nodevis = None
+
+    def setSlopeEdge(self):
+        """Read the current 3D selection and assign the first selected edge
+        as the SlopeEdge property of the slab."""
+        sel = FreeCADGui.Selection.getSelectionEx()
+        for s in sel:
+            for sub_name in s.SubElementNames:
+                if sub_name.startswith("Edge"):
+                    try:
+                        self.Object.SlopeEdge = (s.Object, [sub_name])
+                        self._update_slope_edge_label()
+                        FreeCAD.ActiveDocument.recompute()
+                        FreeCAD.Console.PrintMessage(
+                            f"SlopeEdge set to {s.Object.Label} → {sub_name}\n"
+                        )
+                        return
+                    except Exception as e:
+                        FreeCAD.Console.PrintError(
+                            f"Could not set SlopeEdge: {e}\n"
+                        )
+                        return
+        FreeCAD.Console.PrintWarning(
+            "No edge selected. Select an edge in the 3D view first.\n"
+        )
+
+    def clearSlopeEdge(self):
+        """Remove the SlopeEdge reference. The first base-face edge is used."""
+        try:
+            self.Object.SlopeEdge = None
+            self._update_slope_edge_label()
+            FreeCAD.ActiveDocument.recompute()
+            FreeCAD.Console.PrintMessage("SlopeEdge cleared.\n")
+        except Exception as e:
+            FreeCAD.Console.PrintError(f"Could not clear SlopeEdge: {e}\n")
+
+    def _update_slope_edge_label(self):
+        """Update the label showing the current SlopeEdge assignment."""
+        if not hasattr(self, "slopeEdgeLabel"):
+            return
+        se = getattr(self.Object, "SlopeEdge", None)
+        if se and len(se) >= 2 and se[0] and se[1]:
+            try:
+                label = f"Edge: {se[0].Label} → {se[1][0]}"
+            except Exception:
+                label = "Edge: (set)"
+        else:
+            label = "Edge: (not set — using first base edge)"
+        self.slopeEdgeLabel.setText(label)
 
     def editNodes(self):
 
