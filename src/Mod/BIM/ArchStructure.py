@@ -1568,42 +1568,45 @@ class _Structure(ArchComponent.Component):
                     layers = self.get_layers(obj)
                     unit_n = FreeCAD.Vector(extrusion).normalize()
 
-                    # ── Resolve slope ──────────────────────────────────────────
-                    # Works for both multi-material AND single-material slabs.
-                    slope_angle = getattr(obj, "Slope", 0)
-                    if hasattr(slope_angle, "Value"):
-                        slope_angle = slope_angle.Value
+                        # Resolve z_offset via AlignLayer > Align > Offset
+                        z_offset = self._compute_z_offset(obj, layers)
 
-                    slope_base = None
-                    if abs(slope_angle) > 1e-6:
-                        x_axis = None
-                        slope_edge_link = getattr(obj, "SlopeEdge", None)
-                        if (
-                            slope_edge_link
-                            and len(slope_edge_link) >= 2
-                            and slope_edge_link[0]
-                            and slope_edge_link[1]
-                        ):
-                            try:
-                                linked_obj = slope_edge_link[0]
-                                sub_names = slope_edge_link[1]
-                                sub_name = sub_names[0] if sub_names else None
-                                if sub_name and hasattr(linked_obj, "Shape"):
-                                    edge = linked_obj.Shape.getElement(sub_name)
-                                    x_axis = edge.tangentAt(
-                                        edge.FirstParameter
+                        # --- Slope with SlopeEdge direction ---
+                        slope_angle = getattr(obj, "Slope", 0)
+                        if hasattr(slope_angle, "Value"):
+                            slope_angle = slope_angle.Value
+                        slope_base = None
+                        if abs(slope_angle) > 1e-6:
+                            import math
+
+                            x_axis = None
+                            slope_edge_link = getattr(obj, "SlopeEdge", None)
+                            if (
+                                slope_edge_link
+                                and len(slope_edge_link) >= 2
+                                and slope_edge_link[0]
+                                and slope_edge_link[1]
+                            ):
+                                try:
+                                    linked_obj = slope_edge_link[0]
+                                    sub_names = slope_edge_link[1]
+                                    sub_name = sub_names[0] if sub_names else None
+                                    if sub_name and hasattr(linked_obj, "Shape"):
+                                        edge = linked_obj.Shape.getElement(sub_name)
+                                        x_axis = edge.tangentAt(
+                                            edge.FirstParameter
+                                        ).normalize()
+                                except Exception:
+                                    x_axis = None
+
+                            if x_axis is None:
+                                try:
+                                    outer_wire = base.Wires[0]
+                                    x_axis = outer_wire.Edges[0].tangentAt(
+                                        outer_wire.Edges[0].FirstParameter
                                     ).normalize()
-                            except Exception:
-                                x_axis = None
-
-                        if x_axis is None:
-                            try:
-                                outer_wire = base.Wires[0]
-                                x_axis = outer_wire.Edges[0].tangentAt(
-                                    outer_wire.Edges[0].FirstParameter
-                                ).normalize()
-                            except Exception:
-                                x_axis = FreeCAD.Vector(1, 0, 0)
+                                except Exception:
+                                    x_axis = FreeCAD.Vector(1, 0, 0)
 
                         try:
                             pivot = base.CenterOfMass
@@ -1934,9 +1937,7 @@ class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
                                         c[2],
                                         1.0 - float(mat.Material["Transparency"]),
                                     )
-                                cols.extend(
-                                    [c for _ in range(len(obj.Shape.Solids[i].Faces))]
-                                )
+                                cols.extend([c for _ in range(len(obj.Shape.Solids[i].Faces))])
                             obj.ViewObject.DiffuseColor = cols
             ArchComponent.ViewProviderComponent.updateData(self, obj, prop)
             if len(obj.ViewObject.DiffuseColor) > 1:
