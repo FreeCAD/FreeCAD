@@ -742,6 +742,11 @@ void ViewProvider::setupContextMenu(QMenu* menu, QObject* receiver, const char* 
     }
 }
 
+App::DocumentObject* ViewProvider::resolveTreeSelectTarget(const char* /*subname*/) const
+{
+    return nullptr;
+}
+
 bool ViewProvider::onDelete(const vector<string>& subNames)
 {
     bool del = true;
