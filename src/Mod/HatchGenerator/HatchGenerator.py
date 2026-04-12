@@ -622,311 +622,333 @@ class CustomHatchFeature:
             fp.Placement = FreeCAD.Placement(p, oldPlacement.Rotation)
 
     def execute(self, fp):
+        """Recompute the hatch shape.
+        
+        Guarantees fp.Shape is ALWAYS set to something after execute()
+        completes, so FreeCAD always calls purgeTouched() and the
+        'still touched after recompute' message never fires.
+        """
         import datetime
         start_time = datetime.datetime.now()
         doc = fp.Document
-        if not doc:
-            fp.Shape = Part.makeCompound([])
-            return
-
-        baseShapes = []
-
-        # Gather BaseObject
-        if fp.BaseObject:
-            temp_shape = getClosedWiresAsFaces(fp.BaseObject)
-            if temp_shape and not temp_shape.isNull():
-                shape_conv = temp_shape
-            else:
-                shape_conv = fp.BaseObject.Shape.copy()
-
-            if shape_conv and not shape_conv.isNull():
-                baseShapes.append(shape_conv)
-
-        # Gather BaseObjects (the list)
-        if fp.BaseObjects:
-            for bobj in (fp.BaseObjects or []):
-                if bobj:
-                    temp_face = getClosedWiresAsFaces(bobj)
-                    if temp_face and not temp_face.isNull():
-                        face_shape = temp_face
-                    else:
-                        face_shape = bobj.Shape.copy()
-                    if face_shape and not face_shape.isNull():
-                        baseShapes.append(face_shape)
-
-        if not baseShapes:
-            fp.Shape = Part.makeCompound([])
-            return
-        validBaseShapes = [sh for sh in baseShapes if sh and not sh.isNull()]
-        if not validBaseShapes:
-            fp.Shape = Part.makeCompound([])
-            return
-
-        # Compute unified bounding box for consistent tiling across multiple base shapes
-        unified_bb = _compute_unified_bb(validBaseShapes)
-
-        distMode = fp.DistributionMode
-        autoScale = fp.AutoScaleToFitBase
-        scaleVal = fp.PatternScale
-        rotVal = fp.RotationDeg
-        spacingVal = fp.BaseSpacing
-        if fp.UseUnits:
-            spacingVal = convertBaseSpacingValue(spacingVal, fp.UseUnits, fp.SelectedUnitSystem)
-
-        rx = fp.RepetitionsX
-        ry = fp.RepetitionsY
-        randPlace = fp.RandomizePlacement
-        randOff = fp.RandomOffsetRange
-        rotationMin = fp.RandomRotationMin
-        rotationMax = fp.RandomRotationMax
-        randSmin = fp.RandomScaleMin
-        randSmax = fp.RandomScaleMax
-        radialCount = fp.RadialCount
-        radialRadius = fp.RadialRadius
-        concentricCount = fp.ConcentricCount
-        concentricSpace = fp.ConcentricSpacing
-        randomCount = fp.RandomCount
-        pOffX = fp.PatternOffsetX
-        pOffY = fp.PatternOffsetY
-        scaleMode = fp.ScaleMode
-        tileObj = fp.BaseTileObject if hasattr(fp, "BaseTileObject") else None
-        tileVisibility = fp.TileVisibility
-        showFaces = fp.ShowFaces
-        apply3D = fp.ApplyTo3DSurface
-        maxTiles = fp.MaxTilesAllowed
-        densityFactor = fp.DensityFactor
-        enableColorVar = fp.EnableColorVariation
-        colorVarInt = fp.ColorVariationIntensity
-        spacingVariation = fp.SpacingVariation
-        shapeDistortion = fp.EnableShapeDistortion
         
-        # Surface projection properties
-        useSurfaceProjection = getattr(fp, "UseSurfaceProjection", True)
-        forceXYPlane = getattr(fp, "ForceXYPlane", False)
-
-        # Subtractions
-        subObjs = fp.Subtractions
-
-        # Decide pattern shape
-        if fp.PatternType == "SolidFill":
-            combined = Part.makeCompound(validBaseShapes)
-            fp.GenerationTime = (datetime.datetime.now() - start_time).total_seconds()
-            fp.TileCount = len(validBaseShapes)
-            tileObjName = fp.Name + "_TileRep"
-            existingTileObj = doc.getObject(tileObjName)
-            if existingTileObj:
-                doc.removeObject(existingTileObj.Name)
-        else:
-            # If PatternType == "CustomObject", gather from PatternObject + PatternObjects
-            if fp.PatternType == "CustomObject":
-                allPatternShapes = []
-                if fp.PatternObject and hasattr(fp.PatternObject, "Shape"):
-                    pat_shp = getClosedWiresAsFaces(fp.PatternObject) if showFaces else fp.PatternObject.Shape.copy()
-                    if pat_shp and not pat_shp.isNull():
-                        allPatternShapes.append(pat_shp)
-
-                if fp.PatternObjects:
-                    for pobj in fp.PatternObjects:
-                        if pobj and hasattr(pobj, "Shape"):
-                            pat2 = getClosedWiresAsFaces(pobj) if showFaces else pobj.Shape.copy()
-                            if pat2 and not pat2.isNull():
-                                allPatternShapes.append(pat2)
-
-                if not allPatternShapes:
-                    fp.Shape = Part.makeCompound([])
-                    return
-                if len(allPatternShapes) == 1:
-                    patternShape = allPatternShapes[0]
-                else:
-                    patternShape = allPatternShapes[0]
-                    for extraShape in allPatternShapes[1:]:
-                        patternShape = patternShape.fuse(extraShape)
-            else:
-                patternShape = generateBuiltInPatternShape(fp.PatternType)
-
-            if not patternShape or patternShape.isNull():
+        # Safety: Always ensure we set fp.Shape even on failure
+        try:
+            if not doc:
                 fp.Shape = Part.makeCompound([])
                 return
 
-            total_tiles = 0
-            finalParts = []
+            baseShapes = []
+
+            # Gather BaseObject
+            if fp.BaseObject:
+                temp_shape = getClosedWiresAsFaces(fp.BaseObject)
+                if temp_shape and not temp_shape.isNull():
+                    shape_conv = temp_shape
+                else:
+                    shape_conv = fp.BaseObject.Shape.copy()
+
+                if shape_conv and not shape_conv.isNull():
+                    baseShapes.append(shape_conv)
+
+            # Gather BaseObjects (the list)
+            if fp.BaseObjects:
+                for bobj in (fp.BaseObjects or []):
+                    if bobj:
+                        temp_face = getClosedWiresAsFaces(bobj)
+                        if temp_face and not temp_face.isNull():
+                            face_shape = temp_face
+                        else:
+                            face_shape = bobj.Shape.copy()
+                        if face_shape and not face_shape.isNull():
+                            baseShapes.append(face_shape)
+
+            if not baseShapes:
+                fp.Shape = Part.makeCompound([])
+                return
+                
+            validBaseShapes = [sh for sh in baseShapes if sh and not sh.isNull()]
+            if not validBaseShapes:
+                fp.Shape = Part.makeCompound([])
+                return
+
+            # Compute unified bounding box for consistent tiling across multiple base shapes
+            unified_bb = _compute_unified_bb(validBaseShapes)
+
+            distMode = fp.DistributionMode
+            autoScale = fp.AutoScaleToFitBase
+            scaleVal = fp.PatternScale
+            rotVal = fp.RotationDeg
+            spacingVal = fp.BaseSpacing
+            if fp.UseUnits:
+                spacingVal = convertBaseSpacingValue(spacingVal, fp.UseUnits, fp.SelectedUnitSystem)
+
+            rx = fp.RepetitionsX
+            ry = fp.RepetitionsY
+            randPlace = fp.RandomizePlacement
+            randOff = fp.RandomOffsetRange
+            rotationMin = fp.RandomRotationMin
+            rotationMax = fp.RandomRotationMax
+            randSmin = fp.RandomScaleMin
+            randSmax = fp.RandomScaleMax
+            radialCount = fp.RadialCount
+            radialRadius = fp.RadialRadius
+            concentricCount = fp.ConcentricCount
+            concentricSpace = fp.ConcentricSpacing
+            randomCount = fp.RandomCount
+            pOffX = fp.PatternOffsetX
+            pOffY = fp.PatternOffsetY
+            scaleMode = fp.ScaleMode
+            tileObj = fp.BaseTileObject if hasattr(fp, "BaseTileObject") else None
+            tileVisibility = fp.TileVisibility
+            showFaces = fp.ShowFaces
+            apply3D = fp.ApplyTo3DSurface
+            maxTiles = fp.MaxTilesAllowed
+            densityFactor = fp.DensityFactor
+            enableColorVar = fp.EnableColorVariation
+            colorVarInt = fp.ColorVariationIntensity
+            spacingVariation = fp.SpacingVariation
+            shapeDistortion = fp.EnableShapeDistortion
             
-            for bShape in validBaseShapes:
-                try:
-                    # Check if we should use surface projection
-                    use_projection = (useSurfaceProjection and not forceXYPlane and 
-                                      bShape.Faces and len(bShape.Faces) > 0)
-                    
-                    if use_projection:
-                        # Get the first face for transformation
-                        target_face = bShape.Faces[0]
-                        
-                        # Build surface transforms
-                        to_local, to_world = buildSurfaceTransforms(target_face)
-                        
-                        # Project base shape into local 2D coordinates
-                        localBase = projectShapeToLocal(bShape, to_local)
-                        
-                        # Generate hatch in local 2D space with unified BB
-                        localHatch, tiles = buildHatchShape(
-                            baseShape=localBase,
-                            overrideBB=_compute_unified_bb([localBase]),
-                            patternShape=patternShape,
-                            distributionMode=distMode,
-                            autoScaleToFitBase=autoScale,
-                            patternScale=scaleVal,
-                            rotationDeg=rotVal,
-                            baseSpacing=spacingVal,
-                            repX=rx,
-                            repY=ry,
-                            randRotMin=rotationMin,
-                            randRotMax=rotationMax,
-                            randomizePlacement=randPlace,
-                            randomOffsetRange=randOff,
-                            randomScaleMin=randSmin,
-                            randomScaleMax=randSmax,
-                            radialCount=radialCount,
-                            radialRadius=radialRadius,
-                            concentricCount=concentricCount,
-                            concentricSpacing=concentricSpace,
-                            randomCount=randomCount,
-                            offsetX=pOffX,
-                            offsetY=pOffY,
-                            scaleMode=scaleMode,
-                            tileShape=(tileObj.Shape if tileObj else None),
-                            tileVisibility=tileVisibility,
-                            showFaces=showFaces,
-                            maxTiles=maxTiles,
-                            densityFactor=densityFactor,
-                            enableColorVar=enableColorVar,
-                            colorVarInt=colorVarInt,
-                            spacingVariation=spacingVariation,
-                            shapeDistortion=shapeDistortion,
-                            apply3D=apply3D,
-                            placement_mode=fp.PatternPlacementMode,
-                            clipMode=fp.ClipMode
-                        )
-                        
-                        # Unproject back to world coordinates
-                        shaped = unprojectShapeToWorld(localHatch, to_world)
-                        total_tiles += tiles
-                        finalParts.append(shaped)
-                    else:
-                        # Original XY-plane path with unified bounding box
-                        shaped, tiles = buildHatchShape(
-                            baseShape=bShape,
-                            overrideBB=unified_bb,  # KEY FIX: unified BB for consistent tiling
-                            patternShape=patternShape,
-                            distributionMode=distMode,
-                            autoScaleToFitBase=autoScale,
-                            patternScale=scaleVal,
-                            rotationDeg=rotVal,
-                            baseSpacing=spacingVal,
-                            repX=rx,
-                            repY=ry,
-                            randRotMin=rotationMin,
-                            randRotMax=rotationMax,
-                            randomizePlacement=randPlace,
-                            randomOffsetRange=randOff,
-                            randomScaleMin=randSmin,
-                            randomScaleMax=randSmax,
-                            radialCount=radialCount,
-                            radialRadius=radialRadius,
-                            concentricCount=concentricCount,
-                            concentricSpacing=concentricSpace,
-                            randomCount=randomCount,
-                            offsetX=pOffX,
-                            offsetY=pOffY,
-                            scaleMode=scaleMode,
-                            tileShape=(tileObj.Shape if tileObj else None),
-                            tileVisibility=tileVisibility,
-                            showFaces=showFaces,
-                            maxTiles=maxTiles,
-                            densityFactor=densityFactor,
-                            enableColorVar=enableColorVar,
-                            colorVarInt=colorVarInt,
-                            spacingVariation=spacingVariation,
-                            shapeDistortion=shapeDistortion,
-                            apply3D=apply3D,
-                            placement_mode=fp.PatternPlacementMode,
-                            clipMode=fp.ClipMode
-                        )
-                        total_tiles += tiles
-                        finalParts.append(shaped)
-                except Exception as e:
-                    FreeCAD.Console.PrintError(f"Error building hatch on base shape: {str(e)}\n")
+            # Surface projection properties
+            useSurfaceProjection = getattr(fp, "UseSurfaceProjection", True)
+            forceXYPlane = getattr(fp, "ForceXYPlane", False)
 
-            if not finalParts:
-                combined = Part.makeCompound([])
-            else:
-                combined = finalParts[0]
-                for c in finalParts[1:]:
-                    combined = combined.fuse(c)
+            # Subtractions
+            subObjs = fp.Subtractions
 
-            fp.TileCount = total_tiles
-
-            # Cleanup tile objects if any
-            tileObjName = fp.Name + "_TileRep"
-            existingTileObj = doc.getObject(tileObjName)
-
-            if tileVisibility and tileObj and not tileObj.Shape.isNull():
-                if not existingTileObj:
-                    existingTileObj = doc.addObject("Part::Feature", tileObjName)
-                doc.openTransaction("Update Tiles")
-                try:
-                    repeatedTile, _ = buildHatchShape(
-                        baseShape=validBaseShapes[0],
-                        overrideBB=unified_bb,
-                        patternShape=tileObj.Shape,
-                        distributionMode=distMode,
-                        autoScaleToFitBase=autoScale,
-                        patternScale=scaleVal,
-                        rotationDeg=rotVal,
-                        baseSpacing=spacingVal,
-                        repX=rx,
-                        repY=ry,
-                        randRotMin=rotationMin,
-                        randRotMax=rotationMax,
-                        randomizePlacement=randPlace,
-                        randomOffsetRange=randOff,
-                        randomScaleMin=randSmin,
-                        randomScaleMax=randSmax,
-                        offsetX=pOffX,
-                        offsetY=pOffY,
-                        scaleMode=scaleMode,
-                        tileShape=None,
-                        tileVisibility=False,
-                        showFaces=False,
-                        maxTiles=maxTiles,
-                        densityFactor=densityFactor,
-                        enableColorVar=False,
-                        colorVarInt=0.0,
-                        spacingVariation=spacingVariation,
-                        shapeDistortion=False,
-                        apply3D=apply3D,
-                        placement_mode=fp.PatternPlacementMode
-                    )
-                    existingTileObj.Shape = repeatedTile
-                    applyTileViewOverrides(existingTileObj, existingTileObj.ViewObject)
-                finally:
-                    doc.commitTransaction()
-            else:
+            # Decide pattern shape
+            if fp.PatternType == "SolidFill":
+                combined = Part.makeCompound(validBaseShapes)
+                fp.GenerationTime = (datetime.datetime.now() - start_time).total_seconds()
+                fp.TileCount = len(validBaseShapes)
+                tileObjName = fp.Name + "_TileRep"
+                existingTileObj = doc.getObject(tileObjName)
                 if existingTileObj:
                     doc.removeObject(existingTileObj.Name)
+            else:
+                # If PatternType == "CustomObject", gather from PatternObject + PatternObjects
+                if fp.PatternType == "CustomObject":
+                    allPatternShapes = []
+                    if fp.PatternObject and hasattr(fp.PatternObject, "Shape"):
+                        pat_shp = getClosedWiresAsFaces(fp.PatternObject) if showFaces else fp.PatternObject.Shape.copy()
+                        if pat_shp and not pat_shp.isNull():
+                            allPatternShapes.append(pat_shp)
 
-        # === Apply subtractions (for either SolidFill or normal)
-        if subObjs:
-            for so in subObjs:
-                if so and hasattr(so, "Shape") and not so.Shape.isNull():
+                    if fp.PatternObjects:
+                        for pobj in fp.PatternObjects:
+                            if pobj and hasattr(pobj, "Shape"):
+                                pat2 = getClosedWiresAsFaces(pobj) if showFaces else pobj.Shape.copy()
+                                if pat2 and not pat2.isNull():
+                                    allPatternShapes.append(pat2)
+
+                    if not allPatternShapes:
+                        fp.Shape = Part.makeCompound([])
+                        return
+                    if len(allPatternShapes) == 1:
+                        patternShape = allPatternShapes[0]
+                    else:
+                        patternShape = allPatternShapes[0]
+                        for extraShape in allPatternShapes[1:]:
+                            patternShape = patternShape.fuse(extraShape)
+                else:
+                    patternShape = generateBuiltInPatternShape(fp.PatternType)
+
+                if not patternShape or patternShape.isNull():
+                    fp.Shape = Part.makeCompound([])
+                    return
+
+                total_tiles = 0
+                finalParts = []
+                
+                for bShape in validBaseShapes:
                     try:
-                        combined = combined.cut(so.Shape)
+                        # Check if we should use surface projection
+                        use_projection = (useSurfaceProjection and not forceXYPlane and 
+                                          bShape.Faces and len(bShape.Faces) > 0)
+                        
+                        if use_projection:
+                            # Get the first face for transformation
+                            target_face = bShape.Faces[0]
+                            
+                            # Build surface transforms
+                            to_local, to_world = buildSurfaceTransforms(target_face)
+                            
+                            # Project base shape into local 2D coordinates
+                            localBase = projectShapeToLocal(bShape, to_local)
+                            
+                            # Generate hatch in local 2D space with unified BB
+                            localHatch, tiles = buildHatchShape(
+                                baseShape=localBase,
+                                overrideBB=_compute_unified_bb([localBase]),
+                                patternShape=patternShape,
+                                distributionMode=distMode,
+                                autoScaleToFitBase=autoScale,
+                                patternScale=scaleVal,
+                                rotationDeg=rotVal,
+                                baseSpacing=spacingVal,
+                                repX=rx,
+                                repY=ry,
+                                randRotMin=rotationMin,
+                                randRotMax=rotationMax,
+                                randomizePlacement=randPlace,
+                                randomOffsetRange=randOff,
+                                randomScaleMin=randSmin,
+                                randomScaleMax=randSmax,
+                                radialCount=radialCount,
+                                radialRadius=radialRadius,
+                                concentricCount=concentricCount,
+                                concentricSpacing=concentricSpace,
+                                randomCount=randomCount,
+                                offsetX=pOffX,
+                                offsetY=pOffY,
+                                scaleMode=scaleMode,
+                                tileShape=(tileObj.Shape if tileObj else None),
+                                tileVisibility=tileVisibility,
+                                showFaces=showFaces,
+                                maxTiles=maxTiles,
+                                densityFactor=densityFactor,
+                                enableColorVar=enableColorVar,
+                                colorVarInt=colorVarInt,
+                                spacingVariation=spacingVariation,
+                                shapeDistortion=shapeDistortion,
+                                apply3D=apply3D,
+                                placement_mode=fp.PatternPlacementMode,
+                                clipMode=fp.ClipMode
+                            )
+                            
+                            # Unproject back to world coordinates
+                            shaped = unprojectShapeToWorld(localHatch, to_world)
+                            total_tiles += tiles
+                            finalParts.append(shaped)
+                        else:
+                            # Original XY-plane path with unified bounding box
+                            shaped, tiles = buildHatchShape(
+                                baseShape=bShape,
+                                overrideBB=unified_bb,  # KEY FIX: unified BB for consistent tiling
+                                patternShape=patternShape,
+                                distributionMode=distMode,
+                                autoScaleToFitBase=autoScale,
+                                patternScale=scaleVal,
+                                rotationDeg=rotVal,
+                                baseSpacing=spacingVal,
+                                repX=rx,
+                                repY=ry,
+                                randRotMin=rotationMin,
+                                randRotMax=rotationMax,
+                                randomizePlacement=randPlace,
+                                randomOffsetRange=randOff,
+                                randomScaleMin=randSmin,
+                                randomScaleMax=randSmax,
+                                radialCount=radialCount,
+                                radialRadius=radialRadius,
+                                concentricCount=concentricCount,
+                                concentricSpacing=concentricSpace,
+                                randomCount=randomCount,
+                                offsetX=pOffX,
+                                offsetY=pOffY,
+                                scaleMode=scaleMode,
+                                tileShape=(tileObj.Shape if tileObj else None),
+                                tileVisibility=tileVisibility,
+                                showFaces=showFaces,
+                                maxTiles=maxTiles,
+                                densityFactor=densityFactor,
+                                enableColorVar=enableColorVar,
+                                colorVarInt=colorVarInt,
+                                spacingVariation=spacingVariation,
+                                shapeDistortion=shapeDistortion,
+                                apply3D=apply3D,
+                                placement_mode=fp.PatternPlacementMode,
+                                clipMode=fp.ClipMode
+                            )
+                            total_tiles += tiles
+                            finalParts.append(shaped)
                     except Exception as e:
-                        FreeCAD.Console.PrintError(f"Error subtracting {so.Name}: {str(e)}\n")
+                        FreeCAD.Console.PrintError(f"Error building hatch on base shape: {str(e)}\n")
+                        continue
 
-        fp.Shape = combined
-        fp.GenerationTime = (datetime.datetime.now() - start_time).total_seconds()
-        if fp.PatternType == "SolidFill":
-            fp.TileCount = len(validBaseShapes)
+                if not finalParts:
+                    combined = Part.makeCompound([])
+                else:
+                    combined = finalParts[0]
+                    for c in finalParts[1:]:
+                        combined = combined.fuse(c)
+
+                fp.TileCount = total_tiles
+
+                # Cleanup tile objects if any
+                tileObjName = fp.Name + "_TileRep"
+                existingTileObj = doc.getObject(tileObjName)
+
+                if tileVisibility and tileObj and not tileObj.Shape.isNull():
+                    if not existingTileObj:
+                        existingTileObj = doc.addObject("Part::Feature", tileObjName)
+                    doc.openTransaction("Update Tiles")
+                    try:
+                        repeatedTile, _ = buildHatchShape(
+                            baseShape=validBaseShapes[0],
+                            overrideBB=unified_bb,
+                            patternShape=tileObj.Shape,
+                            distributionMode=distMode,
+                            autoScaleToFitBase=autoScale,
+                            patternScale=scaleVal,
+                            rotationDeg=rotVal,
+                            baseSpacing=spacingVal,
+                            repX=rx,
+                            repY=ry,
+                            randRotMin=rotationMin,
+                            randRotMax=rotationMax,
+                            randomizePlacement=randPlace,
+                            randomOffsetRange=randOff,
+                            randomScaleMin=randSmin,
+                            randomScaleMax=randSmax,
+                            offsetX=pOffX,
+                            offsetY=pOffY,
+                            scaleMode=scaleMode,
+                            tileShape=None,
+                            tileVisibility=False,
+                            showFaces=False,
+                            maxTiles=maxTiles,
+                            densityFactor=densityFactor,
+                            enableColorVar=False,
+                            colorVarInt=0.0,
+                            spacingVariation=spacingVariation,
+                            shapeDistortion=False,
+                            apply3D=apply3D,
+                            placement_mode=fp.PatternPlacementMode
+                        )
+                        existingTileObj.Shape = repeatedTile
+                        applyTileViewOverrides(existingTileObj, existingTileObj.ViewObject)
+                    finally:
+                        doc.commitTransaction()
+                else:
+                    if existingTileObj:
+                        doc.removeObject(existingTileObj.Name)
+
+            # === Apply subtractions (for either SolidFill or normal)
+            if subObjs:
+                for so in subObjs:
+                    if so and hasattr(so, "Shape") and not so.Shape.isNull():
+                        try:
+                            combined = combined.cut(so.Shape)
+                        except Exception as e:
+                            FreeCAD.Console.PrintError(f"Error subtracting {so.Name}: {str(e)}\n")
+
+            fp.Shape = combined
+            fp.GenerationTime = (datetime.datetime.now() - start_time).total_seconds()
+            if fp.PatternType == "SolidFill":
+                fp.TileCount = len(validBaseShapes)
+                
+        except Exception as e:
+            # CRITICAL FIX: Always set Shape even on failure
+            FreeCAD.Console.PrintWarning(
+                f"CustomHatch '{fp.Name}' execute failed: {e}\n"
+            )
+            # ALWAYS set shape — this is what clears the touched state
+            try:
+                fp.Shape = Part.makeCompound([])
+            except Exception:
+                pass
 
     def onDocumentRestored(self, obj):
         """Handle document restoration"""

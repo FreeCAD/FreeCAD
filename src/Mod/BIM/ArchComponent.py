@@ -55,6 +55,11 @@ if FreeCAD.GuiUp:
     from PySide.QtCore import QT_TRANSLATE_NOOP
     import FreeCADGui
     from draftutils.translate import translate
+    try:
+        from GhostHatchRenderer import GhostHatchRenderer
+    except ImportError:
+        GhostHatchRenderer = None
+        FreeCAD.Console.PrintWarning("GhostHatchRenderer not available. Ghost mode disabled.\n")
 else:
     # \cond
     def translate(ctxt, txt):
@@ -62,7 +67,6 @@ else:
 
     def QT_TRANSLATE_NOOP(ctxt, txt):
         return txt
-
     # \endcond
 
 
@@ -289,7 +293,7 @@ class Component(ArchIFC.IfcProduct):
                 "Component",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Specifies if this object must move together when its host is moved",
+                    "Specifies if this object must move together when its host is moved"
                 ),
                 locked=True,
             )
@@ -340,7 +344,7 @@ class Component(ArchIFC.IfcProduct):
                 "Component",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "An optional axis or axis system on which this object should be duplicated",
+                    "An optional axis or axis system on which this object should be duplicated"
                 ),
                 locked=True,
             )
@@ -359,7 +363,7 @@ class Component(ArchIFC.IfcProduct):
                     "(outside of walls, top/bottom of slabs). "
                     "Pattern source: Material.Hatch or MultiMaterial.Hatches[layer]. "
                     "Two objects can share the same material but have independent "
-                    "hatch visibility by toggling this property.",
+                    "hatch visibility by toggling this property."
                 ),
                 locked=True,
             )
@@ -375,7 +379,7 @@ class Component(ArchIFC.IfcProduct):
                     "When True, apply hatch patterns to the narrow cap/edge faces "
                     "(wall ends, slab edges). "
                     "Useful for section cut representation. "
-                    "Independent of HatchSurfaces — both can be on or off at the same time.",
+                    "Independent of HatchSurfaces — both can be on or off at the same time."
                 ),
                 locked=True,
             )
@@ -391,7 +395,7 @@ class Component(ArchIFC.IfcProduct):
                     "When True, apply hatch to ALL faces regardless of size. "
                     "Use for columns, round pillars, or any object where the "
                     "area threshold does not correctly identify the target faces. "
-                    "Overrides HatchSurfaces and HatchCaps when enabled.",
+                    "Overrides HatchSurfaces and HatchCaps when enabled."
                 ),
                 locked=True,
             )
@@ -406,11 +410,28 @@ class Component(ArchIFC.IfcProduct):
                     "App::Property",
                     "Internal link to the DocumentObjectGroup that holds all "
                     "generated hatch face features and hatch instances for this "
-                    "object. Do not set manually.",
+                    "object. Do not set manually."
                 ),
                 locked=True,
             )
-            obj.setEditorMode("HatchContainer", 2)  # hidden in Data panel
+            obj.setEditorMode("HatchContainer", 2)   # hidden in Data panel
+
+        if "HatchGhost" not in pl:
+            obj.addProperty(
+                "App::PropertyBool",
+                "HatchGhost",
+                "Hatch",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "When True, hatch is displayed as a fast Coin3D ghost preview "
+                    "instead of creating parametric document objects. "
+                    "Ghost mode: instant display, not saved. "
+                    "Ghost off: full parametric hatch objects, saved with document. "
+                    "Toggle off when satisfied with the result.",
+                ),
+                locked=True,
+            )
+            obj.HatchGhost = True   # default ON — fast preview while working
 
         self.Subvolume = None
 
@@ -531,6 +552,13 @@ class Component(ArchIFC.IfcProduct):
                         )
                     if deltap:
                         child.Placement.move(deltap)
+
+        # ── Hatch toggle changed: re-apply or clean up immediately ────────
+        if prop in ("HatchSurfaces", "HatchCaps", "HatchAllFaces", "HatchGhost"):
+            # Only fire if object has a valid shape — if not, execute() will
+            # call apply_material_hatches when the shape is ready.
+            if hasattr(obj, "Shape") and obj.Shape and not obj.Shape.isNull():
+                self.apply_material_hatches(obj)
 
     def getMovableChildren(self, obj):
         """Find the component's children set to move with their host.
@@ -1215,25 +1243,20 @@ class Component(ArchIFC.IfcProduct):
         self.computeAreas(obj)
 
     # =========================================================================
-    # apply_material_hatches - Deferred execution (v6 - FIXED)
+    # apply_material_hatches - Deferred execution with ghost/hard routing
     # =========================================================================
     def apply_material_hatches(self, obj):
-        """Schedule hatch application to run after recompute completes.
-
-        Works with or without material. If toggles are on but no material,
-        prints a helpful message.
-        """
+        """Schedule hatch update. Routes to ghost or hard based on HatchGhost."""
         if not FreeCAD.GuiUp:
             return
-        # Exit early if all toggles are off — avoids unnecessary deferred call
-        if not any(
-            [
-                getattr(obj, "HatchSurfaces", False),
-                getattr(obj, "HatchCaps", False),
-                getattr(obj, "HatchAllFaces", False),
-            ]
-        ):
-            return
+
+        any_on = any([
+            getattr(obj, "HatchSurfaces", False),
+            getattr(obj, "HatchCaps",     False),
+            getattr(obj, "HatchAllFaces",  False),
+        ])
+
+        ghost_mode = bool(getattr(obj, "HatchGhost", True))
 
         doc_name = obj.Document.Name
         obj_name = obj.Name
@@ -1248,11 +1271,50 @@ class Component(ArchIFC.IfcProduct):
                 target = doc.getObject(obj_name)
                 if not target:
                     return
-                if not hasattr(target, "Shape") or not target.Shape or target.Shape.isNull():
-                    return
-                _apply_material_hatches_now(doc, target)
+
+                # Route via ViewProvider ghost renderer if available
+                vp = getattr(target, "ViewObject", None)
+                vp_proxy = getattr(vp, "Proxy", None) if vp else None
+
+                if ghost_mode:
+                    # Clear hard objects if they exist
+                    _clear_all_hatch_objects(doc, target)
+                    # Hide container
+                    hc = getattr(target, "HatchContainer", None)
+                    if hc:
+                        try:
+                            hc.ViewObject.Visibility = False
+                        except Exception:
+                            pass
+                    # Render ghost via ViewProvider
+                    if vp_proxy and hasattr(vp_proxy, "_render_ghost"):
+                        if any_on:
+                            vp_proxy._render_ghost(target)
+                        else:
+                            if hasattr(vp_proxy, "_ghost_renderer") and \
+                               vp_proxy._ghost_renderer:
+                                vp_proxy._ghost_renderer.clear()
+                else:
+                    # Clear ghost
+                    if vp_proxy and hasattr(vp_proxy, "_ghost_renderer") and \
+                       vp_proxy._ghost_renderer:
+                        vp_proxy._ghost_renderer.clear()
+                    # Show container
+                    hc = getattr(target, "HatchContainer", None)
+                    if hc:
+                        try:
+                            hc.ViewObject.Visibility = True
+                        except Exception:
+                            pass
+                    # Create/update or clean hard objects
+                    if not target.Shape or target.Shape.isNull():
+                        return
+                    _apply_material_hatches_now(doc, target)
+
             except Exception as e:
-                FreeCAD.Console.PrintWarning(f"apply_material_hatches '{obj_name}': {e}\n")
+                FreeCAD.Console.PrintWarning(
+                    f"apply_material_hatches '{obj_name}': {e}\n"
+                )
 
         QtCore.QTimer.singleShot(0, _deferred)
 
@@ -1434,25 +1496,31 @@ class Component(ArchIFC.IfcProduct):
 # HATCH APPLICATION FUNCTIONS (v6 - FIXED)
 # ============================================================================
 
+def _clear_all_hatch_objects(doc, obj):
+    """Remove all HF/HI objects for obj regardless of naming convention."""
+    prefix = obj.Name
+    to_remove = [
+        o for o in doc.Objects
+        if o.Name.startswith(prefix + "_") and
+           ("_HF" in o.Name or "_HI" in o.Name)
+    ]
+    for o in to_remove:
+        try:
+            doc.removeObject(o.Name)
+        except Exception:
+            pass
+
 
 def _apply_material_hatches_now(doc, obj):
-    """Route to multi-material or single-material path.
-
-    If toggles are on but no material, prints a helpful message.
-    """
+    """Create/update hard parametric hatch objects. Ghost mode already handled."""
     mat = getattr(obj, "Material", None)
     if not mat:
-        # No material at all — check if toggles are on for material-less objects
-        if any(
-            [
-                getattr(obj, "HatchSurfaces", False),
-                getattr(obj, "HatchCaps", False),
-                getattr(obj, "HatchAllFaces", False),
-            ]
-        ):
+        if any([getattr(obj, "HatchSurfaces", False),
+                getattr(obj, "HatchCaps",     False),
+                getattr(obj, "HatchAllFaces",  False)]):
             FreeCAD.Console.PrintMessage(
-                f"Hatch: '{obj.Label}' has hatch toggle on but no Material "
-                f"assigned. Assign a Material with a Hatch property set.\n"
+                f"Hatch: '{obj.Label}' toggle on but no Material assigned. "
+                f"Assign a Material with a Hatch property set.\n"
             )
         return
 
@@ -1463,9 +1531,7 @@ def _apply_material_hatches_now(doc, obj):
 
 
 def _get_or_create_hatch_container(doc, obj):
-    """Return the hatch container group, creating it only when needed.
-    Guards the property write so it doesn't fire onChanged unnecessarily.
-    """
+    """Return the hatch container group, creating it only when needed."""
     existing = getattr(obj, "HatchContainer", None)
     if existing is not None:
         return existing
@@ -1476,38 +1542,13 @@ def _get_or_create_hatch_container(doc, obj):
         container.Label = f"{obj.Label} Hatches"
         if FreeCAD.GuiUp:
             container.ViewObject.Visibility = False
-    # Only write if actually None — avoids spurious onChanged
     if getattr(obj, "HatchContainer", None) != container:
         obj.HatchContainer = container
     return container
 
 
 def _classify_faces(solid, area_threshold=0.15):
-    """
-    Split a solid's faces into surface_faces and cap_faces using
-    area threshold ONLY. No normal direction test.
-
-    Why no outward/inward test:
-      face.normalAt() on faces extracted from solid.Faces returns the
-      face's intrinsic topological orientation, NOT necessarily the
-      outward-from-solid normal. For multi-layer walls, this causes the
-      WRONG face to be selected as "outward" approximately 50% of the time.
-      The area threshold alone is sufficient:
-        - Large faces (>= 15% of max) = visible surface faces
-        - Small faces (<15%)          = cap / edge faces
-      The buried inner face between layers also qualifies as a surface face
-      by area, but it is invisible (occluded by adjacent layer) so the
-      extra hatch object has no visual impact and negligible compute cost.
-
-    Parameters
-    ----------
-    solid          : Part.Solid or any shape with .Faces
-    area_threshold : float, default 0.15
-
-    Returns
-    -------
-    (surface_faces, cap_faces)
-    """
+    """Split faces into (surface_faces, cap_faces) by area threshold only."""
     try:
         faces_by_area = sorted(solid.Faces, key=lambda f: f.Area, reverse=True)
     except Exception:
@@ -1518,24 +1559,21 @@ def _classify_faces(solid, area_threshold=0.15):
     if max_area < 1e-6:
         return [], []
     surface_faces = [f for f in faces_by_area if f.Area >= max_area * area_threshold]
-    cap_faces = [f for f in faces_by_area if f.Area < max_area * area_threshold]
+    cap_faces     = [f for f in faces_by_area if f.Area <  max_area * area_threshold]
     return surface_faces, cap_faces
 
 
 def _prepare_face(face):
-    """
-    Prepare a face for use as a hatch base shape.
-
-    The DraftGeomUtils "direction of segment reversed" warning comes from
-    faces extracted from solid compounds whose BRep topology stores edges
-    in solid-level orientation. When the face is used standalone, some edge
-    traversal directions conflict.
-
-    Fix: face.copy() detaches the face from the parent solid's topology.
-    The copy has a self-consistent BRep with no conflicting edge references.
-    This is cheaper and more reliable than reconstructing from OuterWire
-    (which can fail for non-simply-connected faces like faces with holes).
-    """
+    """Return a clean copy of face with normalised wire orientation."""
+    import Part
+    try:
+        ow = face.OuterWire
+        ow.fix(1e-7, 0, 1)
+        fresh = Part.Face(ow)
+        if not fresh.isNull() and fresh.isValid():
+            return fresh
+    except Exception:
+        pass
     try:
         return face.copy()
     except Exception:
@@ -1544,58 +1582,69 @@ def _prepare_face(face):
 
 def _sync_face_hatch_objects(doc, container, hatch_pattern, faces, name_prefix):
     """
-    Create / update face features and hatch instances for one face set.
+    Create/update face features and hatch instances.
 
-    - No doc.recompute() — uses inst.touch() only
-    - Uses face.copy() to avoid DraftGeomUtils warnings
-    - Adds objects to container group for clean tree view
+    - purgeTouched() on HF objects so they never appear in 'still touched'
+    - No return value, no _schedule_hatch_recompute
+    - container.addObject() only for new objects
     """
     try:
         from HatchGenerator import makeCustomHatch
     except ImportError:
-        FreeCAD.Console.PrintWarning("apply_material_hatches: HatchGenerator not found.\n")
+        FreeCAD.Console.PrintWarning(
+            "apply_material_hatches: HatchGenerator not found.\n"
+        )
         return
 
     for j, face in enumerate(faces):
         face_feat_name = f"{name_prefix}_HF{j}"
-        inst_name = f"{name_prefix}_HI{j}"
+        inst_name      = f"{name_prefix}_HI{j}"
 
+        # ── Face feature ──────────────────────────────────────────────────
         face_feat = doc.getObject(face_feat_name)
         if face_feat is None:
             face_feat = doc.addObject("Part::Feature", face_feat_name)
             if container:
                 try:
-                    container.addObject(face_feat)
+                    if face_feat not in (container.Group or []):
+                        container.addObject(face_feat)
                 except Exception:
                     pass
 
-        # face.copy() — detaches from parent solid BRep topology
-        # eliminates the reversed-segment warning from DraftGeomUtils
         face_feat.Shape = _prepare_face(face)
+
+        # purgeTouched: this shape is set directly, not by execute().
+        # Without this call FreeCAD keeps the object in the recompute queue
+        # producing "still touched after recompute" every cycle.
+        if hasattr(face_feat, "purgeTouched"):
+            face_feat.purgeTouched()
+
         if FreeCAD.GuiUp:
             face_feat.ViewObject.Visibility = False
 
+        # ── Hatch instance ────────────────────────────────────────────────
         inst = doc.getObject(inst_name)
         if inst is None:
             inst = makeCustomHatch(name=inst_name)
             if container:
                 try:
-                    container.addObject(inst)
+                    if inst not in (container.Group or []):
+                        container.addObject(inst)
                 except Exception:
                     pass
 
-        inst.BaseObject = face_feat
-        inst.PatternType = "CustomObject"
-        inst.PatternObject = hatch_pattern
+        inst.BaseObject           = face_feat
+        inst.PatternType          = "CustomObject"
+        inst.PatternObject        = hatch_pattern
         inst.UseSurfaceProjection = True
-        inst.ForceXYPlane = False
+        inst.ForceXYPlane         = False
         if not getattr(inst, "PatternScale", 0):
             inst.PatternScale = 1.0
+        # Property assignments auto-mark inst as touched.
+        # FreeCAD's natural recompute handles inst.execute() — no explicit
+        # doc.recompute() or inst.touch() needed.
 
-        # Touch only the hatch instance — NOT the wall, NOT the document
-        inst.touch()
-
-    # Remove stale objects (wall simplified → fewer faces now)
+    # Remove stale objects from previous runs
     j = len(faces)
     while True:
         hf = doc.getObject(f"{name_prefix}_HF{j}")
@@ -1609,7 +1658,7 @@ def _sync_face_hatch_objects(doc, container, hatch_pattern, faces, name_prefix):
 
 
 def _remove_prefix_objects(doc, name_prefix):
-    """Remove all face feature and hatch instance objects under name_prefix."""
+    """Remove all HF/HI objects under name_prefix."""
     j = 0
     while True:
         hf = doc.getObject(f"{name_prefix}_HF{j}")
@@ -1623,11 +1672,11 @@ def _remove_prefix_objects(doc, name_prefix):
 
 
 def _apply_multimaterial_hatches(doc, obj, mat):
-    """Apply per-layer hatches from MultiMaterial. No doc.recompute()."""
+    """Apply per-layer hard hatches from MultiMaterial."""
     do_surfaces = bool(getattr(obj, "HatchSurfaces", False))
-    do_caps = bool(getattr(obj, "HatchCaps", False))
-    do_all = bool(getattr(obj, "HatchAllFaces", False))
-    n_layers = len(getattr(mat, "Materials", []))
+    do_caps     = bool(getattr(obj, "HatchCaps",     False))
+    do_all      = bool(getattr(obj, "HatchAllFaces",  False))
+    n_layers    = len(getattr(mat, "Materials", []))
 
     if not do_surfaces and not do_caps and not do_all:
         for i in range(n_layers):
@@ -1638,15 +1687,15 @@ def _apply_multimaterial_hatches(doc, obj, mat):
     if not hasattr(mat, "Proxy") or not hasattr(mat.Proxy, "get_hatch_for_layer"):
         return
 
-    proxy = mat.Proxy
-    shape = obj.Shape if (obj.Shape and not obj.Shape.isNull()) else None
-    solids = shape.Solids if shape else []
+    proxy     = mat.Proxy
+    shape     = obj.Shape if (obj.Shape and not obj.Shape.isNull()) else None
+    solids    = shape.Solids if shape else []
     container = _get_or_create_hatch_container(doc, obj)
 
     for i in range(n_layers):
         hatch_pattern = proxy.get_hatch_for_layer(mat, i)
-        surf_prefix = f"{obj.Name}_HS{i}"
-        cap_prefix = f"{obj.Name}_HC{i}"
+        surf_prefix   = f"{obj.Name}_HS{i}"
+        cap_prefix    = f"{obj.Name}_HC{i}"
 
         if hatch_pattern is None or i >= len(solids):
             _remove_prefix_objects(doc, surf_prefix)
@@ -1669,12 +1718,11 @@ def _apply_multimaterial_hatches(doc, obj, mat):
             else:
                 _remove_prefix_objects(doc, cap_prefix)
 
-    # Clean up layers beyond current n_layers
+    # Clean up layers beyond n_layers
     i = n_layers
     while True:
-        sentinel_hf = doc.getObject(f"{obj.Name}_HS{i}_HF0")
-        sentinel_hi = doc.getObject(f"{obj.Name}_HS{i}_HI0")
-        if not sentinel_hf and not sentinel_hi:
+        if not doc.getObject(f"{obj.Name}_HS{i}_HF0") and \
+           not doc.getObject(f"{obj.Name}_HS{i}_HI0"):
             break
         _remove_prefix_objects(doc, f"{obj.Name}_HS{i}")
         _remove_prefix_objects(doc, f"{obj.Name}_HC{i}")
@@ -1682,24 +1730,13 @@ def _apply_multimaterial_hatches(doc, obj, mat):
 
 
 def _apply_single_material_hatch(doc, obj, mat):
-    """
-    Apply hatch from plain Material (not MultiMaterial). No doc.recompute().
-
-    Works for: walls, slabs, panels, columns (Structure), any Component.
-
-    SETUP CHECKLIST (why it might silently do nothing):
-      1. obj.HatchSurfaces=True OR obj.HatchCaps=True OR obj.HatchAllFaces=True
-      2. The Material object (e.g. 'Concrete-Generic') must have Hatch set:
-           Select material in tree → Data tab → Hatch → pick CustomHatch object
-      3. obj.Material must NOT be a MultiMaterial. MultiMaterial is detected
-         by hasattr(mat, 'Materials') — if true, this function is never called.
-    """
+    """Apply hard hatch from plain Material."""
     do_surfaces = bool(getattr(obj, "HatchSurfaces", False))
-    do_caps = bool(getattr(obj, "HatchCaps", False))
-    do_all = bool(getattr(obj, "HatchAllFaces", False))
+    do_caps     = bool(getattr(obj, "HatchCaps",     False))
+    do_all      = bool(getattr(obj, "HatchAllFaces",  False))
 
     surf_prefix = f"{obj.Name}_SM_HS0"
-    cap_prefix = f"{obj.Name}_SM_HC0"
+    cap_prefix  = f"{obj.Name}_SM_HC0"
 
     if not do_surfaces and not do_caps and not do_all:
         _remove_prefix_objects(doc, surf_prefix)
@@ -1711,37 +1748,30 @@ def _apply_single_material_hatch(doc, obj, mat):
         _remove_prefix_objects(doc, surf_prefix)
         _remove_prefix_objects(doc, cap_prefix)
         FreeCAD.Console.PrintMessage(
-            f"Hatch: '{obj.Label}' toggle is on but "
-            f"'{mat.Label}'.Hatch is not set. "
-            f"Select the material → Data tab → Hatch field.\n"
+            f"Hatch: '{obj.Label}' toggle on but '{mat.Label}'.Hatch "
+            f"not set. Select material → Data tab → Hatch field.\n"
         )
         return
 
-    shape = obj.Shape if (obj.Shape and not obj.Shape.isNull()) else None
+    shape  = obj.Shape if (obj.Shape and not obj.Shape.isNull()) else None
     if not shape:
         return
 
     container = _get_or_create_hatch_container(doc, obj)
-    solids = shape.Solids
+    solids    = shape.Solids
 
     if do_all:
-        # HatchAllFaces — every face on the shape.
-        # Works for columns, round pillars, symmetric objects.
-        # Fallback to shape.Faces when no closed solids (open profiles).
         all_faces = []
         if solids:
-            for solid in solids:
-                all_faces.extend(solid.Faces)
+            for s in solids:
+                all_faces.extend(s.Faces)
         else:
-            # Structure columns and open profiles may have faces but no solids
             all_faces = list(shape.Faces)
-
         if all_faces:
             _sync_face_hatch_objects(doc, container, hatch_pattern, all_faces, surf_prefix)
         _remove_prefix_objects(doc, cap_prefix)
         return
 
-    # Surface and cap mode — collect faces across all solids
     all_surface, all_caps = [], []
     if solids:
         for solid in solids:
@@ -1749,7 +1779,6 @@ def _apply_single_material_hatch(doc, obj, mat):
             all_surface.extend(sf)
             all_caps.extend(cf)
     else:
-        # No solids — treat all faces as surfaces
         all_surface = list(shape.Faces)
 
     if do_surfaces and all_surface:
@@ -1761,53 +1790,6 @@ def _apply_single_material_hatch(doc, obj, mat):
         _sync_face_hatch_objects(doc, container, hatch_pattern, all_caps, cap_prefix)
     else:
         _remove_prefix_objects(doc, cap_prefix)
-
-
-def _migrate_hatch_naming(doc):
-    """Remove objects from all previous naming conventions."""
-    import re
-
-    patterns = [
-        r"_HF\d+_\d+$",
-        r"_HI\d+_\d+$",
-        r"_SM_HF0_\d+$",
-        r"_SM_HI0_\d+$",
-        r"_HatchLayer\d+$",
-        r"_FaceLayer\d+$",
-        r"_SM_HS\d+_HF\d+$",
-        r"_SM_HS\d+_HI\d+$",
-        r"_SM_HC\d+_HF\d+$",
-        r"_SM_HC\d+_HI\d+$",
-        r"_HS\d+_HF\d+$",
-        r"_HS\d+_HI\d+$",
-        r"_HC\d+_HF\d+$",
-        r"_HC\d+_HI\d+$",
-    ]
-    removed = []
-    for obj in list(doc.Objects):
-        for pat in patterns:
-            if re.search(pat, obj.Name):
-                try:
-                    doc.removeObject(obj.Name)
-                    removed.append(obj.Name)
-                except Exception:
-                    pass
-                break
-    # Also remove any stale _Hatches groups
-    for obj in list(doc.Objects):
-        if obj.Name.endswith("_Hatches") and obj.isDerivedFrom("App::DocumentObjectGroup"):
-            if not obj.Group:
-                try:
-                    doc.removeObject(obj.Name)
-                    removed.append(obj.Name)
-                except Exception:
-                    pass
-    if removed:
-        FreeCAD.Console.PrintMessage(
-            f"Migration: removed {len(removed)} old hatch objects. "
-            "Enable HatchSurfaces/HatchCaps on walls/slabs to regenerate.\n"
-        )
-    return removed
 
 
 class AreaCalculator:
@@ -2058,6 +2040,8 @@ class ViewProviderComponent:
         vobj.Proxy = self
         self.Object = vobj.Object
         self.setProperties(vobj)
+        # Initialize ghost renderer attribute
+        self._ghost_renderer = None
 
     def setProperties(self, vobj):
         """Give the component view provider its component view provider specific properties.
@@ -2073,7 +2057,7 @@ class ViewProviderComponent:
                 "Component",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Use the material color as this object's shape color, if available",
+                    "Use the material color as this object's shape color, if available"
                 ),
                 locked=True,
             )
@@ -2135,6 +2119,12 @@ class ViewProviderComponent:
                         if len(obj.CloneOf.ViewObject.DiffuseColor) > 1:
                             obj.ViewObject.DiffuseColor = obj.CloneOf.ViewObject.DiffuseColor
                             obj.ViewObject.update()
+        
+        # Handle hatch property changes for ghost mode
+        if prop in ("Shape", "Material",
+                    "HatchSurfaces", "HatchCaps", "HatchAllFaces", "HatchGhost"):
+            self._update_hatch_display(obj)
+            
         return
 
     def getIcon(self):
@@ -2230,7 +2220,45 @@ class ViewProviderComponent:
         self.hiresgroup.addChild(self.meshcolor)
         self.hiresgroup.setName("HiRes")
         vobj.addDisplayMode(self.hiresgroup, "HiRes")
+        
+        # Initialize ghost hatch renderer
+        if GhostHatchRenderer is not None:
+            try:
+                self._ghost_renderer = GhostHatchRenderer(vobj)
+            except Exception as e:
+                FreeCAD.Console.PrintWarning(f"Failed to init ghost renderer: {e}\n")
+                self._ghost_renderer = None
+        else:
+            self._ghost_renderer = None
+            
         return
+
+    def onDocumentRestored(self, obj):
+        """Called when a saved document is reopened.
+        Re-triggers ghost rendering if HatchGhost is True."""
+        if not FreeCAD.GuiUp:
+            return
+        # Small delay so the viewer is fully set up before rendering
+        if not hasattr(self, "_ghost_renderer"):
+            return
+        obj_name = obj.Name
+        doc_name = obj.Document.Name
+
+        from PySide import QtCore
+
+        def _restore_ghost():
+            try:
+                doc = FreeCAD.getDocument(doc_name)
+                if not doc:
+                    return
+                target = doc.getObject(obj_name)
+                if not target:
+                    return
+                self._update_hatch_display(target)
+            except Exception:
+                pass
+
+        QtCore.QTimer.singleShot(500, _restore_ghost)
 
     def getDisplayModes(self, vobj):
         """Define the display modes unique to the Arch Component.
@@ -2489,6 +2517,155 @@ class ViewProviderComponent:
             ):
 
                 obj.ViewObject.DiffuseColor = obj.CloneOf.ViewObject.DiffuseColor
+
+    # =========================================================================
+    # Ghost mode rendering methods
+    # =========================================================================
+    def _update_hatch_display(self, obj):
+        """Route to ghost or hard hatch based on HatchGhost toggle."""
+        if not FreeCAD.GuiUp:
+            return
+
+        ghost_mode = bool(getattr(obj, "HatchGhost", True))
+        any_hatch = any([
+            getattr(obj, "HatchSurfaces", False),
+            getattr(obj, "HatchCaps",     False),
+            getattr(obj, "HatchAllFaces",  False),
+        ])
+
+        if ghost_mode:
+            # Hide hard hatch container if it exists
+            hc = getattr(obj, "HatchContainer", None)
+            if hc and FreeCAD.GuiUp:
+                try:
+                    hc.ViewObject.Visibility = False
+                except Exception:
+                    pass
+
+            if any_hatch:
+                self._render_ghost(obj)
+            else:
+                if self._ghost_renderer:
+                    self._ghost_renderer.clear()
+        else:
+            # Clear ghost, show hard hatch
+            if self._ghost_renderer:
+                self._ghost_renderer.clear()
+
+            hc = getattr(obj, "HatchContainer", None)
+            if hc and FreeCAD.GuiUp:
+                try:
+                    hc.ViewObject.Visibility = True
+                except Exception:
+                    pass
+
+            # Trigger hard hatch generation if not done yet
+            if any_hatch:
+                obj.Proxy.apply_material_hatches(obj)
+
+    # =========================================================================
+    # FIX 1 — _render_ghost: defer coin3D scene graph modification
+    #
+    # Coin3D scene graph is locked during FreeCAD property update callbacks.
+    # addChild()/removeChild() called from updateData() are silently discarded.
+    # After file restore the 500ms timer fires when the scene is idle — works.
+    # During a toggle (updateData fires) — silently discarded — ghost invisible.
+    # =========================================================================
+    def _render_ghost(self, obj):
+        """Collect faces + patterns and schedule Coin3D render for next idle frame."""
+        if not self._ghost_renderer:
+            return
+
+        mat = getattr(obj, "Material", None)
+        if not mat:
+            self._ghost_renderer.clear()
+            return
+
+        shape = obj.Shape if (obj.Shape and not obj.Shape.isNull()) else None
+        if not shape:
+            self._ghost_renderer.clear()
+            return
+
+        do_all      = bool(getattr(obj, "HatchAllFaces",  False))
+        do_surfaces = bool(getattr(obj, "HatchSurfaces",  False))
+        do_caps     = bool(getattr(obj, "HatchCaps",      False))
+
+        # Collect (faces, hatch_pattern) pairs — one per material layer
+        # For single material: one pair covering the relevant faces
+        # For multi-material: one pair per layer that has a hatch assigned
+        render_pairs = []   # list of (face_list, hatch_pattern_obj)
+
+        if hasattr(mat, "Proxy") and hasattr(mat.Proxy, "get_hatch_for_layer"):
+            # Multi-material path
+            solids   = shape.Solids if shape else []
+            n_layers = len(getattr(mat, "Materials", []))
+            for i in range(n_layers):
+                hatch_pattern = mat.Proxy.get_hatch_for_layer(mat, i)
+                if hatch_pattern is None:
+                    continue
+                if i >= len(solids):
+                    continue
+                solid = solids[i]
+                if do_all:
+                    render_pairs.append((list(solid.Faces), hatch_pattern))
+                else:
+                    sf, cf = _classify_faces(solid)
+                    faces = []
+                    if do_surfaces:
+                        faces.extend(sf)
+                    if do_caps:
+                        faces.extend(cf)
+                    if faces:
+                        render_pairs.append((faces, hatch_pattern))
+        else:
+            # Single material path
+            hatch_pattern = getattr(mat, "Hatch", None)
+            if not hatch_pattern:
+                self._ghost_renderer.clear()
+                return
+            solids = shape.Solids if shape else []
+            if do_all:
+                all_faces = []
+                for s in (solids or [shape]):
+                    all_faces.extend(s.Faces if hasattr(s, "Faces") else [])
+                if not solids:
+                    all_faces = list(shape.Faces)
+                if all_faces:
+                    render_pairs.append((all_faces, hatch_pattern))
+            else:
+                faces = []
+                if solids:
+                    for solid in solids:
+                        sf, cf = _classify_faces(solid)
+                        if do_surfaces:
+                            faces.extend(sf)
+                        if do_caps:
+                            faces.extend(cf)
+                else:
+                    faces = list(shape.Faces)
+                if faces:
+                    render_pairs.append((faces, hatch_pattern))
+
+        if not render_pairs:
+            self._ghost_renderer.clear()
+            return
+
+        # FIX 1: Defer coin3D scene graph modification.
+        # addChild/removeChild during updateData() are silently dropped by coin3D
+        # because the scene graph is locked during rendering.
+        # Scheduling via QTimer ensures the modification happens when the scene
+        # is idle — same reason the 500ms restart timer works but direct calls don't.
+        renderer = self._ghost_renderer
+
+        from PySide import QtCore
+
+        def _deferred_render():
+            try:
+                renderer.update_multi(render_pairs)
+            except Exception as e:
+                FreeCAD.Console.PrintWarning(f"Ghost render deferred failed: {e}\n")
+
+        QtCore.QTimer.singleShot(0, _deferred_render)
 
 
 class ArchSelectionObserver:
