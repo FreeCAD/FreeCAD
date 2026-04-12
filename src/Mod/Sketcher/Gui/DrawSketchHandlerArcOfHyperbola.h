@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 /***************************************************************************
- *   Copyright (c) 2026 Loke S. Haugsnes <Lokesh@live.no>                   *
+ *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
+ *   Copyright (c) 2026 Loke S. Haugsnes <Lokesh@live.no>                  *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -806,7 +807,7 @@ void DSHArcOfHyperbolaController::addConstraints()
         if (majorRadiusSet && majorDoFs > 0) {
             constraintMajorRadius();
             handler->diagnoseWithAutoConstraints();
-            majorDoFs = handler->getLineDoFs(majorDoFs);
+            majorDoFs = handler->getLineDoFs(majorLine);
         }
 
         if (majorAxisSet && majorDoFs > 0) {
