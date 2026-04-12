@@ -624,7 +624,8 @@ void DSHArcOfHyperbolaController::adaptParameters(Base::Vector2d onSketchPos)
                 start
                     + toVector3d(
                         handler->minorAxis()
-                        * (handler->minorRadius * ((handler->startAngle > 0) - (handler->startAngle < 0)))
+                        * (handler->minorRadius
+                           * ((handler->startAngle > 0) - (handler->startAngle < 0)))
                     )
             );
             if (!handler->valid) {

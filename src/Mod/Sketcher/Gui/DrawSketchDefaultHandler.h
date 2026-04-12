@@ -1195,7 +1195,7 @@ protected:
         Sketcher::GeometryFacade::setConstruction(arc.get(), constructionMode);
         return static_cast<Part::GeomArcOfEllipse*>(ShapeGeometry.emplace_back(std::move(arc)).get());
     }
-    
+
     /** @brief Function to add an arc of hyperbola to the ShapeGeometry vector.*/
     auto addArcOfHyperbolaToShapeGeometry(
         Base::Vector3d centerPoint,
