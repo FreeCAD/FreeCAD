@@ -23,6 +23,7 @@
  ***************************************************************************/
 
 #include <algorithm>
+#include <array>
 #include <QApplication>
 #include <QDir>
 #include <QDirListing>
@@ -38,6 +39,9 @@
 #include <Gui/TextEdit.h>
 #include "Translator.h"
 
+#ifdef FC_OS_WIN32
+# include <windows.h>
+#endif
 
 using namespace Gui;
 
@@ -59,6 +63,19 @@ Translator::LocaleFormattingPreference toLocaleFormattingPreference(const int fo
             );
     }
 }
+
+#ifdef FC_OS_WIN32
+QString getWindowsUserDefaultLocaleName()
+{
+    std::array<wchar_t, LOCALE_NAME_MAX_LENGTH> buffer {};
+    const int written = GetUserDefaultLocaleName(buffer.data(), static_cast<int>(buffer.size()));
+    if (written <= 0) {
+        return {};
+    }
+
+    return QString::fromWCharArray(buffer.data());
+}
+#endif
 }  // namespace
 
 /** \defgroup i18n Internationalization with FreeCAD
@@ -357,6 +374,16 @@ void Translator::setLocale(const std::string& language) const
     const bool isCLocale = Base::Tools::isCLocaleName(language);
 
     auto loc = QLocale::system();  // Defaulting to OS locale
+#ifdef FC_OS_WIN32
+    if (language.empty()) {
+        // Local Windows development runs can inherit shell state that makes Qt resolve the
+        // system locale differently from the user's regional format.
+        const auto operatingSystemLocale = getWindowsUserDefaultLocaleName();
+        if (!operatingSystemLocale.isEmpty()) {
+            loc = QLocale(operatingSystemLocale);
+        }
+    }
+#endif
     if (isCLocale) {
         loc = QLocale::c();
     }

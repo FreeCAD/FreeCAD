@@ -136,7 +136,7 @@ class TestFileNameGenerator(unittest.TestCase):
 
         tc = PathToolController.Create("TC_Test_Tool", tool, 5)
         tc.Label = "TC: 6mm Endmill"
-        cls.job.addObject(tc)
+        cls.job.Proxy.addToolController(tc)
 
         # Create a simple mock operation for testing operation-related substitutions
         profile_op = cls.doc.addObject("Path::FeaturePython", "TestProfile")
@@ -455,7 +455,7 @@ class TestExport2Integration(unittest.TestCase):
 
         tc = PathToolController.Create("TC_Test_Tool", tool, 1)
         tc.Label = "TC: 6mm Endmill"
-        cls.job.addObject(tc)
+        cls.job.Proxy.addToolController(tc)
 
         profile_op = cls.doc.addObject("Path::FeaturePython", "TestProfile")
         profile_op.Label = "TestProfile"

@@ -28,7 +28,6 @@
 #include "GCodeParser.h"
 #include "Shader.h"
 #include "linmath.h"
-#include "GlUtils.h"
 #include "StockObject.h"
 #include "MillPathSegment.h"
 #include "SimDisplay.h"
