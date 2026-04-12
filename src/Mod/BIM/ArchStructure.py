@@ -1590,18 +1590,18 @@ class _Structure(ArchComponent.Component):
                                 sub_name = sub_names[0] if sub_names else None
                                 if sub_name and hasattr(linked_obj, "Shape"):
                                     edge = linked_obj.Shape.getElement(sub_name)
-                                    x_axis = edge.tangentAt(
-                                        edge.FirstParameter
-                                    ).normalize()
+                                    x_axis = edge.tangentAt(edge.FirstParameter).normalize()
                             except Exception:
                                 x_axis = None
 
                         if x_axis is None:
                             try:
                                 outer_wire = base.Wires[0]
-                                x_axis = outer_wire.Edges[0].tangentAt(
-                                    outer_wire.Edges[0].FirstParameter
-                                ).normalize()
+                                x_axis = (
+                                    outer_wire.Edges[0]
+                                    .tangentAt(outer_wire.Edges[0].FirstParameter)
+                                    .normalize()
+                                )
                             except Exception:
                                 x_axis = FreeCAD.Vector(1, 0, 0)
 
@@ -1641,7 +1641,7 @@ class _Structure(ArchComponent.Component):
                     # ── Single-material path ───────────────────────────────────
                     # Apply Align and Offset even without layers.
                     else:
-                        total = extrusion.Length   # = obj.Height for a slab
+                        total = extrusion.Length  # = obj.Height for a slab
                         z_offset = 0.0
 
                         # Global alignment (Bottom/Center/Top)
@@ -1934,9 +1934,7 @@ class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
                                         c[2],
                                         1.0 - float(mat.Material["Transparency"]),
                                     )
-                                cols.extend(
-                                    [c for _ in range(len(obj.Shape.Solids[i].Faces))]
-                                )
+                                cols.extend([c for _ in range(len(obj.Shape.Solids[i].Faces))])
                             obj.ViewObject.DiffuseColor = cols
             ArchComponent.ViewProviderComponent.updateData(self, obj, prop)
             if len(obj.ViewObject.DiffuseColor) > 1:
@@ -2021,13 +2019,13 @@ class StructureTaskPanel(ArchComponent.ComponentOptionsTaskPanel):
         if getattr(obj, "IfcType", "Beam") == "Slab":
             property_definitions = [
                 {"prop": "Height", "label": translate("Arch", "Thickness")},
-                {"prop": "Slope",  "label": translate("Arch", "Slope (°)")},
+                {"prop": "Slope", "label": translate("Arch", "Slope (°)")},
             ]
         else:
             # For Beams and Columns
             property_definitions = [
                 {"prop": "Length", "label": translate("Arch", "Length")},
-                {"prop": "Width",  "label": translate("Arch", "Width")},
+                {"prop": "Width", "label": translate("Arch", "Width")},
                 {"prop": "Height", "label": translate("Arch", "Height")},
             ]
 
@@ -2106,13 +2104,18 @@ class StructureTaskPanel(ArchComponent.ComponentOptionsTaskPanel):
         self.selectToolButton.clicked.connect(self.setSelectionFromTool)
 
         # FIX 4: Slab-specific widget: Slope Edge picker
-        form_widgets = [self.options_widget, self.nodes_widget,
-                        self.extrusion_widget, self.baseform]
+        form_widgets = [
+            self.options_widget,
+            self.nodes_widget,
+            self.extrusion_widget,
+            self.baseform,
+        ]
 
         if getattr(obj, "IfcType", "Beam") == "Slab":
             self.slab_widget = QtGui.QWidget()
             self.slab_widget.setWindowTitle(
-                QtGui.QApplication.translate("Arch", "Slab Tools", None))
+                QtGui.QApplication.translate("Arch", "Slab Tools", None)
+            )
             slab_lay = QtGui.QVBoxLayout(self.slab_widget)
 
             # Label explaining how SlopeEdge works
@@ -2121,33 +2124,41 @@ class StructureTaskPanel(ArchComponent.ComponentOptionsTaskPanel):
                     "Arch",
                     "Select an edge in the 3D view, then click\n"
                     "'Set Slope Edge' to define the drainage pivot.",
-                    None))
+                    None,
+                )
+            )
             info.setWordWrap(True)
             slab_lay.addWidget(info)
 
             self.setSlopeEdgeButton = QtGui.QPushButton(self.slab_widget)
             self.setSlopeEdgeButton.setIcon(QtGui.QIcon(":/icons/Snap_Endpoint.svg"))
             self.setSlopeEdgeButton.setText(
-                QtGui.QApplication.translate("Arch", "Set Slope Edge", None))
+                QtGui.QApplication.translate("Arch", "Set Slope Edge", None)
+            )
             self.setSlopeEdgeButton.setToolTip(
                 QtGui.QApplication.translate(
                     "Arch",
                     "Select an edge in the 3D view first, then click here "
                     "to use it as the drainage slope pivot axis.",
-                    None))
+                    None,
+                )
+            )
             slab_lay.addWidget(self.setSlopeEdgeButton)
             self.setSlopeEdgeButton.clicked.connect(self.setSlopeEdge)
 
             self.clearSlopeEdgeButton = QtGui.QPushButton(self.slab_widget)
             self.clearSlopeEdgeButton.setIcon(QtGui.QIcon(":/icons/edit-cleartext.svg"))
             self.clearSlopeEdgeButton.setText(
-                QtGui.QApplication.translate("Arch", "Clear Slope Edge", None))
+                QtGui.QApplication.translate("Arch", "Clear Slope Edge", None)
+            )
             self.clearSlopeEdgeButton.setToolTip(
                 QtGui.QApplication.translate(
                     "Arch",
                     "Remove the slope edge reference. The first edge of the "
                     "base face will be used as the default pivot.",
-                    None))
+                    None,
+                )
+            )
             slab_lay.addWidget(self.clearSlopeEdgeButton)
             self.clearSlopeEdgeButton.clicked.connect(self.clearSlopeEdge)
 
@@ -2179,13 +2190,9 @@ class StructureTaskPanel(ArchComponent.ComponentOptionsTaskPanel):
                         )
                         return
                     except Exception as e:
-                        FreeCAD.Console.PrintError(
-                            f"Could not set SlopeEdge: {e}\n"
-                        )
+                        FreeCAD.Console.PrintError(f"Could not set SlopeEdge: {e}\n")
                         return
-        FreeCAD.Console.PrintWarning(
-            "No edge selected. Select an edge in the 3D view first.\n"
-        )
+        FreeCAD.Console.PrintWarning("No edge selected. Select an edge in the 3D view first.\n")
 
     def clearSlopeEdge(self):
         """Remove the SlopeEdge reference. The first base-face edge is used."""
