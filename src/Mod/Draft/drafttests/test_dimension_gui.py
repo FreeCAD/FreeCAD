@@ -99,9 +99,13 @@ class DraftGuiDimension(test_base.DraftTestCaseDoc):
             self.assertEqual(state["dim_scale_end"], expected_state["dim_scale_end"])
             self.assertEqual(state["ext_scale_start"], expected_state["ext_scale_start"])
             self.assertEqual(state["ext_scale_end"], expected_state["ext_scale_end"])
-            self.assertEqual(state["dim_translation_start"], expected_state["dim_translation_start"])
+            self.assertEqual(
+                state["dim_translation_start"], expected_state["dim_translation_start"]
+            )
             self.assertEqual(state["dim_translation_end"], expected_state["dim_translation_end"])
-            self.assertEqual(state["ext_translation_start"], expected_state["ext_translation_start"])
+            self.assertEqual(
+                state["ext_translation_start"], expected_state["ext_translation_start"]
+            )
             self.assertEqual(state["ext_translation_end"], expected_state["ext_translation_end"])
             self.assertRotationAlmostEqual(
                 state["dim_rotation_start"], expected_state["dim_rotation_start"]
