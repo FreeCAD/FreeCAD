@@ -285,9 +285,9 @@ void ViewProviderMeasureBase::setLabelValue(const Base::Quantity& value)
     pLabel->string.setValue(value.getUserString().c_str());
 }
 
-void ViewProviderMeasureBase::setLabelValue(const QString& value)
+void ViewProviderMeasureBase::setLabelValue(const std::string& value)
 {
-    const auto userString = Base::UnitsApi::toUnicodeSuperscript(value.toStdString());
+    const auto userString = Base::UnitsApi::toUnicodeSuperscript(value);
     const auto lines = QString::fromStdString(userString).split(QStringLiteral("\n"));
 
     int i = 0;
@@ -407,7 +407,7 @@ void ViewProviderMeasureBase::updateData(const App::Property* prop)
         // Update label
         std::string userLabel(obj->Label.getValue());
         std::string name = userLabel.substr(0, userLabel.find(":"));
-        obj->Label.setValue((name + ": ") + obj->getResultString().toStdString());
+        obj->Label.setValue((name + ": ") + obj->getResultString());
     }
 
     ViewProviderDocumentObject::updateData(prop);

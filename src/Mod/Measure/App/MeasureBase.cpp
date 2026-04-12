@@ -30,6 +30,8 @@
 #include <Base/UnitsApi.h>
 #include <Base/Quantity.h>
 
+#include <fmt/format.h>
+
 #include "MeasureBase.h"
 // Generated from MeasureBasePy.xml
 #include "MeasureBasePy.h"
@@ -163,43 +165,36 @@ std::vector<std::string> MeasureBase::getInputProps()
 }
 
 
-QString MeasureBase::formatQuantity(const Base::Quantity& qty) const
+std::string MeasureBase::formatQuantity(const Base::Quantity& qty) const
 {
     const std::string displayUnitstr = DisplayUnit.getStrValue();
 
-    if (!displayUnitstr.empty()) {
-        try {
-            const Base::Quantity targetUnit = Base::Quantity::parse("1 " + displayUnitstr);
-            if (qty.getUnit() == targetUnit.getUnit()) {
-                const double convertedValue = qty.getValueAs(targetUnit);
-                QString formattedValue;
-                int decimals = Base::UnitsApi::getDecimals();
-                // If between -1 and 1: use 'g' with significant digits = decimals
-                if (std::abs(convertedValue) < 1.0 && convertedValue != 0.0) {
-                    formattedValue = QString::number(convertedValue, 'g', decimals);
-                }
-                else {
-                    formattedValue = QString::number(convertedValue, 'f', decimals);
-                }
-                return formattedValue + QLatin1String(" ") + QString::fromStdString(displayUnitstr);
-            }
-        }
-        catch (const Base::ParserError&) {
-            Base::Console().error("Failed to parse DisplayUnit '%s'\n", displayUnitstr.c_str());
-        }
+    if (displayUnitstr.empty()) {
+        return qty.getUserString();
     }
 
-    return QString::fromStdString(qty.getUserString());
+    Base::Quantity displayQty(1, displayUnitstr);
+    if (qty.getUnit() != displayQty.getUnit()) {
+        return qty.getUserString();
+    }
+
+    const double convertedValue = qty.getValueAs(displayQty);
+    const Base::QuantityFormat format(
+        (std::abs(convertedValue) < 1.0 && convertedValue != 0.0) ? Base::QuantityFormat::Default
+                                                                  : Base::QuantityFormat::Fixed
+    );
+
+    displayQty.setValue(convertedValue);
+    return fmt::format("{} {}", displayQty.toNumber(format), displayUnitstr);
 }
 
 
-QString MeasureBase::getResultString()
+std::string MeasureBase::getResultString()
 {
-    Py::Object proxy = getProxyObject();
     Base::PyGILStateLocker lock;
+    Py::Object proxy = getProxyObject();
 
     if (!proxy.isNone()) {
-
         // Pass the feature object to the proxy
         Py::Tuple args(1);
         args.setItem(0, Py::Object(const_cast<MeasureBase*>(this)->getPyObject()));
@@ -211,22 +206,17 @@ QString MeasureBase::getResultString()
         catch (Py::Exception&) {
             Base::PyException e;
             e.reportException();
-            return QString();
+            return {};
         }
-        return QString::fromStdString(ret.as_string());
+        return ret.as_string();
     }
 
     App::Property* prop = getResultProp();
-    if (prop == nullptr) {
-        return QString();
-    }
-
-    if (prop->isDerivedFrom<App::PropertyQuantity>()) {
+    if (prop && prop->isDerivedFrom<App::PropertyQuantity>()) {
         return formatQuantity(static_cast<App::PropertyQuantity*>(prop)->getQuantityValue());
     }
 
-
-    return QString();
+    return {};
 }
 
 void MeasureBase::onDocumentRestored()

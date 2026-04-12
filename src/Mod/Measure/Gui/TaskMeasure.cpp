@@ -74,14 +74,13 @@ constexpr std::array angleUnitLabels {"deg", "rad", "gon"};
 constexpr std::array areaUnitLabels {"mm^2", "cm^2", "m^2", "km^2", "in^2", "ft^2", "yd^2", "mi^2"};
 
 template<std::size_t N>
-QStringList toQStringList(const std::array<const char*, N>& strings)
+void populateUnitCombo(QComboBox* combo, const std::array<const char*, N>& labels)
 {
-    QStringList result;
-    result.reserve(N);
-    for (const char* s : strings) {
-        result.append(QString::fromUtf8(s));
+    for (const char* s : labels) {
+        QString display = QString::fromStdString(Base::UnitsApi::toUnicodeSuperscript(s));
+        // store (mm²,mm^2)
+        combo->addItem(display, QString::fromUtf8(s));
     }
-    return result;
 }
 
 Base::Unit unitForMeasureType(const App::MeasureType* measureType)
@@ -104,19 +103,17 @@ Base::Unit unitForMeasureType(const App::MeasureType* measureType)
     return Base::Unit();
 }
 
-QStringList unitLabelsForUnit(const Base::Unit& unit)
+void addUnitLabels(QComboBox* combo, const Base::Unit& unit)
 {
     if (unit == Base::Unit::Length) {
-        return toQStringList(lengthUnitLabels);
+        populateUnitCombo(combo, lengthUnitLabels);
     }
-    if (unit == Base::Unit::Angle) {
-        return toQStringList(angleUnitLabels);
+    else if (unit == Base::Unit::Area) {
+        populateUnitCombo(combo, areaUnitLabels);
     }
-    if (unit == Base::Unit::Area) {
-        return toQStringList(areaUnitLabels);
+    else if (unit == Base::Unit::Angle) {
+        populateUnitCombo(combo, angleUnitLabels);
     }
-
-    return QStringList();
 }
 
 QString preferredUnitForMeasureType(const App::MeasureType* measureType)
@@ -128,7 +125,7 @@ QString preferredUnitForMeasureType(const App::MeasureType* measureType)
     double factor;
     std::string unitString;
     Base::UnitsApi::schemaTranslate(Base::Quantity(1.0, unit), factor, unitString);
-    return QString::fromUtf8(unitString.c_str());
+    return QString::fromStdString(unitString);
 }
 
 }  // namespace
@@ -437,26 +434,25 @@ void TaskMeasure::tryUpdate()
 
 void TaskMeasure::updateUnitDropdown(const App::MeasureType* measureType)
 {
-    const QString previousUnit = unitSwitch->currentText();
+    const QString previousUnit = unitSwitch->currentData().toString();
     const Base::Unit unit = unitForMeasureType(measureType);
-    const QStringList units = unitLabelsForUnit(unit);
     const QString defaultUnit = preferredUnitForMeasureType(measureType);
 
     QSignalBlocker unitSwitchBlocker(unitSwitch);
 
     unitSwitch->clear();
-    if (!units.isEmpty()) {
-        unitSwitch->addItems(units);
+    addUnitLabels(unitSwitch, unit);
 
-        if (!previousUnit.isEmpty() && previousUnit != QLatin1String("-")) {
-            int unitIndex = unitSwitch->findText(previousUnit);
+    if (unitSwitch->count() > 0) {
+        if (!previousUnit.isEmpty()) {
+            int unitIndex = unitSwitch->findData(previousUnit);
             if (unitIndex >= 0) {
                 unitSwitch->setCurrentIndex(unitIndex);
                 return;
             }
         }
 
-        int unitIndex = unitSwitch->findText(defaultUnit);
+        int unitIndex = unitSwitch->findData(defaultUnit);
         if (unitIndex >= 0) {
             unitSwitch->setCurrentIndex(unitIndex);
         }
@@ -469,7 +465,8 @@ void TaskMeasure::syncDisplayUnit()
         return;
     }
 
-    const std::string unit = unitSwitch->currentText().toStdString();
+    // get the raw parseable unit (^2)
+    const std::string unit = unitSwitch->currentData().toString().toStdString();
     if (_mMeasureObject->DisplayUnit.getStrValue() != unit) {
         _mMeasureObject->DisplayUnit.setValue(unit);
     }
@@ -480,7 +477,9 @@ void TaskMeasure::refreshResult()
     if (!_mMeasureObject) {
         return;
     }
-    valueResult->setText(_mMeasureObject->getResultString());
+    valueResult->setText(
+        QString::fromStdString(Base::UnitsApi::toUnicodeSuperscript(_mMeasureObject->getResultString()))
+    );
 }
 
 

@@ -136,7 +136,7 @@ protected:
     void onChanged(const App::Property* prop) override;
     virtual void onLabelMoved() {};
     void setLabelValue(const Base::Quantity& value);
-    void setLabelValue(const QString& value);
+    void setLabelValue(const std::string& value);
     void setLabelTranslation(const SbVec3f& position);
     void updateIcon();
     void syncDraggerOrientationToView();
