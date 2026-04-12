@@ -301,8 +301,10 @@ def can_open_external_browser(url):
                         "Change this in Preferences > General > Help > External browser links.",
                     ),
                 )
-            except Exception:
-                pass
+            except Exception as err:
+                FreeCAD.Console.PrintLog(
+                    "Help: failed to show 'external links disabled' warning: {}\n".format(err)
+                )
         return False
 
     if not FreeCAD.GuiUp:
