@@ -517,6 +517,19 @@
          id="path3102-2" />
     </g>
     <g
+       transform="matrix(0.77869459,0,0,0.77869445,25.241125,4.2028991)"
+       id="g3797-9-5-5-2"
+       style="stroke-width:1.2842">
+      <path
+         style="fill:none;stroke:#2e0000;stroke-width:2.56841;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="path4250-71-6-6-4"
+         d="M -26.310778,5.3580033 A 8.3519646,8.3515832 0.02039876 1 1 -13.623399,16.222662 8.3519646,8.3515832 0.02039876 1 1 -26.310778,5.3580033 Z" />
+      <path
+         style="fill:url(#linearGradient42);fill-opacity:1;stroke:#ef2929;stroke-width:2.56842;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="path4250-7-3-2-2-4"
+         d="m -24.358888,7.0362241 a 5.782493,5.7773415 0 1 1 8.784093,7.5158349 5.782493,5.7773415 0 0 1 -8.784093,-7.5158349 z" />
+    </g>
+    <g
        transform="matrix(0.77869459,0,0,0.77869445,47.298264,46.015138)"
        id="g43"
        style="stroke-width:1.2842">
@@ -527,19 +540,6 @@
       <path
          style="fill:url(#linearGradient43);fill-opacity:1;stroke:#ef2929;stroke-width:2.56842;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          id="path43"
-         d="m -24.358888,7.0362241 a 5.782493,5.7773415 0 1 1 8.784093,7.5158349 5.782493,5.7773415 0 0 1 -8.784093,-7.5158349 z" />
-    </g>
-    <g
-       transform="matrix(0.77869459,0,0,0.77869445,69.355403,4.2028991)"
-       id="g47"
-       style="stroke-width:1.2842">
-      <path
-         style="fill:none;stroke:#2e0000;stroke-width:2.56841;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         id="path46"
-         d="M -26.310778,5.3580033 A 8.3519646,8.3515832 0.02039876 1 1 -13.623399,16.222662 8.3519646,8.3515832 0.02039876 1 1 -26.310778,5.3580033 Z" />
-      <path
-         style="fill:url(#linearGradient47);fill-opacity:1;stroke:#ef2929;stroke-width:2.56842;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         id="path47"
          d="m -24.358888,7.0362241 a 5.782493,5.7773415 0 1 1 8.784093,7.5158349 5.782493,5.7773415 0 0 1 -8.784093,-7.5158349 z" />
     </g>
     <g
@@ -556,7 +556,7 @@
          d="m -24.358888,7.0362241 a 5.782493,5.7773415 0 1 1 8.784093,7.5158349 5.782493,5.7773415 0 0 1 -8.784093,-7.5158349 z" />
     </g>
     <g
-       transform="matrix(0.77869459,0,0,0.77869445,25.243194,4.2036752)"
+       transform="matrix(0.77869459,0,0,0.77869445,69.355394,4.202769)"
        id="g6"
        style="display:inline;stroke-width:1.2842">
       <path
