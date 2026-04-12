@@ -167,6 +167,14 @@ Data::ElementMapPtr TopoShape::resetElementMap(Data::ElementMapPtr elementMap)
     return Data::ComplexGeoData::resetElementMap(elementMap);
 }
 
+void TopoShape::dropElementNaming()
+{
+    resetElementMap();
+    Tag = 0;
+    Hasher = nullptr;
+    initCache(1);
+}
+
 void TopoShape::flushElementMap() const
 {
     initCache();
@@ -1409,12 +1417,18 @@ TopoShape& TopoShape::makeShapeWithElementMap(
     const TopoDS_Shape& shape,
     const Mapper& mapper,
     const std::vector<TopoShape>& shapes,
-    const char* op
+    const char* op,
+    ElementMapPolicy elementMapPolicy
 )
 {
     setShape(shape);
     if (shape.IsNull()) {
         FC_THROWM(NullShapeException, "Null shape");
+    }
+
+    if (elementMapPolicy == ElementMapPolicy::Drop) {
+        dropElementNaming();
+        return *this;
     }
 
     if (shapes.empty()) {
@@ -2350,11 +2364,15 @@ TopoShape& TopoShape::makeElementRuledSurface(
 TopoShape& TopoShape::makeElementCompound(
     const std::vector<TopoShape>& shapes,
     const char* op,
-    SingleShapeCompoundCreationPolicy policy
+    SingleShapeCompoundCreationPolicy policy,
+    ElementMapPolicy elementMapPolicy
 )
 {
     if (policy == SingleShapeCompoundCreationPolicy::returnShape && shapes.size() == 1) {
         *this = shapes[0];
+        if (elementMapPolicy == ElementMapPolicy::Drop) {
+            dropElementNaming();
+        }
         return *this;
     }
 
@@ -2364,13 +2382,21 @@ TopoShape& TopoShape::makeElementCompound(
 
     if (shapes.empty()) {
         setShape(comp);
+        if (elementMapPolicy == ElementMapPolicy::Drop) {
+            dropElementNaming();
+        }
         return *this;
     }
     addShapesToBuilder(shapes, builder, comp);
     setShape(comp);
-    initCache();
 
-    mapSubElement(shapes, op);
+    if (elementMapPolicy == ElementMapPolicy::Drop) {
+        dropElementNaming();
+    }
+    else {
+        initCache();
+        mapSubElement(shapes, op);
+    }
     return *this;
 }
 
@@ -3108,10 +3134,11 @@ TopoShape& TopoShape::makeElementWires(
     const char* op,
     double tol,
     ConnectionPolicy policy,
-    TopoShapeMap* output
+    TopoShapeMap* output,
+    ElementMapPolicy elementMapPolicy
 )
 {
-    return makeElementWires(std::vector<TopoShape> {shape}, op, tol, policy, output);
+    return makeElementWires(std::vector<TopoShape> {shape}, op, tol, policy, output, elementMapPolicy);
 }
 
 
@@ -3120,7 +3147,8 @@ TopoShape& TopoShape::makeElementWires(
     const char* op,
     double tol,
     ConnectionPolicy policy,
-    TopoShapeMap* output
+    TopoShapeMap* output,
+    ElementMapPolicy elementMapPolicy
 )
 {
     if (!op) {
@@ -3152,10 +3180,20 @@ TopoShape& TopoShape::makeElementWires(
         std::vector<TopoShape> wires;
         for (int i = 1; i <= hWires->Length(); i++) {
             auto wire = hWires->Value(i);
-            wires.emplace_back(Tag, Hasher, wire);
-            wires.back().mapSubElement(shapes, op);
+            if (elementMapPolicy == ElementMapPolicy::Drop) {
+                wires.emplace_back(wire);
+            }
+            else {
+                wires.emplace_back(Tag, Hasher, wire);
+                wires.back().mapSubElement(shapes, op);
+            }
         }
-        return makeElementCompound(wires, "", SingleShapeCompoundCreationPolicy::returnShape);
+        return makeElementCompound(
+            wires,
+            "",
+            SingleShapeCompoundCreationPolicy::returnShape,
+            elementMapPolicy
+        );
     }
 
     std::vector<TopoShape> wires;
@@ -3212,10 +3250,17 @@ TopoShape& TopoShape::makeElementWires(
         }
 
         wires.emplace_back(new_wire);
-        wires.back().mapSubElement(edges, op);
+        if (elementMapPolicy == ElementMapPolicy::Propagate) {
+            wires.back().mapSubElement(edges, op);
+        }
         wires.back().fix();
     }
-    return makeElementCompound(wires, nullptr, SingleShapeCompoundCreationPolicy::returnShape);
+    return makeElementCompound(
+        wires,
+        nullptr,
+        SingleShapeCompoundCreationPolicy::returnShape,
+        elementMapPolicy
+    );
 }
 
 namespace
@@ -3524,7 +3569,13 @@ TopoShape& TopoShape::makeElementGTransform(
     return *this;
 }
 
-TopoShape& TopoShape::makeElementCopy(const TopoShape& shape, const char* op, bool copyGeom, bool copyMesh)
+TopoShape& TopoShape::makeElementCopy(
+    const TopoShape& shape,
+    const char* op,
+    bool copyGeom,
+    bool copyMesh,
+    ElementMapPolicy elementMapPolicy
+)
 {
     if (shape.isNull()) {
         return *this;
@@ -3532,6 +3583,12 @@ TopoShape& TopoShape::makeElementCopy(const TopoShape& shape, const char* op, bo
 
     TopoShape tmp(shape);
     tmp.setShape(BRepBuilderAPI_Copy(shape.getShape(), copyGeom, copyMesh).Shape(), false);
+
+    if (elementMapPolicy == ElementMapPolicy::Drop) {
+        setShape(tmp._Shape);
+        dropElementNaming();
+        return *this;
+    }
 
     if (op || (shape.Tag && shape.Tag != Tag)) {
         setShape(tmp._Shape);
@@ -4243,7 +4300,12 @@ TopoShape& TopoShape::makeElementCut(const std::vector<TopoShape>& shapes, const
     return makeElementBoolean(Part::OpCodes::Cut, shapes, op, tol);
 }
 
-TopoShape& TopoShape::makeElementXor(const std::vector<TopoShape>& shapes, const char* op, double tol)
+TopoShape& TopoShape::makeElementXor(
+    const std::vector<TopoShape>& shapes,
+    const char* op,
+    double tol,
+    ElementMapPolicy elementMapPolicy
+)
 {
     if (shapes.empty()) {
         FC_THROWM(NullShapeException, "Null shape");
@@ -4283,6 +4345,9 @@ TopoShape& TopoShape::makeElementXor(const std::vector<TopoShape>& shapes, const
     }
     if (inputs.size() == 1) {
         *this = inputs[0];
+        if (elementMapPolicy == ElementMapPolicy::Drop) {
+            dropElementNaming();
+        }
         if (shapes.size() == 1) {
             FC_WARN("Boolean operation with only one shape input");
         }
@@ -4296,42 +4361,71 @@ TopoShape& TopoShape::makeElementXor(const std::vector<TopoShape>& shapes, const
 
         // Step 1: Union(A, B) - intermediate result, no op code.
         TopoShape tempUnion(0, Hasher);
-        tempUnion.makeElementBoolean(Part::OpCodes::Fuse, {result, inputs[i]}, nullptr, tol);
+        tempUnion.makeElementBoolean(
+            Part::OpCodes::Fuse,
+            {result, inputs[i]},
+            nullptr,
+            tol,
+            elementMapPolicy
+        );
 
         // Step 2: Common(A, B) - intermediate result, no op code.
         TopoShape tempCommon(0, Hasher);
-        tempCommon.makeElementBoolean(Part::OpCodes::Common, {result, inputs[i]}, nullptr, tol);
+        tempCommon.makeElementBoolean(
+            Part::OpCodes::Common,
+            {result, inputs[i]},
+            nullptr,
+            tol,
+            elementMapPolicy
+        );
 
         // Step 3: Compute the final result for this iteration
         if (tempCommon.isNull() || tempCommon.getShape().IsNull()) {
             // No intersection, XOR is the same as Union.
             // We still call the boolean op to get the correct history.
-            result.makeElementBoolean(Part::OpCodes::Fuse, {result, inputs[i]}, currentOp, tol);
+            result.makeElementBoolean(
+                Part::OpCodes::Fuse,
+                {result, inputs[i]},
+                currentOp,
+                tol,
+                elementMapPolicy
+            );
         }
         else {
             // Final result is Cut(Union, Common).
-            result.makeElementBoolean(Part::OpCodes::Cut, {tempUnion, tempCommon}, currentOp, tol);
+            result.makeElementBoolean(
+                Part::OpCodes::Cut,
+                {tempUnion, tempCommon},
+                currentOp,
+                tol,
+                elementMapPolicy
+            );
         }
     }
 
     *this = result;
+    if (elementMapPolicy == ElementMapPolicy::Drop) {
+        dropElementNaming();
+    }
     return *this;
 }
 
 TopoShape& TopoShape::makeElementShape(
     BRepBuilderAPI_MakeShape& mkShape,
     const TopoShape& source,
-    const char* op
+    const char* op,
+    ElementMapPolicy elementMapPolicy
 )
 {
     std::vector<TopoShape> sources(1, source);
-    return makeElementShape(mkShape, sources, op);
+    return makeElementShape(mkShape, sources, op, elementMapPolicy);
 }
 
 TopoShape& TopoShape::makeElementShape(
     BRepBuilderAPI_MakeShape& mkShape,
     const std::vector<TopoShape>& shapes,
-    const char* op
+    const char* op,
+    ElementMapPolicy elementMapPolicy
 )
 {
     TopoDS_Shape shape;
@@ -4342,7 +4436,7 @@ TopoShape& TopoShape::makeElementShape(
     else {
         shape = mkShape.Shape();
     }
-    return makeShapeWithElementMap(shape, MapperMaker(mkShape), shapes, op);
+    return makeShapeWithElementMap(shape, MapperMaker(mkShape), shapes, op, elementMapPolicy);
 }
 
 TopoShape& TopoShape::makeElementShape(
@@ -4784,7 +4878,8 @@ TopoShape& TopoShape::makeElementFace(
     const TopoShape& shape,
     const char* op,
     const char* maker,
-    const gp_Pln* plane
+    const gp_Pln* plane,
+    ElementMapPolicy elementMapPolicy
 )
 {
     std::vector<TopoShape> shapes;
@@ -4797,14 +4892,15 @@ TopoShape& TopoShape::makeElementFace(
     else {
         shapes.push_back(shape);
     }
-    return makeElementFace(shapes, op, maker, plane);
+    return makeElementFace(shapes, op, maker, plane, elementMapPolicy);
 }
 
 TopoShape& TopoShape::makeElementFace(
     const std::vector<TopoShape>& shapes,
     const char* op,
     const char* maker,
-    const gp_Pln* plane
+    const gp_Pln* plane,
+    ElementMapPolicy elementMapPolicy
 )
 {
     if (!maker || !maker[0]) {
@@ -4813,6 +4909,7 @@ TopoShape& TopoShape::makeElementFace(
     std::unique_ptr<FaceMaker> mkFace = FaceMaker::ConstructFromType(maker);
     mkFace->MyHasher = Hasher;
     mkFace->MyOp = op;
+    mkFace->MyElementMapPolicy = elementMapPolicy;
     if (plane) {
         mkFace->setPlane(*plane);
     }
@@ -4833,8 +4930,13 @@ TopoShape& TopoShape::makeElementFace(
 
     const auto& ret = mkFace->getTopoShape();
     setShape(ret._Shape);
-    Hasher = ret.Hasher;
-    resetElementMap(ret.elementMap());
+    if (elementMapPolicy == ElementMapPolicy::Drop) {
+        dropElementNaming();
+    }
+    else {
+        Hasher = ret.Hasher;
+        resetElementMap(ret.elementMap());
+    }
     if (!isValid()) {
         ShapeFix_ShapeTolerance aSFT;
         aSFT.LimitTolerance(getShape(), Precision::Confusion(), Precision::Confusion(), TopAbs_SHAPE);
@@ -5637,7 +5739,7 @@ const std::vector<TopoDS_Shape>& MapperHistory::generated(const TopoDS_Shape& s)
 }
 
 // topo naming counterpart of TopoShape::makeShell()
-TopoShape& TopoShape::makeElementShell(bool silent, const char* op)
+TopoShape& TopoShape::makeElementShell(bool silent, const char* op, ElementMapPolicy elementMapPolicy)
 {
     if (silent) {
         if (isNull()) {
@@ -5687,9 +5789,13 @@ TopoShape& TopoShape::makeElementShell(bool silent, const char* op)
             builder.Add(shell, face);
         }
 
-        TopoShape tmp(Tag, Hasher, shell);
-        tmp.resetElementMap();
-        tmp.mapSubElement(*this, op);
+        Data::ElementMapPtr elementMap;
+        if (elementMapPolicy == ElementMapPolicy::Propagate) {
+            TopoShape tmp(Tag, Hasher, shell);
+            tmp.resetElementMap();
+            tmp.mapSubElement(*this, op);
+            elementMap = tmp.elementMap();
+        }
 
         shape = shell;
         BRepCheck_Analyzer check(shell);
@@ -5718,7 +5824,12 @@ TopoShape& TopoShape::makeElementShell(bool silent, const char* op)
         }
 
         setShape(shape);
-        resetElementMap(tmp.elementMap());
+        if (elementMapPolicy == ElementMapPolicy::Drop) {
+            dropElementNaming();
+        }
+        else {
+            resetElementMap(elementMap);
+        }
     }
     catch (Standard_Failure& e) {
         if (!silent) {
@@ -5732,7 +5843,8 @@ TopoShape& TopoShape::makeElementShell(bool silent, const char* op)
 TopoShape& TopoShape::makeElementShellFromWires(
     const std::vector<TopoShape>& wires,
     bool silent,
-    const char* op
+    const char* op,
+    ElementMapPolicy elementMapPolicy
 )
 {
     BRepFill_Generator maker;
@@ -5749,7 +5861,7 @@ TopoShape& TopoShape::makeElementShellFromWires(
         FC_THROWM(NullShapeException, "No input shapes");
     }
     maker.Perform();
-    this->makeShapeWithElementMap(maker.Shell(), MapperFill(maker), wires, op);
+    this->makeShapeWithElementMap(maker.Shell(), MapperFill(maker), wires, op, elementMapPolicy);
     return *this;
 }
 
@@ -5812,10 +5924,11 @@ TopoShape& TopoShape::makeElementBoolean(
     const char* maker,
     const TopoShape& shape,
     const char* op,
-    double tolerance
+    double tolerance,
+    ElementMapPolicy elementMapPolicy
 )
 {
-    return makeElementBoolean(maker, std::vector<TopoShape>(1, shape), op, tolerance);
+    return makeElementBoolean(maker, std::vector<TopoShape>(1, shape), op, tolerance, elementMapPolicy);
 }
 
 
@@ -5824,7 +5937,8 @@ TopoShape& TopoShape::makeElementBoolean(
     const char* maker,
     const std::vector<TopoShape>& shapes,
     const char* op,
-    double tolerance
+    double tolerance,
+    ElementMapPolicy elementMapPolicy
 )
 {
     if (!maker) {
@@ -5844,7 +5958,12 @@ TopoShape& TopoShape::makeElementBoolean(
     }
 
     if (strcmp(maker, Part::OpCodes::Compound) == 0) {
-        return makeElementCompound(shapes, op, SingleShapeCompoundCreationPolicy::returnShape);
+        return makeElementCompound(
+            shapes,
+            op,
+            SingleShapeCompoundCreationPolicy::returnShape,
+            elementMapPolicy
+        );
     }
     else if (boost::starts_with(maker, Part::OpCodes::Face)) {
         std::string prefix(Part::OpCodes::Face);
@@ -5853,10 +5972,17 @@ TopoShape& TopoShape::makeElementBoolean(
         if (boost::starts_with(maker, prefix)) {
             face_maker = maker + prefix.size();
         }
-        return makeElementFace(shapes, op, face_maker);
+        return makeElementFace(shapes, op, face_maker, nullptr, elementMapPolicy);
     }
     else if (strcmp(maker, Part::OpCodes::Wire) == 0) {
-        return makeElementWires(shapes, op);
+        return makeElementWires(
+            shapes,
+            op,
+            0.0,
+            ConnectionPolicy::mergeWithTolerance,
+            nullptr,
+            elementMapPolicy
+        );
     }
     else if (strcmp(maker, Part::OpCodes::Compsolid) == 0) {
         BRep_Builder builder;
@@ -5868,7 +5994,12 @@ TopoShape& TopoShape::makeElementBoolean(
             }
         }
         setShape(Comp);
-        mapSubElement(shapes, op);
+        if (elementMapPolicy == ElementMapPolicy::Drop) {
+            dropElementNaming();
+        }
+        else {
+            mapSubElement(shapes, op);
+        }
         return *this;
     }
 
@@ -5883,7 +6014,7 @@ TopoShape& TopoShape::makeElementBoolean(
             FC_THROWM(Base::CADKernelError, "Spine shape is not a wire");
         }
         BRepOffsetAPI_MakePipe mkPipe(TopoDS::Wire(shapes[0].getShape()), shapes[1].getShape());
-        return makeElementShape(mkPipe, shapes, op);
+        return makeElementShape(mkPipe, shapes, op, elementMapPolicy);
     }
 
     if (strcmp(maker, Part::OpCodes::Shell) == 0) {
@@ -5894,18 +6025,26 @@ TopoShape& TopoShape::makeElementBoolean(
             builder.Add(shell, s.getShape());
         }
         setShape(shell);
-        mapSubElement(shapes, op);
+        if (elementMapPolicy == ElementMapPolicy::Drop) {
+            dropElementNaming();
+        }
+        else {
+            mapSubElement(shapes, op);
+        }
         BRepCheck_Analyzer check(shell);
         if (!check.IsValid()) {
             ShapeUpgrade_ShellSewing sewShell;
             setShape(sewShell.ApplySewing(shell), false);
             // TODO: confirm the above won't change OCCT topological naming
+            if (elementMapPolicy == ElementMapPolicy::Drop) {
+                dropElementNaming();
+            }
         }
         return *this;
     }
 
     if (strcmp(maker, Part::OpCodes::Xor) == 0) {
-        return makeElementXor(shapes, op, tolerance);
+        return makeElementXor(shapes, op, tolerance, elementMapPolicy);
     }
 
     bool buildShell = true;
@@ -5959,6 +6098,9 @@ TopoShape& TopoShape::makeElementBoolean(
     }
     if (inputs.size() == 1) {
         *this = inputs[0];
+        if (elementMapPolicy == ElementMapPolicy::Drop) {
+            dropElementNaming();
+        }
         if (shapes.size() == 1) {
             // _shapes has fewer items than shapes due to compound expansion.
             // Only warn if the caller passes one shape.
@@ -6019,10 +6161,10 @@ TopoShape& TopoShape::makeElementBoolean(
     if (Base::Sequencer().wasCanceled()) {
         FC_THROWM(Base::CADKernelError, "User aborted");
     }
-    makeElementShape(*mk, inputs, op);
+    makeElementShape(*mk, inputs, op, elementMapPolicy);
 
     if (buildShell) {
-        makeElementShell();
+        makeElementShell(true, nullptr, elementMapPolicy);
     }
     return *this;
 }

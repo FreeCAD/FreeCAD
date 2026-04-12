@@ -203,26 +203,46 @@ int TopoShapePy::PyInit(PyObject* args, PyObject* keywds)
     return 0;
 }
 
-PyObject* TopoShapePy::copy(PyObject* args) const
+PyObject* TopoShapePy::copy(PyObject* args, PyObject* keywds) const
 {
     PyObject* copyGeom = Py_True;
     PyObject* copyMesh = Py_False;
+    PyObject* noElementMap = Py_False;
     const char* op = nullptr;
     PyObject* pyHasher = nullptr;
-    if (!PyArg_ParseTuple(
+    static const std::array<const char*, 4> kwd_list {"copyGeom", "copyMesh", "noElementMap", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(
             args,
-            "|sO!O!O!",
-            &op,
-            &App::StringHasherPy::Type,
-            &pyHasher,
+            keywds,
+            "|O!O!$O!",
+            kwd_list,
             &PyBool_Type,
             &copyGeom,
             &PyBool_Type,
-            &copyMesh
+            &copyMesh,
+            &PyBool_Type,
+            &noElementMap
         )) {
         PyErr_Clear();
-        if (!PyArg_ParseTuple(args, "|O!O!", &PyBool_Type, &copyGeom, &PyBool_Type, &copyMesh)) {
-            return 0;
+        if (keywds && PyDict_Size(keywds) != 0) {
+            PyErr_SetString(PyExc_TypeError, "copy() received invalid keyword arguments");
+            return nullptr;
+        }
+        if (!PyArg_ParseTuple(
+                args,
+                "|sO!O!O!",
+                &op,
+                &App::StringHasherPy::Type,
+                &pyHasher,
+                &PyBool_Type,
+                &copyGeom,
+                &PyBool_Type,
+                &copyMesh
+            )) {
+            PyErr_Clear();
+            if (!PyArg_ParseTuple(args, "|O!O!", &PyBool_Type, &copyGeom, &PyBool_Type, &copyMesh)) {
+                return 0;
+            }
         }
     }
     if (op && !op[0]) {
@@ -233,9 +253,11 @@ PyObject* TopoShapePy::copy(PyObject* args) const
         hasher = static_cast<App::StringHasherPy*>(pyHasher)->getStringHasherPtr();
     }
     auto& self = *getTopoShapePtr();
+    auto elementMapPolicy = Base::asBoolean(noElementMap) ? ElementMapPolicy::Drop
+                                                          : ElementMapPolicy::Propagate;
     return Py::new_reference_to(shape2pyshape(
         TopoShape(self.Tag, hasher)
-            .makeElementCopy(self, op, PyObject_IsTrue(copyGeom), PyObject_IsTrue(copyMesh))
+            .makeElementCopy(self, op, PyObject_IsTrue(copyGeom), PyObject_IsTrue(copyMesh), elementMapPolicy)
     ));
 }
 
@@ -709,6 +731,38 @@ PyObject* TopoShapePy::check(PyObject* args) const
     Py_Return;
 }
 
+static PyObject* makeShape(const char* op, const TopoShape& shape, PyObject* args, PyObject* keywds)
+{
+    double tol = 0;
+    PyObject* pcObj;
+    PyObject* noElementMap = Py_False;
+    static const std::array<const char*, 4> kwd_list {"tools", "tolerance", "noElementMap", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(
+            args,
+            keywds,
+            "O|d$O!",
+            kwd_list,
+            &pcObj,
+            &tol,
+            &PyBool_Type,
+            &noElementMap
+        )) {
+        return 0;
+    }
+    PY_TRY
+    {
+        auto elementMapPolicy = Base::asBoolean(noElementMap) ? ElementMapPolicy::Drop
+                                                              : ElementMapPolicy::Propagate;
+        std::vector<TopoShape> shapes;
+        shapes.push_back(shape);
+        getPyShapes(pcObj, shapes);
+        return Py::new_reference_to(
+            shape2pyshape(TopoShape().makeElementBoolean(op, shapes, 0, tol, elementMapPolicy))
+        );
+    }
+    PY_CATCH_OCC
+}
+
 static PyObject* makeShape(const char* op, const TopoShape& shape, PyObject* args)
 {
     double tol = 0;
@@ -726,14 +780,14 @@ static PyObject* makeShape(const char* op, const TopoShape& shape, PyObject* arg
     PY_CATCH_OCC
 }
 
-PyObject* TopoShapePy::fuse(PyObject* args) const
+PyObject* TopoShapePy::fuse(PyObject* args, PyObject* keywds) const
 {
-    return makeShape(Part::OpCodes::Fuse, *getTopoShapePtr(), args);
+    return makeShape(Part::OpCodes::Fuse, *getTopoShapePtr(), args, keywds);
 }
 
-PyObject* TopoShapePy::multiFuse(PyObject* args) const
+PyObject* TopoShapePy::multiFuse(PyObject* args, PyObject* keywds) const
 {
-    return makeShape(Part::OpCodes::Fuse, *getTopoShapePtr(), args);
+    return makeShape(Part::OpCodes::Fuse, *getTopoShapePtr(), args, keywds);
 }
 
 PyObject* TopoShapePy::common(PyObject* args) const

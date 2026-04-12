@@ -486,9 +486,12 @@ public:
         add_keyword_method(
             "makeFace",
             &Module::makeFace,
-            "makeFace(list_of_shapes_or_compound, maker_class_name) -- Create a face (faces) using "
-            "facemaker class.\n"
-            "maker_class_name is a string like 'Part::FaceMakerSimple'."
+            "makeFace(list_of_shapes_or_compound, [maker_class_name, op], "
+            "*, noElementMap=False) -- "
+            "Create a face (faces) using facemaker class.\n"
+            "maker_class_name is a string like 'Part::FaceMakerSimple'.\n"
+            "Set noElementMap=True for transient geometry where stable element "
+            "naming is not needed."
         );
         add_keyword_method(
             "makeFilledSurface",
@@ -746,7 +749,8 @@ public:
         add_keyword_method(
             "getShape",
             &Module::getShape,
-            "getShape(obj,subname=None,mat=None,needSubElement=False,transform=True,retType=0):\n"
+            "getShape(obj,subname=None,mat=None,needSubElement=False,transform=True,retType=0,"
+            "noElementMap=False,refine=False):\n"
             "Obtain the TopoShape of a given object with SubName reference\n\n"
             "* obj: the input object\n"
             "* subname: dot separated sub-object reference\n"
@@ -761,6 +765,8 @@ public:
             "'subname',\n"
             "              and 'mat' is the accumulated transformation matrix of that sub-object.\n"
             "           2: same as 1, but make sure 'subObj' is resolved if it is a link.\n"
+            "* noElementMap: if True, return a shape without mapped element names. Use this for "
+            "transient geometry where stable element naming is not needed.\n"
             "* refine: refine the returned shape"
         );
         add_varargs_method(
@@ -1137,19 +1143,27 @@ private:
         PyObject* obj;
         const char* className = nullptr;
         const char* op = nullptr;
-        const std::array<const char*, 4> kwd_list = {"shapes", "class_name", "op", nullptr};
+        PyObject* noElementMap = Py_False;
+        const std::array<const char*, 5> kwd_list
+            = {"shapes", "class_name", "op", "noElementMap", nullptr};
         if (!Base::Wrapped_ParseTupleAndKeywords(
                 args.ptr(),
                 kwds.ptr(),
-                "O|ss",
+                "O|ss$O!",
                 kwd_list,
                 &obj,
                 &className,
-                &op
+                &op,
+                &PyBool_Type,
+                &noElementMap
             )) {
             throw Py::Exception();
         }
-        return shape2pyshape(TopoShape().makeElementFace(getPyShapes(obj), op, className));
+        auto elementMapPolicy = Base::asBoolean(noElementMap) ? ElementMapPolicy::Drop
+                                                              : ElementMapPolicy::Propagate;
+        return shape2pyshape(
+            TopoShape().makeElementFace(getPyShapes(obj), op, className, nullptr, elementMapPolicy)
+        );
     }
 
     template<class F>
