@@ -32,6 +32,7 @@
 import Path
 import Path.Base.FeedRate as PathFeedRate
 import Path.Base.Generator.helix as helix
+import Path.Base.Generator.spiral as spiral
 import Path.Op.Base as PathOp
 import Path.Op.Util as PathOpUtil
 import PathScripts.PathUtils as PathUtils
@@ -40,6 +41,7 @@ import time
 import json
 import math
 import area
+import Constants
 from FreeCAD import BoundBox
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -166,17 +168,13 @@ def GenerateGCode(op, obj, adaptiveResults):
 
     stepDown = max(obj.StepDown.Value, _ADAPTIVE_MIN_STEPDOWN)
 
-    length = 2 * math.pi * helixRadius
+    if obj.HelixMaxRampAngle < 0:
+        obj.HelixMaxRampAngle = 0
+    elif obj.HelixMaxRampAngle > 90:
+        obj.HelixMaxRampAngle = 90
 
-    if obj.HelixAngle < 0.01:
-        obj.HelixAngle = 1
-    elif obj.HelixAngle > 89.9:
-        obj.HelixAngle = 89.9
-
-    helixAngleRad = math.radians(obj.HelixAngle)
-    depthPerOneCircle = length * math.tan(helixAngleRad)
-    if obj.HelixMaxStepdown.Value != 0 and obj.HelixMaxStepdown.Value < depthPerOneCircle:
-        depthPerOneCircle = obj.HelixMaxStepdown.Value
+    if obj.HelixConeAngle < 0:
+        obj.HelixConeAngle = 0
 
     stepUp = max(obj.LiftDistance.Value, 0)
 
@@ -215,35 +213,63 @@ def GenerateGCode(op, obj, adaptiveResults):
             # Helix ramp
             if helixRadius > 0.01:
                 r = helixRadius - 0.01
+                helixHeight = passStartDepth - passEndDepth
+                cone_angle_rad = math.radians(obj.HelixConeAngle.Value)
+                r_bottom = r - helixHeight * math.tan(cone_angle_rad)
+                if r_bottom < r * 0.5:
+                    # put a limit on how small the cone tip can be
+                    r_bottom = r * 0.5
+                    cone_angle_rad = math.atan((r - r_bottom) / helixHeight)
+
                 op.commandlist.append(Path.Command("(Helix to depth: %f)" % passEndDepth))
                 op.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
 
                 # Prepend parameters for generator to create helix
-                args = {
+                argsHelix = {
                     "edge": None,
-                    "outer_radius": r,
-                    "pitch": depthPerOneCircle,
+                    "outer_radius": r_bottom,
+                    "pitch": obj.HelixMaxPitch.Value or helixHeight,
                     "retract_height": obj.SafeHeight.Value,
                     "direction": "CCW",
                     "startAt": "Inside",
                     "finish_circle": True,
-                    "cone_angle_rad": math.radians(obj.HelixConeAngle.Value),
+                    "cone_angle_rad": cone_angle_rad,
                     "dir_angle_rad": dirAngleRad,
+                    "ramp_angle_rad": math.radians(obj.HelixMaxRampAngle.Value) or math.pi / 2,
                 }
                 centerTop = FreeCAD.Vector(p1[0], p1[1], passStartDepth)
                 centerBottom = FreeCAD.Vector(p1[0], p1[1], passEndDepth)
-                args["edge"] = Part.makeLine(centerTop, centerBottom)
+                argsHelix["edge"] = Part.makeLine(centerTop, centerBottom)
 
-                helixCommands = helix.generate(**args)
-                while helixCommands[-1].Name == "G0":
-                    # Remove last retract movements
-                    helixCommands.pop()
+                helixCommands = helix.generate(**argsHelix)
+                while helixCommands[-1].Name in Constants.GCODE_MOVE_LINE:
+                    # Remove last retract movements from helix path
+                    del helixCommands[-1]
 
                 op.commandlist.append(helixCommands[1])  # move to helix start point (x,y)
                 op.commandlist.append(Path.Command("G0", {"Z": obj.SafeHeight.Value}))
 
                 PathFeedRate.setFeedRate(helixCommands, obj.ToolController)
                 op.commandlist.extend(helixCommands[2:])
+
+                if cone_angle_rad:
+                    # Add spiral to connect helix and adaptive path
+                    spiralArgs = {
+                        "center": centerBottom,
+                        "outer_radius": r,
+                        "step": op.tool.Diameter.Value * obj.StepOver / 100,
+                        "inner_radius": r_bottom,
+                        "direction": "CCW",
+                        "startAt": "Inside",
+                        "dir_angle_rad": dirAngleRad,
+                    }
+                    spiralCommands = spiral.generate(**spiralArgs)
+                    PathFeedRate.setFeedRate(spiralCommands, obj.ToolController)
+                    # remove first linear movements
+                    while spiralCommands[0].Name in Constants.GCODE_MOVE_LINE:
+                        del spiralCommands[0]
+                    op.commandlist.append(Path.Command("(Spiral to radius: %f)" % r))
+                    op.commandlist.extend(spiralCommands)
 
             else:  # no helix entry
                 # rapid move to start point at clearance height
@@ -1636,20 +1662,22 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.setEditorMode("AdaptiveOutputState", 2)  # hide this property
         obj.addProperty(
             "App::PropertyAngle",
-            "HelixAngle",
+            "HelixMaxRampAngle",
             "AdaptiveHelixEntry",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Helix ramp entry angle (degrees)",
+                "The maximum allowable helix ramp entry angle (degrees)"
+                "\nSet to zero to disable limitation by ramp angle",
             ),
         )
         obj.addProperty(
             "App::PropertyLength",
-            "HelixMaxStepdown",
+            "HelixMaxPitch",
             "AdaptiveHelixEntry",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "The maximum allowable descent in a single revolution of the helix.",
+                "The maximum allowable descent in a single revolution of the helix"
+                "\nSet to zero to disable limitation by pitch",
             ),
         )
         obj.addProperty(
@@ -1742,7 +1770,7 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.FinishingProfile = True
         obj.Stopped = False
         obj.StopProcessing = False
-        obj.HelixAngle = 5
+        obj.HelixMaxRampAngle = 5
         obj.HelixConeAngle = 0
         obj.HelixMaxDiameterPercent = 100
         obj.HelixMinDiameterPercent = 10
@@ -1873,16 +1901,32 @@ class PathAdaptive(PathOp.ObjectOp):
                     75 if oldD == 0 else 100 * oldD / obj.ToolController.Tool.Diameter.Value
                 )
 
-        if not hasattr(obj, "HelixMaxStepdown"):
+        if hasattr(obj, "HelixAngle"):
+            obj.renameProperty("HelixAngle", "HelixMaxRampAngle")
+
+        if hasattr(obj, "HelixMaxStepdown"):
+            obj.renameProperty("HelixMaxStepdown", "HelixMaxPitch")
+        if not hasattr(obj, "HelixMaxPitch"):
             obj.addProperty(
                 "App::PropertyLength",
-                "HelixMaxStepdown",
+                "HelixMaxPitch",
                 "AdaptiveHelixEntry",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "The maximum allowable descent in a single revolution of the helix.",
+                    "The maximum allowable descent in a single revolution of the helix"
+                    "Set to zero to disable limitation by pitch",
                 ),
             )
+        helixProps = (
+            "HelixConeAngle",
+            "HelixMaxDiameterPercent",
+            "HelixMinDiameterPercent",
+            "HelixMaxRampAngle",
+            "HelixMaxPitch",
+        )
+        for prop in helixProps:
+            if obj.getGroupOfProperty(prop) != "AdaptiveHelixEntry":
+                obj.setGroupOfProperty(prop, "AdaptiveHelixEntry")
 
         FeatureExtensions.initialize_properties(obj)
 
@@ -1903,7 +1947,7 @@ def SetupProperties():
         "StopProcessing",
         "AdaptiveInputState",
         "AdaptiveOutputState",
-        "HelixAngle",
+        "HelixMaxRampAngle",
         "HelixConeAngle",
         "HelixMaxDiameterPercent",
         "HelixMinDiameterPercent",

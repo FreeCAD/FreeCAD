@@ -476,7 +476,7 @@ class TestPathAdaptive(PathTestBase):
         # Set additional operation properties
         # setDepthsAndHeights(adaptive)
         adaptive.FinishingProfile = False
-        adaptive.HelixAngle = 75.0
+        adaptive.HelixMaxRampAngle = 75.0
         adaptive.LiftDistance.Value = 1.0
         adaptive.StepOver = 75
         adaptive.UseOutline = False
@@ -508,7 +508,7 @@ class TestPathAdaptive(PathTestBase):
         # Set additional operation properties
         # setDepthsAndHeights(adaptive)
         adaptive.FinishingProfile = False
-        adaptive.HelixAngle = 75.0
+        adaptive.HelixMaxRampAngle = 75.0
         adaptive.LiftDistance.Value = 1.0
         adaptive.StepOver = 75
         adaptive.UseOutline = False
@@ -534,7 +534,7 @@ class TestPathAdaptive(PathTestBase):
         # Set additional operation properties
         # setDepthsAndHeights(adaptive)
         adaptive.FinishingProfile = False
-        adaptive.HelixAngle = 75.0
+        adaptive.HelixMaxRampAngle = 75.0
         adaptive.LiftDistance.Value = 1.0
         adaptive.StepOver = 75
         adaptive.UseOutline = True
@@ -573,7 +573,7 @@ class TestPathAdaptive(PathTestBase):
         # Set additional operation properties
         # setDepthsAndHeights(adaptive)
         adaptive.FinishingProfile = False
-        adaptive.HelixAngle = 75.0
+        adaptive.HelixMaxRampAngle = 75.0
         adaptive.LiftDistance.Value = 1.0
         adaptive.StepOver = 75
         adaptive.UseOutline = False
@@ -614,7 +614,7 @@ class TestPathAdaptive(PathTestBase):
         # Set additional operation properties
         # setDepthsAndHeights(adaptive)
         adaptive.FinishingProfile = False
-        adaptive.HelixAngle = 75.0
+        adaptive.HelixMaxRampAngle = 75.0
         adaptive.LiftDistance.Value = 1.0
         adaptive.StepOver = 75
         adaptive.UseOutline = False
@@ -655,7 +655,7 @@ class TestPathAdaptive(PathTestBase):
         # Set additional operation properties
         # setDepthsAndHeights(adaptive)
         adaptive.FinishingProfile = False
-        adaptive.HelixAngle = 75.0
+        adaptive.HelixMaxRampAngle = 75.0
         adaptive.LiftDistance.Value = 1.0
         adaptive.StepOver = 75
         adaptive.UseOutline = False
@@ -696,7 +696,7 @@ class TestPathAdaptive(PathTestBase):
         # Set additional operation properties
         # setDepthsAndHeights(adaptive)
         adaptive.FinishingProfile = False
-        adaptive.HelixAngle = 75.0
+        adaptive.HelixMaxRampAngle = 75.0
         adaptive.LiftDistance.Value = 1.0
         adaptive.StepOver = 75
         adaptive.UseOutline = False
@@ -755,7 +755,7 @@ class TestPathAdaptive(PathTestBase):
         # Set additional operation properties
         setDepthsAndHeights(adaptive, 15, 0)
         adaptive.FinishingProfile = False
-        adaptive.HelixAngle = 75.0
+        adaptive.HelixMaxRampAngle = 75.0
         adaptive.LiftDistance.Value = 1.0
         adaptive.StepOver = 75
         adaptive.UseOutline = False
@@ -819,7 +819,7 @@ class TestPathAdaptive(PathTestBase):
         # Set additional operation properties
         setDepthsAndHeights(adaptive, 15, 10)
         adaptive.FinishingProfile = False
-        adaptive.HelixAngle = 75.0
+        adaptive.HelixMaxRampAngle = 75.0
         adaptive.LiftDistance.Value = 1.0
         adaptive.StepOver = 75
         adaptive.UseOutline = False
@@ -879,7 +879,7 @@ class TestPathAdaptive(PathTestBase):
         # Set additional operation properties
         setDepthsAndHeights(adaptive, 15, 0)
         adaptive.FinishingProfile = False
-        adaptive.HelixAngle = 75.0
+        adaptive.HelixMaxRampAngle = 75.0
         adaptive.LiftDistance.Value = 1.0
         adaptive.StepOver = 75
         adaptive.UseOutline = False
@@ -955,7 +955,7 @@ class TestPathAdaptive(PathTestBase):
         # Set additional operation properties
         setDepthsAndHeights(adaptive, 15, 5)
         adaptive.FinishingProfile = False
-        adaptive.HelixAngle = 75.0
+        adaptive.HelixMaxRampAngle = 75.0
         adaptive.LiftDistance.Value = 1.0
         adaptive.StepOver = 75
         adaptive.UseOutline = False
