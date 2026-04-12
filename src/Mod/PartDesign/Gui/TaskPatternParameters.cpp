@@ -42,6 +42,7 @@
 #include <Mod/PartDesign/App/FeatureLinearPattern.h>
 #include <Mod/PartDesign/App/FeaturePolarPattern.h>
 #include <Mod/Part/Gui/PatternParametersWidget.h>
+#include <Mod/Part/App/Part2DObject.h>
 
 #include "ui_TaskPatternParameters.h"
 #include "TaskPatternParameters.h"
@@ -53,6 +54,27 @@ using namespace PartDesignGui;
 using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskPatternParameters */
+
+namespace
+{
+bool sameLink(
+    App::DocumentObject* obj1,
+    const std::vector<std::string>& sub1,
+    App::DocumentObject* obj2,
+    const std::vector<std::string>& sub2
+)
+{
+    return obj1 == obj2 && sub1 == sub2;
+}
+
+bool isSketchDefaultHVAxisLink(App::DocumentObject* obj, const std::vector<std::string>& sub)
+{
+    if (!obj || !obj->isDerivedFrom<Part::Part2DObject>() || sub.size() != 1) {
+        return false;
+    }
+    return sub.front() == "H_Axis" || sub.front() == "V_Axis";
+}
+}  // namespace
 
 TaskPatternParameters::TaskPatternParameters(ViewProviderTransformed* TransformedView, QWidget* parent)
     : TaskTransformedParameters(TransformedView, parent)
@@ -134,6 +156,14 @@ void TaskPatternParameters::setupParameterUI(QWidget* widget)
     }
 
     bindProperties();
+    if (parametersWidget2) {
+        connect(
+            parametersWidget2,
+            &PartGui::PatternParametersWidget::enabledChanged,
+            this,
+            &TaskPatternParameters::onDirection2EnabledChanged
+        );
+    }
 
     // --- Task Specific Setup ---
     showOriginAxes(true);  // Show origin helper axes
@@ -293,6 +323,90 @@ void TaskPatternParameters::onParameterWidgetParametersChanged()
         return;  // Avoid loops if change originated from Task update
     }
     kickUpdateViewTimer();  // Debounce recompute
+}
+
+void TaskPatternParameters::onDirection2EnabledChanged(bool enabled)
+{
+    if (!enabled) {
+        return;
+    }
+
+    setDefaultPerpendicularDirection2();
+}
+
+void TaskPatternParameters::setDefaultPerpendicularDirection2()
+{
+    auto* patternObj = getObject();
+    auto* linearPattern = patternObj ? dynamic_cast<PartDesign::LinearPattern*>(patternObj) : nullptr;
+    if (!linearPattern || !parametersWidget || !parametersWidget2) {
+        return;
+    }
+
+    App::DocumentObject* dir1Obj = nullptr;
+    std::vector<std::string> dir1Sub;
+    parametersWidget->getAxis(dir1Obj, dir1Sub);
+    if (!dir1Obj) {
+        return;
+    }
+
+    App::DocumentObject* dir2Obj = nullptr;
+    std::vector<std::string> dir2Sub;
+    parametersWidget2->getAxis(dir2Obj, dir2Sub);
+
+    App::DocumentObject* candidateObj = nullptr;
+    std::vector<std::string> candidateSub;
+
+    // Sketch axis defaults: H <-> V.
+    if (dir1Sub.size() == 1) {
+        if (dir1Sub.front() == "H_Axis") {
+            candidateObj = dir1Obj;
+            candidateSub = {"V_Axis"};
+        }
+        else if (dir1Sub.front() == "V_Axis") {
+            candidateObj = dir1Obj;
+            candidateSub = {"H_Axis"};
+        }
+    }
+
+    // Origin axis defaults: X <-> Y (for common 2D grid usage).
+    if (!candidateObj) {
+        auto* body = PartDesign::Body::findBodyOf(linearPattern);
+        if (body) {
+            try {
+                App::Origin* origin = body->getOrigin();
+                if (dir1Obj == origin->getX()) {
+                    candidateObj = origin->getY();
+                }
+                else if (dir1Obj == origin->getY()) {
+                    candidateObj = origin->getX();
+                }
+            }
+            catch (const Base::Exception&) {
+            }
+        }
+    }
+
+    if (!candidateObj) {
+        return;
+    }
+
+    // Keep an existing explicit second direction chosen by the user,
+    // except when Direction 1 uses body base axes and Direction 2 still
+    // points to a sketch axis fallback.
+    bool direction2Unset = (dir2Obj == nullptr);
+    bool direction2SameAsDirection1 = sameLink(dir1Obj, dir1Sub, dir2Obj, dir2Sub);
+    bool direction1IsBodyBaseAxis = (candidateObj != dir1Obj);
+    bool direction2LooksLikeSketchFallback = isSketchDefaultHVAxisLink(dir2Obj, dir2Sub);
+    bool shouldOverride = direction2Unset || direction2SameAsDirection1
+        || (direction1IsBodyBaseAxis && direction2LooksLikeSketchFallback);
+    if (!shouldOverride) {
+        return;
+    }
+
+    setupTransaction();
+    linearPattern->Direction2.setValue(candidateObj, candidateSub);
+    parametersWidget2->updateUI();
+    kickUpdateViewTimer();
 }
 
 void TaskPatternParameters::onUpdateView(bool on)

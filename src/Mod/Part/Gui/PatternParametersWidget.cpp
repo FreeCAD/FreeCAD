@@ -206,10 +206,11 @@ void PatternParametersWidget::updateUI()
     if (dirLinks.setCurrentLink(*m_directionProp) == -1) {
         // failed to set current, because the link isn't in the list yet
         if (m_directionProp->getValue()) {
-            QString refStr = QStringLiteral("%1:%2").arg(
-                QString::fromLatin1(m_directionProp->getValue()->getNameInDocument()),
-                QString::fromLatin1(m_directionProp->getSubValues().front().c_str())
-            );
+            const auto& subValues = m_directionProp->getSubValues();
+            QString refStr = QString::fromLatin1(m_directionProp->getValue()->getNameInDocument());
+            if (!subValues.empty()) {
+                refStr += QStringLiteral(":") + QString::fromLatin1(subValues.front().c_str());
+            }
             dirLinks.addLink(*m_directionProp, refStr);
             dirLinks.setCurrentLink(*m_directionProp);
         }
@@ -243,6 +244,8 @@ void PatternParametersWidget::onGroupBoxToggled(bool checked)
         ui->enableCheckbox->setVisible(true);
         ui->enableCheckbox->setChecked(false);
     }
+
+    enabledChanged(checked);
 }
 
 void PatternParametersWidget::onEnableCheckBoxToggled(bool checked)

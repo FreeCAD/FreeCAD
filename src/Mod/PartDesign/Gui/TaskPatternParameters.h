@@ -64,6 +64,7 @@ private Q_SLOTS:
     void onParameterWidgetRequestReferenceSelection2();
     // Slot to handle parameter changes from the widget
     void onParameterWidgetParametersChanged();
+    void onDirection2EnabledChanged(bool enabled);
     // Update view signal (might be redundant now)
     void onUpdateView(bool on) override;
 
@@ -76,6 +77,7 @@ private:
     void kickUpdateViewTimer() const;
 
     void bindProperties();
+    void setDefaultPerpendicularDirection2();
 
     // Task-specific logic remains
     void showOriginAxes(bool show);
