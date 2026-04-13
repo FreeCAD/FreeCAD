@@ -163,7 +163,10 @@ class DraftSVGExportRegression(test_base.DraftTestCaseDoc):
     def _iter_island_cases():
         return (
             ("rect_outer_circle_hole", DraftSVGExportRegression._make_face_with_circular_island),
-            ("circle_outer_rect_hole", DraftSVGExportRegression._make_face_with_rectangular_island_in_circle),
+            (
+                "circle_outer_rect_hole",
+                DraftSVGExportRegression._make_face_with_rectangular_island_in_circle,
+            ),
         )
 
     @staticmethod
