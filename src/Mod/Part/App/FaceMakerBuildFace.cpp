@@ -73,13 +73,13 @@ void Part::FaceMakerBuildFace::setPlane(const gp_Pln& plane)
     planeSupplied = true;
 }
 
-namespace
-{
-
 // Split self-intersecting edges (e.g., figure-8 BSplines) at their crossing
 // points.  BuilderAlgo only finds inter-edge intersections, so a single edge
 // that crosses itself must be handled here.
-TopTools_ListOfShape splitSelfIntersecting(const TopTools_ListOfShape& edges, const gp_Pln& plane)
+// Records the mapping original → fragments in myPreSplitHistory so that
+// postBuild() can chain it with mySplitter for proper element naming.
+TopTools_ListOfShape Part::FaceMakerBuildFace::splitSelfIntersecting(
+    const TopTools_ListOfShape& edges, const gp_Pln& plane)
 {
     const Standard_Real tol = Precision::Confusion();
     TopTools_ListOfShape result;
@@ -128,13 +128,12 @@ TopTools_ListOfShape splitSelfIntersecting(const TopTools_ListOfShape& edges, co
                 params.end()
             );
             Standard_Real prev = first;
-            bool didSplit = false;
+            TopTools_ListOfShape fragments;
             for (Standard_Real p : params) {
                 if (p - prev > tol) {
                     BRepBuilderAPI_MakeEdge me(curve, prev, p);
                     if (me.IsDone()) {
-                        result.Append(me.Edge());
-                        didSplit = true;
+                        fragments.Append(me.Edge());
                     }
                     prev = p;
                 }
@@ -142,11 +141,19 @@ TopTools_ListOfShape splitSelfIntersecting(const TopTools_ListOfShape& edges, co
             if (last - prev > tol) {
                 BRepBuilderAPI_MakeEdge me(curve, prev, last);
                 if (me.IsDone()) {
-                    result.Append(me.Edge());
-                    didSplit = true;
+                    fragments.Append(me.Edge());
                 }
             }
-            if (!didSplit) {
+            if (fragments.Size() > 0) {
+                if (myPreSplitHistory.IsNull()) {
+                    myPreSplitHistory = new BRepTools_History();
+                }
+                for (TopTools_ListIteratorOfListOfShape fi(fragments); fi.More(); fi.Next()) {
+                    myPreSplitHistory->AddModified(edge, fi.Value());
+                    result.Append(fi.Value());
+                }
+            }
+            else {
                 result.Append(edge);
             }
         }
@@ -161,10 +168,15 @@ TopTools_ListOfShape splitSelfIntersecting(const TopTools_ListOfShape& edges, co
             result.Append(edge);
         }
     }
+    if (!myPreSplitHistory.IsNull()) {
+        BRep_Builder builder;
+        builder.MakeCompound(myPreSplitCompound);
+        for (TopTools_ListIteratorOfListOfShape ri(result); ri.More(); ri.Next()) {
+            builder.Add(myPreSplitCompound, ri.Value());
+        }
+    }
     return result;
 }
-
-}  // namespace
 
 bool Part::FaceMakerBuildFace::findPlane(const TopTools_ListOfShape& edges, gp_Pln& plane) const
 {

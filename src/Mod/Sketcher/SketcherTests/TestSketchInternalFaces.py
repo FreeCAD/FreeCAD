@@ -56,6 +56,26 @@ def add_arc(sketch, cx, cy, radius, start_angle, end_angle):
     return i
 
 
+def add_figure8_bspline(sketch):
+    """Add a self-intersecting figure-8 BSpline to the sketch. Returns the geometry index."""
+    i = int(sketch.GeometryCount)
+    pts = [
+        App.Vector(0, 0, 0),
+        App.Vector(5, 5, 0),
+        App.Vector(10, 0, 0),
+        App.Vector(5, -5, 0),
+        App.Vector(0, 0, 0),
+        App.Vector(-5, -5, 0),
+        App.Vector(-10, 0, 0),
+        App.Vector(-5, 5, 0),
+        App.Vector(0, 0, 0),
+    ]
+    bs = Part.BSplineCurve()
+    bs.interpolate(pts)
+    sketch.addGeometry(bs)
+    return i
+
+
 def get_internal_faces(sketch):
     """Get the list of faces from the InternalShape, or empty list if null."""
     shape = sketch.InternalShape
@@ -511,20 +531,7 @@ class TestSketchInternalFaces(unittest.TestCase):
     def testFigure8BSpline(self):
         """A single self-intersecting BSpline forming a figure-8 -> 2 faces."""
         sk = self._make_sketch()
-        pts = [
-            App.Vector(0, 0, 0),
-            App.Vector(5, 5, 0),
-            App.Vector(10, 0, 0),
-            App.Vector(5, -5, 0),
-            App.Vector(0, 0, 0),
-            App.Vector(-5, -5, 0),
-            App.Vector(-10, 0, 0),
-            App.Vector(-5, 5, 0),
-            App.Vector(0, 0, 0),
-        ]
-        bs = Part.BSplineCurve()
-        bs.interpolate(pts)
-        sk.addGeometry(bs)
+        add_figure8_bspline(sk)
         self.Doc.recompute()
         faces = get_internal_faces(sk)
         self.assertEqual(len(faces), 2, "Figure-8 BSpline should produce 2 faces")
@@ -535,20 +542,7 @@ class TestSketchInternalFaces(unittest.TestCase):
         """Self-intersecting BSpline + separate non-touching line:
         the line should be pruned (dangling), BSpline produces 2 faces."""
         sk = self._make_sketch()
-        pts = [
-            App.Vector(0, 0, 0),
-            App.Vector(5, 5, 0),
-            App.Vector(10, 0, 0),
-            App.Vector(5, -5, 0),
-            App.Vector(0, 0, 0),
-            App.Vector(-5, -5, 0),
-            App.Vector(-10, 0, 0),
-            App.Vector(-5, 5, 0),
-            App.Vector(0, 0, 0),
-        ]
-        bs = Part.BSplineCurve()
-        bs.interpolate(pts)
-        sk.addGeometry(bs)
+        add_figure8_bspline(sk)
         sk.addGeometry(Part.LineSegment(App.Vector(50, 0, 0), App.Vector(60, 0, 0)))
         self.Doc.recompute()
         faces = get_internal_faces(sk)
@@ -605,6 +599,61 @@ class TestSketchInternalFaces(unittest.TestCase):
                 has_indexed_ref,
                 f"{idx_name} -> '{mapped_name}' references indexed edge name",
             )
+
+    def testSplitBSplineEdgesHaveMappedNames(self):
+        """B-Spline variant of testSplitEdgesHaveMappedNames: a self-intersecting
+        B-spline with a dangling edge must produce split edges with mapped names."""
+        sk = self._make_sketch()
+        add_figure8_bspline(sk)
+        # Add a dangling edge that doesn't touch the B-spline
+        sk.addGeometry(Part.LineSegment(App.Vector(50, 0, 0), App.Vector(60, 0, 0)))
+        self.Doc.recompute()
+        shape = sk.InternalShape
+        self.assertFalse(shape.isNull())
+        erm = shape.ElementReverseMap
+        edge_names = {k: v for k, v in erm.items() if k.startswith("Edge")}
+        self.assertGreater(len(edge_names), 0)
+        for idx_name, mapped_name in edge_names.items():
+            self.assertNotEqual(
+                idx_name,
+                mapped_name,
+                f"{idx_name} has no mapped name (identity mapping = unnamed)",
+            )
+            self.assertFalse(
+                str(mapped_name).startswith("Edge"),
+                f"{idx_name} -> '{mapped_name}' references an indexed name, not a mapped name",
+            )
+
+    def testSplitBSplineFaceNamesReferenceSketchEdges(self):
+        """B-Spline variant of testSplitFaceNamesReferenceSketchEdges: face names
+        from a self-intersecting B-spline should reference mapped names."""
+        sk = self._make_sketch()
+        add_figure8_bspline(sk)
+        sk.addGeometry(Part.LineSegment(App.Vector(50, 0, 0), App.Vector(60, 0, 0)))
+        self.Doc.recompute()
+        shape = sk.InternalShape
+        self.assertFalse(shape.isNull())
+        erm = shape.ElementReverseMap
+        face_names = {k: str(v) for k, v in erm.items() if k.startswith("Face")}
+        self.assertEqual(len(face_names), 2, "Figure-8 BSpline should produce 2 faces")
+        for idx_name, mapped_name in face_names.items():
+            has_indexed_ref = any(mapped_name.startswith(f"Edge{i};") for i in range(1, 20))
+            self.assertFalse(
+                has_indexed_ref,
+                f"{idx_name} -> '{mapped_name}' references indexed edge name",
+            )
+
+    def testSplitBSplineEdgeNamingStableAfterRecompute(self):
+        """Split edge names for a self-intersecting B-spline with dangling edge
+        must be identical across recomputes."""
+        sk = self._make_sketch()
+        add_figure8_bspline(sk)
+        sk.addGeometry(Part.LineSegment(App.Vector(50, 0, 0), App.Vector(60, 0, 0)))
+        self.Doc.recompute()
+        names_before = sorted(sk.InternalShape.ElementReverseMap.items())
+        self.Doc.recompute()
+        names_after = sorted(sk.InternalShape.ElementReverseMap.items())
+        self.assertEqual(names_before, names_after)
 
     def testSplitEdgeNamingStableAfterRecompute(self):
         """Split edge names for overlapping geometry must be identical

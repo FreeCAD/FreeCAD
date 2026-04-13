@@ -57,6 +57,7 @@ protected:
 private:
     bool findPlane(const TopTools_ListOfShape& edges, gp_Pln& plane) const;
     TopTools_ListOfShape splitAtIntersections(const TopTools_ListOfShape& edges);
+    TopTools_ListOfShape splitSelfIntersecting(const TopTools_ListOfShape& edges, const gp_Pln& plane);
 
     gp_Pln myPlane;
     bool planeSupplied = false;
