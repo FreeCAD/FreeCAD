@@ -267,6 +267,7 @@ class DrillCycleExpander:
                         },
                     )
                 )
+                self.current_position["Z"] = clearance_depth
 
             # Feed to next depth
             move_params = {
@@ -293,6 +294,7 @@ class DrillCycleExpander:
                             },
                         )
                     )
+                    self.current_position["Z"] = retract_z
                 else:
                     # Chip breaking - small retract
                     chip_break_height = next_depth + clearance
@@ -306,6 +308,7 @@ class DrillCycleExpander:
                             },
                         )
                     )
+                    self.current_position["Z"] = chip_break_height
             elif cmd_name == "G83":
                 # Full retract to R plane
                 expanded.append(
@@ -318,6 +321,7 @@ class DrillCycleExpander:
                         },
                     )
                 )
+                self.current_position["Z"] = retract_z
 
             current_depth = next_depth
 
