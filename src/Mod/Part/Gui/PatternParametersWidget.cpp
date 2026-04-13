@@ -645,7 +645,6 @@ void PatternParametersWidget::updateSpacingLabels(
                 &PatternParametersWidget::onSpacingLabelClicked
             );
 
-            auto mode = static_cast<PatternMode>(m_modeProp->getValue());
             if (mode == PatternMode::Spacing) {
                 connect(
                     label.get(),
@@ -757,6 +756,15 @@ void PatternParametersWidget::updateSpacingLabels(
                 this,
                 &PatternParametersWidget::onSpacingLabelClicked
             );
+            
+            if (mode == PatternMode::Spacing) {
+                connect(
+                    label.get(),
+                    &Gui::EditableDatumLabel::rightClicked,
+                    this,
+                    &PatternParametersWidget::onSpacingLabelRightClicked
+                );
+            }
             spacingLabels.push_back(std::move(label));
         }
 
