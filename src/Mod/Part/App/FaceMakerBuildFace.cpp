@@ -79,7 +79,9 @@ void Part::FaceMakerBuildFace::setPlane(const gp_Pln& plane)
 // Records the mapping original → fragments in myPreSplitHistory so that
 // postBuild() can chain it with mySplitter for proper element naming.
 TopTools_ListOfShape Part::FaceMakerBuildFace::splitSelfIntersecting(
-    const TopTools_ListOfShape& edges, const gp_Pln& plane)
+    const TopTools_ListOfShape& edges,
+    const gp_Pln& plane
+)
 {
     const Standard_Real tol = Precision::Confusion();
     TopTools_ListOfShape result;

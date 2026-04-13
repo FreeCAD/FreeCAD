@@ -224,8 +224,7 @@ void Part::FaceMaker::postBuild()
         preSplitShape.makeShapeWithElementMap(myPreSplitCompound, mapper, mySourceShapes);
         preSplitSources.push_back(std::move(preSplitShape));
     }
-    const auto& splitterSources =
-        preSplitSources.empty() ? mySourceShapes : preSplitSources;
+    const auto& splitterSources = preSplitSources.empty() ? mySourceShapes : preSplitSources;
 
     // Some makers (FaceMakerBuildFace) modify the source shapes by splitting edges apart,
     // so we need to run makeShapeWithElementMap for proper history tracking. If we don't,
@@ -233,8 +232,7 @@ void Part::FaceMaker::postBuild()
     if (mySplitter.IsDone()) {
         MapperMaker mapper(mySplitter);
         TopoShape splitInputShape(myTopoShape.Tag);
-        splitInputShape.makeShapeWithElementMap(
-            mySplitter.Shape(), mapper, splitterSources);
+        splitInputShape.makeShapeWithElementMap(mySplitter.Shape(), mapper, splitterSources);
         myTopoShape.mapSubElement(splitInputShape);
     }
     int index = 0;
