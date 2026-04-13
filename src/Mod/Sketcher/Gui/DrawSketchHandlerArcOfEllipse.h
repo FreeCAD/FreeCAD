@@ -128,7 +128,7 @@ private:
         switch (state()) {
             case SelectMode::SeekFirst: {
                 centerPoint = onSketchPos;
-                toolWidgetManager.drawDirectionAtCursor(onSketchPos, centerPoint);
+                toolWidgetManager.drawPositionAtCursor(onSketchPos);
                 seekAndRenderAutoConstraint(sugConstraints[0], onSketchPos, Base::Vector2d(0.f, 0.f));
             } break;
             case SelectMode::SeekSecond: {
@@ -138,7 +138,7 @@ private:
                     break;
                 }
 
-                toolWidgetManager.drawDirectionAtCursor(onSketchPos, axisPoint);
+                toolWidgetManager.drawDirectionAtCursor(onSketchPos, centerPoint);
                 seekAndRenderAutoConstraint(
                     sugConstraints[1],
                     onSketchPos,
@@ -174,7 +174,7 @@ private:
                 }
 
                 startAngle = std::atan2(delta13Prime.y / secondRadius, delta13Prime.x / a);
-                toolWidgetManager.drawPositionAtCursor(onSketchPos);
+                toolWidgetManager.drawWidthHeightAtCursor(onSketchPos, firstRadius(), secondRadius);
                 seekAndRenderAutoConstraint(sugConstraints[2], onSketchPos, Base::Vector2d(0.f, 0.f));
             } break;
             case SelectMode::SeekFourth: {
@@ -198,7 +198,7 @@ private:
                     break;
                 }
 
-                toolWidgetManager.drawPositionAtCursor(onSketchPos);
+                toolWidgetManager.drawDoubleAtCursor(onSketchPos, arcAngle, Base::Unit::Angle);
                 seekAndRenderAutoConstraint(sugConstraints[3], onSketchPos, Base::Vector2d(0.f, 0.f));
             } break;
             default:
@@ -723,6 +723,7 @@ void DSHArcOfEllipseController::addConstraints()
     bool majorRadiusSet = onViewParameters[OnViewParameter::Third]->isSet;
     bool firstAxisSet = onViewParameters[OnViewParameter::Fourth]->isSet;
     bool minorRadiusSet = onViewParameters[OnViewParameter::Fifth]->isSet;
+    // cant constrain the angles
 
     auto constraintx0 = [&]() {
         ConstraintToAttachment(
