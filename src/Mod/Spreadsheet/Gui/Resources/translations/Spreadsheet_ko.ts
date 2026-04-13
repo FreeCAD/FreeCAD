@@ -274,7 +274,7 @@
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="919"/>
+      <location filename="../../qtcolorpicker.cpp" line="920"/>
       <source>Custom Color</source>
       <translation>사용자 지정 색상</translation>
     </message>
@@ -347,43 +347,70 @@
       <translation>셀 속성 설정</translation>
     </message>
     <message>
-      <location filename="../../SheetModel.cpp" line="573"/>
+      <location filename="../../SheetModel.cpp" line="628"/>
       <source>Edit cell</source>
       <translation>셀 편집</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="147"/>
+      <location filename="../../Workbench.cpp" line="148"/>
       <source>Set text color</source>
       <translation>텍스트 색상 설정</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="182"/>
+      <location filename="../../Workbench.cpp" line="184"/>
       <source>Set background color</source>
       <translation>배경색 설정</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="347"/>
-      <location filename="../../SheetTableView.cpp" line="380"/>
+      <location filename="../../SheetTableView.cpp" line="224"/>
+      <source>Recompute Cells</source>
+      <translation type="unfinished">Recompute Cells</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="326"/>
       <source>Insert Rows</source>
       <translation>행 삽입</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="400"/>
-      <location filename="../../SheetTableView.cpp" line="475"/>
+      <location filename="../../SheetTableView.cpp" line="353"/>
       <source>Remove Rows</source>
       <translation>행 삭제</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="422"/>
-      <location filename="../../SheetTableView.cpp" line="455"/>
+      <location filename="../../SheetTableView.cpp" line="366"/>
+      <source>Remove Columns</source>
+      <translation type="unfinished">Remove Columns</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="339"/>
       <source>Insert Columns</source>
       <translation>열 삽입</translation>
     </message>
     <message>
       <location filename="../../SpreadsheetView.cpp" line="193"/>
-      <location filename="../../SheetTableView.cpp" line="679"/>
+      <location filename="../../SheetTableView.cpp" line="581"/>
       <source>Clear Cells</source>
       <translation>셀 지우기</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.cpp" line="243"/>
+      <source>Bind cells</source>
+      <translation>셀 바인딩</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.cpp" line="297"/>
+      <source>Unbind cells</source>
+      <translation type="unfinished">Unbind cells</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="204"/>
+      <source>Setup conf table</source>
+      <translation type="unfinished">Setup conf table</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="309"/>
+      <source>Unsetup conf table</source>
+      <translation type="unfinished">Unsetup conf table</translation>
     </message>
   </context>
   <context>
@@ -715,29 +742,29 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>스프레드시트 표시</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="98"/>
+      <location filename="../../Workbench.cpp" line="99"/>
       <source>Sets the text color of cells</source>
       <translation>셀의 텍스트 색상을 설정합니다</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="99"/>
       <location filename="../../Workbench.cpp" line="100"/>
+      <location filename="../../Workbench.cpp" line="101"/>
       <source>Sets the text color of spreadsheet cells</source>
       <translation>스프레드시트 셀의 텍스트 색상을 설정합니다</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="121"/>
-      <location filename="../../Workbench.cpp" line="123"/>
+      <location filename="../../Workbench.cpp" line="122"/>
+      <location filename="../../Workbench.cpp" line="124"/>
       <source>Sets the background color of cells</source>
       <translation>셀의 배경색을 설정합니다</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="122"/>
+      <location filename="../../Workbench.cpp" line="123"/>
       <source>Sets the spreadsheet cells background color</source>
       <translation>스프레드시트 셀의 배경색을 설정합니다</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="815"/>
+      <location filename="../../SheetTableView.cpp" line="719"/>
       <source>Copy &amp; Paste Failed</source>
       <translation>복사 및 붙여넣기 실패</translation>
     </message>
@@ -904,19 +931,19 @@ Continue?</source>
 계속하시겠습니까?</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="284"/>
+      <location filename="../../DlgBindSheet.cpp" line="283"/>
       <source>Bind Spreadsheet Cells</source>
       <translation>스프레드시트 셀 바인딩</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="285"/>
+      <location filename="../../DlgBindSheet.cpp" line="284"/>
       <source>Error:
 </source>
       <translation>오류:
 </translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="312"/>
+      <location filename="../../DlgBindSheet.cpp" line="311"/>
       <source>Unbind Cells</source>
       <translation>셀 바인딩 해제</translation>
     </message>
@@ -1015,118 +1042,122 @@ Defaults to: %V = %A
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-      <location filename="../../SheetTableView.cpp" line="197"/>
-      <location filename="../../SheetTableView.cpp" line="661"/>
+      <location filename="../../SheetTableView.cpp" line="186"/>
+      <location filename="../../SheetTableView.cpp" line="563"/>
       <source>Recompute</source>
       <translation>재계산</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="141"/>
-      <source>Insert %n Row(s) Above</source>
-      <translation>
-        <numerusform>위에 %n개 행 삽입</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="145"/>
-      <source>Insert %n Row(s) Below</source>
-      <translation>
-        <numerusform>아래에 %n개 행 삽입</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="150"/>
+      <location filename="../../SheetTableView.cpp" line="147"/>
       <source>Insert %n Non-Contiguous Rows</source>
       <translation>
         <numerusform>비연속 %n개 행 삽입</numerusform>
       </translation>
     </message>
-    <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="153"/>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="150"/>
       <source>Remove Rows</source>
-      <translation>
-        <numerusform>행 삭제</numerusform>
-      </translation>
+      <translation>행 삭제</translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="167"/>
-      <source>Insert %n Column(s) Left</source>
-      <translation>
-        <numerusform>왼쪽에 %n개 열 삽입</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="172"/>
-      <source>Insert %n Column(s) Right</source>
-      <translation>
-        <numerusform>오른쪽에 %n개 열 삽입</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="178"/>
       <source>Insert %n Non-Contiguous Columns</source>
       <translation>
         <numerusform>비연속 %n개 열 삽입</numerusform>
       </translation>
     </message>
-    <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="181"/>
-      <source>Remove Column(s)</source>
-      <translation>
-        <numerusform>열 삭제</numerusform>
-      </translation>
-    </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="194"/>
-      <location filename="../../SheetTableView.cpp" line="660"/>
+      <location filename="../../SheetTableView.cpp" line="562"/>
       <source>Properties…</source>
       <translation>속성…</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="198"/>
-      <location filename="../../SheetTableView.cpp" line="669"/>
+      <location filename="../../SheetTableView.cpp" line="187"/>
+      <location filename="../../SheetTableView.cpp" line="571"/>
       <source>Bind…</source>
       <translation>바인딩…</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="199"/>
-      <location filename="../../SheetTableView.cpp" line="662"/>
+      <location filename="../../SheetTableView.cpp" line="564"/>
       <source>Configuration Table…</source>
       <translation>구성 테이블…</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="203"/>
-      <location filename="../../SheetTableView.cpp" line="663"/>
+      <location filename="../../SheetTableView.cpp" line="192"/>
+      <location filename="../../SheetTableView.cpp" line="565"/>
       <source>Merge Cells</source>
       <translation>셀 병합</translation>
     </message>
+    <message numerus="yes">
+      <location filename="../../SheetTableView.cpp" line="141"/>
+      <source>Insert %n Rows Above</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n Rows Above</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <location filename="../../SheetTableView.cpp" line="143"/>
+      <source>Insert %n Rows Below</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n Rows Below</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <location filename="../../SheetTableView.cpp" line="161"/>
+      <source>Insert %n Columns Left</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n Columns Left</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <location filename="../../SheetTableView.cpp" line="163"/>
+      <source>Insert %n Columns Right</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n Columns Right</numerusform>
+      </translation>
+    </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="208"/>
-      <location filename="../../SheetTableView.cpp" line="664"/>
+      <location filename="../../SheetTableView.cpp" line="170"/>
+      <source>Remove Columns</source>
+      <translation type="unfinished">Remove Columns</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="183"/>
+      <source>Properties</source>
+      <translation>속성</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="188"/>
+      <source>Configuration Table</source>
+      <translation type="unfinished">Configuration Table</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="197"/>
+      <location filename="../../SheetTableView.cpp" line="566"/>
       <source>Split Cell</source>
       <translation>셀 분할</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="212"/>
-      <location filename="../../SheetTableView.cpp" line="667"/>
+      <location filename="../../SheetTableView.cpp" line="201"/>
+      <location filename="../../SheetTableView.cpp" line="569"/>
       <source>Cut</source>
       <translation>잘라내기</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="213"/>
-      <location filename="../../SheetTableView.cpp" line="665"/>
+      <location filename="../../SheetTableView.cpp" line="202"/>
+      <location filename="../../SheetTableView.cpp" line="567"/>
       <source>Copy</source>
       <translation>복사</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="214"/>
-      <location filename="../../SheetTableView.cpp" line="666"/>
+      <location filename="../../SheetTableView.cpp" line="203"/>
+      <location filename="../../SheetTableView.cpp" line="568"/>
       <source>Paste</source>
       <translation>붙여넣기</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="215"/>
-      <location filename="../../SheetTableView.cpp" line="668"/>
+      <location filename="../../SheetTableView.cpp" line="204"/>
+      <location filename="../../SheetTableView.cpp" line="570"/>
       <source>Delete</source>
       <translation>삭제</translation>
     </message>
@@ -1147,22 +1178,22 @@ Defaults to: %V = %A
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="50"/>
+      <location filename="../../Workbench.cpp" line="51"/>
       <source>Spreadsheet</source>
       <translation>스프레드시트</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="51"/>
+      <location filename="../../Workbench.cpp" line="52"/>
       <source>&amp;Spreadsheet</source>
       <translation>스프레드시트(&amp;S)</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="52"/>
+      <location filename="../../Workbench.cpp" line="53"/>
       <source>&amp;Alignment</source>
       <translation>정렬(&amp;A)</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="53"/>
+      <location filename="../../Workbench.cpp" line="54"/>
       <source>&amp;Styles</source>
       <translation>스타일(&amp;S)</translation>
     </message>
@@ -1192,12 +1223,12 @@ Defaults to: %V = %A
   <context>
     <name>SpreadsheetGui::DlgSheetConf</name>
     <message>
-      <location filename="../../DlgSheetConf.cpp" line="292"/>
+      <location filename="../../DlgSheetConf.cpp" line="291"/>
       <source>Setup Configuration Table</source>
       <translation>구성 테이블 설정</translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.cpp" line="349"/>
+      <location filename="../../DlgSheetConf.cpp" line="348"/>
       <source>Unsetup Configuration Table</source>
       <translation>구성 테이블 설정 해제</translation>
     </message>

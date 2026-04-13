@@ -713,22 +713,22 @@ For stock from the base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="39"/>
       <source>Automatic</source>
-      <translation type="unfinished">Automatic</translation>
+      <translation>Automatski</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="44"/>
       <source>Manual</source>
-      <translation type="unfinished">Manual</translation>
+      <translation>Ručno</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="62"/>
       <source>Select All</source>
-      <translation type="unfinished">Select All</translation>
+      <translation>Izaberi sve</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="72"/>
       <source>Filter</source>
-      <translation type="unfinished">Filter</translation>
+      <translation>Filter</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="84"/>
@@ -985,7 +985,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="362"/>
       <location filename="../panels/PageOpMillFacingEdit.ui" line="158"/>
       <source>%</source>
-      <translation type="unfinished">%</translation>
+      <translation>%</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="256"/>
@@ -1015,7 +1015,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="297"/>
       <source>Cone angle</source>
-      <translation type="unfinished">Cone angle</translation>
+      <translation>Ugao konusa</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="304"/>
@@ -1202,7 +1202,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="46"/>
       <source>Drilling</source>
-      <translation type="unfinished">Drilling</translation>
+      <translation>Bušenje</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="51"/>
@@ -1488,7 +1488,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpMillFacingEdit.ui" line="138"/>
       <source>Reverse</source>
-      <translation type="unfinished">Reverse</translation>
+      <translation>Obrnuto</translation>
     </message>
     <message>
       <location filename="../panels/PageOpMillFacingEdit.ui" line="141"/>
@@ -3184,7 +3184,7 @@ See the file save policy below on how to deal with name conflicts.</translation>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="84"/>
       <source>Reverse</source>
-      <translation type="unfinished">Reverse</translation>
+      <translation>Obrnuto</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="91"/>
@@ -6284,12 +6284,12 @@ Shoud be used only with Individually HandleMultipleFeaturesand disabled UseStart
     <message>
       <location filename="../../../Path/Op/Profile.py" line="258"/>
       <source>Automatic</source>
-      <translation type="unfinished">Automatic</translation>
+      <translation>Automatski</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="259"/>
       <source>Manual</source>
-      <translation type="unfinished">Manual</translation>
+      <translation>Ručno</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="464"/>
@@ -8233,7 +8233,7 @@ or tangent edges.</translation>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/selector.py" line="61"/>
       <source>Cancel</source>
-      <translation type="unfinished">Cancel</translation>
+      <translation>Otkaži</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/library/ui/browser.py" line="509"/>
@@ -8861,12 +8861,12 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="77"/>
       <source>Automatic</source>
-      <translation type="unfinished">Automatic</translation>
+      <translation>Automatski</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="78"/>
       <source>Manual</source>
-      <translation type="unfinished">Manual</translation>
+      <translation>Ručno</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/FeatureExtension.py" line="180"/>
@@ -9554,17 +9554,17 @@ Several operations can be used with identical tool controller and coolant mode</
     <message>
       <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="239"/>
       <source>Metric</source>
-      <translation type="unfinished">Metric</translation>
+      <translation>Metrički</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="240"/>
       <source>Imperial</source>
-      <translation type="unfinished">Imperial</translation>
+      <translation>Imperijalni</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="248"/>
       <source>Units</source>
-      <translation type="unfinished">Units</translation>
+      <translation>Merne jedinice</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="253"/>
@@ -9649,7 +9649,7 @@ Several operations can be used with identical tool controller and coolant mode</
     <message>
       <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="738"/>
       <source>Warnings</source>
-      <translation type="unfinished">Warnings</translation>
+      <translation>Poruke upozorenja</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="768"/>
@@ -9687,7 +9687,7 @@ Several operations can be used with identical tool controller and coolant mode</
     <message>
       <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1209"/>
       <source>Rename</source>
-      <translation type="unfinished">Rename</translation>
+      <translation>Preimenuj</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1295"/>
@@ -10088,17 +10088,17 @@ Several operations can be used with identical tool controller and coolant mode</
     <message>
       <location filename="../../../Path/Tool/assets/ui/preferences.py" line="113"/>
       <source>Add</source>
-      <translation type="unfinished">Add</translation>
+      <translation>Dodaj</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/assets/ui/preferences.py" line="114"/>
       <source>Edit</source>
-      <translation type="unfinished">Edit</translation>
+      <translation>Uredi</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/assets/ui/preferences.py" line="115"/>
       <source>Delete</source>
-      <translation type="unfinished">Delete</translation>
+      <translation>Obriši</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/assets/ui/preferences.py" line="144"/>
@@ -10636,7 +10636,7 @@ Several operations can be used with identical tool controller and coolant mode</
     <message>
       <location filename="../../../Path/Op/MillFacing.py" line="219"/>
       <source>Spiral</source>
-      <translation type="unfinished">Spiral</translation>
+      <translation>Spirala</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/MillFacing.py" line="165"/>
@@ -10731,7 +10731,7 @@ Several operations can be used with identical tool controller and coolant mode</
       <location filename="../panels/DlgPostProcess.ui" line="155"/>
       <location filename="../panels/DlgPostProcess.ui" line="300"/>
       <source>Options</source>
-      <translation type="unfinished">Options</translation>
+      <translation>Opcije</translation>
     </message>
     <message>
       <location filename="../panels/DlgPostProcess.ui" line="161"/>
@@ -10781,7 +10781,7 @@ Several operations can be used with identical tool controller and coolant mode</
     <message>
       <location filename="../panels/DlgPostProcess.ui" line="247"/>
       <source>Select All</source>
-      <translation type="unfinished">Select All</translation>
+      <translation>Izaberi sve</translation>
     </message>
     <message>
       <location filename="../panels/DlgPostProcess.ui" line="254"/>
@@ -10791,133 +10791,133 @@ Several operations can be used with identical tool controller and coolant mode</
     <message>
       <location filename="../panels/DlgPostProcess.ui" line="261"/>
       <source>Show the workplan (postable items structure)</source>
-      <translation/>
+      <translation type="unfinished">Show the workplan (postable items structure)</translation>
     </message>
     <message>
       <location filename="../panels/DlgPostProcess.ui" line="264"/>
       <source>Workplan</source>
-      <translation/>
+      <translation type="unfinished">Workplan</translation>
     </message>
     <message>
       <location filename="../panels/DlgPostProcess.ui" line="284"/>
       <source>Total estimated machining time for checked operations</source>
-      <translation/>
+      <translation type="unfinished">Total estimated machining time for checked operations</translation>
     </message>
     <message>
       <location filename="../panels/DlgPostProcess.ui" line="287"/>
       <source>Total: -</source>
-      <translation/>
+      <translation type="unfinished">Total: -</translation>
     </message>
     <message>
       <location filename="../panels/DlgPostProcess.ui" line="324"/>
       <location filename="../panels/DlgPostProcess.ui" line="435"/>
       <source>color: gray; font-style: italic;</source>
-      <translation/>
+      <translation type="unfinished">color: gray; font-style: italic;</translation>
     </message>
     <message>
       <location filename="../panels/DlgPostProcess.ui" line="327"/>
       <source>(Select a machine on the Overview tab to see machine output options)</source>
-      <translation/>
+      <translation type="unfinished">(Select a machine on the Overview tab to see machine output options)</translation>
     </message>
     <message>
       <location filename="../panels/DlgPostProcess.ui" line="355"/>
       <source>Output</source>
-      <translation/>
+      <translation>Izlaz</translation>
     </message>
     <message>
       <location filename="../panels/DlgPostProcess.ui" line="363"/>
       <source>Output folder:</source>
-      <translation/>
+      <translation type="unfinished">Output folder:</translation>
     </message>
     <message>
       <location filename="../panels/DlgPostProcess.ui" line="370"/>
       <source>Folder where G-code files will be saved</source>
-      <translation/>
+      <translation type="unfinished">Folder where G-code files will be saved</translation>
     </message>
     <message>
       <location filename="../panels/DlgPostProcess.ui" line="373"/>
       <source>(resolved when output is generated)</source>
-      <translation/>
+      <translation type="unfinished">(resolved when output is generated)</translation>
     </message>
     <message>
       <location filename="../panels/DlgPostProcess.ui" line="386"/>
       <source>Browse...</source>
-      <translation/>
+      <translation type="unfinished">Browse...</translation>
     </message>
     <message>
       <location filename="../panels/DlgPostProcess.ui" line="397"/>
       <source>Filename template:</source>
-      <translation/>
+      <translation type="unfinished">Filename template:</translation>
     </message>
     <message>
       <location filename="../panels/DlgPostProcess.ui" line="404"/>
       <source>Filename template. Substitutions: %j=job name, %d=document, %T=tool, %W=fixture, %O=operation</source>
-      <translation/>
+      <translation type="unfinished">Filename template. Substitutions: %j=job name, %d=document, %T=tool, %W=fixture, %O=operation</translation>
     </message>
     <message>
       <location filename="../panels/DlgPostProcess.ui" line="407"/>
       <source>e.g. %j.nc</source>
-      <translation/>
+      <translation type="unfinished">e.g. %j.nc</translation>
     </message>
     <message>
       <location filename="../panels/DlgPostProcess.ui" line="423"/>
       <source>Regenerate output filenames using this template</source>
-      <translation/>
+      <translation type="unfinished">Regenerate output filenames using this template</translation>
     </message>
     <message>
       <location filename="../panels/DlgPostProcess.ui" line="426"/>
       <source>Apply</source>
-      <translation/>
+      <translation>Primeni</translation>
     </message>
     <message>
       <location filename="../panels/DlgPostProcess.ui" line="438"/>
       <source>Press &quot;Generate Output&quot; to preview G-code before saving.</source>
-      <translation/>
+      <translation type="unfinished">Press &quot;Generate Output&quot; to preview G-code before saving.</translation>
     </message>
     <message>
       <location filename="../panels/DlgPostProcess.ui" line="458"/>
       <source>Generated output files. Select a file to view or edit its contents.</source>
-      <translation/>
+      <translation type="unfinished">Generated output files. Select a file to view or edit its contents.</translation>
     </message>
     <message>
       <location filename="../panels/DlgPostProcess.ui" line="469"/>
       <source>G-code content for the selected file. You may edit before saving.</source>
-      <translation/>
+      <translation type="unfinished">G-code content for the selected file. You may edit before saving.</translation>
     </message>
     <message>
       <location filename="../panels/DlgPostProcess.ui" line="482"/>
       <source>Save to Disk</source>
-      <translation/>
+      <translation type="unfinished">Save to Disk</translation>
     </message>
     <message>
       <location filename="../panels/DlgPostProcess.ui" line="505"/>
       <source>Warnings</source>
-      <translation/>
+      <translation>Poruke upozorenja</translation>
     </message>
     <message>
       <location filename="../panels/DlgPostProcess.ui" line="511"/>
       <source>color: green; font-weight: bold;</source>
-      <translation/>
+      <translation type="unfinished">color: green; font-weight: bold;</translation>
     </message>
     <message>
       <location filename="../panels/DlgPostProcess.ui" line="514"/>
       <source>No issues found.</source>
-      <translation/>
+      <translation type="unfinished">No issues found.</translation>
     </message>
     <message>
       <location filename="../panels/DlgPostProcess.ui" line="524"/>
       <source>Validation issues found in the job. WARNING and CAUTION items should be addressed before machining.</source>
-      <translation/>
+      <translation type="unfinished">Validation issues found in the job. WARNING and CAUTION items should be addressed before machining.</translation>
     </message>
     <message>
       <location filename="../panels/DlgPostProcess.ui" line="546"/>
       <source>Severity</source>
-      <translation/>
+      <translation type="unfinished">Severity</translation>
     </message>
     <message>
       <location filename="../panels/DlgPostProcess.ui" line="551"/>
       <source>Note</source>
-      <translation/>
+      <translation type="unfinished">Note</translation>
     </message>
   </context>
   <context>
@@ -10926,599 +10926,599 @@ Several operations can be used with identical tool controller and coolant mode</
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="86"/>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="145"/>
       <source>Include Blank Lines</source>
-      <translation/>
+      <translation type="unfinished">Include Blank Lines</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="87"/>
       <source>Path Labels</source>
-      <translation/>
+      <translation type="unfinished">Path Labels</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="88"/>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="136"/>
       <source>Include Machine Name</source>
-      <translation/>
+      <translation type="unfinished">Include Machine Name</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="89"/>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="90"/>
       <source>Output Duplicate Axis Values</source>
-      <translation/>
+      <translation type="unfinished">Output Duplicate Axis Values</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="91"/>
       <source>Adaptive Output</source>
-      <translation/>
+      <translation type="unfinished">Adaptive Output</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="92"/>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="155"/>
       <source>Axis Precision</source>
-      <translation/>
+      <translation type="unfinished">Axis Precision</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="93"/>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="156"/>
       <source>Feed Precision</source>
-      <translation/>
+      <translation type="unfinished">Feed Precision</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="94"/>
       <source>Toolhead Decimals</source>
-      <translation/>
+      <translation type="unfinished">Toolhead Decimals</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="95"/>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="143"/>
       <source>Comment Symbol</source>
-      <translation/>
+      <translation type="unfinished">Comment Symbol</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="96"/>
       <source>Modal Output (Suppress Repeats)</source>
-      <translation/>
+      <translation type="unfinished">Modal Output (Suppress Repeats)</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="97"/>
       <source>Translate Drill Cycles</source>
-      <translation/>
+      <translation type="unfinished">Translate Drill Cycles</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="98"/>
       <source>Translate Rapid Moves</source>
-      <translation/>
+      <translation type="unfinished">Translate Rapid Moves</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="99"/>
       <source>Split Arcs</source>
-      <translation/>
+      <translation type="unfinished">Split Arcs</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="102"/>
       <source>XY Before Z After Tool Change</source>
-      <translation/>
+      <translation type="unfinished">XY Before Z After Tool Change</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="103"/>
       <source>Show Editor After Generation</source>
-      <translation/>
+      <translation type="unfinished">Show Editor After Generation</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="104"/>
       <source>List Tools in Preamble</source>
-      <translation/>
+      <translation type="unfinished">List Tools in Preamble</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="105"/>
       <source>Show Machine Units</source>
-      <translation/>
+      <translation type="unfinished">Show Machine Units</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="106"/>
       <source>Show Operation Labels</source>
-      <translation/>
+      <translation type="unfinished">Show Operation Labels</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="107"/>
       <source>Output T Before M6</source>
-      <translation/>
+      <translation type="unfinished">Output T Before M6</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="108"/>
       <source>Chipbreaking Amount (mm)</source>
-      <translation/>
+      <translation type="unfinished">Chipbreaking Amount (mm)</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="109"/>
       <source>Toolhead Wait Time (seconds)</source>
-      <translation/>
+      <translation type="unfinished">Toolhead Wait Time (seconds)</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="110"/>
       <source>Post Processor</source>
-      <translation/>
+      <translation type="unfinished">Post Processor</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="111"/>
       <source>Post Processor Arguments</source>
-      <translation/>
+      <translation type="unfinished">Post Processor Arguments</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="112"/>
       <source>Use Tool Length Offset</source>
-      <translation/>
+      <translation type="unfinished">Use Tool Length Offset</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="115"/>
       <source>Output Tool Length Offset (G43)</source>
-      <translation/>
+      <translation type="unfinished">Output Tool Length Offset (G43)</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="116"/>
       <source>Enable Remote Posting</source>
-      <translation/>
+      <translation type="unfinished">Enable Remote Posting</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="119"/>
       <source>Stop Toolhead for Tool Change</source>
-      <translation/>
+      <translation type="unfinished">Stop Toolhead for Tool Change</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="120"/>
       <source>Enable Coolant</source>
-      <translation/>
+      <translation type="unfinished">Enable Coolant</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="123"/>
       <source>Enable Machine-Specific Commands</source>
-      <translation/>
+      <translation type="unfinished">Enable Machine-Specific Commands</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="125"/>
       <source>Output Units</source>
-      <translation/>
+      <translation type="unfinished">Output Units</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="126"/>
       <source>Header Options</source>
-      <translation/>
+      <translation type="unfinished">Header Options</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="127"/>
       <source>Comment Options</source>
-      <translation/>
+      <translation type="unfinished">Comment Options</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="128"/>
       <source>Formatting Options</source>
-      <translation/>
+      <translation type="unfinished">Formatting Options</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="129"/>
       <source>Precision Options</source>
-      <translation/>
+      <translation type="unfinished">Precision Options</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="130"/>
       <source>Duplicate Output Options</source>
-      <translation/>
+      <translation type="unfinished">Duplicate Output Options</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="131"/>
       <source>Output Header</source>
-      <translation/>
+      <translation type="unfinished">Output Header</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="133"/>
       <source>Include Date</source>
-      <translation/>
+      <translation type="unfinished">Include Date</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="134"/>
       <source>Include Description</source>
-      <translation/>
+      <translation type="unfinished">Include Description</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="135"/>
       <source>Include Document Name</source>
-      <translation/>
+      <translation type="unfinished">Include Document Name</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="137"/>
       <source>Include Project File</source>
-      <translation/>
+      <translation type="unfinished">Include Project File</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="138"/>
       <source>Include Units</source>
-      <translation/>
+      <translation type="unfinished">Include Units</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="139"/>
       <source>Include Tool List</source>
-      <translation/>
+      <translation type="unfinished">Include Tool List</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="140"/>
       <source>Include Fixture List</source>
-      <translation/>
+      <translation type="unfinished">Include Fixture List</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="142"/>
       <source>Enable Comments</source>
-      <translation/>
+      <translation type="unfinished">Enable Comments</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="144"/>
       <source>Include Operation Labels</source>
-      <translation/>
+      <translation type="unfinished">Include Operation Labels</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="146"/>
       <source>Output bCNC Comments</source>
-      <translation/>
+      <translation type="unfinished">Output bCNC Comments</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="148"/>
       <source>Line Numbers</source>
-      <translation/>
+      <translation type="unfinished">Line Numbers</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="149"/>
       <source>Line Number Start</source>
-      <translation/>
+      <translation type="unfinished">Line Number Start</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="150"/>
       <source>Line Number Prefix</source>
-      <translation/>
+      <translation type="unfinished">Line Number Prefix</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="151"/>
       <source>Line Increment</source>
-      <translation/>
+      <translation type="unfinished">Line Increment</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="152"/>
       <source>Command Space</source>
-      <translation/>
+      <translation type="unfinished">Command Space</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="153"/>
       <source>End of Line Chars</source>
-      <translation/>
+      <translation type="unfinished">End of Line Chars</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="157"/>
       <source>Toolhead Precision</source>
-      <translation/>
+      <translation type="unfinished">Toolhead Precision</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="159"/>
       <source>Duplicate Commands</source>
-      <translation/>
+      <translation type="unfinished">Duplicate Commands</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="160"/>
       <source>Duplicate Parameters</source>
-      <translation/>
+      <translation type="unfinished">Duplicate Parameters</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="162"/>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="1046"/>
       <source>Kinematics</source>
-      <translation/>
+      <translation type="unfinished">Kinematics</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="163"/>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="1050"/>
       <source>Base Frame</source>
-      <translation/>
+      <translation type="unfinished">Base Frame</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="164"/>
       <source>Origin</source>
-      <translation/>
+      <translation>Koordinatni početak</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="165"/>
       <source>Orientation Quaternion</source>
-      <translation/>
+      <translation type="unfinished">Orientation Quaternion</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="166"/>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="1128"/>
       <source>TCP Supported</source>
-      <translation/>
+      <translation type="unfinished">TCP Supported</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="167"/>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="1136"/>
       <source>DWO Supported</source>
-      <translation/>
+      <translation type="unfinished">DWO Supported</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="168"/>
       <source>Kinematics Notes</source>
-      <translation/>
+      <translation type="unfinished">Kinematics Notes</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="170"/>
       <source>Role</source>
-      <translation/>
+      <translation type="unfinished">Role</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="171"/>
       <source>Parent Axis</source>
-      <translation/>
+      <translation type="unfinished">Parent Axis</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="172"/>
       <source>Sequence</source>
-      <translation/>
+      <translation type="unfinished">Sequence</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="173"/>
       <source>Joint Origin</source>
-      <translation/>
+      <translation type="unfinished">Joint Origin</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="174"/>
       <source>Joint Axis</source>
-      <translation/>
+      <translation type="unfinished">Joint Axis</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="175"/>
       <source>Solution Preference</source>
-      <translation/>
+      <translation type="unfinished">Solution Preference</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="176"/>
       <source>Allow Flip</source>
-      <translation/>
+      <translation type="unfinished">Allow Flip</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="341"/>
       <source>Custom Machine</source>
-      <translation/>
+      <translation type="unfinished">Custom Machine</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="346"/>
       <source>2-Axis Lathe (X, Z)</source>
-      <translation/>
+      <translation type="unfinished">2-Axis Lathe (X, Z)</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="351"/>
       <source>3-Axis Mill (XYZ)</source>
-      <translation/>
+      <translation type="unfinished">3-Axis Mill (XYZ)</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="356"/>
       <source>4-Axis Mill (XYZ + A)</source>
-      <translation/>
+      <translation type="unfinished">4-Axis Mill (XYZ + A)</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="361"/>
       <source>4-Axis Mill (XYZ + B)</source>
-      <translation/>
+      <translation type="unfinished">4-Axis Mill (XYZ + B)</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="366"/>
       <source>5-Axis Mill (XYZ + A, C)</source>
-      <translation/>
+      <translation type="unfinished">5-Axis Mill (XYZ + A, C)</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="371"/>
       <source>5-Axis Mill (XYZ + B, C)</source>
-      <translation/>
+      <translation type="unfinished">5-Axis Mill (XYZ + B, C)</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="405"/>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="612"/>
       <source>Machine Editor</source>
-      <translation/>
+      <translation type="unfinished">Machine Editor</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="421"/>
       <source>Machine</source>
-      <translation/>
+      <translation type="unfinished">Machine</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="426"/>
       <source>Postprocessor</source>
-      <translation/>
+      <translation type="unfinished">Postprocessor</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="431"/>
       <source>Output Options</source>
-      <translation/>
+      <translation type="unfinished">Output Options</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="436"/>
       <source>Processing Options</source>
-      <translation/>
+      <translation type="unfinished">Processing Options</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="466"/>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="2486"/>
       <source>Edit as Text</source>
-      <translation/>
+      <translation type="unfinished">Edit as Text</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="476"/>
       <source>Save</source>
-      <translation/>
+      <translation type="unfinished">Save</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="479"/>
       <source>Close</source>
-      <translation/>
+      <translation>Zatvori</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="787"/>
       <source>Remove Toolhead</source>
-      <translation/>
+      <translation type="unfinished">Remove Toolhead</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="788"/>
       <source>Remove toolhead? This action cannot be undone.</source>
-      <translation/>
+      <translation type="unfinished">Remove toolhead? This action cannot be undone.</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="857"/>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="987"/>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="1017"/>
       <source>Custom</source>
-      <translation/>
+      <translation>Sopstvena</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="865"/>
       <source>Template Load Error</source>
-      <translation/>
+      <translation type="unfinished">Template Load Error</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="866"/>
       <source>Could not load template</source>
-      <translation/>
+      <translation type="unfinished">Could not load template</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="967"/>
       <source>Name</source>
-      <translation/>
+      <translation>Ime</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="1022"/>
       <source>Load settings from an existing machine template</source>
-      <translation/>
+      <translation type="unfinished">Load settings from an existing machine template</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="1023"/>
       <source>Template</source>
-      <translation/>
+      <translation>Šablon</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="1027"/>
       <source>Manufacturer</source>
-      <translation/>
+      <translation type="unfinished">Manufacturer</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="1031"/>
       <source>Description</source>
-      <translation/>
+      <translation>Opis</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="1034"/>
       <source>Metric</source>
-      <translation/>
+      <translation>Metrički</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="1035"/>
       <source>Imperial</source>
-      <translation/>
+      <translation>Imperijalni</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="1037"/>
       <source>Units</source>
-      <translation/>
+      <translation>Merne jedinice</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="1043"/>
       <source>Type</source>
-      <translation/>
+      <translation>Vrsta</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="1145"/>
       <source>Notes</source>
-      <translation/>
+      <translation type="unfinished">Notes</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="1151"/>
       <source>Axes</source>
-      <translation/>
+      <translation type="unfinished">Axes</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="1157"/>
       <source>Toolheads</source>
-      <translation/>
+      <translation type="unfinished">Toolheads</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="1171"/>
       <source>Add Toolhead</source>
-      <translation/>
+      <translation type="unfinished">Add Toolhead</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="1927"/>
       <source>Main Options</source>
-      <translation/>
+      <translation type="unfinished">Main Options</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="2029"/>
       <source>Postprocessor Selection</source>
-      <translation/>
+      <translation type="unfinished">Postprocessor Selection</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="2039"/>
       <source>Select the postprocessor file for this machine</source>
-      <translation/>
+      <translation type="unfinished">Select the postprocessor file for this machine</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="2065"/>
       <source>Post Processor:</source>
-      <translation/>
+      <translation type="unfinished">Post Processor:</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="2071"/>
       <source>Postprocessor Configuration</source>
-      <translation/>
+      <translation type="unfinished">Postprocessor Configuration</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="2491"/>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="2581"/>
       <source>JSON Error</source>
-      <translation/>
+      <translation type="unfinished">JSON Error</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="2492"/>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="2582"/>
       <source>Invalid JSON: {}</source>
-      <translation/>
+      <translation type="unfinished">Invalid JSON: {}</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="2497"/>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="2516"/>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="2588"/>
       <source>Error</source>
-      <translation/>
+      <translation>Greška</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="2498"/>
       <source>Failed to parse data: {}</source>
-      <translation/>
+      <translation type="unfinished">Failed to parse data: {}</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="2511"/>
       <source>Edit as Form</source>
-      <translation/>
+      <translation type="unfinished">Edit as Form</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="2517"/>
       <source>Failed to generate JSON: {}</source>
-      <translation/>
+      <translation type="unfinished">Failed to generate JSON: {}</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="2555"/>
       <source>Duplicate Machine Name</source>
-      <translation/>
+      <translation type="unfinished">Duplicate Machine Name</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="2559"/>
       <source>A machine with the name &apos;{}&apos; already exists. Please choose a different name.</source>
-      <translation/>
+      <translation type="unfinished">A machine with the name &apos;{}&apos; already exists. Please choose a different name.</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="2589"/>
       <source>Failed to save: {}</source>
-      <translation/>
+      <translation type="unfinished">Failed to save: {}</translation>
     </message>
   </context>
 </TS>
