@@ -1017,23 +1017,23 @@ bool NaviCubeImplementation::mouseReleased(short x, short y)
             }
         }
         else if (faceType == FaceType::Button) {
-            Base::Console().warning("button \n");  
+            Base::Console().warning("button \n");
             // Handle the menu
             if (pickId == PickId::ViewMenu || pickId == PickId::ViewMenuBorder) {
-                Base::Console().warning("ViewMenu \n");  
+                Base::Console().warning("ViewMenu \n");
                 resetClickState();
                 handleMenu();
                 return true;
             }
             else if (pickId == PickId::Home) {
-                Base::Console().warning("home \n");  
+                Base::Console().warning("home \n");
                 CommandManager& rcCmdMgr = Application::Instance->commandManager();
                 rcCmdMgr.runCommandByName("Std_ViewHome");
 
                 return true;
             }
             else if (pickId == PickId::Isometric) {
-                Base::Console().warning("isometric \n");  
+                Base::Console().warning("isometric \n");
                 SbRotation rotation;
                 m_View3DInventorViewer->setCameraOrientation(Camera::rotation(Camera::Isometric));
                 return true;
@@ -1043,7 +1043,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y)
             resetClickState();
             SbRotation rotation = getFaceRotation(pickId);
             if (pickId == PickId::Backside1 || pickId == PickId::Backside2) {
-                Base::Console().warning("bbackside \n");  
+                Base::Console().warning("bbackside \n");
                 rotation.scaleAngle(pi);
             }
             else {
