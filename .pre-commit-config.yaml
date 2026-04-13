@@ -82,8 +82,14 @@ repos:
 -   repo: local
     hooks:
     -   id: version-sync
+        name: Push version changes to other necessary files
+        entry: python src/Tools/sync_version.py --update
+        language: python
+        files: '(version\.json)'
+        pass_filenames: false
+    -   id: version-sync
         name: Verify version consistency
         entry: python src/Tools/sync_version.py --check
         language: python
-        files: '(version\.json|pixi\.toml|recipe\.yaml|declarations\.nsh|freecad\.spec)'
+        files: '(pixi\.toml|recipe\.yaml|declarations\.nsh|freecad\.spec)'
         pass_filenames: false
