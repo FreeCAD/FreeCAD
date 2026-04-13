@@ -184,12 +184,14 @@ SbBool Fusion360NavigationStyle::processSoEvent(const SoEvent* const ev)
                     if (sinceLastRelease.getValue() < dci && !this->lockrecenter) {
                         viewer->viewAll();
                         processed = true;
-                    } else {
+                    }
+                    else {
                         this->centerTime = now;
                         setupPanningPlane(getCamera());
                         this->lockrecenter = false;
                     }
-                } else {
+                }
+                else {
                     this->lastReleaseTime = ev->getTime();
                 }
                 this->button3down = press;
