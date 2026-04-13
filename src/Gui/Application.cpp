@@ -79,6 +79,7 @@
 #include "FileDialog.h"
 #include "GuiApplication.h"
 #include "GuiInitScript.h"
+#include "GuiTestScript.h"
 #include "InputHintPy.h"
 #include "LinkViewPy.h"
 #include "MainWindow.h"
@@ -2176,13 +2177,7 @@ void Application::setupContextMenu(const char* recipient, MenuItem* items) const
                 method.apply(args);
             }
             catch (Py::Exception& e) {
-                Py::Object o = Py::type(e);
-                e.clear();
-                if (o.isString()) {
-                    Py::String s(o);
-                    std::clog << "Application::setupContextMenu: " << s.as_std_string("utf-8")
-                              << std::endl;
-                }
+                PyErr_Print();
             }
         }
         actWb->createContextMenu(recipient, items);
@@ -2329,6 +2324,7 @@ void Application::initApplication()
     try {
         initTypes();
         new Base::ScriptProducer("FreeCADGuiInit", FreeCADGuiInit);
+        new Base::ScriptProducer("FreeCADGuiTest", FreeCADGuiTest);
         init_resources();
         setCategoryFilterRules();
         old_qtmsg_handler = qInstallMessageHandler(messageHandler);

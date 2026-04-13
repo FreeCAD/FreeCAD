@@ -491,8 +491,8 @@ Ní oibríonn an t-ordú seo ach le réad mogaill.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../TaskFilling.cpp" line="64"/>
       <location filename="../../TaskGeomFillSurface.cpp" line="61"/>
+      <location filename="../../TaskFilling.cpp" line="64"/>
       <source>Edit Filling</source>
       <translation>Cuir Líonadh in Eagar</translation>
     </message>

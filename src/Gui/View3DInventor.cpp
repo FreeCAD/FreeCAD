@@ -339,7 +339,14 @@ void View3DInventor::print(QPrinter* printer)
 
     QRect rect = printer->pageLayout().paintRectPixels(printer->resolution());
     QImage img;
-    _viewer->imageFromFramebuffer(rect.width(), rect.height(), 8, QColor(255, 255, 255), img);
+    _viewer->imageFromFramebuffer(
+        rect.width(),
+        rect.height(),
+        8,
+        QColor(255, 255, 255),
+        img,
+        View3DInventorViewer::RenderIntent::RasterCapture
+    );
     p.drawImage(0, 0, img);
     p.end();
 }

@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "OpenGlWrapper.h"
+#include <string>
 #include "linmath.h"
 
 namespace MillSim

@@ -26,8 +26,8 @@
       <translation>Posizioa</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="376"/>
       <location filename="../propertyeditor/PropertyItem.cpp" line="2989"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="376"/>
       <source>Enum</source>
       <translation>Enum</translation>
     </message>
@@ -5993,15 +5993,15 @@ Save all changes?</translation>
       <translation>PDF formatua</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="673"/>
       <location filename="../GraphvizView.cpp" line="479"/>
+      <location filename="../CommandDoc.cpp" line="673"/>
       <source>Graphviz format</source>
       <translation>Graphviz formatua</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="676"/>
       <location filename="../GraphvizView.cpp" line="505"/>
       <location filename="../GraphvizView.cpp" line="607"/>
+      <location filename="../CommandDoc.cpp" line="676"/>
       <source>Export graph</source>
       <translation>Esportatu grafikoa</translation>
     </message>
@@ -6053,66 +6053,66 @@ Save all changes?</translation>
   <context>
     <name>Gui::LocationDialog</name>
     <message>
+      <location filename="../InputVector.cpp" line="104"/>
+      <location filename="../InputVector.cpp" line="118"/>
       <location filename="../InputVector.h" line="132"/>
       <location filename="../InputVector.h" line="155"/>
       <location filename="../InputVector.h" line="278"/>
       <location filename="../InputVector.h" line="301"/>
       <location filename="../InputVector.h" line="476"/>
       <location filename="../InputVector.h" line="490"/>
-      <location filename="../InputVector.cpp" line="104"/>
-      <location filename="../InputVector.cpp" line="118"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
+      <location filename="../InputVector.cpp" line="105"/>
+      <location filename="../InputVector.cpp" line="119"/>
       <location filename="../InputVector.h" line="133"/>
       <location filename="../InputVector.h" line="156"/>
       <location filename="../InputVector.h" line="279"/>
       <location filename="../InputVector.h" line="302"/>
       <location filename="../InputVector.h" line="477"/>
       <location filename="../InputVector.h" line="491"/>
-      <location filename="../InputVector.cpp" line="105"/>
-      <location filename="../InputVector.cpp" line="119"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
+      <location filename="../InputVector.cpp" line="106"/>
+      <location filename="../InputVector.cpp" line="120"/>
       <location filename="../InputVector.h" line="134"/>
       <location filename="../InputVector.h" line="157"/>
       <location filename="../InputVector.h" line="280"/>
       <location filename="../InputVector.h" line="303"/>
       <location filename="../InputVector.h" line="478"/>
       <location filename="../InputVector.h" line="492"/>
-      <location filename="../InputVector.cpp" line="106"/>
-      <location filename="../InputVector.cpp" line="120"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
+      <location filename="../InputVector.cpp" line="107"/>
+      <location filename="../InputVector.cpp" line="123"/>
       <location filename="../InputVector.h" line="135"/>
       <location filename="../InputVector.h" line="160"/>
       <location filename="../InputVector.h" line="281"/>
       <location filename="../InputVector.h" line="306"/>
       <location filename="../InputVector.h" line="479"/>
       <location filename="../InputVector.h" line="495"/>
-      <location filename="../InputVector.cpp" line="107"/>
-      <location filename="../InputVector.cpp" line="123"/>
       <source>User defined…</source>
       <translation type="unfinished">User defined…</translation>
     </message>
     <message>
+      <location filename="../InputVector.cpp" line="215"/>
       <location filename="../InputVector.h" line="241"/>
       <location filename="../InputVector.h" line="376"/>
       <location filename="../InputVector.h" line="565"/>
-      <location filename="../InputVector.cpp" line="215"/>
       <source>Wrong direction</source>
       <translation>Norabide okerra</translation>
     </message>
     <message>
+      <location filename="../InputVector.cpp" line="216"/>
       <location filename="../InputVector.h" line="242"/>
       <location filename="../InputVector.h" line="377"/>
       <location filename="../InputVector.h" line="566"/>
-      <location filename="../InputVector.cpp" line="216"/>
       <source>Direction must not be the null vector</source>
       <translation>Norabideak ezin du bektore nulua izan</translation>
     </message>
@@ -7578,7 +7578,7 @@ Specify another directory?</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3779"/>
-      <location filename="../Tree.cpp" line="6373"/>
+      <location filename="../Tree.cpp" line="6375"/>
       <source>Rename</source>
       <translation>Aldatu izena</translation>
     </message>
@@ -7598,12 +7598,12 @@ Specify another directory?</translation>
       <translation type="unfinished">Open File Location</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6341"/>
+      <location filename="../Tree.cpp" line="6343"/>
       <source> (but must be executed)</source>
       <translation> (baina exekutatu behar da)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6344"/>
+      <location filename="../Tree.cpp" line="6346"/>
       <source>%1, Internal name: %2</source>
       <translation>%1, barne-izena: %2</translation>
     </message>
@@ -8637,8 +8637,8 @@ Aukeratu 'Abortatu' abortatzeko.</translation>
       <translation type="unfinished">Clarify Selection</translation>
     </message>
     <message>
-      <location filename="../ViewProviderDragger.cpp" line="127"/>
       <location filename="../ViewProviderLink.cpp" line="3184"/>
+      <location filename="../ViewProviderDragger.cpp" line="127"/>
       <source>Transform</source>
       <translation>Transformatu</translation>
     </message>
@@ -8751,12 +8751,12 @@ Aukeratu 'Abortatu' abortatzeko.</translation>
       <translation>Esteka guztiak inportatzeak huts egin du</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="977"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="980"/>
       <source>Add property</source>
       <translation>Gehitu propietatea</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="978"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="981"/>
       <source>Failed to add property to '%1': %2</source>
       <translation>Huts egin du '%1' objektuari propietatea gehitzeak: %2</translation>
     </message>
@@ -8767,8 +8767,8 @@ Aukeratu 'Abortatu' abortatzeko.</translation>
       <translation>Arrastatu eta jaregiteak huts egin du</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="900"/>
       <location filename="../ViewProviderLink.cpp" line="2999"/>
+      <location filename="../MainWindow.cpp" line="900"/>
       <source>Apply to all</source>
       <translation>Aplikatu guztiei</translation>
     </message>
@@ -8884,8 +8884,8 @@ the current copy will be lost.
       <translation>Txandakatu gainjartzea</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="2555"/>
       <location filename="../OverlayManager.cpp" line="1077"/>
+      <location filename="../OverlayWidgets.cpp" line="2555"/>
       <source>Toggle floating window</source>
       <translation>Txandakatu leiho flotagarria</translation>
     </message>

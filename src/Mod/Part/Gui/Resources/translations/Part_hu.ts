@@ -2267,7 +2267,7 @@ irányát.</translation>
       <translation>Húzás</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="1603"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="1606"/>
       <source>Project on surface</source>
       <translation>Felszínre vetít</translation>
     </message>
@@ -3729,7 +3729,7 @@ Válasszon ki egy vagy több élt.</translation>
       <translation>Nincs aktív dokumentum</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="2648"/>
+      <location filename="../../DlgPrimitives.cpp" line="2651"/>
       <source>&amp;Create</source>
       <translation>Létrehozás</translation>
     </message>
@@ -4326,19 +4326,19 @@ a fekete színt fogja használni.</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="37"/>
-      <location filename="../../Location.ui" line="118"/>
+      <location filename="../../Location.ui" line="121"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="54"/>
-      <location filename="../../Location.ui" line="147"/>
+      <location filename="../../Location.ui" line="150"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="71"/>
-      <location filename="../../Location.ui" line="176"/>
+      <location filename="../../Location.ui" line="179"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
@@ -4348,33 +4348,33 @@ a fekete színt fogja használni.</translation>
       <translation>3D-s nézet</translation>
     </message>
     <message>
-      <location filename="../../Location.ui" line="110"/>
+      <location filename="../../Location.ui" line="113"/>
       <source>Rotation Axis</source>
       <translation>Forgástengely</translation>
     </message>
     <message>
-      <location filename="../../Location.ui" line="125"/>
+      <location filename="../../Location.ui" line="128"/>
       <source>X-component of direction vector</source>
       <translation>Irányvektor X komponense</translation>
     </message>
     <message>
-      <location filename="../../Location.ui" line="154"/>
+      <location filename="../../Location.ui" line="157"/>
       <source>Y-component of direction vector</source>
       <translation>Irányvektor Y komponense</translation>
     </message>
     <message>
-      <location filename="../../Location.ui" line="183"/>
+      <location filename="../../Location.ui" line="186"/>
       <source>Z-component of direction vector</source>
       <translation>Irányvektor Z komponense</translation>
     </message>
     <message>
-      <location filename="../../Location.ui" line="106"/>
+      <location filename="../../Location.ui" line="109"/>
       <source>Use custom vector for pad direction otherwise
 the sketch plane's normal vector will be used</source>
       <translation>Saját vektor használata a tömb irányához, különben a vázlat sík normálvektorát használja</translation>
     </message>
     <message>
-      <location filename="../../Location.ui" line="208"/>
+      <location filename="../../Location.ui" line="211"/>
       <source>Angle</source>
       <translation>Szög</translation>
     </message>
@@ -5546,8 +5546,8 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="51"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="59"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="54"/>
       <location filename="../../ViewProvider.cpp" line="53"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="54"/>
       <source>Edit %1</source>
       <translation>%1 szerkesztése</translation>
     </message>
@@ -5973,7 +5973,7 @@ Folytassa?</translation>
       <translation>Csatolmány szerkesztő</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1005"/>
+      <location filename="../../ViewProviderExt.cpp" line="1007"/>
       <source>Appearance per Face</source>
       <translation>Felületenkénti megjelenés</translation>
     </message>
@@ -6184,10 +6184,10 @@ Folytassa?</translation>
       <translation>Rossz kiválasztás</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="402"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="644"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <source>Continue</source>
       <translation>Tovább</translation>
     </message>

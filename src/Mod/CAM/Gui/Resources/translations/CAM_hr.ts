@@ -679,10 +679,10 @@ Za materijal obrade iz graničnog okvira to znači dodatni materijal u svim smje
       <translation>Svi objekti obraditi će se koristeći iste postavke operacija</translation>
     </message>
     <message>
-      <location filename="../panels/PageBaseGeometryEdit.ui" line="72"/>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="52"/>
-      <location filename="../panels/PageBaseLocationEdit.ui" line="43"/>
       <location filename="../panels/PropertyBag.ui" line="62"/>
+      <location filename="../panels/PageBaseLocationEdit.ui" line="43"/>
+      <location filename="../panels/PageBaseGeometryEdit.ui" line="72"/>
       <source>Add</source>
       <translation>Dodaj</translation>
     </message>
@@ -692,16 +692,16 @@ Za materijal obrade iz graničnog okvira to znači dodatni materijal u svim smje
       <translation>Lista operacija sa baznom geometrijom u trenutnom poslu</translation>
     </message>
     <message>
-      <location filename="../panels/PageBaseGeometryEdit.ui" line="82"/>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="62"/>
-      <location filename="../panels/PageBaseLocationEdit.ui" line="53"/>
       <location filename="../panels/PropertyBag.ui" line="48"/>
+      <location filename="../panels/PageBaseLocationEdit.ui" line="53"/>
+      <location filename="../panels/PageBaseGeometryEdit.ui" line="82"/>
       <source>Remove</source>
       <translation>Ukloniti</translation>
     </message>
     <message>
-      <location filename="../panels/PageBaseGeometryEdit.ui" line="92"/>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="149"/>
+      <location filename="../panels/PageBaseGeometryEdit.ui" line="92"/>
       <source>Clear</source>
       <translation>Brisanje</translation>
     </message>
@@ -724,8 +724,8 @@ Poništi briše sve trenutne stavke s popisa i popunjava popis svim kružnim rup
       <translation>Svojstva</translation>
     </message>
     <message>
-      <location filename="../panels/ToolEditor.ui" line="96"/>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="41"/>
+      <location filename="../panels/ToolEditor.ui" line="96"/>
       <source>Diameter</source>
       <translation>Promjer</translation>
     </message>
@@ -795,32 +795,32 @@ Poništi briše sve trenutne stavke s popisa i popunjava popis svim kružnim rup
       <translation>Uredi</translation>
     </message>
     <message>
-      <location filename="../panels/PageDepthsEdit.ui" line="39"/>
       <location filename="../panels/SetupGlobal.ui" line="36"/>
+      <location filename="../panels/PageDepthsEdit.ui" line="39"/>
       <source>Start depth</source>
       <translation>Početna dubina</translation>
     </message>
     <message>
-      <location filename="../panels/PageDepthsEdit.ui" line="46"/>
       <location filename="../panels/PageDiametersEdit.ui" line="27"/>
+      <location filename="../panels/PageDepthsEdit.ui" line="46"/>
       <source>Start depth of the operation. The highest point in Z-axis the operation needs to process.</source>
       <translation>Dubina početka operacije. Najviša točka u Z-osi koju operacija treba obraditi.</translation>
     </message>
     <message>
-      <location filename="../panels/PageDepthsEdit.ui" line="59"/>
       <location filename="../panels/PageDiametersEdit.ui" line="43"/>
+      <location filename="../panels/PageDepthsEdit.ui" line="59"/>
       <source>Transfer the Z value of the selected feature as the start depth for the operation</source>
       <translation>Prenesite Z vrijednost odabrane značajke kao početnu dubinu operacije</translation>
     </message>
     <message>
-      <location filename="../panels/PageDepthsEdit.ui" line="85"/>
       <location filename="../panels/SetupGlobal.ui" line="52"/>
+      <location filename="../panels/PageDepthsEdit.ui" line="85"/>
       <source>Final depth</source>
       <translation>Konačna dubina</translation>
     </message>
     <message>
-      <location filename="../panels/PageDepthsEdit.ui" line="92"/>
       <location filename="../panels/PageDiametersEdit.ui" line="64"/>
+      <location filename="../panels/PageDepthsEdit.ui" line="92"/>
       <source>The depth of the operation which corresponds to the lowest value in Z-axis the operation needs to process.</source>
       <translation>Dubina operacije koja odgovara najnižoj vrijednosti u Z-osi koju operacija treba obraditi."</translation>
     </message>
@@ -830,8 +830,8 @@ Poništi briše sve trenutne stavke s popisa i popunjava popis svim kružnim rup
       <translation>Prenesite Z vrijednost odabrane značajke kao konačnu dubinu operacije</translation>
     </message>
     <message>
-      <location filename="../panels/PageDepthsEdit.ui" line="131"/>
       <location filename="../panels/SetupGlobal.ui" line="68"/>
+      <location filename="../panels/PageDepthsEdit.ui" line="131"/>
       <source>Step down</source>
       <translation>Korak dolje</translation>
     </message>
@@ -887,25 +887,25 @@ Poništi briše sve trenutne stavke s popisa i popunjava popis svim kružnim rup
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="255"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="43"/>
       <location filename="../panels/PageOpVcarveEdit.ui" line="43"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="43"/>
       <source>Coolant Mode</source>
       <translation>Način rada rashladnog sredstva</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="29"/>
       <location filename="../panels/SetupGlobal.ui" line="180"/>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="29"/>
-      <location filename="../panels/PageOpThreadMillingEdit.ui" line="29"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="29"/>
       <location filename="../panels/PageOpDrillingEdit.ui" line="35"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="29"/>
+      <location filename="../panels/PageOpThreadMillingEdit.ui" line="29"/>
       <source>Tool Controller</source>
       <translation>Kontroler Alata</translation>
     </message>
     <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="33"/>
       <location filename="../panels/PageOpHelixEdit.ui" line="43"/>
       <location filename="../panels/SetupGlobal.ui" line="249"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="33"/>
       <source>Coolant</source>
       <translation>Rashladno sredstvo</translation>
     </message>
@@ -959,34 +959,34 @@ Veće vrijednosti (dalje udesno) će brže izračunati; manje vrijednosti (dalje
       <translation>Kut ulaznog stošca spirale (helix)</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="53"/>
-      <location filename="../panels/PageOpSlotEdit.ui" line="35"/>
-      <location filename="../panels/PageOpCustomEdit.ui" line="35"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="29"/>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="29"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="29"/>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="29"/>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="23"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="53"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="29"/>
+      <location filename="../panels/PageOpCustomEdit.ui" line="35"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="29"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="35"/>
       <location filename="../panels/PageOpProbeEdit.ui" line="35"/>
+      <location filename="../panels/PageOpEngraveEdit.ui" line="29"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="29"/>
       <source>Tool controller</source>
       <translation>Kontroler alata</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="99"/>
-      <location filename="../panels/PageOpSlotEdit.ui" line="59"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="57"/>
-      <location filename="../panels/PageOpCustomEdit.ui" line="59"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="57"/>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="57"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="57"/>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="57"/>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="53"/>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="43"/>
-      <location filename="../panels/PageOpProbeEdit.ui" line="49"/>
-      <location filename="../panels/PageOpThreadMillingEdit.ui" line="43"/>
-      <location filename="../panels/PageOpTappingEdit.ui" line="117"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="57"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="99"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="53"/>
+      <location filename="../panels/PageOpCustomEdit.ui" line="59"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="57"/>
       <location filename="../panels/PageOpDrillingEdit.ui" line="73"/>
+      <location filename="../panels/PageOpTappingEdit.ui" line="117"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="57"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="57"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="59"/>
+      <location filename="../panels/PageOpThreadMillingEdit.ui" line="43"/>
+      <location filename="../panels/PageOpProbeEdit.ui" line="49"/>
+      <location filename="../panels/PageOpEngraveEdit.ui" line="57"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="57"/>
       <source>Edit Tool Controller</source>
       <translation>Uredi Kontroler alata</translation>
     </message>
@@ -1021,8 +1021,8 @@ Veće vrijednosti (dalje udesno) će brže izračunati; manje vrijednosti (dalje
       <translation>Kut rampe spirale</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="244"/>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="196"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="244"/>
       <source>Use outline</source>
       <translation>Koristi vanjsku liniju</translation>
     </message>
@@ -1062,8 +1062,8 @@ Veće vrijednosti (dalje udesno) će brže izračunati; manje vrijednosti (dalje
       <translation>Stop</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="138"/>
       <location filename="../panels/PageOpHelixEdit.ui" line="94"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="138"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="89"/>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="188"/>
       <source>Direction</source>
@@ -1141,8 +1141,8 @@ Veće vrijednosti (dalje udesno) će brže izračunati; manje vrijednosti (dalje
       <translation>Prekidanje</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpTappingEdit.ui" line="65"/>
       <location filename="../panels/PageOpDrillingEdit.ui" line="102"/>
+      <location filename="../panels/PageOpTappingEdit.ui" line="65"/>
       <source>Extend depth</source>
       <translation>Povećaj dubinu</translation>
     </message>
@@ -1172,8 +1172,8 @@ Veće vrijednosti (dalje udesno) će brže izračunati; manje vrijednosti (dalje
       <translation>Prekid pridržača</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpTappingEdit.ui" line="32"/>
       <location filename="../panels/PageOpDrillingEdit.ui" line="142"/>
+      <location filename="../panels/PageOpTappingEdit.ui" line="32"/>
       <source>Dwell</source>
       <translation>Mirovanje</translation>
     </message>
@@ -1183,8 +1183,8 @@ Veće vrijednosti (dalje udesno) će brže izračunati; manje vrijednosti (dalje
       <translation>Obrazac</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpTappingEdit.ui" line="25"/>
       <location filename="../panels/PageOpDrillingEdit.ui" line="95"/>
+      <location filename="../panels/PageOpTappingEdit.ui" line="25"/>
       <source>Time</source>
       <translation>Vrijeme</translation>
     </message>
@@ -1210,8 +1210,8 @@ Veće vrijednosti (dalje udesno) će brže izračunati; manje vrijednosti (dalje
       <translation>Upravljač alata</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpTappingEdit.ui" line="40"/>
       <location filename="../panels/PageOpDrillingEdit.ui" line="117"/>
+      <location filename="../panels/PageOpTappingEdit.ui" line="40"/>
       <source>None</source>
       <translation>Prazno</translation>
     </message>
@@ -1262,9 +1262,9 @@ Veće vrijednosti (dalje udesno) će brže izračunati; manje vrijednosti (dalje
       <translation>Specificirajte postotak promjera alata za koji će se svaki spiralni zavoj pomaknuti u odnosu na prethodni. Preklapanje od 100% znači da nema preklapanja pojedinačnih rezova.</translation>
     </message>
     <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="172"/>
       <location filename="../panels/PageOpHelixEdit.ui" line="118"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="185"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="172"/>
       <source>Step over percent</source>
       <translation>Preklapanje u procentima</translation>
     </message>
@@ -1370,39 +1370,39 @@ Potonje se može koristiti za oblaganje cijelog područja materijala obrade kako
       <translation>Uzorak</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="60"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="92"/>
       <location filename="../panels/PageOpHelixEdit.ui" line="36"/>
       <location filename="../panels/PageOpHelixEdit.ui" line="50"/>
-      <location filename="../panels/PageOpCustomEdit.ui" line="42"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="36"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="50"/>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="36"/>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="50"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="36"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="50"/>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="36"/>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="50"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="60"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="92"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="36"/>
-      <location filename="../panels/PageOpProbeEdit.ui" line="42"/>
+      <location filename="../panels/PageOpCustomEdit.ui" line="42"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="36"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="50"/>
       <location filename="../panels/PageOpDrillingEdit.ui" line="42"/>
       <location filename="../panels/PageOpDrillingEdit.ui" line="56"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="36"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="50"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="36"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="50"/>
+      <location filename="../panels/PageOpProbeEdit.ui" line="42"/>
+      <location filename="../panels/PageOpEngraveEdit.ui" line="36"/>
+      <location filename="../panels/PageOpEngraveEdit.ui" line="50"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="36"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="50"/>
       <source>The tool and its settings to be used for this operation</source>
       <translation>Alat i njegove postavke za ovu operaciju</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="85"/>
-      <location filename="../panels/PageOpSlotEdit.ui" line="52"/>
-      <location filename="../panels/PageOpCustomEdit.ui" line="49"/>
       <location filename="../panels/SetupGlobal.ui" line="261"/>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="43"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="43"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="85"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="46"/>
-      <location filename="../panels/PageOpTappingEdit.ui" line="96"/>
+      <location filename="../panels/PageOpCustomEdit.ui" line="49"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="43"/>
       <location filename="../panels/PageOpDrillingEdit.ui" line="49"/>
+      <location filename="../panels/PageOpTappingEdit.ui" line="96"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="43"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="52"/>
+      <location filename="../panels/PageOpEngraveEdit.ui" line="43"/>
       <source>Coolant mode</source>
       <translation>Način rada rashladnog sredstva</translation>
     </message>
@@ -1477,8 +1477,8 @@ Potonje se može koristiti za oblaganje cijelog područja materijala obrade kako
       <translation>Odredite treba li ova operacija koristiti početnu točku</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="234"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="264"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="234"/>
       <source>Use start point</source>
       <translation>Koristi početnu točku</translation>
     </message>
@@ -1747,9 +1747,9 @@ Potonje se može koristiti za oblaganje cijelog područja materijala obrade kako
       <translation>Produži početak staze</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="352"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="105"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="98"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="352"/>
       <source>Layer mode</source>
       <translation>Mod sloja</translation>
     </message>
@@ -1784,9 +1784,9 @@ Potonje se može koristiti za oblaganje cijelog područja materijala obrade kako
       <translation>Pozitivno produžuje završetak staze, negativno skraćuje</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="364"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="117"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="105"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="364"/>
       <source>Complete the operation in a single pass at depth, or multiple passes to final depth</source>
       <translation>Dovršite operaciju u jednom prolazu na dubini ili višestrukim prolazima do krajnje dubine</translation>
     </message>
@@ -2964,8 +2964,8 @@ Pogledajte politiku spremanja datoteka u nastavku kako biste saznali kako se nos
       <translation>Kosturi</translation>
     </message>
     <message>
-      <location filename="../panels/DogboneEdit.ui" line="35"/>
       <location filename="../panels/ZCorrectEdit.ui" line="35"/>
+      <location filename="../panels/DogboneEdit.ui" line="35"/>
       <source>Dressup</source>
       <translation>Dodani reljef (priprema)</translation>
     </message>
@@ -3200,27 +3200,27 @@ Pogledajte politiku spremanja datoteka u nastavku kako biste saznali kako se nos
   <context>
     <name>TaskPathSimulator</name>
     <message>
-      <location filename="../panels/TaskCAMSimulator.ui" line="14"/>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="14"/>
       <location filename="../panels/TaskPathSimulator.ui" line="14"/>
+      <location filename="../panels/TaskCAMSimulator.ui" line="14"/>
       <source>Path Simulator</source>
       <translation>Simulator putanje</translation>
     </message>
     <message>
-      <location filename="../panels/TaskCAMSimulator.ui" line="31"/>
       <location filename="../panels/TaskPathSimulator.ui" line="229"/>
+      <location filename="../panels/TaskCAMSimulator.ui" line="31"/>
       <source>Accuracy</source>
       <translation>Preciznost</translation>
     </message>
     <message>
-      <location filename="../panels/TaskCAMSimulator.ui" line="86"/>
       <location filename="../panels/TaskPathSimulator.ui" line="278"/>
+      <location filename="../panels/TaskCAMSimulator.ui" line="86"/>
       <source>Job</source>
       <translation>Zadatak</translation>
     </message>
     <message>
-      <location filename="../panels/TaskCAMSimulator.ui" line="103"/>
       <location filename="../panels/TaskPathSimulator.ui" line="55"/>
+      <location filename="../panels/TaskCAMSimulator.ui" line="103"/>
       <source>Activate/resume simulation</source>
       <translation>Aktivirajte/ nastavite simulaciju</translation>
     </message>
@@ -3235,8 +3235,8 @@ Pogledajte politiku spremanja datoteka u nastavku kako biste saznali kako se nos
       <translation>Stop</translation>
     </message>
     <message>
-      <location filename="../panels/TaskCAMSimulator.ui" line="106"/>
       <location filename="../panels/TaskPathSimulator.ui" line="58"/>
+      <location filename="../panels/TaskCAMSimulator.ui" line="106"/>
       <source>Play</source>
       <translation>Pokreni</translation>
     </message>
@@ -4060,12 +4060,12 @@ Zadano: "3mm"</translation>
       <location filename="../../../Path/Base/PropertyBag.py" line="77"/>
       <location filename="../../../Path/Base/PropertyBag.py" line="114"/>
       <source>List of custom property groups</source>
+      <extracomment>float = field(default=0) float = field(default=0) float = field(default=0) float = field(default=0) float = field(default=0) float = field(default=0) float = field(default=None) bool = field(default=False) str = field(default=&quot;G54&quot;) str = field(default=&quot;off&quot;) int = field(default=0) int = field(default=None)</extracomment>
       <translation>Lista grupa prilagođenih svojstava</translation>
     </message>
     <message>
       <location filename="../../../Path/Base/SetupSheet.py" line="115"/>
       <source>Default speed for horizontal rapid moves.</source>
-      <extracomment>float = field(default=0) float = field(default=0) float = field(default=0) float = field(default=0) float = field(default=0) float = field(default=0) float = field(default=None) bool = field(default=False) str = field(default=&quot;G54&quot;) str = field(default=&quot;off&quot;) int = field(default=0) int = field(default=None)</extracomment>
       <translation>Zadana brzina za vodoravne brze pomake.</translation>
     </message>
     <message>
@@ -4126,8 +4126,8 @@ Zadano: "3mm"</translation>
 </translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="905"/>
       <location filename="../../../Path/Dressup/Boundary.py" line="54"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="905"/>
       <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="56"/>
       <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="416"/>
       <source>The base path to modify</source>
@@ -4238,10 +4238,10 @@ Visina potpornih mostića.</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="43"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="75"/>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="170"/>
-      <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="60"/>
       <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="65"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="75"/>
+      <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="60"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="170"/>
       <source>The base toolpath to modify</source>
       <translation>Osnovna staza obrade za modifikaciju</translation>
     </message>
@@ -4471,9 +4471,9 @@ Visina potpornih mostića.</translation>
       <translation>Kolekcija svih kontrolera alata za ovaj zadatak</translation>
     </message>
     <message>
+      <location filename="../../../Path/Main/Job.py" line="487"/>
       <location filename="../../../Path/Op/Base.py" line="187"/>
       <location filename="../../../Path/Op/Base.py" line="444"/>
-      <location filename="../../../Path/Main/Job.py" line="487"/>
       <source>Operations Cycle Time Estimation</source>
       <translation>Procjena vremena ciklusa</translation>
     </message>
@@ -4553,9 +4553,9 @@ Visina potpornih mostića.</translation>
       <translation>Broj pomaka pričvršćenja</translation>
     </message>
     <message>
+      <location filename="../../../Path/Main/Gui/Fixture.py" line="64"/>
       <location filename="../../../Path/Op/Base.py" line="169"/>
       <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="57"/>
-      <location filename="../../../Path/Main/Gui/Fixture.py" line="64"/>
       <source>Make False, to prevent operation from generating code</source>
       <translation>Postavite na netočno da spriječite operaciju kod generiranja koda.</translation>
     </message>
@@ -4570,9 +4570,9 @@ Visina potpornih mostića.</translation>
       <translation>Vrsta prilagođene Operacije</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="170"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1692"/>
       <location filename="../../../Path/Op/PocketBase.py" line="154"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1692"/>
+      <location filename="../../../Path/Op/Helix.py" line="170"/>
       <source>Percent of cutter diameter to step over on each pass</source>
       <translation>Postotak promjera glodala koji bi preklapao u svakom prolazu</translation>
     </message>
@@ -4599,17 +4599,6 @@ Veće vrijednosti (dalje udesno) će brže izračunati; manje vrijednosti (dalje
       <location filename="../../../Path/Op/Adaptive.py" line="1719"/>
       <source>How much stock to leave in the XY plane (eg for finishing operation)</source>
       <translation>Koliko materijala obrade ostaviti u XY ravnini (tj. za završnu operaciju)</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1837"/>
-      <source>Orders cuts by region instead of depth. This property is only used if the ModelAwareExperiment is enabled.</source>
-      <translation>Sređuje rezove po području umjesto po dubini. Ovo svojstvo se koristi samo ako je omogućen ModelAwareExperiment.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1852"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1958"/>
-      <source>Enable the experimental model awareness feature to respect 3D geometry and prevent cutting under overhangs</source>
-      <translation>Omogućite eksperimentalnu značajku prepoznavanja modela kako biste poštovali 3D geometriju i spriječili rezanje ispod prevjesa</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1947"/>
@@ -4668,10 +4657,21 @@ Veće vrijednosti (dalje udesno) će brže izračunati; manje vrijednosti (dalje
       <translation>Ograničite promjer ulaza spirale, ako je ograničenje veće od promjera alata ili 0, koristi se promjer alata</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PocketShape.py" line="67"/>
       <location filename="../../../Path/Op/Adaptive.py" line="1828"/>
+      <location filename="../../../Path/Op/PocketShape.py" line="67"/>
       <source>Uses the outline of the base geometry.</source>
       <translation>Koristi konturu geometrije baze.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1837"/>
+      <source>Orders cuts by region instead of depth. This property is only used if the ModelAwareExperiment is enabled.</source>
+      <translation>Sređuje rezove po području umjesto po dubini. Ovo svojstvo se koristi samo ako je omogućen ModelAwareExperiment.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1852"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1958"/>
+      <source>Enable the experimental model awareness feature to respect 3D geometry and prevent cutting under overhangs</source>
+      <translation>Omogućite eksperimentalnu značajku prepoznavanja modela kako biste poštovali 3D geometriju i spriječili rezanje ispod prevjesa</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1936"/>
@@ -4787,9 +4787,9 @@ Veće vrijednosti (dalje udesno) će brže izračunati; manje vrijednosti (dalje
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="299"/>
-      <location filename="../../../Path/Op/Slot.py" line="235"/>
-      <location filename="../../../Path/Op/Surface.py" line="418"/>
       <location filename="../../../Path/Op/Waterline.py" line="453"/>
+      <location filename="../../../Path/Op/Surface.py" line="418"/>
+      <location filename="../../../Path/Op/Slot.py" line="235"/>
       <source>Make True, if specifying a Start Point</source>
       <translation>Postavite na Točno, ako se specificira Početna točka</translation>
     </message>
@@ -4879,14 +4879,14 @@ Veće vrijednosti (dalje udesno) će brže izračunati; manje vrijednosti (dalje
       <translation>Vrijeme zadržavanja između ciklusa kidanja strugotine</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Tapping.py" line="110"/>
       <location filename="../../../Path/Op/Drilling.py" line="147"/>
+      <location filename="../../../Path/Op/Tapping.py" line="110"/>
       <source>Enable dwell</source>
       <translation>Omogući pauzu</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Tapping.py" line="119"/>
       <location filename="../../../Path/Op/Drilling.py" line="156"/>
+      <location filename="../../../Path/Op/Tapping.py" line="119"/>
       <source>Calculate the tip length and subtract from final depth</source>
       <translation>Izračunajte duljinu vrha i oduzmite ga od krajnje dubine</translation>
     </message>
@@ -4916,9 +4916,9 @@ Koristite svojstvo KeepToolDown za promjenu ovoga</translation>
       <translation>Primijenite povlačenje G99: samo povucite do Povlačne visine između rupa u ovoj operaciji</translation>
     </message>
     <message>
+      <location filename="../../../Path/Op/Vcarve.py" line="294"/>
       <location filename="../../../Path/Op/Engrave.py" line="70"/>
       <location filename="../../../Path/Op/Engrave.py" line="78"/>
-      <location filename="../../../Path/Op/Vcarve.py" line="294"/>
       <source>Additional base objects to be engraved</source>
       <translation>Dodatni osnovni objekti koji trebaju biti gravirani</translation>
     </message>
@@ -4987,10 +4987,10 @@ Koristite svojstvo KeepToolDown za promjenu ovoga</translation>
       <translation>Isključite glodanje povišenih područja unutar površine.</translation>
     </message>
     <message>
+      <location filename="../../../Path/Op/Waterline.py" line="266"/>
+      <location filename="../../../Path/Op/Surface.py" line="240"/>
       <location filename="../../../Path/Op/Profile.py" line="116"/>
       <location filename="../../../Path/Op/Pocket.py" line="67"/>
-      <location filename="../../../Path/Op/Surface.py" line="240"/>
-      <location filename="../../../Path/Op/Waterline.py" line="266"/>
       <source>Choose how to process multiple Base Geometry features.</source>
       <translation>Odaberite način obrade značajki više osnovnih geometrija.</translation>
     </message>
@@ -5077,8 +5077,8 @@ Koristite svojstvo KeepToolDown za promjenu ovoga</translation>
       <translation>Izlazno mjesto ispisa za podatke sonde</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="107"/>
       <location filename="../../../Path/Op/PocketBase.py" line="131"/>
+      <location filename="../../../Path/Op/Profile.py" line="107"/>
       <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
       <translation>Smjer kojim staza obrade treba obilaziti dio (u smjeru kazaljke) CW ili (suprotno smjeru kazaljke) CCW</translation>
     </message>
@@ -5134,22 +5134,22 @@ Koristite svojstvo KeepToolDown za promjenu ovoga</translation>
       <translation>Broj prolaza koje treba napraviti. Ako ih je više od jednog, potrebna je vrijednost različita od nule za prolaz 'Pass stepover'</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="128"/>
       <location filename="../../../Path/Op/Waterline.py" line="204"/>
+      <location filename="../../../Path/Op/Surface.py" line="128"/>
       <source>Show the temporary path construction objects when module is in DEBUG mode.</source>
       <translation>Prikažite privremene objekte za izgradnju staza kada je modul u stanju DEBUG moda.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="148"/>
-      <location filename="../../../Path/Op/Surface.py" line="284"/>
       <location filename="../../../Path/Op/Waterline.py" line="328"/>
+      <location filename="../../../Path/Op/Surface.py" line="284"/>
+      <location filename="../../../Path/Op/Slot.py" line="148"/>
       <source>Set the geometric clearing pattern to use for the operation.</source>
       <translation>Postavite geometrijski uzorak čišćenja koji će se koristiti za operaciju.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="175"/>
-      <location filename="../../../Path/Op/Surface.py" line="319"/>
       <location filename="../../../Path/Op/Waterline.py" line="369"/>
+      <location filename="../../../Path/Op/Surface.py" line="319"/>
+      <location filename="../../../Path/Op/Slot.py" line="175"/>
       <source>Complete the operation in a single pass at depth, or multiple passes to final depth.</source>
       <translation>Dovršite operaciju u jednom prolazu na dubini ili višestrukim prolazima do krajnje dubine.</translation>
     </message>
@@ -5211,8 +5211,8 @@ Koristite svojstvo KeepToolDown za promjenu ovoga</translation>
       <translation>Prilagođena početna točka za stazu obrade ove operacije</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="412"/>
       <location filename="../../../Path/Op/Waterline.py" line="447"/>
+      <location filename="../../../Path/Op/Surface.py" line="412"/>
       <source>The custom start point for the path of this operation</source>
       <translation>Prilagođena početna točka za stazu ove operacije</translation>
     </message>
@@ -5258,81 +5258,81 @@ Koristite svojstvo KeepToolDown za promjenu ovoga</translation>
       <translation>Ravan: U ravnini, 3D skeniranje površine. Rotacijsko: rotacijsko skeniranje oko 4-te osi.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="205"/>
       <location filename="../../../Path/Op/Waterline.py" line="231"/>
+      <location filename="../../../Path/Op/Surface.py" line="205"/>
       <source>Avoid cutting the last &apos;N&apos; faces in the Base Geometry list of selected faces.</source>
       <translation>Izbjegavajte rezanje zadnjih 'N' lica na popisu Osnovna geometrija lista odabranih površina.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="213"/>
       <location filename="../../../Path/Op/Waterline.py" line="239"/>
+      <location filename="../../../Path/Op/Surface.py" line="213"/>
       <source>Do not cut internal features on avoided faces.</source>
       <translation>Ne skraćujte unutarnja svojstva površina koje se izbjegavaju</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="222"/>
       <location filename="../../../Path/Op/Waterline.py" line="248"/>
+      <location filename="../../../Path/Op/Surface.py" line="222"/>
       <source>Positive values push the cutter toward, or beyond, the boundary. Negative values retract the cutter away from the boundary.</source>
       <translation>Pozitivne vrijednosti guraju rezač prema ili preko granice. Negativne vrijednosti povlače rezač od granice.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="231"/>
       <location filename="../../../Path/Op/Waterline.py" line="257"/>
+      <location filename="../../../Path/Op/Surface.py" line="231"/>
       <source>If true, the cutter will remain inside the boundaries of the model or selected face(s).</source>
       <translation>Ako je istinito, rezač ostaje unutar granica modela ili odabrane površine(a).</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="249"/>
       <location filename="../../../Path/Op/Waterline.py" line="275"/>
+      <location filename="../../../Path/Op/Surface.py" line="249"/>
       <source>Positive values push the cutter toward, or into, the feature. Negative values retract the cutter away from the feature.</source>
       <translation>Pozitivni pomaci guraju rezač prema ili u značajku. Negativni pomaci povlače rezač od značajke.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="258"/>
       <location filename="../../../Path/Op/Waterline.py" line="284"/>
+      <location filename="../../../Path/Op/Surface.py" line="258"/>
       <source>Cut internal feature areas within a larger selected face.</source>
       <translation>Glodanje unutarnjih područja značajke unutar veće odabrane površine.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="266"/>
       <location filename="../../../Path/Op/Waterline.py" line="301"/>
+      <location filename="../../../Path/Op/Surface.py" line="266"/>
       <source>Select the overall boundary for the operation.</source>
       <translation>Odaberite cjelokupnu granicu za operaciju.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="275"/>
       <location filename="../../../Path/Op/Waterline.py" line="319"/>
+      <location filename="../../../Path/Op/Surface.py" line="275"/>
       <source>Set the direction for the cutting tool to engage the material: Climb (ClockWise) or Conventional (CounterClockWise)</source>
       <translation>Postavite smjer alata  glodanja koji zahvaća materijal: Penjanje (U smjeru kazaljke na satu) ili Konvencionalno (Suprotno smjeru kazaljke na satu)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="292"/>
       <location filename="../../../Path/Op/Waterline.py" line="336"/>
+      <location filename="../../../Path/Op/Surface.py" line="292"/>
       <source>The yaw angle used for certain clearing patterns</source>
       <translation>Kut otklona koji se koristi za određene uzorke čišćenja (ulanjanja)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="301"/>
       <location filename="../../../Path/Op/Waterline.py" line="345"/>
+      <location filename="../../../Path/Op/Surface.py" line="301"/>
       <source>Reverse the cut order of the stepover paths. For circular cut patterns, begin at the outside and work toward the center.</source>
       <translation>Obrnite redoslijed glodanja preklapajućih staza. Za kružne uzorke glodanja, 
 započnite s vanjske strane i radite prema sredini.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="310"/>
       <location filename="../../../Path/Op/Waterline.py" line="354"/>
+      <location filename="../../../Path/Op/Surface.py" line="310"/>
       <source>Set the Z-axis depth offset from the target surface.</source>
       <translation>Postavite dubinu pomaka Z-osi od ciljne površine.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="325"/>
       <location filename="../../../Path/Op/Waterline.py" line="375"/>
+      <location filename="../../../Path/Op/Surface.py" line="325"/>
       <source>Set the start point for the cut pattern.</source>
       <translation>Postavite početnu točku glodanja uzorka.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="334"/>
       <location filename="../../../Path/Op/Waterline.py" line="384"/>
+      <location filename="../../../Path/Op/Surface.py" line="334"/>
       <source>Choose location of the center point for starting the cut pattern.</source>
       <translation>Odaberite mjesto središnje točke za početak glodanja uzorka.</translation>
     </message>
@@ -5342,26 +5342,26 @@ započnite s vanjske strane i radite prema sredini.</translation>
       <translation>Profilirajte rubove odabira</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="349"/>
       <location filename="../../../Path/Op/Waterline.py" line="393"/>
+      <location filename="../../../Path/Op/Surface.py" line="349"/>
       <source>Set the sampling resolution. Smaller values quickly increase processing time.</source>
       <translation>Postavite rezoluciju uzorkovanja. Manje vrijednosti brzo povećavaju vrijeme naknadne obrade.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="358"/>
       <location filename="../../../Path/Op/Waterline.py" line="402"/>
+      <location filename="../../../Path/Op/Surface.py" line="358"/>
       <source>Set the stepover percentage, based on the tool&apos;s diameter.</source>
       <translation>Postavite postotak preklapanja na temelju promjera alata.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="367"/>
       <location filename="../../../Path/Op/Waterline.py" line="411"/>
+      <location filename="../../../Path/Op/Surface.py" line="367"/>
       <source>Enable optimization of linear paths (co-linear points). Removes unnecessary co-linear points from G-code output.</source>
       <translation>Omogućiti optimizaciju linearnih staza (kolinearnih točaka). Uklanja nepotrebne kolinearne točke iz izvoza G-koda.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="376"/>
       <location filename="../../../Path/Op/Waterline.py" line="420"/>
+      <location filename="../../../Path/Op/Surface.py" line="376"/>
       <source>Enable separate optimization of transitions between, and breaks within, each step over path.</source>
       <translation>Omogućite zasebnu optimizaciju prijelaza između i unutar svakog preklapanja staze.</translation>
     </message>
@@ -5371,14 +5371,14 @@ započnite s vanjske strane i radite prema sredini.</translation>
       <translation>Pretvorite koplanarne lukove u G2 / G3  G-code naredbe za uzorke rezanja `Kružno` i` Kružno CikCak`.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="394"/>
       <location filename="../../../Path/Op/Waterline.py" line="429"/>
+      <location filename="../../../Path/Op/Surface.py" line="394"/>
       <source>Collinear and co-radial artifact gaps that are smaller than this threshold are closed in the path.</source>
       <translation>Kolinearni i ko-radijalni artefakti koji su manji od ovog praga su zatvoreni u stazu.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="403"/>
       <location filename="../../../Path/Op/Waterline.py" line="438"/>
+      <location filename="../../../Path/Op/Surface.py" line="403"/>
       <source>Feedback: three smallest gaps identified in the path geometry.</source>
       <translation>Povratne informacije: tri najmanja razmaka identificirana u geometriji staze.</translation>
     </message>
@@ -5501,8 +5501,8 @@ započnite s vanjske strane i radite prema sredini.</translation>
       <translation>Ignorirajte vanjske vodne linije iznad ove visine.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="54"/>
       <location filename="../../../Path/Dressup/Array.py" line="49"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="54"/>
       <source>Pattern method</source>
       <translation>Metoda Uzorka</translation>
     </message>
@@ -5512,14 +5512,14 @@ započnite s vanjske strane i radite prema sredini.</translation>
       <translation>Napravite kopije u smjeru X prije Y u linearnom 2D uzorku</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="71"/>
       <location filename="../../../Path/Dressup/Array.py" line="66"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="71"/>
       <source>The number of copies in X-direction in linear pattern</source>
       <translation>Broj kopija u smjeru X u pravocrtnom uzorku</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="79"/>
       <location filename="../../../Path/Dressup/Array.py" line="74"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="79"/>
       <source>The number of copies in Y-direction in linear pattern</source>
       <translation>Broj kopija u smjeru Y u pravocrtnom uzorku</translation>
     </message>
@@ -5529,21 +5529,21 @@ započnite s vanjske strane i radite prema sredini.</translation>
       <translation>Napravite kopije u smjeru X prije Y u linearnom 2D uzorku</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="114"/>
       <location filename="../../../Path/Dressup/Array.py" line="109"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="114"/>
       <source>Percent of copies to randomly offset</source>
       <translation>Postotak kopija za slučajno odstupanje</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="120"/>
       <location filename="../../../Path/Dressup/Array.py" line="115"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="120"/>
       <source>Maximum random offset of copies</source>
       <translation>Maksimalni slučajni pomak kopija</translation>
     </message>
     <message>
+      <location filename="../../../Path/Dressup/Array.py" line="121"/>
       <location filename="../../../Path/Op/Gui/Array.py" line="126"/>
       <location filename="../../../Path/Op/Gui/Array.py" line="209"/>
-      <location filename="../../../Path/Dressup/Array.py" line="121"/>
       <source>Seed value for jitter randomness</source>
       <translation>Vrijednost seed za slučajnost jitter</translation>
     </message>
@@ -5553,26 +5553,26 @@ započnite s vanjske strane i radite prema sredini.</translation>
       <translation>Puteve obrade na matricu</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="63"/>
       <location filename="../../../Path/Dressup/Array.py" line="58"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="63"/>
       <source>The spacing between the array copies in linear pattern</source>
       <translation>Razmak između kopija matrice u linearnom uzorku</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="85"/>
       <location filename="../../../Path/Dressup/Array.py" line="80"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="85"/>
       <source>Total angle in polar pattern</source>
       <translation>Ukupni kut u polarnom uzorku</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="93"/>
       <location filename="../../../Path/Dressup/Array.py" line="88"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="93"/>
       <source>The number of copies in linear 1D and polar pattern</source>
       <translation>Broj kopija u linearnom 1D i polarnom uzorku</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="99"/>
       <location filename="../../../Path/Dressup/Array.py" line="94"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="99"/>
       <source>The centre of rotation in polar pattern</source>
       <translation>Središte rotacije u polarnom uzorku</translation>
     </message>
@@ -5583,9 +5583,9 @@ započnite s vanjske strane i radite prema sredini.</translation>
       <translation>Alat kontroler koji će se koristiti za izračunavanje staze obrade</translation>
     </message>
     <message>
+      <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="78"/>
       <location filename="../../../Path/Op/Gui/Array.py" line="147"/>
       <location filename="../../../Path/Op/Gui/Array.py" line="218"/>
-      <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="78"/>
       <source>Operations cycle time estimation</source>
       <translation>Procjena vremena ciklusa</translation>
     </message>
@@ -5847,7 +5847,7 @@ Staza obrade koju treba kopirati</translation>
       <translation>Nije moguće stvoriti stazu za površinu(e).</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="686"/>
+      <location filename="../../../Path/Op/Profile.py" line="692"/>
       <source>Check edge selection and Final Depth requirements for profiling open edge(s).</source>
       <translation>Provjerite odabir ruba i zahtjeve za konačnu dubinu za profiliranje otvorenih rubova.</translation>
     </message>
@@ -6654,26 +6654,26 @@ Odaberite jednu ili više okomitih strana za pretraživanje strana petlje koje t
   <context>
     <name>CAM_DressupDogbone</name>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="1323"/>
       <location filename="../../../Path/Dressup/Gui/DogboneII.py" line="331"/>
+      <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="1323"/>
       <source>Dogbone</source>
       <translation>Pseća kost</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="1327"/>
       <location filename="../../../Path/Dressup/Gui/DogboneII.py" line="335"/>
+      <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="1327"/>
       <source>Creates a dogbone dress-up object from a selected toolpath</source>
       <translation>Stvara Dogbone Dress-up objekt iz odabrane staze obrade</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="1343"/>
       <location filename="../../../Path/Dressup/Gui/DogboneII.py" line="351"/>
+      <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="1343"/>
       <source>Select one toolpath object</source>
       <translation>Odaberite jedan objekt staze obrade</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="1349"/>
       <location filename="../../../Path/Dressup/Gui/DogboneII.py" line="357"/>
+      <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="1349"/>
       <source>The selected object is not a toolpath</source>
       <translation>Odabrani objekt nije staza obrade</translation>
     </message>
@@ -6790,8 +6790,8 @@ Odaberite jednu ili više okomitih strana za pretraživanje strana petlje koje t
       <translation>Odaberi datoteku mjernih točaka</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Probe.py" line="107"/>
       <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="288"/>
+      <location filename="../../../Path/Op/Gui/Probe.py" line="107"/>
       <source>All Files (*.*)</source>
       <translation>Sve datoteke (*.*)</translation>
     </message>
@@ -7625,15 +7625,15 @@ Razmotrite specificiranje Materijala obrade</translation>
       <translation>Neplanarni prilagodljivi početak također nije dostupan.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Engrave.py" line="75"/>
       <location filename="../../../Path/Op/Gui/Vcarve.py" line="67"/>
+      <location filename="../../../Path/Op/Gui/Engrave.py" line="75"/>
       <source>%s is not a Base Model object of the job %s</source>
       <translation>%s nije objekt osnovnog modela zadatka %s</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Probe.py" line="70"/>
-      <location filename="../../../Path/Op/Gui/ThreadMilling.py" line="113"/>
       <location filename="../../../Path/Op/Gui/Vcarve.py" line="177"/>
+      <location filename="../../../Path/Op/Gui/ThreadMilling.py" line="113"/>
       <source>No valid toolcontroller</source>
       <translation>Nema valjanog upravljača alata</translation>
     </message>
@@ -7840,9 +7840,9 @@ This will not delete the toolbits contained within it.</source>
 Ovim se neće izbrisati alati koji se u njoj nalaze.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/toolbit/ui/browser.py" line="289"/>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="430"/>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="470"/>
+      <location filename="../../../Path/Tool/toolbit/ui/browser.py" line="289"/>
       <source>Error</source>
       <translation>Pogreška</translation>
     </message>
@@ -9150,79 +9150,79 @@ Ovim se neće izbrisati alati koji se u njoj nalaze.</translation>
   <context>
     <name>ToolBitShape</name>
     <message>
-      <location filename="../../../Path/Tool/shape/models/vbit.py" line="41"/>
+      <location filename="../../../Path/Tool/shape/models/custom.py" line="43"/>
+      <location filename="../../../Path/Tool/shape/models/endmill.py" line="37"/>
       <location filename="../../../Path/Tool/shape/models/radius.py" line="40"/>
+      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="45"/>
+      <location filename="../../../Path/Tool/shape/models/reamer.py" line="37"/>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="41"/>
       <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="35"/>
-      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="45"/>
       <location filename="../../../Path/Tool/shape/models/ballend.py" line="37"/>
-      <location filename="../../../Path/Tool/shape/models/custom.py" line="43"/>
-      <location filename="../../../Path/Tool/shape/models/reamer.py" line="37"/>
-      <location filename="../../../Path/Tool/shape/models/endmill.py" line="37"/>
+      <location filename="../../../Path/Tool/shape/models/vbit.py" line="41"/>
       <source>Cutting edge height</source>
       <translation>Visina reznog ruba</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="49"/>
-      <location filename="../../../Path/Tool/shape/models/drill.py" line="37"/>
-      <location filename="../../../Path/Tool/shape/models/vbit.py" line="45"/>
-      <location filename="../../../Path/Tool/shape/models/radius.py" line="44"/>
-      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="45"/>
-      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="39"/>
-      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="49"/>
-      <location filename="../../../Path/Tool/shape/models/ballend.py" line="41"/>
       <location filename="../../../Path/Tool/shape/models/custom.py" line="47"/>
-      <location filename="../../../Path/Tool/shape/models/reamer.py" line="41"/>
       <location filename="../../../Path/Tool/shape/models/endmill.py" line="41"/>
+      <location filename="../../../Path/Tool/shape/models/drill.py" line="37"/>
+      <location filename="../../../Path/Tool/shape/models/radius.py" line="44"/>
+      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="49"/>
+      <location filename="../../../Path/Tool/shape/models/reamer.py" line="41"/>
+      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="45"/>
+      <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="49"/>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="39"/>
+      <location filename="../../../Path/Tool/shape/models/ballend.py" line="41"/>
+      <location filename="../../../Path/Tool/shape/models/vbit.py" line="45"/>
       <source>Diameter</source>
       <translation>Promjer</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="53"/>
-      <location filename="../../../Path/Tool/shape/models/dovetail.py" line="53"/>
-      <location filename="../../../Path/Tool/shape/models/drill.py" line="41"/>
-      <location filename="../../../Path/Tool/shape/models/vbit.py" line="49"/>
-      <location filename="../../../Path/Tool/shape/models/radius.py" line="52"/>
-      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="49"/>
-      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="43"/>
-      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="53"/>
       <location filename="../../../Path/Tool/shape/models/threadmill.py" line="45"/>
-      <location filename="../../../Path/Tool/shape/models/ballend.py" line="45"/>
       <location filename="../../../Path/Tool/shape/models/custom.py" line="51"/>
       <location filename="../../../Path/Tool/shape/models/endmill.py" line="45"/>
+      <location filename="../../../Path/Tool/shape/models/drill.py" line="41"/>
       <location filename="../../../Path/Tool/shape/models/tap.py" line="45"/>
+      <location filename="../../../Path/Tool/shape/models/radius.py" line="52"/>
+      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="53"/>
+      <location filename="../../../Path/Tool/shape/models/dovetail.py" line="53"/>
+      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="49"/>
+      <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="53"/>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="43"/>
+      <location filename="../../../Path/Tool/shape/models/ballend.py" line="45"/>
+      <location filename="../../../Path/Tool/shape/models/vbit.py" line="49"/>
       <source>Flutes</source>
       <translation>Žljebovi</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="57"/>
-      <location filename="../../../Path/Tool/shape/models/dovetail.py" line="57"/>
-      <location filename="../../../Path/Tool/shape/models/drill.py" line="45"/>
-      <location filename="../../../Path/Tool/shape/models/vbit.py" line="53"/>
-      <location filename="../../../Path/Tool/shape/models/radius.py" line="56"/>
-      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="53"/>
-      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="47"/>
-      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="57"/>
       <location filename="../../../Path/Tool/shape/models/threadmill.py" line="49"/>
-      <location filename="../../../Path/Tool/shape/models/ballend.py" line="49"/>
       <location filename="../../../Path/Tool/shape/models/custom.py" line="55"/>
-      <location filename="../../../Path/Tool/shape/models/reamer.py" line="45"/>
       <location filename="../../../Path/Tool/shape/models/endmill.py" line="49"/>
+      <location filename="../../../Path/Tool/shape/models/drill.py" line="45"/>
+      <location filename="../../../Path/Tool/shape/models/radius.py" line="56"/>
+      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="57"/>
+      <location filename="../../../Path/Tool/shape/models/dovetail.py" line="57"/>
+      <location filename="../../../Path/Tool/shape/models/reamer.py" line="45"/>
+      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="53"/>
+      <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="57"/>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="47"/>
+      <location filename="../../../Path/Tool/shape/models/ballend.py" line="49"/>
+      <location filename="../../../Path/Tool/shape/models/vbit.py" line="53"/>
       <source>Overall tool length</source>
       <translation>Ukupna duljina alata</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="61"/>
-      <location filename="../../../Path/Tool/shape/models/dovetail.py" line="69"/>
-      <location filename="../../../Path/Tool/shape/models/vbit.py" line="57"/>
-      <location filename="../../../Path/Tool/shape/models/radius.py" line="60"/>
-      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="57"/>
-      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="51"/>
-      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="61"/>
       <location filename="../../../Path/Tool/shape/models/threadmill.py" line="61"/>
-      <location filename="../../../Path/Tool/shape/models/ballend.py" line="53"/>
-      <location filename="../../../Path/Tool/shape/models/reamer.py" line="49"/>
       <location filename="../../../Path/Tool/shape/models/tap.py" line="53"/>
+      <location filename="../../../Path/Tool/shape/models/radius.py" line="60"/>
+      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="61"/>
+      <location filename="../../../Path/Tool/shape/models/dovetail.py" line="69"/>
+      <location filename="../../../Path/Tool/shape/models/reamer.py" line="49"/>
+      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="57"/>
+      <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="61"/>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="51"/>
+      <location filename="../../../Path/Tool/shape/models/ballend.py" line="53"/>
+      <location filename="../../../Path/Tool/shape/models/vbit.py" line="57"/>
       <source>Shank diameter</source>
       <translation>Promjer osovine</translation>
     </message>
@@ -9232,15 +9232,15 @@ Ovim se neće izbrisati alati koji se u njoj nalaze.</translation>
       <translation>Kuglast</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/vbit.py" line="37"/>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="37"/>
+      <location filename="../../../Path/Tool/shape/models/vbit.py" line="37"/>
       <source>Cutting edge angle</source>
       <translation>Kut rezanja ruba</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/vbit.py" line="61"/>
       <location filename="../../../Path/Tool/shape/models/radius.py" line="64"/>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="61"/>
+      <location filename="../../../Path/Tool/shape/models/vbit.py" line="61"/>
       <source>Tip diameter</source>
       <translation>Promjer vrha alata</translation>
     </message>
@@ -9255,14 +9255,14 @@ Ovim se neće izbrisati alati koji se u njoj nalaze.</translation>
       <translation>Nepoznat prilagođeni oblik</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/dovetail.py" line="37"/>
       <location filename="../../../Path/Tool/shape/models/threadmill.py" line="37"/>
+      <location filename="../../../Path/Tool/shape/models/dovetail.py" line="37"/>
       <source>Crest height</source>
       <translation>Visina kreste</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/dovetail.py" line="41"/>
       <location filename="../../../Path/Tool/shape/models/threadmill.py" line="65"/>
+      <location filename="../../../Path/Tool/shape/models/dovetail.py" line="41"/>
       <source>Cutting angle</source>
       <translation>Kut rezanja</translation>
     </message>
@@ -9272,20 +9272,20 @@ Ovim se neće izbrisati alati koji se u njoj nalaze.</translation>
       <translation>Visina lastinog repa</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/dovetail.py" line="49"/>
       <location filename="../../../Path/Tool/shape/models/threadmill.py" line="41"/>
+      <location filename="../../../Path/Tool/shape/models/dovetail.py" line="49"/>
       <source>Major diameter</source>
       <translation>Vanjski promjer</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/dovetail.py" line="61"/>
       <location filename="../../../Path/Tool/shape/models/threadmill.py" line="53"/>
+      <location filename="../../../Path/Tool/shape/models/dovetail.py" line="61"/>
       <source>Neck diameter</source>
       <translation>Promjer vrata</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/dovetail.py" line="65"/>
       <location filename="../../../Path/Tool/shape/models/threadmill.py" line="57"/>
+      <location filename="../../../Path/Tool/shape/models/dovetail.py" line="65"/>
       <source>Neck length</source>
       <translation>Dužina vrata</translation>
     </message>

@@ -106,9 +106,9 @@ void TaskImage::connectSignals()
     connect(ui->sliderTransparency, qOverload<int>(&QSlider::valueChanged),
         this, &TaskImage::changeTransparency);
 
-    connect(ui->spinBoxWidth, &QuantitySpinBox::editingFinished,
+    connect(ui->spinBoxWidth, qOverload<double>(&QuantitySpinBox::valueChanged),
         this, &TaskImage::changeWidth);
-    connect(ui->spinBoxHeight, &QuantitySpinBox::editingFinished,
+    connect(ui->spinBoxHeight, qOverload<double>(&QuantitySpinBox::valueChanged),
         this, &TaskImage::changeHeight);
     connect(ui->pushButtonScale, &QPushButton::clicked,
         this, &TaskImage::onInteractiveScale);

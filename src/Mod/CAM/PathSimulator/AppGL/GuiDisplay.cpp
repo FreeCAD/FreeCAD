@@ -23,12 +23,16 @@
  ***************************************************************************/
 
 #include "GuiDisplay.h"
-#include "OpenGlWrapper.h"
+
+#include "GlUtils.h"
 #include "MillSimulation.h"
 #include <cstddef>
 #include <QToolTip>
 #include <QPoint>
 #include <QCoreApplication>
+
+// include this last as the defines can mess up other includes
+#include "OpenGlWrapper.h"
 
 using namespace MillSim;
 

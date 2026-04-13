@@ -24,6 +24,11 @@
 
 #pragma once
 
+// The defines in this file can mess up other includes that are using OpenGL function names as
+// reported in #28950. For this reason this file must be included last. To avoid having to track
+// multiple levels of includes, this file should only be included in source files and not in
+// headers. If OpenGL defines are needed in headers, use <QOpenGLFunctions>.
+
 #include "DlgCAMSimulator.h"
 
 #define gSimWindow CAMSimulator::DlgCAMSimulator::instance()
@@ -47,7 +52,7 @@
 #define glLinkProgram gSimWindow->glLinkProgram
 #define glGetProgramiv gSimWindow->glGetProgramiv
 #define glGetUniformLocation gSimWindow->glGetUniformLocation
-#define glGetError(...) /* GL( */ gSimWindow->glGetError(__VA_ARGS__) /* ) */
+#define glGetError gSimWindow->glGetError
 #define glEnable gSimWindow->glEnable
 #define glColorMask gSimWindow->glColorMask
 #define glCullFace gSimWindow->glCullFace
@@ -91,3 +96,32 @@
 #define glLineWidth gSimWindow->glLineWidth
 #define glGetShaderiv gSimWindow->glGetShaderiv
 #define glGetShaderInfoLog gSimWindow->glGetShaderInfoLog
+
+#define GL(x) \
+    { \
+        GLClearError(); \
+        x; \
+        if (GLLogError()) \
+            __debugbreak(); \
+    }
+
+#define GLDELETE(type, x) \
+    { \
+        if (x != 0) \
+            glDelete##type(1, &x); \
+        x = 0; \
+    }
+
+#define GLDELETE_FRAMEBUFFER(x) GLDELETE(Framebuffers, x)
+#define GLDELETE_TEXTURE(x) GLDELETE(Textures, x)
+#define GLDELETE_VERTEXARRAY(x) GLDELETE(VertexArrays, x)
+#define GLDELETE_RENDERBUFFER(x) GLDELETE(Renderbuffers, x)
+#define GLDELETE_BUFFER(x) GLDELETE(Buffers, x)
+
+namespace MillSim
+{
+
+void GLClearError();
+bool GLLogError();
+
+}  // namespace MillSim

@@ -31,7 +31,7 @@ __url__ = "https://www.freecad.org"
 
 import numpy as np
 import time
-from os.path import join
+import os
 
 import FreeCAD
 
@@ -42,6 +42,7 @@ from .write_constraint_displacement import WriterDisplacement
 from .write_constraint_fixed import WriterFixed
 from .write_constraint_force import WriterForce
 from .write_constraint_pressure import WriterPressure
+from .write_sectionprint import WriterSectionPrint
 from .write_element1D import WriterElement1D
 from .write_element2D import WriterElement2D
 from .write_material import WriterMaterial
@@ -67,6 +68,7 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
         self.write_z88_mesh()
         self.write_z88_constraints()
         self.write_z88_face_loads()
+        self.write_z88_section_prints()
         self.write_z88_materials()
         self.write_z88_elements_properties()
         self.write_z88_integration_properties()
@@ -80,7 +82,7 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
 
     # ********************************************************************************************
     def write_z88_constraints(self):
-        constraints_file_path = join(self.solver_obj.WorkingDirectory, "z88i2.txt")
+        constraints_file_path = os.path.join(self.solver_obj.WorkingDirectory, "z88i2.txt")
         self.z88i2 = open(constraints_file_path, "w")
         self.z88i2_rows = []
 
@@ -103,7 +105,7 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
 
     # ********************************************************************************************
     def write_z88_face_loads(self):
-        face_load_file_path = join(self.solver_obj.WorkingDirectory, "z88i5.txt")
+        face_load_file_path = os.path.join(self.solver_obj.WorkingDirectory, "z88i5.txt")
         self.z88i5 = open(face_load_file_path, "w")
         self.z88i5_rows = []
 
@@ -117,8 +119,26 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
         self.z88i5.close()
 
     # ********************************************************************************************
+    def write_z88_section_prints(self):
+        section_print_file_path = os.path.join(
+            self.solver_obj.WorkingDirectory, "z88section_print.npy"
+        )
+        # remove old section print data
+        if os.path.exists(section_print_file_path):
+            os.remove(section_print_file_path)
+
+        # collection of index in nodes array per section print object
+        self.z88section_print_dict = {}
+
+        # section print
+        w_section_print = WriterSectionPrint(self)
+        w_section_print.write_items()
+        if self.z88section_print_dict:
+            np.save(section_print_file_path, self.z88section_print_dict)
+
+    # ********************************************************************************************
     def write_z88_materials(self):
-        material_file_path = join(self.solver_obj.WorkingDirectory, "z88mat.txt")
+        material_file_path = os.path.join(self.solver_obj.WorkingDirectory, "z88mat.txt")
         self.z88mat = open(material_file_path, "w")
         self.z88mat_rows = []
 
@@ -127,13 +147,13 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
         w_material.write_items()
 
         self.z88mat.write(f"{len(self.z88mat_rows)}\n")
-        self.z88mat.writelines(self.z88mat_rows)
+        self.z88mat.writelines(map(lambda x: "{} {} {}\n".format(*x), self.z88mat_rows))
 
         self.z88mat.close()
 
     # ********************************************************************************************
     def write_z88_elements_properties(self):
-        element_properties_file_path = join(self.solver_obj.WorkingDirectory, "z88elp.txt")
+        element_properties_file_path = os.path.join(self.solver_obj.WorkingDirectory, "z88elp.txt")
         self.z88elp = open(element_properties_file_path, "w")
         self.z88elp_rows = []
 
@@ -144,13 +164,15 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
         w_element2D.write_items()
 
         self.z88elp.write(f"{len(self.z88elp_rows)}\n")
-        self.z88elp.writelines(self.z88elp_rows)
+        self.z88elp.writelines(map(lambda x: "{} {} {}\n".format(*x), self.z88elp_rows))
 
         self.z88elp.close()
 
     # ********************************************************************************************
     def write_z88_integration_properties(self):
-        integration_properties_file_path = join(self.solver_obj.WorkingDirectory, "z88int.txt")
+        integration_properties_file_path = os.path.join(
+            self.solver_obj.WorkingDirectory, "z88int.txt"
+        )
         self.z88int = open(integration_properties_file_path, "w")
         self.z88int_rows = []
         el_types = np.unique(self.elements["type"])
@@ -217,7 +239,7 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
             param_isflag=isflag,
         )
 
-        solver_parameter_file_path = join(self.solver_obj.WorkingDirectory, "z88man.txt")
+        solver_parameter_file_path = os.path.join(self.solver_obj.WorkingDirectory, "z88man.txt")
         self.z88man = open(solver_parameter_file_path, "w")
         self.z88man.write(z88_man_template)
         self.z88man.close()
@@ -231,7 +253,7 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
             param_maxkoi=maxkoi,
         )
 
-        solver_parameter_file_path = join(self.solver_obj.WorkingDirectory, "z88.dyn")
+        solver_parameter_file_path = os.path.join(self.solver_obj.WorkingDirectory, "z88.dyn")
         self.z88dyn = open(solver_parameter_file_path, "w")
         self.z88dyn.write(z88_dyn_template)
         self.z88dyn.close()
@@ -300,7 +322,7 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
             dtype=[("index", "u4"), ("coords", ("f8", (3,))), ("dof", "u1")],
         )
 
-        self.z88i1 = open(join(self.solver_obj.WorkingDirectory, "z88i1.txt"), "w")
+        self.z88i1 = open(os.path.join(self.solver_obj.WorkingDirectory, "z88i1.txt"), "w")
 
         dim = 3 if self.solver_obj.ModelSpace == "3D" else 2
         self.z88i1.writelines(

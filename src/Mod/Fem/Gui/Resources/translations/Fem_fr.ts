@@ -350,7 +350,7 @@
     <message>
       <location filename="../../Command.cpp" line="2236"/>
       <source>Region Clip Filter</source>
-      <translation>Filtre d'écrêtage selon une région</translation>
+      <translation>Filtre d'écrêtage d'une région</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2237"/>
@@ -378,12 +378,12 @@
     <message>
       <location filename="../../Command.cpp" line="2275"/>
       <source>Function Cut Filter</source>
-      <translation>Filtre de fonction de découpe</translation>
+      <translation>Filtre par une fonction</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2276"/>
       <source>Cuts the data along an implicit function</source>
-      <translation>Coupe les données suivant une fonction implicite.</translation>
+      <translation>Sélectionne les données suivant une fonction implicite.</translation>
     </message>
   </context>
   <context>
@@ -457,7 +457,7 @@
     <message>
       <location filename="../../Command.cpp" line="2843"/>
       <source>Box</source>
-      <translation>Boîte</translation>
+      <translation>Pavé droit</translation>
     </message>
   </context>
   <context>
@@ -595,27 +595,27 @@
     <message>
       <location filename="../../Command.cpp" line="553"/>
       <source>Create fluid boundary condition</source>
-      <translation>Créer une condition limite de fluide</translation>
+      <translation>Crée une condition limite de fluide.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="261"/>
       <source>Make bearing constraint</source>
-      <translation>Créer une contrainte de roulement</translation>
+      <translation>Crée une contrainte de roulement.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="309"/>
       <source>Make contact constraint on a face</source>
-      <translation>Créer une contrainte de contact sur une face</translation>
+      <translation>Crée une contrainte de contact sur une face.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="387"/>
       <source>Make displacement boundary condition on face</source>
-      <translation>Créer une condition limite de déplacement sur une face</translation>
+      <translation>Crée une condition limite de déplacement sur une face.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="441"/>
       <source>Make fixed boundary condition for geometry</source>
-      <translation>Créer une condition de limite fixe pour la géométrie</translation>
+      <translation>Crée une condition de limite fixe pour la géométrie.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="491"/>
@@ -625,52 +625,52 @@
     <message>
       <location filename="../../Command.cpp" line="610"/>
       <source>Make force load on geometry</source>
-      <translation>Créer une charge d'effort sur la géométrie</translation>
+      <translation>Crée une charge d'effort sur la géométrie.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="672"/>
       <source>Make gear constraint</source>
-      <translation>Créer une contrainte d'engrenage</translation>
+      <translation>Crée une contrainte d'engrenage.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="721"/>
       <source>Make heat flux load on face</source>
-      <translation>Créer une charge de flux thermique sur une face</translation>
+      <translation>Crée une charge de flux thermique sur une face.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="794"/>
       <source>Make initial temperature condition on body</source>
-      <translation>Créer une condition de température initiale sur le corps</translation>
+      <translation>Crée une condition de température initiale sur le corps.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="851"/>
       <source>Make plane multi-point constraint on face</source>
-      <translation>Créer une contrainte multi-points selon un plan sur une face</translation>
+      <translation>Crée une contrainte multi-points selon un plan sur une face.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="908"/>
       <source>Make pressure load on face</source>
-      <translation>Créer une charge de pression sur une face</translation>
+      <translation>Crée une charge de pression sur une face.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="972"/>
       <source>Make Spring Constraint</source>
-      <translation>Créer une contrainte de ressort</translation>
+      <translation>Crée une contrainte de ressort.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1031"/>
       <source>Make pulley constraint</source>
-      <translation>Créer une contrainte de poulie</translation>
+      <translation>Crée une contrainte de poulie.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1084"/>
       <source>Make temperature boundary condition on face</source>
-      <translation>Créer une condition limite de température sur une face</translation>
+      <translation>Crée une condition limite de température sur une face.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1141"/>
       <source>Make local coordinate system on face</source>
-      <translation>Créer un système local de coordonnées sur une face</translation>
+      <translation>Crée un système local de coordonnées sur une face.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1195"/>
@@ -686,7 +686,7 @@
     <message>
       <location filename="../../Command.cpp" line="1306"/>
       <source>Create nodes set</source>
-      <translation>Créer un jeu de nœuds</translation>
+      <translation>Crée un jeu de nœuds.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1450"/>
@@ -696,22 +696,22 @@
     <message>
       <location filename="../../Command.cpp" line="1462"/>
       <source>Create Elements set</source>
-      <translation>Créer un jeu d'éléments</translation>
+      <translation>Crée un jeu d'éléments.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2061"/>
       <source>Create filter</source>
-      <translation>Créer un filtre</translation>
+      <translation>Crée un filtre.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2647"/>
       <source>Create function</source>
-      <translation>Créer une fonction</translation>
+      <translation>Crée une fonction.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2967"/>
       <source>Create pipeline from result</source>
-      <translation>Créer un pipeline à partir du résultat</translation>
+      <translation>Crée un pipeline à partir des résultats.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="269"/>
@@ -796,22 +796,22 @@
     <message>
       <location filename="../../Command.cpp" line="2815"/>
       <source>Create a plane function, defined by its origin and normal</source>
-      <translation>Crée une fonction plan définie par son origine et sa normale.</translation>
+      <translation>Crée une fonction Plan définie par son origine et sa normale.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2825"/>
       <source>Create a sphere function, defined by its center and radius</source>
-      <translation>Créer une fonction sphère définie par son centre et son rayon</translation>
+      <translation>Crée une fonction Sphère définie par son centre et son rayon.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2835"/>
       <source>Create a cylinder function, defined by its center, axis and radius</source>
-      <translation>Créer une fonction cylindre définie par son centre, son axe et son rayon</translation>
+      <translation>Crée une fonction Cylindre définie par son centre, son axe et son rayon.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2845"/>
       <source>Create a box function, defined by its center, length, width and height</source>
-      <translation>Créer une fonction boîte définie par son centre, sa longueur, sa largeur et sa hauteur</translation>
+      <translation>Crée une fonction Pavé droit définie par son centre, sa longueur, sa largeur et sa hauteur.</translation>
     </message>
   </context>
   <context>
@@ -1303,7 +1303,7 @@ Créer votre propre sous-répertoire pour chaque solveur. Nommer le répertoire 
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="31"/>
       <source>Working Directory for Solving Analysis and Gmsh Meshing</source>
-      <translation>Répertoires de travail pour la résolution d'analyses et le maillage Gmsh</translation>
+      <translation>Répertoires de travail pour la résolution d'analyses et le maillage</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="187"/>
@@ -2853,9 +2853,9 @@ Appliquer d'abord une condition limite de déplacement ou une charge de force su
       <translation>Pression d'entrée</translation>
     </message>
     <message>
-      <location filename="../ui/InitialPressure.ui" line="20"/>
       <location filename="../ui/ElementFluid1D.ui" line="235"/>
       <location filename="../ui/ElementFluid1D.ui" line="308"/>
+      <location filename="../ui/InitialPressure.ui" line="20"/>
       <source>Pressure</source>
       <translation>Pression</translation>
     </message>
@@ -2985,12 +2985,12 @@ Appliquer d'abord une condition limite de déplacement ou une charge de force su
       <translation>Tours par seconde</translation>
     </message>
     <message>
-      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
-      <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
       <location filename="../ui/ElementGeometry2D.ui" line="26"/>
       <location filename="../ui/ConstraintTie.ui" line="26"/>
-      <location filename="../ui/MeshRegion.ui" line="26"/>
+      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
+      <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
       <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
+      <location filename="../ui/MeshRegion.ui" line="26"/>
       <source>Parameter</source>
       <translation>Paramètre</translation>
     </message>
@@ -3154,17 +3154,17 @@ Remarque : n'a pas d'effet si un solide a été sélectionné.</translation>
       <translation>Définir le potentiel scalaire et le potentiel vectoriel magnétique</translation>
     </message>
     <message>
+      <location filename="../ui/ElectrostaticPotential.ui" line="113"/>
       <location filename="../ui/CurrentDensity.ui" line="61"/>
       <location filename="../ui/CurrentDensity.ui" line="246"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="113"/>
       <location filename="../ui/Magnetization.ui" line="39"/>
       <source>Real</source>
       <translation>Réel</translation>
     </message>
     <message>
+      <location filename="../ui/ElectrostaticPotential.ui" line="123"/>
       <location filename="../ui/CurrentDensity.ui" line="71"/>
       <location filename="../ui/CurrentDensity.ui" line="256"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="123"/>
       <location filename="../ui/Magnetization.ui" line="49"/>
       <source>Imaginary</source>
       <translation>Imaginaire</translation>
@@ -3245,8 +3245,8 @@ Remarque : n'a pas d'effet si un solide a été sélectionné.</translation>
       <translation>Paramètre de la coupe de l'élément 1D</translation>
     </message>
     <message>
-      <location filename="../ui/ElementRotation1D.ui" line="20"/>
       <location filename="../ui/ElementGeometry1D.ui" line="20"/>
+      <location filename="../ui/ElementRotation1D.ui" line="20"/>
       <source>Cross-Section Parameter</source>
       <translation>Paramètre de la coupe transversale</translation>
     </message>
@@ -3257,14 +3257,14 @@ Remarque : n'a pas d'effet si un solide a été sélectionné.</translation>
       <translation>Largeur</translation>
     </message>
     <message>
-      <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
       <location filename="../ui/ElementGeometry2D.ui" line="44"/>
-      <location filename="../ui/MeshRegion.ui" line="44"/>
+      <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
       <location filename="../ui/ElementGeometry1D.ui" line="48"/>
       <location filename="../ui/ElementGeometry1D.ui" line="74"/>
       <location filename="../ui/ElementGeometry1D.ui" line="111"/>
       <location filename="../ui/ElementGeometry1D.ui" line="148"/>
       <location filename="../ui/ElementGeometry1D.ui" line="174"/>
+      <location filename="../ui/MeshRegion.ui" line="44"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
@@ -3321,40 +3321,40 @@ Remarque : n'a pas d'effet si un solide a été sélectionné.</translation>
       <translation>Épaisseur T4</translation>
     </message>
     <message>
-      <location filename="../ui/InitialFlowVelocity.ui" line="25"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="73"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="131"/>
       <location filename="../ui/FlowVelocity.ui" line="25"/>
       <location filename="../ui/FlowVelocity.ui" line="73"/>
       <location filename="../ui/FlowVelocity.ui" line="131"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="25"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="73"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="131"/>
       <source>Formula</source>
       <translation>Formule</translation>
     </message>
     <message>
-      <location filename="../ui/InitialFlowVelocity.ui" line="32"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="87"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="118"/>
       <location filename="../ui/FlowVelocity.ui" line="32"/>
       <location filename="../ui/FlowVelocity.ui" line="87"/>
       <location filename="../ui/FlowVelocity.ui" line="118"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="32"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="87"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="118"/>
       <source>Unspecified</source>
       <translation>Non spécifié</translation>
     </message>
     <message>
-      <location filename="../ui/InitialFlowVelocity.ui" line="42"/>
       <location filename="../ui/FlowVelocity.ui" line="42"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="42"/>
       <source>Velocity X</source>
       <translation>Vitesse en X</translation>
     </message>
     <message>
-      <location filename="../ui/InitialFlowVelocity.ui" line="80"/>
       <location filename="../ui/FlowVelocity.ui" line="80"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="80"/>
       <source>Velocity Y</source>
       <translation>Vitesse en Y</translation>
     </message>
     <message>
-      <location filename="../ui/InitialFlowVelocity.ui" line="138"/>
       <location filename="../ui/FlowVelocity.ui" line="138"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="138"/>
       <source>Velocity Z</source>
       <translation>Vitesse en Z</translation>
     </message>
@@ -3364,14 +3364,14 @@ Remarque : n'a pas d'effet si un solide a été sélectionné.</translation>
       <translation>Normal à la paroi</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="14"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="14"/>
-      <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
-      <location filename="../ui/Magnetization.ui" line="14"/>
       <location filename="../ui/BodyHeatSource.ui" line="14"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
-      <location filename="../ui/InitialPressure.ui" line="14"/>
+      <location filename="../ui/CurrentDensity.ui" line="14"/>
+      <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
       <location filename="../ui/FlowVelocity.ui" line="14"/>
+      <location filename="../ui/InitialPressure.ui" line="14"/>
+      <location filename="../ui/Magnetization.ui" line="14"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
       <source>Analysis Feature Properties</source>
       <translation>Propriétés de la fonction d'analyse</translation>
     </message>
@@ -3381,9 +3381,9 @@ Remarque : n'a pas d'effet si un solide a été sélectionné.</translation>
       <translation>Source de chaleur</translation>
     </message>
     <message>
+      <location filename="../ui/BodyHeatSource.ui" line="35"/>
       <location filename="../ui/CurrentDensity.ui" line="29"/>
       <location filename="../ui/ElectricChargeDensity.ui" line="25"/>
-      <location filename="../ui/BodyHeatSource.ui" line="35"/>
       <source>Mode</source>
       <translation>Mode</translation>
     </message>
@@ -3467,8 +3467,8 @@ avec un courant primaire harmonique/oscillant.</translation>
       <translation>Sélectionner le mode personnalisé pour activer la densité de courant vectorielle</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="78"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="194"/>
+      <location filename="../ui/CurrentDensity.ui" line="78"/>
       <location filename="../ui/Magnetization.ui" line="56"/>
       <source>X</source>
       <translation>X</translation>
@@ -3484,8 +3484,8 @@ avec un courant primaire harmonique/oscillant.</translation>
       <translation>Partie imaginaire de la composante en X de la densité de courant</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="129"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="257"/>
+      <location filename="../ui/CurrentDensity.ui" line="129"/>
       <location filename="../ui/Magnetization.ui" line="107"/>
       <source>Y</source>
       <translation>Y</translation>
@@ -3501,8 +3501,8 @@ avec un courant primaire harmonique/oscillant.</translation>
       <translation>Partie imaginaire de la composante en Y de la densité de courant</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="180"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="320"/>
+      <location filename="../ui/CurrentDensity.ui" line="180"/>
       <location filename="../ui/Magnetization.ui" line="158"/>
       <source>Z</source>
       <translation>Z</translation>
@@ -3543,22 +3543,22 @@ avec un courant primaire harmonique/oscillant.</translation>
       <translation>Taille maximale des éléments</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="14"/>
       <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
       <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
       <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="14"/>
       <source>Form</source>
       <translation>Forme</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="34"/>
       <location filename="../ui/PostHistogramIndexAppEdit.ui" line="34"/>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="34"/>
       <source>Field</source>
       <translation>Champ</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="61"/>
       <location filename="../ui/PostLineplotFieldAppEdit.ui" line="86"/>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="61"/>
       <source>Frames</source>
       <translation>Cadres</translation>
     </message>
@@ -3688,14 +3688,14 @@ avec un courant primaire harmonique/oscillant.</translation>
       <translation>Vous devez créer ou activer une analyse</translation>
     </message>
     <message>
+      <location filename="../../ViewProviderFemPostObject.cpp" line="892"/>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="312"/>
-      <location filename="../../ViewProviderFemPostObject.cpp" line="895"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Une fenêtre de dialogue est déjà ouverte dans le panneau des tâches.</translation>
     </message>
     <message>
+      <location filename="../../ViewProviderFemPostObject.cpp" line="893"/>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="313"/>
-      <location filename="../../ViewProviderFemPostObject.cpp" line="896"/>
       <source>Do you want to close this dialog?</source>
       <translation>Voulez-vous fermer cette fenêtre de dialogue ?</translation>
     </message>
@@ -3804,22 +3804,22 @@ avec un courant primaire harmonique/oscillant.</translation>
       <translation>Échelle du déplacement</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="276"/>
+      <location filename="../ui/ResultShow.ui" line="264"/>
       <source>Factor</source>
       <translation>Facteur</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="358"/>
+      <location filename="../ui/ResultShow.ui" line="349"/>
       <source>Animation Control</source>
       <translation>Contrôle de l'animation</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="505"/>
+      <location filename="../ui/ResultShow.ui" line="496"/>
       <source>Toggles between Start and Stop</source>
       <translation>Démarrer/arrêter</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="508"/>
+      <location filename="../ui/ResultShow.ui" line="499"/>
       <source>Start Animation</source>
       <translation>Démarrer l'animation</translation>
     </message>
@@ -3889,32 +3889,32 @@ avec un courant primaire harmonique/oscillant.</translation>
       <translation>Afficher</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="312"/>
+      <location filename="../ui/ResultShow.ui" line="300"/>
       <source>Slider maximum</source>
       <translation>Curseur maximum</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="382"/>
+      <location filename="../ui/ResultShow.ui" line="373"/>
       <source>Number of steps per cycle</source>
       <translation>Nombre de pas par cycle</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="429"/>
+      <location filename="../ui/ResultShow.ui" line="420"/>
       <source>Number of cycles</source>
       <translation>Nombre de cycles</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="467"/>
+      <location filename="../ui/ResultShow.ui" line="458"/>
       <source>Frame rate</source>
       <translation>Images par seconde</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="522"/>
+      <location filename="../ui/ResultShow.ui" line="513"/>
       <source>User-Defined Equation</source>
       <translation>Équation définie par l'utilisateur</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="528"/>
+      <location filename="../ui/ResultShow.ui" line="519"/>
       <source>Runs the equation given in the field below,
 outputs the results to the Min and Max fields
 and colors the result mesh accordingly</source>
@@ -3922,19 +3922,18 @@ and colors the result mesh accordingly</source>
 les champs Min et Max et colore le maillage des résultats en fonction de ces derniers.</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="533"/>
+      <location filename="../ui/ResultShow.ui" line="524"/>
       <source>Calculate</source>
       <translation>Calculer</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="552"/>
+      <location filename="../ui/ResultShow.ui" line="543"/>
       <source>Enter here an equation to be calculated.
 For possible variables, see the description box below.</source>
-      <translation>Entrez ici une équation à calculer.
-Pour les variables possibles, voir la zone de description ci-dessous.</translation>
+      <translation>Entrer ici une équation à calculer. Pour les variables possibles, voir la zone de description ci-dessous.</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="556"/>
+      <location filename="../ui/ResultShow.ui" line="547"/>
       <source>P1 - P3 # Max - Min Principal Stress</source>
       <translation>P1 - P3 # contrainte principale Max. - Min.</translation>
     </message>
@@ -4171,7 +4170,7 @@ Pour les variables possibles, voir la zone de description ci-dessous.</translati
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="70"/>
       <source>Box</source>
-      <translation>Boîte</translation>
+      <translation>Pavé droit</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="80"/>
@@ -5766,95 +5765,95 @@ normal vector of the face is used as direction</source>
   <context>
     <name>FEM</name>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="318"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="320"/>
       <source>Displacement Magnitude</source>
       <translation>Magnitude du déplacement</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="327"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="329"/>
       <source>Displacement X</source>
       <translation>Déplacement en X</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="335"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="337"/>
       <source>Displacement Y</source>
       <translation>Déplacement en Y</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="343"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="345"/>
       <source>Displacement Z</source>
       <translation>Déplacement en Z</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="354"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="356"/>
       <source>von Mises Stress</source>
       <translation>Critère de von Mises</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="366"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="368"/>
       <source>Max Shear Stress</source>
       <translation>Critère de cisaillement maximal</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="378"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="380"/>
       <source>Max Principal Stress</source>
       <translation>Contrainte principale max.</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="390"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="392"/>
       <source>Temperature</source>
       <translation>Température</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="402"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="404"/>
       <source>Mass Flow Rate</source>
       <translation>Flux massique</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="414"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="416"/>
       <source>Network Pressure</source>
       <translation>Pression du réseau</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="426"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="428"/>
       <source>Min Principal Stress</source>
       <translation>Contrainte principale min.</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="438"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="440"/>
       <source>Equivalent Plastic Strain</source>
       <translation>Déformation plastique équivalente : Peeq</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="458"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="460"/>
       <source>Information</source>
       <translation>Informations</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="462"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="464"/>
       <source>No histogram available.
 Please select a result type first.</source>
       <translation>Aucun histogramme disponible.
 Sélectionner d'abord un type de résultat.</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="610"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="612"/>
       <source>Histogram of {}</source>
       <translation>Histogramme de {}</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="611"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="613"/>
       <source>Nodes</source>
       <translation>Nœuds</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="740"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="764"/>
       <source>Result mesh is empty</source>
       <translation>Le maillage des résultats est vide.</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="754"/>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="763"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="778"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="787"/>
       <source>No result object</source>
       <translation>Aucun résultat</translation>
     </message>
@@ -6007,8 +6006,8 @@ No matching module was found in the current Python path.</source>
       <translation>Quelle partie du vecteur de champ Y à utiliser pour l'axe Y</translation>
     </message>
     <message>
-      <location filename="../../../femobjects/post_extract2D.py" line="64"/>
       <location filename="../../../femobjects/post_extract1D.py" line="64"/>
+      <location filename="../../../femobjects/post_extract2D.py" line="64"/>
       <source>Specify if the field shall be extracted for every available frame</source>
       <translation>Spécifier si le champ doit être extrait pour chaque image disponible</translation>
     </message>
@@ -6070,8 +6069,8 @@ No matching module was found in the current Python path.</source>
       <translation>Données de la table</translation>
     </message>
     <message>
-      <location filename="../../../femviewprovider/view_post_histogram.py" line="267"/>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="283"/>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="267"/>
       <source>The name used in the plots legend</source>
       <translation>Le nom utilisé dans la légende des graphiques</translation>
     </message>
@@ -6098,8 +6097,8 @@ No matching module was found in the current Python path.</source>
       <translation>La largeur de la barre, comprise entre 0 et 1 (1 correspondant à l'absence d'espaces)</translation>
     </message>
     <message>
-      <location filename="../../../femviewprovider/view_post_histogram.py" line="311"/>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="297"/>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="311"/>
       <source>The style the line is drawn in</source>
       <translation>Le style dans lequel la ligne est dessinée.</translation>
     </message>
@@ -6124,28 +6123,28 @@ No matching module was found in the current Python path.</source>
       <translation>Le nombre de cellules dans lesquels les données sont divisées.</translation>
     </message>
     <message>
-      <location filename="../../../femviewprovider/view_post_histogram.py" line="437"/>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="421"/>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="437"/>
       <source>The histogram plot title</source>
       <translation>Le titre de l'histogramme</translation>
     </message>
     <message>
-      <location filename="../../../femviewprovider/view_post_histogram.py" line="444"/>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="428"/>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="444"/>
       <source>The label shown for the histogram X axis</source>
       <translation>L'étiquette affichée pour l'axe X de l'histogramme</translation>
     </message>
     <message>
-      <location filename="../../../femviewprovider/view_post_histogram.py" line="451"/>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="435"/>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="451"/>
       <source>The label shown for the histogram Y axis</source>
       <translation>L'étiquette affichée pour l'axe Y de l'histogramme</translation>
     </message>
     <message>
-      <location filename="../../../femviewprovider/view_post_histogram.py" line="458"/>
-      <location filename="../../../femviewprovider/view_post_histogram.py" line="465"/>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="442"/>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="449"/>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="458"/>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="465"/>
       <source>Determines if the legend is plotted</source>
       <translation>Détermine si la légende est tracée.</translation>
     </message>
@@ -7127,10 +7126,10 @@ Leave blank to use default Python executable</source>
   <context>
     <name>TaskPostGlyph</name>
     <message>
+      <location filename="../ui/TaskPostHistogram.ui" line="37"/>
       <location filename="../ui/TaskPostLineplot.ui" line="37"/>
       <location filename="../ui/TaskPostGlyph.ui" line="22"/>
       <location filename="../ui/TaskPostGlyph.ui" line="38"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="37"/>
       <source>The form of the glyph</source>
       <translation>La forme du symbole</translation>
     </message>
@@ -7170,12 +7169,12 @@ Leave blank to use default Python executable</source>
       <translation>Sphère</translation>
     </message>
     <message>
+      <location filename="../ui/TaskPostHistogram.ui" line="66"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="82"/>
       <location filename="../ui/TaskPostLineplot.ui" line="81"/>
       <location filename="../ui/TaskPostLineplot.ui" line="97"/>
       <location filename="../ui/TaskPostGlyph.ui" line="75"/>
       <location filename="../ui/TaskPostGlyph.ui" line="91"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="66"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="82"/>
       <source>Which vector field is used to orient the glyphs</source>
       <translation>Champ vectoriel utilisé pour orienter les symboles</translation>
     </message>
@@ -7185,10 +7184,10 @@ Leave blank to use default Python executable</source>
       <translation>Orientation</translation>
     </message>
     <message>
+      <location filename="../ui/TaskPostHistogram.ui" line="86"/>
       <location filename="../ui/TaskPostLineplot.ui" line="101"/>
       <location filename="../ui/TaskPostGlyph.ui" line="95"/>
       <location filename="../ui/TaskPostGlyph.ui" line="148"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="86"/>
       <source>None</source>
       <translation>Aucun</translation>
     </message>
@@ -7209,10 +7208,10 @@ Leave blank to use default Python executable</source>
       <translation>Données</translation>
     </message>
     <message>
+      <location filename="../ui/TaskPostHistogram.ui" line="176"/>
       <location filename="../ui/TaskPostLineplot.ui" line="155"/>
       <location filename="../ui/TaskPostGlyph.ui" line="158"/>
       <location filename="../ui/TaskPostGlyph.ui" line="176"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="176"/>
       <source>A constant multiplier the glyphs are scaled with</source>
       <translation>Un coefficient multiplicateur constant avec lequel les glyphes sont mis à l'échelle.</translation>
     </message>
@@ -7227,9 +7226,9 @@ Leave blank to use default Python executable</source>
       <translation>Changer le facteur d'échelle de +/- 50% du facteur d'échelle défini</translation>
     </message>
     <message>
+      <location filename="../ui/TaskPostHistogram.ui" line="166"/>
       <location filename="../ui/TaskPostLineplot.ui" line="145"/>
       <location filename="../ui/TaskPostGlyph.ui" line="226"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="166"/>
       <source>If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</source>
       <translation>Si les données d'échelle sont un vecteur, cette propriété détermine si le symbole est mis à l'échelle par la magnitude du vecteur ou par chaque composante.</translation>
     </message>
@@ -7321,27 +7320,27 @@ Leave blank to use default Python executable</source>
       <translation>Cumulatif</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostLineplot.ui" line="64"/>
       <location filename="../ui/TaskPostHistogram.ui" line="103"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="64"/>
       <source>Legend</source>
       <translation>Légende</translation>
     </message>
     <message>
+      <location filename="../ui/TaskPostHistogram.ui" line="112"/>
       <location filename="../ui/TaskPostLineplot.ui" line="47"/>
       <location filename="../ui/TaskPostLineplot.ui" line="57"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="112"/>
       <source>Show</source>
       <translation>Afficher</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostLineplot.ui" line="117"/>
       <location filename="../ui/TaskPostHistogram.ui" line="138"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="117"/>
       <source>Labels</source>
       <translation>Étiquettes</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostLineplot.ui" line="135"/>
       <location filename="../ui/TaskPostHistogram.ui" line="156"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="135"/>
       <source>Y-axis</source>
       <translation>Axe Y</translation>
     </message>
@@ -7351,8 +7350,8 @@ Leave blank to use default Python executable</source>
       <translation>Axe X</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostLineplot.ui" line="158"/>
       <location filename="../ui/TaskPostHistogram.ui" line="179"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="158"/>
       <source>Title</source>
       <translation>Titre</translation>
     </message>
@@ -7830,9 +7829,9 @@ visualisation des données de sommets.</translation>
   <context>
     <name>PostHistogramEdit</name>
     <message>
-      <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="14"/>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="14"/>
+      <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
       <source>Form</source>
       <translation>Forme</translation>
     </message>

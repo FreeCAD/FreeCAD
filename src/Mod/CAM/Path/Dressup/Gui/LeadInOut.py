@@ -162,6 +162,24 @@ class ObjectDressup:
             "Path Lead-out",
             QT_TRANSLATE_NOOP("App::Property", "Move end point"),
         )
+        obj.addProperty(
+            "App::PropertyLength",
+            "ExtendLeadIn",
+            "Path Lead-in",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Extends Lead-in distance\nOnly for styles: Arc, Line, Perpendicular and Tangent",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyLength",
+            "ExtendLeadOut",
+            "Path Lead-out",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Extends Lead-out distance\nOnly for styles: Arc, Line, Perpendicular and Tangent",
+            ),
+        )
         self.obj = obj
         obj.Proxy = self
 
@@ -234,6 +252,12 @@ class ObjectDressup:
             obj.AngleOut = 179
         elif obj.StyleOut in ("LineZFollow") and obj.AngleOut > 89:
             obj.AngleOut = 89
+
+        extStyles = ("Arc", "Line", "Perpendicular", "Tangent")
+        extLeadInMode = 0 if obj.StyleIn in extStyles else 2
+        obj.setEditorMode("ExtendLeadIn", extLeadInMode)
+        extLeadOutMode = 0 if obj.StyleOut in extStyles else 2
+        obj.setEditorMode("ExtendLeadOut", extLeadOutMode)
 
         # Use shared hideModes from TaskDressupLeadInOut
         for k, v in TaskDressupLeadInOut.hideModes.items():
@@ -374,13 +398,6 @@ class ObjectDressup:
                     obj.RadiusOut = 10
                 obj.removeProperty("PercentageRadiusOut")
 
-        # The new features do not have a good analog for ExtendLeadIn/Out, so these old values will be ignored
-        if hasattr(obj, "ExtendLeadIn"):
-            # Remove ExtendLeadIn property
-            obj.removeProperty("ExtendLeadIn")
-        if hasattr(obj, "ExtendLeadOut"):
-            # Remove ExtendLeadOut property
-            obj.removeProperty("ExtendLeadOut")
         if hasattr(obj, "IncludeLayers"):
             obj.removeProperty("IncludeLayers")
 
@@ -426,6 +443,32 @@ class ObjectDressup:
             if obj.KeepToolDown:
                 obj.RetractThreshold = 999999
             obj.removeProperty("KeepToolDown")
+        if not hasattr(obj, "ExtendLeadIn"):
+            obj.addProperty(
+                "App::PropertyLength",
+                "ExtendLeadIn",
+                "Path Lead-in",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Extends Lead-in distance"
+                    "\nOnly for styles: Arc, Line, Perpendicular and Tangent",
+                ),
+            )
+            extLeadInMode = 0 if obj.StyleIn in ("Arc", "Line", "Perpendicular", "Tangent") else 2
+            obj.setEditorMode("ExtendLeadIn", extLeadInMode)
+        if not hasattr(obj, "ExtendLeadOut"):
+            obj.addProperty(
+                "App::PropertyLength",
+                "ExtendLeadOut",
+                "Path Lead-out",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Extends Lead-out distance"
+                    "\nOnly for styles: Arc, Line, Perpendicular and Tangent",
+                ),
+            )
+            extLeadOutMode = 0 if obj.StyleOut in ("Arc", "Line", "Perpendicular", "Tangent") else 2
+            obj.setEditorMode("ExtendLeadOut", extLeadOutMode)
 
         # Ensure correct initial visibility of fields after defaults are set
         for k, v in TaskDressupLeadInOut.hideModes.items():
@@ -782,10 +825,18 @@ class ObjectDressup:
                 lead.append(
                     self.createArcMove(arcBegin, begin, arcOffset, obj.InvertIn, self.entranceFeed)
                 )
+                if obj.ExtendLeadIn and styleIn == "Arc":
+                    extAngleTangent = lead[-1].anglesOfTangents()[0]
+                    extTangent = -self.angleToVector(extAngleTangent) * obj.ExtendLeadIn.Value
+                    arcBegin = lead[-1].positionBegin()
+                    extBegin = arcBegin + extTangent
+                    lead.insert(0, self.createStraightMove(extBegin, arcBegin, self.entranceFeed))
 
             # prepend "Line" style lead-in - line in XY
             # Line3d the same as Line, but increased Z start point
             elif styleIn in ("Line", "Line3d", "Perpendicular", "Tangent"):
+                if styleIn in ("Line", "Perpendicular", "Tangent"):
+                    length += obj.ExtendLeadIn.Value
                 # tangent and normal vectors in XY plane
                 tangentLength = math.cos(angleIn) * length
                 normalLength = math.sin(angleIn) * length
@@ -924,10 +975,18 @@ class ObjectDressup:
                 lead.append(
                     self.createArcMove(end, arcEnd, normalMax, obj.InvertOut, self.exitFeed)
                 )
+                if obj.ExtendLeadOut and obj.StyleOut == "Arc":
+                    extAngleTangent = lead[-1].anglesOfTangents()[1]
+                    extTangent = self.angleToVector(extAngleTangent) * obj.ExtendLeadOut.Value
+                    arcEnd = lead[-1].positionEnd()
+                    extEnd = arcEnd + extTangent
+                    lead.append(self.createStraightMove(arcEnd, extEnd, self.exitFeed))
 
             # append "Line" style lead-out
             # Line3d the same as Line, but increased Z start point
             elif obj.StyleOut in ("Line", "Line3d", "Perpendicular", "Tangent"):
+                if obj.StyleOut in ("Line", "Perpendicular", "Tangent"):
+                    length += obj.ExtendLeadOut.Value
                 # tangent and normal vectors in XY plane
                 tangentLength = math.cos(angleOut) * length
                 normalLength = math.sin(angleOut) * length

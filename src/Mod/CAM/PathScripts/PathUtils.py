@@ -515,17 +515,29 @@ def findParentJob(obj):
     if hasattr(obj, "Proxy") and isinstance(obj.Proxy, PathJob.ObjectJob):
         return obj
 
+    # we need to traverse the document tree in reverse order:
+    #
+    #    Job <- Operations <- Dressup <- Operation
+    #        <- Model <- Body
+    #        <- Stock <- Body
+    #        <- SetupSheet
+    #        <- Tools <- ToolController
+
     for i in obj.InList:
-        if hasattr(i, "Proxy") and isinstance(i.Proxy, PathJob.ObjectJob):
-            return i
         if (
-            i.TypeId == "Path::FeaturePython"
-            or i.TypeId == "Path::FeatureCompoundPython"
-            or i.TypeId == "App::DocumentObjectGroup"
+            hasattr(i, "Proxy")
+            and isinstance(i.Proxy, PathJob.ObjectJob)
+            and obj in [i.Operations, i.Model, i.Stock, i.SetupSheet, i.Tools]
+        ):
+            return i
+
+        if (i.isDerivedFrom("App::DocumentObjectGroup") and obj in i.Group) or (
+            i.isDerivedFrom("Path::Feature") and obj == getattr(i, "Base", None)
         ):
             grandParent = findParentJob(i)
             if grandParent is not None:
                 return grandParent
+
     return None
 
 

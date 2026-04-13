@@ -45,6 +45,7 @@ SET(CAMSimulator_SRCS_Core
     MillPathSegment.h
     MillSimulation.cpp
     MillSimulation.h
+    OpenGlWrapper.cpp
     OpenGlWrapper.h
     Shader.cpp
     Shader.h

@@ -1638,7 +1638,7 @@ des plans vertical et horizontal avec un sommet ou le long d'une ligne.</transla
     <message>
       <location filename="../../Command.cpp" line="1593"/>
       <source>Fillet</source>
-      <translation>Congé</translation>
+      <translation>Créer un congé</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1594"/>
@@ -2297,7 +2297,7 @@ projection.</translation>
       <translation>Balayage</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="1603"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="1606"/>
       <source>Project on surface</source>
       <translation>Projeter sur une surface</translation>
     </message>
@@ -3755,7 +3755,7 @@ Check one or more edge entities first.</source>
       <translation>Aucun document actif</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="2648"/>
+      <location filename="../../DlgPrimitives.cpp" line="2651"/>
       <source>&amp;Create</source>
       <translation>&amp;Créer</translation>
     </message>
@@ -4350,19 +4350,19 @@ couleur du rétroéclairage sera utilisée ou ce sera noir.</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="37"/>
-      <location filename="../../Location.ui" line="118"/>
+      <location filename="../../Location.ui" line="121"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="54"/>
-      <location filename="../../Location.ui" line="147"/>
+      <location filename="../../Location.ui" line="150"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="71"/>
-      <location filename="../../Location.ui" line="176"/>
+      <location filename="../../Location.ui" line="179"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
@@ -4372,34 +4372,34 @@ couleur du rétroéclairage sera utilisée ou ce sera noir.</translation>
       <translation>Vue 3D</translation>
     </message>
     <message>
-      <location filename="../../Location.ui" line="110"/>
+      <location filename="../../Location.ui" line="113"/>
       <source>Rotation Axis</source>
       <translation>Axe de rotation</translation>
     </message>
     <message>
-      <location filename="../../Location.ui" line="125"/>
+      <location filename="../../Location.ui" line="128"/>
       <source>X-component of direction vector</source>
       <translation>Composante en X du vecteur directeur</translation>
     </message>
     <message>
-      <location filename="../../Location.ui" line="154"/>
+      <location filename="../../Location.ui" line="157"/>
       <source>Y-component of direction vector</source>
       <translation>Composante en Y du vecteur directeur</translation>
     </message>
     <message>
-      <location filename="../../Location.ui" line="183"/>
+      <location filename="../../Location.ui" line="186"/>
       <source>Z-component of direction vector</source>
       <translation>Composante en Z du vecteur directeur</translation>
     </message>
     <message>
-      <location filename="../../Location.ui" line="106"/>
+      <location filename="../../Location.ui" line="109"/>
       <source>Use custom vector for pad direction otherwise
 the sketch plane's normal vector will be used</source>
       <translation>Utiliser un vecteur personnalisé pour la direction de la protrusion
 sinon le vecteur normal du plan de l'esquisse sera utilisé.</translation>
     </message>
     <message>
-      <location filename="../../Location.ui" line="208"/>
+      <location filename="../../Location.ui" line="211"/>
       <source>Angle</source>
       <translation>Angle</translation>
     </message>
@@ -5587,8 +5587,8 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="51"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="59"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="54"/>
       <location filename="../../ViewProvider.cpp" line="53"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="54"/>
       <source>Edit %1</source>
       <translation>Éditer %1</translation>
     </message>
@@ -6013,7 +6013,7 @@ Continue?</source>
       <translation>Éditeur de l'ancrage</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1005"/>
+      <location filename="../../ViewProviderExt.cpp" line="1007"/>
       <source>Appearance per Face</source>
       <translation>Apparence par face</translation>
     </message>
@@ -6224,10 +6224,10 @@ Continue?</source>
       <translation>Mauvaise sélection</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="402"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="644"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <source>Continue</source>
       <translation>Continuer</translation>
     </message>

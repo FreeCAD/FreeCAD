@@ -2268,7 +2268,7 @@ Pogled kamere određuje smjer projekcije.</translation>
       <translation>Zamah</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="1603"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="1606"/>
       <source>Project on surface</source>
       <translation>Projekcija na površinu</translation>
     </message>
@@ -3733,7 +3733,7 @@ Check one or more edge entities first.</source>
       <translation>Nema aktivnog dokumenta</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="2648"/>
+      <location filename="../../DlgPrimitives.cpp" line="2651"/>
       <source>&amp;Create</source>
       <translation>&amp;Izradi</translation>
     </message>
@@ -4329,19 +4329,19 @@ koristit će se ili crna.</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="37"/>
-      <location filename="../../Location.ui" line="118"/>
+      <location filename="../../Location.ui" line="121"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="54"/>
-      <location filename="../../Location.ui" line="147"/>
+      <location filename="../../Location.ui" line="150"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="71"/>
-      <location filename="../../Location.ui" line="176"/>
+      <location filename="../../Location.ui" line="179"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
@@ -4351,27 +4351,27 @@ koristit će se ili crna.</translation>
       <translation>3D Prikaz</translation>
     </message>
     <message>
-      <location filename="../../Location.ui" line="110"/>
+      <location filename="../../Location.ui" line="113"/>
       <source>Rotation Axis</source>
       <translation>Rotacijska os</translation>
     </message>
     <message>
-      <location filename="../../Location.ui" line="125"/>
+      <location filename="../../Location.ui" line="128"/>
       <source>X-component of direction vector</source>
       <translation>X komponenta vektora smjera</translation>
     </message>
     <message>
-      <location filename="../../Location.ui" line="154"/>
+      <location filename="../../Location.ui" line="157"/>
       <source>Y-component of direction vector</source>
       <translation>Y komponenta vektora smjera</translation>
     </message>
     <message>
-      <location filename="../../Location.ui" line="183"/>
+      <location filename="../../Location.ui" line="186"/>
       <source>Z-component of direction vector</source>
       <translation>Z komponenta vektora smjera</translation>
     </message>
     <message>
-      <location filename="../../Location.ui" line="106"/>
+      <location filename="../../Location.ui" line="109"/>
       <source>Use custom vector for pad direction otherwise
 the sketch plane's normal vector will be used</source>
       <translation>Koristite prilagođeni vektor za smjer podloška
@@ -4380,7 +4380,7 @@ u suprotnom koristit će se normalni vektor ravnine skice
 </translation>
     </message>
     <message>
-      <location filename="../../Location.ui" line="208"/>
+      <location filename="../../Location.ui" line="211"/>
       <source>Angle</source>
       <translation>Kut</translation>
     </message>
@@ -5567,8 +5567,8 @@ u 3D prikazu za putanju vodilju pomicanja.</translation>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="51"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="59"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="54"/>
       <location filename="../../ViewProvider.cpp" line="53"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="54"/>
       <source>Edit %1</source>
       <translation>Uređivanje %1</translation>
     </message>
@@ -5994,7 +5994,7 @@ Nastaviti?</translation>
       <translation>Uređivač dodataka</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1005"/>
+      <location filename="../../ViewProviderExt.cpp" line="1007"/>
       <source>Appearance per Face</source>
       <translation>Izgled po licu</translation>
     </message>
@@ -6217,10 +6217,10 @@ Nastaviti?</translation>
       <translation>Nevažeći Odabir</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="402"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="644"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <source>Continue</source>
       <translation>Nastavi</translation>
     </message>

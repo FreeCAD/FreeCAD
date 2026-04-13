@@ -177,7 +177,6 @@ SET(bimcommands_SRCS
     bimcommands/BimTDPage.py
     bimcommands/BimTDView.py
     bimcommands/BimText.py
-    bimcommands/BimTogglePanels.py
     bimcommands/BimTrash.py
     bimcommands/BimTruss.py
     bimcommands/BimTutorial.py
@@ -255,6 +254,7 @@ SET(bimtests_SRCS
     bimtests/TestWebGLExportGui.py
     bimtests/TestArchImportersGui.py
     bimtests/TestArchBuildingPartGui.py
+    bimtests/TestArchStairsGui.py
     bimtests/TestArchReport.py
     bimtests/TestArchReportGui.py
 )

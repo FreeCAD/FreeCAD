@@ -30,6 +30,7 @@
 #include <Inventor/SoPickedPoint.h>
 #include <QApplication>
 #include <QDialog>
+#include <QDockWidget>
 #include <QDomDocument>
 #include <QDomElement>
 #include <QFile>
@@ -40,7 +41,9 @@
 #include <QMessageBox>
 #include <QPainter>
 #include <QPointer>
+#include <QSignalBlocker>
 #include <QTextStream>
+#include <QToolButton>
 
 #include <App/ComplexGeoDataPy.h>
 #include <App/Document.h>
@@ -4198,6 +4201,105 @@ public:
 };
 
 //===========================================================================
+// Std_ToggleBottomPanels
+//===========================================================================
+
+DEF_STD_CMD_AC(StdCmdToggleBottomPanels)
+
+StdCmdToggleBottomPanels::StdCmdToggleBottomPanels()
+    : Command("Std_ToggleBottomPanels")
+{
+    sGroup = "View";
+    sMenuText = QT_TR_NOOP("Toggle Bottom Panels");
+    sToolTipText = QT_TR_NOOP("Toggles the bottom dock panels");
+    sWhatsThis = "Std_ToggleBottomPanels";
+    sStatusTip = sToolTipText;
+    sAccel = "Ctrl+0";
+    sPixmap = "Std_ToggleBottomPanels";
+    eType = NoTransaction;
+}
+
+void StdCmdToggleBottomPanels::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    auto* mainWindow = getMainWindow();
+    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Gui");
+    QList<QDockWidget*> panelsToHide;
+
+    // Collect all currently visible bottom panels
+    for (auto* panel : mainWindow->findChildren<QDockWidget*>()) {
+        if (mainWindow->dockWidgetArea(panel) == Qt::BottomDockWidgetArea && panel->isVisible()) {
+            panelsToHide.append(panel);
+        }
+    }
+
+    bool panelsNowVisible = false;
+
+    if (panelsToHide.isEmpty()) {
+        // No visible bottom panels: restore the previously hidden ones. The default covers a fresh
+        // install with no saved state.
+        const auto savedNames = QString::fromStdString(
+            hGrp->GetASCII("HiddenBottomWidgets", "Python console;;Report view;;Selection view")
+        );
+        QStringList panelNamesToRestore = savedNames.split(QStringLiteral(";;"));
+
+        for (const auto& panelName : panelNamesToRestore) {
+            if (panelName.isEmpty()) {
+                continue;
+            }
+            auto* panel = mainWindow->findChild<QWidget*>(panelName);
+            if (panel) {
+                panel->show();
+            }
+        }
+
+        panelsNowVisible = true;
+    }
+    else {
+        // Hide all visible bottom panels and save their names so they can be restored when the
+        // command is invoked again
+        QStringList panelNamesToSave;
+
+        for (auto* panel : panelsToHide) {
+            panel->hide();
+            panelNamesToSave.append(panel->objectName());
+        }
+
+        hGrp->SetASCII("HiddenBottomWidgets", panelNamesToSave.join(QStringLiteral(";;")).toStdString());
+    }
+
+    // Sync the checked state of the menu action
+    if (_pcAction) {
+        _pcAction->setBlockedChecked(panelsNowVisible);
+    }
+
+    // Sync the checked state of the the status bar button.
+    auto* toggleButton = mainWindow->findChild<QToolButton*>(
+        QStringLiteral("toggleBottomPanelsButton")
+    );
+    if (toggleButton) {
+        // Signal blocking prevents setChecked from triggering clicked, which would call activated()
+        // again
+        QSignalBlocker blocker(toggleButton);
+        toggleButton->setChecked(panelsNowVisible);
+    }
+}
+
+Action* StdCmdToggleBottomPanels::createAction()
+{
+    _pcAction = Command::createAction();
+    // Checkable so the action reflects panel visibility when placed in a toolbar or menu
+    _pcAction->setCheckable(true);
+    return _pcAction;
+}
+
+bool StdCmdToggleBottomPanels::isActive()
+{
+    // Always enabled, even when no document is open
+    return true;
+}
+
+//===========================================================================
 // Std_StoreWorkingView
 //===========================================================================
 DEF_STD_CMD_A(StdStoreWorkingView)
@@ -4525,6 +4627,7 @@ void CreateViewStdCommands()
     rcCmdMgr.addCommand(new StdCmdSelBoundingBox());
     rcCmdMgr.addCommand(new StdCmdTreeViewActions());
     rcCmdMgr.addCommand(new StdCmdDockOverlay());
+    rcCmdMgr.addCommand(new StdCmdToggleBottomPanels());
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/View"
