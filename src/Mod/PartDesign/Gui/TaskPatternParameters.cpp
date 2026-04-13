@@ -376,9 +376,11 @@ void TaskPatternParameters::setDefaultPerpendicularDirection2()
                 App::Origin* origin = body->getOrigin();
                 if (dir1Obj == origin->getX()) {
                     candidateObj = origin->getY();
+                    candidateSub = {""};
                 }
                 else if (dir1Obj == origin->getY()) {
                     candidateObj = origin->getX();
+                    candidateSub = {""};
                 }
             }
             catch (const Base::Exception&) {
