@@ -42,7 +42,6 @@ import os
 import PySide.QtCore as QtCore
 
 import FreeCAD as App
-from draftgeoutils import general as geo_general
 from draftutils import params
 from draftutils.messages import _wrn, _err, _log
 from draftutils.translate import translate
@@ -543,12 +542,9 @@ def shapify(obj, delete=True):
     elif len(shape.Wires) == 1:
         name = "Wire"
     elif len(shape.Edges) == 1:
-        if geo_general.geomType(shape.Edges[0]) == "Line":
-            name = "Line"
-        else:
-            name = "Circle"
+        name = "Edge"
     else:
-        name = getRealName(obj.Name)
+        name = get_real_name(obj.Name)
 
     if delete:
         App.ActiveDocument.removeObject(obj.Name)
