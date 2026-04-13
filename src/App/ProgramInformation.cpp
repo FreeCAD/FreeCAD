@@ -23,7 +23,6 @@
 
 #include <filesystem>
 #include <algorithm>
-#include <optional>
 #include <vector>
 #include <boost/version.hpp>
 #include <boost/tokenizer.hpp>
@@ -56,18 +55,12 @@ std::ostream& operator<<(std::ostream& os, const QString& str)
     return os;
 }
 
-struct AddonInfo
-{
-    QString name;
-    std::string entry;
-};
-
-static std::optional<AddonInfo> getModuleInfo(const std::string& path)
+static std::string getModuleInfoString(const std::string& path)
 {
     QString modPath = QString::fromStdString(path);
     QFileInfo mod(modPath);
     if (mod.isHidden()) {  // Ignore hidden directories
-        return std::nullopt;
+        return {};
     }
 
     std::string addonName = mod.isDir() ? QDir(modPath).dirName().toStdString()
@@ -101,7 +94,7 @@ static std::optional<AddonInfo> getModuleInfo(const std::string& path)
     }
 
     str << "\n";
-    return AddonInfo {QString::fromStdString(addonName), str.str()};
+    return str.str();
 }
 
 }
@@ -161,8 +154,9 @@ std::string ProgramInformation::prettyProductInfoWrapper()
 
 void ProgramInformation::addModuleInfo(std::stringstream& str, const std::string& path)
 {
-    if (auto moduleInfo = getModuleInfo(path)) {
-        str << moduleInfo->entry;
+    auto moduleInfo = getModuleInfoString(path);
+    if (!moduleInfo.empty()) {
+        str << moduleInfo;
     }
 }
 
@@ -354,15 +348,16 @@ void ProgramInformation::getVerboseAddOnsInfo(
 {
     // Add installed module information:
     const auto modDir = fs::path(Application::getUserAppDataDir()) / "Mod";
-    std::vector<AddonInfo> addonEntries;
+    std::vector<std::string> addons;
     if (fs::exists(modDir) && fs::is_directory(modDir)) {
         for (const auto& mod : fs::directory_iterator(modDir)) {
             if (!fs::is_directory(mod)) {
                 continue;  // Ignore files, only show directories
             }
             auto dirName = mod.path().string();
-            if (auto moduleInfo = getModuleInfo(dirName)) {
-                addonEntries.push_back(std::move(*moduleInfo));
+            auto moduleInfo = getModuleInfoString(dirName);
+            if (!moduleInfo.empty()) {
+                addons.push_back(std::move(moduleInfo));
             }
         }
     }
@@ -372,24 +367,18 @@ void ProgramInformation::getVerboseAddOnsInfo(
         boost::char_separator<char> sep(";");
         boost::tokenizer<boost::char_separator<char>> mods(additionalModules, sep);
         for (const auto& mod : mods) {
-            if (auto moduleInfo = getModuleInfo(mod)) {
-                addonEntries.push_back(std::move(*moduleInfo));
+            auto moduleInfo = getModuleInfoString(mod);
+            if (!moduleInfo.empty()) {
+                addons.push_back(std::move(moduleInfo));
             }
         }
     }
 
-    std::sort(addonEntries.begin(), addonEntries.end(), [](const AddonInfo& lhs, const AddonInfo& rhs) {
-        return lhs.name.compare(rhs.name, Qt::CaseInsensitive) < 0;
-    });
-
-    std::stringstream tmp;
-    for (const auto& addon : addonEntries) {
-        tmp << addon.entry;
-    }
-
-    std::string addons = tmp.str();
+    std::sort(addons.begin(), addons.end());
     if (!addons.empty()) {
         str << "Installed mods:\n";
-        str << addons;
+        for (const auto& addon : addons) {
+            str << addon;
+        }
     }
 }
