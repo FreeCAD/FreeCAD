@@ -82,6 +82,7 @@
 #include <Base/Stream.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
+#include <Inventor/SoDB.h>
 #include <DAGView/DAGView.h>
 #include <TaskView/TaskView.h>
 
@@ -2538,9 +2539,16 @@ void MainWindow::changeEvent(QEvent* e)
         App::GetApplication().retranslateExportTypes();
     }
     else if (e->type() == QEvent::ActivationChange) {
+        static SbTime savedRealTimeInterval = SoDB::getRealTimeInterval();
         if (isActiveWindow()) {
             QMdiSubWindow* mdi = d->mdiArea->currentSubWindow();
             setActiveSubWindow(mdi);
+            SoDB::enableRealTimeSensor(true);
+            SoDB::setRealTimeInterval(savedRealTimeInterval);
+        }
+        else {
+            savedRealTimeInterval = SoDB::getRealTimeInterval();
+            SoDB::enableRealTimeSensor(false);
         }
     }
     else {
