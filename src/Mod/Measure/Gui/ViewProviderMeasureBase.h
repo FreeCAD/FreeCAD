@@ -130,13 +130,13 @@ public:
     void onSubjectVisibilityChanged(const App::DocumentObject& docObj, const App::Property& prop);
     void connectToSubject(App::DocumentObject* subject);
     void connectToSubject(std::vector<App::DocumentObject*> subject);
+    void setLabelValue(const Base::Quantity& value);
+    void setLabelValue(const QString& value);
 
 protected:
     static void draggerChangedCallback(void* data, SoDragger*);
     void onChanged(const App::Property* prop) override;
     virtual void onLabelMoved() {};
-    void setLabelValue(const Base::Quantity& value);
-    void setLabelValue(const QString& value);
     void setLabelTranslation(const SbVec3f& position);
     void updateIcon();
     void syncDraggerOrientationToView();
@@ -146,6 +146,7 @@ protected:
     SoDrawStyle* getSoLineStyleSecondary();
     SoSeparator* getSoSeparatorText();
 
+    static constexpr char32_t UnicodeSuperscript2 = 0x00B2;
     static constexpr double defaultTolerance = 10e-6;
     virtual Base::Vector3d getTextDirection(
         Base::Vector3d elementDirection,
