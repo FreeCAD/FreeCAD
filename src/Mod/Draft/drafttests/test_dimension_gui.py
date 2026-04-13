@@ -115,9 +115,7 @@ class DraftGuiDimension(test_base.DraftTestCaseDoc):
 
     def extractOvershootLines(self, svg_text):
         """Extract overshoot line transforms from Draft SVG output."""
-        root = ET.fromstring(
-            f'<svg xmlns:freecad="{self.FREECAD_NAMESPACE}">{svg_text}</svg>'
-        )
+        root = ET.fromstring(f'<svg xmlns:freecad="{self.FREECAD_NAMESPACE}">{svg_text}</svg>')
         lines = []
         for element in root.iter():
             if not element.tag.endswith("line"):
@@ -253,7 +251,9 @@ class DraftGuiDimension(test_base.DraftTestCaseDoc):
         """Create a TechDraw DraftView for the provided angular dimension."""
         page = doc.addObject("TechDraw::DrawPage")
         template = doc.addObject("TechDraw::DrawSVGTemplate")
-        template.Template = App.getResourceDir() + "Mod/TechDraw/Templates/ISO/A3_Landscape_blank.svg"
+        template.Template = (
+            App.getResourceDir() + "Mod/TechDraw/Templates/ISO/A3_Landscape_blank.svg"
+        )
         page.Template = template
         view = doc.addObject("TechDraw::DrawViewDraft")
         view.Source = source
