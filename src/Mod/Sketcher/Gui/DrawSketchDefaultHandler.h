@@ -817,8 +817,10 @@ protected:
                     //     geoId2);
                     return false;
                 }
-                else if (geom2->is<Part::GeomEllipse>()
-                         && (geom1->is<Part::GeomConic>() || geom1->is<Part::GeomArcOfConic>())) {
+                else if (
+                    geom2->is<Part::GeomEllipse>()
+                    && (geom1->is<Part::GeomConic>() || geom1->is<Part::GeomArcOfConic>())
+                ) {
                     // makeTangentToEllipseviaNewPoint(
                     //     Obj,
                     //     static_cast<const Part::GeomEllipse*>(geom2),
@@ -827,8 +829,10 @@ protected:
                     //     geoId1);
                     return false;
                 }
-                else if (geom1->is<Part::GeomArcOfEllipse>()
-                         && (geom2->is<Part::GeomConic>() || geom2->is<Part::GeomArcOfConic>())) {
+                else if (
+                    geom1->is<Part::GeomArcOfEllipse>()
+                    && (geom2->is<Part::GeomConic>() || geom2->is<Part::GeomArcOfConic>())
+                ) {
                     // makeTangentToArcOfEllipseviaNewPoint(
                     //     Obj,
                     //     static_cast<const Part::GeomArcOfEllipse*>(geom1),
@@ -837,8 +841,10 @@ protected:
                     //     geoId2);
                     return false;
                 }
-                else if (geom2->is<Part::GeomArcOfEllipse>()
-                         && (geom1->is<Part::GeomConic>() || geom1->is<Part::GeomArcOfConic>())) {
+                else if (
+                    geom2->is<Part::GeomArcOfEllipse>()
+                    && (geom1->is<Part::GeomConic>() || geom1->is<Part::GeomArcOfConic>())
+                ) {
                     // makeTangentToArcOfEllipseviaNewPoint(
                     //     Obj,
                     //     static_cast<const Part::GeomArcOfEllipse*>(geom2),
