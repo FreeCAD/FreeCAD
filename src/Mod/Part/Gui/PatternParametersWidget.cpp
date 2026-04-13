@@ -756,7 +756,7 @@ void PatternParametersWidget::updateSpacingLabels(
                 this,
                 &PatternParametersWidget::onSpacingLabelClicked
             );
-            
+
             if (mode == PatternMode::Spacing) {
                 connect(
                     label.get(),
