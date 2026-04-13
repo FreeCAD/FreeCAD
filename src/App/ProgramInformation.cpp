@@ -22,6 +22,9 @@
  **************************************************************************/
 
 #include <filesystem>
+#include <algorithm>
+#include <optional>
+#include <vector>
 #include <boost/version.hpp>
 #include <boost/tokenizer.hpp>
 #include <QDir>
@@ -51,6 +54,54 @@ std::ostream& operator<<(std::ostream& os, const QString& str)
 {
     os << str.toStdString();
     return os;
+}
+
+struct AddonInfo
+{
+    QString name;
+    std::string entry;
+};
+
+std::optional<AddonInfo> getModuleInfo(const std::string& path)
+{
+    QString modPath = QString::fromStdString(path);
+    QFileInfo mod(modPath);
+    if (mod.isHidden()) {  // Ignore hidden directories
+        return std::nullopt;
+    }
+
+    std::string addonName = mod.isDir() ? QDir(modPath).dirName().toStdString()
+                                        : mod.fileName().toStdString();
+    std::string versionString;
+    std::stringstream str;
+    try {
+        auto metadataFile = std::filesystem::path(mod.absoluteFilePath().toStdString())
+            / "package.xml";
+        if (std::filesystem::exists(metadataFile)) {
+            App::Metadata metadata(metadataFile);
+            if (!metadata.name().empty()) {
+                addonName = metadata.name();
+            }
+            if (metadata.version() != App::Meta::Version()) {
+                versionString = " " + metadata.version().str();
+            }
+        }
+    }
+    catch (const Base::Exception& e) {
+        auto what = QString::fromUtf8(e.what()).trimmed().replace(
+            QChar::fromLatin1('\n'),
+            QChar::fromLatin1(' ')
+        );
+        str << " (Malformed metadata: " << what << ")";
+    }
+    str << "  * " << addonName << versionString;
+    QFileInfo disablingFile(mod.absoluteFilePath(), QStringLiteral("ADDON_DISABLED"));
+    if (disablingFile.exists()) {
+        str << " (Disabled)";
+    }
+
+    str << "\n";
+    return AddonInfo {QString::fromStdString(addonName), str.str()};
 }
 
 }
@@ -110,41 +161,9 @@ std::string ProgramInformation::prettyProductInfoWrapper()
 
 void ProgramInformation::addModuleInfo(std::stringstream& str, const std::string& path)
 {
-    QString modPath = QString::fromStdString(path);
-    QFileInfo mod(modPath);
-    if (mod.isHidden()) {  // Ignore hidden directories
-        return;
+    if (auto moduleInfo = getModuleInfo(path)) {
+        str << moduleInfo->entry;
     }
-    std::string addonName = mod.isDir() ? QDir(modPath).dirName().toStdString()
-                                        : mod.fileName().toStdString();
-    std::string versionString;
-    try {
-        auto metadataFile = std::filesystem::path(mod.absoluteFilePath().toStdString())
-            / "package.xml";
-        if (std::filesystem::exists(metadataFile)) {
-            App::Metadata metadata(metadataFile);
-            if (!metadata.name().empty()) {
-                addonName = metadata.name();
-            }
-            if (metadata.version() != App::Meta::Version()) {
-                versionString = " " + metadata.version().str();
-            }
-        }
-    }
-    catch (const Base::Exception& e) {
-        auto what = QString::fromUtf8(e.what()).trimmed().replace(
-            QChar::fromLatin1('\n'),
-            QChar::fromLatin1(' ')
-        );
-        str << " (Malformed metadata: " << what << ")";
-    }
-    str << "  * " << addonName << versionString;
-    QFileInfo disablingFile(mod.absoluteFilePath(), QStringLiteral("ADDON_DISABLED"));
-    if (disablingFile.exists()) {
-        str << " (Disabled)";
-    }
-
-    str << "\n";
 }
 
 std::string ProgramInformation::getValueOrEmpty(
@@ -335,14 +354,16 @@ void ProgramInformation::getVerboseAddOnsInfo(
 {
     // Add installed module information:
     const auto modDir = fs::path(Application::getUserAppDataDir()) / "Mod";
-    std::stringstream tmp;
+    std::vector<AddonInfo> addonEntries;
     if (fs::exists(modDir) && fs::is_directory(modDir)) {
         for (const auto& mod : fs::directory_iterator(modDir)) {
             if (!fs::is_directory(mod)) {
                 continue;  // Ignore files, only show directories
             }
             auto dirName = mod.path().string();
-            addModuleInfo(tmp, dirName);
+            if (auto moduleInfo = getModuleInfo(dirName)) {
+                addonEntries.push_back(std::move(*moduleInfo));
+            }
         }
     }
     const auto additionalModules = getValueOrEmpty(mConfig, "AdditionalModulePaths");
@@ -351,8 +372,19 @@ void ProgramInformation::getVerboseAddOnsInfo(
         boost::char_separator<char> sep(";");
         boost::tokenizer<boost::char_separator<char>> mods(additionalModules, sep);
         for (const auto& mod : mods) {
-            addModuleInfo(tmp, mod);
+            if (auto moduleInfo = getModuleInfo(mod)) {
+                addonEntries.push_back(std::move(*moduleInfo));
+            }
         }
+    }
+
+    std::sort(addonEntries.begin(), addonEntries.end(), [](const AddonInfo& lhs, const AddonInfo& rhs) {
+        return lhs.name.compare(rhs.name, Qt::CaseInsensitive) < 0;
+    });
+
+    std::stringstream tmp;
+    for (const auto& addon : addonEntries) {
+        tmp << addon.entry;
     }
 
     std::string addons = tmp.str();
