@@ -1012,6 +1012,7 @@ SET(Navigation_CPP_SRCS
     Navigation/TinkerCADNavigationStyle.cpp
     Navigation/TouchpadNavigationStyle.cpp
     Navigation/GestureNavigationStyle.cpp
+    Navigation/Fusion360NavigationStyle.cpp
     Navigation/NavigationAnimator.cpp
     Navigation/NavigationAnimation.cpp
 )

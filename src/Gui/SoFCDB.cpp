@@ -212,6 +212,7 @@ void Gui::SoFCDB::init()
     NavigationStateChart ::init();
     BlenderNavigationStyle ::init();
     CADNavigationStyle ::init();
+    Fusion360NavigationStyle ::init();
     GestureNavigationStyle ::init();
     MayaGestureNavigationStyle ::init();
     OpenCascadeNavigationStyle ::init();
