@@ -418,7 +418,7 @@ App::DocumentObjectExecReturn* Helix::execute()
 
             if (!isSingleSolidRuleSatisfied(result)) {
                 return new App::DocumentObjectExecReturn(
-                    QT_TRANSLATE_NOOP("Exception", "Error: Result has multiple solids")
+                    QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: enable 'Allow Compound' in the active body.")
                 );
             }
 
@@ -448,7 +448,7 @@ App::DocumentObjectExecReturn* Helix::execute()
 
             if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {
                 return new App::DocumentObjectExecReturn(
-                    QT_TRANSLATE_NOOP("Exception", "Error: Result has multiple solids")
+                    QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: enable 'Allow Compound' in the active body.")
                 );
             }
 
@@ -489,7 +489,7 @@ App::DocumentObjectExecReturn* Helix::execute()
 
             if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {
                 return new App::DocumentObjectExecReturn(
-                    QT_TRANSLATE_NOOP("Exception", "Error: Result has multiple solids")
+                    QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: enable 'Allow Compound' in the active body.")
                 );
             }
 
