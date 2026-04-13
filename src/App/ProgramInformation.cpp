@@ -62,7 +62,7 @@ struct AddonInfo
     std::string entry;
 };
 
-std::optional<AddonInfo> getModuleInfo(const std::string& path)
+static std::optional<AddonInfo> getModuleInfo(const std::string& path)
 {
     QString modPath = QString::fromStdString(path);
     QFileInfo mod(modPath);
