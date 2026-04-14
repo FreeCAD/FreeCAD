@@ -403,7 +403,16 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
     App::DocumentObject* parent = nullptr;
     std::string parentSub;
     std::map<App::DocumentObject*, std::vector<std::string>> values;
-    for (auto& sel : Gui::Selection().getCompleteSelection(Gui::ResolveMode::NoResolve)) {
+
+    // Try to get the current active document's selection and
+    // fallback on the previous one to allow for interdocument ssb
+    auto selection = Gui::Selection().getSelection();
+    if (selection.empty()) {
+        if (auto prevDoc = App::GetApplication().getPrevActiveDocument()) {
+            selection = Gui::Selection().getSelection(prevDoc->getName());
+        }
+    }
+    for (auto& sel : selection) {
         if (!sel.pObject) {
             continue;
         }

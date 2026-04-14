@@ -1066,6 +1066,10 @@ Document* Application::getActiveDocument() const
 {
     return _pActiveDoc;
 }
+App::Document* Application::getPrevActiveDocument() const
+{
+    return _pPrevActiveDoc;
+}
 
 void Application::setActiveDocument(Document* pDoc)
 {
@@ -1078,7 +1082,7 @@ void Application::setActiveDocument(Document* pDoc)
 
 void Application::setActiveDocumentNoSignal(Document* pDoc)
 {
-    _pActiveDoc = pDoc;
+    assignActiveDocumentImpl(pDoc);
 
     // make sure that the active document is set in case no GUI is up
     if (pDoc) {
@@ -1091,12 +1095,17 @@ void Application::setActiveDocumentNoSignal(Document* pDoc)
         Py::Module("FreeCAD").setAttr(std::string("ActiveDocument"), Py::None());
     }
 }
+void Application::assignActiveDocumentImpl(App::Document* pDoc)
+{
+    _pPrevActiveDoc = _pActiveDoc;
+    _pActiveDoc = pDoc;
+}
 
 void Application::setActiveDocument(const char* Name)
 {
     // If no active document is set, resort to a default.
     if (*Name == '\0') {
-        _pActiveDoc = nullptr;
+        assignActiveDocumentImpl(nullptr);
         return;
     }
 

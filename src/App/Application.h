@@ -196,6 +196,7 @@ public:
 
     /// Get the active document.
     App::Document* getActiveDocument() const;
+    App::Document* getPrevActiveDocument() const;
 
     /**
      * @brief Retrieve a document based on its name.
@@ -929,6 +930,7 @@ private:
             const char *label, bool isMainDoc, DocumentInitFlags initFlags, std::vector<std::string> &&objNames);
 
     void setActiveDocumentNoSignal(App::Document* pDoc);
+    void assignActiveDocumentImpl(App::Document* pDoc);
 
     static Base::Reference<ParameterManager> _pcSysParamMngr;
     static Base::Reference<ParameterManager> _pcUserParamMngr;
@@ -984,6 +986,7 @@ private:
     std::map<std::string,Base::Reference<ParameterManager>> mpcPramManager;
     std::map<std::string,std::string> &_mConfig;
     App::Document* _pActiveDoc{nullptr};
+    App::Document* _pPrevActiveDoc{nullptr};
 
     std::deque<std::string> _pendingDocs;
     std::deque<std::string> _pendingDocsReopen;
