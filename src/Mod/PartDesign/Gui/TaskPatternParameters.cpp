@@ -620,7 +620,8 @@ void TaskPatternParameters::setDefaultPerpendicularDirection2()
     bool direction1IsBuiltinAxis = direction1IsSketchHV || direction1IsBodyBaseAxis;
     bool direction2LooksLikeSketchFallback = isSketchDefaultHVAxisLink(dir2Obj, dir2Sub);
     bool direction2IsBodyAxis = isBodyBaseAxisLink(linearPattern, dir2Obj, dir2Sub);
-    bool direction2LooksLikeBuiltinFallback = direction2LooksLikeSketchFallback || direction2IsBodyAxis;
+    bool direction2LooksLikeBuiltinFallback = direction2LooksLikeSketchFallback
+        || direction2IsBodyAxis;
     bool shouldOverride = direction2Unset || direction2SameAsDirection1
         || (direction1IsBodyBaseAxis && direction2LooksLikeSketchFallback)
         || (!direction1IsBuiltinAxis && direction2LooksLikeBuiltinFallback);
