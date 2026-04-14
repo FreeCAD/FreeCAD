@@ -241,6 +241,13 @@ void View3DInventor::applySettings()
     naviSettings->applySettings();
 }
 
+void View3DInventor::syncCameraTypePref(bool isOrthographic)
+{
+    if (viewSettings) {
+        viewSettings->syncOrthographicPref(isOrthographic);
+    }
+}
+
 void View3DInventor::onRename(Gui::Document* pDoc)
 {
     SoSFString name;
@@ -442,10 +449,12 @@ bool View3DInventor::onMsg(const char* pMsg)
     }
     else if (strcmp("OrthographicCamera", pMsg) == 0) {
         _viewer->setCameraType(SoOrthographicCamera::getClassTypeId());
+        syncCameraTypePref(true);
         return true;
     }
     else if (strcmp("PerspectiveCamera", pMsg) == 0) {
         _viewer->setCameraType(SoPerspectiveCamera::getClassTypeId());
+        syncCameraTypePref(false);
         return true;
     }
     else if (strcmp("Undo", pMsg) == 0) {
