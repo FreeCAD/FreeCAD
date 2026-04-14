@@ -2828,6 +2828,11 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
     for (const auto & it : files) {
 
         Base::FileInfo file(it);
+        if (!QFileInfo(QString::fromUtf8(file.filePath().c_str())).isAbsolute()) {
+            // Keep command-line-opened documents registered to their real filesystem path.
+            const QString absolutePath = QFileInfo(QString::fromUtf8(it.c_str())).absoluteFilePath();
+            file = Base::FileInfo(absolutePath.toUtf8().constData());
+        }
         // Can we safely remove the isSymlink check and directly query the canonical
         // path for every string? The reason for avoiding it currently is that
         // getCannonicalPath will log an error if the file doesn't exist
