@@ -81,6 +81,17 @@ private Q_SLOTS:
         QCOMPARE(input.validate(text, pos), QValidator::Acceptable);
     }
 
+    void test_GroupedLocaleNumberIsNormalizedBeforeParse()  // NOLINT
+    {
+        ScopedNumericLocales locales("en_US", "en_US");
+
+        Gui::InputField input;
+        input.setText(QStringLiteral("1,010.00 mm"));
+
+        QCOMPARE(input.getQuantity(), Base::Quantity(1010, "mm"));
+        QCOMPARE(input.rawValue(), 1010.0);
+    }
+
 private:
     std::unique_ptr<Gui::InputField> field;
 };

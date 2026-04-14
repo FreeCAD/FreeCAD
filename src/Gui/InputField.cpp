@@ -37,6 +37,7 @@
 #include "InputField.h"
 #include "BitmapFactory.h"
 #include "Command.h"
+#include "QuantityParsingUtils.h"
 #include "QuantitySpinBox_p.h"
 
 
@@ -269,8 +270,9 @@ void InputField::newInput(const QString& text)
     auto tryParse = [&](const QString& input) -> bool {
         try {
             if (isBound()) {
+                const QByteArray inputUtf8 = input.toUtf8();
                 std::shared_ptr<Expression> e(
-                    ExpressionParser::parse(getPath().getDocumentObject(), input.toUtf8())
+                    ExpressionParser::parse(getPath().getDocumentObject(), inputUtf8.constData())
                 );
 
                 setExpression(e);
@@ -294,17 +296,15 @@ void InputField::newInput(const QString& text)
         }
     };
 
-    if (!tryParse(text)) {
-        QString input = text;
-        fixup(input);
-        if (input == text || !tryParse(input)) {
-            if (iconLabel->isHidden()) {
-                iconLabel->setVisible(true);
-            }
-            Q_EMIT parseError(errorText);
-            validInput = false;
-            return;
+    if (!Gui::detail::parseWithFixupFallback(text, locale(), tryParse, [this](QString& input) {
+            fixup(input);
+        })) {
+        if (iconLabel->isHidden()) {
+            iconLabel->setVisible(true);
         }
+        Q_EMIT parseError(errorText);
+        validInput = false;
+        return;
     }
 
     if (res.isDimensionless()) {
@@ -805,14 +805,12 @@ QValidator::State InputField::validate(QString& input, int& pos) const
         }
     };
 
-    QString text = input;
-    if (!tryParse(text)) {
-        fixup(text);
-        if (text == input || !tryParse(text)) {
-            // Actually invalid input but the newInput slot gives
-            // some feedback
-            return QValidator::Intermediate;
-        }
+    if (!Gui::detail::parseWithFixupFallback(input, locale(), tryParse, [this](QString& text) {
+            fixup(text);
+        })) {
+        // Actually invalid input but the newInput slot gives
+        // some feedback
+        return QValidator::Intermediate;
     }
 
     double factor;

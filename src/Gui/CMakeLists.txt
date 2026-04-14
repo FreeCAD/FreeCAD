@@ -1185,6 +1185,7 @@ SET(Widget_HPP_SRCS
     NotificationArea.h
     PrefWidgets.h
     InputField.h
+    QuantityParsingUtils.h
     ProgressBar.h
     ProgressDialog.h
     QuantitySpinBox.h

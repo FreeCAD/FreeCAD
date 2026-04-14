@@ -111,7 +111,7 @@ private Q_SLOTS:
         QCOMPARE(spinBox.rawValue(), 10.0);
     }
 
-    void test_GroupedLocaleNumberFallsBackAfterInitialParseFails()  // NOLINT
+    void test_GroupedLocaleNumberIsNormalizedBeforeParse()  // NOLINT
     {
         ScopedNumericLocales locales("da_DK", "en_US");
 
@@ -121,6 +121,36 @@ private Q_SLOTS:
         QCOMPARE(result, Base::Quantity(1000, "mm"));
     }
 
+    void test_CanonicalDecimalPointRemainsAcceptedInCommaLocale()  // NOLINT
+    {
+        ScopedNumericLocales locales("da_DK", "en_US");
+
+        Gui::QuantitySpinBox spinBox;
+        const auto result = spinBox.valueFromText("10.00 mm");
+
+        QCOMPARE(result, Base::Quantity(10, "mm"));
+    }
+
+    void test_GroupedEditDoesNotCorruptRawValue()  // NOLINT
+    {
+        ScopedNumericLocales locales("en_US", "en_US");
+
+        Gui::QuantitySpinBox spinBox;
+        Base::Quantity quantity(10.0, "mm");
+        Base::QuantityFormat format(Base::QuantityFormat::Fixed, 2);
+        format.option = Base::QuantityFormat::None;
+        quantity.setFormat(format);
+
+        spinBox.setValue(quantity);
+        spinBox.show();
+        spinBox.setFocus();
+        spinBox.selectNumber();
+        QTest::keyClicks(&spinBox, "1,010.00");
+        QTest::keyClick(&spinBox, Qt::Key_Return);
+
+        QCOMPARE(spinBox.rawValue(), 1010.0);
+        QCOMPARE(spinBox.text(), QStringLiteral("1,010.00 mm"));
+    }
 private:
     std::unique_ptr<Gui::QuantitySpinBox> qsb;
 };

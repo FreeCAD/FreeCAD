@@ -45,6 +45,7 @@
 
 #include "QuantitySpinBox.h"
 #include "QuantitySpinBox_p.h"
+#include "QuantityParsingUtils.h"
 #include "Command.h"
 #include "Dialogs/DlgExpressionInput.h"
 #include "Tools.h"
@@ -160,23 +161,16 @@ public:
         };
 
         try {
-            if (tryParse(str)) {
-                return true;
-            }
-
-            const QString groupSeparator = locale.groupSeparator();
-            if (!groupSeparator.isNull() && str.contains(groupSeparator)) {
-                QString copy = str;
-                copy.remove(groupSeparator);
-                if (copy != str && tryParse(copy)) {
-                    return true;
+            return Gui::detail::parseWithFixupFallback(str, locale, tryParse, [this](QString& input) {
+                const QString groupSeparator = locale.groupSeparator();
+                if (!groupSeparator.isNull()) {
+                    input.remove(groupSeparator);
                 }
-            }
+            });
         }
         catch (Base::Exception&) {
             return false;
         }
-        return false;
     }
     Base::Quantity validateAndInterpret(
         QString& input,
@@ -1126,14 +1120,19 @@ Base::Quantity QuantitySpinBox::valueFromText(const QString& text) const
 {
     Q_D(const QuantitySpinBox);
 
-    QString copy = text;
     QValidator::State state = QValidator::Acceptable;
     const App::ObjectIdentifier& path = getPath();
-    Base::Quantity quant = d->validateAndInterpret(copy, state, path);
-    if (state != QValidator::Acceptable) {
-        fixup(copy);
-        quant = d->validateAndInterpret(copy, state, path);
-    }
+    Base::Quantity quant;
+    Gui::detail::parseWithFixupFallback(
+        text,
+        locale(),
+        [&](const QString& input) {
+            QString copy = input;
+            quant = d->validateAndInterpret(copy, state, path);
+            return state == QValidator::Acceptable;
+        },
+        [this](QString& input) { fixup(input); }
+    );
 
     return quant;
 }
