@@ -320,6 +320,8 @@ private:
 
     void createShape(bool onlyeditoutline) override
     {
+        Q_UNUSED(onlyeditoutline);
+
         ShapeGeometry.clear();
 
         if (!valid) {

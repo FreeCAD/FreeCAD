@@ -319,6 +319,8 @@ private:
 
     void createShape(bool onlyeditoutline) override
     {
+        Q_UNUSED(onlyeditoutline);
+
         ShapeGeometry.clear();
 
         if (!valid) {
@@ -698,7 +700,7 @@ void DSHArcOfHyperbolaController::addConstraints()
     int firstCurve = handler->hyperbolaGeoId;
     int majorLine = firstCurve + 1;
     int minorLine = firstCurve + 2;
-    int point = firstCurve + 3;
+    // int point = firstCurve + 3;
 
     using namespace Sketcher;
 
