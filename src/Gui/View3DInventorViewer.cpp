@@ -22,6 +22,9 @@
 
 #include <FCConfig.h>
 
+#include <algorithm>
+#include <cmath>
+
 #include <Inventor/SoFCPlacementIndicatorKit.h>
 
 #ifdef FC_OS_WIN32
@@ -93,6 +96,7 @@
 #include <App/Document.h>
 #include <App/GeoFeatureGroupExtension.h>
 #include <Base/Console.h>
+#include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/Sequencer.h>
 #include <Base/Profiler.h>
@@ -2951,9 +2955,14 @@ SbVec3f View3DInventorViewer::getViewDirection() const
 
 void View3DInventorViewer::setViewDirection(SbVec3f dir)
 {
-    if (SoCamera* cam = this->getSoRenderManager()->getCamera()) {
-        cam->orientation.setValue(SbRotation(SbVec3f(0, 0, -1), dir));
+    if (!navigation) {
+        return;
     }
+    navigation->setCameraOrientationValue(
+        getCamera(),
+        SbRotation(SbVec3f(0, 0, -1), dir),
+        NavigationStyle::OrientationChangeSource::Programmatic
+    );
 }
 
 SbVec3f View3DInventorViewer::getUpDirection() const
@@ -3480,6 +3489,17 @@ std::shared_ptr<NavigationAnimation> View3DInventorViewer::setCameraOrientation(
     const bool moveToCenter
 ) const
 {
+    SoCamera* camera = getCamera();
+    if (!camera) {
+        return {};
+    }
+    if (!navigation->canChangeCameraOrientation(
+            camera->orientation.getValue(),
+            orientation,
+            NavigationStyle::OrientationChangeSource::Programmatic
+        )) {
+        return {};
+    }
     return navigation->setCameraOrientation(orientation, moveToCenter);
 }
 
@@ -3509,11 +3529,6 @@ void View3DInventorViewer::setCameraType(SoType type)
 
 bool View3DInventorViewer::setCamera(const char* pCamera)
 {
-    SoCamera* CamViewer = getSoRenderManager()->getCamera();
-    if (!CamViewer) {
-        throw Base::RuntimeError("No camera set so far…");
-    }
-
     SoInput in;
     in.setBuffer(pCamera, std::strlen(pCamera));
 
@@ -3526,38 +3541,65 @@ bool View3DInventorViewer::setCamera(const char* pCamera)
 
     // this is to make sure to reliably delete the node
     CoinPtr<SoNode> camPtr {Cam};
+    auto* parsedCamera = static_cast<SoCamera*>(Cam);  // safe downward cast, checked above
+    return applyCameraState(*parsedCamera);
+}
 
-    // toggle between perspective and orthographic camera
-    if (Cam->getTypeId() != CamViewer->getTypeId()) {
-        setCameraType(Cam->getTypeId());
-        CamViewer = getSoRenderManager()->getCamera();
-
-        assert(Cam->getTypeId() == CamViewer->getTypeId());
+bool View3DInventorViewer::applyCameraState(const SoCamera& sourceCamera)
+{
+    SoCamera* targetCamera = getCamera();
+    if (!targetCamera) {
+        throw Base::RuntimeError("No camera set so far…");
     }
 
-    // we just made sure the cameras are the same type, now we can safely downcast
-    if (Cam->getTypeId() == SoPerspectiveCamera::getClassTypeId()) {
-        auto CamViewerP = static_cast<SoPerspectiveCamera*>(CamViewer);
-        auto CamP = static_cast<SoPerspectiveCamera*>(Cam);
-
-        CamViewerP->position = CamP->position;
-        CamViewerP->orientation = CamP->orientation;
-        CamViewerP->nearDistance = CamP->nearDistance;
-        CamViewerP->farDistance = CamP->farDistance;
-        CamViewerP->focalDistance = CamP->focalDistance;
+    if (navigation
+        && !navigation->canChangeCameraOrientation(
+            targetCamera->orientation.getValue(),
+            sourceCamera.orientation.getValue(),
+            NavigationStyle::OrientationChangeSource::Programmatic
+        )) {
+        return false;
     }
-    else if (Cam->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
-        auto CamViewerO = static_cast<SoOrthographicCamera*>(CamViewer);
-        auto CamO = static_cast<SoOrthographicCamera*>(Cam);
 
-        CamViewerO->viewportMapping = CamO->viewportMapping;
-        CamViewerO->position = CamO->position;
-        CamViewerO->orientation = CamO->orientation;
-        CamViewerO->nearDistance = CamO->nearDistance;
-        CamViewerO->farDistance = CamO->farDistance;
-        CamViewerO->focalDistance = CamO->focalDistance;
-        CamViewerO->aspectRatio = CamO->aspectRatio;
-        CamViewerO->height = CamO->height;
+    if (sourceCamera.getTypeId() != targetCamera->getTypeId()) {
+        setCameraType(sourceCamera.getTypeId());
+        targetCamera = getCamera();
+        if (!targetCamera) {
+            throw Base::RuntimeError("No camera set so far…");
+        }
+    }
+
+    if (targetCamera->getTypeId() == SoPerspectiveCamera::getClassTypeId()) {
+        auto* targetPerspective = static_cast<SoPerspectiveCamera*>(targetCamera);
+        if (sourceCamera.getTypeId() != SoPerspectiveCamera::getClassTypeId()) {
+            throw Base::TypeError("Camera type mismatch");
+        }
+
+        const auto& sourcePerspective = static_cast<const SoPerspectiveCamera&>(sourceCamera);
+        targetPerspective->position = sourcePerspective.position;
+        targetPerspective->orientation = sourcePerspective.orientation;
+        targetPerspective->nearDistance = sourcePerspective.nearDistance;
+        targetPerspective->farDistance = sourcePerspective.farDistance;
+        targetPerspective->focalDistance = sourcePerspective.focalDistance;
+    }
+    else if (targetCamera->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
+        auto* targetOrthographic = static_cast<SoOrthographicCamera*>(targetCamera);
+        if (sourceCamera.getTypeId() != SoOrthographicCamera::getClassTypeId()) {
+            throw Base::TypeError("Camera type mismatch");
+        }
+
+        const auto& sourceOrthographic = static_cast<const SoOrthographicCamera&>(sourceCamera);
+        targetOrthographic->viewportMapping = sourceOrthographic.viewportMapping;
+        targetOrthographic->position = sourceOrthographic.position;
+        targetOrthographic->orientation = sourceOrthographic.orientation;
+        targetOrthographic->nearDistance = sourceOrthographic.nearDistance;
+        targetOrthographic->farDistance = sourceOrthographic.farDistance;
+        targetOrthographic->focalDistance = sourceOrthographic.focalDistance;
+        targetOrthographic->aspectRatio = sourceOrthographic.aspectRatio;
+        targetOrthographic->height = sourceOrthographic.height;
+    }
+    else {
+        throw Base::TypeError("Camera type mismatch");
     }
 
     return true;
@@ -3567,6 +3609,13 @@ void View3DInventorViewer::moveCameraTo(const SbRotation& orientation, const SbV
 {
     SoCamera* camera = getCamera();
     if (!camera) {
+        return;
+    }
+    if (!navigation->canChangeCameraOrientation(
+            camera->orientation.getValue(),
+            orientation,
+            NavigationStyle::OrientationChangeSource::Programmatic
+        )) {
         return;
     }
 
@@ -3580,7 +3629,11 @@ void View3DInventorViewer::moveCameraTo(const SbRotation& orientation, const SbV
         );
     }
 
-    camera->orientation.setValue(orientation);
+    navigation->setCameraOrientationValue(
+        camera,
+        orientation,
+        NavigationStyle::OrientationChangeSource::Programmatic
+    );
     camera->position.setValue(position);
 }
 
