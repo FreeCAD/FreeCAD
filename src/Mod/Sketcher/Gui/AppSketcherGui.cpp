@@ -67,6 +67,12 @@ public:
     Module()
         : Py::ExtensionModule<Module>("SketcherGui")
     {
+        add_varargs_method(
+            "hasModelTreeWidget",
+            &Module::hasModelTreeWidgetPy,
+            "Returns True if the Model TreeWidget exists"
+        );
+
         initialize("This module is the SketcherGui module.");  // register with Python
     }
 
@@ -74,6 +80,10 @@ public:
     {}
 
 private:
+    Py::Object hasModelTreeWidgetPy(const Py::Tuple&)
+    {
+        return Py::Boolean(SketcherGui::hasModelTreeWidget());
+    }
 };
 
 PyObject* initModule()

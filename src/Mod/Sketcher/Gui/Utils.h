@@ -27,6 +27,7 @@
 #include <Base/Exception.h>
 #include <Base/Tools.h>
 #include <Base/Tools2D.h>
+#include <Gui/Tree.h>
 #include <Mod/Sketcher/App/GeoEnum.h>
 #include <QListWidget>
 #include <QMap>
@@ -254,6 +255,10 @@ inline void scrollTo(QListWidget* list, int i, bool select)
 }
 
 QMap<QString, QString> findAvailableFontFiles();
+
+// Model TreeWidget helpers
+Gui::TreeWidget* findModelTreeWidget();
+bool hasModelTreeWidget();
 
 }  // namespace SketcherGui
 
