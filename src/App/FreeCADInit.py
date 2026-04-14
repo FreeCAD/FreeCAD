@@ -1291,6 +1291,9 @@ class DirModScanner:
             Wrn(warning)
 
         if flat:
+            resolved = base.resolve()
+            if any(mod.path.resolve() == resolved for mod in self.mods.values()):
+                return
             self.mods[str(base)] = DirMod(base)
             return
 
