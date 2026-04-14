@@ -263,6 +263,7 @@ private:
 
     bool CheckForDependents();
     void addDependentToSelection(App::Document* doc, App::DocumentObject* docObject);
+    void tryOfferRelabel(App::DocumentObject* obj, DocumentItem* docItem);
     static TreeWidget* getTreeForSelection();
 
 private:
