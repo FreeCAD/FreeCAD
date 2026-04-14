@@ -50,6 +50,7 @@ SelectionObject::SelectionObject(const Gui::SelectionChanges& msg)
     if (msg.pSubName) {
         SubNames.emplace_back(msg.pSubName);
         SelPoses.emplace_back(msg.x, msg.y, msg.z);
+        evaluateLinkParent(SubNames);
     }
 }
 
@@ -61,6 +62,25 @@ SelectionObject::SelectionObject(const App::DocumentObject* obj)
 }
 
 SelectionObject::~SelectionObject() = default;
+
+std::string SelectionObject::evaluateLinkParent(const std::vector<std::string>& candidates)
+{
+    const auto doc = getObject()->getDocument();
+    auto it = std::ranges::find_if(candidates, [doc](const std::string& name) {
+        const App::DocumentObject* obj = doc->getObject(name.c_str());
+        return obj && obj->isLink();
+    });
+
+    if (it != candidates.end()) {
+        const std::string& name = *it;
+        if (LinkParentName != name) {
+            LinkParentName = name;
+        }
+        return name;
+    }
+
+    return {};
+}
 
 const App::DocumentObject* SelectionObject::getObject() const
 {
