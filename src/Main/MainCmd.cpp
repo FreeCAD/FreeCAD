@@ -38,6 +38,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
+#include <Base/Tools.h>
 
 // FreeCAD doc header
 #include <App/Application.h>
@@ -56,6 +57,11 @@ int main(int argc, char** argv)
 {
     // Make sure that we use '.' as decimal point
     setlocale(LC_ALL, "");
+#ifndef FC_OS_WIN32
+    if (const char* localeName = setlocale(LC_NUMERIC, nullptr)) {
+        Base::Tools::setOperatingSystemNumericLocale(localeName);
+    }
+#endif
     setlocale(LC_NUMERIC, "C");
 
 #if defined(__MINGW32__)

@@ -20,11 +20,13 @@ namespace
 class ScopedNumericLocales
 {
 public:
-    ScopedNumericLocales(const char* qtLocale, const char* icuLocale)
+    ScopedNumericLocales(const char* qtLocale, const char* formattingLocale, const char* icuLocale)
         : previousQtLocale {QLocale()}
         , previousIcuLocale {icu::Locale::getDefault()}
+        , previousFormattingLocale {Base::Tools::getCurrentNumericFormattingLocale()}
     {
         QLocale::setDefault(QLocale(QString::fromLatin1(qtLocale)));
+        Base::Tools::setCurrentNumericFormattingLocale(formattingLocale);
         Base::Tools::setIcuDefaultLocale(icuLocale);
     }
 
@@ -34,6 +36,7 @@ public:
 
         UErrorCode status = U_ZERO_ERROR;
         icu::Locale::setDefault(previousIcuLocale, status);
+        Base::Tools::setCurrentNumericFormattingLocale(previousFormattingLocale);
     }
 
     ScopedNumericLocales(const ScopedNumericLocales&) = delete;
@@ -42,6 +45,7 @@ public:
 private:
     QLocale previousQtLocale;
     icu::Locale previousIcuLocale;
+    std::string previousFormattingLocale;
 };
 }  // namespace
 
@@ -102,7 +106,7 @@ private Q_SLOTS:
 
     void test_MismatchedFormatterAndWidgetLocaleDoesNotMutateValue()  // NOLINT
     {
-        ScopedNumericLocales locales("da_DK", "en_US");
+        ScopedNumericLocales locales("da_DK", "en_US", "fr_FR");
 
         Gui::QuantitySpinBox spinBox;
         spinBox.setValue(Base::Quantity(10, "mm"));
@@ -113,7 +117,7 @@ private Q_SLOTS:
 
     void test_GroupedLocaleNumberIsNormalizedBeforeParse()  // NOLINT
     {
-        ScopedNumericLocales locales("da_DK", "en_US");
+        ScopedNumericLocales locales("da_DK", "en_US", "fr_FR");
 
         Gui::QuantitySpinBox spinBox;
         const auto result = spinBox.valueFromText("1.000,00 mm");

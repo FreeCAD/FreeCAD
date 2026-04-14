@@ -46,6 +46,7 @@ namespace
 {
 constexpr auto underscore = static_cast<UChar32>(U'_');
 std::string operatingSystemNumericLocale;
+std::string currentNumericFormattingLocale;
 
 #ifdef FC_OS_WIN32
 std::string getWindowsUserDefaultLocaleName()
@@ -344,6 +345,21 @@ std::string Base::Tools::getEffectiveOperatingSystemNumericLocale()
     }
 #endif
     return operatingSystemNumericLocale;
+}
+
+void Base::Tools::setCurrentNumericFormattingLocale(std::string_view localeName)
+{
+    currentNumericFormattingLocale = localeName;
+}
+
+std::string Base::Tools::getCurrentNumericFormattingLocale()
+{
+    if (!currentNumericFormattingLocale.empty()) {
+        return currentNumericFormattingLocale;
+    }
+
+    const auto localeName = getEffectiveOperatingSystemNumericLocale();
+    return localeName.empty() ? std::string {"C"} : localeName;
 }
 
 void Base::Tools::setIcuDefaultLocale(std::string_view icuLocaleId)

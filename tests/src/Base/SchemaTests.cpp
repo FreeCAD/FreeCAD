@@ -50,10 +50,9 @@ class SchemaTest: public testing::Test
 protected:
     void SetUp() override
     {
-        // Ensure deterministic decimal separator for tests.
-        UErrorCode status = U_ZERO_ERROR;
-        icu::Locale::setDefault(icu::Locale("en_US_POSIX"), status);
-        ASSERT_TRUE(U_SUCCESS(status));
+        // Ensure deterministic decimal separators without relying on ICU default state.
+        Base::Tools::setCurrentNumericFormattingLocale("en_US_POSIX");
+        Base::Tools::setIcuDefaultLocale("en_US_POSIX");
     }
 
     void TearDown() override

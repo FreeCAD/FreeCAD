@@ -24,6 +24,8 @@
 
 #pragma once
 
+#include <string_view>
+
 #include "UnitsSchema.h"
 #include "UnitsSchemas.h"
 #include "UnitsSchemasData.h"
@@ -44,8 +46,15 @@ public:
     static void setSchema(std::size_t num);
 
     static std::string schemaTranslate(const Quantity& quant, double& factor, std::string& unitString);
+    static std::string schemaTranslate(
+        const Quantity& quant,
+        std::string_view localeId,
+        double& factor,
+        std::string& unitString
+    );
 
     static std::string schemaTranslate(const Quantity& quant);
+    static std::string schemaTranslate(const Quantity& quant, std::string_view localeId);
 
     static std::string toUnicodeSuperscript(const std::string& str);
 

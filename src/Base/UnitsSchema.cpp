@@ -36,11 +36,11 @@
 #include <unicode/unistr.h>
 
 #include "Quantity.h"
+#include "Tools.h"
 #include "UnitsSchema.h"
 #include "UnitsSchemasData.h"
 #include "UnitsSchemasSpecs.h"
 #include "Exception.h"
-#include "Quantity.h"
 
 using Base::UnitsSchema;
 using Base::UnitsSchemaSpec;
@@ -99,10 +99,20 @@ std::string formatDefaultScientificLikeQt(
     return localizeDecimalSeparator(out.str(), locale);
 }
 
-std::string formatNumberIcu(const double value, const Base::QuantityFormat& format)
+icu::Locale resolveIcuLocale(std::string_view localeId)
+{
+    if (localeId.empty() || Base::Tools::isCLocaleName(localeId)) {
+        return icu::Locale("en_US_POSIX");
+    }
+
+    const std::string localeName(localeId);
+    return icu::Locale::createFromName(localeName.c_str());
+}
+
+std::string formatNumberIcu(const double value, const Base::QuantityFormat& format, std::string_view localeId)
 {
     UErrorCode status = U_ZERO_ERROR;
-    icu::Locale locale = icu::Locale::getDefault();
+    const icu::Locale locale = resolveIcuLocale(localeId);
 
     std::unique_ptr<icu::NumberFormat> nf(icu::NumberFormat::createInstance(locale, status));
     if (!U_SUCCESS(status) || !nf) {
@@ -170,24 +180,39 @@ UnitsSchema::UnitsSchema(UnitsSchemaSpec spec)
 
 std::string UnitsSchema::translate(const Quantity& quant) const
 {  // to satisfy GCC
+    return translate(quant, Base::Tools::getCurrentNumericFormattingLocale());
+}
+
+std::string UnitsSchema::translate(const Quantity& quant, std::string_view localeId) const
+{
     double dummy1 {};
     std::string dummy2;
-    return translate(quant, dummy1, dummy2);
+    return translate(quant, localeId, dummy1, dummy2);
 }
 
 std::string UnitsSchema::translate(const Quantity& quant, double& factor, std::string& unitString) const
+{
+    return translate(quant, Base::Tools::getCurrentNumericFormattingLocale(), factor, unitString);
+}
+
+std::string UnitsSchema::translate(
+    const Quantity& quant,
+    std::string_view localeId,
+    double& factor,
+    std::string& unitString
+) const
 {
     // Use defaults without schema-level translation.
     factor = 1.0;
     unitString = quant.getUnit().getString();
 
     if (spec.translationSpecs.empty()) {
-        return toLocale(quant, factor, unitString);
+        return toLocale(quant, localeId, factor, unitString);
     }
 
     const auto unitName = quant.getUnit().getTypeString();
     if (!spec.translationSpecs.contains(unitName)) {
-        return toLocale(quant, factor, unitString);
+        return toLocale(quant, localeId, factor, unitString);
     }
 
     const auto value = quant.getValue();
@@ -223,14 +248,20 @@ std::string UnitsSchema::translate(const Quantity& quant, double& factor, std::s
     factor = unitSpec->factor;
     unitString = unitSpec->unitString;
 
-    return toLocale(quant, factor, unitString);
+    return toLocale(quant, localeId, factor, unitString);
 }
 
-std::string UnitsSchema::toLocale(const Quantity& quant, const double factor, const std::string& unitString)
+std::string UnitsSchema::toLocale(
+    const Quantity& quant,
+    std::string_view localeId,
+    const double factor,
+    const std::string& unitString
+)
 {
     const QuantityFormat& format = quant.getFormat();
     const double v = quant.getValue() / factor;
-    const std::string valueString = std::isfinite(v) ? formatNumberIcu(v, format) : std::to_string(v);
+    const std::string valueString = std::isfinite(v) ? formatNumberIcu(v, format, localeId)
+                                                     : std::to_string(v);
 
     auto notUnit = [](auto s) {
         return s.empty() || s == "°" || s == "″" || s == "′" || s == "\"" || s == "'";

@@ -882,9 +882,10 @@ void QuantitySpinBox::clearSchema()
 QString QuantitySpinBox::getUserString(const Base::Quantity& val, double& factor, QString& unitString) const
 {
     Q_D(const QuantitySpinBox);
+    const auto localeId = Base::Tools::getCurrentNumericFormattingLocale();
     std::string unitStr;
-    const std::string str = d->scheme ? val.getUserString(d->scheme.get(), factor, unitStr)
-                                      : val.getUserString(factor, unitStr);
+    const std::string str = d->scheme ? val.getUserString(d->scheme.get(), localeId, factor, unitStr)
+                                      : val.getUserString(localeId, factor, unitStr);
     unitString = QString::fromStdString(unitStr);
     return QString::fromStdString(str);
 }
@@ -892,14 +893,15 @@ QString QuantitySpinBox::getUserString(const Base::Quantity& val, double& factor
 QString QuantitySpinBox::getUserString(const Base::Quantity& val) const
 {
     Q_D(const QuantitySpinBox);
+    const auto localeId = Base::Tools::getCurrentNumericFormattingLocale();
     std::string str;
     if (d->scheme) {
         double factor;
         std::string unitString;
-        str = val.getUserString(d->scheme.get(), factor, unitString);
+        str = val.getUserString(d->scheme.get(), localeId, factor, unitString);
     }
     else {
-        str = val.getUserString();
+        str = val.getUserString(localeId);
     }
     return QString::fromStdString(str);
 }

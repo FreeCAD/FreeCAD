@@ -389,10 +389,11 @@ void Translator::applyLocaleFormattingPreference() const
 
 void Translator::setLocale(const std::string& language) const
 {
-    // Resolve Qt and ICU from the same numeric locale source so widget separators and
-    // quantity formatting cannot drift apart.
+    // Resolve Qt, FreeCAD quantity formatting, and ICU from the same numeric locale source so
+    // widget separators and formatted quantities cannot drift apart.
     const auto resolved = resolveNumericLocale(*this, language);
     QLocale::setDefault(resolved.qtLocale);
+    Base::Tools::setCurrentNumericFormattingLocale(resolved.icuLocaleId);
     Base::Tools::setIcuDefaultLocale(resolved.icuLocaleId);
     updateLocaleChange();
 

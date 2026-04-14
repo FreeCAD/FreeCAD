@@ -32,6 +32,7 @@
 #include <App/Application.h>
 #include <App/Transactions.h>
 #include <Base/Quantity.h>
+#include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 #include <Gui/CommandT.h>
 #include <Gui/Document.h>
@@ -857,7 +858,8 @@ std::string SketcherGui::lengthToDisplayFormat(double value, int digits)
     Base::Quantity asQuantity;
     asQuantity.setValue(value);
     asQuantity.setUnit(Base::Unit::Length);
-    std::string userString = asQuantity.getUserString();
+    const auto localeId = Base::Tools::getCurrentNumericFormattingLocale();
+    std::string userString = asQuantity.getUserString(localeId);
     if (Base::UnitsApi::isMultiUnitLength() || (!hideUnits() && useSystemDecimals())) {
         // just return the user string
         return userString;
@@ -866,7 +868,7 @@ std::string SketcherGui::lengthToDisplayFormat(double value, int digits)
     // find the unit of measure
     double factor = 1.0;
     std::string unitString;
-    std::string translate = Base::UnitsApi::schemaTranslate(asQuantity, factor, unitString);
+    std::string translate = Base::UnitsApi::schemaTranslate(asQuantity, localeId, factor, unitString);
     std::string unitPart = " " + unitString;
 
     // get the numeric part of the user string
@@ -917,7 +919,8 @@ std::string SketcherGui::angleToDisplayFormat(double value, int digits)
     Base::Quantity asQuantity;
     asQuantity.setValue(value);
     asQuantity.setUnit(Base::Unit::Angle);
-    QString qUserString = QString::fromStdString(asQuantity.getUserString());
+    const auto localeId = Base::Tools::getCurrentNumericFormattingLocale();
+    QString qUserString = QString::fromStdString(asQuantity.getUserString(localeId));
     if (Base::UnitsApi::isMultiUnitAngle()) {
         // just return the user string
         // Coin SbString doesn't handle utf8 well, so we convert to ascii

@@ -22,6 +22,7 @@ public:
         : previousQtLocale {QLocale()}
         , previousIcuLocale {icu::Locale::getDefault()}
         , previousOperatingSystemNumericLocale {Base::Tools::getOperatingSystemNumericLocale()}
+        , previousCurrentNumericFormattingLocale {Base::Tools::getCurrentNumericFormattingLocale()}
     {
         Base::Tools::setOperatingSystemNumericLocale(operatingSystemNumericLocale);
     }
@@ -34,6 +35,7 @@ public:
         icu::Locale::setDefault(previousIcuLocale, status);
 
         Base::Tools::setOperatingSystemNumericLocale(previousOperatingSystemNumericLocale);
+        Base::Tools::setCurrentNumericFormattingLocale(previousCurrentNumericFormattingLocale);
     }
 
     ScopedLocaleState(const ScopedLocaleState&) = delete;
@@ -43,6 +45,7 @@ private:
     QLocale previousQtLocale;
     icu::Locale previousIcuLocale;
     std::string previousOperatingSystemNumericLocale;
+    std::string previousCurrentNumericFormattingLocale;
 };
 }  // namespace
 
@@ -66,6 +69,10 @@ private Q_SLOTS:
         QCOMPARE(QLocale().name(), QStringLiteral("de_DE"));
         QCOMPARE(QLocale().decimalPoint(), QChar(','));
         QCOMPARE(QLocale().groupSeparator(), QChar('.'));
+        QCOMPARE(
+            QString::fromStdString(Base::Tools::getCurrentNumericFormattingLocale()),
+            QStringLiteral("de_DE")
+        );
         QCOMPARE(QString::fromLatin1(icu::Locale::getDefault().getName()), QStringLiteral("de_DE"));
     }
 };
