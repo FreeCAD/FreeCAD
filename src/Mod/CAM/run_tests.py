@@ -147,14 +147,14 @@ def changed_test_classes(classes, base="master"):
     return selected
 
 
-def invoke(bin_path, selector, quiet=False):
+def invoke(bin_path, selector, quiet=False, env=None):
     """Run FreeCADCmd -t <selector>. Return (returncode, wall_seconds)."""
     cmd = [str(bin_path), "-t", selector]
     start = time.perf_counter()
     if quiet:
-        res = subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+        res = subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, env=env)
     else:
-        res = subprocess.run(cmd)
+        res = subprocess.run(cmd, env=env)
     return res.returncode, time.perf_counter() - start
 
 
@@ -229,6 +229,14 @@ def main():
     )
     ap.add_argument("--no-history", action="store_true", help="Do not read or write timing history")
     ap.add_argument(
+        "--regen",
+        action="store_true",
+        help="Regenerate post-processor golden files (sets CAM_REGEN_GOLDEN=1). "
+        "Goldens are written into the BUILD tree under "
+        "<build>/Mod/CAM/CAMTests/post/post_golden/<dialect>/. "
+        "Copy back to the source tree to commit.",
+    )
+    ap.add_argument(
         "-q",
         "--quiet",
         action="store_true",
@@ -266,12 +274,17 @@ def main():
         print(f"FreeCADCmd not found at {bin_path}", file=sys.stderr)
         return 2
 
+    env = None
+    if args.regen:
+        env = {**os.environ, "CAM_REGEN_GOLDEN": "1"}
+        print("CAM_REGEN_GOLDEN=1 — goldens will be (re)written in the build tree.")
+
     # No filter → run everything. If benchmarking, expand to per-class.
     if not selected:
         if args.benchmark:
             selected = classes
         else:
-            rc, secs = invoke(bin_path, "TestCAMApp", quiet=args.quiet)
+            rc, secs = invoke(bin_path, "TestCAMApp", quiet=args.quiet, env=env)
             print(f"\nSuite finished in {secs:.2f}s (rc={rc})")
             return rc
 
@@ -286,7 +299,7 @@ def main():
         for cls in selected:
             selector = f"TestCAMApp.{cls}"
             print(f"\n>>> {selector}")
-            rc, secs = invoke(bin_path, selector, quiet=args.quiet)
+            rc, secs = invoke(bin_path, selector, quiet=args.quiet, env=env)
             results.append((selector, rc, secs))
         history = None if args.no_history else Path(args.history)
         print_benchmark_table(results, history)
@@ -295,7 +308,7 @@ def main():
     # Non-benchmark path: run each selected class sequentially, no timing.
     fail = 0
     for cls in selected:
-        rc, _ = invoke(bin_path, f"TestCAMApp.{cls}", quiet=args.quiet)
+        rc, _ = invoke(bin_path, f"TestCAMApp.{cls}", quiet=args.quiet, env=env)
         if rc:
             fail = rc
     return fail

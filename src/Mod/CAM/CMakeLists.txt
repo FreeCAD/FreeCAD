@@ -596,6 +596,7 @@ SET(Tests_Tool_SRCS
 
 SET(Tests_Post_SRCS
     CAMTests/post/__init__.py
+    CAMTests/post/post_harness.py
     CAMTests/post/TestCentroidLegacyPost.py
     CAMTests/post/TestDressupPost.py
     CAMTests/post/TestDxfPost.py
@@ -619,6 +620,93 @@ SET(Tests_Post_SRCS
 SET(Tests_Machine_SRCS
     CAMTests/machine/__init__.py
     CAMTests/machine/TestMachine.py
+)
+
+SET(Tests_Post_Scenarios_SRCS
+    CAMTests/post/post_scenarios/__init__.py
+    CAMTests/post/post_scenarios/amble.py
+    CAMTests/post/post_scenarios/comment.py
+    CAMTests/post/post_scenarios/drilling.py
+    CAMTests/post/post_scenarios/empty_path.py
+    CAMTests/post/post_scenarios/inches.py
+    CAMTests/post/post_scenarios/line_numbers.py
+    CAMTests/post/post_scenarios/modal.py
+    CAMTests/post/post_scenarios/precision.py
+    CAMTests/post/post_scenarios/thread_tap.py
+    CAMTests/post/post_scenarios/tool_change.py
+)
+
+SET(Tests_Post_Golden_Fanuc_SRCS
+    CAMTests/post/post_golden/fanuc_legacy/comment__default.gcode
+    CAMTests/post/post_golden/fanuc_legacy/drilling_peck__default.gcode
+    CAMTests/post/post_golden/fanuc_legacy/drilling_peck_chipbreak__default.gcode
+    CAMTests/post/post_golden/fanuc_legacy/empty_path__no_header.gcode
+    CAMTests/post/post_golden/fanuc_legacy/empty_path__no_header_no_comments.gcode
+    CAMTests/post/post_golden/fanuc_legacy/empty_path_spindle_empty__no_header.gcode
+    CAMTests/post/post_golden/fanuc_legacy/empty_path_spindle_empty__no_header_no_comments.gcode
+    CAMTests/post/post_golden/fanuc_legacy/inches__default.gcode
+    CAMTests/post/post_golden/fanuc_legacy/inches__p2.gcode
+    CAMTests/post/post_golden/fanuc_legacy/line_numbers__default.gcode
+    CAMTests/post/post_golden/fanuc_legacy/post_amble__custom.gcode
+    CAMTests/post/post_golden/fanuc_legacy/pre_amble__custom.gcode
+    CAMTests/post/post_golden/fanuc_legacy/precision__default.gcode
+    CAMTests/post/post_golden/fanuc_legacy/precision__p2.gcode
+    CAMTests/post/post_golden/fanuc_legacy/thread_tap__default.gcode
+    CAMTests/post/post_golden/fanuc_legacy/tool_change__default.gcode
+    CAMTests/post/post_golden/fanuc_legacy/tool_change__no_tlo.gcode
+)
+
+SET(Tests_Post_Golden_Centroid_SRCS
+    CAMTests/post/post_golden/centroid_legacy/axis_modal__default.gcode
+    CAMTests/post/post_golden/centroid_legacy/comment__default.gcode
+    CAMTests/post/post_golden/centroid_legacy/empty_path__no_header.gcode
+    CAMTests/post/post_golden/centroid_legacy/empty_path__no_header_no_comments.gcode
+    CAMTests/post/post_golden/centroid_legacy/empty_path_spindle_empty__no_header.gcode
+    CAMTests/post/post_golden/centroid_legacy/empty_path_spindle_empty__no_header_no_comments.gcode
+    CAMTests/post/post_golden/centroid_legacy/inches__default.gcode
+    CAMTests/post/post_golden/centroid_legacy/inches__p2.gcode
+    CAMTests/post/post_golden/centroid_legacy/line_numbers__default.gcode
+    CAMTests/post/post_golden/centroid_legacy/modal__default.gcode
+    CAMTests/post/post_golden/centroid_legacy/post_amble__custom.gcode
+    CAMTests/post/post_golden/centroid_legacy/pre_amble__custom.gcode
+    CAMTests/post/post_golden/centroid_legacy/precision__default.gcode
+    CAMTests/post/post_golden/centroid_legacy/precision__p2.gcode
+    CAMTests/post/post_golden/centroid_legacy/tool_change__default.gcode
+    CAMTests/post/post_golden/centroid_legacy/tool_change__no_tlo.gcode
+)
+
+SET(Tests_Post_Golden_Mach3_SRCS
+    CAMTests/post/post_golden/mach3_mach4_legacy/axis_modal__default.gcode
+    CAMTests/post/post_golden/mach3_mach4_legacy/comment__default.gcode
+    CAMTests/post/post_golden/mach3_mach4_legacy/empty_path__no_header.gcode
+    CAMTests/post/post_golden/mach3_mach4_legacy/empty_path__no_header_no_comments.gcode
+    CAMTests/post/post_golden/mach3_mach4_legacy/inches__default.gcode
+    CAMTests/post/post_golden/mach3_mach4_legacy/inches__p2.gcode
+    CAMTests/post/post_golden/mach3_mach4_legacy/line_numbers__default.gcode
+    CAMTests/post/post_golden/mach3_mach4_legacy/modal__default.gcode
+    CAMTests/post/post_golden/mach3_mach4_legacy/post_amble__custom.gcode
+    CAMTests/post/post_golden/mach3_mach4_legacy/pre_amble__custom.gcode
+    CAMTests/post/post_golden/mach3_mach4_legacy/precision__default.gcode
+    CAMTests/post/post_golden/mach3_mach4_legacy/precision__p2.gcode
+    CAMTests/post/post_golden/mach3_mach4_legacy/tool_change__default.gcode
+    CAMTests/post/post_golden/mach3_mach4_legacy/tool_change__no_tlo.gcode
+)
+
+SET(Tests_Post_Golden_Generic_SRCS
+    CAMTests/post/post_golden/generic/axis_modal__default.gcode
+    CAMTests/post/post_golden/generic/comment__default.gcode
+    CAMTests/post/post_golden/generic/empty_path__no_header.gcode
+    CAMTests/post/post_golden/generic/empty_path__no_header_no_comments.gcode
+    CAMTests/post/post_golden/generic/inches__default.gcode
+    CAMTests/post/post_golden/generic/inches__p2.gcode
+    CAMTests/post/post_golden/generic/line_numbers__default.gcode
+    CAMTests/post/post_golden/generic/modal__default.gcode
+    CAMTests/post/post_golden/generic/post_amble__custom.gcode
+    CAMTests/post/post_golden/generic/pre_amble__custom.gcode
+    CAMTests/post/post_golden/generic/precision__default.gcode
+    CAMTests/post/post_golden/generic/precision__p2.gcode
+    CAMTests/post/post_golden/generic/tool_change__default.gcode
+    CAMTests/post/post_golden/generic/tool_change__no_tlo.gcode
 )
 
 SET(Tests_Sanity_SRCS
@@ -723,6 +811,11 @@ SET(test_files
   ${Tests_Dressup_SRCS}
   ${Tests_Tool_SRCS}
   ${Tests_Post_SRCS}
+  ${Tests_Post_Scenarios_SRCS}
+  ${Tests_Post_Golden_Fanuc_SRCS}
+  ${Tests_Post_Golden_Centroid_SRCS}
+  ${Tests_Post_Golden_Generic_SRCS}
+  ${Tests_Post_Golden_Mach3_SRCS}
   ${Tests_Machine_SRCS}
   ${Tests_Sanity_SRCS}
   ${Tests_Gui_SRCS}
@@ -1024,6 +1117,11 @@ INSTALL(FILES ${Tests_Generator_SRCS} DESTINATION Mod/CAM/CAMTests/generator)
 INSTALL(FILES ${Tests_Dressup_SRCS}   DESTINATION Mod/CAM/CAMTests/dressup)
 INSTALL(FILES ${Tests_Tool_SRCS}      DESTINATION Mod/CAM/CAMTests/tool)
 INSTALL(FILES ${Tests_Post_SRCS}      DESTINATION Mod/CAM/CAMTests/post)
+INSTALL(FILES ${Tests_Post_Scenarios_SRCS}     DESTINATION Mod/CAM/CAMTests/post/post_scenarios)
+INSTALL(FILES ${Tests_Post_Golden_Fanuc_SRCS}    DESTINATION Mod/CAM/CAMTests/post/post_golden/fanuc_legacy)
+INSTALL(FILES ${Tests_Post_Golden_Centroid_SRCS} DESTINATION Mod/CAM/CAMTests/post/post_golden/centroid_legacy)
+INSTALL(FILES ${Tests_Post_Golden_Generic_SRCS}  DESTINATION Mod/CAM/CAMTests/post/post_golden/generic)
+INSTALL(FILES ${Tests_Post_Golden_Mach3_SRCS}    DESTINATION Mod/CAM/CAMTests/post/post_golden/mach3_mach4_legacy)
 INSTALL(FILES ${Tests_Machine_SRCS}   DESTINATION Mod/CAM/CAMTests/machine)
 INSTALL(FILES ${Tests_Sanity_SRCS}    DESTINATION Mod/CAM/CAMTests/sanity)
 INSTALL(FILES ${Tests_Gui_SRCS}       DESTINATION Mod/CAM/CAMTests/gui)
