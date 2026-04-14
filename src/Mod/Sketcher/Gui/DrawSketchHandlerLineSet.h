@@ -1976,16 +1976,20 @@ void DSHPolyLineController::computeNextDrawSketchHandlerMode()
 {
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
-            if (onViewParameters[OnViewParameter::First]->isSet
-                && onViewParameters[OnViewParameter::Second]->isSet) {
+            auto& firstParam = onViewParameters[OnViewParameter::First];
+            auto& secondParam = onViewParameters[OnViewParameter::Second];
+
+            if (firstParam->hasFinishedEditing && secondParam->hasFinishedEditing) {
                 double x = onViewParameters[OnViewParameter::First]->getValue();
                 double y = onViewParameters[OnViewParameter::Second]->getValue();
                 handler->onButtonPressed(Base::Vector2d(x, y));
             }
         } break;
         case SelectMode::SeekSecond: {
-            if (onViewParameters[OnViewParameter::Third]->isSet
-                && onViewParameters[OnViewParameter::Fourth]->isSet) {
+            auto& thirdParam = onViewParameters[OnViewParameter::Third];
+            auto& fourthParam = onViewParameters[OnViewParameter::Fourth];
+
+            if (thirdParam->hasFinishedEditing && fourthParam->hasFinishedEditing) {
                 handler->canGoToNextMode();  // its not going to next mode
 
                 unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
