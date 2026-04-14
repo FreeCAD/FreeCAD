@@ -182,7 +182,7 @@ PyMOD_INIT_FUNC(Measure)
 
     App::MeasureManager::addMeasureType(
         "CENTEROFMASS",
-        QT_TRANSLATE_NOOP("TaskMeasure", "Center of mass"),
+        QT_TRANSLATE_NOOP("TaskMeasure", "Geometric Center"),
         "Measure::MeasureCOM",
         MeasureCOM::isValidSelection,
         nullptr

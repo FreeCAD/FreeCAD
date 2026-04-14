@@ -66,7 +66,7 @@ public:
     {
         return &this->CenterOfMass;
     }
-    QString getResultString() override;
+    std::string getResultString() override;
 
     Base::Placement getPlacement() const override;
 
