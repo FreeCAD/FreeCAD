@@ -55,11 +55,8 @@ def write_mesh(ccxwriter):
     face_variant = "shell"
 
     # Use 2D elements if model space is not set to 3D
-    if ccxwriter.solver_obj.ModelSpace == "3D":
-        if ccxwriter.solver_obj.ExcludeBendingStiffness:
-            face_variant = "membrane"
-        else:
-            face_variant = "shell"
+    if ccxwriter.solver_obj.ModelSpace == "3D" and ccxwriter.solver_obj.ExcludeBendingStiffness:
+        face_variant = "membrane"
     elif ccxwriter.solver_obj.ModelSpace == "plane stress":
         face_variant = "stress"
     elif ccxwriter.solver_obj.ModelSpace == "plane strain":
