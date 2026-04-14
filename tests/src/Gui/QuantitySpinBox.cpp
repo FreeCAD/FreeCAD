@@ -1,14 +1,49 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 #include <QDebug>
+#include <QLocale>
 #include <QTest>
 
 #include <App/Application.h>
+#include <Base/Tools.h>
+
+#include <unicode/locid.h>
+#include <unicode/utypes.h>
 
 #include "Gui/QuantitySpinBox.h"
 #include <src/App/InitApplication.h>
 
 // NOLINTBEGIN(readability-magic-numbers)
+
+namespace
+{
+class ScopedNumericLocales
+{
+public:
+    ScopedNumericLocales(const char* qtLocale, const char* icuLocale)
+        : previousQtLocale {QLocale()}
+        , previousIcuLocale {icu::Locale::getDefault()}
+    {
+        QLocale::setDefault(QLocale(QString::fromLatin1(qtLocale)));
+        Base::Tools::setIcuDefaultLocale(icuLocale);
+    }
+
+    ~ScopedNumericLocales()
+    {
+        QLocale::setDefault(previousQtLocale);
+
+        UErrorCode status = U_ZERO_ERROR;
+        icu::Locale::setDefault(previousIcuLocale, status);
+    }
+
+    ScopedNumericLocales(const ScopedNumericLocales&) = delete;
+    ScopedNumericLocales& operator=(const ScopedNumericLocales&) = delete;
+
+private:
+    QLocale previousQtLocale;
+    icu::Locale previousIcuLocale;
+};
+}  // namespace
 
 class testQuantitySpinBox: public QObject
 {
@@ -63,6 +98,27 @@ private Q_SLOTS:
         qsb->setValue(3.5);
         auto val2 = qsb->value();
         QCOMPARE(val2.getFormat().getPrecision(), 7);
+    }
+
+    void test_MismatchedFormatterAndWidgetLocaleDoesNotMutateValue()  // NOLINT
+    {
+        ScopedNumericLocales locales("da_DK", "en_US");
+
+        Gui::QuantitySpinBox spinBox;
+        spinBox.setValue(Base::Quantity(10, "mm"));
+
+        QCOMPARE(spinBox.value(), Base::Quantity(10, "mm"));
+        QCOMPARE(spinBox.rawValue(), 10.0);
+    }
+
+    void test_GroupedLocaleNumberFallsBackAfterInitialParseFails()  // NOLINT
+    {
+        ScopedNumericLocales locales("da_DK", "en_US");
+
+        Gui::QuantitySpinBox spinBox;
+        const auto result = spinBox.valueFromText("1.000,00 mm");
+
+        QCOMPARE(result, Base::Quantity(1000, "mm"));
     }
 
 private:
