@@ -100,12 +100,12 @@ PyMOD_INIT_FUNC(Measure)
     Measure::Measurement::init();
 
     // umf classes
-    Measure::MeasureDistanceType ::init();
-    Measure::MeasureBase ::init();
-    Measure::MeasurePython ::init();
-    Measure::MeasureAngle ::init();
-    Measure::MeasureCOM ::init();
-    Measure::MeasureDistance ::init();
+    Measure::MeasureDistanceType::init();
+    Measure::MeasureBase::init();
+    Measure::MeasurePython::init();
+    Measure::MeasureAngle::init();
+    Measure::MeasureCOM::init();
+    Measure::MeasureDistance::init();
     Measure::MeasureDistanceDetached::init();
     Measure::MeasurePosition::init();
     Measure::MeasureLength::init();
@@ -182,7 +182,7 @@ PyMOD_INIT_FUNC(Measure)
 
     App::MeasureManager::addMeasureType(
         "CENTEROFMASS",
-        QT_TRANSLATE_NOOP("TaskMeasure", "Center of mass"),
+        QT_TRANSLATE_NOOP("TaskMeasure", "Geometric Center"),
         "Measure::MeasureCOM",
         MeasureCOM::isValidSelection,
         nullptr
