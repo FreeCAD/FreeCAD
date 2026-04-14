@@ -1071,7 +1071,12 @@ Gui::TreeWidget* SketcherGui::findModelTreeWidget()
         return nullptr;
     }
 
-    return dock->findChild<Gui::TreeWidget*>();
+    for (auto* w : dock->findChildren<QWidget*>()) {
+        if (w->inherits("Gui::TreeWidget")) {
+            return static_cast<Gui::TreeWidget*>(w);
+        }
+    }
+    return nullptr;
 }
 
 bool SketcherGui::hasModelTreeWidget()
