@@ -39,7 +39,7 @@ def write_mesh(ccxwriter):
 
     is_reduced = ccxwriter.solver_obj.ReducedIntegration
 
-    # Use reduced integration elements or truss elements if this is enabled in ccx solver settings
+    # Use reduced integration solid/beam elements or replace beams with trusses if these settings are enabled in the ccx solver
     vol_variant = "reduced" if is_reduced else "standard"
     if ccxwriter.solver_obj.ExcludeBendingStiffness:
         edge_variant = "truss"
