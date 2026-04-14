@@ -9489,7 +9489,7 @@ den aktuella kopian kommer att gå förlorade.
       <location filename="../CommandDoc.cpp" line="619"/>
       <location filename="../CommandDoc.cpp" line="631"/>
       <source>Merge Document</source>
-      <translation type="unfinished">Merge Document</translation>
+      <translation>Slå samman dokument</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="621"/>

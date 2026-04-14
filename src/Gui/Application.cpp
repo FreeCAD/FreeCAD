@@ -491,12 +491,12 @@ Application::Application(bool GUIenabled)
             hPGrp->GetASCII("Language", (const char*)lang.toLatin1()).c_str());
         GetWidgetFactorySupplier();
 
-        // Coin3d disabled VBO support for all Intel drivers but in the meantime they have improved
-        // so we can try to override the workaround by setting COIN_VBO
+        // Coin3d disables VBO support for some (typically very old) drivers and hardware.
+        // Force it on if the preference says to.
         ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/View");
         if (hViewGrp->GetBool("UseVBO", false)) {
-            (void)coin_setenv("COIN_VBO", "0", true);
+            (void)coin_setenv("COIN_VBO", "1", true);
         }
 
         // Check for the symbols for group separator and decimal point. They must be different

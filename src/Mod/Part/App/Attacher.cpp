@@ -983,7 +983,8 @@ void AttachEngine::readLinks(
         // considered later, when the need arises.
         types[i] = getShapeType(shapes[i]->getShape());
 
-        if (subs[i].length() == 0) {
+        std::string elementName = Data::findElementName(subs[i].c_str());
+        if (elementName.length() == 0) {
             types[i] = eRefType(types[i] | rtFlagHasPlacement);
         }
     }

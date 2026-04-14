@@ -195,11 +195,11 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
                     I_0=4,
                     I_R=8,
                     I_P=9,
-                    I_C=200,  # ccx default = 16
+                    I_C=16,
                     I_L=10,
-                    I_G=400,  # ccx default = 4
+                    I_G=4,
                     I_S="",
-                    I_A=200,  # ccx default = 5
+                    I_A=5,
                     I_J="",
                     I_T="",
                 ),
@@ -220,6 +220,24 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
                     D_H="",
                     D_D=1.5,
                     W_G="",
+                ),
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyString",
+                name="IterationsControlParameterField",
+                group="Solver",
+                doc="User defined field control parameter",
+                value="{R_n},{C_n},{q_0},{q_u},{R_p},{e},{C_e},{R_l}".format(
+                    R_n=0.005,
+                    C_n=0.01,
+                    q_0=0.01,
+                    q_u=" ",
+                    R_p=0.02,
+                    e=1e-05,
+                    C_e=0.001,
+                    R_l=1e-08,
                 ),
             )
         )

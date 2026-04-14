@@ -92,7 +92,7 @@ public:
     void setLockedAppearance(bool locked);  ///< Sets visual appearance to indicate locked state
                                             ///< (finished editing)
     void resetLockedState();  ///< Resets both hasFinishedEditing flag and locked appearance
-    void updateGeometry();
+    void updateGeometry(QLineEdit* edit);
 
     Function getFunction();
 
