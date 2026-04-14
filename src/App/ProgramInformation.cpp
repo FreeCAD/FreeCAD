@@ -152,14 +152,6 @@ std::string ProgramInformation::prettyProductInfoWrapper()
     return productName.toStdString();
 }
 
-void ProgramInformation::addModuleInfo(std::stringstream& str, const std::string& path)
-{
-    auto moduleInfo = getModuleInfoString(path);
-    if (!moduleInfo.empty()) {
-        str << moduleInfo;
-    }
-}
-
 std::string ProgramInformation::getValueOrEmpty(
     const std::map<std::string, std::string>& map,
     const std::string& key)
