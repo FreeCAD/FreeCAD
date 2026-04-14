@@ -25,6 +25,7 @@
 #include <unicode/uchar.h>
 #include <unicode/utf8.h>
 #include <unicode/locid.h>
+#include <array>
 #include <chrono>
 #include <ctime>
 #include <iomanip>
@@ -45,6 +46,19 @@ namespace
 {
 constexpr auto underscore = static_cast<UChar32>(U'_');
 std::string operatingSystemNumericLocale;
+
+#ifdef FC_OS_WIN32
+std::string getWindowsUserDefaultLocaleName()
+{
+    std::array<wchar_t, LOCALE_NAME_MAX_LENGTH> buffer {};
+    const int written = GetUserDefaultLocaleName(buffer.data(), static_cast<int>(buffer.size()));
+    if (written <= 0) {
+        return {};
+    }
+
+    return Base::Tools::wstringToString(std::wstring(buffer.data()));
+}
+#endif
 
 bool isValidFirstChar(UChar32 c)
 {
@@ -319,6 +333,16 @@ void Base::Tools::setOperatingSystemNumericLocale(std::string_view localeName)
 
 std::string Base::Tools::getOperatingSystemNumericLocale()
 {
+    return operatingSystemNumericLocale;
+}
+
+std::string Base::Tools::getEffectiveOperatingSystemNumericLocale()
+{
+#ifdef FC_OS_WIN32
+    if (operatingSystemNumericLocale.empty()) {
+        return getWindowsUserDefaultLocaleName();
+    }
+#endif
     return operatingSystemNumericLocale;
 }
 
