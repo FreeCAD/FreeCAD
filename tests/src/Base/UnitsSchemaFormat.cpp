@@ -1,44 +1,14 @@
 #include <gtest/gtest.h>
 
 #include <Base/Quantity.h>
-#include <Base/Tools.h>
 #include <Base/UnitsSchema.h>
 
-#include <unicode/locid.h>
-#include <unicode/utypes.h>
+#include <src/LocaleTestHelpers.h>
 
 #include <string>
 
 namespace
 {
-class ScopedLocaleState
-{
-public:
-    ScopedLocaleState(const char* formattingLocale, const char* icuLocale)
-        : previousIcuLocale {icu::Locale::getDefault()}
-        , previousFormattingLocale {Base::Tools::getCurrentNumericFormattingLocale()}
-    {
-        Base::Tools::setCurrentNumericFormattingLocale(formattingLocale);
-        Base::Tools::setIcuDefaultLocale(icuLocale);
-    }
-
-    ~ScopedLocaleState()
-    {
-        UErrorCode status = U_ZERO_ERROR;
-        icu::Locale::setDefault(previousIcuLocale, status);
-        Base::Tools::setCurrentNumericFormattingLocale(previousFormattingLocale);
-    }
-
-    ScopedLocaleState(const ScopedLocaleState&) = delete;
-    ScopedLocaleState(ScopedLocaleState&&) = delete;
-    ScopedLocaleState& operator=(const ScopedLocaleState&) = delete;
-    ScopedLocaleState& operator=(ScopedLocaleState&&) = delete;
-
-private:
-    icu::Locale previousIcuLocale;
-    std::string previousFormattingLocale;
-};
-
 Base::UnitsSchema makeNoTranslationSchema()
 {
     Base::UnitsSchemaSpec spec {};
@@ -124,7 +94,7 @@ TEST(UnitsSchemaFormatTest, omit_group_separator_option_removes_grouping)
 
 TEST(UnitsSchemaFormatTest, explicit_locale_overrides_current_and_icu_defaults)
 {
-    ScopedLocaleState locale("de_DE", "fr_FR");
+    tests::ScopedFormattingLocaleState localeState {"de_DE", "fr_FR"};
 
     Base::QuantityFormat fmt(Base::QuantityFormat::Fixed, 2);
     fmt.option = Base::QuantityFormat::None;
@@ -134,7 +104,7 @@ TEST(UnitsSchemaFormatTest, explicit_locale_overrides_current_and_icu_defaults)
 
 TEST(UnitsSchemaFormatTest, default_translation_uses_current_numeric_formatting_locale)
 {
-    ScopedLocaleState locale("de_DE", "en_US");
+    tests::ScopedFormattingLocaleState localeState {"de_DE", "en_US"};
 
     Base::QuantityFormat fmt(Base::QuantityFormat::Fixed, 2);
     fmt.option = Base::QuantityFormat::None;

@@ -5,49 +5,11 @@
 
 #include <Base/Tools.h>
 
-#include <unicode/locid.h>
-#include <unicode/utypes.h>
-
 #include "Gui/Language/Translator.h"
+#include <src/LocaleTestHelpers.h>
 #include <src/App/InitApplication.h>
 
 // NOLINTBEGIN(readability-magic-numbers)
-
-namespace
-{
-class ScopedLocaleState
-{
-public:
-    explicit ScopedLocaleState(const char* operatingSystemNumericLocale)
-        : previousQtLocale {QLocale()}
-        , previousIcuLocale {icu::Locale::getDefault()}
-        , previousOperatingSystemNumericLocale {Base::Tools::getOperatingSystemNumericLocale()}
-        , previousCurrentNumericFormattingLocale {Base::Tools::getCurrentNumericFormattingLocale()}
-    {
-        Base::Tools::setOperatingSystemNumericLocale(operatingSystemNumericLocale);
-    }
-
-    ~ScopedLocaleState()
-    {
-        QLocale::setDefault(previousQtLocale);
-
-        UErrorCode status = U_ZERO_ERROR;
-        icu::Locale::setDefault(previousIcuLocale, status);
-
-        Base::Tools::setOperatingSystemNumericLocale(previousOperatingSystemNumericLocale);
-        Base::Tools::setCurrentNumericFormattingLocale(previousCurrentNumericFormattingLocale);
-    }
-
-    ScopedLocaleState(const ScopedLocaleState&) = delete;
-    ScopedLocaleState& operator=(const ScopedLocaleState&) = delete;
-
-private:
-    QLocale previousQtLocale;
-    icu::Locale previousIcuLocale;
-    std::string previousOperatingSystemNumericLocale;
-    std::string previousCurrentNumericFormattingLocale;
-};
-}  // namespace
 
 class testTranslatorLocale: public QObject
 {
@@ -62,7 +24,10 @@ public:
 private Q_SLOTS:
     void test_OperatingSystemNumericLocaleKeepsQtAndIcuAligned()  // NOLINT
     {
-        ScopedLocaleState localeState("de_DE.UTF-8");
+        tests::ScopedQtDefaultLocale qtLocale;
+        tests::ScopedIcuDefaultLocale icuLocale;
+        tests::ScopedCurrentNumericFormattingLocale formattingLocale;
+        tests::ScopedOperatingSystemNumericLocale operatingSystemNumericLocale {"de_DE.UTF-8"};
 
         Gui::Translator::instance()->setLocale();
 

@@ -1,53 +1,15 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 #include <QDebug>
-#include <QLocale>
 #include <QTest>
 
 #include <App/Application.h>
-#include <Base/Tools.h>
-
-#include <unicode/locid.h>
-#include <unicode/utypes.h>
 
 #include "Gui/QuantitySpinBox.h"
+#include <src/LocaleTestHelpers.h>
 #include <src/App/InitApplication.h>
 
 // NOLINTBEGIN(readability-magic-numbers)
-
-namespace
-{
-class ScopedNumericLocales
-{
-public:
-    ScopedNumericLocales(const char* qtLocale, const char* formattingLocale, const char* icuLocale)
-        : previousQtLocale {QLocale()}
-        , previousIcuLocale {icu::Locale::getDefault()}
-        , previousFormattingLocale {Base::Tools::getCurrentNumericFormattingLocale()}
-    {
-        QLocale::setDefault(QLocale(QString::fromLatin1(qtLocale)));
-        Base::Tools::setCurrentNumericFormattingLocale(formattingLocale);
-        Base::Tools::setIcuDefaultLocale(icuLocale);
-    }
-
-    ~ScopedNumericLocales()
-    {
-        QLocale::setDefault(previousQtLocale);
-
-        UErrorCode status = U_ZERO_ERROR;
-        icu::Locale::setDefault(previousIcuLocale, status);
-        Base::Tools::setCurrentNumericFormattingLocale(previousFormattingLocale);
-    }
-
-    ScopedNumericLocales(const ScopedNumericLocales&) = delete;
-    ScopedNumericLocales& operator=(const ScopedNumericLocales&) = delete;
-
-private:
-    QLocale previousQtLocale;
-    icu::Locale previousIcuLocale;
-    std::string previousFormattingLocale;
-};
-}  // namespace
 
 class testQuantitySpinBox: public QObject
 {
@@ -106,7 +68,7 @@ private Q_SLOTS:
 
     void test_MismatchedFormatterAndWidgetLocaleDoesNotMutateValue()  // NOLINT
     {
-        ScopedNumericLocales locales("da_DK", "en_US", "fr_FR");
+        tests::ScopedNumericLocaleState localeState {"da_DK", "en_US", "fr_FR"};
 
         Gui::QuantitySpinBox spinBox;
         spinBox.setValue(Base::Quantity(10, "mm"));
@@ -117,7 +79,7 @@ private Q_SLOTS:
 
     void test_GroupedLocaleNumberIsNormalizedBeforeParse()  // NOLINT
     {
-        ScopedNumericLocales locales("da_DK", "en_US", "fr_FR");
+        tests::ScopedNumericLocaleState localeState {"da_DK", "en_US", "fr_FR"};
 
         Gui::QuantitySpinBox spinBox;
         const auto result = spinBox.valueFromText("1.000,00 mm");

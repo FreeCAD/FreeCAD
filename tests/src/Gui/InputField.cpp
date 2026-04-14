@@ -2,52 +2,13 @@
 
 #include <memory>
 
-#include <QLocale>
 #include <QTest>
 
-#include <Base/Tools.h>
-
-#include <unicode/locid.h>
-#include <unicode/utypes.h>
-
 #include "Gui/InputField.h"
+#include <src/LocaleTestHelpers.h>
 #include <src/App/InitApplication.h>
 
 // NOLINTBEGIN(readability-magic-numbers)
-
-namespace
-{
-class ScopedNumericLocales
-{
-public:
-    ScopedNumericLocales(const char* qtLocale, const char* formattingLocale, const char* icuLocale)
-        : previousQtLocale {QLocale()}
-        , previousIcuLocale {icu::Locale::getDefault()}
-        , previousFormattingLocale {Base::Tools::getCurrentNumericFormattingLocale()}
-    {
-        QLocale::setDefault(QLocale(QString::fromLatin1(qtLocale)));
-        Base::Tools::setCurrentNumericFormattingLocale(formattingLocale);
-        Base::Tools::setIcuDefaultLocale(icuLocale);
-    }
-
-    ~ScopedNumericLocales()
-    {
-        QLocale::setDefault(previousQtLocale);
-
-        UErrorCode status = U_ZERO_ERROR;
-        icu::Locale::setDefault(previousIcuLocale, status);
-        Base::Tools::setCurrentNumericFormattingLocale(previousFormattingLocale);
-    }
-
-    ScopedNumericLocales(const ScopedNumericLocales&) = delete;
-    ScopedNumericLocales& operator=(const ScopedNumericLocales&) = delete;
-
-private:
-    QLocale previousQtLocale;
-    icu::Locale previousIcuLocale;
-    std::string previousFormattingLocale;
-};
-}  // namespace
 
 class testInputField: public QObject
 {
@@ -63,7 +24,7 @@ public:
 private Q_SLOTS:
     void test_MismatchedFormatterAndWidgetLocaleDoesNotMutateValue()  // NOLINT
     {
-        ScopedNumericLocales locales("da_DK", "en_US", "fr_FR");
+        tests::ScopedNumericLocaleState localeState {"da_DK", "en_US", "fr_FR"};
 
         Gui::InputField input;
         input.setValue(Base::Quantity(10, "mm"));
@@ -74,7 +35,7 @@ private Q_SLOTS:
 
     void test_ValidatorUsesOriginalTextBeforeLocaleFixup()  // NOLINT
     {
-        ScopedNumericLocales locales("da_DK", "en_US", "fr_FR");
+        tests::ScopedNumericLocaleState localeState {"da_DK", "en_US", "fr_FR"};
 
         Gui::InputField input;
         input.setMaximum(500);
@@ -87,7 +48,7 @@ private Q_SLOTS:
 
     void test_GroupedLocaleNumberIsNormalizedBeforeParse()  // NOLINT
     {
-        ScopedNumericLocales locales("en_US", "en_US");
+        tests::ScopedNumericLocaleState localeState {"en_US", "en_US", "en_US"};
 
         Gui::InputField input;
         input.setText(QStringLiteral("1,010.00 mm"));
