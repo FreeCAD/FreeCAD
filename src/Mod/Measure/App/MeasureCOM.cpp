@@ -21,13 +21,13 @@
  *                                                                         *
  **************************************************************************/
 
-#include <QTextStream>
-
 #include <App/Application.h>
 #include <App/Document.h>
 
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/TopoShape.h>
+
+#include <fmt/format.h>
 
 #include "MeasureCOM.h"
 
@@ -39,7 +39,13 @@ PROPERTY_SOURCE(Measure::MeasureCOM, Measure::MeasureBase)
 
 MeasureCOM::MeasureCOM()
 {
-    ADD_PROPERTY_TYPE(Element, (nullptr), "Measurement", App::Prop_None, "Element to measure COM");
+    ADD_PROPERTY_TYPE(
+        Element,
+        (nullptr),
+        "Measurement",
+        App::Prop_None,
+        "Element to measure Geometric Center"
+    );
     Element.setScope(App::LinkScope::Global);
     Element.setAllowExternal(true);
 
@@ -48,7 +54,7 @@ MeasureCOM::MeasureCOM()
         (0.0, 0.0, 0.0),
         "Measurement",
         App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-        "Center of mass of element"
+        "Geometric center of element"
     );
 }
 
@@ -109,7 +115,7 @@ App::DocumentObjectExecReturn* MeasureCOM::execute()
     // In toposhape centerOfGravity = centerOfMass
     auto com = topoShape.centerOfGravity();
     if (!com) {
-        return new App::DocumentObjectExecReturn("Cannot calculate center of mass");
+        return new App::DocumentObjectExecReturn("Cannot calculate geometric center");
     }
 
     CenterOfMass.setValue(*com);
@@ -133,17 +139,20 @@ void MeasureCOM::onChanged(const App::Property* prop)
 }
 
 
-QString MeasureCOM::getResultString()
+std::string MeasureCOM::getResultString()
 {
+    Base::Unit unit = CenterOfMass.getUnit();
     Base::Vector3d value = CenterOfMass.getValue();
-    QString unit = QString::fromStdString(CenterOfMass.getUnit().getString());
-    const int precision = 2;
-    QString text;
-    QTextStream(&text) << "COM" << Qt::endl
-                       << "X: " << QString::number(value.x, 'f', precision) << " " << unit << Qt::endl
-                       << "Y: " << QString::number(value.y, 'f', precision) << " " << unit << Qt::endl
-                       << "Z: " << QString::number(value.z, 'f', precision) << " " << unit;
-    return text;
+    Base::Quantity qx(value.x, unit);
+    Base::Quantity qy(value.y, unit);
+    Base::Quantity qz(value.z, unit);
+
+    return fmt::format(
+        "Geometric Center\nX: {}\nY: {}\nZ: {}",
+        formatQuantity(qx),
+        formatQuantity(qy),
+        formatQuantity(qz)
+    );
 }
 
 
