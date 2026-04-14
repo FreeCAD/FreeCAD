@@ -233,13 +233,13 @@ bool EditableDatumLabel::eventFilter(QObject* watched, QEvent* event)
 {
     if (event->type() == QEvent::KeyPress) {
         auto* keyEvent = static_cast<QKeyEvent*>(event);
-        if (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter
-            || keyEvent->key() == Qt::Key_Tab) {
+        int key = keyEvent->key();
 
+        if (key == Qt::Key_Return || key == Qt::Key_Enter || key == Qt::Key_Tab) {
             if (auto* spinBox = qobject_cast<QAbstractSpinBox*>(watched)) {
                 // if tab has been pressed and user did not type anything previously,
                 // then just cycle but don't lock anything, otherwise we lock the label
-                if (keyEvent->key() == Qt::Key_Tab && !this->isSet) {
+                if (key == Qt::Key_Tab && !this->isSet) {
                     if (!this->spinBox->hasValidInput()) {
                         Q_EMIT this->spinBox->valueChanged(this->value);
                         return true;
@@ -259,6 +259,18 @@ bool EditableDatumLabel::eventFilter(QObject* watched, QEvent* event)
                     return true;
                 }
             }
+        }
+        else if (
+            key == Qt::Key_Left || key == Qt::Key_Right || key == Qt::Key_Up || key == Qt::Key_Down
+            || key == Qt::Key_Home || key == Qt::Key_End
+        ) {
+            // cursor movement fights between viewer and ovp
+            // send the event to the viewer directly for camera movement
+            if (!viewer) {
+                return false;
+            }
+            QCoreApplication::sendEvent(viewer, event);
+            return true;
         }
         else if (this->hasFinishedEditing && keyEvent->key() != Qt::Key_Tab) {
             this->setLockedAppearance(false);
