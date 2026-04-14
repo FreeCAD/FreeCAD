@@ -794,9 +794,11 @@ double Measurement::radius() const
             return (double)curve.Circle().Radius();
         }
     }
-    else if (measureType == MeasureType::Cylinder || measureType == MeasureType::CylinderSection
-             || measureType == MeasureType::Sphere || measureType == MeasureType::Torus
-             || measureType == MeasureType::Disc) {
+    else if (
+        measureType == MeasureType::Cylinder || measureType == MeasureType::CylinderSection
+        || measureType == MeasureType::Sphere || measureType == MeasureType::Torus
+        || measureType == MeasureType::Disc
+    ) {
         TopoDS_Shape shape = getShape(objects.at(0), subElements.at(0).c_str(), TopAbs_FACE);
         TopoDS_Face face = TopoDS::Face(shape);
 
@@ -827,9 +829,11 @@ double Measurement::diameter() const
     if (numRefs == 0) {
         Base::Console().error("Measurement::diameter - No 3D references available\n");
     }
-    else if (measureType == MeasureType::Circle || measureType == MeasureType::Cylinder
-             || measureType == MeasureType::Disc || measureType == MeasureType::Sphere
-             || measureType == MeasureType::Torus) {
+    else if (
+        measureType == MeasureType::Circle || measureType == MeasureType::Cylinder
+        || measureType == MeasureType::Disc || measureType == MeasureType::Sphere
+        || measureType == MeasureType::Torus
+    ) {
         return radius() * 2;
     }
     Base::Console().error("Measurement::diameter - Invalid References3D Provided\n");
@@ -963,11 +967,13 @@ double Measurement::area() const
     if (References3D.getSize() == 0) {
         Base::Console().error("Measurement::area - No 3D references available\n");
     }
-    else if (measureType == MeasureType::Volumes || measureType == MeasureType::Surfaces
-             || measureType == MeasureType::Cylinder || measureType == MeasureType::CylinderSection
-             || measureType == MeasureType::TwoCylinders || measureType == MeasureType::Cone
-             || measureType == MeasureType::Sphere || measureType == MeasureType::Torus
-             || measureType == MeasureType::Plane || measureType == MeasureType::Disc) {
+    else if (
+        measureType == MeasureType::Volumes || measureType == MeasureType::Surfaces
+        || measureType == MeasureType::Cylinder || measureType == MeasureType::CylinderSection
+        || measureType == MeasureType::TwoCylinders || measureType == MeasureType::Cone
+        || measureType == MeasureType::Sphere || measureType == MeasureType::Torus
+        || measureType == MeasureType::Plane || measureType == MeasureType::Disc
+    ) {
 
         const std::vector<App::DocumentObject*>& objects = References3D.getValues();
         const std::vector<std::string>& subElements = References3D.getSubValues();
