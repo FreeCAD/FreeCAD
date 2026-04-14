@@ -518,80 +518,121 @@ SET(Tests_SRCS
     CAMTests/test_profile.fcstd
     CAMTests/test_geomop.fcstd
     CAMTests/test_holes00.fcstd
-    CAMTests/TestCAMSanity.py
-    CAMTests/TestCentroidLegacyPost.py
-    CAMTests/TestDxfPost.py
-    CAMTests/TestFanucPost.py
-    CAMTests/TestGenericPost.py
-    CAMTests/TestGenericPlasma.py
-    CAMTests/TestLinuxCNCPost.py
-    CAMTests/TestLinkingGenerator.py
-    CAMTests/TestMachine.py
-    CAMTests/TestMach3Mach4LegacyPost.py
-    CAMTests/TestPathAdaptive.py
-    CAMTests/TestPathCommandAnnotations.py
-    CAMTests/TestPathCore.py
-    CAMTests/TestPathDepthParams.py
-    CAMTests/TestPathDressupArray.py
-    CAMTests/TestPathDressupDogboneII.py
-    CAMTests/TestPathDressupHoldingTags.py
-    CAMTests/TestPathDrillGenerator.py
-    CAMTests/TestDrillCycleExpander.py
-    CAMTests/TestPathDrillable.py
-    CAMTests/TestPathFacingGenerator.py
-    CAMTests/TestPathGeneratorDogboneII.py
-    CAMTests/TestPathGeom.py
-    CAMTests/TestPathHelix.py
-    CAMTests/TestPathHelpers.py
-    CAMTests/TestPathHelixGenerator.py
-    CAMTests/TestPathLanguage.py
-    CAMTests/TestPathLog.py
-    CAMTests/TestPathOpDeburr.py
-    CAMTests/TestPathOpUtil.py
-    CAMTests/TestPostCore.py
-    CAMTests/TestPostProcessor.py
-    CAMTests/TestPostOutput.py
-    CAMTests/TestPathPocket.py
-    CAMTests/TestPathPreferences.py
-    CAMTests/TestPathProfile.py
-    CAMTests/TestPathPropertyBag.py
-    CAMTests/TestPathRotationGenerator.py
-    CAMTests/TestPathSetupSheet.py
-    CAMTests/TestPathSpiralGenerator.py
-    CAMTests/TestPathStock.py
-    CAMTests/TestPathTapGenerator.py
-    CAMTests/TestPathToolChangeGenerator.py
-    CAMTests/TestPathThreadMilling.py
-    CAMTests/TestPathThreadMillingGenerator.py
-    CAMTests/TestPathToolAsset.py
-    CAMTests/TestPathToolAssetCache.py
-    CAMTests/TestPathToolAssetUri.py
-    CAMTests/TestPathToolAssetStore.py
-    CAMTests/TestPathToolAssetManager.py
-    CAMTests/TestPathToolBit.py
-    CAMTests/TestPathToolBitSerializer.py
-    CAMTests/TestPathToolShapeClasses.py
-    CAMTests/TestPathToolShapeDoc.py
-    CAMTests/TestPathToolShapeIcon.py
-    CAMTests/TestPathToolLibrary.py
-    CAMTests/TestPathToolLibrarySerializer.py
-    CAMTests/TestPathToolController.py
-    CAMTests/TestPathUtil.py
-    CAMTests/TestPathVcarve.py
-    CAMTests/TestPathVoronoi.py
-    CAMTests/TestDressupPost.py
-    CAMTests/TestTestPost.py
-    CAMTests/TestPostGCodes.py
-    CAMTests/TestPostMCodes.py
-    CAMTests/TestSnapmakerPost.py
-    CAMTests/TestPostToolProcessing.py
-    CAMTests/TestSVGPost.py
-    CAMTests/TestTSPSolver.py
-    CAMTests/TestGcodeProcessingUtils.py
     CAMTests/Tools/Bit/test-path-tool-bit-bit-00.fctb
     CAMTests/Tools/Library/test-path-tool-bit-library-00.fctl
     CAMTests/Tools/Shape/test-path-tool-bit-shape-00.fcstd
-    CAMTests/TestToolBitRecomputeState.py
+)
+
+SET(Tests_Core_SRCS
+    CAMTests/core/__init__.py
+    CAMTests/core/TestPathCommandAnnotations.py
+    CAMTests/core/TestPathCore.py
+    CAMTests/core/TestPathDepthParams.py
+    CAMTests/core/TestPathGeom.py
+    CAMTests/core/TestPathHelpers.py
+    CAMTests/core/TestPathLanguage.py
+    CAMTests/core/TestPathLog.py
+    CAMTests/core/TestPathPreferences.py
+    CAMTests/core/TestPathPropertyBag.py
+    CAMTests/core/TestPathSetupSheet.py
+    CAMTests/core/TestPathStock.py
+    CAMTests/core/TestPathUtil.py
+    CAMTests/core/TestPathVoronoi.py
+    CAMTests/core/TestTSPSolver.py
+)
+
+SET(Tests_Ops_SRCS
+    CAMTests/ops/__init__.py
+    CAMTests/ops/TestPathAdaptive.py
+    CAMTests/ops/TestPathDrillable.py
+    CAMTests/ops/TestPathHelix.py
+    CAMTests/ops/TestPathOpDeburr.py
+    CAMTests/ops/TestPathOpUtil.py
+    CAMTests/ops/TestPathPocket.py
+    CAMTests/ops/TestPathProfile.py
+    CAMTests/ops/TestPathThreadMilling.py
+    CAMTests/ops/TestPathVcarve.py
+)
+
+SET(Tests_Generator_SRCS
+    CAMTests/generator/__init__.py
+    CAMTests/generator/TestDrillCycleExpander.py
+    CAMTests/generator/TestLinkingGenerator.py
+    CAMTests/generator/TestPathDrillGenerator.py
+    CAMTests/generator/TestPathFacingGenerator.py
+    CAMTests/generator/TestPathGeneratorDogboneII.py
+    CAMTests/generator/TestPathHelixGenerator.py
+    CAMTests/generator/TestPathRotationGenerator.py
+    CAMTests/generator/TestPathSpiralGenerator.py
+    CAMTests/generator/TestPathTapGenerator.py
+    CAMTests/generator/TestPathThreadMillingGenerator.py
+    CAMTests/generator/TestPathToolChangeGenerator.py
+)
+
+SET(Tests_Dressup_SRCS
+    CAMTests/dressup/__init__.py
+    CAMTests/dressup/TestPathDressupArray.py
+    CAMTests/dressup/TestPathDressupDogboneII.py
+    CAMTests/dressup/TestPathDressupHoldingTags.py
+)
+
+SET(Tests_Tool_SRCS
+    CAMTests/tool/__init__.py
+    CAMTests/tool/TestPathToolAsset.py
+    CAMTests/tool/TestPathToolAssetCache.py
+    CAMTests/tool/TestPathToolAssetManager.py
+    CAMTests/tool/TestPathToolAssetStore.py
+    CAMTests/tool/TestPathToolAssetUri.py
+    CAMTests/tool/TestPathToolBit.py
+    CAMTests/tool/TestPathToolBitSerializer.py
+    CAMTests/tool/TestPathToolController.py
+    CAMTests/tool/TestPathToolLibrary.py
+    CAMTests/tool/TestPathToolLibrarySerializer.py
+    CAMTests/tool/TestPathToolShapeClasses.py
+    CAMTests/tool/TestPathToolShapeDoc.py
+    CAMTests/tool/TestPathToolShapeIcon.py
+    CAMTests/tool/TestToolBitRecomputeState.py
+)
+
+SET(Tests_Post_SRCS
+    CAMTests/post/__init__.py
+    CAMTests/post/TestCentroidLegacyPost.py
+    CAMTests/post/TestDressupPost.py
+    CAMTests/post/TestDxfPost.py
+    CAMTests/post/TestFanucPost.py
+    CAMTests/post/TestGcodeProcessingUtils.py
+    CAMTests/post/TestGenericPlasma.py
+    CAMTests/post/TestGenericPost.py
+    CAMTests/post/TestLinuxCNCPost.py
+    CAMTests/post/TestMach3Mach4LegacyPost.py
+    CAMTests/post/TestPostCore.py
+    CAMTests/post/TestPostGCodes.py
+    CAMTests/post/TestPostMCodes.py
+    CAMTests/post/TestPostOutput.py
+    CAMTests/post/TestPostProcessor.py
+    CAMTests/post/TestPostToolProcessing.py
+    CAMTests/post/TestSnapmakerPost.py
+    CAMTests/post/TestSVGPost.py
+    CAMTests/post/TestTestPost.py
+)
+
+SET(Tests_Machine_SRCS
+    CAMTests/machine/__init__.py
+    CAMTests/machine/TestMachine.py
+)
+
+SET(Tests_Sanity_SRCS
+    CAMTests/sanity/__init__.py
+    CAMTests/sanity/TestCAMSanity.py
+)
+
+SET(Tests_Gui_SRCS
+    CAMTests/gui/__init__.py
+    CAMTests/gui/TestPathToolBitBrowserWidget.py
+    CAMTests/gui/TestPathToolBitEditorWidget.py
+    CAMTests/gui/TestPathToolBitListWidget.py
+    CAMTests/gui/TestPathToolBitPropertyEditorWidget.py
+    CAMTests/gui/TestPathToolDocumentObjectEditorWidget.py
 )
 
 SET(Tests_Fixtures
@@ -676,6 +717,15 @@ ADD_CUSTOM_TARGET(PathScripts ALL
 SET(test_files
   ${Path_Scripts}
   ${Tests_SRCS}
+  ${Tests_Core_SRCS}
+  ${Tests_Ops_SRCS}
+  ${Tests_Generator_SRCS}
+  ${Tests_Dressup_SRCS}
+  ${Tests_Tool_SRCS}
+  ${Tests_Post_SRCS}
+  ${Tests_Machine_SRCS}
+  ${Tests_Sanity_SRCS}
+  ${Tests_Gui_SRCS}
   ${Tests_Fixtures}
 )
 
@@ -967,6 +1017,16 @@ INSTALL(
     DESTINATION
         Mod/CAM/CAMTests
 )
+
+INSTALL(FILES ${Tests_Core_SRCS}      DESTINATION Mod/CAM/CAMTests/core)
+INSTALL(FILES ${Tests_Ops_SRCS}       DESTINATION Mod/CAM/CAMTests/ops)
+INSTALL(FILES ${Tests_Generator_SRCS} DESTINATION Mod/CAM/CAMTests/generator)
+INSTALL(FILES ${Tests_Dressup_SRCS}   DESTINATION Mod/CAM/CAMTests/dressup)
+INSTALL(FILES ${Tests_Tool_SRCS}      DESTINATION Mod/CAM/CAMTests/tool)
+INSTALL(FILES ${Tests_Post_SRCS}      DESTINATION Mod/CAM/CAMTests/post)
+INSTALL(FILES ${Tests_Machine_SRCS}   DESTINATION Mod/CAM/CAMTests/machine)
+INSTALL(FILES ${Tests_Sanity_SRCS}    DESTINATION Mod/CAM/CAMTests/sanity)
+INSTALL(FILES ${Tests_Gui_SRCS}       DESTINATION Mod/CAM/CAMTests/gui)
 
 INSTALL(
     FILES

@@ -35,7 +35,7 @@ import Path.Tool.Controller as PathToolController
 import os
 import unittest
 
-from .FilePathTestUtils import assertFilePathsEqual
+from CAMTests.FilePathTestUtils import assertFilePathsEqual
 
 PathCommand.LOG_MODULE = Path.Log.thisModule()
 Path.Log.setLevel(Path.Log.Level.INFO, PathCommand.LOG_MODULE)

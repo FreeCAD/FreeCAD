@@ -31,7 +31,7 @@ import Path.Main.Job as PathJob
 import Path.Op.Helix as PathHelix
 import CAMTests.PathTestUtils as PathTestUtils
 
-FIXTURE_PATH = pathlib.Path(__file__).parent / "Fixtures"
+FIXTURE_PATH = pathlib.Path(__file__).parent.parent / "Fixtures"
 
 Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 # Path.Log.trackModule(Path.Log.thisModule())

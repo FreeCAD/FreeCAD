@@ -29,7 +29,7 @@ from typing import cast
 from Path.Tool.toolbit.ui.browser import ToolBitBrowserWidget, ToolBitUriRole
 from Path.Tool.toolbit.ui.tablecell import TwoLineTableCell
 from Path.Tool.toolbit.models.base import ToolBit
-from .PathTestUtils import PathTestWithAssets
+from CAMTests.PathTestUtils import PathTestWithAssets
 
 
 class TestToolBitBrowserWidget(PathTestWithAssets):

@@ -23,114 +23,124 @@
 
 import TestApp
 
-from CAMTests.TestCAMSanity import TestCAMSanity
+# --- sanity ---
+from CAMTests.sanity.TestCAMSanity import TestCAMSanity
 
-from CAMTests.TestLinkingGenerator import TestGetLinkingMoves
-from CAMTests.TestMachine import (
+# --- machine ---
+from CAMTests.machine.TestMachine import (
     TestMachineDataclass,
     TestMachineFactory,
     TestToolhead,
 )
-from CAMTests.TestPathProfile import TestPathProfile
 
-from CAMTests.TestPathAdaptive import TestPathAdaptive
-from CAMTests.TestPathCommandAnnotations import TestPathCommandAnnotations
-from CAMTests.TestPathCore import TestPathCore
-from CAMTests.TestPathDepthParams import depthTestCases
-from CAMTests.TestPathDressupDogboneII import TestDressupDogboneII
-from CAMTests.TestPathDressupHoldingTags import TestHoldingTags
-from CAMTests.TestPathDrillable import TestPathDrillable
-from CAMTests.TestPathDrillGenerator import TestPathDrillGenerator
-from CAMTests.TestDrillCycleExpander import TestDrillCycleExpander
-from CAMTests.TestPathFacingGenerator import TestPathFacingGenerator
-from CAMTests.TestPathGeneratorDogboneII import TestGeneratorDogboneII
-from CAMTests.TestPathGeom import TestPathGeom
-from CAMTests.TestPathLanguage import TestPathLanguage
-from CAMTests.TestPathOpDeburr import TestPathOpDeburr
-from CAMTests.TestPathHelpers import TestPathHelpers
-from CAMTests.TestPathHelix import TestPathHelix
-from CAMTests.TestPathHelixGenerator import TestPathHelixGenerator
-from CAMTests.TestPathSpiralGenerator import TestPathSpiralGenerator
-from CAMTests.TestPathLog import TestPathLog
-from CAMTests.TestPathOpUtil import TestPathOpUtil
-from CAMTests.TestPostToolProcessing import TestToolLengthOffset, TestToolProcessing
+# --- core ---
+from CAMTests.core.TestPathCommandAnnotations import TestPathCommandAnnotations
+from CAMTests.core.TestPathCore import TestPathCore
+from CAMTests.core.TestPathDepthParams import depthTestCases
+from CAMTests.core.TestPathGeom import TestPathGeom
+from CAMTests.core.TestPathHelpers import TestPathHelpers
+from CAMTests.core.TestPathLanguage import TestPathLanguage
+from CAMTests.core.TestPathLog import TestPathLog
+from CAMTests.core.TestPathPreferences import TestPathPreferences
+from CAMTests.core.TestPathPropertyBag import TestPathPropertyBag
+from CAMTests.core.TestPathSetupSheet import TestPathSetupSheet
+from CAMTests.core.TestPathStock import TestPathStock
+from CAMTests.core.TestPathUtil import TestPathUtil
+from CAMTests.core.TestPathVoronoi import TestPathVoronoi
+from CAMTests.core.TestTSPSolver import TestTSPSolver
 
-# Post-processing tests split into 3 files for better organization
-from CAMTests.TestPostCore import TestPathPostUtils, TestBuildPostList, TestJobPropertyOverrides
-from CAMTests.TestPostProcessor import (
+# --- generators ---
+from CAMTests.generator.TestDrillCycleExpander import TestDrillCycleExpander
+from CAMTests.generator.TestLinkingGenerator import TestGetLinkingMoves
+from CAMTests.generator.TestPathDrillGenerator import TestPathDrillGenerator
+from CAMTests.generator.TestPathFacingGenerator import TestPathFacingGenerator
+from CAMTests.generator.TestPathGeneratorDogboneII import TestGeneratorDogboneII
+from CAMTests.generator.TestPathHelixGenerator import TestPathHelixGenerator
+from CAMTests.generator.TestPathRotationGenerator import TestPathRotationGenerator
+from CAMTests.generator.TestPathSpiralGenerator import TestPathSpiralGenerator
+from CAMTests.generator.TestPathTapGenerator import TestPathTapGenerator
+from CAMTests.generator.TestPathThreadMillingGenerator import TestPathThreadMillingGenerator
+from CAMTests.generator.TestPathToolChangeGenerator import TestPathToolChangeGenerator
+
+# --- operations ---
+from CAMTests.ops.TestPathAdaptive import TestPathAdaptive
+from CAMTests.ops.TestPathDrillable import TestPathDrillable
+from CAMTests.ops.TestPathHelix import TestPathHelix
+from CAMTests.ops.TestPathOpDeburr import TestPathOpDeburr
+from CAMTests.ops.TestPathOpUtil import TestPathOpUtil
+from CAMTests.ops.TestPathPocket import TestPathPocket
+from CAMTests.ops.TestPathProfile import TestPathProfile
+from CAMTests.ops.TestPathThreadMilling import TestPathThreadMilling
+from CAMTests.ops.TestPathVcarve import TestPathVcarve
+
+# --- dressups ---
+from CAMTests.dressup.TestPathDressupDogboneII import TestDressupDogboneII
+from CAMTests.dressup.TestPathDressupHoldingTags import TestHoldingTags
+
+# --- tools ---
+from CAMTests.tool.TestPathToolAsset import TestPathToolAsset
+from CAMTests.tool.TestPathToolAssetCache import (
+    TestPathToolAssetCache,
+    TestPathToolAssetCacheIntegration,
+)
+from CAMTests.tool.TestPathToolAssetManager import TestPathToolAssetManager
+from CAMTests.tool.TestPathToolAssetStore import TestPathToolFileStore, TestPathToolMemoryStore
+from CAMTests.tool.TestPathToolAssetUri import TestPathToolAssetUri
+from CAMTests.tool.TestPathToolBit import TestPathToolBit
+from CAMTests.tool.TestPathToolBitSerializer import (
+    TestCamoticsToolBitSerializer,
+    TestFCTBSerializer,
+    TestYamlToolBitSerializer,
+)
+from CAMTests.tool.TestPathToolController import TestPathToolController
+from CAMTests.tool.TestPathToolLibrary import TestPathToolLibrary
+from CAMTests.tool.TestPathToolLibrarySerializer import (
+    TestCamoticsLibrarySerializer,
+    TestLinuxCNCLibrarySerializer,
+)
+from CAMTests.tool.TestPathToolShapeClasses import TestPathToolShapeClasses
+from CAMTests.tool.TestPathToolShapeDoc import TestPathToolShapeDoc
+from CAMTests.tool.TestPathToolShapeIcon import (
+    TestToolBitShapeIconBase,
+    TestToolBitShapeSvgIcon,
+    TestToolBitShapePngIcon,
+)
+from CAMTests.tool.TestToolBitRecomputeState import TestToolBitRecomputeState
+
+# --- post-processors ---
+from CAMTests.post.TestPostCore import (
+    TestPathPostUtils,
+    TestBuildPostList,
+    TestJobPropertyOverrides,
+)
+from CAMTests.post.TestPostProcessor import (
     TestPostProcessorFactory,
     TestResolvingPostProcessorName,
     TestHeaderBuilder,
     TestConfigurationBundle,
 )
-from CAMTests.TestPostOutput import (
+from CAMTests.post.TestPostOutput import (
     TestFileNameGenerator,
     TestExport2Integration,
 )
-
-from CAMTests.TestPathPreferences import TestPathPreferences
-from CAMTests.TestPathPocket import TestPathPocket
-from CAMTests.TestPathProfile import TestPathProfile
-from CAMTests.TestPathPropertyBag import TestPathPropertyBag
-from CAMTests.TestPathRotationGenerator import TestPathRotationGenerator
-from CAMTests.TestPathSetupSheet import TestPathSetupSheet
-from CAMTests.TestPathStock import TestPathStock
-from CAMTests.TestPathTapGenerator import TestPathTapGenerator
-from CAMTests.TestPathThreadMilling import TestPathThreadMilling
-from CAMTests.TestPathThreadMillingGenerator import TestPathThreadMillingGenerator
-from CAMTests.TestPathToolAsset import TestPathToolAsset
-from CAMTests.TestPathToolAssetCache import (
-    TestPathToolAssetCache,
-    TestPathToolAssetCacheIntegration,
-)
-from CAMTests.TestPathToolAssetManager import TestPathToolAssetManager
-from CAMTests.TestPathToolAssetStore import TestPathToolFileStore, TestPathToolMemoryStore
-from CAMTests.TestPathToolAssetUri import TestPathToolAssetUri
-from CAMTests.TestPathToolBit import TestPathToolBit
-from CAMTests.TestToolBitRecomputeState import TestToolBitRecomputeState
-from CAMTests.TestPathToolShapeClasses import TestPathToolShapeClasses
-from CAMTests.TestPathToolShapeDoc import TestPathToolShapeDoc
-from CAMTests.TestPathToolShapeIcon import (
-    TestToolBitShapeIconBase,
-    TestToolBitShapeSvgIcon,
-    TestToolBitShapePngIcon,
-)
-from CAMTests.TestPathToolBitSerializer import (
-    TestCamoticsToolBitSerializer,
-    TestFCTBSerializer,
-    TestYamlToolBitSerializer,
-)
-from CAMTests.TestPathToolLibrary import TestPathToolLibrary
-from CAMTests.TestPathToolLibrarySerializer import (
-    TestCamoticsLibrarySerializer,
-    TestLinuxCNCLibrarySerializer,
-)
-from CAMTests.TestPathToolChangeGenerator import TestPathToolChangeGenerator
-from CAMTests.TestPathToolController import TestPathToolController
-from CAMTests.TestPathUtil import TestPathUtil
-from CAMTests.TestPathVcarve import TestPathVcarve
-from CAMTests.TestPathVoronoi import TestPathVoronoi
-
-from CAMTests.TestGenericPost import TestGenericPost
-from CAMTests.TestGenericPlasma import TestGenericPlasma
-from CAMTests.TestLinuxCNCPost import TestLinuxCNCPost
-from CAMTests.TestDxfPost import TestDxfPost
-from CAMTests.TestFanucPost import TestFanucPost
-
-from CAMTests.TestTestPost import TestTestPost
-from CAMTests.TestPostGCodes import TestPostGCodes
-from CAMTests.TestPostMCodes import TestPostMCodes
-from CAMTests.TestDressupPost import TestDressupPost
-
-from CAMTests.TestCentroidLegacyPost import TestCentroidLegacyPost
-from CAMTests.TestMach3Mach4LegacyPost import TestMach3Mach4LegacyPost
-
-from CAMTests.TestSnapmakerPost import TestSnapmakerPost
-from CAMTests.TestSVGPost import TestSVGPost
-from CAMTests.TestTSPSolver import TestTSPSolver
-from CAMTests.TestGcodeProcessingUtils import (
+from CAMTests.post.TestPostToolProcessing import TestToolLengthOffset, TestToolProcessing
+from CAMTests.post.TestPostGCodes import TestPostGCodes
+from CAMTests.post.TestPostMCodes import TestPostMCodes
+from CAMTests.post.TestGcodeProcessingUtils import (
     TestInsertLineNumbers,
     TestSuppressRedundantAxesWords,
     TestFilterInefficientMoves,
     TestNumberGenerator,
 )
+from CAMTests.post.TestDressupPost import TestDressupPost
+
+from CAMTests.post.TestGenericPost import TestGenericPost
+from CAMTests.post.TestGenericPlasma import TestGenericPlasma
+from CAMTests.post.TestLinuxCNCPost import TestLinuxCNCPost
+from CAMTests.post.TestDxfPost import TestDxfPost
+from CAMTests.post.TestFanucPost import TestFanucPost
+from CAMTests.post.TestTestPost import TestTestPost
+from CAMTests.post.TestCentroidLegacyPost import TestCentroidLegacyPost
+from CAMTests.post.TestMach3Mach4LegacyPost import TestMach3Mach4LegacyPost
+from CAMTests.post.TestSnapmakerPost import TestSnapmakerPost
+from CAMTests.post.TestSVGPost import TestSVGPost

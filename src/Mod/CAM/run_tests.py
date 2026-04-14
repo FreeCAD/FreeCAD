@@ -96,7 +96,7 @@ def parse_registered_classes():
     text = re.sub(r"\(([^)]*)\)", lambda m: m.group(1).replace("\n", " "), text)
     classes = []
     for line in text.splitlines():
-        m = re.match(r"\s*from\s+CAMTests\.\w+\s+import\s+(.+?)\s*$", line)
+        m = re.match(r"\s*from\s+CAMTests\.[\w.]+\s+import\s+(.+?)\s*$", line)
         if not m:
             continue
         for name in m.group(1).split(","):

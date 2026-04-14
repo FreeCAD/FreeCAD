@@ -29,7 +29,7 @@ import Part
 import Path.Op.Profile as PathProfile
 import Path.Main.Job as PathJob
 from CAMTests.PathTestUtils import PathTestBase
-from CAMTests.TestPathAdaptive import getGcodeMoves
+from CAMTests.ops.TestPathAdaptive import getGcodeMoves
 
 if FreeCAD.GuiUp:
     import Path.Main.Gui.Job as PathJobGui

@@ -21,7 +21,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-from CAMTests.TestPathToolBitPropertyEditorWidget import (
+from CAMTests.gui.TestPathToolBitPropertyEditorWidget import (
     TestBoolPropertyEditorWidget,
     TestEnumPropertyEditorWidget,
     TestIntPropertyEditorWidget,
@@ -29,7 +29,7 @@ from CAMTests.TestPathToolBitPropertyEditorWidget import (
     TestPropertyEditorFactory,
     TestQuantityPropertyEditorWidget,
 )
-from CAMTests.TestPathToolDocumentObjectEditorWidget import TestDocumentObjectEditorWidget
-from CAMTests.TestPathToolBitBrowserWidget import TestToolBitBrowserWidget
-from CAMTests.TestPathToolBitEditorWidget import TestToolBitPropertiesWidget
-from CAMTests.TestPathToolBitListWidget import TestToolBitListWidget
+from CAMTests.gui.TestPathToolDocumentObjectEditorWidget import TestDocumentObjectEditorWidget
+from CAMTests.gui.TestPathToolBitBrowserWidget import TestToolBitBrowserWidget
+from CAMTests.gui.TestPathToolBitEditorWidget import TestToolBitPropertiesWidget
+from CAMTests.gui.TestPathToolBitListWidget import TestToolBitListWidget

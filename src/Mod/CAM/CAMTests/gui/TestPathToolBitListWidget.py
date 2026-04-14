@@ -28,7 +28,7 @@ import unittest
 from Path.Tool.toolbit import ToolBit
 from Path.Tool.toolbit.ui.toollist import ToolBitListWidget, ToolBitUriRole
 from Path.Tool.toolbit.ui.tablecell import TwoLineTableCell
-from .PathTestUtils import PathTestWithAssets  # Import the base test class
+from CAMTests.PathTestUtils import PathTestWithAssets  # Import the base test class
 
 
 class TestToolBitListWidget(PathTestWithAssets):

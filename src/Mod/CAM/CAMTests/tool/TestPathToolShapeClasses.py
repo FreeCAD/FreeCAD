@@ -368,7 +368,7 @@ class TestPathToolShapeClasses(PathTestWithAssets):
         """
         # Load a shape instance from a fixture file
         fixture_path = (
-            Path(__file__).parent / "Tools" / "Shape" / "test-path-tool-bit-shape-00.fcstd"
+            Path(__file__).parent.parent / "Tools" / "Shape" / "test-path-tool-bit-shape-00.fcstd"
         )
         original_shape = ToolBitShape.from_file(fixture_path)
 
