@@ -4221,7 +4221,7 @@ packages:
   timestamp: 1765632825351
 - conda: .
   name: freecad
-  version: 1.1.0
+  version: 1.1.1
   build: h3c70cbc_0
   subdir: win-64
   variants:
@@ -4282,7 +4282,7 @@ packages:
   - tbb >=2022.3.0
 - conda: .
   name: freecad
-  version: 1.1.0
+  version: 1.1.1
   build: h6d4d2f9_0
   subdir: linux-aarch64
   variants:
@@ -4344,7 +4344,7 @@ packages:
   - yaml-cpp >=0.8.0,<0.9.0a0
 - conda: .
   name: freecad
-  version: 1.1.0
+  version: 1.1.1
   build: h81b34b9_0
   subdir: linux-64
   variants:
@@ -4407,7 +4407,7 @@ packages:
   - yaml-cpp >=0.8.0,<0.9.0a0
 - conda: .
   name: freecad
-  version: 1.1.0
+  version: 1.1.1
   build: hc347f7b_0
   subdir: osx-64
   variants:
@@ -4467,7 +4467,7 @@ packages:
   - yaml-cpp >=0.8.0,<0.9.0a0
 - conda: .
   name: freecad
-  version: 1.1.0
+  version: 1.1.1
   build: he8ea13f_0
   subdir: osx-arm64
   variants:
