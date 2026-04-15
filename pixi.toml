@@ -168,10 +168,16 @@ configure-release = { cmd = [ "cmake", "--preset", "conda-linux-release" ], depe
 [target.osx-64.tasks]
 configure-debug = { cmd = [ "cmake", "--preset", "conda-macos-debug", "{{ extra_args }}" ], args = [{ "arg" = "extra_args", "default" = "" }], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
 configure-release = { cmd = [ "cmake", "--preset", "conda-macos-release" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+build = [{ task = "build-debug" }, { task = "install-debug" }]
+freecad-debug = [{ task = "install-debug" }, { task = "_osx-open-freecad-debug" }]
+freecad-release = [{ task = "install-release" }, { task = "_osx-open-freecad-release" }]
 
 [target.osx-arm64.tasks]
 configure-debug = { cmd = [ "cmake", "--preset", "conda-macos-debug", "{{ extra_args }}" ], args = [{ "arg" = "extra_args", "default" = "" }], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
 configure-release = { cmd = [ "cmake", "--preset", "conda-macos-release" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+build = [{ task = "build-debug" }, { task = "install-debug" }]
+freecad-debug = [{ task = "install-debug" }, { task = "_osx-open-freecad-debug" }]
+freecad-release = [{ task = "install-release" }, { task = "_osx-open-freecad-release" }]
 
 [target.win-64.tasks]
 configure-debug = { cmd = [ "cmake", "--preset", "conda-windows-debug", "-DCMAKE_GENERATOR_PLATFORM=", "-DCMAKE_GENERATOR_TOOLSET=", "{{ extra_args }}" ], args = [{ "arg" = "extra_args", "default" = "" }], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
@@ -196,3 +202,7 @@ test-debug = { cmd = ["ctest", "--test-dir", "build/debug"]}
 test-release = { cmd = ["ctest", "--test-dir", "build/release"]}
 freecad-debug = "build/debug/bin/FreeCAD"
 freecad-release = "build/release/bin/FreeCAD"
+
+# Forward the opened application's stdout/stderr to the invoking terminal.
+_osx-open-freecad-debug = 'T=$(tty 2>/dev/null || echo /dev/null); open -W -n --stdout "$T" --stderr "$T" build/debug/FreeCAD.app'
+_osx-open-freecad-release = 'T=$(tty 2>/dev/null || echo /dev/null); open -W -n --stdout "$T" --stderr "$T" build/release/FreeCAD.app'
