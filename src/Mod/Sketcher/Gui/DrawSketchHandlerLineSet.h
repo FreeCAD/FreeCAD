@@ -931,7 +931,8 @@ public:
         , range(0.0)
         , dirChangeAngle(0.0)
         , angleToPrevious(0.0)
-        , pos(PointPos::end) {};
+        , pos(PointPos::end)
+        , capturedDirection(0.0, 0.0) {};
     ~DrawSketchHandlerPolyLine() override = default;
 
     void activated() override
@@ -1231,6 +1232,8 @@ private:
         angleToPrevious = 0.0;
         pos = PointPos::end;
 
+        capturedDirection = Base::Vector2d(0.0, 0.0);
+
         toolWidgetManager.resetControls();
 
         setConstructionMethod(ConstructionMethod::Line);
@@ -1338,6 +1341,8 @@ private:
     double previousDirectionAngle, dirChangeAngle, startAngle, range, angleToPrevious;
     PointPos pos;
 
+    // Direction tracking to check once OVP is locked
+    Base::Vector2d capturedDirection;
 
     void changeConstructionMethode()
     {
@@ -1776,10 +1781,13 @@ void DSHPolyLineControllerBase::doEnforceControlParameters(Base::Vector2d& onSke
             }
         } break;
         case SelectMode::SeekSecond: {
+            auto& thirdParam = onViewParameters[OnViewParameter::Third];
+            auto& fourthParam = onViewParameters[OnViewParameter::Fourth];
+
             if (handler->resetSeekSecond) {
                 handler->resetSeekSecond = false;
-                unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
-                unsetOnViewParameter(onViewParameters[OnViewParameter::Fourth].get());
+                unsetOnViewParameter(thirdParam.get());
+                unsetOnViewParameter(fourthParam.get());
                 unsetOnViewParameter(onViewParameters[OnViewParameter::Fifth].get());
                 setFocusToOnViewParameter(OnViewParameter::Third);
                 return;
@@ -1788,44 +1796,50 @@ void DSHPolyLineControllerBase::doEnforceControlParameters(Base::Vector2d& onSke
             Base::Vector2d prevPoint = handler->getLastPoint();
 
             if (handler->constructionMethod() == ConstructionMethod::Line) {
-                if (onViewParameters[OnViewParameter::Third]->isSet) {
-                    Base::Vector2d dir = onSketchPos - prevPoint;
+                Base::Vector2d dir = onSketchPos - prevPoint;
+
+                if (fourthParam->isSet) {
+                    const double angle = Base::toRadians(fourthParam->getValue());
+                    const Base::Vector2d ovpDir(cos(angle), sin(angle));
+                    handler->capturedDirection = ovpDir;
+                }
+                else {
+                    handler->capturedDirection = dir.Normalize();
+                }
+
+                if (thirdParam->isSet) {
                     if (dir.Length() < Precision::Confusion()) {
                         dir.x = 1.0;  // if direction null, default to (1,0)
                     }
-                    double length = onViewParameters[OnViewParameter::Third]->getValue();
-                    if (length < Precision::Confusion()) {
-                        unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
+                    double length = thirdParam->getValue();
+                    if (length < Precision::Confusion() && thirdParam->hasFinishedEditing) {
+                        unsetOnViewParameter(thirdParam.get());
+                        handler->capturedDirection = Base::Vector2d(0.0, 0.0);
                         return;
                     }
 
-                    onSketchPos = prevPoint + length * dir.Normalize();
+                    onSketchPos = prevPoint + length * handler->capturedDirection;
                 }
-
-                if (onViewParameters[OnViewParameter::Fourth]->isSet) {
+                else if (fourthParam->isSet) {
                     double arcAngle = Base::toRadians(
-                        onViewParameters[OnViewParameter::Fourth]->getValue()
-                    );
-                    double angle = handler->previousDirectionAngle + arcAngle;
-
-                    // Project onSketchPos on the line starting from prevPoint with angle of angle
-                    Base::Vector2d ovpDir(cos(angle), sin(angle));
-                    onSketchPos.ProjectToLine(onSketchPos - prevPoint, ovpDir);
+                        fourthParam->getValue()
+                    );                    
+                    onSketchPos.ProjectToLine(onSketchPos - prevPoint, handler->capturedDirection);
                     onSketchPos += prevPoint;
                 }
 
-                if (onViewParameters[OnViewParameter::Third]->isSet
-                    && onViewParameters[OnViewParameter::Fourth]->isSet
+                if (thirdParam->hasFinishedEditing && fourthParam->hasFinishedEditing
                     && (onSketchPos - prevPoint).Length() < Precision::Confusion()) {
-                    unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
-                    unsetOnViewParameter(onViewParameters[OnViewParameter::Fourth].get());
+                    unsetOnViewParameter(thirdParam.get());
+                    unsetOnViewParameter(fourthParam.get());
+                    handler->capturedDirection = Base::Vector2d();
                 }
             }
             else {
-                if (onViewParameters[OnViewParameter::Third]->isSet) {
-                    double radius = onViewParameters[OnViewParameter::Third]->getValue();
+                if (thirdParam->isSet) {
+                    double radius = thirdParam->getValue();
                     if (radius < Precision::Confusion()) {
-                        unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
+                        unsetOnViewParameter(thirdParam.get());
                         return;
                     }
 
@@ -1844,14 +1858,14 @@ void DSHPolyLineControllerBase::doEnforceControlParameters(Base::Vector2d& onSke
                     dir = onSketchPos - center;
                     onSketchPos = center + radius * dir.Normalize();
                 }
-                if (onViewParameters[OnViewParameter::Fourth]->isSet) {
+                if (fourthParam->isSet) {
                     Base::Vector2d center;
                     ;
                     double radius = handler->getArcCenter(center, onSketchPos);
                     int sign = radius < 0 ? -1 : 1;
                     radius = fabs(radius);
                     double range = Base::toRadians(
-                        onViewParameters[OnViewParameter::Fourth]->getValue()
+                        fourthParam->getValue()
                     );
                     double angle = handler->startAngle + sign * range;
                     Base::Vector2d dir(1.0, 0.0);
