@@ -542,6 +542,14 @@ class CustomHatchFeature:
             self.safe_delayed_execute(fp, 100)
         if prop == "PatternPlacementMode":
             self.safe_delayed_execute(fp, 100)
+        # Delay execute when BaseObject / BaseObjects changes so that FreeCAD's
+        # dependency graph has time to fully resolve the linked shapes before we
+        # compute the unified bounding box.  Without this delay the first
+        # recompute fires while the newly added object's shape is still in a
+        # stale/unresolved state, producing a wrong unified BB and an apparent
+        # position shift that only corrects itself on the next recompute.
+        if prop in ("BaseObject", "BaseObjects"):
+            self.safe_delayed_execute(fp, 200)
         if prop == "DistributionMode":
             props = fp.PropertiesList
             def set_mode_if_exists(prop_name, mode_value):
@@ -679,10 +687,13 @@ class CustomHatchFeature:
             if len(all_pattern_shapes) == 1:
                 return all_pattern_shapes[0]
 
-            combined = all_pattern_shapes[0]
-            for extra in all_pattern_shapes[1:]:
-                combined = combined.fuse(extra)
-            return combined
+            # Use makeCompound instead of fuse() so that mixed shape types
+            # (Sketch wires + Draft Wires, edges + faces, etc.) can coexist
+            # without triggering OCCT's Boolean engine.  fuse() requires
+            # manifold/compatible topology and raises ValueError: Null shape
+            # whenever the two inputs are both wire/edge geometry (as is always
+            # the case when combining Sketch and Draft objects).
+            return Part.makeCompound(all_pattern_shapes)
 
         return generateBuiltInPatternShape(src_pattern_type)
 
