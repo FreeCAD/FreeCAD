@@ -23,6 +23,8 @@
 # *                                                                          *
 # ***************************************************************************
 
+import os
+
 import FreeCAD
 import FreeCADGui
 import Part
@@ -34,6 +36,8 @@ from .ArchHatchPatterns import generate_built_in_pattern_shape as generateBuiltI
 from .ArchHatchCore import buildHatchShape, normalizePatternShape
 from .ArchFaceExtractor import make_face_extractor_from_selection
 
+def _icon_path(filename):
+    return os.path.join(os.path.dirname(__file__), "Resources", "icons", filename)
 
 def convertBaseSpacingValue(spacing_value, use_units, selected_unit_system):
     if not use_units:
@@ -1281,7 +1285,13 @@ class CustomHatchViewProvider:
         pass
 
     def getIcon(self):
-        return ":/icons/Draft_Facebinder.svg"
+        try:
+            obj = self.Object
+            if obj and getattr(obj, "HatchRole", "Applied") == "Definition":
+                return _icon_path("BIM_HatchDef.svg")
+        except Exception:
+            pass
+        return _icon_path("BIM_HatchApplied.svg")
 
     def __getstate__(self):
         return {"Object": self.Object.Name}
@@ -2731,7 +2741,7 @@ class _CommandFaceExtractor:
 class _CommandHatch:
     def GetResources(self):
         return {
-            'Pixmap': 'Draft_Hatch',
+            'Pixmap': _icon_path("BIM_Hatch.svg"),
             'MenuText': 'Create Hatch',
             'ToolTip': 'Generate parametric hatch patterns on surfaces'
         }
