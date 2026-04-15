@@ -70,6 +70,13 @@ class BIMWorkbench(Workbench):
         import bimcommands
         from nativeifc import ifc_commands
 
+        # Import BIM-owned hatch commands
+        try:
+            import HatchGenerator.ArchHatch
+        except Exception as e:
+            FreeCAD.Console.PrintError(f"Could not load BIM hatch commands: {e}\n")
+
+
         # build menus and toolbars
         self.draftingtools = [
             "BIM_Sketch",
@@ -93,6 +100,8 @@ class BIMWorkbench(Workbench):
             "BIM_Leader",
             "Draft_Label",
             "Draft_Hatch",
+            "BIM_Hatch_Dialog",
+            "BIM_FaceExtractor",
             "BIM_AxisTools",
             "Arch_Grid",
             "Arch_SectionPlane",
@@ -176,6 +185,7 @@ class BIMWorkbench(Workbench):
         ]
 
         self.utils = [
+            "BIM_TogglePanels",
             "BIM_Trash",
             "BIM_WPView",
             "Draft_SelectGroup",
