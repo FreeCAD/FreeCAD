@@ -1821,9 +1821,7 @@ void DSHPolyLineControllerBase::doEnforceControlParameters(Base::Vector2d& onSke
                     onSketchPos = prevPoint + length * handler->capturedDirection;
                 }
                 else if (fourthParam->isSet) {
-                    double arcAngle = Base::toRadians(
-                        fourthParam->getValue()
-                    );                    
+                    double arcAngle = Base::toRadians(fourthParam->getValue());
                     onSketchPos.ProjectToLine(onSketchPos - prevPoint, handler->capturedDirection);
                     onSketchPos += prevPoint;
                 }
@@ -1864,9 +1862,7 @@ void DSHPolyLineControllerBase::doEnforceControlParameters(Base::Vector2d& onSke
                     double radius = handler->getArcCenter(center, onSketchPos);
                     int sign = radius < 0 ? -1 : 1;
                     radius = fabs(radius);
-                    double range = Base::toRadians(
-                        fourthParam->getValue()
-                    );
+                    double range = Base::toRadians(fourthParam->getValue());
                     double angle = handler->startAngle + sign * range;
                     Base::Vector2d dir(1.0, 0.0);
                     dir.Rotate(angle);
