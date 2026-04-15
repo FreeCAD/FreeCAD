@@ -234,6 +234,8 @@ public:
 
     static void resetBlocker();
     static bool waitUntilStarted(std::chrono::milliseconds timeout);
+    static bool waitUntilExecutionCount(int count, std::chrono::milliseconds timeout);
+    static int getExecutionCount();
     static void releaseBlocker();
 };
 

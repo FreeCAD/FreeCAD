@@ -117,6 +117,8 @@ struct AppExport RecomputeResult
 /// Stable, queueable work item for document or object recompute.
 struct AppExport RecomputeRequest
 {
+    using Callback = std::function<void(RecomputeRequest&, RecomputeResult&)>;
+
     static RecomputeRequest fromDocument(const Document& document, bool force = false, int options = 0);
     static RecomputeRequest fromDocumentObject(
         const DocumentObject& documentObject,
@@ -137,7 +139,7 @@ struct AppExport RecomputeRequest
     int options {0};
     bool recursive {false};
     // Callback to be invoked when recompute is complete.
-    std::function<void(RecomputeRequest&, RecomputeResult&)> callback {};
+    Callback callback {};
 };
 
 /**
@@ -1047,9 +1049,17 @@ private:
 
     // Worker thread for processing pending recompute requests
     std::thread _recomputeThread;
+    struct RecomputeQueueEntry
+    {
+        RecomputeRequest request;
+        std::vector<RecomputeRequest::Callback> callbacks;
+        bool rerunRequested {false};
+        std::vector<RecomputeRequest::Callback> rerunCallbacks;
+    };
     // Protects the queued/in-progress recompute state below
     std::mutex _recomputeMutex;
-    std::deque<RecomputeRequest> _recomputeRequests;
+    std::deque<RecomputeQueueEntry> _recomputeRequests;
+    std::optional<RecomputeQueueEntry> _recomputeRequestInProgress;
     std::set<std::string> _recomputeDocumentsInProgress;
     std::condition_variable _recomputeRequestAvailable;
     std::condition_variable _recomputeStateChanged;
@@ -1059,6 +1069,17 @@ private:
 
     // Worker thread function that processes _recomputeRequests
     void recomputeWorker();
+    static bool recomputeRequestsMatch(const RecomputeRequest& lhs, const RecomputeRequest& rhs);
+    static RecomputeQueueEntry makeRecomputeQueueEntry(RecomputeRequest request);
+    static void collectRecomputeCallback(
+        RecomputeRequest& request,
+        std::vector<RecomputeRequest::Callback>& callbacks
+    );
+    static void invokeRecomputeCallbacks(
+        std::vector<RecomputeRequest::Callback>& callbacks,
+        RecomputeRequest& request,
+        RecomputeResult& result
+    );
     // Helper to notify the worker thread when new requests are available
     void notifyRecomputeWorker();
     // Drop queued requests for a document and wait for any active recompute of

@@ -117,3 +117,108 @@ TEST_F(AsyncRecomputeTest, WorkerSafetyIsCheckedFromRequest)
         App::GetApplication().canRecomputeRequestOnWorker(App::RecomputeRequest::fromDocument(*_doc))
     );
 }
+
+TEST_F(AsyncRecomputeTest, QueuedDuplicateRequestsAreCoalesced)
+{
+    auto* blocker = dynamic_cast<App::FeatureTestAsyncBlocker*>(
+        _doc->addObject("App::FeatureTestAsyncBlocker", "BlockingFeature")
+    );
+    auto* safeObject = dynamic_cast<App::FeatureTest*>(
+        _doc->addObject("App::FeatureTest", "SafeFeature")
+    );
+    ASSERT_NE(blocker, nullptr);
+    ASSERT_NE(safeObject, nullptr);
+
+    App::FeatureTestAsyncBlocker::resetBlocker();
+    BOOST_SCOPE_EXIT_ALL(&)
+    {
+        App::FeatureTestAsyncBlocker::releaseBlocker();
+    };
+
+    blocker->touch();
+    App::GetApplication().queueRecomputeRequest(App::RecomputeRequest::fromDocumentObject(*blocker));
+    ASSERT_TRUE(App::FeatureTestAsyncBlocker::waitUntilStarted(2s));
+
+    std::mutex callbackMutex;
+    std::condition_variable callbackChanged;
+    int callbackCount = 0;
+    const auto onQueuedCallback = [&](App::RecomputeRequest&, App::RecomputeResult&) {
+        std::lock_guard<std::mutex> lock(callbackMutex);
+        ++callbackCount;
+        callbackChanged.notify_all();
+    };
+
+    safeObject->touch();
+    App::RecomputeRequest firstRequest = App::RecomputeRequest::fromDocumentObject(*safeObject);
+    firstRequest.callback = onQueuedCallback;
+    App::GetApplication().queueRecomputeRequest(std::move(firstRequest));
+
+    safeObject->touch();
+    App::RecomputeRequest secondRequest = App::RecomputeRequest::fromDocumentObject(*safeObject);
+    secondRequest.callback = onQueuedCallback;
+    App::GetApplication().queueRecomputeRequest(std::move(secondRequest));
+
+    App::FeatureTestAsyncBlocker::releaseBlocker();
+
+    std::unique_lock<std::mutex> callbackLock(callbackMutex);
+    ASSERT_TRUE(callbackChanged.wait_for(callbackLock, 2s, [&] { return callbackCount == 2; }));
+    EXPECT_EQ(safeObject->ExecCount.getValue(), 1);
+}
+
+TEST_F(AsyncRecomputeTest, InFlightDuplicateRequestsScheduleSingleRerun)
+{
+    auto* blocker = dynamic_cast<App::FeatureTestAsyncBlocker*>(
+        _doc->addObject("App::FeatureTestAsyncBlocker", "BlockingFeature")
+    );
+    ASSERT_NE(blocker, nullptr);
+
+    App::FeatureTestAsyncBlocker::resetBlocker();
+    BOOST_SCOPE_EXIT_ALL(&)
+    {
+        App::FeatureTestAsyncBlocker::releaseBlocker();
+    };
+
+    std::mutex callbackMutex;
+    std::condition_variable callbackChanged;
+    int totalCallbacks = 0;
+    int firstRunCallbacks = 0;
+    int rerunCallbacks = 0;
+
+    const auto onFirstRunCallback = [&](App::RecomputeRequest&, App::RecomputeResult&) {
+        std::lock_guard<std::mutex> lock(callbackMutex);
+        ++totalCallbacks;
+        ++firstRunCallbacks;
+        callbackChanged.notify_all();
+    };
+    const auto onRerunCallback = [&](App::RecomputeRequest&, App::RecomputeResult&) {
+        std::lock_guard<std::mutex> lock(callbackMutex);
+        ++totalCallbacks;
+        ++rerunCallbacks;
+        callbackChanged.notify_all();
+    };
+
+    blocker->touch();
+    App::RecomputeRequest firstRequest = App::RecomputeRequest::fromDocumentObject(*blocker);
+    firstRequest.callback = onFirstRunCallback;
+    App::GetApplication().queueRecomputeRequest(std::move(firstRequest));
+    ASSERT_TRUE(App::FeatureTestAsyncBlocker::waitUntilStarted(2s));
+
+    blocker->touch();
+    App::RecomputeRequest secondRequest = App::RecomputeRequest::fromDocumentObject(*blocker);
+    secondRequest.callback = onRerunCallback;
+    App::GetApplication().queueRecomputeRequest(std::move(secondRequest));
+
+    blocker->touch();
+    App::RecomputeRequest thirdRequest = App::RecomputeRequest::fromDocumentObject(*blocker);
+    thirdRequest.callback = onRerunCallback;
+    App::GetApplication().queueRecomputeRequest(std::move(thirdRequest));
+
+    App::FeatureTestAsyncBlocker::releaseBlocker();
+
+    std::unique_lock<std::mutex> callbackLock(callbackMutex);
+    ASSERT_TRUE(callbackChanged.wait_for(callbackLock, 2s, [&] { return totalCallbacks == 3; }));
+    EXPECT_EQ(firstRunCallbacks, 1);
+    EXPECT_EQ(rerunCallbacks, 2);
+    EXPECT_TRUE(App::FeatureTestAsyncBlocker::waitUntilExecutionCount(2, 2s));
+    EXPECT_EQ(App::FeatureTestAsyncBlocker::getExecutionCount(), 2);
+}
