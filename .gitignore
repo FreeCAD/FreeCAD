@@ -49,6 +49,7 @@ ui_*.h
 /bin/
 /build-*/
 /build/
+/package/rattler-build/osx/build/
 /cmake-build*/
 /conda/environment.yml
 /doc/

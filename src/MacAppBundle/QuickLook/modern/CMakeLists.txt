@@ -1,10 +1,10 @@
-cmake_minimum_required(VERSION 3.22)
-
-# Modern Swift QuickLook Extensions for macOS 15.0+
 # This file handles building .appex extensions using Swift
+# Required for macOS 15.0+
 
 # Configuration options (inherited from parent)
 # CMAKE_OSX_DEPLOYMENT_TARGET
+# TARGET_APP_BUNDLE
+# FREECAD_BUNDLE_ID
 
 # Check for required tools
 find_program(SWIFTC_EXECUTABLE swiftc REQUIRED)
@@ -24,13 +24,10 @@ endif()
 
 message(STATUS "Modern QuickLook: Using macOS SDK: ${MACOS_SDK_PATH}")
 
-# Bundle identifiers (inherited from parent)
-set(FREECAD_BUNDLE_ID "org.freecad.FreeCAD")
+# Bundle identifiers
 set(THUMBNAIL_BUNDLE_ID "${FREECAD_BUNDLE_ID}.quicklook.thumbnail")
 set(PREVIEW_BUNDLE_ID "${FREECAD_BUNDLE_ID}.quicklook.preview")
 
-# Paths (inherited from parent)
-set(TARGET_APP_BUNDLE "${CMAKE_BINARY_DIR}/src/MacAppBundle/FreeCAD.app")
 set(EXTENSIONS_DIR "${TARGET_APP_BUNDLE}/Contents/PlugIns")
 
 # Build directories

@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-cmake_minimum_required(VERSION 3.22)
-project(FreeCADQuickLook)
+# This file is included via add_subdirectory() from MacAppBundle/CMakeLists.txt.
+# TARGET_APP_BUNDLE is inherited from the parent scope.
 
 # Configuration options for QuickLook support
 option(FREECAD_QUICKLOOK_LEGACY_SUPPORT "Build legacy .qlgenerator for older macOS compatibility" ON)
@@ -66,9 +66,8 @@ if(NOT BUILD_MODERN_EXTENSIONS AND NOT BUILD_LEGACY_GENERATOR)
     return()
 endif()
 
-# Global configuration
+# FREECAD_BUNDLE_ID used by both modern/ and legacy/.
 set(FREECAD_BUNDLE_ID "org.freecad.FreeCAD")
-set(TARGET_APP_BUNDLE "${CMAKE_BINARY_DIR}/src/MacAppBundle/FreeCAD.app")
 
 # Detect target architecture
 if(CMAKE_SYSTEM_PROCESSOR STREQUAL "arm64" OR CMAKE_OSX_ARCHITECTURES STREQUAL "arm64")

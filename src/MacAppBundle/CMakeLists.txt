@@ -7,7 +7,7 @@ if(APPLE AND BUILD_WITH_CONDA)
     # package/rattler-build/osx/create_bundle.sh substitutes the same placeholders
     # via sed for the CI bundle build.
 
-    set(TARGET_APP_BUNDLE "${CMAKE_BINARY_DIR}/src/MacAppBundle/FreeCAD.app")
+    set(TARGET_APP_BUNDLE "${CMAKE_BINARY_DIR}/FreeCAD.app")
 
     # Dev-build defaults. Callers (CI, future release tooling) can override
     # these on the cmake command line to embed a more specific version string.
@@ -23,6 +23,40 @@ if(APPLE AND BUILD_WITH_CONDA)
         ${TARGET_APP_BUNDLE}/Contents/Info.plist
         @ONLY
     )
+
+    # Dev-build launcher. Runs inside the .app bundle and execs the real
+    # freecad binary from Contents/Resources/bin/freecad. Source is shared
+    # with the CI bundle step, which still runs its own standalone cmake
+    # against launcher/CMakeLists.txt from create_bundle.sh.
+    #
+    # Only build with Unix Makefiles or Ninja generator, just like QuickLook.
+
+    if(CMAKE_GENERATOR MATCHES "Unix Makefiles|Ninja")
+        add_executable(FreeCADLauncher launcher/FreeCAD.cpp)
+        set_target_properties(FreeCADLauncher PROPERTIES
+            OUTPUT_NAME FreeCAD
+            RUNTIME_OUTPUT_DIRECTORY "${TARGET_APP_BUNDLE}/Contents/MacOS"
+            CXX_STANDARD 17
+            # Plain C++ program, no Qt; skip the global AUTO* machinery.
+            AUTOMOC OFF
+            AUTOUIC OFF
+            AUTORCC OFF
+        )
+    endif()
+
+    # Symlink Contents/Resources -> ${CMAKE_INSTALL_PREFIX} so the launcher's
+    # lookup of ../Resources/bin/freecad resolves into the live pixi env and
+    # FreeCAD's runtime resource lookups (NSBundle, Mod/, Ext/, ssl/) see the
+    # installed tree.
+    if(IS_SYMLINK "${TARGET_APP_BUNDLE}/Contents/Resources")
+        file(REMOVE "${TARGET_APP_BUNDLE}/Contents/Resources")
+    endif()
+    file(CREATE_LINK
+        "${CMAKE_INSTALL_PREFIX}"
+        "${TARGET_APP_BUNDLE}/Contents/Resources"
+        SYMBOLIC
+    )
+
 endif()
 
 #
