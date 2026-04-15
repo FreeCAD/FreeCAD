@@ -17,7 +17,7 @@
 	<key>CFBundleLongVersionString</key>
 	<string></string>
 	<key>CFBundleName</key>
-	<string>APPLICATION_MENU_NAME</string>
+	<string>@FREECAD_BUNDLE_APPLICATION_NAME@</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -25,7 +25,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>FREECAD_VERSION</string>
+	<string>@FREECAD_BUNDLE_VERSION@</string>
 	<key>CSResourcesFileMapped</key>
 	<true/>
 	<key>NSHumanReadableCopyright</key>
