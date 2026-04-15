@@ -1,13 +1,10 @@
-cmake_minimum_required(VERSION 3.22)
-
 # Legacy Objective-C QuickLook Generator for older macOS compatibility
 # This file handles building .qlgenerator bundles using Objective-C/C
 
 # Configuration options (inherited from parent)
 # CMAKE_OSX_DEPLOYMENT_TARGET
+# TARGET_APP_BUNDLE
 
-# Paths (inherited from parent)
-set(TARGET_APP_BUNDLE "${CMAKE_BINARY_DIR}/src/MacAppBundle/FreeCAD.app")
 set(LEGACY_QUICKLOOK_DIR "${TARGET_APP_BUNDLE}/Contents/Library/QuickLook")
 
 # Build legacy QuickLook generator as a proper macOS plugin bundle
