@@ -339,6 +339,7 @@ class _Window(ArchComponent.Component):
                 "Width",
                 "Hosts",
                 "Shape",
+                "Opening",
             ]:
                 # anti-recursive loops, bc the base sketch will touch the Placement all the time
                 touchhosts = False
