@@ -42,7 +42,7 @@ find . -name "*.pyc" -type f -delete
 python ../scripts/fix_macos_lib_paths.py ${conda_env}/lib -r
 
 # build and install the launcher
-cmake -B build launcher
+cmake -B build -S ../../../src/MacAppBundle/launcher
 cmake --build build
 mkdir -p FreeCAD.app/Contents/MacOS
 cp build/FreeCAD FreeCAD.app/Contents/MacOS/FreeCAD
