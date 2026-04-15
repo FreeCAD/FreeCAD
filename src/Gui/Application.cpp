@@ -74,11 +74,13 @@
 #include "PreferencePages/DlgSettingsCacheDirectory.h"
 #include "DocumentPy.h"
 #include "DocumentRecovery.h"
+#include "EditableDatumLabelPy.h"
 #include "EditorView.h"
 #include "ExpressionBindingPy.h"
 #include "FileDialog.h"
 #include "GuiApplication.h"
 #include "GuiInitScript.h"
+#include "GuiTestScript.h"
 #include "InputHintPy.h"
 #include "LinkViewPy.h"
 #include "MainWindow.h"
@@ -490,12 +492,12 @@ Application::Application(bool GUIenabled)
             hPGrp->GetASCII("Language", (const char*)lang.toLatin1()).c_str());
         GetWidgetFactorySupplier();
 
-        // Coin3d disabled VBO support for all Intel drivers but in the meantime they have improved
-        // so we can try to override the workaround by setting COIN_VBO
+        // Coin3d disables VBO support for some (typically very old) drivers and hardware.
+        // Force it on if the preference says to.
         ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/View");
         if (hViewGrp->GetBool("UseVBO", false)) {
-            (void)coin_setenv("COIN_VBO", "0", true);
+            (void)coin_setenv("COIN_VBO", "1", true);
         }
 
         // Check for the symbols for group separator and decimal point. They must be different
@@ -573,6 +575,10 @@ Application::Application(bool GUIenabled)
         Base::Interpreter().addType(ExpressionBindingPy::type_object(),
                                     module,
                                     "ExpressionBinding");
+
+        Base::Interpreter().addType(&EditableDatumLabelPy::Type,
+                                    module,
+                                    "EditableDatumLabel");
 
         // insert Selection module
         static struct PyModuleDef SelectionModuleDef = {PyModuleDef_HEAD_INIT,
@@ -2323,6 +2329,7 @@ void Application::initApplication()
     try {
         initTypes();
         new Base::ScriptProducer("FreeCADGuiInit", FreeCADGuiInit);
+        new Base::ScriptProducer("FreeCADGuiTest", FreeCADGuiTest);
         init_resources();
         setCategoryFilterRules();
         old_qtmsg_handler = qInstallMessageHandler(messageHandler);

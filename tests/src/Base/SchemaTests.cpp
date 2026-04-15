@@ -1330,6 +1330,42 @@ TEST_F(SchemaTest, sweep_imperial_building)
     });
 }
 
+TEST_F(SchemaTest, imperial_building_density_uses_lb_ft3)
+{
+    const auto result = setWithPrecision(
+        "ImperialBuilding",
+        Quantity::parse("1 lb/ft^3").getValue(),
+        Unit::Density,
+        6
+    );
+
+    EXPECT_EQ(result, "1.000000 lb/ft^3");
+}
+
+TEST_F(SchemaTest, imperial_building_stress_uses_psi)
+{
+    const auto result
+        = setWithPrecision("ImperialBuilding", Quantity::parse("1 psi").getValue(), Unit::Stress, 6);
+
+    EXPECT_EQ(result, "1.000000 psi");
+}
+
+TEST_F(SchemaTest, imperial_density_uses_lb_in3)
+{
+    const auto result
+        = setWithPrecision("Imperial", Quantity::parse("1 lb/in^3").getValue(), Unit::Density, 6);
+
+    EXPECT_EQ(result, "1.000000 lb/in^3");
+}
+
+TEST_F(SchemaTest, imperial_civil_density_uses_lb_ft3)
+{
+    const auto result
+        = setWithPrecision("ImperialCivil", Quantity::parse("1 lb/ft^3").getValue(), Unit::Density, 6);
+
+    EXPECT_EQ(result, "1.000000 lb/ft^3");
+}
+
 TEST_F(SchemaTest, sweep_imperial_civil)
 {
     UnitsApi::setSchema("ImperialCivil");

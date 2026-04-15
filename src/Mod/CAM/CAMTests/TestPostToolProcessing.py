@@ -279,7 +279,7 @@ class TestToolProcessing(unittest.TestCase):
 
         tc2 = PathToolController.Create("TC_Test_Tool2", tool2, 2)
         tc2.Label = "TC: 3mm Endmill"
-        self.job.addObject(tc2)
+        self.job.Proxy.addToolController(tc2)
 
         # Create a second operation using the second tool
         # First move after tool change has X, Y, and Z components
@@ -357,7 +357,7 @@ class TestToolProcessing(unittest.TestCase):
 
         tc2 = PathToolController.Create("TC_Test_Tool2", tool2, 2)
         tc2.Label = "TC: 3mm Endmill"
-        self.job.addObject(tc2)
+        self.job.Proxy.addToolController(tc2)
 
         # Create a second operation using the second tool
         profile_op2 = self.doc.addObject("Path::FeaturePython", "TestProfile2")
@@ -452,7 +452,7 @@ class TestToolProcessing(unittest.TestCase):
 
         tc2 = PathToolController.Create("TC_Second_Tool", tool, 2)
         tc2.Label = "TC: 3mm Endmill"
-        self.job.addObject(tc2)
+        self.job.Proxy.addToolController(tc2)
 
         # Create a second operation using the second tool
         profile_op2 = self.doc.addObject("Path::FeaturePython", "TestProfile2")

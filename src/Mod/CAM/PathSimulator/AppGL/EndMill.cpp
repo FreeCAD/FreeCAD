@@ -23,7 +23,7 @@
  ***************************************************************************/
 
 #include "EndMill.h"
-#include "OpenGlWrapper.h"
+
 #include "SimShapes.h"
 
 using namespace MillSim;

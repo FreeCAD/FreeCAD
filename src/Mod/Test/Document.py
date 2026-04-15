@@ -1441,6 +1441,22 @@ class DocumentGroupCases(unittest.TestCase):
 
         self.Doc.recompute()
 
+    def testContainerChainGroupInPart(self):
+        # ContainerChain must not raise when a plain group is nested inside a GeoFeatureGroup
+        from Show.Containers import ContainerChain
+
+        part = self.Doc.addObject("App::Part", "Part")
+        group = self.Doc.addObject("App::DocumentObjectGroup", "Group")
+        obj = self.Doc.addObject("App::FeatureTest", "Obj")
+        part.addObject(group)
+        group.addObject(obj)
+        self.Doc.recompute()
+
+        chain = ContainerChain(obj)
+        objects_in_chain = [c for c in chain if not c.isDerivedFrom("App::Document")]
+        self.assertIn(part, objects_in_chain)
+        self.assertIn(group, objects_in_chain)
+
     def testIssue0003150Part2(self):
         self.box = self.Doc.addObject("App::FeatureTest")
         self.cyl = self.Doc.addObject("App::FeatureTest")

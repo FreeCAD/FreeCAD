@@ -1314,7 +1314,7 @@
     <message>
       <location filename="../../Command.cpp" line="1716"/>
       <source>Shape Builder</source>
-      <translation type="unfinished">Shape Builder</translation>
+      <translation>Generador de forma</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1718"/>

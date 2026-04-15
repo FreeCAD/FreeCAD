@@ -131,11 +131,11 @@ class TestPathPocket(PathTestBase):
 
         _addViewProvider(pocket)
 
-        # Add pocket to job's operations
-        job.addObject(pocket)
-
         # Generate the toolpath
-        pocket.recompute()
+        # Note: PathPocket.Create() with parentJob already adds the operation
+        # to job.Operations.Group via PathUtils.addToJob, so no need to call
+        # job.addObject() here (which would move it out of Operations).
+        self.doc.recompute()
 
         return pocket
 

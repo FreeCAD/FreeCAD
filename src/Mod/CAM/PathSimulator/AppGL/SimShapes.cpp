@@ -24,10 +24,12 @@
 
 #include "SimShapes.h"
 #include "Shader.h"
-#include "GlUtils.h"
 #include <math.h>
 #include <cstddef>
 #include <vector>
+
+// include this last as the defines can mess up other includes
+#include "OpenGlWrapper.h"
 
 using namespace MillSim;
 using std::numbers::pi;

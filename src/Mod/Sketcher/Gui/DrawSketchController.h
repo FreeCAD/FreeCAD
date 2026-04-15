@@ -660,13 +660,20 @@ protected:
                                  )
                                  .get();
 
+            const auto handleParameterValueChanged = [this, parameter, i](double value) {
+                parameter->setActivatedColor();
+                onViewValueChanged(i, value);
+            };
+
             QObject::connect(
                 parameter,
                 &Gui::EditableDatumLabel::valueChanged,
-                [this, parameter, i](double value) {
-                    parameter->setActivatedColor();
-                    onViewValueChanged(i, value);
-                }
+                handleParameterValueChanged
+            );
+            QObject::connect(
+                parameter,
+                &Gui::EditableDatumLabel::editingFinished,
+                handleParameterValueChanged
             );
 
             // this gets triggered whenever user deletes content in OVP, we remove the

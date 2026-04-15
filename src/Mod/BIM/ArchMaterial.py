@@ -376,6 +376,7 @@ class _ArchMaterial:
                 for p in obj.InList:
                     if (
                         hasattr(p, "Material")
+                        and p.Material is not None
                         and p.Material.Name == obj.Name
                         and getattr(obj.ViewObject, "UseMaterialColor", True)
                     ):
@@ -874,11 +875,12 @@ class _ArchMultiMaterialTaskPanel:
         self.obj = obj
         self.form = FreeCADGui.PySideUic.loadUi(":/ui/ArchMultiMaterial.ui")
         self.model = QtGui.QStandardItemModel()
+        unit_str = FreeCAD.Units.Quantity(1, FreeCAD.Units.Length).getUserPreferred()[2]
         self.model.setHorizontalHeaderLabels(
             [
                 translate("Arch", "Name"),
                 translate("Arch", "Material"),
-                translate("Arch", "Thickness"),
+                translate("Arch", "Thickness") + " (" + unit_str + ")",
             ]
         )
         self.form.tree.setRootIsDecorated(False)  # remove 1st column's extra left margin
@@ -900,11 +902,12 @@ class _ArchMultiMaterialTaskPanel:
             obj = self.obj
         if obj:
             self.model.clear()
+            unit_str = FreeCAD.Units.Quantity(1, FreeCAD.Units.Length).getUserPreferred()[2]
             self.model.setHorizontalHeaderLabels(
                 [
                     translate("Arch", "Name"),
                     translate("Arch", "Material"),
-                    translate("Arch", "Thickness"),
+                    translate("Arch", "Thickness") + " (" + unit_str + ")",
                 ]
             )
             # restore widths
@@ -978,19 +981,21 @@ class _ArchMultiMaterialTaskPanel:
         for item in items:
             self.model.insertRow(0, item)
 
+    @staticmethod
+    def _parse_thickness(text):
+        """Parse a thickness string to mm. Plain numbers use the user's preferred unit."""
+        pref_factor = FreeCAD.Units.Quantity(1, FreeCAD.Units.Length).getUserPreferred()[1]
+        try:
+            return float(text) * pref_factor
+        except ValueError:
+            return FreeCAD.Units.Quantity(text).Value
+
     def recalcThickness(self, item=None):
         prefix = translate("Arch", "Total thickness") + ": "
         th = 0
         suffix = ""
         for row in range(self.model.rowCount()):
-            thick = 0
-            d = self.model.item(row, 2).text()
-            try:
-                d = float(d)
-            except Exception:
-                thick = FreeCAD.Units.Quantity(d).Value
-            else:
-                thick = FreeCAD.Units.Quantity(d, FreeCAD.Units.Length).Value
+            thick = self._parse_thickness(self.model.item(row, 2).text())
             th += abs(thick)
             if not thick:
                 suffix = " (" + translate("Arch", "depends on the object") + ")"
@@ -1016,13 +1021,7 @@ class _ArchMultiMaterialTaskPanel:
                 for m in mats:
                     if m.Label == ml:
                         mat = m
-                d = self.model.item(row, 2).text()
-                try:
-                    d = float(d)
-                except Exception:
-                    thick = FreeCAD.Units.Quantity(d).Value
-                else:
-                    thick = FreeCAD.Units.Quantity(d, FreeCAD.Units.Length).Value
+                thick = self._parse_thickness(self.model.item(row, 2).text())
                 if round(thick, 32) == 0:
                     thick = 0.0
                 if name and mat:

@@ -481,6 +481,13 @@ bool ProjectFile::containsFile(const std::string& name) const
     return entry != nullptr;
 }
 
+uint32_t ProjectFile::sizeOfFile(const std::string& name) const
+{
+    zipios::ZipFile project(stdFile);
+    auto entry = project.getEntry(name);
+    return entry == nullptr ? 0 : entry->getSize();
+}
+
 std::list<std::string> ProjectFile::getInputFiles(const std::string& name) const
 {
     // <ObjectData Count="1">
@@ -568,7 +575,7 @@ void ProjectFile::readInputFile(const std::string& name, std::ostream& str)
 
 // Read the given input file from the zip directly into the given stream (not using a temporary
 // file)
-void ProjectFile::readInputFileDirect(const std::string& name, std::ostream& str)
+void ProjectFile::readInputFileDirect(const std::string& name, std::ostream& str) const
 {
     zipios::ZipFile project(stdFile);
     std::unique_ptr<std::istream> istr(project.getInputStream(name));
