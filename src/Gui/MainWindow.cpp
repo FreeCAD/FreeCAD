@@ -1846,8 +1846,8 @@ void MainWindow::registerQuickLookExtensions()
     checkProcess.waitForFinished();
     QString registeredPlugins = QString::fromUtf8(checkProcess.readAllStandardOutput());
 
-    const QString thumbnailId = QStringLiteral("org.freecad.FreeCAD.quicklook.thumbnail");
-    const QString previewId = QStringLiteral("org.freecad.FreeCAD.quicklook.preview");
+    const QString thumbnailId = QStringLiteral(FREECAD_BUNDLE_ID ".quicklook.thumbnail");
+    const QString previewId = QStringLiteral(FREECAD_BUNDLE_ID ".quicklook.preview");
 
     bool thumbnailRegistered = registeredPlugins.contains(thumbnailId);
     bool previewRegistered = registeredPlugins.contains(previewId);

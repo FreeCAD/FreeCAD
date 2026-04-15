@@ -27,6 +27,7 @@ if(BUILD_GUI)
 
     add_executable(FreeCADMain WIN32 ${FreeCAD_SRCS})
     target_link_libraries(FreeCADMain ${FreeCAD_LIBS})
+    target_compile_definitions(FreeCADMain PRIVATE FREECAD_BUNDLE_ID="${FREECAD_BUNDLE_ID}")
     if(BUILD_TEST)
         add_dependencies(FreeCADMain TestSources)
         add_dependencies(FreeCADMain TestGuiSources)

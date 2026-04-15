@@ -56,9 +56,12 @@ echo -e "\################"
 echo -e "version_name:  ${version_name}"
 echo -e "################"
 
+bundle_id="org.freecad.FreeCAD"
+
 cp ../../../src/MacAppBundle/Info.plist.in ${conda_env}/../Info.plist
 sed -i "s|@FREECAD_BUNDLE_VERSION@|${version_name}|" ${conda_env}/../Info.plist
 sed -i "s|@FREECAD_BUNDLE_APPLICATION_NAME@|${application_menu_name}|" ${conda_env}/../Info.plist
+sed -i "s|@FREECAD_BUNDLE_ID@|${bundle_id}|" ${conda_env}/../Info.plist
 
 pixi list -e default > FreeCAD.app/Contents/packages.txt
 sed -i '1s/.*/\nLIST OF PACKAGES:/' FreeCAD.app/Contents/packages.txt

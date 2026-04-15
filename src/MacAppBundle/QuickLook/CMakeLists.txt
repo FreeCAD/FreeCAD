@@ -66,9 +66,6 @@ if(NOT BUILD_MODERN_EXTENSIONS AND NOT BUILD_LEGACY_GENERATOR)
     return()
 endif()
 
-# FREECAD_BUNDLE_ID used by both modern/ and legacy/.
-set(FREECAD_BUNDLE_ID "org.freecad.FreeCAD")
-
 # Detect target architecture
 if(CMAKE_SYSTEM_PROCESSOR STREQUAL "arm64" OR CMAKE_OSX_ARCHITECTURES STREQUAL "arm64")
     set(TARGET_ARCH "arm64")
