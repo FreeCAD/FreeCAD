@@ -52,7 +52,8 @@ private:
     static auto renderedTextRegion(const Gui::NotificationArea& notificationArea, const QImage& image)
         -> QRect
     {
-        const int glyphWidth = qMax(notificationArea.fontMetrics().horizontalAdvance(QStringLiteral("0")), 1);
+        const int glyphWidth
+            = qMax(notificationArea.fontMetrics().horizontalAdvance(QStringLiteral("0")), 1);
         const int rightInset = 4;
         const int topInset = qMin(4, qMax(image.height() - 1, 0));
         const int bottomInset = qMin(4, qMax(image.height() - topInset - 1, 0));
@@ -77,7 +78,9 @@ private:
 
         notificationArea.setText(QString());
         QCoreApplication::processEvents();
-        const auto withoutText = notificationArea.grab().toImage().convertToFormat(QImage::Format_ARGB32);
+        const auto withoutText = notificationArea.grab().toImage().convertToFormat(
+            QImage::Format_ARGB32
+        );
 
         notificationArea.setText(originalText);
         notificationArea.setMinimumSize(originalMinimumSize);
@@ -89,8 +92,7 @@ private:
         return countDifferingPixels(withText.copy(region), withoutText.copy(region));
     }
 
-    static auto capturePresentationState(Gui::NotificationArea& notificationArea)
-        -> PresentationState
+    static auto capturePresentationState(Gui::NotificationArea& notificationArea) -> PresentationState
     {
         return {
             notificationArea.text(),
@@ -133,10 +135,12 @@ private Q_SLOTS:
         auto* menu = notificationArea->menu();
         QVERIFY(menu != nullptr);
 
-        QTest::mouseClick(notificationArea,
-                          Qt::LeftButton,
-                          Qt::NoModifier,
-                          notificationArea->rect().center());
+        QTest::mouseClick(
+            notificationArea,
+            Qt::LeftButton,
+            Qt::NoModifier,
+            notificationArea->rect().center()
+        );
         QTRY_VERIFY(menu->isVisible());
         auto menuOpen = capturePresentationState(*notificationArea);
         QCOMPARE(startup.text, menuOpen.text);
