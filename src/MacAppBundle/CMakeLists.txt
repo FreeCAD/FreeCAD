@@ -1,5 +1,30 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
+if(APPLE AND BUILD_WITH_CONDA)
+    # This .app bundle layout is shared by the dev conda/pixi build and the CI
+    # rattler-build bundle step. Info.plist.in is the single source of truth for
+    # bundle metadata; CMake substitutes @VAR@ placeholders for the dev build and
+    # package/rattler-build/osx/create_bundle.sh substitutes the same placeholders
+    # via sed for the CI bundle build.
+
+    set(TARGET_APP_BUNDLE "${CMAKE_BINARY_DIR}/src/MacAppBundle/FreeCAD.app")
+
+    # Dev-build defaults. Callers (CI, future release tooling) can override
+    # these on the cmake command line to embed a more specific version string.
+    if(NOT FREECAD_BUNDLE_VERSION)
+        set(FREECAD_BUNDLE_VERSION "FreeCAD-dev")
+    endif()
+    if(NOT FREECAD_BUNDLE_APPLICATION_NAME)
+        set(FREECAD_BUNDLE_APPLICATION_NAME "FreeCAD")
+    endif()
+
+    configure_file(
+        ${CMAKE_CURRENT_SOURCE_DIR}/Info.plist.in
+        ${TARGET_APP_BUNDLE}/Contents/Info.plist
+        @ONLY
+    )
+endif()
+
 #
 # Build and install QuickLook for FCStd files (org.freecad.fcstd)
 # This is used by Homebrew and Conda/Mamba scripts alike.
