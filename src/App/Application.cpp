@@ -208,13 +208,6 @@ namespace fs = std::filesystem;
 namespace
 {
 
-RecomputeRequest takeNextRecomputeRequest(std::deque<RecomputeRequest>& requests)
-{
-    RecomputeRequest request = std::move(requests.front());
-    requests.pop_front();
-    return request;
-}
-
 bool requestTargetsDocument(const RecomputeRequest& request, const std::string& documentName)
 {
     return request.documentName == documentName;
@@ -257,12 +250,13 @@ RecomputeResult processRecomputeRequest(RecomputeRequest& request)
     RecomputeResult result;
 
     try {
-        if (Document* document = request.resolveDocument()) {
-            document->recompute({}, request.force, nullptr, request.options);
+        if (!request.documentObjectName.empty()) {
+            if (DocumentObject* documentObject = request.resolveDocumentObject()) {
+                documentObject->recomputeFeature(request.recursive);
+            }
         }
-
-        if (DocumentObject* documentObject = request.resolveDocumentObject()) {
-            documentObject->recomputeFeature(request.recursive);
+        else if (Document* document = request.resolveDocument()) {
+            document->recompute({}, request.force, nullptr, request.options);
         }
     }
     catch (Base::BadGraphError& exception) {
@@ -336,6 +330,49 @@ DocumentObject* RecomputeRequest::resolveDocumentObject() const
     }
 
     return nullptr;
+}
+
+bool Application::recomputeRequestsMatch(const RecomputeRequest& lhs, const RecomputeRequest& rhs)
+{
+    return lhs.documentName == rhs.documentName
+        && lhs.documentObjectName == rhs.documentObjectName
+        && lhs.force == rhs.force
+        && lhs.options == rhs.options
+        && lhs.recursive == rhs.recursive;
+}
+
+Application::RecomputeQueueEntry Application::makeRecomputeQueueEntry(RecomputeRequest request)
+{
+    RecomputeQueueEntry entry;
+    collectRecomputeCallback(request, entry.callbacks);
+    entry.request = std::move(request);
+    return entry;
+}
+
+void Application::collectRecomputeCallback(
+    RecomputeRequest& request,
+    std::vector<RecomputeRequest::Callback>& callbacks
+)
+{
+    if (!request.callback) {
+        return;
+    }
+
+    callbacks.push_back(std::move(request.callback));
+    request.callback = {};
+}
+
+void Application::invokeRecomputeCallbacks(
+    std::vector<RecomputeRequest::Callback>& callbacks,
+    RecomputeRequest& request,
+    RecomputeResult& result
+)
+{
+    for (auto& callback : callbacks) {
+        if (callback) {
+            callback(request, result);
+        }
+    }
 }
 
 
@@ -860,9 +897,33 @@ void Application::queueRecomputeRequest(RecomputeRequest req)
         return;
     }
 
+    RecomputeQueueEntry queuedRequest = makeRecomputeQueueEntry(std::move(req));
     {
         std::lock_guard<std::mutex> lock(_recomputeMutex);
-        _recomputeRequests.push_back(std::move(req));
+        if (_recomputeRequestInProgress
+            && recomputeRequestsMatch(_recomputeRequestInProgress->request, queuedRequest.request)) {
+            _recomputeRequestInProgress->rerunRequested = true;
+            for (auto& callback : queuedRequest.callbacks) {
+                if (callback) {
+                    _recomputeRequestInProgress->rerunCallbacks.push_back(std::move(callback));
+                }
+            }
+            return;
+        }
+
+        auto queuedMatch = std::ranges::find_if(_recomputeRequests, [&](const RecomputeQueueEntry& request) {
+            return recomputeRequestsMatch(request.request, queuedRequest.request);
+        });
+        if (queuedMatch != _recomputeRequests.end()) {
+            for (auto& callback : queuedRequest.callbacks) {
+                if (callback) {
+                    queuedMatch->callbacks.push_back(std::move(callback));
+                }
+            }
+            return;
+        }
+
+        _recomputeRequests.push_back(std::move(queuedRequest));
     }
     notifyRecomputeWorker();
 }
@@ -880,8 +941,8 @@ void Application::cancelRecomputeRequestsForDocument(const std::string& document
 
     // Cancellation runs on document-close boundaries, so a linear scan keeps
     // the queue simple without affecting the steady-state worker path.
-    std::erase_if(_recomputeRequests, [&documentName](const RecomputeRequest& request) {
-        return requestTargetsDocument(request, documentName);
+    std::erase_if(_recomputeRequests, [&documentName](const RecomputeQueueEntry& request) {
+        return requestTargetsDocument(request.request, documentName);
     });
 }
 
@@ -3196,25 +3257,34 @@ void Application::recomputeWorker()
 
         // Process all pending recompute requests.
         while (!_recomputeRequests.empty()) {
-            RecomputeRequest request = takeNextRecomputeRequest(_recomputeRequests);
-            if (!request.documentName.empty()) {
-                _recomputeDocumentsInProgress.insert(request.documentName);
+            _recomputeRequestInProgress = std::move(_recomputeRequests.front());
+            _recomputeRequests.pop_front();
+            auto& inProgress = *_recomputeRequestInProgress;
+            const std::string documentName = inProgress.request.documentName;
+            RecomputeRequest request = inProgress.request;
+            std::vector<RecomputeRequest::Callback> callbacks = std::move(inProgress.callbacks);
+            if (!documentName.empty()) {
+                _recomputeDocumentsInProgress.insert(documentName);
             }
 
             // Unlock while processing to allow other threads to add new requests.
             lock.unlock();
 
             RecomputeResult result = processRecomputeRequest(request);
-
-            if (request.callback) {
-                request.callback(request, result);
-            }
+            invokeRecomputeCallbacks(callbacks, request, result);
 
             lock.lock();
-            if (!request.documentName.empty()) {
-                _recomputeDocumentsInProgress.erase(request.documentName);
+            if (_recomputeRequestInProgress && _recomputeRequestInProgress->rerunRequested) {
+                RecomputeQueueEntry rerunRequest;
+                rerunRequest.request = _recomputeRequestInProgress->request;
+                rerunRequest.callbacks = std::move(_recomputeRequestInProgress->rerunCallbacks);
+                _recomputeRequests.push_back(std::move(rerunRequest));
+            }
+            if (!documentName.empty()) {
+                _recomputeDocumentsInProgress.erase(documentName);
                 _recomputeStateChanged.notify_all();
             }
+            _recomputeRequestInProgress.reset();
         }
     }
 }
