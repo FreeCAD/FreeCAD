@@ -34,7 +34,7 @@ import UtilsAssembly
 translate = App.Qt.translate
 
 __title__ = "Assembly Command Create Snapshot"
-__author__ = "AsdtoCAD"
+__author__ = "AstoCAD"
 __url__ = "https://www.freecad.org"
 
 
@@ -220,7 +220,7 @@ class ViewProviderSnapshot:
 
         if Gui.Control.activeDialog():
             App.Console.PrintError("Cannot restore snapshot while a task is active.\n")
-            return
+            return False
 
         Gui.ActiveDocument.openCommand(
             translate("Assembly_Snapshot", "Restore Snapshot") + " '" + snapshot_obj.Label + "'"
@@ -229,8 +229,7 @@ class ViewProviderSnapshot:
             snapshot_obj.Proxy.restoreState(snapshot_obj)
         except Exception as e:
             App.Console.PrintError(f"Failed to restore snapshot: {e}\n")
-            if noTransaction:
-                Gui.ActiveDocument.abortCommand()
+            Gui.ActiveDocument.abortCommand()
             return False
 
         Gui.ActiveDocument.commitCommand()
