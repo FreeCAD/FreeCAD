@@ -190,13 +190,13 @@ add_custom_target(FreeCADModernQuickLook ALL
 
 # Install targets for modern extensions
 install(DIRECTORY ${EXTENSIONS_DIR}/FreeCADThumbnailExtension.appex
-    DESTINATION "${CMAKE_INSTALL_PREFIX}/PlugIns"
+    DESTINATION "Contents/PlugIns"
     COMPONENT ModernQuickLook
     USE_SOURCE_PERMISSIONS
 )
 
 install(DIRECTORY ${EXTENSIONS_DIR}/FreeCADPreviewExtension.appex
-    DESTINATION "${CMAKE_INSTALL_PREFIX}/PlugIns"
+    DESTINATION "Contents/PlugIns"
     COMPONENT ModernQuickLook
     USE_SOURCE_PERMISSIONS
 )

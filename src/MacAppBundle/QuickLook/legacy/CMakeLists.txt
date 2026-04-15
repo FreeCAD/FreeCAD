@@ -75,7 +75,7 @@ add_custom_target(FreeCADLegacyQuickLook ALL
 
 # Install target for legacy generator
 install(DIRECTORY ${LEGACY_QUICKLOOK_DIR}/QuicklookFCStd.qlgenerator
-    DESTINATION "${CMAKE_INSTALL_PREFIX}/Library/QuickLook"
+    DESTINATION "Contents/Library/QuickLook"
     COMPONENT LegacyQuickLook
     USE_SOURCE_PERMISSIONS
 )
