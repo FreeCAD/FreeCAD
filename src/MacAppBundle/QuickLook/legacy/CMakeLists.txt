@@ -57,9 +57,19 @@ add_custom_target(embed_legacy_generator ALL
     COMMENT "Embedding legacy QuickLook generator in main FreeCAD.app"
 )
 
+# Ad-hoc sign the inner QuicklookFCStd binary. Mirrors create_bundle.sh's
+# unsigned-build path for the legacy generator; CI's official signing path
+# re-signs with a real identity via macos_sign_and_notarize.zsh.
+add_custom_target(sign_legacy_generator ALL
+    COMMAND /usr/bin/codesign --force --sign -
+        ${LEGACY_QUICKLOOK_DIR}/QuicklookFCStd.qlgenerator/Contents/MacOS/QuicklookFCStd
+    DEPENDS embed_legacy_generator
+    COMMENT "Ad-hoc signing legacy QuickLook generator binary"
+)
+
 # Main legacy generator target
 add_custom_target(FreeCADLegacyQuickLook ALL
-    DEPENDS embed_legacy_generator
+    DEPENDS sign_legacy_generator
     COMMENT "Legacy Objective-C QuickLook generator built"
 )
 

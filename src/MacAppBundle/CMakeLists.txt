@@ -68,6 +68,27 @@ if(FREECAD_CREATE_MAC_APP OR (APPLE AND BUILD_WITH_CONDA))
     # Installation handled by QuickLook/CMakeLists.txt
 endif()
 
+# Ad-hoc sign the outer FreeCAD.app bundle after everything is in place.
+# Mirrors the unsigned-build tail of package/rattler-build/osx/create_bundle.sh
+# (`codesign --force --sign - FreeCAD.app`) so LaunchServices accepts the
+# bundle and registers its App Extensions in PlugIns/. CI's official signing
+# path re-signs with a real identity via macos_sign_and_notarize.zsh; this
+# target is unused in CI because create_bundle.sh assembles its own bundle.
+#
+# Shallow sign (no --deep) by design: Contents/Resources is a symlink to the
+# live pixi env, which contains its own signed dylibs we must not re-seal.
+if(APPLE AND BUILD_WITH_CONDA AND CMAKE_GENERATOR MATCHES "Unix Makefiles|Ninja")
+    set(_bundle_sign_deps FreeCADLauncher)
+    if(TARGET FreeCADQuickLook)
+        list(APPEND _bundle_sign_deps FreeCADQuickLook)
+    endif()
+    add_custom_target(sign_app_bundle ALL
+        COMMAND /usr/bin/codesign --force --sign - ${TARGET_APP_BUNDLE}
+        DEPENDS ${_bundle_sign_deps}
+        COMMENT "Ad-hoc signing ${TARGET_APP_BUNDLE}"
+    )
+endif()
+
 
 #
 # Build a Bundle in Homebrew.

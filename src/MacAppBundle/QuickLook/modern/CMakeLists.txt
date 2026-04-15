@@ -166,9 +166,25 @@ add_custom_target(embed_modern_extensions ALL
     COMMENT "Embedding modern extensions in main FreeCAD.app"
 )
 
+# Ad-hoc sign each .appex with its entitlements. Mirrors the signing step
+# in package/rattler-build/osx/create_bundle.sh for unsigned (local) builds:
+# without per-extension entitlements, pluginkit/LaunchServices won't actually
+# invoke the extensions for .FCStd previews. CI's official signing path
+# re-signs with a real identity via macos_sign_and_notarize.zsh.
+add_custom_target(sign_modern_extensions ALL
+    COMMAND /usr/bin/codesign --force --sign -
+        --entitlements ${CMAKE_CURRENT_SOURCE_DIR}/ThumbnailExtension.entitlements
+        ${EXTENSIONS_DIR}/FreeCADThumbnailExtension.appex
+    COMMAND /usr/bin/codesign --force --sign -
+        --entitlements ${CMAKE_CURRENT_SOURCE_DIR}/PreviewExtension.entitlements
+        ${EXTENSIONS_DIR}/FreeCADPreviewExtension.appex
+    DEPENDS embed_modern_extensions
+    COMMENT "Ad-hoc signing modern QuickLook extensions with entitlements"
+)
+
 # Main modern extensions target
 add_custom_target(FreeCADModernQuickLook ALL
-    DEPENDS embed_modern_extensions
+    DEPENDS sign_modern_extensions
     COMMENT "Modern Swift QuickLook extensions built"
 )
 
