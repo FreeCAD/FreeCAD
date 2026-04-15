@@ -55,48 +55,6 @@ std::ostream& operator<<(std::ostream& os, const QString& str)
     return os;
 }
 
-static std::string getModuleInfoString(const std::string& path)
-{
-    QString modPath = QString::fromStdString(path);
-    QFileInfo mod(modPath);
-    if (mod.isHidden()) {  // Ignore hidden directories
-        return {};
-    }
-
-    std::string addonName = mod.isDir() ? QDir(modPath).dirName().toStdString()
-                                        : mod.fileName().toStdString();
-    std::string versionString;
-    std::stringstream str;
-    try {
-        auto metadataFile = std::filesystem::path(mod.absoluteFilePath().toStdString())
-            / "package.xml";
-        if (std::filesystem::exists(metadataFile)) {
-            App::Metadata metadata(metadataFile);
-            if (!metadata.name().empty()) {
-                addonName = metadata.name();
-            }
-            if (metadata.version() != App::Meta::Version()) {
-                versionString = " " + metadata.version().str();
-            }
-        }
-    }
-    catch (const Base::Exception& e) {
-        auto what = QString::fromUtf8(e.what()).trimmed().replace(
-            QChar::fromLatin1('\n'),
-            QChar::fromLatin1(' ')
-        );
-        str << " (Malformed metadata: " << what << ")";
-    }
-    str << "  * " << addonName << versionString;
-    QFileInfo disablingFile(mod.absoluteFilePath(), QStringLiteral("ADDON_DISABLED"));
-    if (disablingFile.exists()) {
-        str << " (Disabled)";
-    }
-
-    str << "\n";
-    return str.str();
-}
-
 }
 
 std::string ProgramInformation::prettyProductInfoWrapper()
@@ -332,6 +290,48 @@ void ProgramInformation::getLocale(std::stringstream& str)
             << " (" << loc.name() << ") ]";
     }
     str << "\n";
+}
+
+static std::string getModuleInfoString(const std::string& path)
+{
+    QString modPath = QString::fromStdString(path);
+    QFileInfo mod(modPath);
+    if (mod.isHidden()) {  // Ignore hidden directories
+        return {};
+    }
+
+    std::string addonName = mod.isDir() ? QDir(modPath).dirName().toStdString()
+                                        : mod.fileName().toStdString();
+    std::string versionString;
+    std::stringstream str;
+    try {
+        auto metadataFile = std::filesystem::path(mod.absoluteFilePath().toStdString())
+            / "package.xml";
+        if (std::filesystem::exists(metadataFile)) {
+            App::Metadata metadata(metadataFile);
+            if (!metadata.name().empty()) {
+                addonName = metadata.name();
+            }
+            if (metadata.version() != App::Meta::Version()) {
+                versionString = " " + metadata.version().str();
+            }
+        }
+    }
+    catch (const Base::Exception& e) {
+        auto what = QString::fromUtf8(e.what()).trimmed().replace(
+            QChar::fromLatin1('\n'),
+            QChar::fromLatin1(' ')
+        );
+        str << " (Malformed metadata: " << what << ")";
+    }
+    str << "  * " << addonName << versionString;
+    QFileInfo disablingFile(mod.absoluteFilePath(), QStringLiteral("ADDON_DISABLED"));
+    if (disablingFile.exists()) {
+        str << " (Disabled)";
+    }
+
+    str << "\n";
+    return str.str();
 }
 
 void ProgramInformation::getVerboseAddOnsInfo(
