@@ -41,60 +41,34 @@ find . -name "*.pyc" -type f -delete
 # and https://github.com/FreeCAD/FreeCAD-Bundle/issues/375
 python ../scripts/fix_macos_lib_paths.py ${conda_env}/lib -r
 
-# build and install the launcher
-cmake -B build -S ../../../src/MacAppBundle/launcher
-cmake --build build
-mkdir -p FreeCAD.app/Contents/MacOS
-cp build/FreeCAD FreeCAD.app/Contents/MacOS/FreeCAD
+# Move installed Contents files into place, including the launcher, Info.plist,
+# and ad-hoc signed QuickLook App Extensions.
+#
+# CI's real signing pass happens below via macos_sign_and_notarize.zsh.
+mv ${conda_env}/Contents/* FreeCAD.app/Contents/
+rmdir ${conda_env}/Contents
 
-# Add deployment target suffix to artifact name (e.g., "-macOS11" or "-macOS15")
-deploy_target="${MACOS_DEPLOYMENT_TARGET:-11.0}"
-version_name="FreeCAD_${BUILD_TAG}-macOS${deploy_target%%.*}-$(uname -m)"
-application_menu_name="FreeCAD_${BUILD_TAG}"
+# Read the dmg filename back from the Info.plist that build.sh + cmake just
+# created (CFBundleVersion is set from FREECAD_BUNDLE_VERSION).
+version_name=$(/usr/libexec/PlistBuddy -c "Print :CFBundleVersion" FreeCAD.app/Contents/Info.plist)
 
 echo -e "\################"
 echo -e "version_name:  ${version_name}"
 echo -e "################"
 
-bundle_id="org.freecad.FreeCAD"
-
-cp ../../../src/MacAppBundle/Info.plist.in ${conda_env}/../Info.plist
-sed -i "s|@FREECAD_BUNDLE_VERSION@|${version_name}|" ${conda_env}/../Info.plist
-sed -i "s|@FREECAD_BUNDLE_APPLICATION_NAME@|${application_menu_name}|" ${conda_env}/../Info.plist
-sed -i "s|@FREECAD_BUNDLE_ID@|${bundle_id}|" ${conda_env}/../Info.plist
-
 pixi list -e default > FreeCAD.app/Contents/packages.txt
 sed -i '1s/.*/\nLIST OF PACKAGES:/' FreeCAD.app/Contents/packages.txt
-
-# move plugins into their final location (Library only exists for macOS < 15.0 builds)
-if [ -d "${conda_env}/Library" ]; then
-    mv ${conda_env}/Library ${conda_env}/..
-fi
-
-# move App Extensions (PlugIns) to the correct location for macOS registration
-if [ -d "${conda_env}/PlugIns" ]; then
-    mv ${conda_env}/PlugIns ${conda_env}/..
-fi
 
 if [[ "${MACOS_SIGN_RELEASE}" == "true" ]]; then
     # create the signed dmg
     ../../scripts/macos_sign_and_notarize.zsh -p "FreeCAD" -k ${MACOS_SIGNING_KEY_ID} -o "${version_name}.dmg"
 else
-    # Ad-hoc sign for local builds (required for QuickLook extensions to register)
-    if [ -d "FreeCAD.app/Contents/PlugIns" ]; then
-        echo "Ad-hoc signing App Extensions with entitlements..."
-        codesign --force --sign - \
-            --entitlements ../../../src/MacAppBundle/QuickLook/modern/ThumbnailExtension.entitlements \
-            FreeCAD.app/Contents/PlugIns/FreeCADThumbnailExtension.appex
-        codesign --force --sign - \
-            --entitlements ../../../src/MacAppBundle/QuickLook/modern/PreviewExtension.entitlements \
-            FreeCAD.app/Contents/PlugIns/FreeCADPreviewExtension.appex
-    fi
+    # Ad-hoc sign the outer bundle. Inner .appex / .qlgenerator signing is
+    # already handled at cmake-build time by the sign_modern_extensions and
+    # sign_legacy_generator targets, and those signatures survived the
+    # install → cp -a → mv chain into FreeCAD.app/Contents/.
     echo "Ad-hoc signing app bundle..."
     codesign --force --sign - FreeCAD.app/Contents/packages.txt
-    if [ -f "FreeCAD.app/Contents/Library/QuickLook/QuicklookFCStd.qlgenerator/Contents/MacOS/QuicklookFCStd" ]; then
-        codesign --force --sign - FreeCAD.app/Contents/Library/QuickLook/QuicklookFCStd.qlgenerator/Contents/MacOS/QuicklookFCStd
-    fi
     codesign --force --sign - FreeCAD.app
 
     # create the dmg

@@ -2,15 +2,10 @@
 
 if(APPLE AND BUILD_WITH_CONDA)
     # This .app bundle layout is shared by the dev conda/pixi build and the CI
-    # rattler-build bundle step. Info.plist.in is the single source of truth for
-    # bundle metadata; CMake substitutes @VAR@ placeholders for the dev build and
-    # package/rattler-build/osx/create_bundle.sh substitutes the same placeholders
-    # via sed for the CI bundle build.
-
+    # rattler-build bundle step.
     set(TARGET_APP_BUNDLE "${CMAKE_BINARY_DIR}/FreeCAD.app")
 
-    # Dev-build defaults. Callers (CI, future release tooling) can override
-    # these on the cmake command line to embed a more specific version string.
+    # Dev-build defaults. CI (package/rattler-build/build.sh) overrides these.
     if(NOT FREECAD_BUNDLE_VERSION)
         set(FREECAD_BUNDLE_VERSION "FreeCAD-dev")
     endif()
@@ -24,10 +19,12 @@ if(APPLE AND BUILD_WITH_CONDA)
         @ONLY
     )
 
-    # Dev-build launcher. Runs inside the .app bundle and execs the real
-    # freecad binary from Contents/Resources/bin/freecad. Source is shared
-    # with the CI bundle step, which still runs its own standalone cmake
-    # against launcher/CMakeLists.txt from create_bundle.sh.
+    install(FILES ${TARGET_APP_BUNDLE}/Contents/Info.plist
+        DESTINATION Contents
+    )
+
+    # Launcher runs inside the .app bundle and execs the real
+    # freecad binary from Contents/Resources/bin/freecad.
     #
     # Only build with Unix Makefiles or Ninja generator, just like QuickLook.
 
@@ -41,6 +38,13 @@ if(APPLE AND BUILD_WITH_CONDA)
             AUTOMOC OFF
             AUTOUIC OFF
             AUTORCC OFF
+            # Resolve conda-env dylibs to their bundle location.
+            BUILD_RPATH "@loader_path/../Resources/lib"
+            INSTALL_RPATH "@loader_path/../Resources/lib"
+        )
+
+        install(TARGETS FreeCADLauncher
+            RUNTIME DESTINATION Contents/MacOS
         )
     endif()
 
