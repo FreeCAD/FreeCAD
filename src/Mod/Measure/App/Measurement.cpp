@@ -38,6 +38,7 @@
 #include <GProp_GProps.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Shape.hxx>
+#include <TopExp_Explorer.hxx>
 
 
 #include <Base/Console.h>
