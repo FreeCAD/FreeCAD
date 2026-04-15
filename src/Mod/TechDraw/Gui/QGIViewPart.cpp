@@ -1019,6 +1019,7 @@ void QGIViewPart::drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b)
         highlight->setWidth(Rez::guiX(vp->IsoWidth.getValue()));
         highlight->setFont(getFont(), fontSize);
         highlight->setZValue(ZVALUE::HIGHLIGHT);
+        highlight->setColor(vp->HighlightLineColor.getValue().asValue<QColor>());
         highlight->setReferenceAngle(vpDetail->HighlightAdjust.getValue());
 
         //handle conversion of apparent X,Y to rotated
