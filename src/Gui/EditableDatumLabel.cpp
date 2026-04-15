@@ -187,6 +187,17 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
     value = val;
     editStartValue = val;
 
+    lockIconLabel = new QLabel(spinBox);
+    lockIconLabel->setAttribute(Qt::WA_TransparentForMouseEvents, true);
+
+    // load icon and scale it to fit in spinbox
+    QPixmap lockIcon = Gui::BitmapFactory().pixmap("Constraint_Lock");
+    const QFontMetrics fm(spinBox->fontMetrics());
+    int iconSize = fm.height();
+    QPixmap scaledIcon = lockIcon.scaled(iconSize, iconSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    lockIconLabel->setPixmap(scaledIcon);
+    lockIconLabel->setVisible(false);
+
     if (eventFilteringObj) {
         spinBox->installEventFilter(eventFilteringObj);
     }
@@ -427,20 +438,6 @@ void EditableDatumLabel::positionSpinbox()
     pxCoord.setX(posX);
     pxCoord.setY(posY);
     spinBox->move(pxCoord);
-
-    // Update lock icon position inside the spinbox if it exists and is visible
-    if (lockIconLabel && lockIconLabel->isVisible()) {
-        const QFontMetrics fm(spinBox->fontMetrics());
-        int iconSize = fm.height();
-        int padding = spinBox->getMargin();
-        QSize spinboxSize = spinBox->size();
-        lockIconLabel->setGeometry(
-            spinboxSize.width() - iconSize - padding,
-            (spinboxSize.height() - iconSize) / 2,
-            iconSize,
-            iconSize
-        );
-    }
 }
 
 SbVec3f EditableDatumLabel::getTextCenterPoint() const
@@ -601,46 +598,25 @@ void EditableDatumLabel::setLockedAppearance(bool locked)
     if (!locked) {
         this->hasFinishedEditing = false;
     }
-    if (!spinBox) {
+    if (!spinBox || !lockIconLabel) {
         return;
+    }
+    spinBox->addIconSpace(locked);
+    lockIconLabel->setVisible(locked);
+    if (auto* edit = spinBox->findChild<QLineEdit*>()) {
+        updateGeometry(edit);
     }
     const QFontMetrics fm(spinBox->fontMetrics());
     int iconSize = fm.height();
     int padding = spinBox->getMargin();
-    if (locked) {
-        spinBox->addIconSpace(true);
-        spinBox->adjustSize();
-        // create lock icon label it it doesn't exist, if it does - show it
-        if (!lockIconLabel) {
-            lockIconLabel = new QLabel(spinBox);
-            lockIconLabel->setAttribute(Qt::WA_TransparentForMouseEvents, true);
-            lockIconLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-
-            // load icon and scale it to fit in spinbox
-            QPixmap lockIcon = Gui::BitmapFactory().pixmap("Constraint_Lock");
-            QPixmap scaledIcon
-                = lockIcon.scaled(iconSize, iconSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-            lockIconLabel->setPixmap(scaledIcon);
-
-            // position lock icon inside the spinbox
-            QSize spinboxSize = spinBox->size();
-            lockIconLabel->setGeometry(
-                spinboxSize.width() - iconSize - padding,
-                (spinboxSize.height() - iconSize) / 2,
-                iconSize,
-                iconSize
-            );
-        }
-        lockIconLabel->show();
-    }
-    else {
-        // hide lock icon if it exists for later reuse
-        if (lockIconLabel) {
-            lockIconLabel->hide();
-            spinBox->addIconSpace(false);
-            spinBox->adjustSize();
-        }
-    }
+    // position lock icon inside the spinbox
+    QSize spinboxSize = spinBox->size();
+    lockIconLabel->setGeometry(
+        spinboxSize.width() - iconSize - padding,
+        (spinboxSize.height() - iconSize) / 2,
+        iconSize,
+        iconSize
+    );
 }
 
 void EditableDatumLabel::resetLockedState()
