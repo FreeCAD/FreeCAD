@@ -456,7 +456,7 @@ class ViewProviderMotion:
 
 
 class MotionEditDialog:
-    def __init__(self, assembly, motionType=MotionTypes[0], joint=None, formula="5*time"):
+    def __init__(self, assembly, motionType=MotionTypes[0], joint=None, formula="initialValue + 5*time"):
         self.assembly = assembly
         self.motionType = motionType
         self.joint = joint
@@ -542,7 +542,7 @@ class MotionEditDialog:
         self.help_label0 = QLabel(
             translate(
                 "Assembly",
-                "In capital are variables that you need to replace with actual values. More details about each example in its tooltip.",
+                "In capital are variables that you need to replace with actual values. 'initialValue' is dynamically replaced by the current angle or distance. More details about each example in its tooltip.",
             ),
             self.dialog,
         )
