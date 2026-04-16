@@ -361,6 +361,7 @@ SET(FemSolverZ88_SRCS
     femsolver/z88/write_element1D.py
     femsolver/z88/write_element2D.py
     femsolver/z88/write_material.py
+    femsolver/z88/write_sectionprint.py
     femsolver/z88/writer.py
     femsolver/z88/writer_list.py
     femsolver/z88/z88tools.py

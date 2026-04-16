@@ -1636,6 +1636,7 @@ class _Wall(ArchComponent.Component):
         layers = self.get_layers(obj)
         width = self.get_width(obj, widths=False)
         align = obj.Align
+        wall_offset = obj.Offset.Value
 
         safe_length = obj.Length.Value or 0.5
 

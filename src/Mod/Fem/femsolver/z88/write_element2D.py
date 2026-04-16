@@ -32,13 +32,17 @@ class WriterElement2D(WriterList):
     def __init__(self, writer):
         super().__init__(writer, writer.member.geos_shellthickness)
 
+    def write_items(self):
+        super().write_items()
+        self.writer.z88elp_rows = self.fill_default(self.writer.z88elp_rows, self.get_param)
+
     def write_item(self, item):
         obj = item["Object"]
+        if not obj.References:
+            return
 
-        param = obj.Thickness.getValueAs("mm").Value
+        param = self.get_param(obj)
         self.add_file_rows(item["ShellElements"], self.writer.z88elp_rows, param)
 
-        # if there is only one beam section and without references, assign it to all elements.
-        if len(self.member_list) == 1 and not self.writer.z88elp_rows:
-            start, end = self.get_start_end_id()
-            self.writer.z88elp_rows.append(f"{start + 1} {end + 1} {param}\n")
+    def get_param(self, obj):
+        return obj.Thickness.getValueAs("mm").Value

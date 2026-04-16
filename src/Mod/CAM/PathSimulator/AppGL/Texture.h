@@ -23,7 +23,6 @@
  ***************************************************************************/
 
 #pragma once
-#include "OpenGlWrapper.h"
 
 namespace MillSim
 {

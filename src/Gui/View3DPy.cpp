@@ -2219,16 +2219,6 @@ void View3DInventorPy::eventCallback(void* ud, SoEventCallback* n)
         method.apply(args);
     }
     catch (const Py::Exception& e) {
-        Py::Object o = Py::type(e);
-        if (o.isString()) {
-            Py::String s(o);
-            Base::Console().warning("%s\n", s.as_std_string("utf-8").c_str());
-        }
-        else {
-            Py::String s(o.repr());
-            Base::Console().warning("%s\n", s.as_std_string("utf-8").c_str());
-        }
-        // Prints message to console window if we are in interactive mode
         PyErr_Print();
     }
 }
@@ -2389,16 +2379,6 @@ void View3DInventorPy::eventCallbackPivy(void* ud, SoEventCallback* n)
         return;
     }
     catch (const Py::Exception& e) {
-        Py::Object o = Py::type(e);
-        if (o.isString()) {
-            Py::String s(o);
-            Base::Console().warning("%s\n", s.as_std_string("utf-8").c_str());
-        }
-        else {
-            Py::String s(o.repr());
-            Base::Console().warning("%s\n", s.as_std_string("utf-8").c_str());
-        }
-        // Prints message to console window if we are in interactive mode
         PyErr_Print();
     }
 }
@@ -2423,16 +2403,6 @@ void View3DInventorPy::eventCallbackPivyEx(void* ud, SoEventCallback* n)
         return;
     }
     catch (const Py::Exception& e) {
-        Py::Object o = Py::type(e);
-        if (o.isString()) {
-            Py::String s(o);
-            Base::Console().warning("%s\n", s.as_std_string("utf-8").c_str());
-        }
-        else {
-            Py::String s(o.repr());
-            Base::Console().warning("%s\n", s.as_std_string("utf-8").c_str());
-        }
-        // Prints message to console window if we are in interactive mode
         PyErr_Print();
     }
 }
@@ -2561,16 +2531,6 @@ void View3DInventorPy::draggerCallback(void* ud, SoDragger* n)
         throw Py::RuntimeError(e.what());
     }
     catch (const Py::Exception& e) {
-        Py::Object o = Py::type(e);
-        if (o.isString()) {
-            Py::String s(o);
-            Base::Console().warning("%s\n", s.as_std_string("utf-8").c_str());
-        }
-        else {
-            Py::String s(o.repr());
-            Base::Console().warning("%s\n", s.as_std_string("utf-8").c_str());
-        }
-        // Prints message to console window if we are in interactive mode
         PyErr_Print();
     }
 }

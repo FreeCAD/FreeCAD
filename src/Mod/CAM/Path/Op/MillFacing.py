@@ -1,26 +1,24 @@
 # -*- coding: utf-8 -*-
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2025 sliptonic sliptonic@freecad.org                    *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+# SPDX-FileCopyrightText: 2025 sliptonic sliptonic@freecad.org
+# SPDX-FileNotice: Part of the FreeCAD project.
+
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 
 __title__ = "CAM Mill Facing Operation"
@@ -35,6 +33,7 @@ import Path
 import Path.Op.Base as PathOp
 
 import Path.Base.Generator.spiral_facing as spiral_facing
+import Path.Base.Generator.facing_common as facing_common
 import Path.Base.Generator.zigzag_facing as zigzag_facing
 import Path.Base.Generator.directional_facing as directional_facing
 import Path.Base.Generator.bidirectional_facing as bidirectional_facing
@@ -327,6 +326,12 @@ class ObjectMillFacing(PathOp.ObjectOp):
         boundary_wire = boundary_wire.makeOffset2D(
             obj.StockExtension.Value, 2
         )  # offset with intersection joins
+
+        # Convert boundary to a rectangular polygon aligned to the cut angle.
+        # Stock faces may have curved edges (e.g. cylindrical stock) and all
+        # facing strategies assume a rectangular boundary.
+        cut_angle = getattr(obj.Angle, "Value", obj.Angle)
+        boundary_wire = facing_common.get_angled_polygon(boundary_wire, cut_angle)
 
         # Determine milling direction
         milling_direction = "climb" if obj.CutMode == "Climb" else "conventional"
@@ -653,67 +658,6 @@ class ObjectMillFacing(PathOp.ObjectOp):
             if lastZ is None or abs(targetZ - lastZ) > 1e-9:
                 # Prefer Z-only to avoid non-numeric XY issues
                 self.commandlist.append(Path.Command("G0", {"Z": targetZ}))
-
-        # # Sanitize commands: ensure full XYZ continuity and remove zero-length/invalid/absurd moves
-        # sanitized = []
-        # curX = curY = curZ = None
-        # # Compute XY bounds from original wire
-        # try:
-        #     bb = boundary_wire.BoundBox
-        #     import math
-
-        #     diag = math.hypot(bb.XLength, bb.YLength)
-        #     xy_limit = max(1.0, diag * 10.0)
-        # except Exception:
-        #     xy_limit = 1e6
-        # for idx, cmd in enumerate(self.commandlist):
-        #     params = dict(cmd.Parameters)
-        #     # Carry forward
-        #     if curX is not None:
-        #         params.setdefault("X", curX)
-        #         params.setdefault("Y", curY)
-        #         params.setdefault("Z", curZ)
-        #     # Extract
-        #     X = params.get("X")
-        #     Y = params.get("Y")
-        #     Z = params.get("Z")
-        #     # Skip NaN/inf
-        #     try:
-        #         _ = float(X) + float(Y) + float(Z)
-        #     except Exception:
-        #         Path.Log.warning(
-        #             f"Dropping cmd {idx} non-finite coords: {cmd.Name} {cmd.Parameters}"
-        #         )
-        #         continue
-        #     # Debug: large finite XY - log but keep for analysis (do not drop)
-        #     if abs(X) > xy_limit or abs(Y) > xy_limit:
-        #         Path.Log.warning(f"Large XY detected (limit {xy_limit}): {cmd.Name} {params}")
-        #     # Skip zero-length
-        #     if (
-        #         curX is not None
-        #         and abs(X - curX) <= 1e-12
-        #         and abs(Y - curY) <= 1e-12
-        #         and abs(Z - curZ) <= 1e-12
-        #     ):
-        #         continue
-
-        #     # Preserve I, J, K parameters for arc commands (G2/G3)
-        #     if cmd.Name in ["G2", "G3"]:
-        #         arc_params = {"X": X, "Y": Y, "Z": Z}
-        #         if "I" in params:
-        #             arc_params["I"] = params["I"]
-        #         if "J" in params:
-        #             arc_params["J"] = params["J"]
-        #         if "K" in params:
-        #             arc_params["K"] = params["K"]
-        #         if "R" in params:
-        #             arc_params["R"] = params["R"]
-        #         sanitized.append(Path.Command(cmd.Name, arc_params))
-        #     else:
-        #         sanitized.append(Path.Command(cmd.Name, {"X": X, "Y": Y, "Z": Z}))
-        #     curX, curY, curZ = X, Y, Z
-
-        # self.commandlist = sanitized
 
         # Apply feedrates to the entire commandlist, with debug on failure
         try:

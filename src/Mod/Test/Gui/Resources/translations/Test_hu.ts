@@ -30,71 +30,81 @@
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="128"/>
+      <source>&amp;Copy</source>
+      <translation>&amp;Másolás</translation>
+    </message>
+    <message>
+      <location filename="../../UnitTest.ui" line="131"/>
+      <source>Ctrl+C</source>
+      <translation type="unfinished">Ctrl+C</translation>
+    </message>
+    <message>
+      <location filename="../../UnitTest.ui" line="141"/>
       <source>&amp;Help</source>
       <translation>Súgó</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="131"/>
+      <location filename="../../UnitTest.ui" line="144"/>
       <source>F1</source>
       <translation>F1</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="141"/>
+      <location filename="../../UnitTest.ui" line="154"/>
       <source>&amp;About</source>
       <translation>Névjegy</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="144"/>
+      <location filename="../../UnitTest.ui" line="157"/>
       <source>Alt+A</source>
       <translation>Alt+A</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="154"/>
-      <source>&amp;Close</source>
-      <translation>Bezár</translation>
+      <location filename="../../UnitTest.ui" line="167"/>
+      <source>Close</source>
+      <translation>Bezárás</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="157"/>
+      <location filename="../../UnitTest.ui" line="170"/>
       <source>Alt+C</source>
       <translation>Alt+C</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="169"/>
+      <location filename="../../UnitTest.ui" line="182"/>
       <source>Progress</source>
       <translation>Folyamatban</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="188"/>
+      <location filename="../../UnitTest.ui" line="201"/>
       <source>Run</source>
       <translation>Futtat</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="205"/>
+      <location filename="../../UnitTest.ui" line="218"/>
       <source>Failures</source>
       <translation>Hibák</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="222"/>
+      <location filename="../../UnitTest.ui" line="235"/>
       <source>Errors</source>
       <translation>Hibaüzenetek</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="239"/>
+      <location filename="../../UnitTest.ui" line="252"/>
       <source>Remaining</source>
       <translation>Fennmaradó</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="259"/>
+      <location filename="../../UnitTest.ui" line="272"/>
       <source>Failures and Errors</source>
       <translation>Hibák és sikertelenségek</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="275"/>
+      <location filename="../../UnitTest.ui" line="288"/>
       <source>Description</source>
       <translation>Leírás</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="292"/>
+      <location filename="../../UnitTest.ui" line="305"/>
       <source>Idle</source>
       <translation>Üresjárati</translation>
     </message>
@@ -102,12 +112,12 @@
   <context>
     <name>TestGui::UnitTestDialog</name>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="167"/>
+      <location filename="../../UnitTestImp.cpp" line="172"/>
       <source>Help</source>
       <translation>Súgó</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="168"/>
+      <location filename="../../UnitTestImp.cpp" line="173"/>
       <source>Enter the name of a callable object which, when called, will return a TestCase.
 Click 'start', and the test thus produced will be run.
 
@@ -118,18 +128,23 @@ Nyomjon 'Indítás'-t, és az így készült vizsgálat futni fog.
 Dupla kattintással, a fa nézeten további információkat kap, beleértve a verem-nyomkövetést.</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="182"/>
+      <location filename="../../UnitTestImp.cpp" line="187"/>
       <source>About FreeCAD UnitTest</source>
       <translation>FreeCAD Egység-Teszt névjegye</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="183"/>
+      <location filename="../../UnitTestImp.cpp" line="188"/>
       <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
       <translation>Copyright (c) Werner Mayer 
 
 FreeCAD UnitTest része a FreeCAD programnak és támogatja a saját modulokra a Unit tesztek írását.</translation>
+    </message>
+    <message>
+      <location filename="../../UnitTestImp.cpp" line="206"/>
+      <source>Errors copied to clipboard</source>
+      <translation type="unfinished">Errors copied to clipboard</translation>
     </message>
   </context>
 </TS>

@@ -1582,7 +1582,7 @@ class MachineFactory:
     # Callback registry for configuration changes
     _callbacks = []
 
-    # Addon machine directories registered via register_addon_machine_dir()
+    # Addon machine directories: list of (namespace, path) tuples
     _addon_machine_dirs: list = []
 
     # Flag: has the filesystem scan for addon machine dirs been run yet?
@@ -1606,20 +1606,28 @@ class MachineFactory:
             cls._callbacks.remove(callback)
 
     @classmethod
-    def register_addon_machine_dir(cls, path) -> None:
+    def register_addon_machine_dir(cls, path, namespace=None) -> None:
         """Register a directory containing addon machine definition files.
 
-        Called by addon Init.py at FreeCAD startup. The directory should
-        contain .fcm files. Machines are available for direct use and as
-        templates — without copying to the user asset directory.
-        Duplicate registrations are silently ignored.
+        Called by ``_scan_installed_addon_dirs()`` when an addon's
+        ``package.xml`` declares ``<Machine>`` content.  May also be
+        called directly via ``Path.Preferences.addAddonAssetPath()``
+        for programmatic registration.
+
+        The directory should contain .fcm files.  Machines are available
+        for direct use and as templates — without copying to the user
+        asset directory.  Duplicate registrations are silently ignored.
 
         Args:
             path: Directory path (str or pathlib.Path) containing .fcm files.
+            namespace: Display name for grouping (e.g. addon folder name).
+                       Defaults to the parent directory name of *path*.
         """
         p = pathlib.Path(path)
-        if p not in cls._addon_machine_dirs:
-            cls._addon_machine_dirs.append(p)
+        if namespace is None:
+            namespace = p.parent.name
+        if not any(d == p for _, d in cls._addon_machine_dirs):
+            cls._addon_machine_dirs.append((namespace, p))
 
     @classmethod
     def _notify_callbacks(cls, event_type, machine_name=None):
@@ -1758,11 +1766,9 @@ class MachineFactory:
                   display_name is read from the JSON machine.name field.
         """
         templates = []
-        for addon_dir in cls._addon_machine_dirs:
+        for namespace, addon_dir in cls._addon_machine_dirs:
             if not addon_dir.exists():
                 continue
-            # Namespace = parent dir name (addon root), e.g. ".../Mod/Machines/machines" → "Machines"
-            namespace = addon_dir.parent.name
             for machine_file in sorted(addon_dir.glob("*.fcm")):
                 display_name = cls._read_machine_name_from_path(machine_file)
                 templates.append((namespace, display_name, str(machine_file)))
@@ -1770,35 +1776,50 @@ class MachineFactory:
 
     @classmethod
     def _scan_installed_addon_dirs(cls) -> None:
-        """Scan FreeCAD Mod directories for machine addons via package.xml tags.
+        """Scan FreeCAD Mod directories for machine addons via package.xml content.
 
-        Finds every installed addon whose package.xml contains <tag>Machine</tag>
-        and registers its 'machines/' subdirectory.  Name-agnostic — does not rely
-        on the addon folder name or on Init.py execution order.
+        Finds every installed addon whose package.xml declares a ``<Machine>``
+        content element inside ``<content>`` and registers the corresponding
+        subdirectory.
+
+        Name-agnostic — does not rely on the addon folder name or on Init.py
+        execution order.
         Supplements the Init.py push mechanism; duplicate registrations are ignored.
+
+        Sentinel files:
+          - ``Mod/ALL_ADDONS_DISABLED`` — skip the entire Mod tree.
+          - ``<addon>/ADDON_DISABLED``  — skip a single addon.
         """
         for get_dir in (FreeCAD.getUserAppDataDir, FreeCAD.getHomePath):
             try:
                 mod_root = pathlib.Path(get_dir()) / "Mod"
                 if not mod_root.is_dir():
                     continue
+                if (mod_root / "ALL_ADDONS_DISABLED").exists():
+                    continue
                 for entry in sorted(mod_root.iterdir(), key=lambda e: e.name.lower()):
                     if not entry.is_dir():
+                        continue
+                    if (entry / "ADDON_DISABLED").exists():
                         continue
                     pkg_xml = entry / "package.xml"
                     if not pkg_xml.exists():
                         continue
                     try:
                         meta = FreeCAD.Metadata(str(pkg_xml))
-                        if "Machine" not in meta.Tag:
-                            continue
                     except Exception:
+                        # Skip addons with malformed or unreadable package.xml
                         continue
-                    machines_dir = entry / "machines"
-                    if machines_dir.is_dir():
-                        cls.register_addon_machine_dir(machines_dir)
+
+                    content = meta.Content
+                    if "Machine" in content:
+                        for item in content["Machine"]:
+                            subdir = item.Subdirectory or item.Name
+                            machines_dir = entry / subdir
+                            if machines_dir.is_dir():
+                                cls.register_addon_machine_dir(machines_dir, namespace=entry.name)
             except Exception:
-                # fail silently if this doesn't work
+                # Skip entire Mod root if directory listing fails
                 pass
 
     @classmethod
@@ -1818,10 +1839,9 @@ class MachineFactory:
             cls._addon_dirs_scanned = True
 
         result = []
-        for addon_dir in cls._addon_machine_dirs:
+        for namespace, addon_dir in cls._addon_machine_dirs:
             if not addon_dir.exists():
                 continue
-            namespace = addon_dir.parent.name
             subtree = cls._scan_machine_dir(addon_dir)
             if subtree:
                 result.append((namespace, subtree))

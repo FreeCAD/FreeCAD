@@ -259,12 +259,24 @@ class Component(ArchIFC.IfcProduct):
             )
         if not "Material" in pl:
             obj.addProperty(
-                "App::PropertyLink",
+                "App::PropertyLinkGlobal",
                 "Material",
                 "Component",
                 QT_TRANSLATE_NOOP("App::Property", "A material for this object"),
                 locked=True,
             )
+        elif obj.getTypeIdOfProperty("Material") == "App::PropertyLink":
+            mat = obj.Material
+            obj.setPropertyStatus("Material", "-LockDynamic")
+            obj.removeProperty("Material")
+            obj.addProperty(
+                "App::PropertyLinkGlobal",
+                "Material",
+                "Component",
+                QT_TRANSLATE_NOOP("App::Property", "A material for this object"),
+                locked=True,
+            )
+            obj.Material = mat
         if "BaseMaterial" in pl:
             obj.Material = obj.BaseMaterial
             obj.removeProperty("BaseMaterial")
