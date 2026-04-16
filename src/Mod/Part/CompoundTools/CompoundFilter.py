@@ -264,9 +264,9 @@ class _CompoundFilter:
             sh = rst[0]
             # Only transform if placement is not identity
             if not sh.Placement.isNull():
-                 sh = sh.transformGeometry(sh.Placement.toMatrix())
-                 sh.Placement = FreeCAD.Placement()
-            obj.Shape = sh   
+                sh = sh.transformGeometry(sh.Placement.toMatrix())
+                sh.Placement = FreeCAD.Placement()
+            obj.Shape = sh
 
         return
 
