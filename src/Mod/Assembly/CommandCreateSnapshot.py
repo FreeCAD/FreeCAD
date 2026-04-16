@@ -101,6 +101,18 @@ class Snapshot:
                 ),
             )
 
+        if not hasattr(snapshot_obj, "SolveOnActivation"):
+            snapshot_obj.addProperty(
+                "App::PropertyBool",
+                "SolveOnActivation",
+                "Snapshot",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "If true, applying the snapshot will solve the assembly after restoring the placements.",
+                ),
+            )
+            snapshot_obj.SolveOnActivation = True
+
         # Capture the state immediately upon creation
         self.captureState(snapshot_obj)
 
@@ -197,6 +209,9 @@ class Snapshot:
                 pass  # Ignore if material properties are missing or object changed
 
             part.purgeTouched()
+
+        if snapshot_obj.SolveOnActivation:
+            assembly.recompute()
 
 
 class ViewProviderSnapshot:
