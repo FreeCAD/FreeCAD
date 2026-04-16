@@ -74,15 +74,10 @@ class TestArchBaseGui(TestArchBase):
         """Run the Qt event loop briefly so queued GUI callbacks execute.
 
         This helper starts a QEventLoop and quits it after `timeout_ms` milliseconds using
-        QTimer.singleShot. Any exception (e.g. missing Qt in the environment) is silently ignored so
-        tests can still run in pure-CLI environments where the GUI isn't available.
+        QTimer.singleShot.
         """
-        try:
-            from PySide import QtCore
+        from PySide import QtCore
 
-            loop = QtCore.QEventLoop()
-            QtCore.QTimer.singleShot(int(timeout_ms), loop.quit)
-            loop.exec_()
-        except Exception:
-            # Best-effort: if Qt isn't present or event pumping fails, continue.
-            pass
+        loop = QtCore.QEventLoop()
+        QtCore.QTimer.singleShot(int(timeout_ms), loop.quit)
+        loop.exec_()

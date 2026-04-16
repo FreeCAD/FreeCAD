@@ -115,7 +115,9 @@ class TestArchSiteGui(TestArchBaseGui.TestArchBaseGui):
         finally:
             try:
                 os.unlink(path)
-            except Exception:
+            except FileNotFoundError:
+                # The temp file may already be gone if setup failed before it
+                # was fully written, which is fine for test cleanup.
                 pass
 
     def test_legacy_site_migration(self):
