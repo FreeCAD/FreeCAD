@@ -25,6 +25,7 @@
 
 #include <QApplication>
 #include <QGestureEvent>
+#include <QNativeGestureEvent>
 #include <QWidget>
 
 #include <Base/Exception.h>
@@ -205,8 +206,66 @@ const SoEvent* GesturesDevice::translateEvent(QEvent* event)
         auto sg = static_cast<QSwipeGesture*>(gevent->gesture(Qt::SwipeGesture));
         if (sg) {
             gevent->setAccepted(Qt::SwipeGesture, true);
-            return new SoGesturePanEvent(pg, this->widget);
+            return new SoGestureSwipeEvent(sg, this->widget);
         }
     }
+
+    // handle macOS native trackpad gestures (pinch-to-zoom)
+    // Qt::BeginNativeGesture and Qt::EndNativeGesture are macOS-specific,
+    // so nativeGestureActive stays false on other platforms and zoom updates
+    // are safely ignored there.
+    if (event->type() == QEvent::NativeGesture) {
+        auto* nge = static_cast<QNativeGestureEvent*>(event);
+        const Qt::NativeGestureType gestureType = nge->gestureType();
+
+        int h = widget->height();
+        SbVec2f center(nge->pos().x(), h - nge->pos().y());
+
+        auto* pinch = new SoGesturePinchEvent();
+        pinch->deltaAngle = 0;
+        pinch->totalAngle = 0;
+        pinch->deltaCenter = SbVec2f(0, 0);
+
+        if (gestureType == Qt::BeginNativeGesture) {
+            nativeGestureAccumZoom = 1.0;
+            nativeGestureCenter = center;
+            nativeGestureActive = true;
+            pinch->state = SoGestureEvent::SbGSStart;
+            pinch->deltaZoom = 1.0;
+            pinch->totalZoom = 1.0;
+            pinch->startCenter = center;
+            pinch->curCenter = center;
+        }
+        else if (gestureType == Qt::ZoomNativeGesture && nativeGestureActive) {
+            double delta = nge->value();
+            nativeGestureAccumZoom *= (1.0 + delta);
+            pinch->state = SoGestureEvent::SbGSUpdate;
+            pinch->deltaZoom = 1.0 + delta;
+            pinch->totalZoom = nativeGestureAccumZoom;
+            pinch->startCenter = nativeGestureCenter;
+            pinch->curCenter = center;
+        }
+        else if (gestureType == Qt::EndNativeGesture && nativeGestureActive) {
+            nativeGestureActive = false;
+            pinch->state = SoGestureEvent::SbGSEnd;
+            pinch->deltaZoom = 1.0;
+            pinch->totalZoom = nativeGestureAccumZoom;
+            pinch->startCenter = nativeGestureCenter;
+            pinch->curCenter = center;
+        }
+        else {
+            delete pinch;
+            return nullptr;
+        }
+
+        pinch->setPosition(SbVec2s(static_cast<short>(center[0]), static_cast<short>(center[1])));
+        Qt::KeyboardModifiers mods = QApplication::keyboardModifiers();
+        pinch->setAltDown(mods.testFlag(Qt::AltModifier));
+        pinch->setCtrlDown(mods.testFlag(Qt::ControlModifier));
+        pinch->setShiftDown(mods.testFlag(Qt::ShiftModifier));
+        pinch->setTime(SbTime::getTimeOfDay());
+        return pinch;
+    }
+
     return nullptr;
 }
