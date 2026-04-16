@@ -1083,6 +1083,13 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     Base::Vector2d snappedPos = snapHandle->compute();
                     return sketchHandler->pressButton(snappedPos);
                 }
+                // Cancel selection states set by prior RMB press (pan gesture)
+                case STATUS_SELECT_Point:
+                case STATUS_SELECT_Edge:
+                case STATUS_SELECT_Cross:
+                case STATUS_SELECT_Constraint:
+                    setSketchMode(STATUS_NONE);
+                    return true;
                 default:
                     return false;
             }
@@ -1233,20 +1240,20 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
             // Do things depending on the mode of the user interaction
             switch (Mode) {
                 case STATUS_NONE: {
-                    if (preselection.isPreselectPointValid()) {
-                        setSketchMode(STATUS_SELECT_Point);
-                    }
-                    else if (preselection.isPreselectCurveValid()) {
-                        setSketchMode(STATUS_SELECT_Edge);
-                    }
-                    else if (preselection.isCrossPreselected()) {
-                        setSketchMode(STATUS_SELECT_Cross);
-                    }
-                    else if (!preselection.PreselectConstraintSet.empty()) {
-                        setSketchMode(STATUS_SELECT_Constraint);
-                    }
+                    // Don't set SELECT states on RMB press. This prevents
+                    // mouseMove from escalating to STATUS_SKETCH_Drag during
+                    // RMB+LMB pan gestures. Selection for context menu is
+                    // performed on RMB release instead.
                     break;
                 }
+                // Cancel selection/rubberband states when pan gesture starts
+                case STATUS_SELECT_Point:
+                case STATUS_SELECT_Edge:
+                case STATUS_SELECT_Cross:
+                case STATUS_SELECT_Constraint:
+                case STATUS_SKETCH_StartRubberBand:
+                    setSketchMode(STATUS_NONE);
+                    return true;
                 case STATUS_SKETCH_UseRubberBand:
                     // Cancel rubberband
                     rubberband->setWorking(false);
@@ -1267,9 +1274,49 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     // delegate to handler whether to quit or do otherwise
                     sketchHandler->pressRightButton(Base::Vector2d(x, y));
                     return true;
-                case STATUS_NONE:
+                case STATUS_NONE: {
+                    // Perform preselection-to-selection for context menu
+                    if (pp) {
+                        if (preselection.isPreselectPointValid()) {
+                            std::stringstream ss;
+                            ss << "Vertex" << preselection.getPreselectionVertexIndex();
+                            preselectToSelection(ss, pp, false);
+                        }
+                        else if (preselection.isPreselectCurveValid()) {
+                            std::stringstream ss;
+                            if (preselection.isEdge()) {
+                                ss << "Edge" << preselection.getPreselectionEdgeIndex();
+                            }
+                            else {
+                                ss << "ExternalEdge"
+                                   << preselection.getPreselectionExternalEdgeIndex();
+                            }
+                            preselectToSelection(ss, pp, false);
+                        }
+                        else if (preselection.isCrossPreselected()) {
+                            std::stringstream ss;
+                            switch (preselection.PreselectCross) {
+                                case Preselection::Axes::RootPoint:
+                                    ss << "RootPoint"; break;
+                                case Preselection::Axes::HorizontalAxis:
+                                    ss << "H_Axis"; break;
+                                case Preselection::Axes::VerticalAxis:
+                                    ss << "V_Axis"; break;
+                                default: break;
+                            }
+                            preselectToSelection(ss, pp, false);
+                        }
+                        else if (!preselection.PreselectConstraintSet.empty()) {
+                            for (int id : preselection.PreselectConstraintSet) {
+                                std::stringstream ss;
+                                ss << Sketcher::PropertyConstraintList::getConstraintName(id);
+                                preselectToSelection(ss, pp, false);
+                            }
+                        }
+                    }
                     generateContextMenu();
                     return true;
+                }
                 case STATUS_SELECT_Point:
                     if (pp) {
                         //  Do selection
