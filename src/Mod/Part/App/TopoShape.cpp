@@ -178,6 +178,7 @@
 #include "encodeFilename.h"
 #include "FaceMakerBullseye.h"
 #include "Interface.h"
+#include "WireJoiner.h"
 #include "modelRefine.h"
 #include "PartPyCXX.h"
 #include "Tools.h"

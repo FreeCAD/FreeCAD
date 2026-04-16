@@ -23,9 +23,13 @@
  ***************************************************************************/
 
 #include "MillSimulation.h"
-#include "OpenGlWrapper.h"
+
+#include "GlUtils.h"
 #include <vector>
 #include <iostream>
+
+// include this last as the defines can mess up other includes
+#include "OpenGlWrapper.h"
 
 #define DRAG_ZOOM_FACTOR 10
 

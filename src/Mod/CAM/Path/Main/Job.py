@@ -638,7 +638,16 @@ class ObjectJob:
                 if attrs.get(JobTemplate.GeometryTolerance):
                     obj.GeometryTolerance = float(attrs.get(JobTemplate.GeometryTolerance))
                 if attrs.get(JobTemplate.PostProcessor):
-                    obj.PostProcessor = attrs.get(JobTemplate.PostProcessor)
+                    templatePost = attrs.get(JobTemplate.PostProcessor)
+                    # Validate that the template's postprocessor exists in current enumeration
+                    if templatePost in obj.PostProcessor:
+                        obj.PostProcessor = templatePost
+                    else:
+                        Path.Log.warning(
+                            f"PostProcessor '{templatePost}' from template not found in available postprocessors. Using default."
+                        )
+                        Path.Log.debug(f"Available postprocessors: {obj.PostProcessor}")
+                        # Keep the default postprocessor that was already set
                     if attrs.get(JobTemplate.PostProcessorArgs):
                         obj.PostProcessorArgs = attrs.get(JobTemplate.PostProcessorArgs)
                     else:

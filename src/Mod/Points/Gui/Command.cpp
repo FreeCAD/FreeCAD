@@ -77,23 +77,21 @@ void CmdPointsImport::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    QString fn = Gui::FileDialog::getOpenFileName(
-        Gui::getMainWindow(),
-        QString(),
-        QString(),
-        QStringLiteral("%1 (*.asc *.pcd *.ply *.e57);;%2 (*.*)")
-            .arg(QObject::tr("Point formats"), QObject::tr("All Files"))
-    );
+    QStringList formatList;
+    formatList << QStringLiteral("%1 (*.asc *.pcd *.ply *.e57)").arg(QObject::tr("Point formats"));
+    formatList << QStringLiteral("%1 (*.*)").arg(QObject::tr("All Files"));
+    QString fn
+        = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(), formatList);
     if (fn.isEmpty()) {
         return;
     }
 
     if (!fn.isEmpty()) {
-        fn = Base::Tools::escapeEncodeFilename(fn);
+        const std::string fnEscapedUtf8 = Base::Tools::escapeEncodeFilename(fn.toUtf8().constData());
         App::Document* doc = getActiveDocument();
         openCommand(QT_TRANSLATE_NOOP("Command", "Import points"));
         addModule(Command::App, "Points");
-        doCommand(Command::Doc, "Points.insert(\"%s\", \"%s\")", fn.toUtf8().data(), doc->getName());
+        doCommand(Command::Doc, "Points.insert(\"%s\", \"%s\")", fnEscapedUtf8.c_str(), doc->getName());
         commitCommand();
 
         updateActive();
@@ -165,24 +163,24 @@ void CmdPointsExport::activated(int iMsg)
         Points::Feature::getClassTypeId()
     );
     for (auto point : points) {
-        QString fn = Gui::FileDialog::getSaveFileName(
-            Gui::getMainWindow(),
-            QString(),
-            QString(),
-            QStringLiteral("%1 (*.asc *.pcd *.ply);;%2 (*.*)")
-                .arg(QObject::tr("Point formats"), QObject::tr("All Files"))
-        );
+        QStringList formatList;
+        formatList << QStringLiteral("%1 (*.asc *.pcd *.ply)").arg(QObject::tr("Point formats"));
+        formatList << QStringLiteral("%1 (*.*)").arg(QObject::tr("All Files"));
+        QString fn
+            = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QString(), QString(), formatList);
         if (fn.isEmpty()) {
             break;
         }
 
         if (!fn.isEmpty()) {
-            fn = Base::Tools::escapeEncodeFilename(fn);
+            const std::string fnEscapedUtf8 = Base::Tools::escapeEncodeFilename(
+                fn.toUtf8().constData()
+            );
             doCommand(
                 Command::Doc,
                 "Points.export([App.ActiveDocument.%s], \"%s\")",
                 point->getNameInDocument(),
-                fn.toUtf8().data()
+                fnEscapedUtf8.c_str()
             );
         }
     }

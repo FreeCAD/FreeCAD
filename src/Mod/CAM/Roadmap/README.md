@@ -72,7 +72,7 @@ We agree these things should get collective attention because they are larger th
 | [Better Tool Library](Epics/Better%20Tool%20Library.md)                         | Implement the 'Better Tool Library' approach to tool management         | Active   |
 | [Improve Circular Holes](Epics/Circular%20Holes%20Improvement.md)               | Improve the user experience and efficiency of Circular holes operations | Active   |
 | [Improve Core Dressups](Epics/ImproveCoreDressups.md)                           | Improve the user experience and feature completion of core dressups     | Active   |
-| [Improve Adaptive Operation](Epics/ImproveAdaptiveOperation.md)                 | Improve the user experience and feature completion of Adaptive          | Active   |
+| [Improve Adaptive Operation](Epics/ImproveAdaptiveOperation.md)                 | Improve the user experience and feature completion of Adaptive          | Closed   |
 | [Clipper 2 Upgrade](Epics/Clipper.md)                                           | Upgrade Clipper 1/libarea/kurve to Clipper 2                            | Active   |
 
 # Priorities

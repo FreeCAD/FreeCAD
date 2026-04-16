@@ -25,6 +25,8 @@
 
 #include <Inventor/SoFullPath.h>
 #include <Inventor/SoPickedPoint.h>
+
+#include "SoFullPathHelper.h"
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
@@ -137,7 +139,7 @@ SoFCUnifiedSelection::SoFCUnifiedSelection()
     // instances to the SoFullPath type. This will allow you to examine hidden children. Actually,
     // you are not supposed to allocate instances of this class at all. It is only available as an
     // "extended interface" into the superclass SoPath.
-    detailPath = static_cast<SoFullPath*>(new SoPath(20));
+    detailPath = Gui::toFullPath(new SoPath(20));
     detailPath->ref();
 
     setPreSelection = false;
@@ -261,7 +263,7 @@ std::vector<SoFCUnifiedSelection::PickedInfo> SoFCUnifiedSelection::getPickedLis
         info.pp = points[i];
         info.vpd = nullptr;
         ViewProvider* vp = nullptr;
-        auto path = static_cast<SoFullPath*>(info.pp->getPath());
+        auto path = Gui::toFullPath(info.pp->getPath());
         if (this->pcDocument && path && path->containsPath(action->getCurPath())) {
             vp = this->pcDocument->getViewProviderByPathFromHead(path);
             if (singlePick && last_vp && last_vp != vp) {
@@ -411,7 +413,7 @@ void SoFCUnifiedSelection::doAction(SoAction* action)
                     }
                     else {
                         // fallback to ViewProvider root if no specific path
-                        pathToHighlight = static_cast<SoFullPath*>(new SoPath(2));
+                        pathToHighlight = Gui::toFullPath(new SoPath(2));
                         pathToHighlight->ref();
                         pathToHighlight->append(vp->getRoot());
                     }
@@ -419,7 +421,7 @@ void SoFCUnifiedSelection::doAction(SoAction* action)
             }
             else {
                 detail = vp->getDetail(subName);
-                pathToHighlight = static_cast<SoFullPath*>(new SoPath(2));
+                pathToHighlight = Gui::toFullPath(new SoPath(2));
                 pathToHighlight->ref();
                 pathToHighlight->append(vp->getRoot());
             }
@@ -431,7 +433,7 @@ void SoFCUnifiedSelection::doAction(SoAction* action)
                 highlightAction.setElement(detail);
                 highlightAction.apply(pathToHighlight);
 
-                currentHighlightPath = static_cast<SoFullPath*>(pathToHighlight->copy());
+                currentHighlightPath = Gui::toFullPath(pathToHighlight->copy());
                 currentHighlightPath->ref();
 
                 // clean up temporary path if we created one
@@ -598,7 +600,7 @@ bool SoFCUnifiedSelection::setPreselect(const PickedInfo& info)
 
     const auto& pt = info.pp->getPoint();
     return setPreselect(
-        static_cast<SoFullPath*>(info.pp->getPath()),
+        Gui::toFullPath(info.pp->getPath()),
         info.pp->getDetail(),
         info.vpd,
         info.element.c_str(),
@@ -644,7 +646,7 @@ bool SoFCUnifiedSelection::setPreselect(
                 currentHighlightPath->unref();
                 currentHighlightPath = nullptr;
             }
-            currentHighlightPath = static_cast<SoFullPath*>(path->copy());
+            currentHighlightPath = Gui::toFullPath(path->copy());
             currentHighlightPath->ref();
             highlighted = true;
         }
@@ -720,7 +722,7 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo>& infos, bo
     const SoPickedPoint* pp = info.pp;
     const SoDetail* det = pp->getDetail();
     SoDetail* detNext = nullptr;
-    auto pPath = static_cast<SoFullPath*>(pp->getPath());
+    auto pPath = Gui::toFullPath(pp->getPath());
     const auto& pt = pp->getPoint();
     SoSelectionElementAction::Type type = SoSelectionElementAction::None;
     auto preselectionMode = static_cast<SelectionModes>(this->preselectionMode.getValue());

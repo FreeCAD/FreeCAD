@@ -56,18 +56,9 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
         prop.append(
             _PropHelper(
                 type="App::PropertyLinkList",
-                name="MeshBoundaryLayerList",
+                name="MeshRefinementList",
                 group="Mesh Parameters",
-                doc="Mesh boundaries need inflation layers",
-                value=[],
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyLinkList",
-                name="MeshRegionList",
-                group="Mesh Parameters",
-                doc="Mesh refinments of the mesh",
+                doc="Mesh definitions for manipulating the mesh, like regions or boundary layers",
                 value=[],
             )
         )
@@ -270,6 +261,15 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
                 value=["None", "All Quadrangles", "All Hexahedra", "Barycentric"],
             )
         )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyBool",
+                name="ParallelProcessing",
+                group="Mesh Parameters",
+                doc="Use multiple threads to create the mesh",
+                value=True,
+            )
+        )
 
         return prop
 
@@ -292,6 +292,7 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
                 prop.handle_change_type(
                     obj, "App::PropertyBool", lambda x: "Optimization" if x else "None"
                 )
+
             # Migrate group of properties for old projects
             if obj.getGroupOfProperty(prop.name) != prop.group:
                 obj.setGroupOfProperty(prop.name, prop.group)
@@ -310,8 +311,19 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
                 value=value_part,
             )
             prop.add_to_object(obj)
+
         except Base.PropertyError:
             pass
 
         if not obj.hasExtension("Fem::WorkerExtensionPython"):
             obj.addExtension("Fem::WorkerExtensionPython")
+
+        # migrate old properties to definition list
+        for prop in ["MeshBoundaryLayerList", "MeshRegionList"]:
+            try:
+                value = obj.getPropertyByName(prop)
+                obj.setPropertyStatus(prop, "-LockDynamic")
+                obj.removeProperty(prop)
+                obj.MeshRefinementList = obj.MeshRefinementList + value
+            except Base.PropertyError:
+                pass

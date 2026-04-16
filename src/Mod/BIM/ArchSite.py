@@ -1025,6 +1025,304 @@ class _Site(ArchIFC.IfcProduct):
         self.Type = "Site"
 
 
+if FreeCAD.GuiUp:
+
+    class SiteTaskPanel(ArchComponent.ComponentTaskPanel):
+        """Task panel for editing a Site object.
+
+        Shown when the user double-clicks or opens 'Edit' on a Site. Provides grouped controls for
+        location, diagrams, and sun position settings. All controls update the relevant properties
+        live.
+        """
+
+        def __init__(self, vobj):
+            ArchComponent.ComponentTaskPanel.__init__(self)
+            self.vobj = vobj
+            self.obj = vobj.Object
+            self.update()
+
+            # Detect solar library availability once, used later to disable controls.
+            import importlib.util
+
+            _solar_available = (
+                importlib.util.find_spec("ladybug") is not None
+                or importlib.util.find_spec("pysolar") is not None
+            )
+
+            self.siteWidget = QtGui.QWidget()
+            self.siteWidget.setWindowTitle(translate("Arch", "Solar Diagrams"))
+            layout = QtGui.QVBoxLayout(self.siteWidget)
+
+            # Location group
+            locationGroup = QtGui.QGroupBox(translate("Arch", "Location"))
+            locationLayout = QtGui.QFormLayout(locationGroup)
+
+            self.latSpin = QtGui.QDoubleSpinBox()
+            self.latSpin.setRange(-90.0, 90.0)
+            self.latSpin.setSingleStep(0.1)
+            self.latSpin.setDecimals(6)
+            self.latSpin.setSuffix(" \u00b0")
+            self.latSpin.setValue(self.obj.Latitude if hasattr(self.obj, "Latitude") else 0.0)
+            self.latSpin.setToolTip(
+                translate(
+                    "Arch",
+                    "The latitude of this site in decimal degrees.\n"
+                    "Positive values are north of the Equator, negative values are south.",
+                )
+            )
+            locationLayout.addRow(translate("Arch", "Latitude"), self.latSpin)
+
+            self.lonSpin = QtGui.QDoubleSpinBox()
+            self.lonSpin.setRange(-180.0, 180.0)
+            self.lonSpin.setSingleStep(0.1)
+            self.lonSpin.setDecimals(6)
+            self.lonSpin.setSuffix(" \u00b0")
+            self.lonSpin.setValue(self.obj.Longitude if hasattr(self.obj, "Longitude") else 0.0)
+            self.lonSpin.setToolTip(
+                translate(
+                    "Arch",
+                    "The longitude of this site in decimal degrees.\n"
+                    "Positive values are east of the Prime Meridian, negative values are west.",
+                )
+            )
+            locationLayout.addRow(translate("Arch", "Longitude"), self.lonSpin)
+
+            self.tzSpin = QtGui.QSpinBox()
+            self.tzSpin.setRange(-12, 14)
+            self.tzSpin.setPrefix("UTC ")
+            self.tzSpin.setValue(self.obj.TimeZone if hasattr(self.obj, "TimeZone") else 0)
+            self.tzSpin.setToolTip(
+                translate(
+                    "Arch",
+                    "The UTC offset of the time zone where this site is located.\n"
+                    "Used when calculating the sun position.",
+                )
+            )
+            locationLayout.addRow(translate("Arch", "Time zone"), self.tzSpin)
+
+            self.northOffsetSpin = QtGui.QDoubleSpinBox()
+            self.northOffsetSpin.setRange(-360.0, 360.0)
+            self.northOffsetSpin.setSingleStep(1.0)
+            self.northOffsetSpin.setDecimals(2)
+            self.northOffsetSpin.setSuffix(" \u00b0")
+            self.northOffsetSpin.setValue(
+                vobj.CompassRotation.Value if hasattr(vobj, "CompassRotation") else 0.0
+            )
+            self.northOffsetSpin.setToolTip(
+                translate(
+                    "Arch",
+                    "The angle between the model's north and geographic north.\n"
+                    "Drives the compass orientation and the declination used to\n"
+                    "align the solar diagram and sun path.",
+                )
+            )
+            locationLayout.addRow(translate("Arch", "North offset"), self.northOffsetSpin)
+            layout.addWidget(locationGroup)
+
+            # Diagrams group
+            diagramsGroup = QtGui.QGroupBox(translate("Arch", "Diagrams"))
+            diagramsLayout = QtGui.QVBoxLayout(diagramsGroup)
+
+            self.checkSolarDiagram = QtGui.QCheckBox(translate("Arch", "Solar Diagram"))
+            self.checkSolarDiagram.setChecked(
+                vobj.SolarDiagram if hasattr(vobj, "SolarDiagram") else False
+            )
+            self.checkSolarDiagram.setToolTip(
+                translate(
+                    "Arch",
+                    "Shows a sun path arc diagram projected onto the site,\n"
+                    "computed from the site's latitude, longitude and north offset.",
+                )
+            )
+            diagramsLayout.addWidget(self.checkSolarDiagram)
+
+            self.checkCompass = QtGui.QCheckBox(translate("Arch", "Compass"))
+            self.checkCompass.setChecked(vobj.Compass if hasattr(vobj, "Compass") else False)
+            self.checkCompass.setToolTip(
+                translate(
+                    "Arch",
+                    "Shows a compass rose overlay on the site,\n"
+                    "oriented according to the north offset.",
+                )
+            )
+            diagramsLayout.addWidget(self.checkCompass)
+
+            layout.addWidget(diagramsGroup)
+
+            # Sun Position group (checkable)
+            self.sunGroup = QtGui.QGroupBox(translate("Arch", "Sun Position"))
+            self.sunGroup.setCheckable(True)
+            self.sunGroup.setChecked(
+                vobj.ShowSunPosition if hasattr(vobj, "ShowSunPosition") else False
+            )
+            self.sunGroup.setToolTip(
+                translate(
+                    "Arch",
+                    "Shows a sphere and ray indicating the sun position\n"
+                    "for the selected date and time.",
+                )
+            )
+            sunLayout = QtGui.QVBoxLayout(self.sunGroup)
+
+            # Date row
+            dateLayout = QtGui.QHBoxLayout()
+            self.dateEdit = QtGui.QDateEdit()
+            self.dateEdit.setDisplayFormat("dd MMM")
+            self.dateEdit.setMinimumDate(QtCore.QDate(2000, 1, 1))
+            self.dateEdit.setMaximumDate(QtCore.QDate(2000, 12, 31))
+            month = (
+                vobj.SunDateMonth if (hasattr(vobj, "SunDateMonth") and vobj.SunDateMonth) else 6
+            )
+            day = vobj.SunDateDay if (hasattr(vobj, "SunDateDay") and vobj.SunDateDay) else 21
+            self.dateEdit.setDate(QtCore.QDate(2000, month, min(day, 28)))
+            self.dateEdit.setToolTip(
+                translate(
+                    "Arch",
+                    "The day and month for which the sun position is shown.\n"
+                    "The year is ignored.",
+                )
+            )
+            dateLayout.addWidget(QtGui.QLabel(translate("Arch", "Date")))
+            dateLayout.addWidget(self.dateEdit)
+            dateLayout.addStretch()
+            sunLayout.addLayout(dateLayout)
+
+            # Hour row: slider (0–47, half-hour steps) kept in sync with spinbox
+            _hourTip = translate(
+                "Arch",
+                "The time of day for which the sun position is shown,\n"
+                "in 24-hour local time. Steps in half-hour increments.",
+            )
+            hourLayout = QtGui.QHBoxLayout()
+            self.hourSlider = QtGui.QSlider(QtCore.Qt.Horizontal)
+            self.hourSlider.setRange(0, 47)
+            self.hourSlider.setToolTip(_hourTip)
+            self.hourSpin = QtGui.QDoubleSpinBox()
+            self.hourSpin.setRange(0.0, 23.5)
+            self.hourSpin.setSingleStep(0.5)
+            self.hourSpin.setDecimals(1)
+            self.hourSpin.setSuffix(" h")
+            self.hourSpin.setToolTip(_hourTip)
+            current_hour = vobj.SunTimeHour if hasattr(vobj, "SunTimeHour") else 12.0
+            self.hourSlider.setValue(int(round(current_hour / 0.5)))
+            self.hourSpin.setValue(current_hour)
+            hourLayout.addWidget(QtGui.QLabel(translate("Arch", "Hour")))
+            hourLayout.addWidget(self.hourSlider)
+            hourLayout.addWidget(self.hourSpin)
+            sunLayout.addLayout(hourLayout)
+
+            self.checkHourLabels = QtGui.QCheckBox(translate("Arch", "Show Hour Labels"))
+            self.checkHourLabels.setChecked(
+                vobj.ShowHourLabels if hasattr(vobj, "ShowHourLabels") else True
+            )
+            self.checkHourLabels.setToolTip(
+                translate("Arch", "Shows text labels at key hours along the sun path arc")
+            )
+            sunLayout.addWidget(self.checkHourLabels)
+
+            layout.addWidget(self.sunGroup)
+
+            # If no solar library is available, disable the solar controls and show a visible
+            # explanation so the user knows why they are greyed out.
+            if not _solar_available:
+                _unavailable_tip = translate(
+                    "Arch",
+                    "Solar calculations require the ladybug or pysolar Python module,\n"
+                    "which was not found.",
+                )
+                self.checkSolarDiagram.setEnabled(False)
+                self.checkSolarDiagram.setToolTip(_unavailable_tip)
+                self.sunGroup.setEnabled(False)
+                self.sunGroup.setToolTip(_unavailable_tip)
+                warningLabel = QtGui.QLabel(
+                    translate(
+                        "Arch",
+                        "Solar calculations unavailable.\n"
+                        "The ladybug or pysolar Python module is required.",
+                    )
+                )
+                font = warningLabel.font()
+                font.setItalic(True)
+                warningLabel.setFont(font)
+                palette = warningLabel.palette()
+                palette.setColor(
+                    QtGui.QPalette.WindowText,
+                    QtGui.QApplication.palette().color(
+                        QtGui.QPalette.Disabled, QtGui.QPalette.WindowText
+                    ),
+                )
+                warningLabel.setPalette(palette)
+                layout.addWidget(warningLabel)
+
+            layout.addStretch()
+
+            # Connect signals for live updates
+            self.latSpin.valueChanged.connect(self._onLatitudeChanged)
+            self.lonSpin.valueChanged.connect(self._onLongitudeChanged)
+            self.tzSpin.valueChanged.connect(self._onTimeZoneChanged)
+            self.northOffsetSpin.valueChanged.connect(self._onNorthOffsetChanged)
+            self.checkSolarDiagram.toggled.connect(self._onSolarDiagramToggled)
+            self.checkCompass.toggled.connect(self._onCompassToggled)
+            self.sunGroup.toggled.connect(self._onShowSunPositionToggled)
+            self.dateEdit.dateChanged.connect(self._onDateChanged)
+            self.hourSlider.valueChanged.connect(self._onHourSliderChanged)
+            self.hourSpin.valueChanged.connect(self._onHourSpinChanged)
+            self.checkHourLabels.toggled.connect(self._onHourLabelsToggled)
+
+            # Site-specific controls first, subcomponents tree second
+            self.form = [self.siteWidget, self.form]
+
+        def _onLatitudeChanged(self, value):
+            self.obj.Latitude = value
+
+        def _onLongitudeChanged(self, value):
+            self.obj.Longitude = value
+
+        def _onTimeZoneChanged(self, value):
+            self.obj.TimeZone = value
+
+        def _onNorthOffsetChanged(self, value):
+            self.vobj.CompassRotation = value
+
+        def _onSolarDiagramToggled(self, checked):
+            self.vobj.SolarDiagram = checked
+
+        def _onCompassToggled(self, checked):
+            self.vobj.Compass = checked
+            if checked:
+                # Keep declination in sync with the compass rotation.
+                self.vobj.UpdateDeclination = True
+
+        def _onShowSunPositionToggled(self, checked):
+            self.vobj.ShowSunPosition = checked
+
+        def _onDateChanged(self, date):
+            self.vobj.SunDateMonth = date.month()
+            self.vobj.SunDateDay = date.day()
+
+        def _onHourSliderChanged(self, value):
+            hour = value * 0.5
+            self.hourSpin.blockSignals(True)
+            self.hourSpin.setValue(hour)
+            self.hourSpin.blockSignals(False)
+            self.vobj.SunTimeHour = hour
+
+        def _onHourSpinChanged(self, value):
+            # Snap to the nearest half-hour step to stay consistent with the slider
+            snapped = round(value * 2) / 2
+            slider_val = int(round(snapped / 0.5))
+            self.hourSlider.blockSignals(True)
+            self.hourSlider.setValue(slider_val)
+            self.hourSlider.blockSignals(False)
+            self.vobj.SunTimeHour = snapped
+
+        def _onHourLabelsToggled(self, checked):
+            self.vobj.ShowHourLabels = checked
+
+        def accept(self):
+            return super().accept()
+
+
 class _ViewProviderSite:
     """A View Provider for the Site object.
 
@@ -1057,7 +1355,7 @@ class _ViewProviderSite:
             vobj.addProperty(
                 "App::PropertyBool",
                 "WindRose",
-                "Site",
+                "Diagrams",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Show wind rose diagram or not. Uses solar diagram scale. Needs Ladybug module",
@@ -1068,7 +1366,7 @@ class _ViewProviderSite:
             vobj.addProperty(
                 "App::PropertyBool",
                 "SolarDiagram",
-                "Site",
+                "Diagrams",
                 QT_TRANSLATE_NOOP("App::Property", "Show solar diagram or not"),
                 locked=True,
             )
@@ -1076,7 +1374,7 @@ class _ViewProviderSite:
             vobj.addProperty(
                 "App::PropertyFloat",
                 "SolarDiagramScale",
-                "Site",
+                "Solar Diagram",
                 QT_TRANSLATE_NOOP("App::Property", "The scale of the solar diagram"),
                 locked=True,
             )
@@ -1085,7 +1383,7 @@ class _ViewProviderSite:
             vobj.addProperty(
                 "App::PropertyVector",
                 "SolarDiagramPosition",
-                "Site",
+                "Solar Diagram",
                 QT_TRANSLATE_NOOP("App::Property", "The position of the solar diagram"),
                 locked=True,
             )
@@ -1093,7 +1391,7 @@ class _ViewProviderSite:
             vobj.addProperty(
                 "App::PropertyColor",
                 "SolarDiagramColor",
-                "Site",
+                "Solar Diagram",
                 QT_TRANSLATE_NOOP("App::Property", "The color of the solar diagram"),
                 locked=True,
             )
@@ -1102,7 +1400,7 @@ class _ViewProviderSite:
             vobj.addProperty(
                 "App::PropertyEnumeration",
                 "Orientation",
-                "Site",
+                "Compass",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
                     "When set to 'True North' the whole geometry will be rotated to match the true north of this site",
@@ -1115,7 +1413,7 @@ class _ViewProviderSite:
             vobj.addProperty(
                 "App::PropertyBool",
                 "Compass",
-                "Compass",
+                "Diagrams",
                 QT_TRANSLATE_NOOP("App::Property", "Show compass or not"),
                 locked=True,
             )
@@ -1153,7 +1451,7 @@ class _ViewProviderSite:
             vobj.addProperty(
                 "App::PropertyBool",
                 "ShowSunPosition",
-                "Sun",
+                "Diagrams",
                 QT_TRANSLATE_NOOP(
                     "App::Property", "Show the sun position for a specific date and time"
                 ),
@@ -1163,7 +1461,7 @@ class _ViewProviderSite:
             vobj.addProperty(
                 "App::PropertyIntegerConstraint",
                 "SunDateMonth",
-                "Sun",
+                "Sun Position",
                 QT_TRANSLATE_NOOP(
                     "App::Property", "The month of the year to show the sun position"
                 ),
@@ -1173,7 +1471,7 @@ class _ViewProviderSite:
             vobj.addProperty(
                 "App::PropertyIntegerConstraint",
                 "SunDateDay",
-                "Sun",
+                "Sun Position",
                 QT_TRANSLATE_NOOP("App::Property", "The day of the month to show the sun position"),
                 locked=True,
             )
@@ -1181,7 +1479,7 @@ class _ViewProviderSite:
             vobj.addProperty(
                 "App::PropertyFloatConstraint",
                 "SunTimeHour",
-                "Sun",
+                "Sun Position",
                 QT_TRANSLATE_NOOP("App::Property", "The hour of the day to show the sun position"),
                 locked=True,
             )
@@ -1189,7 +1487,7 @@ class _ViewProviderSite:
             vobj.addProperty(
                 "App::PropertyBool",
                 "ShowHourLabels",
-                "Sun",
+                "Sun Position",
                 QT_TRANSLATE_NOOP(
                     "App::Property", "Show text labels for key hours on the sun path"
                 ),
@@ -1271,11 +1569,7 @@ class _ViewProviderSite:
         if mode == 1 or mode == 2:
             return None
 
-        import ArchComponent
-
-        taskd = ArchComponent.ComponentTaskPanel()
-        taskd.obj = self.Object
-        taskd.update()
+        taskd = SiteTaskPanel(vobj)
         FreeCADGui.Control.showDialog(taskd)
         return True
 
@@ -1373,8 +1667,9 @@ class _ViewProviderSite:
         self.sunSep.addChild(self.sunSphere)
         self.sunSwitch.addChild(self.sunSep)
 
-        # Add the entire sun assembly to the object's annotation node
-        vobj.Annotation.addChild(self.sunSwitch)
+        # Inside basesep, sunSwitch inherits self.coords (SolarDiagramPosition +
+        # Declination rotation), so sun path nodes use plain local coordinates.
+        basesep.addChild(self.sunSwitch)
 
         def setup_path_segment(color_tuple):
             separator = coin.SoSeparator()
@@ -1437,12 +1732,18 @@ class _ViewProviderSite:
 
         if prop in ["Longitude", "Latitude", "TimeZone"]:
             self.onChanged(obj.ViewObject, "SolarDiagram")
-            self.updateSunPosition(obj.ViewObject)
+            vobj = obj.ViewObject
+            from PySide import QtCore
+
+            QtCore.QTimer.singleShot(0, lambda: self.updateSunPosition(vobj))
         elif prop == "Declination":
             self.onChanged(obj.ViewObject, "SolarDiagramPosition")
             self.updateTrueNorthRotation()
             if hasattr(obj.ViewObject, "ShowSunPosition"):
-                self.updateSunPosition(obj.ViewObject)
+                vobj = obj.ViewObject
+                from PySide import QtCore
+
+                QtCore.QTimer.singleShot(0, lambda: self.updateSunPosition(vobj))
         elif prop == "Terrain":
             self.updateCompassLocation(obj.ViewObject)
         elif prop == "Placement":
@@ -1530,6 +1831,11 @@ class _ViewProviderSite:
                 self.coords.rotation.setValue(
                     coin.SbVec3f((0, 0, 1)), math.radians(vobj.Object.Declination.Value)
                 )
+            if all(
+                hasattr(vobj, required)
+                for required in ["ShowSunPosition", "SunDateMonth", "SunDateDay", "SunTimeHour"]
+            ):
+                self.updateSunPosition(vobj)
         elif prop == "SolarDiagramColor":
             if hasattr(vobj, "SolarDiagramColor"):
                 l = vobj.SolarDiagramColor
@@ -1562,9 +1868,9 @@ class _ViewProviderSite:
             "SolarDiagramPosition",
             "ShowHourLabels",
         ]:
-            # During file load or property creation, this method can be triggered
-            # before all necessary properties are available. This guard ensures
-            # that the sun position is only updated when the object is in a consistent state.
+            # During file load or property creation, this method can be triggered before all
+            # necessary properties are available. Ensure that the sun position is only updated when
+            # the object is in a consistent state.
             if all(
                 hasattr(vobj, p)
                 for p in ["ShowSunPosition", "SunDateMonth", "SunDateDay", "SunTimeHour"]
@@ -1917,7 +2223,7 @@ class _ViewProviderSite:
                 x = math.cos(az_rad) * xy_proj
                 y = math.sin(az_rad) * xy_proj
                 z = math.sin(alt_rad) * vobj.SolarDiagramScale
-                point = declination_rot * FreeCAD.Vector(x, y, z)
+                point = FreeCAD.Vector(x, y, z)
                 if hour_float < 10:
                     morning_points.append(point)
                 elif hour_float <= 14:
@@ -2005,11 +2311,14 @@ class _ViewProviderSite:
         x = math.cos(azimuth_rad) * xy_proj
         y = math.sin(azimuth_rad) * xy_proj
         z = math.sin(altitude_rad) * vobj.SolarDiagramScale
-        sun_pos_3d = vobj.SolarDiagramPosition.add(
-            declination_rot * FreeCAD.Vector(x, y, z)
-        )  # Final absolute position
+        # Local coordinates for the Coin sphere: self.coords applies the Declination rotation and
+        # SolarDiagramPosition translation automatically.
+        sun_pos_local = FreeCAD.Vector(x, y, z)
+        self.sunTransform.translation.setValue(sun_pos_local.x, sun_pos_local.y, sun_pos_local.z)
 
-        self.sunTransform.translation.setValue(sun_pos_3d.x, sun_pos_3d.y, sun_pos_3d.z)
+        # The ray is a document object, unaffected by the Coin scene graph transform, so its
+        # endpoints must be absolute world positions.
+        sun_pos_3d = vobj.SolarDiagramPosition.add(declination_rot * sun_pos_local)
         self.sunSphere.radius = vobj.SolarDiagramScale * 0.02
 
         # Safely obtain existing SunRay if present, and update it; otherwise create one
@@ -2023,7 +2332,14 @@ class _ViewProviderSite:
                 # If updating fails, fall back to creating a new ray
                 ray_object = None
         if not ray_object:
+            # Draft.make_line() automatically selects the new object, which shifts the Properties
+            # panel focus away from the Site. Save and restore the selection so the user's context
+            # is not disrupted.
+            saved_selection = FreeCADGui.Selection.getSelection()
             ray_object = Draft.make_line(sun_pos_3d, vobj.SolarDiagramPosition)
+            FreeCADGui.Selection.clearSelection()
+            for sel_obj in saved_selection:
+                FreeCADGui.Selection.addSelection(sel_obj)
             vo = ray_object.ViewObject
             vo.LineColor = (1.0, 1.0, 0.0)
             vo.DrawStyle = "Dashed"
@@ -2078,3 +2394,4 @@ class _ViewProviderSite:
         time_string = dt_object_for_label.strftime("%B %d, %H:%M")
         ray_object.Time = time_string
         ray_object.Label = f"Sun Ray ({time_string})"
+        ray_object.purgeTouched()

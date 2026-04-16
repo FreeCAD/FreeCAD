@@ -23,7 +23,9 @@
  ***************************************************************************/
 
 #include "Texture.h"
-#include "GlUtils.h"
+
+// include this last as the defines can mess up other includes
+#include "OpenGlWrapper.h"
 
 namespace MillSim
 {

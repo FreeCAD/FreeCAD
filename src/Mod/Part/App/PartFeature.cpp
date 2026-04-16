@@ -38,9 +38,12 @@
 #include <BRepGProp.hxx>
 #include <BRepGProp_Face.hxx>
 #include <BRepIntCurveSurface_Inter.hxx>
+#include <gce_MakeCirc.hxx>
 #include <gce_MakeDir.hxx>
 #include <gce_MakeLin.hxx>
 #include <gp_Ax1.hxx>
+#include <gp_Ax2.hxx>
+#include <gp_Ax3.hxx>
 #include <gp_Dir.hxx>
 #include <gp_Pln.hxx>
 #include <gp_Trsf.hxx>
@@ -2073,6 +2076,87 @@ std::vector<Part::cutTopoShapeFaces> Part::findAllFacesCutBy(
         newF.face = mkSection.Face();
         newF.face.mapSubElement(shape);
         newF.distsq = dsq;
+        result.push_back(newF);
+    }
+
+    return result;
+}
+
+std::vector<Part::cutTopoShapeFaces> Part::findAllFacesCutBy(
+    const TopoShape& shape,
+    const TopoShape& face,
+    const gp_Ax1& axis
+)
+{
+    // Find the centre of gravity of the face
+    GProp_GProps props;
+    BRepGProp::SurfaceProperties(face.getShape(), props);
+    gp_Pnt cog = props.CentreOfMass();
+
+    // Get the projection of cog on the line defined by axis.
+    // This is equal to the intersection point of the plane that goes
+    // through cog and the axis direction as normal.
+    gp_XYZ aCoord = cog.XYZ();
+    aCoord.Subtract(axis.Location().XYZ());
+    double parameter = aCoord.Dot(axis.Direction().XYZ());
+    gp_XYZ aPoP = axis.Location().XYZ();
+    aPoP.Add(axis.Direction().XYZ() * parameter);
+    gp_Pnt center(aPoP);
+
+    // Find intersection of circle with all faces of the shape
+    std::vector<cutTopoShapeFaces> result;
+
+    // TODO: Less precision than Confusion() should be OK?
+    gp_Lin line = gce_MakeLin(axis);
+    Standard_Real radius = line.Distance(cog);
+    if (radius < Precision::Confusion()) {
+        return result;
+    }
+
+    // Create a circle through the centre of gravity
+    Handle(Geom_Circle) circle = new Geom_Circle(gce_MakeCirc(center, axis.Direction(), radius));
+    GeomAdaptor_Curve adaptor(circle);
+
+    // Construct transformation matrix to convert to local coordinates
+    gp_Dir vx(gp_Vec(center, cog));
+    gp_Ax2 rhs(center, axis.Direction(), vx);
+    gp_Ax3 lcs(rhs);
+    gp_Trsf mat;
+    mat.SetTransformation(lcs);
+
+    BRepIntCurveSurface_Inter mkSection;
+    for (mkSection.Init(shape.getShape(), adaptor, Precision::Confusion()); mkSection.More();
+         mkSection.Next()) {
+        gp_Pnt iPnt = mkSection.Pnt();
+
+        double dsq = cog.SquareDistance(iPnt);
+        if (dsq < Precision::Confusion()) {
+            continue;  // intersection with original face
+        }
+
+        // Find out which side of the original face the intersection is on
+        gce_MakeDir mkDir(cog, iPnt);
+        if (!mkDir.IsDone()) {
+            continue;  // some error (appears highly unlikely to happen, though...)
+        }
+
+        if (mkDir.Value().IsParallel(axis.Direction(), Precision::Confusion())) {
+            continue;
+        }
+
+        // Intersection point in local coords
+        gp_Pnt iLoc = iPnt.Transformed(mat);
+        // Get angle with local X axis
+        double x = Base::clamp(iLoc.X(), -radius, radius);
+        double angle = std::acos(x / radius);
+        if (iLoc.Y() < 0.0) {
+            angle = 2.0 * std::numbers::pi - angle;
+        }
+
+        cutTopoShapeFaces newF;
+        newF.face = mkSection.Face();
+        newF.face.mapSubElement(shape);
+        newF.distsq = angle * radius;
         result.push_back(newF);
     }
 

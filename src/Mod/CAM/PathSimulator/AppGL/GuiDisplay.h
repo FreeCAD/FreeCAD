@@ -23,11 +23,10 @@
  ***************************************************************************/
 
 #pragma once
-#include "OpenGlWrapper.h"
+
 #include "Texture.h"
 #include "Shader.h"
 #include "TextureLoader.h"
-#include "GlUtils.h"
 #include <QString>
 
 namespace MillSim

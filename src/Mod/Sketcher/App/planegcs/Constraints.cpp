@@ -895,7 +895,7 @@ double ConstraintP2LDistance::signed_value()
 }
 double ConstraintP2LDistance::error()
 {
-    double dist = ccw ? *distance() : -*distance();
+    double dist = ccw ? std::abs(*distance()) : -std::abs(*distance());
 
     return scale * (signed_value() - dist);
 }
@@ -932,6 +932,9 @@ double ConstraintP2LDistance::grad(double* param)
         if (param == p2y()) {
             deriv += ((x1 - x0) * d - (dy / d) * area) / d2;
         }
+    }
+    if (param == distance()) {
+        deriv += ccw ? -1 : +1;
     }
 
     return scale * deriv;
