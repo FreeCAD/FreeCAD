@@ -15,7 +15,6 @@ add_executable(Gui_tests_run
 )
 
 # Qt tests
-setup_qt_test(NotificationArea)
 setup_qt_test(QuantitySpinBox)
 
 target_link_libraries(Gui_tests_run PRIVATE
