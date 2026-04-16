@@ -225,12 +225,7 @@ void ZoomableView::contextMenuEvent(QContextMenuEvent* event)
             return false;
         }
 
-        QContextMenuEvent forwarded(
-            QContextMenuEvent::Mouse,
-            targetPos,
-            globalPos,
-            event->modifiers()
-        );
+        QContextMenuEvent forwarded(QContextMenuEvent::Mouse, targetPos, globalPos, event->modifiers());
         QCoreApplication::sendEvent(target, &forwarded);
         return true;
     };
