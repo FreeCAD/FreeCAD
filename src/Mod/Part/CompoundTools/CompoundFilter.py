@@ -261,10 +261,10 @@ class _CompoundFilter:
         if len(rst) > 1:
             obj.Shape = Part.makeCompound(rst)
         else:  # don't make compound of one shape, output it directly
-            #Preserve placement instead of resetting it.
+            # Preserve placement instead of resetting it.
             # Using transformShape + clearing Placement loses transformation.
             # Also avoid transformGeometry as it may alter underlying geometry.
-            
+
             sh = rst[0]
             obj.Shape = sh
 
