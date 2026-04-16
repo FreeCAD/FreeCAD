@@ -1076,7 +1076,7 @@ void QGIViewPart::drawBreakLines()
         breakLine->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));
         breakLine->setBreakType(breakType);
         breakLine->setZValue(ZVALUE::SECTIONLINE);
-        Base::Color color = prefBreaklineColor();
+        Base::Color color = vp->BreakLineColor.getValue();
         breakLine->setBreakColor(color.asValue<QColor>());
         breakLine->setRotation(-dbv->Rotation.getValue());
         breakLine->draw();
