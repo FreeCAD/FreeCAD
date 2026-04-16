@@ -262,9 +262,11 @@ class _CompoundFilter:
             obj.Shape = Part.makeCompound(rst)
         else:  # don't make compound of one shape, output it directly
             sh = rst[0]
-            sh.transformShape(sh.Placement.toMatrix(), True)  # True = make copy
-            sh.Placement = FreeCAD.Placement()
-            obj.Shape = sh
+            # Only transform if placement is not identity
+            if not sh.Placement.isNull():
+                 sh = sh.transformGeometry(sh.Placement.toMatrix())
+                 sh.Placement = FreeCAD.Placement()
+            obj.Shape = sh   
 
         return
 
