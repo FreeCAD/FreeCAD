@@ -238,7 +238,7 @@ bool EditableDatumLabel::syncValueFromSpinBox(bool emitParameterUnset)
 
     if (!spinBox->hasValidInput()) {
         if (emitParameterUnset) {
-            setLockedAppearance(false);
+            resetLockedState();
             Q_EMIT parameterUnset();
         }
         return false;
@@ -311,7 +311,7 @@ bool EditableDatumLabel::eventFilter(QObject* watched, QEvent* event)
             }
         }
         else if (this->hasFinishedEditing && keyEvent->key() != Qt::Key_Tab) {
-            this->setLockedAppearance(false);
+            this->resetLockedState();
             return false;
         }
     }
@@ -595,9 +595,6 @@ void EditableDatumLabel::setSpinboxVisibleToMouse(bool val)
 
 void EditableDatumLabel::setLockedAppearance(bool locked)
 {
-    if (!locked) {
-        this->hasFinishedEditing = false;
-    }
     if (!spinBox || !lockIconLabel) {
         return;
     }
