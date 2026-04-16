@@ -456,7 +456,9 @@ class ViewProviderMotion:
 
 
 class MotionEditDialog:
-    def __init__(self, assembly, motionType=MotionTypes[0], joint=None, formula="initialValue + 5*time"):
+    def __init__(
+        self, assembly, motionType=MotionTypes[0], joint=None, formula="initialValue + 5*time"
+    ):
         self.assembly = assembly
         self.motionType = motionType
         self.joint = joint
