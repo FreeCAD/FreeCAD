@@ -115,8 +115,9 @@ def _get_bbox_anchor(xmin, xmax, ymin, ymax, placement_mode):
         return 0.0, 0.0
 
 
-def _compute_transformed_tile_bounds(tile_x, tile_y, tile_width, tile_height,
-                                      base_scale, base_rot_rad, placement_mode):
+def _compute_transformed_tile_bounds(
+    tile_x, tile_y, tile_width, tile_height, base_scale, base_rot_rad, placement_mode
+):
     """
     Conservative broad-phase bounds for one tile after:
       1) scaling
@@ -161,14 +162,26 @@ def _compute_transformed_tile_bounds(tile_x, tile_y, tile_width, tile_height,
     return xmin, xmax, ymin, ymax
 
 
-def make_tile_and_clip(base_shape, normed_pattern, tile_x, tile_y,
-                       base_scale, base_rot_rad,
-                       randomize, random_offset_range,
-                       random_rot_min, random_rot_max,
-                       random_scale_min, random_scale_max,
-                       show_faces, shape_distortion,
-                       enable_color_var, color_var_intensity,
-                       placement_mode="Center", clip_mode="BooleanOnly"):
+def make_tile_and_clip(
+    base_shape,
+    normed_pattern,
+    tile_x,
+    tile_y,
+    base_scale,
+    base_rot_rad,
+    randomize,
+    random_offset_range,
+    random_rot_min,
+    random_rot_max,
+    random_scale_min,
+    random_scale_max,
+    show_faces,
+    shape_distortion,
+    enable_color_var,
+    color_var_intensity,
+    placement_mode="Center",
+    clip_mode="BooleanOnly",
+):
     """
     Create a single tile instance, transform it, and clip it against the base shape.
     """
@@ -207,9 +220,7 @@ def make_tile_and_clip(base_shape, normed_pattern, tile_x, tile_y,
 
     bounding_box = tile_copy.BoundBox
     anchor_x, anchor_y = _get_bbox_anchor(
-        bounding_box.XMin, bounding_box.XMax,
-        bounding_box.YMin, bounding_box.YMax,
-        placement_mode
+        bounding_box.XMin, bounding_box.XMax, bounding_box.YMin, bounding_box.YMax, placement_mode
     )
 
     if abs(anchor_x) > 1e-12 or abs(anchor_y) > 1e-12:
@@ -252,6 +263,7 @@ def make_tile_and_clip(base_shape, normed_pattern, tile_x, tile_y,
     random_color = None
     if enable_color_var:
         import colorsys
+
         hue = random.random()
         saturation = 0.5 + 0.5 * color_var_intensity
         value = 1.0
@@ -267,35 +279,44 @@ def separate_faces_and_edges(shape):
     return shape.Faces, shape.Edges
 
 
-def buildHatchShape(baseShape, overrideBB=None,
-                    patternShape=None,
-                    distributionMode="SeamlessTiling",
-                    autoScaleToFitBase=False,
-                    patternScale=1.0,
-                    rotationDeg=0.0,
-                    baseSpacing=10.0,
-                    repX=5, repY=5,
-                    randRotMin=0.0, randRotMax=0.0,
-                    randomizePlacement=False,
-                    randomOffsetRange=0.0,
-                    randomScaleMin=1.0, randomScaleMax=1.0,
-                    radialCount=8, radialRadius=50.0,
-                    concentricCount=5, concentricSpacing=10.0,
-                    randomCount=30,
-                    offsetX=0.0, offsetY=0.0,
-                    scaleMode="Absolute",
-                    tileShape=None,
-                    tileVisibility=False,
-                    showFaces=False,
-                    maxTiles=5000,
-                    densityFactor=1.0,
-                    enableColorVar=False,
-                    colorVarInt=0.5,
-                    spacingVariation=0.0,
-                    shapeDistortion=False,
-                    apply3D=False,
-                    placement_mode="Origin",
-                    clipMode="BooleanOnly"):
+def buildHatchShape(
+    baseShape,
+    overrideBB=None,
+    patternShape=None,
+    distributionMode="SeamlessTiling",
+    autoScaleToFitBase=False,
+    patternScale=1.0,
+    rotationDeg=0.0,
+    baseSpacing=10.0,
+    repX=5,
+    repY=5,
+    randRotMin=0.0,
+    randRotMax=0.0,
+    randomizePlacement=False,
+    randomOffsetRange=0.0,
+    randomScaleMin=1.0,
+    randomScaleMax=1.0,
+    radialCount=8,
+    radialRadius=50.0,
+    concentricCount=5,
+    concentricSpacing=10.0,
+    randomCount=30,
+    offsetX=0.0,
+    offsetY=0.0,
+    scaleMode="Absolute",
+    tileShape=None,
+    tileVisibility=False,
+    showFaces=False,
+    maxTiles=5000,
+    densityFactor=1.0,
+    enableColorVar=False,
+    colorVarInt=0.5,
+    spacingVariation=0.0,
+    shapeDistortion=False,
+    apply3D=False,
+    placement_mode="Origin",
+    clipMode="BooleanOnly",
+):
     """
     Generate hatch pattern on base shape.
 
@@ -373,10 +394,7 @@ def buildHatchShape(baseShape, overrideBB=None,
         def tile_and_clip(tile_x, tile_y, base_scale, base_rot_rad, placement_mode):
             nonlocal tile_count
 
-            can_broadphase_cull = (
-                (not randomizePlacement) and
-                (not shapeDistortion)
-            )
+            can_broadphase_cull = (not randomizePlacement) and (not shapeDistortion)
 
             if can_broadphase_cull:
                 minx, maxx, miny, maxy = _compute_transformed_tile_bounds(
@@ -389,14 +407,19 @@ def buildHatchShape(baseShape, overrideBB=None,
                     placement_mode=placement_mode,
                 )
 
-                if (maxx < bounding_box.XMin or minx > bounding_box.XMax or
-                    maxy < bounding_box.YMin or miny > bounding_box.YMax):
+                if (
+                    maxx < bounding_box.XMin
+                    or minx > bounding_box.XMax
+                    or maxy < bounding_box.YMin
+                    or miny > bounding_box.YMax
+                ):
                     return None, None
 
             tile_shape, tile_color = make_tile_and_clip(
                 baseShape,
                 normed_pattern,
-                tile_x, tile_y,
+                tile_x,
+                tile_y,
                 base_scale,
                 base_rot_rad,
                 randomizePlacement,
@@ -410,7 +433,7 @@ def buildHatchShape(baseShape, overrideBB=None,
                 enableColorVar,
                 colorVarInt,
                 placement_mode=placement_mode,
-                clip_mode=clipMode
+                clip_mode=clipMode,
             )
 
             if tile_shape and not tile_shape.isNull():
@@ -437,7 +460,7 @@ def buildHatchShape(baseShape, overrideBB=None,
         for part in tile_parts[1:]:
             result = result.fuse(part)
 
-        if enableColorVar and tile_colors and hasattr(result, 'ViewObject'):
+        if enableColorVar and tile_colors and hasattr(result, "ViewObject"):
             try:
                 result.ViewObject.ShapeColor = tile_colors[0]
             except Exception:
@@ -471,19 +494,24 @@ def buildHatchShape(baseShape, overrideBB=None,
                 tile_x = start_x + i * step_x
                 tile_y = start_y + j * step_y
                 tile, color = make_tile_and_clip(
-                    baseShape, normed_pattern,
-                    tile_x, tile_y,
-                    patternScale, rotation_rad,
+                    baseShape,
+                    normed_pattern,
+                    tile_x,
+                    tile_y,
+                    patternScale,
+                    rotation_rad,
                     randomizePlacement,
                     randomOffsetRange,
-                    randRotMin, randRotMax,
-                    randomScaleMin, randomScaleMax,
+                    randRotMin,
+                    randRotMax,
+                    randomScaleMin,
+                    randomScaleMax,
                     showFaces,
                     shapeDistortion,
                     enableColorVar,
                     colorVarInt,
                     placement_mode=placement_mode,
-                    clip_mode=clipMode
+                    clip_mode=clipMode,
                 )
                 if tile and not tile.isNull():
                     tile_parts.append(tile)
@@ -498,7 +526,7 @@ def buildHatchShape(baseShape, overrideBB=None,
         for part in tile_parts[1:]:
             result = result.fuse(part)
 
-        if enableColorVar and tile_colors and hasattr(result, 'ViewObject'):
+        if enableColorVar and tile_colors and hasattr(result, "ViewObject"):
             try:
                 result.ViewObject.ShapeColor = tile_colors[0]
             except Exception:
@@ -519,19 +547,24 @@ def buildHatchShape(baseShape, overrideBB=None,
             tile_x = center_x + radialRadius * math.cos(angle)
             tile_y = center_y + radialRadius * math.sin(angle)
             tile, color = make_tile_and_clip(
-                baseShape, normed_pattern,
-                tile_x, tile_y,
-                patternScale, rotation_rad,
+                baseShape,
+                normed_pattern,
+                tile_x,
+                tile_y,
+                patternScale,
+                rotation_rad,
                 randomizePlacement,
                 randomOffsetRange,
-                randRotMin, randRotMax,
-                randomScaleMin, randomScaleMax,
+                randRotMin,
+                randRotMax,
+                randomScaleMin,
+                randomScaleMax,
                 showFaces,
                 shapeDistortion,
                 enableColorVar,
                 colorVarInt,
                 placement_mode=placement_mode,
-                clip_mode=clipMode
+                clip_mode=clipMode,
             )
             if tile and not tile.isNull():
                 tile_parts.append(tile)
@@ -563,19 +596,24 @@ def buildHatchShape(baseShape, overrideBB=None,
                 tile_x = center_x + radius * math.cos(angle)
                 tile_y = center_y + radius * math.sin(angle)
                 tile, color = make_tile_and_clip(
-                    baseShape, normed_pattern,
-                    tile_x, tile_y,
-                    patternScale, rotation_rad,
+                    baseShape,
+                    normed_pattern,
+                    tile_x,
+                    tile_y,
+                    patternScale,
+                    rotation_rad,
                     randomizePlacement,
                     randomOffsetRange,
-                    randRotMin, randRotMax,
-                    randomScaleMin, randomScaleMax,
+                    randRotMin,
+                    randRotMax,
+                    randomScaleMin,
+                    randomScaleMax,
                     showFaces,
                     shapeDistortion,
                     enableColorVar,
                     colorVarInt,
                     placement_mode=placement_mode,
-                    clip_mode=clipMode
+                    clip_mode=clipMode,
                 )
                 if tile and not tile.isNull():
                     tile_parts.append(tile)
@@ -600,19 +638,24 @@ def buildHatchShape(baseShape, overrideBB=None,
             tile_x = bounding_box.XMin + random.random() * bounding_box.XLength
             tile_y = bounding_box.YMin + random.random() * bounding_box.YLength
             tile, color = make_tile_and_clip(
-                baseShape, normed_pattern,
-                tile_x, tile_y,
-                patternScale, rotation_rad,
+                baseShape,
+                normed_pattern,
+                tile_x,
+                tile_y,
+                patternScale,
+                rotation_rad,
                 randomizePlacement,
                 randomOffsetRange,
-                randRotMin, randRotMax,
-                randomScaleMin, randomScaleMax,
+                randRotMin,
+                randRotMax,
+                randomScaleMin,
+                randomScaleMax,
                 showFaces,
                 shapeDistortion,
                 enableColorVar,
                 colorVarInt,
                 placement_mode=placement_mode,
-                clip_mode=clipMode
+                clip_mode=clipMode,
             )
             if tile and not tile.isNull():
                 tile_parts.append(tile)

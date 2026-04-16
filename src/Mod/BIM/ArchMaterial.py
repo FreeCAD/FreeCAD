@@ -253,7 +253,7 @@ class _ArchMaterial:
                     "App::Property",
                     "Optional hatch pattern (CustomHatch) to apply to surfaces "
                     "of objects using this material. Only used when no "
-                    "MultiMaterial is assigned to the object."
+                    "MultiMaterial is assigned to the object.",
                 ),
                 locked=True,
             )
@@ -815,15 +815,15 @@ class _ArchMultiMaterial:
                 return
 
             n_layers = len(getattr(obj, "Materials", []))
-            hatches   = list(getattr(obj, "Hatches",     []) or [])
-            indices   = list(getattr(obj, "HatchIndices",[]) or [])
+            hatches = list(getattr(obj, "Hatches", []) or [])
+            indices = list(getattr(obj, "HatchIndices", []) or [])
 
             paired = [(h, idx) for h, idx in zip(hatches, indices) if idx < n_layers]
             new_hatches = [p[0] for p in paired]
             new_indices = [p[1] for p in paired]
 
             if new_hatches != hatches or new_indices != indices:
-                obj.Hatches      = new_hatches
+                obj.Hatches = new_hatches
                 obj.HatchIndices = new_indices
 
     def get_hatch_for_layer(self, obj, layer_index):
@@ -840,8 +840,8 @@ class _ArchMultiMaterial:
         -------
         FreeCAD document object (CustomHatch) or None
         """
-        hatches = list(getattr(obj, "Hatches",     []) or [])
-        indices = list(getattr(obj, "HatchIndices",[]) or [])
+        hatches = list(getattr(obj, "Hatches", []) or [])
+        indices = list(getattr(obj, "HatchIndices", []) or [])
         for hatch_obj, idx in zip(hatches, indices):
             if idx == layer_index and hatch_obj is not None:
                 return hatch_obj
@@ -856,8 +856,8 @@ class _ArchMultiMaterial:
         layer_index : int, zero-based
         hatch_obj   : CustomHatch document object, or None to clear
         """
-        hatches = list(getattr(obj, "Hatches",     []) or [])
-        indices = list(getattr(obj, "HatchIndices",[]) or [])
+        hatches = list(getattr(obj, "Hatches", []) or [])
+        indices = list(getattr(obj, "HatchIndices", []) or [])
 
         paired = [(h, idx) for h, idx in zip(hatches, indices) if idx != layer_index]
 
@@ -865,7 +865,7 @@ class _ArchMultiMaterial:
             paired.append((hatch_obj, layer_index))
             paired.sort(key=lambda p: p[1])
 
-        obj.Hatches      = [p[0] for p in paired]
+        obj.Hatches = [p[0] for p in paired]
         obj.HatchIndices = [p[1] for p in paired]
 
     def execute(self, obj):
@@ -962,6 +962,7 @@ if FreeCAD.GuiUp:
         def setEditorData(self, editor, index):
             if index.column() == 0:
                 import ArchWindow
+
                 editor.addItems([index.data()] + ArchWindow.WindowPartTypes)
             elif index.column() == 1:
                 idx = -1
@@ -1175,17 +1176,18 @@ class _ArchMultiMaterialTaskPanel:
                 self.obj.Hatches = []
                 self.obj.HatchIndices = []
                 for row in range(self.model.rowCount()):
-                    hatch_label = self.model.item(row, 3).text().strip() \
-                                  if self.model.item(row, 3) else ""
+                    hatch_label = (
+                        self.model.item(row, 3).text().strip() if self.model.item(row, 3) else ""
+                    )
                     if hatch_label:
                         for doc_obj in FreeCAD.ActiveDocument.Objects:
                             if doc_obj.Label == hatch_label:
-                                if hasattr(doc_obj, "Proxy") and \
-                                   hasattr(doc_obj.Proxy, "Type") and \
-                                   doc_obj.Proxy.Type == "CustomHatchFP":
-                                    self.obj.Proxy.set_hatch_for_layer(
-                                        self.obj, row, doc_obj
-                                    )
+                                if (
+                                    hasattr(doc_obj, "Proxy")
+                                    and hasattr(doc_obj.Proxy, "Type")
+                                    and doc_obj.Proxy.Type == "CustomHatchFP"
+                                ):
+                                    self.obj.Proxy.set_hatch_for_layer(self.obj, row, doc_obj)
                                     break
 
             if self.form.nameField.text():

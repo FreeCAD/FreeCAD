@@ -76,7 +76,6 @@ class BIMWorkbench(Workbench):
         except Exception as e:
             FreeCAD.Console.PrintError(f"Could not load BIM hatch commands: {e}\n")
 
-
         # build menus and toolbars
         self.draftingtools = [
             "BIM_Sketch",

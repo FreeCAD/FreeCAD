@@ -28,6 +28,7 @@ if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
+
     def QT_TRANSLATE_NOOP(context, text):
         return text
 
@@ -292,7 +293,9 @@ class FaceExtractorFeature:
             )
             obj.IsTemporary = False
 
-    def _score_face_match(self, face, stored_normal, stored_center, stored_area=0.0, parent_pl=None):
+    def _score_face_match(
+        self, face, stored_normal, stored_center, stored_area=0.0, parent_pl=None
+    ):
         """
         Score how well a candidate face matches the stored fingerprint.
         All values compared in world space. Normal 55%, area 25%, center 20%.
@@ -332,7 +335,9 @@ class FaceExtractorFeature:
 
         return (0.55 * normal_score) + (0.25 * area_score) + (0.20 * center_score)
 
-    def _find_face_by_fingerprint(self, parent_shape, stored_normal, stored_center, stored_area=0.0, parent_pl=None):
+    def _find_face_by_fingerprint(
+        self, parent_shape, stored_normal, stored_center, stored_area=0.0, parent_pl=None
+    ):
         """
         Scan all faces and return the best match (normal + center + area in world space).
         Returns (face, sub_name_str, score) or (None, None, -1.0).
@@ -345,7 +350,9 @@ class FaceExtractorFeature:
         best_score = -1.0
 
         for index, face in enumerate(parent_shape.Faces):
-            score = self._score_face_match(face, stored_normal, stored_center, stored_area, parent_pl)
+            score = self._score_face_match(
+                face, stored_normal, stored_center, stored_area, parent_pl
+            )
             if score > best_score:
                 best_score = score
                 best_face = face
@@ -589,9 +596,7 @@ def make_face_extractor(parent_obj, sub_name, name=None, temporary=True, _skip_c
             FaceExtractorViewProvider(obj.ViewObject)
             apply_support_face_view_style(obj.ViewObject)
         except Exception as e:
-            FreeCAD.Console.PrintError(
-                f"Failed to create FaceExtractor view provider: {e}\n"
-            )
+            FreeCAD.Console.PrintError(f"Failed to create FaceExtractor view provider: {e}\n")
 
     return obj
 
