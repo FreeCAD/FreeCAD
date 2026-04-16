@@ -120,8 +120,8 @@ App::DocumentObjectExecReturn* MultiCommon::execute()
     try {
         std::vector<TopoShape> shapes;
         for (auto obj : Shapes.getValues()) {
-            TopoShape sh =
-                Feature::getTopoShape(obj, ShapeOption::ResolveLink | ShapeOption::Transform);
+            TopoShape sh
+                = Feature::getTopoShape(obj, ShapeOption::ResolveLink | ShapeOption::Transform);
             if (sh.isNull()) {
                 return new App::DocumentObjectExecReturn("Input shape is null");
             }
