@@ -122,6 +122,7 @@ MeasureType Measurement::findType()
     int cones = 0;
     int torus = 0;
     int spheres = 0;
+    int discs = 0;
     int vols = 0;
     int other = 0;
 
@@ -173,22 +174,24 @@ MeasureType Measurement::findType()
                 BRepAdaptor_Surface sf(face);
 
                 if (sf.GetType() == GeomAbs_Plane) {
-                    planes++;
                     TopExp_Explorer edges(face, TopAbs_EDGE);
                     if (!edges.More()) {
+                        planes++;
                         break;
                     }
                     TopoDS_Edge edge = TopoDS::Edge(edges.Current());
                     edges.Next();
                     if (edges.More()) {
+                        planes++;
                         break;
                     }
                     BRepAdaptor_Curve adapt(edge);
                     if (adapt.GetType() != GeomAbs_Circle) {
+                        planes++;
                         break;
                     }
 
-                    circles++;
+                    discs++;
                 }
                 else if (sf.GetType() == GeomAbs_Cylinder) {
                     if (sf.IsUClosed() || sf.IsVClosed()) {
@@ -253,9 +256,6 @@ MeasureType Measurement::findType()
             if (planes == 1 && faces == 1) {
                 mode = MeasureType::Plane;
             }
-            if (planes == 1 && faces == 1 && circles == 1 && edges == 0) {
-                mode = MeasureType::Disc;
-            }
             else if (planes == 2 && faces == 2) {
                 if (planesAreParallel()) {
                     mode = MeasureType::TwoPlanes;
@@ -281,6 +281,9 @@ MeasureType Measurement::findType()
             }
             else if (torus == 1 && faces == 1) {
                 mode = MeasureType::Torus;
+            }
+            else if (discs == 1 && faces == 1) {
+                mode = MeasureType::Disc;
             }
             else {
                 mode = MeasureType::Surfaces;
