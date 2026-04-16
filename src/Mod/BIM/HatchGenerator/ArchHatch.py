@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                          *
@@ -535,16 +533,15 @@ class CustomHatchFeature:
 
     def onChanged(self, fp, prop):
         if prop == "BaseTileObject" and fp.UpdateTileOnChange:
-            if prop == "BaseTileObject":
-                if fp.BaseTileObject:
-                    FreeCADGui.Selection.clearSelection()
-                    FreeCADGui.Selection.addSelection(fp.BaseTileObject)
+            if fp.BaseTileObject:
+                FreeCADGui.Selection.clearSelection()
+                FreeCADGui.Selection.addSelection(fp.BaseTileObject)
             self.safe_delayed_execute(fp, 100)
         if prop == "PatternPlacementMode":
             self.safe_delayed_execute(fp, 100)
         # Delay execute when BaseObject / BaseObjects changes so that FreeCAD's
         # dependency graph has time to fully resolve the linked shapes before we
-        # compute the unified bounding box.  Without this delay the first
+        # compute the unified bounding box. Without this delay the first
         # recompute fires while the newly added object's shape is still in a
         # stale/unresolved state, producing a wrong unified BB and an apparent
         # position shift that only corrects itself on the next recompute.
@@ -566,10 +563,10 @@ class CustomHatchFeature:
                 fp.setEditorMode("Placement", 0)
 
         # Propagate recipe changes from a Definition hatch to all Applied
-        # hatches that reference it.  This is the missing link: switching
-        # PatternType (especially in/out of SolidFill) left the generated
-        # material-applied hatch in a stale shape-mode until the user
-        # manually toggled HatchSurfaces / HatchCaps.
+        # hatches that reference it. When switching PatternType (especially
+        # in/out of SolidFill), the generated material-applied hatch would
+        # remain in a stale shape-mode until the user manually toggled
+        # HatchSurfaces / HatchCaps. This propagation fixes that.
         _RECIPE_PROPS = {
             "PatternType", "PatternObject", "PatternObjects",
             "BaseSpacing", "PatternScale", "RotationDeg",
@@ -689,7 +686,7 @@ class CustomHatchFeature:
 
             # Use makeCompound instead of fuse() so that mixed shape types
             # (Sketch wires + Draft Wires, edges + faces, etc.) can coexist
-            # without triggering OCCT's Boolean engine.  fuse() requires
+            # without triggering OCCT's Boolean engine. fuse() requires
             # manifold/compatible topology and raises ValueError: Null shape
             # whenever the two inputs are both wire/edge geometry (as is always
             # the case when combining Sketch and Draft objects).
@@ -912,7 +909,7 @@ class CustomHatchFeature:
                                     # That function produces -(x_axis · CenterOfMass),
                                     # which interacts with buildHatchShape's internal
                                     # BB.XMin-relative tiling to create a net shift of
-                                    # -halfWidth in world space.  When the face resizes,
+                                    # -halfWidth in world space. When the face resizes,
                                     # halfWidth changes and the tiles move in the OPPOSITE
                                     # direction to the face (the "reverse mirror" bug).
                                     # Passing the user offsets directly makes the tiling
@@ -1400,7 +1397,7 @@ def _copy_definition_recipe_to_applied(applied_obj, hatch_def):
 class _HatchGeometryObserver:
     """
     Lightweight FreeCAD DocumentObserver.
-    Watches for Shape changes on any object.  When the changed object is the
+    Watches for Shape changes on any object. When the changed object is the
     BaseObject of a _MaterialHatch_* applied hatch, it touches that hatch and
     schedules a deferred doc.recompute() so execute() sees the fresh geometry.
 
@@ -1526,7 +1523,7 @@ def ensure_material_hatch(target_obj, material_obj=None, hatch_obj=None):
 
     _copy_definition_recipe_to_applied(generated, hatch_obj)
 
-    # Mark the generated object as needing recompute.  This ensures it is
+    # Mark the generated object as needing recompute. This ensures it is
     # always in FreeCAD's dirty queue regardless of when it was created
     # relative to the current recompute cycle.
     try:

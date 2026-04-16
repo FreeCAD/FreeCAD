@@ -55,15 +55,7 @@ if FreeCAD.GuiUp:
     from PySide.QtCore import QT_TRANSLATE_NOOP
     import FreeCADGui
     from draftutils.translate import translate
-
-    try:
-        from HatchGenerator.ArchGhostHatchRenderer import GhostHatchRenderer
-    except ImportError as e:
-        GhostHatchRenderer = None
-        FreeCAD.Console.PrintWarning(
-            f"GhostHatchRenderer not available. Ghost mode disabled: {e}\n"
-        )
-
+    from HatchGenerator.ArchGhostHatchRenderer import GhostHatchRenderer
 else:
     # \cond
     def translate(ctxt, txt):
@@ -276,9 +268,6 @@ class Component(ArchIFC.IfcProduct):
         if "BaseMaterial" in pl:
             obj.Material = obj.BaseMaterial
             obj.removeProperty("BaseMaterial")
-            FreeCAD.Console.PrintMessage(
-                "Upgrading " + obj.Label + " BaseMaterial property to Material\n"
-            )
         if not "MoveBase" in pl:
             obj.addProperty(
                 "App::PropertyBool",
@@ -353,9 +342,7 @@ class Component(ArchIFC.IfcProduct):
                 locked=True,
             )
 
-        # ======================================================================
-        # HATCH PROPERTIES (v6)
-        # ======================================================================
+        # Hatch properties
         if "HatchSurfaces" not in pl:
             obj.addProperty(
                 "App::PropertyBool",
@@ -418,7 +405,7 @@ class Component(ArchIFC.IfcProduct):
                 ),
                 locked=True,
             )
-            obj.setEditorMode("HatchContainer", 2)   # hidden in Data panel
+            obj.setEditorMode("HatchContainer", 2)
 
         if "HatchGhost" not in pl:
             obj.addProperty(
@@ -435,7 +422,7 @@ class Component(ArchIFC.IfcProduct):
                 ),
                 locked=True,
             )
-            obj.HatchGhost = True   # default ON — fast preview while working
+            obj.HatchGhost = True
 
         self.Subvolume = None
 
@@ -467,31 +454,16 @@ class Component(ArchIFC.IfcProduct):
         if self.clone(obj):
             return
         if getattr(obj, "Base", None) is None:
-            # Do not modify Arch_Components without a Base object.
             return
 
         if hasattr(obj.Base, "Shape") and not obj.Base.Shape.isNull():
-            # The Base object contains valid geometry.
-            # Create a standalone shape as a deep copy of the base geometry, to avoid modifying
-            # the original source.
             base_shape = Part.Shape(obj.Base.Shape)
-
-            # Reset the shape's internal placement to Identity. This strips the placement
-            # inherited from the Base object, ensuring the geometry is centered at (0,0,0) for
-            # Boolean operations in processSubShapes. This also prevents the shape's placement from
-            # overwriting the Component's own Placement property during assignment in applyShape.
             base_shape.Placement = FreeCAD.Placement()
-
-            # Localize the CSG shapes: pass the object's placement to processSubShapes, so that the
-            # placements of any additions and subtractions are also localized to the local origin of
-            # the Arch Component.
             final_shape = self.processSubShapes(obj, base_shape, obj.Placement)
             self.applyShape(obj, final_shape, obj.Placement, allownosolid=True)
         else:
-            # Clear the shape to avoid leaving a stale shape.
             obj.Shape = Part.Shape()
 
-        # Schedule hatch application after recompute completes
         self.apply_material_hatches(obj)
 
     def dumps(self):
@@ -557,10 +529,8 @@ class Component(ArchIFC.IfcProduct):
                     if deltap:
                         child.Placement.move(deltap)
 
-        # ── Hatch toggle changed: re-apply or clean up immediately ────────
+        # Hatch toggle changed: re-apply or clean up immediately
         if prop in ("HatchSurfaces", "HatchCaps", "HatchAllFaces", "HatchGhost"):
-            # Only fire if object has a valid shape — if not, execute() will
-            # call apply_material_hatches when the shape is ready.
             if hasattr(obj, "Shape") and obj.Shape and not obj.Shape.isNull():
                 self.apply_material_hatches(obj)
 
@@ -592,8 +562,6 @@ class Component(ArchIFC.IfcProduct):
                 if obj == o.Host:
                     ilist.append(o)
 
-        # Stairs railings should be considered as children
-        # (RailingLeft and RailingRight property)
         if hasattr(obj, "RailingLeft") and obj.RailingLeft:
             ilist.append(obj.RailingLeft)
         if hasattr(obj, "RailingRight") and obj.RailingRight:
@@ -631,12 +599,10 @@ class Component(ArchIFC.IfcProduct):
                     if parent.HeightPropagate:
                         if parent.Height.Value:
                             return parent.Height.Value
-        # not found? get one level higher
         for parent in obj.InList:
             if hasattr(parent, "Group"):
                 if obj in parent.Group:
                     return self.getParentHeight(parent)
-        # still not found? check if we are embedded
         for parent in obj.InList:
             if hasattr(parent, "Additions"):
                 if obj in parent.Additions:
@@ -671,7 +637,6 @@ class Component(ArchIFC.IfcProduct):
                     Draft.getType(obj) in ["Component", "BuildingPart"]
                 ):
                     pl = obj.Placement
-                    ## TODO use Part.Shape() instead?
                     obj.Shape = obj.CloneOf.Shape.copy()
                     obj.Placement = pl
                     for prop in [
@@ -760,7 +725,6 @@ class Component(ArchIFC.IfcProduct):
                             return data
 
         if obj.Base:
-            # the base is another arch object which can provide extrusion data
             if (
                 hasattr(obj.Base, "Proxy")
                 and hasattr(obj.Base.Proxy, "getExtrusionData")
@@ -769,25 +733,9 @@ class Component(ArchIFC.IfcProduct):
             ):
                 if obj.Base.Base:
                     if obj.Placement.Rotation.Angle < 0.0001:
-                        # if the final obj is rotated, this will screw all our IFC orientation. Better leave it like that then...
                         data = obj.Base.Proxy.getExtrusionData(obj.Base)
                         if data:
                             return data
-                            # TODO above doesn't work if underlying shape is not at (0,0,0). But code below doesn't work well yet
-                            # add the displacement of the final object
-                            disp = obj.Shape.CenterOfMass.sub(obj.Base.Shape.CenterOfMass)
-                            if isinstance(data[2], (list, tuple)):
-                                ndata2 = []
-                                for p in data[2]:
-                                    p.move(disp)
-                                    ndata2.append(p)
-                                return (data[0], data[1], ndata2)
-                            else:
-                                ndata2 = data[2]
-                                ndata2.move(disp)
-                                return (data[0], data[1], ndata2)
-
-            # the base is a Part Extrusion
             elif obj.Base.isDerivedFrom("Part::Extrusion"):
                 if obj.Base.Base and len(obj.Base.Base.Shape.Wires) == 1:
                     base, placement = self.rebase(obj.Base.Base.Shape)
@@ -802,7 +750,6 @@ class Component(ArchIFC.IfcProduct):
                     if not self.isIdentity(obj.Base.Placement):
                         placement = placement.multiply(obj.Base.Placement)
                     return (base, extrusion, placement)
-
             elif obj.Base.isDerivedFrom("Part::MultiFuse"):
                 rshapes = []
                 revs = []
@@ -859,7 +806,6 @@ class Component(ArchIFC.IfcProduct):
 
         import DraftGeomUtils
 
-        # Get the object's center.
         if not isinstance(shape, list):
             shape = [shape]
         if hasattr(shape[0], "CenterOfMass"):
@@ -867,13 +813,10 @@ class Component(ArchIFC.IfcProduct):
         else:
             v = shape[0].BoundBox.Center
 
-        # Get the object's normal.
         n = DraftGeomUtils.getNormal(shape[0])
         if (not n) or (not n.Length):
             n = FreeCAD.Vector(0, 0, 1)
 
-        # Reverse the normal if the hint vector and the normal vector have more
-        # than a 90 degree angle between them.
         if hint and hint.getAngle(n) > 1.58:
             n = n.negative()
 
@@ -883,7 +826,6 @@ class Component(ArchIFC.IfcProduct):
 
         shapes = []
         for s in shape:
-            ## TODO use Part.Shape() instead?
             s = s.copy()
             s.translate(v.negative())
             s.rotate(FreeCAD.Vector(0, 0, 0), r.Axis, math.degrees(-r.Angle))
@@ -971,8 +913,6 @@ class Component(ArchIFC.IfcProduct):
         import Draft
         import Part
 
-        # print("Processing subshapes of ",obj.Label, " : ",obj.Additions)
-
         if placement:
             if self.isIdentity(placement):
                 placement = None
@@ -980,44 +920,25 @@ class Component(ArchIFC.IfcProduct):
                 placement = FreeCAD.Placement(placement)
                 placement = placement.inverse()
 
-        # treat additions
         for o in obj.Additions:
-
-            # Arch Objects can have no Base, but Additions only
-            # If there is no base/base isNull, 1st Addition becomes 'base',
-            # placement should be treated as rest of Additions.
-            # if not base:
             if not base or base.isNull():
                 if hasattr(o, "Shape"):
-                    base = Part.Shape(o.Shape)  # base = o.Shape
-                    # Base is first Addition, treat placement as other Additions
+                    base = Part.Shape(o.Shape)
                     if placement:
-                        # see https://forum.freecad.org/viewtopic.php?p=579754#p579754
                         base.Placement = placement.multiply(base.Placement)
             else:
-                # base.isNull() case grouped into if condition above, no need
-                # if/else below.  Remarked out 2025.9.2
-                #
-                # if base.isNull():
-                #    if hasattr(o,'Shape'):
-                #        base = o.Shape
-                # else:
-                # special case, both walls with coinciding endpoints
                 import ArchWall
 
                 js = ArchWall.mergeShapes(o, obj)
                 if js:
                     add = js.cut(base)
                     if placement:
-                        # see https://forum.freecad.org/viewtopic.php?p=579754#p579754
                         add.Placement = placement.multiply(add.Placement)
                     base = base.fuse(add)
                 elif hasattr(o, "Shape"):
                     if o.Shape and not o.Shape.isNull() and o.Shape.Solids:
-                        # TODO use Part.Shape() instead?
                         s = o.Shape.copy()
                         if placement:
-                            # see https://forum.freecad.org/viewtopic.php?p=579754#p579754
                             s.Placement = placement.multiply(s.Placement)
                         if base:
                             if base.Solids:
@@ -1030,7 +951,6 @@ class Component(ArchIFC.IfcProduct):
                         else:
                             base = s
 
-        # treat subtractions
         subs = obj.Subtractions
         for link in obj.InListRecursive:
             if hasattr(link, "Host"):
@@ -1054,39 +974,30 @@ class Component(ArchIFC.IfcProduct):
                 if (Draft.getType(o.getLinkedObject()) == "Window") or (
                     Draft.isClone(o, "Window", True)
                 ):
-                    # windows can be additions or subtractions, treated the same way
                     subvolume = o.getLinkedObject().Proxy.getSubVolume(
                         o, host=obj
-                    )  # pass host obj (mostly Wall)
+                    )
                 elif (Draft.getType(o) == "Roof") or (Draft.isClone(o, "Roof")):
-                    # roofs define their own special subtraction volume
                     subvolume = o.Proxy.getSubVolume(o).copy()
                 elif hasattr(o, "Subvolume") and hasattr(o.Subvolume, "Shape"):
-                    # Any other object with a Subvolume property
-                    ## TODO - Part.Shape() instead?
                     subvolume = o.Subvolume.Shape.copy()
                     if hasattr(o, "Placement"):
-                        # see https://forum.freecad.org/viewtopic.php?p=579754#p579754
                         subvolume.Placement = o.Placement.multiply(subvolume.Placement)
 
                 if subvolume:
                     if base.Solids and subvolume.Solids:
                         if placement:
-                            # see https://forum.freecad.org/viewtopic.php?p=579754#p579754
                             subvolume.Placement = placement.multiply(subvolume.Placement)
                         if len(base.Solids) > 1:
                             base = Part.makeCompound([sol.cut(subvolume) for sol in base.Solids])
                         else:
                             base = base.cut(subvolume)
                 elif hasattr(o, "Shape"):
-                    # no subvolume, we subtract the whole shape
                     if o.Shape:
                         if not o.Shape.isNull():
                             if o.Shape.Solids and base.Solids:
-                                ## TODO use Part.Shape() instead?
                                 s = o.Shape.copy()
                                 if placement:
-                                    # see https://forum.freecad.org/viewtopic.php?p=579754#p579754
                                     s.Placement = placement.multiply(s.Placement)
                                 try:
                                     if len(base.Solids) > 1:
@@ -1137,12 +1048,10 @@ class Component(ArchIFC.IfcProduct):
         if points:
             shps = []
             for p in points:
-                ## TODO use Part.Shape() instead?
                 sh = shape.copy()
                 sh.translate(p)
                 shps.append(sh)
             import Part
-
             shape = Part.makeCompound(shps)
         return shape
 
@@ -1207,7 +1116,6 @@ class Component(ArchIFC.IfcProduct):
                             )
                             return
                         import Part
-
                         try:
                             r = shape.removeSplitter()
                         except Part.OCCError:
@@ -1216,7 +1124,7 @@ class Component(ArchIFC.IfcProduct):
                             shape = r
                         p = self.spread(
                             obj, shape, placement
-                        ).Placement.copy()  # for some reason this gets zeroed in next line
+                        ).Placement.copy()
                         obj.Shape = self.spread(obj, shape, placement)
                         if not self.isIdentity(placement):
                             obj.Placement = placement
@@ -1246,9 +1154,6 @@ class Component(ArchIFC.IfcProduct):
                 )
         self.computeAreas(obj)
 
-    # =========================================================================
-    # apply_material_hatches - Deferred execution with ghost/hard routing
-    # =========================================================================
     def apply_material_hatches(self, obj):
         """Schedule hatch update. Routes to ghost or hard based on HatchGhost."""
         if not FreeCAD.GuiUp:
@@ -1276,21 +1181,17 @@ class Component(ArchIFC.IfcProduct):
                 if not target:
                     return
 
-                # Route via ViewProvider ghost renderer if available
                 vp = getattr(target, "ViewObject", None)
                 vp_proxy = getattr(vp, "Proxy", None) if vp else None
 
                 if ghost_mode:
-                    # Clear hard objects if they exist
                     _clear_all_hatch_objects(doc, target)
-                    # Hide container
                     hc = getattr(target, "HatchContainer", None)
                     if hc:
                         try:
                             hc.ViewObject.Visibility = False
                         except Exception:
                             pass
-                    # Render ghost via ViewProvider
                     if vp_proxy and hasattr(vp_proxy, "_render_ghost"):
                         if any_on:
                             vp_proxy._render_ghost(target)
@@ -1299,18 +1200,15 @@ class Component(ArchIFC.IfcProduct):
                                vp_proxy._ghost_renderer:
                                 vp_proxy._ghost_renderer.clear()
                 else:
-                    # Clear ghost
                     if vp_proxy and hasattr(vp_proxy, "_ghost_renderer") and \
                        vp_proxy._ghost_renderer:
                         vp_proxy._ghost_renderer.clear()
-                    # Show container
                     hc = getattr(target, "HatchContainer", None)
                     if hc:
                         try:
                             hc.ViewObject.Visibility = True
                         except Exception:
                             pass
-                    # Create/update or clean hard objects
                     if not target.Shape or target.Shape.isNull():
                         return
                     _apply_material_hatches_now(doc, target)
@@ -1366,31 +1264,21 @@ class Component(ArchIFC.IfcProduct):
             Whether the object is a standard case or not.
         """
 
-        # Standard Case has been set manually by the user
         if obj.IfcType.endswith("Standard Case"):
             return True
-        # Try to guess
         if obj.IfcType + " Standard Case" in ArchIFC.IfcTypes:
-            # this type has a standard case
             if obj.Additions or obj.Subtractions:
                 return False
             if obj.Placement.Rotation.Axis.getAngle(FreeCAD.Vector(0, 0, 1)) > 0.01:
-                # reject rotated objects
                 return False
             if obj.CloneOf:
                 return obj.CloneOf.Proxy.isStandardCase(obj.CloneOf)
             if obj.IfcType == "Wall":
-                # rules:
-                # - vertically extruded
-                # - single baseline or no baseline
                 if (not obj.Base) or (len(obj.Base.Shape.Edges) == 1):
                     if hasattr(obj, "Normal"):
                         if obj.Normal in [FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(0, 0, 1)]:
                             return True
             elif obj.IfcType in ["Beam", "Column", "Slab"]:
-                # rules:
-                # - have a single-wire profile or no profile
-                # - extrusion direction is perpendicular to the profile
                 if obj.Base and (len(obj.Base.Shape.Wires) != 1):
                     return False
                 if not hasattr(obj, "Normal"):
@@ -1401,19 +1289,12 @@ class Component(ArchIFC.IfcProduct):
                     return True
                 elif len(obj.Base.Shape.Wires) == 1:
                     import DraftGeomUtils
-
                     n = DraftGeomUtils.getNormal(obj.Base.Shape)
                     if n:
                         if (n.getAngle(obj.Normal) < 0.01) or (
                             abs(n.getAngle(obj.Normal) - 3.14159) < 0.01
                         ):
                             return True
-            # TODO: Support windows and doors
-            # rules:
-            # - must have a rectangular shape
-            # - must have a host
-            # - must be parallel to the host plane
-            # - must have an IfcWindowType and IfcRelFillsElement (to be implemented in IFC exporter)
             return False
 
     def getHosts(self, obj):
@@ -1442,9 +1323,6 @@ class Component(ArchIFC.IfcProduct):
     def ensureBase(self, obj):
         """Returns False if the object has a Base but of the wrong type.
         Either returns True"""
-        # TODO: this method has a third undocumented state: None, which is returned if the object
-        # has no Base. This should either be fixed if unintended, or documented if intended.
-
         if getattr(obj, "Base", None):
             if obj.Base.isDerivedFrom("Part::Feature"):
                 return True
@@ -1452,7 +1330,6 @@ class Component(ArchIFC.IfcProduct):
                 return True
             else:
                 import Part
-
                 if isinstance(getattr(obj.Base, "Shape", None), Part.Shape):
                     return True
                 else:
@@ -1464,8 +1341,6 @@ class Component(ArchIFC.IfcProduct):
         """Returns True if obj is an internal LinkGroup. Such a group is used to
         store hidden objects used for variant Links that should not be hosted."""
 
-        # based on code by bdm
-        # https://forum.freecad.org/viewtopic.php?p=820487#p820428
         if obj.TypeId != "App::LinkGroup":
             return False
         for inObj in obj.InList:
@@ -1486,19 +1361,14 @@ class Component(ArchIFC.IfcProduct):
         App::Link hook: called when a link to a BIM object is created.
         Used to setup shadow properties for lightweight instancing.
         """
-        # Shadow the given property so multiple links can have independent values without triggering
-        # a deep copy of the BIM object geometry.
         if self.LinkOverrideProperties:
             ArchCommands.override_link_properties(linkObj, self.LinkOverrideProperties)
 
-        # Execute features in the SketchArch External Add-on, if present
         if hasattr(self, "executeSketchArchFeatures"):
             self.executeSketchArchFeatures(obj, linkObj, index, linkElement)
 
 
-# ============================================================================
-# HATCH APPLICATION FUNCTIONS (v6 - FIXED)
-# ============================================================================
+# Hatch application functions
 
 def _clear_all_hatch_objects(doc, obj):
     """Remove all HF/HI objects for obj regardless of naming convention."""
@@ -1551,9 +1421,6 @@ def _get_or_create_hatch_container(doc, obj):
     return container
 
 
-# ============================================================================
-# FIX 2 — _classify_faces: Add min_area filter to skip degenerate faces
-# ============================================================================
 def _classify_faces(solid, area_threshold=0.15, min_area=1.0):
     """
     Split faces into (surface_faces, cap_faces).
@@ -1590,9 +1457,9 @@ def _prepare_face(face):
     """Return a clean copy of face with normalised wire orientation."""
     import Part
     try:
-        ow = face.OuterWire
-        ow.fix(1e-7, 0, 1)
-        fresh = Part.Face(ow)
+        outer_wire = face.OuterWire
+        outer_wire.fix(1e-7, 0, 1)
+        fresh = Part.Face(outer_wire)
         if not fresh.isNull() and fresh.isValid():
             return fresh
     except Exception:
@@ -1607,9 +1474,7 @@ def _sync_face_hatch_objects(doc, container, hatch_pattern, faces, name_prefix):
     """
     Create/update face features and hatch instances.
 
-    - purgeTouched() on HF objects so they never appear in 'still touched'
-    - No return value, no _schedule_hatch_recompute
-    - container.addObject() only for new objects
+    purgeTouched() on HF objects so they never appear in 'still touched'
     """
     try:
         from HatchGenerator.ArchHatch import makeCustomHatch
@@ -1623,7 +1488,6 @@ def _sync_face_hatch_objects(doc, container, hatch_pattern, faces, name_prefix):
         face_feat_name = f"{name_prefix}_HF{j}"
         inst_name      = f"{name_prefix}_HI{j}"
 
-        # ── Face feature ──────────────────────────────────────────────────
         face_feat = doc.getObject(face_feat_name)
         if face_feat is None:
             face_feat = doc.addObject("Part::Feature", face_feat_name)
@@ -1636,38 +1500,30 @@ def _sync_face_hatch_objects(doc, container, hatch_pattern, faces, name_prefix):
 
         face_feat.Shape = _prepare_face(face)
 
-        # purgeTouched: this shape is set directly, not by execute().
-        # Without this call FreeCAD keeps the object in the recompute queue
-        # producing "still touched after recompute" every cycle.
         if hasattr(face_feat, "purgeTouched"):
             face_feat.purgeTouched()
 
         if FreeCAD.GuiUp:
             face_feat.ViewObject.Visibility = False
 
-        # ── Hatch instance ────────────────────────────────────────────────
-        inst = doc.getObject(inst_name)
-        if inst is None:
-            inst = makeCustomHatch(name=inst_name)
+        hatch_instance = doc.getObject(inst_name)
+        if hatch_instance is None:
+            hatch_instance = makeCustomHatch(name=inst_name)
             if container:
                 try:
-                    if inst not in (container.Group or []):
-                        container.addObject(inst)
+                    if hatch_instance not in (container.Group or []):
+                        container.addObject(hatch_instance)
                 except Exception:
                     pass
 
-        inst.BaseObject           = face_feat
-        inst.PatternType          = "CustomObject"
-        inst.PatternObject        = hatch_pattern
-        inst.UseSurfaceProjection = True
-        inst.ForceXYPlane         = False
-        if not getattr(inst, "PatternScale", 0):
-            inst.PatternScale = 1.0
-        # Property assignments auto-mark inst as touched.
-        # FreeCAD's natural recompute handles inst.execute() — no explicit
-        # doc.recompute() or inst.touch() needed.
+        hatch_instance.BaseObject           = face_feat
+        hatch_instance.PatternType          = "CustomObject"
+        hatch_instance.PatternObject        = hatch_pattern
+        hatch_instance.UseSurfaceProjection = True
+        hatch_instance.ForceXYPlane         = False
+        if not getattr(hatch_instance, "PatternScale", 0):
+            hatch_instance.PatternScale = 1.0
 
-    # Remove stale objects from previous runs
     j = len(faces)
     while True:
         hf = doc.getObject(f"{name_prefix}_HF{j}")
@@ -1728,12 +1584,10 @@ def _apply_multimaterial_hatches(doc, obj, mat):
         solid = solids[i]
 
         if do_all:
-            # FIX 2: Filter out near-zero area faces — degenerate boolean artifacts
             valid_faces = [f for f in solid.Faces if f.Area >= 1.0]
             _sync_face_hatch_objects(doc, container, hatch_pattern, valid_faces, surf_prefix)
             _remove_prefix_objects(doc, cap_prefix)
         else:
-            # _classify_faces now includes min_area=1.0 filter
             surface_faces, cap_faces = _classify_faces(solid)
             if do_surfaces and surface_faces:
                 _sync_face_hatch_objects(doc, container, hatch_pattern, surface_faces, surf_prefix)
@@ -1744,7 +1598,6 @@ def _apply_multimaterial_hatches(doc, obj, mat):
             else:
                 _remove_prefix_objects(doc, cap_prefix)
 
-    # Clean up layers beyond n_layers
     i = n_layers
     while True:
         if not doc.getObject(f"{obj.Name}_HS{i}_HF0") and \
@@ -1786,12 +1639,10 @@ def _apply_single_material_hatch(doc, obj, mat):
     container = _get_or_create_hatch_container(doc, obj)
     solids    = shape.Solids
 
-    # FIX 2: Filter out near-zero area faces in all paths
     if do_all:
         all_faces = []
         if solids:
             for s in solids:
-                # Filter out near-zero area faces — degenerate boolean artifacts
                 valid = [f for f in s.Faces if f.Area >= 1.0]
                 all_faces.extend(valid)
         else:
@@ -1805,7 +1656,6 @@ def _apply_single_material_hatch(doc, obj, mat):
     all_surface, all_caps = [], []
     if solids:
         for solid in solids:
-            # _classify_faces now includes min_area=1.0 filter
             sf, cf = _classify_faces(solid)
             all_surface.extend(sf)
             all_caps.extend(cf)
@@ -1895,9 +1745,9 @@ class AreaCalculator:
             angle = face.Surface.Direction.getAngle(FreeCAD.Vector(0, 0, 1))
             return self.isZeroAngle(angle)
         elif face.Surface.TypeId == "Part::GeomPlane":
-            projectedArea = 0  # dummy value, isRightAngle check is sufficient here
+            projectedArea = 0
         elif face.findPlane() is not None:
-            projectedArea = 0  # dummy value, idem
+            projectedArea = 0
         else:
             try:
                 edges = TechDraw.project(face, FreeCAD.Vector(0, 0, 1))[0].Edges
@@ -1956,18 +1806,15 @@ class AreaCalculator:
         verticalArea = 0
         horizontalAreaFaces = []
 
-        # Compute vertical area and collect faces to be projected for the horizontal area
         for i, face in enumerate(self.obj.Shape.Faces, start=1):
             if self.isFaceVertical(face, face_index=i):
                 verticalArea += face.Area
             else:
                 horizontalAreaFaces.append(face)
 
-        # Update vertical area
         if hasattr(self.obj, "VerticalArea") and self.obj.VerticalArea.Value != verticalArea:
             self.obj.VerticalArea = verticalArea
 
-        # Compute horizontal area and perimeter length
         if horizontalAreaFaces and hasattr(self.obj, "HorizontalArea"):
             self._computeHorizontalAreaAndPerimeter(horizontalAreaFaces)
 
@@ -1988,8 +1835,6 @@ class AreaCalculator:
         import TechDraw
         import DraftGeomUtils
 
-        # In TechDraw edges longer than 9999.9 (ca. 10m) are considered 'crazy'.
-        # See also Draft/draftobjects/hatch.py.
         param_grp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/TechDraw/debug")
         if "allowCrazyEdge" not in param_grp.GetBools():
             old_allow_crazy_edge = None
@@ -2003,7 +1848,6 @@ class AreaCalculator:
             try:
                 if face.findPlane() is None:
                     if len(face.Wires) > 1:
-                        # Non-planar faces with holes are not handled properly
                         FreeCAD.Console.PrintWarning(
                             translate(
                                 "Arch",
@@ -2018,9 +1862,7 @@ class AreaCalculator:
                 else:
                     edges = TechDraw.project(face, direction)[0].Edges
                     wires = DraftGeomUtils.findWires(edges)
-                    # Using "Part::FaceMakerCheese" as the face can have holes
                     projectedFace = Part.makeFace(wires, "Part::FaceMakerCheese")
-                # Part.show(projectedFace)
                 projectedFaces.append(projectedFace)
             except Part.OCCError:
                 FreeCAD.Console.PrintWarning(
@@ -2044,7 +1886,6 @@ class AreaCalculator:
             for face in projectedFaces:
                 fusedFace = fusedFace.fuse(face)
             fusedFace = fusedFace.removeSplitter()
-            # Part.show(fusedFace)
 
             if self.obj.HorizontalArea.Value != fusedFace.Area:
                 self.obj.HorizontalArea = fusedFace.Area
@@ -2071,7 +1912,6 @@ class ViewProviderComponent:
         vobj.Proxy = self
         self.Object = vobj.Object
         self.setProperties(vobj)
-        # Initialize ghost renderer attribute
         self._ghost_renderer = None
 
     def _ensure_ghost_renderer(self, view_object):
@@ -2115,9 +1955,6 @@ class ViewProviderComponent:
             )
             vobj.UseMaterialColor = params.get_param_arch("UseMaterialColor")
 
-    # =========================================================================
-    # FIX 3 — updateData: Add "Placement" to trigger list for stale placement
-    # =========================================================================
     def updateData(self, obj, prop):
         """Method called when the host object has a property changed.
 
@@ -2135,7 +1972,6 @@ class ViewProviderComponent:
             The name of the property that has changed.
         """
 
-        # print(obj.Name," : updating ",prop)
         if prop == "Material":
             if obj.Material and getattr(obj.ViewObject, "UseMaterialColor", True):
                 if hasattr(obj.Material, "Material"):
@@ -2151,7 +1987,6 @@ class ViewProviderComponent:
                         )
                         if obj.ViewObject.ShapeColor != c:
                             obj.ViewObject.ShapeColor = c
-                        # Overwrite DiffuseColor (required if it does not match number of faces):
                         if obj.ViewObject.DiffuseColor != [c]:
                             obj.ViewObject.DiffuseColor = [c]
                     if "Transparency" in obj.Material.Material:
@@ -2175,8 +2010,6 @@ class ViewProviderComponent:
                             obj.ViewObject.DiffuseColor = obj.CloneOf.ViewObject.DiffuseColor
                             obj.ViewObject.update()
 
-        # Handle hatch property changes for ghost mode
-        # FIX 3: Added "Placement" to trigger list — when wall moves, faces need updating
         if prop in ("Shape", "Material", "Placement",
                     "HatchSurfaces", "HatchCaps", "HatchAllFaces", "HatchGhost"):
             self._update_hatch_display(obj)
@@ -2231,16 +2064,13 @@ class ViewProviderComponent:
                             vobj.DiffuseColor = obj.CloneOf.ViewObject.DiffuseColor
                             vobj.update()
         elif prop == "ShapeColor":
-            # restore DiffuseColor after overridden by ShapeColor
             if hasattr(vobj, "DiffuseColor"):
                 if len(vobj.DiffuseColor) > 1:
                     d = vobj.DiffuseColor
                     vobj.DiffuseColor = d
         elif prop == "Visibility":
-            # do nothing if object is an addition
             if not [parent for parent in obj.InList if obj in getattr(parent, "Additions", [])]:
                 hostedObjs = obj.Proxy.getHosts(obj)
-                # add objects hosted by additions
                 for addition in getattr(obj, "Additions", []):
                     if hasattr(addition, "Proxy") and hasattr(addition.Proxy, "getHosts"):
                         hostedObjs.extend(addition.Proxy.getHosts(addition))
@@ -2249,9 +2079,6 @@ class ViewProviderComponent:
                         hostedObj.ViewObject.Visibility = vobj.Visibility
         return
 
-    # =========================================================================
-    # FIX 1B — attach: schedule initial ghost render for new documents
-    # =========================================================================
     def attach(self, vobj):
         """Add display modes' data to the coin scenegraph.
 
@@ -2280,7 +2107,6 @@ class ViewProviderComponent:
         self.hiresgroup.setName("HiRes")
         vobj.addDisplayMode(self.hiresgroup, "HiRes")
 
-        # Initialize ghost hatch renderer
         if GhostHatchRenderer is not None:
             try:
                 self._ghost_renderer = GhostHatchRenderer(vobj)
@@ -2290,8 +2116,6 @@ class ViewProviderComponent:
         else:
             self._ghost_renderer = None
 
-        # FIX 1B: After creating _ghost_renderer, schedule initial ghost render.
-        # This fires in new documents where onDocumentRestored never runs.
         if self._ghost_renderer is not None:
             obj_ref  = self.Object
             self_ref = self
@@ -2312,7 +2136,6 @@ class ViewProviderComponent:
         Re-triggers ghost rendering if HatchGhost is True."""
         if not FreeCAD.GuiUp:
             return
-        # Small delay so the viewer is fully set up before rendering
         if not hasattr(self, "_ghost_renderer"):
             return
         obj_name = obj.Name
@@ -2391,7 +2214,6 @@ class ViewProviderComponent:
             if hasattr(self, "Object"):
                 if hasattr(self.Object, "HiRes"):
                     if self.Object.HiRes:
-                        # if the file was recently loaded, the node is not present yet
                         self.Object.HiRes.ViewObject.show()
                         self.Object.HiRes.ViewObject.hide()
                         m = self.Object.HiRes.ViewObject.RootNode
@@ -2400,20 +2222,17 @@ class ViewProviderComponent:
                         if self.Object.CloneOf:
                             if hasattr(self.Object.CloneOf, "HiRes"):
                                 if self.Object.CloneOf.HiRes:
-                                    # if the file was recently loaded, the node is not present yet
                                     self.Object.CloneOf.HiRes.ViewObject.show()
                                     self.Object.CloneOf.HiRes.ViewObject.hide()
                                     m = self.Object.CloneOf.HiRes.ViewObject.RootNode
             if m:
                 self.meshnode = m.copy()
                 for c in self.meshnode.getChildren():
-                    # switch the first found SoSwitch on
                     if isinstance(c, coin.SoSwitch):
                         num = 0
                         if c.getNumChildren() > 0:
                             if c.getChild(0).getName() == "HiRes":
                                 num = 1
-                        # print "getting node ",num," for ",self.Object.Label
                         c.whichChild = num
                         break
                 self.hiresgroup.addChild(self.meshnode)
@@ -2422,11 +2241,9 @@ class ViewProviderComponent:
         return mode
 
     def dumps(self):
-
         return None
 
     def loads(self, state):
-
         return None
 
     def claimChildren(self):
@@ -2473,7 +2290,6 @@ class ViewProviderComponent:
                     if objlink:
                         c.append(objlink)
 
-            # Claim the hatch container so it appears nested under the wall
             if hasattr(self.Object, "HatchContainer"):
                 hc = self.Object.HatchContainer
                 if hc:
@@ -2589,12 +2405,8 @@ class ViewProviderComponent:
                 )
                 or force
             ):
-
                 obj.ViewObject.DiffuseColor = obj.CloneOf.ViewObject.DiffuseColor
 
-    # =========================================================================
-    # Ghost mode rendering methods
-    # =========================================================================
     def _update_hatch_display(self, obj):
         """Route to ghost or hard hatch based on HatchGhost toggle."""
         if not FreeCAD.GuiUp:
@@ -2609,7 +2421,6 @@ class ViewProviderComponent:
 
         if not any_hatch:
             self._clear_ghost_renderer()
-            # Hide hard hatch container if it exists
             hc = getattr(obj, "HatchContainer", None)
             if hc and FreeCAD.GuiUp:
                 try:
@@ -2619,44 +2430,28 @@ class ViewProviderComponent:
             return
 
         if ghost_mode:
-            # Hide hard hatch container
             hc = getattr(obj, "HatchContainer", None)
             if hc and FreeCAD.GuiUp:
                 try:
                     hc.ViewObject.Visibility = False
                 except Exception:
                     pass
-            
-            # Render ghost
+
             renderer = self._ensure_ghost_renderer(obj.ViewObject)
             if renderer is not None:
                 self._render_ghost(obj)
         else:
-            # Clear ghost, show hard hatch
             self._clear_ghost_renderer()
-            
+
             hc = getattr(obj, "HatchContainer", None)
             if hc and FreeCAD.GuiUp:
                 try:
                     hc.ViewObject.Visibility = True
                 except Exception:
                     pass
-            
-            # Trigger hard hatch generation if not done yet
+
             obj.Proxy.apply_material_hatches(obj)
-    # =========================================================================
-    # FIX 1 — _render_ghost: defer coin3D scene graph modification
-    #
-    # Coin3D scene graph is locked during FreeCAD property update callbacks.
-    # addChild()/removeChild() called from updateData() are silently discarded.
-    # After file restore the 500ms timer fires when the scene is idle — works.
-    # During a toggle (updateData fires) — silently discarded — ghost invisible.
-    #
-    # The actual addChild/removeChild is deferred to QTimer.singleShot(0)
-    # inside GhostHatchRenderer._render_edges, but we also ensure the call
-    # to GhostHatchRenderer.update_multi is deferred so the entire render
-    # pipeline happens when the scene graph is idle.
-    # =========================================================================
+
     def _render_ghost(self, obj):
         """Collect faces + patterns and schedule Coin3D render for next idle frame."""
         if not self._ghost_renderer:
@@ -2676,13 +2471,9 @@ class ViewProviderComponent:
         do_surfaces = bool(getattr(obj, "HatchSurfaces",  False))
         do_caps     = bool(getattr(obj, "HatchCaps",      False))
 
-        # Collect (faces, hatch_pattern) pairs — one per material layer
-        # For single material: one pair covering the relevant faces
-        # For multi-material: one pair per layer that has a hatch assigned
-        render_pairs = []   # list of (face_list, hatch_pattern_obj)
+        render_pairs = []
 
         if hasattr(mat, "Proxy") and hasattr(mat.Proxy, "get_hatch_for_layer"):
-            # Multi-material path
             solids   = shape.Solids if shape else []
             n_layers = len(getattr(mat, "Materials", []))
             for i in range(n_layers):
@@ -2695,7 +2486,6 @@ class ViewProviderComponent:
                 if do_all:
                     render_pairs.append((list(solid.Faces), hatch_pattern))
                 else:
-                    # _classify_faces now includes min_area=1.0 filter
                     sf, cf = _classify_faces(solid)
                     faces = []
                     if do_surfaces:
@@ -2705,7 +2495,6 @@ class ViewProviderComponent:
                     if faces:
                         render_pairs.append((faces, hatch_pattern))
         else:
-            # Single material path
             hatch_pattern = getattr(mat, "Hatch", None)
             if not hatch_pattern:
                 self._ghost_renderer.clear()
@@ -2723,7 +2512,6 @@ class ViewProviderComponent:
                 faces = []
                 if solids:
                     for solid in solids:
-                        # _classify_faces now includes min_area=1.0 filter
                         sf, cf = _classify_faces(solid)
                         if do_surfaces:
                             faces.extend(sf)
@@ -2738,11 +2526,6 @@ class ViewProviderComponent:
             self._ghost_renderer.clear()
             return
 
-        # Defer coin3D scene graph modification.
-        # addChild/removeChild during updateData() are silently dropped by coin3D
-        # because the scene graph is locked during rendering.
-        # Scheduling via QTimer ensures the modification happens when the scene
-        # is idle — same reason the 500ms restart timer works but direct calls don't.
         renderer = self._ghost_renderer
 
         from PySide import QtCore
@@ -2873,9 +2656,6 @@ class ComponentTaskPanel:
         Initializes the task panel. The transaction context is implicitly opened by the C++ layer
         when entering edit mode.
         """
-        # the panel has a tree widget that contains categories
-        # for the subcomponents, such as additions, subtractions.
-        # the categories are shown only if they are not empty.
 
         self.obj = None
         self.attribs = [
@@ -2897,13 +2677,11 @@ class ComponentTaskPanel:
         self.grid.addWidget(self.title, 0, 0, 1, 2)
         self.form = self.baseform
 
-        # tree
         self.tree = QtGui.QTreeWidget(self.baseform)
         self.grid.addWidget(self.tree, 1, 0, 1, 2)
         self.tree.setColumnCount(1)
         self.tree.header().hide()
 
-        # buttons
         self.addButton = QtGui.QPushButton(self.baseform)
         self.addButton.setObjectName("addButton")
         self.addButton.setIcon(QtGui.QIcon(":/icons/Arch_Add.svg"))
@@ -2932,7 +2710,6 @@ class ComponentTaskPanel:
         else:
             import os
 
-            # the BIM_Classification command needs to be added before it can be used
             if not "BIM_Classification" in FreeCADGui.listCommands():
                 FreeCADGui.activateWorkbench("BIMWorkbench")
             self.classButton.setIcon(
@@ -3114,12 +2891,9 @@ class ComponentTaskPanel:
 
         element_to_remove = FreeCAD.ActiveDocument.getObject(str(element_selected.toolTip(0)))
 
-        # Call the polymorphic handler on the object's proxy.
-        # This is generic and works for any Arch object.
         if hasattr(self.obj.Proxy, "handleComponentRemoval"):
             self.obj.Proxy.handleComponentRemoval(self.obj, element_to_remove)
         else:
-            # Fallback for older proxies that might not have the method
             removeFromComponent(self.obj, element_to_remove)
 
         self.obj.recompute()
@@ -3217,7 +2991,6 @@ class ComponentTaskPanel:
         import Arch_rc
         import ArchIFCSchema
 
-        # get presets
         self.ptypes = list(ArchIFCSchema.IfcTypes)
         self.plabels = [
             "".join(map(lambda x: x if x.islower() else " " + x, t[3:]))[1:] for t in self.ptypes
@@ -3238,14 +3011,12 @@ class ComponentTaskPanel:
         self.psetkeys.sort()
         self.ifcEditor = FreeCADGui.PySideUic.loadUi(":/ui/dialogIfcPropertiesRedux.ui")
 
-        # center the dialog over FreeCAD window
         mw = FreeCADGui.getMainWindow()
         self.ifcEditor.move(
             mw.frameGeometry().topLeft() + mw.rect().center() - self.ifcEditor.rect().center()
         )
         self.ifcModel = QtGui.QStandardItemModel()
         self.ifcEditor.treeProperties.setModel(self.ifcModel)
-        # self.ifcEditor.treeProperties.setDragDropMode(QtGui.QAbstractItemView.InternalMove)
         self.ifcEditor.treeProperties.setUniformRowHeights(True)
         self.ifcEditor.treeProperties.setItemDelegate(
             IfcEditorDelegate(dialog=self, ptypes=self.ptypes, plabels=self.plabels)
@@ -3258,7 +3029,6 @@ class ComponentTaskPanel:
             ]
         )
 
-        # set combos
         self.ifcEditor.comboProperty.addItems(
             [QtGui.QApplication.translate("Arch", "Add property", None)] + self.plabels
         )
@@ -3270,14 +3040,11 @@ class ComponentTaskPanel:
             + self.psetkeys
         )
 
-        # set UUID
         if "IfcUID" in self.obj.IfcData:
             self.ifcEditor.labelUUID.setText(self.obj.IfcData["IfcUID"])
 
-        # fill the tree
         psets = {}
         for pname, value in self.obj.IfcProperties.items():
-            # properties in IfcProperties dict are stored as "key":"pset;;type;;value" or "key":"type;;value"
             value = value.split(";;")
             if len(value) == 3:
                 pset = value[0]
@@ -3308,14 +3075,12 @@ class ComponentTaskPanel:
                 top.appendRow([it1, it2, it3])
             top.sortChildren(0)
 
-        # span top levels
         idx = self.ifcModel.invisibleRootItem().index()
         for i in range(self.ifcModel.rowCount()):
             if self.ifcModel.item(i, 0).hasChildren():
                 self.ifcEditor.treeProperties.setFirstColumnSpanned(i, idx, True)
         self.ifcEditor.treeProperties.expandAll()
 
-        # Add callbacks
         QtCore.QObject.connect(
             self.ifcEditor.buttonBox, QtCore.SIGNAL("accepted()"), self.acceptIfcProperties
         )
@@ -3332,7 +3097,6 @@ class ComponentTaskPanel:
         )
         self.ifcEditor.treeProperties.setSortingEnabled(True)
 
-        # set checkboxes
         if "FlagForceBrep" in self.obj.IfcData:
             self.ifcEditor.checkBrep.setChecked(self.obj.IfcData["FlagForceBrep"] == "True")
         if "FlagParametric" in self.obj.IfcData:
@@ -3364,7 +3128,6 @@ class ComponentTaskPanel:
             ifcData["IfcUID"] = self.ifcEditor.labelUUID.text()
             ifcData["FlagForceBrep"] = str(self.ifcEditor.checkBrep.isChecked())
             ifcData["FlagParametric"] = str(self.ifcEditor.checkParametric.isChecked())
-            # The transaction context is implicitly opened by the C++ layer when entering edit mode.
             if ifcdict != self.obj.IfcProperties:
                 self.obj.IfcProperties = ifcdict
             if ifcData != self.obj.IfcData:
@@ -3470,7 +3233,6 @@ class ComponentTaskPanel:
                             ptype=self.psetdefs[psetdef][i + 1],
                         )
             if idx != 0:
-                # span top levels
                 idx = self.ifcModel.invisibleRootItem().index()
                 for i in range(self.ifcModel.rowCount()):
                     if self.ifcModel.item(i, 0).hasChildren():
@@ -3526,9 +3288,9 @@ class ComponentOptionsTaskPanel(ComponentTaskPanel):
 
         super().__init__()
         self.obj = obj
-        self.update()  # Populate the components tree now that self.obj is set
+        self.update()
         self.property_definitions = property_definitions
-        self.property_widgets = {}  # Map property name to {'widget': widget, 'type': type_id}
+        self.property_widgets = {}
 
         self.options_widget = QtGui.QWidget()
         self.options_widget.setWindowTitle(translate("Arch", "Options"))
@@ -3538,10 +3300,8 @@ class ComponentOptionsTaskPanel(ComponentTaskPanel):
         for item in self.property_definitions:
             prop_name = item["prop"]
 
-            # Heuristics for label: Use provided label or fallback to split CamelCase
             label_text = item.get("label", re.sub(r"(?<!^)(?=[A-Z])", " ", prop_name))
 
-            # Check if property exists on Data object or View object
             target_obj = self.obj
             if not hasattr(target_obj, prop_name):
                 if hasattr(self.obj, "ViewObject") and hasattr(self.obj.ViewObject, prop_name):
@@ -3553,7 +3313,6 @@ class ComponentOptionsTaskPanel(ComponentTaskPanel):
             prop_type_id = target_obj.getTypeIdOfProperty(prop_name)
             widget = None
 
-            # Quantity types
             if prop_type_id in [
                 "App::PropertyLength",
                 "App::PropertyDistance",
@@ -3565,11 +3324,9 @@ class ComponentOptionsTaskPanel(ComponentTaskPanel):
                 FreeCADGui.ExpressionBinding(widget).bind(target_obj, prop_name)
                 widget.setProperty("value", prop_val)
 
-            # Float
             elif prop_type_id == "App::PropertyFloat":
                 widget = loader.createWidget("Gui::DoubleSpinBox")
                 FreeCADGui.ExpressionBinding(widget).bind(target_obj, prop_name)
-                # Unlike `Gui::QuantitySpinbox`, `Gui::DoubleSpinBox` requires explicit initialization
                 widget.setDecimals(
                     FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt(
                         "Decimals", 2
@@ -3578,7 +3335,6 @@ class ComponentOptionsTaskPanel(ComponentTaskPanel):
                 widget.setRange(-(2**31), 2**31)
                 widget.setValue(float(prop_val))
 
-            # Integer types
             elif prop_type_id in ["App::PropertyInteger", "App::PropertyPercent"]:
                 widget = loader.createWidget("Gui::IntSpinBox")
                 FreeCADGui.ExpressionBinding(widget).bind(target_obj, prop_name)
@@ -3588,17 +3344,12 @@ class ComponentOptionsTaskPanel(ComponentTaskPanel):
                     widget.setProperty("minimum", 0)
                     widget.setProperty("maximum", 100)
 
-            # Boolean
             elif prop_type_id == "App::PropertyBool":
                 widget = QtGui.QCheckBox()
                 widget.setChecked(prop_val)
 
-            # Enumeration (ComboBox)
             elif prop_type_id == "App::PropertyEnumeration":
                 widget = QtGui.QComboBox()
-                # Combo boxes tend to have long texts in BIM. Do not use them to calculate the
-                # size of the task boxes, which would appear too wide and would grow beyond their
-                # task panel container
                 widget.setSizeAdjustPolicy(QtGui.QComboBox.AdjustToMinimumContentsLengthWithIcon)
                 widget.setMinimumContentsLength(20)
                 widget.addItems(target_obj.getEnumerationsOfProperty(prop_name))
@@ -3606,13 +3357,11 @@ class ComponentOptionsTaskPanel(ComponentTaskPanel):
                 if idx >= 0:
                     widget.setCurrentIndex(idx)
 
-            # String
             elif prop_type_id == "App::PropertyString":
                 widget = loader.createWidget("Gui::ExpLineEdit")
                 FreeCADGui.ExpressionBinding(widget).bind(target_obj, prop_name)
                 widget.setProperty("text", prop_val)
 
-            # String List
             elif prop_type_id == "App::PropertyStringList":
                 widget = QtGui.QPlainTextEdit()
                 widget.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
@@ -3630,7 +3379,6 @@ class ComponentOptionsTaskPanel(ComponentTaskPanel):
                     "object": target_obj,
                 }
 
-        # Prepend the options widget to the form list (inherited from ComponentTaskPanel)
         self.form = [self.options_widget, self.baseform]
 
     def accept(self):
@@ -3641,7 +3389,6 @@ class ComponentOptionsTaskPanel(ComponentTaskPanel):
             target_obj = data["object"]
 
             try:
-                # Quantities, Floats and Integers
                 if prop_type in [
                     "App::PropertyLength",
                     "App::PropertyDistance",
@@ -3654,19 +3401,15 @@ class ComponentOptionsTaskPanel(ComponentTaskPanel):
                 ]:
                     setattr(target_obj, prop_name, widget.property("value"))
 
-                # Bools
                 elif prop_type == "App::PropertyBool":
                     setattr(target_obj, prop_name, widget.isChecked())
 
-                # Enumerations
                 elif prop_type == "App::PropertyEnumeration":
                     setattr(target_obj, prop_name, widget.currentText())
 
-                # Strings
                 elif prop_type == "App::PropertyString":
                     setattr(target_obj, prop_name, widget.text())
 
-                # String Lists
                 elif prop_type == "App::PropertyStringList":
                     setattr(target_obj, prop_name, widget.toPlainText().splitlines())
 
@@ -3723,11 +3466,11 @@ if FreeCAD.GuiUp:
                 The editor widget this method has created.
             """
 
-            if index.column() == 0:  # property name
+            if index.column() == 0:
                 editor = QtGui.QLineEdit(parent)
-            elif index.column() == 1:  # property type
+            elif index.column() == 1:
                 editor = QtGui.QComboBox(parent)
-            else:  # property value
+            else:
                 ptype = index.sibling(index.row(), 1).data()
                 if "Integer" in ptype:
                     editor = QtGui.QSpinBox(parent)

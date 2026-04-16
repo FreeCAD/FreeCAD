@@ -242,9 +242,8 @@ class _ArchMaterial:
                 QT_TRANSLATE_NOOP("App::Property", "The color of this material when cut"),
                 locked=True,
             )
-        # ======================================================================
-        # NEW: Hatch property for single materials
-        # ======================================================================
+
+        # Hatch property for single materials
         if not "Hatch" in obj.PropertiesList:
             obj.addProperty(
                 "App::PropertyLink",
@@ -254,7 +253,7 @@ class _ArchMaterial:
                     "App::Property",
                     "Optional hatch pattern (CustomHatch) to apply to surfaces "
                     "of objects using this material. Only used when no "
-                    "MultiMaterial is assigned to the object.",
+                    "MultiMaterial is assigned to the object."
                 ),
                 locked=True,
             )
@@ -370,10 +369,6 @@ class _ArchMaterial:
                 d["Description"] = val
         if d and (d != obj.Material):
             obj.Material = d
-            # if FreeCAD.GuiUp:
-            # import FreeCADGui
-            # not sure why this is needed, but it is...
-            # FreeCADGui.ActiveDocument.resetEdit()
 
     def execute(self, obj):
         if obj.Material:
@@ -428,7 +423,6 @@ class _ViewProviderArchMaterial:
         if prop == "Color":
             from PySide import QtCore, QtGui
 
-            # custom icon
             if hasattr(obj, "Color"):
                 c = obj.Color
                 matcolor = QtGui.QColor(int(c[0] * 255), int(c[1] * 255), int(c[2] * 255))
@@ -437,7 +431,6 @@ class _ViewProviderArchMaterial:
                 im.fill(QtCore.Qt.transparent)
                 pt = QtGui.QPainter(im)
                 pt.setPen(QtGui.QPen(QtCore.Qt.black, 2, QtCore.Qt.SolidLine, QtCore.Qt.FlatCap))
-                # pt.setBrush(QtGui.QBrush(matcolor, QtCore.Qt.SolidPattern))
                 gradient = QtGui.QLinearGradient(0, 0, 48, 48)
                 gradient.setColorAt(0, matcolor)
                 gradient.setColorAt(1, darkcolor)
@@ -657,7 +650,6 @@ class _ArchMaterialTaskPanel:
         if text:
             if text == "None":
                 if "Father" in self.material:
-                    # for some have Father at first and change to none
                     self.material.pop("Father")
             else:
                 self.material["Father"] = text
@@ -680,8 +672,6 @@ class _ArchMaterialTaskPanel:
 
     def fillMaterialCombo(self):
         "fills the combo with the existing FCMat cards"
-        # look for cards in both resources dir and a Materials sub-folder in the user folder.
-        # User cards with same name will override system cards
         resources_mat_path = os.path.join(
             FreeCAD.getResourceDir(), "Mod", "Material", "Resources", "Materials"
         )
@@ -732,9 +722,6 @@ class _ArchMaterialTaskPanel:
         FreeCADGui.runCommand("BIM_Classification")
 
 
-# ============================================================================
-# FIXED _ArchMultiMaterial class with sparse HatchIndices approach
-# ============================================================================
 class _ArchMultiMaterial:
     "The MultiMaterial object"
 
@@ -793,9 +780,6 @@ class _ArchMultiMaterial:
                 ),
                 locked=True,
             )
-        # HatchIndices maps Hatches[i] to the layer index it belongs to.
-        # Stored as a flat IntegerList so we can have sparse hatch assignments
-        # without trying to put None in a PropertyLinkList.
         if "HatchIndices" not in pl:
             obj.addProperty(
                 "App::PropertyIntegerList",
@@ -808,7 +792,7 @@ class _ArchMultiMaterial:
                 ),
                 locked=True,
             )
-            obj.setEditorMode("HatchIndices", 1)  # read-only in Data panel
+            obj.setEditorMode("HatchIndices", 1)
 
     def onDocumentRestored(self, obj):
         """Called when a saved document is reopened.
@@ -820,28 +804,25 @@ class _ArchMultiMaterial:
         """Called when any property on obj changes.
 
         The Hatches / HatchIndices properties are managed here only when
-        they already exist.  During initial construction, setProperties()
+        they already exist. During initial construction, setProperties()
         adds properties one by one — each addProperty() call fires onChanged
-        for that property name.  We guard with hasattr() to avoid accessing
+        for that property name. We guard with hasattr() to avoid accessing
         properties that haven't been added yet.
         """
-        # Nothing to sync unless the layer structure properties fire AND
-        # Hatches already exists on the object.
         if prop in ("Materials", "Names", "Thicknesses"):
             if not hasattr(obj, "Hatches") or not hasattr(obj, "HatchIndices"):
-                return  # still being constructed — skip
+                return
 
             n_layers = len(getattr(obj, "Materials", []))
-            hatches = list(getattr(obj, "Hatches", []) or [])
-            indices = list(getattr(obj, "HatchIndices", []) or [])
+            hatches   = list(getattr(obj, "Hatches",     []) or [])
+            indices   = list(getattr(obj, "HatchIndices",[]) or [])
 
-            # Drop any hatch/index pairs whose layer index is now out of range
             paired = [(h, idx) for h, idx in zip(hatches, indices) if idx < n_layers]
             new_hatches = [p[0] for p in paired]
             new_indices = [p[1] for p in paired]
 
             if new_hatches != hatches or new_indices != indices:
-                obj.Hatches = new_hatches
+                obj.Hatches      = new_hatches
                 obj.HatchIndices = new_indices
 
     def get_hatch_for_layer(self, obj, layer_index):
@@ -858,11 +839,11 @@ class _ArchMultiMaterial:
         -------
         FreeCAD document object (CustomHatch) or None
         """
-        hatches = list(getattr(obj, "Hatches", []) or [])
-        indices = list(getattr(obj, "HatchIndices", []) or [])
-        for h, idx in zip(hatches, indices):
-            if idx == layer_index and h is not None:
-                return h
+        hatches = list(getattr(obj, "Hatches",     []) or [])
+        indices = list(getattr(obj, "HatchIndices",[]) or [])
+        for hatch_obj, idx in zip(hatches, indices):
+            if idx == layer_index and hatch_obj is not None:
+                return hatch_obj
         return None
 
     def set_hatch_for_layer(self, obj, layer_index, hatch_obj):
@@ -874,18 +855,16 @@ class _ArchMultiMaterial:
         layer_index : int, zero-based
         hatch_obj   : CustomHatch document object, or None to clear
         """
-        hatches = list(getattr(obj, "Hatches", []) or [])
-        indices = list(getattr(obj, "HatchIndices", []) or [])
+        hatches = list(getattr(obj, "Hatches",     []) or [])
+        indices = list(getattr(obj, "HatchIndices",[]) or [])
 
-        # Remove any existing assignment for this layer index
         paired = [(h, idx) for h, idx in zip(hatches, indices) if idx != layer_index]
 
         if hatch_obj is not None:
             paired.append((hatch_obj, layer_index))
-            # Keep sorted by layer index for predictability
             paired.sort(key=lambda p: p[1])
 
-        obj.Hatches = [p[0] for p in paired]
+        obj.Hatches      = [p[0] for p in paired]
         obj.HatchIndices = [p[1] for p in paired]
 
     def execute(self, obj):
@@ -982,7 +961,6 @@ if FreeCAD.GuiUp:
         def setEditorData(self, editor, index):
             if index.column() == 0:
                 import ArchWindow
-
                 editor.addItems([index.data()] + ArchWindow.WindowPartTypes)
             elif index.column() == 1:
                 idx = -1
@@ -992,9 +970,7 @@ if FreeCAD.GuiUp:
                         idx = i
                 editor.setCurrentIndex(idx)
             elif index.column() == 3:
-                import Draft
-
-                editor.addItem("")  # empty = no hatch
+                editor.addItem("")
                 for obj in FreeCAD.ActiveDocument.Objects:
                     if hasattr(obj, "Proxy") and hasattr(obj.Proxy, "Type"):
                         if obj.Proxy.Type == "CustomHatchFP":
@@ -1036,7 +1012,7 @@ class _ArchMultiMaterialTaskPanel:
                 translate("Arch", "Hatch"),
             ]
         )
-        self.form.tree.setRootIsDecorated(False)  # remove 1st column's extra left margin
+        self.form.tree.setRootIsDecorated(False)
         self.form.tree.setModel(self.model)
         self.form.tree.setUniformRowHeights(True)
         self.form.tree.setItemDelegate(MultiMaterialDelegate())
@@ -1063,7 +1039,6 @@ class _ArchMultiMaterialTaskPanel:
                     translate("Arch", "Hatch"),
                 ]
             )
-            # restore widths
             self.form.tree.setColumnWidth(0, params.get_param_arch("MultiMaterialColumnWidth0"))
             self.form.tree.setColumnWidth(1, params.get_param_arch("MultiMaterialColumnWidth1"))
             for i in range(len(obj.Names)):
@@ -1074,12 +1049,11 @@ class _ArchMultiMaterialTaskPanel:
                         obj.Thicknesses[i], FreeCAD.Units.Length
                     ).getUserPreferred()[0]
                 )
-                # Look up existing hatch assignment for this layer
                 hatch_label = ""
                 if hasattr(obj, "Proxy") and hasattr(obj.Proxy, "get_hatch_for_layer"):
-                    h = obj.Proxy.get_hatch_for_layer(obj, i)
-                    if h is not None:
-                        hatch_label = h.Label
+                    hatch_obj = obj.Proxy.get_hatch_for_layer(obj, i)
+                    if hatch_obj is not None:
+                        hatch_label = hatch_obj.Label
                 item4 = QtGui.QStandardItem(hatch_label)
                 self.model.appendRow([item1, item2, item3, item4])
             self.form.nameField.setText(obj.Label)
@@ -1108,7 +1082,7 @@ class _ArchMultiMaterialTaskPanel:
         item1 = QtGui.QStandardItem(translate("Arch", "New layer"))
         item2 = QtGui.QStandardItem()
         item3 = QtGui.QStandardItem()
-        item4 = QtGui.QStandardItem()  # empty hatch
+        item4 = QtGui.QStandardItem()
         self.model.appendRow([item1, item2, item3, item4])
 
     def delLayer(self):
@@ -1162,7 +1136,6 @@ class _ArchMultiMaterialTaskPanel:
         self.form.labelTotalThickness.setText(prefix + val + suffix)
 
     def accept(self):
-        # store widths
         params.set_param_arch("MultiMaterialColumnWidth0", self.form.tree.columnWidth(0))
         params.set_param_arch("MultiMaterialColumnWidth1", self.form.tree.columnWidth(1))
         if self.obj:
@@ -1197,25 +1170,21 @@ class _ArchMultiMaterialTaskPanel:
             self.obj.Materials = materials
             self.obj.Thicknesses = thicknesses
 
-            # Save hatch assignments using the sparse API
             if hasattr(self.obj, "Proxy") and hasattr(self.obj.Proxy, "set_hatch_for_layer"):
-                # First clear all existing hatch assignments
                 self.obj.Hatches = []
                 self.obj.HatchIndices = []
-                # Then write the new assignments from the table
                 for row in range(self.model.rowCount()):
-                    hatch_label = (
-                        self.model.item(row, 3).text().strip() if self.model.item(row, 3) else ""
-                    )
+                    hatch_label = self.model.item(row, 3).text().strip() \
+                                  if self.model.item(row, 3) else ""
                     if hatch_label:
                         for doc_obj in FreeCAD.ActiveDocument.Objects:
                             if doc_obj.Label == hatch_label:
-                                if (
-                                    hasattr(doc_obj, "Proxy")
-                                    and hasattr(doc_obj.Proxy, "Type")
-                                    and doc_obj.Proxy.Type == "CustomHatchFP"
-                                ):
-                                    self.obj.Proxy.set_hatch_for_layer(self.obj, row, doc_obj)
+                                if hasattr(doc_obj, "Proxy") and \
+                                   hasattr(doc_obj.Proxy, "Type") and \
+                                   doc_obj.Proxy.Type == "CustomHatchFP":
+                                    self.obj.Proxy.set_hatch_for_layer(
+                                        self.obj, row, doc_obj
+                                    )
                                     break
 
             if self.form.nameField.text():

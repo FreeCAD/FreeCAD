@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                          *
@@ -29,7 +27,7 @@ import math
 import random
 
 
-def shapeToEdges(shape):
+def shape_to_edges(shape):
     """Convert a shape to a compound of edges."""
     if shape.isNull():
         return shape
@@ -163,14 +161,14 @@ def _compute_transformed_tile_bounds(tile_x, tile_y, tile_width, tile_height,
     return xmin, xmax, ymin, ymax
 
 
-def makeTileAndClip(base_shape, normed_pattern, tile_x, tile_y,
-                    base_scale, base_rot_rad,
-                    randomize, random_offset_range,
-                    random_rot_min, random_rot_max,
-                    random_scale_min, random_scale_max,
-                    show_faces, shape_distortion,
-                    enable_color_var, color_var_intensity,
-                    placement_mode="Center", clip_mode="BooleanOnly"):
+def make_tile_and_clip(base_shape, normed_pattern, tile_x, tile_y,
+                       base_scale, base_rot_rad,
+                       randomize, random_offset_range,
+                       random_rot_min, random_rot_max,
+                       random_scale_min, random_scale_max,
+                       show_faces, shape_distortion,
+                       enable_color_var, color_var_intensity,
+                       placement_mode="Center", clip_mode="BooleanOnly"):
     """
     Create a single tile instance, transform it, and clip it against the base shape.
     """
@@ -243,7 +241,7 @@ def makeTileAndClip(base_shape, normed_pattern, tile_x, tile_y,
         except Exception as ex:
             FreeCAD.Console.PrintWarning(f"makeFace() failed: {str(ex)}\n")
     else:
-        tile_copy = shapeToEdges(tile_copy)
+        tile_copy = shape_to_edges(tile_copy)
 
     try:
         result = clipShapeToBase(base_shape, tile_copy, clip_mode)
@@ -262,7 +260,7 @@ def makeTileAndClip(base_shape, normed_pattern, tile_x, tile_y,
     return result, random_color
 
 
-def separateFacesAndEdges(shape):
+def separate_faces_and_edges(shape):
     """Return (faces, edges) from a shape."""
     if shape.isNull():
         return [], []
@@ -318,18 +316,18 @@ def buildHatchShape(baseShape, overrideBB=None,
     except Exception:
         return Part.makeCompound([]), 0
 
-    normed_pattern, pattern_bb = normalizePatternShape(patternShape)
+    normed_pattern, pattern_bbox = normalizePatternShape(patternShape)
     if normed_pattern.isNull():
         return Part.makeCompound([]), 0
 
-    tile_width = max(pattern_bb.XLength, 1e-6)
-    tile_height = max(pattern_bb.YLength, 1e-6)
+    tile_width = max(pattern_bbox.XLength, 1e-6)
+    tile_height = max(pattern_bbox.YLength, 1e-6)
 
     if tileShape is not None and not tileShape.isNull():
-        tile_normed, tile_bb = normalizePatternShape(tileShape)
+        tile_normed, tile_bbox = normalizePatternShape(tileShape)
         if not tile_normed.isNull():
-            tile_width = max(tile_bb.XLength, 1e-6)
-            tile_height = max(tile_bb.YLength, 1e-6)
+            tile_width = max(tile_bbox.XLength, 1e-6)
+            tile_height = max(tile_bbox.YLength, 1e-6)
 
     if autoScaleToFitBase:
         base_width = bounding_box.XLength
@@ -372,7 +370,7 @@ def buildHatchShape(baseShape, overrideBB=None,
         tile_parts = []
         tile_colors = []
 
-        def tileAndClip(tile_x, tile_y, base_scale, base_rot_rad, placement_mode):
+        def tile_and_clip(tile_x, tile_y, base_scale, base_rot_rad, placement_mode):
             nonlocal tile_count
 
             can_broadphase_cull = (
@@ -395,7 +393,7 @@ def buildHatchShape(baseShape, overrideBB=None,
                     maxy < bounding_box.YMin or miny > bounding_box.YMax):
                     return None, None
 
-            tile_shape, tile_color = makeTileAndClip(
+            tile_shape, tile_color = make_tile_and_clip(
                 baseShape,
                 normed_pattern,
                 tile_x, tile_y,
@@ -424,7 +422,7 @@ def buildHatchShape(baseShape, overrideBB=None,
         while x <= end_x and tile_count < maxTiles:
             y = start_y
             while y <= end_y and tile_count < maxTiles:
-                tile, color = tileAndClip(x, y, patternScale, rotation_rad, placement_mode)
+                tile, color = tile_and_clip(x, y, patternScale, rotation_rad, placement_mode)
                 if tile and not tile.isNull():
                     tile_parts.append(tile)
                     if color:
@@ -472,7 +470,7 @@ def buildHatchShape(baseShape, overrideBB=None,
                     break
                 tile_x = start_x + i * step_x
                 tile_y = start_y + j * step_y
-                tile, color = makeTileAndClip(
+                tile, color = make_tile_and_clip(
                     baseShape, normed_pattern,
                     tile_x, tile_y,
                     patternScale, rotation_rad,
@@ -520,7 +518,7 @@ def buildHatchShape(baseShape, overrideBB=None,
             angle = 2 * math.pi * i / radialCount
             tile_x = center_x + radialRadius * math.cos(angle)
             tile_y = center_y + radialRadius * math.sin(angle)
-            tile, color = makeTileAndClip(
+            tile, color = make_tile_and_clip(
                 baseShape, normed_pattern,
                 tile_x, tile_y,
                 patternScale, rotation_rad,
@@ -564,7 +562,7 @@ def buildHatchShape(baseShape, overrideBB=None,
                 angle = 2 * math.pi * i / steps
                 tile_x = center_x + radius * math.cos(angle)
                 tile_y = center_y + radius * math.sin(angle)
-                tile, color = makeTileAndClip(
+                tile, color = make_tile_and_clip(
                     baseShape, normed_pattern,
                     tile_x, tile_y,
                     patternScale, rotation_rad,
@@ -601,7 +599,7 @@ def buildHatchShape(baseShape, overrideBB=None,
                 break
             tile_x = bounding_box.XMin + random.random() * bounding_box.XLength
             tile_y = bounding_box.YMin + random.random() * bounding_box.YLength
-            tile, color = makeTileAndClip(
+            tile, color = make_tile_and_clip(
                 baseShape, normed_pattern,
                 tile_x, tile_y,
                 patternScale, rotation_rad,

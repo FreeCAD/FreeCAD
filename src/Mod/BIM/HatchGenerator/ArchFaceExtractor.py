@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                          *
@@ -34,12 +32,12 @@ else:
         return text
 
 
-def _safe_normalized_vector(vec):
+def _safe_normalized_vector(vector):
     """Return a normalized FreeCAD.Vector or None."""
-    if vec is None:
+    if vector is None:
         return None
     try:
-        out = FreeCAD.Vector(vec.x, vec.y, vec.z)
+        out = FreeCAD.Vector(vector.x, vector.y, vector.z)
     except Exception:
         return None
     if out.Length <= 1e-12:
@@ -104,6 +102,90 @@ def apply_support_face_view_style(view_object):
             view_object.DisplayMode = modes[0]
     except Exception:
         pass
+
+
+def _is_face_extractor(obj):
+    """Identify FaceExtractor objects robustly — survives module reloads."""
+    proxy = getattr(obj, "Proxy", None)
+    if proxy is None:
+        return False
+    if getattr(proxy, "Type", "") == "FaceExtractor":
+        return True
+    if isinstance(proxy, FaceExtractorFeature):
+        return True
+    return False
+
+
+def _placements_are_close(pl1, pl2, tol_mm=1.0, tol_rad=0.001):
+    """
+    Return True if two placements represent nearly the same transform.
+
+    Used to detect the FreeCAD convention difference between:
+      - Part / Draft objects  → obj.Shape is stored in LOCAL space; the
+        object's document Placement positions it.  The shape's internal OCCT
+        TopLoc_Location IS (or closely mirrors) the document Placement.
+      - Arch objects          → obj.Shape is stored relative to a BASE object
+        (e.g. a sketch) whose placement is baked in as the shape's internal
+        TopLoc_Location, independently of the Arch object's own Placement.
+    """
+    try:
+        if (pl1.Base - pl2.Base).Length > tol_mm:
+            return False
+        rel_angle = pl1.inverse().multiply(pl2).Rotation.Angle
+        return abs(rel_angle) < tol_rad
+    except Exception:
+        return False
+
+
+def _face_total_placement(face_copy, parent_pl):
+    """
+    Compute the full world Placement for a face extracted from a parent object.
+
+    face_copy.Placement exposes the shape's internal OCCT TopLoc_Location.
+
+    Two conventions exist in FreeCAD:
+      A) Part / Draft objects store their shape in local space and carry the
+         document Placement as the shape's internal location.  Here
+         shape_internal_pl ≈ parent_pl, so the total world transform is
+         simply parent_pl (no double-application).
+      B) Arch objects store their shape in the BASE SKETCH's local space and
+         carry the sketch's placement as the shape's internal location,
+         independently of the Arch object's own Placement.  Here
+         shape_internal_pl ≠ parent_pl, so we compose both:
+         total = parent_pl × shape_internal_pl.
+
+    Returns total_pl (FreeCAD.Placement).
+    """
+    shape_internal_pl = face_copy.Placement
+    if _placements_are_close(shape_internal_pl, parent_pl):
+        # Convention A — shape already positioned by parent_pl
+        return parent_pl
+    else:
+        # Convention B — compose independent transforms
+        return parent_pl.multiply(shape_internal_pl)
+
+
+def _cleanup_old_face_extractors(current_obj=None):
+    """Remove temporary FaceExtractor objects not marked as permanent."""
+    doc = FreeCAD.ActiveDocument
+    if not doc:
+        return
+
+    to_remove = []
+    for obj in doc.Objects:
+        if not _is_face_extractor(obj):
+            continue
+        if not getattr(obj, "IsTemporary", False):
+            continue
+        if current_obj is not None and obj == current_obj:
+            continue
+        to_remove.append(obj.Name)
+
+    for name in to_remove:
+        try:
+            doc.removeObject(name)
+        except Exception:
+            pass
 
 
 class FaceExtractorFeature:
@@ -198,24 +280,44 @@ class FaceExtractorFeature:
             )
             obj.setEditorMode("FaceNormal", 1)
 
-    def _score_face_match(self, face, stored_normal, stored_center, stored_area=0.0):
+        if "IsTemporary" not in properties_list:
+            obj.addProperty(
+                "App::PropertyBool",
+                "IsTemporary",
+                "FaceExtractor",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "If True, this extractor will be replaced by the next face selection.",
+                ),
+            )
+            obj.IsTemporary = False
+
+    def _score_face_match(self, face, stored_normal, stored_center, stored_area=0.0, parent_pl=None):
         """
         Score how well a candidate face matches the stored fingerprint.
-
-        Normal is the strongest signal (55% weight).
-        Center distance is softened (/100) so a resized wall face does not
-        immediately look wrong just because its center moved.
-        Area similarity helps reject a wrong face that still has a similar
-        normal direction (25% weight).
+        All values compared in world space. Normal 55%, area 25%, center 20%.
         """
-        try:
+        if parent_pl is not None:
+            try:
+                ln = _safe_face_normal(face)
+                normal = parent_pl.Rotation.multVec(ln) if ln is not None else None
+            except Exception:
+                normal = _safe_face_normal(face)
+            try:
+                center = parent_pl.multVec(face.CenterOfMass)
+            except Exception:
+                center = face.CenterOfMass
+        else:
             normal = _safe_face_normal(face)
+            center = face.CenterOfMass
+
+        try:
             normal_score = max(normal.dot(stored_normal), 0.0) if normal is not None else 0.0
         except Exception:
             normal_score = 0.0
 
         try:
-            distance = (face.CenterOfMass - stored_center).Length
+            distance = (center - stored_center).Length
             center_score = 1.0 / (1.0 + (distance / 100.0))
         except Exception:
             center_score = 0.0
@@ -230,10 +332,9 @@ class FaceExtractorFeature:
 
         return (0.55 * normal_score) + (0.25 * area_score) + (0.20 * center_score)
 
-    def _find_face_by_fingerprint(self, parent_shape, stored_normal, stored_center, stored_area=0.0):
+    def _find_face_by_fingerprint(self, parent_shape, stored_normal, stored_center, stored_area=0.0, parent_pl=None):
         """
-        Scan all faces and return the best match by normal + softened center
-        proximity + area similarity.
+        Scan all faces and return the best match (normal + center + area in world space).
         Returns (face, sub_name_str, score) or (None, None, -1.0).
         """
         if not parent_shape.Faces:
@@ -244,7 +345,7 @@ class FaceExtractorFeature:
         best_score = -1.0
 
         for index, face in enumerate(parent_shape.Faces):
-            score = self._score_face_match(face, stored_normal, stored_center, stored_area)
+            score = self._score_face_match(face, stored_normal, stored_center, stored_area, parent_pl)
             if score > best_score:
                 best_score = score
                 best_face = face
@@ -278,6 +379,8 @@ class FaceExtractorFeature:
         stored_center = getattr(obj, "StoredCenter", FreeCAD.Vector(0, 0, 0))
         stored_area = float(getattr(obj, "StoredArea", 0.0) or 0.0)
 
+        parent_pl = parent_obj.Placement
+
         candidate = None
         candidate_score = -1.0
         try:
@@ -286,7 +389,7 @@ class FaceExtractorFeature:
                 candidate = maybe
                 if stored_normal.Length > 1e-6:
                     candidate_score = self._score_face_match(
-                        candidate, stored_normal, stored_center, stored_area
+                        candidate, stored_normal, stored_center, stored_area, parent_pl
                     )
         except Exception:
             pass
@@ -296,7 +399,7 @@ class FaceExtractorFeature:
 
         if stored_normal.Length > 1e-6:
             found_face, found_name, best_score = self._find_face_by_fingerprint(
-                parent_shape, stored_normal, stored_center, stored_area
+                parent_shape, stored_normal, stored_center, stored_area, parent_pl
             )
 
             use_fallback = False
@@ -311,10 +414,6 @@ class FaceExtractorFeature:
             if use_fallback and found_face is not None:
                 element = found_face
                 resolved_name = found_name
-                FreeCAD.Console.PrintMessage(
-                    f"FaceExtractor '{obj.Label}': re-aligned to "
-                    f"'{found_name}' (was '{sub_name}'). Updating reference.\n"
-                )
                 obj.SourceFace = (parent_obj, (found_name,))
 
         if element is None:
@@ -325,21 +424,60 @@ class FaceExtractorFeature:
             obj.Shape = Part.Shape()
             return
 
+        # ------------------------------------------------------------------ #
+        # World-space shape and fingerprint                                    #
+        #                                                                      #
+        # FreeCAD uses two conflicting conventions for how a shape's OCCT     #
+        # TopLoc_Location (exposed via shape.Placement) relates to the        #
+        # document object's Placement:                                         #
+        #                                                                      #
+        #  A) Part / Draft objects: shape internal loc ≈ document Placement.  #
+        #     The shape is already positioned by its own internal location;   #
+        #     total world transform = parent_pl (once, not twice).            #
+        #                                                                      #
+        #  B) Arch objects: shape internal loc = base sketch's Placement,     #
+        #     independent of the Arch object's own Placement.                 #
+        #     total world transform = parent_pl × shape_internal_pl.          #
+        #                                                                      #
+        # _face_total_placement() detects which convention applies.           #
+        # We then:                                                             #
+        #  1. Clear the shape's internal location (Placement → identity).     #
+        #  2. Compute local geometry properties from the cleared copy.        #
+        #  3. Set obj.Placement = total_pl so FreeCAD positions it correctly. #
+        # ------------------------------------------------------------------ #
         try:
-            obj.Shape = element.copy()
-        except Exception:
-            obj.Shape = element
+            face_copy = element.copy()
+            total_pl = _face_total_placement(face_copy, parent_pl)
+            # Clear the internal location so it does not conflict with
+            # obj.Placement (whether or not Part::FeaturePython absorbs it).
+            face_copy.Placement = FreeCAD.Placement()
+            obj.Shape = face_copy
+            obj.Placement = total_pl
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                f"FaceExtractor '{obj.Label}': shape placement failed ({err}), "
+                "falling back to parent placement.\n"
+            )
+            try:
+                obj.Shape = element.copy()
+                obj.Placement = parent_pl
+            except Exception:
+                obj.Shape = element
 
+        # Store fingerprint in world space.
+        # After clearing the shape's internal location, face_copy.CenterOfMass
+        # gives the raw geometric center.  total_pl converts it to world space.
         try:
-            normal = _safe_face_normal(element)
-            if normal is not None:
-                obj.StoredNormal = normal
-                obj.FaceNormal = normal
+            local_normal = _safe_face_normal(face_copy)
+            if local_normal is not None:
+                world_normal = total_pl.Rotation.multVec(local_normal)
+                obj.StoredNormal = world_normal
+                obj.FaceNormal = world_normal
         except Exception:
             pass
 
         try:
-            obj.StoredCenter = element.CenterOfMass
+            obj.StoredCenter = total_pl.multVec(face_copy.CenterOfMass)
         except Exception:
             pass
 
@@ -410,11 +548,15 @@ class FaceExtractorViewProvider:
                 self.Object = doc.getObject(state["Object"])
 
 
-def make_face_extractor(parent_obj, sub_name, name=None):
+def make_face_extractor(parent_obj, sub_name, name=None, temporary=True, _skip_cleanup=False):
     """Create a FaceExtractor for a specific face of parent_obj."""
     doc = FreeCAD.ActiveDocument
     if not doc:
         raise RuntimeError("No active document")
+
+    if temporary and not _skip_cleanup:
+        _cleanup_old_face_extractors()
+
     if name is None:
         name = f"{parent_obj.Label}_{sub_name}"
     safe_name = "".join(char if char.isalnum() or char == "_" else "_" for char in name)
@@ -422,15 +564,22 @@ def make_face_extractor(parent_obj, sub_name, name=None):
     obj = doc.addObject("Part::FeaturePython", safe_name)
     FaceExtractorFeature(obj)
 
+    obj.IsTemporary = temporary
     obj.SourceFace = (parent_obj, (sub_name,))
 
+    # Seed world-space fingerprint so the first execute() comparison is valid.
     try:
         face = parent_obj.Shape.getElement(sub_name)
         if isinstance(face, Part.Face):
-            normal = _safe_face_normal(face)
-            if normal is not None:
-                obj.StoredNormal = normal
-            obj.StoredCenter = face.CenterOfMass
+            parent_pl = parent_obj.Placement
+            face_copy = face.copy()
+            total_pl = _face_total_placement(face_copy, parent_pl)
+            face_copy.Placement = FreeCAD.Placement()  # clear for raw geom
+
+            local_normal = _safe_face_normal(face_copy)
+            if local_normal is not None:
+                obj.StoredNormal = total_pl.Rotation.multVec(local_normal)
+            obj.StoredCenter = total_pl.multVec(face_copy.CenterOfMass)
             obj.StoredArea = float(face.Area)
     except Exception:
         pass
@@ -447,10 +596,19 @@ def make_face_extractor(parent_obj, sub_name, name=None):
     return obj
 
 
-def make_face_extractor_from_selection():
+def make_permanent_face_extractor(parent_obj, sub_name, name=None):
+    """Create a permanent FaceExtractor that won't be auto-cleaned."""
+    return make_face_extractor(parent_obj, sub_name, name, temporary=False)
+
+
+def make_face_extractor_from_selection(permanent=False):
     """Create FaceExtractor objects for every selected face sub-element."""
     if not FreeCAD.GuiUp:
         return []
+
+    if not permanent:
+        _cleanup_old_face_extractors()
+
     selection = FreeCADGui.Selection.getSelectionEx()
     created = []
     for sel in selection:
@@ -459,11 +617,10 @@ def make_face_extractor_from_selection():
             if not sub_name.startswith("Face"):
                 continue
             try:
-                face_extractor = make_face_extractor(parent, sub_name)
-                created.append(face_extractor)
-                FreeCAD.Console.PrintMessage(
-                    f"Created FaceExtractor: {face_extractor.Name} ({parent.Label}.{sub_name})\n"
+                face_extractor = make_face_extractor(
+                    parent, sub_name, temporary=not permanent, _skip_cleanup=True
                 )
+                created.append(face_extractor)
             except Exception as e:
                 FreeCAD.Console.PrintError(f"FaceExtractor failed for {sub_name}: {e}\n")
     if created:

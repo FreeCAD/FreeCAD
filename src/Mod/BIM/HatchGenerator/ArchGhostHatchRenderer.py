@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                          *
@@ -21,7 +19,7 @@
 # *   License along with FreeCAD. If not, see                               *
 # *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                          *
-# ***************************************************************************/
+# ***************************************************************************
 
 import FreeCAD
 
@@ -227,7 +225,6 @@ class GhostHatchRenderer:
                 projected = []
                 transforms = []
 
-                # FIX: Use raw offsets directly (same as final execution path)
                 preview_offset_x = float(getattr(hatch_pattern_obj, "PatternOffsetX", 0.0))
                 preview_offset_y = float(getattr(hatch_pattern_obj, "PatternOffsetY", 0.0))
 
@@ -343,7 +340,6 @@ class GhostHatchRenderer:
 
         def _inject():
             try:
-                # If a newer render/clear happened meanwhile, discard this stale node.
                 if render_serial != self._render_serial:
                     return
                 if self._pending_root is not separator:
