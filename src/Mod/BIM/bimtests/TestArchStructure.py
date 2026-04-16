@@ -26,6 +26,8 @@ import unittest
 import FreeCAD as App
 from FreeCAD import Vector
 import Arch
+import ArchComponent
+import Draft
 from bimtests import TestArchBase
 
 
@@ -35,6 +37,28 @@ class TestArchStructure(TestArchBase.TestArchBase):
         App.Console.PrintLog("Checking BIM Structure...\n")
         structure = Arch.makeStructure(length=2, width=3, height=5)
         self.assertTrue(structure, "BIM Structure failed")
+
+    def test_slab_get_footprint(self):
+        """Slabs should expose a flattened footprint for plan display."""
+        self.printTestMessage("Checking slab footprint faces")
+
+        rect = Draft.makeRectangle(length=4000, height=3000)
+        slab = Arch.makeStructure(rect, height=200, name="TestSlab")
+        slab.IfcType = "Slab"
+        self.document.recompute()
+
+        faces = slab.Proxy.getFootprint(slab)
+        self.assertEqual(len(faces), 1, "Expected one footprint face for a rectangular slab.")
+        self.assertAlmostEqual(faces[0].Area, 4000 * 3000, places=3)
+        bbox = faces[0].BoundBox
+        self.assertAlmostEqual(bbox.ZMin, slab.Shape.BoundBox.ZMin, places=6)
+        self.assertAlmostEqual(bbox.ZMax, slab.Shape.BoundBox.ZMin, places=6)
+
+        context = ArchComponent.PlanContext(cut_z=0.0, target_z=42.0)
+        context_faces = slab.Proxy.getPlanRepresentation(slab, context)
+        context_bbox = context_faces[0].BoundBox
+        self.assertAlmostEqual(context_bbox.ZMin, 42.0, places=6)
+        self.assertAlmostEqual(context_bbox.ZMax, 42.0, places=6)
 
     #  Dimensions
     def test_makeStructure_explicit_dimensions(self):

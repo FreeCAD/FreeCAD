@@ -31,5 +31,6 @@ from bimtests.TestArchFootprintGui import TestArchFootprintGui
 from bimtests.TestArchStairsGui import TestArchStairsGui
 from bimtests.TestArchReportGui import TestArchReportGui
 from bimtests.TestArchSiteGui import TestArchSiteGui
+from bimtests.TestArchStructureGui import TestArchStructureGui
 from bimtests.TestArchWallGui import TestArchWallGui
 from bimtests.TestWebGLExportGui import TestWebGLExportGui
