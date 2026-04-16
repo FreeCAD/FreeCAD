@@ -34,6 +34,7 @@ class QHBoxLayout;
 class QToolButton;
 class QCheckBox;
 class QSpacerItem;
+class QLabel;
 QT_END_NAMESPACE
 
 namespace Gui
@@ -174,6 +175,14 @@ private:
     void retranslateUi();
     void findText(bool skip, bool next, const QString& str);
     void updateButtons();
+    struct SearchResults
+    {
+        QVector<QPair<int, int>> matchRanges;
+        int currentIndex = -1;
+    };
+    SearchResults findAllMatches(const QString& str);
+    void updateSearchResults(const QString& str);
+    void highlightSearchResults(const SearchResults& matches);
 
 private:
     QPlainTextEdit* textEditor;
@@ -181,10 +190,12 @@ private:
     QSpacerItem* horizontalSpacer;
     QToolButton* closeButton;
     QLineEdit* searchText;
+    QLabel* resultLabel;
     QToolButton* prevButton;
     QToolButton* nextButton;
     QCheckBox* matchCase;
     QCheckBox* matchWord;
+    bool skipSearch = false;
 };
 
 }  // namespace Gui
