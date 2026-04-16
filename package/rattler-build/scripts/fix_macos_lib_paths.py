@@ -63,6 +63,8 @@ def scan_directory(directory, recursive=False):
             continue
         elif not os.path.isfile(full_path) or os.path.islink(full_path):
             continue
+        if not filename.endswith(".dylib"):
+            continue
 
         try:
             output = subprocess.check_output(['otool', '-l', full_path], text=True)
