@@ -144,14 +144,11 @@ App::DocumentObjectExecReturn* MultiFuse::execute()
 
             if (!mkFuse.IsDone()) {
                 return new App::DocumentObjectExecReturn(
-                    "MultiFusion failed. This is usually caused by a "
-                    "limitation in the geometry engine, not a problem with "
-                    "your model. Faces that are exactly aligned, nearly "
-                    "touching, or in complex coplanar arrangements can be "
-                    "difficult for the engine to process. Try repositioning "
-                    "one shape slightly (e.g. add 0.01 mm in Placement), "
-                    "combining in a different order, or fusing in smaller "
-                    "groups. See: https://wiki.freecad.org/"
+                    "MultiFusion failed. Likely due to a geometry engine "
+                    "limitation. Nearly touching, aligned, or complex coplanar "
+                    "faces may cause it. Try slightly moving a shape (e.g. "
+                    "0.01 mm in Placement), changing the fusion order, or "
+                    "fusing smaller groups. See: https://wiki.freecad.org/"
                     "Boolean_Troubleshooting"
                 );
             }

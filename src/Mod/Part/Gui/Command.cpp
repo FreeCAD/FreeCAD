@@ -239,28 +239,6 @@ bool CmdPartPrimitives::isActive()
 
 namespace PartGui
 {
-bool checkForSolids(const TopoDS_Shape& shape)
-{
-    TopExp_Explorer xp;
-    xp.Init(shape, TopAbs_FACE, TopAbs_SHELL);
-    if (xp.More()) {
-        return false;
-    }
-    xp.Init(shape, TopAbs_WIRE, TopAbs_FACE);
-    if (xp.More()) {
-        return false;
-    }
-    xp.Init(shape, TopAbs_EDGE, TopAbs_WIRE);
-    if (xp.More()) {
-        return false;
-    }
-    xp.Init(shape, TopAbs_VERTEX, TopAbs_EDGE);
-    if (xp.More()) {
-        return false;
-    }
-
-    return true;
-}
 /*
  * returns vector of Part::TopoShapes from selected Part::Feature derived objects,
  * App::Links linked to Part::Features, or App::Part containers with visible Part::Features
@@ -336,31 +314,8 @@ void CmdPartCut::activated(int iMsg)
         return;
     }
 
-    bool askUser = false;
     std::vector<std::string> names;
     for (const auto& it : Sel) {
-        const App::DocumentObject* obj = it.getObject();
-        const TopoDS_Shape& shape = Part::Feature::getShape(
-            obj,
-            Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
-        );
-        if (!PartGui::checkForSolids(shape) && !askUser) {
-            int ret = QMessageBox::warning(
-                Gui::getMainWindow(),
-                QObject::tr("Non-solids selected"),
-                QObject::tr(
-                    "The use of non-solids for boolean operations may lead to unexpected results.\n"
-                    "Continue?"
-                ),
-                QMessageBox::Yes,
-                QMessageBox::No
-            );
-            if (ret == QMessageBox::No) {
-                return;
-            }
-            askUser = true;
-        }
-
         names.push_back(Base::Tools::quoted(it.getFeatName()));
     }
 
@@ -413,31 +368,8 @@ void CmdPartCommon::activated(int iMsg)
         return;
     }
 
-    bool askUser = false;
     std::vector<std::string> names;
     for (const auto& it : Sel) {
-        const App::DocumentObject* obj = it.getObject();
-        const TopoDS_Shape& shape = Part::Feature::getShape(
-            obj,
-            Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
-        );
-        if (!PartGui::checkForSolids(shape) && !askUser) {
-            int ret = QMessageBox::warning(
-                Gui::getMainWindow(),
-                QObject::tr("Non-solids selected"),
-                QObject::tr(
-                    "The use of non-solids for boolean operations may lead to unexpected results.\n"
-                    "Continue?"
-                ),
-                QMessageBox::Yes,
-                QMessageBox::No
-            );
-            if (ret == QMessageBox::No) {
-                return;
-            }
-            askUser = true;
-        }
-
         names.push_back(Base::Tools::quoted(it.getFeatName()));
     }
 
@@ -513,31 +445,8 @@ void CmdPartFuse::activated(int iMsg)
         return;
     }
 
-    bool askUser = false;
     std::vector<std::string> names;
     for (const auto& it : Sel) {
-        const App::DocumentObject* obj = it.getObject();
-        const TopoDS_Shape& shape = Part::Feature::getShape(
-            obj,
-            Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
-        );
-        if (!PartGui::checkForSolids(shape) && !askUser) {
-            int ret = QMessageBox::warning(
-                Gui::getMainWindow(),
-                QObject::tr("Non-solids selected"),
-                QObject::tr(
-                    "The use of non-solids for boolean operations may lead to unexpected results.\n"
-                    "Continue?"
-                ),
-                QMessageBox::Yes,
-                QMessageBox::No
-            );
-            if (ret == QMessageBox::No) {
-                return;
-            }
-            askUser = true;
-        }
-
         names.push_back(Base::Tools::quoted(it.getFeatName()));
     }
 
