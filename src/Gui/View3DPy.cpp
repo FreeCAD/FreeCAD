@@ -1312,7 +1312,6 @@ Py::Object View3DInventorPy::setCameraType(const Py::Tuple& args)
     else {
         getView3DInventorPtr()->getViewer()->setCameraType(SoPerspectiveCamera::getClassTypeId());
     }
-    getView3DInventorPtr()->syncCameraTypePref(cameratype == 0);
     return Py::None();
 }
 
