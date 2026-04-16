@@ -800,20 +800,88 @@ class _Wall(ArchComponent.Component):
         ArchComponent.Component.onChanged(self, obj, prop)
 
     def getFootprint(self, obj):
-        """Get the faces that make up the base/foot of the wall.
+        """Get the plan faces that represent this wall in footprint mode.
+
+        The preferred representation is a horizontal section through the wall
+        solid at a standard plan cut height. If the wall belongs to a Building
+        Storey, use that level's PlanCutHeight relative to the storey elevation.
+        Otherwise, fall back to the default 1000 mm plan cut above the wall
+        base. This makes hosted openings appear naturally in footprint mode
+        because the wall shape has already been cut by them. If that section
+        cannot be computed, fall back to the literal bottom faces of the wall.
+        This is the default-preview wrapper for `getPlanRepresentation()`.
 
         Returns
         -------
         list of <Part.Face>
-            The faces that make up the foot of the wall.
+            The faces that make up the wall footprint.
         """
 
+        context = self.getDefaultPlanContext(obj)
+        return self.getPlanRepresentation(obj, context)
+
+    def getPlanRepresentation(self, obj, context):
+        """Return wall plan faces for the supplied plan context.
+
+        The context defines both the absolute cut elevation and the elevation
+        where the resulting faces are placed. This lets callers ask for
+        different plan representations of the same wall without changing the
+        generic Footprint display mode contract.
+        """
+
+        import Part
+
+        if context is None:
+            context = self.getDefaultPlanContext(obj)
+        shape = obj.Shape
+        if shape and (not shape.isNull()) and shape.Solids:
+            bb = shape.BoundBox
+            if bb.ZLength > 0.001 and context.cut_z is not None:
+                cut_z = context.cut_z
+                cut_z = max(bb.ZMin + 0.001, min(bb.ZMax - 0.001, cut_z))
+                target_z = context.target_z if context.target_z is not None else bb.ZMin
+                cut_plane = Part.makePlane(1, 1)
+                cut_plane.translate(FreeCAD.Vector(bb.Center.x, bb.Center.y, cut_z))
+                try:
+                    section_plane, _, _ = ArchCommands.getCutVolume(cut_plane, shape)
+                    if section_plane:
+                        section = shape.section(section_plane)
+                        if section and section.Edges:
+                            try:
+                                edge_groups = Part.sortEdges(section.Edges)
+                            except AttributeError:
+                                edge_groups = Part.__sortEdges__(section.Edges)
+                            faces = []
+                            for edges in edge_groups:
+                                wire = Part.Wire(edges)
+                                if not wire.isClosed():
+                                    continue
+                                face = Part.Face(wire)
+                                if face.Area <= 0:
+                                    continue
+                                face.translate(FreeCAD.Vector(0, 0, target_z - cut_z))
+                                faces.append(face)
+                            if faces:
+                                return faces
+                except Part.OCCError:
+                    # Sectioning can fail on OCC edge cases; fall back to the
+                    # wall's literal bottom faces below instead of breaking the
+                    # footprint display mode.
+                    pass
+
         faces = []
-        if obj.Shape:
-            for f in obj.Shape.Faces:
+        if shape:
+            bb = shape.BoundBox
+            target_z = context.target_z if context.target_z is not None else bb.ZMin
+            for f in shape.Faces:
                 if f.normalAt(0, 0).getAngle(FreeCAD.Vector(0, 0, -1)) < 0.01:
-                    if abs(abs(f.CenterOfMass.z) - abs(obj.Shape.BoundBox.ZMin)) < 0.001:
-                        faces.append(f)
+                    if abs(abs(f.CenterOfMass.z) - abs(bb.ZMin)) < 0.001:
+                        face = f
+                        delta_z = target_z - bb.ZMin
+                        if abs(delta_z) >= 0.001:
+                            face = f.copy()
+                            face.translate(FreeCAD.Vector(0, 0, delta_z))
+                        faces.append(face)
         return faces
 
     def getExtrusionData(self, obj):

@@ -50,6 +50,8 @@ import Draft
 
 from draftutils import params
 
+DEFAULT_PLAN_CUT_HEIGHT = 1000.0
+
 if FreeCAD.GuiUp:
     from PySide import QtGui, QtCore
     from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -64,6 +66,24 @@ else:
         return txt
 
     # \endcond
+
+
+class PlanContext:
+    """Plan view definition used to derive object plan representations.
+
+    `cut_z` is the absolute document Z coordinate where solid objects are cut.
+    `target_z` is the absolute document Z coordinate where the resulting plan
+    faces should be placed. `source` can reference the document object that
+    supplied the context, such as a Building Storey. The generic Footprint
+    display mode uses this as its default preview context, but callers can pass
+    another context to request a different plan representation of the same
+    object.
+    """
+
+    def __init__(self, cut_z=None, target_z=None, source=None):
+        self.cut_z = cut_z
+        self.target_z = target_z
+        self.source = source
 
 
 def addToComponent(compobject, addobject, prop):
@@ -553,6 +573,57 @@ class Component(ArchIFC.IfcProduct):
                 if obj in parent.Additions:
                     return self.getParentHeight(parent)
         return 0
+
+    def getParentBuildingPart(self, obj, ifc_type=None):
+        """Return the nearest containing BuildingPart, optionally filtered by IFC type."""
+
+        for parent in obj.InList:
+            if Draft.getType(parent) == "BuildingPart":
+                if obj in getattr(parent, "Group", []):
+                    if (ifc_type is None) or (getattr(parent, "IfcType", "") == ifc_type):
+                        return parent
+        for parent in obj.InList:
+            if hasattr(parent, "Group"):
+                if obj in parent.Group:
+                    building_part = self.getParentBuildingPart(parent, ifc_type)
+                    if building_part:
+                        return building_part
+        for parent in obj.InList:
+            if hasattr(parent, "Additions"):
+                if obj in parent.Additions:
+                    building_part = self.getParentBuildingPart(parent, ifc_type)
+                    if building_part:
+                        return building_part
+        return None
+
+    def getDefaultPlanContext(self, obj, default_cut_height=DEFAULT_PLAN_CUT_HEIGHT):
+        """Return the default plan context for generic footprint previews.
+
+        Contained objects use their parent Building Storey's `PlanCutHeight`,
+        measured from the storey level. Standalone objects fall back to a simple
+        cut height above the object's base. `getFootprint()` wrappers use this
+        default context to preserve the existing display-mode API while
+        `getPlanRepresentation()` provides the view-aware extension point.
+        """
+
+        shape = getattr(obj, "Shape", None)
+        if shape and not shape.isNull():
+            target_z = shape.BoundBox.ZMin
+        else:
+            target_z = obj.Placement.Base.z
+
+        storey = self.getParentBuildingPart(obj, ifc_type="Building Storey")
+        if storey and hasattr(storey, "PlanCutHeight") and storey.PlanCutHeight.Value > 0:
+            level_offset = getattr(storey, "LevelOffset", 0)
+            if hasattr(level_offset, "Value"):
+                level_offset = level_offset.Value
+            cut_z = storey.Placement.Base.z + level_offset + storey.PlanCutHeight.Value
+            return PlanContext(cut_z=cut_z, target_z=target_z, source=storey)
+
+        return PlanContext(
+            cut_z=target_z + default_cut_height,
+            target_z=target_z,
+        )
 
     def clone(self, obj):
         """If the object is a clone, copy the shape.

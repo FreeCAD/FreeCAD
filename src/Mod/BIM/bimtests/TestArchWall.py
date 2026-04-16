@@ -26,6 +26,7 @@
 
 import os
 import Arch
+import ArchComponent
 import Draft
 import Part
 import FreeCAD as App
@@ -33,6 +34,31 @@ from bimtests import TestArchBase
 
 
 class TestArchWall(TestArchBase.TestArchBase):
+
+    def _make_hosted_window(self, wall, name, x_start, z_start, width=800.0, height=1200.0):
+        sketch = self.document.addObject("Sketcher::SketchObject", name + "Sketch")
+        sketch.addGeometry(
+            [
+                Part.LineSegment(App.Vector(0, 0, 0), App.Vector(width, 0, 0)),
+                Part.LineSegment(App.Vector(width, 0, 0), App.Vector(width, height, 0)),
+                Part.LineSegment(App.Vector(width, height, 0), App.Vector(0, height, 0)),
+                Part.LineSegment(App.Vector(0, height, 0), App.Vector(0, 0, 0)),
+            ]
+        )
+        sketch.Placement.Rotation = App.Rotation(App.Vector(1, 0, 0), 90)
+        sketch.Placement.Base = App.Vector(x_start, 0, z_start)
+        self.document.recompute()
+
+        window = Arch.makeWindow(sketch, name=name)
+        window.Width = width
+        window.Height = height
+        window.HoleDepth = 0
+        window.WindowParts = ["DefaultFrame", "Frame", "Wire0", "60", "0"]
+        self.document.recompute()
+
+        Arch.addComponents(window, wall)
+        self.document.recompute()
+        return window
 
     def testWall(self):
         operation = "Checking Arch Wall..."
@@ -103,6 +129,157 @@ class TestArchWall(TestArchBase.TestArchBase):
         wall = Arch.makeWall(length=5000, width=200, height=3000)
         self.assertIsNotNone(wall, "makeWall failed to create a wall object.")
         self.assertEqual(wall.Label, "Wall", "Wall label is incorrect.")
+
+    def test_wall_footprint_shows_hosted_opening_gap(self):
+        """Hosted windows should split the wall footprint at the plan cut height."""
+        self.printTestMessage("Checking wall footprint with hosted opening...")
+
+        line = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(3000, 0, 0))
+        wall = Arch.makeWall(line, width=200, height=3000)
+        self.document.recompute()
+
+        initial_faces = wall.Proxy.getFootprint(wall)
+        self.assertEqual(
+            len(initial_faces), 1, "Straight wall footprint should start as a single face."
+        )
+
+        window_width = 800.0
+        self._make_hosted_window(
+            wall,
+            "FootprintWindow",
+            x_start=1100,
+            z_start=800,
+            width=window_width,
+            height=1200.0,
+        )
+
+        footprint_faces = wall.Proxy.getFootprint(wall)
+        self.assertEqual(
+            len(footprint_faces),
+            2,
+            "Hosted opening should split a straight wall footprint into two faces.",
+        )
+        footprint_area = sum(face.Area for face in footprint_faces)
+        expected_area = (wall.Length.Value - window_width) * wall.Width.Value
+        self.assertAlmostEqual(
+            footprint_area,
+            expected_area,
+            places=3,
+            msg="Wall footprint area should reflect the hosted opening gap at plan cut height.",
+        )
+
+    def test_wall_footprint_ignores_openings_above_cut_height(self):
+        """Only openings intersecting the plan cut height should affect the wall footprint."""
+        self.printTestMessage("Checking wall footprint ignores openings above cut height...")
+
+        line = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(4000, 0, 0))
+        wall = Arch.makeWall(line, width=200, height=3000)
+        self.document.recompute()
+
+        low_window_width = 700.0
+        self._make_hosted_window(
+            wall,
+            "LowFootprintWindow",
+            x_start=700,
+            z_start=700,
+            width=low_window_width,
+            height=1200.0,
+        )
+        high_window_width = 500.0
+        self._make_hosted_window(
+            wall,
+            "HighFootprintWindow",
+            x_start=2400,
+            z_start=1800,
+            width=high_window_width,
+            height=700.0,
+        )
+
+        footprint_faces = wall.Proxy.getFootprint(wall)
+        self.assertEqual(
+            len(footprint_faces),
+            2,
+            "Only the opening crossing the cut height should split the wall footprint.",
+        )
+        footprint_area = sum(face.Area for face in footprint_faces)
+        expected_area = (wall.Length.Value - low_window_width) * wall.Width.Value
+        self.assertAlmostEqual(
+            footprint_area,
+            expected_area,
+            places=3,
+            msg="Openings above the cut height must not remove area from the wall footprint.",
+        )
+        high_cut_context = ArchComponent.PlanContext(
+            cut_z=2200.0,
+            target_z=wall.Shape.BoundBox.ZMin,
+        )
+        high_cut_faces = wall.Proxy.getPlanRepresentation(wall, high_cut_context)
+        high_cut_area = sum(face.Area for face in high_cut_faces)
+        expected_high_cut_area = (wall.Length.Value - high_window_width) * wall.Width.Value
+        self.assertAlmostEqual(
+            high_cut_area,
+            expected_high_cut_area,
+            places=3,
+            msg="Explicit plan contexts should drive wall plan representation height.",
+        )
+
+    def test_wall_footprint_uses_parent_storey_plan_cut_height(self):
+        """Parent storeys should define the absolute plan cut for contained walls."""
+        self.printTestMessage("Checking wall footprint uses parent storey plan cut height...")
+
+        line = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(4000, 0, 0))
+        wall = Arch.makeWall(line, width=200, height=3000)
+        storey = Arch.makeFloor(name="FootprintLevel")
+        storey.LevelOffset = 1200
+        storey.PlanCutHeight = 1500
+        storey.addObject(wall)
+        self.document.recompute()
+
+        low_window_width = 500.0
+        self._make_hosted_window(
+            wall,
+            "LowStoreyWindow",
+            x_start=700,
+            z_start=700,
+            width=low_window_width,
+            height=900.0,
+        )
+        high_window_width = 900.0
+        self._make_hosted_window(
+            wall,
+            "HighStoreyWindow",
+            x_start=2200,
+            z_start=2200,
+            width=high_window_width,
+            height=700.0,
+        )
+
+        context = wall.Proxy.getDefaultPlanContext(wall)
+        self.assertAlmostEqual(
+            context.cut_z,
+            2700.0,
+            places=6,
+            msg="Contained walls should derive their plan cut from the parent storey level.",
+        )
+        self.assertIs(
+            context.source,
+            storey,
+            "The default wall plan context should record the parent storey source.",
+        )
+        footprint_faces = wall.Proxy.getFootprint(wall)
+        self.assertEqual(
+            len(footprint_faces),
+            2,
+            "Only the opening crossing the parent storey cut height should split the wall.",
+        )
+        footprint_area = sum(face.Area for face in footprint_faces)
+        expected_area = (wall.Length.Value - high_window_width) * wall.Width.Value
+        self.assertAlmostEqual(
+            footprint_area,
+            expected_area,
+            places=3,
+            msg="Parent storey plan cut height should override the default wall-base cut.",
+        )
 
     def test_joinWalls(self):
         """Test the joinWalls function."""
