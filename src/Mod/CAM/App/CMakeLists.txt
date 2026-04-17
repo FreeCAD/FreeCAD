@@ -147,6 +147,26 @@ if (FREECAD_WARN_ERROR)
 endif()
 
 SET_BIN_DIR(tsp_solver tsp_solver /Mod/CAM)
-SET_PYTHON_PREFIX_SUFFIX(tsp_solver)
 
-INSTALL(TARGETS tsp_solver DESTINATION ${CMAKE_INSTALL_LIBDIR})
+add_library(surface_stl SHARED surface_stl.cpp)
+target_include_directories(surface_stl PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${pybind11_INCLUDE_DIR}
+    ${OCC_INCLUDE_DIR}
+    ${CMAKE_SOURCE_DIR}/src/Mod/Part/App
+)
+target_link_libraries(surface_stl PRIVATE
+    pybind11::module
+    Python3::Python
+    ${OCC_LIBRARIES}
+    Part
+)
+add_dependencies(surface_stl Part)
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(surface_stl)
+endif()
+
+SET_BIN_DIR(surface_stl surface_stl /Mod/CAM)
+SET_PYTHON_PREFIX_SUFFIX(surface_stl)
+
+INSTALL(TARGETS surface_stl DESTINATION ${CMAKE_INSTALL_LIBDIR})
