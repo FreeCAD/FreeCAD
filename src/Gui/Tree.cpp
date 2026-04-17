@@ -6218,7 +6218,6 @@ enum Status
 }
 
 // currentStatus is the status enum built by testStatus()
-// w is the width of the overlay in pixels
 // overlays is a reference to the main QIcon that needs overlays added
 // Overlays are static icons that may need to be initialized
 void DocumentObjectItem::setIconOverlays(int currentStatus, QPixmap& overlays)
