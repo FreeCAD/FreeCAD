@@ -191,7 +191,9 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
     }
 
     spinBox->show();
-    updateGeometry();
+    if (auto* edit = spinBox->findChild<QLineEdit*>()) {
+        updateGeometry(edit);
+    }
     setFocusToSpinbox();
 
     const auto validateAndFinish = [this]() {
@@ -221,7 +223,9 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
 
     connect(spinBox, qOverload<double>(&QuantitySpinBox::valueChanged), this, validateAndFinish);
     if (auto* edit = spinBox->findChild<QLineEdit*>()) {
-        connect(edit, &QLineEdit::textChanged, this, &EditableDatumLabel::updateGeometry);
+        connect(edit, &QLineEdit::textChanged, this, [this, edit](const QString& text) {
+            this->updateGeometry(edit);
+        });
     }
 }
 
@@ -431,12 +435,14 @@ void EditableDatumLabel::setPlacement(const Base::Placement& plc)
     label->norm.setValue(SbVec3f(float(RN.x), float(RN.y), float(RN.z)));
 }
 
-void EditableDatumLabel::updateGeometry()
+void EditableDatumLabel::updateGeometry(QLineEdit* edit)
 {
-    if (!spinBox) {
+    if (!spinBox || !edit) {
         return;
     }
+    int pos = edit->cursorPosition();
     spinBox->adjustSize();
+    edit->setCursorPosition(pos);
 }
 
 // NOLINTNEXTLINE

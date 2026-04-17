@@ -535,11 +535,17 @@ void View3DInventorViewer::init()
     naviCubeAnnotation->ref();
     naviCubeAnnotation->setName("naviCubeAnnotation");
 
-    auto lm = new SoLightModel;
-    lm->model = SoLightModel::BASE_COLOR;
+    auto decorationLightModel = new SoLightModel;
+    decorationLightModel->model = SoLightModel::BASE_COLOR;
 
-    auto bc = new SoBaseColor;
-    bc->rgb = SbColor(1, 1, 0);
+    auto decorationBaseColor = new SoBaseColor;
+    decorationBaseColor->rgb = SbColor(1, 1, 0);
+
+    auto foregroundLightModel = new SoLightModel;
+    foregroundLightModel->model = SoLightModel::BASE_COLOR;
+
+    auto foregroundBaseColor = new SoBaseColor;
+    foregroundBaseColor->rgb = SbColor(1, 1, 0);
 
     // NOLINTBEGIN
     cam = new SoOrthographicCamera;
@@ -554,8 +560,8 @@ void View3DInventorViewer::init()
     lightRotation->rotation.connectFrom(&cam->orientation);
 
     this->decorationroot->addChild(cam);
-    this->decorationroot->addChild(lm);
-    this->decorationroot->addChild(bc);
+    this->decorationroot->addChild(decorationLightModel);
+    this->decorationroot->addChild(decorationBaseColor);
     this->decorationroot->addChild(naviCubeAnnotation);
 
     auto threePointLightingSeparator = new SoTransformSeparator;
@@ -563,6 +569,8 @@ void View3DInventorViewer::init()
     threePointLightingSeparator->addChild(this->fillLight);
 
     this->foregroundroot->addChild(cam);
+    this->foregroundroot->addChild(foregroundLightModel);
+    this->foregroundroot->addChild(foregroundBaseColor);
 
     // NOTE: For every mouse click event the SoFCUnifiedSelection searches for the picked
     // point which causes a certain slow-down because for all objects the primitives
@@ -1102,33 +1110,10 @@ void View3DInventorViewer::resetEditingRoot(bool updateLinks)
             ViewProviderLink::updateLinks(editViewProvider);
         }
     }
-    catch (const Py::Exception& e) {
-        /* coverity[UNCAUGHT_EXCEPT] Uncaught exception */
-        // Coverity created several reports when removeViewProvider()
-        // is used somewhere in a destructor which indirectly invokes
-        // resetEditingRoot().
-        // Now theoretically Py::type can throw an exception which nowhere
-        // will be handled and thus terminates the application. So, add an
-        // extra try/catch block here.
-        try {
-            Py::Object py = Py::type(e);
-            if (py.isString()) {
-                Py::String str(py);
-                Base::Console().warning("%s\n", str.as_std_string("utf-8").c_str());
-            }
-            else {
-                Py::String str(py.repr());
-                Base::Console().warning("%s\n", str.as_std_string("utf-8").c_str());
-            }
-            // Prints message to console window if we are in interactive mode
-            PyErr_Print();
-        }
-        catch (Py::Exception& e) {
-            e.clear();
-            Base::Console().error(
-                "Unexpected exception raised in View3DInventorViewer::resetEditingRoot\n"
-            );
-        }
+    catch (const Py::Exception&) {
+        // resetEditingRoot() can be reached while tearing down view providers,
+        // so keep Python callback failures confined to traceback reporting.
+        PyErr_Print();
     }
 }
 

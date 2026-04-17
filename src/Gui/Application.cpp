@@ -79,6 +79,7 @@
 #include "FileDialog.h"
 #include "GuiApplication.h"
 #include "GuiInitScript.h"
+#include "GuiTestScript.h"
 #include "InputHintPy.h"
 #include "LinkViewPy.h"
 #include "MainWindow.h"
@@ -490,12 +491,12 @@ Application::Application(bool GUIenabled)
             hPGrp->GetASCII("Language", (const char*)lang.toLatin1()).c_str());
         GetWidgetFactorySupplier();
 
-        // Coin3d disabled VBO support for all Intel drivers but in the meantime they have improved
-        // so we can try to override the workaround by setting COIN_VBO
+        // Coin3d disables VBO support for some (typically very old) drivers and hardware.
+        // Force it on if the preference says to.
         ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/View");
         if (hViewGrp->GetBool("UseVBO", false)) {
-            (void)coin_setenv("COIN_VBO", "0", true);
+            (void)coin_setenv("COIN_VBO", "1", true);
         }
 
         // Check for the symbols for group separator and decimal point. They must be different
@@ -2176,13 +2177,7 @@ void Application::setupContextMenu(const char* recipient, MenuItem* items) const
                 method.apply(args);
             }
             catch (Py::Exception& e) {
-                Py::Object o = Py::type(e);
-                e.clear();
-                if (o.isString()) {
-                    Py::String s(o);
-                    std::clog << "Application::setupContextMenu: " << s.as_std_string("utf-8")
-                              << std::endl;
-                }
+                PyErr_Print();
             }
         }
         actWb->createContextMenu(recipient, items);
@@ -2329,6 +2324,7 @@ void Application::initApplication()
     try {
         initTypes();
         new Base::ScriptProducer("FreeCADGuiInit", FreeCADGuiInit);
+        new Base::ScriptProducer("FreeCADGuiTest", FreeCADGuiTest);
         init_resources();
         setCategoryFilterRules();
         old_qtmsg_handler = qInstallMessageHandler(messageHandler);

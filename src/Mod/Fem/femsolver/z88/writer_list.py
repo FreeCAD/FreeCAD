@@ -58,8 +58,44 @@ class WriterList:
             if not is_sub_el and elements:
                 rg = self.get_elements_ranges(elements)
                 for start, end in rg:
-                    rows.append(f"{start + 1} {end + 1} {param}\n")
+                    rows.append((start + 1, end + 1, param))
 
     def get_start_end_id(self):
         el_range = tuple(self.writer.element_id_map.values())
-        return (el_range[0], el_range[-1])
+        return (el_range[0] + 1, el_range[-1] + 1)
+
+    def fill_sorted_ranges(self, a, b, sort, value):
+        """Continuosly complete a list of sorted Z88 ranges from a bigger range (a, b)"""
+        res = []
+        if not sort:
+            res.append((a, b, value))
+            return res
+
+        first = sort[0]
+        if first[0] == a:
+            res.append(first)
+        else:
+            res.append((a, first[0] - 1, value))
+            res.append(first)
+        for i in sort[1:]:
+            if i[0] - 1 == res[-1][1]:
+                # contiguous
+                res.append(i)
+            else:
+                res.append((res[-1][1] + 1, i[0] - 1, value))
+                res.append(i)
+        last = sort[-1]
+        if last[1] < b:
+            res.append((last[1] + 1, b, value))
+        return res
+
+    def fill_default(self, rows, func):
+        """If there is any object without references, use it as default for not assigned  elements"""
+        rows = sorted(rows)
+        for item in self.member_list:
+            obj = item["Object"]
+            if not obj.References:
+                param = func(obj)
+                start, end = self.get_start_end_id()
+                return self.fill_sorted_ranges(start, end, rows, param)
+        return rows

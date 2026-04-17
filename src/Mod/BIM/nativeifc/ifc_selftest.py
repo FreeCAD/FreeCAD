@@ -44,6 +44,7 @@ from . import ifc_layers
 from . import ifc_psets
 from . import ifc_objects
 from . import ifc_generator
+from . import ifc_types
 
 IFC_FILE_PATH = None  # downloaded IFC file path
 FCSTD_FILE_PATH = None  # saved FreeCAD file
@@ -90,6 +91,18 @@ def compare(file1, file2):
     return res
 
 
+def get_schema_descendant_names(schema_name, root_name):
+    schema = ifcopenshell.ifcopenshell_wrapper.schema_by_name(schema_name)
+    declaration = schema.declaration_by_name(root_name)
+    descendants = []
+    stack = list(declaration.subtypes())
+    while stack:
+        current = stack.pop()
+        descendants.append(current.name())
+        stack.extend(current.subtypes())
+    return sorted(set(descendants))
+
+
 class NativeIFCTest(unittest.TestCase):
 
     def setUp(self):
@@ -104,6 +117,13 @@ class NativeIFCTest(unittest.TestCase):
     def tearDown(self):
         FreeCAD.closeDocument("IfcTest")
         pass
+
+    def assertClassEnumMatchesFamily(self, obj, root_name):
+        ifcfile = ifc_tools.get_ifcfile(obj)
+        schema_name = ifcfile.wrapped_data.schema_name()
+        expected = get_schema_descendant_names(schema_name, root_name)
+        actual = sorted(obj.getEnumerationsOfProperty("Class"))
+        self.assertEqual(actual, expected)
 
     def test01_ImportCoinSingle(self):
         FreeCAD.Console.PrintMessage("NativeIFC 01: Importing single object, coin mode...")
@@ -224,6 +244,56 @@ class NativeIFCTest(unittest.TestCase):
         proj.Schema = "IFC2X3"
         FreeCAD.getDocument("IfcTest").recompute()
         self.assertTrue(obj.StepId != oldid, "ChangeIFCSchema failed")
+
+    def test08b_ClassListUsesActiveSchema(self):
+        FreeCAD.Console.PrintMessage("NativeIFC 08b: IFC class list uses full schema...")
+        clearObjects()
+        fp = getIfcFilePath()
+        ifc_import.insert(
+            fp,
+            "IfcTest",
+            strategy=2,
+            shapemode=0,
+            switchwb=0,
+            silent=True,
+            singledoc=SINGLEDOC,
+        )
+        wall = next(
+            o
+            for o in FreeCAD.getDocument("IfcTest").Objects
+            if getattr(o, "IfcClass", "") in ("IfcWall", "IfcWallStandardCase")
+        )
+        self.assertClassEnumMatchesFamily(wall, "IfcProduct")
+
+    def test08c_IFC2X3TypeClassListUsesTypeFamily(self):
+        FreeCAD.Console.PrintMessage("NativeIFC 08c: IFC2X3 type class list uses full schema...")
+        clearObjects()
+        doc = FreeCAD.ActiveDocument
+        proj = ifc_tools.create_document(doc, silent=True)
+        proj.Proxy.silent = True
+        proj.Schema = "IFC2X3"
+        doc.recompute()
+        site = ifc_tools.aggregate(Arch.makeSite(), proj)
+        building = ifc_tools.aggregate(Arch.makeBuilding(), site)
+        storey = ifc_tools.aggregate(Arch.makeFloor(), building)
+        wall = Arch.makeWall(None, 200, 400, 20)
+        wall = ifc_tools.aggregate(wall, storey)
+        doc.recompute()
+        self.assertTrue(ifc_types.is_typable(wall), "IFC2X3 wall should be typable")
+        ask_again = PARAMS.GetBool("ConvertTypeAskAgain", True)
+        keep_original = PARAMS.GetBool("ConvertTypeKeepOriginal", False)
+        try:
+            PARAMS.SetBool("ConvertTypeAskAgain", False)
+            PARAMS.SetBool("ConvertTypeKeepOriginal", True)
+            ifc_types.convert_to_type(wall, keep_object=True)
+            doc.recompute()
+        finally:
+            PARAMS.SetBool("ConvertTypeAskAgain", ask_again)
+            PARAMS.SetBool("ConvertTypeKeepOriginal", keep_original)
+        self.assertTrue(
+            getattr(wall, "Type", None), "Wall type conversion did not create a type object"
+        )
+        self.assertClassEnumMatchesFamily(wall.Type, "IfcTypeProduct")
 
     def test09_CreateBIMObjects(self):
         FreeCAD.Console.PrintMessage("NativeIFC 09: Creating BIM objects...")

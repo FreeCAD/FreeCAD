@@ -34,10 +34,15 @@
 # @{
 
 import os
+import tempfile
 import unittest
+from unittest import mock
 
 import FreeCAD as App
 import Draft
+import Part
+import draftfunctions.svgshapes as svgshapes
+import importSVG
 from drafttests import auxiliary as aux
 from drafttests import test_base
 from draftutils.messages import _msg
@@ -101,6 +106,108 @@ class DraftSVG(test_base.DraftTestCaseDoc):
             App.Console.PrintLog("Exception thrown, OK: {}".format(err))
         else:
             self.fail("no exception thrown")
+
+
+class DraftSVGExportRegression(test_base.DraftTestCaseDoc):
+    """Regression tests for SVG export edge cases."""
+
+    @staticmethod
+    def _make_face_with_circular_island():
+        outer = Part.makePolygon(
+            [
+                App.Vector(0, 0, 0),
+                App.Vector(20, 0, 0),
+                App.Vector(20, 20, 0),
+                App.Vector(0, 20, 0),
+                App.Vector(0, 0, 0),
+            ]
+        )
+        inner = Part.Wire([Part.makeCircle(5, App.Vector(10, 10, 0), App.Vector(0, 0, 1))])
+        return Part.Face([outer, inner])
+
+    @staticmethod
+    def _make_circular_face():
+        wire = Part.Wire([Part.makeCircle(5, App.Vector(0, 0, 0), App.Vector(0, 0, 1))])
+        return Part.Face([wire])
+
+    @staticmethod
+    def _make_face_with_rectangular_island_in_circle():
+        outer = Part.Wire([Part.makeCircle(10, App.Vector(10, 10, 0), App.Vector(0, 0, 1))])
+        inner = Part.makePolygon(
+            [
+                App.Vector(7, 8, 0),
+                App.Vector(13, 8, 0),
+                App.Vector(13, 12, 0),
+                App.Vector(7, 12, 0),
+                App.Vector(7, 8, 0),
+            ]
+        )
+        return Part.Face([outer, inner])
+
+    def _add_shape(self, name, shape):
+        obj = self.doc.addObject("Part::Feature", name)
+        obj.Shape = shape
+        self.doc.recompute()
+        return obj
+
+    def _assert_island_svg(self, svg):
+        self.assertIn("<path ", svg)
+        self.assertIn("fill-rule: evenodd", svg)
+        self.assertNotIn("<circle ", svg)
+        self.assertEqual(svg.count("M "), 2)
+        self.assertEqual(svg.count("Z "), 2)
+        self.assertEqual(svg.count("A "), 2)
+        self.assertEqual(svg.count("L "), 4)
+
+    @staticmethod
+    def _iter_island_cases():
+        return (
+            ("rect_outer_circle_hole", DraftSVGExportRegression._make_face_with_circular_island),
+            (
+                "circle_outer_rect_hole",
+                DraftSVGExportRegression._make_face_with_rectangular_island_in_circle,
+            ),
+        )
+
+    @staticmethod
+    def _force_circle_fallback():
+        return mock.patch.object(svgshapes.TechDraw, "projectToSVG", return_value="")
+
+    def test_get_svg_from_face_with_circular_island(self):
+        with self._force_circle_fallback():
+            for name, shape_factory in self._iter_island_cases():
+                with self.subTest(case=name):
+                    obj = self._add_shape(f"IslandFace_{name}", shape_factory())
+                    svg = Draft.get_svg(obj, direction=App.Vector(0, 0, 1))
+                    self._assert_island_svg(svg)
+
+    def test_get_svg_from_face_with_circular_island_for_techdraw(self):
+        with self._force_circle_fallback():
+            for name, shape_factory in self._iter_island_cases():
+                with self.subTest(case=name):
+                    obj = self._add_shape(f"TechDrawIslandFace_{name}", shape_factory())
+                    svg = Draft.get_svg(obj, direction=App.Vector(0, 0, 1), techdraw=True)
+                    self._assert_island_svg(svg)
+
+    def test_export_svg_from_face_with_circular_island(self):
+        with self._force_circle_fallback():
+            for name, shape_factory in self._iter_island_cases():
+                with self.subTest(case=name):
+                    obj = self._add_shape(f"ExportIslandFace_{name}", shape_factory())
+                    with tempfile.TemporaryDirectory() as temp_dir:
+                        out_file = os.path.join(temp_dir, "island_face.svg")
+                        importSVG.export([obj], out_file)
+                        with open(out_file, "r", encoding="utf-8") as svg_file:
+                            svg = svg_file.read()
+                    self._assert_island_svg(svg)
+
+    def test_get_svg_from_circular_face_stays_compact(self):
+        obj = self._add_shape("DiskFace", self._make_circular_face())
+
+        svg = Draft.get_svg(obj, direction=App.Vector(0, 0, 1))
+
+        self.assertIn("<circle ", svg)
+        self.assertNotIn("fill-rule: evenodd", svg)
 
 
 ## @}

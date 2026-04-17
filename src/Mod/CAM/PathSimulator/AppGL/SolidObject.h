@@ -23,6 +23,8 @@
  ***************************************************************************/
 
 #pragma once
+
+#include <QOpenGLFunctions>
 #include "SimShapes.h"
 #include "linmath.h"
 #include <vector>

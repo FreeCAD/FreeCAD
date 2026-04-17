@@ -123,7 +123,7 @@ def getDiscretized(edge, plane):
 
 
 def _get_path_circ_ellipse(
-    plane, edge, verts, edata, iscircle, isellipse, fill, stroke, linewidth, lstyle
+    plane, edge, verts, edata, iscircle, isellipse, fill, stroke, linewidth, lstyle, allow_final_svg
 ):
     """Get the edge data from a path that is a circle or ellipse."""
     if plane:
@@ -168,10 +168,14 @@ def _get_path_circ_ellipse(
     if not done:
         if len(edge.Vertexes) == 1 and iscircle:
             # Complete circle not only arc
-            svg = get_circle(plane, fill, stroke, linewidth, lstyle, edge)
-            # If it's a circle we will return the final SVG string,
-            # otherwise it will process the `edata` further
-            return "svg", svg
+            if allow_final_svg:
+                svg = get_circle(plane, fill, stroke, linewidth, lstyle, edge)
+                # If it's the whole exported shape we can return a compact SVG
+                # circle, otherwise we must keep a single path so islands work.
+                return "svg", svg
+
+            _diff = (center.LastParameter - center.FirstParameter) / 2.0
+            endpoints = [get_proj(center.value(_diff), plane), get_proj(verts[-1].Point, plane)]
         elif len(edge.Vertexes) == 1 and isellipse:
             # Complete ellipse not only arc
             # svg = get_ellipse(plane,
@@ -402,7 +406,17 @@ def get_path(
 
             if iscircle or isellipse:
                 _type, data = _get_path_circ_ellipse(
-                    plane, edge, verts, edata, iscircle, isellipse, fill, stroke, linewidth, lstyle
+                    plane,
+                    edge,
+                    verts,
+                    edata,
+                    iscircle,
+                    isellipse,
+                    fill,
+                    stroke,
+                    linewidth,
+                    lstyle,
+                    allow_final_svg=len(egroups) == 1 and len(_edges) == 1,
                 )
                 if _type == "svg":
                     # final svg string already calculated, so just return it

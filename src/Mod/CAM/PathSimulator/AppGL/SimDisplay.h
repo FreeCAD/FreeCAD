@@ -24,13 +24,13 @@
 
 #pragma once
 
-#include "GlUtils.h"
 #include "Shader.h"
 #include "StockObject.h"
 #include "MillPathLine.h"
 #include <vector>
 #include <random>
 #include <algorithm>
+#include <numbers>
 
 namespace MillSim
 {

@@ -31,9 +31,17 @@
 #include "InputHint.h"
 #include "InputHintWidget.h"
 
+namespace
+{
+constexpr int iconSize = 22;
+constexpr int iconMargin = 2;
+}  // namespace
+
 Gui::InputHintWidget::InputHintWidget(QWidget* parent)
     : StatusBarLabel(parent, "InputHintEnabled")
-{}
+{
+    setMinimumHeight(iconSize + iconMargin * 2);
+}
 
 void Gui::InputHintWidget::showHints(const std::list<InputHint>& hints)
 {
@@ -41,9 +49,6 @@ void Gui::InputHintWidget::showHints(const std::list<InputHint>& hints)
         clearHints();
         return;
     }
-
-    constexpr int iconSize = 22;
-    constexpr int iconMargin = 2;
 
     const auto getKeyImage = [this](InputHint::UserInput key) {
         const auto& factory = BitmapFactory();
