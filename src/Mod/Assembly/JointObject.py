@@ -1056,7 +1056,7 @@ class Joint:
         part1Connected = assembly.isPartConnected(part1)
         part2Connected = assembly.isPartConnected(part2)
         joint.Suppressed = suppressed_backup
-        
+
         # If only part1 is unconnected and part2 is connected, swap references and related properties
         if not part1Connected and part2Connected:
             ref1 = joint.Reference1
