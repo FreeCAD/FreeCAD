@@ -52,15 +52,18 @@ class TestArchMaterialGui(TestArchBaseGui):
         super().tearDown()
 
     def _find_multimaterial_tree(self):
+        expected_names = list(self.multi_material.Names)
+        expected_materials = [material.Label for material in self.multi_material.Materials]
         main_window = FreeCADGui.getMainWindow()
         for tree in main_window.findChildren(QtGui.QTreeView, "tree"):
             if not tree.isVisible():
                 continue
             model = tree.model()
-            if model is None or model.columnCount() < 3 or model.rowCount() < 2:
+            if model is None or model.columnCount() < 3 or model.rowCount() != len(expected_names):
                 continue
-            header_item = model.horizontalHeaderItem(2)
-            if header_item and "Thickness" in header_item.text():
+            names = [model.index(row, 0).data() for row in range(model.rowCount())]
+            materials = [model.index(row, 1).data() for row in range(model.rowCount())]
+            if names == expected_names and materials == expected_materials:
                 return tree
         self.fail("Could not find the visible MultiMaterial task panel tree.")
 
@@ -72,17 +75,9 @@ class TestArchMaterialGui(TestArchBaseGui):
             if editor.metaObject().className() == "Gui::InputField" and editor.isVisible()
         ]
 
-    def test_multimaterial_delegate_reserves_inputfield_height(self):
-        """The real edit lifecycle should grow only the active thickness row, then shrink it again."""
-        self.assertTrue(self.multi_material.ViewObject.Proxy.setEdit(self.multi_material.ViewObject, 0))
-        self.pump_gui_events()
-
-        tree = self._find_multimaterial_tree()
-        self.assertFalse(tree.uniformRowHeights())
-        index = tree.model().index(0, 2)
-        other_index = tree.model().index(1, 2)
-        tree.setCurrentIndex(index)
-        tree.openPersistentEditor(index)
+    def _assert_editor_row_state(self, tree, active_index, inactive_index):
+        tree.setCurrentIndex(active_index)
+        tree.openPersistentEditor(active_index)
         self.pump_gui_events()
 
         editors = self._visible_input_fields(tree)
@@ -91,8 +86,8 @@ class TestArchMaterialGui(TestArchBaseGui):
         editor.ensurePolished()
         editor_height = max(editor.sizeHint().height(), editor.minimumSizeHint().height())
 
-        row_height = tree.visualRect(index).height()
-        other_row_height = tree.visualRect(other_index).height()
+        row_height = tree.visualRect(active_index).height()
+        other_row_height = tree.visualRect(inactive_index).height()
         self.assertGreaterEqual(
             row_height,
             editor_height,
@@ -104,14 +99,14 @@ class TestArchMaterialGui(TestArchBaseGui):
             "Only the edited thickness row should expand for the InputField editor.",
         )
 
-        tree.closePersistentEditor(index)
+        tree.closePersistentEditor(active_index)
         self.pump_gui_events()
 
         self.assertFalse(
             self._visible_input_fields(tree),
             "Expected the active Gui::InputField editor to close after ending the edit.",
         )
-        closed_row_height = tree.visualRect(index).height()
+        closed_row_height = tree.visualRect(active_index).height()
         self.assertLess(
             closed_row_height,
             row_height,
@@ -122,3 +117,15 @@ class TestArchMaterialGui(TestArchBaseGui):
             other_row_height,
             "Closing the editor should restore the edited row to the non-edited row height.",
         )
+
+    def test_multimaterial_delegate_reserves_inputfield_height(self):
+        """The real edit lifecycle should grow only the active thickness row, then shrink it again."""
+        self.assertTrue(self.multi_material.ViewObject.Proxy.setEdit(self.multi_material.ViewObject, 0))
+        self.pump_gui_events()
+
+        tree = self._find_multimaterial_tree()
+        self.assertFalse(tree.uniformRowHeights())
+        index = tree.model().index(0, 2)
+        other_index = tree.model().index(1, 2)
+        self._assert_editor_row_state(tree, index, other_index)
+        self._assert_editor_row_state(tree, other_index, index)
