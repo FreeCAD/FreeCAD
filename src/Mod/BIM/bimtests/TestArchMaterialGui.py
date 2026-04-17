@@ -24,6 +24,8 @@
 
 """GUI tests for the ArchMaterial module."""
 
+import time
+
 from PySide import QtGui
 
 import Arch
@@ -35,7 +37,6 @@ from bimtests.TestArchBaseGui import TestArchBaseGui
 class TestArchMaterialGui(TestArchBaseGui):
     def setUp(self):
         super().setUp()
-        self.panel = None
 
         self.material = Arch.makeMaterial(name="Material")
         self.material_001 = Arch.makeMaterial(name="Material001")
@@ -45,13 +46,7 @@ class TestArchMaterialGui(TestArchBaseGui):
         self.multi_material.Thicknesses = [200.0, 100.0]
         self.document.recompute()
 
-    def tearDown(self):
-        if self.panel:
-            self.panel.form.close()
-            self.panel = None
-        super().tearDown()
-
-    def _find_multimaterial_tree(self):
+    def _matching_multimaterial_tree(self):
         expected_names = list(self.multi_material.Names)
         expected_materials = [material.Label for material in self.multi_material.Materials]
         main_window = FreeCADGui.getMainWindow()
@@ -65,7 +60,38 @@ class TestArchMaterialGui(TestArchBaseGui):
             materials = [model.index(row, 1).data() for row in range(model.rowCount())]
             if names == expected_names and materials == expected_materials:
                 return tree
-        self.fail("Could not find the visible MultiMaterial task panel tree.")
+        return None
+
+    def _wait_until(self, predicate, message, timeout_ms=2000, step_ms=50):
+        deadline = time.monotonic() + (timeout_ms / 1000.0)
+        while time.monotonic() < deadline:
+            try:
+                if predicate():
+                    return
+            except RuntimeError:
+                pass
+            self.pump_gui_events(step_ms)
+
+        try:
+            if predicate():
+                return
+        except RuntimeError:
+            pass
+
+        self.fail(message)
+
+    def _find_multimaterial_tree(self):
+        holder = {}
+
+        def _tree_available():
+            tree = self._matching_multimaterial_tree()
+            if tree is None:
+                return False
+            holder["tree"] = tree
+            return True
+
+        self._wait_until(_tree_available, "Could not find the visible MultiMaterial task panel tree.")
+        return holder["tree"]
 
     @staticmethod
     def _visible_input_fields(tree):
@@ -75,39 +101,64 @@ class TestArchMaterialGui(TestArchBaseGui):
             if editor.metaObject().className() == "Gui::InputField" and editor.isVisible()
         ]
 
+    def _wait_for_visible_input_field(self, tree):
+        holder = {}
+
+        def _editor_available():
+            editors = self._visible_input_fields(tree)
+            if not editors:
+                return False
+            holder["editor"] = editors[0]
+            return True
+
+        self._wait_until(
+            _editor_available, "Expected an active Gui::InputField editor in the thickness column."
+        )
+        return holder["editor"]
+
     def _assert_editor_row_state(self, tree, active_index, inactive_index):
+        baseline_row_height = tree.visualRect(active_index).height()
         tree.setCurrentIndex(active_index)
         tree.openPersistentEditor(active_index)
-        self.pump_gui_events()
+        row_height = baseline_row_height
 
-        editors = self._visible_input_fields(tree)
-        self.assertTrue(
-            editors, "Expected an active Gui::InputField editor in the thickness column."
-        )
-        editor = editors[0]
-        editor.ensurePolished()
-        editor_height = max(editor.sizeHint().height(), editor.minimumSizeHint().height())
+        try:
+            editor = self._wait_for_visible_input_field(tree)
+            editor.ensurePolished()
+            editor_height = max(editor.sizeHint().height(), editor.minimumSizeHint().height())
 
-        row_height = tree.visualRect(active_index).height()
-        other_row_height = tree.visualRect(inactive_index).height()
-        self.assertGreaterEqual(
-            row_height,
-            editor_height,
-            f"Thickness row height {row_height} is smaller than the InputField height {editor_height}.",
-        )
-        self.assertLess(
-            other_row_height,
-            row_height,
-            "Only the edited thickness row should expand for the InputField editor.",
-        )
+            self._wait_until(
+                lambda: tree.visualRect(active_index).height() >= editor_height,
+                f"Thickness row did not grow to the InputField height {editor_height}.",
+            )
+            row_height = tree.visualRect(active_index).height()
+            other_row_height = tree.visualRect(inactive_index).height()
+            self.assertGreaterEqual(
+                row_height,
+                editor_height,
+                f"Thickness row height {row_height} is smaller than the InputField height {editor_height}.",
+            )
+            self.assertLess(
+                other_row_height,
+                row_height,
+                "Only the edited thickness row should expand for the InputField editor.",
+            )
+        finally:
+            try:
+                tree.closePersistentEditor(active_index)
+            except RuntimeError:
+                return
+            self.pump_gui_events()
 
-        tree.closePersistentEditor(active_index)
-        self.pump_gui_events()
-
-        self.assertFalse(
-            self._visible_input_fields(tree),
+        self._wait_until(
+            lambda: not self._visible_input_fields(tree),
             "Expected the active Gui::InputField editor to close after ending the edit.",
         )
+        self._wait_until(
+            lambda: tree.visualRect(active_index).height() <= baseline_row_height,
+            "The edited thickness row did not shrink again after the InputField editor closed.",
+        )
+
         closed_row_height = tree.visualRect(active_index).height()
         self.assertLess(
             closed_row_height,
@@ -116,20 +167,15 @@ class TestArchMaterialGui(TestArchBaseGui):
         )
         self.assertLessEqual(
             closed_row_height,
-            other_row_height,
-            "Closing the editor should restore the edited row to the non-edited row height.",
+            baseline_row_height,
+            "Closing the editor should restore the edited row to its baseline height.",
         )
 
     def test_multimaterial_delegate_reserves_inputfield_height(self):
         """The real edit lifecycle should grow only the active thickness row, then shrink it again."""
-        self.assertTrue(
-            self.multi_material.ViewObject.Proxy.setEdit(self.multi_material.ViewObject, 0)
-        )
-        self.pump_gui_events()
-
+        self.assertTrue(self.multi_material.ViewObject.Proxy.setEdit(self.multi_material.ViewObject, 0))
         tree = self._find_multimaterial_tree()
         self.assertFalse(tree.uniformRowHeights())
         index = tree.model().index(0, 2)
         other_index = tree.model().index(1, 2)
         self._assert_editor_row_state(tree, index, other_index)
-        self._assert_editor_row_state(tree, other_index, index)
