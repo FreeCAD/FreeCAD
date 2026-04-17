@@ -822,6 +822,24 @@ if FreeCAD.GuiUp:
                 if obj.isDerivedFrom("App::MaterialObject"):
                     self.mats.append(obj)
             QtGui.QStyledItemDelegate.__init__(self, parent, *args)
+            self._editor_height = self._get_editor_height()
+            self._editing_row = None
+
+        @staticmethod
+        def _get_editor_height():
+            editor = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+            editor.ensurePolished()
+            height = max(editor.sizeHint().height(), editor.minimumSizeHint().height())
+            editor.deleteLater()
+            return height
+
+        def _schedule_layout(self, parent):
+            try:
+                tree = parent.parent()
+            except RuntimeError:
+                return
+            if tree:
+                QtCore.QTimer.singleShot(0, tree.doItemsLayout)
 
         def createEditor(self, parent, option, index):
             if index.column() == 0:
@@ -834,9 +852,16 @@ if FreeCAD.GuiUp:
                 editor = ui.createWidget("Gui::InputField")
                 editor.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Minimum)
                 editor.setParent(parent)
+                self._editing_row = index.row()
+                self._schedule_layout(parent)
+                editor.destroyed.connect(lambda *_args, p=parent: self._finish_editing(p))
             else:
                 editor = QtGui.QLineEdit(parent)
             return editor
+
+        def _finish_editing(self, parent):
+            self._editing_row = None
+            self._schedule_layout(parent)
 
         def setEditorData(self, editor, index):
             if index.column() == 0:
@@ -867,6 +892,12 @@ if FreeCAD.GuiUp:
             else:
                 QtGui.QStyledItemDelegate.setModelData(self, editor, model, index)
 
+        def sizeHint(self, option, index):
+            size = QtGui.QStyledItemDelegate.sizeHint(self, option, index)
+            if index.column() == 2 and index.row() == self._editing_row:
+                size.setHeight(max(size.height(), self._editor_height))
+            return size
+
 
 class _ArchMultiMaterialTaskPanel:
     """The editmode TaskPanel for MultiMaterial objects"""
@@ -885,7 +916,7 @@ class _ArchMultiMaterialTaskPanel:
         )
         self.form.tree.setRootIsDecorated(False)  # remove 1st column's extra left margin
         self.form.tree.setModel(self.model)
-        self.form.tree.setUniformRowHeights(True)
+        self.form.tree.setUniformRowHeights(False)
         self.form.tree.setItemDelegate(MultiMaterialDelegate())
         self.form.chooseCombo.currentIndexChanged.connect(self.fromExisting)
         self.form.addButton.pressed.connect(self.addLayer)
