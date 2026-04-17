@@ -90,7 +90,9 @@ class TestArchMaterialGui(TestArchBaseGui):
             holder["tree"] = tree
             return True
 
-        self._wait_until(_tree_available, "Could not find the visible MultiMaterial task panel tree.")
+        self._wait_until(
+            _tree_available, "Could not find the visible MultiMaterial task panel tree."
+        )
         return holder["tree"]
 
     @staticmethod
@@ -173,7 +175,9 @@ class TestArchMaterialGui(TestArchBaseGui):
 
     def test_multimaterial_delegate_reserves_inputfield_height(self):
         """The real edit lifecycle should grow only the active thickness row, then shrink it again."""
-        self.assertTrue(self.multi_material.ViewObject.Proxy.setEdit(self.multi_material.ViewObject, 0))
+        self.assertTrue(
+            self.multi_material.ViewObject.Proxy.setEdit(self.multi_material.ViewObject, 0)
+        )
         tree = self._find_multimaterial_tree()
         self.assertFalse(tree.uniformRowHeights())
         index = tree.model().index(0, 2)
