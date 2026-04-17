@@ -27,7 +27,7 @@
 from PySide import QtGui
 
 import Arch
-import ArchMaterial
+import FreeCADGui
 
 from bimtests.TestArchBaseGui import TestArchBaseGui
 
@@ -51,25 +51,41 @@ class TestArchMaterialGui(TestArchBaseGui):
             self.panel = None
         super().tearDown()
 
-    def test_multimaterial_delegate_reserves_inputfield_height(self):
-        """Only the edited thickness row should grow enough for the embedded InputField editor."""
-        self.panel = ArchMaterial._ArchMultiMaterialTaskPanel(self.multi_material)
-        self.panel.form.show()
-        self.pump_gui_events()
+    def _find_multimaterial_tree(self):
+        main_window = FreeCADGui.getMainWindow()
+        for tree in main_window.findChildren(QtGui.QTreeView, "tree"):
+            if not tree.isVisible():
+                continue
+            model = tree.model()
+            if model is None or model.columnCount() < 3 or model.rowCount() < 2:
+                continue
+            header_item = model.horizontalHeaderItem(2)
+            if header_item and "Thickness" in header_item.text():
+                return tree
+        self.fail("Could not find the visible MultiMaterial task panel tree.")
 
-        tree = self.panel.form.tree
-        self.assertFalse(tree.uniformRowHeights())
-        index = self.panel.model.index(0, 2)
-        other_index = self.panel.model.index(1, 2)
-        tree.setCurrentIndex(index)
-        tree.openPersistentEditor(index)
-        self.pump_gui_events()
-
-        editors = [
+    @staticmethod
+    def _visible_input_fields(tree):
+        return [
             editor
             for editor in tree.findChildren(QtGui.QWidget)
             if editor.metaObject().className() == "Gui::InputField" and editor.isVisible()
         ]
+
+    def test_multimaterial_delegate_reserves_inputfield_height(self):
+        """The real edit lifecycle should grow only the active thickness row, then shrink it again."""
+        self.assertTrue(self.multi_material.ViewObject.Proxy.setEdit(self.multi_material.ViewObject, 0))
+        self.pump_gui_events()
+
+        tree = self._find_multimaterial_tree()
+        self.assertFalse(tree.uniformRowHeights())
+        index = tree.model().index(0, 2)
+        other_index = tree.model().index(1, 2)
+        tree.setCurrentIndex(index)
+        tree.openPersistentEditor(index)
+        self.pump_gui_events()
+
+        editors = self._visible_input_fields(tree)
         self.assertTrue(editors, "Expected an active Gui::InputField editor in the thickness column.")
         editor = editors[0]
         editor.ensurePolished()
@@ -86,4 +102,23 @@ class TestArchMaterialGui(TestArchBaseGui):
             other_row_height,
             row_height,
             "Only the edited thickness row should expand for the InputField editor.",
+        )
+
+        tree.closePersistentEditor(index)
+        self.pump_gui_events()
+
+        self.assertFalse(
+            self._visible_input_fields(tree),
+            "Expected the active Gui::InputField editor to close after ending the edit.",
+        )
+        closed_row_height = tree.visualRect(index).height()
+        self.assertLess(
+            closed_row_height,
+            row_height,
+            "The edited thickness row should shrink again after the InputField editor closes.",
+        )
+        self.assertLessEqual(
+            closed_row_height,
+            other_row_height,
+            "Closing the editor should restore the edited row to the non-edited row height.",
         )
