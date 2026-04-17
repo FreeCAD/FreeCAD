@@ -2429,9 +2429,8 @@ class HatchTaskPanel:
         preview_name = None
 
         try:
-            # Step 1 — build a real hatch object (temp) so execute() runs
-            # exactly as it would for the final parametric hatch.  This gives
-            # us the correct Shape AND Placement without any guesswork.
+            # Always build a real parametric hatch so execute() runs the
+            # identical pipeline to the final hatch (correct shape + placement).
             temp_name = doc.getUniqueObjectName("_HatchPreviewTemp")
             temp_hatch = make_custom_hatch(
                 name=temp_name,
@@ -2456,42 +2455,78 @@ class HatchTaskPanel:
                 )
                 return
 
-            # Step 2 — capture everything we need from the temp hatch, then
-            # delete it.  After this point temp_hatch no longer exists.
-            preview_shape    = temp_hatch.Shape.copy()
-            show_faces       = temp_hatch.ShowFaces
-            # Deep-copy the Placement so it survives temp_hatch deletion.
-            hatch_pl = FreeCAD.Placement(
-                FreeCAD.Vector(temp_hatch.Placement.Base),
-                FreeCAD.Rotation(temp_hatch.Placement.Rotation)
-            )
-            doc.removeObject(temp_name)
-            temp_name = None
-
-            # Step 3 — create a plain Part::Feature for the preview.
-            # Part::Feature has NO execute(), so its Placement can never be
-            # reset by a recompute.  This is the key difference from keeping
-            # a parametric hatch object whose execute() fights over Placement.
-            preview_name = doc.getUniqueObjectName("HatchPreview")
-            preview_feature = doc.addObject("Part::Feature", preview_name)
-            preview_feature.Shape = preview_shape
+            show_faces = temp_hatch.ShowFaces
 
             at_location = getattr(self, "previewAtLocationCheck", None)
-            if at_location is None or at_location.isChecked() or is_definition:
-                # Checked (default): place preview exactly where the final
-                # parametric hatch will appear — same Placement as temp_hatch.
-                preview_feature.Placement = hatch_pl
+            preview_at_surface = (
+                at_location is None or
+                at_location.isChecked() or
+                is_definition
+            )
+
+            if preview_at_surface:
+                # ---------------------------------------------------------- #
+                # AT SURFACE LOCATION (default, checkbox checked)             #
+                #                                                              #
+                # Keep the parametric hatch object itself as the preview.    #
+                # Its execute() already produced the correct Shape and        #
+                # Placement — no copy needed, no coordinate reconstruction.  #
+                # Future recomputes keep it correct automatically.           #
+                # ---------------------------------------------------------- #
+                preview_name = temp_name
+                temp_name = None   # don't clean up — this IS the preview
+                preview_obj = doc.getObject(preview_name)
+
             else:
-                # Unchecked: display at world origin for close-up inspection.
-                preview_feature.Placement = FreeCAD.Placement()
+                # ---------------------------------------------------------- #
+                # AT WORLD ORIGIN (checkbox unchecked)                        #
+                #                                                              #
+                # We cannot just shift the parametric hatch's Placement:     #
+                # execute() runs on every recompute and resets it back to the #
+                # surface location — the "bounce-back" bug.                  #
+                #                                                              #
+                # Instead:                                                    #
+                # 1. Bake the hatch's current world-space geometry into a    #
+                #    shape by applying Placement to vertices via              #
+                #    transformGeometry.                                       #
+                # 2. Shift that world-space shape so its centre lands at     #
+                #    the origin.                                              #
+                # 3. Store in a Part::Feature (no execute(), Placement is    #
+                #    stable — will never bounce back).                        #
+                # 4. Delete the parametric hatch.                            #
+                # ---------------------------------------------------------- #
+                world_shape = temp_hatch.Shape.copy()
+                hatch_pl    = temp_hatch.Placement
 
-            # Recompute to populate display modes on the new Part::Feature.
-            # Safe: Part::Feature has no execute() so Placement is never reset.
-            doc.recompute()
+                # Bake placement into vertices so Part::Feature at identity
+                # renders the shape at the same position as the hatch.
+                if not hatch_pl.isIdentity():
+                    try:
+                        world_shape = world_shape.transformGeometry(hatch_pl.toMatrix())
+                    except Exception:
+                        pass
 
-            # Apply view style after recompute (display modes exist now).
+                # Shift centre to origin for close-up inspection.
+                try:
+                    c = world_shape.BoundBox.Center
+                    mat = FreeCAD.Matrix()
+                    mat.move(FreeCAD.Vector(-c.x, -c.y, -c.z))
+                    world_shape.transformShape(mat)
+                except Exception:
+                    pass
+
+                doc.removeObject(temp_name)
+                temp_name = None
+
+                preview_name = doc.getUniqueObjectName("HatchPreview")
+                preview_obj  = doc.addObject("Part::Feature", preview_name)
+                preview_obj.Shape     = world_shape
+                preview_obj.Placement = FreeCAD.Placement()   # identity — geometry is already shifted
+                doc.recompute()
+
+            # Apply green preview style (after any recompute so display modes exist)
             if FreeCAD.GuiUp:
-                vobj = preview_feature.ViewObject
+                vobj = preview_obj.ViewObject
                 _LINE_COLOR  = (1/255, 255/255, 1/255)   # #01ff01
                 _SHAPE_COLOR = (0/255, 204/255, 51/255)   # #00cc33
                 safe_set_display_mode(vobj, "Flat Lines" if show_faces else "Wireframe")
@@ -2505,13 +2540,13 @@ class HatchTaskPanel:
 
             keep = self.keepPreviewCheck.isChecked()
             if keep:
-                preview_feature.Label = "HatchPreview_Kept"
+                preview_obj.Label = "HatchPreview_Kept"
                 self.current_temp_preview_name = None
             else:
                 self.current_temp_preview_name = preview_name
 
-            num_edges = len(preview_shape.Edges)
-            num_faces = len(preview_shape.Faces)
+            num_edges = len(preview_obj.Shape.Edges)
+            num_faces  = len(preview_obj.Shape.Faces)
             QtWidgets.QMessageBox.information(
                 self.form, "Preview Generated",
                 f"Preview complete (≤100 tiles for speed).\n"
