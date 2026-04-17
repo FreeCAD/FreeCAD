@@ -25,6 +25,9 @@
 
 #pragma once
 
+#include <memory>
+
+#include <Gui/DeferredDialogRejectUtils.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
 
@@ -51,13 +54,21 @@ public:
 
     bool accept();
     bool reject();
+    void flushPendingRecompute();
+    void stopPendingRecompute();
+    bool hasOutstandingRecompute() const;
+    bool isFaceSelectionActive() const;
+    void setDeferredClosePending(bool pending);
     Part::Thickness* getObject() const;
+
+Q_SIGNALS:
+    void recomputeSettled();
 
 private:
     void setupConnections();
     void schedulePreviewRecompute();
-    void flushPreviewRecompute();
-    void stopPreviewRecompute();
+    void requestPreviewRecompute(bool waitForCompletion);
+    void updateRecomputeUi();
     void onSpinOffsetValueChanged(double);
     void onModeTypeActivated(int);
     void onJoinTypeActivated(int);
@@ -99,7 +110,16 @@ public:
     }
 
 private:
+    void ensureDeferredRejectConnection();
+    void setDeferredRejectPending(bool pending);
+    bool rejectNow();
+
+private Q_SLOTS:
+    void onRecomputeSettled();
+
+private:
     ThicknessWidget* widget;
+    Gui::DeferredDialogRejectState deferredReject;
 };
 
 }  // namespace PartGui
