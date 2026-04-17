@@ -23,17 +23,20 @@
  ***************************************************************************/
 
 #include <limits>
+
 #include <QMessageBox>
+#include <QSignalBlocker>
 
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Base/Tools.h>
-#include <Gui/ActionFunction.h>
 #include <Gui/Application.h>
+#include <Gui/AsyncPreviewSession.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/CommandT.h>
+#include <Gui/DeferredDialogRejectUtils.h>
 #include <Gui/Document.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/Selection/SelectionFilter.h>
@@ -59,7 +62,7 @@ public:
     QString text;
     std::string selection;
     Part::Thickness* thickness {nullptr};
-    std::unique_ptr<Gui::DebouncedFunction> previewRecompute;
+    std::unique_ptr<Gui::AsyncPreviewSession> asyncPreviewSession;
 
     class FaceSelection: public Gui::SelectionFilterGate
     {
@@ -121,15 +124,41 @@ ThicknessWidget::ThicknessWidget(Part::Thickness* thickness, QWidget* parent)
 
     d->ui.spinOffset->bind(d->thickness->Value);
 
-    d->previewRecompute = std::make_unique<Gui::DebouncedFunction>(this);
-    d->previewRecompute->setInterval(
-        App::GetApplication().isAsyncRecomputeEnabled() ? Private::AsyncPreviewDebounceMs : 0
-    );
-    d->previewRecompute->setFunction([this]() {
-        if (d->ui.updateView->isChecked() && d->thickness && d->thickness->getDocument()) {
+    Gui::AsyncPreviewController::Callbacks callbacks;
+    callbacks.makeRequest = [this]() {
+        auto* object = d->thickness;
+        return object ? App::RecomputeRequest::fromDocumentObject(*object) : App::RecomputeRequest {};
+    };
+    callbacks.runSync = [this]() {
+        if (d->thickness && d->thickness->getDocument()) {
             d->thickness->getDocument()->recomputeFeature(d->thickness);
         }
-    });
+    };
+    callbacks.onAppliedResult = [this](bool success, bool canceled) {
+        if (success && !canceled && gizmoContainer) {
+            setGizmoPositions();
+        }
+    };
+    d->asyncPreviewSession = std::make_unique<Gui::AsyncPreviewSession>(std::move(callbacks), this);
+    d->asyncPreviewSession->setSchedulerInterval(
+        App::GetApplication().isAsyncRecomputeEnabled() ? Private::AsyncPreviewDebounceMs : 0
+    );
+    connect(
+        d->asyncPreviewSession->controller(),
+        &Gui::AsyncPreviewController::recomputeSettled,
+        this,
+        &ThicknessWidget::recomputeSettled
+    );
+    d->asyncPreviewSession->bindWidgets(
+        {
+            d->ui.previewStatusWidget,
+            d->ui.progressBarPreview,
+            d->ui.labelPreviewStatus,
+            d->ui.buttonCancelPreview,
+        },
+        [](const char* text) { return ThicknessWidget::tr(text); }
+    );
+    updateRecomputeUi();
 
     // The interactive gizmos are implemented for this operation just as a proof
     // of concept. And so, it is kept disabled until the other operations of the
@@ -170,22 +199,53 @@ Part::Thickness* ThicknessWidget::getObject() const
 
 void ThicknessWidget::schedulePreviewRecompute()
 {
-    if (d->previewRecompute && d->ui.updateView->isChecked()) {
-        d->previewRecompute->start();
+    if (d->asyncPreviewSession && d->ui.updateView->isChecked()) {
+        d->asyncPreviewSession->scheduleRecompute();
     }
 }
 
-void ThicknessWidget::flushPreviewRecompute()
+void ThicknessWidget::flushPendingRecompute()
 {
-    if (d->previewRecompute) {
-        d->previewRecompute->triggerNow();
+    if (d->asyncPreviewSession) {
+        d->asyncPreviewSession->flushPendingRecompute();
     }
 }
 
-void ThicknessWidget::stopPreviewRecompute()
+void ThicknessWidget::stopPendingRecompute()
 {
-    if (d->previewRecompute) {
-        d->previewRecompute->stop();
+    if (d->asyncPreviewSession) {
+        d->asyncPreviewSession->stopPendingRecompute();
+    }
+}
+
+bool ThicknessWidget::hasOutstandingRecompute() const
+{
+    return d->asyncPreviewSession && d->asyncPreviewSession->hasOutstandingRecompute();
+}
+
+bool ThicknessWidget::isFaceSelectionActive() const
+{
+    return d->ui.facesButton->isChecked();
+}
+
+void ThicknessWidget::setDeferredClosePending(bool pending)
+{
+    if (d->asyncPreviewSession) {
+        d->asyncPreviewSession->setDeferredClosePending(pending);
+    }
+}
+
+void ThicknessWidget::requestPreviewRecompute(bool waitForCompletion)
+{
+    if (d->asyncPreviewSession) {
+        d->asyncPreviewSession->requestRecompute(waitForCompletion);
+    }
+}
+
+void ThicknessWidget::updateRecomputeUi()
+{
+    if (d->asyncPreviewSession) {
+        d->asyncPreviewSession->updateUi();
     }
 }
 
@@ -222,7 +282,7 @@ void ThicknessWidget::onSelfIntersectionToggled(bool on)
 void ThicknessWidget::onFacesButtonToggled(bool on)
 {
     if (on) {
-        stopPreviewRecompute();
+        stopPendingRecompute();
         QList<QWidget*> c = this->findChildren<QWidget*>();
         for (auto it : c) {
             it->setEnabled(false);
@@ -278,10 +338,16 @@ void ThicknessWidget::onFacesButtonToggled(bool on)
 void ThicknessWidget::onUpdateViewToggled(bool on)
 {
     if (on) {
-        flushPreviewRecompute();
+        if (!d->asyncPreviewSession) {
+            return;
+        }
+
+        if (!d->asyncPreviewSession->triggerScheduledRecomputeNow()) {
+            requestPreviewRecompute(/*waitForCompletion=*/false);
+        }
     }
     else {
-        stopPreviewRecompute();
+        stopPendingRecompute();
     }
 }
 
@@ -291,7 +357,8 @@ bool ThicknessWidget::accept()
         return false;
     }
 
-    stopPreviewRecompute();
+    const bool previewUpToDate = d->ui.updateView->isChecked();
+    flushPendingRecompute();
 
     try {
         if (!d->selection.empty()) {
@@ -310,6 +377,13 @@ bool ThicknessWidget::accept()
             "SelfIntersection = %s",
             d->ui.selfIntersection->isChecked() ? "True" : "False"
         );
+
+        if (previewUpToDate) {
+            Gui::cmdAppObject(d->thickness, "purgeTouched()");
+            for (auto parent : d->thickness->getInList()) {
+                parent->touch();
+            }
+        }
 
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
         if (!d->thickness->isValid()) {
@@ -338,7 +412,7 @@ bool ThicknessWidget::reject()
         return false;
     }
 
-    stopPreviewRecompute();
+    stopPendingRecompute();
 
     // save this and check if the object is still there after the
     // transaction is aborted
@@ -364,6 +438,7 @@ void ThicknessWidget::changeEvent(QEvent* e)
     if (e->type() == QEvent::LanguageChange) {
         d->ui.retranslateUi(this);
         d->ui.labelOffset->setText(tr("Thickness"));
+        updateRecomputeUi();
     }
 }
 
@@ -428,6 +503,7 @@ TaskThickness::TaskThickness(Part::Thickness* offset)
     widget = new ThicknessWidget(offset);
     widget->setWindowTitle(ThicknessWidget::tr("Thickness"));
     addTaskBox(Gui::BitmapFactory().pixmap("Part_Thickness"), widget);
+    connect(widget, &ThicknessWidget::recomputeSettled, this, &TaskThickness::onRecomputeSettled);
 }
 
 Part::Thickness* TaskThickness::getObject() const
@@ -443,12 +519,70 @@ void TaskThickness::clicked(int)
 
 bool TaskThickness::accept()
 {
+    if (!widget || deferredReject.pending) {
+        return false;
+    }
+
     return widget->accept();
 }
 
 bool TaskThickness::reject()
 {
-    return widget->reject();
+    if (!widget || widget->isFaceSelectionActive()) {
+        return false;
+    }
+
+    ensureDeferredRejectConnection();
+    widget->stopPendingRecompute();
+    if (!widget->hasOutstandingRecompute()) {
+        return rejectNow();
+    }
+
+    if (!deferredReject.pending) {
+        auto* object = getObject();
+        deferredReject.documentName = object && object->getDocument()
+            ? std::string(object->getDocument()->getName())
+            : std::string();
+        setDeferredRejectPending(true);
+    }
+
+    return false;
+}
+
+void TaskThickness::ensureDeferredRejectConnection()
+{
+    Gui::ensureDeferredDialogRejectConnection(
+        deferredReject,
+        widget,
+        &ThicknessWidget::recomputeSettled,
+        this,
+        &TaskThickness::onRecomputeSettled
+    );
+}
+
+void TaskThickness::setDeferredRejectPending(bool pending)
+{
+    Gui::setDeferredDialogRejectPending(deferredReject, pending, buttonBox, [this](bool pending) {
+        if (widget) {
+            widget->setDeferredClosePending(pending);
+        }
+    });
+}
+
+bool TaskThickness::rejectNow()
+{
+    return widget && widget->reject();
+}
+
+void TaskThickness::onRecomputeSettled()
+{
+    Gui::finishDeferredDialogReject(
+        this,
+        deferredReject,
+        widget && !widget->hasOutstandingRecompute(),
+        [this]() { return rejectNow(); },
+        [this](bool pending) { setDeferredRejectPending(pending); }
+    );
 }
 
 #include "moc_TaskThickness.cpp"
