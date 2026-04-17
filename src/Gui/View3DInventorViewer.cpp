@@ -255,11 +255,7 @@ void clearDimensionPaneState()
 
 int qImageByteCount(const QImage& image)
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     return static_cast<int>(image.sizeInBytes());
-#else
-    return image.byteCount();
-#endif
 }
 
 void setOverlayCacheContext(SoGLRenderAction& action, const View3DInventorViewer* viewer)

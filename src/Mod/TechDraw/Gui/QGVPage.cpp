@@ -448,11 +448,7 @@ void QGVPage::kbPanScroll(int xMove, int yMove)
     }
 }
 
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
-void QGVPage::enterEvent(QEvent* event)
-#else
 void QGVPage::enterEvent(QEnterEvent* event)
-#endif
 {
     if (toolHandler) {
         // if the user interacted with another widget than the mdi, the cursor got unset.
