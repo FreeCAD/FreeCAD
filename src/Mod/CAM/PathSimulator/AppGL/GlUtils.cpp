@@ -24,9 +24,9 @@
 
 #include "GlUtils.h"
 
-namespace MillSim
+namespace CAMSimulator
 {
 
 const mat4x4 identityMat = {{1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}};
 
-}  // namespace MillSim
+}  // namespace CAMSimulator

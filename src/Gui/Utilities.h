@@ -449,6 +449,8 @@ class DocumentObject;
 namespace Gui
 {
 
+[[nodiscard]] GuiExport bool isInternalGuiTestRun();
+
 /**
  */
 class GuiExport ViewVolumeProjection: public Base::ViewProjMethod

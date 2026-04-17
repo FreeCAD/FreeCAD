@@ -279,7 +279,7 @@ ViewProviderMeasureAngle::ViewProviderMeasureAngle()
     arcEngine->angle.connectFrom(&fieldAngle);
 
     auto calculatorRadius = new SoCalculator();
-    calculatorRadius->A.connectFrom(&pDragger->translation);
+    calculatorRadius->A.connectFrom(&pLabelTranslation->translation);
     calculatorRadius->expression.setValue("oa=length(A)");
     arcEngine->radius.connectFrom(&calculatorRadius->oa);
     arcEngine->deviation.setValue(0.1f);

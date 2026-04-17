@@ -3499,6 +3499,62 @@ void View3DInventorViewer::setCameraType(SoType type)
     lightRotation->rotation.connectFrom(&cam->orientation);
 }
 
+bool View3DInventorViewer::setCamera(const char* pCamera)
+{
+    SoCamera* CamViewer = getSoRenderManager()->getCamera();
+    if (!CamViewer) {
+        throw Base::RuntimeError("No camera set so far…");
+    }
+
+    SoInput in;
+    in.setBuffer(pCamera, std::strlen(pCamera));
+
+    SoNode* Cam;
+    SoDB::read(&in, Cam);
+
+    if (!Cam || !Cam->isOfType(SoCamera::getClassTypeId())) {
+        throw Base::RuntimeError("Camera settings failed to read");
+    }
+
+    // this is to make sure to reliably delete the node
+    CoinPtr<SoNode> camPtr {Cam};
+
+    // toggle between perspective and orthographic camera
+    if (Cam->getTypeId() != CamViewer->getTypeId()) {
+        setCameraType(Cam->getTypeId());
+        CamViewer = getSoRenderManager()->getCamera();
+
+        assert(Cam->getTypeId() == CamViewer->getTypeId());
+    }
+
+    // we just made sure the cameras are the same type, now we can safely downcast
+    if (Cam->getTypeId() == SoPerspectiveCamera::getClassTypeId()) {
+        auto CamViewerP = static_cast<SoPerspectiveCamera*>(CamViewer);
+        auto CamP = static_cast<SoPerspectiveCamera*>(Cam);
+
+        CamViewerP->position = CamP->position;
+        CamViewerP->orientation = CamP->orientation;
+        CamViewerP->nearDistance = CamP->nearDistance;
+        CamViewerP->farDistance = CamP->farDistance;
+        CamViewerP->focalDistance = CamP->focalDistance;
+    }
+    else if (Cam->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
+        auto CamViewerO = static_cast<SoOrthographicCamera*>(CamViewer);
+        auto CamO = static_cast<SoOrthographicCamera*>(Cam);
+
+        CamViewerO->viewportMapping = CamO->viewportMapping;
+        CamViewerO->position = CamO->position;
+        CamViewerO->orientation = CamO->orientation;
+        CamViewerO->nearDistance = CamO->nearDistance;
+        CamViewerO->farDistance = CamO->farDistance;
+        CamViewerO->focalDistance = CamO->focalDistance;
+        CamViewerO->aspectRatio = CamO->aspectRatio;
+        CamViewerO->height = CamO->height;
+    }
+
+    return true;
+}
+
 void View3DInventorViewer::moveCameraTo(const SbRotation& orientation, const SbVec3f& position, int duration)
 {
     SoCamera* camera = getCamera();

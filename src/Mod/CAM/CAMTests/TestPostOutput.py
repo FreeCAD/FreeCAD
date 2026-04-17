@@ -1618,6 +1618,99 @@ class TestExport2Integration(unittest.TestCase):
                 suppressed_count, 3, f"Should have 3 suppressed G1 moves, found {suppressed_count}"
             )
 
+    def test128b_bare_command_suppressed_when_all_params_duplicate(self):
+        """
+        Test that a command is fully suppressed when all its parameters are
+        duplicates, rather than emitting a bare command name.
+
+        Expected:
+            G0 X10 Y10 Z5     <- first move, all params output
+            G0 X10 Y10 Z5     <- identical, ALL params suppressed -> entire line dropped
+        """
+        machine = self._create_machine(
+            parameters=False, line_numbers=False, comments_enabled=False, output_header=False
+        )
+
+        with self._modify_operation_path(
+            [
+                Path.Command("G0", {"X": 10.0, "Y": 10.0, "Z": 5.0}),
+                Path.Command("G0", {"X": 10.0, "Y": 10.0, "Z": 5.0}),
+            ]
+        ):
+            results = self._run_export2(machine)
+            gcode = self._get_first_section_gcode(results)
+            lines = [
+                l.strip() for l in gcode.split("\n") if l.strip() and not l.strip().startswith("(")
+            ]
+
+            # There should be no bare "G0" line (command with no parameters)
+            bare_g0 = [l for l in lines if l == "G0"]
+            self.assertEqual(
+                len(bare_g0),
+                0,
+                f"Bare G0 with no parameters should be suppressed, found: {bare_g0}",
+            )
+
+    def test130_modal_state_reset_after_tool_change(self):
+        """
+        Test that modal state resets after tool change so parameters are not
+        suppressed as duplicates.
+
+        When duplicates.parameters=False, the second M3 S6000 and G4 P4.000
+        after a tool change must still include S and P parameters even though
+        they are numerically identical to the first occurrence.
+
+        Expected:
+            M6 T2
+            M3 S6000
+            G4 P4.000
+            G0 X10 Y10 Z5
+            M5
+            M6 T3
+            M3 S6000    <- S must NOT be suppressed
+            G4 P4.000   <- P must NOT be suppressed
+        """
+        machine = self._create_machine(
+            parameters=False, line_numbers=False, comments_enabled=False, output_header=False
+        )
+
+        with self._modify_operation_path(
+            [
+                Path.Command("M6", {"T": 2}),
+                Path.Command("M3", {"S": 6000.0}),
+                Path.Command("G4", {"P": 4.0}),
+                Path.Command("G0", {"X": 10.0, "Y": 10.0, "Z": 5.0}),
+                Path.Command("M5"),
+                Path.Command("M6", {"T": 3}),
+                Path.Command("M3", {"S": 6000.0}),
+                Path.Command("G4", {"P": 4.0}),
+                Path.Command("G0", {"X": 20.0, "Y": 20.0, "Z": 5.0}),
+            ]
+        ):
+            results = self._run_export2(machine)
+            gcode = self._get_first_section_gcode(results)
+            lines = [
+                l.strip() for l in gcode.split("\n") if l.strip() and not l.strip().startswith("(")
+            ]
+
+            # Find the second M3 line (after second M6)
+            m3_lines = [l for l in lines if l.startswith("M3")]
+            self.assertGreaterEqual(
+                len(m3_lines), 2, f"Should have at least 2 M3 lines, got: {m3_lines}"
+            )
+            self.assertIn(
+                "S", m3_lines[1], f"Second M3 must include S parameter, got: '{m3_lines[1]}'"
+            )
+
+            # Find the second G4 line
+            g4_lines = [l for l in lines if l.startswith("G4")]
+            self.assertGreaterEqual(
+                len(g4_lines), 2, f"Should have at least 2 G4 lines, got: {g4_lines}"
+            )
+            self.assertIn(
+                "P", g4_lines[1], f"Second G4 must include P parameter, got: '{g4_lines[1]}'"
+            )
+
     # ===== 140-149: G-code blocks insertion tests =====
 
     def test140_gcode_blocks_insertion(self):

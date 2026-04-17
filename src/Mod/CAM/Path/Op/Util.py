@@ -223,7 +223,7 @@ def approximateWire(wire, tolerance=0.01):
 
     # Reassemble the wire if any edges were replaced
     if modified:
-        return Part.Wire(processed_edges)
+        return Part.Wire(Part.__sortEdges__(processed_edges))
     return wire
 
 
