@@ -748,7 +748,7 @@ class _Roof(ArchComponent.Component):
                         overhangV = profilCurr["overhang"] * math.tan(
                             math.radians(profilCurr["angle"])
                         )
-                        sol = face.extrude(Vector(0.0, 0.0, profilCurr["height"] + 1000000.0))
+                        sol = face.extrude(Vector(0.0, 0.0, profilCurr["height"] + 100000.0))
                         sol.translate(Vector(0.0, 0.0, -2.0 * overhangV))
 
                         ## baseVolume shape
