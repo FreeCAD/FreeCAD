@@ -22,6 +22,7 @@ set(Assembly_Scripts
     CommandCreateAssembly.py
     CommandCreateBom.py
     CommandInsertLink.py
+    CommandInsertFastener.py
     CommandInsertNewPart.py
     CommandSolveAssembly.py
     CommandCreateJoint.py
