@@ -56,15 +56,6 @@
 #include <QPushButton>
 #include <string>
 
-
-#if defined(Q_OS_WIN)
-# if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
-#  include <QtPlatformHeaders/QWindowsWindowFunctions>
-# else
-#  include <qpa/qplatformwindow_p.h>
-# endif
-#endif
-
 #include <algorithm>
 #include <boost/algorithm/string/predicate.hpp>
 
@@ -345,14 +336,12 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     d->whatsthis = false;
     d->assistant = new Assistant();
 
-#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
     // this forces QT to switch to OpenGL mode, this prevents delay and flickering of the window
     // after opening project and prevent issues with double initialization of the window
     //
     // https://stackoverflow.com/questions/76026196/how-to-force-qt-to-use-the-opengl-window-type
     auto _OpenGLWidget = new QOpenGLWidget(this);
     _OpenGLWidget->move(QPoint(-100, -100));
-#endif
 
     // global access
     instance = this;
@@ -505,13 +494,9 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     d->windowMapper = new QSignalMapper(this);
 
     // connection between workspace, window menu and tab bar
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    connect(d->windowMapper, &QSignalMapper::mappedWidget, this, &MainWindow::setActiveSubWindow);
-#else
     connect(d->windowMapper, &QSignalMapper::mappedObject, this, [=, this](QObject* object) {
         setActiveSubWindow(qobject_cast<QWidget*>(object));
     });
-#endif
     connect(d->mdiArea, &QMdiArea::subWindowActivated, this, &MainWindow::onWindowActivated);
 
     setupDockWindows();
@@ -2092,16 +2077,10 @@ void MainWindow::loadWindowSettings()
 
     // make menus and tooltips usable in fullscreen under Windows, see issue #7563
 #if defined(Q_OS_WIN)
-# if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    if (QWindow* win = this->windowHandle()) {
-        QWindowsWindowFunctions::setHasBorderInFullScreen(win, true);
-    }
-# else
     using namespace QNativeInterface::Private;
     if (auto* windowsWindow = dynamic_cast<QWindowsWindow*>(this->windowHandle())) {
         windowsWindow->setHasBorderInFullScreen(true);
     }
-# endif
 #endif
 
     statusBar()->setVisible(showStatusBar);

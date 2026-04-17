@@ -115,8 +115,6 @@ macro(InitializeFreeCADBuildOptions)
         set(FREECAD_LIBPACK_DIR ""  CACHE PATH  "Directory of the FreeCAD LibPack")
     endif(MSVC)
 
-    ChooseQtVersion()
-
     option(BUILD_DESIGNER_PLUGIN "Build and install the designer plugin" OFF)
 
     if(APPLE)

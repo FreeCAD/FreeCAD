@@ -196,11 +196,7 @@ void DlgSettingsNavigation::loadSettings()
     // fill up font styles
 
     // we purposely allow all available fonts on the system
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QStringList familyNames = QFontDatabase().families(QFontDatabase::Any);
-#else
     QStringList familyNames = QFontDatabase::families(QFontDatabase::Any);
-#endif
     ui->naviCubeFontName->addItems(familyNames);
 
     // mark this combobox to be excluded from preference search
