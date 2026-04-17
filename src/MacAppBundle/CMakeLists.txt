@@ -25,11 +25,14 @@ if(APPLE AND BUILD_WITH_CONDA)
 
     configure_file(
         ${CMAKE_CURRENT_SOURCE_DIR}/Info.plist.in
-        ${TARGET_APP_BUNDLE}/Contents/Info.plist
+        ${CMAKE_CURRENT_BINARY_DIR}/Info.plist
         @ONLY
     )
 
-    install(FILES ${TARGET_APP_BUNDLE}/Contents/Info.plist
+    file(COPY ${CMAKE_CURRENT_BINARY_DIR}/Info.plist
+         DESTINATION ${TARGET_APP_BUNDLE}/Contents)
+
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/Info.plist
         DESTINATION Contents
     )
 
