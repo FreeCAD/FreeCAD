@@ -34,8 +34,10 @@ from .ArchHatchPatterns import generate_built_in_pattern_shape as generateBuiltI
 from .ArchHatchCore import buildHatchShape, normalizePatternShape
 from .ArchFaceExtractor import make_face_extractor_from_selection
 
+
 def _icon_path(filename):
     return os.path.join(os.path.dirname(__file__), "Resources", "icons", filename)
+
 
 def convertBaseSpacingValue(spacing_value, use_units, selected_unit_system):
     if not use_units:
@@ -95,7 +97,9 @@ def get_face_local_frame(face, preferred_normal=None):
             pass
 
     if normal is None:
-        FreeCAD.Console.PrintWarning("get_face_local_frame: could not read face normal, defaulting to Z-up.\n")
+        FreeCAD.Console.PrintWarning(
+            "get_face_local_frame: could not read face normal, defaulting to Z-up.\n"
+        )
         normal = FreeCAD.Vector(0, 0, 1)
 
     preferred = _copy_normalized_vector(preferred_normal)
@@ -175,8 +179,12 @@ def build_surface_transforms(face, preferred_normal=None):
 def compute_stable_world_anchor(face, preferred_normal=None, offset_x=0.0, offset_y=0.0):
     try:
         origin, x_axis, y_axis, _normal = get_face_local_frame(face, preferred_normal)
-        world_anchor_x = -(x_axis.x * origin.x + x_axis.y * origin.y + x_axis.z * origin.z) + offset_x
-        world_anchor_y = -(y_axis.x * origin.x + y_axis.y * origin.y + y_axis.z * origin.z) + offset_y
+        world_anchor_x = (
+            -(x_axis.x * origin.x + x_axis.y * origin.y + x_axis.z * origin.z) + offset_x
+        )
+        world_anchor_y = (
+            -(y_axis.x * origin.x + y_axis.y * origin.y + y_axis.z * origin.z) + offset_y
+        )
         return world_anchor_x, world_anchor_y
     except Exception:
         return offset_x, offset_y
@@ -195,7 +203,7 @@ def unproject_shape_to_world(shape, to_world_matrix):
 
 
 def apply_tile_view_overrides(tile_obj, view_provider, override_color=None):
-    if not tile_obj or not hasattr(tile_obj, 'ViewObject'):
+    if not tile_obj or not hasattr(tile_obj, "ViewObject"):
         return
 
     if override_color is not None:
@@ -263,24 +271,54 @@ class CustomHatchFeature:
         self._is_recomputing = False
 
         obj.addProperty("App::PropertyLink", "BaseObject", "Hatch", "Object with the base shape.")
-        obj.addProperty("App::PropertyLinkList", "BaseObjects", "Hatch",
-                        "Optional list of multiple base objects.")
-        obj.addProperty("App::PropertyLink", "PatternObject", "Hatch", "Object with the pattern shape.")
-        obj.addProperty("App::PropertyLinkList", "PatternObjects", "Hatch",
-                        "Optional list of multiple pattern objects (fused).")
-        obj.addProperty("App::PropertyLink", "BaseTileObject", "Hatch",
-                        "Optional tile shape object (if set, used to define bounding box).")
-        obj.addProperty("App::PropertyBool", "TileVisibility", "Hatch",
-                        "Toggle tile shape visibility as a separate object.")
+        obj.addProperty(
+            "App::PropertyLinkList",
+            "BaseObjects",
+            "Hatch",
+            "Optional list of multiple base objects.",
+        )
+        obj.addProperty(
+            "App::PropertyLink", "PatternObject", "Hatch", "Object with the pattern shape."
+        )
+        obj.addProperty(
+            "App::PropertyLinkList",
+            "PatternObjects",
+            "Hatch",
+            "Optional list of multiple pattern objects (fused).",
+        )
+        obj.addProperty(
+            "App::PropertyLink",
+            "BaseTileObject",
+            "Hatch",
+            "Optional tile shape object (if set, used to define bounding box).",
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "TileVisibility",
+            "Hatch",
+            "Toggle tile shape visibility as a separate object.",
+        )
         obj.TileVisibility = True
-        obj.addProperty("App::PropertyBool", "UpdateTileOnChange", "Hatch",
-                        "Update tile shapes automatically when Base Tile Object changes.")
+        obj.addProperty(
+            "App::PropertyBool",
+            "UpdateTileOnChange",
+            "Hatch",
+            "Update tile shapes automatically when Base Tile Object changes.",
+        )
         obj.UpdateTileOnChange = True
-        obj.addProperty("App::PropertyLinkList", "Subtractions", "Hatch",
-                        "List of objects to subtract from the hatch pattern.")
+        obj.addProperty(
+            "App::PropertyLinkList",
+            "Subtractions",
+            "Hatch",
+            "List of objects to subtract from the hatch pattern.",
+        )
 
-        obj.addProperty("App::PropertyEnumeration", "DistributionMode", "Hatch",
-                        "How to distribute the pattern.")
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "DistributionMode",
+            "Hatch",
+            "How to distribute the pattern.",
+        )
         obj.DistributionMode = [
             "CenteredTiling",
             "RelativeSpacing",
@@ -289,12 +327,16 @@ class CustomHatchFeature:
             "RadialDistribution",
             "ConcentricDistribution",
             "RandomDistribution",
-            "AdaptiveDistribution"
+            "AdaptiveDistribution",
         ]
         obj.DistributionMode = "SeamlessTiling"
 
-        obj.addProperty("App::PropertyEnumeration", "PatternType", "Hatch",
-                        "Choose built-in patterns or custom PatternObject.")
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "PatternType",
+            "Hatch",
+            "Choose built-in patterns or custom PatternObject.",
+        )
         obj.PatternType = [
             "CustomObject",
             "SolidFill",
@@ -383,133 +425,225 @@ class CustomHatchFeature:
         ]
         obj.PatternType = "CustomObject"
 
-        obj.addProperty("App::PropertyBool", "AutoScaleToFitBase", "Scaling",
-                        "If true, automatically compute scale.")
+        obj.addProperty(
+            "App::PropertyBool",
+            "AutoScaleToFitBase",
+            "Scaling",
+            "If true, automatically compute scale.",
+        )
         obj.AutoScaleToFitBase = False
         obj.addProperty("App::PropertyFloat", "PatternScale", "Scaling", "Manual scale factor.")
         obj.PatternScale = 1.0
-        obj.addProperty("App::PropertyFloat", "RotationDeg", "Hatch", "Rotation around Z (degrees).")
+        obj.addProperty(
+            "App::PropertyFloat", "RotationDeg", "Hatch", "Rotation around Z (degrees)."
+        )
         obj.RotationDeg = 0.0
         obj.addProperty("App::PropertyFloat", "BaseSpacing", "Hatch", "Base spacing (mm or %).")
         obj.BaseSpacing = 0.0
-        obj.addProperty("App::PropertyBool", "UseUnits", "Hatch",
-                        "If true, interpret BaseSpacing with a chosen unit system.")
+        obj.addProperty(
+            "App::PropertyBool",
+            "UseUnits",
+            "Hatch",
+            "If true, interpret BaseSpacing with a chosen unit system.",
+        )
         obj.UseUnits = False
-        obj.addProperty("App::PropertyEnumeration", "SelectedUnitSystem", "Hatch",
-                        "User-chosen unit system for BaseSpacing.")
-        obj.SelectedUnitSystem = ["FreeCAD Default", "Metric (m)", "Imperial (ft)", "BIM Workbench Unit"]
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "SelectedUnitSystem",
+            "Hatch",
+            "User-chosen unit system for BaseSpacing.",
+        )
+        obj.SelectedUnitSystem = [
+            "FreeCAD Default",
+            "Metric (m)",
+            "Imperial (ft)",
+            "BIM Workbench Unit",
+        ]
         obj.SelectedUnitSystem = "FreeCAD Default"
         obj.addProperty("App::PropertyInteger", "RepetitionsX", "Hatch", "Number of repeats in X.")
         obj.RepetitionsX = 5
         obj.addProperty("App::PropertyInteger", "RepetitionsY", "Hatch", "Number of repeats in Y.")
         obj.RepetitionsY = 5
-        obj.addProperty("App::PropertyFloat", "PatternOffsetX", "Hatch",
-                        "Offset the pattern in X direction.")
+        obj.addProperty(
+            "App::PropertyFloat", "PatternOffsetX", "Hatch", "Offset the pattern in X direction."
+        )
         obj.PatternOffsetX = 0.0
-        obj.addProperty("App::PropertyFloat", "PatternOffsetY", "Hatch",
-                        "Offset the pattern in Y direction.")
+        obj.addProperty(
+            "App::PropertyFloat", "PatternOffsetY", "Hatch", "Offset the pattern in Y direction."
+        )
         obj.PatternOffsetY = 0.0
 
-        obj.addProperty("App::PropertyEnumeration", "ScaleMode", "Scaling",
-                        "How PatternScale is interpreted.")
+        obj.addProperty(
+            "App::PropertyEnumeration", "ScaleMode", "Scaling", "How PatternScale is interpreted."
+        )
         obj.ScaleMode = ["Absolute", "FitWidth", "FitHeight", "FitMinDim", "FitMaxDim"]
         obj.ScaleMode = "Absolute"
 
-        obj.addProperty("App::PropertyBool", "RandomizePlacement", "Random",
-                        "Apply random transforms?")
+        obj.addProperty(
+            "App::PropertyBool", "RandomizePlacement", "Random", "Apply random transforms?"
+        )
         obj.RandomizePlacement = False
-        obj.addProperty("App::PropertyFloat", "RandomOffsetRange", "Random",
-                        "Max random offset ± mm.")
+        obj.addProperty(
+            "App::PropertyFloat", "RandomOffsetRange", "Random", "Max random offset ± mm."
+        )
         obj.RandomOffsetRange = 0.0
-        obj.addProperty("App::PropertyFloat", "RandomRotationRange", "Random",
-                        "Max random rotation ± deg.")
+        obj.addProperty(
+            "App::PropertyFloat", "RandomRotationRange", "Random", "Max random rotation ± deg."
+        )
         obj.RandomRotationRange = 0.0
-        obj.addProperty("App::PropertyFloat", "RandomScaleMin", "Random",
-                        "Min random scale factor.")
+        obj.addProperty(
+            "App::PropertyFloat", "RandomScaleMin", "Random", "Min random scale factor."
+        )
         obj.RandomScaleMin = 1.0
-        obj.addProperty("App::PropertyFloat", "RandomScaleMax", "Random",
-                        "Max random scale factor.")
+        obj.addProperty(
+            "App::PropertyFloat", "RandomScaleMax", "Random", "Max random scale factor."
+        )
         obj.RandomScaleMax = 1.0
 
-        obj.addProperty("App::PropertyBool", "LockToBase", "Placement",
-                        "If True, user transform is re-clipped.")
+        obj.addProperty(
+            "App::PropertyBool", "LockToBase", "Placement", "If True, user transform is re-clipped."
+        )
         obj.LockToBase = False
 
-        obj.addProperty("App::PropertyInteger", "RadialCount", "Radial",
-                        "Number of copies around the circle.")
+        obj.addProperty(
+            "App::PropertyInteger", "RadialCount", "Radial", "Number of copies around the circle."
+        )
         obj.RadialCount = 8
-        obj.addProperty("App::PropertyFloat", "RadialRadius", "Radial",
-                        "Radius for radial distribution.")
+        obj.addProperty(
+            "App::PropertyFloat", "RadialRadius", "Radial", "Radius for radial distribution."
+        )
         obj.RadialRadius = 50.0
-        obj.addProperty("App::PropertyInteger", "ConcentricCount", "Concentric",
-                        "Number of rings.")
+        obj.addProperty("App::PropertyInteger", "ConcentricCount", "Concentric", "Number of rings.")
         obj.ConcentricCount = 5
-        obj.addProperty("App::PropertyFloat", "ConcentricSpacing", "Concentric",
-                        "Spacing between rings.")
+        obj.addProperty(
+            "App::PropertyFloat", "ConcentricSpacing", "Concentric", "Spacing between rings."
+        )
         obj.ConcentricSpacing = 10.0
-        obj.addProperty("App::PropertyInteger", "RandomCount", "Random",
-                        "Number of random placements.")
+        obj.addProperty(
+            "App::PropertyInteger", "RandomCount", "Random", "Number of random placements."
+        )
         obj.RandomCount = 30
 
-        obj.addProperty("App::PropertyEnumeration", "PatternPlacementMode", "Hatch",
-                        "Positioning of the pattern within each tile.")
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "PatternPlacementMode",
+            "Hatch",
+            "Positioning of the pattern within each tile.",
+        )
         obj.PatternPlacementMode = [
-            "Origin", "Center",
-            "TopLeft", "TopRight", "BottomLeft", "BottomRight",
-            "TopCenter", "BottomCenter", "LeftCenter", "RightCenter",
-            "Custom"
+            "Origin",
+            "Center",
+            "TopLeft",
+            "TopRight",
+            "BottomLeft",
+            "BottomRight",
+            "TopCenter",
+            "BottomCenter",
+            "LeftCenter",
+            "RightCenter",
+            "Custom",
         ]
         obj.PatternPlacementMode = "Origin"
 
-        obj.addProperty("App::PropertyBool", "ShowFaces", "Rendering",
-                        "If True, tries to convert lines to faces.")
+        obj.addProperty(
+            "App::PropertyBool",
+            "ShowFaces",
+            "Rendering",
+            "If True, tries to convert lines to faces.",
+        )
         obj.ShowFaces = False
 
-        obj.addProperty("App::PropertyBool", "ApplyTo3DSurface", "Rendering",
-                        "If True, map the pattern onto the selected 3D face.")
+        obj.addProperty(
+            "App::PropertyBool",
+            "ApplyTo3DSurface",
+            "Rendering",
+            "If True, map the pattern onto the selected 3D face.",
+        )
         obj.ApplyTo3DSurface = False
 
-        obj.addProperty("App::PropertyEnumeration", "ClipMode", "Rendering",
-                        "How to handle open wires vs. faces when clipping with the base.")
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "ClipMode",
+            "Rendering",
+            "How to handle open wires vs. faces when clipping with the base.",
+        )
         obj.ClipMode = ["BooleanOnly", "PreserveLinesNoClip"]
         obj.ClipMode = "BooleanOnly"
 
-        obj.addProperty("App::PropertyBool", "UseSurfaceProjection", "Surface",
-                        "If True, project pattern onto the surface of the base shape.")
+        obj.addProperty(
+            "App::PropertyBool",
+            "UseSurfaceProjection",
+            "Surface",
+            "If True, project pattern onto the surface of the base shape.",
+        )
         obj.UseSurfaceProjection = True
-        obj.addProperty("App::PropertyBool", "ForceXYPlane", "Surface",
-                        "If True, ignore surface projection and use XY plane only.")
+        obj.addProperty(
+            "App::PropertyBool",
+            "ForceXYPlane",
+            "Surface",
+            "If True, ignore surface projection and use XY plane only.",
+        )
         obj.ForceXYPlane = False
 
-        obj.addProperty("App::PropertyInteger", "MaxTilesAllowed", "Performance",
-                        "Maximum number of tiles allowed.")
+        obj.addProperty(
+            "App::PropertyInteger",
+            "MaxTilesAllowed",
+            "Performance",
+            "Maximum number of tiles allowed.",
+        )
         obj.MaxTilesAllowed = 5000
 
-        obj.addProperty("App::PropertyFloat", "DensityFactor", "Variation",
-                        "Density factor for random distribution (0-1).")
+        obj.addProperty(
+            "App::PropertyFloat",
+            "DensityFactor",
+            "Variation",
+            "Density factor for random distribution (0-1).",
+        )
         obj.DensityFactor = 1.0
-        obj.addProperty("App::PropertyFloat", "RandomRotationMin", "Variation",
-                        "Minimum random rotation (deg).")
+        obj.addProperty(
+            "App::PropertyFloat", "RandomRotationMin", "Variation", "Minimum random rotation (deg)."
+        )
         obj.RandomRotationMin = 0.0
-        obj.addProperty("App::PropertyFloat", "RandomRotationMax", "Variation",
-                        "Maximum random rotation (deg).")
+        obj.addProperty(
+            "App::PropertyFloat", "RandomRotationMax", "Variation", "Maximum random rotation (deg)."
+        )
         obj.RandomRotationMax = 0.0
-        obj.addProperty("App::PropertyBool", "EnableColorVariation", "Variation",
-                        "If true, random colors are assigned to each tile.")
+        obj.addProperty(
+            "App::PropertyBool",
+            "EnableColorVariation",
+            "Variation",
+            "If true, random colors are assigned to each tile.",
+        )
         obj.EnableColorVariation = False
-        obj.addProperty("App::PropertyFloat", "ColorVariationIntensity", "Variation",
-                        "Intensity of color variation (0-1).")
+        obj.addProperty(
+            "App::PropertyFloat",
+            "ColorVariationIntensity",
+            "Variation",
+            "Intensity of color variation (0-1).",
+        )
         obj.ColorVariationIntensity = 0.5
-        obj.addProperty("App::PropertyFloat", "SpacingVariation", "Variation",
-                        "Random factor for spacing variation (0-1).")
+        obj.addProperty(
+            "App::PropertyFloat",
+            "SpacingVariation",
+            "Variation",
+            "Random factor for spacing variation (0-1).",
+        )
         obj.SpacingVariation = 0.0
-        obj.addProperty("App::PropertyBool", "EnableShapeDistortion", "Variation",
-                        "If true, shapes might be distorted in random ways.")
+        obj.addProperty(
+            "App::PropertyBool",
+            "EnableShapeDistortion",
+            "Variation",
+            "If true, shapes might be distorted in random ways.",
+        )
         obj.EnableShapeDistortion = False
 
-        obj.addProperty("App::PropertyFloat", "GenerationTime", "Statistics", "Time taken to generate the hatch")
+        obj.addProperty(
+            "App::PropertyFloat", "GenerationTime", "Statistics", "Time taken to generate the hatch"
+        )
         obj.GenerationTime = 0.0
-        obj.addProperty("App::PropertyInteger", "TileCount", "Statistics", "Number of tiles generated")
+        obj.addProperty(
+            "App::PropertyInteger", "TileCount", "Statistics", "Number of tiles generated"
+        )
         obj.TileCount = 0
 
         if "HatchRole" not in obj.PropertiesList:
@@ -517,7 +651,7 @@ class CustomHatchFeature:
                 "App::PropertyEnumeration",
                 "HatchRole",
                 "Hatch",
-                "Definition: reusable hatch style asset (no base required). Applied: generates hatch on target faces."
+                "Definition: reusable hatch style asset (no base required). Applied: generates hatch on target faces.",
             )
             obj.HatchRole = ["Definition", "Applied"]
             obj.HatchRole = "Applied"
@@ -549,9 +683,11 @@ class CustomHatchFeature:
             self.safe_delayed_execute(fp, 200)
         if prop == "DistributionMode":
             props = fp.PropertiesList
+
             def set_mode_if_exists(prop_name, mode_value):
                 if prop_name in props:
                     fp.setEditorMode(prop_name, mode_value)
+
             set_mode_if_exists("BaseSpacing", 0)
             set_mode_if_exists("RepetitionsX", 0)
             set_mode_if_exists("RepetitionsY", 0)
@@ -568,10 +704,18 @@ class CustomHatchFeature:
         # remain in a stale shape-mode until the user manually toggled
         # HatchSurfaces / HatchCaps. This propagation fixes that.
         _RECIPE_PROPS = {
-            "PatternType", "PatternObject", "PatternObjects",
-            "BaseSpacing", "PatternScale", "RotationDeg",
-            "PatternOffsetX", "PatternOffsetY", "DistributionMode",
-            "ScaleMode", "PatternPlacementMode", "ClipMode",
+            "PatternType",
+            "PatternObject",
+            "PatternObjects",
+            "BaseSpacing",
+            "PatternScale",
+            "RotationDeg",
+            "PatternOffsetX",
+            "PatternOffsetY",
+            "DistributionMode",
+            "ScaleMode",
+            "PatternPlacementMode",
+            "ClipMode",
         }
         if prop in _RECIPE_PROPS and getattr(fp, "HatchRole", "Applied") == "Definition":
             self._propagate_to_applied_hatches(fp, prop)
@@ -609,7 +753,7 @@ class CustomHatchFeature:
         if not doc:
             return
 
-        is_type_change = (changed_prop == "PatternType")
+        is_type_change = changed_prop == "PatternType"
 
         for obj in list(doc.Objects):
             try:
@@ -631,9 +775,12 @@ class CustomHatchFeature:
                         applied_proxy.safe_delayed_execute(obj, 150)
                         continue
                     except Exception as e:
-                        FreeCAD.Console.PrintWarning(f"Failed to schedule delayed execute for {obj.Name}: {e}\n")
+                        FreeCAD.Console.PrintWarning(
+                            f"Failed to schedule delayed execute for {obj.Name}: {e}\n"
+                        )
 
                 _doc_name = doc.Name
+
                 def _fallback_recompute(dn=_doc_name):
                     d = FreeCAD.getDocument(dn)
                     if d:
@@ -641,10 +788,13 @@ class CustomHatchFeature:
                             d.recompute()
                         except Exception as e:
                             FreeCAD.Console.PrintWarning(f"Fallback recompute failed: {e}\n")
+
                 QtCore.QTimer.singleShot(200, _fallback_recompute)
 
             except Exception as e:
-                FreeCAD.Console.PrintWarning(f"Failed to propagate to {getattr(obj, 'Name', 'unknown')}: {e}\n")
+                FreeCAD.Console.PrintWarning(
+                    f"Failed to propagate to {getattr(obj, 'Name', 'unknown')}: {e}\n"
+                )
 
     def _is_definition_hatch(self, obj):
         try:
@@ -669,13 +819,21 @@ class CustomHatchFeature:
         if src_pattern_type == "CustomObject":
             src_pattern_obj = getattr(source_obj, "PatternObject", None)
             if src_pattern_obj and hasattr(src_pattern_obj, "Shape"):
-                pattern_shape = get_closed_wires_as_faces(src_pattern_obj) if show_faces else src_pattern_obj.Shape.copy()
+                pattern_shape = (
+                    get_closed_wires_as_faces(src_pattern_obj)
+                    if show_faces
+                    else src_pattern_obj.Shape.copy()
+                )
                 if pattern_shape and not pattern_shape.isNull():
                     all_pattern_shapes.append(pattern_shape)
 
-            for pattern_obj in (getattr(source_obj, "PatternObjects", None) or []):
+            for pattern_obj in getattr(source_obj, "PatternObjects", None) or []:
                 if pattern_obj and hasattr(pattern_obj, "Shape"):
-                    extra_shape = get_closed_wires_as_faces(pattern_obj) if show_faces else pattern_obj.Shape.copy()
+                    extra_shape = (
+                        get_closed_wires_as_faces(pattern_obj)
+                        if show_faces
+                        else pattern_obj.Shape.copy()
+                    )
                     if extra_shape and not extra_shape.isNull():
                         all_pattern_shapes.append(extra_shape)
 
@@ -721,7 +879,7 @@ class CustomHatchFeature:
                     base_shape_pairs.append((shape_conv, fp.BaseObject))
 
             if fp.BaseObjects:
-                for base_obj in (fp.BaseObjects or []):
+                for base_obj in fp.BaseObjects or []:
                     if base_obj:
                         temp_face = get_closed_wires_as_faces(base_obj)
                         if temp_face and not temp_face.isNull():
@@ -737,7 +895,8 @@ class CustomHatchFeature:
                 return
 
             valid_base_pairs = [
-                (shape, source) for shape, source in base_shape_pairs
+                (shape, source)
+                for shape, source in base_shape_pairs
                 if shape and not shape.isNull()
             ]
             if not valid_base_pairs:
@@ -755,7 +914,9 @@ class CustomHatchFeature:
             rot_val = getattr(recipe, "RotationDeg", fp.RotationDeg)
             spacing_val = getattr(recipe, "BaseSpacing", fp.BaseSpacing)
             use_units = getattr(recipe, "UseUnits", getattr(fp, "UseUnits", False))
-            unit_system = getattr(recipe, "SelectedUnitSystem", getattr(fp, "SelectedUnitSystem", "FreeCAD Default"))
+            unit_system = getattr(
+                recipe, "SelectedUnitSystem", getattr(fp, "SelectedUnitSystem", "FreeCAD Default")
+            )
             if use_units:
                 spacing_val = convertBaseSpacingValue(spacing_val, use_units, unit_system)
 
@@ -775,20 +936,30 @@ class CustomHatchFeature:
             pattern_offset_x = getattr(recipe, "PatternOffsetX", fp.PatternOffsetX)
             pattern_offset_y = getattr(recipe, "PatternOffsetY", fp.PatternOffsetY)
             scale_mode = getattr(recipe, "ScaleMode", fp.ScaleMode)
-            tile_obj = getattr(recipe, "BaseTileObject", None) if hasattr(recipe, "BaseTileObject") else None
+            tile_obj = (
+                getattr(recipe, "BaseTileObject", None)
+                if hasattr(recipe, "BaseTileObject")
+                else None
+            )
             tile_visibility = getattr(recipe, "TileVisibility", fp.TileVisibility)
             show_faces = getattr(recipe, "ShowFaces", fp.ShowFaces)
             apply_3d = getattr(recipe, "ApplyTo3DSurface", fp.ApplyTo3DSurface)
             max_tiles = getattr(recipe, "MaxTilesAllowed", fp.MaxTilesAllowed)
             density_factor = getattr(recipe, "DensityFactor", fp.DensityFactor)
             enable_color_var = getattr(recipe, "EnableColorVariation", fp.EnableColorVariation)
-            color_var_intensity = getattr(recipe, "ColorVariationIntensity", fp.ColorVariationIntensity)
+            color_var_intensity = getattr(
+                recipe, "ColorVariationIntensity", fp.ColorVariationIntensity
+            )
             spacing_variation = getattr(recipe, "SpacingVariation", fp.SpacingVariation)
             shape_distortion = getattr(recipe, "EnableShapeDistortion", fp.EnableShapeDistortion)
 
-            use_surface_projection = getattr(recipe, "UseSurfaceProjection", getattr(fp, "UseSurfaceProjection", True))
+            use_surface_projection = getattr(
+                recipe, "UseSurfaceProjection", getattr(fp, "UseSurfaceProjection", True)
+            )
             force_xy_plane = getattr(recipe, "ForceXYPlane", getattr(fp, "ForceXYPlane", False))
-            effective_placement_mode = getattr(recipe, "PatternPlacementMode", fp.PatternPlacementMode)
+            effective_placement_mode = getattr(
+                recipe, "PatternPlacementMode", fp.PatternPlacementMode
+            )
             effective_clip_mode = getattr(recipe, "ClipMode", fp.ClipMode)
             effective_pattern_type = getattr(recipe, "PatternType", fp.PatternType)
 
@@ -800,14 +971,18 @@ class CustomHatchFeature:
                 for base_shape, base_source_obj in valid_base_pairs:
                     try:
                         use_projection = (
-                            use_surface_projection and
-                            not force_xy_plane and
-                            base_shape.Faces and
-                            len(base_shape.Faces) > 0
+                            use_surface_projection
+                            and not force_xy_plane
+                            and base_shape.Faces
+                            and len(base_shape.Faces) > 0
                         )
 
                         if use_projection:
-                            faces_to_process = base_shape.Faces if len(base_shape.Faces) > 1 else [base_shape.Faces[0]]
+                            faces_to_process = (
+                                base_shape.Faces
+                                if len(base_shape.Faces) > 1
+                                else [base_shape.Faces[0]]
+                            )
 
                             for target_face in faces_to_process:
                                 try:
@@ -875,12 +1050,22 @@ class CustomHatchFeature:
 
                 for base_shape, base_source_obj in valid_base_pairs:
                     try:
-                        use_projection = (use_surface_projection and not force_xy_plane and
-                                          base_shape.Faces and len(base_shape.Faces) > 0)
+                        use_projection = (
+                            use_surface_projection
+                            and not force_xy_plane
+                            and base_shape.Faces
+                            and len(base_shape.Faces) > 0
+                        )
 
                         if use_projection:
-                            preferred_normal = get_preferred_face_normal_from_source(base_source_obj)
-                            faces_to_process = base_shape.Faces if len(base_shape.Faces) > 1 else [base_shape.Faces[0]]
+                            preferred_normal = get_preferred_face_normal_from_source(
+                                base_source_obj
+                            )
+                            faces_to_process = (
+                                base_shape.Faces
+                                if len(base_shape.Faces) > 1
+                                else [base_shape.Faces[0]]
+                            )
 
                             for target_face in faces_to_process:
                                 try:
@@ -951,7 +1136,7 @@ class CustomHatchFeature:
                                         shapeDistortion=shape_distortion,
                                         apply3D=apply_3d,
                                         placement_mode=effective_placement_mode,
-                                        clipMode=effective_clip_mode
+                                        clipMode=effective_clip_mode,
                                     )
 
                                     hatch_world = unproject_shape_to_world(local_hatch, to_world)
@@ -999,12 +1184,14 @@ class CustomHatchFeature:
                                 shapeDistortion=shape_distortion,
                                 apply3D=apply_3d,
                                 placement_mode=effective_placement_mode,
-                                clipMode=effective_clip_mode
+                                clipMode=effective_clip_mode,
                             )
                             total_tiles += tiles
                             final_parts.append(shaped)
                     except Exception as e:
-                        FreeCAD.Console.PrintError(f"Error building hatch on base shape: {str(e)}\n")
+                        FreeCAD.Console.PrintError(
+                            f"Error building hatch on base shape: {str(e)}\n"
+                        )
                         continue
 
                 if not final_parts:
@@ -1054,7 +1241,7 @@ class CustomHatchFeature:
                             spacingVariation=spacing_variation,
                             shapeDistortion=False,
                             apply3D=apply_3d,
-                            placement_mode=effective_placement_mode
+                            placement_mode=effective_placement_mode,
                         )
                         existing_tile_obj.Shape = repeated_tile
                         apply_tile_view_overrides(existing_tile_obj, existing_tile_obj.ViewObject)
@@ -1070,7 +1257,9 @@ class CustomHatchFeature:
                         try:
                             combined = combined.cut(sub_obj.Shape)
                         except Exception as e:
-                            FreeCAD.Console.PrintError(f"Error subtracting {sub_obj.Name}: {str(e)}\n")
+                            FreeCAD.Console.PrintError(
+                                f"Error subtracting {sub_obj.Name}: {str(e)}\n"
+                            )
 
             fp.Shape = combined
             fp.GenerationTime = (datetime.datetime.now() - start_time).total_seconds()
@@ -1141,10 +1330,12 @@ class CustomHatchFeature:
                     tile_width = max(pattern_bb.XLength, 1e-6)
                     tile_height = max(pattern_bb.YLength, 1e-6)
 
-                swatch_size_x = min(max_swatch,
-                                    max(min_swatch, tile_width * fp.PatternScale * tiles_in_view))
-                swatch_size_y = min(max_swatch,
-                                    max(min_swatch, tile_height * fp.PatternScale * tiles_in_view))
+                swatch_size_x = min(
+                    max_swatch, max(min_swatch, tile_width * fp.PatternScale * tiles_in_view)
+                )
+                swatch_size_y = min(
+                    max_swatch, max(min_swatch, tile_height * fp.PatternScale * tiles_in_view)
+                )
             except Exception:
                 pass
 
@@ -1153,18 +1344,23 @@ class CustomHatchFeature:
 
         try:
             swatch = Part.makePlane(
-                swatch_size_x, swatch_size_y,
+                swatch_size_x,
+                swatch_size_y,
                 FreeCAD.Vector(-half_x, -half_y, 0),
-                FreeCAD.Vector(0, 0, 1)
+                FreeCAD.Vector(0, 0, 1),
             )
         except Exception:
-            swatch = Part.Face(Part.makePolygon([
-                FreeCAD.Vector(-half_x, -half_y, 0),
-                FreeCAD.Vector(half_x, -half_y, 0),
-                FreeCAD.Vector(half_x, half_y, 0),
-                FreeCAD.Vector(-half_x, half_y, 0),
-                FreeCAD.Vector(-half_x, -half_y, 0),
-            ]))
+            swatch = Part.Face(
+                Part.makePolygon(
+                    [
+                        FreeCAD.Vector(-half_x, -half_y, 0),
+                        FreeCAD.Vector(half_x, -half_y, 0),
+                        FreeCAD.Vector(half_x, half_y, 0),
+                        FreeCAD.Vector(-half_x, half_y, 0),
+                        FreeCAD.Vector(-half_x, -half_y, 0),
+                    ]
+                )
+            )
 
         if pattern_shape is None or pattern_shape.isNull():
             try:
@@ -1394,6 +1590,7 @@ def _copy_definition_recipe_to_applied(applied_obj, hatch_def):
 
 # Geometry-change observer
 
+
 class _HatchGeometryObserver:
     """
     Lightweight FreeCAD DocumentObserver.
@@ -1494,9 +1691,9 @@ def ensure_material_hatch(target_obj, material_obj=None, hatch_obj=None):
         hatch_obj = getattr(material_obj, "Hatch", None)
 
     enabled = bool(
-        getattr(target_obj, "HatchSurfaces", False) or
-        getattr(target_obj, "HatchCaps", False) or
-        getattr(target_obj, "HatchGhost", False)
+        getattr(target_obj, "HatchSurfaces", False)
+        or getattr(target_obj, "HatchCaps", False)
+        or getattr(target_obj, "HatchGhost", False)
     )
 
     if not enabled or hatch_obj is None:
@@ -1573,6 +1770,7 @@ def apply_material_hatches(target_obj=None, material_obj=None, hatch_obj=None, r
 
 # Hatch Task Panel
 
+
 class HatchTaskPanel:
     def __init__(self, hatch_obj=None):
         self.editing_obj = hatch_obj
@@ -1615,7 +1813,7 @@ class HatchTaskPanel:
         return None
 
     def _estimate_tile_count(self):
-        is_definition = (self.hatchRoleCombo.currentIndex() == 0)
+        is_definition = self.hatchRoleCombo.currentIndex() == 0
         if is_definition:
             width = 200.0
             height = 200.0
@@ -1636,10 +1834,11 @@ class HatchTaskPanel:
         pattern_width, pattern_height = 10.0, 10.0
         try:
             if self.patternSourceCombo.currentIndex() == 0:
-                from .ArchHatchPatterns import generate_built_in_pattern_shape as generateBuiltInPatternShape
-                pattern_shape = generateBuiltInPatternShape(
-                    self.builtinPatternCombo.currentText()
+                from .ArchHatchPatterns import (
+                    generate_built_in_pattern_shape as generateBuiltInPatternShape,
                 )
+
+                pattern_shape = generateBuiltInPatternShape(self.builtinPatternCombo.currentText())
                 if pattern_shape and not pattern_shape.isNull():
                     pattern_width = max(pattern_shape.BoundBox.XLength, 1e-6)
                     pattern_height = max(pattern_shape.BoundBox.YLength, 1e-6)
@@ -1667,7 +1866,12 @@ class HatchTaskPanel:
             tiles = 50
 
         recommended_scale = None
-        if tiles > 300 and dist_mode == "SeamlessTiling" and effective_width > 0 and effective_height > 0:
+        if (
+            tiles > 300
+            and dist_mode == "SeamlessTiling"
+            and effective_width > 0
+            and effective_height > 0
+        ):
             target = 200
             recommended_scale = current_scale * math.sqrt(tiles / target)
             magnitude = 10 ** math.floor(math.log10(recommended_scale))
@@ -1704,7 +1908,9 @@ class HatchTaskPanel:
         else:
             self.tileEstLabel.setStyleSheet("color: #006600; font-size: 10px;")
 
-        show_recommend = recommended_scale is not None and recommended_scale > self.scaleSpin.value() * 1.2
+        show_recommend = (
+            recommended_scale is not None and recommended_scale > self.scaleSpin.value() * 1.2
+        )
         self.tileRecommendBtn.setVisible(show_recommend)
         if show_recommend:
             self.tileRecommendBtn.setText(f"Rec: {recommended_scale:g}")
@@ -1724,14 +1930,18 @@ class HatchTaskPanel:
 
         self._session_warned_for.add(warn_key)
 
-        message = f"Estimated tile count: ~{tiles:,} — this may take a long time or freeze FreeCAD.\n\n"
+        message = (
+            f"Estimated tile count: ~{tiles:,} — this may take a long time or freeze FreeCAD.\n\n"
+        )
         if recommended_scale:
             message += f"Recommended scale: {recommended_scale:g} (≈200 tiles).\n\n"
         message += "Continue with current scale?"
 
         reply = QtWidgets.QMessageBox.warning(
-            self.form, "Performance Warning", message,
-            QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No
+            self.form,
+            "Performance Warning",
+            message,
+            QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
         )
         return reply == QtWidgets.QMessageBox.Yes
 
@@ -1812,26 +2022,92 @@ class HatchTaskPanel:
 
         self.builtinPatternLabel = QtWidgets.QLabel("Built-in Pattern:")
         self.builtinPatternCombo = QtWidgets.QComboBox()
-        self.builtinPatternCombo.addItems([
-            "SolidFill", "HorizontalLines", "VerticalLines", "Crosshatch", "Herringbone",
-            "BrickPattern", "RandomDots", "OverlappingSquares", "Checkerboard",
-            "CheckerboardCircles", "RotatingHexagons", "NestedTriangles", "InterlockingCircles",
-            "RecursiveSquares", "FlowerOfLife", "VoronoiMesh", "OffsetChecker", "ZigZag",
-            "HexagonalHoriz", "HexagonalVerti", "HexagonalPattern", "TrianglesGrid",
-            "MidEastMosaic", "StarGridPattern", "BasketWeave", "Honeycomb", "SineWave",
-            "SpaceFrame", "HoneycombDual", "ArtDeco", "StainedGlass", "PenroseTriangle",
-            "GreekKey", "ChainLinks", "TriangleForest", "CeramicTile", "CirclesGrid",
-            "PlusSigns", "WavesPattern", "GalaxyStarsPattern", "GridDots", "HexDots",
-            "FractalTree", "Voronoi", "FractalBranches", "OrganicMaze", "BiomorphicCells",
-            "RadialSunburst", "Sunburst", "Ziggurat", "SpiralPattern", "PentaflakeFractal",
-            "HilbertCurve", "SierpinskiTriangle", "PenroseTiling", "EinsteinMonotile",
-            "LeafVeins", "WoodPlanks", "ParquetHerringbone", "WoodGrain", "DrywallOrangePeel",
-            "DrywallKnockdown", "StuccoSandFloat", "StuccoDash", "DrywallSkipTrowel",
-            "Concrete", "ConcreteStampedPattern", "ConcreteSaltFinish", "ConcreteFormTiePattern",
-            "ConcreteSandblastPattern", "ConcreteControlJoint", "ConcreteGridPattern",
-            "WoodKnotPattern", "ConcreteAggregatePattern", "BrushedConcrete", "PebbleConcrete",
-            "CrackedConcrete", "AggregateConcrete", "StampedConcrete", "Insulation", "Rebar", "RoofTiles"
-        ])
+        self.builtinPatternCombo.addItems(
+            [
+                "SolidFill",
+                "HorizontalLines",
+                "VerticalLines",
+                "Crosshatch",
+                "Herringbone",
+                "BrickPattern",
+                "RandomDots",
+                "OverlappingSquares",
+                "Checkerboard",
+                "CheckerboardCircles",
+                "RotatingHexagons",
+                "NestedTriangles",
+                "InterlockingCircles",
+                "RecursiveSquares",
+                "FlowerOfLife",
+                "VoronoiMesh",
+                "OffsetChecker",
+                "ZigZag",
+                "HexagonalHoriz",
+                "HexagonalVerti",
+                "HexagonalPattern",
+                "TrianglesGrid",
+                "MidEastMosaic",
+                "StarGridPattern",
+                "BasketWeave",
+                "Honeycomb",
+                "SineWave",
+                "SpaceFrame",
+                "HoneycombDual",
+                "ArtDeco",
+                "StainedGlass",
+                "PenroseTriangle",
+                "GreekKey",
+                "ChainLinks",
+                "TriangleForest",
+                "CeramicTile",
+                "CirclesGrid",
+                "PlusSigns",
+                "WavesPattern",
+                "GalaxyStarsPattern",
+                "GridDots",
+                "HexDots",
+                "FractalTree",
+                "Voronoi",
+                "FractalBranches",
+                "OrganicMaze",
+                "BiomorphicCells",
+                "RadialSunburst",
+                "Sunburst",
+                "Ziggurat",
+                "SpiralPattern",
+                "PentaflakeFractal",
+                "HilbertCurve",
+                "SierpinskiTriangle",
+                "PenroseTiling",
+                "EinsteinMonotile",
+                "LeafVeins",
+                "WoodPlanks",
+                "ParquetHerringbone",
+                "WoodGrain",
+                "DrywallOrangePeel",
+                "DrywallKnockdown",
+                "StuccoSandFloat",
+                "StuccoDash",
+                "DrywallSkipTrowel",
+                "Concrete",
+                "ConcreteStampedPattern",
+                "ConcreteSaltFinish",
+                "ConcreteFormTiePattern",
+                "ConcreteSandblastPattern",
+                "ConcreteControlJoint",
+                "ConcreteGridPattern",
+                "WoodKnotPattern",
+                "ConcreteAggregatePattern",
+                "BrushedConcrete",
+                "PebbleConcrete",
+                "CrackedConcrete",
+                "AggregateConcrete",
+                "StampedConcrete",
+                "Insulation",
+                "Rebar",
+                "RoofTiles",
+            ]
+        )
 
         self.customPatternLabel = QtWidgets.QLabel("Custom Pattern:")
         self.customPatternCombo = QtWidgets.QComboBox()
@@ -1851,11 +2127,18 @@ class HatchTaskPanel:
 
         self.distLabel = QtWidgets.QLabel("Distribution Mode:")
         self.distCombo = QtWidgets.QComboBox()
-        self.distCombo.addItems([
-            "CenteredTiling", "RelativeSpacing", "SeamlessTiling",
-            "LinearGrid", "RadialDistribution", "ConcentricDistribution",
-            "RandomDistribution", "AdaptiveDistribution"
-        ])
+        self.distCombo.addItems(
+            [
+                "CenteredTiling",
+                "RelativeSpacing",
+                "SeamlessTiling",
+                "LinearGrid",
+                "RadialDistribution",
+                "ConcentricDistribution",
+                "RandomDistribution",
+                "AdaptiveDistribution",
+            ]
+        )
         self.distCombo.setCurrentText("SeamlessTiling")
 
         self.autoScaleCheck = QtWidgets.QCheckBox("Auto Scale to Fit Base?")
@@ -1868,9 +2151,9 @@ class HatchTaskPanel:
 
         self.scaleResetBtn = QtWidgets.QPushButton("↺")
         self.scaleResetBtn.setToolTip("Reset to pattern default scale")
-        self.scaleResetBtn.clicked.connect(lambda: self.set_smart_default_scale(
-            self.patternSourceCombo.currentIndex() == 0
-        ))
+        self.scaleResetBtn.clicked.connect(
+            lambda: self.set_smart_default_scale(self.patternSourceCombo.currentIndex() == 0)
+        )
 
         self.scaleRecommendBtn = QtWidgets.QPushButton("Rec")
         self.scaleRecommendBtn.setToolTip("Set to recommended scale (≈200 tiles)")
@@ -1926,10 +2209,21 @@ class HatchTaskPanel:
 
         self.placementModeLabel = QtWidgets.QLabel("Pattern Placement Mode:")
         self.placementModeCombo = QtWidgets.QComboBox()
-        self.placementModeCombo.addItems([
-            "Origin", "Center", "TopLeft", "TopRight", "BottomLeft", "BottomRight",
-            "TopCenter", "BottomCenter", "LeftCenter", "RightCenter", "Custom"
-        ])
+        self.placementModeCombo.addItems(
+            [
+                "Origin",
+                "Center",
+                "TopLeft",
+                "TopRight",
+                "BottomLeft",
+                "BottomRight",
+                "TopCenter",
+                "BottomCenter",
+                "LeftCenter",
+                "RightCenter",
+                "Custom",
+            ]
+        )
         self.placementModeCombo.setCurrentText("Origin")
 
         self.lockCheck = QtWidgets.QCheckBox("Lock to Base?")
@@ -1943,7 +2237,9 @@ class HatchTaskPanel:
 
         self.scaleModeLabel = QtWidgets.QLabel("Scale Mode:")
         self.scaleModeCombo = QtWidgets.QComboBox()
-        self.scaleModeCombo.addItems(["Absolute", "FitWidth", "FitHeight", "FitMinDim", "FitMaxDim"])
+        self.scaleModeCombo.addItems(
+            ["Absolute", "FitWidth", "FitHeight", "FitMinDim", "FitMaxDim"]
+        )
 
         self.randomCheck = QtWidgets.QCheckBox("Randomize Placement?")
         self.offRangeLabel = QtWidgets.QLabel("Random Offset ±:")
@@ -1984,7 +2280,9 @@ class HatchTaskPanel:
 
         self.surface_projection_group = QtWidgets.QGroupBox("Surface Projection")
         self.surface_projection_layout = QtWidgets.QFormLayout(self.surface_projection_group)
-        self.useSurfaceProjectionCheck = QtWidgets.QCheckBox("Use Surface Projection (works on walls, sloped roofs)")
+        self.useSurfaceProjectionCheck = QtWidgets.QCheckBox(
+            "Use Surface Projection (works on walls, sloped roofs)"
+        )
         self.useSurfaceProjectionCheck.setChecked(True)
         self.forceXYPlaneCheck = QtWidgets.QCheckBox("Force XY Plane (old behavior)")
         self.forceXYPlaneCheck.setChecked(False)
@@ -2012,7 +2310,9 @@ class HatchTaskPanel:
         base_row_layout.addWidget(self.baseTypeFilterCombo)
 
         self.main_tab_layout.insertRow(0, self.hatchRoleLabel, self.hatchRoleCombo)
-        self.definitionNote = QtWidgets.QLabel("Definition Mode: No base face required. This object can be assigned to Material.Hatch as a reusable style.")
+        self.definitionNote = QtWidgets.QLabel(
+            "Definition Mode: No base face required. This object can be assigned to Material.Hatch as a reusable style."
+        )
         self.definitionNote.setWordWrap(True)
         self.definitionNote.setStyleSheet("color: #006600; font-style: italic; margin: 4px;")
         self.main_tab_layout.insertRow(1, "", self.definitionNote)
@@ -2128,10 +2428,14 @@ class HatchTaskPanel:
 
         self.baseCombo.currentIndexChanged.connect(self.on_base_combo_index_changed)
         self.baseTypeFilterCombo.currentIndexChanged.connect(self.refresh_base_combo)
-        self.baseSearchField.textChanged.connect(lambda: QtCore.QTimer.singleShot(300, self.refresh_base_combo))
+        self.baseSearchField.textChanged.connect(
+            lambda: QtCore.QTimer.singleShot(300, self.refresh_base_combo)
+        )
 
         self.patternTypeFilterCombo.currentIndexChanged.connect(self.refresh_custom_pattern_combo)
-        self.patternSearchField.textChanged.connect(lambda: QtCore.QTimer.singleShot(300, self.refresh_custom_pattern_combo))
+        self.patternSearchField.textChanged.connect(
+            lambda: QtCore.QTimer.singleShot(300, self.refresh_custom_pattern_combo)
+        )
         self.customPatternCombo.currentIndexChanged.connect(self.on_custom_pattern_selected)
         self.tileCombo.currentIndexChanged.connect(self.on_tile_combo_index_changed)
 
@@ -2147,12 +2451,18 @@ class HatchTaskPanel:
         return main_widget
 
     def _on_hatch_role_changed(self, index):
-        is_definition = (index == 0)
+        is_definition = index == 0
         base_controls = [
-            self.baseLabel, self.baseCombo, self.pickBaseBtn,
-            self.baseSearchLabel, self.baseSearchField, self.baseTypeFilterLabel,
-            self.baseTypeFilterCombo, self.baseObjectsLabel, self.baseObjectsList,
-            self.face_extractor_group
+            self.baseLabel,
+            self.baseCombo,
+            self.pickBaseBtn,
+            self.baseSearchLabel,
+            self.baseSearchField,
+            self.baseTypeFilterLabel,
+            self.baseTypeFilterCombo,
+            self.baseObjectsLabel,
+            self.baseObjectsList,
+            self.face_extractor_group,
         ]
         for widget in base_controls:
             if widget:
@@ -2168,11 +2478,7 @@ class HatchTaskPanel:
             self.face_extractor_status.setStyleSheet("color: red; font-style: italic;")
             return
 
-        has_face = any(
-            sub.startswith("Face")
-            for sel in selection
-            for sub in sel.SubElementNames
-        )
+        has_face = any(sub.startswith("Face") for sel in selection for sub in sel.SubElementNames)
         if not has_face:
             self.face_extractor_status.setText(
                 "No face selected. Click a face surface, not an edge or vertex."
@@ -2216,7 +2522,9 @@ class HatchTaskPanel:
     def pick_base_shape(self):
         selection = FreeCADGui.Selection.getSelection()
         if not selection:
-            QtWidgets.QMessageBox.warning(self.form, "No selection", "Select an object in 3D view or tree.")
+            QtWidgets.QMessageBox.warning(
+                self.form, "No selection", "Select an object in 3D view or tree."
+            )
             return
         obj = selection[0]
         name = obj.Name
@@ -2229,7 +2537,9 @@ class HatchTaskPanel:
     def pick_custom_pattern(self):
         selection = FreeCADGui.Selection.getSelection()
         if not selection:
-            QtWidgets.QMessageBox.warning(self.form, "No selection", "Select an object in 3D view or tree.")
+            QtWidgets.QMessageBox.warning(
+                self.form, "No selection", "Select an object in 3D view or tree."
+            )
             return
         obj = selection[0]
         name = obj.Name
@@ -2254,7 +2564,9 @@ class HatchTaskPanel:
     def pick_base_tile(self):
         selection = FreeCADGui.Selection.getSelection()
         if not selection:
-            QtWidgets.QMessageBox.warning(self.form, "No selection", "Select an object in 3D view or tree.")
+            QtWidgets.QMessageBox.warning(
+                self.form, "No selection", "Select an object in 3D view or tree."
+            )
             return
         obj = selection[0]
         name = obj.Name
@@ -2340,7 +2652,7 @@ class HatchTaskPanel:
         self._update_pattern_controls_visibility(show_builtin=is_builtin)
 
     def on_pattern_source_changed(self, index):
-        is_builtin = (index == 0)
+        is_builtin = index == 0
         if self.last_manual_scale is None:
             self.set_smart_default_scale(is_builtin)
         else:
@@ -2406,15 +2718,16 @@ class HatchTaskPanel:
         if not doc:
             return
 
-        is_definition = (self.hatchRoleCombo.currentIndex() == 0)
+        is_definition = self.hatchRoleCombo.currentIndex() == 0
         if not is_definition:
             base_name = self.baseCombo.currentText()
             base_obj = self._resolve_obj_name(base_name)
             if not base_obj or not hasattr(base_obj, "Shape"):
                 QtWidgets.QMessageBox.warning(
-                    self.form, "Preview Error",
+                    self.form,
+                    "Preview Error",
                     f"Select a valid base shape before previewing.\n"
-                    f"Could not find object '{base_name}' in document."
+                    f"Could not find object '{base_name}' in document.",
                 )
                 return
 
@@ -2433,8 +2746,7 @@ class HatchTaskPanel:
             # identical pipeline to the final hatch (correct shape + placement).
             temp_name = doc.getUniqueObjectName("_HatchPreviewTemp")
             temp_hatch = make_custom_hatch(
-                name=temp_name,
-                role="Definition" if is_definition else "Applied"
+                name=temp_name, role="Definition" if is_definition else "Applied"
             )
 
             if not self._apply_properties_to(temp_hatch):
@@ -2449,20 +2761,16 @@ class HatchTaskPanel:
                 doc.removeObject(temp_name)
                 temp_name = None
                 QtWidgets.QMessageBox.warning(
-                    self.form, "Preview",
-                    "Preview generated an empty shape. "
-                    "Check base object and pattern settings."
+                    self.form,
+                    "Preview",
+                    "Preview generated an empty shape. " "Check base object and pattern settings.",
                 )
                 return
 
             show_faces = temp_hatch.ShowFaces
 
             at_location = getattr(self, "previewAtLocationCheck", None)
-            preview_at_surface = (
-                at_location is None or
-                at_location.isChecked() or
-                is_definition
-            )
+            preview_at_surface = at_location is None or at_location.isChecked() or is_definition
 
             if preview_at_surface:
                 # ---------------------------------------------------------- #
@@ -2474,7 +2782,7 @@ class HatchTaskPanel:
                 # Future recomputes keep it correct automatically.           #
                 # ---------------------------------------------------------- #
                 preview_name = temp_name
-                temp_name = None   # don't clean up — this IS the preview
+                temp_name = None  # don't clean up — this IS the preview
                 preview_obj = doc.getObject(preview_name)
 
             else:
@@ -2496,7 +2804,7 @@ class HatchTaskPanel:
                 # 4. Delete the parametric hatch.                            #
                 # ---------------------------------------------------------- #
                 world_shape = temp_hatch.Shape.copy()
-                hatch_pl    = temp_hatch.Placement
+                hatch_pl = temp_hatch.Placement
 
                 # Bake placement into vertices so Part::Feature at identity
                 # renders the shape at the same position as the hatch.
@@ -2519,16 +2827,18 @@ class HatchTaskPanel:
                 temp_name = None
 
                 preview_name = doc.getUniqueObjectName("HatchPreview")
-                preview_obj  = doc.addObject("Part::Feature", preview_name)
-                preview_obj.Shape     = world_shape
-                preview_obj.Placement = FreeCAD.Placement()   # identity — geometry is already shifted
+                preview_obj = doc.addObject("Part::Feature", preview_name)
+                preview_obj.Shape = world_shape
+                preview_obj.Placement = (
+                    FreeCAD.Placement()
+                )  # identity — geometry is already shifted
                 doc.recompute()
 
             # Apply green preview style (after any recompute so display modes exist)
             if FreeCAD.GuiUp:
                 vobj = preview_obj.ViewObject
-                _LINE_COLOR  = (1/255, 255/255, 1/255)   # #01ff01
-                _SHAPE_COLOR = (0/255, 204/255, 51/255)   # #00cc33
+                _LINE_COLOR = (1 / 255, 255 / 255, 1 / 255)  # #01ff01
+                _SHAPE_COLOR = (0 / 255, 204 / 255, 51 / 255)  # #00cc33
                 safe_set_display_mode(vobj, "Flat Lines" if show_faces else "Wireframe")
                 vobj.ShapeColor = _SHAPE_COLOR
                 try:
@@ -2546,21 +2856,20 @@ class HatchTaskPanel:
                 self.current_temp_preview_name = preview_name
 
             num_edges = len(preview_obj.Shape.Edges)
-            num_faces  = len(preview_obj.Shape.Faces)
+            num_faces = len(preview_obj.Shape.Faces)
             QtWidgets.QMessageBox.information(
-                self.form, "Preview Generated",
+                self.form,
+                "Preview Generated",
                 f"Preview complete (≤100 tiles for speed).\n"
                 f"Edges: {num_edges}  Faces: {num_faces}\n\n"
                 f"{'Shape kept as non-parametric feature.' if keep else 'Shape will be removed on next preview or on Create.'}\n\n"
                 "Tip: Adjust MaxTilesAllowed in Advanced tab\n"
-                "and Base Spacing / Scale to tune density."
+                "and Base Spacing / Scale to tune density.",
             )
 
         except Exception as e:
             FreeCAD.Console.PrintError(f"Preview failed: {e}\n")
-            QtWidgets.QMessageBox.critical(
-                self.form, "Preview Error", f"Preview failed:\n{str(e)}"
-            )
+            QtWidgets.QMessageBox.critical(self.form, "Preview Error", f"Preview failed:\n{str(e)}")
             for name in [temp_name, preview_name]:
                 if name:
                     obj = doc.getObject(name)
@@ -2613,8 +2922,9 @@ class HatchTaskPanel:
             self.scaleSpin.setValue(float(getattr(obj, "PatternScale", 1.0)))
             self.rotSpin.setValue(float(getattr(obj, "RotationDeg", 0.0)))
             spacing = getattr(obj, "BaseSpacing", 0.0)
-            self.spacingInput.setProperty("quantity",
-                FreeCAD.Units.Quantity(spacing, FreeCAD.Units.Length))
+            self.spacingInput.setProperty(
+                "quantity", FreeCAD.Units.Quantity(spacing, FreeCAD.Units.Length)
+            )
             self.repXSpin.setValue(int(getattr(obj, "RepetitionsX", 5)))
             self.repYSpin.setValue(int(getattr(obj, "RepetitionsY", 5)))
 
@@ -2625,7 +2935,8 @@ class HatchTaskPanel:
             self.offsetXSpin.setValue(float(getattr(obj, "PatternOffsetX", 0.0)))
             self.offsetYSpin.setValue(float(getattr(obj, "PatternOffsetY", 0.0)))
             placement_mode_idx = self.placementModeCombo.findText(
-                getattr(obj, "PatternPlacementMode", "Origin"))
+                getattr(obj, "PatternPlacementMode", "Origin")
+            )
             if placement_mode_idx >= 0:
                 self.placementModeCombo.setCurrentIndex(placement_mode_idx)
 
@@ -2647,7 +2958,8 @@ class HatchTaskPanel:
             self.colorVarSpin.setValue(float(getattr(obj, "ColorVariationIntensity", 0.5)))
 
             self.useSurfaceProjectionCheck.setChecked(
-                bool(getattr(obj, "UseSurfaceProjection", True)))
+                bool(getattr(obj, "UseSurfaceProjection", True))
+            )
             self.forceXYPlaneCheck.setChecked(bool(getattr(obj, "ForceXYPlane", False)))
 
             if getattr(obj, "BaseTileObject", None):
@@ -2684,8 +2996,7 @@ class HatchTaskPanel:
             base_name = self.baseCombo.currentText()
             base_obj = self._resolve_obj_name(base_name)
             if not base_obj or not hasattr(base_obj, "Shape"):
-                QtWidgets.QMessageBox.warning(
-                    self.form, "Error", "Invalid base object selection")
+                QtWidgets.QMessageBox.warning(self.form, "Error", "Invalid base object selection")
                 return False
             hatch_obj.BaseObject = base_obj
         else:
@@ -2744,7 +3055,7 @@ class HatchTaskPanel:
             hatch_objects = [o for o in self.doc.Objects if o.Name.startswith("CustomHatch")]
             max_num = 0
             for obj in hatch_objects:
-                suffix = obj.Name[len("CustomHatch"):]
+                suffix = obj.Name[len("CustomHatch") :]
                 if suffix.isdigit():
                     max_num = max(max_num, int(suffix))
             hatch_name = "CustomHatch" if max_num == 0 else f"CustomHatch{max_num + 1:03d}"
@@ -2758,13 +3069,14 @@ class HatchTaskPanel:
             self.doc.recompute()
             FreeCAD.ActiveDocument.commitTransaction()
             QtWidgets.QMessageBox.information(
-                self.form, "Success",
+                self.form,
+                "Success",
                 f"Hatch created!\nTime: {hatch_obj.GenerationTime:.2f}s\n"
-                f"Tiles: {hatch_obj.TileCount}")
+                f"Tiles: {hatch_obj.TileCount}",
+            )
         except Exception as e:
             FreeCAD.ActiveDocument.abortTransaction()
-            QtWidgets.QMessageBox.critical(self.form, "Error",
-                f"Hatch creation failed:\n{str(e)}")
+            QtWidgets.QMessageBox.critical(self.form, "Error", f"Hatch creation failed:\n{str(e)}")
         FreeCADGui.Control.closeDialog()
 
     def _accept_edit(self):
@@ -2777,13 +3089,14 @@ class HatchTaskPanel:
             self.doc.recompute()
             FreeCAD.ActiveDocument.commitTransaction()
             QtWidgets.QMessageBox.information(
-                self.form, "Updated",
+                self.form,
+                "Updated",
                 f"Hatch updated!\nTime: {self.editing_obj.GenerationTime:.2f}s\n"
-                f"Tiles: {self.editing_obj.TileCount}")
+                f"Tiles: {self.editing_obj.TileCount}",
+            )
         except Exception as e:
             FreeCAD.ActiveDocument.abortTransaction()
-            QtWidgets.QMessageBox.critical(self.form, "Error",
-                f"Hatch update failed:\n{str(e)}")
+            QtWidgets.QMessageBox.critical(self.form, "Error", f"Hatch update failed:\n{str(e)}")
         FreeCADGui.Control.closeDialog()
 
     def reject(self):
@@ -2806,11 +3119,7 @@ class _CommandFaceExtractor:
         if not FreeCAD.GuiUp:
             return False
         selection = FreeCADGui.Selection.getSelectionEx()
-        return any(
-            sub.startswith("Face")
-            for sel in selection
-            for sub in sel.SubElementNames
-        )
+        return any(sub.startswith("Face") for sel in selection for sub in sel.SubElementNames)
 
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Extract Face")
@@ -2828,9 +3137,9 @@ class _CommandFaceExtractor:
 class _CommandHatch:
     def GetResources(self):
         return {
-            'Pixmap': _icon_path("BIM_Hatch.svg"),
-            'MenuText': 'Create Hatch',
-            'ToolTip': 'Generate parametric hatch patterns on surfaces'
+            "Pixmap": _icon_path("BIM_Hatch.svg"),
+            "MenuText": "Create Hatch",
+            "ToolTip": "Generate parametric hatch patterns on surfaces",
         }
 
     def IsActive(self):
@@ -2842,10 +3151,10 @@ class _CommandHatch:
 
 
 if FreeCAD.GuiUp:
-    if 'BIM_Hatch_Dialog' not in FreeCADGui.listCommands():
-        FreeCADGui.addCommand('BIM_Hatch_Dialog', _CommandHatch())
-    if 'BIM_FaceExtractor' not in FreeCADGui.listCommands():
-        FreeCADGui.addCommand('BIM_FaceExtractor', _CommandFaceExtractor())
+    if "BIM_Hatch_Dialog" not in FreeCADGui.listCommands():
+        FreeCADGui.addCommand("BIM_Hatch_Dialog", _CommandHatch())
+    if "BIM_FaceExtractor" not in FreeCADGui.listCommands():
+        FreeCADGui.addCommand("BIM_FaceExtractor", _CommandFaceExtractor())
 
 
 def run_as_macro():
@@ -2867,7 +3176,9 @@ def run_as_macro():
     scroll.setWidget(widget)
     layout.addWidget(scroll)
 
-    button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
+    button_box = QtWidgets.QDialogButtonBox(
+        QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel
+    )
     button_box.accepted.connect(lambda: (task_panel.accept(), dialog.accept()))
     button_box.rejected.connect(lambda: (task_panel.reject(), dialog.reject()))
     layout.addWidget(button_box)
@@ -2877,7 +3188,7 @@ def run_as_macro():
 
 def run_hatch_generator_dialog():
     if FreeCAD.GuiUp:
-        FreeCADGui.runCommand('BIM_Hatch_Dialog')
+        FreeCADGui.runCommand("BIM_Hatch_Dialog")
 
 
 if __name__ == "__main__":
