@@ -38,7 +38,6 @@ import Path
 import Path.Post.Utils as PostUtils
 import Path.Post.UtilsArguments as PostUtilsArguments
 import Path.Post.UtilsExport as PostUtilsExport
-from Path.Base.MachineState import MachineState
 from Path.Post import PostList
 from Path.Post.UtilsParse import format_command_line
 from Path.Post.DrillCycleExpander import DrillCycleExpander
@@ -485,7 +484,7 @@ class PostProcessor:
             if hasattr(self._jobs[0], "Machine"):
                 machine_name = self._jobs[0].Machine
                 for a_job in self._jobs[1:]:
-                    if hasattr(a_job, "Machine") and job.Machine != machine_name:
+                    if hasattr(a_job, "Machine") and a_job.Machine != machine_name:
                         raise ValueError("All jobs must have the same machine")
             # For now, only single job supported
             if len(self._jobs) > 1:
@@ -993,7 +992,7 @@ class PostProcessor:
                     if item.data['str'] != "" and not item.data['str'].endswith("\n"):
                         # count last line
                         str_lines += 1
-                    for _ in range(0, item.data['str'].count("\n")):
+                    for _ in range(0, str_lines):
                         next( line_number )
 
                 # number Path.Command's
@@ -1386,7 +1385,7 @@ class PostProcessor:
         """Return preamble lines from machine configuration."""
         return self._get_property_lines("preamble")
 
-    def _collect_unit_command(self) -> list:
+    def _collect_unit_command(self) -> Path.Command:
         """Return G20/G21 unit command based on output_units setting."""
         if self._machine and hasattr(self._machine, "output"):
 
@@ -1394,26 +1393,11 @@ class PostProcessor:
                 return Path.Command("G21")
             elif self._machine.output.units == OutputUnits.IMPERIAL:
                 return Path.Command("G20")
-        return []
+        return None
 
     def _collect_pre_job_lines(self) -> list:
         """Return pre-job lines from machine configuration."""
         return self._get_property_lines("pre_job")
-
-    def _build_section_prefix(
-        self, header_lines, preamble_lines, unit_command, pre_job_lines
-    ) -> list:
-        """Assemble the per-section prefix lines.
-
-        Each section becomes a separate output file and must be
-        self-contained.
-        """
-        gcode_lines = []
-        gcode_lines.extend(header_lines)
-        gcode_lines.extend(preamble_lines)
-        gcode_lines.extend(unit_command)
-        gcode_lines.extend(pre_job_lines)
-        return gcode_lines
 
     def _item_pre_block(self, item) -> None|list[str]|list[Path.Command]:
         """Emit pre-block None|[str]|[Path.Command] for a postable item based on its type.
@@ -2382,6 +2366,20 @@ class PostProcessor:
 
         # Spindle control
         if command_name in Constants.MCODE_SPINDLE_ON + Constants.MCODE_SPINDLE_OFF:
+            return self._convert_spindle_command(command)
+
+        # Coolant control
+        if command_name in Constants.MCODE_COOLANT:
+            return self._convert_coolant_command(command)
+
+        # Program control
+        if (
+            command_name
+            in Constants.MCODE_STOP
+            + Constants.MCODE_OPTIONAL_STOP
+            + Constants.MCODE_END
+            + Constants.MCODE_END_RESET
+        ):
             return self._convert_program_control(command)
 
         # Fixtures
@@ -2485,7 +2483,7 @@ class PostProcessor:
             feed_value = _convert_axis_param(feed_value)
 
             # There are actually oddball controls that use {units}/second feedrate.
-            if not ( self._machine and hasattr(self._machine, "feedrate_per_second") ):
+            if not ( self._machine and getattr(self._machine, "feedrate_per_second", False) ):
                 # Convert from mm/sec to mm/min (multiply by 60)
                 feed_value = feed_value * 60.0
 

@@ -63,7 +63,6 @@ class TestToolLengthOffset(unittest.TestCase):
         profile_op.Path = Path.Path( [ Path.Command("G43", {"H": 1}) ] )
 
         # Convert G43 command
-        processor._machine.output.output_tool_length_offset = False
         result = processor.export2()[0][1]
 
         # Should return None (suppressed)

@@ -754,7 +754,9 @@ class TestExport2Integration(unittest.TestCase):
         from Path.Post.Processor import PostProcessor
 
         post = PostProcessor(self.job, "", "", "mm")
-        post._machine = Machine("Test Machine")
+        post._machine = self._create_machine(
+            output_header=True, include_machine_name=True, line_numbers=False
+        )
         results = post.export2()
 
         self.assertIsNotNone(results, "export2 should return results")
