@@ -29,7 +29,6 @@
 The Line class is used by other Gui Commands that behave in a similar way
 like Wire, BSpline, and BezCurve.
 """
-
 ## @package gui_lines
 # \ingroup draftguitools
 # \brief Provides GUI tools to create straight Line and Wire objects.
@@ -239,18 +238,14 @@ class Line(gui_base_original.Creator):
                 _toolmsg(translate("draft", "Pick next point"))
             self.update_hints()
 
-    def _rejects_duplicate_consecutive_points(self):
-        """Only straight line and wire commands reject duplicate points."""
-        return self.__class__ in (Line, Wire)
-
     def _append_point(self, point):
         """Append a point unless it would create a zero-length segment."""
         if (
-            self._rejects_duplicate_consecutive_points()
+            self.__class__ in (Line, Wire)
             and self.node
             and DraftVecUtils.equals(self.node[-1], point)
         ):
-            _wrn(translate("draft", "Start and end points are identical"))
+            _wrn(translate("draft", "Point identical to previous point"))
             _toolmsg(translate("draft", "Pick next point"))
             self.update_hints()
             return False

@@ -28,7 +28,6 @@ import unittest
 from unittest import mock
 
 import FreeCAD as App
-from draftguitools import gui_beziers
 from draftguitools import gui_lines
 from draftguitools import gui_splines
 
@@ -54,7 +53,7 @@ class DraftGuiLines(unittest.TestCase):
 
         self.assertEqual(command.node, [first])
         warning.assert_called_once_with(
-            gui_lines.translate("draft", "Start and end points are identical")
+            gui_lines.translate("draft", "Point identical to previous point")
         )
         toolmsg.assert_called_once_with(gui_lines.translate("draft", "Pick next point"))
         update_hints.assert_called_once_with()
@@ -92,7 +91,7 @@ class DraftGuiLines(unittest.TestCase):
         self.assertFalse(command.obj.ViewObject.Selectable)
         command.ui.redraw.assert_called_once_with()
         warning.assert_called_once_with(
-            gui_lines.translate("draft", "Start and end points are identical")
+            gui_lines.translate("draft", "Point identical to previous point")
         )
         toolmsg.assert_called_once_with(gui_lines.translate("draft", "Pick next point"))
         update_hints.assert_called_once_with()
@@ -162,30 +161,64 @@ class DraftGuiLines(unittest.TestCase):
         undolast.assert_called_once_with()
         finish.assert_called_once_with(cont=None, closed=True)
 
-    def test_curve_numeric_input_keeps_duplicate_points(self):
-        """Curve commands keep their inherited duplicate-point behavior."""
+    def test_numeric_input_rejects_duplicate_bspline_point(self):
+        """Duplicate numeric input should be rejected for B-Splines."""
+        command = gui_splines.BSpline()
         first = App.Vector(0, 0, 0)
-        curve_classes = (
-            gui_beziers.BezCurve,
-            gui_beziers.CubicBezCurve,
-            gui_splines.BSpline,
+        command.node = [first]
+        command.ui = mock.Mock()
+
+        with (
+            mock.patch.object(gui_splines, "_wrn") as warning,
+            mock.patch.object(gui_splines, "_toolmsg") as toolmsg,
+            mock.patch.object(command, "update_hints") as update_hints,
+            mock.patch.object(command, "drawUpdate") as draw_update,
+            mock.patch.object(command, "finish") as finish,
+        ):
+            command.numericInput(0, 0, 0)
+
+        self.assertEqual(command.node, [first])
+        warning.assert_called_once_with(
+            gui_splines.translate("draft", "Point identical to previous point")
         )
+        toolmsg.assert_called_once_with(gui_splines.translate("draft", "Pick next point"))
+        update_hints.assert_called_once_with()
+        draw_update.assert_not_called()
+        finish.assert_not_called()
+        command.ui.setNextFocus.assert_called_once_with()
 
-        for curve_class in curve_classes:
-            with self.subTest(curve_class=curve_class.__name__):
-                command = curve_class()
-                command.node = [first]
-                command.ui = mock.Mock()
+    def test_mouse_action_rejects_duplicate_bspline_point(self):
+        """Duplicate mouse input should be rejected before spline updates."""
+        first = App.Vector(0, 0, 0)
+        command = gui_splines.BSpline()
+        command.node = [first]
+        command.point = first
+        command.pos = None
+        command.support = True
+        command.ui = mock.Mock(mouse=True)
+        command.obj = SimpleNamespace(ViewObject=SimpleNamespace(Selectable=True))
 
-                with (
-                    mock.patch.object(gui_lines, "_wrn") as warning,
-                    mock.patch.object(gui_lines, "_toolmsg") as toolmsg,
-                    mock.patch.object(command, "drawUpdate") as draw_update,
-                ):
-                    command.numericInput(0, 0, 0)
+        with (
+            mock.patch.object(gui_splines, "_wrn") as warning,
+            mock.patch.object(gui_splines, "_toolmsg") as toolmsg,
+            mock.patch.object(command, "update_hints") as update_hints,
+            mock.patch.object(command, "drawUpdate") as draw_update,
+        ):
+            command.action(
+                {
+                    "Type": "SoMouseButtonEvent",
+                    "State": "DOWN",
+                    "Button": "BUTTON1",
+                    "Position": (10, 10),
+                }
+            )
 
-                self.assertEqual(command.node, [first, first])
-                warning.assert_not_called()
-                toolmsg.assert_not_called()
-                draw_update.assert_called_once_with(first)
-                command.ui.setNextFocus.assert_called_once_with()
+        self.assertEqual(command.node, [first])
+        self.assertFalse(command.obj.ViewObject.Selectable)
+        command.ui.redraw.assert_called_once_with()
+        warning.assert_called_once_with(
+            gui_splines.translate("draft", "Point identical to previous point")
+        )
+        toolmsg.assert_called_once_with(gui_splines.translate("draft", "Pick next point"))
+        update_hints.assert_called_once_with()
+        draw_update.assert_not_called()
