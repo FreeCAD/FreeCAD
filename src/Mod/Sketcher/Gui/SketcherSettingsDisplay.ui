@@ -44,9 +44,6 @@
         <property name="prefPath" stdset="0">
          <cstring>View</cstring>
         </property>
-        <property name="requiredChars" stdset="0">
-         <cstring>µ°◠⌀ƒ</cstring>
-        </property>
        </widget>
       </item>
       <item row="1" column="0">

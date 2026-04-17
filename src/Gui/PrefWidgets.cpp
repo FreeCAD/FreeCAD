@@ -23,7 +23,6 @@
 
 #include <QContextMenuEvent>
 #include <QMenu>
-#include <QStringListModel>
 
 
 #include <cstring>
@@ -861,93 +860,9 @@ void PrefQuantitySpinBox::setHistorySize(int i)
 PrefFontBox::PrefFontBox(QWidget* parent)
     : QFontComboBox(parent)
     , PrefWidget()
-{
-    connect(this, &QFontComboBox::currentFontChanged, this, &PrefFontBox::onCurrentFontChanged);
-}
+{}
 
 PrefFontBox::~PrefFontBox() = default;
-
-QByteArray PrefFontBox::requiredCharacters() const
-{
-    return m_requiredChars;
-}
-
-void PrefFontBox::setRequiredCharacters(const QByteArray& chars)
-{
-    acceptableFonts.clear();
-
-    m_requiredChars = chars;
-    if (m_requiredChars.size() == 0) {
-        // No filtering requested
-        return;
-    }
-
-    QFontDatabase fontDb;
-    QStringList fontFamilies = fontDb.families(writingSystem());
-
-    QString reqChars = QString::fromUtf8(m_requiredChars);
-    for (QString fontFamily : fontFamilies) {
-        // To QFontMetrics::inFont() return false, QFont::setStyleStrategy() must be called before
-        // QFont::setFamily()
-        QFont font;
-        font.setStyleStrategy(QFont::NoFontMerging);
-        font.setFamily(fontFamily);
-
-        QFontMetrics metrics(font);
-        qsizetype i;
-        for (i = 0; i < reqChars.length(); ++i) {
-            if (!metrics.inFont(reqChars.at(i))) {
-                break;
-            }
-        }
-        if (i < reqChars.length()) {
-            continue;
-        }
-
-        acceptableFonts.insert(fontFamily);
-    }
-}
-
-void PrefFontBox::onCurrentFontChanged(const QFont& font)
-{
-    // QFontComboBox font list stored in QStringListModel is quite difficult to modify.
-    // QStringListModel::setStringList() is not virtual and as such can not be overriden,
-    // while QFontComboBox blocks QAbstractItemModel::modelReset() signal during update.
-    // Thus the only solution left is to assign the filtered list here,
-    // as long as the original font list and the filtered font list differ.
-
-    if (m_requiredChars.size() == 0) {
-        // No font list filtering needed
-        return;
-    }
-
-    QStringListModel* listModel = qobject_cast<QStringListModel*>(model());
-    if (!listModel) {
-        return;
-    }
-
-    QStringList filteredList;
-    bool listAcceptable = true;
-    int index = 0;
-
-    QFontInfo fontInfo(font);
-    for (QString fontFamily : listModel->stringList()) {
-        bool fontAcceptable = acceptableFonts.contains(fontFamily);
-        if (fontAcceptable) {
-            if (fontFamily == fontInfo.family()
-                || fontFamily.startsWith(fontInfo.family() + QStringLiteral(" ["))) {
-                index = filteredList.size();
-            }
-            filteredList.append(fontFamily);
-        }
-        listAcceptable &= fontAcceptable;
-    }
-
-    if (!listAcceptable) {
-        listModel->setStringList(filteredList);
-        setCurrentIndex(index);
-    }
-}
 
 void PrefFontBox::restorePreferences()
 {

@@ -471,26 +471,15 @@ class GuiExport PrefFontBox: public QFontComboBox, public PrefWidget
     Q_PROPERTY(
         QByteArray prefPath READ paramGrpPath WRITE setParamGrpPath
     )  // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(QByteArray requiredChars READ requiredCharacters WRITE setRequiredCharacters)
 
 public:
     explicit PrefFontBox(QWidget* parent = nullptr);
     ~PrefFontBox() override;
 
-    QByteArray requiredCharacters() const;
-    void setRequiredCharacters(const QByteArray& name);
-
-public Q_SLOTS:
-    void onCurrentFontChanged(const QFont& font);
-
 protected:
     // restore from/save to parameters
     void restorePreferences() override;
     void savePreferences() override;
-
-private:
-    QByteArray m_requiredChars;
-    QSet<QString> acceptableFonts;
 };
 
 /**
