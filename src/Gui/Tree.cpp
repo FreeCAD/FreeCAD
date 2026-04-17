@@ -5420,12 +5420,11 @@ void DocumentItem::testStatus()
         v.second->testStatus();
     }
 
-    auto tree = getTree();
     setBaseIcon(
         0,
         document()->getDocument()->testStatus(App::Document::PartialDoc)
-            ? *(tree->documentPartialPixmap)
-            : *(tree->documentPixmap)
+            ? *TreeWidget::documentPartialPixmap
+            : *TreeWidget::documentPixmap
     );
 }
 
@@ -6040,7 +6039,7 @@ void DocumentItem::updateSelection()
     getTree()->blockSelection(lock);
 }
 
-void DocumentItem::setReadOnlyIconOverlays(int column, QIcon& overlayedIcon)
+void DocumentItem::setReadOnlyIconInfo(int column, QIcon& overlayedIcon)
 {
     // handle read only file icon overlays
     static QPixmap px(Gui::BitmapFactory().pixmapFromSvg("forbidden", QSize(10, 10)));
@@ -6070,10 +6069,10 @@ void DocumentItem::setBaseIcon(int column, const QIcon& base)
     QIcon overlayedIcon = base;
     setToolTip(column, "");
     if (document()->getDocument()->isReadOnlyFile()) {
-        setReadOnlyIconOverlays(column, overlayedIcon);
+        setReadOnlyIconInfo(column, overlayedIcon);
     }
 
-    // future icon overlays handled here. tooltip logic needs imporovement for merging multiple icons.
+    // Future icon overlays are handled here. Tooltip logic needs improvement for merging multiple icons.
 
     setIcon(column, overlayedIcon);
 }
@@ -6220,9 +6219,9 @@ enum Status
 
 // currentStatus is the status enum built by testStatus()
 // w is the width of the overlay in pixels
-// overlays is a reference to the main QIcon that needs overalys added
+// overlays is a reference to the main QIcon that needs overlays added
 // Overlays are static icons that may need to be initialized
-void DocumentObjectItem::setIconOverlays(int currentStatus, int w, QPixmap& overlays)
+void DocumentObjectItem::setIconOverlays(int currentStatus, QPixmap& overlays)
 {
     if (currentStatus & Status::Hidden) {
         static QPixmap pxHidden;
@@ -6306,8 +6305,8 @@ void DocumentObjectItem::generateIcon(int currentStatus, QIcon::Mode mode, QIcon
         pxOn = icon_org.pixmap(w, w, mode, QIcon::On);
     }
 
-    setIconOverlays(currentStatus, w, pxOff);
-    setIconOverlays(currentStatus, w, pxOn);
+    setIconOverlays(currentStatus, pxOff);
+    setIconOverlays(currentStatus, pxOn);
 
     icon.addPixmap(pxOn, QIcon::Normal, QIcon::On);
     icon.addPixmap(pxOff, QIcon::Normal, QIcon::Off);
