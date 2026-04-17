@@ -13,17 +13,13 @@ cp -a ../.pixi/envs/default/* ${conda_env}
 rm -rf ${conda_env}/include
 find ${conda_env} -name \*.a -delete
 
+# Build release bin/ with only the binaries needed at runtime.
 mv ${conda_env}/bin ${conda_env}/bin_tmp
 mkdir ${conda_env}/bin
-cp ${conda_env}/bin_tmp/freecad ${conda_env}/bin/
-cp ${conda_env}/bin_tmp/freecadcmd ${conda_env}/bin
-cp ${conda_env}/bin_tmp/ccx ${conda_env}/bin/
-cp ${conda_env}/bin_tmp/python ${conda_env}/bin/
-cp ${conda_env}/bin_tmp/pip ${conda_env}/bin/
-cp ${conda_env}/bin_tmp/pyside6-rcc ${conda_env}/bin/
-cp ${conda_env}/bin_tmp/gmsh ${conda_env}/bin/
-cp ${conda_env}/bin_tmp/dot ${conda_env}/bin/
-cp ${conda_env}/bin_tmp/unflatten ${conda_env}/bin/
+while IFS= read -r entry; do
+    [ -z "$entry" ] && continue
+    [ -f "${conda_env}/bin_tmp/${entry}" ] && cp "${conda_env}/bin_tmp/${entry}" "${conda_env}/bin/"
+done < ../../../src/MacAppBundle/bundle_bin_entries.txt
 rm -rf ${conda_env}/bin_tmp
 
 sed -i '1s|.*|#!/usr/bin/env python|' ${conda_env}/bin/pip

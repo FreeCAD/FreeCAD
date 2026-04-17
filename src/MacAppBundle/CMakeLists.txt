@@ -5,6 +5,16 @@ if(APPLE AND BUILD_WITH_CONDA)
     # rattler-build bundle step.
     set(TARGET_APP_BUNDLE "${CMAKE_BINARY_DIR}/FreeCAD.app")
 
+    # Binaries included in Contents/Resources/bin/.
+    file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/bundle_bin_entries.txt"
+         FREECAD_BUNDLE_BIN_ENTRIES)
+    list(FILTER FREECAD_BUNDLE_BIN_ENTRIES EXCLUDE REGEX "^$")
+
+    # FreeCAD binaries are built with uppercase names in the build tree.
+    # These need to physically reside inside the .app, everything else
+    # can be symlinked from the conda env.
+    set(FREECAD_BUILD_BINARIES FreeCAD FreeCADCmd)
+
     # Dev-build defaults. CI (package/rattler-build/build.sh) overrides these.
     if(NOT FREECAD_BUNDLE_VERSION)
         set(FREECAD_BUNDLE_VERSION "FreeCAD-dev")
@@ -48,19 +58,6 @@ if(APPLE AND BUILD_WITH_CONDA)
         )
     endif()
 
-    # Symlink Contents/Resources -> ${CMAKE_INSTALL_PREFIX} so the launcher's
-    # lookup of ../Resources/bin/freecad resolves into the live pixi env and
-    # FreeCAD's runtime resource lookups (NSBundle, Mod/, Ext/, ssl/) see the
-    # installed tree.
-    if(IS_SYMLINK "${TARGET_APP_BUNDLE}/Contents/Resources")
-        file(REMOVE "${TARGET_APP_BUNDLE}/Contents/Resources")
-    endif()
-    file(CREATE_LINK
-        "${CMAKE_INSTALL_PREFIX}"
-        "${TARGET_APP_BUNDLE}/Contents/Resources"
-        SYMBOLIC
-    )
-
 endif()
 
 #
@@ -72,17 +69,79 @@ if(FREECAD_CREATE_MAC_APP OR (APPLE AND BUILD_WITH_CONDA))
     # Installation handled by QuickLook/CMakeLists.txt
 endif()
 
-# Ad-hoc sign the outer FreeCAD.app bundle after everything is in place.
-# Mirrors the unsigned-build tail of package/rattler-build/osx/create_bundle.sh
-# (`codesign --force --sign - FreeCAD.app`) so LaunchServices accepts the
-# bundle and registers its App Extensions in PlugIns/. CI's official signing
-# path re-signs with a real identity via macos_sign_and_notarize.zsh; this
-# target is unused in CI because create_bundle.sh assembles its own bundle.
-#
-# Shallow sign (no --deep) by design: Contents/Resources is a symlink to the
-# live pixi env, which contains its own signed dylibs we must not re-seal.
+
 if(APPLE AND BUILD_WITH_CONDA AND CMAKE_GENERATOR MATCHES "Unix Makefiles|Ninja")
-    set(_bundle_sign_deps FreeCADLauncher)
+    # Populate FreeCAD.app/Contents/Resources/ for a local build.
+    #
+    # Resources is a real directory, not a symlink, so the FreeCAD binaries
+    # have a proc_pidpath() that resolves inside the .app (required for the
+    # 3Dconnexion Navlib to recognize the application, and for macOS TCC to
+    # associate permissions with the bundle).
+    #
+    # Most items are symlinks back to the live pixi env.  bin/ is a real
+    # directory whose contents match the release bundle layout (see
+    # FREECAD_BUNDLE_BIN_ENTRIES above).  The FreeCAD binaries listed in
+    # FREECAD_BUILD_BINARIES are copied from the build tree; all others
+    # are symlinked.
+    set(_resources "${TARGET_APP_BUNDLE}/Contents/Resources")
+    set(_conda "${CMAKE_INSTALL_PREFIX}")
+
+    # Commands to symlink top-level conda env items into Reseources/
+    # (except bin/ and Contents/).
+    set(_create_resource_symlinks)
+    file(GLOB _conda_items "${_conda}/*")
+    foreach(_item ${_conda_items})
+        get_filename_component(_name "${_item}" NAME)
+        if(_name STREQUAL "bin" OR _name STREQUAL "Contents")
+            continue()
+        endif()
+        list(APPEND _create_resource_symlinks
+            COMMAND ${CMAKE_COMMAND} -E create_symlink
+                "${_item}" "${_resources}/${_name}")
+    endforeach()
+
+    # Commands to copy the FreeCAD binaries into bin/ and symlink the rest.
+    set(_populate_bundle_bin
+        COMMAND ${CMAKE_COMMAND} -E make_directory "${_resources}/bin")
+    foreach(_entry ${FREECAD_BUNDLE_BIN_ENTRIES})
+        # Check if this entry has a corresponding build-tree binary.
+        set(_build_name "")
+        foreach(_bin ${FREECAD_BUILD_BINARIES})
+            string(TOLOWER "${_bin}" _bin_lower)
+            if(_entry STREQUAL _bin_lower)
+                set(_build_name "${_bin}")
+                break()
+            endif()
+        endforeach()
+        if(_build_name AND EXISTS "${CMAKE_BINARY_DIR}/bin/${_build_name}")
+            list(APPEND _populate_bundle_bin
+                COMMAND ${CMAKE_COMMAND} -E copy
+                    "${CMAKE_BINARY_DIR}/bin/${_build_name}"
+                    "${_resources}/bin/${_entry}")
+        elseif(EXISTS "${_conda}/bin/${_entry}")
+            list(APPEND _populate_bundle_bin
+                COMMAND ${CMAKE_COMMAND} -E create_symlink
+                    "${_conda}/bin/${_entry}"
+                    "${_resources}/bin/${_entry}")
+        endif()
+    endforeach()
+
+    add_custom_target(populate_bundle_resources ALL
+        COMMAND ${CMAKE_COMMAND} -E rm -rf "${_resources}"
+        COMMAND ${CMAKE_COMMAND} -E make_directory "${_resources}"
+        ${_create_resource_symlinks}
+        ${_populate_bundle_bin}
+        DEPENDS FreeCADLauncher
+        COMMENT "Populating ${TARGET_APP_BUNDLE}/Contents/Resources"
+    )
+
+    # Ad-hoc sign the bundle after Resources is populated.
+    # Mirrors the unsigned-build tail of package/rattler-build/osx/create_bundle.sh
+    # (`codesign --force --sign - FreeCAD.app`) so LaunchServices accepts the
+    # bundle and registers its App Extensions in PlugIns/. CI's official signing
+    # path re-signs with a real identity via macos_sign_and_notarize.zsh; this
+    # target is unused in CI because create_bundle.sh assembles its own bundle.
+    set(_bundle_sign_deps populate_bundle_resources)
     if(TARGET FreeCADQuickLook)
         list(APPEND _bundle_sign_deps FreeCADQuickLook)
     endif()
