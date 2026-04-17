@@ -81,7 +81,9 @@ class TestArchMaterialGui(TestArchBaseGui):
         self.pump_gui_events()
 
         editors = self._visible_input_fields(tree)
-        self.assertTrue(editors, "Expected an active Gui::InputField editor in the thickness column.")
+        self.assertTrue(
+            editors, "Expected an active Gui::InputField editor in the thickness column."
+        )
         editor = editors[0]
         editor.ensurePolished()
         editor_height = max(editor.sizeHint().height(), editor.minimumSizeHint().height())
@@ -120,7 +122,9 @@ class TestArchMaterialGui(TestArchBaseGui):
 
     def test_multimaterial_delegate_reserves_inputfield_height(self):
         """The real edit lifecycle should grow only the active thickness row, then shrink it again."""
-        self.assertTrue(self.multi_material.ViewObject.Proxy.setEdit(self.multi_material.ViewObject, 0))
+        self.assertTrue(
+            self.multi_material.ViewObject.Proxy.setEdit(self.multi_material.ViewObject, 0)
+        )
         self.pump_gui_events()
 
         tree = self._find_multimaterial_tree()
