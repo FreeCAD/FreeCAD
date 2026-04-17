@@ -152,7 +152,7 @@ class TestArchRoof(TestArchBase.TestArchBase):
         roof = Arch.makeRoof(name="TestRoof")
         self.assertIsNotNone(roof, "makeRoof failed to create a roof object.")
         self.assertEqual(roof.Label, "TestRoof", "Roof label is incorrect.")
-        
+
     def test_roof_subtraction(self):
         """Test the ArchRoof getSubVolume function."""
         operation = "Arch Roof subtraction (roof brep has small inaccuracies)"
@@ -174,4 +174,3 @@ class TestArchRoof(TestArchBase.TestArchBase):
         App.ActiveDocument.recompute()
         vol_new = wall.Shape.Volume
         self.assertNotEqual(vol, vol_new, "Roof sub volume is incorrect")
-    
