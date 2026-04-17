@@ -165,13 +165,26 @@ class TestArchMaterialGui(TestArchBaseGui):
                 return
             self._best_effort_wait(lambda: not self._visible_input_fields(tree))
 
+    def _close_multimaterial_edit_session(self):
+        try:
+            self.multi_material.ViewObject.Proxy.unsetEdit(self.multi_material.ViewObject, 0)
+        except RuntimeError:
+            return
+        self._best_effort_wait(lambda: self._matching_multimaterial_tree() is None)
+
     def test_multimaterial_delegate_reserves_inputfield_height(self):
         """The real edit lifecycle should grow only the active thickness row to fit the editor."""
-        self.assertTrue(
-            self.multi_material.ViewObject.Proxy.setEdit(self.multi_material.ViewObject, 0)
-        )
-        tree = self._find_multimaterial_tree()
-        self.assertFalse(tree.uniformRowHeights())
-        index = tree.model().index(0, 2)
-        other_index = tree.model().index(1, 2)
-        self._assert_editor_row_state(tree, index, other_index)
+        edit_started = False
+        try:
+            self.assertTrue(
+                self.multi_material.ViewObject.Proxy.setEdit(self.multi_material.ViewObject, 0)
+            )
+            edit_started = True
+            tree = self._find_multimaterial_tree()
+            self.assertFalse(tree.uniformRowHeights())
+            index = tree.model().index(0, 2)
+            other_index = tree.model().index(1, 2)
+            self._assert_editor_row_state(tree, index, other_index)
+        finally:
+            if edit_started:
+                self._close_multimaterial_edit_session()

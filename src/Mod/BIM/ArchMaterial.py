@@ -834,12 +834,19 @@ if FreeCAD.GuiUp:
             return height
 
         def _schedule_layout(self, parent):
-            try:
-                tree = parent.parent()
-            except RuntimeError:
-                return
-            if tree:
-                QtCore.QTimer.singleShot(0, tree.doItemsLayout)
+            def _do_layout():
+                try:
+                    tree = parent.parent()
+                except RuntimeError:
+                    return
+                if not tree:
+                    return
+                try:
+                    tree.doItemsLayout()
+                except RuntimeError:
+                    return
+
+            QtCore.QTimer.singleShot(0, _do_layout)
 
         def createEditor(self, parent, option, index):
             if index.column() == 0:
