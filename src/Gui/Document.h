@@ -243,9 +243,9 @@ public:
     /// call relabel to all attached views
     void onRelabel();
     /// returns a list of all attached MDI views
-    std::list<MDIView*> getMDIViews() const;
+    std::list<MDIView*> getMDIViews(bool includePassive = false) const;
     /// returns a list of all MDI views of a certain type
-    std::list<MDIView*> getMDIViewsOfType(const Base::Type& typeId) const;
+    std::list<MDIView*> getMDIViewsOfType(const Base::Type& typeId, bool includePassive = false) const;
     MDIView* setActiveView(
         const ViewProviderDocumentObject* vp = nullptr,
         Base::Type typeId = Base::Type()

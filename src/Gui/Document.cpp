@@ -586,14 +586,12 @@ Document::~Document()
         it->deleteSelf();
     }
 
-    std::map<const App::DocumentObject*, ViewProviderDocumentObject*>::iterator jt;
-    for (jt = d->_ViewProviderMap.begin(); jt != d->_ViewProviderMap.end(); ++jt) {
-        delete jt->second;
+    for (const auto& vp : d->_ViewProviderMap) {
+        delete vp.second;
     }
-    std::map<std::string, ViewProvider*>::iterator it2;
-    for (it2 = d->_ViewProviderMapAnnotation.begin(); it2 != d->_ViewProviderMapAnnotation.end();
-         ++it2) {
-        delete it2->second;
+
+    for (const auto& va : d->_ViewProviderMapAnnotation) {
+        delete va.second;
     }
 
     // remove the reference from the object
@@ -730,10 +728,9 @@ void Document::resetEdit()
 
 void Document::_resetEdit()
 {
-    std::list<Gui::BaseView*>::iterator it;
     if (d->_editViewProvider) {
-        for (it = d->baseViews.begin(); it != d->baseViews.end(); ++it) {
-            auto activeView = dynamic_cast<View3DInventor*>(*it);
+        for (auto* v : d->baseViews) {
+            auto activeView = dynamic_cast<View3DInventor*>(v);
             if (activeView) {
                 activeView->getViewer()->resetEditingViewProvider();
             }
@@ -816,8 +813,6 @@ void Document::setInEdit(ViewProviderDocumentObject* parentVp, const char* subna
 
 void Document::setAnnotationViewProvider(const char* name, ViewProvider* pcProvider)
 {
-    std::list<Gui::BaseView*>::iterator vIt;
-
     // already in ?
     std::map<std::string, ViewProvider*>::iterator it = d->_ViewProviderMapAnnotation.find(name);
     if (it != d->_ViewProviderMapAnnotation.end()) {
@@ -828,8 +823,8 @@ void Document::setAnnotationViewProvider(const char* name, ViewProvider* pcProvi
     d->_ViewProviderMapAnnotation[name] = pcProvider;
 
     // cycling to all views of the document
-    for (vIt = d->baseViews.begin(); vIt != d->baseViews.end(); ++vIt) {
-        auto activeView = dynamic_cast<View3DInventor*>(*vIt);
+    for (auto* v : d->baseViews) {
+        auto activeView = dynamic_cast<View3DInventor*>(v);
         if (activeView) {
             activeView->getViewer()->addViewProvider(pcProvider);
         }
@@ -849,9 +844,8 @@ ViewProvider* Document::getAnnotationViewProvider(const char* name) const
 
 bool Document::isAnnotationViewProvider(const ViewProvider* vp) const
 {
-    std::map<std::string, ViewProvider*>::const_iterator it;
-    for (it = d->_ViewProviderMapAnnotation.begin(); it != d->_ViewProviderMapAnnotation.end(); ++it) {
-        if (it->second == vp) {
+    for (const auto& va : d->_ViewProviderMapAnnotation) {
+        if (va.second == vp) {
             return true;
         }
     }
@@ -896,12 +890,9 @@ ViewProvider* Document::getViewProvider(const App::DocumentObject* Feat) const
 std::vector<ViewProvider*> Document::getViewProvidersOfType(const Base::Type& typeId) const
 {
     std::vector<ViewProvider*> Objects;
-    for (std::map<const App::DocumentObject*, ViewProviderDocumentObject*>::const_iterator it
-         = d->_ViewProviderMap.begin();
-         it != d->_ViewProviderMap.end();
-         ++it) {
-        if (it->second->isDerivedFrom(typeId)) {
-            Objects.push_back(it->second);
+    for (const auto& vp : d->_ViewProviderMap) {
+        if (vp.second->isDerivedFrom(typeId)) {
+            Objects.push_back(vp.second);
         }
     }
     return Objects;
@@ -1039,10 +1030,9 @@ void Document::slotNewObject(const App::DocumentObject& Obj)
     }
 
     if (pcProvider) {
-        std::list<Gui::BaseView*>::iterator vIt;
         // cycling to all views of the document
-        for (vIt = d->baseViews.begin(); vIt != d->baseViews.end(); ++vIt) {
-            auto activeView = dynamic_cast<View3DInventor*>(*vIt);
+        for (auto* v : d->baseViews) {
+            auto activeView = dynamic_cast<View3DInventor*>(v);
             if (activeView) {
                 activeView->getViewer()->addViewProvider(pcProvider);
             }
@@ -1062,7 +1052,6 @@ void Document::slotNewObject(const App::DocumentObject& Obj)
 
 void Document::slotDeletedObject(const App::DocumentObject& Obj)
 {
-    std::list<Gui::BaseView*>::iterator vIt;
     setModified(true);
 
     // cycling to all views of the document
@@ -1085,8 +1074,8 @@ void Document::slotDeletedObject(const App::DocumentObject& Obj)
 
     if (viewProvider && viewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
         // go through the views
-        for (vIt = d->baseViews.begin(); vIt != d->baseViews.end(); ++vIt) {
-            auto activeView = dynamic_cast<View3DInventor*>(*vIt);
+        for (auto* v : d->baseViews) {
+            auto activeView = dynamic_cast<View3DInventor*>(v);
             if (activeView) {
                 activeView->getViewer()->removeViewProvider(viewProvider);
             }
@@ -1814,9 +1803,9 @@ unsigned int Document::getMemSize() const
     unsigned int size = 0;
 
     // size of the view providers in the document
-    std::map<const App::DocumentObject*, ViewProviderDocumentObject*>::const_iterator it;
-    for (it = d->_ViewProviderMap.begin(); it != d->_ViewProviderMap.end(); ++it) {
-        size += it->second->getMemSize();
+
+    for (const auto& vp : d->_ViewProviderMap) {
+        size += vp.second->getMemSize();
     }
     return size;
 }
@@ -1864,9 +1853,9 @@ void Document::Restore(Base::XMLReader& reader)
     // hide all elements to avoid to update the 3d view when loading data files
     // RestoreDocFile then restores the visibility status again
     std::map<const App::DocumentObject*, ViewProviderDocumentObject*>::iterator it;
-    for (it = d->_ViewProviderMap.begin(); it != d->_ViewProviderMap.end(); ++it) {
-        it->second->startRestoring();
-        it->second->setStatus(Gui::isRestoring, true);
+    for (const auto& vp : d->_ViewProviderMap) {
+        vp.second->startRestoring();
+        vp.second->setStatus(Gui::isRestoring, true);
     }
 }
 
@@ -1946,8 +1935,8 @@ void Document::RestoreDocFile(Base::Reader& reader)
             saveCameraSettings(ppReturn);
             try {
                 for (const auto& it : getMDIViews()) {
-                    if (auto* view3D = freecad_cast<View3DInventor*>(it)) {
-                        view3D->setCamera(cameraSettings.c_str());
+                    if (auto* viewCamera = freecad_cast<MDIViewWithCamera*>(it)) {
+                        viewCamera->setCamera(cameraSettings.c_str());
                     }
                 }
             }
@@ -2069,8 +2058,8 @@ void Document::SaveDocFile(Base::Writer& writer) const
 
     // save camera settings
     for (const auto& it : getMDIViews()) {
-        if (auto* view3D = freecad_cast<View3DInventor*>(it)) {
-            const std::string& camera = view3D->getCamera();
+        if (auto* viewCamera = freecad_cast<MDIViewWithCamera*>(it)) {
+            const std::string& camera = viewCamera->getCamera();
             if (saveCameraSettings(camera.c_str())) {
                 break;
             }
@@ -2274,18 +2263,17 @@ MDIView* Document::createView(const Base::Type& typeId, CreateViewMode mode)
         // attach the viewproviders. we need to make sure that we only attach the toplevel ones
         // and not viewproviders which are claimed by other providers. To ensure this we first
         // add all providers and then remove the ones already claimed
-        std::map<const App::DocumentObject*, ViewProviderDocumentObject*>::const_iterator It1;
+
         std::vector<App::DocumentObject*> child_vps;
-        for (It1 = d->_ViewProviderMap.begin(); It1 != d->_ViewProviderMap.end(); ++It1) {
-            view3D->getViewer()->addViewProvider(It1->second);
-            std::vector<App::DocumentObject*> children = It1->second->claimChildren3D();
+        for (const auto& vp : d->_ViewProviderMap) {
+            view3D->getViewer()->addViewProvider(vp.second);
+            std::vector<App::DocumentObject*> children = vp.second->claimChildren3D();
             child_vps.insert(child_vps.end(), children.begin(), children.end());
         }
-        std::map<std::string, ViewProvider*>::const_iterator It2;
-        for (It2 = d->_ViewProviderMapAnnotation.begin(); It2 != d->_ViewProviderMapAnnotation.end();
-             ++It2) {
-            view3D->getViewer()->addViewProvider(It2->second);
-            std::vector<App::DocumentObject*> children = It2->second->claimChildren3D();
+
+        for (const auto& va : d->_ViewProviderMapAnnotation) {
+            view3D->getViewer()->addViewProvider(va.second);
+            std::vector<App::DocumentObject*> children = va.second->claimChildren3D();
             child_vps.insert(child_vps.end(), children.begin(), children.end());
         }
 
@@ -2404,14 +2392,12 @@ void Document::onUpdate()
     Base::Console().log("Acti: Gui::Document::onUpdate()");
 #endif
 
-    std::list<Gui::BaseView*>::iterator it;
-
-    for (it = d->baseViews.begin(); it != d->baseViews.end(); ++it) {
-        (*it)->onUpdate();
+    for (auto* v : d->baseViews) {
+        v->onUpdate();
     }
 
-    for (it = d->passiveViews.begin(); it != d->passiveViews.end(); ++it) {
-        (*it)->onUpdate();
+    for (auto* v : d->passiveViews) {
+        v->onUpdate();
     }
 }
 
@@ -2421,14 +2407,12 @@ void Document::onRelabel()
     Base::Console().log("Acti: Gui::Document::onRelabel()");
 #endif
 
-    std::list<Gui::BaseView*>::iterator it;
-
-    for (it = d->baseViews.begin(); it != d->baseViews.end(); ++it) {
-        (*it)->onRelabel(this);
+    for (auto* v : d->baseViews) {
+        v->onRelabel(this);
     }
 
-    for (it = d->passiveViews.begin(); it != d->passiveViews.end(); ++it) {
-        (*it)->onRelabel(this);
+    for (auto* v : d->passiveViews) {
+        v->onRelabel(this);
     }
 
     d->connectChangeDocumentBlocker.unblock();
@@ -2540,28 +2524,44 @@ bool Document::canClose(bool checkModify, bool checkLink)
     return ok;
 }
 
-std::list<MDIView*> Document::getMDIViews() const
+std::list<MDIView*> Document::getMDIViews(bool includePassive) const
 {
     std::list<MDIView*> views;
-    for (std::list<BaseView*>::const_iterator it = d->baseViews.begin(); it != d->baseViews.end();
-         ++it) {
-        auto view = dynamic_cast<MDIView*>(*it);
+    for (auto* v : d->baseViews) {
+        auto view = dynamic_cast<MDIView*>(v);
         if (view) {
             views.push_back(view);
+        }
+    }
+
+    if (includePassive) {
+        for (auto* v : d->passiveViews) {
+            auto view = dynamic_cast<MDIView*>(v);
+            if (view) {
+                views.push_back(view);
+            }
         }
     }
 
     return views;
 }
 
-std::list<MDIView*> Document::getMDIViewsOfType(const Base::Type& typeId) const
+std::list<MDIView*> Document::getMDIViewsOfType(const Base::Type& typeId, bool includePassive) const
 {
     std::list<MDIView*> views;
-    for (std::list<BaseView*>::const_iterator it = d->baseViews.begin(); it != d->baseViews.end();
-         ++it) {
-        auto view = dynamic_cast<MDIView*>(*it);
+    for (auto* v : d->baseViews) {
+        auto view = dynamic_cast<MDIView*>(v);
         if (view && view->isDerivedFrom(typeId)) {
             views.push_back(view);
+        }
+    }
+
+    if (includePassive) {
+        for (auto* v : d->passiveViews) {
+            auto view = dynamic_cast<MDIView*>(v);
+            if (view && view->isDerivedFrom(typeId)) {
+                views.push_back(view);
+            }
         }
     }
 
@@ -2571,16 +2571,14 @@ std::list<MDIView*> Document::getMDIViewsOfType(const Base::Type& typeId) const
 /// send messages to the active view
 bool Document::sendMsgToViews(const char* pMsg)
 {
-    std::list<Gui::BaseView*>::iterator it;
-
-    for (it = d->baseViews.begin(); it != d->baseViews.end(); ++it) {
-        if ((*it)->onMsg(pMsg)) {
+    for (auto* v : d->baseViews) {
+        if (v->onMsg(pMsg)) {
             return true;
         }
     }
 
-    for (it = d->passiveViews.begin(); it != d->passiveViews.end(); ++it) {
-        if ((*it)->onMsg(pMsg)) {
+    for (auto* v : d->passiveViews) {
+        if (v->onMsg(pMsg)) {
             return true;
         }
     }
@@ -2616,7 +2614,7 @@ MDIView* Document::getActiveView() const
     MDIView* active = getMainWindow()->activeWindow();
 
     // get all MDI views of the document
-    std::list<MDIView*> mdis = getMDIViews();
+    std::list<MDIView*> mdis = getMDIViews(true);
 
     // check whether the active view is part of this document
     bool ok = false;
@@ -2721,7 +2719,7 @@ void Document::setActiveWindow(Gui::MDIView* view)
     }
 
     // get all MDI views of the document
-    std::list<MDIView*> mdis = getMDIViews();
+    std::list<MDIView*> mdis = getMDIViews(true);
 
     // this document is not active
     if (std::ranges::find(mdis, active) == mdis.end()) {

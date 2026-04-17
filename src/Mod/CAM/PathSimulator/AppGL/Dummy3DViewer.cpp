@@ -22,51 +22,57 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "Texture.h"
+#include "PreCompiled.h"
 
-// include this last as the defines can mess up other includes
-#include "OpenGlWrapper.h"
+#include "Dummy3DViewer.h"
+
+using namespace Gui;
 
 namespace CAMSimulator
 {
 
-Texture::~Texture()
+Dummy3DViewer::Dummy3DViewer(QWidget* parent)
+    : View3DInventorViewer(parent)
 {
-    DestroyTexture();
+    addViewProvider(&stockViewProvider);
+    addViewProvider(&baseViewProvider);
 }
 
-void Texture::DestroyTexture()
+void Dummy3DViewer::cloneFrom(Dummy3DViewer& viewer)
 {
-    GLDELETE_TEXTURE(mTextureId);
+    // move view providers from viewer to us
+
+    stockViewProvider = std::move(viewer.stockViewProvider);
+    baseViewProvider = std::move(viewer.baseViewProvider);
 }
 
-bool Texture::LoadImage(unsigned int* image, int _width, int _height)
+void Dummy3DViewer::setStockShape(const Part::TopoShape& shape)
 {
-    DestroyTexture();
-    width = _width;
-    height = _height;
-    glGenTextures(1, &mTextureId);
-    glBindTexture(GL_TEXTURE_2D, mTextureId);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
-    glBindTexture(GL_TEXTURE_2D, 0);
-    return true;
+    stockViewProvider.setShape(shape);
 }
 
-bool Texture::Activate()
+void Dummy3DViewer::setStockVisible(bool b)
 {
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, mTextureId);
-    return true;
+    stockViewProvider.setShapeVisible(b);
 }
 
-bool Texture::unbind()
+void Dummy3DViewer::setBaseShape(const Part::TopoShape& shape)
 {
-    glBindTexture(GL_TEXTURE_2D, 0);
-    return true;
+    baseViewProvider.setShape(shape);
+}
+
+void Dummy3DViewer::setBaseVisible(bool b)
+{
+    baseViewProvider.setShapeVisible(b);
+}
+
+void Dummy3DViewer::paintEvent(QPaintEvent* event)
+{
+    if (discardPaintEvent_) {
+        return;
+    }
+
+    View3DInventorViewer::paintEvent(event);
 }
 
 }  // namespace CAMSimulator

@@ -22,51 +22,58 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "Texture.h"
+#include "PreCompiled.h"
 
-// include this last as the defines can mess up other includes
-#include "OpenGlWrapper.h"
+#include "CAMSettings.h"
+
+#include "DlgCAMSimulator.h"
+#include <string_view>
+
+using namespace std::literals;
 
 namespace CAMSimulator
 {
 
-Texture::~Texture()
+CAMSettings::CAMSettings(ParameterGrp::handle hGrp, DlgCAMSimulator& dlg)
+    : hGrp(hGrp)
+    , mDlg(dlg)
 {
-    DestroyTexture();
+    hGrp->Attach(this);
 }
 
-void Texture::DestroyTexture()
+CAMSettings::~CAMSettings()
 {
-    GLDELETE_TEXTURE(mTextureId);
+    hGrp->Detach(this);
 }
 
-bool Texture::LoadImage(unsigned int* image, int _width, int _height)
+void CAMSettings::applySettings()
 {
-    DestroyTexture();
-    width = _width;
-    height = _height;
-    glGenTextures(1, &mTextureId);
-    glBindTexture(GL_TEXTURE_2D, mTextureId);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
-    glBindTexture(GL_TEXTURE_2D, 0);
-    return true;
+    OnChange(*hGrp, "DefaultNormalPathColor");
+    OnChange(*hGrp, "DefaultRapidPathColor");
 }
 
-bool Texture::Activate()
+void CAMSettings::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType Reason)
 {
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, mTextureId);
-    return true;
-}
+    (void)rCaller;
 
-bool Texture::unbind()
-{
-    glBindTexture(GL_TEXTURE_2D, 0);
-    return true;
+    if (Reason == "DefaultNormalPathColor"sv || Reason == "DefaultRapidPathColor"sv) {
+
+        const unsigned long lcol
+            = hGrp->GetUnsigned("DefaultNormalPathColor", 11141375UL);  // dark green (0,170,0)
+        float lr, lg, lb;
+        lr = ((lcol >> 24) & 0xff) / 255.0;
+        lg = ((lcol >> 16) & 0xff) / 255.0;
+        lb = ((lcol >> 8) & 0xff) / 255.0;
+
+        const unsigned long rcol
+            = hGrp->GetUnsigned("DefaultRapidPathColor", 2852126975UL);  // dark red (170,0,0)
+        float rr, rg, rb;
+        rr = ((rcol >> 24) & 0xff) / 255.0;
+        rg = ((rcol >> 16) & 0xff) / 255.0;
+        rb = ((rcol >> 8) & 0xff) / 255.0;
+
+        mDlg.setPathColor(QColor::fromRgbF(lr, lg, lb), QColor::fromRgbF(rr, rg, rb));
+    }
 }
 
 }  // namespace CAMSimulator

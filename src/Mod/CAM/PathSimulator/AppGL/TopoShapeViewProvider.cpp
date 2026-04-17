@@ -22,51 +22,67 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "Texture.h"
+#include "TopoShapeViewProvider.h"
 
-// include this last as the defines can mess up other includes
-#include "OpenGlWrapper.h"
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoSwitch.h>
+#include <Mod/Part/App/TopoShape.h>
 
 namespace CAMSimulator
 {
 
-Texture::~Texture()
+TopoShapeViewProvider::TopoShapeViewProvider()
 {
-    DestroyTexture();
+    pcSwitch = new SoSwitch;
+    pcRoot->addChild(pcSwitch);
+
+    setShapeVisible(true);
 }
 
-void Texture::DestroyTexture()
+TopoShapeViewProvider& TopoShapeViewProvider::operator=(TopoShapeViewProvider&& vp)
 {
-    GLDELETE_TEXTURE(mTextureId);
+    clear();
+
+    pcShape = vp.pcShape;
+    if (pcShape) {
+        pcSwitch->addChild(pcShape);
+    }
+
+    vp.clear();
+
+    return *this;
 }
 
-bool Texture::LoadImage(unsigned int* image, int _width, int _height)
+void TopoShapeViewProvider::clear()
 {
-    DestroyTexture();
-    width = _width;
-    height = _height;
-    glGenTextures(1, &mTextureId);
-    glBindTexture(GL_TEXTURE_2D, mTextureId);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
-    glBindTexture(GL_TEXTURE_2D, 0);
-    return true;
+    if (!pcShape) {
+        return;
+    }
+
+    pcSwitch->removeChild(pcShape);
+    pcShape = nullptr;
 }
 
-bool Texture::Activate()
+void TopoShapeViewProvider::setShape(const Part::TopoShape& shape)
 {
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, mTextureId);
-    return true;
+    clear();
+
+    // create SoNode from TopoShape
+
+    std::stringstream s;
+    shape.exportFaceSet(0.1f, 0.0f, {}, s);
+
+    const auto str = s.str();
+    SoInput in;
+    in.setBuffer(str.data(), str.length());
+
+    SoDB::read(&in, pcShape);
+    pcSwitch->addChild(pcShape);
 }
 
-bool Texture::unbind()
+void TopoShapeViewProvider::setShapeVisible(bool b)
 {
-    glBindTexture(GL_TEXTURE_2D, 0);
-    return true;
+    pcSwitch->whichChild = b ? SO_SWITCH_ALL : SO_SWITCH_NONE;
 }
 
-}  // namespace CAMSimulator
+} /* namespace CAMSimulator */

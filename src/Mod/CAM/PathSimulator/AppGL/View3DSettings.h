@@ -22,51 +22,26 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "Texture.h"
+#pragma once
 
-// include this last as the defines can mess up other includes
-#include "OpenGlWrapper.h"
+#include <Gui/View3DSettings.h>
 
 namespace CAMSimulator
 {
 
-Texture::~Texture()
-{
-    DestroyTexture();
-}
+class Dummy3DViewer;
+class DlgCAMSimulator;
 
-void Texture::DestroyTexture()
+class View3DSettings: public Gui::View3DSettings
 {
-    GLDELETE_TEXTURE(mTextureId);
-}
+public:
+    explicit View3DSettings(ParameterGrp::handle hGrp, Dummy3DViewer& view, DlgCAMSimulator& dlg);
 
-bool Texture::LoadImage(unsigned int* image, int _width, int _height)
-{
-    DestroyTexture();
-    width = _width;
-    height = _height;
-    glGenTextures(1, &mTextureId);
-    glBindTexture(GL_TEXTURE_2D, mTextureId);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
-    glBindTexture(GL_TEXTURE_2D, 0);
-    return true;
-}
+    void OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType Reason) override;
 
-bool Texture::Activate()
-{
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, mTextureId);
-    return true;
-}
-
-bool Texture::unbind()
-{
-    glBindTexture(GL_TEXTURE_2D, 0);
-    return true;
-}
+private:
+    Dummy3DViewer& mView;
+    DlgCAMSimulator& mDlg;
+};
 
 }  // namespace CAMSimulator

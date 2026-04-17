@@ -22,51 +22,32 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "Texture.h"
+#pragma once
 
-// include this last as the defines can mess up other includes
-#include "OpenGlWrapper.h"
+#include <Gui/ViewProvider.h>
+
+namespace Part
+{
+class TopoShape;
+}
 
 namespace CAMSimulator
 {
 
-Texture::~Texture()
+class TopoShapeViewProvider: public Gui::ViewProvider
 {
-    DestroyTexture();
-}
+public:
+    TopoShapeViewProvider();
+    TopoShapeViewProvider& operator=(TopoShapeViewProvider&& vp);
 
-void Texture::DestroyTexture()
-{
-    GLDELETE_TEXTURE(mTextureId);
-}
+    void clear();
+    void setShape(const Part::TopoShape& shape);
 
-bool Texture::LoadImage(unsigned int* image, int _width, int _height)
-{
-    DestroyTexture();
-    width = _width;
-    height = _height;
-    glGenTextures(1, &mTextureId);
-    glBindTexture(GL_TEXTURE_2D, mTextureId);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
-    glBindTexture(GL_TEXTURE_2D, 0);
-    return true;
-}
+    void setShapeVisible(bool b);
 
-bool Texture::Activate()
-{
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, mTextureId);
-    return true;
-}
-
-bool Texture::unbind()
-{
-    glBindTexture(GL_TEXTURE_2D, 0);
-    return true;
-}
+private:
+    SoSwitch* pcSwitch = nullptr;
+    SoNode* pcShape = nullptr;
+};
 
 }  // namespace CAMSimulator
