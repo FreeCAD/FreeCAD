@@ -194,7 +194,8 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
     QPixmap lockIcon = Gui::BitmapFactory().pixmap("Constraint_Lock");
     const QFontMetrics fm(spinBox->fontMetrics());
     int iconSize = fm.height();
-    QPixmap scaledIcon = lockIcon.scaled(iconSize, iconSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    QPixmap scaledIcon
+        = lockIcon.scaled(iconSize, iconSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     lockIconLabel->setPixmap(scaledIcon);
     lockIconLabel->setVisible(false);
 
