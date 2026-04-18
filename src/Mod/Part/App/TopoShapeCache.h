@@ -33,6 +33,8 @@
 #include <TopExp_Explorer.hxx>
 #include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
+#include <TopTools_ListIteratorOfListOfShape.hxx>
+#include <mutex>
 #include <utility>
 
 #include <App/ElementMap.h>
@@ -56,26 +58,6 @@ struct PartExport ShapeRelationKey
 class PartExport TopoShapeCache: public std::enable_shared_from_this<TopoShapeCache>
 {
 public:
-    /// Reference counted element map for the owner TopoShape. The ElementMap of
-    /// a TopoShape is normally accessed through the inherited member function
-    /// ComplexGeoData::elementMap(). The extra shared pointer here is so that
-    /// other TopoShape instances with the same Cache can reuse the map once
-    /// generated.
-    Data::ElementMapPtr cachedElementMap;
-
-    /// Location of the original cached TopoDS_Shape.
-    TopLoc_Location subLocation;
-
-    /// The cached TopoDS_Shape stripped of any location (i.e. a null TopoDS_Shape::myLocation).
-    TopoDS_Shape shape;
-
-    /// Location of the last ancestor shape used to find this TopoShape. These two members are used
-    /// to avoid repetitive inverting the location of the same ancestor.
-    TopLoc_Location location;
-
-    /// Inverse of location
-    TopLoc_Location locationInverse;
-
     struct PartExport AncestorInfo
     {
         bool initialized = false;
@@ -117,8 +99,18 @@ public:
     };
 
     explicit TopoShapeCache(const TopoDS_Shape& tds);
+    TopoDS_Shape getShape() const;
     void insertRelation(const ShapeRelationKey& key, const QVector<Data::MappedElement>& value);
+    bool getRelation(const ShapeRelationKey& key, QVector<Data::MappedElement>& value) const;
     bool isTouched(const TopoDS_Shape& tds) const;
+    void clearShapeAncestryCache();
+    void setCachedElementMap(Data::ElementMapPtr elementMap);
+    Data::ElementMapPtr getCachedElementMap() const;
+    bool hasCachedElementMap() const;
+    void resetSubLocation();
+    void setSubLocation(const TopLoc_Location& location);
+    TopLoc_Location getSubLocation() const;
+    void clearRelations();
     Ancestry& getAncestry(TopAbs_ShapeEnum type);
     int countShape(TopAbs_ShapeEnum type);
     int findShape(const TopoDS_Shape& parent, const TopoDS_Shape& subShape);
@@ -135,12 +127,35 @@ public:
         std::vector<TopoDS_Shape>* ancestors = nullptr
     );
 
+private:
+    /// Reference counted element map for the owner TopoShape. The ElementMap of
+    /// a TopoShape is normally accessed through the inherited member function
+    /// ComplexGeoData::elementMap(). The extra shared pointer here is so that
+    /// other TopoShape instances with the same Cache can reuse the map once
+    /// generated.
+    Data::ElementMapPtr cachedElementMap;
+
+    /// Location of the original cached TopoDS_Shape.
+    TopLoc_Location subLocation;
+
+    /// The cached TopoDS_Shape stripped of any location (i.e. a null TopoDS_Shape::myLocation).
+    TopoDS_Shape shape;
+
+    /// Location of the last ancestor shape used to find this TopoShape. These two members are used
+    /// to avoid repetitive inverting the location of the same ancestor.
+    TopLoc_Location location;
+
+    /// Inverse of location
+    TopLoc_Location locationInverse;
+
     /// Ancestor and children shape caches of all shape types. Note that
     /// shapeAncestryCache[TopAbs_SHAPE] is also valid and stores the direct children of a
     /// compound shape.
     std::array<Ancestry, TopAbs_SHAPE + 1> shapeAncestryCache;
 
     std::map<ShapeRelationKey, QVector<Data::MappedElement>> relations;
+
+    mutable std::recursive_mutex _mutex;
 };
 
 }  // namespace Part

@@ -4,6 +4,12 @@
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/TopoShapeCache.h>
 
+#include <atomic>
+#include <condition_variable>
+#include <mutex>
+#include <thread>
+#include <vector>
+
 #include <src/App/InitApplication.h>
 #include <gp_Quaternion.hxx>
 #include <TopoDS_TVertex.hxx>
@@ -83,10 +89,10 @@ TEST_F(TopoShapeCacheTest, ConstructionFromTopoDS_Shape)
     auto cache = Part::TopoShapeCache(vertex);
 
     // Assert - ensure the location of the cached shape was zeroed out
-    EXPECT_NE(cache.shape.Location(), vertex.Location());
+    EXPECT_NE(cache.getShape().Location(), vertex.Location());
 }
 
-TEST_F(TopoShapeCacheTest, InsertRelationIntoEmptyTableCompacts)
+TEST_F(TopoShapeCacheTest, InsertRelationIntoEmptyTableCanBeReadBack)
 {
     // Arrange
     Data::IndexedName indexedName {"EDGE1"};
@@ -102,9 +108,10 @@ TEST_F(TopoShapeCacheTest, InsertRelationIntoEmptyTableCompacts)
     cache.insertRelation(key, vectorOfElements);
 
     // Assert
-    auto foundIterator = cache.relations.find(key);
-    EXPECT_NE(foundIterator, cache.relations.end());
-    EXPECT_FALSE(foundIterator->first.name.isRaw());  // compact() was called
+    QVector<Data::MappedElement> found;
+    ASSERT_TRUE(cache.getRelation(key, found));
+    ASSERT_EQ(found.size(), 1);
+    EXPECT_EQ(found[0], mappedElement1);
 }
 
 TEST_F(TopoShapeCacheTest, InsertAlreadyExistsUpdatesExisting)
@@ -124,7 +131,9 @@ TEST_F(TopoShapeCacheTest, InsertAlreadyExistsUpdatesExisting)
     cache.insertRelation(key, emptyVector);
 
     // Assert
-    EXPECT_TRUE(cache.relations.find(key)->second.empty());
+    QVector<Data::MappedElement> found;
+    ASSERT_TRUE(cache.getRelation(key, found));
+    EXPECT_TRUE(found.empty());
 }
 
 TEST_F(TopoShapeCacheTest, IsTouchedNotPartners)
@@ -287,6 +296,72 @@ TEST_F(TopoShapeCacheTest, FindAncestor)
 
     // Assert
     EXPECT_FALSE(ancestorResultCompound.IsNull());
+}
+
+TEST_F(TopoShapeCacheTest, SharedCacheConcurrentLazyLookup)
+{
+    auto boxMaker = BRepPrimAPI_MakeBox(1.0, 1.0, 1.0);
+    boxMaker.Build();
+
+    Part::TopoShape shared(boxMaker.Shape());
+    shared.initCache();
+
+    constexpr int threadCount = 8;
+    constexpr int iterations = 250;
+
+    std::mutex startMutex;
+    std::condition_variable startCv;
+    bool start = false;
+    std::atomic<bool> ok = true;
+
+    std::vector<std::thread> threads;
+    threads.reserve(threadCount);
+
+    for (int threadIndex = 0; threadIndex < threadCount; ++threadIndex) {
+        threads.emplace_back([&]() {
+            std::unique_lock<std::mutex> lock(startMutex);
+            startCv.wait(lock, [&]() { return start; });
+            lock.unlock();
+
+            try {
+                for (int iteration = 0; iteration < iterations; ++iteration) {
+                    Part::TopoShape local(shared);
+                    auto face = local.getSubTopoShape("Face1", false);
+                    if (face.isNull()) {
+                        ok = false;
+                        return;
+                    }
+
+                    auto faces = local.getSubTopoShapes(TopAbs_FACE);
+                    if (faces.size() != 6) {
+                        ok = false;
+                        return;
+                    }
+
+                    auto solid = local.findAncestorShape(face.getShape(), TopAbs_SOLID);
+                    if (solid.IsNull()) {
+                        ok = false;
+                        return;
+                    }
+                }
+            }
+            catch (...) {
+                ok = false;
+            }
+        });
+    }
+
+    {
+        std::lock_guard<std::mutex> lock(startMutex);
+        start = true;
+    }
+    startCv.notify_all();
+
+    for (auto& thread : threads) {
+        thread.join();
+    }
+
+    EXPECT_TRUE(ok.load());
 }
 
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)

@@ -202,16 +202,14 @@ void TopoShape::initCache(int reset) const
 Data::ElementMapPtr TopoShape::resetElementMap(Data::ElementMapPtr elementMap)
 {
     if (_cache && elementMap != this->elementMap(false)) {
-        for (auto& info : _cache->shapeAncestryCache) {
-            info.clear();
-        }
+        _cache->clearShapeAncestryCache();
     }
     else {
         initCache();
     }
     if (elementMap) {
-        _cache->cachedElementMap = elementMap;
-        _cache->subLocation.Identity();
+        _cache->setCachedElementMap(elementMap);
+        _cache->resetSubLocation();
         _subLocation.Identity();
         _parentCache.reset();
     }
@@ -230,17 +228,17 @@ void TopoShape::flushElementMap() const
 {
     initCache();
     if (!elementMap(false) && this->_cache) {
-        if (this->_cache->cachedElementMap) {
-            const_cast<TopoShape*>(this)->resetElementMap(this->_cache->cachedElementMap);
+        if (auto cachedElementMap = this->_cache->getCachedElementMap()) {
+            const_cast<TopoShape*>(this)->resetElementMap(cachedElementMap);
         }
         else if (this->_parentCache) {
-            TopoShape parent(this->Tag, this->Hasher, this->_parentCache->shape);
+            TopoShape parent(this->Tag, this->Hasher, this->_parentCache->getShape());
             parent._cache = _parentCache;
             parent.flushElementMap();
             TopoShape self(
                 this->Tag,
                 this->Hasher,
-                this->_Shape.Located(this->_subLocation * this->_cache->subLocation)
+                this->_Shape.Located(this->_subLocation * this->_cache->getSubLocation())
             );
             self._cache = _cache;
             self.mapSubElement(parent);
@@ -787,7 +785,7 @@ std::vector<TopoDS_Shape> TopoShape::findAncestorsShapes(
 bool TopoShape::hasPendingElementMap() const
 {
     return !elementMap(false) && this->_cache
-        && (this->_parentCache || this->_cache->cachedElementMap);
+        && (this->_parentCache || this->_cache->hasCachedElementMap());
 }
 
 bool TopoShape::canMapElement(const TopoShape& other) const
@@ -800,7 +798,7 @@ bool TopoShape::canMapElement(const TopoShape& other) const
     }
     initCache();
     other.initCache();
-    _cache->relations.clear();
+    _cache->clearRelations();
     return true;
 }
 
@@ -6542,12 +6540,7 @@ bool TopoShape::getRelatedElementsCached(
     if (!_cache) {
         return false;
     }
-    auto it = _cache->relations.find(ShapeRelationKey(name, sameType));
-    if (it == _cache->relations.end()) {
-        return false;
-    }
-    names = it->second;
-    return true;
+    return _cache->getRelation(ShapeRelationKey(name, sameType), names);
 }
 
 Data::MappedElement TopoShape::chooseMatchingSubShapeByPlaneOrLine(
