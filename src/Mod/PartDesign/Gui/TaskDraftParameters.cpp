@@ -323,6 +323,9 @@ void TaskDraftParameters::setupGizmos(ViewProvider* vp)
     }
 
     angleGizmo = new Gui::RotationGizmo(ui->draftAngle);
+    angleGizmo->setDeferredUpdateHandler([this]() {
+        onAngleChanged(ui->draftAngle->value().getValue());
+    });
 
     gizmoContainer = GizmoContainer::create({angleGizmo}, vp);
 
