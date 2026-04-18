@@ -179,7 +179,7 @@ void CmdTechDrawPageTemplate::activated(int iMsg)
     QString templateDir = Preferences::defaultTemplateDir();
     QString templateFileName = Gui::FileDialog::getOpenFileName(
         Gui::getMainWindow(), QString::fromUtf8(QT_TR_NOOP("Select a template file")), templateDir,
-        QString::fromUtf8(QT_TR_NOOP("Template (*.svg)")));
+        QStringList(QString::fromUtf8(QT_TR_NOOP("Template (*.svg)"))));
     Gui::FileDialog::setWorkingDirectory(work_dir);// Don't overwrite WD with templateDir
 
     if (templateFileName.isEmpty()) {
@@ -440,18 +440,20 @@ void CmdTechDrawView::activated(int iMsg)
                 }
             }
 
+            QStringList filterList;
+            filterList << QStringLiteral("%1 (*.svg *.svgz *.jpg *.jpeg *.png *.bmp)").arg(QObject::tr("SVG or Image files"));
+            filterList << QStringLiteral("%1 (*.*)").arg(QObject::tr("All Files"));
             QString filename = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(),
                 QObject::tr("Select a SVG or Image file to open"),
                 Preferences::defaultSymbolDir(),
-                QStringLiteral("%1 (*.svg *.svgz *.jpg *.jpeg *.png *.bmp);;%2 (*.*)")
-                .arg(QObject::tr("SVG or Image files"), QObject::tr("All Files")));
+                filterList);
 
             if (!filename.isEmpty()) {
                 if (filename.endsWith(QStringLiteral(".svg"), Qt::CaseInsensitive)
                     || filename.endsWith(QStringLiteral(".svgz"), Qt::CaseInsensitive)) {
                     std::string FeatName = getUniqueObjectName("Symbol");
-                    filename = Base::Tools::escapeEncodeFilename(filename);
-                    auto filespec = DU::cleanFilespecBackslash(filename.toStdString());
+                    auto filespec = DU::cleanFilespecBackslash(
+                        Base::Tools::escapeEncodeFilename(filename.toStdString()));
                     openCommand(QT_TRANSLATE_NOOP("Command", "Create Symbol"));
                     doCommand(Doc, "import codecs");
                     doCommand(Doc,
@@ -475,8 +477,8 @@ void CmdTechDrawView::activated(int iMsg)
                 }
                 else {
                     std::string FeatName = getUniqueObjectName("Image");
-                    filename = Base::Tools::escapeEncodeFilename(filename);
-                    auto filespec = DU::cleanFilespecBackslash(filename.toStdString());
+                    auto filespec = DU::cleanFilespecBackslash(
+                        Base::Tools::escapeEncodeFilename(filename.toStdString()));
                     openCommand(QT_TRANSLATE_NOOP("Command", "Create image"));
                     doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewImage', '%s')", FeatName.c_str());
                     doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewImage', 'Image', '%s')",
@@ -1547,16 +1549,18 @@ void CmdTechDrawSymbol::activated(int iMsg)
     std::string PageName = page->getNameInDocument();
 
     // Reading an image
+    QStringList filterList;
+    filterList << QStringLiteral("%1 (*.svg *.svgz)").arg(QObject::tr("Scalable vector graphic"));
+    filterList << QStringLiteral("%1 (*.*)").arg(QObject::tr("All files"));
     QString filename = Gui::FileDialog::getOpenFileName(
         Gui::getMainWindow(), QObject::tr("Choose an SVG file to open"),
         Preferences::defaultSymbolDir(),
-        QStringLiteral("%1 (*.svg *.svgz);;%2 (*.*)")
-            .arg(QObject::tr("Scalable vector graphic"), QObject::tr("All files")));
+        filterList);
 
     if (!filename.isEmpty()) {
         std::string FeatName = getUniqueObjectName("Symbol");
-        filename = Base::Tools::escapeEncodeFilename(filename);
-        auto filespec = DU::cleanFilespecBackslash(filename.toStdString());
+        auto filespec = DU::cleanFilespecBackslash(
+            Base::Tools::escapeEncodeFilename(filename.toStdString()));
         openCommand(QT_TRANSLATE_NOOP("Command", "Create Symbol"));
         doCommand(Doc, "import codecs");
         doCommand(Doc, "f = codecs.open(\"%s\", 'r', encoding=\"utf-8\")",  filespec.c_str());
@@ -1883,7 +1887,7 @@ void CmdTechDrawExportPageDXF::activated(int iMsg)
     QString defaultDir;
     QString fileName = Gui::FileDialog::getSaveFileName(
         Gui::getMainWindow(), QString::fromUtf8(QT_TR_NOOP("Save DXF file")), defaultDir,
-        QStringLiteral("DXF (*.dxf)"));
+        QStringList(QStringLiteral("DXF (*.dxf)")));
 
     if (fileName.isEmpty()) {
         return;
@@ -1892,8 +1896,8 @@ void CmdTechDrawExportPageDXF::activated(int iMsg)
     std::string PageName = page->getNameInDocument();
     openCommand(QT_TRANSLATE_NOOP("Command", "Save page to DXF"));
     doCommand(Doc, "import TechDraw");
-    fileName = Base::Tools::escapeEncodeFilename(fileName);
-    auto filespec = DU::cleanFilespecBackslash(fileName.toStdString());
+    auto filespec = DU::cleanFilespecBackslash(
+        Base::Tools::escapeEncodeFilename(fileName.toStdString()));
     doCommand(Doc, "TechDraw.writeDXFPage(App.activeDocument().%s, u\"%s\")", PageName.c_str(),
               filespec.c_str());
     commitCommand();

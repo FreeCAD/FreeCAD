@@ -39,6 +39,7 @@
 
 #include "PythonWrapper.h"
 #include "SoFCDB.h"
+#include "SoFullPathHelper.h"
 
 // generated out of ViewProvider.pyi
 #include "ViewProviderPy.h"
@@ -638,7 +639,7 @@ PyObject* ViewProviderPy::getDetailPath(PyObject* args) const
         throw Base::TypeError("'path' must be a coin.SoPath");
     }
     SoDetail* det = nullptr;
-    if (!getViewProviderPtr()->getDetailPath(sub, static_cast<SoFullPath*>(pPath), append, det)) {
+    if (!getViewProviderPtr()->getDetailPath(sub, Gui::toFullPath(pPath), append, det)) {
         delete det;
         Py_Return;
     }

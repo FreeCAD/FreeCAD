@@ -166,7 +166,7 @@ def generate(
     turnDivider = n * CIRCLE_POINTS  # should be n*6 (e.g. 6, 12, ...)
     stepAngle = math.tau / turnDivider  # step angle for rotate
     stepAngle = -stepAngle if direction == "CCW" else stepAngle
-    turns = math.ceil((outer_radius - inner_radius) / step)  # amount of spiral turns
+    turns = math.ceil(round((outer_radius - inner_radius) / step, 6))  # amount of spiral turns
     iters = round(math.tau * turns / abs(stepAngle))
     stepRadius = (outer_radius - inner_radius) / iters  # changes spiral radius on each step
     stepRadius = -stepRadius if startAt == "Outside" else stepRadius

@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 # SPDX-FileCopyrightText: 2025 Billy Huddleston <billy@ivdc.com>
+# SPDX-FileCopyrightText: 2026 sliptonic <shopinthewoods@gmail.com>
 # SPDX-FileNotice: Part of the FreeCAD project.
 
 ################################################################################
@@ -907,62 +908,109 @@ class Machine:
 
     @classmethod
     def create_AC_table_config(cls, a_limits=(-120, 120), c_limits=(-360, 360)):
-        """Create standard A/C table configuration"""
+        """Create standard A/C table configuration.
+
+        Kinematic tree:
+          BaseFrame -> C (azimuth, table_rotary) -> A (tilt, table_rotary)
+          BaseFrame -> Z (head_linear)
+        """
         config = cls("AC Table Configuration")
         config.add_linear_axis("X", FreeCAD.Vector(1, 0, 0))
         config.add_linear_axis("Y", FreeCAD.Vector(0, 1, 0))
         config.add_linear_axis("Z", FreeCAD.Vector(0, 0, 1))
-        config.add_rotary_axis("A", FreeCAD.Vector(1, 0, 0), a_limits[0], a_limits[1])
+        config.linear_axes["Z"].role = AxisRole.HEAD_LINEAR
         config.add_rotary_axis("C", FreeCAD.Vector(0, 0, 1), c_limits[0], c_limits[1])
+        config.rotary_axes["C"].role = AxisRole.TABLE_ROTARY
+        config.rotary_axes["C"].sequence = 0
+        config.add_rotary_axis("A", FreeCAD.Vector(1, 0, 0), a_limits[0], a_limits[1])
+        config.rotary_axes["A"].role = AxisRole.TABLE_ROTARY
+        config.rotary_axes["A"].parent = "C"
+        config.rotary_axes["A"].sequence = 1
         config.set_alignment_axes("C", "A")
         return config
 
     @classmethod
     def create_BC_head_config(cls, b_limits=(-120, 120), c_limits=(-360, 360)):
-        """Create standard B/C head configuration"""
+        """Create standard B/C head configuration.
+
+        Kinematic tree:
+          BaseFrame -> B (tilt, head_rotary) -> C (azimuth, head_rotary)
+          BaseFrame -> X, Y (table_linear)
+        """
         config = cls("BC Head Configuration")
         config.add_linear_axis("X", FreeCAD.Vector(1, 0, 0))
         config.add_linear_axis("Y", FreeCAD.Vector(0, 1, 0))
         config.add_linear_axis("Z", FreeCAD.Vector(0, 0, 1))
+        config.linear_axes["Z"].role = AxisRole.HEAD_LINEAR
         config.add_rotary_axis("B", FreeCAD.Vector(0, 1, 0), b_limits[0], b_limits[1])
+        config.rotary_axes["B"].role = AxisRole.HEAD_ROTARY
+        config.rotary_axes["B"].sequence = 0
         config.add_rotary_axis("C", FreeCAD.Vector(0, 0, 1), c_limits[0], c_limits[1])
+        config.rotary_axes["C"].role = AxisRole.HEAD_ROTARY
+        config.rotary_axes["C"].parent = "B"
+        config.rotary_axes["C"].sequence = 1
         config.set_alignment_axes("C", "B")
         config.compound_moves = True  # Ensure compound moves are enabled for test compatibility
         return config
 
     @classmethod
     def create_AB_table_config(cls, a_limits=(-120, 120), b_limits=(-120, 120)):
-        """Create standard A/B table configuration"""
+        """Create standard A/B table configuration.
+
+        Kinematic tree:
+          BaseFrame -> A (tilt-X, table_rotary) -> B (tilt-Y, table_rotary)
+          BaseFrame -> Z (head_linear)
+        """
         config = cls("AB Table Configuration")
         # AB configuration will be detected as 'custom' by the machine_type property
         config.add_linear_axis("X", FreeCAD.Vector(1, 0, 0))
         config.add_linear_axis("Y", FreeCAD.Vector(0, 1, 0))
         config.add_linear_axis("Z", FreeCAD.Vector(0, 0, 1))
+        config.linear_axes["Z"].role = AxisRole.HEAD_LINEAR
         config.add_rotary_axis("A", FreeCAD.Vector(1, 0, 0), a_limits[0], a_limits[1])
+        config.rotary_axes["A"].role = AxisRole.TABLE_ROTARY
+        config.rotary_axes["A"].sequence = 0
         config.add_rotary_axis("B", FreeCAD.Vector(0, 1, 0), b_limits[0], b_limits[1])
+        config.rotary_axes["B"].role = AxisRole.TABLE_ROTARY
+        config.rotary_axes["B"].parent = "A"
+        config.rotary_axes["B"].sequence = 1
         config.set_alignment_axes("A", "B")
         return config
 
     @classmethod
     def create_4axis_A_config(cls, a_limits=(-120, 120)):
-        """Create standard 4-axis XYZA configuration (rotary table around X)"""
+        """Create standard 4-axis XYZA configuration (rotary table around X).
+
+        Kinematic tree:
+          BaseFrame -> A (table_rotary)
+          BaseFrame -> Z (head_linear)
+        """
         config = cls("4-Axis XYZA Configuration")
         config.add_linear_axis("X", FreeCAD.Vector(1, 0, 0))
         config.add_linear_axis("Y", FreeCAD.Vector(0, 1, 0))
         config.add_linear_axis("Z", FreeCAD.Vector(0, 0, 1))
+        config.linear_axes["Z"].role = AxisRole.HEAD_LINEAR
         config.add_rotary_axis("A", FreeCAD.Vector(1, 0, 0), a_limits[0], a_limits[1])
+        config.rotary_axes["A"].role = AxisRole.TABLE_ROTARY
         config.set_alignment_axes("A", None)
         config.description = "4-axis machine with A-axis rotary table (rotation around X-axis)"
         return config
 
     @classmethod
     def create_4axis_B_config(cls, b_limits=(-120, 120)):
-        """Create standard 4-axis XYZB configuration (rotary table around Y)"""
+        """Create standard 4-axis XYZB configuration (rotary table around Y).
+
+        Kinematic tree:
+          BaseFrame -> B (table_rotary)
+          BaseFrame -> Z (head_linear)
+        """
         config = cls("4-Axis XYZB Configuration")
         config.add_linear_axis("X", FreeCAD.Vector(1, 0, 0))
         config.add_linear_axis("Y", FreeCAD.Vector(0, 1, 0))
         config.add_linear_axis("Z", FreeCAD.Vector(0, 0, 1))
+        config.linear_axes["Z"].role = AxisRole.HEAD_LINEAR
         config.add_rotary_axis("B", FreeCAD.Vector(0, 1, 0), b_limits[0], b_limits[1])
+        config.rotary_axes["B"].role = AxisRole.TABLE_ROTARY
         config.set_alignment_axes("B", None)
         config.description = "4-axis machine with B-axis rotary table (rotation around Y-axis)"
         return config
@@ -1092,9 +1140,9 @@ class Machine:
     def _initialize_3axis_config(self) -> None:
         """Initialize as a standard 3-axis XYZ configuration (no rotary axes)"""
         self.linear_axes = {
-            "X": LinearAxis("X", FreeCAD.Vector(1, 0, 0)),
-            "Y": LinearAxis("Y", FreeCAD.Vector(0, 1, 0)),
-            "Z": LinearAxis("Z", FreeCAD.Vector(0, 0, 1)),
+            "X": LinearAxis("X", FreeCAD.Vector(1, 0, 0), role=AxisRole.TABLE_LINEAR),
+            "Y": LinearAxis("Y", FreeCAD.Vector(0, 1, 0), role=AxisRole.TABLE_LINEAR),
+            "Z": LinearAxis("Z", FreeCAD.Vector(0, 0, 1), role=AxisRole.HEAD_LINEAR),
         }
         self.rotary_axes = {}
         self.primary_rotary_axis = None
@@ -1203,40 +1251,102 @@ class Machine:
         return config
 
     def _initialize_4axis_A_config(self, a_limits=(-120, 120)) -> None:
-        """Initialize as a 4-axis XYZA configuration (rotary table around X)"""
+        """Initialize as a 4-axis XYZA configuration (rotary table around X).
+
+        Kinematic tree:
+          BaseFrame -> A (table_rotary)
+          BaseFrame -> Z (head_linear)
+        """
         self._initialize_3axis_config()
         self.rotary_axes["A"] = RotaryAxis(
-            "A", FreeCAD.Vector(1, 0, 0), min_limit=a_limits[0], max_limit=a_limits[1]
+            "A",
+            FreeCAD.Vector(1, 0, 0),
+            min_limit=a_limits[0],
+            max_limit=a_limits[1],
+            role=AxisRole.TABLE_ROTARY,
         )
         self.primary_rotary_axis = "A"
 
     def _initialize_4axis_B_config(self, b_limits=(-120, 120)) -> None:
-        """Initialize as a 4-axis XYZB configuration (rotary table around Y)"""
+        """Initialize as a 4-axis XYZB configuration (rotary table around Y).
+
+        Kinematic tree:
+          BaseFrame -> B (table_rotary)
+          BaseFrame -> Z (head_linear)
+        """
         self._initialize_3axis_config()
         self.rotary_axes["B"] = RotaryAxis(
-            "B", FreeCAD.Vector(0, 1, 0), min_limit=b_limits[0], max_limit=b_limits[1]
+            "B",
+            FreeCAD.Vector(0, 1, 0),
+            min_limit=b_limits[0],
+            max_limit=b_limits[1],
+            role=AxisRole.TABLE_ROTARY,
         )
         self.primary_rotary_axis = "B"
 
     def _initialize_AC_table_config(self, a_limits=(-120, 120), c_limits=(-360, 360)) -> None:
-        """Initialize as a 5-axis AC table configuration"""
-        self._initialize_4axis_A_config(a_limits)
+        """Initialize as a 5-axis AC table configuration.
+
+        Kinematic tree:
+          BaseFrame -> C (azimuth, table_rotary) -> A (tilt, table_rotary)
+          BaseFrame -> Z (head_linear)
+        """
+        self._initialize_3axis_config()
         self.rotary_axes["C"] = RotaryAxis(
-            "C", FreeCAD.Vector(0, 0, 1), min_limit=c_limits[0], max_limit=c_limits[1]
+            "C",
+            FreeCAD.Vector(0, 0, 1),
+            min_limit=c_limits[0],
+            max_limit=c_limits[1],
+            role=AxisRole.TABLE_ROTARY,
+            parent=None,
+            sequence=0,
         )
-        self.secondary_rotary_axis = "C"
+        self.rotary_axes["A"] = RotaryAxis(
+            "A",
+            FreeCAD.Vector(1, 0, 0),
+            min_limit=a_limits[0],
+            max_limit=a_limits[1],
+            role=AxisRole.TABLE_ROTARY,
+            parent="C",
+            sequence=1,
+        )
+        self.primary_rotary_axis = "C"
+        self.secondary_rotary_axis = "A"
 
     def _initialize_BC_head_config(self, b_limits=(-120, 120), c_limits=(-360, 360)) -> None:
-        """Initialize as a 5-axis BC head configuration"""
-        self._initialize_4axis_B_config(b_limits)
-        self.rotary_axes["C"] = RotaryAxis(
-            "C", FreeCAD.Vector(0, 0, 1), min_limit=c_limits[0], max_limit=c_limits[1]
+        """Initialize as a 5-axis BC head configuration.
+
+        Kinematic tree:
+          BaseFrame -> B (tilt, head_rotary) -> C (azimuth, head_rotary)
+          BaseFrame -> X, Y (table_linear)
+        """
+        self._initialize_3axis_config()
+        self.rotary_axes["B"] = RotaryAxis(
+            "B",
+            FreeCAD.Vector(0, 1, 0),
+            min_limit=b_limits[0],
+            max_limit=b_limits[1],
+            role=AxisRole.HEAD_ROTARY,
+            parent=None,
+            sequence=0,
         )
+        self.rotary_axes["C"] = RotaryAxis(
+            "C",
+            FreeCAD.Vector(0, 0, 1),
+            min_limit=c_limits[0],
+            max_limit=c_limits[1],
+            role=AxisRole.HEAD_ROTARY,
+            parent="B",
+            sequence=1,
+        )
+        self.primary_rotary_axis = "B"
         self.secondary_rotary_axis = "C"
 
     def _initialize_from_machine_type(self, machine_type: str) -> None:
         """Initialize machine configuration based on machine type"""
-        if machine_type == "xyz":
+        if machine_type == "xz":
+            self._initialize_lathe_config()
+        elif machine_type == "xyz":
             self._initialize_3axis_config()
         elif machine_type == "xyza":
             self._initialize_4axis_A_config()
@@ -1246,6 +1356,17 @@ class Machine:
             self._initialize_AC_table_config()
         elif machine_type == "xyzbc":
             self._initialize_BC_head_config()
+
+    def _initialize_lathe_config(self) -> None:
+        """Initialize as a 2-axis XZ lathe configuration."""
+        self.linear_axes = {
+            "X": LinearAxis("X", FreeCAD.Vector(1, 0, 0), role=AxisRole.TABLE_LINEAR),
+            "Z": LinearAxis("Z", FreeCAD.Vector(0, 0, 1), role=AxisRole.HEAD_LINEAR),
+        }
+        self.rotary_axes = {}
+        self.primary_rotary_axis = None
+        self.secondary_rotary_axis = None
+        self.compound_moves = True
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "Machine":
@@ -1582,7 +1703,7 @@ class MachineFactory:
     # Callback registry for configuration changes
     _callbacks = []
 
-    # Addon machine directories registered via register_addon_machine_dir()
+    # Addon machine directories: list of (namespace, path) tuples
     _addon_machine_dirs: list = []
 
     # Flag: has the filesystem scan for addon machine dirs been run yet?
@@ -1606,20 +1727,28 @@ class MachineFactory:
             cls._callbacks.remove(callback)
 
     @classmethod
-    def register_addon_machine_dir(cls, path) -> None:
+    def register_addon_machine_dir(cls, path, namespace=None) -> None:
         """Register a directory containing addon machine definition files.
 
-        Called by addon Init.py at FreeCAD startup. The directory should
-        contain .fcm files. Machines are available for direct use and as
-        templates — without copying to the user asset directory.
-        Duplicate registrations are silently ignored.
+        Called by ``_scan_installed_addon_dirs()`` when an addon's
+        ``package.xml`` declares ``<Machine>`` content.  May also be
+        called directly via ``Path.Preferences.addAddonAssetPath()``
+        for programmatic registration.
+
+        The directory should contain .fcm files.  Machines are available
+        for direct use and as templates — without copying to the user
+        asset directory.  Duplicate registrations are silently ignored.
 
         Args:
             path: Directory path (str or pathlib.Path) containing .fcm files.
+            namespace: Display name for grouping (e.g. addon folder name).
+                       Defaults to the parent directory name of *path*.
         """
         p = pathlib.Path(path)
-        if p not in cls._addon_machine_dirs:
-            cls._addon_machine_dirs.append(p)
+        if namespace is None:
+            namespace = p.parent.name
+        if not any(d == p for _, d in cls._addon_machine_dirs):
+            cls._addon_machine_dirs.append((namespace, p))
 
     @classmethod
     def _notify_callbacks(cls, event_type, machine_name=None):
@@ -1758,11 +1887,9 @@ class MachineFactory:
                   display_name is read from the JSON machine.name field.
         """
         templates = []
-        for addon_dir in cls._addon_machine_dirs:
+        for namespace, addon_dir in cls._addon_machine_dirs:
             if not addon_dir.exists():
                 continue
-            # Namespace = parent dir name (addon root), e.g. ".../Mod/Machines/machines" → "Machines"
-            namespace = addon_dir.parent.name
             for machine_file in sorted(addon_dir.glob("*.fcm")):
                 display_name = cls._read_machine_name_from_path(machine_file)
                 templates.append((namespace, display_name, str(machine_file)))
@@ -1770,35 +1897,50 @@ class MachineFactory:
 
     @classmethod
     def _scan_installed_addon_dirs(cls) -> None:
-        """Scan FreeCAD Mod directories for machine addons via package.xml tags.
+        """Scan FreeCAD Mod directories for machine addons via package.xml content.
 
-        Finds every installed addon whose package.xml contains <tag>Machine</tag>
-        and registers its 'machines/' subdirectory.  Name-agnostic — does not rely
-        on the addon folder name or on Init.py execution order.
+        Finds every installed addon whose package.xml declares a ``<Machine>``
+        content element inside ``<content>`` and registers the corresponding
+        subdirectory.
+
+        Name-agnostic — does not rely on the addon folder name or on Init.py
+        execution order.
         Supplements the Init.py push mechanism; duplicate registrations are ignored.
+
+        Sentinel files:
+          - ``Mod/ALL_ADDONS_DISABLED`` — skip the entire Mod tree.
+          - ``<addon>/ADDON_DISABLED``  — skip a single addon.
         """
         for get_dir in (FreeCAD.getUserAppDataDir, FreeCAD.getHomePath):
             try:
                 mod_root = pathlib.Path(get_dir()) / "Mod"
                 if not mod_root.is_dir():
                     continue
+                if (mod_root / "ALL_ADDONS_DISABLED").exists():
+                    continue
                 for entry in sorted(mod_root.iterdir(), key=lambda e: e.name.lower()):
                     if not entry.is_dir():
+                        continue
+                    if (entry / "ADDON_DISABLED").exists():
                         continue
                     pkg_xml = entry / "package.xml"
                     if not pkg_xml.exists():
                         continue
                     try:
                         meta = FreeCAD.Metadata(str(pkg_xml))
-                        if "Machine" not in meta.Tag:
-                            continue
                     except Exception:
+                        # Skip addons with malformed or unreadable package.xml
                         continue
-                    machines_dir = entry / "machines"
-                    if machines_dir.is_dir():
-                        cls.register_addon_machine_dir(machines_dir)
+
+                    content = meta.Content
+                    if "Machine" in content:
+                        for item in content["Machine"]:
+                            subdir = item.Subdirectory or item.Name
+                            machines_dir = entry / subdir
+                            if machines_dir.is_dir():
+                                cls.register_addon_machine_dir(machines_dir, namespace=entry.name)
             except Exception:
-                # fail silently if this doesn't work
+                # Skip entire Mod root if directory listing fails
                 pass
 
     @classmethod
@@ -1818,10 +1960,9 @@ class MachineFactory:
             cls._addon_dirs_scanned = True
 
         result = []
-        for addon_dir in cls._addon_machine_dirs:
+        for namespace, addon_dir in cls._addon_machine_dirs:
             if not addon_dir.exists():
                 continue
-            namespace = addon_dir.parent.name
             subtree = cls._scan_machine_dir(addon_dir)
             if subtree:
                 result.append((namespace, subtree))

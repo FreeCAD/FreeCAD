@@ -4,17 +4,17 @@
   <context>
     <name>CmdPointsConvert</name>
     <message>
-      <location filename="../../Command.cpp" line="202"/>
+      <location filename="../../Command.cpp" line="204"/>
       <source>Points</source>
       <translation>Σημεία</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="203"/>
+      <location filename="../../Command.cpp" line="205"/>
       <source>Convert to Points</source>
       <translation>Μετατροπή σε Σημεία</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="204"/>
+      <location filename="../../Command.cpp" line="206"/>
       <source>Converts to points</source>
       <translation>Τα μετατρέπει σε σημεία</translation>
     </message>
@@ -59,17 +59,17 @@
   <context>
     <name>CmdPointsMerge</name>
     <message>
-      <location filename="../../Command.cpp" line="341"/>
+      <location filename="../../Command.cpp" line="343"/>
       <source>Points</source>
       <translation>Σημεία</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="342"/>
+      <location filename="../../Command.cpp" line="344"/>
       <source>Merge Point Clouds</source>
       <translation>Συγχώνευση συνόλων σημείων</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="343"/>
+      <location filename="../../Command.cpp" line="345"/>
       <source>Merges several point clouds into one</source>
       <translation>Συγχωνεύει αρκετά σύνολα σημείων σε ένα</translation>
     </message>
@@ -77,17 +77,17 @@
   <context>
     <name>CmdPointsPolyCut</name>
     <message>
-      <location filename="../../Command.cpp" line="291"/>
+      <location filename="../../Command.cpp" line="293"/>
       <source>Points</source>
       <translation>Σημεία</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="292"/>
+      <location filename="../../Command.cpp" line="294"/>
       <source>Cut Point Cloud</source>
       <translation>Αποκοπή συνόλου σημείων</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="293"/>
+      <location filename="../../Command.cpp" line="295"/>
       <source>Cuts a point cloud with a selected polygon</source>
       <translation>Αποκόπτει ένα σύνολο σημείων χρησιμοποιώντας ένα επιλεγμένο πολύγωνο</translation>
     </message>
@@ -95,17 +95,17 @@
   <context>
     <name>CmdPointsStructure</name>
     <message>
-      <location filename="../../Command.cpp" line="405"/>
+      <location filename="../../Command.cpp" line="407"/>
       <source>Points</source>
       <translation>Σημεία</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="406"/>
+      <location filename="../../Command.cpp" line="408"/>
       <source>Structured Point Cloud</source>
       <translation>Δομημένο σύνολο σημείων</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="407"/>
+      <location filename="../../Command.cpp" line="409"/>
       <source>Converts points to a structured point cloud</source>
       <translation>Μετατρέπει σημεία σε δομημένο σύνολο σημείων</translation>
     </message>
@@ -118,7 +118,7 @@
       <translation>Import points</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="238"/>
+      <location filename="../../Command.cpp" line="240"/>
       <source>Convert to points</source>
       <translation>Μετατροπή σε σημεία</translation>
     </message>
@@ -284,12 +284,12 @@
       <translation>Το πλαίσιο οριοθέτησης των εισηγμένων σημείων δεν περιέχει την αρχή των αξόνων. Θέλετε να μετατοπιστεί στην αρχή των αξόνων;</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="224"/>
+      <location filename="../../Command.cpp" line="226"/>
       <source>Distance</source>
       <translation>Απόσταση</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="225"/>
+      <location filename="../../Command.cpp" line="227"/>
       <source>Enter maximum distance:</source>
       <translation>Εισαγωγή μέγιστης απόστασης:</translation>
     </message>
@@ -305,6 +305,14 @@
       <location filename="../../Workbench.cpp" line="36"/>
       <source>&amp;Points</source>
       <translation>Σημεία</translation>
+    </message>
+  </context>
+  <context>
+    <name>FileFormat</name>
+    <message>
+      <location filename="../../../Init.py" line="35"/>
+      <source>Point formats</source>
+      <translation>Μορφές σημείων</translation>
     </message>
   </context>
 </TS>

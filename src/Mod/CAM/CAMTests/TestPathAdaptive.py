@@ -30,6 +30,7 @@ import Path.Main.Job as PathJob
 from CAMTests.PathTestUtils import PathTestBase
 import area
 import math
+import time
 
 if FreeCAD.GuiUp:
     import Path.Main.Gui.Job as PathJobGui
@@ -50,6 +51,7 @@ class TestPathAdaptive(PathTestBase):
         is able to call static methods within this same class.
         """
         cls.needsInit = True
+        cls.test_times = {}  # For tracking per-test execution time
 
     @classmethod
     def initClass(cls):
@@ -83,6 +85,23 @@ class TestPathAdaptive(PathTestBase):
         """
         # FreeCAD.Console.PrintMessage("TestPathAdaptive.tearDownClass()\n")
 
+        # Print test timing report
+        if cls.test_times:
+            print("\n" + "=" * 70)
+            print("Test Execution Times:")
+            print("=" * 70)
+
+            sorted_times = sorted(cls.test_times.items(), key=lambda x: x[1], reverse=True)
+            total_time = sum(cls.test_times.values())
+
+            for test_name, elapsed in sorted_times:
+                percentage = (elapsed / total_time * 100) if total_time > 0 else 0
+                print(f"{elapsed:7.3f}s ({percentage:5.1f}%)  {test_name}")
+
+            print("-" * 70)
+            print(f"Total: {total_time:.3f}s")
+            print("=" * 70)
+
         # Close geometry document without saving
         if not cls.needsInit:
             FreeCAD.closeDocument(cls.doc.Name)
@@ -96,12 +115,21 @@ class TestPathAdaptive(PathTestBase):
         if self.needsInit:
             self.initClass()
 
+        # Start timing this test
+        self._test_start_time = time.time()
+
     def tearDown(self):
         """tearDown()...
         This method is called after each test() method. Add cleanup instructions here.
         Such cleanup instructions will likely undo those in the setUp() method.
         """
-        pass
+        # Clean up scene graph visualization
+        PathAdaptive.sceneClean()
+
+        # Record elapsed time for this test
+        elapsed = time.time() - self._test_start_time
+        test_name = self.id().split(".")[-1]  # Get just the test method name
+        self.__class__.test_times[test_name] = elapsed
 
     def checkAdaptiveErrors(self, adaptiveOutput):
         """Check error flags in C++ AdaptiveOutput object."""
@@ -174,6 +202,9 @@ class TestPathAdaptive(PathTestBase):
         if clearedArea is None:
             clearedArea = []
 
+        # Initialize scene graph for visualization if GUI is up
+        PathAdaptive.initSceneGraph(z=10)
+
         # Create and configure Adaptive2d with defaults
         a2d = area.Adaptive2d()
         a2d.stepOverFactor = kwargs.get("stepOverFactor", 0.20)
@@ -184,8 +215,13 @@ class TestPathAdaptive(PathTestBase):
         a2d.keepToolDownDistRatio = kwargs.get("keepToolDownDistRatio", 3.0)
         a2d.opType = opType
 
+        # Create progress callback for visualization
+        def progressFn(tpaths):
+            PathAdaptive.renderProgressCallback(tpaths)
+            return False  # Don't stop processing
+
         # Execute
-        results = a2d.Execute(stockPath2d, path2d, clearedArea, lambda paths: False)
+        results = a2d.Execute(stockPath2d, path2d, clearedArea, progressFn)
 
         # Validate
         self.assertTrue(len(results) > 0, "Adaptive2d should return at least one result")
@@ -333,7 +369,7 @@ class TestPathAdaptive(PathTestBase):
 
         # Execute adaptive profiling
         total_cleared, a2d = self._executeAdaptive(
-            area.AdaptiveOperationType.ProfilingInside, stockPath2d, path2d
+            area.AdaptiveOperationType.ProfilingInside, stockPath2d, path2d, stepOverFactor=0.5
         )
 
         # Verify cleared area is appropriate for profiling between 2-3 tool diameters
@@ -381,7 +417,7 @@ class TestPathAdaptive(PathTestBase):
 
         # Execute adaptive profiling
         total_cleared, a2d = self._executeAdaptive(
-            area.AdaptiveOperationType.ProfilingOutside, stockPath2d, path2d
+            area.AdaptiveOperationType.ProfilingOutside, stockPath2d, path2d, stepOverFactor=0.5
         )
 
         # Calculate expected area range for a profile 2-3 tool diameters wide

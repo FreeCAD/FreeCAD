@@ -1093,10 +1093,6 @@ bool QGIView::shouldShowFrame() const
         return false;
     }
 
-    if (isSelected()) {
-        return true;
-    }
-
     ViewFrameMode frameMode = PreferencesGui::getViewFrameMode();
     switch(frameMode) {
         case ViewFrameMode::Manual:

@@ -94,6 +94,9 @@ MDIViewPage::MDIViewPage(ViewProviderPage* pageVp, Gui::Document* doc, QWidget* 
     m_toggleFrameAction = new QAction(tr("Toggle &Frames"), this);
     connect(m_toggleFrameAction, &QAction::triggered, this, &MDIViewPage::toggleFrame);
 
+    m_toggleGridAction = new QAction(tr("Toggle &Grid"), this);
+    connect(m_toggleGridAction, &QAction::triggered, this, &MDIViewPage::toggleGrid);
+
     m_exportSVGAction = new QAction(tr("&Export SVG"), this);
 
     connect(m_exportSVGAction, &QAction::triggered, this, qOverload<>(&MDIViewPage::saveSVG));
@@ -446,6 +449,7 @@ void MDIViewPage::contextMenuEvent(QContextMenuEvent* event)
 {
     if (isContextualMenuEnabled) {
         QMenu menu;
+        menu.addAction(m_toggleGridAction);
         menu.addAction(m_toggleFrameAction);
         menu.addAction(m_toggleKeepUpdatedAction);
         menu.addAction(m_exportSVGAction);
@@ -462,6 +466,11 @@ void MDIViewPage::contextMenuEvent(QContextMenuEvent* event)
 }
 
 void MDIViewPage::toggleFrame() { m_vpPage->toggleFrameState(); }
+
+void MDIViewPage::toggleGrid()
+{
+    m_vpPage->ShowGrid.setValue(!m_vpPage->ShowGrid.getValue());
+}
 
 void MDIViewPage::toggleKeepUpdated()
 {
@@ -508,7 +517,7 @@ void MDIViewPage::saveSVG()
     QString fn =
         Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page as SVG"),
 
-                                         defaultFileName(), filter.join(QLatin1String(";;")));
+                                         defaultFileName(), filter);
     if (fn.isEmpty()) {
         return;
     }
@@ -530,7 +539,7 @@ void MDIViewPage::saveDXF()
     QString fn =
         Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page as DXF"),
 
-                                         defaultFileName(), filter.join(QLatin1String(";;")));
+                                         defaultFileName(), filter);
     if (fn.isEmpty()) {
         return;
     }
@@ -586,7 +595,7 @@ QString MDIViewPage::getPdfFileName() const
     QString fn =
         Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
                                          QObject::tr("Export Page as PDF"),
-                                         QString(), filter.join(QLatin1String(";;")));
+                                         QString(), filter);
     if (fn.isEmpty()) {
         return {};
     }

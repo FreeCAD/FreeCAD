@@ -21,6 +21,8 @@
  ***************************************************************************/
 
 #include <Inventor/nodes/SoCamera.h>
+#include <algorithm>
+
 #include <QApplication>
 #include <QCheckBox>
 #include <QClipboard>
@@ -97,47 +99,39 @@ void StdCmdOpen::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     // fill the list of registered endings
-    QString formatList;
-    const char* supported = QT_TR_NOOP("Supported formats");
-    const char* allFiles = QT_TR_NOOP("All files (*.*)");
-    formatList = QObject::tr(supported);
-    formatList += QLatin1String(" (");
+    QStringList formatList;
 
-    std::vector<std::string> filetypes = App::GetApplication().getImportTypes();
-    // Make sure FCStd is the very first fileformat
-    auto it = std::ranges::find(filetypes, "FCStd");
-    if (it != filetypes.end()) {
-        filetypes.erase(it);
-        filetypes.insert(filetypes.begin(), "FCStd");
+    QString allSupportedFormats = QObject::tr("Supported formats") + QStringLiteral(" (");
+    // Cram all formats FreeCAD can import under one label
+    const auto filetypes = App::GetApplication().getImportTypes();
+    for (const auto& type : filetypes) {
+        allSupportedFormats += QStringLiteral(" *.");
+        allSupportedFormats += QString::fromStdString(type);
     }
-    for (it = filetypes.begin(); it != filetypes.end(); ++it) {
-        formatList += QLatin1String(" *.");
-        formatList += QLatin1String(it->c_str());
-    }
-    formatList += QLatin1String(" *.FCBak");
+    allSupportedFormats += QLatin1String(" *.FCBak)");
+    formatList += allSupportedFormats;
 
-    formatList += QLatin1String(");;");
-
-    std::map<std::string, std::string> FilterList = App::GetApplication().getImportFilters();
-    std::map<std::string, std::string>::iterator jt;
-    // Make sure the format name for FCStd is the very first in the list
-    for (jt = FilterList.begin(); jt != FilterList.end(); ++jt) {
-        if (jt->first.find("*.FCStd") != std::string::npos) {
-            QString fcstdFilter = QLatin1String(jt->first.c_str());
+    const auto importFilters = App::GetApplication().getImportFilters();
+    // Make sure FCStd is the second entry in the format list
+    auto fcstdIt = importFilters.cend();
+    for (auto it = importFilters.cbegin(); it != importFilters.cend(); ++it) {
+        if (const auto fc = it->first.find("*.FCStd"); fc != std::string::npos) {
+            fcstdIt = it;
+            QString fcstdFilter = QString::fromStdString(it->first);
             if (!fcstdFilter.contains(QStringLiteral("*.FCBak"), Qt::CaseInsensitive)) {
                 fcstdFilter.replace(")", QStringLiteral(" *.FCBak)"));
             }
             formatList += fcstdFilter;
-            formatList += QLatin1String(";;");
-            FilterList.erase(jt);
             break;
         }
     }
-    for (jt = FilterList.begin(); jt != FilterList.end(); ++jt) {
-        formatList += QLatin1String(jt->first.c_str());
-        formatList += QLatin1String(";;");
+    for (auto it = importFilters.cbegin(); it != importFilters.cend(); ++it) {
+        if (it != fcstdIt) {
+            formatList += QString::fromStdString(it->first);
+        }
     }
-    formatList += QObject::tr(allFiles);
+
+    formatList += QObject::tr("All files") + QStringLiteral(" (*.*)");
 
     QString selectedFilter;
     QStringList fileList = FileDialog::getOpenFileNames(
@@ -231,34 +225,27 @@ void StdCmdImport::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     // fill the list of registered endings
-    QString formatList;
-    const char* supported = QT_TR_NOOP("Supported formats");
-    const char* allFiles = QT_TR_NOOP("All files (*.*)");
-    formatList = QObject::tr(supported);
-    formatList += QLatin1String(" (");
+    QStringList formatList;
 
-    std::vector<std::string> filetypes = App::GetApplication().getImportTypes();
-    std::vector<std::string>::const_iterator it;
-    for (it = filetypes.begin(); it != filetypes.end(); ++it) {
-        if (*it != "FCStd") {
-            // ignore the project file format
-            formatList += QLatin1String(" *.");
-            formatList += QLatin1String(it->c_str());
+    QString allSupportedFormats = QObject::tr("Supported formats") + QStringLiteral(" (");
+    const auto filetypes = App::GetApplication().getImportTypes();
+    for (const auto& type : filetypes) {
+        if (type != "FCStd") {
+            allSupportedFormats += QStringLiteral(" *.");
+            allSupportedFormats += QString::fromStdString(type);
+        }
+    }
+    allSupportedFormats += QLatin1Char(')');
+    formatList += allSupportedFormats;
+
+    const auto importFilters = App::GetApplication().getImportFilters();
+    for (auto it = importFilters.cbegin(); it != importFilters.cend(); ++it) {
+        if (it->first.find("*.FCStd") == std::string::npos) {
+            formatList += QString::fromStdString(it->first);
         }
     }
 
-    formatList += QLatin1String(");;");
-
-    std::map<std::string, std::string> FilterList = App::GetApplication().getImportFilters();
-    std::map<std::string, std::string>::const_iterator jt;
-    for (jt = FilterList.begin(); jt != FilterList.end(); ++jt) {
-        // ignore the project file format
-        if (jt->first.find("(*.FCStd)") == std::string::npos) {
-            formatList += QLatin1String(jt->first.c_str());
-            formatList += QLatin1String(";;");
-        }
-    }
-    formatList += QObject::tr(allFiles);
+    formatList += QObject::tr("All files") + QStringLiteral(" (*.*)");
 
     Base::Reference<ParameterGrp> hPath = App::GetApplication()
                                               .GetUserParameter()
@@ -489,7 +476,6 @@ void StdCmdExport::activated(int iMsg)
             filterList << QString::fromStdString(filter.first);
         }
     }
-    QString formatList = filterList.join(QLatin1String(";;"));
     Base::Reference<ParameterGrp> hPath = App::GetApplication()
                                               .GetUserParameter()
                                               .GetGroup("BaseApp")
@@ -552,7 +538,7 @@ void StdCmdExport::activated(int iMsg)
         getMainWindow(),
         QObject::tr("Export File"),
         defaultFilename,
-        formatList,
+        filterList,
         &selectedFilter
     );
     if (!filename.isEmpty()) {
@@ -618,7 +604,7 @@ void StdCmdMergeProjects::activated(int iMsg)
         Gui::getMainWindow(),
         QString::fromUtf8(QT_TR_NOOP("Merge Document")),
         FileDialog::getWorkingDirectory(),
-        QString::fromUtf8(QT_TR_NOOP("%1 document (*.FCStd)")).arg(exe)
+        QStringList(QString::fromUtf8(QT_TR_NOOP("%1 document (*.FCStd)")).arg(exe))
     );
     if (!project.isEmpty()) {
         FileDialog::setWorkingDirectory(project);
@@ -710,7 +696,7 @@ void StdCmdExportDependencyGraph::activated(int iMsg)
         Gui::getMainWindow(),
         Gui::GraphvizView::tr("Export Graph"),
         QString(),
-        format
+        QStringList(format)
     );
     if (!fn.isEmpty()) {
         QFile file(fn);
@@ -1702,6 +1688,68 @@ StdCmdRefresh::StdCmdRefresh()
     }
 }
 
+namespace
+{
+
+bool shouldProceedAfterDependencyCycle()
+{
+    return QMessageBox::warning(
+               getMainWindow(),
+               QObject::tr("Dependency error"),
+               qApp->translate(
+                   "Std_Refresh",
+                   "The document contains dependency cycles.\n"
+                   "Check the report view for more details.\n\n"
+                   "Proceed?"
+               ),
+               QMessageBox::Yes,
+               QMessageBox::No
+           )
+        == QMessageBox::Yes;
+}
+
+void handleDocumentRecomputeResult(const std::string& documentName, App::RecomputeFailure failure)
+{
+    if (failure == App::RecomputeFailure::None) {
+        return;
+    }
+
+    if (failure != App::RecomputeFailure::DependencyCycle) {
+        return;
+    }
+
+    App::Document* document = App::GetApplication().getDocument(documentName.c_str());
+    if (!document) {
+        return;
+    }
+
+    if (!shouldProceedAfterDependencyCycle()) {
+        return;
+    }
+
+    // If the user wants to proceed, enqueue another recompute request without
+    // the cycle-check option so the document recomputes like the legacy path.
+    App::RecomputeRequest newRequest = App::RecomputeRequest::fromDocument(*document, /*force=*/true);
+    App::GetApplication().queueRecomputeRequest(newRequest);
+}
+
+void refreshDocumentSynchronously(App::Document& document)
+{
+    try {
+        document.recompute({}, true, nullptr, App::Document::DepNoCycle);
+    }
+    catch (Base::BadGraphError&) {
+        if (shouldProceedAfterDependencyCycle()) {
+            document.recompute({}, true);
+        }
+    }
+    catch (Base::Exception& exception) {
+        exception.reportException();
+    }
+}
+
+}  // namespace
+
 void StdCmdRefresh::activated([[maybe_unused]] int iMsg)
 {
     if (!getActiveGuiDocument()) {
@@ -1709,28 +1757,29 @@ void StdCmdRefresh::activated([[maybe_unused]] int iMsg)
     }
 
     App::AutoTransaction trans((eType & NoTransaction) ? 0 : openActiveDocumentCommand("Recompute"));
+    auto doc = getActiveGuiDocument()->getDocument();
 
-    try {
-        doCommand(Doc, "App.activeDocument().recompute(None,True,True)");
+    App::RecomputeRequest request
+        = App::RecomputeRequest::fromDocument(*doc, true, App::Document::DepNoCycle);
+
+    if (!App::GetApplication().isAsyncRecomputeEnabled()
+        || !App::GetApplication().canRecomputeRequestOnWorker(request)) {
+        refreshDocumentSynchronously(*doc);
+        return;
     }
-    catch (Base::Exception& /*e*/) {
-        auto ret = QMessageBox::warning(
-            getMainWindow(),
-            QObject::tr("Dependency Error"),
-            qApp->translate(
-                "Std_Refresh",
-                "The document contains dependency cycles.\n"
-                "Check the report view for more details.\n\n"
-                "Proceed?"
-            ),
-            QMessageBox::Yes,
-            QMessageBox::No
+
+    request.callback = [](App::RecomputeRequest& request, App::RecomputeResult& result) {
+        // Handle the result in the UI thread.
+        QMetaObject::invokeMethod(
+            qApp,
+            [documentName = request.documentName, failure = result.failure]() {
+                handleDocumentRecomputeResult(documentName, failure);
+            },
+            Qt::QueuedConnection
         );
-        if (ret == QMessageBox::No) {
-            return;
-        }
-        doCommand(Doc, "App.activeDocument().recompute(None,True)");
-    }
+    };
+
+    App::GetApplication().queueRecomputeRequest(request);
 }
 
 bool StdCmdRefresh::isActive()

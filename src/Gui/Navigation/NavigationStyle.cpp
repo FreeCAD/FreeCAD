@@ -56,6 +56,7 @@
 #include "MouseSelection.h"
 #include "Navigation/NavigationAnimator.h"
 #include "Navigation/NavigationAnimation.h"
+#include "SoFullPathHelper.h"
 #include "View3DInventorViewer.h"
 
 using namespace Gui;
@@ -1616,7 +1617,7 @@ bool NavigationStyle::isDraggerUnderCursor(const SbVec2s pos) const
     rp.apply(this->viewer->getSoRenderManager()->getSceneGraph());
     SoPickedPoint* pick = rp.getPickedPoint();
     if (pick) {
-        const auto fullpath = static_cast<const SoFullPath*>(pick->getPath());
+        const auto fullpath = Gui::toFullPath(pick->getPath());
         for (int i = 0; i < fullpath->getLength(); ++i) {
             if (fullpath->getNode(i)->isOfType(SoDragger::getClassTypeId())) {
                 return true;
