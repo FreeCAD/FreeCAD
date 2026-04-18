@@ -25,6 +25,7 @@
 #include <cmath>
 #include <limits>
 #include <sstream>
+#include <mutex>
 
 #ifndef _Standard_Version_HeaderFile
 # include <Standard_Version.hxx>
@@ -124,6 +125,44 @@ using BRepAdaptor_HCompCurve = BRepAdaptor_CompCurve;
 
 namespace Part
 {
+
+class ScopedBooleanOcctThreadMode
+{
+public:
+    explicit ScopedBooleanOcctThreadMode(BooleanRunMode runMode)
+        : lock(threadModeMutex())
+        , previousUseOcctThreads(OSD_Parallel::ToUseOcctThreads())
+        , desiredUseOcctThreads(
+              runMode == BooleanRunMode::singleThreaded ? Standard_False : Standard_True
+          )
+    {
+        if (previousUseOcctThreads != desiredUseOcctThreads) {
+            OSD_Parallel::SetUseOcctThreads(desiredUseOcctThreads);
+        }
+    }
+
+    ~ScopedBooleanOcctThreadMode()
+    {
+        if (previousUseOcctThreads != desiredUseOcctThreads) {
+            OSD_Parallel::SetUseOcctThreads(previousUseOcctThreads);
+        }
+    }
+
+    ScopedBooleanOcctThreadMode(const ScopedBooleanOcctThreadMode&) = delete;
+    ScopedBooleanOcctThreadMode& operator=(const ScopedBooleanOcctThreadMode&) = delete;
+
+private:
+    static std::mutex& threadModeMutex()
+    {
+        static std::mutex mutex;
+        return mutex;
+    }
+
+private:
+    std::unique_lock<std::mutex> lock;
+    Standard_Boolean previousUseOcctThreads;
+    Standard_Boolean desiredUseOcctThreads;
+};
 
 static void expandCompound(const TopoShape& shape, std::vector<TopoShape>& res)
 {
@@ -4371,16 +4410,47 @@ TopoShape& TopoShape::makeElementGeneralFuse(
 
 TopoShape& TopoShape::makeElementFuse(const std::vector<TopoShape>& shapes, const char* op, double tol)
 {
-    return makeElementBoolean(Part::OpCodes::Fuse, shapes, op, tol);
+    return makeElementFuse(shapes, BooleanRunMode::defaultMode, op, tol);
+}
+
+TopoShape& TopoShape::makeElementFuse(
+    const std::vector<TopoShape>& shapes,
+    BooleanRunMode runMode,
+    const char* op,
+    double tol
+)
+{
+    return makeElementBoolean(Part::OpCodes::Fuse, shapes, runMode, op, tol);
 }
 
 TopoShape& TopoShape::makeElementCut(const std::vector<TopoShape>& shapes, const char* op, double tol)
 {
-    return makeElementBoolean(Part::OpCodes::Cut, shapes, op, tol);
+    return makeElementCut(shapes, BooleanRunMode::defaultMode, op, tol);
+}
+
+TopoShape& TopoShape::makeElementCut(
+    const std::vector<TopoShape>& shapes,
+    BooleanRunMode runMode,
+    const char* op,
+    double tol
+)
+{
+    return makeElementBoolean(Part::OpCodes::Cut, shapes, runMode, op, tol);
 }
 
 TopoShape& TopoShape::makeElementXor(
     const std::vector<TopoShape>& shapes,
+    const char* op,
+    double tol,
+    ElementMapPolicy elementMapPolicy
+)
+{
+    return makeElementXor(shapes, BooleanRunMode::defaultMode, op, tol, elementMapPolicy);
+}
+
+TopoShape& TopoShape::makeElementXor(
+    const std::vector<TopoShape>& shapes,
+    BooleanRunMode runMode,
     const char* op,
     double tol,
     ElementMapPolicy elementMapPolicy
@@ -4446,6 +4516,7 @@ TopoShape& TopoShape::makeElementXor(
         tempUnion.makeElementBoolean(
             Part::OpCodes::Fuse,
             {result, inputs[i]},
+            runMode,
             nullptr,
             tol,
             elementMapPolicy
@@ -4460,6 +4531,7 @@ TopoShape& TopoShape::makeElementXor(
         tempCommon.makeElementBoolean(
             Part::OpCodes::Common,
             {result, inputs[i]},
+            runMode,
             nullptr,
             tol,
             elementMapPolicy
@@ -4476,6 +4548,7 @@ TopoShape& TopoShape::makeElementXor(
             result.makeElementBoolean(
                 Part::OpCodes::Fuse,
                 {result, inputs[i]},
+                runMode,
                 currentOp,
                 tol,
                 elementMapPolicy
@@ -4486,6 +4559,7 @@ TopoShape& TopoShape::makeElementXor(
             result.makeElementBoolean(
                 Part::OpCodes::Cut,
                 {tempUnion, tempCommon},
+                runMode,
                 currentOp,
                 tol,
                 elementMapPolicy
@@ -6090,7 +6164,33 @@ TopoShape& TopoShape::makeElementBoolean(
     ElementMapPolicy elementMapPolicy
 )
 {
-    return makeElementBoolean(maker, std::vector<TopoShape>(1, shape), op, tolerance, elementMapPolicy);
+    return makeElementBoolean(
+        maker,
+        std::vector<TopoShape>(1, shape),
+        BooleanRunMode::defaultMode,
+        op,
+        tolerance,
+        elementMapPolicy
+    );
+}
+
+TopoShape& TopoShape::makeElementBoolean(
+    const char* maker,
+    const TopoShape& shape,
+    BooleanRunMode runMode,
+    const char* op,
+    double tolerance,
+    ElementMapPolicy elementMapPolicy
+)
+{
+    return makeElementBoolean(
+        maker,
+        std::vector<TopoShape>(1, shape),
+        runMode,
+        op,
+        tolerance,
+        elementMapPolicy
+    );
 }
 
 
@@ -6098,6 +6198,18 @@ TopoShape& TopoShape::makeElementBoolean(
 TopoShape& TopoShape::makeElementBoolean(
     const char* maker,
     const std::vector<TopoShape>& shapes,
+    const char* op,
+    double tolerance,
+    ElementMapPolicy elementMapPolicy
+)
+{
+    return makeElementBoolean(maker, shapes, BooleanRunMode::defaultMode, op, tolerance, elementMapPolicy);
+}
+
+TopoShape& TopoShape::makeElementBoolean(
+    const char* maker,
+    const std::vector<TopoShape>& shapes,
+    BooleanRunMode runMode,
     const char* op,
     double tolerance,
     ElementMapPolicy elementMapPolicy
@@ -6204,7 +6316,7 @@ TopoShape& TopoShape::makeElementBoolean(
     }
 
     if (strcmp(maker, Part::OpCodes::Xor) == 0) {
-        return makeElementXor(shapes, op, tolerance, elementMapPolicy);
+        return makeElementXor(shapes, runMode, op, tolerance, elementMapPolicy);
     }
 
     bool buildShell = strcmp(maker, Part::OpCodes::Section) != 0;
@@ -6319,8 +6431,8 @@ TopoShape& TopoShape::makeElementBoolean(
         }
     }
 
-    mk->SetRunParallel(Standard_True);
-    OSD_Parallel::SetUseOcctThreads(Standard_True);
+    const bool runParallel = runMode != BooleanRunMode::singleThreaded;
+    mk->SetRunParallel(runParallel ? Standard_True : Standard_False);
 
     mk->SetArguments(shapeArguments);
     mk->SetTools(shapeTools);
@@ -6334,7 +6446,13 @@ TopoShape& TopoShape::makeElementBoolean(
 
     auto buildScope = progressScope.makeStepScope(1, totalPhases, "Building boolean...");
     throwIfRecomputeCanceled(buildScope);
-    Part::buildWithProgress(*mk);
+    // OCCT boolean internals consult both the builder flag and the process-wide
+    // OSD thread switch. Scope the global override tightly to the actual build
+    // so interactive single-threaded mode does not leak past this operation.
+    {
+        const ScopedBooleanOcctThreadMode threadMode(runMode);
+        Part::buildWithProgress(*mk);
+    }
     throwIfRecomputeCanceled(buildScope);
     buildScope.complete();
     auto mapScope = progressScope.makeStepScope(2, totalPhases, "Mapping boolean result...");
