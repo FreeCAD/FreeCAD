@@ -2,6 +2,9 @@
 
 #include <gtest/gtest.h>
 
+#include <Mod/Part/App/modelRefine.h>
+#include <Standard_ConstructionError.hxx>
+#include <Standard_Failure.hxx>
 #include <src/App/InitApplication.h>
 
 #include "PartTestHelpers.h"
@@ -53,4 +56,15 @@ TEST_F(FeaturePartMakeElementRefineTest, makeElementRefineBoxes)
     EXPECT_EQ(refined.getElementMapSize(), 26);
     // TODO: Refine doesn't work on compounds, so we're going to need a binary operation or the
     // like, and those don't exist yet.  Once they do, this test can be expanded
+}
+
+TEST_F(FeaturePartMakeElementRefineTest, userAbortFailureIsRecognized)
+{
+    Standard_ConstructionError userAbort("User aborted");
+    Standard_ConstructionError constructionFailure("Removing splitter failed");
+    Standard_Failure genericFailure("User aborted while parsing something else");
+
+    EXPECT_TRUE(Part::isUserAbortFailure(userAbort));
+    EXPECT_FALSE(Part::isUserAbortFailure(constructionFailure));
+    EXPECT_FALSE(Part::isUserAbortFailure(genericFailure));
 }
