@@ -361,6 +361,8 @@ MeasureRadiusInfoPtr MeasureRadiusHandler(const App::SubObjectT& subject)
 {
     Base::Placement placement;  // curve center + orientation
     Base::Vector3d centerPoint;
+    Base::Vector3d pointOnCurve;
+    bool hasPointOnCurve = false;
 
     MeasureRadiusInfoPtr invalidRes
         = std::make_shared<MeasureRadiusInfo>(false, 0.0, centerPoint, placement);
@@ -390,6 +392,11 @@ MeasureRadiusInfoPtr MeasureRadiusHandler(const App::SubObjectT& subject)
             gp_Circ circ = adapt.Circle();
             center = circ.Location();
             radius = circ.Radius();
+
+            double midParam = (adapt.FirstParameter() + adapt.LastParameter()) * 0.5;
+            gp_Pnt point = adapt.Value(midParam);
+            pointOnCurve = Base::Vector3d(point.X(), point.Y(), point.Z());
+            hasPointOnCurve = true;
         }
     }
     else if (sType == TopAbs_FACE) {
@@ -407,6 +414,16 @@ MeasureRadiusInfoPtr MeasureRadiusHandler(const App::SubObjectT& subject)
         if (surf.GetType() == GeomAbs_Cylinder) {
             center = surf.Cylinder().Location();
             radius = surf.Cylinder().Radius();
+            // Use a real point on the cylindrical surface (not axis COM) to keep
+            // radius/diameter annotation direction radial.
+            Standard_Real uMin = 0.0;
+            Standard_Real uMax = 0.0;
+            Standard_Real vMin = 0.0;
+            Standard_Real vMax = 0.0;
+            BRepTools::UVBounds(face, uMin, uMax, vMin, vMax);
+            gp_Pnt point = surf.Value((uMin + uMax) * 0.5, (vMin + vMax) * 0.5);
+            pointOnCurve = Base::Vector3d(point.X(), point.Y(), point.Z());
+            hasPointOnCurve = true;
         }
 
         if (surf.GetType() == GeomAbs_Plane) {
@@ -428,6 +445,11 @@ MeasureRadiusInfoPtr MeasureRadiusHandler(const App::SubObjectT& subject)
             gp_Circ circle = adapt.Circle();
             center = circle.Location();
             radius = circle.Radius();
+
+            double midParam = (adapt.FirstParameter() + adapt.LastParameter()) * 0.5;
+            gp_Pnt point = adapt.Value(midParam);
+            pointOnCurve = Base::Vector3d(point.X(), point.Y(), point.Z());
+            hasPointOnCurve = true;
         }
     }
     if (radius <= 0.0) {
@@ -439,16 +461,28 @@ MeasureRadiusInfoPtr MeasureRadiusHandler(const App::SubObjectT& subject)
 
 
     centerPoint = Base::Vector3d(center.X(), center.Y(), center.Z());
+    if (!hasPointOnCurve) {
+        // Fallback for surfaces (eg. cylinders): use center-of-mass on the measured geometry.
+        pointOnCurve = Base::Vector3d(origin.X(), origin.Y(), origin.Z());
+    }
 
-    // a somewhat arbitrary radius from center -> point on curve
-    auto dir = (center.XYZ() - origin.XYZ()).Normalized();
-    Base::Vector3d elementDirection(dir.X(), dir.Y(), dir.Z());
+    constexpr double dirTolerance = 1e-9;
+    Base::Vector3d elementDirection = pointOnCurve - centerPoint;
+    if (elementDirection.Length() < dirTolerance) {
+        auto dir = (center.XYZ() - origin.XYZ()).Normalized();
+        elementDirection = Base::Vector3d(dir.X(), dir.Y(), dir.Z());
+    }
+    if (elementDirection.Length() < dirTolerance) {
+        elementDirection = Base::Vector3d(1.0, 0.0, 0.0);
+    }
+    elementDirection.Normalize();
     Base::Vector3d axisUp(0.0, 0.0, 1.0);
     Base::Rotation rot(axisUp, elementDirection);
 
-    placement = Base::Placement(Base::Vector3d(origin.X(), origin.Y(), origin.Z()), rot);
+    // Store the geometric center as placement origin for view-provider radial layout.
+    placement = Base::Placement(centerPoint, rot);
 
-    return std::make_shared<MeasureRadiusInfo>(true, radius, centerPoint, placement);
+    return std::make_shared<MeasureRadiusInfo>(true, radius, pointOnCurve, placement);
 }
 
 
