@@ -628,8 +628,8 @@ private:
                         }
 
                         Base::Vector3d placement(
-                            obj->getPlacement().toMatrix()[0][3], 
-                            obj->getPlacement().toMatrix()[1][3], 
+                            obj->getPlacement().toMatrix()[0][3],
+                            obj->getPlacement().toMatrix()[1][3],
                             0.0
                         );
 
