@@ -46,9 +46,12 @@
 #include <TopTools_HSequenceOfShape.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
 
+#include <QCoreApplication>
+#include <QMessageBox>
 
 #include <App/Document.h>
 #include <Gui/Application.h>
+#include <Gui/AsyncRecomputeProgressDialog.h>
 #include <Gui/AsyncPreviewSession.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
@@ -1415,8 +1418,32 @@ bool DlgProjectOnSurface::accept()
         return false;
     }
 
+    const auto outcome = Gui::runAsyncDocumentRecomputeProgressDialog(
+        this,
+        tr("Project on surface"),
+        tr("Computing projection..."),
+        document,
+        /*force=*/false,
+        [document]() {
+            if (document) {
+                document->recompute();
+            }
+        }
+    );
+    if (!outcome.success) {
+        if (!outcome.canceled) {
+            QMessageBox::warning(
+                this,
+                tr("Input error"),
+                QCoreApplication::translate(
+                    "Exception",
+                    outcome.message.empty() ? "Projection recompute failed" : outcome.message.c_str()
+                )
+            );
+        }
+        return false;
+    }
     document->commitTransaction();
-    document->recompute();
     return true;
 }
 
