@@ -227,7 +227,24 @@ App::DocumentObjectExecReturn* MultiFuse::execute()
         }
     }
     else {
-        throw Base::CADKernelError("Not enough shape objects linked");
+        if (obj.empty()) {
+            throw Base::CADKernelError(
+                "MultiFuse has no linked shapes. Add at least two solids "
+                "to the Shapes list."
+            );
+        }
+        if (!argumentsAreInCompound) {
+            const std::string label = obj[0]->Label.getValue();
+            throw Base::CADKernelError((std::string("MultiFuse has only one linked shape ('") + label
+                                        + "'). Add at least one more solid to the Shapes list, "
+                                          "or supply a compound containing two or more solids.")
+                                           .c_str());
+        }
+        // Single compound input that didn't expand to >= 2 children.
+        throw Base::CADKernelError((std::string("MultiFuse received a compound with ")
+                                    + std::to_string(shapes.size())
+                                    + " child shape(s); at least 2 are required.")
+                                       .c_str());
     }
 }
 
