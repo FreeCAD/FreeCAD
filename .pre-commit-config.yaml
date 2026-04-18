@@ -79,3 +79,11 @@ repos:
     rev: d730ad6820486029c4fd4cd291a6461a0b6501a3  # frozen: v22.1.3
     hooks:
         -   id: clang-format
+-   repo: local
+    hooks:
+      - id: added_dependency
+        name: check for new FreeCAD inter-module dependencies
+        entry: python tools/lint/added_dependency.py
+        language: python
+        files: \.(cpp|h|py|pyi)$
+        pass_filenames: true
