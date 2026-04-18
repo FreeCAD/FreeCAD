@@ -35,6 +35,7 @@
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
 #include <Gui/Application.h>
+#include <Gui/AsyncRecomputeProgressDialog.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
@@ -486,24 +487,64 @@ void DlgBooleanOperation::accept()
         method = "make_section";
     }
 
+    bool transactionOpen = false;
     try {
-        Gui::WaitCursor wc;
         activeDoc->openTransaction("Boolean operation");
+        transactionOpen = true;
         std::vector<std::string> names;
         names.push_back(Base::Tools::quoted(shapeOne.c_str()));
         names.push_back(Base::Tools::quoted(shapeTwo.c_str()));
-        Gui::Command::doCommand(Gui::Command::Doc, "from BOPTools import BOPFeatures");
-        Gui::Command::doCommand(Gui::Command::Doc, "bp = BOPFeatures.BOPFeatures(App.activeDocument())");
-        Gui::Command::doCommand(
-            Gui::Command::Doc,
-            "bp.%s([%s])",
-            method.c_str(),
-            Base::Tools::joinList(names).c_str()
+
+        {
+            Gui::WaitCursor wc;
+            Gui::Command::doCommand(Gui::Command::Doc, "from BOPTools import BOPFeatures");
+            Gui::Command::doCommand(
+                Gui::Command::Doc,
+                "bp = BOPFeatures.BOPFeatures(App.activeDocument())"
+            );
+            Gui::Command::doCommand(
+                Gui::Command::Doc,
+                "bp.%s([%s])",
+                method.c_str(),
+                Base::Tools::joinList(names).c_str()
+            );
+        }
+
+        App::DocumentObject* resultObject = activeDoc->getActiveObject();
+        if (!resultObject) {
+            throw Base::RuntimeError("Boolean operation did not create a result object");
+        }
+
+        const auto outcome = Gui::runAsyncDocumentObjectRecomputeProgressDialog(
+            this,
+            tr("Boolean operation"),
+            tr("Computing boolean operation..."),
+            resultObject,
+            /*recursive=*/true,
+            [resultObject]() {
+                if (resultObject && resultObject->getDocument()) {
+                    resultObject->getDocument()->recomputeFeature(resultObject, /*recursive=*/true);
+                }
+            }
         );
+        if (!outcome.success) {
+            activeDoc->abortTransaction();
+            transactionOpen = false;
+            if (!outcome.canceled) {
+                throw Base::RuntimeError(
+                    outcome.message.empty() ? "Boolean operation recompute failed" : outcome.message
+                );
+            }
+            return;
+        }
+
         activeDoc->commitTransaction();
-        activeDoc->recompute();
+        transactionOpen = false;
     }
     catch (const Base::Exception& e) {
+        if (transactionOpen) {
+            activeDoc->abortTransaction();
+        }
         e.reportException();
     }
 }
