@@ -52,6 +52,7 @@
 #include <Base/UnitsApi.h>
 #include <Base/Tools.h>
 #include <Gui/Application.h>
+#include <Gui/AsyncRecomputeProgressDialog.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/QuantitySpinBox.h>
@@ -1060,7 +1061,6 @@ bool DlgFilletEdges::accept()
         name = QString::fromLatin1(activeDoc->getUniqueObjectName(fillet.c_str()).c_str());
     }
 
-    activeDoc->openTransaction(fillet.c_str());
     QString code;
     if (!d->fillet) {
         code = QStringLiteral(
@@ -1101,16 +1101,61 @@ bool DlgFilletEdges::accept()
         return false;
     }
 
-    Gui::WaitCursor wc;
     code += QStringLiteral(
                 "FreeCAD.ActiveDocument.%1.Edges = __fillets__\n"
                 "del __fillets__\n"
                 "FreeCADGui.ActiveDocument.%2.Visibility = False\n"
     )
                 .arg(name, shape);
-    Gui::Command::runCommand(Gui::Command::App, code.toLatin1());
-    activeDoc->commitTransaction();
-    activeDoc->recompute();
+
+    const QString operationLabel = QString::fromLatin1(fillet.c_str());
+    bool transactionOpen = false;
+    try {
+        activeDoc->openTransaction(fillet.c_str());
+        transactionOpen = true;
+        {
+            Gui::WaitCursor wc;
+            Gui::Command::runCommand(Gui::Command::App, code.toLatin1());
+        }
+
+        const QByteArray objectName = name.toLatin1();
+        App::DocumentObject* resultObject = activeDoc->getObject(objectName.constData());
+        const auto outcome = Gui::runAsyncDocumentObjectRecomputeProgressDialog(
+            this,
+            operationLabel,
+            tr("Computing %1...").arg(operationLabel.toLower()),
+            resultObject,
+            /*recursive=*/true,
+            [resultObject]() {
+                if (resultObject && resultObject->getDocument()) {
+                    resultObject->getDocument()->recomputeFeature(resultObject, /*recursive=*/true);
+                }
+            }
+        );
+        if (!outcome.success) {
+            activeDoc->abortTransaction();
+            transactionOpen = false;
+            if (!outcome.canceled) {
+                Base::Console().error(
+                    "%s\n",
+                    outcome.message.empty() ? "Fillet or chamfer recompute failed"
+                                            : outcome.message.c_str()
+                );
+            }
+            return false;
+        }
+
+        activeDoc->commitTransaction();
+        transactionOpen = false;
+    }
+    catch (const Base::Exception& e) {
+        if (transactionOpen) {
+            activeDoc->abortTransaction();
+        }
+        e.reportException();
+        return false;
+    }
+
     if (d->fillet) {
         Gui::ViewProvider* vp;
         vp = Gui::Application::Instance->getViewProvider(d->fillet);
