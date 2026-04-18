@@ -1699,9 +1699,6 @@ void ImpExpDxfWrite::exportShape(const TopoDS_Shape input, Base::Vector3d placem
         const TopoDS_Edge& edge = TopoDS::Edge(edges.Current());
         BRepAdaptor_Curve adapt(edge);
         if (adapt.GetType() == GeomAbs_Circle) {
-            gp_Pnt location = input.Location().Transformation().TranslationPart();
-            double x  = location.X();
-            double y  = location.Y();
             double f = adapt.FirstParameter();
             double l = adapt.LastParameter();
             gp_Pnt start = adapt.Value(f);
