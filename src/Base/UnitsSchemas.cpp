@@ -75,6 +75,13 @@ std::vector<std::string> UnitsSchemas::descriptions()
     });
 }
 
+std::vector<std::string> UnitsSchemas::abbreviations()
+{
+    return getVec([](const UnitsSchemaSpec& spec) {
+        return QCoreApplication::translate("UnitsApi", spec.abbreviation).toStdString();
+    });
+}
+
 std::size_t UnitsSchemas::getDecimals() const
 {
     return pack.defDecimals;

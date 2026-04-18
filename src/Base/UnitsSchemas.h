@@ -55,6 +55,7 @@ public:
     size_t count() const;
     std::vector<std::string> names();
     std::vector<std::string> descriptions();
+    std::vector<std::string> abbreviations();
     std::size_t getDecimals() const;
     std::size_t defFractDenominator() const;
     void setdefFractDenominator(std::size_t size);

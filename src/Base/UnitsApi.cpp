@@ -41,6 +41,11 @@ std::vector<std::string> UnitsApi::getDescriptions()
     return schemas->descriptions();
 }
 
+std::vector<std::string> UnitsApi::getAbbreviations()
+{
+    return schemas->abbreviations();
+}
+
 std::vector<std::string> UnitsApi::getNames()
 {
     return schemas->names();

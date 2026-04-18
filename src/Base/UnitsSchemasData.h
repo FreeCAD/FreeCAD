@@ -49,7 +49,7 @@ using namespace Base::UnitsConvData;
 // NOLINTBEGIN
 // clang-format off
 inline const UnitsSchemaSpec s0
-{ 6, "MmMin", "mm" , false, false , QT_TRANSLATE_NOOP("UnitsApi", "Metric small parts & CNC (mm, mm/min)"), false,
+{ 6, "MmMin", "mm" , false, false , QT_TRANSLATE_NOOP("UnitsApi", "Metric small parts & CNC (mm, mm/min)"), QT_TRANSLATE_NOOP("UnitsApi", "Metric CNC"), false,
     {
         { "Length",   {{ 0 , "mm"     , 1.0        }}},
         { "Angle",    {{ 0 , "°"      , 1.0        }}},
@@ -58,7 +58,7 @@ inline const UnitsSchemaSpec s0
 };
 
 inline const UnitsSchemaSpec s1
-{ 9, "MeterDecimal", "m", false, false, QT_TRANSLATE_NOOP("UnitsApi", "Meter decimal (m, m², m³)"), false,
+{ 9, "MeterDecimal", "m", false, false, QT_TRANSLATE_NOOP("UnitsApi", "Meter decimal (m, m², m³)"), QT_TRANSLATE_NOOP("UnitsApi", "Metric Dec"), false,
     {
         { "Length",             {{ 0 , "m"    , 1e3 }}},
         { "Area",               {{ 0 , "m^2"  , 1e6 }}},
@@ -71,7 +71,7 @@ inline const UnitsSchemaSpec s1
 };
 
 inline const UnitsSchemaSpec s2
-{ 3, "ImperialDecimal", "in", false, false, QT_TRANSLATE_NOOP("UnitsApi", "Imperial decimal (in, lb)"), false,
+{ 3, "ImperialDecimal", "in", false, false, QT_TRANSLATE_NOOP("UnitsApi", "Imperial decimal (in, lb)"), QT_TRANSLATE_NOOP("UnitsApi", "Imp Dec"), false,
     {
         { "Length",       {{ 0 , "in"      , in                }}},
         { "Angle",        {{ 0 , "°"       , 1.0               }}},
@@ -86,7 +86,7 @@ inline const UnitsSchemaSpec s2
 };
 
 inline const UnitsSchemaSpec s3
-{ 0, "Internal", "mm", false, false, QT_TRANSLATE_NOOP("UnitsApi", "Standard (mm, kg, s, °)"), true,
+{ 0, "Internal", "mm", false, false, QT_TRANSLATE_NOOP("UnitsApi", "Standard (mm, kg, s, °)"), QT_TRANSLATE_NOOP("UnitsApi", "Metric"), true,
     {
         { "Length", {
             { 1e-6            , "mm"         , 1.0             },
@@ -322,7 +322,7 @@ inline const UnitsSchemaSpec s3
 };
 
 inline const UnitsSchemaSpec s4
-{ 1, "MKS", "m", false, false, QT_TRANSLATE_NOOP("UnitsApi", "MKS (m, kg, s, °)") , false,
+{ 1, "MKS", "m", false, false, QT_TRANSLATE_NOOP("UnitsApi", "MKS (m, kg, s, °)"), QT_TRANSLATE_NOOP("UnitsApi", "MKS"), false,
     {
         { "Length", {
             { 1e-6            , "mm"         , 1.0             },
@@ -550,7 +550,7 @@ inline const UnitsSchemaSpec s4
 };
 
 inline const UnitsSchemaSpec s5
-{ 4, "Centimeter", "cm", false, false, QT_TRANSLATE_NOOP("UnitsApi", "Building Euro (cm, m², m³)") , false,
+{ 4, "Centimeter", "cm", false, false, QT_TRANSLATE_NOOP("UnitsApi", "Building Euro (cm, m², m³)"), QT_TRANSLATE_NOOP("UnitsApi", "Bldg EUR"), false,
     {
         { "Length", {
             { 0              , "cm"          , 10.0             }}
@@ -577,7 +577,7 @@ inline const UnitsSchemaSpec s5
 };
 
 inline const UnitsSchemaSpec s6
-{ 8, "FEM", "mm", false , false , QT_TRANSLATE_NOOP("UnitsApi", "FEM (mm, N, s)"), false,
+{ 8, "FEM", "mm", false, false, QT_TRANSLATE_NOOP("UnitsApi", "FEM (mm, N, s)"), QT_TRANSLATE_NOOP("UnitsApi", "FEM"), false,
     {
         { "Length", {
             { 0             , "mm"           , 1.0               }}
@@ -589,7 +589,7 @@ inline const UnitsSchemaSpec s6
 };
 
 inline const UnitsSchemaSpec s7
-{ 2, "Imperial", "in", false, false, QT_TRANSLATE_NOOP("UnitsApi", "US customary (in, lb)"), false,
+{ 2, "Imperial", "in", false, false, QT_TRANSLATE_NOOP("UnitsApi", "US customary (in, lb)"), QT_TRANSLATE_NOOP("UnitsApi", "Imperial"), false,
     {
         { "Length", {
             { 0.00000254      , "in"       , in                },
@@ -627,7 +627,7 @@ inline const UnitsSchemaSpec s7
 };
 
 inline const UnitsSchemaSpec s8
-{ 5, "ImperialBuilding", "ft", true, false , QT_TRANSLATE_NOOP("UnitsApi", "Building US (ft-in, sqft, cft)"), false,
+{ 5, "ImperialBuilding", "ft", true, false, QT_TRANSLATE_NOOP("UnitsApi", "Building US (ft-in, sqft, cft)"), QT_TRANSLATE_NOOP("UnitsApi", "Bldg US"), false,
     {
         { "Length"   , {{ 0   , "toFractional"    , 0              }}},  // <== !
         { "Angle"    , {{ 0   , "°"               , 1.0            }}},
@@ -638,7 +638,7 @@ inline const UnitsSchemaSpec s8
 };
 
 inline const UnitsSchemaSpec s9
-{ 7, "ImperialCivil", "ft", false, true, QT_TRANSLATE_NOOP("UnitsApi", "Imperial for Civil Eng (ft, lb, mph)"), false,
+{ 7, "ImperialCivil", "ft", false, true, QT_TRANSLATE_NOOP("UnitsApi", "Imperial for Civil Eng (ft, lb, mph)"), QT_TRANSLATE_NOOP("UnitsApi", "Imp Civ"), false,
     {
         { "Length"   , {{ 0   , "ft"    , ft                       }}},
         { "Area"     , {{ 0   , "ft^2"  , ft * ft                  }}},

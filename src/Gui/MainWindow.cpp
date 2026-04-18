@@ -44,6 +44,8 @@
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
 #include <QScreen>
+#include <QStyle>
+#include <QStyleOptionComboBox>
 #include <QSettings>
 #include <QSignalMapper>
 #include <QStatusBar>
@@ -193,7 +195,7 @@ public:
         , WindowParameter("Units")
     {
         setFlat(true);
-        setStyleSheet("QPushButton { text-align: left; padding-right: 6px; }");
+        setStyleSheet("QPushButton { text-align: left; padding-left: 6px; padding-right: 6px; }");
         // create the action buttons
         auto* unitMenu = new QMenu(this);
         auto* actionGrp = new QActionGroup(unitMenu);
@@ -228,37 +230,17 @@ public:
 
         Gui::Application::Instance->signalDeleteDocument.connect(
             [this](const Gui::Document&) { unitChanged(); });
-        //fixed width
-        QFontMetrics fm(this->font());
-
-        int maxWidth = 0;
-
-        auto actionsList = menu()->actions();   
-
-        for (QAction* act : actionsList)        
-        {
-            int w = fm.horizontalAdvance(extractUnits(act->text()));
-            if (w > maxWidth)
-                maxWidth = w;
-        }
-
-        maxWidth += 40;   
-
-        fixedWidthValue = maxWidth;
-        setMinimumWidth(maxWidth);
-        setMaximumWidth(maxWidth);
+        updateFixedWidth();
         setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
     }
-    QString padded(const QString& s)
-    {
-        return QStringLiteral("  ") + s;   // 2-space indent
-    }
+
     QSize sizeHint() const override
     {
         QSize s = QPushButton::sizeHint();
-        s.setWidth(fixedWidthValue);   // use your computed width
+        s.setWidth(fixedWidthValue);
         return s;
     }
+
     ~DimensionWidget() override
     {
         getWindowParameter()->Detach(this);
@@ -285,9 +267,19 @@ public:
             retranslateUi();
             unitChanged();
         }
+        else if (event->type() == QEvent::FontChange ||
+                 event->type() == QEvent::ApplicationFontChange ||
+                 event->type() == QEvent::StyleChange) {
+            QPushButton::changeEvent(event);
+            updateFixedWidth();
+            return;
+        }
         else {
             QPushButton::changeEvent(event);
+            return;
         }
+
+        QPushButton::changeEvent(event);
     }
 
     void setUserSchema(int userSchema)
@@ -309,56 +301,72 @@ public:
     }
 
 private:
-    QString extractUnits(const QString& schema)
+    void updateFixedWidth()
     {
-        int l = schema.indexOf('(');
-        int r = schema.indexOf(')');
+        QFontMetrics fm(font());
+        int maxWidth = 0;
+        const auto abbreviations = Base::UnitsApi::getAbbreviations();
+        for (const auto& abbreviation : abbreviations) {
+            maxWidth = std::max(maxWidth,
+                                fm.horizontalAdvance(QString::fromStdString(abbreviation)));
+        }
 
-        if (l != -1 && r != -1 && r > l)
-            return schema.mid(l + 1, r - l - 1);
+        QStyleOptionComboBox opt;
+        opt.initFrom(this);
+        opt.currentText = text();
+        opt.editable = false;
+        opt.frame = true;
 
-        return schema; // fallback
+        fixedWidthValue =
+            style()->sizeFromContents(QStyle::CT_ComboBox, &opt, QSize(maxWidth, fm.height()), this)
+                .width();
+        setMinimumWidth(fixedWidthValue);
+        setMaximumWidth(fixedWidthValue);
     }
+
     void unitChanged()
     {
         auto actions = menu()->actions();
         if (actions.empty())
             return;
 
-        int userSchema = 0;
+        int userSchema = getWindowParameter()->GetInt("UserSchema", 0);
 
         App::Document* doc = App::GetApplication().getActiveDocument();
 
         if (doc)
             userSchema = doc->UnitSystem.getValue();
-        else
-            userSchema = getWindowParameter()->GetInt("UserSchema", 0);
 
         // clamp safely
         if (userSchema < 0 || userSchema >= actions.size())
             userSchema = 0;
 
         actions[userSchema]->setChecked(true);
-        QString full = actions[userSchema]->text();
-        QString units = extractUnits(full);
         QAction* act = actions[userSchema];
         if (!act || act->text().isEmpty()) {
             setText("Units");
+            setToolTip(QString());
             return;
         }
 
-        setText(padded(units));          // short text
-        setToolTip(full);        // full schema on hover
+        setText(act->text());
+        setToolTip(act->toolTip());
     }
+
     void retranslateUi()
     {
         auto actions = menu()->actions();
-        auto addAction = [&, index {0}](const std::string& action) mutable {
-            actions[index++]->setText(QString::fromStdString(action));
-        };
+        auto abbreviations = Base::UnitsApi::getAbbreviations();
         auto descriptions = Base::UnitsApi::getDescriptions();
+
+        assert(actions.size() <= static_cast<qsizetype>(abbreviations.size()));
         assert(actions.size() <= static_cast<qsizetype>(descriptions.size()));
-        std::for_each(descriptions.begin(), descriptions.end(), addAction);
+        for (qsizetype i = 0; i < actions.size(); ++i) {
+            actions[i]->setText(QString::fromStdString(abbreviations[i]));
+            actions[i]->setToolTip(QString::fromStdString(descriptions[i]));
+            actions[i]->setStatusTip(QString::fromStdString(descriptions[i]));
+        }
+        updateFixedWidth();
     }
 };
 
@@ -2564,8 +2572,6 @@ void MainWindow::loadUrls(App::Document* doc, const QList<QUrl>& urls)
 void MainWindow::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        d->sizeLabel->setText(tr("Dimension"));
-
         CommandManager& rclMan = Application::Instance->commandManager();
         std::vector<Command*> cmd = rclMan.getAllCommands();
         for (auto& it : cmd) {
