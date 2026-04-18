@@ -43,6 +43,7 @@
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 #include <Gui/Application.h>
+#include <Gui/AsyncRecomputeProgressDialog.h>
 #include <Gui/AsyncPreviewSession.h>
 #include <Gui/Document.h>
 #include <Gui/Command.h>
@@ -126,6 +127,44 @@ static QString safeQuantityQString(Gui::QuantitySpinBox* qs)
     return QString::fromStdString(qs->value().getSafeUserString());
 }
 
+static bool runPrimitiveDocumentRecompute(
+    QWidget* widget,
+    const QString& title,
+    const QString& fallbackLabel,
+    App::Document* document
+)
+{
+    const auto recomputeDocument = [document]() {
+        if (document) {
+            document->recompute();
+        }
+    };
+
+    const auto outcome = Gui::runAsyncDocumentRecomputeProgressDialog(
+        widget,
+        title,
+        fallbackLabel,
+        document,
+        /*force=*/false,
+        recomputeDocument
+    );
+    if (!outcome.success) {
+        if (!outcome.canceled) {
+            QMessageBox::warning(
+                widget,
+                title,
+                QCoreApplication::translate(
+                    "Exception",
+                    outcome.message.empty() ? "Primitive recompute failed" : outcome.message.c_str()
+                )
+            );
+        }
+        return false;
+    }
+
+    return true;
+}
+
 void Picker::createPrimitive(QWidget* widget, const QString& descr, Gui::Document* doc)
 {
     try {
@@ -136,7 +175,9 @@ void Picker::createPrimitive(QWidget* widget, const QString& descr, Gui::Documen
         doc->openCommand(descr.toUtf8());
         Gui::Command::runCommand(Gui::Command::Doc, cmd.toUtf8());
         doc->commitCommand();
-        Gui::Command::runCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+        if (!runPrimitiveDocumentRecompute(widget, descr, QObject::tr("Computing primitive..."), app)) {
+            return;
+        }
         Gui::Command::runCommand(Gui::Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
     }
     catch (const Base::Exception& e) {
@@ -2329,7 +2370,9 @@ void DlgPrimitives::tryCreatePrimitive(const QString& placement)
     Gui::Command::runCommand(Gui::Command::Doc, cmd.toUtf8());
     Gui::Command::runCommand(Gui::Command::Doc, getAutoGroupCommandStr(name).toUtf8());
     Gui::Application::Instance->activeDocument()->commitCommand();
-    Gui::Command::runCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+    if (!runPrimitiveDocumentRecompute(this, prim, tr("Computing primitive..."), doc)) {
+        return;
+    }
     Gui::Command::runCommand(Gui::Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
 }
 
@@ -2424,13 +2467,19 @@ bool DlgPrimitives::accept(const QString& placement)
         return false;
     }
     App::Document* doc = featurePtr->getDocument();
+    auto* object = getObject();
+    if (!doc || !object) {
+        return false;
+    }
     flushPendingRecompute();
     acceptChanges(placement);
-    Gui::cmdAppObject(getObject(), "purgeTouched()");
-    for (auto parent : getObject()->getInList()) {
+    Gui::cmdAppObject(object, "purgeTouched()");
+    for (auto parent : object->getInList()) {
         parent->touch();
     }
-    doc->recompute();
+    if (!runPrimitiveDocumentRecompute(this, tr("Input error"), tr("Computing primitive..."), doc)) {
+        return false;
+    }
     // commit undo command
     doc->commitTransaction();
     return true;
