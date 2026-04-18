@@ -381,10 +381,6 @@ void EditableDatumLabel::setSpinboxValue(double val, const Base::Unit& unit)
 void EditableDatumLabel::setFocusToSpinbox()
 {
     if (!spinBox) {
-        Base::Console().developerWarning(
-            "EditableDatumLabel::setFocusToSpinbox",
-            "Spinbox doesn't exist in"
-        );
         return;
     }
     if (!spinBox->hasFocus()) {
