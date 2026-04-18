@@ -32,6 +32,7 @@
 #include <App/DocumentObject.h>
 #include <Base/Tools.h>
 #include <Gui/Application.h>
+#include <Gui/AsyncRecomputeProgressDialog.h>
 #include <Gui/AsyncPreviewSession.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -359,6 +360,10 @@ bool ThicknessWidget::accept()
 
     const bool previewUpToDate = d->ui.updateView->isChecked();
     flushPendingRecompute();
+    App::Document* document = d->thickness->getDocument();
+    if (!document) {
+        return false;
+    }
 
     try {
         if (!d->selection.empty()) {
@@ -385,16 +390,35 @@ bool ThicknessWidget::accept()
             }
         }
 
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+        const auto outcome = Gui::runAsyncDocumentRecomputeProgressDialog(
+            this,
+            tr("Thickness"),
+            tr("Computing thickness..."),
+            document,
+            /*force=*/false,
+            [document]() {
+                if (document) {
+                    document->recompute();
+                }
+            }
+        );
+        if (!outcome.success) {
+            if (outcome.canceled) {
+                return false;
+            }
+            throw Base::RuntimeError(
+                outcome.message.empty() ? "Thickness recompute failed" : outcome.message
+            );
+        }
         if (!d->thickness->isValid()) {
             throw Base::CADKernelError(d->thickness->getStatusString());
         }
         Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
-        d->thickness->getDocument()->commitTransaction();  // Opened in
-                                                           // ViewProviderDocumentObject::startDefaultEditMode()
+        document->commitTransaction();  // Opened in
+                                        // ViewProviderDocumentObject::startDefaultEditMode()
     }
     catch (const Base::Exception& e) {
-        d->thickness->getDocument()->abortTransaction();  // ViewProviderDocumentObject::startDefaultEditMode()
+        document->abortTransaction();  // ViewProviderDocumentObject::startDefaultEditMode()
         QMessageBox::warning(
             this,
             tr("Input error"),

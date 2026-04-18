@@ -30,6 +30,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Gui/Application.h>
+#include <Gui/AsyncRecomputeProgressDialog.h>
 #include <Gui/AsyncPreviewSession.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -278,6 +279,10 @@ bool OffsetWidget::accept()
 {
     const bool previewUpToDate = d->ui.updateView->isChecked();
     flushPendingRecompute();
+    App::Document* document = d->offset->getDocument();
+    if (!document) {
+        return false;
+    }
 
     try {
         double offsetValue = d->ui.spinOffset->value().getValue();
@@ -304,16 +309,35 @@ bool OffsetWidget::accept()
             }
         }
 
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+        const auto outcome = Gui::runAsyncDocumentRecomputeProgressDialog(
+            this,
+            tr("Offset"),
+            tr("Computing offset..."),
+            document,
+            /*force=*/false,
+            [document]() {
+                if (document) {
+                    document->recompute();
+                }
+            }
+        );
+        if (!outcome.success) {
+            if (outcome.canceled) {
+                return false;
+            }
+            throw Base::RuntimeError(
+                outcome.message.empty() ? "Offset recompute failed" : outcome.message
+            );
+        }
         if (!d->offset->isValid()) {
             throw Base::CADKernelError(d->offset->getStatusString());
         }
 
         Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
-        d->offset->getDocument()->commitTransaction();  // ViewProviderDocumentObject::startDefaultEditMode()
+        document->commitTransaction();  // ViewProviderDocumentObject::startDefaultEditMode()
     }
     catch (const Base::Exception& e) {
-        d->offset->getDocument()->abortTransaction();  // ViewProviderDocumentObject::startDefaultEditMode()
+        document->abortTransaction();  // ViewProviderDocumentObject::startDefaultEditMode()
         QMessageBox::warning(
             this,
             tr("Input error"),
