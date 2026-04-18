@@ -564,7 +564,6 @@ QString DoubleSpinBox::textFromValue(double value) const
     // Qt's default formatting acts weird with floats (e.g. 6.7876564999999998)
     // Using 'g' + 16 sig digs to keeps it clean and readable
     return QLocale().toString(value, 'g', 16);
-
 }
 
 void DoubleSpinBox::resizeEvent(QResizeEvent* event)
