@@ -1571,6 +1571,9 @@ void TaskHoleParameters::setupGizmos(ViewProviderHole* vp)
     }
 
     holeDepthGizmo = new LinearGizmo(ui->Depth);
+    holeDepthGizmo->setDeferredUpdateHandler([this]() {
+        depthValueChanged(ui->Depth->value().getValue());
+    });
 
     gizmoContainer = GizmoContainer::create({holeDepthGizmo}, vp);
 

@@ -1494,6 +1494,18 @@ void TaskExtrudeParameters::setupGizmos()
     lengthGizmo2 = new Gui::LinearGizmo(ui->lengthEdit2);
     taperAngleGizmo1 = new Gui::RotationGizmo(ui->taperEdit);
     taperAngleGizmo2 = new Gui::RotationGizmo(ui->taperEdit2);
+    lengthGizmo1->setDeferredUpdateHandler([this]() {
+        onLengthChanged(ui->lengthEdit->value().getValue(), Side::First);
+    });
+    lengthGizmo2->setDeferredUpdateHandler([this]() {
+        onLengthChanged(ui->lengthEdit2->value().getValue(), Side::Second);
+    });
+    taperAngleGizmo1->setDeferredUpdateHandler([this]() {
+        onTaperChanged(ui->taperEdit->value().getValue(), Side::First);
+    });
+    taperAngleGizmo2->setDeferredUpdateHandler([this]() {
+        onTaperChanged(ui->taperEdit2->value().getValue(), Side::Second);
+    });
 
     connect(ui->sidesMode, qOverload<int>(&QComboBox::currentIndexChanged), [this](int) {
         setGizmoPositions();

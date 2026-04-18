@@ -23,6 +23,7 @@
 
 #pragma once
 
+#include <functional>
 #include <initializer_list>
 #include <memory>
 #include <vector>
@@ -75,6 +76,7 @@ public:
     virtual void setGeometryScale(float scale) = 0;
     virtual void orientAlongCamera([[maybe_unused]] SoCamera* camera) {};
     bool isDelayedUpdateEnabled();
+    void setDeferredUpdateHandler(std::function<void()> handler);
 
     double getMultFactor();
     double getAddFactor();
@@ -89,6 +91,7 @@ protected:
     double initialValue;
 
     bool visible = true;
+    std::function<void()> deferredUpdateHandler;
 };
 
 class GuiExport LinearGizmo: public Gizmo

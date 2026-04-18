@@ -1025,17 +1025,35 @@ void TaskBoxPrimitives::setupGizmos()
             lengthGizmo = new Gui::LinearGizmo(ui->boxLength);
             widthGizmo = new Gui::LinearGizmo(ui->boxWidth);
             heightGizmo = new Gui::LinearGizmo(ui->boxHeight);
+            lengthGizmo->setDeferredUpdateHandler([this]() {
+                onBoxLengthChanged(ui->boxLength->value().getValue());
+            });
+            widthGizmo->setDeferredUpdateHandler([this]() {
+                onBoxWidthChanged(ui->boxWidth->value().getValue());
+            });
+            heightGizmo->setDeferredUpdateHandler([this]() {
+                onBoxHeightChanged(ui->boxHeight->value().getValue());
+            });
 
             gizmoContainer = Gui::GizmoContainer::create({widthGizmo, heightGizmo, lengthGizmo}, vp);
             break;
         case PartDesign::FeaturePrimitive::Cylinder:
             heightGizmo = new Gui::LinearGizmo(ui->cylinderHeight);
             radiusGizmo = new Gui::LinearGizmo(ui->cylinderRadius);
+            heightGizmo->setDeferredUpdateHandler([this]() {
+                onCylinderHeightChanged(ui->cylinderHeight->value().getValue());
+            });
+            radiusGizmo->setDeferredUpdateHandler([this]() {
+                onCylinderRadiusChanged(ui->cylinderRadius->value().getValue());
+            });
 
             gizmoContainer = Gui::GizmoContainer::create({heightGizmo, radiusGizmo}, vp);
             break;
         case PartDesign::FeaturePrimitive::Sphere:
             radiusGizmo = new Gui::LinearGizmo(ui->sphereRadius);
+            radiusGizmo->setDeferredUpdateHandler([this]() {
+                onSphereRadiusChanged(ui->sphereRadius->value().getValue());
+            });
 
             gizmoContainer = Gui::GizmoContainer::create({radiusGizmo}, vp);
             break;

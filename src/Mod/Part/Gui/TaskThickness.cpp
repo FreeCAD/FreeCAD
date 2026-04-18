@@ -449,6 +449,9 @@ void ThicknessWidget::setupGizmos()
     }
 
     linearGizmo = new Gui::LinearGizmo(d->ui.spinOffset);
+    linearGizmo->setDeferredUpdateHandler([this]() {
+        onSpinOffsetValueChanged(d->ui.spinOffset->value().getValue());
+    });
 
     auto vp = Base::freecad_cast<ViewProviderPart*>(
         Gui::Application::Instance->getViewProvider(d->thickness)

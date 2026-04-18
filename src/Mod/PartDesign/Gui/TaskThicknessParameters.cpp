@@ -286,6 +286,7 @@ void TaskThicknessParameters::setupGizmos(ViewProviderDressUp* vp)
     }
 
     linearGizmo = new Gui::LinearGizmo(ui->Value);
+    linearGizmo->setDeferredUpdateHandler([this]() { onValueChanged(ui->Value->value().getValue()); });
 
     gizmoContainer = GizmoContainer::create({linearGizmo}, vp);
 

@@ -225,6 +225,12 @@ void TaskFilletParameters::setupGizmos(ViewProviderDressUp* vp)
 
     radiusGizmo = new Gui::LinearGizmo(ui->filletRadius);
     radiusGizmo2 = new Gui::LinearGizmo(ui->filletRadius);
+    radiusGizmo->setDeferredUpdateHandler([this]() {
+        onLengthChanged(ui->filletRadius->value().getValue());
+    });
+    radiusGizmo2->setDeferredUpdateHandler([this]() {
+        onLengthChanged(ui->filletRadius->value().getValue());
+    });
 
     gizmoContainer = GizmoContainer::create({radiusGizmo, radiusGizmo2}, vp);
 

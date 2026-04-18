@@ -847,6 +847,12 @@ void TaskRevolutionParameters::setupGizmos(ViewProvider* vp)
 
     rotationGizmo = new Gui::RadialGizmo(ui->revolveAngle);
     rotationGizmo2 = new Gui::RadialGizmo(ui->revolveAngle2);
+    rotationGizmo->setDeferredUpdateHandler([this]() {
+        onAngleChanged(ui->revolveAngle->value().getValue());
+    });
+    rotationGizmo2->setDeferredUpdateHandler([this]() {
+        onAngle2Changed(ui->revolveAngle2->value().getValue());
+    });
 
     gizmoContainer = GizmoContainer::create({rotationGizmo, rotationGizmo2}, vp);
     rotationGizmo->flipArrow();
