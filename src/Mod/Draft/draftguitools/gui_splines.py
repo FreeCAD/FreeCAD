@@ -80,8 +80,6 @@ class BSpline(gui_lines.Line):
         """Reject duplicate consecutive points before updating the spline."""
         if self.node and gui_lines.DraftVecUtils.equals(self.node[-1], point):
             _wrn(translate("draft", "Point identical to previous point"))
-            _toolmsg(translate("draft", "Pick next point"))
-            self.update_hints()
             return False
 
         self.node.append(point)

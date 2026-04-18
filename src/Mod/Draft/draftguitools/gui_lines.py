@@ -247,8 +247,6 @@ class Line(gui_base_original.Creator):
             and DraftVecUtils.equals(self.node[-1], point)
         ):
             _wrn(translate("draft", "Point identical to previous point"))
-            _toolmsg(translate("draft", "Pick next point"))
-            self.update_hints()
             return False
 
         self.node.append(point)

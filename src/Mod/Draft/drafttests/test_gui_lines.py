@@ -55,8 +55,8 @@ class DraftGuiLines(unittest.TestCase):
         warning.assert_called_once_with(
             gui_lines.translate("draft", "Point identical to previous point")
         )
-        toolmsg.assert_called_once_with(gui_lines.translate("draft", "Pick next point"))
-        update_hints.assert_called_once_with()
+        toolmsg.assert_not_called()
+        update_hints.assert_not_called()
         draw_update.assert_not_called()
         finish.assert_not_called()
         command.ui.setNextFocus.assert_called_once_with()
@@ -93,8 +93,8 @@ class DraftGuiLines(unittest.TestCase):
         warning.assert_called_once_with(
             gui_lines.translate("draft", "Point identical to previous point")
         )
-        toolmsg.assert_called_once_with(gui_lines.translate("draft", "Pick next point"))
-        update_hints.assert_called_once_with()
+        toolmsg.assert_not_called()
+        update_hints.assert_not_called()
         draw_update.assert_not_called()
 
     def test_numeric_input_allows_wire_closure_point(self):
@@ -181,8 +181,8 @@ class DraftGuiLines(unittest.TestCase):
         warning.assert_called_once_with(
             gui_splines.translate("draft", "Point identical to previous point")
         )
-        toolmsg.assert_called_once_with(gui_splines.translate("draft", "Pick next point"))
-        update_hints.assert_called_once_with()
+        toolmsg.assert_not_called()
+        update_hints.assert_not_called()
         draw_update.assert_not_called()
         finish.assert_not_called()
         command.ui.setNextFocus.assert_called_once_with()
@@ -219,6 +219,6 @@ class DraftGuiLines(unittest.TestCase):
         warning.assert_called_once_with(
             gui_splines.translate("draft", "Point identical to previous point")
         )
-        toolmsg.assert_called_once_with(gui_splines.translate("draft", "Pick next point"))
-        update_hints.assert_called_once_with()
+        toolmsg.assert_not_called()
+        update_hints.assert_not_called()
         draw_update.assert_not_called()
