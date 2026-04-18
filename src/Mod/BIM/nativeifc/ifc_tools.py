@@ -901,9 +901,8 @@ def restore_spatial_data(obj, ifcentity, ifcfile):
             obj.Placement = restored
         if "LevelOffset" in obj.PropertiesList:
             restore_freecad_property(obj, ifcentity, "LevelOffset", ifcfile)
-        if (
-            ("Height" in obj.PropertiesList)
-            and not restore_freecad_property(obj, ifcentity, "Height", ifcfile)
+        if ("Height" in obj.PropertiesList) and not restore_freecad_property(
+            obj, ifcentity, "Height", ifcfile
         ):
             quantity = get_quantity_value(ifcentity, "Height")
             if quantity is not None:

@@ -76,9 +76,8 @@ def writeQuantities(ifcfile, obj, product, history, scale, ifctype=None):
     if ifcdata or (ifctype == "IfcBuildingStorey"):
         export_height = False
         if hasattr(obj, "Height"):
-            export_height = (
-                (ifctype == "IfcBuildingStorey")
-                or (("ExportHeight" in ifcdata) and ifcdata["ExportHeight"])
+            export_height = (ifctype == "IfcBuildingStorey") or (
+                ("ExportHeight" in ifcdata) and ifcdata["ExportHeight"]
             )
         if export_height:
             quantities.append(
@@ -88,11 +87,7 @@ def writeQuantities(ifcfile, obj, product, history, scale, ifctype=None):
             quantities.append(
                 ifcfile.createIfcQuantityLength("Width", None, None, obj.Width.Value * scale)
             )
-        if (
-            ("ExportLength" in ifcdata)
-            and ifcdata["ExportLength"]
-            and hasattr(obj, "Length")
-        ):
+        if ("ExportLength" in ifcdata) and ifcdata["ExportLength"] and hasattr(obj, "Length"):
             quantities.append(
                 ifcfile.createIfcQuantityLength("Length", None, None, obj.Length.Value * scale)
             )
