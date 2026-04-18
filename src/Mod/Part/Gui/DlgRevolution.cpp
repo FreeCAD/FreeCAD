@@ -41,6 +41,7 @@
 #include <App/Part.h>
 #include <Base/Tools.h>
 #include <Gui/Application.h>
+#include <Gui/AsyncRecomputeProgressDialog.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
@@ -421,11 +422,13 @@ void DlgRevolution::accept()
     if (!this->validate()) {
         return;
     }
-    Gui::WaitCursor wc;
     App::Document* activeDoc = App::GetApplication().getActiveDocument();
-    activeDoc->openTransaction("Revolve");
+    bool transactionOpen = false;
 
     try {
+        activeDoc->openTransaction("Revolve");
+        transactionOpen = true;
+
         QString shape, type, name, solid;
         QList<QTreeWidgetItem*> items = ui->treeWidget->selectedItems();
         if (ui->checkSolid->isChecked()) {
@@ -461,55 +464,84 @@ void DlgRevolution::accept()
             symmetric = QStringLiteral("False");
         }
 
-        for (auto item : items) {
-            shape = item->data(0, Qt::UserRole).toString();
-            type = QStringLiteral("Part::Revolution");
-            name = QString::fromLatin1(activeDoc->getUniqueObjectName("Revolve").c_str());
-            Base::Vector3d axis = this->getDirection();
-            Base::Vector3d pos = this->getPosition();
+        {
+            Gui::WaitCursor wc;
+            for (auto item : items) {
+                shape = item->data(0, Qt::UserRole).toString();
+                type = QStringLiteral("Part::Revolution");
+                name = QString::fromLatin1(activeDoc->getUniqueObjectName("Revolve").c_str());
+                Base::Vector3d axis = this->getDirection();
+                Base::Vector3d pos = this->getPosition();
 
 
-            QString code = QStringLiteral(
-                               "FreeCAD.ActiveDocument.addObject(\"%1\",\"%2\")\n"
-                               "FreeCAD.ActiveDocument.%2.Source = FreeCAD.ActiveDocument.%3\n"
-                               "FreeCAD.ActiveDocument.%2.Axis = (%4,%5,%6)\n"
-                               "FreeCAD.ActiveDocument.%2.Base = (%7,%8,%9)\n"
-                               "FreeCAD.ActiveDocument.%2.Angle = %10\n"
-                               "FreeCAD.ActiveDocument.%2.Solid = %11\n"
-                               "FreeCAD.ActiveDocument.%2.AxisLink = %12\n"
-                               "FreeCAD.ActiveDocument.%2.Symmetric = %13\n"
-                               "FreeCADGui.ActiveDocument.%3.Visibility = False\n"
-            )
-                               .arg(type, name, shape)       //%1, 2, 3
-                               .arg(axis.x, 0, 'f', 15)      //%4
-                               .arg(axis.y, 0, 'f', 15)      //%5
-                               .arg(axis.z, 0, 'f', 15)      //%6
-                               .arg(pos.x, 0, 'f', 15)       //%7
-                               .arg(pos.y, 0, 'f', 15)       //%8
-                               .arg(pos.z, 0, 'f', 15)       //%9
-                               .arg(getAngle(), 0, 'f', 15)  //%10
-                               .arg(
-                                   solid,        //%11
-                                   strAxisLink,  //%12
-                                   symmetric
-                               )  //%13
-                ;
-            Gui::Command::runCommand(Gui::Command::App, code.toLatin1());
+                QString code = QStringLiteral(
+                                   "FreeCAD.ActiveDocument.addObject(\"%1\",\"%2\")\n"
+                                   "FreeCAD.ActiveDocument.%2.Source = FreeCAD.ActiveDocument.%3\n"
+                                   "FreeCAD.ActiveDocument.%2.Axis = (%4,%5,%6)\n"
+                                   "FreeCAD.ActiveDocument.%2.Base = (%7,%8,%9)\n"
+                                   "FreeCAD.ActiveDocument.%2.Angle = %10\n"
+                                   "FreeCAD.ActiveDocument.%2.Solid = %11\n"
+                                   "FreeCAD.ActiveDocument.%2.AxisLink = %12\n"
+                                   "FreeCAD.ActiveDocument.%2.Symmetric = %13\n"
+                                   "FreeCADGui.ActiveDocument.%3.Visibility = False\n"
+                )
+                                   .arg(type, name, shape)       //%1, 2, 3
+                                   .arg(axis.x, 0, 'f', 15)      //%4
+                                   .arg(axis.y, 0, 'f', 15)      //%5
+                                   .arg(axis.z, 0, 'f', 15)      //%6
+                                   .arg(pos.x, 0, 'f', 15)       //%7
+                                   .arg(pos.y, 0, 'f', 15)       //%8
+                                   .arg(pos.z, 0, 'f', 15)       //%9
+                                   .arg(getAngle(), 0, 'f', 15)  //%10
+                                   .arg(
+                                       solid,        //%11
+                                       strAxisLink,  //%12
+                                       symmetric
+                                   )  //%13
+                    ;
+                Gui::Command::runCommand(Gui::Command::App, code.toLatin1());
 
-            auto newObj = activeDoc->getObject(name.toStdString().c_str());
-            auto sourceObj = activeDoc->getObject(shape.toStdString().c_str());
+                auto newObj = activeDoc->getObject(name.toStdString().c_str());
+                auto sourceObj = activeDoc->getObject(shape.toStdString().c_str());
 
-            if (!sourceObj->isDerivedFrom<Part::Part2DObject>()) {
-                Gui::Command::copyVisual(newObj, "ShapeAppearance", sourceObj);
-                Gui::Command::copyVisual(newObj, "LineColor", sourceObj);
-                Gui::Command::copyVisual(newObj, "PointColor", sourceObj);
+                if (!sourceObj->isDerivedFrom<Part::Part2DObject>()) {
+                    Gui::Command::copyVisual(newObj, "ShapeAppearance", sourceObj);
+                    Gui::Command::copyVisual(newObj, "LineColor", sourceObj);
+                    Gui::Command::copyVisual(newObj, "PointColor", sourceObj);
+                }
             }
         }
 
+        const auto outcome = Gui::runAsyncDocumentRecomputeProgressDialog(
+            this,
+            tr("Revolve"),
+            tr("Computing revolved shapes..."),
+            activeDoc,
+            /*force=*/false,
+            [activeDoc]() {
+                if (activeDoc) {
+                    activeDoc->recompute();
+                }
+            }
+        );
+        if (!outcome.success) {
+            activeDoc->abortTransaction();
+            transactionOpen = false;
+            if (!outcome.canceled) {
+                throw Base::RuntimeError(
+                    outcome.message.empty() ? "Revolve recompute failed" : outcome.message
+                );
+            }
+            return;
+        }
+
         activeDoc->commitTransaction();
-        activeDoc->recompute();
+        transactionOpen = false;
     }
     catch (Base::Exception& err) {
+        if (transactionOpen) {
+            activeDoc->abortTransaction();
+        }
         QMessageBox::critical(
             this,
             windowTitle(),
@@ -518,6 +550,9 @@ void DlgRevolution::accept()
         return;
     }
     catch (...) {
+        if (transactionOpen) {
+            activeDoc->abortTransaction();
+        }
         QMessageBox::critical(
             this,
             windowTitle(),

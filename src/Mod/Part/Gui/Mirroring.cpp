@@ -38,6 +38,7 @@
 #include <TopExp_Explorer.hxx>
 
 #include <QMessageBox>
+#include <QCoreApplication>
 #include <QRegularExpression>
 #include <QTreeWidget>
 #include <QComboBox>
@@ -49,6 +50,7 @@
 #include <App/Link.h>
 #include <App/Part.h>
 #include <Gui/Application.h>
+#include <Gui/AsyncRecomputeProgressDialog.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
 #include <Gui/Document.h>
@@ -322,9 +324,7 @@ bool Mirroring::accept()
         return false;
     }
 
-    Gui::WaitCursor wc;
     unsigned int count = activeDoc->countObjectsOfType<Part::Mirroring>();
-    activeDoc->openTransaction("Mirroring");
 
     QString shape, label, selectionString;
     QRegularExpression rx(QString::fromLatin1(R"( \(Mirror #\d+\)$)"));
@@ -352,48 +352,92 @@ bool Mirroring::accept()
     double basex = ui->baseX->value().getValue();
     double basey = ui->baseY->value().getValue();
     double basez = ui->baseZ->value().getValue();
-    for (auto item : items) {
-        shape = item->data(0, Qt::UserRole).toString();
-        std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(item->text(0).toUtf8());
-        label = QString::fromStdString(escapedstr);
-        selectionString = QString::fromStdString(selection);
+    bool transactionOpen = false;
+    try {
+        activeDoc->openTransaction("Mirroring");
+        transactionOpen = true;
 
-        // if we already have the suffix " (Mirror #<number>)" remove it
-        int pos = label.indexOf(rx);
-        if (pos > -1) {
-            label = label.left(pos);
+        {
+            Gui::WaitCursor wc;
+            for (auto item : items) {
+                shape = item->data(0, Qt::UserRole).toString();
+                std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(item->text(0).toUtf8());
+                label = QString::fromStdString(escapedstr);
+                selectionString = QString::fromStdString(selection);
+
+                // if we already have the suffix " (Mirror #<number>)" remove it
+                int pos = label.indexOf(rx);
+                if (pos > -1) {
+                    label = label.left(pos);
+                }
+                label.append(QStringLiteral(" (Mirror #%1)").arg(++count));
+
+                QString code = QStringLiteral(
+                                   "__doc__=FreeCAD.getDocument(\"%1\")\n"
+                                   "__doc__.addObject(\"Part::Mirroring\")\n"
+                                   "__doc__.ActiveObject.Source=__doc__.getObject(\"%2\")\n"
+                                   "__doc__.ActiveObject.Label=u\"%3\"\n"
+                                   "__doc__.ActiveObject.Normal=(%4,%5,%6)\n"
+                                   "__doc__.ActiveObject.Base=(%7,%8,%9)\n"
+                                   "__doc__.ActiveObject.MirrorPlane=(%10)\n"
+                                   "del __doc__"
+                )
+                                   .arg(this->document, shape, label)
+                                   .arg(normx)
+                                   .arg(normy)
+                                   .arg(normz)
+                                   .arg(basex)
+                                   .arg(basey)
+                                   .arg(basez)
+                                   .arg(selectionString);
+                Gui::Command::runCommand(Gui::Command::App, code.toUtf8());
+                QByteArray from = shape.toUtf8();
+                auto dst = activeDoc->getActiveObject();
+                auto src = activeDoc->getObject(from);
+                Gui::copyVisualT(dst, "ShapeAppearance", src);
+                Gui::copyVisualT(dst, "LineColor", src);
+                Gui::copyVisualT(dst, "PointColor", src);
+            }
         }
-        label.append(QStringLiteral(" (Mirror #%1)").arg(++count));
 
-        QString code = QStringLiteral(
-                           "__doc__=FreeCAD.getDocument(\"%1\")\n"
-                           "__doc__.addObject(\"Part::Mirroring\")\n"
-                           "__doc__.ActiveObject.Source=__doc__.getObject(\"%2\")\n"
-                           "__doc__.ActiveObject.Label=u\"%3\"\n"
-                           "__doc__.ActiveObject.Normal=(%4,%5,%6)\n"
-                           "__doc__.ActiveObject.Base=(%7,%8,%9)\n"
-                           "__doc__.ActiveObject.MirrorPlane=(%10)\n"
-                           "del __doc__"
-        )
-                           .arg(this->document, shape, label)
-                           .arg(normx)
-                           .arg(normy)
-                           .arg(normz)
-                           .arg(basex)
-                           .arg(basey)
-                           .arg(basez)
-                           .arg(selectionString);
-        Gui::Command::runCommand(Gui::Command::App, code.toUtf8());
-        QByteArray from = shape.toUtf8();
-        auto dst = activeDoc->getActiveObject();
-        auto src = activeDoc->getObject(from);
-        Gui::copyVisualT(dst, "ShapeAppearance", src);
-        Gui::copyVisualT(dst, "LineColor", src);
-        Gui::copyVisualT(dst, "PointColor", src);
+        const auto outcome = Gui::runAsyncDocumentRecomputeProgressDialog(
+            this,
+            tr("Mirroring"),
+            tr("Computing mirrored shapes..."),
+            activeDoc,
+            /*force=*/false,
+            [activeDoc]() {
+                if (activeDoc) {
+                    activeDoc->recompute();
+                }
+            }
+        );
+        if (!outcome.success) {
+            activeDoc->abortTransaction();
+            transactionOpen = false;
+            if (!outcome.canceled) {
+                throw Base::RuntimeError(
+                    outcome.message.empty() ? "Mirroring recompute failed" : outcome.message
+                );
+            }
+            Gui::Selection().rmvSelectionGate();
+            filterSelection = false;
+            return false;
+        }
+
+        activeDoc->commitTransaction();
+        transactionOpen = false;
+    }
+    catch (const Base::Exception& e) {
+        if (transactionOpen) {
+            activeDoc->abortTransaction();
+        }
+        QMessageBox::critical(this, windowTitle(), QCoreApplication::translate("Exception", e.what()));
+        Gui::Selection().rmvSelectionGate();
+        filterSelection = false;
+        return false;
     }
 
-    activeDoc->commitTransaction();
-    activeDoc->recompute();
     Gui::Selection().rmvSelectionGate();
     filterSelection = false;
     return true;
