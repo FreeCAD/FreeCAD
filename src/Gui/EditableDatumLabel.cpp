@@ -502,8 +502,13 @@ void EditableDatumLabel::updateGeometry(QLineEdit* edit)
         return;
     }
     int pos = edit->cursorPosition();
+    int selStart = edit->selectionStart();
+    int selEnd = edit->selectionEnd();
     spinBox->adjustSize();
     edit->setCursorPosition(pos);
+    if (selStart != -1 && selEnd != -1) {
+        edit->setSelection(selStart, selEnd);
+    }
 }
 
 // NOLINTNEXTLINE
