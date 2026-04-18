@@ -30,6 +30,7 @@
 
 #include <BRepBuilderAPI_MakeShape.hxx>
 #include <GeomAbs_SurfaceType.hxx>
+#include <Message_ProgressRange.hxx>
 #include <Standard_Version.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>
@@ -41,6 +42,8 @@
 #include <TopTools_MapOfShape.hxx>
 
 #include <Mod/Part/PartGlobal.h>
+
+class Standard_Failure;
 
 
 namespace ModelRefine
@@ -192,7 +195,7 @@ private:
 
 public:
     FaceUniter(const TopoDS_Shell& shellIn);
-    bool process();
+    bool process(const Message_ProgressRange& theRange = Message_ProgressRange());
     const TopoDS_Shell& getShell() const
     {
         return workShell;
@@ -237,10 +240,18 @@ GeomAbs_OtherSurface
 */
 namespace Part
 {
+PartExport bool isUserAbortFailure(const Standard_Failure& failure);
+
 class PartExport BRepBuilderAPI_RefineModel: public BRepBuilderAPI_MakeShape
 {
 public:
-    BRepBuilderAPI_RefineModel(const TopoDS_Shape&);
+    enum class BuildMode
+    {
+        Immediate,
+        Deferred,
+    };
+
+    explicit BRepBuilderAPI_RefineModel(const TopoDS_Shape&, BuildMode buildMode = BuildMode::Immediate);
 #if OCC_VERSION_HEX >= 0x070600
     void Build(const Message_ProgressRange& theRange = Message_ProgressRange()) override;
 #else

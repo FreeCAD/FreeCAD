@@ -5193,7 +5193,7 @@ class MyRefineMaker: public BRepBuilderAPI_RefineModel
 {
 public:
     explicit MyRefineMaker(const TopoDS_Shape& s)
-        : BRepBuilderAPI_RefineModel(s)
+        : BRepBuilderAPI_RefineModel(s, BRepBuilderAPI_RefineModel::BuildMode::Deferred)
     {}
 
     void populate(ShapeMapper& mapper)
@@ -5222,13 +5222,23 @@ TopoShape& TopoShape::makeElementRefine(const TopoShape& shape, const char* op, 
     }
     bool closed = shape.isClosed();
     try {
+        constexpr std::size_t totalPhases = 2;
+        ScopedRecomputeProgress progressScope(op);
+        auto buildScope = progressScope.makeStepScope(0, totalPhases, "Refining shape...");
+        buildScope.throwIfCanceled();
         MyRefineMaker mkRefine(shape.getShape());
+        Part::buildWithProgress(mkRefine);
+        buildScope.complete();
+
+        auto mapScope = progressScope.makeStepScope(1, totalPhases, "Mapping refined shape...");
+        mapScope.throwIfCanceled();
         GenericShapeMapper mapper;
         mkRefine.populate(mapper);
         mapper.init(shape, mkRefine.Shape());
         makeShapeWithElementMap(mkRefine.Shape(), mapper, {shape}, op);
         // For some reason, refine operation may reverse the solid
         fixSolidOrientation();
+        mapScope.complete();
         if (isClosed() == closed) {
             return *this;
         }
