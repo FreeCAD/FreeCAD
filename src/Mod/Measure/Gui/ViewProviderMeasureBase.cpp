@@ -774,7 +774,8 @@ void ViewProviderMeasure::redrawAnnotation()
     setLabelValue(getMeasureObject()->getResultString());
 
     const bool isSaved = isSavedMeasurement();
-    const bool isRadiusOrDiameter = (dynamic_cast<Measure::MeasureRadius*>(getMeasureObject()) != nullptr)
+    const bool isRadiusOrDiameter = (dynamic_cast<Measure::MeasureRadius*>(getMeasureObject())
+                                     != nullptr)
         || (dynamic_cast<Measure::MeasureDiameter*>(getMeasureObject()) != nullptr);
     bool enableArrow = isSaved || isRadiusOrDiameter;
     const float leaderLength = pLabelTranslation->translation.getValue().length();
