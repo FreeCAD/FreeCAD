@@ -22,6 +22,10 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QPointer>
+#include <QSignalBlocker>
+
+#include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Origin.h>
@@ -29,7 +33,9 @@
 #include <Base/Converter.h>
 #include <Base/Tools.h>
 #include <Gui/Application.h>
+#include <Gui/AsyncPreviewSession.h>
 #include <Gui/CommandT.h>
+#include <Gui/Control.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/ViewProviderCoordinateSystem.h>
@@ -41,6 +47,7 @@
 
 #include "ui_TaskRevolutionParameters.h"
 #include "TaskRevolutionParameters.h"
+#include "DeferredDialogRejectUtils.h"
 #include "ViewProviderGroove.h"
 #include "ViewProviderRevolution.h"
 #include "ReferenceSelection.h"
@@ -49,6 +56,12 @@ using namespace PartDesignGui;
 using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskRevolutionParameters */
+
+namespace
+{
+constexpr int AsyncInteractivePreviewDebounceMs = 150;
+
+}
 
 TaskRevolutionParameters::TaskRevolutionParameters(
     PartDesignGui::ViewProvider* RevolutionView,
@@ -102,6 +115,43 @@ TaskRevolutionParameters::TaskRevolutionParameters(
     }
 
     setupGizmos(RevolutionView);
+
+    AsyncPreviewController::Callbacks callbacks;
+    callbacks.makeRequest = [this]() {
+        auto* object = getObject<PartDesign::Revolved>();
+        return object ? App::RecomputeRequest::fromDocumentObject(*object) : App::RecomputeRequest {};
+    };
+    callbacks.runSync = [this]() {
+        if (auto* revolution = getObject<PartDesign::Revolved>()) {
+            revolution->recomputeFeature();
+            revolution->recomputePreview();
+        }
+    };
+    callbacks.onAppliedResult = [this](bool success, bool canceled) {
+        if (!canceled && success) {
+            setGizmoPositions();
+        }
+    };
+    asyncPreviewSession = std::make_unique<Gui::AsyncPreviewSession>(std::move(callbacks), this);
+    connect(
+        asyncPreviewSession->controller(),
+        &AsyncPreviewController::recomputeSettled,
+        this,
+        &TaskRevolutionParameters::recomputeSettled
+    );
+    asyncPreviewSession->bindWidgets(
+        {
+            ui->previewStatusWidget,
+            ui->progressBarPreview,
+            ui->labelPreviewStatus,
+            ui->buttonCancelPreview,
+        },
+        [this](const char* text) { return tr(text); },
+        proxy
+    );
+    asyncPreviewSession->setSchedulerInterval(
+        App::GetApplication().isAsyncRecomputeEnabled() ? AsyncInteractivePreviewDebounceMs : 0
+    );
 }
 
 Gui::ViewProviderCoordinateSystem* TaskRevolutionParameters::getOriginView() const
@@ -359,6 +409,72 @@ void TaskRevolutionParameters::connectSignals()
     // clang-format on
 }
 
+void TaskRevolutionParameters::schedulePendingRecompute()
+{
+    if (!isUpdateBlocked() && asyncPreviewSession) {
+        asyncPreviewSession->scheduleRecompute();
+    }
+}
+
+void TaskRevolutionParameters::runImmediateRecompute()
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->stopScheduledRecompute();
+    }
+    try {
+        requestRecompute(/*waitForCompletion=*/false);
+    }
+    catch (const Base::Exception& e) {
+        e.reportException();
+    }
+}
+
+void TaskRevolutionParameters::flushPendingRecompute()
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->flushPendingRecompute();
+    }
+}
+
+void TaskRevolutionParameters::stopPendingRecompute()
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->stopPendingRecompute();
+    }
+}
+
+bool TaskRevolutionParameters::hasOutstandingRecompute() const
+{
+    return asyncPreviewSession && asyncPreviewSession->hasOutstandingRecompute();
+}
+
+void TaskRevolutionParameters::setDeferredClosePending(bool pending)
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->setDeferredClosePending(pending);
+    }
+}
+
+void TaskRevolutionParameters::updateRecomputeUi()
+{
+    if (!ui || !asyncPreviewSession) {
+        return;
+    }
+    asyncPreviewSession->updateUi();
+}
+
+void TaskRevolutionParameters::requestRecompute(bool waitForCompletion)
+{
+    if (!isUpdateBlocked() && asyncPreviewSession) {
+        asyncPreviewSession->requestRecompute(waitForCompletion);
+    }
+}
+
+void TaskRevolutionParameters::triggerPreviewRecompute()
+{
+    schedulePendingRecompute();
+}
+
 void TaskRevolutionParameters::updateUI(int index)
 {
     if (isUpdateBlocked()) {
@@ -375,8 +491,7 @@ void TaskRevolutionParameters::onSelectionChanged(const Gui::SelectionChanges& m
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         int mode = ui->changeMode->currentIndex();
         if (selectionFace) {
-            auto rev = getObject<PartDesign::Revolution>();
-            QString refText = onAddSelection(msg, rev->UpToFace);
+            QString refText = onAddSelection(msg, *propUpToFace);
             if (refText.length() > 0) {
                 QSignalBlocker block(ui->lineFaceName);
                 ui->lineFaceName->setText(refText);
@@ -395,11 +510,8 @@ void TaskRevolutionParameters::onSelectionChanged(const Gui::SelectionChanges& m
             App::DocumentObject* selObj {};
             if (getReferencedSelection(getObject(), msg, selObj, axis) && selObj) {
                 propReferenceAxis->setValue(selObj, axis);
-
-                recomputeFeature();
                 updateUI(mode);
-
-                setGizmoPositions();
+                schedulePendingRecompute();
             }
         }
     }
@@ -483,12 +595,37 @@ void TaskRevolutionParameters::clearFaceName()
     ui->lineFaceName->setProperty("FaceName", QVariant());
 }
 
+void TaskRevolutionParameters::clearInteractiveSelection()
+{
+    if (ui && ui->buttonFace) {
+        QSignalBlocker blocker(ui->buttonFace);
+        ui->buttonFace->setChecked(false);
+    }
+
+    selectionFace = false;
+    TaskSketchBasedParameters::exitSelectionMode();
+    Gui::Selection().clearSelection();
+}
+
+void TaskRevolutionParameters::onUpdateView(bool on)
+{
+    setUpdateBlocked(!on);
+    if (on) {
+        if (!asyncPreviewSession || !asyncPreviewSession->triggerScheduledRecomputeNow()) {
+            runImmediateRecompute();
+        }
+    }
+    else {
+        stopPendingRecompute();
+    }
+}
+
 void TaskRevolutionParameters::onAngleChanged(double len)
 {
     if (getObject()) {
         propAngle->setValue(len);
         exitSelectionMode();
-        recomputeFeature();
+        schedulePendingRecompute();
     }
 }
 
@@ -499,7 +636,7 @@ void TaskRevolutionParameters::onAngle2Changed(double len)
             propAngle2->setValue(len);
         }
         exitSelectionMode();
-        recomputeFeature();
+        schedulePendingRecompute();
     }
 }
 
@@ -530,6 +667,7 @@ void TaskRevolutionParameters::onAxisChanged(int num)
         TaskSketchBasedParameters::onSelectReference(
             AllowSelection::EDGE | AllowSelection::PLANAR | AllowSelection::CIRCLE
         );
+        return;
     }
     else {
         if (!pcRevolution->getDocument()->isIn(lnk.getValue())) {
@@ -566,9 +704,7 @@ void TaskRevolutionParameters::onAxisChanged(int num)
             }
         }
 
-        recomputeFeature();
-
-        setGizmoPositions();
+        schedulePendingRecompute();
     }
     catch (const Base::Exception& e) {
         e.reportException();
@@ -579,9 +715,7 @@ void TaskRevolutionParameters::onMidplane(bool on)
 {
     if (getObject()) {
         propMidPlane->setValue(on);
-        recomputeFeature();
-
-        setGizmoPositions();
+        schedulePendingRecompute();
     }
 }
 
@@ -589,9 +723,7 @@ void TaskRevolutionParameters::onReversed(bool on)
 {
     if (getObject()) {
         propReversed->setValue(on);
-        recomputeFeature();
-
-        setGizmoPositions();
+        schedulePendingRecompute();
     }
 }
 
@@ -618,9 +750,7 @@ void TaskRevolutionParameters::onModeChanged(int index)
     }
 
     updateUI(index);
-    recomputeFeature();
-
-    setGizmoPositions();
+    schedulePendingRecompute();
 }
 
 void TaskRevolutionParameters::getReferenceAxis(
@@ -659,6 +789,8 @@ bool TaskRevolutionParameters::getReversed() const
 
 TaskRevolutionParameters::~TaskRevolutionParameters()
 {
+    stopPendingRecompute();
+
     // hide the parts coordinate system axis for selection
     try {
         if (auto vpOrigin = getOriginView()) {
@@ -680,6 +812,7 @@ void TaskRevolutionParameters::changeEvent(QEvent* event)
 
         // Translate mode items
         translateModeList(ui->changeMode->currentIndex());
+        updateRecomputeUi();
     }
 }
 
@@ -722,7 +855,6 @@ void TaskRevolutionParameters::setupGizmos(ViewProvider* vp)
     defaultGizmoMultFactor = rotationGizmo->getMultFactor();
 
     setGizmoPositions();
-    showDraggerHints();
 }
 
 void TaskRevolutionParameters::setGizmoPositions()
@@ -795,25 +927,97 @@ void TaskRevolutionParameters::setGizmoPositions()
 //**************************************************************************
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+TaskDlgRevolutionBase::TaskDlgRevolutionBase(PartDesignGui::ViewProvider* vp)
+    : TaskDlgSketchBasedParameters(vp)
+{}
+
+void TaskDlgRevolutionBase::ensureDeferredRejectConnection()
+{
+    ensureDeferredDialogRejectConnection(
+        deferredReject,
+        parameter,
+        &TaskRevolutionParameters::recomputeSettled,
+        this,
+        &TaskDlgRevolutionBase::onParameterRecomputeSettled
+    );
+}
+
+void TaskDlgRevolutionBase::setDeferredRejectPending(bool pending)
+{
+    setDeferredDialogRejectPending(deferredReject, pending, buttonBox, [this](bool pending) {
+        if (parameter) {
+            parameter->setDeferredClosePending(pending);
+        }
+    });
+}
+
+bool TaskDlgRevolutionBase::accept()
+{
+    if (!parameter || deferredReject.pending) {
+        return false;
+    }
+
+    ensureDeferredRejectConnection();
+    parameter->clearInteractiveSelection();
+
+    return TaskDlgSketchBasedParameters::accept();
+}
+
+bool TaskDlgRevolutionBase::reject()
+{
+    if (!parameter) {
+        return false;
+    }
+
+    ensureDeferredRejectConnection();
+    parameter->clearInteractiveSelection();
+    parameter->stopPendingRecompute();
+    if (!parameter->hasOutstandingRecompute()) {
+        return TaskDlgSketchBasedParameters::reject();
+    }
+
+    if (!deferredReject.pending) {
+        auto* feature = getObject<PartDesign::Feature>();
+        deferredReject.documentName = feature && feature->getDocument()
+            ? std::string(feature->getDocument()->getName())
+            : std::string();
+        setDeferredRejectPending(true);
+    }
+
+    return false;
+}
+
+void TaskDlgRevolutionBase::onParameterRecomputeSettled()
+{
+    finishDeferredDialogReject(
+        this,
+        deferredReject,
+        parameter && !parameter->hasOutstandingRecompute(),
+        [this]() { return TaskDlgSketchBasedParameters::reject(); },
+        [this](bool pending) { setDeferredRejectPending(pending); }
+    );
+}
+
 TaskDlgRevolutionParameters::TaskDlgRevolutionParameters(ViewProviderRevolution* RevolutionView)
-    : TaskDlgSketchBasedParameters(RevolutionView)
+    : TaskDlgRevolutionBase(RevolutionView)
 {
     assert(RevolutionView);
-    Content.push_back(
-        new TaskRevolutionParameters(RevolutionView, "PartDesign_Revolution", tr("Revolution Parameters"))
+    parameter = new TaskRevolutionParameters(
+        RevolutionView,
+        "PartDesign_Revolution",
+        tr("Revolution Parameters")
     );
+    Content.push_back(parameter);
     Content.push_back(preview);
 }
 
 TaskDlgGrooveParameters::TaskDlgGrooveParameters(ViewProviderGroove* GrooveView)
-    : TaskDlgSketchBasedParameters(GrooveView)
+    : TaskDlgRevolutionBase(GrooveView)
 {
     assert(GrooveView);
-    Content.push_back(
-        new TaskRevolutionParameters(GrooveView, "PartDesign_Groove", tr("Groove Parameters"))
-    );
+    parameter = new TaskRevolutionParameters(GrooveView, "PartDesign_Groove", tr("Groove Parameters"));
+    Content.push_back(parameter);
     Content.push_back(preview);
 }
-
 
 #include "moc_TaskRevolutionParameters.cpp"
