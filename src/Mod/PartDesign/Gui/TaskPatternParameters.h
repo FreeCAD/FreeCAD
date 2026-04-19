@@ -24,16 +24,12 @@
 
 #pragma once
 
-#include "TaskTransformedParameters.h"
-#include "ViewProviderTransformed.h"
 #include <Mod/PartDesign/App/FeatureLinearPattern.h>
 
-class Ui_TaskPatternParameters;
+#include "TaskTransformedParameters.h"
+#include "ViewProviderTransformed.h"
 
-namespace Gui
-{
-class DebouncedFunction;
-}
+class Ui_TaskPatternParameters;
 
 namespace PartGui
 {
@@ -60,9 +56,9 @@ public:
 
 protected:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
+    void applyStagedPreviewStateToObject() override;
 
 private Q_SLOTS:
-    void onUpdateViewTimer();
     // Slot to handle reference selection request from the widget
     void onParameterWidgetRequestReferenceSelection();
     void onParameterWidgetRequestReferenceSelection2();
@@ -71,14 +67,12 @@ private Q_SLOTS:
     // Update view signal (might be redundant now)
     void onUpdateView(bool on) override;
 
-
 private:
     void setupParameterUI(QWidget* widget) override;
     void retranslateParameterUI(QWidget* widget) override;
 
     void updateUI();
-    void updateSpacingLabels();
-    void scheduleUpdateView() const;
+    void scheduleUpdateView();
     void updateSpacingLabels();
 
     void bindProperties();
@@ -96,9 +90,7 @@ private:
     PartGui::PatternParametersWidget* activeDirectionWidget = nullptr;
 
     std::unique_ptr<Ui_TaskPatternParameters> ui;
-    std::unique_ptr<Gui::DebouncedFunction> updateViewScheduler;
 };
-
 
 /// simulation dialog for the TaskView
 class TaskDlgLinearPatternParameters: public TaskDlgTransformedParameters
