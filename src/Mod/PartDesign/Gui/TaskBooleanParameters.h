@@ -25,6 +25,11 @@
 
 #pragma once
 
+#include <memory>
+#include <string>
+
+#include <QMetaObject>
+
 #include "TaskFeatureParameters.h"
 
 
@@ -44,7 +49,8 @@ class Property;
 namespace Gui
 {
 class ViewProvider;
-}
+class AsyncPreviewSession;
+}  // namespace Gui
 
 
 namespace PartDesignGui
@@ -60,6 +66,13 @@ public:
 
     const std::vector<std::string> getBodies() const;
     int getType() const;
+    void flushPendingRecompute();
+    void stopPendingRecompute();
+    bool hasOutstandingRecompute() const;
+    void setDeferredClosePending(bool pending);
+
+Q_SIGNALS:
+    void recomputeSettled();
 
 private Q_SLOTS:
     void onButtonBodyAdd(const bool checked);
@@ -75,9 +88,14 @@ protected:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
 private:
+    void requestRecompute(bool waitForCompletion);
+    void updateRecomputeUi();
+
+private:
     QWidget* proxy;
     std::unique_ptr<Ui_TaskBooleanParameters> ui;
     ViewProviderBoolean* BooleanView;
+    std::unique_ptr<Gui::AsyncPreviewSession> asyncPreviewSession;
 
     enum selectionModes
     {
@@ -123,6 +141,14 @@ public:
     {
         return QDialogButtonBox::Ok | QDialogButtonBox::Cancel;
     }
+
+private:
+    void ensureDeferredRejectConnection();
+    void setDeferredRejectPending(bool pending);
+    bool performReject();
+
+private Q_SLOTS:
+    void onParameterRecomputeSettled();
 
 protected:
     ViewProviderBoolean* BooleanView;
