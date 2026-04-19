@@ -629,6 +629,7 @@ bool ProgressBar::eventFilter(QObject* o, QEvent* e)
     if (sequencer->isRunning() && e) {
         QThread* currentThread = QThread::currentThread();
         QThread* thr = this->thread();  // this is the main thread
+        const bool blocking = sequencer->isBlocking();
         if (thr != currentThread) {
             if (e->type() == QEvent::KeyPress) {
                 auto ke = static_cast<QKeyEvent*>(e);
@@ -649,7 +650,7 @@ bool ProgressBar::eventFilter(QObject* o, QEvent* e)
                 if (ke->key() == Qt::Key_Escape) {
                     // eventFilter() was called from the application 50 times without performing a
                     // new step (app could hang)
-                    if (d->observeEventFilter > 50) {
+                    if (blocking && d->observeEventFilter > 50) {
                         // tries to unlock the application if it hangs (probably due to incorrect
                         // usage of Base::Sequencer)
                         if (ke->modifiers() & (Qt::ControlModifier | Qt::AltModifier)) {
@@ -660,12 +661,16 @@ bool ProgressBar::eventFilter(QObject* o, QEvent* e)
 
                     // cancel the operation
                     sequencer->tryToCancel();
+                    return true;
                 }
 
-                return true;
+                if (blocking) {
+                    return true;
+                }
             } break;
 
-            // ignore all these events
+            // Blocking operations intentionally suppress general input, but
+            // worker-thread recomputes must leave the rest of the UI usable.
             case QEvent::KeyRelease:
             case QEvent::Enter:
             case QEvent::Leave:
@@ -674,7 +679,7 @@ bool ProgressBar::eventFilter(QObject* o, QEvent* e)
             case QEvent::MouseMove:
             case QEvent::NativeGesture:
             case QEvent::ContextMenu: {
-                if (!d->isModalDialog(o)) {
+                if (blocking && !d->isModalDialog(o)) {
                     return true;
                 }
             } break;
@@ -683,7 +688,7 @@ bool ProgressBar::eventFilter(QObject* o, QEvent* e)
             case QEvent::Close: {
                 // avoid to exit while app is working
                 // note: all other widget types are allowed to be closed anyway
-                if (o == getMainWindow()) {
+                if (blocking && o == getMainWindow()) {
                     e->ignore();
                     return true;
                 }
@@ -691,7 +696,7 @@ bool ProgressBar::eventFilter(QObject* o, QEvent* e)
 
             // do a system beep and ignore the event
             case QEvent::MouseButtonPress: {
-                if (!d->isModalDialog(o)) {
+                if (blocking && !d->isModalDialog(o)) {
                     QApplication::beep();
                     return true;
                 }
@@ -701,7 +706,9 @@ bool ProgressBar::eventFilter(QObject* o, QEvent* e)
             } break;
         }
 
-        d->observeEventFilter++;
+        if (blocking) {
+            d->observeEventFilter++;
+        }
     }
 
     return QProgressBar::eventFilter(o, e);

@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************/
 
-import FreeCAD, os, unittest, tempfile, zipfile
+import FreeCAD, os, unittest, tempfile, zipfile, time
 from FreeCAD import Base
 import math
 import xml.etree.ElementTree as ET
@@ -29,6 +29,24 @@ import xml.etree.ElementTree as ET
 # ---------------------------------------------------------------------------
 # define the functions to test the FreeCAD Document code
 # ---------------------------------------------------------------------------
+
+
+def spin_gui_events(predicate=None, timeout=1.0, step=0.01):
+    if not FreeCAD.GuiUp:
+        return predicate() if predicate is not None else True
+
+    from PySide import QtCore
+    from PySide.QtGui import QApplication
+
+    end = time.monotonic() + timeout
+    while time.monotonic() < end:
+        QApplication.processEvents(QtCore.QEventLoop.AllEvents, int(step * 1000))
+        if predicate is not None and predicate():
+            return True
+        time.sleep(step)
+
+    QApplication.processEvents(QtCore.QEventLoop.AllEvents, int(step * 1000))
+    return predicate() if predicate is not None else True
 
 
 class Proxy:
@@ -1919,6 +1937,7 @@ class DocumentObserverCases(unittest.TestCase):
             self.signal = []
             self.parameter = []
             self.parameter2 = []
+            self.changed = []
 
         def slotCreatedDocument(self, doc):
             self.signal.append("DocCreated")
@@ -1983,6 +2002,7 @@ class DocumentObserverCases(unittest.TestCase):
             self.signal.append("ObjChanged")
             self.parameter.append(obj)
             self.parameter2.append(prop)
+            self.changed.append((obj, prop))
 
         def slotBeforeChangeObject(self, obj, prop):
             self.signal.append("ObjBeforeChange")
@@ -2036,6 +2056,7 @@ class DocumentObserverCases(unittest.TestCase):
             self.signal = []
             self.parameter = []
             self.parameter2 = []
+            self.changed = []
 
         def slotCreatedDocument(self, doc):
             self.signal.append("DocCreated")
@@ -2069,6 +2090,7 @@ class DocumentObserverCases(unittest.TestCase):
             self.signal.append("ObjChanged")
             self.parameter.append(obj)
             self.parameter2.append(prop)
+            self.changed.append((obj, prop))
 
         def slotInEdit(self, obj):
             self.signal.append("ObjInEdit")
@@ -2077,6 +2099,23 @@ class DocumentObserverCases(unittest.TestCase):
         def slotResetEdit(self, obj):
             self.signal.append("ObjResetEdit")
             self.parameter.append(obj)
+
+    class RecomputeChangedObjectProxy:
+        def __init__(self, obj):
+            obj.Proxy = self
+
+        def execute(self, obj):
+            obj.Visibility = False
+            obj.Visibility = True
+            obj.Visibility = False
+
+    @staticmethod
+    def countChangedSignals(observer, target, prop):
+        return sum(
+            1
+            for changed_target, changed_prop in observer.changed
+            if changed_target is target and changed_prop == prop
+        )
 
     def setUp(self):
         self.Obs = self.Observer()
@@ -2459,6 +2498,47 @@ class DocumentObserverCases(unittest.TestCase):
 
         FreeCAD.Gui.removeDocumentObserver(self.GuiObs)
         self.GuiObs.clear()
+
+    def testGuiObserverCoalescesRecomputeChangedObjectSignals(self):
+
+        if not FreeCAD.GuiUp:
+            return
+
+        # in case another document already exists then the tests cannot
+        # be done reliably
+        if FreeCAD.activeDocument():
+            return
+
+        guiObs = self.GuiObserver()
+        FreeCAD.Gui.addDocumentObserver(guiObs)
+        try:
+            self.Doc1 = FreeCAD.newDocument("Observer1")
+            self.Obs.clear()
+            guiObs.clear()
+
+            obj = self.Doc1.addObject("App::FeaturePython", "obj")
+            self.RecomputeChangedObjectProxy(obj)
+            self.assertTrue(obj.ViewObject is not None)
+
+            self.Obs.clear()
+            guiObs.clear()
+
+            self.Doc1.recompute()
+
+            self.assertGreaterEqual(self.countChangedSignals(self.Obs, obj, "Visibility"), 3)
+            self.assertTrue(
+                spin_gui_events(
+                    lambda: self.countChangedSignals(guiObs, obj.ViewObject, "Visibility") >= 1,
+                    timeout=0.5,
+                )
+            )
+            self.assertEqual(self.countChangedSignals(guiObs, obj.ViewObject, "Visibility"), 1)
+            self.assertFalse(obj.Visibility)
+        finally:
+            FreeCAD.Gui.removeDocumentObserver(guiObs)
+            if getattr(self, "Doc1", None) is not None and FreeCAD.getDocument(self.Doc1.Name):
+                FreeCAD.closeDocument(self.Doc1.Name)
+            self.Obs.clear()
 
     def tearDown(self):
         # closing doc
