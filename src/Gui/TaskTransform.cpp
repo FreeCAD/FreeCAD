@@ -23,10 +23,12 @@
 #include <cassert>
 #include <limits>
 #include <QApplication>
+#include <QCoreApplication>
 
 #include <View3DInventorViewer.h>
 #include <Utilities.h>
 
+#include <App/Application.h>
 #include <App/Document.h>
 #include <App/GeoFeature.h>
 #include <App/Services.h>
@@ -73,6 +75,39 @@ void alignGridLayoutColumns(const std::list<QGridLayout*>& layouts, unsigned col
     for (const auto layout : layouts) {
         layout->setColumnMinimumWidth(column, maxWidth);
     }
+}
+
+void reportTransformAsyncRecomputeFailure(const App::RecomputeResult& result)
+{
+    if (result.failure != App::RecomputeFailure::DependencyCycle || !result.exception) {
+        return;
+    }
+
+    const std::string message = result.exception->what();
+    auto report = [message]() {
+        Base::Console().error("%s\n", message.c_str());
+    };
+    if (auto* app = QCoreApplication::instance()) {
+        QMetaObject::invokeMethod(app, report, Qt::QueuedConnection);
+    }
+    else {
+        report();
+    }
+}
+
+void recomputeDocumentAfterTransform(App::Document& document)
+{
+    App::RecomputeRequest request = App::RecomputeRequest::fromDocument(document);
+    if (!App::GetApplication().isAsyncRecomputeEnabled()
+        || !App::GetApplication().canRecomputeRequestOnWorker(request)) {
+        document.recompute();
+        return;
+    }
+
+    request.callback = [](App::RecomputeRequest&, App::RecomputeResult& result) {
+        reportTransformAsyncRecomputeFailure(result);
+    };
+    App::GetApplication().queueRecomputeRequest(std::move(request));
 }
 
 }  // namespace
@@ -832,7 +867,7 @@ bool TaskTransformDialog::accept()
     if (auto document = vp->getDocument()) {
         document->commitCommand();
         document->resetEdit();
-        document->getDocument()->recompute();
+        recomputeDocumentAfterTransform(*document->getDocument());
     }
 
     return Gui::TaskView::TaskDialog::accept();
@@ -843,7 +878,7 @@ bool TaskTransformDialog::reject()
     if (auto document = vp->getDocument()) {
         document->abortCommand();
         document->resetEdit();
-        document->getDocument()->recompute();
+        recomputeDocumentAfterTransform(*document->getDocument());
     }
 
     return Gui::TaskView::TaskDialog::reject();
