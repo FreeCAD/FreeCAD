@@ -222,6 +222,13 @@ void ViewProviderViewPart::attach(App::DocumentObject *pcFeat)
         sPixmap = "TechDraw_TreeMulti";
     } else if (dvd) {
         sPixmap = "actions/TechDraw_DetailView";
+        // these properties apply to the base view, not the detail
+        HighlightLineStyle.setStatus(App::Property::ReadOnly, true);
+        HighlightLineStyle.setStatus(App::Property::Hidden, true);
+        HighlightLineColor.setStatus(App::Property::ReadOnly, true);
+        HighlightLineColor.setStatus(App::Property::Hidden, true);
+        HighlightAdjust.setStatus(App::Property::ReadOnly, true);
+        HighlightAdjust.setStatus(App::Property::Hidden, true);
     }
 
     ViewProviderDrawingView::attach(pcFeat);
