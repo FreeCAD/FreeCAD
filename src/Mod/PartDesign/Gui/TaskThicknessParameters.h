@@ -46,7 +46,7 @@ class Thickness;
 namespace PartDesignGui
 {
 
-class TaskThicknessParameters: public TaskDressUpParameters
+class PartDesignGuiExport TaskThicknessParameters: public TaskDressUpParameters
 {
     Q_OBJECT
 
@@ -93,7 +93,7 @@ private:
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgThicknessParameters: public TaskDlgDressUpParameters
+class PartDesignGuiExport TaskDlgThicknessParameters: public TaskDlgDressUpParameters
 {
     Q_OBJECT
 

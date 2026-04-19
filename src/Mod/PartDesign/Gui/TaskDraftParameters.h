@@ -40,7 +40,7 @@ class GizmoContainer;
 namespace PartDesignGui
 {
 
-class TaskDraftParameters: public TaskDressUpParameters
+class PartDesignGuiExport TaskDraftParameters: public TaskDressUpParameters
 {
     Q_OBJECT
 
@@ -80,7 +80,7 @@ private:
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgDraftParameters: public TaskDlgDressUpParameters
+class PartDesignGuiExport TaskDlgDraftParameters: public TaskDlgDressUpParameters
 {
     Q_OBJECT
 

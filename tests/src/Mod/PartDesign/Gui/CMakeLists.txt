@@ -54,3 +54,19 @@ setup_qt_module_test(TaskShapeBinderTest
     MODULE_LIBS PartDesignGui
     MODULE_DEPENDS ${_partdesign_material_resource_targets}
 )
+setup_qt_module_test(TaskChamferParametersTest
+    MODULE_LIBS PartDesignGui
+    MODULE_DEPENDS ${_partdesign_material_resource_targets}
+)
+setup_qt_module_test(TaskFilletParametersTest
+    MODULE_LIBS PartDesignGui
+    MODULE_DEPENDS ${_partdesign_material_resource_targets}
+)
+setup_qt_module_test(TaskDraftParametersTest
+    MODULE_LIBS PartDesignGui
+    MODULE_DEPENDS ${_partdesign_material_resource_targets}
+)
+setup_qt_module_test(TaskThicknessParametersTest
+    MODULE_LIBS PartDesignGui
+    MODULE_DEPENDS ${_partdesign_material_resource_targets}
+)

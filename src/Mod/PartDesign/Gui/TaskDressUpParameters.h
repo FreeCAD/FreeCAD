@@ -56,7 +56,8 @@ class Feature;
 namespace PartDesignGui
 {
 
-class TaskDressUpParameters: public TaskFeatureParameters, public Gui::SelectionObserver
+class PartDesignGuiExport TaskDressUpParameters: public TaskFeatureParameters,
+                                                 public Gui::SelectionObserver
 {
     Q_OBJECT
 
@@ -165,7 +166,7 @@ private:
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgDressUpParameters: public TaskDlgFeatureParameters
+class PartDesignGuiExport TaskDlgDressUpParameters: public TaskDlgFeatureParameters
 {
     Q_OBJECT
 
