@@ -3458,25 +3458,30 @@ const SoPickedPoint* View3DInventorViewer::getPickedPoint(SoEventCallback* n) co
     if (selectionRoot) {
         auto ret = selectionRoot->getPickedList(n->getAction(), true);
         auto passesFilter = [&](const SoPickedPoint* pp) -> bool {
-            if (!pp)
+            if (!pp) {
                 return false;
+            }
             App::DocumentObject* obj = nullptr;
             std::string subname;
-            if (!Gui::ViewProvider::getElementPicked(pp, obj, subname))
+            if (!Gui::ViewProvider::getElementPicked(pp, obj, subname)) {
                 return false;
-            if (!obj)
+            }
+            if (!obj) {
                 return false;
+            }
             App::Document* doc = obj->getDocument();
             return Gui::Selection().testSelection(doc, obj, subname.c_str());
         };
 
         if (!ret.empty()) {
             const SoPickedPoint* top = ret[0].pp;
-            if (passesFilter(top))
+            if (passesFilter(top)) {
                 return top;
+            }
             for (size_t i = 1; i < ret.size(); ++i) {
-                if (passesFilter(ret[i].pp))
+                if (passesFilter(ret[i].pp)) {
                     return ret[i].pp;
+                }
             }
             const SbVec2s cursorPos = n->getEvent()->getPosition();
             constexpr float pickRadius = 10.0f;
@@ -3489,8 +3494,9 @@ const SoPickedPoint* View3DInventorViewer::getPickedPoint(SoEventCallback* n) co
 
             const SoPickedPointList& nearby = rp.getPickedPointList();
             for (int i = 0; i < nearby.getLength(); ++i) {
-                if (passesFilter(nearby[i]))
+                if (passesFilter(nearby[i])) {
                     return nearby[i];
+                }
             }
             return nullptr;
         }
