@@ -47,6 +47,103 @@ function(setup_qt_test)
     endforeach()
 endfunction()
 
+function(setup_qt_module_test _testname)
+    set(options)
+    set(oneValueArgs ENTRY_POINT)
+    set(multiValueArgs MODULE_DEPENDS MODULE_INCLUDE_DIRS MODULE_LIBS)
+    cmake_parse_arguments(QT_MODULE_TEST "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
+
+    set(_entry_point ${QT_MODULE_TEST_ENTRY_POINT})
+    if(NOT _entry_point)
+        set(_entry_point run${_testname})
+    endif()
+
+    set(_module_target ${_testname}Module)
+    add_library(${_module_target} MODULE
+        ${_testname}.cpp
+    )
+
+    target_include_directories(${_module_target} PRIVATE
+        ${CMAKE_SOURCE_DIR}/src
+        ${QT_MODULE_TEST_MODULE_INCLUDE_DIRS}
+    )
+    target_include_directories(${_module_target} SYSTEM PRIVATE
+        ${QtTest_INCLUDE_DIRS}
+    )
+
+    set(_module_libs)
+    set(_runner_libs)
+    if(NOT BUILD_DYNAMIC_LINK_PYTHON)
+        list(APPEND _module_libs ${Python3_LIBRARIES})
+        list(APPEND _runner_libs ${Python3_LIBRARIES})
+    endif()
+
+    target_link_libraries(${_module_target}
+        FreeCADApp
+        FreeCADGui
+        ${QtTest_LIBRARIES}
+        ${QT_MODULE_TEST_MODULE_LIBS}
+        ${_module_libs}
+    )
+
+    if(WIN32)
+        set(_qt_module_test_output_dir ${CMAKE_BINARY_DIR}/bin)
+    else()
+        set(_qt_module_test_output_dir ${CMAKE_BINARY_DIR}/tests)
+    endif()
+
+    set_target_properties(${_module_target} PROPERTIES
+        PREFIX ""
+        LIBRARY_OUTPUT_DIRECTORY ${_qt_module_test_output_dir}
+        RUNTIME_OUTPUT_DIRECTORY ${_qt_module_test_output_dir}
+    )
+
+    foreach(_dependency IN LISTS QT_MODULE_TEST_MODULE_DEPENDS)
+        if(TARGET ${_dependency})
+            add_dependencies(${_module_target} ${_dependency})
+        endif()
+    endforeach()
+
+    set(_runner_target ${_testname}_Tests_run)
+    add_executable(${_runner_target}
+        ${CMAKE_SOURCE_DIR}/tests/src/DelayedQtModuleTestRunner.cpp
+    )
+    add_dependencies(${_runner_target} ${_module_target})
+    add_test(
+        NAME ${_runner_target}
+        COMMAND ${_runner_target} $<TARGET_FILE:${_module_target}> ${_entry_point}
+    )
+
+    target_include_directories(${_runner_target} PRIVATE
+        ${CMAKE_SOURCE_DIR}/src
+        ${CMAKE_SOURCE_DIR}/tests
+    )
+    target_include_directories(${_runner_target} SYSTEM PRIVATE
+        ${QtTest_INCLUDE_DIRS}
+    )
+    target_link_libraries(${_runner_target}
+        FreeCADApp
+        FreeCADGui
+        ${QtTest_LIBRARIES}
+        ${_runner_libs}
+    )
+
+    if(WIN32)
+        set_target_properties(${_runner_target} PROPERTIES
+            RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+        set_tests_properties(${_runner_target} PROPERTIES
+            LABELS "Qt"
+            ENVIRONMENT "QT_QPA_PLATFORM=offscreen"
+            ENVIRONMENT_MODIFICATION "${_test_env_mod}")
+    else()
+        set_target_properties(${_runner_target} PROPERTIES
+            RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tests)
+        set_tests_properties(${_runner_target} PROPERTIES
+            LABELS "Qt"
+            ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
+    endif()
+endfunction()
+
 set(TestExecutables
     App_tests_run
     Base_tests_run
