@@ -103,7 +103,12 @@ void Gizmo::setDraggerPlacement(const Base::Vector3d& pos, const Base::Vector3d&
 
 bool Gizmo::isDelayedUpdateEnabled()
 {
-    return getGizmoParameterGroup()->GetBool("DelayedGizmoUpdate", false);
+    // When async recompute is enabled, favor drag-end updates by default to
+    // avoid flooding task-panel preview recomputes from high-frequency gizmo motion.
+    return getGizmoParameterGroup()->GetBool(
+        "DelayedGizmoUpdate",
+        App::GetApplication().isAsyncRecomputeEnabled()
+    );
 }
 
 double Gizmo::getMultFactor()
