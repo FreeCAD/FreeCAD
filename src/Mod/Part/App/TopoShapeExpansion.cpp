@@ -139,6 +139,16 @@ static void expandCompound(const TopoShape& shape, std::vector<TopoShape>& res)
     }
 }
 
+static void throwIfRecomputeCanceled()
+{
+    App::throwIfRecomputeCanceled();
+}
+
+static void throwIfRecomputeCanceled(const ScopedRecomputeProgress& scope)
+{
+    scope.throwIfCanceled();
+}
+
 void TopoShape::initCache(int reset) const
 {
     if (reset > 0 || !_cache || _cache->isTouched(_Shape)) {
@@ -2448,6 +2458,9 @@ TopoShape& TopoShape::makeElementPipeShell(
     if (!op) {
         op = Part::OpCodes::PipeShell;
     }
+    const std::size_t totalPhases = make_solid == MakeSolid::makeSolid ? 4 : 3;
+    ScopedRecomputeProgress progressScope(op);
+    auto prepareScope = progressScope.makeStepScope(0, totalPhases, "Preparing pipe shell...");
 
     if (shapes.size() < 2) {
         FC_THROWM(Base::CADKernelError, "Not enough input shapes");
@@ -2496,15 +2509,27 @@ TopoShape& TopoShape::makeElementPipeShell(
     if (!mkPipeShell.IsReady()) {
         FC_THROWM(Base::CADKernelError, "shape is not ready to build");
     }
-    else {
-        Part::buildWithProgress(mkPipeShell);
-    }
+    prepareScope.complete();
 
+    auto buildScope = progressScope.makeStepScope(1, totalPhases, "Building pipe shell...");
+    throwIfRecomputeCanceled(buildScope);
+    Part::buildWithProgress(mkPipeShell);
+    buildScope.complete();
+
+    std::size_t mapPhase = 2;
     if (make_solid == MakeSolid::makeSolid) {
+        auto solidScope = progressScope.makeStepScope(2, totalPhases, "Making solid...");
+        throwIfRecomputeCanceled(solidScope);
         mkPipeShell.MakeSolid();
+        solidScope.complete();
+        mapPhase = 3;
     }
 
-    return makeElementShape(mkPipeShell, shapes, op);
+    auto mapScope = progressScope.makeStepScope(mapPhase, totalPhases, "Mapping pipe shell...");
+    throwIfRecomputeCanceled(mapScope);
+    auto& result = makeElementShape(mkPipeShell, shapes, op);
+    mapScope.complete();
+    return result;
 }
 
 TopoShape& TopoShape::makeElementOffset(
@@ -2522,6 +2547,10 @@ TopoShape& TopoShape::makeElementOffset(
     if (!op) {
         op = Part::OpCodes::Offset;
     }
+    const std::size_t totalPhases = fill == FillType::noFill ? 2 : 5;
+    ScopedRecomputeProgress progressScope(op);
+    auto offsetScope = progressScope.makeStepScope(0, totalPhases, "Building offset shape...");
+    throwIfRecomputeCanceled(offsetScope);
 
     BRepOffsetAPI_MakeOffsetShape mkOffset;
     mkOffset.PerformByJoin(
@@ -2533,11 +2562,14 @@ TopoShape& TopoShape::makeElementOffset(
         selfInter ? Standard_True : Standard_False,
         GeomAbs_JoinType(join)
     );
+    offsetScope.complete();
 
     if (!mkOffset.IsDone()) {
         FC_THROWM(Base::CADKernelError, "BRepOffsetAPI_MakeOffsetShape not done");
     }
 
+    auto mapScope = progressScope.makeStepScope(1, totalPhases, "Mapping offset shape...");
+    throwIfRecomputeCanceled(mapScope);
     TopoShape res(Tag, Hasher);
     res.makeElementShape(mkOffset, shape, op);
     if (shape.hasSubShape(TopAbs_SOLID) && !res.hasSubShape(TopAbs_SOLID)) {
@@ -2548,6 +2580,7 @@ TopoShape& TopoShape::makeElementOffset(
             FC_WARN("failed to make solid: " << e.GetMessageString());
         }
     }
+    mapScope.complete();
     if (fill == FillType::noFill) {
         *this = res;
         return *this;
@@ -2563,7 +2596,11 @@ TopoShape& TopoShape::makeElementOffset(
 
     BRep_Builder builder;
     std::vector<TopoShape> shapes;
-    for (int index = 1; index <= freeCheck.NbClosedFreeBounds(); ++index) {
+    auto wallScope = progressScope.makeStepScope(2, totalPhases, "Building offset walls...");
+    int freeBounds = freeCheck.NbClosedFreeBounds();
+    for (int index = 1; index <= freeBounds; ++index) {
+        auto sectionScope = wallScope.makeStepScope(index - 1, freeBounds, "Building offset wall...");
+        throwIfRecomputeCanceled(sectionScope);
         TopoShape originalWire(shape.Tag, shape.Hasher, freeCheck.ClosedFreeBound(index)->FreeBound());
         originalWire.mapSubElement(shape);
         const BRepAlgo_Image& img = mkOffset.MakeOffset().OffsetEdgesFromShapes();
@@ -2606,6 +2643,7 @@ TopoShape& TopoShape::makeElementOffset(
         aGenerator.AddWire(TopoDS::Wire(originalWire.getShape()));
         aGenerator.AddWire(offsetWire);
         Part::buildWithProgress(aGenerator);
+        sectionScope.complete();
         if (!aGenerator.IsDone()) {
             FC_THROWM(Base::CADKernelError, "ThruSections failed");
         }
@@ -2615,15 +2653,21 @@ TopoShape& TopoShape::makeElementOffset(
 
     TopoShape perimeterCompound(Tag, Hasher);
     perimeterCompound.makeElementCompound(shapes, op);
+    wallScope.complete();
 
     // still had to sew. not using the passed in parameter for sew.
     // Sew has it's own default tolerance. Opinions?
+    auto sewScope = progressScope.makeStepScope(3, totalPhases, "Sewing offset result...");
+    throwIfRecomputeCanceled(sewScope);
     BRepBuilderAPI_Sewing sewTool;
     sewTool.Add(shape.getShape());
     sewTool.Add(perimeterCompound.getShape());
     sewTool.Add(res.getShape());
     sewTool.Perform();  // Perform Sewing
+    sewScope.complete();
 
+    auto finalizeScope = progressScope.makeStepScope(4, totalPhases, "Finalizing offset result...");
+    throwIfRecomputeCanceled(finalizeScope);
     TopoDS_Shape outputShape = sewTool.SewedShape();
     if ((outputShape.ShapeType() == TopAbs_SHELL) && (outputShape.Closed())) {
         BRepBuilderAPI_MakeSolid solidMaker(TopoDS::Shell(outputShape));
@@ -2644,6 +2688,7 @@ TopoShape& TopoShape::makeElementOffset(
     shapes.push_back(perimeterCompound);
     *this = TopoShape(Tag, Hasher)
                 .makeShapeWithElementMap(outputShape, MapperSewing(sewTool), shapes, op);
+    finalizeScope.complete();
     return *this;
 }
 
@@ -2795,6 +2840,9 @@ TopoShape& TopoShape::makeElementOffset2D(
     }
 
     if (shapesToProcess.size() > 0) {
+        constexpr std::size_t totalPhases = 4;
+        ScopedRecomputeProgress progressScope(op);
+        auto prepareScope = progressScope.makeStepScope(0, totalPhases, "Preparing offset...");
         TopoShape res(Tag, Hasher);
 
         // although 2d offset supports offsetting a face directly, it seems there is
@@ -2846,8 +2894,11 @@ TopoShape& TopoShape::makeElementOffset2D(
                  .findPlane(workingPlane)) {
             FC_THROWM(Base::CADKernelError, "makeOffset2D: wires are nonplanar or noncoplanar");
         }
+        prepareScope.complete();
 
         // do the offset..
+        auto offsetScope = progressScope.makeStepScope(1, totalPhases, "Building offset...");
+        throwIfRecomputeCanceled(offsetScope);
         TopoShape offsetShape;
         if (fabs(offset) > Precision::Confusion()) {
             BRepOffsetAPI_MakeOffsetFix mkOffset(
@@ -2888,7 +2939,11 @@ TopoShape& TopoShape::makeElementOffset2D(
                                   SingleShapeCompoundCreationPolicy::returnShape
                               );
         }
+        throwIfRecomputeCanceled(offsetScope);
+        offsetScope.complete();
 
+        auto processScope = progressScope.makeStepScope(2, totalPhases, "Processing offset result...");
+        throwIfRecomputeCanceled(processScope);
         std::vector<TopoShape> offsetWires;
         // interestingly, if wires are removed, empty compounds are returned by MakeOffset (as of
         // OCC 7.0.0) so, we just extract all nesting
@@ -2951,6 +3006,7 @@ TopoShape& TopoShape::makeElementOffset2D(
                 // just ignore all open wires
             }
             else {
+                throwIfRecomputeCanceled(processScope);
                 // We need to connect open wires to form closed wires.
 
                 // for now, only support offsetting one open wire -> there should be exactly two
@@ -3038,19 +3094,29 @@ TopoShape& TopoShape::makeElementOffset2D(
                 }
                 // add final joining edge
                 mkWire.Add(BRepBuilderAPI_MakeEdge(v3, v1).Edge());
+
+                throwIfRecomputeCanceled(processScope);
                 Part::buildWithProgress(mkWire);
                 wiresForMakingFaces.push_back(
                     TopoShape(Tag, Hasher).makeElementShape(mkWire, openWires, op)
                 );
             }
         }
+        processScope.complete();
 
+        auto finalizeScope = progressScope.makeStepScope(
+            3,
+            totalPhases,
+            wiresForMakingFaces.size() > 0 ? "Building offset faces..." : "Finalizing offset result..."
+        );
+        throwIfRecomputeCanceled(finalizeScope);
         // make faces
         if (wiresForMakingFaces.size() > 0) {
             TopoShape face(0, Hasher);
             face.makeElementFace(wiresForMakingFaces, nullptr, nullptr, &workingPlane);
             expandCompound(face, shapesToReturn);
         }
+        finalizeScope.complete();
     }
 
     return makeElementCompound(shapesToReturn, op, outputPolicy);
@@ -3781,6 +3847,9 @@ TopoShape& TopoShape::makeElementFilledFace(
     if (!op) {
         op = Part::OpCodes::FilledFace;
     }
+    constexpr std::size_t totalPhases = 3;
+    ScopedRecomputeProgress progressScope(op);
+    auto prepareScope = progressScope.makeStepScope(0, totalPhases, "Preparing filled face...");
     BRepOffsetAPI_MakeFilling maker(
         params.degree,
         params.ptsoncurve,
@@ -3958,11 +4027,22 @@ TopoShape& TopoShape::makeElementFilledFace(
         }
     }
 
+    prepareScope.complete();
+
+    auto buildScope = progressScope.makeStepScope(1, totalPhases, "Building filled face...");
+    throwIfRecomputeCanceled(buildScope);
     Part::buildWithProgress(maker);
+    throwIfRecomputeCanceled(buildScope);
+    buildScope.complete();
     if (!maker.IsDone()) {
         FC_THROWM(Base::CADKernelError, "Failed to created face by filling edges");
     }
-    return makeElementShape(maker, _shapes, op);
+
+    auto mapScope = progressScope.makeStepScope(2, totalPhases, "Mapping filled face...");
+    throwIfRecomputeCanceled(mapScope);
+    auto& result = makeElementShape(maker, _shapes, op);
+    mapScope.complete();
+    return result;
 }
 
 // TODO:  This method does not appear to ever be called in the codebase, and it is probably
@@ -4262,19 +4342,16 @@ TopoShape& TopoShape::makeElementGeneralFuse(
     prepareScope.complete();
 
     auto buildScope = progressScope.makeStepScope(1, totalPhases, "Building general fuse...");
-    if (buildScope.wasCanceled()) {
-        FC_THROWM(Base::CADKernelError, "User aborted");
-    }
+    throwIfRecomputeCanceled(buildScope);
     Part::buildWithProgress(mkGFA);
+    throwIfRecomputeCanceled(buildScope);
     buildScope.complete();
     if (!mkGFA.IsDone()) {
         FC_THROWM(Base::CADKernelError, "GeneralFuse failed");
     }
 
     auto mapScope = progressScope.makeStepScope(2, totalPhases, "Mapping general fuse...");
-    if (mapScope.wasCanceled()) {
-        FC_THROWM(Base::CADKernelError, "User aborted");
-    }
+    throwIfRecomputeCanceled(mapScope);
     makeElementShape(mkGFA, shapes, op);
     modifies.resize(shapes.size());
     int index = 0;
@@ -4313,13 +4390,11 @@ TopoShape& TopoShape::makeElementXor(
         FC_THROWM(NullShapeException, "Null shape");
     }
 
-    if (App::currentRecomputeWasCanceled()) {
-        FC_THROWM(Base::CADKernelError, "User aborted");
-    }
-
     if (!op) {
         op = Part::OpCodes::Xor;
     }
+    ScopedRecomputeProgress progressScope(op);
+    throwIfRecomputeCanceled(progressScope);
 
     std::vector<TopoShape> expandedShapes;
     // Same compound expansion as Fuse
@@ -4356,7 +4431,6 @@ TopoShape& TopoShape::makeElementXor(
         return *this;
     }
 
-    ScopedRecomputeProgress progressScope(op);
     const std::size_t totalStages = (inputs.size() - 1) * 3;
     std::size_t progressStage = 0;
     TopoShape result = inputs[0];
@@ -4367,9 +4441,7 @@ TopoShape& TopoShape::makeElementXor(
         // Step 1: Union(A, B) - intermediate result, no op code.
         auto unionScope
             = progressScope.makeStepScope(progressStage++, totalStages, "Building XOR union...");
-        if (unionScope.wasCanceled()) {
-            FC_THROWM(Base::CADKernelError, "User aborted");
-        }
+        throwIfRecomputeCanceled(unionScope);
         TopoShape tempUnion(0, Hasher);
         tempUnion.makeElementBoolean(
             Part::OpCodes::Fuse,
@@ -4383,9 +4455,7 @@ TopoShape& TopoShape::makeElementXor(
         // Step 2: Common(A, B) - intermediate result, no op code.
         auto commonScope
             = progressScope.makeStepScope(progressStage++, totalStages, "Building XOR common...");
-        if (commonScope.wasCanceled()) {
-            FC_THROWM(Base::CADKernelError, "User aborted");
-        }
+        throwIfRecomputeCanceled(commonScope);
         TopoShape tempCommon(0, Hasher);
         tempCommon.makeElementBoolean(
             Part::OpCodes::Common,
@@ -4399,9 +4469,7 @@ TopoShape& TopoShape::makeElementXor(
         // Step 3: Compute the final result for this iteration
         auto finalScope
             = progressScope.makeStepScope(progressStage++, totalStages, "Building XOR result...");
-        if (finalScope.wasCanceled()) {
-            FC_THROWM(Base::CADKernelError, "User aborted");
-        }
+        throwIfRecomputeCanceled(finalScope);
         if (tempCommon.isNull() || tempCommon.getShape().IsNull()) {
             // No intersection, XOR is the same as Union.
             // We still call the boolean op to get the correct history.
@@ -4533,6 +4601,9 @@ TopoShape& TopoShape::makeElementLoft(
     if (!op) {
         op = Part::OpCodes::Loft;
     }
+    constexpr std::size_t totalPhases = 3;
+    ScopedRecomputeProgress progressScope(op);
+    auto prepareScope = progressScope.makeStepScope(0, totalPhases, "Preparing loft...");
 
     // http://opencascade.blogspot.com/2010/01/surface-modeling-part5.html
     BRepOffsetAPI_ThruSections aGenerator(isSolid == IsSolid::solid, isRuled == IsRuled::ruled);
@@ -4590,14 +4661,23 @@ TopoShape& TopoShape::makeElementLoft(
     Standard_Boolean anIsCheck = Standard_True;
     aGenerator.CheckCompatibility(anIsCheck);  // use BRepFill_CompatibleWires on profiles. force
                                                // #edges, orientation, "origin" to match.
+    prepareScope.complete();
 
+    auto buildScope = progressScope.makeStepScope(1, totalPhases, "Building loft...");
+    throwIfRecomputeCanceled(buildScope);
     Part::buildWithProgress(aGenerator);
-    return makeShapeWithElementMap(
+    buildScope.complete();
+
+    auto mapScope = progressScope.makeStepScope(2, totalPhases, "Mapping loft...");
+    throwIfRecomputeCanceled(mapScope);
+    auto& result = makeShapeWithElementMap(
         aGenerator.Shape(),
         MapperThruSections(aGenerator, profiles),
         shapes,
         op
     );
+    mapScope.complete();
+    return result;
 }
 
 TopoShape& TopoShape::makeElementPrism(const TopoShape& base, const gp_Vec& vec, const char* op)
@@ -4890,6 +4970,9 @@ TopoShape& TopoShape::makeElementDraft(
     if (!op) {
         op = Part::OpCodes::Draft;
     }
+    constexpr std::size_t totalPhases = 3;
+    ScopedRecomputeProgress progressScope(op);
+    auto prepareScope = progressScope.makeStepScope(0, totalPhases, "Preparing draft...");
 
     if (shape.isNull()) {
         FC_THROWM(NullShapeException, "Null shape");
@@ -4923,8 +5006,19 @@ TopoShape& TopoShape::makeElementDraft(
         }
     } while (retry && !done);
 
+    prepareScope.complete();
+
+    auto buildScope = progressScope.makeStepScope(1, totalPhases, "Building draft...");
+    throwIfRecomputeCanceled(buildScope);
     Part::buildWithProgress(mkDraft);
-    return makeElementShape(mkDraft, shape, op);
+    throwIfRecomputeCanceled(buildScope);
+    buildScope.complete();
+
+    auto mapScope = progressScope.makeStepScope(2, totalPhases, "Mapping draft...");
+    throwIfRecomputeCanceled(mapScope);
+    auto& result = makeElementShape(mkDraft, shape, op);
+    mapScope.complete();
+    return result;
 }
 
 TopoShape& TopoShape::makeElementFace(
@@ -4959,6 +5053,9 @@ TopoShape& TopoShape::makeElementFace(
     if (!maker || !maker[0]) {
         maker = "Part::FaceMakerBullseye";
     }
+    constexpr std::size_t totalPhases = 3;
+    ScopedRecomputeProgress progressScope(op ? op : Part::OpCodes::Face);
+    auto prepareScope = progressScope.makeStepScope(0, totalPhases, "Preparing face...");
     std::unique_ptr<FaceMaker> mkFace = FaceMaker::ConstructFromType(maker);
     mkFace->MyHasher = Hasher;
     mkFace->MyOp = op;
@@ -4975,8 +5072,15 @@ TopoShape& TopoShape::makeElementFace(
             mkFace->addTopoShape(shape);
         }
     }
-    Part::buildWithProgress(*mkFace);
+    prepareScope.complete();
 
+    auto buildScope = progressScope.makeStepScope(1, totalPhases, "Building face...");
+    throwIfRecomputeCanceled(buildScope);
+    Part::buildWithProgress(*mkFace);
+    buildScope.complete();
+
+    auto finalizeScope = progressScope.makeStepScope(2, totalPhases, "Finalizing face...");
+    throwIfRecomputeCanceled(finalizeScope);
     const auto& ret = mkFace->getTopoShape();
     setShape(ret._Shape);
     if (elementMapPolicy == ElementMapPolicy::Drop) {
@@ -5009,6 +5113,7 @@ TopoShape& TopoShape::makeElementFace(
             FC_WARN("makeElementFace: resulting face is invalid");
         }
     }
+    finalizeScope.complete();
     return *this;
 }
 
@@ -6006,9 +6111,7 @@ TopoShape& TopoShape::makeElementBoolean(
         FC_THROWM(NullShapeException, "Null shape");
     }
 
-    if (App::currentRecomputeWasCanceled()) {
-        FC_THROWM(Base::CADKernelError, "User aborted");
-    }
+    throwIfRecomputeCanceled();
 
     if (!op) {
         op = maker;
@@ -6230,26 +6333,18 @@ TopoShape& TopoShape::makeElementBoolean(
     prepareScope.complete();
 
     auto buildScope = progressScope.makeStepScope(1, totalPhases, "Building boolean...");
-    if (buildScope.wasCanceled()) {
-        FC_THROWM(Base::CADKernelError, "User aborted");
-    }
+    throwIfRecomputeCanceled(buildScope);
     Part::buildWithProgress(*mk);
+    throwIfRecomputeCanceled(buildScope);
     buildScope.complete();
-    if (App::currentRecomputeWasCanceled()) {
-        FC_THROWM(Base::CADKernelError, "User aborted");
-    }
     auto mapScope = progressScope.makeStepScope(2, totalPhases, "Mapping boolean result...");
-    if (mapScope.wasCanceled()) {
-        FC_THROWM(Base::CADKernelError, "User aborted");
-    }
+    throwIfRecomputeCanceled(mapScope);
     makeElementShape(*mk, inputs, op, elementMapPolicy);
     mapScope.complete();
 
     if (buildShell) {
         auto shellScope = progressScope.makeStepScope(3, totalPhases, "Building shell...");
-        if (shellScope.wasCanceled()) {
-            FC_THROWM(Base::CADKernelError, "User aborted");
-        }
+        throwIfRecomputeCanceled(shellScope);
         makeElementShell(true, nullptr, elementMapPolicy);
         shellScope.complete();
     }
