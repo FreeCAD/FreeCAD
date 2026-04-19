@@ -52,7 +52,7 @@ namespace PartDesignGui
 class Ui_TaskHelixParameters;
 
 
-class TaskHelixParameters: public TaskSketchBasedParameters
+class PartDesignGuiExport TaskHelixParameters: public TaskSketchBasedParameters
 {
     Q_OBJECT
 
@@ -163,7 +163,7 @@ private:
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgHelixParameters: public TaskDlgSketchBasedParameters
+class PartDesignGuiExport TaskDlgHelixParameters: public TaskDlgSketchBasedParameters
 {
     Q_OBJECT
 

@@ -57,7 +57,7 @@ class Hole;
 namespace PartDesignGui
 {
 
-class TaskHoleParameters: public TaskSketchBasedParameters
+class PartDesignGuiExport TaskHoleParameters: public TaskSketchBasedParameters
 {
     Q_OBJECT
 
@@ -201,7 +201,7 @@ private:
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgHoleParameters: public TaskDlgSketchBasedParameters
+class PartDesignGuiExport TaskDlgHoleParameters: public TaskDlgSketchBasedParameters
 {
     Q_OBJECT
 
