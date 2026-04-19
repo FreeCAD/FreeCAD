@@ -176,6 +176,13 @@ void ViewProviderTransformed::handleTransformedResult(PartDesign::Transformed* p
     }
 }
 
+void ViewProviderTransformed::refreshPreviewResult()
+{
+    auto* pcTransformed = getObject<PartDesign::Transformed>();
+    updatePreview();
+    handleTransformedResult(pcTransformed);
+}
+
 void ViewProviderTransformed::recomputeFeature(bool recompute)
 {
     auto* pcTransformed = getObject<PartDesign::Transformed>();
@@ -184,9 +191,7 @@ void ViewProviderTransformed::recomputeFeature(bool recompute)
         pcTransformed->recomputeFeature(true);
     }
 
-    updatePreview();
-
-    handleTransformedResult(pcTransformed);
+    refreshPreviewResult();
 }
 
 
