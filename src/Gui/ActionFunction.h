@@ -88,6 +88,7 @@ private:
 };
 
 class TimerFunctionPrivate;
+class DebouncedFunctionPrivate;
 
 class GuiExport TimerFunction: public QObject
 {
@@ -111,6 +112,31 @@ private:
     QScopedPointer<TimerFunctionPrivate> d_ptr;
     Q_DISABLE_COPY(TimerFunction)
     Q_DECLARE_PRIVATE(TimerFunction)
+};
+
+class GuiExport DebouncedFunction: public QObject
+{
+    Q_OBJECT
+
+public:
+    explicit DebouncedFunction(QObject* = nullptr);
+    ~DebouncedFunction() override;
+
+    void setFunction(std::function<void()> func);
+    void setInterval(int ms);
+    int interval() const;
+    bool isActive() const;
+    void start();
+    void stop();
+    void triggerNow();
+
+private Q_SLOTS:
+    void timeout();
+
+private:
+    QScopedPointer<DebouncedFunctionPrivate> d_ptr;
+    Q_DISABLE_COPY(DebouncedFunction)
+    Q_DECLARE_PRIVATE(DebouncedFunction)
 };
 
 }  // namespace Gui
