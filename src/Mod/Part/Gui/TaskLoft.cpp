@@ -37,6 +37,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Gui/Application.h>
+#include <Gui/AsyncRecomputeProgressDialog.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
@@ -224,8 +225,28 @@ bool LoftWidget::accept()
         }
         doc->openCommand(QT_TRANSLATE_NOOP("Command", "Loft"));
         Gui::Command::runCommand(Gui::Command::App, cmd.toUtf8());
-        doc->getDocument()->recompute();
         App::DocumentObject* obj = doc->getDocument()->getActiveObject();
+        const auto outcome = Gui::runAsyncDocumentObjectRecomputeProgressDialog(
+            this,
+            tr("Loft"),
+            tr("Computing loft…"),
+            obj,
+            /*recursive=*/true,
+            [obj]() {
+                if (obj && obj->getDocument()) {
+                    obj->getDocument()->recomputeFeature(obj, /*recursive=*/true);
+                }
+            }
+        );
+        if (!outcome.success) {
+            doc->abortCommand();
+            if (outcome.canceled) {
+                return false;
+            }
+            throw Base::RuntimeError(
+                outcome.message.empty() ? "Loft recompute failed" : outcome.message
+            );
+        }
         if (obj && !obj->isValid()) {
             std::string msg = obj->getStatusString();
             doc->abortCommand();
