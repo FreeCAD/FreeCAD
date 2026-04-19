@@ -37,11 +37,13 @@
 #include <QOpenGLWidget>
 #include <QTextStream>
 #include <QStatusBar>
+#include <QTimer>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/nodes/SoSeparator.h>
 
 #include <App/AutoTransaction.h>
 #include <App/Document.h>
+#include <App/DocumentObserver.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/Transactions.h>
@@ -117,6 +119,8 @@ struct DocumentP
     std::map<SoSeparator*, ViewProviderDocumentObject*> _CoinMap;
     std::map<std::string, ViewProvider*> _ViewProviderMapAnnotation;
     std::list<ViewProviderDocumentObject*> _redoViewProviders;
+    std::map<std::pair<std::string, std::string>, App::DocumentObjectT> pendingObjectUpdates;
+    bool pendingObjectUpdateFlushScheduled {false};
 
     using Connection = fastsignals::connection;
     using AdvancedConnection = fastsignals::advanced_connection;
@@ -1050,6 +1054,15 @@ void Document::slotNewObject(const App::DocumentObject& Obj)
 void Document::slotDeletedObject(const App::DocumentObject& Obj)
 {
     setModified(true);
+    const std::string objectName = Obj.getNameInDocument();
+    for (auto it = d->pendingObjectUpdates.begin(); it != d->pendingObjectUpdates.end();) {
+        if (it->first.first == objectName) {
+            it = d->pendingObjectUpdates.erase(it);
+        }
+        else {
+            ++it;
+        }
+    }
 
     // cycling to all views of the document
     ViewProvider* viewProvider = getViewProvider(&Obj);
@@ -1085,8 +1098,112 @@ void Document::slotDeletedObject(const App::DocumentObject& Obj)
     viewProvider->beforeDelete();
 }
 
+void Document::schedulePendingObjectUpdateFlush()
+{
+    if (d->pendingObjectUpdateFlushScheduled || !qApp) {
+        return;
+    }
+
+    d->pendingObjectUpdateFlushScheduled = true;
+    const QString qDocumentName = QString::fromUtf8(getDocument()->getName());
+    QTimer::singleShot(0, qApp, [qDocumentName]() {
+        if (!Application::Instance) {
+            return;
+        }
+
+        const QByteArray documentName = qDocumentName.toUtf8();
+        if (auto* guiDocument = Application::Instance->getDocument(documentName.constData())) {
+            guiDocument->flushPendingObjectUpdates();
+        }
+    });
+}
+
+void Document::flushPendingObjectUpdates()
+{
+    d->pendingObjectUpdateFlushScheduled = false;
+    if (d->_isClosing || Application::Instance->isClosing() || d->pendingObjectUpdates.empty()) {
+        d->pendingObjectUpdates.clear();
+        return;
+    }
+
+    auto pendingObjectUpdates = std::move(d->pendingObjectUpdates);
+    d->pendingObjectUpdates.clear();
+
+    for (auto& [key, objectInfo] : pendingObjectUpdates) {
+        auto* object = objectInfo.getObject();
+        if (!object) {
+            continue;
+        }
+
+        auto* viewProvider = getViewProvider(object);
+        if (!viewProvider) {
+            continue;
+        }
+
+        const std::string& propertyName = key.second;
+        App::Property* property = propertyName.empty()
+            ? nullptr
+            : objectInfo.getPropertyByName(propertyName.c_str());
+        applyChangedObject(viewProvider, *object, property);
+    }
+
+    if (!d->pendingObjectUpdates.empty()) {
+        schedulePendingObjectUpdateFlush();
+    }
+}
+
+void Document::applyChangedObject(
+    ViewProvider* viewProvider,
+    const App::DocumentObject& Obj,
+    const App::Property* Prop
+)
+{
+    if (!viewProvider) {
+        return;
+    }
+
+    try {
+        viewProvider->update(Prop);
+        if (Prop && d->_editingViewer && d->_editingObject && d->_editViewProviderParent
+            && (Prop->isDerivedFrom<App::PropertyPlacement>()
+                // Issue ID 0004230 : getName() can return null in which case strstr() crashes
+                || (Prop->getName() && strstr(Prop->getName(), "Scale")))
+            && d->_editObjs.contains(&Obj)) {
+            Base::Matrix4D mat;
+            auto sobj = d->_editViewProviderParent->getObject()
+                            ->getSubObject(d->_editSubname.c_str(), nullptr, &mat);
+            if (sobj == d->_editingObject && d->_editingTransform != mat) {
+                d->_editingTransform = mat;
+                d->_editingViewer->setEditingTransform(d->_editingTransform);
+            }
+        }
+    }
+    catch (const Base::MemoryException& e) {
+        FC_ERR("Memory exception in " << Obj.getFullName() << " thrown: " << e.what());
+    }
+    catch (Base::Exception& e) {
+        e.reportException();
+    }
+    catch (const std::exception& e) {
+        FC_ERR("C++ exception in " << Obj.getFullName() << " thrown " << e.what());
+    }
+    catch (...) {
+        FC_ERR("Cannot update representation for " << Obj.getFullName());
+    }
+
+    handleChildren3D(viewProvider);
+
+    if (Prop && viewProvider->isDerivedFrom<ViewProviderDocumentObject>()) {
+        signalChangedObject(static_cast<ViewProviderDocumentObject&>(*viewProvider), *Prop);
+    }
+}
+
 void Document::beforeDelete()
 {
+    d->_isClosing = true;
+    d->pendingObjectUpdates.clear();
+    d->pendingObjectUpdateFlushScheduled = false;
+
     Application::Instance->unsetEditDocumentIf([this](Gui::Document* editDoc) {
         auto vp = freecad_cast<ViewProviderDocumentObject*>(editDoc->d->_editViewProvider);
         auto vpp = freecad_cast<ViewProviderDocumentObject*>(editDoc->d->_editViewProviderParent);
@@ -1102,41 +1219,19 @@ void Document::beforeDelete()
 void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop)
 {
     ViewProvider* viewProvider = getViewProvider(&Obj);
-    if (viewProvider) {
-        try {
-            viewProvider->update(&Prop);
-            if (d->_editingViewer && d->_editingObject && d->_editViewProviderParent
-                && (Prop.isDerivedFrom<App::PropertyPlacement>()
-                    // Issue ID 0004230 : getName() can return null in which case strstr() crashes
-                    || (Prop.getName() && strstr(Prop.getName(), "Scale")))
-                && d->_editObjs.contains(&Obj)) {
-                Base::Matrix4D mat;
-                auto sobj = d->_editViewProviderParent->getObject()
-                                ->getSubObject(d->_editSubname.c_str(), nullptr, &mat);
-                if (sobj == d->_editingObject && d->_editingTransform != mat) {
-                    d->_editingTransform = mat;
-                    d->_editingViewer->setEditingTransform(d->_editingTransform);
-                }
-            }
-        }
-        catch (const Base::MemoryException& e) {
-            FC_ERR("Memory exception in " << Obj.getFullName() << " thrown: " << e.what());
-        }
-        catch (Base::Exception& e) {
-            e.reportException();
-        }
-        catch (const std::exception& e) {
-            FC_ERR("C++ exception in " << Obj.getFullName() << " thrown " << e.what());
-        }
-        catch (...) {
-            FC_ERR("Cannot update representation for " << Obj.getFullName());
-        }
+    const char* propName = Prop.getName();
+    const bool shouldDeferUpdate = viewProvider && !d->_isClosing && qApp
+        && d->_pcDocument->testStatus(App::Document::Recomputing) && propName;
 
-        handleChildren3D(viewProvider);
-
-        if (viewProvider->isDerivedFrom<ViewProviderDocumentObject>()) {
-            signalChangedObject(static_cast<ViewProviderDocumentObject&>(*viewProvider), Prop);
-        }
+    if (shouldDeferUpdate) {
+        // During recompute, coalesce repeated object/property refreshes into a
+        // single queued GUI pass instead of blocking the emitting thread on
+        // every individual view-provider update.
+        d->pendingObjectUpdates[{Obj.getNameInDocument(), propName}] = App::DocumentObjectT(&Obj);
+        schedulePendingObjectUpdateFlush();
+    }
+    else {
+        applyChangedObject(viewProvider, Obj, &Prop);
     }
 
     // a property of an object has changed
