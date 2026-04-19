@@ -28,6 +28,7 @@
 #include <App/DocumentObserver.h>
 #include <App/DocumentObject.h>
 #include <Gui/Application.h>
+#include <Gui/AsyncRecomputeProgressDialog.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
 #include <Gui/InputHint.h>
@@ -188,6 +189,41 @@ TaskDlgFeatureParameters::TaskDlgFeatureParameters(PartDesignGui::ViewProvider* 
 
 TaskDlgFeatureParameters::~TaskDlgFeatureParameters() = default;
 
+TaskDlgFeatureParameters::AcceptRecomputeMode TaskDlgFeatureParameters::acceptRecomputeMode(bool) const
+{
+    return AcceptRecomputeMode::AsyncDocument;
+}
+
+bool PartDesignGui::runAsyncAcceptDocumentRecompute(App::Document* document)
+{
+    if (!document) {
+        throw Base::RuntimeError("Feature document is not available.");
+    }
+
+    const auto outcome = Gui::runAsyncDocumentRecomputeProgressDialog(
+        Gui::getMainWindow(),
+        QApplication::translate("PartDesignGui::TaskDlgFeatureParameters", "Feature parameters"),
+        QApplication::translate("PartDesignGui::TaskDlgFeatureParameters", "Computing feature..."),
+        document,
+        /*force=*/false,
+        [document]() {
+            if (document) {
+                document->recompute();
+            }
+        }
+    );
+    if (!outcome.success) {
+        if (outcome.canceled) {
+            return false;
+        }
+        throw Base::RuntimeError(
+            outcome.message.empty() ? "Feature recompute failed" : outcome.message
+        );
+    }
+
+    return true;
+}
+
 bool TaskDlgFeatureParameters::accept()
 {
     App::DocumentObject* feature = getObject();
@@ -211,10 +247,12 @@ bool TaskDlgFeatureParameters::accept()
             throw Base::TypeError("Bad object processed in the feature dialog.");
         }
 
-        if (isUpdateBlocked) {
-            Gui::cmdAppDocument(feature, "recompute()");
+        App::Document* document = feature->getDocument();
+        if (!document) {
+            throw Base::RuntimeError("Feature document is not available.");
         }
-        else {
+
+        if (!isUpdateBlocked) {
             // object was already computed, nothing more to do with it...
             Gui::cmdAppDocument(feature, "purgeTouched()");
 
@@ -226,8 +264,17 @@ bool TaskDlgFeatureParameters::accept()
             for (auto obj : feature->getInList()) {
                 obj->touch();
             }
-            // ...and recompute them
-            Gui::cmdAppDocument(feature->getDocument(), "recompute()");
+        }
+
+        switch (acceptRecomputeMode(isUpdateBlocked)) {
+            case AcceptRecomputeMode::AsyncDocument:
+                if (!runAsyncAcceptDocumentRecompute(document)) {
+                    return false;
+                }
+                break;
+            case AcceptRecomputeMode::CommandDocument:
+                Gui::cmdAppDocument(document, "recompute()");
+                break;
         }
 
         if (!feature->isValid()) {
@@ -320,7 +367,24 @@ bool TaskDlgFeatureParameters::reject()
         }
     }
 
-    Gui::cmdAppDocument(document, "recompute()");
+    const auto outcome = Gui::runAsyncDocumentRecomputeProgressDialog(
+        Gui::getMainWindow(),
+        tr("Feature parameters"),
+        tr("Restoring document..."),
+        document,
+        /*force=*/false,
+        [document]() {
+            if (document) {
+                document->recompute();
+            }
+        }
+    );
+    if (!outcome.success && !outcome.canceled) {
+        Base::Console().error(
+            "%s\n",
+            outcome.message.empty() ? "Feature rollback recompute failed" : outcome.message.c_str()
+        );
+    }
     Gui::cmdGuiDocument(document, "resetEdit()");
 
     return true;

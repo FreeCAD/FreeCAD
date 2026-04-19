@@ -1200,7 +1200,9 @@ bool TaskDlgPrimitiveParameters::accept()
         parent->touch();
     }
 
-    Gui::cmdAppDocument(document, "recompute()");
+    if (!runAsyncAcceptDocumentRecompute(document)) {
+        return false;
+    }
     Gui::cmdGuiDocument(document, "resetEdit()");
     document->commitTransaction();
 
