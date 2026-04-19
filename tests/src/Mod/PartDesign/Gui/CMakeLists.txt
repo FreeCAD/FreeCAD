@@ -30,3 +30,15 @@ setup_qt_module_test(TaskExtrudeParametersTest
     MODULE_LIBS PartDesignGui
     MODULE_DEPENDS ${_partdesign_material_resource_targets}
 )
+setup_qt_module_test(TaskRevolutionParametersTest
+    MODULE_LIBS PartDesignGui
+    MODULE_DEPENDS ${_partdesign_material_resource_targets}
+)
+setup_qt_module_test(TaskLoftParametersTest
+    MODULE_LIBS PartDesignGui
+    MODULE_DEPENDS ${_partdesign_material_resource_targets}
+)
+setup_qt_module_test(TaskPipeParametersTest
+    MODULE_LIBS PartDesignGui
+    MODULE_DEPENDS ${_partdesign_material_resource_targets}
+)
