@@ -29,6 +29,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Base/Tools.h>
+#include <Gui/ActionFunction.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -52,10 +53,13 @@ using namespace PartGui;
 class ThicknessWidget::Private
 {
 public:
+    static constexpr int AsyncPreviewDebounceMs = 150;
+
     Ui_TaskOffset ui {};
     QString text;
     std::string selection;
     Part::Thickness* thickness {nullptr};
+    std::unique_ptr<Gui::DebouncedFunction> previewRecompute;
 
     class FaceSelection: public Gui::SelectionFilterGate
     {
@@ -117,6 +121,16 @@ ThicknessWidget::ThicknessWidget(Part::Thickness* thickness, QWidget* parent)
 
     d->ui.spinOffset->bind(d->thickness->Value);
 
+    d->previewRecompute = std::make_unique<Gui::DebouncedFunction>(this);
+    d->previewRecompute->setInterval(
+        App::GetApplication().isAsyncRecomputeEnabled() ? Private::AsyncPreviewDebounceMs : 0
+    );
+    d->previewRecompute->setFunction([this]() {
+        if (d->ui.updateView->isChecked() && d->thickness && d->thickness->getDocument()) {
+            d->thickness->getDocument()->recomputeFeature(d->thickness);
+        }
+    });
+
     // The interactive gizmos are implemented for this operation just as a proof
     // of concept. And so, it is kept disabled until the other operations of the
     // Part workbench are covered.
@@ -154,49 +168,61 @@ Part::Thickness* ThicknessWidget::getObject() const
     return d->thickness;
 }
 
+void ThicknessWidget::schedulePreviewRecompute()
+{
+    if (d->previewRecompute && d->ui.updateView->isChecked()) {
+        d->previewRecompute->start();
+    }
+}
+
+void ThicknessWidget::flushPreviewRecompute()
+{
+    if (d->previewRecompute) {
+        d->previewRecompute->triggerNow();
+    }
+}
+
+void ThicknessWidget::stopPreviewRecompute()
+{
+    if (d->previewRecompute) {
+        d->previewRecompute->stop();
+    }
+}
+
 void ThicknessWidget::onSpinOffsetValueChanged(double val)
 {
     d->thickness->Value.setValue(val);
-    if (d->ui.updateView->isChecked()) {
-        d->thickness->getDocument()->recomputeFeature(d->thickness);
-    }
+    schedulePreviewRecompute();
 }
 
 void ThicknessWidget::onModeTypeActivated(int val)
 {
     d->thickness->Mode.setValue(val);
-    if (d->ui.updateView->isChecked()) {
-        d->thickness->getDocument()->recomputeFeature(d->thickness);
-    }
+    schedulePreviewRecompute();
 }
 
 void ThicknessWidget::onJoinTypeActivated(int val)
 {
     d->thickness->Join.setValue((long)val);
-    if (d->ui.updateView->isChecked()) {
-        d->thickness->getDocument()->recomputeFeature(d->thickness);
-    }
+    schedulePreviewRecompute();
 }
 
 void ThicknessWidget::onIntersectionToggled(bool on)
 {
     d->thickness->Intersection.setValue(on);
-    if (d->ui.updateView->isChecked()) {
-        d->thickness->getDocument()->recomputeFeature(d->thickness);
-    }
+    schedulePreviewRecompute();
 }
 
 void ThicknessWidget::onSelfIntersectionToggled(bool on)
 {
     d->thickness->SelfIntersection.setValue(on);
-    if (d->ui.updateView->isChecked()) {
-        d->thickness->getDocument()->recomputeFeature(d->thickness);
-    }
+    schedulePreviewRecompute();
 }
 
 void ThicknessWidget::onFacesButtonToggled(bool on)
 {
     if (on) {
+        stopPreviewRecompute();
         QList<QWidget*> c = this->findChildren<QWidget*>();
         for (auto it : c) {
             it->setEnabled(false);
@@ -240,9 +266,7 @@ void ThicknessWidget::onFacesButtonToggled(bool on)
         Gui::Selection().rmvSelectionGate();
         Gui::Application::Instance->showViewProvider(d->thickness);
         Gui::Application::Instance->hideViewProvider(d->thickness->Faces.getValue());
-        if (d->ui.updateView->isChecked()) {
-            d->thickness->getDocument()->recomputeFeature(d->thickness);
-        }
+        schedulePreviewRecompute();
 
         if (gizmoContainer) {
             gizmoContainer->visible = true;
@@ -254,7 +278,10 @@ void ThicknessWidget::onFacesButtonToggled(bool on)
 void ThicknessWidget::onUpdateViewToggled(bool on)
 {
     if (on) {
-        d->thickness->getDocument()->recomputeFeature(d->thickness);
+        flushPreviewRecompute();
+    }
+    else {
+        stopPreviewRecompute();
     }
 }
 
@@ -263,6 +290,8 @@ bool ThicknessWidget::accept()
     if (d->ui.facesButton->isChecked()) {
         return false;
     }
+
+    stopPreviewRecompute();
 
     try {
         if (!d->selection.empty()) {
@@ -308,6 +337,8 @@ bool ThicknessWidget::reject()
     if (d->ui.facesButton->isChecked()) {
         return false;
     }
+
+    stopPreviewRecompute();
 
     // save this and check if the object is still there after the
     // transaction is aborted

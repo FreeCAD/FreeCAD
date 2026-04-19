@@ -29,6 +29,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <Gui/ActionFunction.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
@@ -45,8 +46,11 @@ using namespace PartGui;
 class OffsetWidget::Private
 {
 public:
+    static constexpr int AsyncPreviewDebounceMs = 150;
+
     Ui_TaskOffset ui {};
     Part::Offset* offset {nullptr};
+    std::unique_ptr<Gui::DebouncedFunction> previewRecompute;
 };
 
 /* TRANSLATOR PartGui::OffsetWidget */
@@ -106,6 +110,16 @@ OffsetWidget::OffsetWidget(Part::Offset* offset, QWidget* parent)
     d->ui.spinOffset->blockSignals(block);
 
     d->ui.spinOffset->bind(d->offset->Value);
+
+    d->previewRecompute = std::make_unique<Gui::DebouncedFunction>(this);
+    d->previewRecompute->setInterval(
+        App::GetApplication().isAsyncRecomputeEnabled() ? Private::AsyncPreviewDebounceMs : 0
+    );
+    d->previewRecompute->setFunction([this]() {
+        if (d->ui.updateView->isChecked() && d->offset && d->offset->getDocument()) {
+            d->offset->getDocument()->recomputeFeature(d->offset);
+        }
+    });
 }
 
 OffsetWidget::~OffsetWidget()
@@ -138,63 +152,77 @@ Part::Offset* OffsetWidget::getObject() const
     return d->offset;
 }
 
+void OffsetWidget::schedulePreviewRecompute()
+{
+    if (d->previewRecompute && d->ui.updateView->isChecked()) {
+        d->previewRecompute->start();
+    }
+}
+
+void OffsetWidget::flushPreviewRecompute()
+{
+    if (d->previewRecompute) {
+        d->previewRecompute->triggerNow();
+    }
+}
+
+void OffsetWidget::stopPreviewRecompute()
+{
+    if (d->previewRecompute) {
+        d->previewRecompute->stop();
+    }
+}
+
 void OffsetWidget::onSpinOffsetValueChanged(double val)
 {
     d->offset->Value.setValue(val);
-    if (d->ui.updateView->isChecked()) {
-        d->offset->getDocument()->recomputeFeature(d->offset);
-    }
+    schedulePreviewRecompute();
 }
 
 void OffsetWidget::onModeTypeActivated(int val)
 {
     d->offset->Mode.setValue(val);
-    if (d->ui.updateView->isChecked()) {
-        d->offset->getDocument()->recomputeFeature(d->offset);
-    }
+    schedulePreviewRecompute();
 }
 
 void OffsetWidget::onJoinTypeActivated(int val)
 {
     d->offset->Join.setValue((long)val);
-    if (d->ui.updateView->isChecked()) {
-        d->offset->getDocument()->recomputeFeature(d->offset);
-    }
+    schedulePreviewRecompute();
 }
 
 void OffsetWidget::onIntersectionToggled(bool on)
 {
     d->offset->Intersection.setValue(on);
-    if (d->ui.updateView->isChecked()) {
-        d->offset->getDocument()->recomputeFeature(d->offset);
-    }
+    schedulePreviewRecompute();
 }
 
 void OffsetWidget::onSelfIntersectionToggled(bool on)
 {
     d->offset->SelfIntersection.setValue(on);
-    if (d->ui.updateView->isChecked()) {
-        d->offset->getDocument()->recomputeFeature(d->offset);
-    }
+    schedulePreviewRecompute();
 }
 
 void OffsetWidget::onFillOffsetToggled(bool on)
 {
     d->offset->Fill.setValue(on);
-    if (d->ui.updateView->isChecked()) {
-        d->offset->getDocument()->recomputeFeature(d->offset);
-    }
+    schedulePreviewRecompute();
 }
 
 void OffsetWidget::onUpdateViewToggled(bool on)
 {
     if (on) {
-        d->offset->getDocument()->recomputeFeature(d->offset);
+        flushPreviewRecompute();
+    }
+    else {
+        stopPreviewRecompute();
     }
 }
 
 bool OffsetWidget::accept()
 {
+    stopPreviewRecompute();
+
     try {
         double offsetValue = d->ui.spinOffset->value().getValue();
         Gui::cmdAppObjectArgs(d->offset, "Value = %f", offsetValue);
@@ -236,6 +264,8 @@ bool OffsetWidget::accept()
 
 bool OffsetWidget::reject()
 {
+    stopPreviewRecompute();
+
     // get the support and Sketch
     App::DocumentObject* source = d->offset->Source.getValue();
     if (source) {

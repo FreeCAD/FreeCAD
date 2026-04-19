@@ -55,6 +55,9 @@ public:
 
 private:
     void setupConnections();
+    void schedulePreviewRecompute();
+    void flushPreviewRecompute();
+    void stopPreviewRecompute();
     void onSpinOffsetValueChanged(double);
     void onModeTypeActivated(int);
     void onJoinTypeActivated(int);
