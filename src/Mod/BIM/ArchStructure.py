@@ -1201,9 +1201,50 @@ class _Structure(ArchComponent.Component):
         finally:
             self._updating_align_layer = False
 
-    def _align_to_z_offset(self, obj, total):
+    # Alignment helpers for slabs that extrude downward
+    def _align_z_offset(self, align, total, unit_n_world):
+        """
+        Convert Align enum to a z_offset in the local extrusion frame.
+
+        Parameters
+        ----------
+        align : str  — "Bottom", "Center", or "Top"
+        total : float — total slab thickness (mm)
+        unit_n_world : FreeCAD.Vector — extrusion unit vector in world space
+
+        Returns float offset such that:
+            translate(unit_n_local * offset) + extrude(unit_n_local * total)
+        produces the correct face at the sketch plane for the chosen alignment.
+
+        The sign convention is identical to the existing code when the slab
+        extrudes upward (unit_n_world.z >= 0).  When it extrudes downward
+        (unit_n_world.z < 0), "Top" and "Bottom" semantics are exchanged
+        because the sketch plane is already the physically higher face.
+        """
+        extrudes_upward = unit_n_world.z >= 0
+
+        if align == "Center":
+            return -total / 2.0
+
+        if extrudes_upward:
+            # Sketch plane = bottom face.  "Top" needs the base shifted back.
+            if align == "Bottom":
+                return 0.0
+            else:  # "Top"
+                return -total
+        else:
+            # Sketch plane = top face.  "Bottom" needs the base shifted back.
+            if align == "Top":
+                return 0.0
+            else:  # "Bottom"
+                return -total
+
+    def _align_to_z_offset(self, obj, total, unit_n_world=None):
         """Convert the global Align enum to a raw z_offset for the full stack."""
         align = getattr(obj, "Align", "Bottom")
+        if unit_n_world is not None:
+            return self._align_z_offset(align, total, unit_n_world)
+        # Fallback: old behaviour (upward extrusion assumed)
         if align == "Center":
             return -total / 2.0
         elif align == "Top":
@@ -1211,14 +1252,8 @@ class _Structure(ArchComponent.Component):
         else:
             return 0.0
 
-    def _compute_z_offset(self, obj, layers):
-        """Return the full z_offset for slab layer stacking.
-
-        Priority:
-        1. AlignLayer + AlignLayerMode (layer-specific pin)
-        2. Align (global Bottom/Center/Top)
-        3. Offset (manual shift) — always added on top
-        """
+    def _compute_z_offset(self, obj, layers, unit_n_world=None):
+        """Return the full z_offset for slab layer stacking."""
         total = sum(abs(l) for l in layers)
         align_layer = getattr(obj, "AlignLayer", "None (use Align)")
 
@@ -1244,16 +1279,28 @@ class _Structure(ArchComponent.Component):
             if layer_idx is not None:
                 layer_mode = getattr(obj, "AlignLayerMode", "Bottom")
                 cum = sum(abs(l) for l in layers[:layer_idx])
-                if layer_mode == "Bottom":
-                    z_offset = -cum
-                elif layer_mode == "Center":
-                    z_offset = -(cum + abs(layers[layer_idx]) / 2.0)
+                extrudes_upward = (unit_n_world is None) or (unit_n_world.z >= 0)
+                if extrudes_upward:
+                    if layer_mode == "Bottom":
+                        z_offset = -cum
+                    elif layer_mode == "Center":
+                        z_offset = -(cum + abs(layers[layer_idx]) / 2.0)
+                    else:  # "Top"
+                        z_offset = -(cum + abs(layers[layer_idx]))
                 else:
-                    z_offset = -(cum + abs(layers[layer_idx]))
+                    # Inverted: "Top" of a layer = its far face from sketch
+                    total_layers = sum(abs(l) for l in layers)
+                    cum_from_end = total_layers - cum - abs(layers[layer_idx])
+                    if layer_mode == "Top":
+                        z_offset = -cum_from_end
+                    elif layer_mode == "Center":
+                        z_offset = -(cum_from_end + abs(layers[layer_idx]) / 2.0)
+                    else:  # "Bottom"
+                        z_offset = -(cum_from_end + abs(layers[layer_idx]))
             else:
-                z_offset = self._align_to_z_offset(obj, total)
+                z_offset = self._align_to_z_offset(obj, total, unit_n_world)
         else:
-            z_offset = self._align_to_z_offset(obj, total)
+            z_offset = self._align_to_z_offset(obj, total, unit_n_world)
 
         manual_offset = getattr(obj, "Offset", None)
         if manual_offset is not None:
@@ -1261,6 +1308,65 @@ class _Structure(ArchComponent.Component):
             z_offset += val
 
         return z_offset
+
+    # Helper for edge-only Applied ArchHatch
+    @staticmethod
+    def _get_real_base_shape(base_obj):
+        """
+        If base_obj is an Applied ArchHatch whose shape has no usable faces
+        (edge-only output, ShowFaces=False), return the underlying face
+        geometry from its BaseObject so a slab can still be generated.
+
+        When ShowFaces=True the hatch already has face geometry and should
+        be used directly — this method returns (None, None) in that case.
+
+        Returns (shape_or_None, message_or_None).
+        """
+        proxy = getattr(base_obj, "Proxy", None)
+        if proxy is None:
+            return None, None
+        if getattr(proxy, "Type", "") != "CustomHatchFP":
+            return None, None
+        if getattr(base_obj, "HatchRole", "Applied") != "Applied":
+            return None, None
+
+        # Check whether the hatch already has usable face geometry.
+        # If ShowFaces=True it will, and we should leave it alone.
+        base_shape = getattr(base_obj, "Shape", None)
+        if base_shape and not base_shape.isNull():
+            valid_faces = [f for f in base_shape.Faces if f.Area > 1.0]
+            if valid_faces:
+                # Hatch has real faces — use them as-is, no redirect needed.
+                return None, None
+
+        # Edge-only hatch (ShowFaces=False). The line geometry cannot form a
+        # slab profile. Try to recover the underlying face from BaseObject.
+        real_base = getattr(base_obj, "BaseObject", None)
+        if real_base and hasattr(real_base, "Shape") and not real_base.Shape.isNull():
+            msg = (
+                f"Structure: '{base_obj.Label}' is an edge-only hatch "
+                f"(ShowFaces=False). Using its BaseObject '{real_base.Label}' "
+                "as the slab profile. Enable ShowFaces on the hatch to use "
+                "tile faces as the slab base instead.\n"
+            )
+            return real_base.Shape.copy(), msg
+
+        base_objects = getattr(base_obj, "BaseObjects", None) or []
+        if base_objects:
+            real_base = base_objects[0]
+            if real_base and hasattr(real_base, "Shape") and \
+               not real_base.Shape.isNull():
+                msg = (
+                    f"Structure: '{base_obj.Label}' is an edge-only hatch. "
+                    f"Using first BaseObject '{real_base.Label}' as slab profile.\n"
+                )
+                return real_base.Shape.copy(), msg
+
+        return None, (
+            f"Structure: '{base_obj.Label}' is an edge-only hatch with no "
+            "usable BaseObject. Enable ShowFaces on the hatch, or set the "
+            "slab Base to the source face directly.\n"
+        )
 
     def getExtrusionData(self, obj):
         """returns (shape,extrusion vector or path,placement) or None"""
@@ -1283,91 +1389,100 @@ class _Structure(ArchComponent.Component):
         baseface = None
         extrusion = None
         normal = None
+
+        # Detect edge-only Applied ArchHatch and redirect to underlying face
         if obj.Base:
-            if hasattr(obj.Base, "Shape"):
-                if obj.Base.Shape:
-                    if obj.Base.Shape.Solids:
+            _alt_shape, _msg = _Structure._get_real_base_shape(obj.Base)
+            if _msg:
+                FreeCAD.Console.PrintMessage(_msg)
+
+            base_shape_to_use = _alt_shape if _alt_shape is not None else (
+                obj.Base.Shape if hasattr(obj.Base, "Shape") else None
+            )
+
+            if base_shape_to_use and not base_shape_to_use.isNull():
+                if base_shape_to_use.Solids:
+                    return None
+                elif base_shape_to_use.Faces:
+                    if not DraftGeomUtils.isCoplanar(base_shape_to_use.Faces, tol=0.01):
                         return None
-                    elif obj.Base.Shape.Faces:
-                        if not DraftGeomUtils.isCoplanar(obj.Base.Shape.Faces, tol=0.01):
-                            return None
-                        else:
-                            baseface = obj.Base.Shape.copy()
-                    elif obj.Base.Shape.Wires:
-                        structureBaseShapeWires = []
-                        baseShapeWires = []
-                        faceMaker = None
+                    else:
+                        baseface = base_shape_to_use.copy()
+                elif base_shape_to_use.Wires:
+                    structureBaseShapeWires = []
+                    baseShapeWires = []
+                    faceMaker = None
 
-                        if (
-                            hasattr(obj.Base, "Proxy")
-                            and obj.ArchSketchData
-                            and hasattr(obj.Base.Proxy, "getStructureBaseShapeWires")
-                        ):
-                            propSetUuid = self.ArchSkPropSetPickedUuid
+                    if (
+                        hasattr(obj.Base, "Proxy")
+                        and obj.ArchSketchData
+                        and hasattr(obj.Base.Proxy, "getStructureBaseShapeWires")
+                    ):
+                        propSetUuid = self.ArchSkPropSetPickedUuid
 
-                            structureBaseShapeWires = obj.Base.Proxy.getStructureBaseShapeWires(
-                                obj.Base, propSetUuid=propSetUuid
+                        structureBaseShapeWires = obj.Base.Proxy.getStructureBaseShapeWires(
+                            obj.Base, propSetUuid=propSetUuid
+                        )
+                        if structureBaseShapeWires:
+                            baseShapeWires = structureBaseShapeWires.get("slabWires")
+                            faceMaker = structureBaseShapeWires.get("faceMaker")
+                    elif obj.Base.isDerivedFrom("Sketcher::SketchObject"):
+                        skGeom = obj.Base.GeometryFacadeList
+                        skGeomEdges = []
+                        skPlacement = obj.Base.Placement
+                        for ig, geom in enumerate(skGeom):
+                            if (not obj.ArchSketchEdges and not geom.Construction) or str(
+                                ig
+                            ) in obj.ArchSketchEdges:
+                                if isinstance(
+                                    geom.Geometry,
+                                    (
+                                        Part.LineSegment,
+                                        Part.Circle,
+                                        Part.ArcOfCircle,
+                                        Part.Ellipse,
+                                        Part.BSplineCurve,
+                                    ),
+                                ):
+                                    skGeomEdgesI = geom.Geometry.toShape()
+                                    skGeomEdges.append(skGeomEdgesI)
+                        clusterTransformed = []
+                        for cluster in Part.getSortedClusters(skGeomEdges):
+                            edgesTransformed = []
+                            for edge in cluster:
+                                edge.Placement = edge.Placement.multiply(skPlacement)
+                                edgesTransformed.append(edge)
+                            clusterTransformed.append(edgesTransformed)
+                        for clusterT in clusterTransformed:
+                            baseShapeWires.append(Part.Wire(clusterT))
+
+                    if not baseShapeWires:
+                        baseShapeWires = obj.Base.Shape.Wires
+                    if faceMaker or (obj.FaceMaker != "None"):
+                        if not faceMaker:
+                            faceMaker = obj.FaceMaker
+                        try:
+                            baseface = Part.makeFace(
+                                baseShapeWires, "Part::FaceMaker" + str(faceMaker)
                             )
-                            if structureBaseShapeWires:
-                                baseShapeWires = structureBaseShapeWires.get("slabWires")
-                                faceMaker = structureBaseShapeWires.get("faceMaker")
-                        elif obj.Base.isDerivedFrom("Sketcher::SketchObject"):
-                            skGeom = obj.Base.GeometryFacadeList
-                            skGeomEdges = []
-                            skPlacement = obj.Base.Placement
-                            for ig, geom in enumerate(skGeom):
-                                if (not obj.ArchSketchEdges and not geom.Construction) or str(
-                                    ig
-                                ) in obj.ArchSketchEdges:
-                                    if isinstance(
-                                        geom.Geometry,
-                                        (
-                                            Part.LineSegment,
-                                            Part.Circle,
-                                            Part.ArcOfCircle,
-                                            Part.Ellipse,
-                                            Part.BSplineCurve,
-                                        ),
-                                    ):
-                                        skGeomEdgesI = geom.Geometry.toShape()
-                                        skGeomEdges.append(skGeomEdgesI)
-                            clusterTransformed = []
-                            for cluster in Part.getSortedClusters(skGeomEdges):
-                                edgesTransformed = []
-                                for edge in cluster:
-                                    edge.Placement = edge.Placement.multiply(skPlacement)
-                                    edgesTransformed.append(edge)
-                                clusterTransformed.append(edgesTransformed)
-                            for clusterT in clusterTransformed:
-                                baseShapeWires.append(Part.Wire(clusterT))
-
-                        if not baseShapeWires:
-                            baseShapeWires = obj.Base.Shape.Wires
-                        if faceMaker or (obj.FaceMaker != "None"):
-                            if not faceMaker:
-                                faceMaker = obj.FaceMaker
-                            try:
-                                baseface = Part.makeFace(
-                                    baseShapeWires, "Part::FaceMaker" + str(faceMaker)
-                                )
-                            except Exception:
-                                FreeCAD.Console.PrintError(
-                                    translate("Arch", "Facemaker returned an error") + "\n"
-                                )
-                        if not baseface:
-                            for w in baseShapeWires:
-                                if not w.isClosed():
-                                    p0 = w.OrderedVertexes[0].Point
-                                    p1 = w.OrderedVertexes[-1].Point
-                                    if p0 != p1:
-                                        e = Part.LineSegment(p0, p1).toShape()
-                                        w.add(e)
-                                w.fix(0.1, 0, 1)
-                                f = Part.Face(w)
-                                if baseface:
-                                    baseface = baseface.fuse(f)
-                                else:
-                                    baseface = f.copy()
+                        except Exception:
+                            FreeCAD.Console.PrintError(
+                                translate("Arch", "Facemaker returned an error") + "\n"
+                            )
+                    if not baseface:
+                        for w in baseShapeWires:
+                            if not w.isClosed():
+                                p0 = w.OrderedVertexes[0].Point
+                                p1 = w.OrderedVertexes[-1].Point
+                                if p0 != p1:
+                                    e = Part.LineSegment(p0, p1).toShape()
+                                    w.add(e)
+                            w.fix(0.1, 0, 1)
+                            f = Part.Face(w)
+                            if baseface:
+                                baseface = baseface.fuse(f)
+                            else:
+                                baseface = f.copy()
         elif length and width and height:
             use_profile_orientation = hasattr(obj, "Profile") and obj.Profile
 
@@ -1392,7 +1507,6 @@ class _Structure(ArchComponent.Component):
                 v3 = Vector(l2, w2, 0)
                 v4 = Vector(-l2, w2, 0)
             import Part
-
             baseface = Part.Face(Part.makePolygon([v1, v2, v3, v4, v1]))
         if baseface:
             if hasattr(obj, "Tool") and obj.Tool:
@@ -1467,23 +1581,26 @@ class _Structure(ArchComponent.Component):
                     if height:
                         extrusion = normal.multiply(height)
             if extrusion:
+                # Multi‑material and alignment handling for slabs
                 if (
                     getattr(obj, "IfcType", "") == "Slab"
-                    and not isinstance(base, list)
                     and isinstance(extrusion, FreeCAD.Vector)
                     and not (hasattr(obj, "Tool") and obj.Tool)
                 ):
                     import math
 
-                    layers = self.get_layers(obj)
                     unit_n = FreeCAD.Vector(extrusion).normalize()
+                    # World-space extrusion direction for correct alignment semantics
+                    ref_placement = placement[0] if isinstance(placement, list) else placement
+                    unit_n_world = ref_placement.Rotation.multVec(unit_n)
 
+                    # Slope handling
                     slope_angle = getattr(obj, "Slope", 0)
                     if hasattr(slope_angle, "Value"):
                         slope_angle = slope_angle.Value
 
                     slope_base = None
-                    if abs(slope_angle) > 1e-6:
+                    if abs(slope_angle) > 1e-6 and not isinstance(base, list):
                         x_axis = None
                         slope_edge_link = getattr(obj, "SlopeEdge", None)
                         if (
@@ -1498,18 +1615,20 @@ class _Structure(ArchComponent.Component):
                                 sub_name = sub_names[0] if sub_names else None
                                 if sub_name and hasattr(linked_obj, "Shape"):
                                     edge = linked_obj.Shape.getElement(sub_name)
-                                    x_axis = edge.tangentAt(edge.FirstParameter).normalize()
+                                    x_axis = edge.tangentAt(
+                                        edge.FirstParameter
+                                    ).normalize()
                             except Exception:
                                 x_axis = None
 
                         if x_axis is None:
                             try:
+                                # For multi-face base, we can't use base.Wires directly
+                                # This block only runs when base is NOT a list
                                 outer_wire = base.Wires[0]
-                                x_axis = (
-                                    outer_wire.Edges[0]
-                                    .tangentAt(outer_wire.Edges[0].FirstParameter)
-                                    .normalize()
-                                )
+                                x_axis = outer_wire.Edges[0].tangentAt(
+                                    outer_wire.Edges[0].FirstParameter
+                                ).normalize()
                             except Exception:
                                 x_axis = FreeCAD.Vector(1, 0, 0)
 
@@ -1528,8 +1647,10 @@ class _Structure(ArchComponent.Component):
 
                     working_base = slope_base if slope_base is not None else base
 
-                    if layers:
-                        z_offset = self._compute_z_offset(obj, layers)
+                    # Multi‑material layers path
+                    layers = self.get_layers(obj)
+                    if layers and not isinstance(base, list):
+                        z_offset = self._compute_z_offset(obj, layers, unit_n_world)
                         bases_list, extrusions_list, placements_list = [], [], []
                         cum_offset = z_offset
 
@@ -1544,32 +1665,42 @@ class _Structure(ArchComponent.Component):
 
                         if bases_list:
                             return (bases_list, extrusions_list, placements_list)
+
+                    # Single‑material / multi‑face path
                     else:
                         total = extrusion.Length
-                        z_offset = 0.0
-
                         align = getattr(obj, "Align", "Bottom")
-                        if align == "Center":
-                            z_offset = -total / 2.0
-                        elif align == "Top":
-                            z_offset = -total
+                        z_offset = self._align_z_offset(align, total, unit_n_world)
 
                         manual_offset = getattr(obj, "Offset", None)
                         if manual_offset is not None:
                             val = manual_offset.Value if hasattr(manual_offset, "Value") else 0.0
                             z_offset += val
 
-                        if abs(z_offset) > 1e-6 or slope_base is not None:
-                            final_base = working_base.copy()
-                            if abs(z_offset) > 1e-6:
-                                final_base.translate(unit_n * z_offset)
-                            return (final_base, extrusion, placement)
+                        needs_shift = abs(z_offset) > 1e-6
+
+                        if isinstance(working_base, list):
+                            # Multi‑face case: translate every tile face
+                            if needs_shift or slope_base is not None:
+                                shifted_bases = []
+                                for face_shape in working_base:
+                                    shifted = face_shape.copy()
+                                    if needs_shift:
+                                        shifted.translate(unit_n * z_offset)
+                                    shifted_bases.append(shifted)
+                                return (shifted_bases, extrusion, placement)
+                        else:
+                            # Single‑face case
+                            if needs_shift or slope_base is not None:
+                                final_base = working_base.copy()
+                                if needs_shift:
+                                    final_base.translate(unit_n * z_offset)
+                                return (final_base, extrusion, placement)
 
                 return (base, extrusion, placement)
         return None
 
     def onChanged(self, obj, prop):
-
         if FreeCAD.ActiveDocument.Restoring:
             return
 
@@ -1589,7 +1720,6 @@ class _Structure(ArchComponent.Component):
                     elif extdata[1].Length > 0:
                         if hasattr(nodes, "CenterOfMass"):
                             import Part
-
                             nodes = Part.LineSegment(
                                 nodes.CenterOfMass, nodes.CenterOfMass.add(extdata[1])
                             ).toShape()
@@ -1661,7 +1791,6 @@ class _Structure(ArchComponent.Component):
         edges = []
         if obj.Nodes:
             import Part
-
             for i in range(len(obj.Nodes) - 1):
                 edges.append(
                     Part.LineSegment(
@@ -1741,7 +1870,6 @@ class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
 
     def getIcon(self):
         import Arch_rc
-
         if hasattr(self, "Object"):
             if hasattr(self.Object, "CloneOf"):
                 if self.Object.CloneOf:
@@ -1814,7 +1942,9 @@ class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
                                         c[2],
                                         1.0 - float(mat.Material["Transparency"]),
                                     )
-                                cols.extend([c for _ in range(len(obj.Shape.Solids[i].Faces))])
+                                cols.extend(
+                                    [c for _ in range(len(obj.Shape.Solids[i].Faces))]
+                                )
                             obj.ViewObject.DiffuseColor = cols
             ArchComponent.ViewProviderComponent.updateData(self, obj, prop)
             if len(obj.ViewObject.DiffuseColor) > 1:
@@ -1827,7 +1957,6 @@ class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
                 del self.nodes
             if vobj.ShowNodes:
                 from pivy import coin
-
                 self.nodes = coin.SoAnnotation()
                 self.coords = coin.SoCoordinate3()
                 self.mat = coin.SoMaterial()
@@ -1890,12 +2019,12 @@ class StructureTaskPanel(ArchComponent.ComponentOptionsTaskPanel):
         if getattr(obj, "IfcType", "Beam") == "Slab":
             property_definitions = [
                 {"prop": "Height", "label": translate("Arch", "Thickness")},
-                {"prop": "Slope", "label": translate("Arch", "Slope (°)")},
+                {"prop": "Slope",  "label": translate("Arch", "Slope (°)")},
             ]
         else:
             property_definitions = [
                 {"prop": "Length", "label": translate("Arch", "Length")},
-                {"prop": "Width", "label": translate("Arch", "Width")},
+                {"prop": "Width",  "label": translate("Arch", "Width")},
                 {"prop": "Height", "label": translate("Arch", "Height")},
             ]
 
@@ -1971,18 +2100,13 @@ class StructureTaskPanel(ArchComponent.ComponentOptionsTaskPanel):
         lay.addWidget(self.selectToolButton)
         self.selectToolButton.clicked.connect(self.setSelectionFromTool)
 
-        form_widgets = [
-            self.options_widget,
-            self.nodes_widget,
-            self.extrusion_widget,
-            self.baseform,
-        ]
+        form_widgets = [self.options_widget, self.nodes_widget,
+                        self.extrusion_widget, self.baseform]
 
         if getattr(obj, "IfcType", "Beam") == "Slab":
             self.slab_widget = QtGui.QWidget()
             self.slab_widget.setWindowTitle(
-                QtGui.QApplication.translate("Arch", "Slab Tools", None)
-            )
+                QtGui.QApplication.translate("Arch", "Slab Tools", None))
             slab_lay = QtGui.QVBoxLayout(self.slab_widget)
 
             info = QtGui.QLabel(
@@ -1990,41 +2114,33 @@ class StructureTaskPanel(ArchComponent.ComponentOptionsTaskPanel):
                     "Arch",
                     "Select an edge in the 3D view, then click\n"
                     "'Set Slope Edge' to define the drainage pivot.",
-                    None,
-                )
-            )
+                    None))
             info.setWordWrap(True)
             slab_lay.addWidget(info)
 
             self.setSlopeEdgeButton = QtGui.QPushButton(self.slab_widget)
             self.setSlopeEdgeButton.setIcon(QtGui.QIcon(":/icons/Snap_Endpoint.svg"))
             self.setSlopeEdgeButton.setText(
-                QtGui.QApplication.translate("Arch", "Set Slope Edge", None)
-            )
+                QtGui.QApplication.translate("Arch", "Set Slope Edge", None))
             self.setSlopeEdgeButton.setToolTip(
                 QtGui.QApplication.translate(
                     "Arch",
                     "Select an edge in the 3D view first, then click here "
                     "to use it as the drainage slope pivot axis.",
-                    None,
-                )
-            )
+                    None))
             slab_lay.addWidget(self.setSlopeEdgeButton)
             self.setSlopeEdgeButton.clicked.connect(self.setSlopeEdge)
 
             self.clearSlopeEdgeButton = QtGui.QPushButton(self.slab_widget)
             self.clearSlopeEdgeButton.setIcon(QtGui.QIcon(":/icons/edit-cleartext.svg"))
             self.clearSlopeEdgeButton.setText(
-                QtGui.QApplication.translate("Arch", "Clear Slope Edge", None)
-            )
+                QtGui.QApplication.translate("Arch", "Clear Slope Edge", None))
             self.clearSlopeEdgeButton.setToolTip(
                 QtGui.QApplication.translate(
                     "Arch",
                     "Remove the slope edge reference. The first edge of the "
                     "base face will be used as the default pivot.",
-                    None,
-                )
-            )
+                    None))
             slab_lay.addWidget(self.clearSlopeEdgeButton)
             self.clearSlopeEdgeButton.clicked.connect(self.clearSlopeEdge)
 
@@ -2055,9 +2171,13 @@ class StructureTaskPanel(ArchComponent.ComponentOptionsTaskPanel):
                         )
                         return
                     except Exception as e:
-                        FreeCAD.Console.PrintError(f"Could not set SlopeEdge: {e}\n")
+                        FreeCAD.Console.PrintError(
+                            f"Could not set SlopeEdge: {e}\n"
+                        )
                         return
-        FreeCAD.Console.PrintWarning("No edge selected. Select an edge in the 3D view first.\n")
+        FreeCAD.Console.PrintWarning(
+            "No edge selected. Select an edge in the 3D view first.\n"
+        )
 
     def clearSlopeEdge(self):
         """Remove the SlopeEdge reference. The first base-face edge is used."""
@@ -2114,7 +2234,6 @@ class StructureTaskPanel(ArchComponent.ComponentOptionsTaskPanel):
                         )
                     else:
                         import DraftGeomUtils
-
                         nodes1 = [self.Object.Placement.multVec(v) for v in self.Object.Nodes]
                         nodes2 = [other.Placement.multVec(v) for v in other.Nodes]
                         intersect = DraftGeomUtils.findIntersection(
@@ -2163,7 +2282,6 @@ class StructureTaskPanel(ArchComponent.ComponentOptionsTaskPanel):
                         )
                     else:
                         import DraftGeomUtils
-
                         nodes1 = [self.Object.Placement.multVec(v) for v in self.Object.Nodes]
                         nodes2 = [other.Placement.multVec(v) for v in other.Nodes]
                         intersect = DraftGeomUtils.findIntersection(
@@ -2375,7 +2493,6 @@ class _StructuralSystem(ArchComponent.Component):
     def getAxisPoints(self, obj):
         "returns the gridpoints of linked axes"
         import DraftGeomUtils
-
         pts = []
         if len(obj.Axes) == 1:
             if hasattr(obj, "Align"):
@@ -2411,7 +2528,6 @@ class _ViewProviderStructuralSystem(ArchComponent.ViewProviderComponent):
 
     def getIcon(self):
         import Arch_rc
-
         return ":/icons/Arch_StructuralSystem_Tree.svg"
 
 
