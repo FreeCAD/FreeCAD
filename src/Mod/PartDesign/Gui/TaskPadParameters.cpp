@@ -125,7 +125,7 @@ void TaskPadParameters::onModeChanged(int index, Side side)
     }
 
     updateUI(side);
-    recomputeFeature();
+    runInteractiveRecompute();
 }
 
 void TaskPadParameters::apply()
