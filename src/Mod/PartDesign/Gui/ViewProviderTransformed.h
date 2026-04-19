@@ -57,6 +57,7 @@ public:
     std::string featureIcon() const;
 
     void recomputeFeature(bool recompute = true);
+    void refreshPreviewResult();
     void setupContextMenu(QMenu*, QObject*, const char*) override;
 
     /// signals if the transformation contains errors
