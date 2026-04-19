@@ -822,6 +822,10 @@ class ObjectOp(object):
         """
         Path.Log.track()
 
+        job = getattr(self, "job", None) or PathUtils.findParentJob(obj)
+        if job and "freezed" in job.getStatusString().casefold():
+            return
+
         if not obj.Active:
             path = Path.Path("(inactive operation)")
             obj.Path = path
