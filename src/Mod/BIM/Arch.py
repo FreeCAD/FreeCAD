@@ -802,10 +802,14 @@ def makePipeConnector(pipes, radius=0, name=None):
     pipeConnector.Pipes = pipes
     if radius:
         pipeConnector.Radius = radius
-    elif pipes[0].ProfileType == "Circle":
-        pipeConnector.Radius = pipes[0].Diameter
     else:
-        pipeConnector.Radius = max(pipes[0].Height, pipes[0].Width)
+        sizes = []
+        for pipe in pipes:
+            if pipe.ProfileType == "Circle":
+                sizes.append(pipe.Diameter)
+            else:
+                sizes.extend([pipe.Height, pipe.Width])
+        pipeConnector.Radius = max(sizes)
 
     return pipeConnector
 
