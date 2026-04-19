@@ -26,8 +26,9 @@
 #pragma once
 
 #include <memory>
-#include <unordered_map>
+#include <string>
 
+#include <QMetaObject>
 #include <Gui/DocumentObserver.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
@@ -46,6 +47,7 @@ namespace Gui
 class ViewProvider;
 class GizmoContainer;
 class LinearGizmo;
+class AsyncPreviewSession;
 }  // namespace Gui
 
 namespace PartDesignGui
@@ -60,6 +62,13 @@ public:
     ~TaskBoxPrimitives() override;
 
     bool setPrimitive(App::DocumentObject*);
+    void flushPendingRecompute();
+    void stopPendingRecompute();
+    bool hasOutstandingRecompute() const;
+    void setDeferredClosePending(bool pending);
+
+Q_SIGNALS:
+    void recomputeSettled();
 
 public Q_SLOTS:
     void onBoxLengthChanged(double);
@@ -108,8 +117,20 @@ public Q_SLOTS:
     void onPlacementChanged();
 
 private:
+    template<typename T, typename Function>
+    void updatePrimitive(Function&& function)
+    {
+        if (auto* primitive = getObject<T>()) {
+            function(primitive);
+            schedulePendingRecompute();
+        }
+    }
+
     /** Notifies when the object is about to be removed. */
     void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj) override;
+    void schedulePendingRecompute();
+    void requestRecompute(bool waitForCompletion);
+    void updateRecomputeUi();
 
     template<typename T = App::DocumentObject>
     T* getObject() const
@@ -126,6 +147,7 @@ private:
     QWidget* proxy;
     std::unique_ptr<Ui_DlgPrimitives> ui;
     ViewProviderPrimitive* vp;
+    std::unique_ptr<Gui::AsyncPreviewSession> asyncPreviewSession;
 
     std::unique_ptr<Gui::GizmoContainer> gizmoContainer;
     Gui::LinearGizmo* lengthGizmo = nullptr;
@@ -149,6 +171,14 @@ protected:
 
     bool accept() override;
     bool reject() override;
+
+private:
+    void ensureDeferredRejectConnection();
+    void setDeferredRejectPending(bool pending);
+    bool rejectNow();
+
+private Q_SLOTS:
+    void onPrimitiveRecomputeSettled();
 
 private:
     TaskBoxPrimitives* primitive;
