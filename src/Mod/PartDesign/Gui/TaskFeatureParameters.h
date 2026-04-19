@@ -25,15 +25,23 @@
 #pragma once
 
 
+#include <memory>
+#include <string>
 #include <type_traits>
+
+#include <App/Application.h>
+#include <Gui/AsyncPreviewController.h>
+#include <Gui/DocumentObserver.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-#include <Gui/DocumentObserver.h>
 
+#include "DeferredDialogRejectUtils.h"
 #include "ViewProvider.h"
 
 namespace PartDesignGui
 {
+
+using AsyncPreviewController = Gui::AsyncPreviewController;
 
 class Ui_TaskPreviewParameters;
 
@@ -78,6 +86,14 @@ public:
     /// apply changes made in the parameters input to the model via commands
     virtual void apply()
     {}
+    virtual void flushPendingRecompute()
+    {}
+    virtual void stopPendingRecompute()
+    {}
+    virtual bool hasOutstandingRecompute() const
+    {
+        return false;
+    }
 
     void recomputeFeature();
 
@@ -181,6 +197,7 @@ public:
 
 protected:
     PartDesignGui::TaskPreviewParameters* preview;
+    DeferredDialogRejectState deferredReject;
 
 private:
     PartDesignGui::ViewProvider* vp;

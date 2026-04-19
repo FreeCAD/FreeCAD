@@ -1309,8 +1309,8 @@ SOURCE_GROUP("Selection" FILES ${Selection_SRCS})
 
 # The FreeCADGui sources
 SET(FreeCADGui_CPP_SRCS
-    Application.cpp
     AsyncPreviewController.cpp
+    Application.cpp
     ApplicationPy.cpp
     AutoSaver.cpp
     BitmapFactory.cpp
@@ -1355,16 +1355,17 @@ SET(FreeCADGui_CPP_SRCS
     StyleParameters/ParameterManager.cpp
 )
 SET(FreeCADGui_SRCS
-    Application.h
     AsyncPreviewController.h
     AsyncPreviewSession.h
     AsyncPreviewWidgetUtils.h
+    Application.h
     AutoSaver.h
     BitmapFactory.h
     Document.h
     DocumentModel.h
     DocumentObserver.h
     DocumentObserverPython.h
+    DeferredDialogRejectUtils.h
     EditableDatumLabel.h
     ExpressionBinding.h
     ExpressionBindingPy.h
@@ -1389,7 +1390,6 @@ SET(FreeCADGui_SRCS
     PreCompiled.h
     QtAll.h
     Control.h
-    DeferredDialogRejectUtils.h
     SpaceballEvent.h
     PreferencePackManager.h
     ProgramInformation.h
