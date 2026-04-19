@@ -42,6 +42,13 @@ def findDockWidget(name):
     return None
 
 
+def processGuiEvents():
+    """Flush pending GUI events for task panel interactions"""
+    app = QtWidgets.QApplication.instance()
+    if app:
+        app.processEvents()
+
+
 """
 #---------------------------------------------------------------------------
 # define the test cases to test the FreeCAD Part module
@@ -91,21 +98,51 @@ class SectionCutTestCases(unittest.TestCase):
         self.Doc = FreeCAD.newDocument("SectionCut")
 
     def testOpenDialog(self):
-        box = self.Doc.addObject("Part::Box", "SectionCutBoxX")
-        comp = self.Doc.addObject("Part::Compound", "SectionCutCompound")
-        comp.Links = box
-        grp = self.Doc.addObject("App::DocumentObjectGroup", "SectionCutX")
-        grp.addObject(comp)
+        self.Doc.addObject("Part::Box", "SourceBox")
         self.Doc.recompute()
 
         FreeCADGui.runCommand("Part_SectionCut")
+        processGuiEvents()
+
         dw = findDockWidget("Section Cutting")
-        if dw:
-            box = dw.findChild(QtWidgets.QDialogButtonBox)
-            button = box.button(QtWidgets.QDialogButtonBox.Close)
-            button.click()
-        else:
-            print("No section cutting panel found")
+        self.assertIsNotNone(dw, "Section cutting panel was not opened")
+
+        panel = dw.widget()
+        self.assertIsNotNone(panel, "Section cutting dock widget has no content widget")
+
+        previewStatusWidget = panel.findChild(QtWidgets.QWidget, "previewStatusWidget")
+        cancelPreviewButton = panel.findChild(QtWidgets.QPushButton, "buttonCancelPreview")
+        progressBarPreview = panel.findChild(QtWidgets.QProgressBar, "progressBarPreview")
+        labelPreviewStatus = panel.findChild(QtWidgets.QLabel, "labelPreviewStatus")
+        self.assertIsNotNone(previewStatusWidget)
+        self.assertIsNotNone(cancelPreviewButton)
+        self.assertIsNotNone(progressBarPreview)
+        self.assertIsNotNone(labelPreviewStatus)
+
+        groupBoxX = panel.findChild(QtWidgets.QGroupBox, "groupBoxX")
+        cutX = panel.findChild(QtWidgets.QDoubleSpinBox, "cutX")
+        self.assertIsNotNone(groupBoxX)
+        self.assertIsNotNone(cutX)
+
+        groupBoxX.setChecked(True)
+        processGuiEvents()
+        cutX.setValue(cutX.value() + 0.1)
+        processGuiEvents()
+
+        self.assertIsNotNone(self.Doc.getObject("SectionCutBoxX"))
+        self.assertIsNotNone(self.Doc.getObject("SectionCutX"))
+
+        buttonBox = dw.findChild(QtWidgets.QDialogButtonBox)
+        self.assertIsNotNone(buttonBox)
+        closeButton = buttonBox.button(QtWidgets.QDialogButtonBox.Close)
+        self.assertIsNotNone(closeButton)
+        closeButton.click()
+        processGuiEvents()
+        self.assertIsNone(findDockWidget("Section Cutting"))
 
     def tearDown(self):
+        dockWidget = findDockWidget("Section Cutting")
+        if dockWidget:
+            dockWidget.close()
+            processGuiEvents()
         FreeCAD.closeDocument("SectionCut")

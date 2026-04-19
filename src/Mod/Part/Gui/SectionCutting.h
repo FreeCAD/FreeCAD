@@ -25,18 +25,21 @@
 #pragma once
 
 #include <functional>
+#include <memory>
 #include <Inventor/SbBox3f.h>
 #include <QDialog>
 #include <Base/BoundBox.h>
 #include <App/DocumentObserver.h>
+#include <Gui/DeferredDialogRejectUtils.h>
 
 class QDoubleSpinBox;
 class QSlider;
 
 namespace Gui
 {
+class AsyncPreviewSession;
 class ViewProviderGeometryObject;
-}
+}  // namespace Gui
 
 namespace Part
 {
@@ -83,6 +86,7 @@ protected Q_SLOTS:
     void onBFragColorclicked();
     void onBFragTransparencyHSMoved(int);
     void onBFragTransparencyHSChanged(int);
+    void onRecomputeSettled();
 
 public:
     void reject() override;
@@ -123,6 +127,18 @@ private:
     void noDocumentActions();
     void startCutting(bool isInitial = false);
     void startObjectCutting(bool isInitial);
+    App::DocumentObject* getPreviewRequestObject() const;
+    void schedulePreviewRecompute();
+    void requestPreviewRecompute(bool waitForCompletion);
+    void flushPendingRecompute();
+    void stopPendingRecompute();
+    bool hasOutstandingRecompute() const;
+    void triggerFinalPreviewRecompute();
+    void updateRecomputeUi();
+    void setDeferredClosePending(bool pending);
+    void setDeferredRejectPending(bool pending);
+    bool rejectNow();
+    bool recomputeObject(App::DocumentObject* object, bool recursive);
     bool findObjects(std::vector<App::DocumentObject*>& objects);
     void filterObjects(std::vector<App::DocumentObject*>& objects);
     void throwMissingObjectsError(bool isInitial);
@@ -193,8 +209,10 @@ private:
 
 private:
     std::unique_ptr<Ui_SectionCut> ui;
+    std::unique_ptr<Gui::AsyncPreviewSession> asyncPreviewSession;
     std::vector<App::DocumentObjectT> ObjectsListVisible;
     App::Document* doc = nullptr;  // pointer to active document
+    Gui::DeferredDialogRejectState deferredReject;
     bool hasBoxX = false;
     bool hasBoxY = false;
     bool hasBoxZ = false;
