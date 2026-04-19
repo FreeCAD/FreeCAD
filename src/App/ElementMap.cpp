@@ -629,19 +629,19 @@ MappedName ElementMap::setElementName(const IndexedName& element,
         Data::MappedNameDataTree nameTree = mappedName.getNameDataTree();
 
         if (nameTree.size()) {
-            nameTree[nameTree.size() - 1][6][0] = "_";
+            nameTree[nameTree.size() - 1][Data::SECTION_DUPLICATE_COUNT_INDEX][0] = "_";
 
             for (auto &loopElement : getAll()) {
                 Data::MappedNameDataTree loopTree = loopElement.name.getNameDataTree();
 
-                loopTree[loopTree.size() - 1][6][0] = "_";
+                loopTree[loopTree.size() - 1][Data::SECTION_DUPLICATE_COUNT_INDEX][0] = "_";
 
                 if (loopTree == nameTree) {
                     duplicateIndex++;
                 }
             }
 
-            nameTree[nameTree.size() - 1][6][0] = std::to_string(duplicateIndex);
+            nameTree[nameTree.size() - 1][Data::SECTION_DUPLICATE_COUNT_INDEX][0] = std::to_string(duplicateIndex);
             
             mappedName = MappedName::fromNameDataTree(nameTree);
             res = this->addName(mappedName, element, *sid, overwrite, &existing);

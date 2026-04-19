@@ -36,6 +36,7 @@
 #include <App/MappedElement.h>
 #include "TopoShape.h"
 #include "TopoShapeOpCode.h"
+#include <App/ElementNamingUtils.h>
 
 
 TYPESYSTEM_SOURCE_ABSTRACT(Part::FaceMaker, Base::BaseClass)
@@ -279,13 +280,13 @@ void Part::FaceMaker::postBuild()
                 Data::MappedNameDataTree tree = name.getNameDataTree();
                 size_t treeSize = tree.size();
 
-                if (treeSize != 0 && tree[0][7][0] == "SRC") {
+                if (treeSize != 0 && tree[0][Data::SECTION_MAPPER_INFO_INDEX][0] == "SRC") {
                     bool canMap = treeSize <= 2;
                     std::string index = "_";
 
                     if (treeSize == 2) {
-                        if (tree[0][2][0] == tree[1][2][0]) {
-                            index = tree[1][4][0];
+                        if (tree[0][Data::SECTION_ITERATION_TAG_INDEX][0] == tree[1][Data::SECTION_ITERATION_TAG_INDEX][0]) {
+                            index = tree[1][Data::SECTION_INDEX_NUM_INDEX][0];
                         }  else {
                             canMap = false;
                         }
@@ -294,11 +295,11 @@ void Part::FaceMaker::postBuild()
                     if (canMap) {
                         std::stringstream ss;
 
-                        for (const auto &id : tree[0][0]) {
+                        for (const auto &id : tree[0][Data::SECTION_REFERENCE_ID_INDEX]) {
                             if (id != "_") {
                                 ss << id;
                                 ss << ":";
-                                ss << tree[0][2][0];
+                                ss << tree[0][Data::SECTION_ITERATION_TAG_INDEX][0];
 
                                 if (index != "_") {
                                     ss << ":";

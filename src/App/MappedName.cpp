@@ -99,7 +99,7 @@ MappedNameDataTree MappedName::getNameDataTree() const {
     for (const auto &mainSection : mainSections) {
         std::vector<std::string> sectionDataSplit = MappedName::splitToSections(mainSection, (*Data::SECTION_SUB_DELIMINATOR));
         std::vector<std::vector<std::string>> addInfo;
-        int sectionsToAdd = 8;
+        int sectionsToAdd = Data::SECTION_SIZE;
 
         for (const auto &subSection : sectionDataSplit) {
             std::vector<std::string> sectionDataList;
@@ -115,7 +115,7 @@ MappedNameDataTree MappedName::getNameDataTree() const {
         }
 
         for (int i = 0; i < sectionsToAdd; i++) {
-            addInfo.push_back({Data::EMPTY_VALUE});
+            addInfo.push_back({ Data::EMPTY_VALUE });
         }
 
         tree.push_back(addInfo);

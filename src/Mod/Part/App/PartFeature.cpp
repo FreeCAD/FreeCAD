@@ -65,6 +65,7 @@
 #include <App/ElementNamingUtils.h>
 #include <App/Placement.h>
 #include <App/Datums.h>
+#include <App/ElementNamingUtils.h>
 #include <Base/Exception.h>
 #include <Base/Placement.h>
 #include <Base/Rotation.h>
@@ -195,8 +196,8 @@ bool Feature::doNamesMatch(const Data::MappedName &name1, const Data::MappedName
         for (const auto &largeTreeSection : std::max(name1Tree, name2Tree)) {
             for (const auto &smallTreeSection : std::min(name1Tree, name2Tree)) {
                 if (
-                    (largeTreeSection[2][0] != "_" && smallTreeSection[2][0] == largeTreeSection[2][0])
-                    && (largeTreeSection[3][0] != "_" && smallTreeSection[3][0] == largeTreeSection[3][0])
+                    (largeTreeSection[Data::SECTION_ITERATION_TAG_INDEX][0] != "_" && smallTreeSection[Data::SECTION_ITERATION_TAG_INDEX][0] == largeTreeSection[Data::SECTION_ITERATION_TAG_INDEX][0])
+                    && (largeTreeSection[Data::SECTION_OPCODE_INDEX][0] != "_" && smallTreeSection[Data::SECTION_OPCODE_INDEX][0] == largeTreeSection[Data::SECTION_OPCODE_INDEX][0])
                 ) {
                     pairedCheckSections.push_back({largeTreeSection, smallTreeSection});
                 }
@@ -210,16 +211,16 @@ bool Feature::doNamesMatch(const Data::MappedName &name1, const Data::MappedName
                 int refIDInterference = 0;
                 size_t linkedNameInterference = 0;
 
-                for (const std::string &largeListID : std::max(checkSections.first[0], checkSections.second[0])) {
-                    for (const std::string &smallListID : std::min(checkSections.first[0], checkSections.second[0])) {
+                for (const std::string &largeListID : std::max(checkSections.first[Data::SECTION_REFERENCE_ID_INDEX], checkSections.second[Data::SECTION_REFERENCE_ID_INDEX])) {
+                    for (const std::string &smallListID : std::min(checkSections.first[Data::SECTION_REFERENCE_ID_INDEX], checkSections.second[Data::SECTION_REFERENCE_ID_INDEX])) {
                         if (largeListID == smallListID) {
                             refIDInterference++;
                         }
                     }
                 }
 
-                for (const std::string &largeListName : std::max(checkSections.first[1], checkSections.second[1])) {
-                    for (const std::string &smallListName : std::min(checkSections.first[1], checkSections.second[1])) {
+                for (const std::string &largeListName : std::max(checkSections.first[Data::SECTION_LINKED_NAME_INDEX], checkSections.second[Data::SECTION_LINKED_NAME_INDEX])) {
+                    for (const std::string &smallListName : std::min(checkSections.first[Data::SECTION_LINKED_NAME_INDEX], checkSections.second[Data::SECTION_LINKED_NAME_INDEX])) {
                         if ((largeListName == smallListName)
                             || (largeListName != "_" 
                                 && smallListName != "_" 
@@ -232,20 +233,20 @@ bool Feature::doNamesMatch(const Data::MappedName &name1, const Data::MappedName
 
                 bool linkedNamePass = false;
 
-                if (checkSections.first[7][0] == "CON" && checkSections.first[7][0] == checkSections.second[7][0]) {
+                if (checkSections.first[Data::SECTION_MAPPER_INFO_INDEX][0] == "CON" && checkSections.first[Data::SECTION_MAPPER_INFO_INDEX][0] == checkSections.second[Data::SECTION_MAPPER_INFO_INDEX][0]) {
                     if (linkedNameInterference >= 2)
                     {
                         linkedNamePass = true;
                     }
                 }
 
-                if (linkedNameInterference == checkSections.first[1].size() && linkedNameInterference == checkSections.second[1].size()) {
+                if (linkedNameInterference == checkSections.first[Data::SECTION_LINKED_NAME_INDEX].size() && linkedNameInterference == checkSections.second[Data::SECTION_LINKED_NAME_INDEX].size()) {
                     linkedNamePass = true;
                 }
 
                 if (linkedNamePass
                      && (refIDInterference >= 2
-                         || checkSections.first[0] == checkSections.second[0]))
+                         || checkSections.first[Data::SECTION_REFERENCE_ID_INDEX] == checkSections.second[Data::SECTION_REFERENCE_ID_INDEX]))
                 {
                     auto modifiedFirstSection = checkSections.first;
                     auto modifiedSecondSection = checkSections.second;

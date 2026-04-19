@@ -101,12 +101,33 @@ constexpr const char* EMPTY_VALUE                       = "_";
 constexpr const char* SUB_SECTION_LIST_DELIMINATOR      = ",";
 /// Section sub deliminator.
 constexpr const char* SECTION_SUB_DELIMINATOR           = ";";
-/// Section data deliminator.
-constexpr const char* SECTION_DATA_DELIMINATOR          = ":";
 /// Name section deliminator.
 constexpr const char* NAME_SECTION_DELIMINATOR          = "|";
 /// Escape character for mapped names in sub-sections
 constexpr const char* SUB_SECTION_ESCAPE_CHAR           = "^";
+
+// Placement indexes of data in sections of MappedNames used by the V2 Topological Naming Algorithm.
+// DO NOT CHANGE THESE VALUES EVER!!! Data should only be added to sections, not removed or otherwise altered.
+
+/// `Reference IDs` entry index.
+constexpr const int   SECTION_REFERENCE_ID_INDEX        = 0;
+/// `Reference Names` entry index.
+constexpr const int   SECTION_LINKED_NAME_INDEX         = 1;
+/// `Iteration Tag` entry index.
+constexpr const int   SECTION_ITERATION_TAG_INDEX       = 2;
+/// `OpCode` entry index.
+constexpr const int   SECTION_OPCODE_INDEX              = 3;
+/// `Index` entry index. (index index index)
+constexpr const int   SECTION_INDEX_NUM_INDEX           = 4;
+/// `Element Type` entry index.
+constexpr const int   SECTION_ELEMENT_TYPE_INDEX        = 5;
+/// `Duplicate count` entry index.
+constexpr const int   SECTION_DUPLICATE_COUNT_INDEX     = 6;
+/// `Mapper Info` entry index.
+constexpr const int   SECTION_MAPPER_INFO_INDEX         = 7;
+
+/// Size of sections used in MappedNames by the V2 Topological Naming Algorithm
+constexpr const int   SECTION_SIZE                      = 8;
 
 /// @}
 
