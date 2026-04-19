@@ -39,6 +39,7 @@
 #include <App/Application.h>
 #include <App/Part.h>
 #include <App/Document.h>
+#include <App/DocumentObject.h>
 #include <Base/Rotation.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
