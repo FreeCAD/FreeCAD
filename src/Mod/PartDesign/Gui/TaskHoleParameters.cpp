@@ -23,6 +23,9 @@
  ***************************************************************************/
 
 
+#include <QApplication>
+#include <QPointer>
+
 #include <BRep_Tool.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <TopoDS.hxx>
@@ -30,9 +33,13 @@
 #include <Base/Console.h>
 #include <Base/Converter.h>
 #include <Base/Tools.h>
+#include <App/Application.h>
 #include <App/Document.h>
+#include <Gui/AsyncPreviewSession.h>
+#include <Gui/ActionFunction.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
+#include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/Inventor/Draggers/Gizmo.h>
 #include <Gui/Inventor/Draggers/SoRotationDragger.h>
@@ -44,12 +51,35 @@
 
 #include "ui_TaskHoleParameters.h"
 #include "TaskHoleParameters.h"
+#include "DeferredDialogRejectUtils.h"
 
 using namespace PartDesignGui;
 using namespace Gui;
 namespace sp = std::placeholders;
 
 /* TRANSLATOR PartDesignGui::TaskHoleParameters */
+
+namespace
+{
+constexpr int AsyncInteractivePreviewDebounceMs = 150;
+
+void reportHoleAsyncRecomputeFailure(App::RecomputeFailure failure, const std::string& message)
+{
+    if (failure != App::RecomputeFailure::DependencyCycle || message.empty()) {
+        return;
+    }
+
+    auto report = [message]() {
+        Base::Console().error("%s\n", message.c_str());
+    };
+    if (auto* app = QCoreApplication::instance()) {
+        QMetaObject::invokeMethod(app, report, Qt::QueuedConnection);
+    }
+    else {
+        report();
+    }
+}
+}  // namespace
 
 // See Hole::HoleCutType_ISOmetric_Enums
 // and Hole::HoleCutType_ISOmetricfine_Enums
@@ -183,7 +213,6 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     ui->CustomThreadClearance->setEnabled(ui->UseCustomThreadClearance->isChecked());
     ui->UpdateView->setChecked(false);
     ui->UpdateView->setVisible(isThreaded && isModeled);
-
     ui->Depth->setEnabled(depthIsDimension);
     ui->ThreadDepthWidget->setVisible(isThreaded);
 
@@ -244,6 +273,8 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
             this, &TaskHoleParameters::taperedAngleChanged);
     connect(ui->UpdateView, &QCheckBox::toggled,
             this, &TaskHoleParameters::updateViewChanged);
+    connect(ui->buttonCancelPreview, &QPushButton::clicked,
+            this, &TaskHoleParameters::onCancelPreview);
     connect(ui->UseCustomThreadClearance, &QCheckBox::toggled,
             this, &TaskHoleParameters::useCustomThreadClearanceChanged);
     connect(ui->CustomThreadClearance, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
@@ -276,16 +307,349 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
 
     setupGizmos(HoleView);
 
+    AsyncPreviewController::Callbacks callbacks;
+    callbacks.makeRequest = [this]() {
+        auto* object = getObject<PartDesign::Hole>();
+        return object ? App::RecomputeRequest::fromDocumentObject(*object) : App::RecomputeRequest {};
+    };
+    callbacks.runSync = [this]() {
+        recomputeFeature();
+    };
+    callbacks.onCompleted = [](bool, bool, App::RecomputeFailure failure, const std::string& message) {
+        reportHoleAsyncRecomputeFailure(failure, message);
+    };
+    callbacks.onAppliedResult = [this](bool success, bool) {
+        const unsigned updates = outstandingRecomputeUiUpdates;
+        outstandingRecomputeUiUpdates = PostRecomputeNone;
+        if (success) {
+            if (auto* feature = getObject<PartDesign::Feature>()) {
+                feature->recomputePreview();
+            }
+        }
+        applyPostRecomputeUpdates(updates);
+    };
+    asyncPreviewSession = std::make_unique<Gui::AsyncPreviewSession>(std::move(callbacks), this);
+    connect(
+        asyncPreviewSession->controller(),
+        &AsyncPreviewController::recomputeSettled,
+        this,
+        &TaskHoleParameters::recomputeSettled
+    );
+    asyncPreviewSession->bindWidgets(
+        {
+            ui->previewStatusWidget,
+            ui->progressBarPreview,
+            ui->labelPreviewStatus,
+            ui->buttonCancelPreview,
+        },
+        [](const char* text) { return TaskHoleParameters::tr(text); },
+        proxy
+    );
+
+    recomputeScheduler = std::make_unique<Gui::DebouncedFunction>(this);
+    recomputeScheduler->setInterval(
+        App::GetApplication().isAsyncRecomputeEnabled() ? AsyncInteractivePreviewDebounceMs : 0
+    );
+    recomputeScheduler->setFunction([this]() {
+        if (pendingRecomputeUiUpdates == PostRecomputeNone) {
+            return;
+        }
+
+        const unsigned updates = pendingRecomputeUiUpdates;
+        pendingRecomputeUiUpdates = PostRecomputeNone;
+        requestRecompute(updates, /*waitForCompletion=*/false);
+    });
+
     ui->CustomThreadClearance->setMinimum(pcHole->CustomThreadClearance.getMinimum());
     ui->CustomThreadClearance->setMaximum(pcHole->CustomThreadClearance.getMaximum());
 }
 
-TaskHoleParameters::~TaskHoleParameters() = default;
+TaskHoleParameters::~TaskHoleParameters()
+{
+    stopPendingRecompute();
+}
+
+void TaskHoleParameters::schedulePendingRecompute(unsigned updates)
+{
+    if (!isUpdateBlocked() && recomputeScheduler) {
+        pendingRecomputeUiUpdates |= updates;
+        recomputeScheduler->start();
+    }
+}
+
+void TaskHoleParameters::flushPendingRecompute()
+{
+    if (recomputeScheduler && recomputeScheduler->isActive()) {
+        recomputeScheduler->stop();
+    }
+
+    if (pendingRecomputeUiUpdates != PostRecomputeNone) {
+        const unsigned updates = pendingRecomputeUiUpdates;
+        pendingRecomputeUiUpdates = PostRecomputeNone;
+        requestRecompute(updates, /*waitForCompletion=*/true);
+        return;
+    }
+
+    if (asyncPreviewSession) {
+        asyncPreviewSession->flushPendingRecompute();
+    }
+}
+
+void TaskHoleParameters::stopPendingRecompute()
+{
+    pendingRecomputeUiUpdates = PostRecomputeNone;
+    outstandingRecomputeUiUpdates = PostRecomputeNone;
+    if (recomputeScheduler) {
+        recomputeScheduler->stop();
+    }
+    if (asyncPreviewSession) {
+        asyncPreviewSession->stopPendingRecompute();
+    }
+}
+
+void TaskHoleParameters::cancelPendingRecompute()
+{
+    stopPendingRecompute();
+}
+
+bool TaskHoleParameters::hasOutstandingRecompute() const
+{
+    return asyncPreviewSession && asyncPreviewSession->hasOutstandingRecompute();
+}
+
+void TaskHoleParameters::setDeferredClosePending(bool pending)
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->setDeferredClosePending(pending);
+    }
+}
+
+void TaskHoleParameters::runImmediateRecompute(unsigned updates)
+{
+    stopPendingRecompute();
+    requestRecompute(updates, /*waitForCompletion=*/false);
+}
+
+void TaskHoleParameters::requestRecompute(unsigned updates, bool waitForCompletion)
+{
+    if (isUpdateBlocked() || !asyncPreviewSession) {
+        return;
+    }
+
+    outstandingRecomputeUiUpdates |= updates;
+    asyncPreviewSession->requestRecompute(waitForCompletion);
+}
+
+void TaskHoleParameters::applyPostRecomputeUpdates(unsigned updates)
+{
+    if (updates & PostRecomputeThreadControls) {
+        syncThreadControls();
+    }
+    if (updates & PostRecomputeHoleCutControls) {
+        syncHoleCutControls();
+    }
+    if (updates & PostRecomputeDepthControls) {
+        syncDepthControls();
+    }
+    if (updates & PostRecomputeGizmoPositions) {
+        setGizmoPositions();
+    }
+}
+
+void TaskHoleParameters::updateRecomputeUi()
+{
+    if (!ui || !asyncPreviewSession) {
+        return;
+    }
+    asyncPreviewSession->updateUi();
+}
+
+void TaskHoleParameters::updateThreadFitLabels()
+{
+    QByteArray typeClass = ui->ThreadType->itemData(ui->ThreadType->currentIndex()).toByteArray();
+    if (typeClass == QByteArray("None")) {
+        QString noneText = QStringLiteral("-");
+        ui->ThreadFit->setItemText(0, noneText);
+        ui->ThreadFit->setItemText(1, noneText);
+        ui->ThreadFit->setItemText(2, noneText);
+    }
+    else if (typeClass == QByteArray("ISO")) {
+        ui->ThreadFit->setItemText(
+            0,
+            tr("Medium", "Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible")
+        );
+        ui->ThreadFit->setItemText(
+            1,
+            tr("Fine", "Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible")
+        );
+        ui->ThreadFit->setItemText(
+            2,
+            tr("Coarse", "Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible")
+        );
+    }
+    else if (typeClass == QByteArray("UTS")) {
+        ui->ThreadFit->setItemText(
+            0,
+            tr("Normal", "Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible")
+        );
+        ui->ThreadFit->setItemText(
+            1,
+            tr("Close", "Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible")
+        );
+        ui->ThreadFit->setItemText(
+            2,
+            tr("Loose", "Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible")
+        );
+    }
+    else {
+        ui->ThreadFit->setItemText(0, tr("Normal", "Distance between thread crest and hole wall"));
+        ui->ThreadFit->setItemText(1, tr("Close", "Distance between thread crest and hole wall"));
+        ui->ThreadFit->setItemText(2, tr("Wide", "Distance between thread crest and hole wall"));
+    }
+}
+
+void TaskHoleParameters::refreshThreadEnumCombos()
+{
+    auto* hole = getObject<PartDesign::Hole>();
+    if (!hole) {
+        return;
+    }
+
+    auto updateComboBoxItems = [](QComboBox* widget, const auto& values, int selected, bool translate) {
+        QSignalBlocker blocker(widget);
+        widget->clear();
+        for (const auto& it : values) {
+            if (translate) {
+                widget->addItem(TaskHoleParameters::tr(it.c_str()));
+            }
+            else {
+                widget->addItem(QString::fromStdString(it));
+            }
+        }
+        widget->setCurrentIndex(selected);
+    };
+
+    updateComboBoxItems(
+        ui->ThreadSize,
+        hole->ThreadSize.getEnumVector(),
+        hole->ThreadSize.getValue(),
+        false
+    );
+    updateComboBoxItems(
+        ui->ThreadClass,
+        hole->ThreadClass.getEnumVector(),
+        hole->ThreadClass.getValue(),
+        true
+    );
+    updateComboBoxItems(
+        ui->HoleCutType,
+        hole->HoleCutType.getEnumVector(),
+        hole->HoleCutType.getValue(),
+        true
+    );
+}
+
+void TaskHoleParameters::syncThreadControls()
+{
+    auto* hole = getObject<PartDesign::Hole>();
+    if (!hole) {
+        return;
+    }
+
+    const bool isNone = std::string(hole->ThreadType.getValueAsString()) == "None";
+    const bool isThreaded = hole->Threaded.getValue();
+    const bool isModeled = hole->ModelThread.getValue();
+    const bool isCosmetic = hole->CosmeticThread.getValue();
+
+    {
+        QSignalBlocker blocker(ui->ThreadType);
+        ui->ThreadType->setCurrentIndex(hole->ThreadType.getValue());
+    }
+    updateHoleTypeCombo();
+    updateThreadFitLabels();
+
+    ui->labelHoleType->setHidden(isNone);
+    ui->HoleType->setHidden(isNone);
+    ui->ThreadSize->setHidden(isNone);
+    ui->labelSize->setHidden(isNone);
+    ui->ThreadFit->setHidden(isNone || isThreaded);
+    ui->labelThreadClearance->setHidden(isNone || isThreaded);
+    ui->ThreadGroupBox->setVisible(!isNone && (isModeled || isCosmetic));
+    ui->UpdateView->setVisible(isThreaded && isModeled);
+    ui->CustomClearanceWidget->setVisible(isThreaded && isModeled);
+    ui->Diameter->setEnabled(isNone && !hole->Diameter.isReadOnly());
+    ui->ThreadFit->setEnabled(!isNone && !isThreaded && !hole->ThreadFit.isReadOnly());
+    ui->ThreadClass->setEnabled(
+        isThreaded && !hole->UseCustomThreadClearance.getValue() && !hole->ThreadClass.isReadOnly()
+    );
+    ui->directionRightHand->setEnabled(isThreaded && !hole->ThreadDirection.isReadOnly());
+    ui->directionLeftHand->setEnabled(isThreaded && !hole->ThreadDirection.isReadOnly());
+    ui->CustomThreadClearance->setEnabled(
+        isThreaded && isModeled && hole->UseCustomThreadClearance.getValue()
+        && !hole->CustomThreadClearance.isReadOnly()
+    );
+    ui->ThreadDepthWidget->setVisible(isThreaded);
+    ui->ThreadDepthDimensionWidget->setVisible(
+        isThreaded && std::string(hole->ThreadDepthType.getValueAsString()) == "Dimension"
+    );
+    setUpdateBlocked(isThreaded && isModeled && !(ui->UpdateView->isChecked()));
+}
+
+void TaskHoleParameters::syncHoleCutControls()
+{
+    auto* hole = getObject<PartDesign::Hole>();
+    if (!hole) {
+        return;
+    }
+
+    ui->HoleCutCustomValues->setDisabled(hole->HoleCutCustomValues.isReadOnly());
+    ui->HoleCutCustomValues->setChecked(hole->HoleCutCustomValues.getValue());
+
+    if (hole->HoleCutType.getValue() < 4) {
+        ui->HoleCutCustomValues->setHidden(true);
+    }
+    else {
+        ui->HoleCutCustomValues->setHidden(false);
+        const bool isCustom = ui->HoleCutCustomValues->isChecked();
+        ui->HoleCutDiameter->setEnabled(isCustom && !hole->HoleCutDiameter.isReadOnly());
+        ui->HoleCutDepth->setEnabled(isCustom && !hole->HoleCutDepth.isReadOnly());
+        ui->HoleCutCountersinkAngle->setEnabled(
+            isCustom && !hole->HoleCutCountersinkAngle.isReadOnly()
+        );
+    }
+
+    setCutDiagram();
+}
+
+void TaskHoleParameters::syncDepthControls()
+{
+    auto* hole = getObject<PartDesign::Hole>();
+    if (!hole) {
+        return;
+    }
+
+    const bool depthIsDimension = std::string(hole->DepthType.getValueAsString()) == "Dimension";
+    const bool drillPointIsAngled = std::string(hole->DrillPoint.getValueAsString()) == "Angled";
+
+    ui->Depth->setEnabled(depthIsDimension && !hole->Depth.isReadOnly());
+    ui->DrillPointAngled->setEnabled(depthIsDimension && !hole->DrillPoint.isReadOnly());
+    ui->DrillPointAngle->setEnabled(
+        depthIsDimension && drillPointIsAngled && !hole->DrillPointAngle.isReadOnly()
+    );
+    ui->DrillForDepth->setEnabled(
+        depthIsDimension && drillPointIsAngled && !hole->DrillForDepth.isReadOnly()
+    );
+
+    setCutDiagram();
+}
 
 void TaskHoleParameters::modelThreadChanged()
 {
     // Model thread checkbox changed
     auto pcHole = getObject<PartDesign::Hole>();
+    if (!pcHole) {
+        return;
+    }
 
     bool isModeled = getModelThread();
     bool isCosmetic = getCosmeticThreaded();
@@ -303,7 +667,7 @@ void TaskHoleParameters::modelThreadChanged()
     // conditional enabling of thread modeling options
     ui->CustomClearanceWidget->setVisible(isModeled);
 
-    recomputeFeature();
+    schedulePendingRecompute(PostRecomputeThreadControls);
 }
 
 void TaskHoleParameters::holeTypeChanged(int index)
@@ -327,7 +691,7 @@ void TaskHoleParameters::holeTypeChanged(int index)
     ui->ThreadFit->setHidden(isNone || isThreaded);
     ui->labelThreadClearance->setHidden(isNone || isThreaded);
 
-    ui->ThreadGroupBox->setVisible(isModeled || isCosmetic);
+    ui->ThreadGroupBox->setVisible(!isNone && (isModeled || isCosmetic));
 
     // update view not active if modeling threads
     // this will also ensure that the feature is recomputed.
@@ -343,13 +707,22 @@ void TaskHoleParameters::holeTypeChanged(int index)
         std::string(pcHole->ThreadDepthType.getValueAsString()) == "Dimension"
     );
 
-    recomputeFeature();
+    schedulePendingRecompute(PostRecomputeThreadControls);
 }
 
 void TaskHoleParameters::updateViewChanged(bool isChecked)
 {
-    setUpdateBlocked(!isChecked);
-    recomputeFeature();
+    if (!isChecked) {
+        stopPendingRecompute();
+        setUpdateBlocked(true);
+        return;
+    }
+
+    setUpdateBlocked(false);
+    runImmediateRecompute(
+        PostRecomputeThreadControls | PostRecomputeHoleCutControls | PostRecomputeDepthControls
+        | PostRecomputeGizmoPositions
+    );
 }
 
 void TaskHoleParameters::threadDepthTypeChanged(int index)
@@ -358,7 +731,7 @@ void TaskHoleParameters::threadDepthTypeChanged(int index)
         hole->ThreadDepthType.setValue(index);
         ui->ThreadDepthDimensionWidget->setVisible(index == 1);
         ui->ThreadDepth->setValue(hole->ThreadDepth.getValue());
-        recomputeFeature();
+        schedulePendingRecompute(PostRecomputeThreadControls);
     }
 }
 void TaskHoleParameters::threadDepthChanged(double value)
@@ -366,7 +739,7 @@ void TaskHoleParameters::threadDepthChanged(double value)
     if (auto hole = getObject<PartDesign::Hole>()) {
         hole->ThreadDepth.setValue(value);
         setCutDiagram();
-        recomputeFeature();
+        schedulePendingRecompute();
     }
 }
 
@@ -378,7 +751,7 @@ void TaskHoleParameters::useCustomThreadClearanceChanged()
 
     if (auto hole = getObject<PartDesign::Hole>()) {
         hole->UseCustomThreadClearance.setValue(isChecked);
-        recomputeFeature();
+        schedulePendingRecompute(PostRecomputeThreadControls);
     }
 }
 
@@ -386,7 +759,7 @@ void TaskHoleParameters::customThreadClearanceChanged(double value)
 {
     if (auto hole = getObject<PartDesign::Hole>()) {
         hole->CustomThreadClearance.setValue(value);
-        recomputeFeature();
+        schedulePendingRecompute();
     }
 }
 
@@ -394,7 +767,7 @@ void TaskHoleParameters::threadPitchChanged(double value)
 {
     if (auto hole = getObject<PartDesign::Hole>()) {
         hole->ThreadPitch.setValue(value);
-        recomputeFeature();
+        schedulePendingRecompute();
     }
 }
 
@@ -417,39 +790,13 @@ void TaskHoleParameters::holeCutTypeChanged(int index)
     ui->HoleCutCustomValues->setChecked(false);
     hole->HoleCutCustomValues.setValue(false);
 
-    // recompute to get the info about the HoleCutType properties
-    recomputeFeature();
-
-    // apply the result to the widgets
-    ui->HoleCutCustomValues->setChecked(hole->HoleCutCustomValues.getValue());
-
-    // HoleCutCustomValues is only enabled for screw definitions
-    // we must do this after recomputeFeature() because this gives us the info if
-    // the type is a countersink and thus if HoleCutCountersinkAngle can be enabled
-
-    if (hole->HoleCutType.getValue() < 4) {
-        ui->HoleCutCustomValues->setHidden(true);
-    }
-    else {  // screw definition
-        // we can have the case that we have no normed values
-        // in this case HoleCutCustomValues is read-only AND true
-        ui->HoleCutCustomValues->setHidden(false);
-        bool isCustom = ui->HoleCutCustomValues->isChecked();
-        ui->HoleCutDiameter->setEnabled(isCustom);
-        ui->HoleCutDepth->setEnabled(isCustom);
-        ui->HoleCutCountersinkAngle->setEnabled(
-            isCustom && !hole->HoleCutCountersinkAngle.isReadOnly()
-        );
-    }
-    setCutDiagram();
+    schedulePendingRecompute(PostRecomputeHoleCutControls | PostRecomputeGizmoPositions);
 }
 void TaskHoleParameters::baseProfileTypeChanged(int index)
 {
     if (auto hole = getObject<PartDesign::Hole>()) {
         hole->BaseProfileType.setValue(PartDesign::Hole::baseProfileOption_idxToBitmask(index));
-        recomputeFeature();
-
-        setGizmoPositions();
+        schedulePendingRecompute(PostRecomputeGizmoPositions);
     }
 }
 
@@ -526,7 +873,7 @@ void TaskHoleParameters::holeCutCustomValuesChanged()
             ui->HoleCutCountersinkAngle->setEnabled(false);
         }
 
-        recomputeFeature();
+        schedulePendingRecompute(PostRecomputeHoleCutControls);
     }
 }
 
@@ -534,7 +881,7 @@ void TaskHoleParameters::holeCutDiameterChanged(double value)
 {
     if (auto hole = getObject<PartDesign::Hole>()) {
         hole->HoleCutDiameter.setValue(value);
-        recomputeFeature();
+        schedulePendingRecompute();
     }
 }
 
@@ -547,6 +894,7 @@ void TaskHoleParameters::holeCutDepthChanged(double value)
 
     std::string HoleCutTypeString = hole->HoleCutType.getValueAsString();
 
+    bool depthUpdated = false;
     if (ui->HoleCutCountersinkAngle->isEnabled() && HoleCutTypeString != "Counterdrill") {
         // we have a countersink and recalculate the HoleCutDiameter
 
@@ -560,20 +908,26 @@ void TaskHoleParameters::holeCutDepthChanged(double value)
         if (newDiameter > hole->Diameter.getValue()) {
             hole->HoleCutDiameter.setValue(newDiameter);
             hole->HoleCutDepth.setValue(value);
+            depthUpdated = true;
         }
     }
     else {
         hole->HoleCutDepth.setValue(value);
+        depthUpdated = true;
     }
 
-    recomputeFeature();
+    if (depthUpdated) {
+        setGizmoPositions();
+    }
+
+    schedulePendingRecompute(PostRecomputeGizmoPositions);
 }
 
 void TaskHoleParameters::holeCutCountersinkAngleChanged(double value)
 {
     if (auto hole = getObject<PartDesign::Hole>()) {
         hole->HoleCutCountersinkAngle.setValue(value);
-        recomputeFeature();
+        schedulePendingRecompute();
     }
 }
 
@@ -584,22 +938,14 @@ void TaskHoleParameters::depthChanged(int index)
         return;
     }
     hole->DepthType.setValue(index);
-    recomputeFeature();
-    // enabling must be handled after recompute
-    bool DepthisDimension = (std::string(hole->DepthType.getValueAsString()) == "Dimension");
-    ui->DrillPointAngled->setEnabled(DepthisDimension);
-    ui->DrillPointAngle->setEnabled(DepthisDimension);
-    ui->DrillForDepth->setEnabled(DepthisDimension);
-    setCutDiagram();
-
-    setGizmoPositions();
+    schedulePendingRecompute(PostRecomputeDepthControls | PostRecomputeGizmoPositions);
 }
 
 void TaskHoleParameters::depthValueChanged(double value)
 {
     if (auto hole = getObject<PartDesign::Hole>()) {
         hole->Depth.setValue(value);
-        recomputeFeature();
+        schedulePendingRecompute();
     }
 }
 
@@ -611,7 +957,7 @@ void TaskHoleParameters::drillPointChanged()
         ui->DrillPointAngle->setEnabled(angled);
         ui->DrillForDepth->setEnabled(angled);
         setCutDiagram();
-        recomputeFeature();
+        schedulePendingRecompute(PostRecomputeDepthControls);
     }
 }
 
@@ -619,7 +965,7 @@ void TaskHoleParameters::drillPointAngledValueChanged(double value)
 {
     if (auto hole = getObject<PartDesign::Hole>()) {
         hole->DrillPointAngle.setValue(value);
-        recomputeFeature();
+        schedulePendingRecompute();
     }
 }
 
@@ -627,7 +973,7 @@ void TaskHoleParameters::drillForDepthChanged()
 {
     if (auto hole = getObject<PartDesign::Hole>()) {
         hole->DrillForDepth.setValue(ui->DrillForDepth->isChecked());
-        recomputeFeature();
+        schedulePendingRecompute(PostRecomputeDepthControls);
     }
     setCutDiagram();
 }
@@ -638,7 +984,7 @@ void TaskHoleParameters::taperedChanged()
     ui->TaperedAngle->setEnabled(checked);
     if (auto hole = getObject<PartDesign::Hole>()) {
         hole->Tapered.setValue(checked);
-        recomputeFeature();
+        schedulePendingRecompute();
     }
 }
 
@@ -646,9 +992,8 @@ void TaskHoleParameters::reversedChanged()
 {
     if (auto hole = getObject<PartDesign::Hole>()) {
         hole->Reversed.setValue(ui->Reversed->isChecked());
-        recomputeFeature();
-
         setGizmoPositions();
+        schedulePendingRecompute(PostRecomputeGizmoPositions);
     }
 }
 
@@ -656,7 +1001,7 @@ void TaskHoleParameters::taperedAngleChanged(double value)
 {
     if (auto hole = getObject<PartDesign::Hole>()) {
         hole->TaperedAngle.setValue(value);
-        recomputeFeature();
+        schedulePendingRecompute();
     }
 }
 
@@ -671,16 +1016,13 @@ void TaskHoleParameters::threadTypeChanged(int index)
         return;
     }
 
+    stopPendingRecompute();
+
     // A typical case is that users change from an ISO profile to another one.
     // When they had e.g. the size "M3" in one profile they expect
     // the same size in the other profile if it exists there.
     // Besides the size also the thread class" and hole cut type are affected.
 
-    // at first check what type class is used
-    QByteArray TypeClass = ui->ThreadType->itemData(index).toByteArray();
-
-    // store the current size
-    QString ThreadSizeString = ui->ThreadSize->currentText();
     // store the current class
     QString ThreadClassString = ui->ThreadClass->currentText();
     // store the current type
@@ -688,6 +1030,7 @@ void TaskHoleParameters::threadTypeChanged(int index)
 
     // now set the new type, this will reset the comboboxes to item 0
     hole->ThreadType.setValue(index);
+    refreshThreadEnumCombos();
 
     // Threaded checkbox is meaningless if no thread profile is selected.
     bool isNone = std::string(hole->ThreadType.getValueAsString()) == "None";
@@ -700,62 +1043,29 @@ void TaskHoleParameters::threadTypeChanged(int index)
     ui->ThreadFit->setHidden(isNone || isThreaded);
     ui->labelThreadClearance->setHidden(isNone || isThreaded);
 
-    if (TypeClass == QByteArray("None")) {
-        QString noneText = QStringLiteral("-");
-        ui->ThreadFit->setItemText(0, noneText);
-        ui->ThreadFit->setItemText(1, noneText);
-        ui->ThreadFit->setItemText(2, noneText);
-    }
-    else if (TypeClass == QByteArray("ISO")) {
-        ui->ThreadFit->setItemText(
-            0,
-            tr("Medium", "Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible")
-        );
-        ui->ThreadFit->setItemText(
-            1,
-            tr("Fine", "Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible")
-        );
-        ui->ThreadFit->setItemText(
-            2,
-            tr("Coarse", "Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible")
-        );
-    }
-    else if (TypeClass == QByteArray("UTS")) {
-        ui->ThreadFit->setItemText(
-            0,
-            tr("Normal", "Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible")
-        );
-        ui->ThreadFit->setItemText(
-            1,
-            tr("Close", "Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible")
-        );
-        ui->ThreadFit->setItemText(
-            2,
-            tr("Loose", "Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible")
-        );
-    }
-    else {
-        ui->ThreadFit->setItemText(0, tr("Normal", "Distance between thread crest and hole wall"));
-        ui->ThreadFit->setItemText(1, tr("Close", "Distance between thread crest and hole wall"));
-        ui->ThreadFit->setItemText(2, tr("Wide", "Distance between thread crest and hole wall"));
-    }
+    updateThreadFitLabels();
 
     // Class and cut type
     // the class and cut types are the same for both TypeClass so we don't need to distinguish
     // between ISO and UTS
     int threadClassIndex = ui->ThreadClass->findText(ThreadClassString, Qt::MatchContains);
     if (threadClassIndex > -1) {
+        QSignalBlocker blocker(ui->ThreadClass);
         ui->ThreadClass->setCurrentIndex(threadClassIndex);
     }
+    hole->ThreadClass.setValue(ui->ThreadClass->currentIndex());
     int holeCutIndex = ui->HoleCutType->findText(CutTypeString, Qt::MatchContains);
     if (holeCutIndex > -1) {
+        QSignalBlocker blocker(ui->HoleCutType);
         ui->HoleCutType->setCurrentIndex(holeCutIndex);
     }
 
-    // we must set the read-only state according to the new HoleCutType
-    holeCutTypeChanged(ui->HoleCutType->currentIndex());
+    hole->HoleCutDepth.setValue(0.0);
+    hole->HoleCutType.setValue(ui->HoleCutType->currentIndex());
+    ui->HoleCutCustomValues->setChecked(false);
+    hole->HoleCutCustomValues.setValue(false);
 
-    recomputeFeature();
+    schedulePendingRecompute(PostRecomputeThreadControls | PostRecomputeHoleCutControls);
 }
 
 void TaskHoleParameters::threadSizeChanged(int index)
@@ -766,11 +1076,7 @@ void TaskHoleParameters::threadSizeChanged(int index)
 
     if (auto hole = getObject<PartDesign::Hole>()) {
         hole->ThreadSize.setValue(index);
-        recomputeFeature();
-
-        // apply the recompute result to the widgets
-        ui->HoleCutCustomValues->setDisabled(hole->HoleCutCustomValues.isReadOnly());
-        ui->HoleCutCustomValues->setChecked(hole->HoleCutCustomValues.getValue());
+        schedulePendingRecompute(PostRecomputeHoleCutControls);
     }
 }
 
@@ -782,7 +1088,7 @@ void TaskHoleParameters::threadClassChanged(int index)
 
     if (auto hole = getObject<PartDesign::Hole>()) {
         hole->ThreadClass.setValue(index);
-        recomputeFeature();
+        schedulePendingRecompute(PostRecomputeThreadControls);
     }
 }
 
@@ -793,7 +1099,7 @@ void TaskHoleParameters::threadDiameterChanged(double value)
 
         updateHoleCutLimits(hole);
 
-        recomputeFeature();
+        schedulePendingRecompute();
     }
 }
 
@@ -801,7 +1107,7 @@ void TaskHoleParameters::threadFitChanged(int index)
 {
     if (auto hole = getObject<PartDesign::Hole>()) {
         hole->ThreadFit.setValue(index);
-        recomputeFeature();
+        schedulePendingRecompute(PostRecomputeThreadControls);
     }
 }
 
@@ -814,8 +1120,13 @@ void TaskHoleParameters::threadDirectionChanged()
         else {
             hole->ThreadDirection.setValue(1L);
         }
-        recomputeFeature();
+        schedulePendingRecompute(PostRecomputeThreadControls);
     }
+}
+
+void TaskHoleParameters::onCancelPreview()
+{
+    cancelPendingRecompute();
 }
 
 void TaskHoleParameters::changeEvent(QEvent* e)
@@ -823,6 +1134,7 @@ void TaskHoleParameters::changeEvent(QEvent* e)
     TaskBox::changeEvent(e);
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(proxy);
+        updateRecomputeUi();
     }
 }
 
@@ -1365,6 +1677,71 @@ TaskDlgHoleParameters::TaskDlgHoleParameters(ViewProviderHole* HoleView)
 }
 
 TaskDlgHoleParameters::~TaskDlgHoleParameters() = default;
+
+void TaskDlgHoleParameters::ensureDeferredRejectConnection()
+{
+    ensureDeferredDialogRejectConnection(
+        deferredReject,
+        parameter,
+        &TaskHoleParameters::recomputeSettled,
+        this,
+        &TaskDlgHoleParameters::onParameterRecomputeSettled
+    );
+}
+
+void TaskDlgHoleParameters::setDeferredRejectPending(bool pending)
+{
+    setDeferredDialogRejectPending(deferredReject, pending, buttonBox, [this](bool pending) {
+        if (parameter) {
+            parameter->setDeferredClosePending(pending);
+        }
+    });
+}
+
+bool TaskDlgHoleParameters::accept()
+{
+    if (!parameter || deferredReject.pending) {
+        return false;
+    }
+
+    ensureDeferredRejectConnection();
+
+    return TaskDlgSketchBasedParameters::accept();
+}
+
+bool TaskDlgHoleParameters::reject()
+{
+    if (!parameter) {
+        return false;
+    }
+
+    ensureDeferredRejectConnection();
+    parameter->cancelPendingRecompute();
+    if (!parameter->hasOutstandingRecompute()) {
+        return TaskDlgSketchBasedParameters::reject();
+    }
+
+    if (!deferredReject.pending) {
+        auto* hole = getObject<PartDesign::Hole>();
+        deferredReject.documentName = hole && hole->getDocument()
+            ? std::string(hole->getDocument()->getName())
+            : std::string();
+        setDeferredRejectPending(true);
+    }
+
+    return false;
+}
+
+void TaskDlgHoleParameters::onParameterRecomputeSettled()
+{
+    finishDeferredDialogReject(
+        this,
+        deferredReject,
+        parameter && !parameter->hasOutstandingRecompute(),
+        [this]() { return TaskDlgSketchBasedParameters::reject(); },
+        [this](bool pending) { setDeferredRejectPending(pending); }
+    );
+}
 
 #include "moc_TaskHoleParameters.cpp"
 
