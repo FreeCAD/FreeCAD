@@ -34,14 +34,20 @@
 
 
 #include <array>
-#include <unordered_map>
 #include <algorithm>
+#include <chrono>
+#include <limits>
+#include <sstream>
+#include <unordered_map>
 
 #include <App/Application.h>
+#include <App/AsyncRecomputeDebug.h>
+#include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Reader.h>
 #include <Mod/Part/App/modelRefine.h>
+#include <Mod/Part/App/ProgressIndicator.h>
 
 #include "FeatureTransformed.h"
 #include "Body.h"
@@ -55,6 +61,87 @@
 
 
 using namespace PartDesign;
+
+namespace
+{
+
+long long elapsedMilliseconds(const std::chrono::steady_clock::time_point& start)
+{
+    return std::chrono::duration_cast<std::chrono::milliseconds>(
+               std::chrono::steady_clock::now() - start
+    )
+        .count();
+}
+
+std::string describeDocumentObject(const App::DocumentObject* object)
+{
+    std::ostringstream stream;
+    if (!object) {
+        stream << "<null>";
+        return stream.str();
+    }
+
+    const App::Document* document = object->getDocument();
+    stream << "doc=" << (document ? document->getName() : "<null>");
+    stream << " object=" << object->getNameInDocument();
+    stream << " type=" << object->getTypeId().getName();
+    return stream.str();
+}
+
+void appendTransformedDebugLog(
+    const PartDesign::Transformed& transformed,
+    const char* event,
+    const std::string& details = {}
+)
+{
+    std::ostringstream stream;
+    stream << "[PartDesign::Transformed] " << event << ' ' << describeDocumentObject(&transformed);
+    if (!details.empty()) {
+        stream << ' ' << details;
+    }
+    App::appendAsyncRecomputeDebugLog(stream.str());
+}
+
+App::DocumentObjectExecReturn* abortIfCanceled(
+    const PartDesign::Transformed& transformed,
+    const Part::ScopedRecomputeProgress& scope,
+    const char* phase
+)
+{
+    if (scope.wasCanceled()) {
+        appendTransformedDebugLog(transformed, "canceled", std::string("phase=") + phase);
+        return new App::DocumentObjectExecReturn("User aborted");
+    }
+    return nullptr;
+}
+
+Part::BooleanRunMode selectInteractiveBooleanRunMode(std::size_t shapeCount)
+{
+    // Large interactive transformed booleans benefit more from responsive cancel
+    // than from OCCT's internal parallel speed-up.
+    constexpr std::size_t singleThreadedThreshold = 8;
+    return shapeCount >= singleThreadedThreshold ? Part::BooleanRunMode::singleThreaded
+                                                 : Part::BooleanRunMode::defaultMode;
+}
+
+const char* describeBooleanRunMode(Part::BooleanRunMode runMode)
+{
+    switch (runMode) {
+        case Part::BooleanRunMode::singleThreaded:
+            return "single_threaded";
+        case Part::BooleanRunMode::defaultMode:
+            return "default";
+    }
+
+    return "unknown";
+}
+
+bool isInteractivePreviewRecompute()
+{
+    return App::currentRecomputeHasOption(App::RecomputeOption::InteractivePreview);
+}
+
+}  // namespace
 
 namespace PartDesign
 {
@@ -127,7 +214,7 @@ std::vector<App::DocumentObject*> Transformed::getSortedOriginals() const
 {
     std::vector<DocumentObject*> originals = Originals.getValues();
 
-    // Sort originals in chronological order of the body's group history
+    // Sort originals in chronological order of the body's group history.
     if (auto body = getFeatureBody()) {
         const auto& group = body->Group.getValues();
         std::unordered_map<const DocumentObject*, size_t> indexMap;
@@ -326,15 +413,30 @@ void Transformed::onChanged(const App::Property* prop)
 
 App::DocumentObjectExecReturn* Transformed::execute()
 {
+    const auto executeStart = std::chrono::steady_clock::now();
     if (isMultiTransformChild()) {
+        appendTransformedDebugLog(*this, "execute skip_multi_transform_child");
         return App::DocumentObject::StdReturn;
     }
+
+    constexpr std::size_t totalPhases = 4;
+    const bool interactivePreview = isInteractivePreviewRecompute();
+    Part::ScopedRecomputeProgress progressScope("Transform");
+    auto prepareScope = progressScope.makeStepScope(0, totalPhases, "Preparing transform...");
 
     auto const mode = static_cast<Mode>(TransformMode.getValue());
 
     std::vector<DocumentObject*> originals = getOriginals();
+    {
+        std::ostringstream details;
+        details << "mode=" << (mode == Mode::Features ? "features" : "whole_shape");
+        details << " originals=" << originals.size();
+        details << " interactive_preview=" << interactivePreview;
+        appendTransformedDebugLog(*this, "execute begin", details.str());
+    }
 
     if (mode == Mode::Features && originals.empty()) {
+        appendTransformedDebugLog(*this, "execute no_originals");
         return App::DocumentObject::StdReturn;
     }
 
@@ -349,17 +451,25 @@ App::DocumentObjectExecReturn* Transformed::execute()
     // get transformations from subclass by calling virtual method
     std::vector<gp_Trsf> transformations;
     try {
+        const auto getTransformationsStart = std::chrono::steady_clock::now();
         std::list<gp_Trsf> t_list = getTransformations(originals);
         transformations.insert(transformations.end(), t_list.begin(), t_list.end());
+        std::ostringstream details;
+        details << "count=" << transformations.size();
+        details << " elapsed_ms=" << elapsedMilliseconds(getTransformationsStart);
+        appendTransformedDebugLog(*this, "getTransformations end", details.str());
     }
     catch (Base::Exception& e) {
+        appendTransformedDebugLog(*this, "getTransformations error", e.what());
         return new App::DocumentObjectExecReturn(e.what());
     }
     catch (const Standard_Failure& e) {
+        appendTransformedDebugLog(*this, "getTransformations std_failure", e.GetMessageString());
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 
     if (transformations.empty()) {
+        appendTransformedDebugLog(*this, "execute no_transformations");
         return App::DocumentObject::StdReturn;  // No transformations defined, exit silently
     }
 
@@ -370,11 +480,13 @@ App::DocumentObjectExecReturn* Transformed::execute()
         supportFeature = getBaseObject();
     }
     catch (Base::Exception& e) {
+        appendTransformedDebugLog(*this, "getBaseObject error", e.what());
         return new App::DocumentObjectExecReturn(e.what());
     }
 
     const Part::TopoShape& supportTopShape = supportFeature->Shape.getShape();
     if (supportTopShape.getShape().IsNull()) {
+        appendTransformedDebugLog(*this, "execute invalid_support_shape");
         return new App::DocumentObjectExecReturn(
             QT_TRANSLATE_NOOP("Exception", "Cannot transform invalid support shape")
         );
@@ -386,94 +498,312 @@ App::DocumentObjectExecReturn* Transformed::execute()
     gp_Trsf trsfInv = supportShape.getShape().Location().Transformation().Inverted();
 
     supportShape.setTransform(Base::Matrix4D());
+    if (auto abort = ::abortIfCanceled(*this, prepareScope, "prepare")) {
+        return abort;
+    }
+    prepareScope.complete();
+    appendTransformedDebugLog(
+        *this,
+        "prepare end",
+        std::string("elapsed_ms=") + std::to_string(elapsedMilliseconds(executeStart))
+    );
 
-    auto getTransformedCompShape = [&](const auto& supportShape, const auto& origShape) {
+    auto getTransformedCompShape = [&](const auto& supportShape,
+                                       const auto& origShape,
+                                       Part::ScopedRecomputeProgress& scope,
+                                       const char* stageLabel) {
+        const auto transformShapeStart = std::chrono::steady_clock::now();
         std::vector<TopoShape> shapes = {supportShape};
         TopoShape shape(origShape);
         int idx = 1;
         auto transformIter = transformations.cbegin();
         transformIter++;
-        for (; transformIter != transformations.end(); transformIter++) {
-            if (App::currentRecomputeWasCanceled()) {
+        const std::size_t totalTransformations = transformations.size() > 1
+            ? transformations.size() - 1
+            : 0;
+        std::size_t transformIndex = 0;
+        for (; transformIter != transformations.end(); transformIter++, transformIndex++) {
+            auto transformScope
+                = scope.makeStepScope(transformIndex, totalTransformations, "Applying transform...");
+            if (auto abort = ::abortIfCanceled(*this, transformScope, stageLabel)) {
+                (void)abort;
+                appendTransformedDebugLog(
+                    *this,
+                    "transformInstances canceled",
+                    std::string("stage=") + stageLabel
+                        + " elapsed_ms=" + std::to_string(elapsedMilliseconds(transformShapeStart))
+                );
                 return std::vector<TopoShape>();
             }
             auto opName = Data::indexSuffix(idx++);
             shapes.emplace_back(shape.makeElementTransform(*transformIter, opName.c_str()));
+            if (auto abort = ::abortIfCanceled(*this, transformScope, stageLabel)) {
+                (void)abort;
+                appendTransformedDebugLog(
+                    *this,
+                    "transformInstances canceled",
+                    std::string("stage=") + stageLabel
+                        + " elapsed_ms=" + std::to_string(elapsedMilliseconds(transformShapeStart))
+                );
+                return std::vector<TopoShape>();
+            }
+            transformScope.complete();
         }
+        std::ostringstream details;
+        details << "stage=" << stageLabel;
+        details << " instances=" << shapes.size();
+        details << " elapsed_ms=" << elapsedMilliseconds(transformShapeStart);
+        appendTransformedDebugLog(*this, "transformInstances end", details.str());
         return shapes;
     };
 
-    switch (mode) {
-        case Mode::Features:
-            // NOTE: It would be possible to build a compound from all original addShapes/subShapes
-            // and then transform the compounds as a whole. But we choose to apply the
-            // transformations to each Original separately. This way it is easier to discover what
-            // feature causes a fuse/cut to fail. The downside is that performance suffers when
-            // there are many originals. But it seems safe to assume that in most cases there are
-            // few originals and many transformations
-            for (auto original : originals) {
-                // Extract the original shape and determine whether to cut or to fuse
-                Part::TopoShape fuseShape;
-                Part::TopoShape cutShape;
+    auto applyScope = progressScope.makeStepScope(
+        1,
+        totalPhases,
+        mode == Mode::Features ? "Applying transformed features..." : "Applying transformed shape..."
+    );
 
-                auto feature = freecad_cast<PartDesign::FeatureAddSub*>(original);
-                if (!feature) {
-                    return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
-                        "Exception",
-                        "Only additive and subtractive features can be transformed"
-                    ));
-                }
+    try {
+        switch (mode) {
+            case Mode::Features:
+                // NOTE: It would be possible to build a compound from all original
+                // addShapes/subShapes and then transform the compounds as a whole. But we choose to
+                // apply the transformations to each Original separately. This way it is easier to
+                // discover what feature causes a fuse/cut to fail. The downside is that performance
+                // suffers when there are many originals. But it seems safe to assume that in most
+                // cases there are few originals and many transformations
+                for (std::size_t originalIndex = 0; originalIndex < originals.size();
+                     ++originalIndex) {
+                    auto original = originals[originalIndex];
+                    const auto originalStart = std::chrono::steady_clock::now();
+                    auto originalScope = applyScope.makeStepScope(
+                        originalIndex,
+                        originals.size(),
+                        "Transforming feature..."
+                    );
+                    {
+                        std::ostringstream details;
+                        details << "index=" << originalIndex;
+                        details << ' ' << describeDocumentObject(original);
+                        appendTransformedDebugLog(*this, "original begin", details.str());
+                    }
+                    if (auto abort = ::abortIfCanceled(*this, originalScope, "original_begin")) {
+                        return abort;
+                    }
+                    // Extract the original shape and determine whether to cut or to fuse
+                    Part::TopoShape fuseShape;
+                    Part::TopoShape cutShape;
 
-                feature->getAddSubShape(fuseShape, cutShape);
-                if (fuseShape.isNull() && cutShape.isNull()) {
-                    return new App::DocumentObjectExecReturn(
-                        QT_TRANSLATE_NOOP("Exception", "Shape of additive/subtractive feature is empty")
+                    auto feature = freecad_cast<PartDesign::FeatureAddSub*>(original);
+                    if (!feature) {
+                        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+                            "Exception",
+                            "Only additive and subtractive features can be transformed"
+                        ));
+                    }
+
+                    feature->getAddSubShape(fuseShape, cutShape);
+                    if (fuseShape.isNull() && cutShape.isNull()) {
+                        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+                            "Exception",
+                            "Shape of additive/subtractive feature is empty"
+                        ));
+                    }
+                    gp_Trsf trsf = feature->getLocation().Transformation().Multiplied(trsfInv);
+                    if (!fuseShape.isNull()) {
+                        fuseShape = fuseShape.makeElementTransform(trsf);
+                    }
+                    if (!cutShape.isNull()) {
+                        cutShape = cutShape.makeElementTransform(trsf);
+                    }
+                    if (!fuseShape.isNull()) {
+                        const auto fuseBuildStart = std::chrono::steady_clock::now();
+                        auto shapes = getTransformedCompShape(
+                            supportShape,
+                            fuseShape,
+                            originalScope,
+                            "build_fuse_inputs"
+                        );
+                        {
+                            std::ostringstream details;
+                            details << "index=" << originalIndex;
+                            details << " shapes=" << shapes.size();
+                            details << " elapsed_ms=" << elapsedMilliseconds(fuseBuildStart);
+                            appendTransformedDebugLog(*this, "fuse inputs end", details.str());
+                        }
+                        if (auto abort = ::abortIfCanceled(*this, originalScope, "fuse_inputs")) {
+                            return abort;
+                        }
+                        const auto fuseStart = std::chrono::steady_clock::now();
+                        const auto runMode = selectInteractiveBooleanRunMode(shapes.size());
+                        appendTransformedDebugLog(
+                            *this,
+                            "fuse begin",
+                            std::string("index=") + std::to_string(originalIndex)
+                                + " run_mode=" + describeBooleanRunMode(runMode)
+                        );
+                        supportShape.makeElementFuse(shapes, runMode, nullptr, -1.0);
+                        {
+                            std::ostringstream details;
+                            details << "index=" << originalIndex;
+                            details << " elapsed_ms=" << elapsedMilliseconds(fuseStart);
+                            appendTransformedDebugLog(*this, "fuse end", details.str());
+                        }
+                        if (auto abort = ::abortIfCanceled(*this, originalScope, "fuse")) {
+                            return abort;
+                        }
+                    }
+                    if (!cutShape.isNull()) {
+                        const auto cutBuildStart = std::chrono::steady_clock::now();
+                        auto shapes = getTransformedCompShape(
+                            supportShape,
+                            cutShape,
+                            originalScope,
+                            "build_cut_inputs"
+                        );
+                        {
+                            std::ostringstream details;
+                            details << "index=" << originalIndex;
+                            details << " shapes=" << shapes.size();
+                            details << " elapsed_ms=" << elapsedMilliseconds(cutBuildStart);
+                            appendTransformedDebugLog(*this, "cut inputs end", details.str());
+                        }
+                        if (auto abort = ::abortIfCanceled(*this, originalScope, "cut_inputs")) {
+                            return abort;
+                        }
+                        const auto cutStart = std::chrono::steady_clock::now();
+                        const auto runMode = selectInteractiveBooleanRunMode(shapes.size());
+                        appendTransformedDebugLog(
+                            *this,
+                            "cut begin",
+                            std::string("index=") + std::to_string(originalIndex)
+                                + " run_mode=" + describeBooleanRunMode(runMode)
+                        );
+                        supportShape.makeElementCut(shapes, runMode, nullptr, -1.0);
+                        {
+                            std::ostringstream details;
+                            details << "index=" << originalIndex;
+                            details << " elapsed_ms=" << elapsedMilliseconds(cutStart);
+                            appendTransformedDebugLog(*this, "cut end", details.str());
+                        }
+                        if (auto abort = ::abortIfCanceled(*this, originalScope, "cut")) {
+                            return abort;
+                        }
+                    }
+                    originalScope.complete();
+                    appendTransformedDebugLog(
+                        *this,
+                        "original end",
+                        std::string("index=") + std::to_string(originalIndex)
+                            + " elapsed_ms=" + std::to_string(elapsedMilliseconds(originalStart))
                     );
                 }
-                gp_Trsf trsf = feature->getLocation().Transformation().Multiplied(trsfInv);
-                if (!fuseShape.isNull()) {
-                    fuseShape = fuseShape.makeElementTransform(trsf);
+                break;
+            case Mode::WholeShape: {
+                auto wholeScope = applyScope.makeStepScope(0, 1, "Transforming shape...");
+                if (auto abort = ::abortIfCanceled(*this, wholeScope, "whole_shape_begin")) {
+                    return abort;
                 }
-                if (!cutShape.isNull()) {
-                    cutShape = cutShape.makeElementTransform(trsf);
+                const auto wholeBuildStart = std::chrono::steady_clock::now();
+                auto shapes = getTransformedCompShape(
+                    supportShape,
+                    supportShape,
+                    wholeScope,
+                    "build_whole_shape_inputs"
+                );
+                {
+                    std::ostringstream details;
+                    details << "shapes=" << shapes.size();
+                    details << " elapsed_ms=" << elapsedMilliseconds(wholeBuildStart);
+                    appendTransformedDebugLog(*this, "whole_shape inputs end", details.str());
                 }
-                if (!fuseShape.isNull()) {
-                    auto shapes = getTransformedCompShape(supportShape, fuseShape);
-                    if (App::currentRecomputeWasCanceled()) {
-                        return new App::DocumentObjectExecReturn("User aborted");
-                    }
-                    supportShape.makeElementFuse(shapes);
+                if (auto abort = ::abortIfCanceled(*this, wholeScope, "whole_shape_inputs")) {
+                    return abort;
                 }
-                if (!cutShape.isNull()) {
-                    auto shapes = getTransformedCompShape(supportShape, cutShape);
-                    if (App::currentRecomputeWasCanceled()) {
-                        return new App::DocumentObjectExecReturn("User aborted");
-                    }
-                    supportShape.makeElementCut(shapes);
+                const auto wholeFuseStart = std::chrono::steady_clock::now();
+                const auto runMode = selectInteractiveBooleanRunMode(shapes.size());
+                appendTransformedDebugLog(
+                    *this,
+                    "whole_shape fuse begin",
+                    std::string("run_mode=") + describeBooleanRunMode(runMode)
+                );
+                supportShape.makeElementFuse(shapes, runMode, nullptr, -1.0);
+                appendTransformedDebugLog(
+                    *this,
+                    "whole_shape fuse end",
+                    std::string("elapsed_ms=") + std::to_string(elapsedMilliseconds(wholeFuseStart))
+                );
+                if (auto abort = ::abortIfCanceled(*this, wholeScope, "whole_shape_fuse")) {
+                    return abort;
                 }
+                wholeScope.complete();
+                break;
             }
-            break;
-        case Mode::WholeShape: {
-            auto shapes = getTransformedCompShape(supportShape, supportShape);
-            if (App::currentRecomputeWasCanceled()) {
-                return new App::DocumentObjectExecReturn("User aborted");
-            }
-            supportShape.makeElementFuse(shapes);
-            break;
         }
-    }
+        applyScope.complete();
+        appendTransformedDebugLog(
+            *this,
+            "apply end",
+            std::string("elapsed_ms=") + std::to_string(elapsedMilliseconds(executeStart))
+        );
 
-    supportShape = refineShapeIfActive((supportShape));
+        auto refineScope = progressScope.makeStepScope(2, totalPhases, "Refining transform...");
+        if (auto abort = ::abortIfCanceled(*this, refineScope, "refine_begin")) {
+            return abort;
+        }
+        if (interactivePreview) {
+            appendTransformedDebugLog(*this, "refine skipped", "interactive_preview=1");
+        }
+        else {
+            const auto refineStart = std::chrono::steady_clock::now();
+            appendTransformedDebugLog(*this, "refine begin");
+            supportShape = refineShapeIfActive((supportShape));
+            appendTransformedDebugLog(
+                *this,
+                "refine end",
+                std::string("elapsed_ms=") + std::to_string(elapsedMilliseconds(refineStart))
+            );
+        }
+        if (auto abort = ::abortIfCanceled(*this, refineScope, "refine")) {
+            return abort;
+        }
+        refineScope.complete();
 
-    this->Shape.setValue(getSolid(supportShape));
-    if (singleSolidRuleMode() == SingleSolidRuleMode::Enforced) {
-        rejected = getRemainingSolids(supportShape.getShape());
-    }
-    else {
-        rejected.Nullify();
-    }
+        auto finalizeScope = progressScope.makeStepScope(3, totalPhases, "Finalizing transform...");
+        if (auto abort = ::abortIfCanceled(*this, finalizeScope, "finalize_begin")) {
+            return abort;
+        }
+        const auto finalizeStart = std::chrono::steady_clock::now();
+        appendTransformedDebugLog(*this, "finalize begin");
+        this->Shape.setValue(getSolid(supportShape));
+        if (singleSolidRuleMode() == SingleSolidRuleMode::Enforced) {
+            rejected = getRemainingSolids(supportShape.getShape());
+        }
+        else {
+            rejected.Nullify();
+        }
+        appendTransformedDebugLog(
+            *this,
+            "finalize end",
+            std::string("elapsed_ms=") + std::to_string(elapsedMilliseconds(finalizeStart))
+        );
+        finalizeScope.complete();
+        appendTransformedDebugLog(
+            *this,
+            "execute end",
+            std::string("elapsed_ms=") + std::to_string(elapsedMilliseconds(executeStart))
+        );
 
-    return App::DocumentObject::StdReturn;
+        return App::DocumentObject::StdReturn;
+    }
+    catch (const Standard_Failure& e) {
+        appendTransformedDebugLog(*this, "execute std_failure", e.GetMessageString());
+        return new App::DocumentObjectExecReturn(e.GetMessageString());
+    }
+    catch (Base::Exception& e) {
+        appendTransformedDebugLog(*this, "execute base_exception", e.what());
+        return new App::DocumentObjectExecReturn(e.what());
+    }
 }
 
 TopoDS_Shape Transformed::getRemainingSolids(const TopoDS_Shape& shape)
@@ -483,7 +813,7 @@ TopoDS_Shape Transformed::getRemainingSolids(const TopoDS_Shape& shape)
     builder.MakeCompound(compShape);
 
     if (shape.IsNull()) {
-        throw Standard_Failure("Shape is null");
+        Standard_Failure::Raise("Shape is null");
     }
     TopExp_Explorer xp;
     xp.Init(shape, TopAbs_SOLID);
