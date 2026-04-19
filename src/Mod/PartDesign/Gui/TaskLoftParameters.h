@@ -24,6 +24,11 @@
 
 #pragma once
 
+#include <memory>
+#include <string>
+
+#include <QMetaObject>
+
 #include "TaskSketchBasedParameters.h"
 #include "ViewProviderLoft.h"
 
@@ -39,7 +44,8 @@ class Property;
 namespace Gui
 {
 class ViewProvider;
-}
+class AsyncPreviewSession;
+}  // namespace Gui
 
 namespace PartDesignGui
 {
@@ -56,8 +62,19 @@ public:
         QWidget* parent = nullptr
     );
     ~TaskLoftParameters() override;
+    void schedulePendingRecompute();
+    void flushPendingRecompute() override;
+    void stopPendingRecompute() override;
+    bool hasOutstandingRecompute() const override;
+    void setDeferredClosePending(bool pending) override;
+    Gui::AsyncPreviewSession* getAcceptedRecomputeProgressSession() override;
+    void clearInteractiveSelection();
+
+Q_SIGNALS:
+    void recomputeSettled();
 
 private Q_SLOTS:
+    void onUpdateView(bool);
     void onProfileButton(bool);
     void onRefButtonAdd(bool);
     void onRefButtonRemove(bool);
@@ -78,6 +95,9 @@ protected:
     void changeEvent(QEvent* e) override;
 
 private:
+    void runImmediateRecompute();
+    void requestRecompute(bool waitForCompletion);
+    void updateRecomputeUi();
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void updateUI();
     bool referenceSelected(const Gui::SelectionChanges& msg) const;
@@ -89,6 +109,7 @@ private:
 private:
     QWidget* proxy;
     std::unique_ptr<Ui_TaskLoftParameters> ui;
+    std::unique_ptr<Gui::AsyncPreviewSession> asyncPreviewSession;
 
     selectionModes selectionMode = none;
 };
@@ -104,9 +125,20 @@ public:
 
     /// is called by the framework if the dialog is accepted (Ok)
     bool accept() override;
+    bool reject() override;
+
+private:
+    void ensureDeferredRejectConnection();
+    void setDeferredRejectPending(bool pending);
+    bool performReject();
+
+private Q_SLOTS:
+    void onParameterRecomputeSettled();
 
 protected:
     TaskLoftParameters* parameter;
+
+private:
 };
 
 }  // namespace PartDesignGui
