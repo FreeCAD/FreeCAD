@@ -24,6 +24,11 @@
 
 #pragma once
 
+#include <cstdint>
+#include <memory>
+#include <string>
+
+#include <QMetaObject>
 #include <Gui/Inventor/Draggers/Gizmo.h>
 
 #include "TaskSketchBasedParameters.h"
@@ -45,7 +50,8 @@ class PropertyLinkSubList;
 namespace Gui
 {
 class PrefQuantitySpinBox;
-}
+class AsyncPreviewSession;
+}  // namespace Gui
 
 namespace Gui
 {
@@ -120,7 +126,7 @@ public:
         const std::string& pixmapname,
         const QString& parname
     );
-    ~TaskExtrudeParameters() override = default;
+    ~TaskExtrudeParameters() override;
 
     void saveHistory() override;
 
@@ -134,6 +140,13 @@ public:
     void applyParameters();
 
     void setSelectionMode(SelectionMode mode, Side side = Side::First);
+    void flushPendingRecompute() override;
+    void stopPendingRecompute() override;
+    bool hasOutstandingRecompute() const override;
+    void setDeferredClosePending(bool pending);
+
+Q_SIGNALS:
+    void recomputeSettled();
 
 protected:
     // This struct holds all pointers for one side's UI and properties
@@ -180,6 +193,7 @@ protected Q_SLOTS:
     virtual void onModeChanged(int index, Side side) = 0;
 
 private Q_SLOTS:
+    void onUpdateView(bool on);
     void onDirectionCBChanged(int);
     void onAlongSketchNormalChanged(bool);
     void onXDirectionEditChanged(double);
@@ -237,6 +251,9 @@ protected:
     void setDirectionMode(int index);
     void handleLineFaceNameClick(QLineEdit*);
     void handleLineFaceNameNo(QLineEdit*);
+    void triggerPreviewRecompute() override;
+    void schedulePendingRecompute();
+    void runInteractiveRecompute();
 
 private:
     void setupSideDialog(SideController& side);
@@ -247,6 +264,8 @@ private:
     void selectedShapeFace(const Gui::SelectionChanges& msg, SideController& side);
 
     void tryRecomputeFeature();
+    void requestRecompute(bool waitForCompletion);
+    void updateRecomputeUi();
     void translateFaceName(QLineEdit*);
     void connectSlots();
     bool hasProfileFace(PartDesign::ProfileBased*) const;
@@ -262,6 +281,7 @@ private:
     void createSideControllers();
 
     std::unique_ptr<Gui::GizmoContainer> gizmoContainer;
+    std::unique_ptr<Gui::AsyncPreviewSession> asyncPreviewSession;
     Gui::LinearGizmo* lengthGizmo1 = nullptr;
     Gui::LinearGizmo* lengthGizmo2 = nullptr;
     Gui::RotationGizmo* taperAngleGizmo1 = nullptr;
@@ -291,6 +311,14 @@ public:
 
     bool accept() override;
     bool reject() override;
+
+private:
+    void ensureDeferredRejectConnection();
+    void setDeferredRejectPending(bool pending);
+
+private Q_SLOTS:
+    void onParameterRecomputeSettled();
+
 
 protected:
     virtual TaskExtrudeParameters* getTaskParameters() = 0;
