@@ -44,6 +44,13 @@ namespace
 {
 std::vector<std::string> EngineEnums = {"Engine 3D", "Engine Plane", "Engine Line", "Engine Point"};
 
+bool isInteractiveMappingProperty(const AttachExtension& extension, const App::Property* prop)
+{
+    return prop == &extension.AttachmentSupport || prop == &extension.MapMode
+        || prop == &extension.MapPathParameter || prop == &extension.MapReversed
+        || prop == &extension.AttachmentOffset;
+}
+
 const char* enumToClass(const char* mode)
 {
     if (EngineEnums.at(0) == mode) {
@@ -346,6 +353,7 @@ bool AttachExtension::changeAttacherType(const char* typeName, bool base)
 
 bool AttachExtension::positionBySupport()
 {
+    _pendingInteractiveMappingUpdate = false;
     _active = 0;
     if (!_props.attacher) {
         throw Base::RuntimeError(
@@ -403,6 +411,67 @@ bool AttachExtension::positionBySupport()
     }
 }
 
+void AttachExtension::beginInteractiveMappingUpdateCoalescing()
+{
+    ++_interactiveMappingUpdateCoalescingDepth;
+}
+
+void AttachExtension::endInteractiveMappingUpdateCoalescing(bool flushPending)
+{
+    if (_interactiveMappingUpdateCoalescingDepth == 0) {
+        return;
+    }
+
+    --_interactiveMappingUpdateCoalescingDepth;
+    if (_interactiveMappingUpdateCoalescingDepth != 0) {
+        return;
+    }
+
+    if (flushPending) {
+        flushPendingInteractiveMappingUpdate();
+    }
+    else {
+        cancelPendingInteractiveMappingUpdate();
+    }
+}
+
+bool AttachExtension::updatePlacementFromMapping()
+{
+    _pendingInteractiveMappingUpdate = false;
+    _active = -1;
+
+    bool attached = false;
+    try {
+        attached = positionBySupport();
+        getExtendedObject()->setStatus(App::Error, false);
+    }
+    catch (Base::Exception& e) {
+        getExtendedObject()->setStatus(App::Error, true);
+        Base::Console().error("PositionBySupport: %s\n", e.what());
+    }
+    catch (Standard_Failure& e) {
+        getExtendedObject()->setStatus(App::Error, true);
+        Base::Console().error("PositionBySupport: %s\n", e.GetMessageString());
+    }
+
+    updatePropertyStatus(attached);
+    return attached;
+}
+
+bool AttachExtension::flushPendingInteractiveMappingUpdate()
+{
+    if (!_pendingInteractiveMappingUpdate) {
+        return !getExtendedObject()->isError() && isAttacherActive();
+    }
+
+    return updatePlacementFromMapping();
+}
+
+void AttachExtension::cancelPendingInteractiveMappingUpdate()
+{
+    _pendingInteractiveMappingUpdate = false;
+}
+
 bool AttachExtension::isAttacherActive() const
 {
     if (_active < 0) {
@@ -447,28 +516,17 @@ App::DocumentObjectExecReturn* AttachExtension::extensionExecute()
 void AttachExtension::extensionOnChanged(const App::Property* prop)
 {
     if (!getExtendedObject()->isRestoring()) {
-        // If we change anything that affects our position, update it immediately so you can see it
-        // interactively.
-        if ((prop == &AttachmentSupport || prop == &MapMode || prop == &MapPathParameter
-             || prop == &MapReversed || prop == &AttachmentOffset)) {
-            bool bAttached = false;
-            try {
-                bAttached = positionBySupport();
-            }
-            catch (Base::Exception& e) {
-                getExtendedObject()->setStatus(App::Error, true);
-                Base::Console().error("PositionBySupport: %s\n", e.what());
-                // set error message - how?
-            }
-            catch (Standard_Failure& e) {
-                getExtendedObject()->setStatus(App::Error, true);
-                Base::Console().error("PositionBySupport: %s\n", e.GetMessageString());
-            }
-
-            updateSinglePropertyStatus(bAttached);
-        }
         if (prop == &AttacherEngine) {
             AttacherType.setValue(enumToClass(AttacherEngine.getValueAsString()));
+        }
+        else if (isInteractiveMappingProperty(*this, prop)) {
+            if (isInteractiveMappingUpdateCoalescingEnabled()) {
+                _pendingInteractiveMappingUpdate = true;
+                _active = -1;
+            }
+            else {
+                updatePlacementFromMapping();
+            }
         }
         else if (_props.matchProperty(prop)) {
             _active = -1;

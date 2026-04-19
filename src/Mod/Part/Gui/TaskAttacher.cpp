@@ -43,6 +43,7 @@
 #include <App/Datums.h>
 #include <App/Part.h>
 #include <Gui/Application.h>
+#include <Gui/ActionFunction.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
 #include <Gui/Control.h>
@@ -75,6 +76,11 @@ using namespace Attacher;
 namespace sp = std::placeholders;
 
 /* TRANSLATOR PartDesignGui::TaskAttacher */
+
+namespace
+{
+constexpr int InteractiveAttachmentPreviewDebounceMs = 150;
+}
 
 // Create reference name from PropertyLinkSub values in a translatable fashion
 const QString makeRefString(const App::DocumentObject* obj, const std::string& sub)
@@ -290,6 +296,10 @@ TaskAttacher::TaskAttacher(
     updatePreview();
     showPlacementUtilities();
 
+    attachmentUpdateScheduler = std::make_unique<Gui::DebouncedFunction>(this);
+    attachmentUpdateScheduler->setInterval(InteractiveAttachmentPreviewDebounceMs);
+    attachmentUpdateScheduler->setFunction([this]() { flushPendingAttachmentUpdate(); });
+
     // NOLINTBEGIN
     //  connect object deletion with slot
     auto bnd1 = std::bind(&TaskAttacher::objectDeleted, this, sp::_1);
@@ -301,11 +311,15 @@ TaskAttacher::TaskAttacher(
     connectDelObject = guiDocument->signalDeletedObject.connect(bnd1);
     connectDelDocument = guiDocument->signalDeleteDocument.connect(bnd2);
 
+    pcAttach->beginInteractiveMappingUpdateCoalescing();
     handleInitialSelection();
+    flushPendingAttachmentUpdate();
 }
 
 TaskAttacher::~TaskAttacher()
 {
+    stopPendingAttachmentUpdate();
+
     try {
         visibilityAutomation(false);
     }
@@ -333,6 +347,7 @@ TaskAttacher::~TaskAttacher()
 void TaskAttacher::objectDeleted(const Gui::ViewProviderDocumentObject& view)
 {
     if (ViewProvider == &view) {
+        stopPendingAttachmentUpdate();
         ViewProvider = nullptr;
         // if the object gets deleted we need to clear all overrides so it does not segfault
         overrides.clear();
@@ -342,6 +357,7 @@ void TaskAttacher::objectDeleted(const Gui::ViewProviderDocumentObject& view)
 
 void TaskAttacher::documentDeleted(const Gui::Document&)
 {
+    stopPendingAttachmentUpdate();
     ViewProvider = nullptr;
     this->setDisabled(true);
 }
@@ -393,6 +409,71 @@ void TaskAttacher::updateReferencesUI()
     updateRefButton(3);
 }
 
+Part::AttachExtension* TaskAttacher::getAttachExtension() const
+{
+    if (!ViewProvider) {
+        return nullptr;
+    }
+
+    return ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
+}
+
+void TaskAttacher::schedulePendingAttachmentUpdate()
+{
+    auto* attachExtension = getAttachExtension();
+    if (!attachExtension) {
+        return;
+    }
+
+    if (attachmentUpdateScheduler) {
+        attachmentUpdateScheduler->start();
+    }
+    else {
+        attachExtension->flushPendingInteractiveMappingUpdate();
+        refreshPreviewStatus();
+        Q_EMIT placementUpdated();
+    }
+}
+
+void TaskAttacher::flushPendingAttachmentUpdate()
+{
+    if (attachmentUpdateScheduler) {
+        attachmentUpdateScheduler->stop();
+    }
+
+    auto* attachExtension = getAttachExtension();
+    if (!attachExtension) {
+        return;
+    }
+
+    const bool hadPending = attachExtension->hasPendingInteractiveMappingUpdate();
+    if (!hadPending) {
+        return;
+    }
+
+    attachExtension->flushPendingInteractiveMappingUpdate();
+    refreshPreviewStatus();
+
+    if (hadPending) {
+        Q_EMIT placementUpdated();
+    }
+}
+
+void TaskAttacher::stopPendingAttachmentUpdate()
+{
+    if (attachmentUpdateScheduler) {
+        attachmentUpdateScheduler->stop();
+    }
+
+    auto* attachExtension = getAttachExtension();
+    if (!attachExtension) {
+        return;
+    }
+
+    attachExtension->cancelPendingInteractiveMappingUpdate();
+    attachExtension->endInteractiveMappingUpdateCoalescing(false);
+}
+
 bool TaskAttacher::updatePreview()
 {
     if (!ViewProvider) {
@@ -415,30 +496,67 @@ bool TaskAttacher::updatePreview()
     catch (...) {
         errMessage = tr("unknown error");
     }
+    updatePreviewUi(attached, errMessage);
+
+    return attached;
+}
+
+void TaskAttacher::updatePreviewUi(bool attached, const QString& errMessage)
+{
     if (errMessage.length() > 0) {
         ui->message->setText(tr("Attachment mode failed: %1").arg(errMessage));
         ui->message->setStyleSheet(QStringLiteral("QLabel{color: red;}"));
     }
-    else {
-        if (!attached) {
-            ui->message->setText(tr("Not attached"));
-            ui->message->setStyleSheet(QString());
-        }
-        else {
-            std::vector<QString> strs = AttacherGui::getUIStrings(
-                pcAttach->attacher().getTypeId(),
-                eMapMode(pcAttach->MapMode.getValue())
-            );
-            ui->message->setText(tr("Attached with mode %1").arg(strs[0]));
-            ui->message->setStyleSheet(QStringLiteral("QLabel{color: green;}"));
-        }
+    else if (!attached) {
+        ui->message->setText(tr("Not attached"));
+        ui->message->setStyleSheet(QString());
     }
+    else {
+        Part::AttachExtension* pcAttach
+            = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
+        std::vector<QString> strs = AttacherGui::getUIStrings(
+            pcAttach->attacher().getTypeId(),
+            eMapMode(pcAttach->MapMode.getValue())
+        );
+        ui->message->setText(tr("Attached with mode %1").arg(strs[0]));
+        ui->message->setStyleSheet(QStringLiteral("QLabel{color: green;}"));
+    }
+
     QString splmLabelText = attached ? tr("Attachment Offset (in its local coordinate system):")
                                      : tr("Attachment Offset (inactive - not attached):");
     ui->groupBox_AttachmentOffset->setTitle(splmLabelText);
     ui->groupBox_AttachmentOffset->setEnabled(attached);
+}
 
-    return attached;
+bool TaskAttacher::refreshPreviewStatus()
+{
+    auto* pcAttach = getAttachExtension();
+    if (!pcAttach) {
+        return false;
+    }
+
+    auto* object = ViewProvider->getObject();
+    if (pcAttach->hasPendingInteractiveMappingUpdate()) {
+        return false;
+    }
+
+    try {
+        const bool attached = pcAttach->isAttacherActive();
+        const bool modeDeactivated = eMapMode(pcAttach->MapMode.getValue()) == mmDeactivated;
+
+        if (!attached && object->isError() && !modeDeactivated) {
+            return updatePreview();
+        }
+
+        updatePreviewUi(attached);
+        return attached;
+    }
+    catch (Base::Exception&) {
+        return updatePreview();
+    }
+    catch (Standard_Failure&) {
+        return updatePreview();
+    }
 }
 
 QLineEdit* TaskAttacher::getLine(unsigned idx)
@@ -595,8 +713,6 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         SubAndObjName pair = {msg.pObjectName, msg.pSubName};
         addToReference(pair);
-
-        Q_EMIT placementUpdated();
     }
 }
 
@@ -689,7 +805,7 @@ void TaskAttacher::addToReference(const std::vector<SubAndObjName>& pairs)
         }
         pcAttach->MapMode.setValue(mmode);
         selectMapMode(mmode);
-        updatePreview();
+        schedulePendingAttachmentUpdate();
     }
     catch (Base::Exception& e) {
         ui->message->setText(QCoreApplication::translate("Exception", e.what()));
@@ -739,9 +855,7 @@ void TaskAttacher::onAttachmentOffsetChanged(double /*val*/, int idx)
     }
 
     pcAttach->AttachmentOffset.setValue(pl);
-    updatePreview();
-
-    Q_EMIT placementUpdated();
+    schedulePendingAttachmentUpdate();
 }
 
 void TaskAttacher::onAttachmentOffsetXChanged(double val)
@@ -783,9 +897,7 @@ void TaskAttacher::onCheckFlip(bool on)
     Part::AttachExtension* pcAttach
         = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
     pcAttach->MapReversed.setValue(on);
-    ViewProvider->getObject()->recomputeFeature();
-
-    Q_EMIT placementUpdated();
+    schedulePendingAttachmentUpdate();
 }
 
 void TaskAttacher::onButtonRef(const bool checked, unsigned idx)
@@ -802,8 +914,6 @@ void TaskAttacher::onButtonRef(const bool checked, unsigned idx)
     updateRefButton(1);
     updateRefButton(2);
     updateRefButton(3);
-
-    Q_EMIT placementUpdated();
 }
 
 void TaskAttacher::onButtonRef1(const bool checked)
@@ -838,7 +948,7 @@ void TaskAttacher::onModeSelect()
     pcAttach->MapMode.setValue(activeMode);
     userSelectedMode = true;
     applyBoldMode(activeMode);
-    updatePreview();
+    schedulePendingAttachmentUpdate();
 }
 
 void TaskAttacher::onRefName(const QString& text, unsigned idx)
@@ -873,7 +983,7 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
         pcAttach->MapMode.setValue(getActiveMapMode());
         selectMapMode(getActiveMapMode());
 
-        updatePreview();
+        schedulePendingAttachmentUpdate();
 
         // Update the UI
         std::vector<QString> refstrings;
@@ -887,7 +997,6 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
         ui->lineRef4->setText(refstrings[3]);
         ui->lineRef4->setProperty("RefName", QByteArray(newrefnames[3].c_str()));
         updateReferencesUI();
-        Q_EMIT placementUpdated();
         return;
     }
 
@@ -978,9 +1087,8 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
     pcAttach->MapMode.setValue(getActiveMapMode());
     selectMapMode(getActiveMapMode());
 
+    schedulePendingAttachmentUpdate();
     updateReferencesUI();
-
-    Q_EMIT placementUpdated();
 }
 
 void TaskAttacher::updateRefButton(int idx)
@@ -1326,8 +1434,9 @@ void TaskAttacher::changeEvent(QEvent* e)
         ui->lineRef1->setText(refstrings[0]);
         ui->lineRef2->setText(refstrings[1]);
         ui->lineRef3->setText(refstrings[2]);
-        ui->lineRef3->setText(refstrings[3]);
+        ui->lineRef4->setText(refstrings[3]);
         updateListOfModes();
+        refreshPreviewStatus();
 
         ui->checkBoxFlip->blockSignals(false);
         ui->buttonRef1->blockSignals(false);
@@ -1593,6 +1702,11 @@ bool TaskDlgAttacher::accept()
             return true;
         }
 
+        if (parameter) {
+            parameter->flushPendingAttachmentUpdate();
+            parameter->stopPendingAttachmentUpdate();
+        }
+
         Part::AttachExtension* pcAttach
             = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
         auto obj = ViewProvider->getObject();
@@ -1660,6 +1774,10 @@ bool TaskDlgAttacher::reject()
 {
     if (onReject) {
         onReject();
+    }
+
+    if (parameter) {
+        parameter->stopPendingAttachmentUpdate();
     }
 
     Gui::DocumentT doc(getDocumentName());

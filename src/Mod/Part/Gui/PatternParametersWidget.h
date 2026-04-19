@@ -72,8 +72,9 @@ enum class PatternMode
  * @brief A widget to configure the parameters for a single direction of a linear pattern.
  *
  * This widget encapsulates the UI and logic for Direction, Reverse, Mode,
- * Length/Spacing (including dynamic spacing), and Occurrences. It binds directly
- * to the corresponding properties of a Feature.
+ * Length/Spacing (including dynamic spacing), and Occurrences. It mirrors the
+ * corresponding properties of a Feature in local UI state and can later publish
+ * the staged values back to the bound properties.
  */
 class PartGuiExport PatternParametersWidget: public QWidget
 {
@@ -90,8 +91,9 @@ public:
     /**
      * @brief Binds the widget's UI elements to the properties of a DocumentObject.
      *
-     * This must be called after creating the widget to link its controls
-     * to the underlying feature's data.
+     * This must be called after creating the widget to initialize its controls
+     * from the underlying feature's data and establish the target properties for
+     * later publication.
      *
      * @param directionProp Reference to the Direction property (PropertyLinkSub).
      * @param reversedProp Reference to the Reversed property (PropertyBool).
@@ -159,6 +161,7 @@ public:
     void setCheckable(bool on);
     void setChecked(bool on);
 
+    void applyToBoundProperties() const;
     void applyQuantitySpinboxes() const;
 
     // Methods for managing on-view labels
@@ -223,6 +226,7 @@ private:
     void clearDynamicSpacingRows();
     void rebuildDynamicSpacingUI();
     void updateSpacingPatternProperty();  // Updates the property from the UI
+    std::vector<double> currentSpacingPatternValues() const;
 
     std::unique_ptr<Ui_PatternParametersWidget> ui;
 
@@ -248,6 +252,7 @@ private:
     std::vector<std::unique_ptr<Gui::EditableDatumLabel>> spacingLabels;
 
     PatternType type;
+    bool reversedState = false;
 };
 
 }  // namespace PartGui
