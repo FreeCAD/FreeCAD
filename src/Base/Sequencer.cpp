@@ -257,6 +257,9 @@ SequencerLauncher::~SequencerLauncher()
 void SequencerLauncher::setText(const char* pszTxt)
 {
     std::lock_guard<std::recursive_mutex> locker(SequencerP::mutex);
+    if (SequencerP::_topLauncher != this) {
+        return;
+    }
     SequencerBase::Instance().setText(pszTxt);
 }
 
@@ -272,6 +275,9 @@ bool SequencerLauncher::next(bool canAbort)
 void SequencerLauncher::setProgress(size_t pos)
 {
     std::lock_guard<std::recursive_mutex> locker(SequencerP::mutex);
+    if (SequencerP::_topLauncher != this) {
+        return;
+    }
     SequencerBase::Instance().setProgress(pos);
 }
 
