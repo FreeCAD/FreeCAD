@@ -23,6 +23,8 @@
 
 #pragma once
 
+#include <functional>
+
 #include "ViewProviderDocumentObject.h"
 #include <Base/Placement.h>
 #include <App/PropertyGeo.h>
@@ -102,10 +104,22 @@ public:
         All = XPos | YPos | ZPos | XRot | YRot | ZRot
     };
     using DraggerComponents = Base::Flags<DraggerComponent>;
+
+    enum class DraggerInteraction
+    {
+        Start,
+        Motion,
+        Finish,
+    };
+    /// previews object movement from the current dragger placement without committing it
+    void previewPlacementFromDragger();
+    /// commits object movement from the current dragger placement
+    void commitPlacementFromDragger(DraggerComponents components = DraggerComponent::All);
     /// updates placement of object based on dragger position and chosen axes components
     void updatePlacementFromDragger(DraggerComponents components = DraggerComponent::All);
     /// updates transform of object based on dragger position, can be used to preview movement
     void updateTransformFromDragger();
+    void setDraggerInteractionHandler(std::function<void(DraggerInteraction)> handler);
 
     /// Gets object placement relative to its coordinate system
     Base::Placement getObjectPlacement() const;
@@ -142,6 +156,7 @@ private:
     static void dragStartCallback(void* data, SoDragger* d);
     static void dragFinishCallback(void* data, SoDragger* d);
     static void dragMotionCallback(void* data, SoDragger* d);
+    void notifyDraggerInteraction(DraggerInteraction interaction);
 
     void updateDraggerPosition();
 
@@ -156,6 +171,7 @@ private:
     );
 
     GizmoContainer* gizmoContainer = nullptr;
+    std::function<void(DraggerInteraction)> draggerInteractionHandler;
 };
 
 }  // namespace Gui

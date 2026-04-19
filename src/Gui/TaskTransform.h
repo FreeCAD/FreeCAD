@@ -116,9 +116,8 @@ private Q_SLOTS:
     void onRotationChange(QuantitySpinBox* changed);
 
 private:
-    static inline bool firstDrag = true;
-    static void dragStartCallback(void* data, SoDragger* d);
-    static void dragMotionCallback(void* data, SoDragger* d);
+    void onDraggerInteraction(ViewProviderDragger::DraggerInteraction interaction);
+    void ensureTransformCommandOpen();
 
     void setSelectionMode(SelectionMode mode);
     SelectionMode getSelectionMode() const;

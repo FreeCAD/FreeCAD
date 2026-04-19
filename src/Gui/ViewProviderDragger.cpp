@@ -109,6 +109,11 @@ void ViewProviderDragger::setGizmoContainer(Gui::GizmoContainer* gizmoContainer)
     this->gizmoContainer = gizmoContainer;
 }
 
+void ViewProviderDragger::setDraggerInteractionHandler(std::function<void(DraggerInteraction)> handler)
+{
+    draggerInteractionHandler = std::move(handler);
+}
+
 void ViewProviderDragger::onChanged(const App::Property* property)
 {
     if (property == &TransformOrigin) {
@@ -268,6 +273,7 @@ void ViewProviderDragger::dragStartCallback(void* data, [[maybe_unused]] SoDragg
 
     vp->draggerPlacement = vp->getDraggerPlacement();
     vp->transformDragger->clearIncrementCounts();
+    vp->notifyDraggerInteraction(DraggerInteraction::Start);
 }
 
 void ViewProviderDragger::dragFinishCallback(void* data, [[maybe_unused]] SoDragger* d)
@@ -278,14 +284,23 @@ void ViewProviderDragger::dragFinishCallback(void* data, [[maybe_unused]] SoDrag
     vp->draggerPlacement = vp->getDraggerPlacement();
     vp->transformDragger->clearIncrementCounts();
 
-    vp->updatePlacementFromDragger();
+    vp->commitPlacementFromDragger();
+    vp->notifyDraggerInteraction(DraggerInteraction::Finish);
 }
 
 void ViewProviderDragger::dragMotionCallback(void* data, [[maybe_unused]] SoDragger* d)
 {
     auto vp = static_cast<ViewProviderDragger*>(data);
 
-    vp->updateTransformFromDragger();
+    vp->previewPlacementFromDragger();
+    vp->notifyDraggerInteraction(DraggerInteraction::Motion);
+}
+
+void ViewProviderDragger::notifyDraggerInteraction(DraggerInteraction interaction)
+{
+    if (draggerInteractionHandler) {
+        draggerInteractionHandler(interaction);
+    }
 }
 
 void ViewProviderDragger::updatePlacementFromDragger(DraggerComponents components)
@@ -352,6 +367,17 @@ void ViewProviderDragger::updatePlacementFromDragger(DraggerComponents component
 
     placement->setValue((finalDraggerPlacement * getTransformOrigin().inverse()));
     updateDraggerPosition();
+}
+
+void ViewProviderDragger::previewPlacementFromDragger()
+{
+    updateTransformFromDragger();
+}
+
+void ViewProviderDragger::commitPlacementFromDragger(DraggerComponents components)
+{
+    previewPlacementFromDragger();
+    updatePlacementFromDragger(components);
 }
 
 Base::Rotation Gui::ViewProviderDragger::orthonormalize(
