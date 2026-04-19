@@ -223,7 +223,7 @@ def approximateWire(wire, tolerance=0.01):
 
     # Reassemble the wire if any edges were replaced
     if modified:
-        return Part.Wire(processed_edges)
+        return Part.Wire(Part.__sortEdges__(processed_edges))
     return wire
 
 
@@ -492,6 +492,8 @@ def getClearedAreas(currentOp, bbox):
         baseOp = PathDressup.baseOp(op)
         if baseOp.Name == currentOp.Name:
             break
+        if getattr(op, "RestMachiningPass", None):
+            op = baseOp
         if getattr(baseOp, "Active", False) and op.Path:
             tool = baseOp.ToolController.Tool
             diameter = tool.Diameter.getValueAs("mm")

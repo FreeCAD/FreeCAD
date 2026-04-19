@@ -232,11 +232,6 @@
            <string>Operation</string>
           </property>
          </column>
-         <column>
-          <property name="text">
-           <string>Cycle Time</string>
-          </property>
-         </column>
         </widget>
        </item>
        <item>
@@ -277,19 +272,6 @@
             </size>
            </property>
           </spacer>
-         </item>
-         <item>
-          <widget class="QLabel" name="labelTotalTime">
-           <property name="toolTip">
-            <string>Total estimated machining time for checked operations</string>
-           </property>
-           <property name="text">
-            <string>Total: -</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
-           </property>
-          </widget>
          </item>
         </layout>
        </item>

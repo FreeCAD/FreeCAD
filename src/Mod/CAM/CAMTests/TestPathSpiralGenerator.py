@@ -18,7 +18,10 @@
 #                                                                              #
 ################################################################################
 
+import Constants
 import FreeCAD
+import math
+import Part
 import Path
 import Path.Base.Generator.spiral as generator
 import CAMTests.PathTestUtils as PathTestUtils
@@ -40,36 +43,26 @@ def _resetArgs():
 
 
 class TestPathSpiralGenerator(PathTestUtils.PathTestBase):
-
-    expectedSpiralGCode = "G1 X12.500000 Y10.000000 Z0.000000\
-G2 I-2.500000 J0.000000 X7.500000 Y10.000000 Z0.000000\
-G2 I2.500000 J0.000000 X12.500000 Y10.000000 Z0.000000\
-G2 I-2.654608 J-0.383000 X11.458333 Y7.474093 Z0.000000\
-G2 I-1.869182 J2.475521 X8.333333 Y7.113249 Z0.000000\
-G2 I1.421870 J3.221280 X6.250000 Y10.000000 Z0.000000\
-G2 I3.921685 J0.377771 X7.916667 Y13.608439 Z0.000000\
-G2 I2.496990 J-3.571950 X12.291667 Y13.969283 Z0.000000\
-G2 I-2.055668 J-4.311251 X15.000000 Y10.000000 Z0.000000\
-G2 I-5.180609 J-0.374388 X12.708333 Y5.309029 Z0.000000\
-G2 I-3.123169 J4.662427 X7.083333 Y4.948185 Z0.000000\
-G2 I2.686086 J5.397979 X3.750000 Y10.000000 Z0.000000\
-G2 I6.436062 J0.372095 X6.666667 Y15.773503 Z0.000000\
-G2 I3.748771 J-5.750081 X13.541667 Y16.134347 Z0.000000\
-G2 I-3.314743 J-6.483194 X17.500000 Y10.000000 Z0.000000\
-G2 I-7.500000 J0.000000 X2.500000 Y10.000000 Z0.000000\
-G2 I7.500000 J0.000000 X17.500000 Y10.000000 Z0.000000"
-
     def test00(self):
         """Test Basic Spiral Generator Return"""
         args = _resetArgs()
-        result = generator.generate(**args)
-        self.assertTrue(isinstance(result, list))
-        self.assertTrue(isinstance(result[0], Path.Command))
+        cmds = generator.generate(**args)
+        self.assertTrue(cmds)
+        self.assertTrue(isinstance(cmds, list))
+        self.assertTrue(all(isinstance(cmd, Path.Command) for cmd in cmds))
 
-        gcode = "".join([r.toGCode() for r in result])
-        print()
-        print("\n".join([str(r.toGCode()) + "\\" for r in result]))
-        self.assertTrue(gcode == self.expectedSpiralGCode, "Incorrect spiral g-code generated")
+        # first command is a straight move to start point
+        self.assertIn(cmds[0].Name, Constants.GCODE_MOVE_STRAIGHT, "Init move should be G1")
+
+        # check clockwise direction
+        args["direction"] = "CW"
+        cmds = generator.generate(**args)[1:]
+        self.assertTrue(all(cmd.Name in Constants.GCODE_MOVE_CW for cmd in cmds))
+
+        # check counterclockwise direction
+        args["direction"] = "CCW"
+        cmds = generator.generate(**args)[1:]
+        self.assertTrue(all(cmd.Name in Constants.GCODE_MOVE_CCW for cmd in cmds))
 
     def test01(self):
         """Test Value and Type checking"""
@@ -130,3 +123,61 @@ G2 I7.500000 J0.000000 X17.500000 Y10.000000 Z0.000000"
         args = _resetArgs()
         args["dir_angle_rad"] = "0.0"
         self.assertRaises(TypeError, generator.generate, **args)
+
+    def test02(self):
+        """Test deviation spiral path from spiral shape"""
+        inner_radius = 5.1
+        step = 5
+        turns = 3
+        center = FreeCAD.Vector(10, 5, 0)
+        dir_angle = 30
+
+        # create Part spiral
+        doc = FreeCAD.newDocument("TestPathSpiralGenerator")
+        spiral = doc.addObject("Part::Spiral", "Spiral")
+        spiral.Placement.Base = center
+        spiral.Placement.Rotation.Angle = math.radians(dir_angle)
+        spiral.Growth = step
+        spiral.Radius = inner_radius
+        spiral.Rotations = turns
+        partSpiral = spiral.Shape
+
+        # create Path spiral
+        args = {}
+        args["center"] = center
+        args["step"] = step
+        args["inner_radius"] = inner_radius
+        args["outer_radius"] = inner_radius + step * turns
+        args["direction"] = "CCW"
+        args["startAt"] = "Inside"
+        args["dir_angle_rad"] = math.radians(dir_angle)
+        cmds = generator.generate(**args)[3:-2]
+
+        # convert Path to Part.Wire
+        edges = []
+        pl = FreeCAD.Placement()
+        pl.rotate(center, FreeCAD.Vector(0, 0, 1), dir_angle)
+        startPoint = pl.multVec(FreeCAD.Vector(center.x + inner_radius, center.y, 0))
+        for cmd in cmds:
+            edges.append(Path.Geom.edgeForCmd(cmd, startPoint))
+            startPoint = FreeCAD.Vector(cmd.x, cmd.y, cmd.z)
+        pathSpiral = Part.Wire(Part.__sortEdges__(edges))
+
+        # wires should have similar length
+        lenghtDiff = abs(pathSpiral.Length - partSpiral.Length)
+        self.assertLess(lenghtDiff, 0.1)
+
+        # amount points after discretization should be identical
+        pointsPathSpiral = pathSpiral.discretize(Distance=1)
+        pointsPartSpiral = partSpiral.discretize(Distance=1)
+        self.assertEqual(len(pointsPathSpiral), len(pointsPartSpiral))
+
+        # for spiral with inner radius greater than 5 mm, deviation should be less than 0.1 mm
+        for i in range(len(pointsPathSpiral)):
+            dist = pointsPathSpiral[i].distanceToPoint(pointsPartSpiral[i])
+            self.assertLess(dist, 0.1)
+
+        # not checked here, but for spiral with inner radius less than or equel 5 mm,
+        # deviation should be less than 0.01 mm
+
+        FreeCAD.closeDocument(doc.Name)

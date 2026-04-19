@@ -94,6 +94,15 @@ class DressupPathBoundary(object):
                 "Set distance which will attempts to avoid unnecessary retractions.",
             ),
         )
+        obj.addProperty(
+            "App::PropertyBool",
+            "RestMachiningPass",
+            "Boundary",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Apply boundary to Rest Machining.",
+            ),
+        )
 
         self.obj = obj
         self.safeHeight = None
@@ -131,6 +140,16 @@ class DressupPathBoundary(object):
             if obj.KeepToolDown:
                 obj.RetractThreshold = 999999
             obj.removeProperty("KeepToolDown")
+        if not hasattr(obj, "RestMachiningPass"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "RestMachiningPass",
+                "Boundary",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Apply boundary to Rest Machining.",
+                ),
+            )
 
     def onDelete(self, obj, args):
         if obj.Base:

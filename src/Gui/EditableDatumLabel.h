@@ -93,6 +93,7 @@ public:
                                             ///< (finished editing)
     void resetLockedState();  ///< Resets both hasFinishedEditing flag and locked appearance
     void updateGeometry();
+    void updateGeometry(QLineEdit* edit);
 
     Function getFunction();
 
@@ -108,6 +109,8 @@ public:
 
 Q_SIGNALS:
     void valueChanged(double val);
+    void editingFinished(double val);
+    void editingCanceled(double val);
     void parameterUnset();
     void finishEditingOnAllOVPs();  ///< Emitted when Ctrl+Enter is pressed to finish editing on all
                                     ///< visible OVPs
@@ -116,6 +119,8 @@ protected:
     bool eventFilter(QObject* watched, QEvent* event) override;
 
 private:
+    bool syncValueFromSpinBox(bool emitParameterUnset = true);
+    void handleSpinBoxValueChanged();
     void positionSpinbox();
     SbVec3f getTextCenterPoint() const;
 
@@ -130,6 +135,7 @@ private:
     SbVec3f midpos;
 
     Function function;
+    double editStartValue;
 };
 
 }  // namespace Gui

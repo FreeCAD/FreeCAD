@@ -110,9 +110,6 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             return
         super().opExecute(obj)
 
-    def areaOpSetDefaultValues(self, obj, job):
-        obj.PocketLastStepOver = 0
-
     def pocketInvertExtraOffset(self):
         """pocketInvertExtraOffset() ... return True if ExtraOffset's direction is inward.
         Can safely be overwritten by subclass."""
@@ -184,15 +181,6 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             ),
         )
         obj.addProperty(
-            "App::PropertyPercent",
-            "PocketLastStepOver",
-            "Pocket",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "Last Stepover Radius.  If 0, 50% of cutter is used. Tuning this can be used to improve stepover for some shapes",
-            ),
-        )
-        obj.addProperty(
             "App::PropertyBool",
             "UseRestMachining",
             "Pocket",
@@ -210,6 +198,15 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                 "Order processing of the shapes"
                 "\nAutomatic: uses nearest neighbour algorithm to sort shapes"
                 "\nManual: uses order of shapes selection",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "ForceMaxStepOver",
+            "Pocket",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Force maximum stepover even if not all area is cleared. Without this flag set, the stepover may be reduced (for large stepover, >50%) to ensure full area coverage.",
             ),
         )
 
@@ -238,7 +235,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             extraOffset = 0 - extraOffset
         params["PocketExtraOffset"] = extraOffset
         params["ToolRadius"] = self.radius
-        params["PocketLastStepover"] = obj.PocketLastStepOver
+        params["ForceMaxStepover"] = obj.ForceMaxStepOver
 
         Pattern = {
             "ZigZag": 1,
@@ -258,18 +255,6 @@ class ObjectPocket(PathAreaOp.ObjectOp):
 
     def opOnDocumentRestored(self, obj):
         super().opOnDocumentRestored(obj)
-        if not hasattr(obj, "PocketLastStepOver"):
-            obj.addProperty(
-                "App::PropertyPercent",
-                "PocketLastStepOver",
-                "Pocket",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "Last Stepover Radius.  If 0, 50% of cutter is used. Tuning this can be used to improve stepover for some shapes",
-                ),
-            )
-            obj.PocketLastStepOver = 0
-
         if not hasattr(obj, "UseRestMachining"):
             obj.addProperty(
                 "App::PropertyBool",
@@ -278,6 +263,16 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                 QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Skips machining regions that have already been cleared by previous operations.",
+                ),
+            )
+        if not hasattr(obj, "ForceMaxStepOver"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "ForceMaxStepOver",
+                "Pocket",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Force maximum stepover even if not all area is cleared. Without this flag set, the stepover may be reduced (for large stepover, >50%) to ensure full area coverage.",
                 ),
             )
         if not hasattr(obj, "RetractThreshold"):
@@ -313,6 +308,8 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             if obj.KeepToolDown:
                 obj.setExpression("RetractThreshold", "1 * OpToolDiameter")
             obj.removeProperty("KeepToolDown")
+        if hasattr(obj, "PocketLastStepOver"):
+            obj.removeProperty("PocketLastStepOver")
 
         Path.Log.track()
 

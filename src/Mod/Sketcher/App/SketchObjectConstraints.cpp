@@ -1412,19 +1412,27 @@ void SketchObject::addConstraint(Sketcher::ConstraintType constrType, int firstG
 
     this->addConstraint(std::move(newConstr));
 }
-void SketchObject::setOrientation(Constraint* constr, bool reset)
-{
-    // Returns true if the points A-B-C truncated to 2d (x, y) are in a ccw order
-    auto ccw2d = [](const Base::Vector3d& A, const Base::Vector3d& B, const Base::Vector3d& C) -> ConstraintOrientations
-    {
-        double signedArea = B.x * C.y - B.y * C.x - A.x * C.y + A.y * C.x + A.x * B.y - A.y * B.x;
-        return signedArea > 0.0 ? ConstraintOrientations::CounterClockwise : ConstraintOrientations::Clockwise;
-    };
 
-    if (constr->Type != Distance || (!reset && !constr->Orientation.testFlag(ConstraintOrientations::None))) {
-        return;
+ConstraintOrientations ccw2d(const Base::Vector3d& A, const Base::Vector3d& B, const Base::Vector3d& C)
+{
+    double signedArea = B.x * C.y - B.y * C.x - A.x * C.y + A.y * C.x + A.x * B.y - A.y * B.x;
+    return signedArea > 0.0 ? ConstraintOrientations::CounterClockwise : ConstraintOrientations::Clockwise;
+}
+std::optional<gp_Circ> getCircle(const Part::Geometry* geo)
+{
+    if (auto* asCirc = freecad_cast<const Part::GeomCircle*>(geo)) {
+        auto loc = asCirc->getLocation();
+        return gp_Circ(gp_Ax2(gp_Pnt(loc.x, loc.y, loc.z), gp_Dir(1, 0, 0), gp_Dir(0, 1, 0)), std::max(asCirc->getRadius(), 0.0));
     }
 
+    if (auto* asArcOfCirc = freecad_cast<const Part::GeomArcOfCircle*>(geo)) {
+        auto loc = asArcOfCirc->getLocation();
+        return gp_Circ(gp_Ax2(gp_Pnt(loc.x, loc.y, loc.z), gp_Dir(1, 0, 0), gp_Dir(0, 1, 0)), std::max(asArcOfCirc->getRadius(), 0.0));
+    }
+    return std::nullopt;
+}
+void SketchObject::setOrientationDistance(Constraint* constr)
+{
     // Try to find the orientation of point-line distance
     if (constr->FirstPos != PointPos::none && constr->Second != GeoEnum::GeoUndef) {
         auto* geo1AsLine = freecad_cast<const Part::GeomLineSegment*>(getGeometry(constr->Second));
@@ -1438,8 +1446,8 @@ void SketchObject::setOrientation(Constraint* constr, bool reset)
     if (constr->FirstPos == PointPos::none && constr->SecondPos == PointPos::none && constr->Second != GeoEnum::GeoUndef) {
         const Part::Geometry* firGeo = getGeometry(constr->First);
         const Part::Geometry* secGeo = getGeometry(constr->Second);
-        auto* geo1AsCirc = freecad_cast<const Part::GeomCircle*>(firGeo);
-        auto* geo2AsCirc = freecad_cast<const Part::GeomCircle*>(secGeo);
+        auto geo1AsCirc = getCircle(firGeo);
+        auto geo2AsCirc = getCircle(secGeo);
 
         if (geo1AsCirc && geo2AsCirc) { // circle-circle distance
 
@@ -1447,10 +1455,10 @@ void SketchObject::setOrientation(Constraint* constr, bool reset)
             // it is internal, if they are not within each other orcompletly intersect we won't
             // make a call
 
-            double centerDistance = Base::Distance(geo1AsCirc->getLocation(), geo2AsCirc->getLocation());
+            double centerDistance = geo1AsCirc->Location().Distance(geo2AsCirc->Location());
 
-            auto circ1Radius = geo1AsCirc->getRadius();
-            auto circ2Radius = geo2AsCirc->getRadius();
+            auto circ1Radius = geo1AsCirc->Radius();
+            auto circ2Radius = geo2AsCirc->Radius();
             if (centerDistance + circ1Radius < circ2Radius) {
                 constr->Orientation = ConstraintOrientations::Internal; // Circ1 is within circ2
             } else if (centerDistance + circ2Radius < circ1Radius) {
@@ -1461,13 +1469,52 @@ void SketchObject::setOrientation(Constraint* constr, bool reset)
 
         auto* geo2AsLine = freecad_cast<const Part::GeomLineSegment*>(secGeo);
         if (geo1AsCirc && geo2AsLine) { // circle-line distance
-            bool internal = geo1AsCirc->getLocation().DistanceToLine(geo2AsLine->getStartPoint(), geo2AsLine->getEndPoint()-geo2AsLine->getStartPoint()) < geo1AsCirc->getRadius();
-            auto ccw = ccw2d(geo2AsLine->getStartPoint(), geo2AsLine->getEndPoint(), geo1AsCirc->getLocation());
+            Base::Vector3d circCenter(geo1AsCirc->Location().X(), geo1AsCirc->Location().Y(), geo1AsCirc->Location().Z());
+            bool internal = circCenter.DistanceToLine(geo2AsLine->getStartPoint(), geo2AsLine->getEndPoint()-geo2AsLine->getStartPoint()) < geo1AsCirc->Radius();
+            auto ccw = ccw2d(geo2AsLine->getStartPoint(), geo2AsLine->getEndPoint(), circCenter);
 
             constr->Orientation = ccw | (internal ? ConstraintOrientations::Internal : ConstraintOrientations::External);
         }
     }
+}
+void SketchObject::setOrientationTangent(Constraint* constr)
+{
+    const Part::Geometry* firGeo = getGeometry(constr->First);
+    const Part::Geometry* secGeo = getGeometry(constr->Second);
 
+    auto impl = [&](const Part::Geometry* firGeo, const Part::Geometry* secGeo) -> bool {
+        auto geo1AsCirc = getCircle(firGeo);
+        auto* geo2AsLine = freecad_cast<const Part::GeomLineSegment*>(secGeo);
+
+        if (!geo1AsCirc || !geo2AsLine) {
+            return false;
+        }
+
+        Base::Vector3d circCenter(geo1AsCirc->Location().X(), geo1AsCirc->Location().Y(), geo1AsCirc->Location().Z());
+        constr->Orientation = ccw2d(geo2AsLine->getStartPoint(), geo2AsLine->getEndPoint(), circCenter);
+        return true;
+    };
+
+    // Tangent can be defined as line + [circle] or [circle] + line
+    // so we test both
+    if (impl(firGeo, secGeo)) {
+        return;
+    }
+    if (impl(secGeo, firGeo)) {
+        return;
+    }
+}
+void SketchObject::setOrientation(Constraint* constr, bool reset)
+{
+    if (!reset && !constr->Orientation.testFlag(ConstraintOrientations::None)) {
+        return;
+    }
+
+    if (constr->Type == Distance) {
+        setOrientationDistance(constr);
+    } else if (constr->Type == Tangent) {
+        setOrientationTangent(constr);
+    }
 }
 std::unique_ptr<Constraint>
 SketchObject::getConstraintAfterDeletingGeo(const Constraint* constr,

@@ -598,6 +598,12 @@ def _get_param_dictionary():
         "ScheduleColumnWidth3":        ("int",       100),
         "ScheduleDialogHeight":        ("int",       200),
         "ScheduleDialogWidth":         ("int",       300),
+        "BeamHeight":                  ("float",     100.0),
+        "BeamLength":                  ("float",     1000.0),
+        "BeamWidth":                   ("float",     100.0),
+        "ColumnHeight":                ("float",     1000.0),
+        "ColumnLength":                ("float",     100.0),
+        "ColumnWidth":                 ("float",     100.0),
         "StructureHeight":             ("float",     1000.0),
         "StructureLength":             ("float",     100.0),
         "StructurePreset":             ("string",    ""),
@@ -691,7 +697,9 @@ def _get_param_dictionary():
         # https://stackoverflow.com/questions/14750997/load-txt-file-from-resources-in-python
         fd = QtCore.QFile(fnm)
         if fd.open(QtCore.QIODevice.ReadOnly | QtCore.QFile.Text):
-            text = QtCore.QTextStream(fd).readAll()
+            # avoid using QTextStream due to bug in PySide6.11
+            # text = QtCore.QTextStream(fd).readAll()
+            text = fd.readAll().toStdString()
             fd.close()
         else:
             continue
