@@ -104,7 +104,7 @@ private Q_SLOTS:
     void onRotationChange(QuantitySpinBox* changed);
 
 private:
-    void onDraggerInteraction(ViewProviderDragger::DraggerInteraction interaction);
+    void onDraggerInteraction(Gui::DraggerInteraction interaction);
     void ensureTransformCommandOpen();
 
     void setSelectionMode(SelectionMode mode);

@@ -27,6 +27,7 @@
 
 #include <Mod/Part/PartGlobal.h>
 
+#include <Gui/DraggerInteraction.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 
 namespace PartGui
@@ -52,9 +53,7 @@ protected:
     //@}
 
 private:
-    static void dragStartCallback(void* data, SoDragger* d);
-    static void dragFinishCallback(void* data, SoDragger* d);
-    static void dragMotionCallback(void* data, SoDragger* d);
+    void onDraggerInteraction(Gui::DraggerInteraction interaction, SoDragger* dragger);
 
 private:
     SoSeparator* pcEditNode;

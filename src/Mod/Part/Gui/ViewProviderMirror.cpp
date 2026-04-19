@@ -142,9 +142,10 @@ bool ViewProviderMirror::setEdit(int ModNum)
             manip->replaceNode(path);
 
             SoDragger* dragger = manip->getDragger();
-            dragger->addStartCallback(dragStartCallback, this);
-            dragger->addFinishCallback(dragFinishCallback, this);
-            dragger->addMotionCallback(dragMotionCallback, this);
+            Gui::installDraggerInteractionCallbacks<ViewProviderMirror, &ViewProviderMirror::onDraggerInteraction>(
+                dragger,
+                this
+            );
         }
         pcRoot->addChild(pcEditNode);
     }
@@ -206,31 +207,30 @@ bool ViewProviderMirror::onDelete(const std::vector<std::string>&)
     return true;
 }
 
-void ViewProviderMirror::dragStartCallback(void*, SoDragger*)
+void ViewProviderMirror::onDraggerInteraction(Gui::DraggerInteraction interaction, SoDragger* dragger)
 {
-    // This is called when a manipulator is about to manipulating
-    Gui::Application::Instance->activeDocument()->openCommand(
-        QT_TRANSLATE_NOOP("Command", "Edit mirror")
-    );
-}
+    switch (interaction) {
+        case Gui::DraggerInteraction::Start:
+            Gui::Application::Instance->activeDocument()->openCommand(
+                QT_TRANSLATE_NOOP("Command", "Edit mirror")
+            );
+            return;
 
-void ViewProviderMirror::dragFinishCallback(void*, SoDragger*)
-{
-    // This is called when a manipulator has done manipulating
-    Gui::Application::Instance->activeDocument()->commitCommand();
-}
+        case Gui::DraggerInteraction::Finish:
+            Gui::Application::Instance->activeDocument()->commitCommand();
+            return;
 
-void ViewProviderMirror::dragMotionCallback(void* data, SoDragger* drag)
-{
-    ViewProviderMirror* that = static_cast<ViewProviderMirror*>(data);
-    const SbMatrix& mat = drag->getMotionMatrix();
-    // the new axis of the plane
-    SbRotation rot(mat);
-    SbVec3f norm(0, 0, 1);
-    rot.multVec(norm, norm);
-    Part::Mirroring* mf = that->getObject<Part::Mirroring>();
-    mf->Base.setValue(mat[3][0], mat[3][1], mat[3][2]);
-    mf->Normal.setValue(norm[0], norm[1], norm[2]);
+        case Gui::DraggerInteraction::Motion: {
+            const SbMatrix& mat = dragger->getMotionMatrix();
+            SbRotation rot(mat);
+            SbVec3f norm(0, 0, 1);
+            rot.multVec(norm, norm);
+            Part::Mirroring* mf = getObject<Part::Mirroring>();
+            mf->Base.setValue(mat[3][0], mat[3][1], mat[3][2]);
+            mf->Normal.setValue(norm[0], norm[1], norm[2]);
+            return;
+        }
+    }
 }
 
 // ----------------------------------------------------------------------------

@@ -1028,6 +1028,7 @@ SET(Viewprovider_SRCS
     ViewProviderGeoFeatureGroupExtension.h
     ViewProviderOriginGroupExtension.h
     ViewProviderAnnotation.h
+    DraggerInteraction.h
     ViewProviderDocumentObject.h
     ViewProviderDocumentObjectGroup.h
     ViewProviderDragger.h

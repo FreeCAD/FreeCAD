@@ -23,6 +23,7 @@
 
 #pragma once
 
+#include "DraggerInteraction.h"
 #include "ViewProviderDocumentObject.h"
 #include <App/PropertyUnits.h>
 #include "SoTextLabel.h"
@@ -111,9 +112,7 @@ protected:
     void drawImage(const std::vector<std::string>&);
 
 private:
-    static void dragStartCallback(void* data, SoDragger* d);
-    static void dragFinishCallback(void* data, SoDragger* d);
-    static void dragMotionCallback(void* data, SoDragger* d);
+    void onDraggerInteraction(Gui::DraggerInteraction interaction, SoDragger* dragger);
 
 private:
     SoCoordinate3* pCoords;
