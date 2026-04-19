@@ -37,6 +37,7 @@
 #include <Base/Console.h>
 #include <Base/Tools.h>
 #include <Gui/Application.h>
+#include <Gui/AsyncRecomputeProgressDialog.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
@@ -200,7 +201,30 @@ void ShapeBuilderWidget::onCreateButtonClicked()
         else if (mode == 5) {
             createSolidFromShell();
         }
-        doc->getDocument()->recompute();
+        App::Document* appDoc = doc->getDocument();
+        const auto recomputeDocument = [appDoc]() {
+            if (appDoc) {
+                appDoc->recompute();
+            }
+        };
+        const auto outcome = Gui::runAsyncDocumentRecomputeProgressDialog(
+            this,
+            tr("Shape builder"),
+            tr("Computing shape..."),
+            appDoc,
+            /*force=*/false,
+            recomputeDocument
+        );
+        if (!outcome.success) {
+            if (!outcome.canceled) {
+                Base::Console().error(
+                    "%s\n",
+                    outcome.message.empty() ? "Shape builder recompute failed"
+                                            : outcome.message.c_str()
+                );
+            }
+            return;
+        }
         Gui::Selection().clearSelection();
     }
     catch (const Base::Exception& e) {
