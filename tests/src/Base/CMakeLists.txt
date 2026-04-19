@@ -22,6 +22,7 @@ add_executable(Base_tests_run
         Reader.cpp
         Rotation.cpp
         SchemaTests.cpp
+        Sequencer.cpp
         ServiceProvider.cpp
         Stream.cpp
         TimeInfo.cpp
