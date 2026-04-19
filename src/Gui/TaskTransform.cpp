@@ -129,8 +129,9 @@ TaskTransform::TaskTransform(
     blockSelection(true);
     clearDocumentScope();  // allow cross-document selection for links
 
-    dragger->addStartCallback(dragStartCallback, this);
-    dragger->addMotionCallback(dragMotionCallback, this);
+    vp->setDraggerInteractionHandler([this](ViewProviderDragger::DraggerInteraction interaction) {
+        onDraggerInteraction(interaction);
+    });
 
     vp->resetTransformOrigin();
 
@@ -145,6 +146,8 @@ TaskTransform::TaskTransform(
 
 TaskTransform::~TaskTransform()
 {
+    vp->setDraggerInteractionHandler({});
+
     Gui::Application::Instance->commandManager()
         .getCommandByName("Std_OrthographicCamera")
         ->setEnabled(true);
@@ -156,28 +159,31 @@ TaskTransform::~TaskTransform()
     savePreferences();
 }
 
-void TaskTransform::dragStartCallback([[maybe_unused]] void* data, [[maybe_unused]] SoDragger* dragger)
+void TaskTransform::ensureTransformCommandOpen()
 {
-    // This is called when a manipulator is about to manipulating
-    if (firstDrag) {
-        Gui::Application::Instance->activeDocument()->openCommand(
-            QT_TRANSLATE_NOOP("Command", "Transform")
-        );
-        firstDrag = false;
+    if (auto* document = vp->getDocument(); document && !document->hasPendingCommand()) {
+        document->openCommand(QT_TRANSLATE_NOOP("Command", "Transform"));
     }
 }
 
-void TaskTransform::dragMotionCallback(void* data, [[maybe_unused]] SoDragger* dragger)
+void TaskTransform::onDraggerInteraction(ViewProviderDragger::DraggerInteraction interaction)
 {
-    auto task = static_cast<TaskTransform*>(data);
+    if (interaction == ViewProviderDragger::DraggerInteraction::Start) {
+        ensureTransformCommandOpen();
+        return;
+    }
 
-    const auto currentRotation = task->vp->getOriginalDraggerPlacement().getRotation();
-    const auto updatedRotation = task->vp->getDraggerPlacement().getRotation();
+    if (interaction != ViewProviderDragger::DraggerInteraction::Motion) {
+        return;
+    }
 
-    const auto rotationAxisHasChanged = [task](auto first, auto second) {
+    const auto currentRotation = vp->getOriginalDraggerPlacement().getRotation();
+    const auto updatedRotation = vp->getDraggerPlacement().getRotation();
+
+    const auto rotationAxisHasChanged = [this](auto first, auto second) {
         double alpha, beta, gamma;
 
-        (first.inverse() * second).getEulerAngles(task->eulerSequence(), alpha, beta, gamma);
+        (first.inverse() * second).getEulerAngles(eulerSequence(), alpha, beta, gamma);
 
         auto angles = {alpha, beta, gamma};
         const int changed = std::count_if(angles.begin(), angles.end(), [](double angle) {
@@ -190,14 +196,14 @@ void TaskTransform::dragMotionCallback(void* data, [[maybe_unused]] SoDragger* d
     };
 
     if (!updatedRotation.isSame(currentRotation, tolerance)) {
-        task->resetReferencePlacement();
+        resetReferencePlacement();
 
-        if (rotationAxisHasChanged(task->referenceRotation, updatedRotation)) {
-            task->referenceRotation = currentRotation;
+        if (rotationAxisHasChanged(referenceRotation, updatedRotation)) {
+            referenceRotation = currentRotation;
         }
     }
 
-    task->updatePositionAndRotationUi();
+    updatePositionAndRotationUi();
 }
 
 void TaskTransform::loadPlacementModeItems() const
@@ -628,8 +634,7 @@ ViewProviderDragger::DraggerComponents TaskTransform::getRelevantComponents()
 
 void TaskTransform::moveObjectToDragger(ViewProviderDragger::DraggerComponents components)
 {
-    vp->updateTransformFromDragger();
-    vp->updatePlacementFromDragger(components);
+    vp->commitPlacementFromDragger(components);
 
     resetReferenceRotation();
     resetReferencePlacement();
@@ -770,8 +775,7 @@ void TaskTransform::onPositionChange()
 
     vp->setDraggerPlacement({xyzPosition, placement.getRotation()});
 
-    vp->updateTransformFromDragger();
-    vp->updatePlacementFromDragger();
+    vp->commitPlacementFromDragger();
 }
 
 void TaskTransform::onRotationChange(QuantitySpinBox* changed)
@@ -806,8 +810,7 @@ void TaskTransform::onRotationChange(QuantitySpinBox* changed)
 
     vp->setDraggerPlacement({placement.getPosition(), xyzRotation});
 
-    vp->updateTransformFromDragger();
-    vp->updatePlacementFromDragger();
+    vp->commitPlacementFromDragger();
 
     resetReferencePlacement();
 }
