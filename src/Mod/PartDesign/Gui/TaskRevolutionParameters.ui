@@ -187,13 +187,64 @@
     </widget>
    </item>
    <item>
-    <widget class="QCheckBox" name="checkBoxUpdateView">
+   <widget class="QCheckBox" name="checkBoxUpdateView">
      <property name="text">
       <string>Recompute on change</string>
      </property>
      <property name="checked">
       <bool>true</bool>
      </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="previewStatusWidget" native="true">
+     <property name="visible">
+      <bool>false</bool>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayoutPreviewStatus">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QProgressBar" name="progressBarPreview">
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>0</number>
+        </property>
+        <property name="value">
+         <number>-1</number>
+        </property>
+        <property name="textVisible">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="labelPreviewStatus">
+        <property name="text">
+         <string>Updating preview…</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="buttonCancelPreview">
+        <property name="text">
+         <string>Cancel preview</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
   </layout>
@@ -211,6 +262,7 @@
   <tabstop>checkBoxMidplane</tabstop>
   <tabstop>checkBoxReversed</tabstop>
   <tabstop>checkBoxUpdateView</tabstop>
+  <tabstop>buttonCancelPreview</tabstop>
  </tabstops>
  <resources/>
  <connections/>

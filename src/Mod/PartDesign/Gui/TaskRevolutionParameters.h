@@ -24,6 +24,11 @@
 
 #pragma once
 
+#include <memory>
+#include <string>
+
+#include <QMetaObject>
+
 #include <Mod/PartDesign/App/FeatureRevolution.h>
 #include <Mod/PartDesign/App/FeatureGroove.h>
 #include "TaskSketchBasedParameters.h"
@@ -42,6 +47,7 @@ class RadialGizmo;
 class Gizmo;
 class ViewProvider;
 class ViewProviderCoordinateSystem;
+class AsyncPreviewSession;
 }  // namespace Gui
 
 namespace PartDesignGui
@@ -77,8 +83,18 @@ public:
         const std::string& linkSubname,
         const QString& itemText
     );
+    void flushPendingRecompute() override;
+    void stopPendingRecompute() override;
+    bool hasOutstandingRecompute() const override;
+    void setDeferredClosePending(bool pending) override;
+    Gui::AsyncPreviewSession* getAcceptedRecomputeProgressSession() override;
+    void clearInteractiveSelection();
+
+Q_SIGNALS:
+    void recomputeSettled();
 
 private Q_SLOTS:
+    void onUpdateView(bool);
     void onAngleChanged(double);
     void onAngle2Changed(double);
     void onAxisChanged(int);
@@ -91,6 +107,7 @@ private Q_SLOTS:
 protected:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void changeEvent(QEvent* event) override;
+    void triggerPreviewRecompute() override;
     void getReferenceAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
     bool getMidplane() const;
     bool getReversed() const;
@@ -112,6 +129,10 @@ private:
     void connectSignals();
     void updateUI(int index);
     void translateModeList(int index);
+    void schedulePendingRecompute();
+    void runImmediateRecompute();
+    void requestRecompute(bool waitForCompletion);
+    void updateRecomputeUi();
     // TODO: This is common with extrude. Maybe send to superclass.
     void translateFaceName();
     void clearFaceName();
@@ -134,6 +155,8 @@ private:
      */
     std::vector<std::unique_ptr<App::PropertyLinkSub>> axesInList;
 
+    std::unique_ptr<Gui::AsyncPreviewSession> asyncPreviewSession;
+
     std::unique_ptr<Gui::GizmoContainer> gizmoContainer;
     Gui::RadialGizmo* rotationGizmo = nullptr;
     Gui::RadialGizmo* rotationGizmo2 = nullptr;
@@ -141,7 +164,29 @@ private:
     void setGizmoPositions();
 };
 
-class TaskDlgRevolutionParameters: public TaskDlgSketchBasedParameters
+class TaskDlgRevolutionBase: public TaskDlgSketchBasedParameters
+{
+    Q_OBJECT
+
+public:
+    explicit TaskDlgRevolutionBase(PartDesignGui::ViewProvider* vp);
+    bool accept() override;
+    bool reject() override;
+
+protected:
+    TaskRevolutionParameters* parameter = nullptr;
+
+private:
+    void ensureDeferredRejectConnection();
+    void setDeferredRejectPending(bool pending);
+
+private Q_SLOTS:
+    void onParameterRecomputeSettled();
+
+private:
+};
+
+class TaskDlgRevolutionParameters: public TaskDlgRevolutionBase
 {
     Q_OBJECT
 
@@ -149,7 +194,7 @@ public:
     explicit TaskDlgRevolutionParameters(PartDesignGui::ViewProviderRevolution* RevolutionView);
 };
 
-class TaskDlgGrooveParameters: public TaskDlgSketchBasedParameters
+class TaskDlgGrooveParameters: public TaskDlgRevolutionBase
 {
     Q_OBJECT
 
