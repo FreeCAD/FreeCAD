@@ -67,6 +67,7 @@ private:
     void setupParameterUI(QWidget* widget) override;
     void retranslateParameterUI(QWidget* widget) override;
     void updateUI();
+    void applyStagedPreviewStateToObject() override;
 
     double getFactor() const;
     unsigned getOccurrences() const;

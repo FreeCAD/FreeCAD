@@ -115,33 +115,31 @@ void TaskScaledParameters::updateUI()
 
 void TaskScaledParameters::onFactor(const double factor)
 {
+    Q_UNUSED(factor);
+
     if (blockUpdate) {
         return;
     }
-    auto pcScaled = getObject<PartDesign::Scaled>();
-    pcScaled->Factor.setValue(factor);
-    recomputeFeature();
+
+    requestStagedPreviewUpdate();
 }
 
 void TaskScaledParameters::onOccurrences(const uint number)
 {
+    Q_UNUSED(number);
+
     if (blockUpdate) {
         return;
     }
-    auto pcScaled = getObject<PartDesign::Scaled>();
-    pcScaled->Occurrences.setValue(number);
-    recomputeFeature();
+
+    requestStagedPreviewUpdate();
 }
 
 void TaskScaledParameters::onUpdateView(bool on)
 {
-    blockUpdate = !on;
+    setUpdateViewEnabled(on);
     if (on) {
-        // Do the same like in TaskDlgScaledParameters::accept() but without doCommand
-        auto pcScaled = getObject<PartDesign::Scaled>();
-        pcScaled->Factor.setValue(getFactor());
-        pcScaled->Occurrences.setValue(getOccurrences());
-        recomputeFeature();
+        requestStagedPreviewUpdate();
     }
 }
 
@@ -155,9 +153,16 @@ unsigned TaskScaledParameters::getOccurrences() const
     return ui->spinOccurrences->value();
 }
 
+void TaskScaledParameters::applyStagedPreviewStateToObject()
+{
+    auto pcScaled = getObject<PartDesign::Scaled>();
+    pcScaled->Factor.setValue(getFactor());
+    pcScaled->Occurrences.setValue(getOccurrences());
+}
+
 void TaskScaledParameters::apply()
 {
-    FCMD_OBJ_CMD(getObject(), "Factor = " << getFactor());
+    ui->spinFactor->apply();
     ui->spinOccurrences->apply();
 }
 
