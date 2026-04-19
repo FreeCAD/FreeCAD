@@ -26,6 +26,8 @@
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <QByteArray>
+#include <QPointF>
+#include <optional>
 
 #include "QGIView.h"
 #include "QGIUserTypes.h"
@@ -64,6 +66,16 @@ protected:
 
     QGDisplayArea* m_displayArea;
     QGCustomSvg *m_svgItem;
+
+    // Anchor point in SVG viewBox coordinates.  Captured when a Draft/Arch
+    // view transitions into LockPosition = true (or on first draw if already
+    // locked) and used to keep already-visible content at a stable page
+    // position as new objects grow the bounding box.  Preserved across a
+    // lock->unlock transition so that unlocking itself never causes a visible
+    // jump; cleared on the next unlocked redraw so that subsequent content
+    // changes re-centre the view (legacy behaviour).
+    std::optional<QPointF> m_lockedSvgAnchor;
+    bool m_wasLocked = false;
 };
 
 } // namespace
