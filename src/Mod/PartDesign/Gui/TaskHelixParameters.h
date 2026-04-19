@@ -24,6 +24,10 @@
 
 #pragma once
 
+#include <memory>
+#include <string>
+
+#include <QMetaObject>
 #include <Gui/Inventor/Draggers/Gizmo.h>
 
 #include "TaskSketchBasedParameters.h"
@@ -40,6 +44,7 @@ namespace Gui
 class LinearGizmo;
 class GizmoContainer;
 class ViewProvider;
+class AsyncPreviewSession;
 }  // namespace Gui
 
 namespace PartDesignGui
@@ -56,8 +61,16 @@ public:
     ~TaskHelixParameters() override;
 
     void apply() override;
+    void flushPendingRecompute() override;
+    void stopPendingRecompute() override;
+    bool hasOutstandingRecompute() const override;
+    void setDeferredClosePending(bool pending);
+    void clearInteractiveSelection();
 
     static bool showPreview(PartDesign::Helix*);
+
+Q_SIGNALS:
+    void recomputeSettled();
 
 private:
     /**
@@ -76,6 +89,7 @@ private:
     void adaptVisibilityToMode();
 
 private Q_SLOTS:
+    void onUpdateView(bool);
     void onPitchChanged(double);
     void onHeightChanged(double);
     void onTurnsChanged(double);
@@ -91,6 +105,7 @@ private Q_SLOTS:
 protected:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void changeEvent(QEvent* e) override;
+    void triggerPreviewRecompute() override;
     bool updateView() const;
     void getReferenceAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
     void startReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base) override;
@@ -112,12 +127,17 @@ protected:
 private:
     void initializeHelix();
     void connectSlots();
+    void updateUiControls(bool forceRefillAxis = false);
     void updateUI();
     void updateStatus();
     void assignProperties();
     void setValuesFromProperties();
     void bindProperties();
     void showCoordinateAxes();
+    void schedulePendingRecompute();
+    void runImmediateRecompute();
+    void requestRecompute(bool waitForCompletion);
+    void updateRecomputeUi();
 
 private:
     QWidget* proxy;
@@ -133,6 +153,8 @@ private:
      */
     std::vector<std::unique_ptr<App::PropertyLinkSub>> axesInList;
 
+    std::unique_ptr<Gui::AsyncPreviewSession> asyncPreviewSession;
+
     std::unique_ptr<Gui::GizmoContainer> gizmoContainer;
     Gui::LinearGizmo* heightGizmo = nullptr;
     void setupGizmos(ViewProviderHelix* vp);
@@ -146,6 +168,18 @@ class TaskDlgHelixParameters: public TaskDlgSketchBasedParameters
 
 public:
     explicit TaskDlgHelixParameters(ViewProviderHelix* HelixView);
+    bool accept() override;
+    bool reject() override;
+
+private:
+    void ensureDeferredRejectConnection();
+    void setDeferredRejectPending(bool pending);
+
+private Q_SLOTS:
+    void onParameterRecomputeSettled();
+
+private:
+    TaskHelixParameters* parameter = nullptr;
 };
 
 }  // namespace PartDesignGui
