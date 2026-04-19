@@ -24,6 +24,7 @@
 
 #pragma once
 
+#include <cstddef>
 #include <memory>
 
 #include <Message_ProgressIndicator.hxx>
@@ -34,10 +35,54 @@
 namespace App
 {
 class RecomputeProgressHandle;
-}
+class RecomputeProgressScope;
+}  // namespace App
 
 namespace Part
 {
+
+enum class ProgressFallback
+{
+    none,
+    createHandle,
+};
+
+class PartExport ScopedRecomputeProgress
+{
+public:
+    ScopedRecomputeProgress();
+    explicit ScopedRecomputeProgress(
+        const char* text,
+        ProgressFallback fallback = ProgressFallback::none
+    );
+    ScopedRecomputeProgress(ScopedRecomputeProgress&& other) noexcept;
+    ScopedRecomputeProgress& operator=(ScopedRecomputeProgress&& other) noexcept;
+    ~ScopedRecomputeProgress();
+
+    explicit operator bool() const;
+
+    ScopedRecomputeProgress makeScope(const char* text = nullptr);
+    ScopedRecomputeProgress makeStepScope(
+        std::size_t stepIndex,
+        std::size_t totalSteps,
+        const char* text = nullptr
+    );
+
+    void setText(const char* text);
+    void setProgress(std::size_t progress);
+    void complete();
+    bool wasCanceled() const;
+    void throwIfCanceled() const;
+
+private:
+    ScopedRecomputeProgress(
+        std::unique_ptr<App::RecomputeProgressHandle> ownedProgress,
+        std::unique_ptr<App::RecomputeProgressScope> scope
+    );
+
+    std::unique_ptr<App::RecomputeProgressHandle> ownedProgress;
+    std::unique_ptr<App::RecomputeProgressScope> scope;
+};
 
 class PartExport ProgressIndicator: public Message_ProgressIndicator
 {
@@ -51,8 +96,7 @@ public:
 
 private:
     std::size_t currentStep {0};
-    App::RecomputeProgressHandle* progress {nullptr};
-    std::unique_ptr<App::RecomputeProgressHandle> ownedProgress;
+    ScopedRecomputeProgress scope;
 };
 
 template<typename Builder>
