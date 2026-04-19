@@ -76,6 +76,7 @@
 
 #include "Geometry.h"
 #include "PartFeature.h"
+#include "ProgressIndicator.h"
 #include "TopoShapeOpCode.h"
 #include "TopoShapeMapper.h"
 
@@ -128,16 +129,9 @@ class WireJoinerProgress
 {
 public:
     WireJoinerProgress(const char* text, std::size_t steps)
-        : _progress(App::currentRecomputeProgress())
+        : _scope(text, ProgressFallback::createHandle)
         , _totalSteps(steps)
-    {
-        if (!_progress) {
-            _ownedProgress = std::make_unique<App::RecomputeProgressHandle>();
-            _progress = _ownedProgress.get();
-        }
-
-        _scope.emplace(_progress->makeScope(text));
-    }
+    {}
 
     void next(bool canAbort = false)
     {
@@ -145,15 +139,14 @@ public:
             checkAbort();
         }
 
-        if (!_progress || _totalSteps == 0) {
-            ++_currentStep;
+        ++_currentStep;
+        if (!_scope || _totalSteps == 0) {
             return;
         }
 
-        ++_currentStep;
         constexpr std::size_t maxProgress = 100;
         std::size_t current = std::min(maxProgress, (_currentStep * maxProgress) / _totalSteps);
-        _scope->setProgress(current);
+        _scope.setProgress(current);
     }
 
     static void checkAbort()
@@ -162,9 +155,7 @@ public:
     }
 
 private:
-    App::RecomputeProgressHandle* _progress {nullptr};
-    std::unique_ptr<App::RecomputeProgressHandle> _ownedProgress;
-    std::optional<App::RecomputeProgressScope> _scope;
+    ScopedRecomputeProgress _scope;
     std::size_t _totalSteps {0};
     std::size_t _currentStep {0};
 };
