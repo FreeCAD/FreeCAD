@@ -51,7 +51,7 @@ namespace PartDesignGui
 {
 
 
-class TaskLoftParameters: public TaskSketchBasedParameters
+class PartDesignGuiExport TaskLoftParameters: public TaskSketchBasedParameters
 {
     Q_OBJECT
 
@@ -115,7 +115,7 @@ private:
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgLoftParameters: public TaskDlgSketchBasedParameters
+class PartDesignGuiExport TaskDlgLoftParameters: public TaskDlgSketchBasedParameters
 {
     Q_OBJECT
 

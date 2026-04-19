@@ -99,7 +99,7 @@ private:
 };
 
 
-class TaskPipeParameters: public TaskSketchBasedParameters
+class PartDesignGuiExport TaskPipeParameters: public TaskSketchBasedParameters
 {
     Q_OBJECT
 
@@ -155,7 +155,7 @@ private:
     friend class TaskDlgPipeParameters;
 };
 
-class TaskPipeOrientation: public TaskSketchBasedParameters
+class PartDesignGuiExport TaskPipeOrientation: public TaskSketchBasedParameters
 {
     Q_OBJECT
 
@@ -193,7 +193,7 @@ private:
 };
 
 
-class TaskPipeScaling: public TaskSketchBasedParameters
+class PartDesignGuiExport TaskPipeScaling: public TaskSketchBasedParameters
 {
     Q_OBJECT
 
@@ -224,7 +224,7 @@ private:
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgPipeParameters: public TaskDlgSketchBasedParameters
+class PartDesignGuiExport TaskDlgPipeParameters: public TaskDlgSketchBasedParameters
 {
     Q_OBJECT
 

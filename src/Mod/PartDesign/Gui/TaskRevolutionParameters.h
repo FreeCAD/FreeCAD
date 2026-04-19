@@ -55,7 +55,7 @@ namespace PartDesignGui
 class ViewProviderRevolution;
 class ViewProviderGroove;
 
-class TaskRevolutionParameters: public TaskSketchBasedParameters
+class PartDesignGuiExport TaskRevolutionParameters: public TaskSketchBasedParameters
 {
     Q_OBJECT
 
@@ -164,7 +164,7 @@ private:
     void setGizmoPositions();
 };
 
-class TaskDlgRevolutionBase: public TaskDlgSketchBasedParameters
+class PartDesignGuiExport TaskDlgRevolutionBase: public TaskDlgSketchBasedParameters
 {
     Q_OBJECT
 
@@ -186,7 +186,7 @@ private Q_SLOTS:
 private:
 };
 
-class TaskDlgRevolutionParameters: public TaskDlgRevolutionBase
+class PartDesignGuiExport TaskDlgRevolutionParameters: public TaskDlgRevolutionBase
 {
     Q_OBJECT
 
@@ -194,7 +194,7 @@ public:
     explicit TaskDlgRevolutionParameters(PartDesignGui::ViewProviderRevolution* RevolutionView);
 };
 
-class TaskDlgGrooveParameters: public TaskDlgRevolutionBase
+class PartDesignGuiExport TaskDlgGrooveParameters: public TaskDlgRevolutionBase
 {
     Q_OBJECT
 
