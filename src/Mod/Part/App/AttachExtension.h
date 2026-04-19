@@ -107,6 +107,19 @@ public:
      */
     virtual bool positionBySupport();
 
+    void beginInteractiveMappingUpdateCoalescing();
+    void endInteractiveMappingUpdateCoalescing(bool flushPending = false);
+    bool flushPendingInteractiveMappingUpdate();
+    void cancelPendingInteractiveMappingUpdate();
+    bool hasPendingInteractiveMappingUpdate() const
+    {
+        return _pendingInteractiveMappingUpdate;
+    }
+    bool isInteractiveMappingUpdateCoalescingEnabled() const
+    {
+        return _interactiveMappingUpdateCoalescingDepth != 0;
+    }
+
     /** Return whether this attacher is active
      */
     bool isAttacherActive() const;
@@ -158,6 +171,8 @@ public:
     void updateSinglePropertyStatus(bool attached, bool base = false);
 
 private:
+    bool updatePlacementFromMapping();
+
     struct _Properties: Properties
     {
         mutable std::unique_ptr<Attacher::AttachEngine> attacher;
@@ -166,6 +181,8 @@ private:
     _Properties _baseProps;
 
     mutable int _active = -1;
+    unsigned _interactiveMappingUpdateCoalescingDepth = 0;
+    bool _pendingInteractiveMappingUpdate = false;
 };
 
 
