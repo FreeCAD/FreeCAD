@@ -28,45 +28,26 @@
 
 
 using namespace Part;
-/*!
-  \code
-  #include <XSControl_WorkSession.hxx>
-  #include <Transfer_TransientProcess.hxx>
-
-  STEPControl_Reader aReader;
-  Handle(Message_ProgressIndicator) pi = new ProgressIndicator();
-
-  aReader.ReadFile("myfile.stp");
-  aReader.TransferRoots(pi->Start());
-
-  \endcode
- */
 
 ProgressIndicator::ProgressIndicator()
-{
-    progress = std::make_unique<Base::SequencerLauncher>("Processing...", 100);
-}
-
-ProgressIndicator::~ProgressIndicator()
-{
-    progress->stop();
-}
+    : progress("Processing...", 100)
+{}
 
 void ProgressIndicator::Show(const Message_ProgressScope& theScope, const Standard_Boolean isForce)
 {
     (void)isForce;
     const char* name = theScope.Name();
-    progress->setText(name ? name : "Processing...");
+    progress.setText(name ? name : "Processing...");
     std::size_t current = static_cast<std::size_t>(100. * theScope.Value() / theScope.MaxValue());
     if (current != currentStep) {
         currentStep = current;
-        progress->setProgress(currentStep);
+        progress.setProgress(currentStep);
     }
 }
 
 Standard_Boolean ProgressIndicator::UserBreak()
 {
-    return progress->wasCanceled();
+    return progress.wasCanceled();
 }
 
 void ProgressIndicator::Reset()
