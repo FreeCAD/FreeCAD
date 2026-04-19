@@ -69,7 +69,7 @@ namespace PartDesignGui
 {
 
 
-class TaskExtrudeParameters: public TaskSketchBasedParameters
+class PartDesignGuiExport TaskExtrudeParameters: public TaskSketchBasedParameters
 {
     Q_OBJECT
 
@@ -302,7 +302,7 @@ protected:
     Side activeSelectionSide = Side::First;
 };
 
-class TaskDlgExtrudeParameters: public TaskDlgSketchBasedParameters
+class PartDesignGuiExport TaskDlgExtrudeParameters: public TaskDlgSketchBasedParameters
 {
     Q_OBJECT
 

@@ -71,9 +71,9 @@ class TaskMultiTransformParameters;
   Because in the second case there is no ViewProvider, some special methods are required to
   access the underlying FeatureTransformed object in two different ways.
   **/
-class TaskTransformedParameters: public Gui::TaskView::TaskBox,
-                                 public Gui::SelectionObserver,
-                                 public Gui::DocumentObserver
+class PartDesignGuiExport TaskTransformedParameters: public Gui::TaskView::TaskBox,
+                                                     public Gui::SelectionObserver,
+                                                     public Gui::DocumentObserver
 {
     Q_OBJECT
 
@@ -264,7 +264,7 @@ private:
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgTransformedParameters: public PartDesignGui::TaskDlgFeatureParameters
+class PartDesignGuiExport TaskDlgTransformedParameters: public PartDesignGui::TaskDlgFeatureParameters
 {
     Q_OBJECT
 

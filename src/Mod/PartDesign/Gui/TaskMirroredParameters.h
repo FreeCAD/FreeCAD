@@ -47,7 +47,7 @@ namespace PartDesignGui
 
 class TaskMultiTransformParameters;
 
-class TaskMirroredParameters: public TaskTransformedParameters
+class PartDesignGuiExport TaskMirroredParameters: public TaskTransformedParameters
 {
     Q_OBJECT
 
@@ -86,7 +86,7 @@ private:
 
 
 /// simulation dialog for the TaskView
-class TaskDlgMirroredParameters: public TaskDlgTransformedParameters
+class PartDesignGuiExport TaskDlgMirroredParameters: public TaskDlgTransformedParameters
 {
     Q_OBJECT
 

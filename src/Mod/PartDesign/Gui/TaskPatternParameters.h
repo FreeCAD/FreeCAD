@@ -41,7 +41,7 @@ namespace PartDesignGui
 
 class TaskMultiTransformParameters;
 
-class TaskPatternParameters: public TaskTransformedParameters
+class PartDesignGuiExport TaskPatternParameters: public TaskTransformedParameters
 {
     Q_OBJECT
 
@@ -93,7 +93,7 @@ private:
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgLinearPatternParameters: public TaskDlgTransformedParameters
+class PartDesignGuiExport TaskDlgLinearPatternParameters: public TaskDlgTransformedParameters
 {
     Q_OBJECT
 

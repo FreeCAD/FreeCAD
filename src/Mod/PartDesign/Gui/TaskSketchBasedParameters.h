@@ -43,8 +43,8 @@ namespace PartDesignGui
 
 
 /// Convenience class to collect common methods for all SketchBased features
-class TaskSketchBasedParameters: public PartDesignGui::TaskFeatureParameters,
-                                 public Gui::SelectionObserver
+class PartDesignGuiExport TaskSketchBasedParameters: public PartDesignGui::TaskFeatureParameters,
+                                                     public Gui::SelectionObserver
 {
     Q_OBJECT
 
@@ -85,7 +85,7 @@ private:
     Gui::ViewProvider* previouslyVisibleViewProvider {nullptr};
 };
 
-class TaskDlgSketchBasedParameters: public PartDesignGui::TaskDlgFeatureParameters
+class PartDesignGuiExport TaskDlgSketchBasedParameters: public PartDesignGui::TaskDlgFeatureParameters
 {
     Q_OBJECT
 

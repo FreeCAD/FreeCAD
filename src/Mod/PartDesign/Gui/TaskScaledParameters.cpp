@@ -59,6 +59,8 @@ TaskScaledParameters::TaskScaledParameters(
     setupParameterUI(parameterWidget);
 }
 
+TaskScaledParameters::~TaskScaledParameters() = default;
+
 void TaskScaledParameters::setupParameterUI(QWidget* widget)
 {
     ui->setupUi(widget);

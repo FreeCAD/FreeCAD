@@ -45,7 +45,7 @@ using AsyncPreviewController = Gui::AsyncPreviewController;
 
 class Ui_TaskPreviewParameters;
 
-class TaskPreviewParameters: public Gui::TaskView::TaskBox
+class PartDesignGuiExport TaskPreviewParameters: public Gui::TaskView::TaskBox
 {
     Q_OBJECT
 
@@ -67,7 +67,8 @@ private:
 };
 
 /// Convenience class to collect common methods for all SketchBased features
-class TaskFeatureParameters: public Gui::TaskView::TaskBox, public Gui::DocumentObserver
+class PartDesignGuiExport TaskFeatureParameters: public Gui::TaskView::TaskBox,
+                                                 public Gui::DocumentObserver
 {
     Q_OBJECT
 
@@ -163,7 +164,7 @@ private:
 };
 
 /// A common base for sketch based, dressup and other solid parameters dialogs
-class TaskDlgFeatureParameters: public Gui::TaskView::TaskDialog
+class PartDesignGuiExport TaskDlgFeatureParameters: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 

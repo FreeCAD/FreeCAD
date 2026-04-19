@@ -43,7 +43,7 @@ namespace PartDesignGui
 {
 
 
-class TaskPadParameters: public TaskExtrudeParameters
+class PartDesignGuiExport TaskPadParameters: public TaskExtrudeParameters
 {
     Q_OBJECT
 
@@ -60,7 +60,7 @@ private:
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgPadParameters: public TaskDlgExtrudeParameters
+class PartDesignGuiExport TaskDlgPadParameters: public TaskDlgExtrudeParameters
 {
     Q_OBJECT
 

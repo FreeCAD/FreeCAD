@@ -50,7 +50,7 @@ namespace PartDesignGui
 {
 
 
-class TaskMultiTransformParameters: public TaskTransformedParameters
+class PartDesignGuiExport TaskMultiTransformParameters: public TaskTransformedParameters
 {
     Q_OBJECT
 
@@ -109,7 +109,7 @@ private:
 
 
 /// simulation dialog for the TaskView
-class TaskDlgMultiTransformParameters: public TaskDlgTransformedParameters
+class PartDesignGuiExport TaskDlgMultiTransformParameters: public TaskDlgTransformedParameters
 {
     Q_OBJECT
 
