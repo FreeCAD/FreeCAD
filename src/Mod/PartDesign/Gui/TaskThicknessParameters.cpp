@@ -60,6 +60,12 @@ void TaskThicknessParameters::addContainerWidget()
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui->setupUi(proxy);
+    setupPreviewWidgets(
+        ui->previewStatusWidget,
+        ui->progressBarPreview,
+        ui->labelPreviewStatus,
+        ui->buttonCancelPreview
+    );
     this->groupLayout()->addWidget(proxy);
 }
 
@@ -161,23 +167,21 @@ void TaskThicknessParameters::onRefDeleted()
 
 PartDesign::Thickness* TaskThicknessParameters::onBeforeChange()
 {
-    setButtons(none);
+    setSelectionMode(none);
     setupTransaction();
     return getObject<PartDesign::Thickness>();
 }
 
-void TaskThicknessParameters::onAfterChange(PartDesign::Thickness* obj)
+void TaskThicknessParameters::onAfterChange()
 {
-    obj->recomputeFeature();
-    // hide the thickness if there was a computation error
-    hideOnError();
+    schedulePendingRecompute();
 }
 
 void TaskThicknessParameters::onValueChanged(double angle)
 {
     if (PartDesign::Thickness* thickness = onBeforeChange()) {
         thickness->Value.setValue(angle);
-        onAfterChange(thickness);
+        onAfterChange();
     }
 }
 
@@ -185,7 +189,7 @@ void TaskThicknessParameters::onJoinTypeChanged(int join)
 {
     if (PartDesign::Thickness* thickness = onBeforeChange()) {
         thickness->Join.setValue(join);
-        onAfterChange(thickness);
+        onAfterChange();
     }
 }
 
@@ -193,7 +197,7 @@ void TaskThicknessParameters::onModeChanged(int mode)
 {
     if (PartDesign::Thickness* thickness = onBeforeChange()) {
         thickness->Mode.setValue(mode);
-        onAfterChange(thickness);
+        onAfterChange();
     }
 }
 
@@ -206,9 +210,7 @@ void TaskThicknessParameters::onReversedChanged(bool on)
 {
     if (PartDesign::Thickness* thickness = onBeforeChange()) {
         thickness->Reversed.setValue(on);
-        onAfterChange(thickness);
-
-        setGizmoPositions();
+        onAfterChange();
     }
 }
 
@@ -221,7 +223,7 @@ void TaskThicknessParameters::onIntersectionChanged(bool on)
 {
     if (PartDesign::Thickness* thickness = onBeforeChange()) {
         thickness->Intersection.setValue(on);
-        onAfterChange(thickness);
+        onAfterChange();
     }
 }
 
@@ -259,6 +261,13 @@ void TaskThicknessParameters::changeEvent(QEvent* e)
     TaskBox::changeEvent(e);
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(proxy);
+    }
+}
+
+void TaskThicknessParameters::onDressUpRecomputeFinished(bool canceled)
+{
+    if (!canceled) {
+        setGizmoPositions();
     }
 }
 
