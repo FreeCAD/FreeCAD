@@ -24,6 +24,11 @@
 
 #pragma once
 
+#include <cstdint>
+#include <string>
+
+#include <QMetaObject>
+
 #include "TaskSketchBasedParameters.h"
 #include "ViewProviderHole.h"
 
@@ -37,9 +42,11 @@ class Property;
 
 namespace Gui
 {
+class DebouncedFunction;
 class LinearGizmo;
 class GizmoContainer;
 class ViewProvider;
+class AsyncPreviewSession;
 }  // namespace Gui
 
 namespace PartDesign
@@ -50,7 +57,6 @@ class Hole;
 namespace PartDesignGui
 {
 
-
 class TaskHoleParameters: public TaskSketchBasedParameters
 {
     Q_OBJECT
@@ -60,6 +66,11 @@ public:
     ~TaskHoleParameters() override;
 
     void apply() override;
+    void flushPendingRecompute() override;
+    void stopPendingRecompute() override;
+    void cancelPendingRecompute();
+    bool hasOutstandingRecompute() const override;
+    void setDeferredClosePending(bool pending);
 
     bool getThreaded() const;
     long getThreadType() const;
@@ -88,6 +99,9 @@ public:
     double getThreadDepth() const;
     int getBaseProfileType() const;
 
+Q_SIGNALS:
+    void recomputeSettled();
+
 private Q_SLOTS:
     void holeTypeChanged(int index);
     void threadTypeChanged(int index);
@@ -114,12 +128,33 @@ private Q_SLOTS:
     void useCustomThreadClearanceChanged();
     void customThreadClearanceChanged(double value);
     void updateViewChanged(bool isChecked);
+    void onCancelPreview();
     void threadDepthTypeChanged(int index);
     void threadDepthChanged(double value);
     void baseProfileTypeChanged(int index);
     void setCutDiagram();
 
 private:
+    enum PostRecomputeUiUpdate : unsigned
+    {
+        PostRecomputeNone = 0,
+        PostRecomputeThreadControls = 1U << 0,
+        PostRecomputeHoleCutControls = 1U << 1,
+        PostRecomputeDepthControls = 1U << 2,
+        PostRecomputeGizmoPositions = 1U << 3,
+    };
+
+    void schedulePendingRecompute(unsigned updates = PostRecomputeNone);
+    void runImmediateRecompute(unsigned updates = PostRecomputeNone);
+    void requestRecompute(unsigned updates, bool waitForCompletion);
+    void applyPostRecomputeUpdates(unsigned updates);
+    void updateRecomputeUi();
+    void syncThreadControls();
+    void syncHoleCutControls();
+    void syncDepthControls();
+    void updateThreadFitLabels();
+    void refreshThreadEnumCombos();
+
     class Observer: public App::DocumentObserver
     {
     public:
@@ -153,6 +188,10 @@ private:
     std::unique_ptr<Observer> observer;
     QWidget* proxy;
     std::unique_ptr<Ui_TaskHoleParameters> ui;
+    std::unique_ptr<Gui::AsyncPreviewSession> asyncPreviewSession;
+    std::unique_ptr<Gui::DebouncedFunction> recomputeScheduler;
+    unsigned pendingRecomputeUiUpdates = PostRecomputeNone;
+    unsigned outstandingRecomputeUiUpdates = PostRecomputeNone;
 
     std::unique_ptr<Gui::GizmoContainer> gizmoContainer;
     Gui::LinearGizmo* holeDepthGizmo = nullptr;
@@ -168,8 +207,17 @@ class TaskDlgHoleParameters: public TaskDlgSketchBasedParameters
 public:
     explicit TaskDlgHoleParameters(ViewProviderHole* HoleView);
     ~TaskDlgHoleParameters() override;
+    bool accept() override;
+    bool reject() override;
 
-protected:
+private Q_SLOTS:
+    void onParameterRecomputeSettled();
+
+private:
+    void ensureDeferredRejectConnection();
+    void setDeferredRejectPending(bool pending);
+
+private:
     TaskHoleParameters* parameter;
 };
 
