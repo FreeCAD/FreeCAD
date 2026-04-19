@@ -24,6 +24,8 @@
 #include "Gui/Application.h"
 #include "Gui/MDIView.h"
 
+#include <functional>
+
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/nodes/SoAnnotation.h>
 #include <Inventor/nodes/SoBaseColor.h>
@@ -39,7 +41,7 @@
 #include <Inventor/engines/SoConcatenate.h>
 #include <Inventor/SbViewportRegion.h>
 
-
+#include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
 #include <Base/UnitsApi.h>
@@ -458,15 +460,18 @@ void ViewProviderMeasureBase::connectToSubject(App::DocumentObject* subject)
         _mVisibilityChangedConnection.disconnect();
     }
 
-    // NOLINTBEGIN
-    auto bndVisibility = std::bind(
-        &ViewProviderMeasureBase::onSubjectVisibilityChanged,
-        this,
-        std::placeholders::_1,
-        std::placeholders::_2
+    App::Document* document = subject->getDocument();
+    if (!document) {
+        return;
+    }
+
+    _mVisibilityChangedConnection = document->signalChangedObject.connect(
+        [this, subject](const App::DocumentObject& obj, const App::Property& prop) {
+            if (&obj == subject) {
+                onSubjectVisibilityChanged(obj, prop);
+            }
+        }
     );
-    // NOLINTEND
-    _mVisibilityChangedConnection = subject->signalChanged.connect(bndVisibility);
 }
 
 //! connect to the subject to receive visibility updates

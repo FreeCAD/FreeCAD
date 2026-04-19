@@ -40,6 +40,7 @@
 #include <QSurfaceFormat>
 #include <QTextStream>
 #include <QTimer>
+#include <QThread>
 #include <QWindow>
 #include <QStyleFactory>
 
@@ -50,6 +51,7 @@
 
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
+#include <App/MainThreadSignal.h>
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/Exception.h>
@@ -171,6 +173,18 @@ extern const long NlErrorCode;  // initialized before main() by navlib_load.cpp
 
 namespace Gui
 {
+
+void requireMainThread(const char* api)
+{
+    if (App::MainThreadSignalConfig::isMainThread()) {
+        return;
+    }
+
+    Base::Console().error("GUI API '%s' may only be used from the main thread.\n", api);
+    throw Base::RuntimeError(
+        std::string("GUI API '") + api + "' may only be used from the main thread"
+    );
+}
 
 class ViewProviderMap
 {
@@ -387,6 +401,48 @@ struct PyMethodDef FreeCADGui_methods[] = {
     {nullptr, nullptr, 0, nullptr} /* sentinel */
 };
 
+class MainThreadInvoker final: public QObject
+{
+public:
+    static MainThreadInvoker* instance()
+    {
+        static MainThreadInvoker* inst = [] {
+            auto* obj = new MainThreadInvoker();
+            // Ensure the object lives on the GUI thread
+            if (qApp && qApp->thread() && QThread::currentThread() != qApp->thread()) {
+                obj->moveToThread(qApp->thread());
+            }
+            return obj;
+        }();
+        return inst;
+    }
+
+private:
+    MainThreadInvoker() = default;
+    ~MainThreadInvoker() override = default;
+};
+
+// Hook: are we currently on the GUI (main) thread?
+bool qtIsMainThread()
+{
+    return !qApp || (QThread::currentThread() == qApp->thread());
+}
+
+// Hook: invoke a functor on the GUI thread, either blocking or queued.
+void qtInvokeOnMain(std::function<void()>&& fn, bool blocking)
+{
+    if (!qApp) {
+        fn();
+        return;
+    }
+
+    QMetaObject::invokeMethod(
+        MainThreadInvoker::instance(),
+        [f = std::move(fn)]() mutable { f(); },
+        blocking ? Qt::BlockingQueuedConnection : Qt::QueuedConnection
+    );
+}
+
 }  // namespace Gui
 
 void Application::initStyleParameterManager()
@@ -466,11 +522,14 @@ void Application::initStyleParameterManager()
 
     Base::registerServiceImplementation(d->styleParameterManager);
 }
+
 // clang-format off
 Application::Application(bool GUIenabled)
 {
     // App::GetApplication().Attach(this);
     if (GUIenabled) {
+        App::MainThreadSignalConfig::setHooks(&qtIsMainThread, &qtInvokeOnMain);
+
         // NOLINTBEGIN
         App::GetApplication().signalNewDocument.connect(
             std::bind(&Gui::Application::slotNewDocument, this, sp::_1, sp::_2));
@@ -1659,6 +1718,7 @@ Gui::Document* Application::getDocument(const App::Document* pDoc) const
 
 void Application::showViewProvider(const App::DocumentObject* obj)
 {
+    requireMainThread("Gui::Application::showViewProvider");
     ViewProvider* vp = getViewProvider(obj);
     if (vp) {
         vp->show();
@@ -1667,6 +1727,7 @@ void Application::showViewProvider(const App::DocumentObject* obj)
 
 void Application::hideViewProvider(const App::DocumentObject* obj)
 {
+    requireMainThread("Gui::Application::hideViewProvider");
     ViewProvider* vp = getViewProvider(obj);
     if (vp) {
         vp->hide();
@@ -1675,6 +1736,7 @@ void Application::hideViewProvider(const App::DocumentObject* obj)
 
 Gui::ViewProvider* Application::getViewProvider(const App::DocumentObject* obj) const
 {
+    requireMainThread("Gui::Application::getViewProvider");
     return d->viewproviderMap.getViewProvider(obj);
 }
 

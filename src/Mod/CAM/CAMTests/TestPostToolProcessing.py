@@ -554,5 +554,126 @@ class TestToolProcessing(unittest.TestCase):
         )
 
 
+class TestEmptyMoveSuppression(unittest.TestCase):
+    """Test that move commands with no parameters after formatting are suppressed.
+
+    This covers the case where axis parameters are excluded from parameter_order
+    (e.g., Z suppression for wire EDM), leaving bare G0/G1/G2/G3 commands that
+    should be filtered out.
+    """
+
+    def setUp(self):
+        """Set up a PostProcessor with Z excluded from parameter_order."""
+        self.processor = PostProcessor(None, tooltip=None, tooltipargs=None, units=None)
+        # Exclude Z from parameter order (wire EDM scenario)
+        self.processor.values["PARAMETER_ORDER"] = [
+            "X",
+            "Y",
+            "A",
+            "B",
+            "C",
+            "I",
+            "J",
+            "F",
+            "S",
+            "T",
+            "Q",
+            "R",
+            "L",
+            "H",
+            "D",
+            "P",
+        ]
+        self.processor.values["OUTPUT_DOUBLES"] = True
+
+    def test_z_only_rapid_suppressed(self):
+        """A G0 with only Z parameter should be suppressed when Z is not in parameter_order."""
+        cmd = Path.Command("G0", {"Z": 5.0})
+        result = self.processor.convert_command_to_gcode(cmd)
+        self.assertIsNone(result, "G0 with only Z should be suppressed")
+
+    def test_z_only_linear_suppressed(self):
+        """A G1 with only Z parameter should be suppressed when Z is not in parameter_order."""
+        cmd = Path.Command("G1", {"Z": -2.0})
+        result = self.processor.convert_command_to_gcode(cmd)
+        self.assertIsNone(result, "G1 with only Z should be suppressed")
+
+    def test_z_only_arc_suppressed(self):
+        """A G2 with only Z parameter should be suppressed."""
+        cmd = Path.Command("G2", {"Z": 3.0})
+        result = self.processor.convert_command_to_gcode(cmd)
+        self.assertIsNone(result, "G2 with only Z should be suppressed")
+
+    def test_z_only_g3_suppressed(self):
+        """A G3 with only Z parameter should be suppressed."""
+        cmd = Path.Command("G3", {"Z": 3.0})
+        result = self.processor.convert_command_to_gcode(cmd)
+        self.assertIsNone(result, "G3 with only Z should be suppressed")
+
+    def test_xy_move_preserved(self):
+        """A G1 with X and Y parameters should still be output."""
+        cmd = Path.Command("G1", {"X": 10.0, "Y": 20.0})
+        result = self.processor.convert_command_to_gcode(cmd)
+        self.assertIsNotNone(result, "G1 with XY should be output")
+        self.assertIn("X", result)
+        self.assertIn("Y", result)
+
+    def test_xyz_move_outputs_xy_only(self):
+        """A G1 with X, Y, and Z should output only X and Y when Z is excluded."""
+        cmd = Path.Command("G1", {"X": 10.0, "Y": 20.0, "Z": -1.0})
+        result = self.processor.convert_command_to_gcode(cmd)
+        self.assertIsNotNone(result, "G1 with XYZ should output XY")
+        self.assertIn("X", result)
+        self.assertIn("Y", result)
+        self.assertNotIn("Z", result)
+
+    def test_mcode_without_params_preserved(self):
+        """M-codes without parameters (M5, M9, etc.) should NOT be suppressed."""
+        cmd = Path.Command("M5")
+        result = self.processor.convert_command_to_gcode(cmd)
+        self.assertIsNotNone(result, "M5 should not be suppressed")
+        self.assertIn("M5", result)
+
+    def test_m9_without_params_preserved(self):
+        """M9 coolant off should NOT be suppressed."""
+        cmd = Path.Command("M9")
+        result = self.processor.convert_command_to_gcode(cmd)
+        self.assertIsNotNone(result, "M9 should not be suppressed")
+        self.assertIn("M9", result)
+
+    def test_drill_z_only_suppressed(self):
+        """A G81 drill cycle with only Z should be suppressed."""
+        cmd = Path.Command("G81", {"Z": -5.0})
+        result = self.processor.convert_command_to_gcode(cmd)
+        self.assertIsNone(result, "G81 with only Z should be suppressed")
+
+    def test_default_parameter_order_preserves_z(self):
+        """With default parameter_order (including Z), Z moves should be preserved."""
+        # Reset to default parameter order
+        self.processor.values["PARAMETER_ORDER"] = [
+            "X",
+            "Y",
+            "Z",
+            "A",
+            "B",
+            "C",
+            "I",
+            "J",
+            "F",
+            "S",
+            "T",
+            "Q",
+            "R",
+            "L",
+            "H",
+            "D",
+            "P",
+        ]
+        cmd = Path.Command("G0", {"Z": 5.0})
+        result = self.processor.convert_command_to_gcode(cmd)
+        self.assertIsNotNone(result, "G0 Z should be preserved with default parameter_order")
+        self.assertIn("Z", result)
+
+
 if __name__ == "__main__":
     unittest.main()

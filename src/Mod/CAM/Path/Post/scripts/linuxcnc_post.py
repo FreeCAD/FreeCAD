@@ -88,6 +88,7 @@ class Linuxcnc(PostProcessor):
             {
                 "name": "blend_mode",
                 "type": "choice",
+                "runtime": True,
                 "label": translate("CAM", "Path Blending Mode"),
                 "default": "BLEND",
                 "choices": ["EXACT_PATH", "EXACT_STOP", "BLEND"],
@@ -100,6 +101,7 @@ class Linuxcnc(PostProcessor):
             {
                 "name": "blend_tolerance",
                 "type": "float",
+                "runtime": True,
                 "label": translate("CAM", "Blend Tolerance"),
                 "default": 0.0,
                 "min": 0.0,

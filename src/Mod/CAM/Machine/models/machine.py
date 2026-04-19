@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 # SPDX-FileCopyrightText: 2025 Billy Huddleston <billy@ivdc.com>
+# SPDX-FileCopyrightText: 2026 sliptonic <shopinthewoods@gmail.com>
 # SPDX-FileNotice: Part of the FreeCAD project.
 
 ################################################################################
@@ -907,62 +908,109 @@ class Machine:
 
     @classmethod
     def create_AC_table_config(cls, a_limits=(-120, 120), c_limits=(-360, 360)):
-        """Create standard A/C table configuration"""
+        """Create standard A/C table configuration.
+
+        Kinematic tree:
+          BaseFrame -> C (azimuth, table_rotary) -> A (tilt, table_rotary)
+          BaseFrame -> Z (head_linear)
+        """
         config = cls("AC Table Configuration")
         config.add_linear_axis("X", FreeCAD.Vector(1, 0, 0))
         config.add_linear_axis("Y", FreeCAD.Vector(0, 1, 0))
         config.add_linear_axis("Z", FreeCAD.Vector(0, 0, 1))
-        config.add_rotary_axis("A", FreeCAD.Vector(1, 0, 0), a_limits[0], a_limits[1])
+        config.linear_axes["Z"].role = AxisRole.HEAD_LINEAR
         config.add_rotary_axis("C", FreeCAD.Vector(0, 0, 1), c_limits[0], c_limits[1])
+        config.rotary_axes["C"].role = AxisRole.TABLE_ROTARY
+        config.rotary_axes["C"].sequence = 0
+        config.add_rotary_axis("A", FreeCAD.Vector(1, 0, 0), a_limits[0], a_limits[1])
+        config.rotary_axes["A"].role = AxisRole.TABLE_ROTARY
+        config.rotary_axes["A"].parent = "C"
+        config.rotary_axes["A"].sequence = 1
         config.set_alignment_axes("C", "A")
         return config
 
     @classmethod
     def create_BC_head_config(cls, b_limits=(-120, 120), c_limits=(-360, 360)):
-        """Create standard B/C head configuration"""
+        """Create standard B/C head configuration.
+
+        Kinematic tree:
+          BaseFrame -> B (tilt, head_rotary) -> C (azimuth, head_rotary)
+          BaseFrame -> X, Y (table_linear)
+        """
         config = cls("BC Head Configuration")
         config.add_linear_axis("X", FreeCAD.Vector(1, 0, 0))
         config.add_linear_axis("Y", FreeCAD.Vector(0, 1, 0))
         config.add_linear_axis("Z", FreeCAD.Vector(0, 0, 1))
+        config.linear_axes["Z"].role = AxisRole.HEAD_LINEAR
         config.add_rotary_axis("B", FreeCAD.Vector(0, 1, 0), b_limits[0], b_limits[1])
+        config.rotary_axes["B"].role = AxisRole.HEAD_ROTARY
+        config.rotary_axes["B"].sequence = 0
         config.add_rotary_axis("C", FreeCAD.Vector(0, 0, 1), c_limits[0], c_limits[1])
+        config.rotary_axes["C"].role = AxisRole.HEAD_ROTARY
+        config.rotary_axes["C"].parent = "B"
+        config.rotary_axes["C"].sequence = 1
         config.set_alignment_axes("C", "B")
         config.compound_moves = True  # Ensure compound moves are enabled for test compatibility
         return config
 
     @classmethod
     def create_AB_table_config(cls, a_limits=(-120, 120), b_limits=(-120, 120)):
-        """Create standard A/B table configuration"""
+        """Create standard A/B table configuration.
+
+        Kinematic tree:
+          BaseFrame -> A (tilt-X, table_rotary) -> B (tilt-Y, table_rotary)
+          BaseFrame -> Z (head_linear)
+        """
         config = cls("AB Table Configuration")
         # AB configuration will be detected as 'custom' by the machine_type property
         config.add_linear_axis("X", FreeCAD.Vector(1, 0, 0))
         config.add_linear_axis("Y", FreeCAD.Vector(0, 1, 0))
         config.add_linear_axis("Z", FreeCAD.Vector(0, 0, 1))
+        config.linear_axes["Z"].role = AxisRole.HEAD_LINEAR
         config.add_rotary_axis("A", FreeCAD.Vector(1, 0, 0), a_limits[0], a_limits[1])
+        config.rotary_axes["A"].role = AxisRole.TABLE_ROTARY
+        config.rotary_axes["A"].sequence = 0
         config.add_rotary_axis("B", FreeCAD.Vector(0, 1, 0), b_limits[0], b_limits[1])
+        config.rotary_axes["B"].role = AxisRole.TABLE_ROTARY
+        config.rotary_axes["B"].parent = "A"
+        config.rotary_axes["B"].sequence = 1
         config.set_alignment_axes("A", "B")
         return config
 
     @classmethod
     def create_4axis_A_config(cls, a_limits=(-120, 120)):
-        """Create standard 4-axis XYZA configuration (rotary table around X)"""
+        """Create standard 4-axis XYZA configuration (rotary table around X).
+
+        Kinematic tree:
+          BaseFrame -> A (table_rotary)
+          BaseFrame -> Z (head_linear)
+        """
         config = cls("4-Axis XYZA Configuration")
         config.add_linear_axis("X", FreeCAD.Vector(1, 0, 0))
         config.add_linear_axis("Y", FreeCAD.Vector(0, 1, 0))
         config.add_linear_axis("Z", FreeCAD.Vector(0, 0, 1))
+        config.linear_axes["Z"].role = AxisRole.HEAD_LINEAR
         config.add_rotary_axis("A", FreeCAD.Vector(1, 0, 0), a_limits[0], a_limits[1])
+        config.rotary_axes["A"].role = AxisRole.TABLE_ROTARY
         config.set_alignment_axes("A", None)
         config.description = "4-axis machine with A-axis rotary table (rotation around X-axis)"
         return config
 
     @classmethod
     def create_4axis_B_config(cls, b_limits=(-120, 120)):
-        """Create standard 4-axis XYZB configuration (rotary table around Y)"""
+        """Create standard 4-axis XYZB configuration (rotary table around Y).
+
+        Kinematic tree:
+          BaseFrame -> B (table_rotary)
+          BaseFrame -> Z (head_linear)
+        """
         config = cls("4-Axis XYZB Configuration")
         config.add_linear_axis("X", FreeCAD.Vector(1, 0, 0))
         config.add_linear_axis("Y", FreeCAD.Vector(0, 1, 0))
         config.add_linear_axis("Z", FreeCAD.Vector(0, 0, 1))
+        config.linear_axes["Z"].role = AxisRole.HEAD_LINEAR
         config.add_rotary_axis("B", FreeCAD.Vector(0, 1, 0), b_limits[0], b_limits[1])
+        config.rotary_axes["B"].role = AxisRole.TABLE_ROTARY
         config.set_alignment_axes("B", None)
         config.description = "4-axis machine with B-axis rotary table (rotation around Y-axis)"
         return config
@@ -1092,9 +1140,9 @@ class Machine:
     def _initialize_3axis_config(self) -> None:
         """Initialize as a standard 3-axis XYZ configuration (no rotary axes)"""
         self.linear_axes = {
-            "X": LinearAxis("X", FreeCAD.Vector(1, 0, 0)),
-            "Y": LinearAxis("Y", FreeCAD.Vector(0, 1, 0)),
-            "Z": LinearAxis("Z", FreeCAD.Vector(0, 0, 1)),
+            "X": LinearAxis("X", FreeCAD.Vector(1, 0, 0), role=AxisRole.TABLE_LINEAR),
+            "Y": LinearAxis("Y", FreeCAD.Vector(0, 1, 0), role=AxisRole.TABLE_LINEAR),
+            "Z": LinearAxis("Z", FreeCAD.Vector(0, 0, 1), role=AxisRole.HEAD_LINEAR),
         }
         self.rotary_axes = {}
         self.primary_rotary_axis = None
@@ -1203,40 +1251,102 @@ class Machine:
         return config
 
     def _initialize_4axis_A_config(self, a_limits=(-120, 120)) -> None:
-        """Initialize as a 4-axis XYZA configuration (rotary table around X)"""
+        """Initialize as a 4-axis XYZA configuration (rotary table around X).
+
+        Kinematic tree:
+          BaseFrame -> A (table_rotary)
+          BaseFrame -> Z (head_linear)
+        """
         self._initialize_3axis_config()
         self.rotary_axes["A"] = RotaryAxis(
-            "A", FreeCAD.Vector(1, 0, 0), min_limit=a_limits[0], max_limit=a_limits[1]
+            "A",
+            FreeCAD.Vector(1, 0, 0),
+            min_limit=a_limits[0],
+            max_limit=a_limits[1],
+            role=AxisRole.TABLE_ROTARY,
         )
         self.primary_rotary_axis = "A"
 
     def _initialize_4axis_B_config(self, b_limits=(-120, 120)) -> None:
-        """Initialize as a 4-axis XYZB configuration (rotary table around Y)"""
+        """Initialize as a 4-axis XYZB configuration (rotary table around Y).
+
+        Kinematic tree:
+          BaseFrame -> B (table_rotary)
+          BaseFrame -> Z (head_linear)
+        """
         self._initialize_3axis_config()
         self.rotary_axes["B"] = RotaryAxis(
-            "B", FreeCAD.Vector(0, 1, 0), min_limit=b_limits[0], max_limit=b_limits[1]
+            "B",
+            FreeCAD.Vector(0, 1, 0),
+            min_limit=b_limits[0],
+            max_limit=b_limits[1],
+            role=AxisRole.TABLE_ROTARY,
         )
         self.primary_rotary_axis = "B"
 
     def _initialize_AC_table_config(self, a_limits=(-120, 120), c_limits=(-360, 360)) -> None:
-        """Initialize as a 5-axis AC table configuration"""
-        self._initialize_4axis_A_config(a_limits)
+        """Initialize as a 5-axis AC table configuration.
+
+        Kinematic tree:
+          BaseFrame -> C (azimuth, table_rotary) -> A (tilt, table_rotary)
+          BaseFrame -> Z (head_linear)
+        """
+        self._initialize_3axis_config()
         self.rotary_axes["C"] = RotaryAxis(
-            "C", FreeCAD.Vector(0, 0, 1), min_limit=c_limits[0], max_limit=c_limits[1]
+            "C",
+            FreeCAD.Vector(0, 0, 1),
+            min_limit=c_limits[0],
+            max_limit=c_limits[1],
+            role=AxisRole.TABLE_ROTARY,
+            parent=None,
+            sequence=0,
         )
-        self.secondary_rotary_axis = "C"
+        self.rotary_axes["A"] = RotaryAxis(
+            "A",
+            FreeCAD.Vector(1, 0, 0),
+            min_limit=a_limits[0],
+            max_limit=a_limits[1],
+            role=AxisRole.TABLE_ROTARY,
+            parent="C",
+            sequence=1,
+        )
+        self.primary_rotary_axis = "C"
+        self.secondary_rotary_axis = "A"
 
     def _initialize_BC_head_config(self, b_limits=(-120, 120), c_limits=(-360, 360)) -> None:
-        """Initialize as a 5-axis BC head configuration"""
-        self._initialize_4axis_B_config(b_limits)
-        self.rotary_axes["C"] = RotaryAxis(
-            "C", FreeCAD.Vector(0, 0, 1), min_limit=c_limits[0], max_limit=c_limits[1]
+        """Initialize as a 5-axis BC head configuration.
+
+        Kinematic tree:
+          BaseFrame -> B (tilt, head_rotary) -> C (azimuth, head_rotary)
+          BaseFrame -> X, Y (table_linear)
+        """
+        self._initialize_3axis_config()
+        self.rotary_axes["B"] = RotaryAxis(
+            "B",
+            FreeCAD.Vector(0, 1, 0),
+            min_limit=b_limits[0],
+            max_limit=b_limits[1],
+            role=AxisRole.HEAD_ROTARY,
+            parent=None,
+            sequence=0,
         )
+        self.rotary_axes["C"] = RotaryAxis(
+            "C",
+            FreeCAD.Vector(0, 0, 1),
+            min_limit=c_limits[0],
+            max_limit=c_limits[1],
+            role=AxisRole.HEAD_ROTARY,
+            parent="B",
+            sequence=1,
+        )
+        self.primary_rotary_axis = "B"
         self.secondary_rotary_axis = "C"
 
     def _initialize_from_machine_type(self, machine_type: str) -> None:
         """Initialize machine configuration based on machine type"""
-        if machine_type == "xyz":
+        if machine_type == "xz":
+            self._initialize_lathe_config()
+        elif machine_type == "xyz":
             self._initialize_3axis_config()
         elif machine_type == "xyza":
             self._initialize_4axis_A_config()
@@ -1246,6 +1356,17 @@ class Machine:
             self._initialize_AC_table_config()
         elif machine_type == "xyzbc":
             self._initialize_BC_head_config()
+
+    def _initialize_lathe_config(self) -> None:
+        """Initialize as a 2-axis XZ lathe configuration."""
+        self.linear_axes = {
+            "X": LinearAxis("X", FreeCAD.Vector(1, 0, 0), role=AxisRole.TABLE_LINEAR),
+            "Z": LinearAxis("Z", FreeCAD.Vector(0, 0, 1), role=AxisRole.HEAD_LINEAR),
+        }
+        self.rotary_axes = {}
+        self.primary_rotary_axis = None
+        self.secondary_rotary_axis = None
+        self.compound_moves = True
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "Machine":

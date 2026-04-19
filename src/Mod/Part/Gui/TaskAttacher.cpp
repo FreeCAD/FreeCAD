@@ -1463,7 +1463,6 @@ TaskDlgAttacher::TaskDlgAttacher(
     , onAccept(onAccept)
     , onReject(onReject)
     , accepted(false)
-    , tid(0)
 {
     assert(ViewProvider);
     setDocumentName(ViewProvider->getDocument()->getDocument()->getName());
@@ -1486,8 +1485,11 @@ TaskDlgAttacher::~TaskDlgAttacher()
 
 void TaskDlgAttacher::open()
 {
-    if (!Gui::Command::hasPendingCommand()) {
-        tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Edit attachment"));
+    Gui::DocumentT doc(getDocumentName());
+    if (Gui::Document* document = doc.getDocument()) {
+        if (!document->hasPendingCommand()) {
+            document->openCommand(QT_TRANSLATE_NOOP("Command", "Edit attachment"));
+        }
     }
 }
 
@@ -1546,7 +1548,7 @@ bool TaskDlgAttacher::accept()
         );
         Gui::cmdAppObject(obj, "recompute()");
 
-        Gui::Command::commitCommand(tid);
+        document->commitCommand();
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(
@@ -1572,7 +1574,7 @@ bool TaskDlgAttacher::reject()
     Gui::Document* document = doc.getDocument();
     if (document) {
         // roll back the done things
-        Gui::Command::abortCommand(tid);
+        document->abortCommand();
         Gui::Command::doCommand(Gui::Command::Doc, "%s.recompute()", doc.getAppDocumentPython().c_str());
     }
 

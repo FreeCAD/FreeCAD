@@ -178,6 +178,7 @@ SET(PathPythonMachineUiEditor_SRCS
     Machine/ui/editor/machine_editor.py
     Machine/ui/editor/postprocessor_properties.py
     Machine/ui/editor/__init__.py
+    Machine/ui/editor/output_options_layout.py
 )
 
 SET(PathPythonMachineModels_SRCS
@@ -343,6 +344,7 @@ SET(PathPythonPostScripts_SRCS
     Path/Post/scripts/mach3_mach4_post.py
     Path/Post/scripts/masso_g3_post.py
     Path/Post/scripts/marlin_legacy_post.py
+    Path/Post/scripts/marlin_post.py
     Path/Post/scripts/nccad_legacy_post.py
     Path/Post/scripts/opensbp_legacy_post.py
     Path/Post/scripts/opensbp_post.py
@@ -539,6 +541,7 @@ SET(Tests_SRCS
     CAMTests/TestMach3Mach4LegacyPost.py
     CAMTests/TestMach3Mach4Post.py
     CAMTests/TestMassoG3Post.py
+    CAMTests/TestMarlinPost.py
     CAMTests/TestPathAdaptive.py
     CAMTests/TestPathCommandAnnotations.py
     CAMTests/TestPathCore.py

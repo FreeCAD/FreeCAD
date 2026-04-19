@@ -568,6 +568,7 @@ bool ViewProviderDocumentObject::canDelete(App::DocumentObject* obj) const
 
 PyObject* ViewProviderDocumentObject::getPyObject()
 {
+    requireMainThread("Gui::ViewProviderDocumentObject::getPyObject");
     if (!pyViewObject) {
         pyViewObject = new ViewProviderDocumentObjectPy(this);
     }

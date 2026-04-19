@@ -214,11 +214,11 @@ class POCKETGate(PathBaseGate):
             pocketable = True
 
         elif obj.ShapeType == "Solid":
-            if sub and sub[0:4] == "Face":
+            if sub and sub[0:4] in ("Face", "Edge"):
                 pocketable = True
 
         elif obj.ShapeType == "Compound":
-            if sub and sub[0:4] == "Face":
+            if sub and sub[0:4] in ("Face", "Edge"):
                 pocketable = True
 
         return pocketable
