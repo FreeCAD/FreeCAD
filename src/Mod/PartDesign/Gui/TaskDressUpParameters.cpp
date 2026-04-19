@@ -27,17 +27,25 @@
 #include <QAction>
 #include <QApplication>
 #include <QKeyEvent>
+#include <QLabel>
 #include <QListWidget>
 #include <QListWidgetItem>
+#include <QProgressBar>
+#include <QPushButton>
+#include <QSignalBlocker>
 #include <QTimer>
+#include <QWidget>
 
+#include <sstream>
 
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <Gui/AsyncPreviewSession.h>
 #include <App/Transactions.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
+#include <Gui/Control.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/Tools.h>
 #include <Gui/WaitCursor.h>
@@ -45,15 +53,19 @@
 #include <Mod/PartDesign/Gui/ReferenceSelection.h>
 
 #include "TaskDressUpParameters.h"
+#include "DeferredDialogRejectUtils.h"
 
-
-FC_LOG_LEVEL_INIT("PartDesign", true, true)
 
 using namespace PartDesignGui;
 using namespace Gui;
 
 
 /* TRANSLATOR PartDesignGui::TaskDressUpParameters */
+
+namespace
+{
+constexpr int AsyncInteractivePreviewDebounceMs = 150;
+}
 
 TaskDressUpParameters::TaskDressUpParameters(
     ViewProviderDressUp* DressUpView,
@@ -73,12 +85,158 @@ TaskDressUpParameters::TaskDressUpParameters(
     transactionID = DressUpView->getObject()->getDocument()->getBookedTransactionID();
 
     selectionMode = none;
+
+
+    AsyncPreviewController::Callbacks callbacks;
+    callbacks.makeRequest = [this]() {
+        auto* object = getObject<PartDesign::DressUp>();
+        return object ? App::RecomputeRequest::fromDocumentObject(*object) : App::RecomputeRequest {};
+    };
+    callbacks.runSync = [this]() {
+        if (auto* dressUp = getObject<PartDesign::DressUp>()) {
+            dressUp->recomputeFeature();
+            dressUp->recomputePreview();
+        }
+    };
+    callbacks.onAppliedResult = [this](bool, bool canceled) {
+        if (shouldRestoreReferenceHighlightAfterRecompute()) {
+            if (auto* view = getDressUpView()) {
+                view->highlightReferences(true);
+            }
+        }
+        if (shouldHideOnErrorAfterRecompute()) {
+            hideOnError();
+        }
+        if (!canceled) {
+            onDressUpRecomputeFinished(canceled);
+        }
+    };
+    asyncPreviewSession = std::make_unique<Gui::AsyncPreviewSession>(std::move(callbacks), this);
+    asyncPreviewSession->setSchedulerInterval(
+        App::GetApplication().isAsyncRecomputeEnabled() ? AsyncInteractivePreviewDebounceMs : 0
+    );
+    connect(
+        asyncPreviewSession->controller(),
+        &AsyncPreviewController::recomputeSettled,
+        this,
+        &TaskDressUpParameters::recomputeSettled
+    );
 }
 
 TaskDressUpParameters::~TaskDressUpParameters()
 {
+    stopPendingRecompute();
     // make sure to remove selection gate in all cases
     Gui::Selection().rmvSelectionGate();
+}
+
+void TaskDressUpParameters::setupPreviewWidgets(
+    QWidget* statusWidget,
+    QProgressBar* progressBar,
+    QLabel* statusLabel,
+    QPushButton* cancelButton
+)
+{
+    previewStatusWidget = statusWidget;
+    previewProgressBar = progressBar;
+    previewStatusLabel = statusLabel;
+    previewCancelButton = cancelButton;
+
+    if (asyncPreviewSession) {
+        asyncPreviewSession->bindWidgets(
+            {
+                previewStatusWidget,
+                previewProgressBar,
+                previewStatusLabel,
+                previewCancelButton,
+            },
+            [this](const char* text) { return tr(text); },
+            proxy
+        );
+    }
+}
+
+void TaskDressUpParameters::schedulePendingRecompute()
+{
+    if (!isUpdateBlocked() && asyncPreviewSession) {
+        asyncPreviewSession->scheduleRecompute();
+    }
+}
+
+void TaskDressUpParameters::runImmediateRecompute()
+{
+    if (asyncPreviewSession && asyncPreviewSession->triggerScheduledRecomputeNow()) {
+        return;
+    }
+
+    try {
+        requestRecompute(/*waitForCompletion=*/false);
+    }
+    catch (const Base::Exception& e) {
+        e.reportException();
+    }
+}
+
+void TaskDressUpParameters::flushPendingRecompute()
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->flushPendingRecompute();
+    }
+}
+
+void TaskDressUpParameters::stopPendingRecompute()
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->stopPendingRecompute();
+    }
+}
+
+bool TaskDressUpParameters::hasOutstandingRecompute() const
+{
+    return asyncPreviewSession && asyncPreviewSession->hasOutstandingRecompute();
+}
+
+void TaskDressUpParameters::setDeferredClosePending(bool pending)
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->setDeferredClosePending(pending);
+    }
+}
+
+void TaskDressUpParameters::clearInteractiveSelection()
+{
+    setSelectionMode(none);
+}
+
+void TaskDressUpParameters::updateRecomputeUi()
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->updateUi();
+    }
+}
+
+bool TaskDressUpParameters::shouldRestoreReferenceHighlightAfterRecompute() const
+{
+    return selectionMode == refSel;
+}
+
+bool TaskDressUpParameters::shouldHideOnErrorAfterRecompute() const
+{
+    return selectionMode != refSel;
+}
+
+void TaskDressUpParameters::onDressUpRecomputeFinished(bool)
+{}
+
+void TaskDressUpParameters::requestRecompute(bool waitForCompletion)
+{
+    if (isUpdateBlocked()) {
+        return;
+    }
+
+    if (asyncPreviewSession) {
+        asyncPreviewSession->requestRecompute(waitForCompletion);
+    }
 }
 
 void TaskDressUpParameters::setupTransaction()
@@ -93,7 +251,7 @@ void TaskDressUpParameters::setupTransaction()
     }
 
     // open a transaction if none is active
-    // where is this transaction committed - theo-vt?
+    // where is this transaction commited - theo-vt?
     std::string n("Edit ");
     n += DressUpView->getObject()->Label.getValue();
     transactionID = DressUpView->getObject()->getDocument()->openTransaction(n.c_str());
@@ -133,8 +291,6 @@ void TaskDressUpParameters::referenceSelected(const Gui::SelectionChanges& msg, 
 
 void TaskDressUpParameters::addAllEdges(QListWidget* widget)
 {
-    Q_UNUSED(widget)
-
     if (DressUpView.expired()) {
         return;
     }
@@ -150,23 +306,23 @@ void TaskDressUpParameters::addAllEdges(QListWidget* widget)
     )
                     .countSubShapes(TopAbs_EDGE);
     auto subValues = pcDressUp->Base.getSubValues(false);
-    std::size_t len = subValues.size();
+    bool changed = false;
+    QSignalBlocker blocker(widget);
     for (int i = 0; i < count; ++i) {
         std::string name = "Edge" + std::to_string(i + 1);
-        if (std::find(subValues.begin(), subValues.begin() + len, name) == subValues.begin() + len) {
+        if (std::find(subValues.begin(), subValues.end(), name) == subValues.end()) {
             subValues.push_back(name);
+            if (widget) {
+                widget->addItem(QString::fromStdString(name));
+            }
+            changed = true;
         }
     }
-    if (subValues.size() == len) {
+    if (!changed) {
         return;
     }
-    try {
-        setupTransaction();
-        pcDressUp->Base.setValue(base, subValues);
-    }
-    catch (Base::Exception& e) {
-        e.reportException();
-    }
+
+    updateFeature(pcDressUp, subValues);
 }
 
 void TaskDressUpParameters::deleteRef(QListWidget* widget)
@@ -198,19 +354,13 @@ void TaskDressUpParameters::updateFeature(
     const std::vector<std::string>& refs
 )
 {
-    if (selectionMode == refSel) {
+    if (shouldRestoreReferenceHighlightAfterRecompute()) {
         DressUpView->highlightReferences(false);
     }
 
     setupTransaction();
     pcDressUp->Base.setValue(pcDressUp->Base.getValue(), refs);
-    pcDressUp->recomputeFeature();
-    if (selectionMode == refSel) {
-        DressUpView->highlightReferences(true);
-    }
-    else {
-        hideOnError();
-    }
+    schedulePendingRecompute();
 }
 
 void TaskDressUpParameters::onButtonRefSel(bool checked)
@@ -519,8 +669,34 @@ TaskDlgDressUpParameters::~TaskDlgDressUpParameters() = default;
 
 //==== calls from the TaskView ===============================================================
 
+void TaskDlgDressUpParameters::ensureDeferredRejectConnection()
+{
+    ensureDeferredDialogRejectConnection(
+        deferredReject,
+        parameter,
+        &TaskDressUpParameters::recomputeSettled,
+        this,
+        &TaskDlgDressUpParameters::onParameterRecomputeSettled
+    );
+}
+
+void TaskDlgDressUpParameters::setDeferredRejectPending(bool pending)
+{
+    setDeferredDialogRejectPending(deferredReject, pending, buttonBox, [this](bool pending) {
+        if (parameter) {
+            parameter->setDeferredClosePending(pending);
+        }
+    });
+}
+
 bool TaskDlgDressUpParameters::accept()
 {
+    if (!parameter || deferredReject.pending) {
+        return false;
+    }
+
+    ensureDeferredRejectConnection();
+    parameter->clearInteractiveSelection();
     getViewObject<ViewProviderDressUp>()->highlightReferences(false);
     std::vector<std::string> refs = parameter->getReferences();
     std::stringstream str;
@@ -536,8 +712,38 @@ bool TaskDlgDressUpParameters::accept()
 
 bool TaskDlgDressUpParameters::reject()
 {
+    if (!parameter) {
+        return false;
+    }
+
+    ensureDeferredRejectConnection();
+    parameter->clearInteractiveSelection();
+    parameter->stopPendingRecompute();
     getViewObject<ViewProviderDressUp>()->highlightReferences(false);
-    return TaskDlgFeatureParameters::reject();
+    if (!parameter->hasOutstandingRecompute()) {
+        return TaskDlgFeatureParameters::reject();
+    }
+
+    if (!deferredReject.pending) {
+        auto* feature = getObject<PartDesign::Feature>();
+        deferredReject.documentName = feature && feature->getDocument()
+            ? std::string(feature->getDocument()->getName())
+            : std::string();
+        setDeferredRejectPending(true);
+    }
+
+    return false;
+}
+
+void TaskDlgDressUpParameters::onParameterRecomputeSettled()
+{
+    finishDeferredDialogReject(
+        this,
+        deferredReject,
+        parameter && !parameter->hasOutstandingRecompute(),
+        [this]() { return TaskDlgFeatureParameters::reject(); },
+        [this](bool pending) { setDeferredRejectPending(pending); }
+    );
 }
 
 #include "moc_TaskDressUpParameters.cpp"
