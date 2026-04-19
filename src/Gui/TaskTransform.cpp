@@ -151,7 +151,7 @@ TaskTransform::TaskTransform(
     blockSelection(true);
     clearDocumentScope();  // allow cross-document selection for links
 
-    vp->setDraggerInteractionHandler([this](ViewProviderDragger::DraggerInteraction interaction) {
+    vp->setDraggerInteractionHandler([this](Gui::DraggerInteraction interaction) {
         onDraggerInteraction(interaction);
     });
 
@@ -189,14 +189,14 @@ void TaskTransform::ensureTransformCommandOpen()
     }
 }
 
-void TaskTransform::onDraggerInteraction(ViewProviderDragger::DraggerInteraction interaction)
+void TaskTransform::onDraggerInteraction(Gui::DraggerInteraction interaction)
 {
-    if (interaction == ViewProviderDragger::DraggerInteraction::Start) {
+    if (interaction == Gui::DraggerInteraction::Start) {
         ensureTransformCommandOpen();
         return;
     }
 
-    if (interaction != ViewProviderDragger::DraggerInteraction::Motion) {
+    if (interaction != Gui::DraggerInteraction::Motion) {
         return;
     }
 

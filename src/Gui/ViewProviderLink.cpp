@@ -3374,11 +3374,7 @@ ViewProvider* ViewProviderLink::startEditing(int mode)
         }
 
         if (auto result = inherited::startEditing(mode)) {
-            if (transformDragger.get()) {
-                transformDragger->addStartCallback(dragStartCallback, this);
-                transformDragger->addFinishCallback(dragFinishCallback, this);
-                transformDragger->addMotionCallback(dragMotionCallback, this);
-
+            if (transformDragger) {
                 setDraggerPlacement(dragCtx->initialPlacement);
             }
 
@@ -3494,33 +3490,35 @@ bool ViewProviderLink::callDraggerProxy(const char* fname)
     return false;
 }
 
-void ViewProviderLink::dragStartCallback(void* data, SoDragger*)
+void ViewProviderLink::onDraggerInteraction(DraggerInteraction interaction)
 {
-    auto me = static_cast<ViewProviderLink*>(data);
-
-    me->dragCtx->initialPlacement = me->getDraggerPlacement();
-    me->callDraggerProxy("onDragStart");
-}
-
-void ViewProviderLink::dragFinishCallback(void* data, SoDragger*)
-{
-    auto me = static_cast<ViewProviderLink*>(data);
-    me->callDraggerProxy("onDragEnd");
-
-    if (me->dragCtx->cmdPending) {
-        if (me->getDraggerPlacement() == me->dragCtx->initialPlacement) {
-            me->getDocument()->abortCommand();
-        }
-        else {
-            me->getDocument()->commitCommand();
-        }
+    if (!dragCtx) {
+        return;
     }
-}
 
-void ViewProviderLink::dragMotionCallback(void* data, SoDragger*)
-{
-    auto me = static_cast<ViewProviderLink*>(data);
-    me->callDraggerProxy("onDragMotion");
+    switch (interaction) {
+        case DraggerInteraction::Start:
+            dragCtx->initialPlacement = getDraggerPlacement();
+            callDraggerProxy("onDragStart");
+            return;
+
+        case DraggerInteraction::Motion:
+            callDraggerProxy("onDragMotion");
+            return;
+
+        case DraggerInteraction::Finish:
+            callDraggerProxy("onDragEnd");
+
+            if (dragCtx->cmdPending) {
+                if (getDraggerPlacement() == dragCtx->initialPlacement) {
+                    getDocument()->abortCommand();
+                }
+                else {
+                    getDocument()->commitCommand();
+                }
+            }
+            return;
+    }
 }
 
 void ViewProviderLink::updateLinks(ViewProvider* vp)

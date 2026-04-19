@@ -388,9 +388,9 @@ void ViewProviderAnnotationLabel::attach(App::DocumentObject* f)
     SoPath* imagePath = sa.getPath();
     if (imagePath) {
         SoDragger* dragger = pTextTranslation->getDragger();
-        dragger->addStartCallback(dragStartCallback, this);
-        dragger->addFinishCallback(dragFinishCallback, this);
-        dragger->addMotionCallback(dragMotionCallback, this);
+        Gui::installDraggerInteractionCallbacks<
+            ViewProviderAnnotationLabel,
+            &ViewProviderAnnotationLabel::onDraggerInteraction>(dragger, this);
 
         dragger->setPartAsPath("translator", imagePath);
 
@@ -420,50 +420,53 @@ void ViewProviderAnnotationLabel::updateData(const App::Property* prop)
 }
 
 
-void ViewProviderAnnotationLabel::dragStartCallback(void*, SoDragger*)
+void ViewProviderAnnotationLabel::onDraggerInteraction(
+    Gui::DraggerInteraction interaction,
+    SoDragger* dragger
+)
 {
-    // This is called when a manipulator is about to manipulating
-    Gui::Application::Instance->activeDocument()->openCommand(
-        QT_TRANSLATE_NOOP("Command", "Transform")
-    );
-}
+    switch (interaction) {
+        case Gui::DraggerInteraction::Start:
+            Gui::Application::Instance->activeDocument()->openCommand(
+                QT_TRANSLATE_NOOP("Command", "Transform")
+            );
+            return;
 
-void ViewProviderAnnotationLabel::dragFinishCallback(void*, SoDragger*)
-{
-    // This is called when a manipulator has done manipulating
-    Gui::Application::Instance->activeDocument()->commitCommand();
-}
+        case Gui::DraggerInteraction::Finish:
+            Gui::Application::Instance->activeDocument()->commitCommand();
+            return;
 
-void ViewProviderAnnotationLabel::dragMotionCallback(void* data, SoDragger* drag)
-{
-    auto that = static_cast<ViewProviderAnnotationLabel*>(data);
-    if (auto* obj = that->getObject<App::AnnotationLabel>()) {
-        Base::Vector3d basepos = obj->BasePosition.getValue();
-        Base::Vector3d textpos = obj->TextPosition.getValue();
+        case Gui::DraggerInteraction::Motion: {
+            if (auto* obj = getObject<App::AnnotationLabel>()) {
+                Base::Vector3d basepos = obj->BasePosition.getValue();
+                Base::Vector3d textpos = obj->TextPosition.getValue();
 
-        auto globalText = Base::convertTo<SbVec3f>(basepos + textpos);
-        SbVec3f pnt = drag->getWorldStartingPoint();
-        // difference between the label's origin and the picked point
-        SbVec3f move = pnt - globalText;
+                auto globalText = Base::convertTo<SbVec3f>(basepos + textpos);
+                SbVec3f pnt = dragger->getWorldStartingPoint();
+                // Difference between the label's origin and the picked point.
+                SbVec3f move = pnt - globalText;
 
-        SbViewVolume vv = drag->getViewVolume();
-        SbVec3f normal = vv.getProjectionDirection();
+                SbViewVolume vv = dragger->getViewVolume();
+                SbVec3f normal = vv.getProjectionDirection();
 
-        SbPlane plane(normal, pnt);
+                SbPlane plane(normal, pnt);
 
-        const SoEvent* ev = drag->getEvent();
-        const SbViewportRegion& vpr = drag->getViewportRegion();
+                const SoEvent* ev = dragger->getEvent();
+                const SbViewportRegion& vpr = dragger->getViewportRegion();
 
-        SbLine line;
-        vv.projectPointToLine(ev->getNormalizedPosition(vpr), line);
+                SbLine line;
+                vv.projectPointToLine(ev->getNormalizedPosition(vpr), line);
 
-        SbVec3f intersect;
-        plane.intersect(line, intersect);
-        drag->setStartingPoint(intersect);
+                SbVec3f intersect;
+                plane.intersect(line, intersect);
+                dragger->setStartingPoint(intersect);
 
-        auto text = Base::convertTo<Base::Vector3d>(intersect - move);
-        text = text - basepos;
-        obj->TextPosition.setValue(text);
+                auto text = Base::convertTo<Base::Vector3d>(intersect - move);
+                text = text - basepos;
+                obj->TextPosition.setValue(text);
+            }
+            return;
+        }
     }
 }
 
