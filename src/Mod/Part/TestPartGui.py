@@ -80,6 +80,31 @@ class PartGuiViewProviderTestCases(unittest.TestCase):
         with self.assertRaises(TypeError):
             box.ViewObject.dropObject(box, 0)
 
+    def testNestedPartVisibilityDoesNotTouchParent(self):
+        parent = self.Doc.addObject("App::Part", "Parent")
+        child = self.Doc.addObject("App::Part", "Child")
+        parent.addObject(child)
+        self.Doc.recompute()
+
+        self.assertNotIn("Touched", parent.State)
+        self.assertFalse(parent.MustExecute)
+
+        FreeCADGui.Selection.clearSelection()
+        FreeCADGui.Selection.addSelection(self.Doc.Name, child.Name)
+        FreeCADGui.runCommand("Std_ToggleVisibility", 0)
+        QtWidgets.QApplication.processEvents()
+
+        self.assertFalse(child.Visibility)
+        self.assertNotIn("Touched", parent.State)
+        self.assertFalse(parent.MustExecute)
+
+        FreeCADGui.runCommand("Std_ToggleVisibility", 0)
+        QtWidgets.QApplication.processEvents()
+
+        self.assertTrue(child.Visibility)
+        self.assertNotIn("Touched", parent.State)
+        self.assertFalse(parent.MustExecute)
+
     def tearDown(self):
         # closing doc
         FreeCAD.closeDocument("PartGuiTest")
