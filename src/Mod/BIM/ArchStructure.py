@@ -1354,8 +1354,7 @@ class _Structure(ArchComponent.Component):
         base_objects = getattr(base_obj, "BaseObjects", None) or []
         if base_objects:
             real_base = base_objects[0]
-            if real_base and hasattr(real_base, "Shape") and \
-               not real_base.Shape.isNull():
+            if real_base and hasattr(real_base, "Shape") and not real_base.Shape.isNull():
                 msg = (
                     f"Structure: '{base_obj.Label}' is an edge-only hatch. "
                     f"Using first BaseObject '{real_base.Label}' as slab profile.\n"
@@ -1396,8 +1395,10 @@ class _Structure(ArchComponent.Component):
             if _msg:
                 FreeCAD.Console.PrintMessage(_msg)
 
-            base_shape_to_use = _alt_shape if _alt_shape is not None else (
-                obj.Base.Shape if hasattr(obj.Base, "Shape") else None
+            base_shape_to_use = (
+                _alt_shape
+                if _alt_shape is not None
+                else (obj.Base.Shape if hasattr(obj.Base, "Shape") else None)
             )
 
             if base_shape_to_use and not base_shape_to_use.isNull():
@@ -1507,6 +1508,7 @@ class _Structure(ArchComponent.Component):
                 v3 = Vector(l2, w2, 0)
                 v4 = Vector(-l2, w2, 0)
             import Part
+
             baseface = Part.Face(Part.makePolygon([v1, v2, v3, v4, v1]))
         if baseface:
             if hasattr(obj, "Tool") and obj.Tool:
@@ -1615,9 +1617,7 @@ class _Structure(ArchComponent.Component):
                                 sub_name = sub_names[0] if sub_names else None
                                 if sub_name and hasattr(linked_obj, "Shape"):
                                     edge = linked_obj.Shape.getElement(sub_name)
-                                    x_axis = edge.tangentAt(
-                                        edge.FirstParameter
-                                    ).normalize()
+                                    x_axis = edge.tangentAt(edge.FirstParameter).normalize()
                             except Exception:
                                 x_axis = None
 
@@ -1626,9 +1626,11 @@ class _Structure(ArchComponent.Component):
                                 # For multi-face base, we can't use base.Wires directly
                                 # This block only runs when base is NOT a list
                                 outer_wire = base.Wires[0]
-                                x_axis = outer_wire.Edges[0].tangentAt(
-                                    outer_wire.Edges[0].FirstParameter
-                                ).normalize()
+                                x_axis = (
+                                    outer_wire.Edges[0]
+                                    .tangentAt(outer_wire.Edges[0].FirstParameter)
+                                    .normalize()
+                                )
                             except Exception:
                                 x_axis = FreeCAD.Vector(1, 0, 0)
 
@@ -1720,6 +1722,7 @@ class _Structure(ArchComponent.Component):
                     elif extdata[1].Length > 0:
                         if hasattr(nodes, "CenterOfMass"):
                             import Part
+
                             nodes = Part.LineSegment(
                                 nodes.CenterOfMass, nodes.CenterOfMass.add(extdata[1])
                             ).toShape()
@@ -1791,6 +1794,7 @@ class _Structure(ArchComponent.Component):
         edges = []
         if obj.Nodes:
             import Part
+
             for i in range(len(obj.Nodes) - 1):
                 edges.append(
                     Part.LineSegment(
@@ -1870,6 +1874,7 @@ class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
 
     def getIcon(self):
         import Arch_rc
+
         if hasattr(self, "Object"):
             if hasattr(self.Object, "CloneOf"):
                 if self.Object.CloneOf:
@@ -1942,9 +1947,7 @@ class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
                                         c[2],
                                         1.0 - float(mat.Material["Transparency"]),
                                     )
-                                cols.extend(
-                                    [c for _ in range(len(obj.Shape.Solids[i].Faces))]
-                                )
+                                cols.extend([c for _ in range(len(obj.Shape.Solids[i].Faces))])
                             obj.ViewObject.DiffuseColor = cols
             ArchComponent.ViewProviderComponent.updateData(self, obj, prop)
             if len(obj.ViewObject.DiffuseColor) > 1:
@@ -1957,6 +1960,7 @@ class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
                 del self.nodes
             if vobj.ShowNodes:
                 from pivy import coin
+
                 self.nodes = coin.SoAnnotation()
                 self.coords = coin.SoCoordinate3()
                 self.mat = coin.SoMaterial()
@@ -2019,12 +2023,12 @@ class StructureTaskPanel(ArchComponent.ComponentOptionsTaskPanel):
         if getattr(obj, "IfcType", "Beam") == "Slab":
             property_definitions = [
                 {"prop": "Height", "label": translate("Arch", "Thickness")},
-                {"prop": "Slope",  "label": translate("Arch", "Slope (°)")},
+                {"prop": "Slope", "label": translate("Arch", "Slope (°)")},
             ]
         else:
             property_definitions = [
                 {"prop": "Length", "label": translate("Arch", "Length")},
-                {"prop": "Width",  "label": translate("Arch", "Width")},
+                {"prop": "Width", "label": translate("Arch", "Width")},
                 {"prop": "Height", "label": translate("Arch", "Height")},
             ]
 
@@ -2100,13 +2104,18 @@ class StructureTaskPanel(ArchComponent.ComponentOptionsTaskPanel):
         lay.addWidget(self.selectToolButton)
         self.selectToolButton.clicked.connect(self.setSelectionFromTool)
 
-        form_widgets = [self.options_widget, self.nodes_widget,
-                        self.extrusion_widget, self.baseform]
+        form_widgets = [
+            self.options_widget,
+            self.nodes_widget,
+            self.extrusion_widget,
+            self.baseform,
+        ]
 
         if getattr(obj, "IfcType", "Beam") == "Slab":
             self.slab_widget = QtGui.QWidget()
             self.slab_widget.setWindowTitle(
-                QtGui.QApplication.translate("Arch", "Slab Tools", None))
+                QtGui.QApplication.translate("Arch", "Slab Tools", None)
+            )
             slab_lay = QtGui.QVBoxLayout(self.slab_widget)
 
             info = QtGui.QLabel(
@@ -2114,33 +2123,41 @@ class StructureTaskPanel(ArchComponent.ComponentOptionsTaskPanel):
                     "Arch",
                     "Select an edge in the 3D view, then click\n"
                     "'Set Slope Edge' to define the drainage pivot.",
-                    None))
+                    None,
+                )
+            )
             info.setWordWrap(True)
             slab_lay.addWidget(info)
 
             self.setSlopeEdgeButton = QtGui.QPushButton(self.slab_widget)
             self.setSlopeEdgeButton.setIcon(QtGui.QIcon(":/icons/Snap_Endpoint.svg"))
             self.setSlopeEdgeButton.setText(
-                QtGui.QApplication.translate("Arch", "Set Slope Edge", None))
+                QtGui.QApplication.translate("Arch", "Set Slope Edge", None)
+            )
             self.setSlopeEdgeButton.setToolTip(
                 QtGui.QApplication.translate(
                     "Arch",
                     "Select an edge in the 3D view first, then click here "
                     "to use it as the drainage slope pivot axis.",
-                    None))
+                    None,
+                )
+            )
             slab_lay.addWidget(self.setSlopeEdgeButton)
             self.setSlopeEdgeButton.clicked.connect(self.setSlopeEdge)
 
             self.clearSlopeEdgeButton = QtGui.QPushButton(self.slab_widget)
             self.clearSlopeEdgeButton.setIcon(QtGui.QIcon(":/icons/edit-cleartext.svg"))
             self.clearSlopeEdgeButton.setText(
-                QtGui.QApplication.translate("Arch", "Clear Slope Edge", None))
+                QtGui.QApplication.translate("Arch", "Clear Slope Edge", None)
+            )
             self.clearSlopeEdgeButton.setToolTip(
                 QtGui.QApplication.translate(
                     "Arch",
                     "Remove the slope edge reference. The first edge of the "
                     "base face will be used as the default pivot.",
-                    None))
+                    None,
+                )
+            )
             slab_lay.addWidget(self.clearSlopeEdgeButton)
             self.clearSlopeEdgeButton.clicked.connect(self.clearSlopeEdge)
 
@@ -2171,13 +2188,9 @@ class StructureTaskPanel(ArchComponent.ComponentOptionsTaskPanel):
                         )
                         return
                     except Exception as e:
-                        FreeCAD.Console.PrintError(
-                            f"Could not set SlopeEdge: {e}\n"
-                        )
+                        FreeCAD.Console.PrintError(f"Could not set SlopeEdge: {e}\n")
                         return
-        FreeCAD.Console.PrintWarning(
-            "No edge selected. Select an edge in the 3D view first.\n"
-        )
+        FreeCAD.Console.PrintWarning("No edge selected. Select an edge in the 3D view first.\n")
 
     def clearSlopeEdge(self):
         """Remove the SlopeEdge reference. The first base-face edge is used."""
@@ -2234,6 +2247,7 @@ class StructureTaskPanel(ArchComponent.ComponentOptionsTaskPanel):
                         )
                     else:
                         import DraftGeomUtils
+
                         nodes1 = [self.Object.Placement.multVec(v) for v in self.Object.Nodes]
                         nodes2 = [other.Placement.multVec(v) for v in other.Nodes]
                         intersect = DraftGeomUtils.findIntersection(
@@ -2282,6 +2296,7 @@ class StructureTaskPanel(ArchComponent.ComponentOptionsTaskPanel):
                         )
                     else:
                         import DraftGeomUtils
+
                         nodes1 = [self.Object.Placement.multVec(v) for v in self.Object.Nodes]
                         nodes2 = [other.Placement.multVec(v) for v in other.Nodes]
                         intersect = DraftGeomUtils.findIntersection(
@@ -2493,6 +2508,7 @@ class _StructuralSystem(ArchComponent.Component):
     def getAxisPoints(self, obj):
         "returns the gridpoints of linked axes"
         import DraftGeomUtils
+
         pts = []
         if len(obj.Axes) == 1:
             if hasattr(obj, "Align"):
@@ -2528,6 +2544,7 @@ class _ViewProviderStructuralSystem(ArchComponent.ViewProviderComponent):
 
     def getIcon(self):
         import Arch_rc
+
         return ":/icons/Arch_StructuralSystem_Tree.svg"
 
 
