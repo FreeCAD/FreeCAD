@@ -771,6 +771,10 @@ class ObjectOp(object):
         """
         Path.Log.track()
 
+        job = getattr(self, "job", None) or PathUtils.findParentJob(obj)
+        if getattr(job, "SkipRecomputes", False):
+            return
+
         if not obj.Active:
             path = Path.Path("(inactive operation)")
             obj.Path = path

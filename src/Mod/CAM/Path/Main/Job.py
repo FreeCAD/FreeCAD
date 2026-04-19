@@ -227,6 +227,12 @@ class ObjectJob:
             ),
         )
         obj.PostProcessorPropertyOverrides = "{}"
+        obj.addProperty(
+            "App::PropertyBool",
+            "SkipRecomputes",
+            "Base",
+            QT_TRANSLATE_NOOP("App::Property", "Do not recomputes operations"),
+        )
 
         obj.Fixtures = ["G54"]
 
@@ -592,6 +598,14 @@ class ObjectJob:
                 ),
             )
             obj.PostProcessorPropertyOverrides = "{}"
+
+        if not hasattr(obj, "SkipRecomputes"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "SkipRecomputes",
+                "Base",
+                QT_TRANSLATE_NOOP("App::Property", "Do not recomputes operations"),
+            )
 
         for n in self.propertyEnumerations():
             setattr(obj, n[0], n[1])
