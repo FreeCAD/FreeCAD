@@ -289,5 +289,8 @@ bool SequencerLauncher::wasCanceled() const
 void SequencerLauncher::stop()
 {
     std::lock_guard<std::recursive_mutex> locker(SequencerP::mutex);
-    SequencerBase::Instance().stop();
+    if (SequencerP::_topLauncher == this) {
+        SequencerBase::Instance().stop();
+        SequencerP::_topLauncher = nullptr;
+    }
 }

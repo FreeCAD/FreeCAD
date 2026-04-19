@@ -2497,11 +2497,7 @@ TopoShape& TopoShape::makeElementPipeShell(
         FC_THROWM(Base::CADKernelError, "shape is not ready to build");
     }
     else {
-#if OCC_VERSION_HEX >= 0x070600
-        mkPipeShell.Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-        mkPipeShell.Build();
-#endif
+        Part::buildWithProgress(mkPipeShell);
     }
 
     if (make_solid == MakeSolid::makeSolid) {
@@ -2609,11 +2605,7 @@ TopoShape& TopoShape::makeElementOffset(
         BRepOffsetAPI_ThruSections aGenerator;
         aGenerator.AddWire(TopoDS::Wire(originalWire.getShape()));
         aGenerator.AddWire(offsetWire);
-#if OCC_VERSION_HEX >= 0x070600
-        aGenerator.Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-        aGenerator.Build();
-#endif
+        Part::buildWithProgress(aGenerator);
         if (!aGenerator.IsDone()) {
             FC_THROWM(Base::CADKernelError, "ThruSections failed");
         }
@@ -3046,11 +3038,7 @@ TopoShape& TopoShape::makeElementOffset2D(
                 }
                 // add final joining edge
                 mkWire.Add(BRepBuilderAPI_MakeEdge(v3, v1).Edge());
-#if OCC_VERSION_HEX >= 0x070600
-                mkWire.Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-                mkWire.Build();
-#endif
+                Part::buildWithProgress(mkWire);
                 wiresForMakingFaces.push_back(
                     TopoShape(Tag, Hasher).makeElementShape(mkWire, openWires, op)
                 );
@@ -3970,11 +3958,7 @@ TopoShape& TopoShape::makeElementFilledFace(
         }
     }
 
-#if OCC_VERSION_HEX >= 0x070600
-    maker.Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-    maker.Build();
-#endif
+    Part::buildWithProgress(maker);
     if (!maker.IsDone()) {
         FC_THROWM(Base::CADKernelError, "Failed to created face by filling edges");
     }
@@ -4272,11 +4256,7 @@ TopoShape& TopoShape::makeElementGeneralFuse(
         FCBRepAlgoAPIHelper::setAutoFuzzy(&mkGFA);
     }
     mkGFA.SetNonDestructive(Standard_True);
-#if OCC_VERSION_HEX >= 0x070600
-    mkGFA.Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-    mkGFA.Build();
-#endif
+    Part::buildWithProgress(mkGFA);
     if (!mkGFA.IsDone()) {
         FC_THROWM(Base::CADKernelError, "GeneralFuse failed");
     }
@@ -4574,11 +4554,7 @@ TopoShape& TopoShape::makeElementLoft(
     aGenerator.CheckCompatibility(anIsCheck);  // use BRepFill_CompatibleWires on profiles. force
                                                // #edges, orientation, "origin" to match.
 
-#if OCC_VERSION_HEX >= 0x070600
-    aGenerator.Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-    aGenerator.Build();
-#endif
+    Part::buildWithProgress(aGenerator);
     return makeShapeWithElementMap(
         aGenerator.Shape(),
         MapperThruSections(aGenerator, profiles),
@@ -4910,11 +4886,7 @@ TopoShape& TopoShape::makeElementDraft(
         }
     } while (retry && !done);
 
-#if OCC_VERSION_HEX >= 0x070600
-    mkDraft.Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-    mkDraft.Build();
-#endif
+    Part::buildWithProgress(mkDraft);
     return makeElementShape(mkDraft, shape, op);
 }
 
@@ -4966,11 +4938,7 @@ TopoShape& TopoShape::makeElementFace(
             mkFace->addTopoShape(shape);
         }
     }
-#if OCC_VERSION_HEX >= 0x070600
-    mkFace->Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-    mkFace->Build();
-#endif
+    Part::buildWithProgress(*mkFace);
 
     const auto& ret = mkFace->getTopoShape();
     setShape(ret._Shape);
@@ -6220,11 +6188,7 @@ TopoShape& TopoShape::makeElementBoolean(
     else if (tolerance < 0.0) {
         FCBRepAlgoAPIHelper::setAutoFuzzy(mk.get());
     }
-#if OCC_VERSION_HEX >= 0x070600
-    mk->Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-    mk->Build();
-#endif
+    Part::buildWithProgress(*mk);
     if (Base::Sequencer().wasCanceled()) {
         FC_THROWM(Base::CADKernelError, "User aborted");
     }
