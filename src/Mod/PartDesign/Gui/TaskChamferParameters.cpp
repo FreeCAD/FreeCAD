@@ -63,6 +63,12 @@ TaskChamferParameters::TaskChamferParameters(ViewProviderDressUp* DressUpView, Q
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui->setupUi(proxy);
+    setupPreviewWidgets(
+        ui->previewStatusWidget,
+        ui->progressBarPreview,
+        ui->labelPreviewStatus,
+        ui->buttonCancelPreview
+    );
     this->groupLayout()->addWidget(proxy);
 
     PartDesign::Chamfer* pcChamfer = DressUpView->getObject<PartDesign::Chamfer>();
@@ -191,7 +197,7 @@ void TaskChamferParameters::onCheckBoxUseAllEdgesToggled(bool checked)
         ui->buttonRefSel->setEnabled(!checked);
         ui->listWidgetReferences->setEnabled(!checked);
         chamfer->UseAllEdges.setValue(checked);
-        chamfer->recomputeFeature();
+        schedulePendingRecompute();
     }
 }
 
@@ -204,7 +210,6 @@ void TaskChamferParameters::setButtons(const selectionModes mode)
 void TaskChamferParameters::onRefDeleted()
 {
     TaskDressUpParameters::deleteRef(ui->listWidgetReferences);
-    setGizmoPositions();
 }
 
 void TaskChamferParameters::onAddAllEdges()
@@ -219,9 +224,7 @@ void TaskChamferParameters::onTypeChanged(int index)
         chamfer->ChamferType.setValue(index);
         ui->stackedWidget->setCurrentIndex(index);
         ui->flipDirection->setEnabled(index != 0);  // Enable if type is not "Equal distance"
-        chamfer->recomputeFeature();
-        // hide the chamfer if there was a computation error
-        hideOnError();
+        schedulePendingRecompute();
     }
 }
 
@@ -231,9 +234,7 @@ void TaskChamferParameters::onSizeChanged(double len)
         setSelectionMode(none);
         setupTransaction();
         chamfer->Size.setValue(len);
-        chamfer->recomputeFeature();
-        // hide the chamfer if there was a computation error
-        hideOnError();
+        schedulePendingRecompute();
     }
 }
 
@@ -243,9 +244,7 @@ void TaskChamferParameters::onSize2Changed(double len)
         setSelectionMode(none);
         setupTransaction();
         chamfer->Size2.setValue(len);
-        chamfer->recomputeFeature();
-        // hide the chamfer if there was a computation error
-        hideOnError();
+        schedulePendingRecompute();
     }
 }
 
@@ -255,9 +254,7 @@ void TaskChamferParameters::onAngleChanged(double angle)
         setSelectionMode(none);
         setupTransaction();
         chamfer->Angle.setValue(angle);
-        chamfer->recomputeFeature();
-        // hide the chamfer if there was a computation error
-        hideOnError();
+        schedulePendingRecompute();
     }
 }
 
@@ -267,11 +264,7 @@ void TaskChamferParameters::onFlipDirection(bool flip)
         setSelectionMode(none);
         setupTransaction();
         chamfer->FlipDirection.setValue(flip);
-        chamfer->recomputeFeature();
-        // hide the chamfer if there was a computation error
-        hideOnError();
-
-        setGizmoPositions();
+        schedulePendingRecompute();
     }
 }
 
@@ -317,6 +310,13 @@ void TaskChamferParameters::changeEvent(QEvent* e)
     TaskBox::changeEvent(e);
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(proxy);
+    }
+}
+
+void TaskChamferParameters::onDressUpRecomputeFinished(bool canceled)
+{
+    if (!canceled) {
+        setGizmoPositions();
     }
 }
 

@@ -62,6 +62,7 @@ protected:
     void setButtons(const selectionModes mode) override;
     void changeEvent(QEvent* e) override;
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
+    void onDressUpRecomputeFinished(bool canceled) override;
 
 private:
     std::unique_ptr<Ui_TaskFilletParameters> ui;

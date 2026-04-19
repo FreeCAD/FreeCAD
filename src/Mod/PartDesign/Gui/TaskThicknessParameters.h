@@ -74,13 +74,14 @@ protected:
     void setButtons(const selectionModes mode) override;
     void changeEvent(QEvent* e) override;
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
+    void onDressUpRecomputeFinished(bool canceled) override;
 
 private:
     void addContainerWidget();
     void initControls();
     void setupConnections();
     PartDesign::Thickness* onBeforeChange();
-    void onAfterChange(PartDesign::Thickness* obj);
+    void onAfterChange();
 
 private:
     std::unique_ptr<Ui_TaskThicknessParameters> ui;

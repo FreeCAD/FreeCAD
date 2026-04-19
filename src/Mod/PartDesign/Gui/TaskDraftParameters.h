@@ -67,6 +67,8 @@ protected:
     void setButtons(selectionModes mode) override;
     void changeEvent(QEvent* e) override;
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
+    bool shouldRestoreReferenceHighlightAfterRecompute() const override;
+    void onDressUpRecomputeFinished(bool canceled) override;
 
 private:
     std::unique_ptr<Ui_TaskDraftParameters> ui;
