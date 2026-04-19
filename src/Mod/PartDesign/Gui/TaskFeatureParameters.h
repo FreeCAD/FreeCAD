@@ -38,10 +38,18 @@
 #include "DeferredDialogRejectUtils.h"
 #include "ViewProvider.h"
 
+namespace App
+{
+class Document;
+class DocumentObject;
+}  // namespace App
+
 namespace PartDesignGui
 {
 
 using AsyncPreviewController = Gui::AsyncPreviewController;
+
+bool runAsyncAcceptDocumentRecompute(App::Document* document);
 
 class Ui_TaskPreviewParameters;
 
@@ -196,6 +204,14 @@ public:
     }
 
 protected:
+    enum class AcceptRecomputeMode
+    {
+        AsyncDocument,
+        CommandDocument
+    };
+
+    virtual AcceptRecomputeMode acceptRecomputeMode(bool isUpdateBlocked) const;
+
     PartDesignGui::TaskPreviewParameters* preview;
     DeferredDialogRejectState deferredReject;
 

@@ -108,7 +108,6 @@ public:
     void setDeferredClosePending(bool pending);
     /// Recompute either this feature or the parent MultiTransform feature
     void recomputeFeature();
-    void recomputeFeatureExactly();
     bool isUpdateBlocked() const
     {
         return blockUpdate;
@@ -284,6 +283,8 @@ private:
     void setDeferredRejectPending(bool pending);
 
 protected:
+    AcceptRecomputeMode acceptRecomputeMode(bool isUpdateBlocked) const override;
+
     TaskTransformedParameters* parameter = nullptr;
     TaskTransformedMessages* message = nullptr;
 

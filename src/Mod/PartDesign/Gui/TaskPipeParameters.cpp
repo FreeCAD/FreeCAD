@@ -686,7 +686,9 @@ bool TaskPipeParameters::accept()
         for (auto obj : pipe->getInList()) {
             obj->touch();
         }
-        Gui::cmdAppDocument(pipe->getDocument(), "recompute()");
+        if (!runAsyncAcceptDocumentRecompute(pipe->getDocument())) {
+            return false;
+        }
 
         if (!getObject()->isValid()) {
             throw Base::RuntimeError(getObject()->getStatusString());

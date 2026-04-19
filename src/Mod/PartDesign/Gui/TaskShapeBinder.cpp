@@ -32,8 +32,10 @@
 
 #include <App/Application.h>
 #include <App/Document.h>
+#include <Base/Console.h>
 #include <Gui/AsyncPreviewSession.h>
 #include <Gui/Application.h>
+#include <Gui/AsyncRecomputeProgressDialog.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
 #include <Gui/Control.h>
@@ -548,7 +550,25 @@ bool TaskDlgShapeBinder::rejectNow()
     App::Document* doc = vp->getObject()->getDocument();
     vp->getDocument()->abortCommand();
     Gui::cmdGuiDocument(doc, "resetEdit()");
-    Gui::cmdAppDocument(doc, "recompute()");
+    const auto outcome = Gui::runAsyncDocumentRecomputeProgressDialog(
+        parameter,
+        tr("Shape binder"),
+        tr("Restoring document..."),
+        doc,
+        /*force=*/false,
+        [doc]() {
+            if (doc) {
+                doc->recompute();
+            }
+        }
+    );
+    if (!outcome.success && !outcome.canceled) {
+        Base::Console().error(
+            "%s\n",
+            outcome.message.empty() ? "Shape binder rollback recompute failed"
+                                    : outcome.message.c_str()
+        );
+    }
     return true;
 }
 
