@@ -96,6 +96,7 @@ public:
 
 private:
     std::size_t currentStep {0};
+    bool loggedCanceledUserBreak {false};
     ScopedRecomputeProgress scope;
 };
 

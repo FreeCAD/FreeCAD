@@ -24,12 +24,28 @@
 
 #include "PreCompiled.h"
 
+#include <string>
+
 #include <App/Application.h>
+#include <App/AsyncRecomputeDebug.h>
 
 #include "ProgressIndicator.h"
 
 
 using namespace Part;
+
+namespace
+{
+
+void appendProgressIndicatorDebugLog(const char* event, std::size_t currentStep)
+{
+    App::appendAsyncRecomputeDebugLog(
+        std::string("[Part::ProgressIndicator] ") + event
+        + " current_step=" + std::to_string(currentStep)
+    );
+}
+
+}  // namespace
 
 ScopedRecomputeProgress::ScopedRecomputeProgress() = default;
 
@@ -146,7 +162,12 @@ void ProgressIndicator::Show(const Message_ProgressScope& theScope, const Standa
 
 Standard_Boolean ProgressIndicator::UserBreak()
 {
-    return scope.wasCanceled();
+    const bool canceled = scope.wasCanceled();
+    if (canceled && !loggedCanceledUserBreak) {
+        loggedCanceledUserBreak = true;
+        appendProgressIndicatorDebugLog("user_break", currentStep);
+    }
+    return canceled;
 }
 
 void ProgressIndicator::Reset()
