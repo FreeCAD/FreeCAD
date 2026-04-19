@@ -34,6 +34,7 @@
 #include <QSlider>
 #include <QToolTip>
 
+#include <App/Application.h>
 #include <App/Document.h>
 #include <App/Link.h>
 #include <App/Part.h>
@@ -41,7 +42,9 @@
 #include <Base/Exception.h>
 #include <Base/UnitsApi.h>
 #include <Gui/Application.h>
+#include <Gui/AsyncPreviewSession.h>
 #include <Gui/Command.h>
+#include <Gui/DeferredDialogRejectUtils.h>
 #include <Gui/DockWindowManager.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
@@ -66,6 +69,8 @@ using namespace PartGui;
 
 namespace
 {
+constexpr int AsyncPreviewDebounceMs = 150;
+
 struct Refresh
 {
     static const bool notXValue = false;
@@ -101,6 +106,39 @@ SectionCut::SectionCut(QWidget* parent)
     if (!doc) {
         throw Base::RuntimeError("Section cut error: there is no document");
     }
+
+    Gui::AsyncPreviewController::Callbacks callbacks;
+    callbacks.makeRequest = [this]() {
+        auto* object = getPreviewRequestObject();
+        return object ? App::RecomputeRequest::fromDocumentObject(*object, /*recursive=*/true)
+                      : App::RecomputeRequest {};
+    };
+    callbacks.runSync = [this]() {
+        if (auto* object = getPreviewRequestObject(); object && object->getDocument()) {
+            object->getDocument()->recomputeFeature(object, /*recursive=*/true);
+        }
+    };
+    asyncPreviewSession = std::make_unique<Gui::AsyncPreviewSession>(std::move(callbacks), this);
+    asyncPreviewSession->setSchedulerInterval(
+        App::GetApplication().isAsyncRecomputeEnabled() ? AsyncPreviewDebounceMs : 0
+    );
+    connect(
+        asyncPreviewSession->controller(),
+        &Gui::AsyncPreviewController::recomputeSettled,
+        this,
+        &SectionCut::onRecomputeSettled,
+        Qt::QueuedConnection
+    );
+    asyncPreviewSession->bindWidgets(
+        {
+            ui->previewStatusWidget,
+            ui->progressBarPreview,
+            ui->labelPreviewStatus,
+            ui->buttonCancelPreview,
+        },
+        [this](const char* text) { return tr(text); }
+    );
+    updateRecomputeUi();
 
     std::vector<App::DocumentObject*> ObjectsList = doc->getObjects();
     if (ObjectsList.empty()) {
@@ -288,6 +326,104 @@ void SectionCut::setSlidersToolTip(const QString& text)
     ui->cutXHS->setToolTip(text);
     ui->cutYHS->setToolTip(text);
     ui->cutZHS->setToolTip(text);
+}
+
+App::DocumentObject* SectionCut::getPreviewRequestObject() const
+{
+    if (!doc) {
+        return nullptr;
+    }
+    if (auto* object = doc->getObject(CutZName)) {
+        return object;
+    }
+    if (auto* object = doc->getObject(CutYName)) {
+        return object;
+    }
+    if (auto* object = doc->getObject(CutXName)) {
+        return object;
+    }
+    return doc->getObject(CompoundName);
+}
+
+void SectionCut::schedulePreviewRecompute()
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->scheduleRecompute();
+    }
+}
+
+void SectionCut::requestPreviewRecompute(bool waitForCompletion)
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->requestRecompute(waitForCompletion);
+    }
+}
+
+void SectionCut::flushPendingRecompute()
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->flushPendingRecompute();
+    }
+}
+
+void SectionCut::stopPendingRecompute()
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->stopPendingRecompute();
+    }
+}
+
+bool SectionCut::hasOutstandingRecompute() const
+{
+    return asyncPreviewSession && asyncPreviewSession->hasOutstandingRecompute();
+}
+
+void SectionCut::triggerFinalPreviewRecompute()
+{
+    if (!App::GetApplication().isAsyncRecomputeEnabled()) {
+        if (auto* object = getPreviewRequestObject()) {
+            recomputeObject(object, /*recursive=*/true);
+        }
+        return;
+    }
+
+    schedulePreviewRecompute();
+}
+
+void SectionCut::updateRecomputeUi()
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->updateUi();
+    }
+}
+
+void SectionCut::setDeferredClosePending(bool pending)
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->setDeferredClosePending(pending);
+    }
+}
+
+void SectionCut::setDeferredRejectPending(bool pending)
+{
+    Gui::setDeferredDialogRejectPending(deferredReject, pending, ui->buttonBox, [this](bool value) {
+        setDeferredClosePending(value);
+    });
+}
+
+bool SectionCut::rejectNow()
+{
+    QDialog::reject();
+    if (auto* dw = qobject_cast<QDockWidget*>(parent())) {
+        dw->deleteLater();
+    }
+    return true;
+}
+
+bool SectionCut::recomputeObject(App::DocumentObject* object, bool recursive)
+{
+    return object && object->getDocument()
+        && object->getDocument()->recomputeFeature(object, recursive);
 }
 
 void SectionCut::setGroupsDisabled()
@@ -836,6 +972,11 @@ Part::Cut* SectionCut::tryCreateCut(const char* name)
 
 void SectionCut::startCutting(bool isInitial)
 {
+    stopPendingRecompute();
+    if (hasOutstandingRecompute()) {
+        flushPendingRecompute();
+    }
+
     // there might be no document
     if (!Gui::Application::Instance->activeDocument()) {
         noDocumentActions();
@@ -1290,10 +1431,8 @@ void SectionCut::processXBoxAndCut(const Args& args)
     // we must set the compoundTransparency also for the cut
     args.cutFunc(pcCut);
 
-    // recomputing recursively is especially for assemblies very time-consuming
-    // however there must be a final recursicve recompute and we do this at the end
-    // so only recomute recursively if there are no other cuts
-    pcCut->recomputeFeature(!ui->groupBoxY->isChecked() && !ui->groupBoxZ->isChecked());
+    // Keep intermediate cuts current cheaply; the final recursive preview is queued separately.
+    recomputeObject(pcCut, /*recursive=*/false);
     hasBoxX = true;
 }
 
@@ -1311,7 +1450,7 @@ void SectionCut::processYBoxAndCut(const Args& args)
     pcCut->Tool.setValue(pcBox);
     args.cutFunc(pcCut);
 
-    pcCut->recomputeFeature(!ui->groupBoxZ->isChecked());
+    recomputeObject(pcCut, /*recursive=*/false);
     hasBoxY = true;
 }
 
@@ -1328,7 +1467,7 @@ void SectionCut::processZBoxAndCut(const Args& args)
     pcCut->Tool.setValue(pcBox);
     args.cutFunc(pcCut);
 
-    pcCut->recomputeFeature(true);
+    recomputeObject(pcCut, /*recursive=*/false);
     hasBoxZ = true;
 }
 
@@ -1450,6 +1589,8 @@ void SectionCut::createAllObjects(const std::vector<App::DocumentObject*>& Objec
              setTransparency}
         );
     }
+
+    triggerFinalPreviewRecompute();
 }
 
 SectionCut* SectionCut::makeDockWidget(QWidget* parent)
@@ -1469,6 +1610,8 @@ SectionCut* SectionCut::makeDockWidget(QWidget* parent)
 /** Destroys the object and frees any allocated resources */
 SectionCut::~SectionCut()
 {
+    stopPendingRecompute();
+
     // there might be no document
     if (!Gui::Application::Instance->activeDocument()) {
         noDocumentActions();
@@ -1483,11 +1626,28 @@ SectionCut::~SectionCut()
 
 void SectionCut::reject()
 {
-    QDialog::reject();
-    auto dw = qobject_cast<QDockWidget*>(parent());
-    if (dw) {
-        dw->deleteLater();
+    stopPendingRecompute();
+    if (hasOutstandingRecompute()) {
+        if (!deferredReject.pending) {
+            deferredReject.documentName = doc ? std::string(doc->getName()) : std::string();
+            setDeferredRejectPending(true);
+        }
+        return;
     }
+
+    rejectNow();
+}
+
+void SectionCut::onRecomputeSettled()
+{
+    Gui::finishDeferredDialogReject(
+        this,
+        deferredReject,
+        !hasOutstandingRecompute(),
+        [this]() { return rejectNow(); },
+        [this](bool pending) { setDeferredRejectPending(pending); },
+        [](App::Document*, SectionCut*) {}
+    );
 }
 
 void SectionCut::onGroupBoxXtoggled()
@@ -1678,6 +1838,7 @@ void SectionCut::onCutXvalueChanged(double val)
     if (!CutObject) {
         return;
     }
+    recomputeObject(CutObject, /*recursive=*/false);
 
     // if there is another cut, we must recalculate it too
     // we might have cut so that the range for Y and Z is now smaller
@@ -1720,8 +1881,6 @@ void SectionCut::onCutXvalueChanged(double val)
         CutFeatureY->Visibility.setValue(true);
         // make SectionCutX invisible again
         CutObject->Visibility.setValue(false);
-        // recompute the cut
-        CutFeatureY->recomputeFeature(true);
     }
     else if (hasBoxZ) {  // at least Z
         // the main cut is Z, no matter if there is a cut in Y
@@ -1740,8 +1899,6 @@ void SectionCut::onCutXvalueChanged(double val)
         CutFeatureZ->Visibility.setValue(true);
         // make SectionCutX invisible again
         CutObject->Visibility.setValue(false);
-        // recompute the cut
-        CutFeatureZ->recomputeFeature(true);
     }
     else {  // just X
         // refresh Y and Z limits + values
@@ -1755,16 +1912,12 @@ void SectionCut::onCutXvalueChanged(double val)
             Refresh::YRange,
             Refresh::ZRange
         );
-        // recompute the cut
-        auto pcCut = dynamic_cast<Part::Cut*>(CutObject);
-        if (!pcCut) {
-            Base::Console().error((std::string("Section cut error: ") + std::string(CutZName)
-                                   + std::string(" is no Part::Cut object. Cannot proceed.\n"))
-                                      .c_str());
-            return;
-        }
-        pcCut->recomputeFeature(true);
     }
+
+    if (auto* previewObject = getPreviewRequestObject(); previewObject && previewObject != CutObject) {
+        recomputeObject(previewObject, /*recursive=*/false);
+    }
+    triggerFinalPreviewRecompute();
 }
 
 void SectionCut::onCutXHSsliderMoved(int val)
@@ -1819,6 +1972,7 @@ void SectionCut::onCutYvalueChanged(double val)
     if (!CutObject) {
         return;
     }
+    recomputeObject(CutObject, /*recursive=*/false);
 
     // if there is another cut, we must recalculate it too
     // we might have cut so that the range for Z is now smaller
@@ -1864,8 +2018,6 @@ void SectionCut::onCutYvalueChanged(double val)
         CutFeatureZ->Visibility.setValue(true);
         // make SectionCutX invisible again
         CutObject->Visibility.setValue(false);
-        // recompute the cut
-        CutFeatureZ->recomputeFeature(true);
     }
     else {  // just Y
         // refresh Z limits + values
@@ -1879,15 +2031,6 @@ void SectionCut::onCutYvalueChanged(double val)
             Refresh::notYRange,
             Refresh::ZRange
         );
-        // recompute the cut
-        auto pcCut = dynamic_cast<Part::Cut*>(CutObject);
-        if (!pcCut) {
-            Base::Console().error((std::string("Section cut error: ") + std::string(CutZName)
-                                   + std::string(" is no Part::Cut object. Cannot proceed.\n"))
-                                      .c_str());
-            return;
-        }
-        pcCut->recomputeFeature(true);
         // refresh X limits
         // this is done by
         // first making the cut X box visible, then setting the limits only for X
@@ -1918,6 +2061,11 @@ void SectionCut::onCutYvalueChanged(double val)
             setMinOrMax(storedX, ui->flipX, ui->cutX);
         }
     }
+
+    if (auto* previewObject = getPreviewRequestObject(); previewObject && previewObject != CutObject) {
+        recomputeObject(previewObject, /*recursive=*/false);
+    }
+    triggerFinalPreviewRecompute();
 }
 
 void SectionCut::onCutYHSsliderMoved(int val)
@@ -1969,14 +2117,7 @@ void SectionCut::onCutZvalueChanged(double val)
     if (!CutObject) {
         return;
     }
-    auto pcCut = dynamic_cast<Part::Cut*>(CutObject);
-    if (!pcCut) {
-        Base::Console().error((std::string("Section cut error: ") + std::string(CutZName)
-                               + std::string(" is no Part::Cut object. Cannot proceed.\n"))
-                                  .c_str());
-        return;
-    }
-    pcCut->recomputeFeature(true);
+    recomputeObject(CutObject, /*recursive=*/false);
     // refresh X and Y limits
     // this is done e.g. for X by
     // first making the cut X box visible, then setting the limits only for X
@@ -2029,6 +2170,8 @@ void SectionCut::onCutZvalueChanged(double val)
         CutBoxY->Visibility.setValue(false);
         setMinOrMax(storedY, ui->flipY, ui->cutY);
     }
+
+    triggerFinalPreviewRecompute();
 }
 
 void SectionCut::onCutZHSsliderMoved(int val)
@@ -2118,21 +2261,13 @@ void SectionCut::onFlipXclicked()
 {
     FlipClickedHelper(BoxXName);
 
-    if (auto CutObject = findOrCreateObject(CutXName)) {
-        // if there is another cut, we must recalculate it too
-        // the hierarchy is always Z->Y->X
-        if (hasBoxY && !hasBoxZ) {
-            // only Y
-            CutObject = findOrCreateObject(CutYName);
+    if (auto* cutObject = findOrCreateObject(CutXName)) {
+        recomputeObject(cutObject, /*recursive=*/false);
+        if (auto* previewObject = getPreviewRequestObject();
+            previewObject && previewObject != cutObject) {
+            recomputeObject(previewObject, /*recursive=*/false);
         }
-        else if ((!hasBoxY && hasBoxZ) || (hasBoxY && hasBoxZ)) {
-            // at least Z
-            CutObject = findOrCreateObject(CutZName);
-        }
-        if (auto cut = dynamic_cast<Part::Cut*>(CutObject)) {
-            // only do this when there is no other box to save recomputes
-            cut->recomputeFeature(true);
-        }
+        triggerFinalPreviewRecompute();
     }
 }
 
@@ -2141,14 +2276,12 @@ void SectionCut::onFlipYclicked()
     FlipClickedHelper(BoxYName);
 
     if (auto CutObject = findOrCreateObject(CutYName)) {
-        // if there is another cut, we must recalculate it too
-        // we only need to check for Z since the hierarchy is always Z->Y->X
-        if (hasBoxZ) {
-            CutObject = findObject(CutZName);
+        recomputeObject(CutObject, /*recursive=*/false);
+        if (auto* previewObject = getPreviewRequestObject();
+            previewObject && previewObject != CutObject) {
+            recomputeObject(previewObject, /*recursive=*/false);
         }
-        if (auto cut = dynamic_cast<Part::Cut*>(CutObject)) {
-            cut->recomputeFeature(true);
-        }
+        triggerFinalPreviewRecompute();
     }
 }
 
@@ -2157,7 +2290,8 @@ void SectionCut::onFlipZclicked()
     FlipClickedHelper(BoxZName);
 
     if (auto CutObject = findOrCreateObject(CutZName)) {
-        CutObject->recomputeFeature(true);
+        recomputeObject(CutObject, /*recursive=*/false);
+        triggerFinalPreviewRecompute();
     }
 }
 
@@ -2227,27 +2361,18 @@ void SectionCut::changeCutBoxColors()
         setColorTransparency(doc->getObject(BoxZName));
     }
 
-    // we must recompute the topmost cut to make the color visible
-    // we must hereby first recompute ewvery cut non-recursively in the order X -> Y -> Z
-    // eventually recompute the topmost cut recursively
+    // Refresh the cut chain cheaply first, then queue one final recursive preview update.
     if (doc->getObject(CutXName)) {
-        doc->getObject(CutXName)->recomputeFeature(false);
+        recomputeObject(doc->getObject(CutXName), /*recursive=*/false);
     }
     if (doc->getObject(CutYName)) {
-        doc->getObject(CutYName)->recomputeFeature(false);
+        recomputeObject(doc->getObject(CutYName), /*recursive=*/false);
     }
     if (doc->getObject(CutZName)) {
-        doc->getObject(CutZName)->recomputeFeature(false);
+        recomputeObject(doc->getObject(CutZName), /*recursive=*/false);
     }
-    if (doc->getObject(CutZName)) {
-        doc->getObject(CutZName)->recomputeFeature(true);
-    }
-    else if (doc->getObject(CutYName)) {
-        doc->getObject(CutYName)->recomputeFeature(true);
-    }
-    else if (doc->getObject(CutXName)) {
-        doc->getObject(CutXName)->recomputeFeature(true);
-    }
+
+    triggerFinalPreviewRecompute();
 }
 
 void SectionCut::onTransparencyHSMoved(int val)
@@ -2283,16 +2408,10 @@ void SectionCut::onBFragColorclicked()
     }
 
     setBooleanFragmentsColor();
-    // we must recompute the topmost cut to make the color visible
-    if (doc->getObject(CutZName)) {
-        doc->getObject(CutZName)->recomputeFeature(true);
+    if (auto* previewObject = getPreviewRequestObject()) {
+        recomputeObject(previewObject, /*recursive=*/false);
     }
-    else if (doc->getObject(CutYName)) {
-        doc->getObject(CutYName)->recomputeFeature(true);
-    }
-    else if (doc->getObject(CutXName)) {
-        doc->getObject(CutXName)->recomputeFeature(true);
-    }
+    triggerFinalPreviewRecompute();
 }
 
 // sets BooleanFragments color
@@ -2341,7 +2460,7 @@ void SectionCut::onBFragTransparencyHSMoved(int val)
         if (CutVPGeom) {
             int BFTransparency = ui->BFragTransparencyHS->value();
             CutVPGeom->Transparency.setValue(BFTransparency);
-            cutObject->recomputeFeature(true);
+            recomputeObject(cutObject, /*recursive=*/false);
         }
     };
 
@@ -2372,6 +2491,8 @@ void SectionCut::onBFragTransparencyHSMoved(int val)
         if (doc->getObject(CutZName)) {
             setTransparency(doc->getObject(CutZName));
         }
+
+        triggerFinalPreviewRecompute();
     }
 }
 
