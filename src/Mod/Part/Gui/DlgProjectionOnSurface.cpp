@@ -48,12 +48,14 @@
 
 
 #include <App/Document.h>
+#include <Gui/Application.h>
+#include <Gui/AsyncPreviewSession.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
+#include <Gui/DeferredDialogRejectUtils.h>
 #include <Gui/MainWindow.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
-#include <Gui/Application.h>
 #include <Gui/Selection/SelectionObject.h>
 #include <Inventor/SbVec3d.h>
 
@@ -1249,6 +1251,8 @@ DlgProjectOnSurface::DlgProjectOnSurface(Part::ProjectOnSurface* feature, QWidge
     , ui(new Ui::DlgProjectionOnSurface)
     , feature(feature)
 {
+    static constexpr int AsyncPreviewDebounceMs = 150;
+
     ui->setupUi(this);
     ui->doubleSpinBoxExtrudeHeight->setValue(feature->Height.getValue());
     ui->doubleSpinBoxSolidDepth->setValue(feature->Offset.getValue());
@@ -1260,6 +1264,37 @@ DlgProjectOnSurface::DlgProjectOnSurface(Part::ProjectOnSurface* feature, QWidge
     ui->pushButtonAddFace->setCheckable(true);
     ui->pushButtonAddProjFace->setCheckable(true);
     ui->pushButtonAddWire->setCheckable(true);
+
+    Gui::AsyncPreviewController::Callbacks callbacks;
+    callbacks.makeRequest = [this]() {
+        auto* object = this->feature.get();
+        return object ? App::RecomputeRequest::fromDocumentObject(*object) : App::RecomputeRequest {};
+    };
+    callbacks.runSync = [this]() {
+        if (auto* projection = this->feature.get()) {
+            projection->recomputeFeature();
+        }
+    };
+    asyncPreviewSession = std::make_unique<Gui::AsyncPreviewSession>(std::move(callbacks), this);
+    asyncPreviewSession->setSchedulerInterval(
+        App::GetApplication().isAsyncRecomputeEnabled() ? AsyncPreviewDebounceMs : 0
+    );
+    connect(
+        asyncPreviewSession->controller(),
+        &Gui::AsyncPreviewController::recomputeSettled,
+        this,
+        &DlgProjectOnSurface::recomputeSettled
+    );
+    asyncPreviewSession->bindWidgets(
+        {
+            ui->previewStatusWidget,
+            ui->progressBarPreview,
+            ui->labelPreviewStatus,
+            ui->buttonCancelPreview,
+        },
+        [](const char* text) { return DlgProjectionOnSurface::tr(text); }
+    );
+    updateRecomputeUi();
 }
 
 DlgProjectOnSurface::~DlgProjectOnSurface()
@@ -1301,6 +1336,51 @@ void DlgProjectOnSurface::setupConnections()
     // clang-format off
 }
 
+Part::ProjectOnSurface* DlgProjectOnSurface::getObject() const
+{
+    return feature.get();
+}
+
+void DlgProjectOnSurface::schedulePreviewRecompute()
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->scheduleRecompute();
+    }
+}
+
+void DlgProjectOnSurface::flushPendingRecompute()
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->flushPendingRecompute();
+    }
+}
+
+void DlgProjectOnSurface::stopPendingRecompute()
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->stopPendingRecompute();
+    }
+}
+
+bool DlgProjectOnSurface::hasOutstandingRecompute() const
+{
+    return asyncPreviewSession && asyncPreviewSession->hasOutstandingRecompute();
+}
+
+void DlgProjectOnSurface::setDeferredClosePending(bool pending)
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->setDeferredClosePending(pending);
+    }
+}
+
+void DlgProjectOnSurface::updateRecomputeUi()
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->updateUi();
+    }
+}
+
 void DlgProjectOnSurface::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     // clang-format off
@@ -1321,21 +1401,41 @@ void DlgProjectOnSurface::onSelectionChanged(const Gui::SelectionChanges& msg)
     // clang-format on
 }
 
-void DlgProjectOnSurface::accept()
+bool DlgProjectOnSurface::accept()
 {
-    if (!feature.expired()) {
-        auto document = feature->getDocument();
-        document->commitTransaction();
-        document->recompute();
+    if (feature.expired()) {
+        return false;
     }
+
+    flushPendingRecompute();
+
+    auto* object = getObject();
+    auto* document = object ? object->getDocument() : nullptr;
+    if (!document) {
+        return false;
+    }
+
+    document->commitTransaction();
+    document->recompute();
+    return true;
 }
 
-void DlgProjectOnSurface::reject()
+bool DlgProjectOnSurface::reject()
 {
-    if (!feature.expired()) {
-        auto document = feature->getDocument();
-        document->abortTransaction();
+    if (feature.expired()) {
+        return false;
     }
+
+    stopPendingRecompute();
+
+    auto* object = getObject();
+    auto* document = object ? object->getDocument() : nullptr;
+    if (!document) {
+        return false;
+    }
+
+    document->abortTransaction();
+    return true;
 }
 
 void DlgProjectOnSurface::onAddProjFaceClicked()
@@ -1466,7 +1566,7 @@ void DlgProjectOnSurface::setDirection()
         auto yVal = ui->doubleSpinBoxDirY->value();
         auto zVal = ui->doubleSpinBoxDirZ->value();
         feature->Direction.setValue(Base::Vector3d(xVal, yVal, zVal));
-        feature->recomputeFeature();
+        schedulePreviewRecompute();
     }
 }
 
@@ -1522,6 +1622,7 @@ void DlgProjectOnSurface::addSelection(const Gui::SelectionChanges& msg, const s
     if (!feature.expired()) {
         Gui::SelectionObject selObj(msg);
         feature->Projection.addValue(selObj.getObject(), {subName});
+        schedulePreviewRecompute();
     }
 }
 
@@ -1530,6 +1631,7 @@ void DlgProjectOnSurface::addSelection(const Gui::SelectionChanges& msg)
     if (!feature.expired()) {
         Gui::SelectionObject selObj(msg);
         feature->Projection.addValue(selObj.getObject(), selObj.getSubNames());
+        schedulePreviewRecompute();
     }
 }
 
@@ -1538,7 +1640,7 @@ void DlgProjectOnSurface::setSupportFace(const Gui::SelectionChanges& msg)
     Gui::SelectionObject selObj(msg);
     if (!feature.expired()) {
         feature->SupportFace.setValue(selObj.getObject(), selObj.getSubNames());
-        feature->recomputeFeature();
+        schedulePreviewRecompute();
     }
 }
 
@@ -1571,7 +1673,7 @@ void DlgProjectOnSurface::onShowAllClicked()
 {
     if (!feature.expired()) {
         feature->Mode.setValue(Part::ProjectOnSurface::AllMode);
-        feature->recomputeFeature();
+        schedulePreviewRecompute();
     }
 }
 
@@ -1579,7 +1681,7 @@ void DlgProjectOnSurface::onFacesClicked()
 {
     if (!feature.expired()) {
         feature->Mode.setValue(Part::ProjectOnSurface::FacesMode);
-        feature->recomputeFeature();
+        schedulePreviewRecompute();
     }
 }
 
@@ -1587,7 +1689,7 @@ void DlgProjectOnSurface::onEdgesClicked()
 {
     if (!feature.expired()) {
         feature->Mode.setValue(Part::ProjectOnSurface::EdgesMode);
-        feature->recomputeFeature();
+        schedulePreviewRecompute();
     }
 }
 
@@ -1595,7 +1697,7 @@ void DlgProjectOnSurface::onExtrudeHeightValueChanged(double value)
 {
     if (!feature.expired()) {
         feature->Height.setValue(value);
-        feature->recomputeFeature();
+        schedulePreviewRecompute();
     }
 }
 
@@ -1603,7 +1705,7 @@ void DlgProjectOnSurface::onSolidDepthValueChanged(double value)
 {
     if (!feature.expired()) {
         feature->Offset.setValue(value);
-        feature->recomputeFeature();
+        schedulePreviewRecompute();
     }
 }
 
@@ -1623,6 +1725,7 @@ TaskProjectOnSurface::TaskProjectOnSurface(App::Document* doc)
     );
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
+    connect(widget, &DlgProjectOnSurface::recomputeSettled, this, &TaskProjectOnSurface::onRecomputeSettled);
 }
 
 TaskProjectOnSurface::TaskProjectOnSurface(Part::ProjectOnSurface* feature)
@@ -1634,8 +1737,12 @@ TaskProjectOnSurface::TaskProjectOnSurface(Part::ProjectOnSurface* feature)
           nullptr
       ))
 {
+    if (feature && feature->getDocument()) {
+        setDocumentName(feature->getDocument()->getName());
+    }
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
+    connect(widget, &DlgProjectOnSurface::recomputeSettled, this, &TaskProjectOnSurface::onRecomputeSettled);
 }
 
 void TaskProjectOnSurface::resetEdit()
@@ -1646,16 +1753,79 @@ void TaskProjectOnSurface::resetEdit()
 
 bool TaskProjectOnSurface::accept()
 {
-    widget->accept();
+    if (!widget || deferredReject.pending) {
+        return false;
+    }
+
+    if (!widget->accept()) {
+        return false;
+    }
     resetEdit();
     return true;
 }
 
 bool TaskProjectOnSurface::reject()
 {
-    widget->reject();
+    if (!widget) {
+        return false;
+    }
+
+    ensureDeferredRejectConnection();
+    widget->stopPendingRecompute();
+    if (!widget->hasOutstandingRecompute()) {
+        return rejectNow();
+    }
+
+    if (!deferredReject.pending) {
+        auto* object = widget->getObject();
+        deferredReject.documentName = object && object->getDocument()
+            ? std::string(object->getDocument()->getName())
+            : std::string();
+        setDeferredRejectPending(true);
+    }
+
+    return false;
+}
+
+void TaskProjectOnSurface::ensureDeferredRejectConnection()
+{
+    Gui::ensureDeferredDialogRejectConnection(
+        deferredReject,
+        widget,
+        &DlgProjectOnSurface::recomputeSettled,
+        this,
+        &TaskProjectOnSurface::onRecomputeSettled
+    );
+}
+
+void TaskProjectOnSurface::setDeferredRejectPending(bool pending)
+{
+    Gui::setDeferredDialogRejectPending(deferredReject, pending, buttonBox, [this](bool pending) {
+        if (widget) {
+            widget->setDeferredClosePending(pending);
+        }
+    });
+}
+
+bool TaskProjectOnSurface::rejectNow()
+{
+    if (!widget || !widget->reject()) {
+        return false;
+    }
+
     resetEdit();
     return true;
+}
+
+void TaskProjectOnSurface::onRecomputeSettled()
+{
+    Gui::finishDeferredDialogReject(
+        this,
+        deferredReject,
+        widget && !widget->hasOutstandingRecompute(),
+        [this]() { return rejectNow(); },
+        [this](bool pending) { setDeferredRejectPending(pending); }
+    );
 }
 
 #include "moc_DlgProjectionOnSurface.cpp"

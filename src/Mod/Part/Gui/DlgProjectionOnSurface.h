@@ -29,13 +29,20 @@
 #include "TopoDS_Shape.hxx"
 #include "TopoDS_Wire.hxx"
 
+#include <memory>
+
 #include <QDoubleSpinBox>
 #include <QWidget>
 #include <App/DocumentObserver.h>
+#include <Gui/DeferredDialogRejectUtils.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/Part/App/FeatureProjectOnSurface.h>
 
+namespace Gui
+{
+class AsyncPreviewSession;
+}
 
 namespace PartGui
 {
@@ -193,12 +200,19 @@ public:
     explicit DlgProjectOnSurface(Part::ProjectOnSurface* feature, QWidget* parent = nullptr);
     ~DlgProjectOnSurface() override;
 
-    void accept();
-    void reject();
+    bool accept();
+    bool reject();
     void setSelectionGate();
+    Part::ProjectOnSurface* getObject() const;
+    void stopPendingRecompute();
+    bool hasOutstandingRecompute() const;
+    void setDeferredClosePending(bool pending);
 
     // from Gui::SelectionObserver
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
+
+Q_SIGNALS:
+    void recomputeSettled();
 
 private:
     enum SelectionMode
@@ -230,9 +244,13 @@ private:
     void setSupportFace(const Gui::SelectionChanges& msg);
     void fetchDirection();
     void fetchMode();
+    void schedulePreviewRecompute();
+    void flushPendingRecompute();
+    void updateRecomputeUi();
 
 private:
     std::unique_ptr<Ui::DlgProjectionOnSurface> ui;
+    std::unique_ptr<Gui::AsyncPreviewSession> asyncPreviewSession;
     App::WeakPtrT<Part::ProjectOnSurface> feature;
     SelectionMode selectionMode = SelectionMode::None;
 };
@@ -255,11 +273,18 @@ public:
     }
 
 private:
+    void ensureDeferredRejectConnection();
+    void setDeferredRejectPending(bool pending);
+    bool rejectNow();
     void resetEdit();
+
+private Q_SLOTS:
+    void onRecomputeSettled();
 
 private:
     DlgProjectOnSurface* widget = nullptr;
     Gui::TaskView::TaskBox* taskbox = nullptr;
+    Gui::DeferredDialogRejectState deferredReject;
 };
 
 
