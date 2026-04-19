@@ -699,7 +699,7 @@ def _get_param_dictionary():
         if fd.open(QtCore.QIODevice.ReadOnly | QtCore.QFile.Text):
             # avoid using QTextStream due to bug in PySide6.11
             # text = QtCore.QTextStream(fd).readAll()
-            text = fd.readAll().toStdString()
+            text = fd.readAll().data().decode()
             fd.close()
         else:
             continue
