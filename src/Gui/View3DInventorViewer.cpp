@@ -3446,33 +3446,25 @@ SoPickedPoint* View3DInventorViewer::pickPoint(const SbVec2s& pos) const
     SoRayPickAction rp(getSoRenderManager()->getViewportRegion());
     rp.setPoint(pos);
     rp.apply(getSoRenderManager()->getSceneGraph());
-
-    // returns a copy of the point
     SoPickedPoint* pick = rp.getPickedPoint();
-    // return (pick ? pick->copy() : 0); // needs the same instance of CRT under MS Windows
     return (pick ? new SoPickedPoint(*pick) : nullptr);
 }
-
-const SoPickedPoint* View3DInventorViewer::getPickedPoint(SoEventCallback* n) const
-{
+const SoPickedPoint* View3DInventorViewer::getPickedPoint(SoEventCallback* n) const{
     if (selectionRoot) {
         auto ret = selectionRoot->getPickedList(n->getAction(), true);
         auto passesFilter = [&](const SoPickedPoint* pp) -> bool {
-            if (!pp) {
-                return false;
-            }
-            App::DocumentObject* obj = nullptr;
-            std::string subname;
-            if (!Gui::ViewProvider::getElementPicked(pp, obj, subname)) {
-                return false;
-            }
-            if (!obj) {
-                return false;
-            }
-            App::Document* doc = obj->getDocument();
-            return Gui::Selection().testSelection(doc, obj, subname.c_str());
-        };
 
+            if (!pp)
+                return false;
+            std::string subname;
+            Gui::ViewProvider* vp = Gui::ViewProvider::getElementPicked(pp, subname);
+            if (!vp)
+                return false;
+            App::DocumentObject* obj = vp->getObject();
+            if (!obj)
+                return false;
+            return Gui::Selection().isSelectable(obj, subname.c_str());
+        };
         if (!ret.empty()) {
             const SoPickedPoint* top = ret[0].pp;
             if (passesFilter(top)) {
@@ -3483,19 +3475,20 @@ const SoPickedPoint* View3DInventorViewer::getPickedPoint(SoEventCallback* n) co
                     return ret[i].pp;
                 }
             }
+            if (!n->getEvent())
+                return nullptr;
+            
             const SbVec2s cursorPos = n->getEvent()->getPosition();
             constexpr float pickRadius = 10.0f;
-
             SoRayPickAction rp(getSoRenderManager()->getViewportRegion());
             rp.setPoint(cursorPos);
             rp.setRadius(pickRadius);
             rp.setPickAll(true);
             rp.apply(getSoRenderManager()->getSceneGraph());
-
             const SoPickedPointList& nearby = rp.getPickedPointList();
             for (int i = 0; i < nearby.getLength(); ++i) {
                 if (passesFilter(nearby[i])) {
-                    return nearby[i];
+                    return new SoPickedPoint(*nearby[i]);
                 }
             }
             return nullptr;
@@ -3503,6 +3496,7 @@ const SoPickedPoint* View3DInventorViewer::getPickedPoint(SoEventCallback* n) co
     }
     return n->getPickedPoint();
 }
+
 
 bool View3DInventorViewer::pubSeekToPoint(const SbVec2s& pos)
 {
