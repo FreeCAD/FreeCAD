@@ -3449,20 +3449,23 @@ SoPickedPoint* View3DInventorViewer::pickPoint(const SbVec2s& pos) const
     SoPickedPoint* pick = rp.getPickedPoint();
     return (pick ? new SoPickedPoint(*pick) : nullptr);
 }
-const SoPickedPoint* View3DInventorViewer::getPickedPoint(SoEventCallback* n) const{
+const SoPickedPoint* View3DInventorViewer::getPickedPoint(SoEventCallback* n) const
+{
     if (selectionRoot) {
         auto ret = selectionRoot->getPickedList(n->getAction(), true);
         auto passesFilter = [&](const SoPickedPoint* pp) -> bool {
-
-            if (!pp)
+            if (!pp) {
                 return false;
+            }
             std::string subname;
             Gui::ViewProvider* vp = Gui::ViewProvider::getElementPicked(pp, subname);
-            if (!vp)
+            if (!vp) {
                 return false;
+            }
             App::DocumentObject* obj = vp->getObject();
-            if (!obj)
+            if (!obj) {
                 return false;
+            }
             return Gui::Selection().isSelectable(obj, subname.c_str());
         };
         if (!ret.empty()) {
@@ -3475,9 +3478,10 @@ const SoPickedPoint* View3DInventorViewer::getPickedPoint(SoEventCallback* n) co
                     return ret[i].pp;
                 }
             }
-            if (!n->getEvent())
+            if (!n->getEvent()) {
                 return nullptr;
-            
+            }
+
             const SbVec2s cursorPos = n->getEvent()->getPosition();
             constexpr float pickRadius = 10.0f;
             SoRayPickAction rp(getSoRenderManager()->getViewportRegion());
