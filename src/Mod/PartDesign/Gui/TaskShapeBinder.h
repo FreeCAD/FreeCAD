@@ -55,7 +55,7 @@ namespace PartDesignGui
 {
 
 
-class TaskShapeBinder: public Gui::TaskView::TaskBox, public Gui::SelectionObserver
+class PartDesignGuiExport TaskShapeBinder: public Gui::TaskView::TaskBox, public Gui::SelectionObserver
 {
     Q_OBJECT
 
@@ -114,7 +114,7 @@ private:
 
 
 /// simulation dialog for the TaskView
-class TaskDlgShapeBinder: public Gui::TaskView::TaskDialog
+class PartDesignGuiExport TaskDlgShapeBinder: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 

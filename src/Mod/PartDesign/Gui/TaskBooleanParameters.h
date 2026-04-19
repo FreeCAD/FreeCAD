@@ -56,7 +56,8 @@ class AsyncPreviewSession;
 namespace PartDesignGui
 {
 
-class TaskBooleanParameters: public Gui::TaskView::TaskBox, public Gui::SelectionObserver
+class PartDesignGuiExport TaskBooleanParameters: public Gui::TaskView::TaskBox,
+                                                 public Gui::SelectionObserver
 {
     Q_OBJECT
 
@@ -107,7 +108,7 @@ private:
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgBooleanParameters: public TaskDlgFeatureParameters
+class PartDesignGuiExport TaskDlgBooleanParameters: public TaskDlgFeatureParameters
 {
     Q_OBJECT
 

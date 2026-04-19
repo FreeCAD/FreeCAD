@@ -53,7 +53,9 @@ class AsyncPreviewSession;
 namespace PartDesignGui
 {
 class Ui_DlgPrimitives;
-class TaskBoxPrimitives: public Gui::TaskView::TaskBox, public Gui::DocumentObserver
+
+class PartDesignGuiExport TaskBoxPrimitives: public Gui::TaskView::TaskBox,
+                                             public Gui::DocumentObserver
 {
     Q_OBJECT
 
@@ -158,7 +160,7 @@ private:
     void setGizmoPositions();
 };
 
-class TaskDlgPrimitiveParameters: public TaskDlgFeatureParameters
+class PartDesignGuiExport TaskDlgPrimitiveParameters: public TaskDlgFeatureParameters
 {
     Q_OBJECT
 
