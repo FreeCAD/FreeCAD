@@ -523,6 +523,16 @@ public:
     // 3D derived constraints
     int addConstraintP2PCoincident3D(Point3D& p1, Point3D& p2, int tagId = 0, bool driving = true);
 
+    // Locks a single coordinate of a 3D point.
+    int addConstraintCoordinateX3D(Point3D& p, double* x, int tagId = 0, bool driving = true);
+    int addConstraintCoordinateY3D(Point3D& p, double* y, int tagId = 0, bool driving = true);
+    int addConstraintCoordinateZ3D(Point3D& p, double* z, int tagId = 0, bool driving = true);
+
+    // 3D line segment parallel to a global axis.
+    int addConstraintLineAlongX3D(Line3D& l, int tagId = 0, bool driving = true);
+    int addConstraintLineAlongY3D(Line3D& l, int tagId = 0, bool driving = true);
+    int addConstraintLineAlongZ3D(Line3D& l, int tagId = 0, bool driving = true);
+
     // internal alignment constraints
     int addConstraintInternalAlignmentPoint2Ellipse(
         Ellipse& e,

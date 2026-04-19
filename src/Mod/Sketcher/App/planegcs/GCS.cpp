@@ -1002,6 +1002,39 @@ int System::addConstraintP2PCoincident3D(Point3D& p1, Point3D& p2, int tagId, bo
     return addConstraintEqual(p1.z, p2.z, tagId, driving);
 }
 
+int System::addConstraintCoordinateX3D(Point3D& p, double* x, int tagId, bool driving)
+{
+    return addConstraintEqual(p.x, x, tagId, driving);
+}
+
+int System::addConstraintCoordinateY3D(Point3D& p, double* y, int tagId, bool driving)
+{
+    return addConstraintEqual(p.y, y, tagId, driving);
+}
+
+int System::addConstraintCoordinateZ3D(Point3D& p, double* z, int tagId, bool driving)
+{
+    return addConstraintEqual(p.z, z, tagId, driving);
+}
+
+int System::addConstraintLineAlongX3D(Line3D& l, int tagId, bool driving)
+{
+    addConstraintEqual(l.p1.y, l.p2.y, tagId, driving);
+    return addConstraintEqual(l.p1.z, l.p2.z, tagId, driving);
+}
+
+int System::addConstraintLineAlongY3D(Line3D& l, int tagId, bool driving)
+{
+    addConstraintEqual(l.p1.x, l.p2.x, tagId, driving);
+    return addConstraintEqual(l.p1.z, l.p2.z, tagId, driving);
+}
+
+int System::addConstraintLineAlongZ3D(Line3D& l, int tagId, bool driving)
+{
+    addConstraintEqual(l.p1.x, l.p2.x, tagId, driving);
+    return addConstraintEqual(l.p1.y, l.p2.y, tagId, driving);
+}
+
 int System::addConstraintArcRules(Arc& a, int tagId, bool driving)
 {
     addConstraintCurveValue(a.start, a, a.startAngle, tagId, driving);
