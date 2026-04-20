@@ -1217,9 +1217,7 @@ def drawMesh(mesh, forceShape=False):
     drawBlock
     """
     if not mesh_available:
-        FCC.PrintWarning(
-            "Could not import mesh object as the Mesh module is not installed.\n"
-        )
+        FCC.PrintWarning("Could not import mesh object as the Mesh module is not installed.\n")
         return None
     md = []
     if mesh.flags == 16:
