@@ -351,9 +351,18 @@ class Shape2DView(DraftObject):
                                         faces = facesOrg
                                     else:
                                         for faceOrg in facesOrg:
-                                            edge_compounds = [self.getProjected(obj, w, proj) for w in faceOrg.Wires]
-                                            wires = [Part.Wire(comp.Edges) for comp in edge_compounds]
-                                            faces.extend(Part.makeFace(wires, "Part::FaceMakerBullseye").Faces)
+                                            edge_compounds = [
+                                                self.getProjected(obj, w, proj)
+                                                for w in faceOrg.Wires
+                                            ]
+                                            wires = [
+                                                Part.Wire(comp.Edges) for comp in edge_compounds
+                                            ]
+                                            faces.extend(
+                                                Part.makeFace(
+                                                    wires, "Part::FaceMakerBullseye"
+                                                ).Faces
+                                            )
                             else:
                                 c = sh.section(cutp)
                                 if hasattr(obj, "InPlace"):

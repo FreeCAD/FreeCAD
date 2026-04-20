@@ -113,7 +113,7 @@ class TestArchSectionPlane(TestArchBase.TestArchBase):
                 App.Vector(2000, 1000, 0),
                 App.Vector(2000, 0, 0),
             ],
-            closed=True
+            closed=True,
         )
         wire.MakeFace = False
         wall = Arch.makeWall(wire, height=3000, width=200)
