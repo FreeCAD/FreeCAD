@@ -217,8 +217,8 @@ class AssemblyWorkbench(Workbench):
             def __init__(self):
                 super().__init__()
                 self.commands = [
-                    "Assembly_InsertLink",
                     "Assembly_InsertNewPart",
+                    "Assembly_InsertLink",
                     "Assembly_InsertFastener",
                 ]
                 self.title = translate("Assembly", "Insert")
