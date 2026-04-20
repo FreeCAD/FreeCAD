@@ -271,12 +271,12 @@ Wiele folderów można dodać za pomocą ";;" do oddzielania ścieżek.</transla
     <message>
       <location filename="../../../App/DisplayedFilesModel.cpp" line="188"/>
       <source>Created at:</source>
-      <translation type="unfinished">Created at:</translation>
+      <translation>Utworzono:</translation>
     </message>
     <message>
       <location filename="../../../App/DisplayedFilesModel.cpp" line="189"/>
       <source>Modified at:</source>
-      <translation type="unfinished">Modified at:</translation>
+      <translation>Zmodyfikowano:</translation>
     </message>
   </context>
 </TS>

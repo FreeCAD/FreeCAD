@@ -65,7 +65,7 @@ Het is aanbevolen dat de gebruiker met de rechter muis knop de hoofdmap van het 
     <message>
       <location filename="../../Datums.cpp" line="273"/>
       <source>Origin-Point</source>
-      <translation type="unfinished">Origin-Point</translation>
+      <translation>Punt van oorsprong</translation>
     </message>
   </context>
   <context>

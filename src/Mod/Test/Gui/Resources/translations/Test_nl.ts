@@ -76,7 +76,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="201"/>
       <source>Run</source>
-      <translation>Uitvoeren</translation>
+      <translation>Hor. afstand</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="218"/>

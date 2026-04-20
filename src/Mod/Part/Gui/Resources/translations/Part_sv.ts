@@ -2221,7 +2221,7 @@ för projektionen.</translation>
       <translation>Konvertera nät</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1490"/>
+      <location filename="../../TaskAttacher.cpp" line="1491"/>
       <source>Edit attachment</source>
       <translation>Redigera bilaga</translation>
     </message>
@@ -3184,8 +3184,8 @@ Kontrollera först en eller flera kantentiteter.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="29"/>
-      <source>Merges compounds during file reading (slower but higher details)</source>
-      <translation>Sammanslagning av föreningar under filläsning (långsammare men mer detaljerad)</translation>
+      <source>Merges all shapes into a single compound during import, resolving part instances and applying transforms. Increases import time but does not affect geometry accuracy or rendering quality.</source>
+      <translation type="unfinished">Merges all shapes into a single compound during import, resolving part instances and applying transforms. Increases import time but does not affect geometry accuracy or rendering quality.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="32"/>
@@ -3413,7 +3413,7 @@ Kontrollera först en eller flera kantentiteter.</translation>
       <location filename="../../DlgPrimitives.ui" line="63"/>
       <location filename="../../DlgPrimitives.cpp" line="628"/>
       <source>Cone</source>
-      <translation>Kon</translation>
+      <translation>Kägla</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="72"/>
@@ -3478,7 +3478,7 @@ Kontrollera först en eller flera kantentiteter.</translation>
       <location filename="../../DlgPrimitives.ui" line="162"/>
       <location filename="../../DlgPrimitives.cpp" line="1983"/>
       <source>Line</source>
-      <translation>Linje</translation>
+      <translation>Rad</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="171"/>
@@ -4061,7 +4061,7 @@ Kontrollera först en eller flera kantentiteter.</translation>
     <message>
       <location filename="../../DlgPrimitives.cpp" line="2102"/>
       <source>Vertex</source>
-      <translation>Hörnpunkt</translation>
+      <translation>Toppunkt</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.cpp" line="2297"/>
@@ -4180,7 +4180,7 @@ Kontrollera först en eller flera kantentiteter.</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="20"/>
       <source>Revolve</source>
-      <translation>Rotera</translation>
+      <translation>Revolvera</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="42"/>
@@ -5049,7 +5049,7 @@ kommer skissplanets normalvektor att användas</translation>
       <location filename="../../SectionCutting.ui" line="118"/>
       <location filename="../../SectionCutting.ui" line="186"/>
       <source>Offset</source>
-      <translation>Offset</translation>
+      <translation>Förskjutning</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="71"/>
@@ -5183,7 +5183,7 @@ kommer endast skapade snitt att vara synliga</translation>
       <location filename="../../TaskShapeBuilder.cpp" line="432"/>
       <location filename="../../TaskShapeBuilder.cpp" line="498"/>
       <source>Wrong selection</source>
-      <translation>Fel val</translation>
+      <translation>Felaktigt val</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="233"/>
@@ -5278,7 +5278,7 @@ kommer endast skapade snitt att vara synliga</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="393"/>
       <source>Wrong selection</source>
-      <translation>Fel val</translation>
+      <translation>Felaktigt val</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="394"/>
@@ -5320,7 +5320,7 @@ kommer endast skapade snitt att vara synliga</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="526"/>
       <source>Sweep</source>
-      <translation>Svep</translation>
+      <translation>Sopa</translation>
     </message>
   </context>
   <context>
@@ -5428,7 +5428,7 @@ för det objekt som fästs.</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="361"/>
       <source>Flip sides</source>
-      <translation>Vänd sidor</translation>
+      <translation>Vänd på sidorna</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="403"/>
@@ -5478,12 +5478,12 @@ för det objekt som fästs.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="937"/>
       <source>Edge</source>
-      <translation>Kant</translation>
+      <translation>Linje</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="944"/>
       <source>Vertex</source>
-      <translation>Hörnpunkt</translation>
+      <translation>Toppunkt</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1033"/>
@@ -5807,12 +5807,12 @@ Individuella booleska operationskontroller:</translation>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1472"/>
+      <location filename="../../TaskAttacher.cpp" line="1471"/>
       <source>Attachment</source>
       <translation>Bilaga</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1554"/>
+      <location filename="../../TaskAttacher.cpp" line="1556"/>
       <source>Datum dialog: input error</source>
       <translation>Referenspunktsdialog: inmatningsfel</translation>
     </message>
@@ -5846,7 +5846,7 @@ Individuella booleska operationskontroller:</translation>
       <location filename="../../TaskOffset.ui" line="14"/>
       <location filename="../../TaskOffset.ui" line="20"/>
       <source>Offset</source>
-      <translation>Offset</translation>
+      <translation>Förskjutning</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="34"/>
@@ -5887,7 +5887,7 @@ Individuella booleska operationskontroller:</translation>
       <location filename="../../TaskOffset.ui" line="78"/>
       <location filename="../../TaskOffset.ui" line="86"/>
       <source>Intersection</source>
-      <translation>Skärning</translation>
+      <translation>Korsningar</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="93"/>
@@ -5956,7 +5956,7 @@ Individuella booleska operationskontroller:</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="82"/>
       <source>Refine shape</source>
-      <translation>Förfina form</translation>
+      <translation>Förfina formen</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="92"/>
@@ -5966,7 +5966,7 @@ Individuella booleska operationskontroller:</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="101"/>
       <source>Box Selection</source>
-      <translation>Lådmarkering</translation>
+      <translation>Val av box</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="122"/>
@@ -5979,7 +5979,7 @@ Individuella booleska operationskontroller:</translation>
     <message>
       <location filename="../../TaskSweep.ui" line="14"/>
       <source>Sweep</source>
-      <translation>Svep</translation>
+      <translation>Sopa</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.ui" line="23"/>
@@ -6049,7 +6049,7 @@ i 3D-vyn för svepbanan.</translation>
     <message>
       <location filename="../../TaskThickness.cpp" line="208"/>
       <source>Done</source>
-      <translation>Färdig</translation>
+      <translation>Klar</translation>
     </message>
     <message>
       <location filename="../../TaskThickness.cpp" line="297"/>
@@ -6093,7 +6093,7 @@ i 3D-vyn för svepbanan.</translation>
       <location filename="../../Command.cpp" line="1015"/>
       <location filename="../../Command.cpp" line="2275"/>
       <source>Wrong selection</source>
-      <translation>Fel val</translation>
+      <translation>Felaktigt val</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="350"/>
@@ -6161,17 +6161,17 @@ Fortsättning?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <source>Edge</source>
-      <translation>Kant</translation>
+      <translation>Linje</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <source>Vertex</source>
-      <translation>Hörnpunkt</translation>
+      <translation>Toppunkt</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="77"/>
       <source>Compound</source>
-      <translation>Förening</translation>
+      <translation>Blandning</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="78"/>
@@ -6484,7 +6484,7 @@ Fortsättning?</translation>
       <translation>Ange avstånd:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1007"/>
+      <location filename="../../ViewProviderExt.cpp" line="994"/>
       <source>Appearance per Face</source>
       <translation>Utseende per yta</translation>
     </message>
@@ -6580,7 +6580,7 @@ Fortsättning?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="37"/>
       <source>Solids</source>
-      <translation>Solider</translation>
+      <translation>Fasta Ämnen</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="38"/>
@@ -6610,7 +6610,7 @@ Fortsättning?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
       <source>Compound</source>
-      <translation>Förening</translation>
+      <translation>Blandning</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
@@ -6747,7 +6747,7 @@ för kollisions- eller avståndsfiltrering.</translation>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="88"/>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="134"/>
       <source>Bad Selection</source>
-      <translation>Dålig markering</translation>
+      <translation>Dåligt urval</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="129"/>
@@ -6780,7 +6780,7 @@ för kollisions- eller avståndsfiltrering.</translation>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="75"/>
       <source>Bad Selection</source>
-      <translation>Dålig markering</translation>
+      <translation>Dåligt urval</translation>
     </message>
   </context>
   <context>
@@ -6918,12 +6918,12 @@ för kollisions- eller avståndsfiltrering.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="38"/>
       <source>Shells</source>
-      <translation>Skal</translation>
+      <translation>Snäckor</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="39"/>
       <source>Solids</source>
-      <translation>Solider</translation>
+      <translation>Fasta Ämnen</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="42"/>
@@ -6933,7 +6933,7 @@ för kollisions- eller avståndsfiltrering.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="47"/>
       <source>Compounds</source>
-      <translation>Sammansättningar</translation>
+      <translation>Föreningar</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="51"/>
@@ -7088,7 +7088,7 @@ eller med formerna i en förening.
     <message>
       <location filename="../../DlgScale.cpp" line="216"/>
       <source>The document '%1' doesn't exist.</source>
-      <translation>Dokumentet "%1" finns inte.</translation>
+      <translation>Dokumentet '%1' finns inte.</translation>
     </message>
     <message>
       <location filename="../../DlgScale.cpp" line="275"/>
@@ -7104,7 +7104,7 @@ eller med formerna i en förening.
     <message>
       <location filename="../../Command.cpp" line="1461"/>
       <source>Part</source>
-      <translation>Detalj</translation>
+      <translation>Del</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1462"/>
@@ -7128,12 +7128,12 @@ eller med formerna i en förening.
   <context>
     <name>Part::FaceMakerSimple</name>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="319"/>
+      <location filename="../../../App/FaceMaker.cpp" line="332"/>
       <source>Simple</source>
       <translation>Enkel</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="324"/>
+      <location filename="../../../App/FaceMaker.cpp" line="337"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
       <translation>Skapar en separat plan yta för varje tråd oberoende av varandra. Inget stöd för hål; trådarna kan ligga på olika plan.</translation>
     </message>
@@ -7222,7 +7222,7 @@ eller med formerna i en förening.
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="101"/>
       <source>Box Selection</source>
-      <translation>Lådmarkering</translation>
+      <translation>Val av box</translation>
     </message>
   </context>
   <context>
@@ -7240,7 +7240,7 @@ eller med formerna i en förening.
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="88"/>
       <source>Bad Selection</source>
-      <translation>Dålig markering</translation>
+      <translation>Dåligt urval</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="91"/>
@@ -7263,7 +7263,7 @@ eller med formerna i en förening.
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="249"/>
       <source>Bad Selection</source>
-      <translation>Dålig markering</translation>
+      <translation>Dåligt urval</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="248"/>
@@ -7276,7 +7276,7 @@ eller med formerna i en förening.
     <message>
       <location filename="../../Command.cpp" line="2522"/>
       <source>Part</source>
-      <translation>Detalj</translation>
+      <translation>Del</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2523"/>
@@ -7294,7 +7294,7 @@ eller med formerna i en förening.
     <message>
       <location filename="../../Command.cpp" line="2661"/>
       <source>Part</source>
-      <translation>Detalj</translation>
+      <translation>Del</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2662"/>
@@ -7320,7 +7320,7 @@ eller med formerna i en förening.
     <message>
       <location filename="../../Command.cpp" line="2560"/>
       <source>Part</source>
-      <translation>Detalj</translation>
+      <translation>Del</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2561"/>
@@ -7338,7 +7338,7 @@ eller med formerna i en förening.
     <message>
       <location filename="../../Command.cpp" line="2593"/>
       <source>Part</source>
-      <translation>Detalj</translation>
+      <translation>Del</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2594"/>
@@ -7356,7 +7356,7 @@ eller med formerna i en förening.
     <message>
       <location filename="../../Command.cpp" line="2626"/>
       <source>Part</source>
-      <translation>Detalj</translation>
+      <translation>Del</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2627"/>
@@ -7735,12 +7735,12 @@ eller med formerna i en förening.
   <context>
     <name>Part::FaceMakerBuildFace</name>
     <message>
-      <location filename="../../../App/FaceMakerBuildFace.cpp" line="46"/>
+      <location filename="../../../App/FaceMakerBuildFace.cpp" line="60"/>
       <source>BuildFace facemaker</source>
       <translation type="unfinished">BuildFace facemaker</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMakerBuildFace.cpp" line="51"/>
+      <location filename="../../../App/FaceMakerBuildFace.cpp" line="65"/>
       <source>Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</source>
       <translation type="unfinished">Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</translation>
     </message>

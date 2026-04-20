@@ -271,12 +271,12 @@ Es können mehrere Ordner hinzugefügt werden; dabei werden Pfade mit ";;" getre
     <message>
       <location filename="../../../App/DisplayedFilesModel.cpp" line="188"/>
       <source>Created at:</source>
-      <translation type="unfinished">Created at:</translation>
+      <translation>Erstellt am:</translation>
     </message>
     <message>
       <location filename="../../../App/DisplayedFilesModel.cpp" line="189"/>
       <source>Modified at:</source>
-      <translation type="unfinished">Modified at:</translation>
+      <translation>Geändert am:</translation>
     </message>
   </context>
 </TS>
