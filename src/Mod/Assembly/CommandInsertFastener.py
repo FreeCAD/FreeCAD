@@ -171,25 +171,24 @@ class TaskAssemblyInsertFastener:
             if not s.SubElementNames:
                 continue
             for sub in s.SubElementNames:
-                if sub.startswith("Edge"):
-                    shape = s.Object.getSubObject(sub)
-                    if hasattr(shape, "Curve"):
-                        curve = shape.Curve
-                        if curve.TypeId in ["Part::GeomCircle", "Part::GeomEllipse"] or hasattr(
-                            curve, "Radius"
-                        ):
-                            try:
-                                self.target_edges.append(
-                                    {
-                                        "object": s.Object,
-                                        "subname": sub,
-                                        "center": curve.Center,
-                                        "axis": curve.Axis,
-                                        "radius": curve.Radius,
-                                    }
-                                )
-                            except Exception:
-                                pass
+                if not sub.startswith("Edge"):
+                    continue
+
+                shape = s.Object.getSubObject(sub)
+                if not hasattr(shape, "Curve"):
+                    continue
+
+                curve = shape.Curve
+                if not curve.TypeId in ["Part::GeomCircle", "Part::GeomEllipse"] or not hasattr(curve, "Radius"):
+                    continue
+
+                self.target_edges.append({
+                    'object': s.Object,
+                    'subname': sub,
+                    'center': curve.Center,
+                    'axis': curve.Axis,
+                    'radius': curve.Radius
+                })
 
     def _get_current_type(self):
         curr_item = self.form.lw_type.currentItem()
@@ -206,21 +205,19 @@ class TaskAssemblyInsertFastener:
         self.form.le_search.clear()
 
         cat = self.form.cb_category.currentText()
-        if cat in self.categories:
-            types = self.categories[cat]
-            for t in types:
-                desc = FastenersCmd.FSGetDescription(t)
-                if not desc:
-                    desc = t
+        for t in self.categories.get(cat, []):
+            desc = FastenersCmd.FSGetDescription(t)
+            if not desc:
+                desc = t 
+                
+            item = QtWidgets.QListWidgetItem(desc)
+            item.setData(QtCore.Qt.UserRole, t)
 
-                item = QtWidgets.QListWidgetItem(desc)
-                item.setData(QtCore.Qt.UserRole, t)
-
-                icon_path = os.path.join(FSutils.iconPath, FSGetIconAlias(t) + ".svg")
-                if os.path.exists(icon_path):
-                    item.setIcon(QtGui.QIcon(icon_path))
-
-                self.form.lw_type.addItem(item)
+            icon_path = os.path.join(FSutils.iconPath, FSGetIconAlias(t) + '.svg')
+            if os.path.exists(icon_path):
+                item.setIcon(QtGui.QIcon(icon_path))
+                    
+            self.form.lw_type.addItem(item)
 
         self.is_updating = False
 
@@ -282,13 +279,10 @@ class TaskAssemblyInsertFastener:
             best_dia = diams[0]
             min_diff = float("inf")
             for d_str in diams:
-                try:
-                    d_num = ScrewMaker.Instance.getDia(d_str, False)
-                    if abs(d_num - target_d) < min_diff:
-                        min_diff = abs(d_num - target_d)
-                        best_dia = d_str
-                except Exception:
-                    pass
+                d_num = ScrewMaker.Instance.getDia(d_str, False)
+                if abs(d_num - target_d) < min_diff:
+                    min_diff = abs(d_num - target_d)
+                    best_dia = d_str
             self.form.cb_diameter.setCurrentText(best_dia)
 
         self.is_updating = False
@@ -336,18 +330,21 @@ class TaskAssemblyInsertFastener:
     def _find_existing_fastener(self, t, d, l):
         source_group = self._get_or_create_source_group()
         for obj in source_group.Group:
-            if hasattr(obj, "Proxy") and isinstance(obj.Proxy, FastenerBase.FSBaseObject):
-                if obj.Type == t and obj.Diameter == d:
-                    if not self.has_length:
-                        return obj
-                    if self.arbitrary_length:
-                        if hasattr(obj, "Length") and math.isclose(
-                            float(obj.Length.Value), float(l), abs_tol=1e-5
-                        ):
-                            return obj
-                    else:
-                        if hasattr(obj, "Length") and str(obj.Length) == str(l):
-                            return obj
+            if not hasattr(obj, "Proxy") or not isinstance(obj.Proxy, FastenerBase.FSBaseObject):
+                continue
+
+            if obj.Type != t or obj.Diameter != d:
+                continue
+
+            if not self.has_length:
+                return obj
+
+            if not hasattr(obj, "Length"):
+                continue
+
+            if (self.arbitrary_length and math.isclose(float(obj.Length.Value), float(l), abs_tol=1e-5)) or str(obj.Length) == str(l):
+                return obj
+
         return None
 
     def update_preview(self):
