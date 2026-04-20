@@ -186,16 +186,20 @@ class TaskAssemblyInsertFastener:
                     continue
 
                 curve = shape.Curve
-                if not curve.TypeId in ["Part::GeomCircle", "Part::GeomEllipse"] or not hasattr(curve, "Radius"):
+                if not curve.TypeId in ["Part::GeomCircle", "Part::GeomEllipse"] or not hasattr(
+                    curve, "Radius"
+                ):
                     continue
 
-                self.target_edges.append({
-                    'object': moving_part,
-                    'subname': new_sub,
-                    'center': curve.Center,
-                    'axis': curve.Axis,
-                    'radius': curve.Radius
-                })
+                self.target_edges.append(
+                    {
+                        "object": moving_part,
+                        "subname": new_sub,
+                        "center": curve.Center,
+                        "axis": curve.Axis,
+                        "radius": curve.Radius,
+                    }
+                )
 
     def _get_current_type(self):
         curr_item = self.form.lw_type.currentItem()
@@ -429,7 +433,7 @@ class TaskAssemblyInsertFastener:
             for edge_info in self.target_edges:
                 link = self.assembly.newObject("App::Link", "FastenerLink")
                 link.LinkedObject = fastener
-                link.Placement = App.Placement(edge_info['center'], App.Rotation())
+                link.Placement = App.Placement(edge_info["center"], App.Rotation())
                 self.links.append(link)
 
 
