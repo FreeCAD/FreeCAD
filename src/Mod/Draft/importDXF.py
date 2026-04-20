@@ -1218,7 +1218,7 @@ def drawMesh(mesh, forceShape=False):
     """
     if not mesh_available:
         FCC.PrintWarning(
-            "Draft cannot complete this DXF operation - " "the Mesh module is not installed.\n"
+            "Could not import mesh object as the Mesh module is not installed.\n"
         )
         return None
     md = []
