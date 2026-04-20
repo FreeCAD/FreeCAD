@@ -1199,7 +1199,7 @@ class _SolverCalculiX(CommandManager):
 
     def Activated(self):
         ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
-        if ccx_prefs.GetBool("ResultAsPipeline", False):
+        if ccx_prefs.GetBool("ResultAsPipeline", True):
             make_solver = "makeSolverCalculiX"
         else:
             make_solver = "makeSolverCalculiXCcxTools"

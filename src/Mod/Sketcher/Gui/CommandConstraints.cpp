@@ -1788,7 +1788,9 @@ public:
     void deactivated() override
     {
         abortCommand();
-        Obj->solve();
+        if (availableConstraint != AvailableConstraint::FIRST) {
+            Obj->solve();
+        }
         sketchgui->draw(false, false); // Redraw
     }
 

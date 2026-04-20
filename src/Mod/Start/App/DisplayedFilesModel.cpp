@@ -21,95 +21,36 @@
  *                                                                          *
  ***************************************************************************/
 
-#include <boost/algorithm/string/predicate.hpp>
-#include <QByteArray>
-#include <QFileInfo>
-#include <QLocale>
-#include <QProcess>
-#include <QTimeZone>
-#include <QThreadPool>
-#include <QUrl>
-
-
 #include "DisplayedFilesModel.h"
 
+#include <boost/algorithm/string/predicate.hpp>
 
+#include <QThreadPool>
+
+#include <App/Application.h>
+
+#include "FcstdInfoSource.h"
 #include "FileUtilities.h"
 #include "ThumbnailSource.h"
-#include <App/Application.h>
-#include <App/ProjectFile.h>
-#include <Base/FileInfo.h>
-#include <Base/TimeInfo.h>
-#include <Base/Stream.h>
 
 
 using namespace Start;
 
-
-FileStats fileInfoFromFreeCADFile(const std::string& path)
-{
-    App::ProjectFile proj(path);
-    proj.loadDocument();
-    auto metadata = proj.getMetadata();
-    FileStats result;
-    result.insert(std::make_pair(DisplayedFilesModelRoles::author, metadata.createdBy));
-    result.insert(std::make_pair(DisplayedFilesModelRoles::modifiedTime, metadata.lastModifiedDate));
-    result.insert(std::make_pair(DisplayedFilesModelRoles::creationTime, metadata.creationDate));
-    result.insert(std::make_pair(DisplayedFilesModelRoles::company, metadata.company));
-    result.insert(std::make_pair(DisplayedFilesModelRoles::license, metadata.license));
-    result.insert(std::make_pair(DisplayedFilesModelRoles::description, metadata.comment));
-    return result;
-}
-
-/// Load the thumbnail image data (if any) that is stored in an FCStd file.
-/// \returns The image bytes, or an empty QByteArray (if no thumbnail was stored)
-QByteArray loadFCStdThumbnail(const QString& pathToFCStdFile)
-{
-    if (App::ProjectFile proj(pathToFCStdFile.toStdString()); proj.loadDocument()) {
-        try {
-            const QString pathToCachedThumbnail = getPathToCachedThumbnail(pathToFCStdFile);
-            if (!useCachedThumbnail(pathToCachedThumbnail, pathToFCStdFile)) {
-                static const QString pathToThumbnail = defaultThumbnailPath;
-                if (proj.containsFile(pathToThumbnail.toStdString())) {
-                    createThumbnailsDir();
-                    const Base::FileInfo fi(pathToCachedThumbnail.toStdString());
-                    Base::ofstream stream(fi, std::ios::out | std::ios::binary);
-                    proj.readInputFileDirect(pathToThumbnail.toStdString(), stream);
-                    stream.close();
-                }
-            }
-
-            if (auto inputFile = QFile(pathToCachedThumbnail); inputFile.exists()) {
-                inputFile.open(QIODevice::OpenModeFlag::ReadOnly);
-                return inputFile.readAll();
-            }
-        }
-        catch (...) {
-            Base::Console().log("Failed to load thumbnail for %s\n", pathToFCStdFile.toStdString());
-        }
-    }
-    return {};
-}
-
-FileStats getFileInfo(const std::string& path)
+/// Get information common to all file types.
+static FileStats getCommonFileInfo(const std::string& path)
 {
     FileStats result;
     const Base::FileInfo file(path);
-    if (file.hasExtension("FCStd")) {
-        result = fileInfoFromFreeCADFile(path);
-    }
-    else {
-        result.insert(
-            std::make_pair(DisplayedFilesModelRoles::modifiedTime, getLastModifiedAsString(file))
-        );
-    }
+    result.insert(
+        std::make_pair(DisplayedFilesModelRoles::modifiedTime, getLastModifiedAsString(file))
+    );
     result.insert(std::make_pair(DisplayedFilesModelRoles::path, path));
     result.insert(std::make_pair(DisplayedFilesModelRoles::size, humanReadableSize(file.size())));
     result.insert(std::make_pair(DisplayedFilesModelRoles::baseName, file.fileName()));
     return result;
 }
 
-bool freecadCanOpen(const QString& extension)
+static bool freecadCanOpen(const QString& extension)
 {
     std::string ext = extension.toStdString();
     auto importTypes = App::GetApplication().getImportTypes();
@@ -133,6 +74,7 @@ int DisplayedFilesModel::rowCount(const QModelIndex& parent) const
 
 QVariant DisplayedFilesModel::data(const QModelIndex& index, int role) const
 {
+    QMutexLocker locker(&_mutex);
     const int row = index.row();
     if (row < 0 || row >= static_cast<int>(_fileInfoCache.size())) {
         return {};
@@ -208,8 +150,22 @@ void DisplayedFilesModel::addFile(const QString& filePath)
         return;
     }
 
-    _fileInfoCache.emplace_back(getFileInfo(filePath.toStdString()));
+    {
+        QMutexLocker locker(&_mutex);
+        _fileInfoCache.emplace_back(getCommonFileInfo(filePath.toStdString()));
+    }
+
     const auto lowercaseExtension = qfi.suffix().toLower();
+    if (lowercaseExtension == QLatin1String("fcstd")) {
+        const auto runner = new FcstdInfoSource(filePath);
+        connect(
+            runner->signals(),
+            &FcstdInfoSource::Signals::infoAvailable,
+            this,
+            &DisplayedFilesModel::processNewFcstdInfo
+        );
+        QThreadPool::globalInstance()->start(runner);
+    }
     const QStringList ignoredExtensions {
         QLatin1String("fcmacro"),
         QLatin1String("py"),
@@ -217,29 +173,24 @@ void DisplayedFilesModel::addFile(const QString& filePath)
         QLatin1String("csv"),
         QLatin1String("txt")
     };
-    if (lowercaseExtension == QLatin1String("fcstd")) {
-        if (const auto thumbnail = loadFCStdThumbnail(filePath); !thumbnail.isEmpty()) {
-            _imageCache.insert(filePath, thumbnail);
-        }
-    }
-    else if (ignoredExtensions.contains(lowercaseExtension)) {
+    if (ignoredExtensions.contains(lowercaseExtension)) {
         // Don't try to generate a thumbnail for things like this: FreeCAD can read them, but
         // there's not much point in showing anything besides a generic icon
+        return;
     }
-    else {
-        const auto runner = new ThumbnailSource(filePath);
-        connect(
-            runner->signals(),
-            &ThumbnailSourceSignals::thumbnailAvailable,
-            this,
-            &DisplayedFilesModel::processNewThumbnail
-        );
-        QThreadPool::globalInstance()->start(runner);
-    }
+    const auto runner = new ThumbnailSource(filePath);
+    connect(
+        runner->signals(),
+        &ThumbnailSource::Signals::thumbnailAvailable,
+        this,
+        &DisplayedFilesModel::processNewThumbnail
+    );
+    QThreadPool::globalInstance()->start(runner);
 }
 
 void DisplayedFilesModel::clear()
 {
+    QMutexLocker locker(&_mutex);
     _fileInfoCache.clear();
 }
 
@@ -260,23 +211,61 @@ QHash<int, QByteArray> DisplayedFilesModel::roleNames() const
     return nameMap;
 }
 
-void DisplayedFilesModel::processNewThumbnail(const QString& file, const QByteArray& thumbnail)
+static std::size_t indexOfFile(const std::vector<FileStats>& fileInfoCache, const std::string& filePath)
 {
-    if (!thumbnail.isEmpty()) {
-        _imageCache.insert(file, thumbnail);
+    auto it = std::ranges::find_if(fileInfoCache, [filePath](const FileStats& row) {
+        auto pathIt = row.find(DisplayedFilesModelRoles::path);
+        return pathIt != row.end() && pathIt->second == filePath;
+    });
+    return std::distance(fileInfoCache.begin(), it);
+}
 
-        // Figure out the index of this file...
-        auto it = std::ranges::find_if(_fileInfoCache, [file](const FileStats& row) {
-            auto pathIt = row.find(DisplayedFilesModelRoles::path);
-            return pathIt != row.end() && pathIt->second == file.toStdString();
-        });
-        if (it != _fileInfoCache.end()) {
-            std::size_t index = std::distance(_fileInfoCache.begin(), it);
-            QModelIndex qmi = createIndex(index, 0);
-            Q_EMIT(dataChanged(qmi, qmi, {static_cast<int>(DisplayedFilesModelRoles::image)}));
-        }
-        else {
-            Base::Console().log("Unrecognized path %s\n", file.toStdString());
-        }
+void DisplayedFilesModel::processNewFcstdInfo(
+    const QString& filePath,
+    const FileStats& stats,
+    const QByteArray& thumbnail
+)
+{
+    QMutexLocker locker(&_mutex);
+
+    const std::size_t index = indexOfFile(_fileInfoCache, filePath.toStdString());
+    if (index == _fileInfoCache.size()) {
+        return;
     }
+
+    QList<int> changedRoles;
+    auto& info = _fileInfoCache[index];
+    for (auto stat : stats) {
+        info.insert(stat);
+        changedRoles.append(static_cast<int>(stat.first));
+    }
+
+    if (!thumbnail.isEmpty()) {
+        _imageCache.insert(filePath, thumbnail);
+        changedRoles.append(static_cast<int>(DisplayedFilesModelRoles::image));
+    }
+
+    locker.unlock();
+    QModelIndex qmi = createIndex(index, 0);
+    Q_EMIT(dataChanged(qmi, qmi, changedRoles));
+}
+
+void DisplayedFilesModel::processNewThumbnail(const QString& filePath, const QByteArray& thumbnail)
+{
+    if (thumbnail.isEmpty()) {
+        return;
+    }
+
+    QMutexLocker locker(&_mutex);
+    _imageCache.insert(filePath, thumbnail);
+
+    const std::size_t index = indexOfFile(_fileInfoCache, filePath.toStdString());
+    if (index == _fileInfoCache.size()) {
+        Base::Console().log("Unrecognized path %s\n", filePath.toStdString());
+        return;
+    }
+
+    locker.unlock();
+    QModelIndex qmi = createIndex(index, 0);
+    Q_EMIT(dataChanged(qmi, qmi, {static_cast<int>(DisplayedFilesModelRoles::image)}));
 }

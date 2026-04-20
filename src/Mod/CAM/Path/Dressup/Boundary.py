@@ -1,25 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2019 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2019 sliptonic <shopinthewoods@gmail.com>               *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
@@ -177,9 +175,6 @@ class DressupPathBoundary(object):
         obj.Path = pb.execute()
 
 
-# Eclass
-
-
 class PathBoundary:
     """class PathBoundary...
     This class requires a base operation, boundary shape, and optional inside boolean (default is True).
@@ -191,36 +186,29 @@ class PathBoundary:
         self.baseOp = baseOp
         self.boundary = boundaryShape
         self.inside = inside
-        self.safeHeight = None
-        self.clearanceHeight = None
-        self.strG0ZsafeHeight = None
-        self.strG0ZclearanceHeight = None
         self.retractThreshold = retractThreshold
         self.firstBoundary = True
 
     def boundaryCommands(self, begin, end, vertFeed, horizFeed=None):
         Path.Log.track(_vstr(begin), _vstr(end))
-        if end and Path.Geom.pointsCoincide(begin, end):
+        if Path.Geom.pointsCoincide(begin, end):
             return []
         cmds = []
-        if self.firstBoundary or not (end and begin.distanceToPoint(end) < self.retractThreshold):
-            if begin.z < self.safeHeight:
-                cmds.append(self.strG0ZsafeHeight)
+        if self.firstBoundary or begin.distanceToPoint(end) > self.retractThreshold:
+            # moves with retract
             if begin.z < self.clearanceHeight:
                 cmds.append(self.strG0ZclearanceHeight)
-            if end:
-                cmds.append(Path.Command("G0", {"X": end.x, "Y": end.y}))
-                if end.z < self.clearanceHeight:
-                    cmds.append(Path.Command("G0", {"Z": max(self.safeHeight, end.z)}))
-                if end.z < self.safeHeight:
-                    cmds.append(Path.Command("G1", {"Z": end.z, "F": vertFeed}))
+            cmds.append(Path.Command("G0", {"X": end.x, "Y": end.y}))
+            if end.z < self.clearanceHeight and end.z < self.safeHeight:
+                cmds.append(self.strG0ZsafeHeight)
+            cmds.append(Path.Command("G1", {"Z": end.z, "F": vertFeed}))
         else:
-            if end:
-                if horizFeed and Path.Geom.isRoughly(begin.z, end.z, 0.001):
-                    speed = horizFeed
-                else:
-                    speed = vertFeed
-                cmds.append(Path.Command("G1", {"X": end.x, "Y": end.y, "Z": end.z, "F": speed}))
+            # moves without retract
+            if horizFeed and Path.Geom.isRoughly(begin.z, end.z, 0.001):
+                speed = horizFeed
+            else:
+                speed = vertFeed
+            cmds.append(Path.Command("G1", {"X": end.x, "Y": end.y, "Z": end.z, "F": speed}))
 
         self.firstBoundary = False
 
@@ -243,9 +231,7 @@ class PathBoundary:
 
         self.safeHeight = float(PathUtil.opProperty(self.baseOp, "SafeHeight"))
         self.clearanceHeight = float(PathUtil.opProperty(self.baseOp, "ClearanceHeight"))
-        self.strG0ZsafeHeight = Path.Command(  # was a Feed rate with G1
-            "G0", {"Z": self.safeHeight, "F": tc.VertRapid.Value}
-        )
+        self.strG0ZsafeHeight = Path.Command("G0", {"Z": self.safeHeight})
         self.strG0ZclearanceHeight = Path.Command("G0", {"Z": self.clearanceHeight})
 
         cmd = path.Commands[0]
@@ -255,133 +241,114 @@ class PathBoundary:
         commands = [cmd]
         lastExit = None
         for cmd in path.Commands[1:]:
-            if cmd.Name in Path.Geom.CmdMoveAll:
-                if bogusX:
-                    bogusX = "X" not in cmd.Parameters
-                if bogusY:
-                    bogusY = "Y" not in cmd.Parameters
-
-                if cmd.z is not None and Path.Geom.isRoughly(cmd.z, self.clearanceHeight):
-                    # append move to clearance height
-                    commands.append(cmd)
-                    pos = Path.Geom.commandEndPoint(cmd, pos)
-                    lastExit = None
-                    continue
-
-                edge = Path.Geom.edgeForCmd(cmd, pos)
-                if edge and cmd.Name in Path.Geom.CmdMoveDrill:
-                    inside = edge.common(self.boundary).Edges
-                    outside = edge.cut(self.boundary).Edges
-                    if not self.inside:
-                        inside, outside = outside, inside
-                    if inside and not outside:
-                        commands.append(cmd)
-                if edge and cmd.Name not in Path.Geom.CmdMoveDrill:
-                    inside = edge.common(self.boundary).Edges
-                    outside = edge.cut(self.boundary).Edges
-                    if not self.inside:  # UI "inside boundary" param
-                        inside, outside = outside, inside
-                    # it's really a shame that one cannot trust the sequence and/or
-                    # orientation of edges
-                    if 1 == len(inside) and 0 == len(outside):
-                        Path.Log.track(_vstr(pos), _vstr(lastExit), " + ", cmd)
-                        # cmd fully included by boundary
-                        if lastExit:
-                            if not (bogusX or bogusY):
-                                # don't insert false paths based on bogus m/c position
-                                commands.extend(
-                                    self.boundaryCommands(lastExit, pos, tc.VertFeed.Value)
-                                )
-                            lastExit = None
-                        commands.append(cmd)
-                        pos = Path.Geom.commandEndPoint(cmd, pos)
-                    elif 0 == len(inside) and 1 == len(outside):
-                        Path.Log.track(_vstr(pos), _vstr(lastExit), " - ", cmd)
-                        # cmd fully excluded by boundary
-                        if not lastExit:
-                            lastExit = pos
-                        pos = Path.Geom.commandEndPoint(cmd, pos)
-                    else:
-                        Path.Log.track(_vstr(pos), _vstr(lastExit), len(inside), len(outside), cmd)
-                        # cmd pierces boundary
-                        while inside or outside:
-                            ie = [e for e in inside if Path.Geom.edgeConnectsTo(e, pos)]
-                            Path.Log.track(ie)
-                            if ie:
-                                e = ie[0]
-                                LastPt = e.valueAt(e.LastParameter)
-                                flip = Path.Geom.pointsCoincide(pos, LastPt)
-                                newPos = e.valueAt(e.FirstParameter) if flip else LastPt
-                                # inside edges are taken at this point (see swap of inside/outside
-                                # above - so we can just connect the dots ...
-                                if lastExit:
-                                    if not (bogusX or bogusY):
-                                        commands.extend(
-                                            self.boundaryCommands(
-                                                begin=lastExit,
-                                                end=pos,
-                                                vertFeed=tc.VertFeed.Value,
-                                                horizFeed=tc.HorizFeed.Value,
-                                            )
-                                        )
-                                    lastExit = None
-                                Path.Log.track(e, flip)
-                                if not (
-                                    bogusX or bogusY
-                                ):  # don't insert false paths based on bogus m/c position
-                                    commands.extend(
-                                        Path.Geom.cmdsForEdge(
-                                            e,
-                                            flip=flip,
-                                            hSpeed=tc.HorizFeed.Value,
-                                            vSpeed=tc.VertFeed.Value,
-                                        )
-                                    )
-                                    # restore G0 movement
-                                    commands[-1].Name = cmd.Name
-                                inside.remove(e)
-                                pos = newPos
-                                lastExit = newPos
-                            else:
-                                oe = [e for e in outside if Path.Geom.edgeConnectsTo(e, pos)]
-                                Path.Log.track(oe)
-                                if oe:
-                                    e = oe[0]
-                                    ptL = e.valueAt(e.LastParameter)
-                                    flip = Path.Geom.pointsCoincide(pos, ptL)
-                                    newPos = e.valueAt(e.FirstParameter) if flip else ptL
-                                    # outside edges are never taken at this point (see swap of
-                                    # inside/outside above) - so just move along ...
-                                    outside.remove(e)
-                                    pos = newPos
-                                else:
-                                    Path.Log.error("huh?")
-                                    import Part
-
-                                    Part.show(Part.Vertex(pos), "pos")
-                                    for e in inside:
-                                        Part.show(e, "ei")
-                                    for e in outside:
-                                        Part.show(e, "eo")
-                                    raise Exception("This is not supposed to happen")
-                                # Eif
-                            # Eif
-                        # Ewhile
-                    # Eif
-                    # pos = Path.Geom.commandEndPoint(cmd, pos)
-                # Eif
-            else:
+            if cmd.Name not in Path.Geom.CmdMoveAll:
                 Path.Log.track("no-move", cmd)
                 commands.append(cmd)
+                continue
+
+            bogusX = True if bogusX and cmd.x is None else False
+            bogusY = True if bogusY and cmd.y is None else False
+
+            if cmd.z is not None and Path.Geom.isRoughly(cmd.z, self.clearanceHeight):
+                # append move to clearance height
+                commands.append(cmd)
+                pos = Path.Geom.commandEndPoint(cmd, pos)
+                lastExit = None
+                continue
+
+            # convert cmd to edge
+            edge = Path.Geom.edgeForCmd(cmd, pos)
+            if not edge:
+                # skip cmd with zero move
+                continue
+
+            inside = edge.common(self.boundary).Edges
+            outside = edge.cut(self.boundary).Edges
+            if not self.inside:
+                inside, outside = outside, inside
+
+            if cmd.Name in Path.Geom.CmdMoveDrill:
+                # process cmd G73, G81, G82, G83, G85
+                if inside and not outside:
+                    commands.append(cmd)
+                continue
+
+            if inside and not outside:
+                # cmd fully included by boundary
+                Path.Log.track(_vstr(pos), _vstr(lastExit), " + ", cmd)
+                if lastExit:
+                    if not bogusX and not bogusY:
+                        # don't insert false paths based on bogus m/c position
+                        commands.extend(self.boundaryCommands(lastExit, pos, tc.VertFeed.Value))
+                    lastExit = None
+                commands.append(cmd)
+                pos = Path.Geom.commandEndPoint(cmd, pos)
+                continue
+
+            if not inside and outside:
+                # cmd fully excluded by boundary
+                Path.Log.track(_vstr(pos), _vstr(lastExit), " - ", cmd)
+                if not lastExit:
+                    lastExit = pos
+                pos = Path.Geom.commandEndPoint(cmd, pos)
+                continue
+
+            # cmd pierces boundary
+            Path.Log.track(_vstr(pos), _vstr(lastExit), len(inside), len(outside), cmd)
+            while inside or outside:
+                ie = [e for e in inside if Path.Geom.edgeConnectsTo(e, pos)]
+                Path.Log.track(ie)
+                if ie:
+                    e = ie[0]
+                    LastPt = e.valueAt(e.LastParameter)
+                    flip = Path.Geom.pointsCoincide(pos, LastPt)
+                    # inside edges are taken at this point (see swap of inside/outside
+                    # above - so we can just connect the dots ...
+                    if lastExit:
+                        if not bogusX and not bogusY:
+                            commands.extend(
+                                self.boundaryCommands(
+                                    begin=lastExit,
+                                    end=pos,
+                                    vertFeed=tc.VertFeed.Value,
+                                    horizFeed=tc.HorizFeed.Value,
+                                )
+                            )
+                        lastExit = None
+                    Path.Log.track(e, flip)
+                    if not bogusX and not bogusY:
+                        # don't insert false paths based on bogus m/c position
+                        commands.extend(
+                            Path.Geom.cmdsForEdge(
+                                e,
+                                flip=flip,
+                                hSpeed=tc.HorizFeed.Value,
+                                vSpeed=tc.VertFeed.Value,
+                            )
+                        )
+                        # restore G0 movement
+                        commands[-1].Name = cmd.Name
+                    inside.remove(e)
+                    newPos = e.valueAt(e.FirstParameter) if flip else LastPt
+                    pos = newPos
+                    lastExit = newPos
+                else:
+                    oe = [e for e in outside if Path.Geom.edgeConnectsTo(e, pos)]
+                    Path.Log.track(oe)
+                    if oe:
+                        # define next point
+                        e = oe[0]
+                        ptL = e.valueAt(e.LastParameter)
+                        flip = Path.Geom.pointsCoincide(pos, ptL)
+                        pos = e.valueAt(e.FirstParameter) if flip else ptL
+                        outside.remove(e)
+
         if lastExit:
-            commands.extend(self.boundaryCommands(lastExit, None, tc.VertFeed.Value))
+            commands.append(self.strG0ZclearanceHeight)
             lastExit = None
 
         Path.Log.track(commands)
         return Path.Path(commands)
-
-
-# Eclass
 
 
 def Create(base, name="DressupPathBoundary"):

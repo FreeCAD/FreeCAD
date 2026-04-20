@@ -31,7 +31,7 @@
 
 
 ** Face elements
-*Element, TYPE=S8, ELSET=Efaces
+*Element, TYPE=S8R, ELSET=Efaces
 1, 1, 5, 17, 8, 6, 18, 23, 9
 2, 5, 2, 14, 17, 7, 15, 19, 18
 3, 17, 14, 4, 11, 19, 16, 13, 21

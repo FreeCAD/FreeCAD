@@ -66,11 +66,12 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
         )
 
         self.write_z88_mesh()
+        # write first materials and elements. They may be used by constraints and loads.
+        self.write_z88_materials()
+        self.write_z88_elements_properties()
         self.write_z88_constraints()
         self.write_z88_face_loads()
         self.write_z88_section_prints()
-        self.write_z88_materials()
-        self.write_z88_elements_properties()
         self.write_z88_integration_properties()
         self.write_z88_memory_parameter()
         self.write_z88_solver_parameter()

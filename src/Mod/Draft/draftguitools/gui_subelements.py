@@ -44,7 +44,7 @@ from draftguitools import gui_base_original
 from draftguitools import gui_tool_utils
 from draftutils import utils
 from draftutils import gui_utils
-from draftutils.messages import _msg
+from draftutils.messages import _msg, _wrn
 from draftutils.translate import translate
 
 
@@ -84,6 +84,7 @@ class SubelementHighlight(gui_base_original.Modifier):
             self.view.removeEventCallback("SoEvent", self.call)
         self.get_editable_objects_from_selection()
         if not self.editable_objects:
+            _wrn(translate("draft", "Only Draft lines, wires, and curves can be highlighted"))
             return self.finish()
         self.call = self.view.addEventCallback("SoEvent", self.action)
         self.highlight_editable_objects()
@@ -129,7 +130,7 @@ class SubelementHighlight(gui_base_original.Modifier):
                 "Wire",
             ]:
                 self.editable_objects.append(obj)
-            elif hasattr(obj, "Base") and (
+            elif getattr(obj, "Base", None) and (
                 obj.Base.isDerivedFrom("Part::Part2DObject")
                 or utils.get_type(obj.Base) in ["BezCurve", "BSpline", "Wire"]
             ):
