@@ -172,9 +172,7 @@ def getCutShapes(
                     s = sub.section(cutface)
                     try:
                         wires = DraftGeomUtils.findWires(s.Edges)
-                        for w in wires:
-                            f = Part.Face(w)
-                            tmpSshapes.append(f)
+                        tmpSshapes.extend(Part.makeFace(wires, "Part::FaceMakerBullseye").Faces)
                     except Part.OCCError:
                         # print "ArchView: unable to get a face"
                         tmpSshapes.append(s)
