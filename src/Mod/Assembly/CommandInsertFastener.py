@@ -450,6 +450,7 @@ class CommandInsertFastener:
                 "the diameter and position the fasteners with Fixed Joints directly onto the holes.\n"
                 "If nothing is selected, the fastener spawns at the center of the screen.",
             ),
+            "Accel": "J",
             "CmdType": "ForEdit",
         }
 
