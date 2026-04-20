@@ -179,16 +179,20 @@ class TaskAssemblyInsertFastener:
                     continue
 
                 curve = shape.Curve
-                if not curve.TypeId in ["Part::GeomCircle", "Part::GeomEllipse"] or not hasattr(curve, "Radius"):
+                if not curve.TypeId in ["Part::GeomCircle", "Part::GeomEllipse"] or not hasattr(
+                    curve, "Radius"
+                ):
                     continue
 
-                self.target_edges.append({
-                    'object': s.Object,
-                    'subname': sub,
-                    'center': curve.Center,
-                    'axis': curve.Axis,
-                    'radius': curve.Radius
-                })
+                self.target_edges.append(
+                    {
+                        "object": s.Object,
+                        "subname": sub,
+                        "center": curve.Center,
+                        "axis": curve.Axis,
+                        "radius": curve.Radius,
+                    }
+                )
 
     def _get_current_type(self):
         curr_item = self.form.lw_type.currentItem()
@@ -208,15 +212,15 @@ class TaskAssemblyInsertFastener:
         for t in self.categories.get(cat, []):
             desc = FastenersCmd.FSGetDescription(t)
             if not desc:
-                desc = t 
-                
+                desc = t
+
             item = QtWidgets.QListWidgetItem(desc)
             item.setData(QtCore.Qt.UserRole, t)
 
-            icon_path = os.path.join(FSutils.iconPath, FSGetIconAlias(t) + '.svg')
+            icon_path = os.path.join(FSutils.iconPath, FSGetIconAlias(t) + ".svg")
             if os.path.exists(icon_path):
                 item.setIcon(QtGui.QIcon(icon_path))
-                    
+
             self.form.lw_type.addItem(item)
 
         self.is_updating = False
@@ -342,7 +346,10 @@ class TaskAssemblyInsertFastener:
             if not hasattr(obj, "Length"):
                 continue
 
-            if (self.arbitrary_length and math.isclose(float(obj.Length.Value), float(l), abs_tol=1e-5)) or str(obj.Length) == str(l):
+            if (
+                self.arbitrary_length
+                and math.isclose(float(obj.Length.Value), float(l), abs_tol=1e-5)
+            ) or str(obj.Length) == str(l):
                 return obj
 
         return None
