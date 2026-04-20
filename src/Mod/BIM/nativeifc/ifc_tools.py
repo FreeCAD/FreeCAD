@@ -734,8 +734,11 @@ def add_properties(obj, ifcfile=None, ifcentity=None, links=False, shapemode=0, 
                                     classification_name += cref.ReferencedSource.Name + " "
 
                             # Add the Identification if present
-                            if cref.Identification:
-                                classification_name += cref.Identification
+                            ident = getattr(cref, "Identification", None)
+                            if not ident:
+                                ident = getattr(cref, "ItemReference", None)
+                            if ident:
+                                classification_name += ident
 
                             classification_name = classification_name.strip()
                             if classification_name:

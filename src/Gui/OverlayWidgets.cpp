@@ -1836,12 +1836,10 @@ void OverlayTabWidget::removeWidget(QDockWidget* dock, QDockWidget* lastDock)
         hide();
     }
 
-    w = dock->titleBarWidget();
-    if (w && w->objectName() == QStringLiteral("OverlayTitle")) {
-        dock->setTitleBarWidget(nullptr);
-        w->deleteLater();
+    auto tw = dock->titleBarWidget();
+    if (!tw || tw->objectName() == QStringLiteral("OverlayTitle")) {
+        OverlayManager::instance()->setupTitleBar(dock);
     }
-    OverlayManager::instance()->setupTitleBar(dock);
 
     dock->setFeatures(dock->features() | QDockWidget::DockWidgetFloatable);
 

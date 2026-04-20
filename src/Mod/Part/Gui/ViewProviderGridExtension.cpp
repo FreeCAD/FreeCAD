@@ -24,6 +24,7 @@
 
 #include <limits>
 
+#include <Inventor/nodes/SoCamera.h>
 #include <Inventor/nodes/SoDepthBuffer.h>
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoLineSet.h>
@@ -63,6 +64,11 @@ App::PropertyQuantityConstraint::Constraints ViewProviderGridExtension::GridSize
 
 namespace PartGui
 {
+
+namespace
+{
+constexpr float GRID_Z_OFFSET {0.002F};
+}
 
 class GridExtensionP
 {
@@ -110,6 +116,8 @@ private:
     void createEditModeInventorNodes();
 
     Base::Vector3d getCamCenterInSketchCoordinates() const;
+    Base::Vector3d getPointInSketchCoordinates(const SbVec3f& point) const;
+    int getViewOrientationFactor() const;
 
     SbVec3f camCenterPointOnFocalPlane;
     float camMaxDimension;
@@ -309,6 +317,8 @@ void GridExtensionP::createGridPart(
     int lineWidth
 )
 {
+    float gridZ = getViewOrientationFactor() * GRID_Z_OFFSET;
+
     auto* parent = new Gui::SoSkipBoundingGroup();
     parent->mode = Gui::SoSkipBoundingGroup::EXCLUDE_BBOX;
 
@@ -378,8 +388,8 @@ void GridExtensionP::createGridPart(
         int iStep = (i + i_offset_x);
         if (((iStep % numberSubdiv == 0) && divLines)
             || ((iStep % numberSubdiv != 0) && subDivLines)) {
-            vertex_coords[2 * i].setValue(iStep * computedGridValue, minY, 0);
-            vertex_coords[2 * i + 1].setValue(iStep * computedGridValue, maxY, 0);
+            vertex_coords[2 * i].setValue(iStep * computedGridValue, minY, gridZ);
+            vertex_coords[2 * i + 1].setValue(iStep * computedGridValue, maxY, gridZ);
         }
         else {
             /*the number of vertices is defined before. To know the number of vertices ahead it would
@@ -396,8 +406,8 @@ void GridExtensionP::createGridPart(
         int iStep = (i + i_offset_y);
         if (((iStep % numberSubdiv == 0) && divLines)
             || ((iStep % numberSubdiv != 0) && subDivLines)) {
-            vertex_coords[2 * i].setValue(minX, iStep * computedGridValue, 0);
-            vertex_coords[2 * i + 1].setValue(maxX, iStep * computedGridValue, 0);
+            vertex_coords[2 * i].setValue(minX, iStep * computedGridValue, gridZ);
+            vertex_coords[2 * i + 1].setValue(maxX, iStep * computedGridValue, gridZ);
         }
         else {
             vertex_coords[2 * i].setValue(0, 0, 0);
@@ -412,19 +422,54 @@ void GridExtensionP::createGridPart(
 
 Base::Vector3d GridExtensionP::getCamCenterInSketchCoordinates() const
 {
+    return getPointInSketchCoordinates(camCenterPointOnFocalPlane);
+}
+
+Base::Vector3d GridExtensionP::getPointInSketchCoordinates(const SbVec3f& point) const
+{
     Base::Vector3d xaxis(1, 0, 0), yaxis(0, 1, 0);
 
     gridRotation.multVec(xaxis, xaxis);
     gridRotation.multVec(yaxis, yaxis);
 
     float x, y, z;
-    camCenterPointOnFocalPlane.getValue(x, y, z);
+    point.getValue(x, y, z);
 
-    Base::Vector3d center(x, y, z);
+    Base::Vector3d result(x, y, z);
+    result.TransformToCoordinateSystem(gridOrigin, xaxis, yaxis);
 
-    center.TransformToCoordinateSystem(gridOrigin, xaxis, yaxis);
+    return result;
+}
 
-    return center;
+int GridExtensionP::getViewOrientationFactor() const
+{
+    auto* app = Gui::Application::Instance;
+    if (!app) {
+        return 1;
+    }
+
+    auto* editDoc = app->editDocument();
+    if (!editDoc) {
+        return 1;
+    }
+
+    auto* view = dynamic_cast<Gui::View3DInventor*>(editDoc->getActiveView());
+    if (!view) {
+        return 1;
+    }
+
+    auto* viewer = view->getViewer();
+    if (!viewer) {
+        return 1;
+    }
+
+    auto* camera = viewer->getSoRenderManager()->getCamera();
+    if (!camera) {
+        return 1;
+    }
+
+    auto cameraPosition = getPointInSketchCoordinates(camera->position.getValue());
+    return cameraPosition.z < 0 ? -1 : 1;
 }
 
 void GridExtensionP::setEnabled(bool enable)

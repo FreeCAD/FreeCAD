@@ -119,6 +119,12 @@ QVariant QGIViewPart::itemChange(GraphicsItemChange change, const QVariant& valu
         // we are selected, don't change anything?
     }
     else if (change == ItemSceneChange && scene()) {
+        // Disconnect the signal to prevent callbacks during teardown
+        if (m_selectionChangedConnection) {
+            QObject::disconnect(m_selectionChangedConnection);
+            // Reset the connection handle so it's not holding a stale reference
+            m_selectionChangedConnection = QMetaObject::Connection();
+        }
         // This means we are finished?
         tidy();
     }
@@ -126,6 +132,9 @@ QVariant QGIViewPart::itemChange(GraphicsItemChange change, const QVariant& valu
         if (scene()) {
             // added to scene
             m_selectionChangedConnection = connect(scene(), &QGraphicsScene::selectionChanged, this, [this]() {
+                if (!scene()) {
+                    return;
+                }
                 // When selection changes, if the mouse is not over the view,
                 // hide any non-selected vertices.
                 if (!isUnderMouse()) {
@@ -259,6 +268,8 @@ void QGIViewPart::draw()
     //this is old C/L
     drawCenterLines(true);//have to draw centerlines after border to get size correct.
     drawAllSectionLines();//same for section lines
+
+    prepareGeometryChange();
 }
 
 void QGIViewPart::drawViewPart()
@@ -497,8 +508,7 @@ void QGIViewPart::drawAllVertexes()
                 item->setRadius(getVertexSize());
                 item->setPrettyNormal();
                 item->setZValue(ZVALUE::VERTEX);
-                item->setVisible(m_isHovered || isSelected() ||
-                (vpPage->getFrameState() && PreferencesGui::getViewFrameMode() == ViewFrameMode::Manual));
+                item->setVisible(shouldShowFrame());
             }
         }
     }
@@ -1291,22 +1301,36 @@ double QGIViewPart::getVertexSize() {
     return getLineWidth() * Preferences::vertexScale();
 }
 
+void QGIViewPart::updateFrameVisibility()
+{
+    QGIView::updateFrameVisibility();
+
+    bool showDecorations = shouldShowFrame();
+    
+    for (auto& child : childItems()) {
+        if (child->type() == UserType::QGIVertex) {
+            child->setVisible(showDecorations || child->isSelected());
+        }
+        if (child->type() == UserType::QGICMark) {
+            child->setVisible(showDecorations || child->isSelected() || !hideCenterMarks());
+        }
+    }
+}
 void QGIViewPart::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     QGIView::hoverEnterEvent(event);
 
+    bool showDecorations = shouldShowFrame();
+
     for (auto& child : childItems()) {
-        if (child->type() == UserType::QGIVertex || child->type() == UserType::QGICMark) {
-            child->show();
+        if (child->type() == UserType::QGIVertex) {
+            child->setVisible(showDecorations);
             continue;
         }
-        if (child->type() == UserType::QGICMark &&
-            !hideCenterMarks()) {
+        if (child->type() == UserType::QGICMark && !hideCenterMarks()) {
             child->show();
         }
-
     }
-
     update();
 }
 
@@ -1314,33 +1338,18 @@ void QGIViewPart::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     QGIView::hoverLeaveEvent(event);
 
-    if (isSelected()) {
-        // if the view is selected, we should leave things alone.
-        return;
-    }
-
-    auto vp(static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject())));
-    ViewProviderPage* vpPage = vp->getViewProviderPage();
-    if (vpPage->getFrameState() &&
-        PreferencesGui::getViewFrameMode() == ViewFrameMode::Manual) {
-        return;
-    }
-
-    bool hideCenters = hideCenterMarks();
+    bool showDecorations = shouldShowFrame();
 
     for (auto& child : childItems()) {
-        if (child->type() == UserType::QGIVertex &&
-            !child->isSelected()) {
-            child->hide();
+        if (child->type() == UserType::QGIVertex) {
+            if (child->isSelected()) continue;
+            child->setVisible(showDecorations);
             continue;
         }
 
         if (child->type() == UserType::QGICMark) {
-            if (child->isSelected()) {
-                continue;
-            }
-
-            if (hideCenters) {
+            if (child->isSelected()) continue;
+            if (hideCenterMarks() || !showDecorations) {
                 child->hide();
             }
         }

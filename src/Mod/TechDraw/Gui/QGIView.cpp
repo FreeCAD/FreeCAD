@@ -1090,10 +1090,6 @@ bool QGIView::shouldShowFrame() const
         return false;
     }
 
-    if (isSelected()) {
-        return true;
-    }
-
     ViewFrameMode frameMode = PreferencesGui::getViewFrameMode();
     switch(frameMode) {
         case ViewFrameMode::Manual:
@@ -1126,17 +1122,22 @@ bool QGIView::shouldShowFromViewProvider() const
 
 bool QGIView::isExporting() const
 {
-    auto* view{freecad_cast<TechDraw::DrawView*>(getViewObject())};
-    auto vpPage = getViewProviderPage(view);
-    if (!view || !vpPage) {
+    auto* obj = getViewObject();
+    if (!obj || !obj->getDocument()) {
         return false;
     }
-
+    auto* view = freecad_cast<TechDraw::DrawView*>(obj);
+    if (!view) {
+        return false;
+    }
+    auto vpPage = getViewProviderPage(view);
+    if (!vpPage) {
+        return false;
+    }
     QGSPage* scenePage = vpPage->getQGSPage();
     if (!scenePage) {
         return false;
     }
-
     return scenePage->getExportingAny();
 }
 

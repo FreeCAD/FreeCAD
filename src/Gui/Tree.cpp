@@ -5807,7 +5807,8 @@ void DocumentItem::selectItems(SelectionReason reason)
     }
     else if (item->selected) {
         if (sync) {
-            if (item->selected == 2 && showItem(item, false, reason == SR_FORCE_EXPAND)) {
+            if ((item->selected == 2 || reason == SR_FORCE_EXPAND)
+                && showItem(item, false, reason == SR_FORCE_EXPAND)) {
                 // This means newly selected and can auto expand
                 if (!newSelect) {
                     newSelect = item;
@@ -5935,7 +5936,7 @@ bool DocumentItem::showItem(DocumentObjectItem* item, bool select, bool force)
     }
 
     if (parent->type() == TreeWidget::ObjectType) {
-        if (!showItem(static_cast<DocumentObjectItem*>(parent), false)) {
+        if (!showItem(static_cast<DocumentObjectItem*>(parent), false, force)) {
             return false;
         }
         auto pitem = static_cast<DocumentObjectItem*>(parent);

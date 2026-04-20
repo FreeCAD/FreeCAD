@@ -360,13 +360,6 @@ class ObjectDressup:
 
             last_params.update(params)
 
-            if cmd.Name in Path.Geom.CmdMoveAll and (
-                "X" not in params or "Y" not in params or "Z" not in params
-            ):
-                params["X"] = params.get("X", start_point[0])
-                params["Y"] = params.get("Y", start_point[1])
-                params["Z"] = params.get("Z", start_point[2])
-                cmd = Path.Command(cmd.Name, params)
             annotated = AnnotatedGCode(cmd, start_point)
             self.edges.append(annotated)
             start_point = annotated.end_point
@@ -424,7 +417,9 @@ class ObjectDressup:
                             covered = True
                         i = i + 1
                     if len(rampedges) == 0:
-                        Path.Log.warn("No suitable edges for ramping, plunge will remain as such")
+                        Path.Log.warning(
+                            "No suitable edges for ramping, plunge will remain as such"
+                        )
                         outedges.append(edge)
                     else:
                         # Path.Log.debug("Doing ramp to edges: {}".format(rampedges))
@@ -499,7 +494,7 @@ class ObjectDressup:
                         rampedges.append(candidate)
                         j = j + 1
                     if not loopFound:
-                        Path.Log.warn("No suitable helix found, leaving as a plunge")
+                        Path.Log.warning("No suitable helix found, leaving as a plunge")
                         outedges.append(edge)
                     else:
                         outedges.extend(self.createHelix(rampedges, edge.start_point[2]))
@@ -740,7 +735,6 @@ class ViewProviderDressup:
                         if g.Name == self.obj.Base.Name:
                             group.remove(g)
                     i.Group = group
-                    print(i.Group)
         # FreeCADGui.ActiveDocument.getObject(obj.Base.Name).Visibility = False
         return [self.obj.Base]
 

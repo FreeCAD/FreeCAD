@@ -1189,11 +1189,9 @@ void SoDatumLabel::GLRender(SoGLRenderAction* action)
     glDisable(GL_LIGHTING);
     glDisable(GL_CULL_FACE);
 
-    // Explicitly enable depth testing for constraint lines. This is needed because the
-    // constraint group may have depth testing disabled (to allow icons to render on top),
-    // but we want constraint LINES to render BELOW geometry lines.
-    // Arrowheads are drawn at elevated Z (ZARROW_TEXT_OFFSET) so they render on top.
-    // Text rendering disables depth testing separately.
+    // Enable depth testing so constraint lines use the sketch-local Z carried by their
+    // input points. That keeps them above coplanar model geometry while still rendering
+    // below sketch elements in the normal scene.
     glEnable(GL_DEPTH_TEST);
 
     // Enable Anti-alias
@@ -1287,18 +1285,18 @@ void SoDatumLabel::drawDistance(const SbVec3f* points, float& angle, SbVec3f& te
     // Perp Lines
     glBegin(GL_LINES);
     if (this->param1.getValue() != 0.) {
-        glVertex2f(geom.p1[0], geom.p1[1]);
-        glVertex2f(geom.perp1[0], geom.perp1[1]);
+        glVertex(geom.p1);
+        glVertex(geom.perp1);
 
-        glVertex2f(geom.p2[0], geom.p2[1]);
-        glVertex2f(geom.perp2[0], geom.perp2[1]);
+        glVertex(geom.p2);
+        glVertex(geom.perp2);
     }
 
-    glVertex2f(geom.par1[0], geom.par1[1]);
-    glVertex2f(geom.par2[0], geom.par2[1]);
+    glVertex(geom.par1);
+    glVertex(geom.par2);
 
-    glVertex2f(geom.par3[0], geom.par3[1]);
-    glVertex2f(geom.par4[0], geom.par4[1]);
+    glVertex(geom.par3);
+    glVertex(geom.par4);
     glEnd();
 
     // Draw the arrowheads at elevated Z to render ON TOP of geometry lines
@@ -1347,11 +1345,11 @@ void SoDatumLabel::drawRadiusOrDiameter(const SbVec3f* points, float& angle, SbV
 
     // Draw the Lines
     glBegin(GL_LINES);
-    glVertex2f(geom.p1[0], geom.p1[1]);
-    glVertex2f(geom.pnt1[0], geom.pnt1[1]);
+    glVertex(geom.p1);
+    glVertex(geom.pnt1);
 
-    glVertex2f(geom.pnt2[0], geom.pnt2[1]);
-    glVertex2f(geom.p2[0], geom.p2[1]);
+    glVertex(geom.pnt2);
+    glVertex(geom.p2);
     glEnd();
 
     // Draw arrowhead at elevated Z to render ON TOP of geometry lines

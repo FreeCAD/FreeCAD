@@ -122,6 +122,7 @@ TaskAttacher::TaskAttacher(
     , ui(new Ui_TaskAttacher)
     , visibilityFunc(visFunc)
     , completed(false)
+    , userSelectedMode(false)
 {
     // check if we are attachable
     if (!ViewProvider->getObject()->hasExtension(Part::AttachExtension::getExtensionClassTypeId())) {
@@ -673,6 +674,7 @@ void TaskAttacher::addToReference(const std::vector<SubAndObjName>& pairs)
     }
 
     try {
+        userSelectedMode = false;
         updateListOfModes();
         eMapMode mmode = getActiveMapMode();  // will be mmDeactivated, if selected or if no modes
                                               // are available
@@ -824,7 +826,10 @@ void TaskAttacher::onModeSelect()
 
     Part::AttachExtension* pcAttach
         = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
-    pcAttach->MapMode.setValue(getActiveMapMode());
+    eMapMode activeMode = getActiveMapMode();
+    pcAttach->MapMode.setValue(activeMode);
+    userSelectedMode = true;
+    applyBoldMode(activeMode);
     updatePreview();
 }
 
@@ -855,6 +860,7 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
             }
         }
         pcAttach->AttachmentSupport.setValues(newrefs, newrefnames);
+        userSelectedMode = false;
         updateListOfModes();
         pcAttach->MapMode.setValue(getActiveMapMode());
         selectMapMode(getActiveMapMode());
@@ -958,6 +964,7 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
         refnames.emplace_back(subElement);
     }
     pcAttach->AttachmentSupport.setValues(refs, refnames);
+    userSelectedMode = false;
     updateListOfModes();
     pcAttach->MapMode.setValue(getActiveMapMode());
     selectMapMode(getActiveMapMode());
@@ -1142,6 +1149,12 @@ void TaskAttacher::updateListOfModes()
         }
     }
 
+    // determine which mode to bold: user's explicit choice takes priority, else suggest best fit
+    eMapMode activeSavedMode = eMapMode(pcAttach->MapMode.getValue());
+    eMapMode boldMode = (userSelectedMode || activeSavedMode != mmDeactivated)
+        ? activeSavedMode
+        : this->lastSuggestResult.bestFitMode;
+
     // populate list
     ui->listOfModes->blockSignals(true);
     ui->listOfModes->clear();
@@ -1186,8 +1199,8 @@ void TaskAttacher::updateListOfModes()
                     item->setText(tr("%1 (add more references)").arg(item->text()));
                 }
             }
-            else if (mmode == this->lastSuggestResult.bestFitMode) {
-                // suggested mode - make bold
+            else if (mmode == boldMode) {
+                // active or suggested mode - make bold
                 QFont fnt = item->font();
                 fnt.setBold(true);
                 item->setFont(fnt);
@@ -1214,6 +1227,19 @@ void TaskAttacher::selectMapMode(eMapMode mmode)
     }
 
     ui->listOfModes->blockSignals(false);
+}
+
+void TaskAttacher::applyBoldMode(eMapMode boldMode)
+{
+    for (int i = 0; i < ui->listOfModes->count(); ++i) {
+        QListWidgetItem* item = ui->listOfModes->item(i);
+        if (!(item->flags() & Qt::ItemFlag::ItemIsEnabled)) {
+            continue;
+        }
+        QFont fnt = item->font();
+        fnt.setBold(modesInList[i] == boldMode);
+        item->setFont(fnt);
+    }
 }
 
 void TaskAttacher::showPlacementUtilities()

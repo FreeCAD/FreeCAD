@@ -128,13 +128,19 @@ namespace App {
         /// \param config The path to check
         bool usingCurrentVersionConfig(std::filesystem::path config) const;
 
+        struct MigrationResult
+        {
+            std::vector<std::filesystem::path> failedPaths;
+            std::vector<std::pair<std::filesystem::path, std::filesystem::path>> migratedPaths;
+        };
+
         /// Migrate a set of versionable configuration directories from the given path to a new
         /// version. The new version's directories cannot exist yet, and the old ones *must* exist.
         /// If the old paths are themselves versioned, then the new paths will be placed at the same
         /// level in the directory structure (e.g., they will be siblings of each entry in paths).
         /// If paths are NOT versioned, the new (versioned) copies will be placed *inside* the
-        /// original paths.
-        void migrateAllPaths(const std::vector<std::filesystem::path> &paths) const;
+        /// original paths. Returns the paths of entries that could not be copied.
+        MigrationResult migrateAllPaths(const std::vector<std::filesystem::path>& paths) const;
 
         /// A utility method to generate the versioned directory name for a given version. This only
         /// returns the version string, not an entire path. As of FreeCAD 1.1, the string is of the
@@ -163,8 +169,9 @@ namespace App {
 
         /// A utility method to copy all files and directories from oldPath to newPath, handling the
         /// case where newPath might itself be a subdirectory of oldPath (and *not* attempting that
-        /// otherwise-recursive copy).
-        static void migrateConfig(const std::filesystem::path &oldPath, const std::filesystem::path &newPath);
+        /// otherwise-recursive copy). Returns the paths of entries that could not be copied.
+        static MigrationResult migrateConfig(const std::filesystem::path& oldPath,
+                                              const std::filesystem::path& newPath);
 
 #ifdef FC_OS_WIN32
         /// On Windows, gets the location of the user's "AppData" directory. Invalid on other OSes.

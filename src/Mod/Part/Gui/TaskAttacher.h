@@ -153,6 +153,12 @@ private:
      */
     void selectMapMode(Attacher::eMapMode mmode);
 
+    /**
+     * @brief applyBoldMode Sets bold font on the enabled list item matching boldMode,
+     * clears bold on all others.
+     */
+    void applyBoldMode(Attacher::eMapMode boldMode);
+
     void showPlacementUtilities();
 
 protected:
@@ -173,6 +179,7 @@ private:
                                                   // into listOfModes widget.
     Attacher::SuggestResult lastSuggestResult;
     bool completed;
+    bool userSelectedMode;  // true when the user has explicitly clicked a mode in the list
 
     using Connection = boost::signals2::connection;
     Connection connectDelObject;

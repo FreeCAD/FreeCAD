@@ -27,7 +27,7 @@ class ApplicationDirectories(PyObjectBase):
         ...
 
     @staticmethod
-    def migrateAllPaths(paths: List[str]) -> None:
+    def migrateAllPaths(paths: List[str], /) -> List[str]:
         """
         migrateAllPaths(paths)
 
@@ -97,7 +97,7 @@ class ApplicationDirectories(PyObjectBase):
         ...
 
     @staticmethod
-    def migrateConfig(oldPath: str, newPath: str) -> None:
+    def migrateConfig(oldPath: str, newPath: str, /) -> List[str]:
         """
         migrateConfig(oldPath, newPath) -> None
 

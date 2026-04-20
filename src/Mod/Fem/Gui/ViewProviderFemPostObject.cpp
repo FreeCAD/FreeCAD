@@ -75,11 +75,7 @@
 using namespace FemGui;
 namespace sp = std::placeholders;
 
-#ifdef VTK_CELL_ARRAY_V2
 using vtkIdTypePtr = const vtkIdType*;
-#else
-using vtkIdTypePtr = vtkIdType*;
-#endif
 
 // ----------------------------------------------------------------------------
 

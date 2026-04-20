@@ -22,8 +22,10 @@
 
 
 
+#include <algorithm>
 #include <iostream>
-#include <boost/regex.hpp>
+#include <string>
+#include <vector>
 
 #include <Base/Base64.h>
 #include <Base/Console.h>
@@ -31,6 +33,7 @@
 #include <Base/Reader.h>
 #include <Base/Writer.h>
 
+#include "Application.h"
 #include "PropertyPythonObject.h"
 #include "DocumentObject.h"
 
@@ -186,6 +189,7 @@ bool isAllowedModule(const std::string& moduleName)
 
 }  // anonymous namespace
 
+
 TYPESYSTEM_SOURCE(App::PropertyPythonObject, App::Property)
 
 PropertyPythonObject::PropertyPythonObject() = default;
@@ -326,31 +330,6 @@ void PropertyPythonObject::fromString(const std::string& repr)
     }
 }
 
-void PropertyPythonObject::loadPickle(const std::string& str)
-{
-    // find the custom attributes and restore them
-    Base::PyGILStateLocker lock;
-    try {
-        std::string buffer = str;
-        boost::regex pickle(R"(S'(\w+)'.+S'(\w+)'\n)");
-        boost::match_results<std::string::const_iterator> what;
-        std::string::const_iterator start, end;
-        start = buffer.begin();
-        end = buffer.end();
-        while (boost::regex_search(start, end, what, pickle)) {
-            std::string key = std::string(what[1].first, what[1].second);
-            std::string val = std::string(what[2].first, what[2].second);
-            this->object.setAttr(key, Py::String(val));
-            buffer = std::string(what[2].second, end);
-            start = buffer.begin();
-            end = buffer.end();
-        }
-    }
-    catch (Py::Exception&) {
-        Base::PyException e;  // extract the Python error text
-        e.reportException();
-    }
-}
 
 std::string PropertyPythonObject::encodeValue(const std::string& str) const
 {
@@ -487,7 +466,6 @@ void PropertyPythonObject::Restore(Base::XMLReader& reader)
     }
     else {
         bool load_json = false;
-        bool load_pickle = false;
         bool load_failed = false;
         std::string buffer = reader.getAttribute<const char*>("value");
         if (reader.hasAttribute("encoded") && strcmp(reader.getAttribute<const char*>("encoded"), "yes") == 0) {
@@ -499,21 +477,25 @@ void PropertyPythonObject::Restore(Base::XMLReader& reader)
 
         Base::PyGILStateLocker lock;
         try {
-            boost::regex pickle(R"(^\(i(\w+)\n(\w+)\n)");
-            boost::match_results<std::string::const_iterator> what;
-            std::string::const_iterator start, end;
-            start = buffer.begin();
-            end = buffer.end();
             if (reader.hasAttribute("module") && reader.hasAttribute("class")) {
-                Py::Module mod(PyImport_ImportModule(reader.getAttribute<const char*>("module")), true);
+                std::string moduleName = reader.getAttribute<const char*>("module");
+                if (!isAllowedModule(moduleName)) {
+                    Base::Console().warning(
+                        "PropertyPythonObject::Restore: blocked import of module '%s' during"
+                        " document restore. Only modules from FreeCAD or installed addons"
+                        " are permitted.\n",
+                        moduleName.c_str());
+                    throw Py::ImportError("module not permitted: " + moduleName);
+                }
+                Py::Module mod(PyImport_ImportModule(moduleName.c_str()), true);
                 if (mod.isNull()) {
                     throw Py::Exception();
                 }
-                PyObject* cls = mod.getAttr(reader.getAttribute<const char*>("class")).ptr();
+                std::string className = reader.getAttribute<const char*>("class");
+                PyObject* cls = mod.getAttr(className).ptr();
                 if (!cls) {
                     std::stringstream s;
-                    s << "Module " << reader.getAttribute<const char*>("module") << " has no class "
-                      << reader.getAttribute<const char*>("class");
+                    s << "Module " << moduleName << " has no class " << className;
                     throw Py::AttributeError(s.str());
                 }
                 if (PyType_Check(cls)) {
@@ -523,17 +505,6 @@ void PropertyPythonObject::Restore(Base::XMLReader& reader)
                     throw Py::TypeError("neither class nor type object");
                 }
                 load_json = true;
-            }
-            else if (boost::regex_search(start, end, what, pickle)) {
-                std::string name = std::string(what[1].first, what[1].second);
-                std::string type = std::string(what[2].first, what[2].second);
-                Py::Module mod(PyImport_ImportModule(name.c_str()), true);
-                if (mod.isNull()) {
-                    throw Py::Exception();
-                }
-                this->object = PyObject_CallObject(mod.getAttr(type).ptr(), nullptr);
-                load_pickle = true;
-                buffer = std::string(what[2].second, end);
             }
             else if (reader.hasAttribute("json")) {
                 load_json = true;
@@ -549,9 +520,6 @@ void PropertyPythonObject::Restore(Base::XMLReader& reader)
         aboutToSetValue();
         if (load_json) {
             this->fromString(buffer);
-        }
-        else if (load_pickle) {
-            this->loadPickle(buffer);
         }
         else if (!load_failed) {
             Base::Console().warning(

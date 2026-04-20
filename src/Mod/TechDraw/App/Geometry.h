@@ -478,3 +478,4 @@ class TechDrawExport GeometryUtils
 } //end namespace TechDraw
 
 #endif //TECHDRAW_GEOMETRY_H
+

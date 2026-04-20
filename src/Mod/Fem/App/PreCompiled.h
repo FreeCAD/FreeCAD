@@ -151,7 +151,7 @@
 #include <vtkAppendFilter.h>
 #include <vtkArrayCalculator.h>
 #include <vtkCellArray.h>
-#if VTK_VERSION_NUMBER >= VTK_VERSION_CHECK(9, 3, 0)
+#if VTK_VERSION_NUMBER >= VTK_VERSION_CHECK(9, 2, 20230125)
 # include <vtkCleanUnstructuredGrid.h>
 #endif
 #include <vtkCompositeDataSet.h>
