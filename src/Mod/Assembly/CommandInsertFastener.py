@@ -135,7 +135,7 @@ class TaskAssemblyInsertFastener:
                     # Ref2 is the origin of the instanced Fastener Link (Empty subname/vertex)
                     ref2 = [link, ["", ""]]
 
-                    joint.Proxy.setJointConnectors(joint, [ref1, ref2], False)
+                    joint.Proxy.setJointConnectors(joint, [ref1, ref2])
                 else:
                     print("Error! JointObject.py not found.")
 
@@ -166,33 +166,36 @@ class TaskAssemblyInsertFastener:
             self.categories["Other"] = others
 
     def _analyze_selection(self):
-        sel = Gui.Selection.getSelectionEx()
+        sel = Gui.Selection.getSelectionEx("*", 0)
         for s in sel:
             if not s.SubElementNames:
                 continue
             for sub in s.SubElementNames:
-                if not sub.startswith("Edge"):
+                moving_part, new_sub = UtilsAssembly.getComponentReference(
+                    self.assembly, s.Object, sub
+                )
+                if not moving_part:
                     continue
 
-                shape = s.Object.getSubObject(sub)
+                element_name = UtilsAssembly.getElementName(new_sub)
+                if not element_name.startswith("Edge"):
+                    continue
+
+                shape = moving_part.getSubObject(new_sub)
                 if not hasattr(shape, "Curve"):
                     continue
 
                 curve = shape.Curve
-                if not curve.TypeId in ["Part::GeomCircle", "Part::GeomEllipse"] or not hasattr(
-                    curve, "Radius"
-                ):
+                if not curve.TypeId in ["Part::GeomCircle", "Part::GeomEllipse"] or not hasattr(curve, "Radius"):
                     continue
 
-                self.target_edges.append(
-                    {
-                        "object": s.Object,
-                        "subname": sub,
-                        "center": curve.Center,
-                        "axis": curve.Axis,
-                        "radius": curve.Radius,
-                    }
-                )
+                self.target_edges.append({
+                    'object': moving_part,
+                    'subname': new_sub,
+                    'center': curve.Center,
+                    'axis': curve.Axis,
+                    'radius': curve.Radius
+                })
 
     def _get_current_type(self):
         curr_item = self.form.lw_type.currentItem()
@@ -426,19 +429,7 @@ class TaskAssemblyInsertFastener:
             for edge_info in self.target_edges:
                 link = self.assembly.newObject("App::Link", "FastenerLink")
                 link.LinkedObject = fastener
-
-                ref = [edge_info["object"], [edge_info["subname"]]]
-                global_plc = UtilsAssembly.getGlobalPlacement(ref)
-
-                global_center = global_plc.multVec(edge_info["center"])
-                global_axis = global_plc.Rotation.multVec(edge_info["axis"])
-
-                rot = App.Rotation(App.Vector(0, 0, 1), global_axis)
-
-                asm_global = self.assembly.getGlobalPlacement()
-                final_plc = asm_global.inverse() * App.Placement(global_center, rot)
-
-                link.Placement = final_plc
+                link.Placement = App.Placement(edge_info['center'], App.Rotation())
                 self.links.append(link)
 
 
