@@ -415,9 +415,7 @@ def buildHatchShape(
         #   • baseShape is a single simple face with no holes  (a face with
         #     inner wires, e.g. a wall with a window opening, can have a tile
         #     that sits inside the bbox safe zone yet still falls inside a hole)
-        _tile_diag = math.sqrt(
-            (tile_width * patternScale) ** 2 + (tile_height * patternScale) ** 2
-        )
+        _tile_diag = math.sqrt((tile_width * patternScale) ** 2 + (tile_height * patternScale) ** 2)
         try:
             _base_is_simple = (
                 rotationDeg == 0.0
