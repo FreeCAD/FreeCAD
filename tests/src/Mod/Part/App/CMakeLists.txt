@@ -21,6 +21,7 @@ add_executable(Part_tests_run
         PartFeature.cpp
         PartFeatures.cpp
         PartTestHelpers.cpp
+        SignalException.cpp
         PropertyTopoShape.cpp
         TopoDS_Shape.cpp
         TopoShape.cpp

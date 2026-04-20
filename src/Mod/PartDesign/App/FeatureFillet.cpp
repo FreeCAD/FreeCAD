@@ -37,6 +37,7 @@
 
 #include <Base/Exception.h>
 #include <Base/Reader.h>
+#include <Mod/Part/App/SignalException.h>
 #include <Mod/Part/App/TopoShape.h>
 
 #include "FeatureFillet.h"
@@ -111,12 +112,9 @@ App::DocumentObjectExecReturn* Fillet::execute()
     try {
         TopoShape shape(0);  //,getDocument()->getStringHasher());
 
-        // Add signal handler for segfault protection
-#if defined(__GNUC__) && defined(FC_OS_LINUX)
-        Base::SignalException se;
-#endif
-
-        shape.makeElementFillet(baseShape, edges, Radius.getValue(), Radius.getValue());
+        Part::SignalException::guard([&] {
+            shape.makeElementFillet(baseShape, edges, Radius.getValue(), Radius.getValue());
+        });
         if (shape.isNull()) {
             return new App::DocumentObjectExecReturn(
                 QT_TRANSLATE_NOOP("Exception", "Resulting shape is null")

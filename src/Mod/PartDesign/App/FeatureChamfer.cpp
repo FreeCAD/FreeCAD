@@ -161,16 +161,17 @@ App::DocumentObjectExecReturn* Chamfer::execute()
     }
     try {
         TopoShape shape(0);
-        Part::SignalException sig;
-        shape.makeElementChamfer(
-            TopShape,
-            edges,
-            static_cast<Part::ChamferType>(chamferType),
-            size,
-            size2,
-            nullptr,
-            flipDirection ? Part::Flip::flip : Part::Flip::none
-        );
+        Part::SignalException::guard([&] {
+            shape.makeElementChamfer(
+                TopShape,
+                edges,
+                static_cast<Part::ChamferType>(chamferType),
+                size,
+                size2,
+                nullptr,
+                flipDirection ? Part::Flip::flip : Part::Flip::none
+            );
+        });
         if (shape.isNull()) {
             return new App::DocumentObjectExecReturn(
                 QT_TRANSLATE_NOOP("Exception", "Failed to create chamfer")

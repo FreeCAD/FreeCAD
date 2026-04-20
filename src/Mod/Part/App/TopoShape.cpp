@@ -38,6 +38,7 @@
 #include <BRep_Tool.hxx>
 #include <BRepAdaptor_Surface.hxx>
 #include <Mod/Part/App/FCBRepAlgoAPI_Common.h>
+#include <Mod/Part/App/SignalException.h>
 #include <BRepAdaptor_CompCurve.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
@@ -2994,10 +2995,7 @@ TopoDS_Shape TopoShape::makeOffset2D(
 
         if (fabs(offset) > Precision::Confusion()) {
             try {
-#if defined(__GNUC__) && defined(FC_OS_LINUX)
-                Base::SignalException se;
-#endif
-                mkOffset.Perform(offset);
+                Part::SignalException::guard([&] { mkOffset.Perform(offset); });
             }
             catch (Standard_Failure&) {
                 throw;

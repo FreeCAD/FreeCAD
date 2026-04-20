@@ -31,6 +31,7 @@
 
 #include <QApplication>
 
+#include <Mod/Part/App/SignalException.h>
 #include <BRep_Tool.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
@@ -253,10 +254,7 @@ private:
             mkOffset.AddWire(wire);
         }
         try {
-#if defined(__GNUC__) && defined(FC_OS_LINUX)
-            Base::SignalException se;
-#endif
-            mkOffset.Perform(offsetLength);
+            Part::SignalException::guard([&] { mkOffset.Perform(offsetLength); });
         }
         catch (Standard_Failure&) {
             throw;

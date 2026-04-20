@@ -46,6 +46,7 @@
 
 #include "FeatureExtrusion.h"
 #include "ExtrusionHelper.h"
+#include "SignalException.h"
 #include "Part2DObject.h"
 
 
@@ -343,11 +344,10 @@ void Extrusion::extrudeShape(TopoShape& result, const TopoShape& source, const E
     if (std::fabs(params.taperAngleFwd) >= Precision::Angular()
         || std::fabs(params.taperAngleRev) >= Precision::Angular()) {
         // Tapered extrusion!
-#if defined(__GNUC__) && defined(FC_OS_LINUX)
-        Base::SignalException se;
-#endif
         std::vector<TopoShape> drafts;
-        ExtrusionHelper::makeElementDraft(params, myShape, drafts, result.Hasher);
+        Part::SignalException::guard([&] {
+            ExtrusionHelper::makeElementDraft(params, myShape, drafts, result.Hasher);
+        });
         if (drafts.empty()) {
             Standard_Failure::Raise("Drafting shape failed");
         }

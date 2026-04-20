@@ -2837,10 +2837,7 @@ TopoShape& TopoShape::makeElementOffset2D(
                 mkOffset.AddWire(TopoDS::Wire(w.getShape()));
             }
             try {
-#if defined(__GNUC__) && defined(FC_OS_LINUX)
-                Base::SignalException se;
-#endif
-                mkOffset.Perform(offset);
+                Part::SignalException::guard([&] { mkOffset.Perform(offset); });
             }
             catch (Standard_Failure&) {
                 throw;
@@ -4171,8 +4168,8 @@ TopoShape& TopoShape::makeElementChamfer(
                 break;
         }
     }
-    Part::SignalException sig;
-    return makeElementShape(mkChamfer, shape, op);
+    Part::SignalException::guard([&] { makeElementShape(mkChamfer, shape, op); });
+    return *this;
 }
 
 TopoShape& TopoShape::makeElementGeneralFuse(
