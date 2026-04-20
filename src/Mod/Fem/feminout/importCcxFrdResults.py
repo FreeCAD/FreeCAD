@@ -399,7 +399,7 @@ def _normalize_ccx_frd_line(line):
             continue
         else:
             return line
-        chunk = rest[i:i + width].strip()
+        chunk = rest[i : i + width].strip()
         if not chunk:
             return line
         try:
