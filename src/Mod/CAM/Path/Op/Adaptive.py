@@ -112,6 +112,37 @@ def sceneClean():
     del scenePathNodes[:]
 
 
+def renderProgressCallback(tpaths):
+    if FreeCAD.GuiUp:
+        for path in tpaths:
+            # path[0] contains the MotionType
+            # path[1] contains list of points
+            if path[0] == area.AdaptiveMotionType.Cutting:
+                sceneDrawPath(path[1], (0, 0, 1))  # Blue for cutting
+            else:
+                sceneDrawPath(path[1], (1, 0, 1))  # Magenta for non-cutting
+
+        FreeCADGui.updateGui()
+
+
+def initSceneGraph(z=10):
+    """Initialize the scene graph for adaptive visualization.
+
+    Args:
+        z: The Z height at which to draw paths (default: 10)
+
+    Returns True if scene graph was initialized, False otherwise.
+    """
+    global sceneGraph, topZ
+
+    if not FreeCAD.GuiUp:
+        return False
+
+    sceneGraph = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
+    topZ = z
+    return True
+
+
 def discretize(edge, flipDirection=False):
     pts = edge.discretize(Deflection=0.002)
     if flipDirection:
@@ -513,11 +544,7 @@ def GenerateGCode(op, obj, adaptiveResults):
 
 
 def Execute(op, obj):
-    global sceneGraph
-    global topZ
-
-    if FreeCAD.GuiUp:
-        sceneGraph = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
+    initSceneGraph()
 
     Path.Log.info("*** Adaptive toolpath processing started...\n")
 
@@ -618,17 +645,7 @@ def Execute(op, obj):
 
         # progress callback fn, if return true it will stop processing
         def progressFn(tpaths):
-            if FreeCAD.GuiUp:
-                for path in tpaths:
-                    # path[0] contains the MotionType
-                    # path[1] contains list of points
-                    if path[0] == area.AdaptiveMotionType.Cutting:
-                        sceneDrawPath(path[1], (0, 0, 1))
-                    else:
-                        sceneDrawPath(path[1], (1, 0, 1))
-
-                FreeCADGui.updateGui()
-
+            renderProgressCallback(tpaths)
             return obj.StopProcessing
 
         start = time.time()
@@ -711,11 +728,7 @@ def get_cleared_area(op, obj, pathArray, zOverride=None):
 
 
 def ExecuteModelAware(op, obj):
-    global sceneGraph
-    global topZ
-
-    if FreeCAD.GuiUp:
-        sceneGraph = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
+    initSceneGraph()
 
     Path.Log.info("*** Adaptive toolpath processing started...\n")
 
@@ -873,17 +886,7 @@ def ExecuteModelAware(op, obj):
 
         # progress callback fn, if return true it will stop processing
         def progressFn(tpaths):
-            if FreeCAD.GuiUp:
-                for path in tpaths:
-                    # path[0] contains the MotionType
-                    # path[1] contains list of points
-                    if path[0] == area.AdaptiveMotionType.Cutting:
-                        sceneDrawPath(path[1], (0, 0, 1))
-                    else:
-                        sceneDrawPath(path[1], (1, 0, 1))
-
-                FreeCADGui.updateGui()
-
+            renderProgressCallback(tpaths)
             return obj.StopProcessing
 
         start = time.time()

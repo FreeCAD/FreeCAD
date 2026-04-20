@@ -57,7 +57,7 @@ jobs:
           git push origin update-crowdin-translations --force
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@c0f553fe549906ede9cf27b5156039d195d2ece0
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1
         with:
           branch: update-crowdin-translations
           title: "Update translations from Crowdin"

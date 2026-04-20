@@ -209,11 +209,6 @@ class ObjectOp(PathOp.ObjectOp):
         Do not overwrite, implement circularHoleExecute(obj, holes) instead."""
         Path.Log.track()
 
-        def haveLocations(self, obj):
-            if PathOp.FeatureLocations & self.opFeatures(obj):
-                return len(obj.Locations) != 0
-            return False
-
         holes = []
         for base, subs in obj.Base:
             for sub in subs:
@@ -244,9 +239,8 @@ class ObjectOp(PathOp.ObjectOp):
                 else:  # is not a repeat, add unique position
                     holes.append({"x": pos.x, "y": pos.y, "d": diam, "sub": sub})
 
-        if haveLocations(self, obj):
-            for location in obj.Locations:
-                holes.append({"x": location.x, "y": location.y, "d": 0})
+        for pos in getattr(obj, "Locations", []):
+            holes.append({"x": pos.x, "y": pos.y, "d": 0})
 
         if len(holes) > 0:
             if obj.SortingMode == "Automatic":

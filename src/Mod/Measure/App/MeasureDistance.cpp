@@ -129,7 +129,8 @@ bool MeasureDistance::isValidSelection(const App::MeasureSelection& selection)
         if (type != App::MeasureElementType::POINT && type != App::MeasureElementType::LINE
             && type != App::MeasureElementType::LINESEGMENT && type != App::MeasureElementType::CIRCLE
             && type != App::MeasureElementType::ARC && type != App::MeasureElementType::CURVE
-            && type != App::MeasureElementType::PLANE && type != App::MeasureElementType::CYLINDER) {
+            && type != App::MeasureElementType::PLANE && type != App::MeasureElementType::CYLINDER
+            && type != App::MeasureElementType::SPHERE && type != App::MeasureElementType::TORUS) {
             return false;
         }
     }

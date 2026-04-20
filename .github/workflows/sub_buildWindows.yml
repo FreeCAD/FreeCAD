@@ -36,12 +36,21 @@ on:
         required: false
         type: boolean
         default: false
+      skipBuild:
+        description: "skip the actual build (report success only)"
+        required: false
+        type: boolean
+        default: false
   workflow_call:
     inputs:
       artifactBasename:
         required: true
         type: string
       allowedToFail:
+        required: false
+        default: false
+        type: boolean
+      skipBuild:
         required: false
         default: false
         type: boolean
@@ -78,16 +87,19 @@ jobs:
 
     steps:
       - name: Harden the runner (Audit all outbound calls)
+        if: "!inputs.skipBuild"
         uses: step-security/harden-runner@f808768d1510423e83855289c910610ca9b43176 # v2.17.0
         with:
           egress-policy: audit
 
       - name: Checking out source code
+        if: "!inputs.skipBuild"
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           submodules: true
 
       - name: Make needed directories, files and initializations
+        if: "!inputs.skipBuild"
         id: Init
         run: |
           mkdir ${{ env.CCACHE_DIR }}
@@ -99,19 +111,21 @@ jobs:
           echo "reportFile=${{ env.reportfilename }}" >> $GITHUB_OUTPUT
 
       - name: Get Ccache
+        if: "!inputs.skipBuild"
         uses: ./.github/workflows/actions/windows/getCcache
         with:
           ccachebindir: ${{ env.ccachebindir }}
 
       - name: Get Libpack
+        if: "!inputs.skipBuild"
         uses: ./.github/workflows/actions/windows/getLibpack
         with:
           libpackdir: ${{ env.libpackdir }}
 
       - name: Restore compiler cache
         id: cache-restore
-        if: always()
-        uses: actions/cache/restore@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
+        if: "!inputs.skipBuild"
+        uses: actions/cache/restore@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
           path: ${{ env.CCACHE_DIR }}
           key: FC-${{ env.cacheKey }}-${{ github.ref }}-${{ github.run_id }}
@@ -120,17 +134,20 @@ jobs:
             FC-${{ env.cacheKey }}-
 
       - name: Print Ccache statistics before build, reset stats and print config
+        if: "!inputs.skipBuild"
         run: |
           . $env:ccachebindir\ccache -s
           . $env:ccachebindir\ccache -z
           . $env:ccachebindir\ccache -p
 
       - name: Install cmake
+        if: "!inputs.skipBuild"
         uses: jwlawson/actions-setup-cmake@0d6a7d60b009d01c9e7523be22153ff8f19460d3 # v2.2.0
         with:
           cmake-version: '3.31.6'
 
       - name: Configuring CMake
+        if: "!inputs.skipBuild"
         run: >
           cmake -B"${{ env.builddir }}" .
           --preset ${{ env.config }}
@@ -147,36 +164,38 @@ jobs:
         uses: microsoft/setup-msbuild@30375c66a4eea26614e0d39710365f22f8b0af57 # v3.0.0
 
       - name: Compiling sources
+        if: "!inputs.skipBuild"
         run: |
           cd $env:builddir
           msbuild ALL_BUILD.vcxproj /m /p:Configuration=Release /p:TrackFileAccess=false /p:CLToolPath=${{ env.ccachebindir }}
 
       - name: Print Ccache statistics after build
-        if: always()
+        if: "!inputs.skipBuild"
         run: |
           . $env:ccachebindir\ccache -s
 
       - name: C++ unit tests
-        if: false # Disabled because seems to not function on Windows build
+        if: false # Disabled because seems to not function on Windows build  # also: && !inputs.skipBuild
         timeout-minutes: 1
         run: |
           . ${{ env.builddir }}\tests\Release\Tests_run --gtest_output=json:${{ env.reportdir }}gtest_results.json # 2>&1 | tee -filepath ${{ env.logdir }}\unitTests.log
 
       - name: FreeCAD CLI tests
+        if: "!inputs.skipBuild"
         run: |
           . ${{ env.builddir }}\bin\FreeCADCmd -t 0 # 2>&1 | tee -filepath ${{ env.logdir }}\integrationTests.log
 
       - name: Save Compiler Cache
         id: cache-save
-        if: always()
-        uses: actions/cache/save@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
+        if: "!inputs.skipBuild"
+        uses: actions/cache/save@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
           path: ${{ env.CCACHE_DIR }}
           key: FC-${{ env.cacheKey }}-${{ github.ref }}-${{ github.run_id }}
 
       - name: Upload logs
-        if: always()
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        if: "!inputs.skipBuild"
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: ${{ inputs.artifactBasename }}-Logs
           path: |

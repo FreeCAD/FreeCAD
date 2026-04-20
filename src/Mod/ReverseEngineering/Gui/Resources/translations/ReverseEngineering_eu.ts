@@ -237,8 +237,8 @@
       <translation>Kokapena</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineCurve.cpp" line="138"/>
       <location filename="../../FitBSplineSurface.cpp" line="242"/>
+      <location filename="../../FitBSplineCurve.cpp" line="138"/>
       <source>Fit B-spline</source>
       <translation type="unfinished">Fit B-spline</translation>
     </message>

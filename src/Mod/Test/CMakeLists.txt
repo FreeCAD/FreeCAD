@@ -3,6 +3,8 @@ SET(Test_SRCS
     __init__.py
     Init.py
     BaseTests.py
+    AutoSaverStress.py
+    RunAutoSaverStress.py
     Document.py
     GuiDocument.py
     Metadata.py

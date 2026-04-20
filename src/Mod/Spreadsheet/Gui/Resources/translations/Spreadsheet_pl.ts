@@ -4,17 +4,17 @@
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
-      <location filename="../../Command.cpp" line="954"/>
+      <location filename="../../Command.cpp" line="956"/>
       <source>Spreadsheet</source>
       <translation>Arkusz kalkulacyjny</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="955"/>
+      <location filename="../../Command.cpp" line="957"/>
       <source>&amp;New Spreadsheet</source>
       <translation>&amp;Nowy arkusz kalkulacyjny</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="956"/>
+      <location filename="../../Command.cpp" line="958"/>
       <source>Creates a new spreadsheet</source>
       <translation>Tworzy nowy arkusz kalkulacyjny</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdSpreadsheetAlignBottom</name>
     <message>
-      <location filename="../../Command.cpp" line="513"/>
+      <location filename="../../Command.cpp" line="515"/>
       <source>Spreadsheet</source>
       <translation>Arkusz kalkulacyjny</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="514"/>
+      <location filename="../../Command.cpp" line="516"/>
       <source>Align &amp;Bottom</source>
       <translation>Wyrównaj do &amp;dołu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="515"/>
+      <location filename="../../Command.cpp" line="517"/>
       <source>Aligns cell contents to the bottom</source>
       <translation>Wyrównuje zawartość komórki do dołu</translation>
     </message>
@@ -40,17 +40,17 @@
   <context>
     <name>CmdSpreadsheetAlignCenter</name>
     <message>
-      <location filename="../../Command.cpp" line="342"/>
+      <location filename="../../Command.cpp" line="344"/>
       <source>Spreadsheet</source>
       <translation>Arkusz kalkulacyjny</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="343"/>
+      <location filename="../../Command.cpp" line="345"/>
       <source>Align Horizontal &amp;Center</source>
       <translation>Wyśrodkuj w p&amp;oziomie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="344"/>
+      <location filename="../../Command.cpp" line="346"/>
       <source>Aligns cell contents to the horizontal center</source>
       <translation>Wyrównuje zawartość komórki poziomo do środka</translation>
     </message>
@@ -58,17 +58,17 @@
   <context>
     <name>CmdSpreadsheetAlignLeft</name>
     <message>
-      <location filename="../../Command.cpp" line="285"/>
+      <location filename="../../Command.cpp" line="287"/>
       <source>Spreadsheet</source>
       <translation>Arkusz kalkulacyjny</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="286"/>
+      <location filename="../../Command.cpp" line="288"/>
       <source>Align &amp;Left</source>
       <translation>Wyrównaj do &amp;lewej</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="287"/>
+      <location filename="../../Command.cpp" line="289"/>
       <source>Aligns cell contents to the left</source>
       <translation>Wyrównuje zawartość komórki do lewej</translation>
     </message>
@@ -76,17 +76,17 @@
   <context>
     <name>CmdSpreadsheetAlignRight</name>
     <message>
-      <location filename="../../Command.cpp" line="399"/>
+      <location filename="../../Command.cpp" line="401"/>
       <source>Spreadsheet</source>
       <translation>Arkusz kalkulacyjny</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="400"/>
+      <location filename="../../Command.cpp" line="402"/>
       <source>Align &amp;Right</source>
       <translation>Wyrównaj do &amp;prawej</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="401"/>
+      <location filename="../../Command.cpp" line="403"/>
       <source>Aligns cell contents to the right</source>
       <translation>Wyrównuje zawartość komórki do prawej</translation>
     </message>
@@ -94,17 +94,17 @@
   <context>
     <name>CmdSpreadsheetAlignTop</name>
     <message>
-      <location filename="../../Command.cpp" line="456"/>
+      <location filename="../../Command.cpp" line="458"/>
       <source>Spreadsheet</source>
       <translation>Arkusz kalkulacyjny</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="457"/>
+      <location filename="../../Command.cpp" line="459"/>
       <source>Align &amp;Top</source>
       <translation>Wyrównaj do &amp;góry</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="458"/>
+      <location filename="../../Command.cpp" line="460"/>
       <source>Aligns cell contents to the top</source>
       <translation>Wyrównuje zawartość komórki do góry</translation>
     </message>
@@ -112,17 +112,17 @@
   <context>
     <name>CmdSpreadsheetAlignVCenter</name>
     <message>
-      <location filename="../../Command.cpp" line="570"/>
+      <location filename="../../Command.cpp" line="572"/>
       <source>Spreadsheet</source>
       <translation>Arkusz kalkulacyjny</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="571"/>
+      <location filename="../../Command.cpp" line="573"/>
       <source>Align &amp;Vertical Center</source>
       <translation>Wyśrodkuj w p&amp;ionie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="572"/>
+      <location filename="../../Command.cpp" line="574"/>
       <source>Aligns cell contents to the vertical center</source>
       <translation>Wyrównuje zawartość komórki pionowo do środka</translation>
     </message>
@@ -130,17 +130,17 @@
   <context>
     <name>CmdSpreadsheetExport</name>
     <message>
-      <location filename="../../Command.cpp" line="240"/>
+      <location filename="../../Command.cpp" line="242"/>
       <source>Spreadsheet</source>
       <translation>Arkusz kalkulacyjny</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="241"/>
+      <location filename="../../Command.cpp" line="243"/>
       <source>&amp;Export Spreadsheet</source>
       <translation>&amp;Eksportuj arkusz kalkulacyjny</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="242"/>
+      <location filename="../../Command.cpp" line="244"/>
       <source>Exports the spreadsheet to a CSV file</source>
       <translation>Eksportuje arkusz do pliku CSV</translation>
     </message>
@@ -184,17 +184,17 @@
   <context>
     <name>CmdSpreadsheetSetAlias</name>
     <message>
-      <location filename="../../Command.cpp" line="882"/>
+      <location filename="../../Command.cpp" line="884"/>
       <source>Spreadsheet</source>
       <translation>Arkusz kalkulacyjny</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="883"/>
+      <location filename="../../Command.cpp" line="885"/>
       <source>Set Alias</source>
       <translation>Ustaw alias</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="884"/>
+      <location filename="../../Command.cpp" line="886"/>
       <source>Sets an alias for the selected cell</source>
       <translation>Ustawia alias dla wybranej komórki</translation>
     </message>
@@ -220,17 +220,17 @@
   <context>
     <name>CmdSpreadsheetStyleBold</name>
     <message>
-      <location filename="../../Command.cpp" line="627"/>
+      <location filename="../../Command.cpp" line="629"/>
       <source>Spreadsheet</source>
       <translation>Arkusz kalkulacyjny</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="628"/>
+      <location filename="../../Command.cpp" line="630"/>
       <source>&amp;Bold Text</source>
       <translation>&amp;Pogrubienie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="629"/>
+      <location filename="../../Command.cpp" line="631"/>
       <source>Sets the text in the selected cells bold</source>
       <translation>Pogrubia tekst w wybranych komórkach</translation>
     </message>
@@ -238,17 +238,17 @@
   <context>
     <name>CmdSpreadsheetStyleItalic</name>
     <message>
-      <location filename="../../Command.cpp" line="712"/>
+      <location filename="../../Command.cpp" line="714"/>
       <source>Spreadsheet</source>
       <translation>Arkusz kalkulacyjny</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="713"/>
+      <location filename="../../Command.cpp" line="715"/>
       <source>&amp;Italic Text</source>
       <translation>Kursywa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="714"/>
+      <location filename="../../Command.cpp" line="716"/>
       <source>Sets the text in the selected cells italic</source>
       <translation>Ustawia kursywę dla tekstu w wybranych komórkach</translation>
     </message>
@@ -256,17 +256,17 @@
   <context>
     <name>CmdSpreadsheetStyleUnderline</name>
     <message>
-      <location filename="../../Command.cpp" line="797"/>
+      <location filename="../../Command.cpp" line="799"/>
       <source>Spreadsheet</source>
       <translation>Arkusz kalkulacyjny</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="798"/>
+      <location filename="../../Command.cpp" line="800"/>
       <source>&amp;Underline Text</source>
       <translation>&amp;Podkreślenie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="799"/>
+      <location filename="../../Command.cpp" line="801"/>
       <source>Underlines the text in the selected cells</source>
       <translation>Podkreśla tekst w wybranych komórkach</translation>
     </message>
@@ -274,7 +274,7 @@
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="919"/>
+      <location filename="../../qtcolorpicker.cpp" line="920"/>
       <source>Custom Color</source>
       <translation>Kolor użytkownika</translation>
     </message>
@@ -292,52 +292,52 @@
       <translation>Podziel komórkę</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="307"/>
+      <location filename="../../Command.cpp" line="309"/>
       <source>Left-align cell</source>
       <translation>Wyrównaj komórkę do lewej</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="364"/>
+      <location filename="../../Command.cpp" line="366"/>
       <source>Center cell</source>
       <translation>Wyśrodkuj komórkę</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="421"/>
+      <location filename="../../Command.cpp" line="423"/>
       <source>Right-align cell</source>
       <translation>Wyrównaj komórkę do prawej</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="478"/>
+      <location filename="../../Command.cpp" line="480"/>
       <source>Top-align cell</source>
       <translation>Wyrównaj komórkę do góry</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="535"/>
+      <location filename="../../Command.cpp" line="537"/>
       <source>Bottom-align cell</source>
       <translation>Wyrównaj komórkę do dołu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="592"/>
+      <location filename="../../Command.cpp" line="594"/>
       <source>Vertically center cells</source>
       <translation>Wyśrodkuj komórkę w pionie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="667"/>
+      <location filename="../../Command.cpp" line="669"/>
       <source>Set bold text</source>
       <translation>Ustaw pogrubiony tekst</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="752"/>
+      <location filename="../../Command.cpp" line="754"/>
       <source>Set italic text</source>
       <translation>Ustaw pochylony tekst</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="837"/>
+      <location filename="../../Command.cpp" line="839"/>
       <source>Set underline text</source>
       <translation>Ustaw podkreślony tekst</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="967"/>
+      <location filename="../../Command.cpp" line="969"/>
       <source>Create Spreadsheet</source>
       <translation>Utwórz Arkusz kalkulacyjny</translation>
     </message>
@@ -347,43 +347,70 @@
       <translation>Ustaw właściwości komórki</translation>
     </message>
     <message>
-      <location filename="../../SheetModel.cpp" line="573"/>
+      <location filename="../../SheetModel.cpp" line="628"/>
       <source>Edit cell</source>
       <translation>Edytuj komórkę</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="147"/>
+      <location filename="../../Workbench.cpp" line="148"/>
       <source>Set text color</source>
       <translation>Ustaw kolor tekstu</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="182"/>
+      <location filename="../../Workbench.cpp" line="184"/>
       <source>Set background color</source>
       <translation>Ustaw kolor tła</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="347"/>
-      <location filename="../../SheetTableView.cpp" line="380"/>
+      <location filename="../../SheetTableView.cpp" line="224"/>
+      <source>Recompute Cells</source>
+      <translation>Przelicz komórki</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="326"/>
       <source>Insert Rows</source>
       <translation>Wstaw wiersze</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="400"/>
-      <location filename="../../SheetTableView.cpp" line="475"/>
+      <location filename="../../SheetTableView.cpp" line="353"/>
       <source>Remove Rows</source>
       <translation>Usuń wiersze</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="422"/>
-      <location filename="../../SheetTableView.cpp" line="455"/>
+      <location filename="../../SheetTableView.cpp" line="366"/>
+      <source>Remove Columns</source>
+      <translation>Usuń kolumny</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="339"/>
       <source>Insert Columns</source>
       <translation>Wstaw kolumny</translation>
     </message>
     <message>
       <location filename="../../SpreadsheetView.cpp" line="193"/>
-      <location filename="../../SheetTableView.cpp" line="679"/>
+      <location filename="../../SheetTableView.cpp" line="581"/>
       <source>Clear Cells</source>
       <translation>Wyczyść komórki</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="204"/>
+      <source>Setup conf table</source>
+      <translation>Ustaw tabelę konfiguracji</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="309"/>
+      <source>Unsetup conf table</source>
+      <translation>Usuń ustawienia tabeli konfiguracji</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.cpp" line="243"/>
+      <source>Bind cells</source>
+      <translation>Powiąż komórki</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.cpp" line="297"/>
+      <source>Unbind cells</source>
+      <translation>Usuń powiązanie komórek</translation>
     </message>
   </context>
   <context>
@@ -679,13 +706,7 @@ switch the design configuration. The property will be created if not exist.</sou
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="107"/>
-      <location filename="../../Command.cpp" line="198"/>
-      <source>CSV (*.csv *.CSV);;All (*)</source>
-      <translation>CSV (*.csv *.CSV);Wszystkie (*)</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="201"/>
+      <location filename="../../Command.cpp" line="203"/>
       <source>Import file</source>
       <translation>Importuj plik</translation>
     </message>
@@ -707,39 +728,51 @@ Arkusz.mój_alias zamiast Arkusz.B1</translation>
       <translation>Arkusz kalkulacyjny</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="110"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="108"/>
+      <location filename="../../Command.cpp" line="199"/>
+      <source>CSV (*.csv *.CSV)</source>
+      <translation>CSV (*.csv *.CSV)</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="109"/>
+      <location filename="../../Command.cpp" line="200"/>
+      <source>All (*)</source>
+      <translation>Wszystkie (*)</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="112"/>
       <source>Export File</source>
       <translation>Eksportuj plik</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="136"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="138"/>
       <source>Show Spreadsheet</source>
       <translation>Pokaż arkusz</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="98"/>
+      <location filename="../../Workbench.cpp" line="99"/>
       <source>Sets the text color of cells</source>
       <translation>Ustawia kolor tekstu komórek</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="99"/>
       <location filename="../../Workbench.cpp" line="100"/>
+      <location filename="../../Workbench.cpp" line="101"/>
       <source>Sets the text color of spreadsheet cells</source>
       <translation>Ustawia kolor tekstu komórek arkusza kalkulacyjnego</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="121"/>
-      <location filename="../../Workbench.cpp" line="123"/>
+      <location filename="../../Workbench.cpp" line="122"/>
+      <location filename="../../Workbench.cpp" line="124"/>
       <source>Sets the background color of cells</source>
       <translation>Ustawia kolor tła komórek</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="122"/>
+      <location filename="../../Workbench.cpp" line="123"/>
       <source>Sets the spreadsheet cells background color</source>
       <translation>Ustawia kolor tła komórek arkusza kalkulacyjnego</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="815"/>
+      <location filename="../../SheetTableView.cpp" line="719"/>
       <source>Copy &amp; Paste Failed</source>
       <translation>Kopiowanie i wklejanie nie powiodło się</translation>
     </message>
@@ -907,19 +940,19 @@ Continue?</source>
 Kontynuować?</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="284"/>
+      <location filename="../../DlgBindSheet.cpp" line="283"/>
       <source>Bind Spreadsheet Cells</source>
       <translation>Powiąż komórki arkusza kalkulacyjnego</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="285"/>
+      <location filename="../../DlgBindSheet.cpp" line="284"/>
       <source>Error:
 </source>
       <translation>Błąd:
 </translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="312"/>
+      <location filename="../../DlgBindSheet.cpp" line="311"/>
       <source>Unbind Cells</source>
       <translation>Odłącz komórki</translation>
     </message>
@@ -1018,33 +1051,13 @@ Domyślnie %V = %A
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-      <location filename="../../SheetTableView.cpp" line="197"/>
-      <location filename="../../SheetTableView.cpp" line="661"/>
+      <location filename="../../SheetTableView.cpp" line="186"/>
+      <location filename="../../SheetTableView.cpp" line="563"/>
       <source>Recompute</source>
       <translation>Przelicz ponownie</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="141"/>
-      <source>Insert %n Row(s) Above</source>
-      <translation>
-        <numerusform>Wstaw %n wiersz powyżej</numerusform>
-        <numerusform>Wstaw %n wiersze powyżej</numerusform>
-        <numerusform>Wstaw %n wierszy powyżej</numerusform>
-        <numerusform>Wstaw %n wierszy powyżej</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="145"/>
-      <source>Insert %n Row(s) Below</source>
-      <translation>
-        <numerusform>Wstaw %n wiersz poniżej</numerusform>
-        <numerusform>Wstaw %n wiersze poniżej</numerusform>
-        <numerusform>Wstaw %n wierszy poniżej</numerusform>
-        <numerusform>Wstaw %n wierszy poniżej</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="150"/>
+      <location filename="../../SheetTableView.cpp" line="147"/>
       <source>Insert %n Non-Contiguous Rows</source>
       <translation>
         <numerusform>Wstaw %n wiersz, który nie jest sąsiadujący</numerusform>
@@ -1053,38 +1066,13 @@ Domyślnie %V = %A
         <numerusform>Wstaw %n wierszy, które nie są sąsiadujące</numerusform>
       </translation>
     </message>
-    <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="153"/>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="150"/>
       <source>Remove Rows</source>
-      <translation>
-        <numerusform>Usuń wiersz</numerusform>
-        <numerusform>Usuń wiersze</numerusform>
-        <numerusform>Usuń wiersze</numerusform>
-        <numerusform>Usuń wiersze</numerusform>
-      </translation>
+      <translation>Usuń wiersze</translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="167"/>
-      <source>Insert %n Column(s) Left</source>
-      <translation>
-        <numerusform>Wstaw %n kolumn(y) z prawej strony</numerusform>
-        <numerusform>Wstaw %n kolumny z lewej strony</numerusform>
-        <numerusform>Wstaw %n kolumn z lewej strony</numerusform>
-        <numerusform>Wstaw %n kolumny z lewej strony</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="172"/>
-      <source>Insert %n Column(s) Right</source>
-      <translation>
-        <numerusform>Wstaw %n kolumnę z prawej strony</numerusform>
-        <numerusform>Wstaw %n kolumny z prawej strony</numerusform>
-        <numerusform>Wstaw %n kolumn z prawej strony</numerusform>
-        <numerusform>Wstaw %n kolumn(y) z prawej strony</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="178"/>
       <source>Insert %n Non-Contiguous Columns</source>
       <translation>
         <numerusform>Wstaw %n kolumnę, która nie jest sąsiadująca</numerusform>
@@ -1093,67 +1081,110 @@ Domyślnie %V = %A
         <numerusform>Wstaw %n kolumn, które nie są sąsiadujące</numerusform>
       </translation>
     </message>
-    <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="181"/>
-      <source>Remove Column(s)</source>
-      <translation>
-        <numerusform>Usuń kolumnę</numerusform>
-        <numerusform>Usuń kolumny</numerusform>
-        <numerusform>Usuń kolumn(y)</numerusform>
-        <numerusform>Usuń kolumn(y)</numerusform>
-      </translation>
-    </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="194"/>
-      <location filename="../../SheetTableView.cpp" line="660"/>
+      <location filename="../../SheetTableView.cpp" line="562"/>
       <source>Properties…</source>
       <translation>Właściwości…</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="198"/>
-      <location filename="../../SheetTableView.cpp" line="669"/>
+      <location filename="../../SheetTableView.cpp" line="187"/>
+      <location filename="../../SheetTableView.cpp" line="571"/>
       <source>Bind…</source>
       <translation>Powiąż…</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="199"/>
-      <location filename="../../SheetTableView.cpp" line="662"/>
+      <location filename="../../SheetTableView.cpp" line="564"/>
       <source>Configuration Table…</source>
       <translation>Tabela konfiguracji…</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="203"/>
-      <location filename="../../SheetTableView.cpp" line="663"/>
+      <location filename="../../SheetTableView.cpp" line="192"/>
+      <location filename="../../SheetTableView.cpp" line="565"/>
       <source>Merge Cells</source>
       <translation>Scal komórki</translation>
     </message>
+    <message numerus="yes">
+      <location filename="../../SheetTableView.cpp" line="141"/>
+      <source>Insert %n Rows Above</source>
+      <translation>
+        <numerusform>Wstaw %n wiersz powyżej</numerusform>
+        <numerusform>Wstaw %n wiersze powyżej</numerusform>
+        <numerusform>Wstaw %n wierszy powyżej</numerusform>
+        <numerusform>Wstaw %n wierszy powyżej</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <location filename="../../SheetTableView.cpp" line="143"/>
+      <source>Insert %n Rows Below</source>
+      <translation>
+        <numerusform>Wstaw %n wiersz poniżej</numerusform>
+        <numerusform>Wstaw %n wiersze poniżej</numerusform>
+        <numerusform>Wstaw %n wierszy poniżej</numerusform>
+        <numerusform>Wstaw %n wierszy poniżej</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <location filename="../../SheetTableView.cpp" line="161"/>
+      <source>Insert %n Columns Left</source>
+      <translation>
+        <numerusform>Wstaw %n kolumnę po lewej</numerusform>
+        <numerusform>Wstaw %n kolumny po lewej</numerusform>
+        <numerusform>Wstaw %n kolumn po lewej</numerusform>
+        <numerusform>Wstaw %n kolumn po lewej</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <location filename="../../SheetTableView.cpp" line="163"/>
+      <source>Insert %n Columns Right</source>
+      <translation>
+        <numerusform>Wstaw %n kolumnę po prawej</numerusform>
+        <numerusform>Wstaw %n kolumny po prawej</numerusform>
+        <numerusform>Wstaw %n kolumn po prawej</numerusform>
+        <numerusform>Wstaw %n kolumn po prawej</numerusform>
+      </translation>
+    </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="208"/>
-      <location filename="../../SheetTableView.cpp" line="664"/>
+      <location filename="../../SheetTableView.cpp" line="170"/>
+      <source>Remove Columns</source>
+      <translation>Usuń kolumny</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="183"/>
+      <source>Properties</source>
+      <translation>Właściwości</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="188"/>
+      <source>Configuration Table</source>
+      <translation>Tabela konfiguracji</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="197"/>
+      <location filename="../../SheetTableView.cpp" line="566"/>
       <source>Split Cell</source>
       <translation>Podziel komórkę</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="212"/>
-      <location filename="../../SheetTableView.cpp" line="667"/>
+      <location filename="../../SheetTableView.cpp" line="201"/>
+      <location filename="../../SheetTableView.cpp" line="569"/>
       <source>Cut</source>
       <translation>Wytnij</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="213"/>
-      <location filename="../../SheetTableView.cpp" line="665"/>
+      <location filename="../../SheetTableView.cpp" line="202"/>
+      <location filename="../../SheetTableView.cpp" line="567"/>
       <source>Copy</source>
       <translation>Kopiuj</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="214"/>
-      <location filename="../../SheetTableView.cpp" line="666"/>
+      <location filename="../../SheetTableView.cpp" line="203"/>
+      <location filename="../../SheetTableView.cpp" line="568"/>
       <source>Paste</source>
       <translation>Wklej</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="215"/>
-      <location filename="../../SheetTableView.cpp" line="668"/>
+      <location filename="../../SheetTableView.cpp" line="204"/>
+      <location filename="../../SheetTableView.cpp" line="570"/>
       <source>Delete</source>
       <translation>Usuń</translation>
     </message>
@@ -1174,22 +1205,22 @@ Domyślnie %V = %A
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="50"/>
+      <location filename="../../Workbench.cpp" line="51"/>
       <source>Spreadsheet</source>
       <translation>Arkusz Kalkulacyjny</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="51"/>
+      <location filename="../../Workbench.cpp" line="52"/>
       <source>&amp;Spreadsheet</source>
       <translation>&amp;Arkusz kalkulacyjny</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="52"/>
+      <location filename="../../Workbench.cpp" line="53"/>
       <source>&amp;Alignment</source>
       <translation>&amp;Wyrównanie</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="53"/>
+      <location filename="../../Workbench.cpp" line="54"/>
       <source>&amp;Styles</source>
       <translation>&amp;Style</translation>
     </message>
@@ -1219,12 +1250,12 @@ Domyślnie %V = %A
   <context>
     <name>SpreadsheetGui::DlgSheetConf</name>
     <message>
-      <location filename="../../DlgSheetConf.cpp" line="292"/>
+      <location filename="../../DlgSheetConf.cpp" line="291"/>
       <source>Setup Configuration Table</source>
       <translation>Ustawienia tabeli konfiguracji</translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.cpp" line="349"/>
+      <location filename="../../DlgSheetConf.cpp" line="348"/>
       <source>Unsetup Configuration Table</source>
       <translation>Usuń tabelę konfiguracji ustawień</translation>
     </message>

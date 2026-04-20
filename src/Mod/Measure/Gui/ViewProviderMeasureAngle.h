@@ -59,6 +59,12 @@ public:
     void redrawAnnotation() override;
     void positionAnno(const Measure::MeasureBase* measureObject) override;
 
+protected:
+    // label draggable in local measurement frame instead of
+    // rotating the dragger into the current view plane.
+    void onLabelMoveStart() override
+    {}
+
 private:
     // Fields
     SoSFFloat fieldAngle;  // radians.

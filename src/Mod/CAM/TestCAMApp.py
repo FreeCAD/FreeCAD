@@ -114,13 +114,14 @@ from CAMTests.TestPathVoronoi import TestPathVoronoi
 from CAMTests.TestGenericPost import TestGenericPost
 from CAMTests.TestGenericPlasma import TestGenericPlasma
 from CAMTests.TestLinuxCNCPost import TestLinuxCNCPost
+from CAMTests.TestMarlinPost import TestMarlinPost
 from CAMTests.TestDxfPost import TestDxfPost
 from CAMTests.TestFanucPost import TestFanucPost
 
-# from CAMTests.TestGrblPost import TestGrblPost
-# from CAMTests.TestMassoG3Post import TestMassoG3Post
-# from CAMTests.TestCentroidPost import TestCentroidPost
-# from CAMTests.TestMach3Mach4Post import TestMach3Mach4Post
+from CAMTests.TestGrblPost import TestGrblPost
+from CAMTests.TestMassoG3Post import TestMassoG3Post
+from CAMTests.TestCentroidPost import TestCentroidPost
+from CAMTests.TestMach3Mach4Post import TestMach3Mach4Post
 from CAMTests.TestTestPost import TestTestPost
 from CAMTests.TestPostGCodes import TestPostGCodes
 from CAMTests.TestPostMCodes import TestPostMCodes

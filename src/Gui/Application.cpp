@@ -40,6 +40,7 @@
 #include <QSurfaceFormat>
 #include <QTextStream>
 #include <QTimer>
+#include <QThread>
 #include <QWindow>
 #include <QStyleFactory>
 
@@ -50,6 +51,7 @@
 
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
+#include <App/MainThreadSignal.h>
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/Exception.h>
@@ -74,6 +76,7 @@
 #include "PreferencePages/DlgSettingsCacheDirectory.h"
 #include "DocumentPy.h"
 #include "DocumentRecovery.h"
+#include "EditableDatumLabelPy.h"
 #include "EditorView.h"
 #include "ExpressionBindingPy.h"
 #include "FileDialog.h"
@@ -89,6 +92,7 @@
 #include "PythonDebugger.h"
 #include "MainWindowPy.h"
 #include "MDIViewPy.h"
+#include "MDIViewWithCamera.h"
 #include "Placement.h"
 #include "SoFCDB.h"
 #include "Selection.h"
@@ -169,6 +173,18 @@ extern const long NlErrorCode;  // initialized before main() by navlib_load.cpp
 
 namespace Gui
 {
+
+void requireMainThread(const char* api)
+{
+    if (App::MainThreadSignalConfig::isMainThread()) {
+        return;
+    }
+
+    Base::Console().error("GUI API '%s' may only be used from the main thread.\n", api);
+    throw Base::RuntimeError(
+        std::string("GUI API '") + api + "' may only be used from the main thread"
+    );
+}
 
 class ViewProviderMap
 {
@@ -385,6 +401,48 @@ struct PyMethodDef FreeCADGui_methods[] = {
     {nullptr, nullptr, 0, nullptr} /* sentinel */
 };
 
+class MainThreadInvoker final: public QObject
+{
+public:
+    static MainThreadInvoker* instance()
+    {
+        static MainThreadInvoker* inst = [] {
+            auto* obj = new MainThreadInvoker();
+            // Ensure the object lives on the GUI thread
+            if (qApp && qApp->thread() && QThread::currentThread() != qApp->thread()) {
+                obj->moveToThread(qApp->thread());
+            }
+            return obj;
+        }();
+        return inst;
+    }
+
+private:
+    MainThreadInvoker() = default;
+    ~MainThreadInvoker() override = default;
+};
+
+// Hook: are we currently on the GUI (main) thread?
+bool qtIsMainThread()
+{
+    return !qApp || (QThread::currentThread() == qApp->thread());
+}
+
+// Hook: invoke a functor on the GUI thread, either blocking or queued.
+void qtInvokeOnMain(std::function<void()>&& fn, bool blocking)
+{
+    if (!qApp) {
+        fn();
+        return;
+    }
+
+    QMetaObject::invokeMethod(
+        MainThreadInvoker::instance(),
+        [f = std::move(fn)]() mutable { f(); },
+        blocking ? Qt::BlockingQueuedConnection : Qt::QueuedConnection
+    );
+}
+
 }  // namespace Gui
 
 void Application::initStyleParameterManager()
@@ -464,11 +522,14 @@ void Application::initStyleParameterManager()
 
     Base::registerServiceImplementation(d->styleParameterManager);
 }
+
 // clang-format off
 Application::Application(bool GUIenabled)
 {
     // App::GetApplication().Attach(this);
     if (GUIenabled) {
+        App::MainThreadSignalConfig::setHooks(&qtIsMainThread, &qtInvokeOnMain);
+
         // NOLINTBEGIN
         App::GetApplication().signalNewDocument.connect(
             std::bind(&Gui::Application::slotNewDocument, this, sp::_1, sp::_2));
@@ -491,12 +552,12 @@ Application::Application(bool GUIenabled)
             hPGrp->GetASCII("Language", (const char*)lang.toLatin1()).c_str());
         GetWidgetFactorySupplier();
 
-        // Coin3d disabled VBO support for all Intel drivers but in the meantime they have improved
-        // so we can try to override the workaround by setting COIN_VBO
+        // Coin3d disables VBO support for some (typically very old) drivers and hardware.
+        // Force it on if the preference says to.
         ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/View");
         if (hViewGrp->GetBool("UseVBO", false)) {
-            (void)coin_setenv("COIN_VBO", "0", true);
+            (void)coin_setenv("COIN_VBO", "1", true);
         }
 
         // Check for the symbols for group separator and decimal point. They must be different
@@ -574,6 +635,10 @@ Application::Application(bool GUIenabled)
         Base::Interpreter().addType(ExpressionBindingPy::type_object(),
                                     module,
                                     "ExpressionBinding");
+
+        Base::Interpreter().addType(&EditableDatumLabelPy::Type,
+                                    module,
+                                    "EditableDatumLabel");
 
         // insert Selection module
         static struct PyModuleDef SelectionModuleDef = {PyModuleDef_HEAD_INIT,
@@ -1653,6 +1718,7 @@ Gui::Document* Application::getDocument(const App::Document* pDoc) const
 
 void Application::showViewProvider(const App::DocumentObject* obj)
 {
+    requireMainThread("Gui::Application::showViewProvider");
     ViewProvider* vp = getViewProvider(obj);
     if (vp) {
         vp->show();
@@ -1661,6 +1727,7 @@ void Application::showViewProvider(const App::DocumentObject* obj)
 
 void Application::hideViewProvider(const App::DocumentObject* obj)
 {
+    requireMainThread("Gui::Application::hideViewProvider");
     ViewProvider* vp = getViewProvider(obj);
     if (vp) {
         vp->hide();
@@ -1669,6 +1736,7 @@ void Application::hideViewProvider(const App::DocumentObject* obj)
 
 Gui::ViewProvider* Application::getViewProvider(const App::DocumentObject* obj) const
 {
+    requireMainThread("Gui::Application::getViewProvider");
     return d->viewproviderMap.getViewProvider(obj);
 }
 
@@ -2343,6 +2411,7 @@ void Application::initTypes()
     // views
     Gui::BaseView                               ::init();
     Gui::MDIView                                ::init();
+    Gui::MDIViewWithCamera						::init();
     Gui::View3DInventor                         ::init();
     Gui::AbstractSplitView                      ::init();
     Gui::SplitView3DInventor                    ::init();

@@ -34,8 +34,17 @@
 #include <list>
 #include <set>
 #include <map>
+#include <memory>
 #include <string>
 #include <optional>
+
+#include <functional>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+#include <atomic>
+
+#include <Base/Exception.h>
 
 #include <Base/Observer.h>
 #include <Base/Parameter.h>
@@ -86,6 +95,50 @@ enum class MessageOption {
 struct DocumentInitFlags {
     bool createView {true}; ///< Whether to hide the document in the tree view.
     bool temporary {false}; ///< Whether the document should be a temporary one.
+};
+
+/**
+ * @brief Failure category for async recompute processing.
+ */
+enum class RecomputeFailure
+{
+    None,
+    DependencyCycle,
+    Exception
+};
+
+/// Result returned by processing a recompute request.
+struct AppExport RecomputeResult
+{
+    bool success {true};
+    RecomputeFailure failure {RecomputeFailure::None};
+    std::unique_ptr<Base::Exception> exception;
+};
+
+/// Stable, queueable work item for document or object recompute.
+struct AppExport RecomputeRequest
+{
+    static RecomputeRequest fromDocument(const Document& document, bool force = false, int options = 0);
+    static RecomputeRequest fromDocumentObject(
+        const DocumentObject& documentObject,
+        bool recursive = false
+    );
+
+    Document* resolveDocument() const;
+    DocumentObject* resolveDocumentObject() const;
+
+    // Stable identifiers are queued instead of raw pointers so worker-side
+    // resolution cannot dereference destroyed documents or objects. The
+    // internal document name is assigned once at creation time and does not
+    // change afterwards, so queued requests do not need to track
+    // signalRenameDocument.
+    std::string documentName;
+    std::string documentObjectName;
+    bool force {false};
+    int options {0};
+    bool recursive {false};
+    // Callback to be invoked when recompute is complete.
+    std::function<void(RecomputeRequest&, RecomputeResult&)> callback {};
 };
 
 /**
@@ -146,7 +199,6 @@ public:
      * @return Returns true if the document was found and closed, false otherwise.
      */
     bool closeDocument(const char* name);
-
     /**
      * @brief Acquire a unique document name from a proposed name.
      *
@@ -309,12 +361,9 @@ public:
      *
      * @return The new transaction ID.
      */
-
     int setActiveTransaction(TransactionName name);
-
     int openGlobalTransaction(TransactionName name);
     int getGlobalTransaction() const;
-
     bool transactionIsActive(int tid) const;
     std::string getTransactionName(int tid) const;
     bool transactionTmpName(int tid) const;
@@ -341,9 +390,14 @@ public:
     /// Internally call closeActiveTransaction(), but it makes the call site clearer
     bool commitTransaction(int tid);
     bool abortTransaction(int tid);
-
-
     //@}
+
+    // Returns if document and object recomputes should be done async.
+    bool isAsyncRecomputeEnabled();
+    bool canRecomputeRequestOnWorker(const RecomputeRequest& req) const;
+
+    // Adds a recompute request to the processing queue.
+    void queueRecomputeRequest(RecomputeRequest req);
 
     // NOLINTBEGIN
     // clang-format off
@@ -992,6 +1046,26 @@ private:
     // To prevent infinite recursion of reloading a partial document due a truly
     // missing object
     std::map<std::string,std::set<std::string> > _docReloadAttempts;
+
+    // Worker thread for processing pending recompute requests
+    std::thread _recomputeThread;
+    // Protects the queued/in-progress recompute state below
+    std::mutex _recomputeMutex;
+    std::deque<RecomputeRequest> _recomputeRequests;
+    std::set<std::string> _recomputeDocumentsInProgress;
+    std::condition_variable _recomputeRequestAvailable;
+    std::condition_variable _recomputeStateChanged;
+    // Separate from the mutex-protected queue state so shutdown can request a
+    // worker stop and wake waiters without first taking _recomputeMutex.
+    std::atomic<bool> _stopRecomputeThread{false};
+
+    // Worker thread function that processes _recomputeRequests
+    void recomputeWorker();
+    // Helper to notify the worker thread when new requests are available
+    void notifyRecomputeWorker();
+    // Drop queued requests for a document and wait for any active recompute of
+    // that document to finish before closing it
+    void cancelRecomputeRequestsForDocument(const std::string& documentName);
 
     bool _isRestoring{false};
     bool _allowPartial{false};

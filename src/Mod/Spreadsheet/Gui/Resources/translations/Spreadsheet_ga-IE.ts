@@ -4,17 +4,17 @@
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
-      <location filename="../../Command.cpp" line="954"/>
+      <location filename="../../Command.cpp" line="956"/>
       <source>Spreadsheet</source>
       <translation>Scarbhileog</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="955"/>
+      <location filename="../../Command.cpp" line="957"/>
       <source>&amp;New Spreadsheet</source>
       <translation>Scarbhileog &amp;Nua</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="956"/>
+      <location filename="../../Command.cpp" line="958"/>
       <source>Creates a new spreadsheet</source>
       <translation>Cruthaíonn sé scarbhileog nua</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdSpreadsheetAlignBottom</name>
     <message>
-      <location filename="../../Command.cpp" line="513"/>
+      <location filename="../../Command.cpp" line="515"/>
       <source>Spreadsheet</source>
       <translation>Scarbhileog</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="514"/>
+      <location filename="../../Command.cpp" line="516"/>
       <source>Align &amp;Bottom</source>
       <translation>Ailínigh &amp;Bun</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="515"/>
+      <location filename="../../Command.cpp" line="517"/>
       <source>Aligns cell contents to the bottom</source>
       <translation>Ailíníonn ábhar na cille go dtí an bun</translation>
     </message>
@@ -40,17 +40,17 @@
   <context>
     <name>CmdSpreadsheetAlignCenter</name>
     <message>
-      <location filename="../../Command.cpp" line="342"/>
+      <location filename="../../Command.cpp" line="344"/>
       <source>Spreadsheet</source>
       <translation>Scarbhileog</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="343"/>
+      <location filename="../../Command.cpp" line="345"/>
       <source>Align Horizontal &amp;Center</source>
       <translation>Ailínigh Lár &amp;Cothrománach</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="344"/>
+      <location filename="../../Command.cpp" line="346"/>
       <source>Aligns cell contents to the horizontal center</source>
       <translation>Ailíníonn ábhar na cille leis an lár cothrománach</translation>
     </message>
@@ -58,17 +58,17 @@
   <context>
     <name>CmdSpreadsheetAlignLeft</name>
     <message>
-      <location filename="../../Command.cpp" line="285"/>
+      <location filename="../../Command.cpp" line="287"/>
       <source>Spreadsheet</source>
       <translation>Scarbhileog</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="286"/>
+      <location filename="../../Command.cpp" line="288"/>
       <source>Align &amp;Left</source>
       <translation>Ailínigh &amp;Ar Chlé</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="287"/>
+      <location filename="../../Command.cpp" line="289"/>
       <source>Aligns cell contents to the left</source>
       <translation>Ailíníonn ábhar na cille ar chlé</translation>
     </message>
@@ -76,17 +76,17 @@
   <context>
     <name>CmdSpreadsheetAlignRight</name>
     <message>
-      <location filename="../../Command.cpp" line="399"/>
+      <location filename="../../Command.cpp" line="401"/>
       <source>Spreadsheet</source>
       <translation>Scarbhileog</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="400"/>
+      <location filename="../../Command.cpp" line="402"/>
       <source>Align &amp;Right</source>
       <translation>Ailínigh Ar &amp;Dheis</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="401"/>
+      <location filename="../../Command.cpp" line="403"/>
       <source>Aligns cell contents to the right</source>
       <translation>Ailíníonn ábhar na cille ar dheis</translation>
     </message>
@@ -94,17 +94,17 @@
   <context>
     <name>CmdSpreadsheetAlignTop</name>
     <message>
-      <location filename="../../Command.cpp" line="456"/>
+      <location filename="../../Command.cpp" line="458"/>
       <source>Spreadsheet</source>
       <translation>Scarbhileog</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="457"/>
+      <location filename="../../Command.cpp" line="459"/>
       <source>Align &amp;Top</source>
       <translation>Ailínigh &amp;Barr</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="458"/>
+      <location filename="../../Command.cpp" line="460"/>
       <source>Aligns cell contents to the top</source>
       <translation>Ailíníonn ábhar na cille go barr</translation>
     </message>
@@ -112,17 +112,17 @@
   <context>
     <name>CmdSpreadsheetAlignVCenter</name>
     <message>
-      <location filename="../../Command.cpp" line="570"/>
+      <location filename="../../Command.cpp" line="572"/>
       <source>Spreadsheet</source>
       <translation>Scarbhileog</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="571"/>
+      <location filename="../../Command.cpp" line="573"/>
       <source>Align &amp;Vertical Center</source>
       <translation>Ailínigh &amp;Lár Ingearach</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="572"/>
+      <location filename="../../Command.cpp" line="574"/>
       <source>Aligns cell contents to the vertical center</source>
       <translation>Aligns cell contents to the vertical center</translation>
     </message>
@@ -130,17 +130,17 @@
   <context>
     <name>CmdSpreadsheetExport</name>
     <message>
-      <location filename="../../Command.cpp" line="240"/>
+      <location filename="../../Command.cpp" line="242"/>
       <source>Spreadsheet</source>
       <translation>Scarbhileog</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="241"/>
+      <location filename="../../Command.cpp" line="243"/>
       <source>&amp;Export Spreadsheet</source>
       <translation>&amp;Easpórtáil Scarbhileog</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="242"/>
+      <location filename="../../Command.cpp" line="244"/>
       <source>Exports the spreadsheet to a CSV file</source>
       <translation>Onnmhairíonn sé an scarbhileog chuig comhad CSV</translation>
     </message>
@@ -184,17 +184,17 @@
   <context>
     <name>CmdSpreadsheetSetAlias</name>
     <message>
-      <location filename="../../Command.cpp" line="882"/>
+      <location filename="../../Command.cpp" line="884"/>
       <source>Spreadsheet</source>
       <translation>Scarbhileog</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="883"/>
+      <location filename="../../Command.cpp" line="885"/>
       <source>Set Alias</source>
       <translation>Socraigh Leasainm</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="884"/>
+      <location filename="../../Command.cpp" line="886"/>
       <source>Sets an alias for the selected cell</source>
       <translation>Socraíonn sé leasainm don chill roghnaithe</translation>
     </message>
@@ -220,17 +220,17 @@
   <context>
     <name>CmdSpreadsheetStyleBold</name>
     <message>
-      <location filename="../../Command.cpp" line="627"/>
+      <location filename="../../Command.cpp" line="629"/>
       <source>Spreadsheet</source>
       <translation>Scarbhileog</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="628"/>
+      <location filename="../../Command.cpp" line="630"/>
       <source>&amp;Bold Text</source>
       <translation>&amp;Téacs Trom</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="629"/>
+      <location filename="../../Command.cpp" line="631"/>
       <source>Sets the text in the selected cells bold</source>
       <translation>Socraíonn sé an téacs sna cealla roghnaithe i gcló trom</translation>
     </message>
@@ -238,17 +238,17 @@
   <context>
     <name>CmdSpreadsheetStyleItalic</name>
     <message>
-      <location filename="../../Command.cpp" line="712"/>
+      <location filename="../../Command.cpp" line="714"/>
       <source>Spreadsheet</source>
       <translation>Scarbhileog</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="713"/>
+      <location filename="../../Command.cpp" line="715"/>
       <source>&amp;Italic Text</source>
       <translation>Téacs &amp;Iodálach</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="714"/>
+      <location filename="../../Command.cpp" line="716"/>
       <source>Sets the text in the selected cells italic</source>
       <translation>Socraíonn sé an téacs sna cealla roghnaithe i gcló iodálach</translation>
     </message>
@@ -256,17 +256,17 @@
   <context>
     <name>CmdSpreadsheetStyleUnderline</name>
     <message>
-      <location filename="../../Command.cpp" line="797"/>
+      <location filename="../../Command.cpp" line="799"/>
       <source>Spreadsheet</source>
       <translation>Scarbhileog</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="798"/>
+      <location filename="../../Command.cpp" line="800"/>
       <source>&amp;Underline Text</source>
       <translation>&amp;Fo-líne ar an Téacs</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="799"/>
+      <location filename="../../Command.cpp" line="801"/>
       <source>Underlines the text in the selected cells</source>
       <translation>Cuireann sé líne faoin téacs sna cealla roghnaithe</translation>
     </message>
@@ -274,7 +274,7 @@
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="919"/>
+      <location filename="../../qtcolorpicker.cpp" line="920"/>
       <source>Custom Color</source>
       <translation>Dath Saincheaptha</translation>
     </message>
@@ -292,52 +292,52 @@
       <translation>Scoi&amp;lt cill</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="307"/>
+      <location filename="../../Command.cpp" line="309"/>
       <source>Left-align cell</source>
       <translation>Cill ailínithe ar chlé</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="364"/>
+      <location filename="../../Command.cpp" line="366"/>
       <source>Center cell</source>
       <translation>Cill lárnach</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="421"/>
+      <location filename="../../Command.cpp" line="423"/>
       <source>Right-align cell</source>
       <translation>Cill ailínithe ar dheis</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="478"/>
+      <location filename="../../Command.cpp" line="480"/>
       <source>Top-align cell</source>
       <translation>Cill ailínithe ag barr</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="535"/>
+      <location filename="../../Command.cpp" line="537"/>
       <source>Bottom-align cell</source>
       <translation>Cill ailínithe bun</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="592"/>
+      <location filename="../../Command.cpp" line="594"/>
       <source>Vertically center cells</source>
       <translation>Lárnaigh cealla go hingearach</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="667"/>
+      <location filename="../../Command.cpp" line="669"/>
       <source>Set bold text</source>
       <translation>Socraigh téacs trom</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="752"/>
+      <location filename="../../Command.cpp" line="754"/>
       <source>Set italic text</source>
       <translation>Socraigh téacs iodálach</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="837"/>
+      <location filename="../../Command.cpp" line="839"/>
       <source>Set underline text</source>
       <translation>Socraigh téacs faoi líne</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="967"/>
+      <location filename="../../Command.cpp" line="969"/>
       <source>Create Spreadsheet</source>
       <translation>Cruthaigh Scarbhileog</translation>
     </message>
@@ -347,43 +347,70 @@
       <translation>Socraigh airíonna na cille</translation>
     </message>
     <message>
-      <location filename="../../SheetModel.cpp" line="573"/>
+      <location filename="../../SheetModel.cpp" line="628"/>
       <source>Edit cell</source>
       <translation>Cuir cill in eagar</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="147"/>
+      <location filename="../../Workbench.cpp" line="148"/>
       <source>Set text color</source>
       <translation>Socraigh dath an téacs</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="182"/>
+      <location filename="../../Workbench.cpp" line="184"/>
       <source>Set background color</source>
       <translation>Socraigh dath cúlra</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="347"/>
-      <location filename="../../SheetTableView.cpp" line="380"/>
+      <location filename="../../SheetTableView.cpp" line="224"/>
+      <source>Recompute Cells</source>
+      <translation>Athríomh Cealla</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="326"/>
       <source>Insert Rows</source>
       <translation>Cuir Sraitheanna Isteach</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="400"/>
-      <location filename="../../SheetTableView.cpp" line="475"/>
+      <location filename="../../SheetTableView.cpp" line="353"/>
       <source>Remove Rows</source>
       <translation>Bain Sraitheanna</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="422"/>
-      <location filename="../../SheetTableView.cpp" line="455"/>
+      <location filename="../../SheetTableView.cpp" line="366"/>
+      <source>Remove Columns</source>
+      <translation>Bain Colúin</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="339"/>
       <source>Insert Columns</source>
       <translation>Cuir Colúin Isteach</translation>
     </message>
     <message>
       <location filename="../../SpreadsheetView.cpp" line="193"/>
-      <location filename="../../SheetTableView.cpp" line="679"/>
+      <location filename="../../SheetTableView.cpp" line="581"/>
       <source>Clear Cells</source>
       <translation>Cealla Glan</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="204"/>
+      <source>Setup conf table</source>
+      <translation>Socraigh tábla comhdhála</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="309"/>
+      <source>Unsetup conf table</source>
+      <translation>Díchumasaigh an tábla comhdhála</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.cpp" line="243"/>
+      <source>Bind cells</source>
+      <translation>Ceangail cealla</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.cpp" line="297"/>
+      <source>Unbind cells</source>
+      <translation>Dícheangal cealla</translation>
     </message>
   </context>
   <context>
@@ -680,13 +707,7 @@ an dearaidh a athrú go dinimiciúil. Cruthófar an mhaoin mura bhfuil sí ann.<
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="107"/>
-      <location filename="../../Command.cpp" line="198"/>
-      <source>CSV (*.csv *.CSV);;All (*)</source>
-      <translation>CSV (*.csv *.CSV);;Uile (*)</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="201"/>
+      <location filename="../../Command.cpp" line="203"/>
       <source>Import file</source>
       <translation>Comhad allmhairithe</translation>
     </message>
@@ -708,39 +729,51 @@ Scarbhileog.m'ainm_leasainm in ionad Scarbhileog.B1</translation>
       <translation>Scarbhileog</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="110"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="108"/>
+      <location filename="../../Command.cpp" line="199"/>
+      <source>CSV (*.csv *.CSV)</source>
+      <translation>CSV (*.csv *.CSV)</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="109"/>
+      <location filename="../../Command.cpp" line="200"/>
+      <source>All (*)</source>
+      <translation>All (*)</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="112"/>
       <source>Export File</source>
       <translation>Easpórtáil Comhad</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="136"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="138"/>
       <source>Show Spreadsheet</source>
       <translation>Taispeáin Scarbhileog</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="98"/>
+      <location filename="../../Workbench.cpp" line="99"/>
       <source>Sets the text color of cells</source>
       <translation>Socraíonn sé dath téacs na gcealla</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="99"/>
       <location filename="../../Workbench.cpp" line="100"/>
+      <location filename="../../Workbench.cpp" line="101"/>
       <source>Sets the text color of spreadsheet cells</source>
       <translation>Socraíonn sé dath téacs na gcealla scarbhileog</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="121"/>
-      <location filename="../../Workbench.cpp" line="123"/>
+      <location filename="../../Workbench.cpp" line="122"/>
+      <location filename="../../Workbench.cpp" line="124"/>
       <source>Sets the background color of cells</source>
       <translation>Socraíonn sé dath cúlra na gcealla</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="122"/>
+      <location filename="../../Workbench.cpp" line="123"/>
       <source>Sets the spreadsheet cells background color</source>
       <translation>Socraíonn sé dath cúlra na gcealla scarbhileog</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="815"/>
+      <location filename="../../SheetTableView.cpp" line="719"/>
       <source>Copy &amp; Paste Failed</source>
       <translation>Theip ar Chóipeáil &amp; Greamaigh</translation>
     </message>
@@ -908,19 +941,19 @@ Continue?</source>
 Ar aghaidh?</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="284"/>
+      <location filename="../../DlgBindSheet.cpp" line="283"/>
       <source>Bind Spreadsheet Cells</source>
       <translation>Ceangail Cealla Scarbhileog</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="285"/>
+      <location filename="../../DlgBindSheet.cpp" line="284"/>
       <source>Error:
 </source>
       <translation>Earráid:
 </translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="312"/>
+      <location filename="../../DlgBindSheet.cpp" line="311"/>
       <source>Unbind Cells</source>
       <translation>Dícheangal Cealla</translation>
     </message>
@@ -1019,35 +1052,13 @@ Réamhshocraithe: %V = %A
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-      <location filename="../../SheetTableView.cpp" line="197"/>
-      <location filename="../../SheetTableView.cpp" line="661"/>
+      <location filename="../../SheetTableView.cpp" line="186"/>
+      <location filename="../../SheetTableView.cpp" line="563"/>
       <source>Recompute</source>
       <translation>Athríomh</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="141"/>
-      <source>Insert %n Row(s) Above</source>
-      <translation>
-        <numerusform>Cuir %n Ró(anna) Thuas</numerusform>
-        <numerusform>Cuir %n Ró(anna) Thuas</numerusform>
-        <numerusform>Cuir %n Ró(anna) Thuas</numerusform>
-        <numerusform>Cuir %n Ró(anna) Thuas</numerusform>
-        <numerusform>Cuir %n Ró(anna) Thuas</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="145"/>
-      <source>Insert %n Row(s) Below</source>
-      <translation>
-        <numerusform>Cuir %n Ró(anna) isteach thíos</numerusform>
-        <numerusform>Cuir %n Ró(anna) isteach thíos</numerusform>
-        <numerusform>Cuir %n Ró(anna) isteach thíos</numerusform>
-        <numerusform>Cuir %n Ró(anna) isteach thíos</numerusform>
-        <numerusform>Cuir %n Ró(anna) isteach thíos</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="150"/>
+      <location filename="../../SheetTableView.cpp" line="147"/>
       <source>Insert %n Non-Contiguous Rows</source>
       <translation>
         <numerusform>Cuir %n Sraitheanna Neamhleanúnacha isteach</numerusform>
@@ -1057,41 +1068,13 @@ Réamhshocraithe: %V = %A
         <numerusform>Cuir %n Sraitheanna Neamhleanúnacha isteach</numerusform>
       </translation>
     </message>
-    <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="153"/>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="150"/>
       <source>Remove Rows</source>
-      <translation>
-        <numerusform>Bain Sraitheanna</numerusform>
-        <numerusform>Bain Sraitheanna</numerusform>
-        <numerusform>Bain Sraitheanna</numerusform>
-        <numerusform>Bain Sraitheanna</numerusform>
-        <numerusform>Bain Sraitheanna</numerusform>
-      </translation>
+      <translation>Bain Sraitheanna</translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="167"/>
-      <source>Insert %n Column(s) Left</source>
-      <translation>
-        <numerusform>Cuir %n Colún(anna) isteach ar Chlé</numerusform>
-        <numerusform>Cuir %n Colún(anna) isteach ar Chlé</numerusform>
-        <numerusform>Cuir %n Colún(anna) isteach ar Chlé</numerusform>
-        <numerusform>Cuir %n Colún(anna) isteach ar Chlé</numerusform>
-        <numerusform>Cuir %n Colún(anna) isteach ar Chlé</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="172"/>
-      <source>Insert %n Column(s) Right</source>
-      <translation>
-        <numerusform>Cuir %n Colún(anna) isteach ar dheis</numerusform>
-        <numerusform>Cuir %n Colún(anna) isteach ar dheis</numerusform>
-        <numerusform>Cuir %n Colún(anna) isteach ar dheis</numerusform>
-        <numerusform>Cuir %n Colún(anna) isteach ar dheis</numerusform>
-        <numerusform>Cuir %n Colún(anna) isteach ar dheis</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="178"/>
       <source>Insert %n Non-Contiguous Columns</source>
       <translation>
         <numerusform>Cuir %n Colún Neamhleanúnach isteach</numerusform>
@@ -1101,68 +1084,114 @@ Réamhshocraithe: %V = %A
         <numerusform>Cuir %n Colún Neamhleanúnach isteach</numerusform>
       </translation>
     </message>
-    <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="181"/>
-      <source>Remove Column(s)</source>
-      <translation>
-        <numerusform>Bain Colún(anna)</numerusform>
-        <numerusform>Bain Colún(anna)</numerusform>
-        <numerusform>Bain Colún(anna)</numerusform>
-        <numerusform>Bain Colún(anna)</numerusform>
-        <numerusform>Bain Colún(anna)</numerusform>
-      </translation>
-    </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="194"/>
-      <location filename="../../SheetTableView.cpp" line="660"/>
+      <location filename="../../SheetTableView.cpp" line="562"/>
       <source>Properties…</source>
       <translation>Airíonna…</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="198"/>
-      <location filename="../../SheetTableView.cpp" line="669"/>
+      <location filename="../../SheetTableView.cpp" line="187"/>
+      <location filename="../../SheetTableView.cpp" line="571"/>
       <source>Bind…</source>
       <translation>Ceangail…</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="199"/>
-      <location filename="../../SheetTableView.cpp" line="662"/>
+      <location filename="../../SheetTableView.cpp" line="564"/>
       <source>Configuration Table…</source>
       <translation>Tábla Cumraíochta…</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="203"/>
-      <location filename="../../SheetTableView.cpp" line="663"/>
+      <location filename="../../SheetTableView.cpp" line="192"/>
+      <location filename="../../SheetTableView.cpp" line="565"/>
       <source>Merge Cells</source>
       <translation>Cumaisc Cealla</translation>
     </message>
+    <message numerus="yes">
+      <location filename="../../SheetTableView.cpp" line="141"/>
+      <source>Insert %n Rows Above</source>
+      <translation>
+        <numerusform>Cuir %n Sraitheanna Thuas</numerusform>
+        <numerusform>Cuir %n Sraitheanna Thuas</numerusform>
+        <numerusform>Cuir %n Sraitheanna Thuas</numerusform>
+        <numerusform>Cuir %n Sraitheanna Thuas</numerusform>
+        <numerusform>Cuir %n Sraitheanna Thuas</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <location filename="../../SheetTableView.cpp" line="143"/>
+      <source>Insert %n Rows Below</source>
+      <translation>
+        <numerusform>Cuir %n Sraitheanna Thíos</numerusform>
+        <numerusform>Cuir %n Sraitheanna Thíos</numerusform>
+        <numerusform>Cuir %n Sraitheanna Thíos</numerusform>
+        <numerusform>Cuir %n Sraitheanna Thíos</numerusform>
+        <numerusform>Cuir %n Sraitheanna Thíos</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <location filename="../../SheetTableView.cpp" line="161"/>
+      <source>Insert %n Columns Left</source>
+      <translation>
+        <numerusform>Cuir %n Colún Ar Chlé</numerusform>
+        <numerusform>Cuir %n Colún Ar Chlé</numerusform>
+        <numerusform>Cuir %n Colún Ar Chlé</numerusform>
+        <numerusform>Cuir %n Colún Ar Chlé</numerusform>
+        <numerusform>Cuir %n Colún Ar Chlé</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <location filename="../../SheetTableView.cpp" line="163"/>
+      <source>Insert %n Columns Right</source>
+      <translation>
+        <numerusform>Cuir %n Colún ar Dheis</numerusform>
+        <numerusform>Cuir %n Colún ar Dheis</numerusform>
+        <numerusform>Cuir %n Colún ar Dheis</numerusform>
+        <numerusform>Cuir %n Colún ar Dheis</numerusform>
+        <numerusform>Cuir %n Colún ar Dheis</numerusform>
+      </translation>
+    </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="208"/>
-      <location filename="../../SheetTableView.cpp" line="664"/>
+      <location filename="../../SheetTableView.cpp" line="170"/>
+      <source>Remove Columns</source>
+      <translation>Bain Colúin</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="183"/>
+      <source>Properties</source>
+      <translation>Airíonna</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="188"/>
+      <source>Configuration Table</source>
+      <translation>Tábla Cumraíochta</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="197"/>
+      <location filename="../../SheetTableView.cpp" line="566"/>
       <source>Split Cell</source>
       <translation>Scoilt Cill</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="212"/>
-      <location filename="../../SheetTableView.cpp" line="667"/>
+      <location filename="../../SheetTableView.cpp" line="201"/>
+      <location filename="../../SheetTableView.cpp" line="569"/>
       <source>Cut</source>
       <translation>Gearr</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="213"/>
-      <location filename="../../SheetTableView.cpp" line="665"/>
+      <location filename="../../SheetTableView.cpp" line="202"/>
+      <location filename="../../SheetTableView.cpp" line="567"/>
       <source>Copy</source>
       <translation>Cóipeáil</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="214"/>
-      <location filename="../../SheetTableView.cpp" line="666"/>
+      <location filename="../../SheetTableView.cpp" line="203"/>
+      <location filename="../../SheetTableView.cpp" line="568"/>
       <source>Paste</source>
       <translation>Greamaigh</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="215"/>
-      <location filename="../../SheetTableView.cpp" line="668"/>
+      <location filename="../../SheetTableView.cpp" line="204"/>
+      <location filename="../../SheetTableView.cpp" line="570"/>
       <source>Delete</source>
       <translation>Scrios</translation>
     </message>
@@ -1183,22 +1212,22 @@ Réamhshocraithe: %V = %A
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="50"/>
+      <location filename="../../Workbench.cpp" line="51"/>
       <source>Spreadsheet</source>
       <translation>Scarbhileog</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="51"/>
+      <location filename="../../Workbench.cpp" line="52"/>
       <source>&amp;Spreadsheet</source>
       <translation>&amp;Scarbhileog</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="52"/>
+      <location filename="../../Workbench.cpp" line="53"/>
       <source>&amp;Alignment</source>
       <translation>&amp;Ailíniú</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="53"/>
+      <location filename="../../Workbench.cpp" line="54"/>
       <source>&amp;Styles</source>
       <translation>&amp;Stíleanna</translation>
     </message>
@@ -1228,12 +1257,12 @@ Réamhshocraithe: %V = %A
   <context>
     <name>SpreadsheetGui::DlgSheetConf</name>
     <message>
-      <location filename="../../DlgSheetConf.cpp" line="292"/>
+      <location filename="../../DlgSheetConf.cpp" line="291"/>
       <source>Setup Configuration Table</source>
       <translation>Tábla Cumraíochta Socraithe</translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.cpp" line="349"/>
+      <location filename="../../DlgSheetConf.cpp" line="348"/>
       <source>Unsetup Configuration Table</source>
       <translation>Tábla Cumraíochta Díshuiteála</translation>
     </message>

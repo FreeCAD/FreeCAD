@@ -41,6 +41,10 @@ on:
         default: "48"
         type: string
         required: false
+      skipBuild:
+        default: false
+        type: boolean
+        required: false
     outputs:
       reportFile:
         value: ${{ jobs.Prepare.outputs.reportFile }}
@@ -86,6 +90,7 @@ jobs:
           egress-policy: audit
 
       - name: Make needed directories, files and initializations
+        if: "!inputs.skipBuild"
         id: Init
         run: |
           mkdir -p ${{ env.logdir }}
@@ -94,11 +99,12 @@ jobs:
           touch ${{ env.logdir }}changedFiles.lst ${{ env.logdir }}changedCppFiles.lst ${{ env.logdir }}changedPythonFiles.lst
           echo "reportFile=${{ env.reportfilename }}" >> $GITHUB_OUTPUT
       - name: Check out code
+        if: "!inputs.skipBuild"
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           submodules: true
       - name: Determine base and head SHA in case of PR
-        if: env.isPR == 'true'
+        if: env.isPR == 'true' && !inputs.skipBuild
         run: |
           baseSha=${{ github.event.pull_request.base.sha }}
           headSha=${{ github.event.pull_request.head.sha }}
@@ -107,7 +113,7 @@ jobs:
           echo "This CI run is performed on a Pull Request" | tee -a ${{env.reportdir}}${{ env.reportfilename }}
           echo "Base SHA is $baseSha, Head SHA is $headSha" | tee -a ${{env.reportdir}}${{ env.reportfilename }}
       - name: Check if PR has been recently rebased
-        if: env.isPR == 'true'
+        if: env.isPR == 'true' && !inputs.skipBuild
         continue-on-error: ${{ inputs.dontFailOnOldRebase }}
         run: |
           baseDate=$(curl -H "Accept: application/vnd.github+json" -H "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" $GITHUB_API_URL/repos/$GITHUB_REPOSITORY/commits/$baseSha | jq -r '.commit.committer.date')
@@ -120,7 +126,7 @@ jobs:
             exit 1
           fi
       - name: Determine base and head SHA in case of push
-        if: env.isPush == 'true'
+        if: env.isPush == 'true' && !inputs.skipBuild
         run: |
           baseSha=${{ github.event.before }}
           headSha=${{ github.event.after }}
@@ -136,17 +142,17 @@ jobs:
             echo "baseSha=$baseSha" >> $GITHUB_ENV
           fi
       - name: Get compare between head and base
-        if: env.isPR == 'true' || env.isPush == 'true'
+        if: (env.isPR == 'true' || env.isPush == 'true') && !inputs.skipBuild
         run: |
           echo "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/compare/$baseSha...$headSha"
           curl -H "Accept: application/vnd.github+json" -H "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" $GITHUB_API_URL/repos/$GITHUB_REPOSITORY/compare/$baseSha...$headSha > ${{ env.logdir }}compare.json
       - name: Get number of commits in the changeset
-        if: env.isPR == 'true' || env.isPush == 'true'
+        if: (env.isPR == 'true' || env.isPush == 'true') && !inputs.skipBuild
         run: |
           commitCnt=$(jq -re '.ahead_by' ${{ env.logdir }}compare.json)
           echo "Changeset is composed of $commitCnt commit(s)" | tee -a ${{env.reportdir}}${{ env.reportfilename }}
       - name: Get files modified in changeset #TODO check what happens with deleted file in the subsequent process
-        if: env.isPR == 'true'
+        if: env.isPR == 'true' && !inputs.skipBuild
         env:
           API_URL: ${{ github.api_url }}
           TOKEN: ${{ github.token }}
@@ -169,6 +175,7 @@ jobs:
           echo "</details>" >> ${{env.reportdir}}${{ env.reportfilename }}
           echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
       - name: Transmitting outputs
+        if: "!inputs.skipBuild"
         id: Output
         run: |
           echo "changedFiles=$(cat ${{ env.logdir }}changedFiles.lst | tr '\n' ' ')" >> $GITHUB_OUTPUT
@@ -179,15 +186,15 @@ jobs:
           echo "changedCppLines=$(cat ${{ env.logdir }}changedCppLines.lst | tr '\n' ' ')" >> $GITHUB_OUTPUT
           echo "" >> $GITHUB_OUTPUT
       - name: Upload logs
-        if: always()
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        if: always() && !inputs.skipBuild
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: ${{ inputs.artifactBasename }}-Logs
           path: |
             ${{ env.logdir }}
       - name: Upload report
-        if: always()
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        if: always() && !inputs.skipBuild
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: ${{ env.reportfilename }}
           path: |

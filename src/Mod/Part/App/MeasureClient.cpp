@@ -219,6 +219,12 @@ App::MeasureElementType PartMeasureTypeCb(App::DocumentObject* ob, const char* s
                 case GeomAbs_Cylinder: {
                     return App::MeasureElementType::CYLINDER;
                 }
+                case GeomAbs_Torus: {
+                    return App::MeasureElementType::TORUS;
+                }
+                case GeomAbs_Sphere: {
+                    return App::MeasureElementType::SPHERE;
+                }
                 case GeomAbs_Plane: {
                     TopExp_Explorer edges(face, TopAbs_EDGE);
                     if (!edges.More()) {
@@ -408,8 +414,22 @@ MeasureRadiusInfoPtr MeasureRadiusHandler(const App::SubObjectT& subject)
             center = surf.Cylinder().Location();
             radius = surf.Cylinder().Radius();
         }
+        else if (surf.GetType() == GeomAbs_Torus) {
+            center = surf.Torus().Location();
+            radius = surf.Torus().MinorRadius();
 
-        if (surf.GetType() == GeomAbs_Plane) {
+            // Places the label point inside the torus
+            // Which is better than placing it in the middle of the torus hole
+            gp_Vec direction(surf.Torus().Position().XDirection());
+            double majorRadius = surf.Torus().MajorRadius();
+            direction = direction * majorRadius;
+            center = center.Translated(direction);
+        }
+        else if (surf.GetType() == GeomAbs_Sphere) {
+            center = surf.Sphere().Location();
+            radius = surf.Sphere().Radius();
+        }
+        else if (surf.GetType() == GeomAbs_Plane) {
             TopExp_Explorer edges(face, TopAbs_EDGE);
             if (!edges.More()) {
                 return invalidRes;
