@@ -75,7 +75,6 @@ class AssemblyWorkbench(Workbench):
         import CommandCreateView
         import CommandCreateSimulation
 
-        # import CommandCreateSnapshot
         import CommandCreateBom
         import Preferences
 
