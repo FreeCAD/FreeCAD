@@ -139,7 +139,12 @@ class GhostHatchRenderer:
                     pass
 
             hard_max = int(getattr(hatch_pattern_obj, "MaxTilesAllowed", 1000))
-            ghost_max = min(max(hard_max, 200), 600)
+            # Floor of 200 guarantees minimal coverage on small faces.
+            # Ceiling of 1000 covers realistic large faces (e.g. 4×3 m wall at
+            # 50 mm brick scale) without hitting the full maxTilesSpin budget.
+            # The old ceiling of 600 was too low and caused the preview to look
+            # broken on any wall wider than ~2 m at fine scales.
+            ghost_max = min(max(hard_max, 200), 1000)
 
             kwargs = dict(
                 patternShape=pattern_shape,

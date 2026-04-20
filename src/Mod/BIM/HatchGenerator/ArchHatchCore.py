@@ -181,9 +181,14 @@ def make_tile_and_clip(
     color_var_intensity,
     placement_mode="Center",
     clip_mode="BooleanOnly",
+    skip_clip=False,
 ):
     """
     Create a single tile instance, transform it, and clip it against the base shape.
+
+    When skip_clip=True the OCC common() call is skipped entirely.  Only pass
+    True when the caller has already proven the tile cannot overlap the face
+    boundary (Zone B interior tiles in buildHatchShape).
     """
     tile_copy = normed_pattern.copy()
 
@@ -254,11 +259,15 @@ def make_tile_and_clip(
     else:
         tile_copy = shape_to_edges(tile_copy)
 
-    try:
-        result = clipShapeToBase(base_shape, tile_copy, clip_mode)
-    except Exception as e:
-        FreeCAD.Console.PrintError(f"Boolean operation error: {str(e)}\n")
-        return None, None
+    if skip_clip:
+        # Zone B: tile proven fully interior — skip OCC boolean entirely.
+        result = tile_copy
+    else:
+        try:
+            result = clipShapeToBase(base_shape, tile_copy, clip_mode)
+        except Exception as e:
+            FreeCAD.Console.PrintError(f"Boolean operation error: {str(e)}\n")
+            return None, None
 
     random_color = None
     if enable_color_var:
@@ -391,6 +400,45 @@ def buildHatchShape(
         tile_parts = []
         tile_colors = []
 
+        # --- Zone B safe-interior setup ---
+        # A tile whose axis-aligned bounds fit entirely within the base bbox
+        # shrunk by the tile diagonal on all sides cannot possibly straddle the
+        # face boundary.  For those tiles we skip OCC common() (Zone C path)
+        # and build them directly (Zone B path).
+        #
+        # Guards — all must hold or we fall back to always-clip:
+        #   • rotationDeg == 0  (non-zero rotation makes the AA bbox too loose
+        #     to guarantee interior; can be tightened later by computing the
+        #     rotated tile AABB, but 0° covers most section-hatch usage)
+        #   • not randomizePlacement / not shapeDistortion  (same as broadphase
+        #     cull guard — random jitter makes the bounds unreliable)
+        #   • baseShape is a single simple face with no holes  (a face with
+        #     inner wires, e.g. a wall with a window opening, can have a tile
+        #     that sits inside the bbox safe zone yet still falls inside a hole)
+        _tile_diag = math.sqrt(
+            (tile_width * patternScale) ** 2 + (tile_height * patternScale) ** 2
+        )
+        try:
+            _base_is_simple = (
+                rotationDeg == 0.0
+                and not randomizePlacement
+                and not shapeDistortion
+                and len(baseShape.Faces) == 1
+                and len(baseShape.Faces[0].Wires) == 1  # outer wire only, no holes
+            )
+        except Exception:
+            _base_is_simple = False
+
+        if _base_is_simple:
+            _safe_xmin = bounding_box.XMin + _tile_diag
+            _safe_xmax = bounding_box.XMax - _tile_diag
+            _safe_ymin = bounding_box.YMin + _tile_diag
+            _safe_ymax = bounding_box.YMax - _tile_diag
+            _has_safe_interior = _safe_xmax > _safe_xmin and _safe_ymax > _safe_ymin
+        else:
+            _has_safe_interior = False
+            _safe_xmin = _safe_xmax = _safe_ymin = _safe_ymax = 0.0
+
         def tile_and_clip(tile_x, tile_y, base_scale, base_rot_rad, placement_mode):
             nonlocal tile_count
 
@@ -413,8 +461,45 @@ def buildHatchShape(
                     or maxy < bounding_box.YMin
                     or miny > bounding_box.YMax
                 ):
-                    return None, None
+                    return None, None  # Zone A — completely outside bbox
 
+                # Zone B — tile entirely inside the safe interior shrunk by
+                # tile_diag.  It cannot straddle the face boundary, so we can
+                # build it without an OCC boolean.
+                # NOTE: _has_safe_interior already implies can_broadphase_cull,
+                # so minx/maxx/miny/maxy are always available here.
+                if _has_safe_interior and (
+                    minx >= _safe_xmin
+                    and maxx <= _safe_xmax
+                    and miny >= _safe_ymin
+                    and maxy <= _safe_ymax
+                ):
+                    tile_shape, tile_color = make_tile_and_clip(
+                        baseShape,
+                        normed_pattern,
+                        tile_x,
+                        tile_y,
+                        base_scale,
+                        base_rot_rad,
+                        randomizePlacement,
+                        randomOffsetRange,
+                        randRotMin,
+                        randRotMax,
+                        randomScaleMin,
+                        randomScaleMax,
+                        showFaces,
+                        shapeDistortion,
+                        enableColorVar,
+                        colorVarInt,
+                        placement_mode=placement_mode,
+                        clip_mode=clipMode,
+                        skip_clip=True,  # Zone B: provably interior, no clip needed
+                    )
+                    if tile_shape and not tile_shape.isNull():
+                        tile_count += 1
+                    return tile_shape, tile_color
+
+            # Zone C — tile intersects the face boundary; must clip.
             tile_shape, tile_color = make_tile_and_clip(
                 baseShape,
                 normed_pattern,
