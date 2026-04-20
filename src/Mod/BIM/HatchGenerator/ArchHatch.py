@@ -202,6 +202,88 @@ def unproject_shape_to_world(shape, to_world_matrix):
     return world_shape
 
 
+def _placements_are_close(pl1, pl2, tol_mm=1.0, tol_rad=0.001):
+    """Return True if two placements represent nearly the same transform."""
+    try:
+        if (pl1.Base - pl2.Base).Length > tol_mm:
+            return False
+        rel_angle = pl1.inverse().multiply(pl2).Rotation.Angle
+        return abs(rel_angle) < tol_rad
+    except Exception:
+        return False
+
+
+def _bake_shape_to_geometry(shape, placement=None):
+    """
+    Return a copy whose transform is baked into the underlying geometry.
+
+    Important: use transformGeometry() first, not transformShape(). For pure
+    translation/rotation transforms, transformShape() may preserve an OCCT
+    Location instead of fully flattening it. That is exactly what causes the
+    hatch object to inherit a non-identity Placement after boolean cuts.
+    """
+    if shape is None or shape.isNull():
+        return shape
+
+    baked = shape.copy()
+    try:
+        pl = placement if placement is not None else baked.Placement
+    except Exception:
+        pl = placement if placement is not None else FreeCAD.Placement()
+
+    try:
+        baked.Placement = FreeCAD.Placement()
+    except Exception:
+        pass
+
+    try:
+        is_identity = pl.isIdentity()
+    except Exception:
+        is_identity = True
+
+    if not is_identity:
+        mat = pl.toMatrix()
+        try:
+            baked = baked.transformGeometry(mat)
+        except Exception:
+            # Fallback only if transformGeometry is unavailable for the shape
+            # subtype. transformShape is less reliable for flattening Locations
+            # but still better than leaving the transform unapplied.
+            baked.transformShape(mat)
+        try:
+            baked.Placement = FreeCAD.Placement()
+        except Exception:
+            pass
+
+    return baked
+
+
+def _copy_object_shape_baked_world(obj):
+    """
+    Copy an object's shape and bake its effective world transform into geometry.
+
+    Mirrors the dual-convention logic already used by FaceExtractor:
+      A) Part/Draft objects: shape internal Placement ~= object Placement
+      B) Arch-style objects: shape internal Placement is independent of the
+         document object's Placement, so both must be composed.
+    """
+    shape_copy = obj.Shape.copy()
+    obj_pl = getattr(obj, "Placement", FreeCAD.Placement())
+    shape_pl = getattr(shape_copy, "Placement", FreeCAD.Placement())
+
+    if _placements_are_close(shape_pl, obj_pl):
+        total_pl = obj_pl
+    else:
+        total_pl = obj_pl.multiply(shape_pl)
+
+    try:
+        shape_copy.Placement = FreeCAD.Placement()
+    except Exception:
+        pass
+
+    return _bake_shape_to_geometry(shape_copy, total_pl)
+
+
 def apply_tile_view_overrides(tile_obj, view_provider, override_color=None):
     if not tile_obj or not hasattr(tile_obj, "ViewObject"):
         return
@@ -1252,15 +1334,33 @@ class CustomHatchFeature:
                         doc.removeObject(existing_tile_obj.Name)
 
             if subtraction_objects:
+                combined = _bake_shape_to_geometry(combined)
                 for sub_obj in subtraction_objects:
                     if sub_obj and hasattr(sub_obj, "Shape") and not sub_obj.Shape.isNull():
                         try:
-                            combined = combined.cut(sub_obj.Shape)
+                            # Do the boolean in fully baked world geometry.
+                            #
+                            # The previous fix still used transformShape() while
+                            # trying to "bake" the subtraction object. For rigid
+                            # transforms, that can preserve an OCCT Location
+                            # instead of flattening it. The cut result then keeps
+                            # that Location, and assigning it to fp.Shape makes
+                            # FreeCAD absorb it into fp.Placement — visually
+                            # shifting a hatch whose geometry was already in world
+                            # coordinates.
+                            sub_shape = _copy_object_shape_baked_world(sub_obj)
+                            combined = combined.cut(sub_shape)
+                            combined = _bake_shape_to_geometry(combined)
                         except Exception as e:
                             FreeCAD.Console.PrintError(
                                 f"Error subtracting {sub_obj.Name}: {str(e)}\n"
                             )
 
+            # Always assign an identity-placed, world-baked result. This makes
+            # the applied hatch deterministic and prevents stale/absorbed OCCT
+            # Locations from leaking into fp.Placement across recomputes.
+            combined = _bake_shape_to_geometry(combined)
+            fp.Placement = FreeCAD.Placement()
             fp.Shape = combined
             fp.GenerationTime = (datetime.datetime.now() - start_time).total_seconds()
 
@@ -2773,36 +2873,33 @@ class HatchTaskPanel:
             preview_at_surface = at_location is None or at_location.isChecked() or is_definition
 
             if preview_at_surface:
-                # ---------------------------------------------------------- #
-                # AT SURFACE LOCATION (default, checkbox checked)             #
-                #                                                              #
-                # Keep the parametric hatch object itself as the preview.    #
-                # Its execute() already produced the correct Shape and        #
-                # Placement — no copy needed, no coordinate reconstruction.  #
-                # Future recomputes keep it correct automatically.           #
-                # ---------------------------------------------------------- #
+                
+                # AT SURFACE LOCATION (default, checkbox checked)             
+                #                                                              
+                # Keep the parametric hatch object itself as the preview.    
+                # Its execute() already produced the correct Shape and        
+                # Placement — no copy needed, no coordinate reconstruction.  
+                # Future recomputes keep it correct automatically.           
                 preview_name = temp_name
                 temp_name = None  # don't clean up — this IS the preview
                 preview_obj = doc.getObject(preview_name)
 
             else:
-                # ---------------------------------------------------------- #
-                # AT WORLD ORIGIN (checkbox unchecked)                        #
-                #                                                              #
-                # We cannot just shift the parametric hatch's Placement:     #
-                # execute() runs on every recompute and resets it back to the #
-                # surface location — the "bounce-back" bug.                  #
-                #                                                              #
-                # Instead:                                                    #
-                # 1. Bake the hatch's current world-space geometry into a    #
-                #    shape by applying Placement to vertices via              #
-                #    transformGeometry.                                       #
-                # 2. Shift that world-space shape so its centre lands at     #
-                #    the origin.                                              #
-                # 3. Store in a Part::Feature (no execute(), Placement is    #
-                #    stable — will never bounce back).                        #
-                # 4. Delete the parametric hatch.                            #
-                # ---------------------------------------------------------- #
+                # AT WORLD ORIGIN (checkbox unchecked)                        
+                #                                                              
+                # We cannot just shift the parametric hatch's Placement:     
+                # execute() runs on every recompute and resets it back to the 
+                # surface location — the "bounce-back" bug.                  
+                #                                                              
+                # Instead:                                                    
+                # 1. Bake the hatch's current world-space geometry into a    
+                #    shape by applying Placement to vertices via              
+                #    transformGeometry.                                       
+                # 2. Shift that world-space shape so its centre lands at     
+                #    the origin.                                              
+                # 3. Store in a Part::Feature (no execute(), Placement is    
+                #    stable — will never bounce back).                        
+                # 4. Delete the parametric hatch.                            
                 world_shape = temp_hatch.Shape.copy()
                 hatch_pl = temp_hatch.Placement
 
