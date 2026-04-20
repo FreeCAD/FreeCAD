@@ -59,7 +59,6 @@ import re
 import time
 import FreeCAD
 import Part
-import Draft
 import DraftVecUtils
 import DraftGeomUtils
 import WorkingPlane
