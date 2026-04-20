@@ -2873,33 +2873,33 @@ class HatchTaskPanel:
             preview_at_surface = at_location is None or at_location.isChecked() or is_definition
 
             if preview_at_surface:
-                
-                # AT SURFACE LOCATION (default, checkbox checked)             
-                #                                                              
-                # Keep the parametric hatch object itself as the preview.    
-                # Its execute() already produced the correct Shape and        
-                # Placement — no copy needed, no coordinate reconstruction.  
-                # Future recomputes keep it correct automatically.           
+
+                # AT SURFACE LOCATION (default, checkbox checked)
+                #
+                # Keep the parametric hatch object itself as the preview.
+                # Its execute() already produced the correct Shape and
+                # Placement — no copy needed, no coordinate reconstruction.
+                # Future recomputes keep it correct automatically.
                 preview_name = temp_name
                 temp_name = None  # don't clean up — this IS the preview
                 preview_obj = doc.getObject(preview_name)
 
             else:
-                # AT WORLD ORIGIN (checkbox unchecked)                        
-                #                                                              
-                # We cannot just shift the parametric hatch's Placement:     
-                # execute() runs on every recompute and resets it back to the 
-                # surface location — the "bounce-back" bug.                  
-                #                                                              
-                # Instead:                                                    
-                # 1. Bake the hatch's current world-space geometry into a    
-                #    shape by applying Placement to vertices via              
-                #    transformGeometry.                                       
-                # 2. Shift that world-space shape so its centre lands at     
-                #    the origin.                                              
-                # 3. Store in a Part::Feature (no execute(), Placement is    
-                #    stable — will never bounce back).                        
-                # 4. Delete the parametric hatch.                            
+                # AT WORLD ORIGIN (checkbox unchecked)
+                #
+                # We cannot just shift the parametric hatch's Placement:
+                # execute() runs on every recompute and resets it back to the
+                # surface location — the "bounce-back" bug.
+                #
+                # Instead:
+                # 1. Bake the hatch's current world-space geometry into a
+                #    shape by applying Placement to vertices via
+                #    transformGeometry.
+                # 2. Shift that world-space shape so its centre lands at
+                #    the origin.
+                # 3. Store in a Part::Feature (no execute(), Placement is
+                #    stable — will never bounce back).
+                # 4. Delete the parametric hatch.
                 world_shape = temp_hatch.Shape.copy()
                 hatch_pl = temp_hatch.Placement
 
