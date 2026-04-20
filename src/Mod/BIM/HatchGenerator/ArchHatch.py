@@ -204,13 +204,10 @@ def unproject_shape_to_world(shape, to_world_matrix):
 
 def _placements_are_close(pl1, pl2, tol_mm=1.0, tol_rad=0.001):
     """Return True if two placements represent nearly the same transform."""
-    try:
-        if (pl1.Base - pl2.Base).Length > tol_mm:
-            return False
-        rel_angle = pl1.inverse().multiply(pl2).Rotation.Angle
-        return abs(rel_angle) < tol_rad
-    except Exception:
+    if (pl1.Base - pl2.Base).Length > tol_mm:
         return False
+    rel_angle = pl1.inverse().multiply(pl2).Rotation.Angle
+    return abs(rel_angle) < tol_rad
 
 
 def _bake_shape_to_geometry(shape, placement=None):
@@ -226,35 +223,22 @@ def _bake_shape_to_geometry(shape, placement=None):
         return shape
 
     baked = shape.copy()
+    pl = placement if placement is not None else baked.Placement
+
+    baked.Placement = FreeCAD.Placement()
+    if pl.isIdentity():
+        return baked
+
+    mat = pl.toMatrix()
     try:
-        pl = placement if placement is not None else baked.Placement
-    except Exception:
-        pl = placement if placement is not None else FreeCAD.Placement()
+        baked = baked.transformGeometry(mat)
+    except RuntimeError:
+        # Fallback only if transformGeometry is unavailable for the shape
+        # subtype. transformShape is less reliable for flattening Locations
+        # but still better than leaving the transform unapplied.
+        baked.transformShape(mat)
 
-    try:
-        baked.Placement = FreeCAD.Placement()
-    except Exception:
-        pass
-
-    try:
-        is_identity = pl.isIdentity()
-    except Exception:
-        is_identity = True
-
-    if not is_identity:
-        mat = pl.toMatrix()
-        try:
-            baked = baked.transformGeometry(mat)
-        except Exception:
-            # Fallback only if transformGeometry is unavailable for the shape
-            # subtype. transformShape is less reliable for flattening Locations
-            # but still better than leaving the transform unapplied.
-            baked.transformShape(mat)
-        try:
-            baked.Placement = FreeCAD.Placement()
-        except Exception:
-            pass
-
+    baked.Placement = FreeCAD.Placement()
     return baked
 
 
@@ -268,18 +252,13 @@ def _copy_object_shape_baked_world(obj):
          document object's Placement, so both must be composed.
     """
     shape_copy = obj.Shape.copy()
-    obj_pl = getattr(obj, "Placement", FreeCAD.Placement())
-    shape_pl = getattr(shape_copy, "Placement", FreeCAD.Placement())
+    obj_pl = obj.Placement
+    shape_pl = shape_copy.Placement
 
     if _placements_are_close(shape_pl, obj_pl):
         total_pl = obj_pl
     else:
         total_pl = obj_pl.multiply(shape_pl)
-
-    try:
-        shape_copy.Placement = FreeCAD.Placement()
-    except Exception:
-        pass
 
     return _bake_shape_to_geometry(shape_copy, total_pl)
 
@@ -2873,43 +2852,40 @@ class HatchTaskPanel:
             preview_at_surface = at_location is None or at_location.isChecked() or is_definition
 
             if preview_at_surface:
-
-                # AT SURFACE LOCATION (default, checkbox checked)
-                #
-                # Keep the parametric hatch object itself as the preview.
-                # Its execute() already produced the correct Shape and
-                # Placement — no copy needed, no coordinate reconstruction.
-                # Future recomputes keep it correct automatically.
+                # ---------------------------------------------------------- #
+                # AT SURFACE LOCATION (default, checkbox checked)             #
+                #                                                              #
+                # Keep the parametric hatch object itself as the preview.    #
+                # Its execute() already produced the correct Shape and        #
+                # Placement — no copy needed, no coordinate reconstruction.  #
+                # Future recomputes keep it correct automatically.           #
+                # ---------------------------------------------------------- #
                 preview_name = temp_name
                 temp_name = None  # don't clean up — this IS the preview
                 preview_obj = doc.getObject(preview_name)
 
             else:
-                # AT WORLD ORIGIN (checkbox unchecked)
-                #
-                # We cannot just shift the parametric hatch's Placement:
-                # execute() runs on every recompute and resets it back to the
-                # surface location — the "bounce-back" bug.
-                #
-                # Instead:
-                # 1. Bake the hatch's current world-space geometry into a
-                #    shape by applying Placement to vertices via
-                #    transformGeometry.
-                # 2. Shift that world-space shape so its centre lands at
-                #    the origin.
-                # 3. Store in a Part::Feature (no execute(), Placement is
-                #    stable — will never bounce back).
-                # 4. Delete the parametric hatch.
-                world_shape = temp_hatch.Shape.copy()
-                hatch_pl = temp_hatch.Placement
-
-                # Bake placement into vertices so Part::Feature at identity
-                # renders the shape at the same position as the hatch.
-                if not hatch_pl.isIdentity():
-                    try:
-                        world_shape = world_shape.transformGeometry(hatch_pl.toMatrix())
-                    except Exception:
-                        pass
+                # ---------------------------------------------------------- #
+                # AT WORLD ORIGIN (checkbox unchecked)                        #
+                #                                                              #
+                # We cannot just shift the parametric hatch's Placement:     #
+                # execute() runs on every recompute and resets it back to the #
+                # surface location — the "bounce-back" bug.                  #
+                #                                                              #
+                # Instead:                                                    #
+                # 1. Bake the hatch's current world-space geometry into a    #
+                #    shape by applying Placement to vertices via              #
+                #    transformGeometry.                                       #
+                # 2. Shift that world-space shape so its centre lands at     #
+                #    the origin.                                              #
+                # 3. Store in a Part::Feature (no execute(), Placement is    #
+                #    stable — will never bounce back).                        #
+                # 4. Delete the parametric hatch.                            #
+                # ---------------------------------------------------------- #
+                # Reuse the same bake-to-geometry path as the subtraction fix.
+                # This keeps preview-origin behavior consistent with execute()
+                # and avoids a second copy of transformGeometry exception logic.
+                world_shape = _bake_shape_to_geometry(temp_hatch.Shape, temp_hatch.Placement)
 
                 # Shift centre to origin for close-up inspection.
                 try:
