@@ -79,7 +79,6 @@ EditableDatumLabel::EditableDatumLabel(
     , cameraSensor(nullptr)
     , pickStyle(nullptr)
     , function(Function::Positioning)
-    , originalValue(0.0)
     , editStartValue(0.0)
 {
     // NOLINTBEGIN
@@ -210,7 +209,6 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
 
     QWidget* mdi = viewer->parentWidget();
 
-    originalValue = val;
     label->string = " ";
 
     spinBox = new QuantitySpinBox(mdi);
@@ -366,7 +364,7 @@ void EditableDatumLabel::stopEdit(bool writeChanges)
             label->string = SbString(valueStr.c_str());
         }
         else {
-            Base::Quantity quantity(originalValue, spinBox->unit());
+            Base::Quantity quantity(editStartValue, spinBox->unit());
             label->string = quantity.getUserString().c_str();
         }
 
