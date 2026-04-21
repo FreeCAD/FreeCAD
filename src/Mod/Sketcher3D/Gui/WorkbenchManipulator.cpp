@@ -41,6 +41,7 @@ void WorkbenchManipulator::modifyMenuBar(Gui::MenuItem* menuBar)
 void WorkbenchManipulator::modifyToolBars(Gui::ToolBarItem* toolBar)
 {
     setupCreateSketchToolbar(toolBar);
+    setupEditModeToolbar(toolBar);
 }
 
 void WorkbenchManipulator::setupCreateSketchToolbar(Gui::ToolBarItem* toolBar)
@@ -66,3 +67,18 @@ void WorkbenchManipulator::addCreateSketchToMenu(Gui::MenuItem* menuBar)
     add->setCommand("Sketcher3D_CreateSketch");
     sketch->appendItem(add);
 }
+
+void WorkbenchManipulator::setupEditModeToolbar(Gui::ToolBarItem* toolBar)
+{
+    if (!toolBar->findItem("Sketcher")) {
+        return;
+    }
+
+    auto* editTb =
+        new Gui::ToolBarItem(toolBar, Gui::ToolBarItem::DefaultVisibility::Unavailable);
+    editTb->setCommand("Sketcher3D Edit");
+    *editTb << "Sketcher3D_CreatePoint"
+            << "Sketcher3D_CreateLine"
+            << "Sketcher3D_CreatePolyline";
+}
+

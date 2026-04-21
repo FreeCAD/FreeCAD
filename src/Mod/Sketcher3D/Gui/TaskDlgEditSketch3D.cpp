@@ -23,47 +23,68 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHER3DGUI_VIEWPROVIDERSKETCH3D_H
-#define SKETCHER3DGUI_VIEWPROVIDERSKETCH3D_H
+#include "PreCompiled.h"
+
+#include <App/Document.h>
+#include <Gui/Command.h>
+#include <Gui/Document.h>
+
+#include "TaskDlgEditSketch3D.h"
+#include "TaskSketcher3DTool.h"
+#include "ViewProviderSketch3D.h"
 
 
-#include <QCoreApplication>
+using namespace Sketcher3DGui;
 
-#include <Mod/Part/Gui/ViewProvider.h>
-#include <Mod/Sketcher3D/Sketcher3DGlobal.h>
 
-class QMenu;
-
-namespace Sketcher3D
+TaskDlgEditSketch3D::TaskDlgEditSketch3D(ViewProviderSketch3D* view)
+    : TaskDialog()
+    , sketchView(view)
+    , toolPanel(nullptr)
 {
-class Sketch3DObject;
+    assert(sketchView);
+
+    toolPanel = new TaskSketcher3DTool(sketchView);
+    Content.push_back(toolPanel);
+
+    if (auto* obj = sketchView->getObject()) {
+        associateToObject3dView(obj);
+    }
 }
 
-namespace Sketcher3DGui
+TaskDlgEditSketch3D::~TaskDlgEditSketch3D() = default;
+
+void TaskDlgEditSketch3D::open()
+{}
+
+bool TaskDlgEditSketch3D::accept()
 {
+    return true;
+}
 
-
-class Sketcher3DGuiExport ViewProviderSketch3D: public PartGui::ViewProviderPart
+bool TaskDlgEditSketch3D::reject()
 {
-    Q_DECLARE_TR_FUNCTIONS(Sketcher3DGui::ViewProviderSketch3D)
-    PROPERTY_HEADER_WITH_OVERRIDE(Sketcher3DGui::ViewProviderSketch3D);
-
-public:
-    ViewProviderSketch3D();
-    ~ViewProviderSketch3D() override;
-
-    Sketcher3D::Sketch3DObject* getSketch3DObject() const;
-    void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
-    const char* getTransactionText() const override
-    {
-        return nullptr;
+    if (!sketchView) {
+        return true;
     }
+    auto* obj = sketchView->getObject();
+    if (!obj || !obj->getDocument()) {
+        return true;
+    }
+    const std::string docName = obj->getDocument()->getName();
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.getDocument('%s').resetEdit()", docName.c_str());
+    Gui::Command::doCommand(Gui::Command::Doc, "App.getDocument('%s').recompute()", docName.c_str());
+    return true;
+}
 
-protected:
-    bool setEdit(int ModNum) override;
-    void unsetEdit(int ModNum) override;
-};
+void TaskDlgEditSketch3D::autoClosedOnClosedView()
+{
+    reject();
+}
 
-}  // namespace Sketcher3DGui
+QDialogButtonBox::StandardButtons TaskDlgEditSketch3D::getStandardButtons() const
+{
+    return QDialogButtonBox::Close;
+}
 
-#endif  // SKETCHER3DGUI_VIEWPROVIDERSKETCH3D_H
+#include "moc_TaskDlgEditSketch3D.cpp"

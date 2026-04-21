@@ -22,48 +22,18 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifndef SKETCHER3DGUI_UTILS_H
+#define SKETCHER3DGUI_UTILS_H
 
-#ifndef SKETCHER3DGUI_VIEWPROVIDERSKETCH3D_H
-#define SKETCHER3DGUI_VIEWPROVIDERSKETCH3D_H
-
-
-#include <QCoreApplication>
-
-#include <Mod/Part/Gui/ViewProvider.h>
 #include <Mod/Sketcher3D/Sketcher3DGlobal.h>
 
-class QMenu;
-
-namespace Sketcher3D
-{
-class Sketch3DObject;
-}
 
 namespace Sketcher3DGui
 {
 
-
-class Sketcher3DGuiExport ViewProviderSketch3D: public PartGui::ViewProviderPart
-{
-    Q_DECLARE_TR_FUNCTIONS(Sketcher3DGui::ViewProviderSketch3D)
-    PROPERTY_HEADER_WITH_OVERRIDE(Sketcher3DGui::ViewProviderSketch3D);
-
-public:
-    ViewProviderSketch3D();
-    ~ViewProviderSketch3D() override;
-
-    Sketcher3D::Sketch3DObject* getSketch3DObject() const;
-    void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
-    const char* getTransactionText() const override
-    {
-        return nullptr;
-    }
-
-protected:
-    bool setEdit(int ModNum) override;
-    void unsetEdit(int ModNum) override;
-};
+// Returns true if a Sketch3DObject is currently being edited.
+Sketcher3DGuiExport bool isSketch3DInEdit();
 
 }  // namespace Sketcher3DGui
 
-#endif  // SKETCHER3DGUI_VIEWPROVIDERSKETCH3D_H
+#endif  // SKETCHER3DGUI_UTILS_H

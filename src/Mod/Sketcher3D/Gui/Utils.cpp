@@ -23,47 +23,30 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHER3DGUI_VIEWPROVIDERSKETCH3D_H
-#define SKETCHER3DGUI_VIEWPROVIDERSKETCH3D_H
+#include "PreCompiled.h"
+
+#include <Gui/Application.h>
+#include <Gui/Document.h>
+#include <Gui/ViewProviderDocumentObject.h>
+#include <Mod/Sketcher3D/App/Sketch3DObject.h>
+
+#include "Utils.h"
 
 
-#include <QCoreApplication>
-
-#include <Mod/Part/Gui/ViewProvider.h>
-#include <Mod/Sketcher3D/Sketcher3DGlobal.h>
-
-class QMenu;
-
-namespace Sketcher3D
+bool Sketcher3DGui::isSketch3DInEdit()
 {
-class Sketch3DObject;
-}
-
-namespace Sketcher3DGui
-{
-
-
-class Sketcher3DGuiExport ViewProviderSketch3D: public PartGui::ViewProviderPart
-{
-    Q_DECLARE_TR_FUNCTIONS(Sketcher3DGui::ViewProviderSketch3D)
-    PROPERTY_HEADER_WITH_OVERRIDE(Sketcher3DGui::ViewProviderSketch3D);
-
-public:
-    ViewProviderSketch3D();
-    ~ViewProviderSketch3D() override;
-
-    Sketcher3D::Sketch3DObject* getSketch3DObject() const;
-    void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
-    const char* getTransactionText() const override
-    {
-        return nullptr;
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    if (!doc) {
+        return false;
     }
-
-protected:
-    bool setEdit(int ModNum) override;
-    void unsetEdit(int ModNum) override;
-};
-
-}  // namespace Sketcher3DGui
-
-#endif  // SKETCHER3DGUI_VIEWPROVIDERSKETCH3D_H
+    Gui::ViewProvider* vp = doc->getInEdit();
+    if (!vp) {
+        return false;
+    }
+    auto* vpd = freecad_cast<Gui::ViewProviderDocumentObject*>(vp);
+    if (!vpd) {
+        return false;
+    }
+    App::DocumentObject* obj = vpd->getObject();
+    return obj && obj->isDerivedFrom<Sketcher3D::Sketch3DObject>();
+}

@@ -10,6 +10,12 @@ SET(Sketcher3DGui_SRCS
     AppSketcher3DGui.cpp
     Command.cpp
     PreCompiled.h
+    TaskDlgEditSketch3D.cpp
+    TaskDlgEditSketch3D.h
+    TaskSketcher3DTool.cpp
+    TaskSketcher3DTool.h
+    Utils.cpp
+    Utils.h
     ViewProviderSketch3D.cpp
     ViewProviderSketch3D.h
     WorkbenchManipulator.cpp

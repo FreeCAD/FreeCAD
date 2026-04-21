@@ -31,7 +31,7 @@
 namespace Sketcher3DGui
 {
 
-// Injects Sketcher3D commands into the Sketcher workbench.
+// Injects Sketcher3D Tools into the Sketcher workbench.
 
 class WorkbenchManipulator: public Gui::WorkbenchManipulator
 {
@@ -41,6 +41,7 @@ protected:
 
 private:
     static void setupCreateSketchToolbar(Gui::ToolBarItem* toolBar);
+    static void setupEditModeToolbar(Gui::ToolBarItem* toolBar);
     static void addCreateSketchToMenu(Gui::MenuItem* menuBar);
 };
 

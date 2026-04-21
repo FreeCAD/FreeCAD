@@ -26,8 +26,12 @@
 #include "PreCompiled.h"
 
 #include <App/Document.h>
+#include <Base/Console.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
+#include <Gui/Document.h>
+
+#include "Utils.h"
 
 
 namespace Sketcher3DGui
@@ -68,6 +72,85 @@ bool CmdSketcher3DCreateSketch::isActive()
     return hasActiveDocument();
 }
 
+// Editmode tool
+
+DEF_STD_CMD_A(CmdSketcher3DCreatePoint)
+
+CmdSketcher3DCreatePoint::CmdSketcher3DCreatePoint()
+    : Command("Sketcher3D_CreatePoint")
+{
+    sAppModule = "Sketcher3D";
+    sGroup = QT_TR_NOOP("Sketcher3D");
+    sMenuText = QT_TR_NOOP("Point");
+    sToolTipText = QT_TR_NOOP("Create a 3D point");
+    sWhatsThis = "Sketcher3D_CreatePoint";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_CreatePoint";
+}
+
+void CmdSketcher3DCreatePoint::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    // stub
+}
+
+bool CmdSketcher3DCreatePoint::isActive()
+{
+    return isSketch3DInEdit();
+}
+
+DEF_STD_CMD_A(CmdSketcher3DCreateLine)
+
+CmdSketcher3DCreateLine::CmdSketcher3DCreateLine()
+    : Command("Sketcher3D_CreateLine")
+{
+    sAppModule = "Sketcher3D";
+    sGroup = QT_TR_NOOP("Sketcher3D");
+    sMenuText = QT_TR_NOOP("Line");
+    sToolTipText = QT_TR_NOOP("Create a 3D line segment");
+    sWhatsThis = "Sketcher3D_CreateLine";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_CreateLine";
+}
+
+void CmdSketcher3DCreateLine::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    // stub
+}
+
+bool CmdSketcher3DCreateLine::isActive()
+{
+    return isSketch3DInEdit();
+}
+
+
+DEF_STD_CMD_A(CmdSketcher3DCreatePolyline)
+
+CmdSketcher3DCreatePolyline::CmdSketcher3DCreatePolyline()
+    : Command("Sketcher3D_CreatePolyline")
+{
+    sAppModule = "Sketcher3D";
+    sGroup = QT_TR_NOOP("Sketcher3D");
+    sMenuText = QT_TR_NOOP("Polyline");
+    sToolTipText = QT_TR_NOOP("Create a 3D polyline");
+    sWhatsThis = "Sketcher3D_CreatePolyline";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_CreatePolyline";
+}
+
+void CmdSketcher3DCreatePolyline::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    // stub
+}
+
+bool CmdSketcher3DCreatePolyline::isActive()
+{
+    return isSketch3DInEdit();
+}
+
+
 }  // namespace Sketcher3DGui
 
 
@@ -75,4 +158,7 @@ void CreateSketcher3DCommands()
 {
     Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DCreateSketch());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DCreatePoint());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DCreateLine());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DCreatePolyline());
 }

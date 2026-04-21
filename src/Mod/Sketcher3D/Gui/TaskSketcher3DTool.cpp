@@ -23,47 +23,65 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHER3DGUI_VIEWPROVIDERSKETCH3D_H
-#define SKETCHER3DGUI_VIEWPROVIDERSKETCH3D_H
+#include "PreCompiled.h"
+
+#include <QLabel>
+#include <QVBoxLayout>
+
+#include <App/DocumentObject.h>
+#include <Gui/BitmapFactory.h>
+
+#include "TaskSketcher3DTool.h"
+#include "ViewProviderSketch3D.h"
 
 
-#include <QCoreApplication>
+using namespace Sketcher3DGui;
 
-#include <Mod/Part/Gui/ViewProvider.h>
-#include <Mod/Sketcher3D/Sketcher3DGlobal.h>
 
-class QMenu;
-
-namespace Sketcher3D
+TaskSketcher3DTool::TaskSketcher3DTool(ViewProviderSketch3D* view)
+    : TaskBox(
+          Gui::BitmapFactory().pixmap("Sketcher_Sketch"),
+          view && view->getObject() ? QString::fromUtf8(view->getObject()->Label.getValue())
+                                    : tr("Sketch3D Edit"),
+          true,
+          nullptr
+      )
+    , sketchView(view)
+    , statusLabel(nullptr)
+    , hintLabel(nullptr)
 {
-class Sketch3DObject;
+    auto* body = new QWidget(this);
+    auto* root = new QVBoxLayout(body);
+    root->setContentsMargins(0, 0, 0, 0);
+    root->setSpacing(4);
+
+    // Status
+    statusLabel = new QLabel();
+    setStatus(0, 0);
+    root->addWidget(statusLabel);
+
+    // Hint
+    hintLabel = new QLabel();
+    hintLabel->setWordWrap(true);
+    setHint(tr("Pick a tool from the toolbar to start sketching."));
+    root->addWidget(hintLabel);
+
+    body->setLayout(root);
+    addWidget(body, true, false);
 }
 
-namespace Sketcher3DGui
+TaskSketcher3DTool::~TaskSketcher3DTool() = default;
+
+void TaskSketcher3DTool::setHint(const QString& text)
 {
-
-
-class Sketcher3DGuiExport ViewProviderSketch3D: public PartGui::ViewProviderPart
-{
-    Q_DECLARE_TR_FUNCTIONS(Sketcher3DGui::ViewProviderSketch3D)
-    PROPERTY_HEADER_WITH_OVERRIDE(Sketcher3DGui::ViewProviderSketch3D);
-
-public:
-    ViewProviderSketch3D();
-    ~ViewProviderSketch3D() override;
-
-    Sketcher3D::Sketch3DObject* getSketch3DObject() const;
-    void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
-    const char* getTransactionText() const override
-    {
-        return nullptr;
+    if (hintLabel) {
+        hintLabel->setText(text);
     }
+}
 
-protected:
-    bool setEdit(int ModNum) override;
-    void unsetEdit(int ModNum) override;
-};
+void TaskSketcher3DTool::setStatus(int points, int lines)
+{
+    // add info here about elemets and constraints
+}
 
-}  // namespace Sketcher3DGui
-
-#endif  // SKETCHER3DGUI_VIEWPROVIDERSKETCH3D_H
+#include "moc_TaskSketcher3DTool.cpp"
