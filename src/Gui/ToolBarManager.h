@@ -71,6 +71,9 @@ public:
 
     void setCommand(const std::string&);
     const std::string& command() const;
+    bool hasPersistenceKey() const;
+    void setPersistenceKey(const std::string&);
+    const std::string& persistenceKey() const;
 
     bool hasItems() const;
     ToolBarItem* findItem(const std::string&);
@@ -90,6 +93,7 @@ public:
 
 private:
     std::string _name;
+    std::string _persistenceKey;
     QList<ToolBarItem*> _items;
 };
 
@@ -162,6 +166,10 @@ public:
     /// The one and only instance.
     static ToolBarManager* getInstance();
     static void destruct();
+    static QString toolBarPersistenceKey(const ToolBarItem*);
+    static QString toolBarPersistenceKey(const QToolBar*);
+    static void setToolBarPersistenceKey(QToolBar*, const QString&);
+
     /** Sets up the toolbars of a given workbench. */
     void setup(ToolBarItem*);
     void saveState() const;
@@ -212,13 +220,24 @@ private:
     void setupResizeTimer();
     void setupMenuBarTimer();
     void setupWidgetProducers();
+    QString activeToolbarLayoutContext() const;
+    bool rememberToolbarLayoutByWorkbench() const;
+    void updateLayoutParameters(const QString& context);
+    ParameterGrp::handle workbenchLayoutGroup(const QString& context) const;
+    ParameterGrp::handle toolbarAreaRestoreParameters(
+        const ParameterGrp::handle& current,
+        const ParameterGrp::handle& fallback
+    ) const;
+    void saveWorkbenchToolBarLayout(const QString& context) const;
+    void restoreWorkbenchToolBarLayout(const QString& context) const;
 
     void addToMenu(QLayout* layout, QWidget* area, QMenu* menu);
     QLayout* findLayoutOfObject(QObject* source, QWidget* area) const;
     ToolBarAreaWidget* findToolBarAreaWidget() const;
 
 private:
-    QStringList toolbarNames;
+    QStringList toolbarKeys;
+    QString toolbarLayoutContext;
     static ToolBarManager* _instance;
 
     QTimer timer;
@@ -230,7 +249,12 @@ private:
     ToolBarAreaWidget* menuBarLeftAreaWidget = nullptr;
     ToolBarAreaWidget* menuBarRightAreaWidget = nullptr;
     ParameterGrp::handle hGeneral;
+    ParameterGrp::handle hMainWindow;
     ParameterGrp::handle hPref;
+    ParameterGrp::handle hWorkbenchLayouts;
+    ParameterGrp::handle hGlobalStatusBar;
+    ParameterGrp::handle hGlobalMenuBarLeft;
+    ParameterGrp::handle hGlobalMenuBarRight;
     ParameterGrp::handle hStatusBar;
     ParameterGrp::handle hMenuBarLeft;
     ParameterGrp::handle hMenuBarRight;

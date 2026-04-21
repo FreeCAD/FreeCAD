@@ -29,6 +29,8 @@ from PySide import QtGui
 conectedToolbars = []
 timer = QtCore.QTimer()
 mw = Gui.getMainWindow()
+toolbarPersistenceKeyProperty = "PersistenceKey"
+mainWindowPrefs = App.ParamGet("User parameter:BaseApp/Preferences/MainWindow")
 
 
 def isConnected(i):
@@ -39,6 +41,31 @@ def isConnected(i):
         i.topLevelChanged.connect(onSave)
     else:
         pass
+
+
+def toolbarName(toolbar):
+    """Return the persisted toolbar identity."""
+
+    key = toolbar.property(toolbarPersistenceKeyProperty)
+    if key:
+        return key
+
+    return toolbar.objectName()
+
+
+def workbenchActivatedSignal():
+    """Return the latest available workbench activation signal."""
+
+    try:
+        return mw.workbenchActivatedCompleted
+    except AttributeError:
+        return mw.workbenchActivated
+
+
+def useCoreWorkbenchLayouts():
+    """Return whether toolbar layouts are handled by the core workbench switch flow."""
+
+    return mainWindowPrefs.GetBool("RememberToolbarLayoutByWorkbench", False)
 
 
 def onRestore(active):
@@ -52,9 +79,10 @@ def onRestore(active):
     for i in tb:
 
         isConnected(i)
+        name = toolbarName(i)
 
-        if i.objectName() and i.parentWidget() == mw and not i.isFloating():
-            toolbars[i.objectName()] = i
+        if name and i.parentWidget() == mw and not i.isFloating():
+            toolbars[name] = i
         else:
             pass
 
@@ -142,14 +170,15 @@ def onSave():
     bottom = []
 
     for i in tb:
-        if i.objectName() and i.isVisible() and not i.isFloating():
+        name = toolbarName(i)
+        if name and i.isVisible() and not i.isFloating():
 
             area = mw.toolBarArea(i)
 
             x = i.geometry().x()
             y = i.geometry().y()
             b = mw.toolBarBreak(i)
-            n = i.objectName()
+            n = name
 
             if area == QtCore.Qt.ToolBarArea.TopToolBarArea:
                 top.append([x, y, b, n])
@@ -209,7 +238,7 @@ def onSave():
     group.SetString("Bottom", ",".join(bottomSave))
 
 
-def onWorkbenchActivated():
+def onWorkbenchActivated(*_args):
     """When workbench gets activated restore toolbar position."""
 
     active = Gui.activeWorkbench().__class__.__name__
@@ -223,10 +252,15 @@ def onWorkbenchActivated():
 def onStart():
     """Start persistent toolbars."""
     if mw.property("eventLoop"):
+        if useCoreWorkbenchLayouts():
+            timer.stop()
+            return
+
         start = False
+        signal = None
         try:
             mw.mainWindowClosed
-            mw.workbenchActivated
+            signal = workbenchActivatedSignal()
             start = True
         except AttributeError:
             pass
@@ -234,7 +268,7 @@ def onStart():
             timer.stop()
             onWorkbenchActivated()
             mw.mainWindowClosed.connect(onClose)
-            mw.workbenchActivated.connect(onWorkbenchActivated)
+            signal.connect(onWorkbenchActivated)
 
 
 def onClose():

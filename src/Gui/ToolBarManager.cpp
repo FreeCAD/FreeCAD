@@ -23,17 +23,22 @@
 
 #include <QAction>
 #include <QApplication>
+#include <QByteArray>
 #include <QHBoxLayout>
+#include <QMap>
 #include <QMenuBar>
 #include <QMouseEvent>
 #include <QPainter>
 #include <QPointer>
+#include <QSet>
 #include <QStatusBar>
 #include <QToolBar>
 #include <QToolButton>
 #include <QStyleOption>
 
 
+#include <algorithm>
+#include <tuple>
 #include <boost/algorithm/string/predicate.hpp>
 
 #include <Base/Tools.h>
@@ -44,10 +49,27 @@
 #include "Command.h"
 #include "MainWindow.h"
 #include "OverlayWidgets.h"
+#include "Workbench.h"
+#include "WorkbenchManager.h"
 #include "WidgetFactory.h"
 
 
 using namespace Gui;
+
+namespace
+{
+constexpr auto ToolBarPersistenceKeyProperty = "_fc_toolbar_persistence_key";
+constexpr auto ToolBarPublicPersistenceKeyProperty = "PersistenceKey";
+
+QStringList splitLayoutState(const std::string& value)
+{
+    if (value.empty()) {
+        return {};
+    }
+
+    return QString::fromUtf8(value.c_str()).split(QLatin1Char(','), Qt::SkipEmptyParts);
+}
+}  // namespace
 
 ToolBarItem::ToolBarItem()
     : visibilityPolicy(DefaultVisibility::Visible)
@@ -76,6 +98,25 @@ const std::string& ToolBarItem::command() const
     return _name;
 }
 
+bool ToolBarItem::hasPersistenceKey() const
+{
+    return !_persistenceKey.empty();
+}
+
+void ToolBarItem::setPersistenceKey(const std::string& key)
+{
+    _persistenceKey = key;
+}
+
+const std::string& ToolBarItem::persistenceKey() const
+{
+    if (_persistenceKey.empty()) {
+        return _name;
+    }
+
+    return _persistenceKey;
+}
+
 bool ToolBarItem::hasItems() const
 {
     return !_items.isEmpty();
@@ -100,6 +141,9 @@ ToolBarItem* ToolBarItem::copy() const
 {
     auto root = new ToolBarItem;
     root->setCommand(command());
+    if (!_persistenceKey.empty()) {
+        root->setPersistenceKey(_persistenceKey);
+    }
 
     QList<ToolBarItem*> items = getItems();
     for (auto it : items) {
@@ -394,6 +438,51 @@ ToolBarManager* ToolBarManager::getInstance()
     return _instance;
 }
 
+QString ToolBarManager::toolBarPersistenceKey(const ToolBarItem* item)
+{
+    if (!item) {
+        return {};
+    }
+
+    return QString::fromUtf8(item->persistenceKey().c_str());
+}
+
+QString ToolBarManager::toolBarPersistenceKey(const QToolBar* toolbar)
+{
+    if (!toolbar) {
+        return {};
+    }
+
+    auto publicProperty = toolbar->property(ToolBarPublicPersistenceKeyProperty);
+    if (publicProperty.isValid()) {
+        auto key = publicProperty.toString();
+        if (!key.isEmpty()) {
+            return key;
+        }
+    }
+
+    auto property = toolbar->property(ToolBarPersistenceKeyProperty);
+    if (property.isValid()) {
+        auto key = property.toString();
+        if (!key.isEmpty()) {
+            return key;
+        }
+    }
+
+    return toolbar->objectName();
+}
+
+void ToolBarManager::setToolBarPersistenceKey(QToolBar* toolbar, const QString& key)
+{
+    if (!toolbar) {
+        return;
+    }
+
+    toolbar->setProperty(ToolBarPersistenceKeyProperty, key);
+    toolbar->setProperty(ToolBarPublicPersistenceKeyProperty, key);
+    toolbar->toggleViewAction()->setProperty(ToolBarPublicPersistenceKeyProperty, key);
+}
+
 void ToolBarManager::destruct()
 {
     delete _instance;
@@ -421,9 +510,14 @@ void ToolBarManager::setupParameters()
 {
     auto& mgr = App::GetApplication().GetUserParameter();
     hGeneral = mgr.GetGroup("BaseApp/Preferences/General");
-    hStatusBar = mgr.GetGroup("BaseApp/MainWindow/StatusBar");
-    hMenuBarRight = mgr.GetGroup("BaseApp/MainWindow/MenuBarRight");
-    hMenuBarLeft = mgr.GetGroup("BaseApp/MainWindow/MenuBarLeft");
+    hMainWindow = mgr.GetGroup("BaseApp/Preferences/MainWindow");
+    hWorkbenchLayouts = mgr.GetGroup("BaseApp/MainWindow/WorkbenchLayouts");
+    hGlobalStatusBar = mgr.GetGroup("BaseApp/MainWindow/StatusBar");
+    hGlobalMenuBarRight = mgr.GetGroup("BaseApp/MainWindow/MenuBarRight");
+    hGlobalMenuBarLeft = mgr.GetGroup("BaseApp/MainWindow/MenuBarLeft");
+    hStatusBar = hGlobalStatusBar;
+    hMenuBarRight = hGlobalMenuBarRight;
+    hMenuBarLeft = hGlobalMenuBarLeft;
     hPref = mgr.GetGroup("BaseApp/MainWindow/Toolbars");
 }
 
@@ -546,6 +640,222 @@ void ToolBarManager::setupMenuBarTimer()
 void Gui::ToolBarManager::setupWidgetProducers()
 {
     new WidgetProducer<Gui::ToolBar>;
+}
+
+QString ToolBarManager::activeToolbarLayoutContext() const
+{
+    auto active = WorkbenchManager::instance()->active();
+    if (!active) {
+        return {};
+    }
+
+    return QString::fromUtf8(active->name().c_str());
+}
+
+bool ToolBarManager::rememberToolbarLayoutByWorkbench() const
+{
+    return hMainWindow->GetBool("RememberToolbarLayoutByWorkbench", false);
+}
+
+ParameterGrp::handle ToolBarManager::workbenchLayoutGroup(const QString& context) const
+{
+    if (!rememberToolbarLayoutByWorkbench() || context.isEmpty()) {
+        return {};
+    }
+
+    return hWorkbenchLayouts->GetGroup(context.toUtf8().constData());
+}
+
+void ToolBarManager::updateLayoutParameters(const QString& context)
+{
+    auto workbenchGroup = workbenchLayoutGroup(context);
+
+    if (workbenchGroup) {
+        hStatusBar = workbenchGroup->GetGroup("StatusBar");
+        hMenuBarLeft = workbenchGroup->GetGroup("MenuBarLeft");
+        hMenuBarRight = workbenchGroup->GetGroup("MenuBarRight");
+    }
+    else {
+        hStatusBar = hGlobalStatusBar;
+        hMenuBarLeft = hGlobalMenuBarLeft;
+        hMenuBarRight = hGlobalMenuBarRight;
+    }
+
+    if (statusBarAreaWidget) {
+        statusBarAreaWidget->setParameters(hStatusBar);
+    }
+    if (menuBarLeftAreaWidget) {
+        menuBarLeftAreaWidget->setParameters(hMenuBarLeft);
+    }
+    if (menuBarRightAreaWidget) {
+        menuBarRightAreaWidget->setParameters(hMenuBarRight);
+    }
+}
+
+ParameterGrp::handle ToolBarManager::toolbarAreaRestoreParameters(
+    const ParameterGrp::handle& current,
+    const ParameterGrp::handle& fallback
+) const
+{
+    if (!rememberToolbarLayoutByWorkbench() || current == fallback) {
+        return current;
+    }
+
+    if (!current->GetIntMap().empty() || !current->GetBoolMap().empty()) {
+        return current;
+    }
+
+    return fallback;
+}
+
+void ToolBarManager::saveWorkbenchToolBarLayout(const QString& context) const
+{
+    auto group = workbenchLayoutGroup(context);
+    if (!group) {
+        return;
+    }
+
+    struct ToolBarPosition
+    {
+        int primary;
+        int secondary;
+        bool toolbarBreak;
+        QString key;
+    };
+
+    QList<ToolBarPosition> top;
+    QList<ToolBarPosition> left;
+    QList<ToolBarPosition> right;
+    QList<ToolBarPosition> bottom;
+
+    for (auto toolbar : toolBars()) {
+        auto key = toolBarPersistenceKey(toolbar);
+        if (key.isEmpty() || toolbar->isFloating() || toolbar->parentWidget() != getMainWindow()) {
+            continue;
+        }
+
+        QRect geometry = toolbar->geometry();
+        bool toolbarBreak = getMainWindow()->toolBarBreak(toolbar);
+        switch (getMainWindow()->toolBarArea(toolbar)) {
+            case Qt::TopToolBarArea:
+                top.push_back({geometry.y(), geometry.x(), toolbarBreak, key});
+                break;
+            case Qt::LeftToolBarArea:
+                left.push_back({geometry.x(), geometry.y(), toolbarBreak, key});
+                break;
+            case Qt::RightToolBarArea:
+                right.push_back({-geometry.x(), geometry.y(), toolbarBreak, key});
+                break;
+            case Qt::BottomToolBarArea:
+                bottom.push_back({-geometry.y(), geometry.x(), toolbarBreak, key});
+                break;
+            default:
+                break;
+        }
+    }
+
+    auto save = [group](const char* key, QList<ToolBarPosition>& positions) {
+        std::sort(positions.begin(), positions.end(), [](const auto& lhs, const auto& rhs) {
+            return std::tie(lhs.primary, lhs.secondary) < std::tie(rhs.primary, rhs.secondary);
+        });
+
+        QStringList layout;
+        for (const auto& position : std::as_const(positions)) {
+            if (position.toolbarBreak) {
+                layout << QStringLiteral("Break");
+            }
+            layout << position.key;
+        }
+        group->SetASCII(key, layout.join(QLatin1Char(',')).toUtf8().constData());
+    };
+
+    group->SetBool("Saved", true);
+    save("Top", top);
+    save("Left", left);
+    save("Right", right);
+    save("Bottom", bottom);
+}
+
+void ToolBarManager::restoreWorkbenchToolBarLayout(const QString& context) const
+{
+    auto group = workbenchLayoutGroup(context);
+    if (!group || !group->GetBool("Saved", false)) {
+        return;
+    }
+
+    QMap<QString, ToolBar*> mainWindowToolbars;
+    QList<ToolBar*> currentToolbars = toolBars();
+    for (auto toolbar : std::as_const(currentToolbars)) {
+        auto key = toolBarPersistenceKey(toolbar);
+        if (key.isEmpty() || toolbar->isFloating() || toolbar->parentWidget() != getMainWindow()) {
+            continue;
+        }
+
+        mainWindowToolbars.insert(key, toolbar);
+    }
+
+    if (mainWindowToolbars.isEmpty()) {
+        return;
+    }
+
+    QStringList top = splitLayoutState(group->GetASCII("Top"));
+    QStringList left = splitLayoutState(group->GetASCII("Left"));
+    QStringList right = splitLayoutState(group->GetASCII("Right"));
+    QStringList bottom = splitLayoutState(group->GetASCII("Bottom"));
+
+    QSet<QString> knownKeys;
+    auto rememberKeys = [&knownKeys](const QStringList& layout) {
+        for (const auto& key : layout) {
+            if (key != QStringLiteral("Break")) {
+                knownKeys.insert(key);
+            }
+        }
+    };
+    rememberKeys(top);
+    rememberKeys(left);
+    rememberKeys(right);
+    rememberKeys(bottom);
+
+    auto appendMissing =
+        [&mainWindowToolbars, &knownKeys, this](QStringList& layout, Qt::ToolBarArea area) {
+            for (auto toolbar : toolBars()) {
+                auto key = toolBarPersistenceKey(toolbar);
+                if (!mainWindowToolbars.contains(key) || knownKeys.contains(key)) {
+                    continue;
+                }
+                if (getMainWindow()->toolBarArea(toolbar) == area) {
+                    layout << key;
+                    knownKeys.insert(key);
+                }
+            }
+        };
+    appendMissing(top, Qt::TopToolBarArea);
+    appendMissing(left, Qt::LeftToolBarArea);
+    appendMissing(right, Qt::RightToolBarArea);
+    appendMissing(bottom, Qt::BottomToolBarArea);
+
+    auto restore = [&mainWindowToolbars, this](const QStringList& layout, Qt::ToolBarArea area) {
+        for (const auto& key : layout) {
+            if (key == QStringLiteral("Break")) {
+                getMainWindow()->addToolBarBreak(area);
+                continue;
+            }
+
+            auto toolbar = mainWindowToolbars.value(key);
+            if (!toolbar) {
+                continue;
+            }
+
+            bool visible = toolbar->isVisible();
+            getMainWindow()->addToolBar(area, toolbar);
+            toolbar->setVisible(visible);
+        }
+    };
+
+    restore(top, Qt::TopToolBarArea);
+    restore(left, Qt::LeftToolBarArea);
+    restore(right, Qt::RightToolBarArea);
+    restore(bottom, Qt::BottomToolBarArea);
 }
 
 ToolBarArea ToolBarManager::toolBarArea(QWidget* widget) const
@@ -677,7 +987,8 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
     QPointer<QWidget> actionWidget = createActionWidget();
 
     saveState();
-    this->toolbarNames.clear();
+    updateLayoutParameters(activeToolbarLayoutContext());
+    this->toolbarKeys.clear();
 
     int max_width = getMainWindow()->width();
     int top_width = 0;
@@ -693,30 +1004,31 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
     QList<ToolBar*> toolbars = toolBars();
 
     for (ToolBarItem* it : items) {
-        // search for the toolbar
         QString name = QString::fromUtf8(it->command().c_str());
-        this->toolbarNames << name;
-        ToolBar* toolbar = findToolBar(toolbars, name);
-        std::string toolbarName = it->command();
+        QString key = toolBarPersistenceKey(it);
+        this->toolbarKeys << key;
+        ToolBar* toolbar = findToolBar(toolbars, key);
         bool toolbar_added = false;
 
         if (!toolbar) {
             toolbar = new ToolBar(getMainWindow());
-            toolbar->setWindowTitle(QApplication::translate("Workbench", toolbarName.c_str()));
+            toolbar->setWindowTitle(QApplication::translate("Workbench", it->command().c_str()));
             toolbar->setObjectName(name);
+            setToolBarPersistenceKey(toolbar, key);
 
             getMainWindow()->addToolBar(toolbar);
             setToolBarIconSize(toolbar);
 
             if (nameAsToolTip) {
                 auto tooltip = QChar::fromLatin1('[')
-                    + QApplication::translate("Workbench", toolbarName.c_str())
+                    + QApplication::translate("Workbench", it->command().c_str())
                     + QChar::fromLatin1(']');
                 toolbar->setToolTip(tooltip);
             }
             toolbar_added = true;
         }
         else {
+            setToolBarPersistenceKey(toolbar, key);
             int index = toolbars.indexOf(toolbar);
             toolbars.removeAt(index);
         }
@@ -730,7 +1042,8 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
         if (it->visibilityPolicy != ToolBarItem::DefaultVisibility::Unavailable) {
             bool defaultvisibility = it->visibilityPolicy == ToolBarItem::DefaultVisibility::Visible;
 
-            visible = hPref->GetBool(toolbarName.c_str(), defaultvisibility);
+            QByteArray toolbarKey = key.toUtf8();
+            visible = hPref->GetBool(toolbarKey.constData(), defaultvisibility);
 
             // Enable automatic handling of visibility via, for example, (contextual) menu
             toolbar->toggleViewAction()->setVisible(true);
@@ -802,6 +1115,8 @@ void ToolBarManager::setup(ToolBarItem* item, QToolBar* toolbar) const
     CommandManager& mgr = Application::Instance->commandManager();
     QList<ToolBarItem*> items = item->getItems();
     QList<QAction*> actions = toolbar->actions();
+    QList<QAction*> orderedActions;
+    orderedActions.reserve(items.size());
     for (ToolBarItem* it : items) {
         // search for the action item
         QAction* action = findAction(actions, QString::fromLatin1(it->command().c_str()));
@@ -822,17 +1137,30 @@ void ToolBarManager::setup(ToolBarItem* item, QToolBar* toolbar) const
             }
         }
         else {
-            // Note: For toolbars we do not remove and re-add the actions
-            // because this causes flicker effects. So, it could happen that the order of
-            // buttons doesn't match with the order of commands in the workbench.
             int index = actions.indexOf(action);
             actions.removeAt(index);
+        }
+
+        if (action) {
+            orderedActions.push_back(action);
         }
     }
 
     // remove all tool buttons which we don't need for the moment
     for (QAction* it : std::as_const(actions)) {
         toolbar->removeAction(it);
+    }
+
+    if (toolbar->actions() != orderedActions) {
+        // Reinsert in one batch so reused toolbars match the workbench definition again.
+        toolbar->setUpdatesEnabled(false);
+        for (QAction* action : std::as_const(orderedActions)) {
+            toolbar->removeAction(action);
+        }
+        for (QAction* action : std::as_const(orderedActions)) {
+            toolbar->addAction(action);
+        }
+        toolbar->setUpdatesEnabled(true);
     }
 }
 
@@ -843,13 +1171,15 @@ void ToolBarManager::onTimer()
 
 void ToolBarManager::saveState() const
 {
+    saveWorkbenchToolBarLayout(toolbarLayoutContext);
+
     auto ignoreSave = [](QAction* action) {
         // Only save state for toolbars whose toggle action is user-visible.
         return !action->isVisible();
     };
 
     QList<ToolBar*> toolbars = toolBars();
-    for (const QString& it : toolbarNames) {
+    for (const QString& it : toolbarKeys) {
         ToolBar* toolbar = findToolBar(toolbars, it);
 
         if (toolbar) {
@@ -857,37 +1187,43 @@ void ToolBarManager::saveState() const
                 continue;
             }
 
-            QByteArray toolbarName = toolbar->objectName().toUtf8();
-            hPref->SetBool(toolbarName.constData(), toolbar->isVisible());
+            QByteArray toolbarKey = toolBarPersistenceKey(toolbar).toUtf8();
+            hPref->SetBool(toolbarKey.constData(), toolbar->isVisible());
         }
     }
 }
 
 void ToolBarManager::restoreState() const
 {
+    const QString layoutContext = activeToolbarLayoutContext();
+    const_cast<ToolBarManager*>(this)->updateLayoutParameters(layoutContext);
+    const auto statusBarParams = toolbarAreaRestoreParameters(hStatusBar, hGlobalStatusBar);
+    const auto menuBarLeftParams = toolbarAreaRestoreParameters(hMenuBarLeft, hGlobalMenuBarLeft);
+    const auto menuBarRightParams = toolbarAreaRestoreParameters(hMenuBarRight, hGlobalMenuBarRight);
+
     std::map<int, QToolBar*> sbToolBars;
     std::map<int, QToolBar*> mbRightToolBars;
     std::map<int, QToolBar*> mbLeftToolBars;
     QList<ToolBar*> toolbars = toolBars();
-    for (const QString& it : toolbarNames) {
+    for (const QString& it : toolbarKeys) {
         QToolBar* toolbar = findToolBar(toolbars, it);
         if (toolbar) {
-            QByteArray toolbarName = toolbar->objectName().toUtf8();
+            QByteArray toolbarKey = toolBarPersistenceKey(toolbar).toUtf8();
             if (getToolbarPolicy(toolbar) != ToolBarItem::DefaultVisibility::Unavailable) {
-                toolbar->setVisible(hPref->GetBool(toolbarName.constData(), toolbar->isVisible()));
+                toolbar->setVisible(hPref->GetBool(toolbarKey.constData(), toolbar->isVisible()));
             }
 
-            int idx = hStatusBar->GetInt(toolbarName, -1);
+            int idx = statusBarParams->GetInt(toolbarKey.constData(), -1);
             if (idx >= 0) {
                 sbToolBars[idx] = toolbar;
                 continue;
             }
-            idx = hMenuBarLeft->GetInt(toolbarName, -1);
+            idx = menuBarLeftParams->GetInt(toolbarKey.constData(), -1);
             if (idx >= 0) {
                 mbLeftToolBars[idx] = toolbar;
                 continue;
             }
-            idx = hMenuBarRight->GetInt(toolbarName, -1);
+            idx = menuBarRightParams->GetInt(toolbarKey.constData(), -1);
             if (idx >= 0) {
                 mbRightToolBars[idx] = toolbar;
                 continue;
@@ -900,9 +1236,12 @@ void ToolBarManager::restoreState() const
 
     setMovable(!areToolBarsLocked());
 
-    statusBarAreaWidget->restoreState(sbToolBars);
-    menuBarRightAreaWidget->restoreState(mbRightToolBars);
-    menuBarLeftAreaWidget->restoreState(mbLeftToolBars);
+    restoreWorkbenchToolBarLayout(layoutContext);
+    statusBarAreaWidget->restoreState(sbToolBars, statusBarParams);
+    menuBarRightAreaWidget->restoreState(mbRightToolBars, menuBarRightParams);
+    menuBarLeftAreaWidget->restoreState(mbLeftToolBars, menuBarLeftParams);
+
+    const_cast<ToolBarManager*>(this)->toolbarLayoutContext = layoutContext;
 }
 
 bool ToolBarManager::addToolBarToArea(QObject* source, QMouseEvent* ev)
@@ -1209,7 +1548,7 @@ void Gui::ToolBarManager::setMovable(bool movable) const
 ToolBar* ToolBarManager::findToolBar(const QList<ToolBar*>& toolbars, const QString& item) const
 {
     for (ToolBar* it : toolbars) {
-        if (it->objectName() == item) {
+        if (toolBarPersistenceKey(it) == item || it->objectName() == item) {
             return it;
         }
     }
