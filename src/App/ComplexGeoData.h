@@ -183,15 +183,16 @@ public:
                                         std::vector<Line>& lines) const;
 
     /**
-     * @brief Get the vertices from a segment.
+     * @brief Get the frist vertex from a segment.
      *
-     * @param[in] segment The segment to get the vertices from.
+     * @param[in] segment The segment to get the vertex from.
      *
-     * @param[in,out] Points The list of points used in the segment.
+     * @param[in,out] Point The point used in the segment.
+     * @retrun true if point was found
      */
-    virtual void getVerticesFromSubElement(
+    virtual bool getFirstVertexFromSubElement(
         const Data::Segment* segment,
-        std::vector<Base::Vector3d>& Points
+        Base::Vector3d& Point
     ) const;
 
     /**

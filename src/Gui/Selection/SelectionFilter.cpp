@@ -28,6 +28,7 @@
 
 #include <algorithm>
 #include <sstream>
+#include <string_view>
 #include <unordered_set>
 
 #include <App/Document.h>
@@ -77,11 +78,11 @@ bool SelectionFilterGate::allow(App::Document* /*pDoc*/, App::DocumentObject* pO
     return Filter->test(pObj, sSubName);
 }
 
-std::unordered_set<const char*> SelectionFilterGate::getGatedTypes(
+std::unordered_set<std::string> SelectionFilterGate::getGatedTypes(
     const std::vector<const char*>& allTypesForGeometry
-)
+) const
 {
-    std::unordered_set<const char*> allowedTypes;
+    std::unordered_set<std::string> allowedTypes;
     std::ranges::copy_if(
         allTypesForGeometry.begin(),
         allTypesForGeometry.end(),
@@ -91,7 +92,7 @@ std::unordered_set<const char*> SelectionFilterGate::getGatedTypes(
                 if (node->SubName.empty()) {
                     return true;
                 }
-                if (std::string(type).starts_with(node->SubName)) {
+                if (std::string_view(type).starts_with(node->SubName)) {
                     return true;
                 }
                 return false;

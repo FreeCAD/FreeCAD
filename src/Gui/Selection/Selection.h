@@ -282,9 +282,9 @@ public:
      *  @param allTypesForGeometry Every type available to select (ex. {"Vertex", "Edge"})
      *  @returns a set of filtered types (ex. {"Vertex"})
      */
-    virtual std::unordered_set<const char*> getGatedTypes(
+    virtual std::unordered_set<std::string> getGatedTypes(
         const std::vector<const char*>& allTypesForGeometry
-    )
+    ) const
     {
         (void)allTypesForGeometry;
         return {};
@@ -426,7 +426,7 @@ public:
     /** @brief get the pointer to the selection gate
      * It will be nullptr when no selection filter active
      */
-    Gui::SelectionGate* getSelectionGate(const App::Document* document);
+    const Gui::SelectionGate* getSelectionGate(const App::Document* document) const;
     /// remove the document's SelectionGate, by default the active document is selected, which is
     /// usually the intended behavior
     void rmvSelectionGate(const char* pDocName = nullptr);

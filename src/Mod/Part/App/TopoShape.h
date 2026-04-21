@@ -403,10 +403,7 @@ public:
         std::vector<Line>& lines
     ) const override;
     /** Get vertices from segment */
-    void getVerticesFromSubElement(
-        const Data::Segment* element,
-        std::vector<Base::Vector3d>& Points
-    ) const override;
+    bool getFirstVertexFromSubElement(const Data::Segment* element, Base::Vector3d& Point) const override;
     /** Get faces from segment */
     void getFacesFromSubElement(
         const Data::Segment* segment,

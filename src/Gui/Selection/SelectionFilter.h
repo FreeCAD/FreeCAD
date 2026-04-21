@@ -93,7 +93,7 @@ public:
         return Ast ? true : false;
     }
 
-    std::shared_ptr<Node_Block> getAst()
+    std::shared_ptr<const Node_Block> getAst()
     {
         return Ast;
     };
@@ -125,9 +125,9 @@ public:
     bool allow(App::Document*, App::DocumentObject*, const char*) override;
 
 
-    std::unordered_set<const char*> getGatedTypes(
+    std::unordered_set<std::string> getGatedTypes(
         const std::vector<const char*>& allTypesForGeometry
-    ) override;
+    ) const override;
 
 protected:
     static SelectionFilter* nullPointer()

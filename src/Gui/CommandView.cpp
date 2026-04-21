@@ -60,6 +60,7 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 
+#include "Base/Tools2D.h"
 #include "Command.h"
 #include "Action.h"
 #include "Application.h"
@@ -3024,7 +3025,7 @@ using SelectionMode = enum
 };
 
 static bool findObjectsOfTypeInBox(
-    const char* type,
+    const std::string& type,
     const Base::ViewProjMethod& proj,
     Data::ComplexGeoData* data,
     const Base::Polygon2d& polygon,
@@ -3032,7 +3033,7 @@ static bool findObjectsOfTypeInBox(
     SelectionMode mode
 )
 {
-    size_t count = data->countSubElements(type);
+    size_t count = data->countSubElements(type.c_str());
     if (!count) {
         return false;
     }
@@ -3045,11 +3046,10 @@ static bool findObjectsOfTypeInBox(
         if (!segment) {
             continue;
         }
-        if (strcmp("Vertex", type) == 0) {
-            std::vector<Base::Vector3d> points;
-            data->getVerticesFromSubElement(segment.get(), points);
-            if (!points.empty()) {
-                auto v = proj(points[0]);
+        if (type == "Vertex") {
+            Base::Vector3d point;
+            if (data->getFirstVertexFromSubElement(segment.get(), point)) {
+                auto v = proj(point);
                 if (polygon.Contains(Base::Vector2d(v.x, v.y))) {
                     foundElement = true;
                     ret.push_back(element);
@@ -3110,9 +3110,10 @@ static std::vector<std::string> getBoxSelection(
     // we may be called by upper object hierarchy that manages our visibility.
 
     auto bbox3 = vp->getBoundingBox(nullptr, transform);
-    if (bbox3.IsValid() && selectionGate == nullptr) {
-        auto bbox = bbox3.Transformed(mat).ProjectBox(&proj);
-
+    Base::BoundBox2d bbox;
+    const bool isBBox3Valid = bbox3.IsValid();
+    if (isBBox3Valid && selectionGate == nullptr) {
+        bbox = bbox3.Transformed(mat).ProjectBox(&proj);
 
         // check if both two boundary points are inside polygon, only
         // valid since we know the given polygon is a box.
@@ -3132,7 +3133,8 @@ static std::vector<std::string> getBoxSelection(
     const auto& subs = obj->getSubObjects(App::DocumentObject::GS_SELECT);
     if (subs.empty()) {
         if (!selectElement) {
-            if (mode == INTERSECT) {
+            // bbox wasn't created if bbox3 had been invalid
+            if (mode == INTERSECT || (isBBox3Valid && polygon.Contains(bbox.GetCenter()))) {
                 ret.emplace_back("");
             }
             return ret;
@@ -3156,7 +3158,7 @@ static std::vector<std::string> getBoxSelection(
             // specified iterate over only those which are allowed
             auto filteredTypes = selectionGate->getGatedTypes(allAllowedDocumentTypes);
             if (!filteredTypes.empty()) {
-                for (const auto& type : selectionGate->getGatedTypes(allAllowedDocumentTypes)) {
+                for (const auto& type : filteredTypes) {
                     findObjectsOfTypeInBox(type, proj, data, polygon, ret, mode);
                 }
                 return ret;

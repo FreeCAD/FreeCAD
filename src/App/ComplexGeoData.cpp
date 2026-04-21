@@ -124,13 +124,14 @@ void ComplexGeoData::getLinesFromSubElement(const Segment* segment,
     (void)lines;
 }
 
-void ComplexGeoData::getVerticesFromSubElement(
+bool ComplexGeoData::getFirstVertexFromSubElement(
     const Data::Segment* segment,
-    std::vector<Base::Vector3d>& Points
+    Base::Vector3d& Point
 ) const
 {
     (void)segment;
-    (void)Points;
+    (void)Point;
+    return false;
 }
 
 void ComplexGeoData::getFacesFromSubElement(const Segment* segment,

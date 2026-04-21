@@ -2684,7 +2684,16 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
         // when no point is preselected, the cursor will stay as Qt::ForbiddenCursor
         // because the code hasn't entered SelectionSingleton::setPreselect
         // so the cursor has to be restored to normal
-        Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
+        const Gui::Document* doc = Gui::Application::Instance->activeDocument();
+        if (!doc)
+        {
+          return false;
+        }
+        Gui::MDIView* mdi = doc->getActiveView();
+        if (!mdi)
+        {
+          return false;
+        }
         mdi->restoreOverrideCursor();
         return true;
     }

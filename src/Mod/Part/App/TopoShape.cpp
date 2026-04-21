@@ -22,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "Base/Vector3D.h"
 #include <FCConfig.h>
 
 #include <TopoDS_Shape.hxx>
@@ -170,6 +169,7 @@
 #include <Base/Exception.h>
 #include <Base/Placement.h>
 #include <Base/Tools.h>
+#include <Base/Vector3D.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
 
@@ -4007,24 +4007,20 @@ void TopoShape::getLinesFromSubElement(
     }
 }
 
-void TopoShape::getVerticesFromSubElement(
-    const Data::Segment* element,
-    std::vector<Base::Vector3d>& Points
-) const
+bool TopoShape::getFirstVertexFromSubElement(const Data::Segment* element, Base::Vector3d& Point) const
 {
     if (element->is<ShapeSegment>()) {
         const TopoDS_Shape& shape = static_cast<const ShapeSegment*>(element)->Shape;
         if (shape.IsNull()) {
-            return;
+            return false;
         }
         for (TopExp_Explorer xp(shape, TopAbs_VERTEX, TopAbs_EDGE); xp.More(); xp.Next()) {
             gp_Pnt p = BRep_Tool::Pnt(TopoDS::Vertex(xp.Current()));
-            Points.push_back(Base::convertTo<Base::Vector3d>(p));
-            return;
+            Point = Base::Vector3d {Base::convertTo<Base::Vector3d>(p)};
+            return true;
         }
-        std::vector<Line> _;
-        getLinesFromSubShape(shape, Points, _);
     }
+    return false;
 }
 
 void TopoShape::getFacesFromSubElement(
