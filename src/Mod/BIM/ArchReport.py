@@ -4,6 +4,7 @@
 
 import FreeCAD
 import os
+import re
 import json
 
 if FreeCAD.GuiUp:
@@ -715,6 +716,11 @@ class _ArchReport:
             last_col = ord(used_range[1].rstrip("0123456789"))
             for col in range(first_col, last_col + 1):
                 saved_widths[chr(col)] = sp.getColumnWidth(chr(col))
+            first_row = int(re.sub(r"[A-Z]", "", used_range[0]))
+            last_row = int(re.sub(r"[A-Z]", "", used_range[1]))
+            for row in range(first_row, last_row + 1):
+                # Splitting the 1st cell in each row is enough.
+                sp.splitCell("A" + str(row))
             sp.clear(f"{used_range[0]}:{used_range[1]}")
 
         # Reset the row counter for a new report build.
