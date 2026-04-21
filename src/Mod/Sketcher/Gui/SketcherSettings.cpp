@@ -428,10 +428,18 @@ SketcherSettingsDisplay::SketcherSettingsDisplay(QWidget* parent)
     ui->setupUi(this);
 
     connect(ui->btnTVApply, &QPushButton::clicked, this, &SketcherSettingsDisplay::onBtnTVApplyClicked);
-    connect(ui->fontBoxSketcherFontName, &QFontComboBox::currentFontChanged,
-            this, &SketcherSettingsDisplay::onFontNameChanged);
-    connect(ui->EditSketcherFontSize, qOverload<int>(&QSpinBox::valueChanged),
-            this, &SketcherSettingsDisplay::onFontSizeChanged);
+    connect(
+        ui->fontBoxSketcherFontName,
+        &QFontComboBox::currentFontChanged,
+        this,
+        &SketcherSettingsDisplay::onFontNameChanged
+    );
+    connect(
+        ui->EditSketcherFontSize,
+        qOverload<int>(&QSpinBox::valueChanged),
+        this,
+        &SketcherSettingsDisplay::onFontSizeChanged
+    );
 }
 
 /**
@@ -598,15 +606,19 @@ QColor SketcherSettingsDisplay::getSketcherBackgroundColor()
         else {
             // For 2 colors gradient take their average, i.e. the background in the center
             backgroundColor = (((parameters->GetUnsigned("BackgroundColor2", 0xFFFFFFFF)) >> 8)
-                + ((parameters->GetUnsigned("BackgroundColor3", 0xFFFFFFFF)) >> 8)) << 7;
+                               + ((parameters->GetUnsigned("BackgroundColor3", 0xFFFFFFFF)) >> 8))
+                << 7;
         }
     }
     else {
         backgroundColor = parameters->GetUnsigned("BackgroundColor", 0xFFFFFFFF);
     }
 
-    return QColor((backgroundColor >> 24)&0xFF, (backgroundColor >> 16)&0xFF,
-                  (backgroundColor >> 8)&0xFF);
+    return QColor(
+        (backgroundColor >> 24) & 0xFF,
+        (backgroundColor >> 16) & 0xFF,
+        (backgroundColor >> 8) & 0xFF
+    );
 }
 
 QColor SketcherSettingsDisplay::getSketcherConstraintColor()
@@ -614,8 +626,11 @@ QColor SketcherSettingsDisplay::getSketcherConstraintColor()
     auto parameters = App::GetApplication().GetUserParameter().GetGroup("BaseApp/Preferences/View");
     uint32_t constraintColor = parameters->GetUnsigned("ConstrainedDimColor", 0x000000FF);
 
-    return QColor((constraintColor >> 24)&0xFF, (constraintColor >> 16)&0xFF,
-                  (constraintColor >> 8)&0xFF);
+    return QColor(
+        (constraintColor >> 24) & 0xFF,
+        (constraintColor >> 16) & 0xFF,
+        (constraintColor >> 8) & 0xFF
+    );
 }
 
 

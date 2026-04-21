@@ -94,8 +94,8 @@ public:
     // Characters required to be present in the selected font:
     //   degree sign, micro sign, f with hook, stroke overlay, diameter sign,
     //   upper half circle, mathematical f, mathematical x
-    static constexpr const char* const RequiredCharacters =
-       "\u00B0\u00B5\u0192\u0336\u2300\u25E0\U0001D453\U0001D465";
+    static constexpr const char* const RequiredCharacters
+        = "\u00B0\u00B5\u0192\u0336\u2300\u25E0\U0001D453\U0001D465";
 
     explicit SketcherSettingsDisplay(QWidget* parent = nullptr);
     ~SketcherSettingsDisplay() override;
@@ -112,7 +112,7 @@ protected:
 
 private Q_SLOTS:
     void onBtnTVApplyClicked(bool);
-    void onFontNameChanged(const QFont &font);
+    void onFontNameChanged(const QFont& font);
     void onFontSizeChanged(int size);
 
 private:
