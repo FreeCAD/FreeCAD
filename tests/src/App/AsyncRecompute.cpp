@@ -222,3 +222,145 @@ TEST_F(AsyncRecomputeTest, InFlightDuplicateRequestsScheduleSingleRerun)
     EXPECT_TRUE(App::FeatureTestAsyncBlocker::waitUntilExecutionCount(2, 2s));
     EXPECT_EQ(App::FeatureTestAsyncBlocker::getExecutionCount(), 2);
 }
+
+TEST_F(AsyncRecomputeTest, CancelRecomputeRequestClearsMatchingRerun)
+{
+    auto* blocker = dynamic_cast<App::FeatureTestAsyncBlocker*>(
+        _doc->addObject("App::FeatureTestAsyncBlocker", "BlockingFeature")
+    );
+    ASSERT_NE(blocker, nullptr);
+
+    App::FeatureTestAsyncBlocker::resetBlocker();
+    BOOST_SCOPE_EXIT_ALL(&)
+    {
+        App::FeatureTestAsyncBlocker::releaseBlocker();
+    };
+
+    std::mutex callbackMutex;
+    std::condition_variable callbackChanged;
+    int totalCallbacks = 0;
+    int firstRunCallbacks = 0;
+    int rerunCallbacks = 0;
+
+    const auto onFirstRunCallback = [&](App::RecomputeRequest&, App::RecomputeResult&) {
+        std::lock_guard<std::mutex> lock(callbackMutex);
+        ++totalCallbacks;
+        ++firstRunCallbacks;
+        callbackChanged.notify_all();
+    };
+    const auto onRerunCallback = [&](App::RecomputeRequest&, App::RecomputeResult&) {
+        std::lock_guard<std::mutex> lock(callbackMutex);
+        ++totalCallbacks;
+        ++rerunCallbacks;
+        callbackChanged.notify_all();
+    };
+
+    blocker->touch();
+    App::RecomputeRequest firstRequest = App::RecomputeRequest::fromDocumentObject(*blocker);
+    firstRequest.callback = onFirstRunCallback;
+    App::GetApplication().queueRecomputeRequest(std::move(firstRequest));
+    ASSERT_TRUE(App::FeatureTestAsyncBlocker::waitUntilStarted(2s));
+
+    blocker->touch();
+    App::RecomputeRequest secondRequest = App::RecomputeRequest::fromDocumentObject(*blocker);
+    secondRequest.callback = onRerunCallback;
+    App::GetApplication().queueRecomputeRequest(std::move(secondRequest));
+
+    App::RecomputeCancellationResult cancelResult = App::GetApplication().cancelRecomputeRequest(
+        App::RecomputeRequest::fromDocumentObject(*blocker)
+    );
+    EXPECT_TRUE(cancelResult.canceledInProgress);
+
+    App::FeatureTestAsyncBlocker::releaseBlocker();
+
+    std::unique_lock<std::mutex> callbackLock(callbackMutex);
+    ASSERT_TRUE(callbackChanged.wait_for(callbackLock, 2s, [&] { return totalCallbacks == 1; }));
+    EXPECT_EQ(firstRunCallbacks, 1);
+    EXPECT_EQ(rerunCallbacks, 0);
+    EXPECT_TRUE(App::FeatureTestAsyncBlocker::waitUntilExecutionCount(1, 2s));
+    EXPECT_EQ(App::FeatureTestAsyncBlocker::getExecutionCount(), 1);
+}
+
+TEST_F(AsyncRecomputeTest, CancelRecomputeRequestReportsCanceledResult)
+{
+    auto* blocker = dynamic_cast<App::FeatureTestAsyncBlocker*>(
+        _doc->addObject("App::FeatureTestAsyncBlocker", "BlockingFeature")
+    );
+    ASSERT_NE(blocker, nullptr);
+
+    App::FeatureTestAsyncBlocker::resetBlocker();
+    BOOST_SCOPE_EXIT_ALL(&)
+    {
+        App::FeatureTestAsyncBlocker::releaseBlocker();
+    };
+
+    std::mutex callbackMutex;
+    std::condition_variable callbackChanged;
+    bool callbackDone = false;
+    bool callbackSuccess = true;
+    App::RecomputeFailure callbackFailure = App::RecomputeFailure::None;
+    std::string callbackMessage;
+
+    blocker->touch();
+    App::RecomputeRequest request = App::RecomputeRequest::fromDocumentObject(*blocker);
+    request.callback = [&](App::RecomputeRequest&, App::RecomputeResult& result) {
+        std::lock_guard<std::mutex> lock(callbackMutex);
+        callbackDone = true;
+        callbackSuccess = result.success;
+        callbackFailure = result.failure;
+        callbackMessage = result.exception ? result.exception->what() : "";
+        callbackChanged.notify_all();
+    };
+    App::GetApplication().queueRecomputeRequest(std::move(request));
+    ASSERT_TRUE(App::FeatureTestAsyncBlocker::waitUntilStarted(2s));
+
+    App::RecomputeCancellationResult cancelResult = App::GetApplication().cancelRecomputeRequest(
+        App::RecomputeRequest::fromDocumentObject(*blocker)
+    );
+    EXPECT_TRUE(cancelResult.canceledInProgress);
+
+    App::FeatureTestAsyncBlocker::releaseBlocker();
+
+    std::unique_lock<std::mutex> callbackLock(callbackMutex);
+    ASSERT_TRUE(callbackChanged.wait_for(callbackLock, 2s, [&] { return callbackDone; }));
+    EXPECT_FALSE(callbackSuccess);
+    EXPECT_EQ(callbackFailure, App::RecomputeFailure::Canceled);
+    EXPECT_EQ(callbackMessage, "User aborted");
+    EXPECT_TRUE(blocker->isError());
+    ASSERT_NE(_doc->getErrorDescription(blocker), nullptr);
+    EXPECT_STREQ(_doc->getErrorDescription(blocker), "User aborted");
+}
+
+namespace
+{
+bool simulatedWorkerThreadIsNeverMainThread()
+{
+    return false;
+}
+
+void invokeInlineOnCallingThread(std::function<void()>&& fn, bool)
+{
+    fn();
+}
+}  // namespace
+
+TEST_F(AsyncRecomputeTest, MainThreadSignalWorkerEmissionDoesNotRequireGil)
+{
+    App::MainThreadSignal<void(int)> signal;
+    int received = 0;
+    signal.connect([&received](int value) { received = value; });
+
+    App::MainThreadSignalConfig::setHooks(
+        &simulatedWorkerThreadIsNeverMainThread,
+        &invokeInlineOnCallingThread
+    );
+    BOOST_SCOPE_EXIT_ALL(&)
+    {
+        App::MainThreadSignalConfig::setHooks(nullptr, nullptr);
+    };
+
+    std::thread worker([&signal] { signal.emit(42); });
+    worker.join();
+
+    EXPECT_EQ(received, 42);
+}

@@ -34,6 +34,7 @@
 #include <Base/Unit.h>
 #include <CXX/Objects.hxx>
 
+#include "Application.h"
 #include "FeatureTest.h"
 #include "Material.h"
 #include "Range.h"
@@ -450,5 +451,11 @@ DocumentObjectExecReturn* FeatureTestAsyncBlocker::execute()
     ++state.executionCount;
     state.changed.notify_all();
     state.changed.wait(lock, [&state] { return state.proceed; });
+    lock.unlock();
+
+    if (App::currentRecomputeWasCanceled()) {
+        throw Base::AbortException("User aborted");
+    }
+
     return StdReturn;
 }
