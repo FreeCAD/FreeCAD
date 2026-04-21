@@ -757,6 +757,18 @@ bool App::currentRecomputeWasCanceled()
     return Base::Sequencer().wasCanceled();
 }
 
+void App::throwIfRecomputeCanceled()
+{
+    if (auto* progress = currentRecomputeProgress()) {
+        if (progress->wasCanceled()) {
+            throw Base::AbortException("User aborted");
+        }
+        return;
+    }
+
+    Base::SequencerBase::Instance().checkAbort();
+}
+
 RecomputeRequest RecomputeRequest::fromDocument(const Document& document, bool force, int options)
 {
     RecomputeRequest request;
@@ -1688,8 +1700,6 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
             docs.push_back(doc);
         }
 
-        Base::SequencerLauncher seq("Postprocessing...", docs.size());
-
         // After external links has been restored, we can now sort the document
         // according to their dependency order.
         try {
@@ -1697,6 +1707,14 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
         } catch (Base::Exception &e) {
             e.reportException();
         }
+        const std::size_t totalPostprocessDocs =
+            std::count_if(docs.begin(), docs.end(), [&newDocs](Document* doc) { return newDocs.contains(doc); });
+        RecomputeProgressHandle postprocessProgress;
+        std::optional<RecomputeProgressScope> postprocessScope;
+        if (totalPostprocessDocs > 0) {
+            postprocessScope.emplace(postprocessProgress.makeScope("Postprocessing..."));
+        }
+        std::size_t processedDocs = 0;
         for(auto it=docs.begin(); it!=docs.end();) {
             auto doc = *it;
 
@@ -1706,6 +1724,12 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
             if(!newDocs.contains(doc)) {
                 it = docs.erase(it);
                 continue;
+            }
+            std::optional<RecomputeProgressScope> docScope;
+            if (postprocessScope) {
+                docScope.emplace(
+                    postprocessScope->makeStepScope(processedDocs, totalPostprocessDocs)
+                );
             }
 
             auto &timing = timings[doc];
@@ -1728,7 +1752,10 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
                 _pendingDocMap.erase(doc->FileName.getValue());
             }
             timing.d2 += std::chrono::duration_cast<std::chrono::duration<double>>(std::chrono::high_resolution_clock::now() - startTime);
-            seq.next();
+            ++processedDocs;
+            if (docScope) {
+                docScope->setProgress(100);
+            }
         }
         // Close the document for reloading
         for(const auto doc : docs)

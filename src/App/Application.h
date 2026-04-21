@@ -211,6 +211,7 @@ private:
 
 AppExport RecomputeProgressHandle* currentRecomputeProgress();
 AppExport bool currentRecomputeWasCanceled();
+AppExport void throwIfRecomputeCanceled();
 
 /// Result returned by processing a recompute request.
 struct AppExport RecomputeResult
