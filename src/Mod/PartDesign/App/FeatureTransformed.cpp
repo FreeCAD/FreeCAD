@@ -31,6 +31,7 @@
 #include <BRepBuilderAPI_Transform.hxx>
 #include <Precision.hxx>
 #include <TopExp_Explorer.hxx>
+#include <TopTools_ListOfShape.hxx>
 
 
 #include <array>
@@ -301,6 +302,38 @@ void Transformed::onChanged(const App::Property* prop)
     FeatureRefine::onChanged(prop);
 }
 
+/// Pre-fuse multiple shapes using raw OCCT boolean operations, bypassing
+/// element naming. Returns a single fused TopoDS_Shape. This is used to
+/// combine transformed tool copies before the final element-mapped boolean
+/// with the support shape, reducing element naming cost from O(N) to O(1).
+static TopoDS_Shape preFuseShapes(const std::vector<TopoDS_Shape>& shapes)
+{
+    if (shapes.empty()) {
+        return {};
+    }
+    if (shapes.size() == 1) {
+        return shapes[0];
+    }
+
+    FCBRepAlgoAPI_Fuse fuser;
+    fuser.SetRunParallel(Standard_True);
+
+    TopTools_ListOfShape arguments, tools;
+    arguments.Append(shapes[0]);
+    for (size_t i = 1; i < shapes.size(); ++i) {
+        tools.Append(shapes[i]);
+    }
+
+    fuser.SetArguments(arguments);
+    fuser.SetTools(tools);
+    fuser.Build();
+    if (!fuser.IsDone()) {
+        throw Base::CADKernelError("Pre-fuse of transformed shapes failed");
+    }
+
+    return fuser.Shape();
+}
+
 App::DocumentObjectExecReturn* Transformed::execute()
 {
     if (isMultiTransformChild()) {
@@ -364,20 +397,20 @@ App::DocumentObjectExecReturn* Transformed::execute()
 
     supportShape.setTransform(Base::Matrix4D());
 
-    auto getTransformedCompShape = [&](const auto& supportShape, const auto& origShape) {
-        std::vector<TopoShape> shapes = {supportShape};
-        TopoShape shape(origShape);
-        int idx = 1;
+    // Build raw OCCT transformed copies of the tool shape (no element naming).
+    auto getRawTransformedShapes = [&](const TopoDS_Shape& origShape) {
+        std::vector<TopoDS_Shape> rawShapes;
+        rawShapes.reserve(transformations.size() - 1);
         auto transformIter = transformations.cbegin();
-        transformIter++;
+        transformIter++;  // skip identity transform
         for (; transformIter != transformations.end(); transformIter++) {
             if (OCCTProgressIndicator::getAppIndicator().UserBreak()) {
-                return std::vector<TopoShape>();
+                return std::vector<TopoDS_Shape>();
             }
-            auto opName = Data::indexSuffix(idx++);
-            shapes.emplace_back(shape.makeElementTransform(*transformIter, opName.c_str()));
+            BRepBuilderAPI_Transform xform(origShape, *transformIter, Standard_True);
+            rawShapes.push_back(xform.Shape());
         }
-        return shapes;
+        return rawShapes;
     };
 
     switch (mode) {
@@ -415,27 +448,35 @@ App::DocumentObjectExecReturn* Transformed::execute()
                     cutShape = cutShape.makeElementTransform(trsf);
                 }
                 if (!fuseShape.isNull()) {
-                    auto shapes = getTransformedCompShape(supportShape, fuseShape);
+                    auto rawShapes = getRawTransformedShapes(fuseShape.getShape());
                     if (OCCTProgressIndicator::getAppIndicator().UserBreak()) {
                         return new App::DocumentObjectExecReturn("User aborted");
                     }
-                    supportShape.makeElementFuse(shapes);
+                    TopoDS_Shape preFused = preFuseShapes(rawShapes);
+                    Part::TopoShape preFusedTS(preFused);
+                    supportShape.makeElementFuse({supportShape, fuseShape, preFusedTS});
                 }
                 if (!cutShape.isNull()) {
-                    auto shapes = getTransformedCompShape(supportShape, cutShape);
+                    auto rawShapes = getRawTransformedShapes(cutShape.getShape());
                     if (OCCTProgressIndicator::getAppIndicator().UserBreak()) {
                         return new App::DocumentObjectExecReturn("User aborted");
                     }
-                    supportShape.makeElementCut(shapes);
+                    TopoDS_Shape preFused = preFuseShapes(rawShapes);
+                    Part::TopoShape preFusedTS(preFused);
+                    Part::TopoShape combinedTool;
+                    combinedTool.makeElementFuse({cutShape, preFusedTS});
+                    supportShape.makeElementCut({supportShape, combinedTool});
                 }
             }
             break;
         case Mode::WholeShape: {
-            auto shapes = getTransformedCompShape(supportShape, supportShape);
+            auto rawShapes = getRawTransformedShapes(supportShape.getShape());
             if (OCCTProgressIndicator::getAppIndicator().UserBreak()) {
                 return new App::DocumentObjectExecReturn("User aborted");
             }
-            supportShape.makeElementFuse(shapes);
+            TopoDS_Shape preFused = preFuseShapes(rawShapes);
+            Part::TopoShape preFusedTS(preFused);
+            supportShape.makeElementFuse({supportShape, preFusedTS});
             break;
         }
     }
