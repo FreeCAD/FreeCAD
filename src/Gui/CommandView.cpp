@@ -3526,7 +3526,7 @@ StdCmdTextureMapping::StdCmdTextureMapping()
 void StdCmdTextureMapping::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::Control().showDialog(new Gui::Dialog::TaskTextureMapping, getDocument());
+    Gui::Control().showDialog(new Gui::Dialog::TaskTextureMapping);
 }
 
 bool StdCmdTextureMapping::isActive()

@@ -77,7 +77,7 @@ bool ViewProviderProjectOnSurface::setEdit(int ModNum)
 void ViewProviderProjectOnSurface::unsetEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
-        Gui::Control().closeDialog(getDocument()->getDocument());
+        Gui::Control().closeDialog(getTransactionContext());
     }
     else {
         ViewProviderPart::unsetEdit(ModNum);

@@ -25,6 +25,7 @@
 #include <QAction>
 #include <QMenu>
 
+#include <App/Document.h>
 #include <Gui/ActionFunction.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
@@ -111,11 +112,11 @@ void ViewProviderAttachExtension::showAttachmentEditor(
     std::function<void()> onReject
 )
 {
-    if (Gui::Control().activeDialog(getExtendedViewProvider()->getDocument()->getDocument())) {
-        Gui::Control().closeDialog(getExtendedViewProvider()->getDocument()->getDocument());
+    if (Gui::Control().activeDialog(getExtendedViewProvider()->getTransactionContext())) {
+        Gui::Control().closeDialog(getExtendedViewProvider()->getTransactionContext());
     }
     auto* task = new TaskDlgAttacher(getExtendedViewProvider(), true, onAccept, onReject);
-    Gui::Control().showDialog(task, getExtendedViewProvider()->getDocument()->getDocument());
+    Gui::Control().showDialog(task, getExtendedViewProvider()->getTransactionContext());
 }
 
 namespace Gui

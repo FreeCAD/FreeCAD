@@ -316,21 +316,21 @@ void FaceAppearances::slotUndoDocument(const Gui::Document& Doc)
 {
     if (d->doc == &Doc) {
         d->doc->resetEdit();
-        Gui::Control().closeDialog(d->doc->getDocument());
+        Gui::Control().closeDialog(d->doc->getDocument()->currentTransactionContextId());
     }
 }
 
 void FaceAppearances::slotDeleteDocument(const Gui::Document& Doc)
 {
     if (d->doc == &Doc) {
-        Gui::Control().closeDialog(d->doc->getDocument());
+        Gui::Control().closeDialog(d->doc->getDocument()->currentTransactionContextId());
     }
 }
 
 void FaceAppearances::slotDeleteObject(const Gui::ViewProvider& obj)
 {
     if (d->vp == &obj) {
-        Gui::Control().closeDialog(d->doc->getDocument());
+        Gui::Control().closeDialog(d->doc->getDocument()->currentTransactionContextId());
     }
 }
 

@@ -453,7 +453,7 @@ bool ViewProviderAssembly::keyPressed(bool pressed, int key)
 {
     if (key == SoKeyboardEvent::ESCAPE) {
         if (isInEditMode()) {
-            if (Gui::Control().activeDialog(nullptr)) {
+            if (Gui::Control().activeDialog()) {
                 return true;
             }
 
@@ -1893,11 +1893,11 @@ void ViewProviderAssembly::updateTaskPanel(bool show)
 
     if (show && !taskSolver) {
         taskSolver = new TaskAssemblyMessages(this);
-        taskView->addContextualPanel(taskSolver, this->getObject()->getDocument());
+        taskView->addContextualPanel(taskSolver, getTransactionContext());
         UpdateSolverInformation();
     }
     else if (!show && taskSolver) {
-        taskView->removeContextualPanel(taskSolver, this->getObject()->getDocument());
+        taskView->removeContextualPanel(taskSolver, getTransactionContext());
         taskSolver = nullptr;
     }
 }

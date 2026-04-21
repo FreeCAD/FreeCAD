@@ -3410,9 +3410,11 @@ bool ViewProviderLink::setEdit(int ModNum)
         if (!ext || !ext->getColoredElementsProperty()) {
             return false;
         }
-        TaskView::TaskDialog* dlg = Control().activeDialog(getDocument()->getDocument());
+        TaskView::TaskDialog* dlg = Control().activeDialog(
+            getDocument()->getDocument()->currentTransactionContextId()
+        );
         if (dlg) {
-            Control().showDialog(dlg, getDocument()->getDocument());
+            Control().showDialog(dlg, getDocument()->getDocument()->currentTransactionContextId());
             return false;
         }
         Selection().clearSelection();
@@ -3425,7 +3427,10 @@ bool ViewProviderLink::setEdit(int ModNum)
 void ViewProviderLink::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
 {
     if (ModNum == ViewProvider::Color) {
-        Gui::Control().showDialog(new TaskElementColors(this), getDocument()->getDocument());
+        Gui::Control().showDialog(
+            new TaskElementColors(this),
+            getDocument()->getDocument()->currentTransactionContextId()
+        );
         return;
     }
 

@@ -446,6 +446,10 @@ Gui::Document* ViewProviderDocumentObject::getDocument() const
         return Gui::Application::Instance->getDocument(pAppDoc);
     }
 }
+int ViewProviderDocumentObject::getTransactionContext() const
+{
+    return getDocument()->getDocument()->currentTransactionContextId();
+}
 
 Gui::MDIView* ViewProviderDocumentObject::getActiveView() const
 {

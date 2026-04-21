@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -21,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #pragma once
 
 #include <vector>
@@ -29,6 +29,7 @@
 #include <QScrollArea>
 #include <QStackedWidget>
 
+#include <App/TransactionDefs.h>
 #include <Base/Parameter.h>
 #include <Gui/QSint/include/QSint>
 #include <Gui/Selection/Selection.h>
@@ -152,7 +153,8 @@ struct TaskInfo
     TaskPanel* taskPanel {nullptr};
     TaskDialog* ActiveDialog {nullptr};
     TaskEditControl* ActiveCtrl {nullptr};
-    App::Document* Document {nullptr};
+    int transactionContext {App::NullTransactionContext};  // Each taskpanel is attached to a
+                                                           // transaction context
 };
 
 /** TaskView class
@@ -188,8 +190,8 @@ public:
     void restoreActionStyle();
 
     /// Add a persistent panel at the top of the task view, independent of the active dialog.
-    void addContextualPanel(QWidget* panel, App::Document* doc);
-    void removeContextualPanel(QWidget* panel, App::Document* doc);
+    void addContextualPanel(QWidget* panel, int transactionContext);
+    void removeContextualPanel(QWidget* panel, int transactionContext);
 
     QSize minimumSizeHint() const override;
 
@@ -199,7 +201,7 @@ public:
 
     std::optional<TaskInfo> currentTaskInfo() const;
 
-    TaskDialog* dialog(App::Document* doc);
+    TaskDialog* dialog(int transactionContext);
 
     // Show the task info at the index
     // or taskwatcher if index = -1
@@ -209,10 +211,10 @@ Q_SIGNALS:
     void taskUpdate();
 
 protected:
-    void accept(App::Document* doc);
-    void reject(App::Document* doc);
-    void helpRequested(App::Document* doc);
-    void clicked(QAbstractButton* button, App::Document* doc);
+    void accept(int transactionContext);
+    void reject(int transactionContext);
+    void helpRequested(int transactionContext);
+    void clicked(QAbstractButton* button, int transactionContext);
 
 private:
     void triggerMinimumSizeHint();
@@ -220,6 +222,7 @@ private:
     void saveCurrentWidth();
     void tryRestoreWidth();
     void slotActiveDocument(const App::Document&);
+    void slotActivateView(const Gui::MDIView* view);
     void slotInEdit(const Gui::ViewProviderDocumentObject&);
     void slotDeletedDocument(const App::Document&);
     void slotViewClosed(const Gui::MDIView*);
@@ -236,9 +239,9 @@ protected:
     /// update the visibility of the TaskWatcher accordant to the selection
     void updateWatcher();
     /// used by Gui::Control to register Dialogs, returns true if the dialog was not already there
-    bool showDialog(TaskDialog* dlg, App::Document* doc);
+    bool showDialog(TaskDialog* dlg, int transactionContext);
     // removes the running dialog after accept() or reject() from the TaskView
-    void removeDialog(App::Document* doc);
+    void removeDialog(int transactionContext);
     void removeDialog(std::vector<TaskInfo>::iterator infoIt);
 
     void setShowTaskWatcher(bool show);
@@ -259,6 +262,7 @@ protected:
     Connection connectApplicationUndoDocument;
     Connection connectApplicationRedoDocument;
     Connection connectApplicationInEdit;
+    Connection connectApplicationActivateView;
     Connection connectShowTaskWatcherSetting;
 };
 

@@ -45,6 +45,7 @@
 #include <App/DocumentObserver.h>
 #include <App/StringHasher.h>
 #include <App/ExportInfo.h>
+#include <App/TransactionContext.h>
 #include <Base/UniqueNameManager.h>
 
 // using VertexProperty = boost::property<boost::vertex_root_t, DocumentObject* >;
@@ -82,7 +83,7 @@ struct DocumentP
     std::vector<DocumentObjectT> pendingRemove;
     long lastObjectId {};
     DocumentObject* activeObject {nullptr};
-    Transaction* activeUndoTransaction {nullptr};
+
     // pointer to the python class
     Py::Object DocumentPythonObject;
     int iTransactionMode {0};
@@ -97,7 +98,8 @@ struct DocumentP
     unsigned int TransactionLock {0};
     // Id and name that the next transaction will take
     // as soon as there is a change to the document
-    int bookedTransaction { 0 }; 
+    TransactionContext* currentTransactionContext { nullptr }; // Can never be nullptr after initialization
+    std::vector<std::shared_ptr<TransactionContext>> transactionContexts; // Will always have a size >= 1
 
     std::string programVersion;
     mutable HasherMap hashers;
@@ -107,7 +109,7 @@ struct DocumentP
 
     StringHasherRef Hasher {new StringHasher};
 
-    DocumentP();
+    DocumentP(int defaultTransactionContextId);
 
     void addRecomputeLog(const char* why, App::DocumentObject* obj)
     {
@@ -172,6 +174,13 @@ struct DocumentP
     static std::vector<App::DocumentObject*>
     partialTopologicalSort(const std::vector<App::DocumentObject*>& objects);
     static void checkStringHasher(const Base::XMLReader& reader);
+
+    bool hasBookedOrActiveTransaction() const 
+    {
+        return std::ranges::find_if(transactionContexts, [](auto context) {
+            return context->bookedTransaction != NullTransaction || context->activeUndoTransaction != nullptr;
+        }) != transactionContexts.end();
+    }
 };
 
 }  // namespace App

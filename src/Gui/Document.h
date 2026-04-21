@@ -231,6 +231,11 @@ public:
     void attachView(Gui::BaseView* pcView, bool bPassiv = false);
     /// Detach a view (get called by the MDIView destructor)
     void detachView(Gui::BaseView* pcView, bool bPassiv = false);
+    /// Activate the transaction context associated with the given view or default transaction if
+    /// view is nullptr
+    void activateTransactionContext(Gui::BaseView* pcView);
+    int getTransactionContext(const Gui::MDIView* view = nullptr) const;
+
     /// helper for selection
     ViewProviderDocumentObject* getViewProviderByPathFromTail(SoPath* path) const;
     /// helper for selection
@@ -367,15 +372,6 @@ private:
     static int _iDocCount;
 
     mutable std::string cameraSettings;
-
-    /** @name attributes for the UNDO REDO facility
-     */
-    //@{
-    /// undo names list
-    std::list<std::string> listUndoNames;
-    /// redo names list
-    std::list<std::string> listRedoNames;
-    //@}
 
     friend class TransactionViewProvider;
 };

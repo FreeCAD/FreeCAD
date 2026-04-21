@@ -249,6 +249,10 @@ public:
     /// Get the active document.
     App::Document* getActiveDocument() const;
 
+    /// Get the active transaction context of the active document
+    /// or NullTransactionContext (0)
+    int getActiveTransactionContext() const;
+
     /**
      * @brief Retrieve a document based on its name.
      *
@@ -371,6 +375,11 @@ public:
     std::optional<TransactionDescription> transactionDescription(int tid) const;
     void setTransactionDescription(int tid, const TransactionDescription& desc);
     void setTransactionName(int tid, const TransactionName& name);
+
+    /// Generate a new transaction context id, this id is unique within the application's
+    /// run and it serves to identifies different undo stacks, each document has at least
+    // one
+    int generateTransactionContextId();
 
     /** Commit/abort current active transactions
      *
@@ -1077,13 +1086,14 @@ private:
     friend class AutoTransaction;
 
     std::map<int, TransactionDescription> _activeTransactionDescriptions; // Maps transaction ID to transaction name
-    
+    int transactionContextIdGenerator {NullTransactionContext}; // Used to create a new identifier for a transaction context
+
     int currentlyClosingID {0};
 
     // This is the transaction ID for a global transaction
     // Documents will take this ID if it is non-zero
     // and generate their own otherwise
-    int _globalTransactionID { 0 };
+    int _globalTransactionID {NullTransaction};
     bool _globalTransactionTmpName {false};
     std::string _globalTransactionName;
 

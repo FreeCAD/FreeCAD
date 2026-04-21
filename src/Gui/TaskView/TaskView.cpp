@@ -302,6 +302,9 @@ TaskView::TaskView(QWidget* parent)
     connectApplicationInEdit = Gui::Application::Instance->signalInEdit.connect(
         std::bind(&Gui::TaskView::TaskView::slotInEdit, this, sp::_1)
     );
+    connectApplicationActivateView = Gui::Application::Instance->signalActivateView.connect(
+        std::bind(&Gui::TaskView::TaskView::slotActivateView, this, sp::_1)
+    );
     // NOLINTEND
 
     setShowTaskWatcher(hGrp->GetBool("ShowTaskWatcher", true));
@@ -324,6 +327,7 @@ TaskView::~TaskView()
     connectApplicationUndoDocument.disconnect();
     connectApplicationRedoDocument.disconnect();
     connectApplicationInEdit.disconnect();
+    connectApplicationActivateView.disconnect();
     connectShowTaskWatcherSetting.disconnect();
     Gui::Selection().Detach(this);
 
@@ -479,7 +483,26 @@ QSize TaskView::minimumSizeHint() const
 
 void TaskView::slotActiveDocument(const App::Document& doc)
 {
-    auto foundTaskInfo = std::ranges::find(taskInfos, &doc, &TaskInfo::Document);
+    // auto foundTaskInfo = std::ranges::find(taskInfos, &doc, &TaskInfo::Document);
+    // if (foundTaskInfo != taskInfos.end()) {
+    //     setShownTaskInfo((foundTaskInfo - taskInfos.begin()));
+    // }
+    // else {
+    //     setShownTaskInfo(-1);
+    // }
+
+    // if (foundTaskInfo == taskInfos.end()) {
+    //     // at this point, active object of the active view returns None.
+    //     // which is a problem if shouldShow of a watcher rely on the presence
+    //     // of an active object (example Assembly).
+    //     QTimer::singleShot(100, this, &TaskView::updateWatcher);
+    // }
+}
+void TaskView::slotActivateView(const Gui::MDIView* view)
+{
+    int transactionContext = Gui::Application::Instance->getTransactionContext(view);
+    auto foundTaskInfo
+        = std::ranges::find(taskInfos, transactionContext, &TaskInfo::transactionContext);
     if (foundTaskInfo != taskInfos.end()) {
         setShownTaskInfo((foundTaskInfo - taskInfos.begin()));
     }
@@ -497,19 +520,26 @@ void TaskView::slotActiveDocument(const App::Document& doc)
 void TaskView::slotInEdit(const Gui::ViewProviderDocumentObject& vp)
 {
     App::Document* doc = vp.getDocument()->getDocument();
-    if (std::ranges::find(taskInfos, doc, &TaskInfo::Document) == taskInfos.end()) {
+    if (std::ranges::find(taskInfos, doc->currentTransactionContextId(), &TaskInfo::transactionContext)
+        == taskInfos.end()) {
         updateWatcher();
     }
 }
 
 void TaskView::slotDeletedDocument(const App::Document& doc)
 {
-    auto foundTaskInfo = std::ranges::find(taskInfos, &doc, &TaskInfo::Document);
-    bool hasDialog = foundTaskInfo != taskInfos.end();
-    if (hasDialog && foundTaskInfo->ActiveDialog->isAutoCloseOnDeletedDocument()) {
-        foundTaskInfo->ActiveDialog->autoClosedOnDeletedDocument();
-        removeDialog(foundTaskInfo);
-        hasDialog = false;
+    std::vector<int> transactionContexts = doc.getAllTransactionContexts();
+    bool hasDialog = false;
+    for (int transactionContext : transactionContexts) {
+        auto foundTaskInfo
+            = std::ranges::find(taskInfos, transactionContext, &TaskInfo::transactionContext);
+        hasDialog = hasDialog || foundTaskInfo != taskInfos.end();
+
+        if (hasDialog && foundTaskInfo->ActiveDialog->isAutoCloseOnDeletedDocument()) {
+            foundTaskInfo->ActiveDialog->autoClosedOnDeletedDocument();
+            removeDialog(foundTaskInfo);
+            hasDialog = false;
+        }
     }
 
     if (!hasDialog) {
@@ -537,7 +567,11 @@ void TaskView::slotViewClosed(const Gui::MDIView* view)
 
 void TaskView::transactionChangeOnDocument(const App::Document& doc, bool undo)
 {
-    auto foundTaskInfo = std::ranges::find(taskInfos, &doc, &TaskInfo::Document);
+    auto foundTaskInfo = std::ranges::find(
+        taskInfos,
+        doc.currentTransactionContextId(),
+        &TaskInfo::transactionContext
+    );
     bool hasDialog = foundTaskInfo != taskInfos.end();
 
     if (hasDialog) {
@@ -590,16 +624,17 @@ void TaskView::OnChange(
 }
 /// @endcond
 
-bool TaskView::showDialog(TaskDialog* dlg, App::Document* doc)
+bool TaskView::showDialog(TaskDialog* dlg, int transactionContext)
 {
-    auto foundTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
+    auto foundTaskInfo
+        = std::ranges::find(taskInfos, transactionContext, &TaskInfo::transactionContext);
     // if trying to open the same dialog twice nothing needs to be done
     if (foundTaskInfo != taskInfos.end() && foundTaskInfo->ActiveDialog == dlg) {
         return false;
     }
     assert(foundTaskInfo == taskInfos.end());
 
-    TaskInfo outInfo {.Document = doc};
+    TaskInfo outInfo {.transactionContext = transactionContext};
     // first create the control element, set it up and wire it:
     outInfo.ActiveCtrl = new TaskEditControl(this);
     outInfo.ActiveCtrl->buttonBox->setStandardButtons(dlg->getStandardButtons());
@@ -639,13 +674,13 @@ bool TaskView::showDialog(TaskDialog* dlg, App::Document* doc)
     // clang-format off
     // make connection to the needed signals
     connect(outInfo.ActiveCtrl->buttonBox, &QDialogButtonBox::accepted,
-            this, [doc, this]{ accept(doc); });
+            this, [transactionContext, this]{ accept(transactionContext); });
     connect(outInfo.ActiveCtrl->buttonBox, &QDialogButtonBox::rejected,
-            this, [doc, this]{ reject(doc); });
+            this, [transactionContext, this]{ reject(transactionContext); });
     connect(outInfo.ActiveCtrl->buttonBox, &QDialogButtonBox::helpRequested,
-            this, [doc, this]{ helpRequested(doc); });
+            this, [transactionContext, this]{ helpRequested(transactionContext); });
     connect(outInfo.ActiveCtrl->buttonBox, &QDialogButtonBox::clicked,
-            this, [doc, this](QAbstractButton *button) { clicked(button, doc); });
+            this, [transactionContext, this](QAbstractButton *button) { clicked(button, transactionContext); });
     // clang-format on
 
     // This will hide whatever was shown in the taskview
@@ -665,9 +700,10 @@ bool TaskView::showDialog(TaskDialog* dlg, App::Document* doc)
     return true;
 }
 
-void TaskView::removeDialog(App::Document* doc)
+void TaskView::removeDialog(int transactionContext)
 {
-    auto foundTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
+    auto foundTaskInfo
+        = std::ranges::find(taskInfos, transactionContext, &TaskInfo::transactionContext);
     if (foundTaskInfo != taskInfos.end()) {
         removeDialog(foundTaskInfo);
     }
@@ -884,9 +920,10 @@ std::optional<TaskInfo> TaskView::currentTaskInfo() const
     }
     return taskInfos[currentIndex() - 1];
 }
-TaskDialog* TaskView::dialog(App::Document* doc)
+TaskDialog* TaskView::dialog(int transactionContext)
 {
-    auto foundTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
+    auto foundTaskInfo
+        = std::ranges::find(taskInfos, transactionContext, &TaskInfo::transactionContext);
     return foundTaskInfo == taskInfos.end() ? nullptr : foundTaskInfo->ActiveDialog;
 }
 void TaskView::setShownTaskInfo(int index)
@@ -946,9 +983,10 @@ void TaskView::removeTaskWatcher()
     TaskWatcherPanel->actionPanel->removeStretch();
 }
 
-void TaskView::accept(App::Document* doc)
+void TaskView::accept(int transactionContext)
 {
-    auto foundTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
+    auto foundTaskInfo
+        = std::ranges::find(taskInfos, transactionContext, &TaskInfo::transactionContext);
     if (foundTaskInfo == taskInfos.end()) {  // Protect against segfaults due to out-of-order deletions
         Base::Console().warning("ActiveDialog was null in call to TaskView::accept()\n");
         return;
@@ -960,13 +998,14 @@ void TaskView::accept(App::Document* doc)
     bool success = foundTaskInfo->ActiveDialog->accept();
     foundTaskInfo->ActiveDialog->setProperty("taskview_accept_or_reject", QVariant());
     if (success || foundTaskInfo->ActiveDialog->property("taskview_remove_dialog").isValid()) {
-        removeDialog(doc);
+        removeDialog(transactionContext);
     }
 }
 
-void TaskView::reject(App::Document* doc)
+void TaskView::reject(int transactionContext)
 {
-    auto foundTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
+    auto foundTaskInfo
+        = std::ranges::find(taskInfos, transactionContext, &TaskInfo::transactionContext);
     if (foundTaskInfo == taskInfos.end()) {  // Protect against segfaults due to out-of-order deletions
         Base::Console().warning("ActiveDialog was null in call to TaskView::reject()\n");
         return;
@@ -978,21 +1017,23 @@ void TaskView::reject(App::Document* doc)
     bool success = foundTaskInfo->ActiveDialog->reject();
     foundTaskInfo->ActiveDialog->setProperty("taskview_accept_or_reject", QVariant());
     if (success || foundTaskInfo->ActiveDialog->property("taskview_remove_dialog").isValid()) {
-        removeDialog(doc);
+        removeDialog(transactionContext);
     }
 }
 
-void TaskView::helpRequested(App::Document* doc)
+void TaskView::helpRequested(int transactionContext)
 {
-    auto foundTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
+    auto foundTaskInfo
+        = std::ranges::find(taskInfos, transactionContext, &TaskInfo::transactionContext);
     if (foundTaskInfo != taskInfos.end()) {
         foundTaskInfo->ActiveDialog->helpRequested();
     }
 }
 
-void TaskView::clicked(QAbstractButton* button, App::Document* doc)
+void TaskView::clicked(QAbstractButton* button, int transactionContext)
 {
-    auto foundTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
+    auto foundTaskInfo
+        = std::ranges::find(taskInfos, transactionContext, &TaskInfo::transactionContext);
     if (foundTaskInfo != taskInfos.end()) {
         int id = foundTaskInfo->ActiveCtrl->buttonBox->standardButton(button);
         foundTaskInfo->ActiveDialog->clicked(id);
@@ -1016,9 +1057,10 @@ void TaskView::restoreActionStyle()
     panel->actionPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
 }
 
-void TaskView::addContextualPanel(QWidget* panel, App::Document* doc)
+void TaskView::addContextualPanel(QWidget* panel, int transactionContext)
 {
-    auto foundTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
+    auto foundTaskInfo
+        = std::ranges::find(taskInfos, transactionContext, &TaskInfo::transactionContext);
     if (!panel || foundTaskInfo == taskInfos.end()
         || foundTaskInfo->taskPanel->contextualPanels.contains(panel)) {
         return;
@@ -1031,9 +1073,10 @@ void TaskView::addContextualPanel(QWidget* panel, App::Document* doc)
     Q_EMIT taskUpdate();
 }
 
-void TaskView::removeContextualPanel(QWidget* panel, App::Document* doc)
+void TaskView::removeContextualPanel(QWidget* panel, int transactionContext)
 {
-    auto foundTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
+    auto foundTaskInfo
+        = std::ranges::find(taskInfos, transactionContext, &TaskInfo::transactionContext);
     if (!panel || foundTaskInfo == taskInfos.end()
         || !foundTaskInfo->taskPanel->contextualPanels.contains(panel)) {
         return;

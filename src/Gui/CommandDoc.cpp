@@ -1864,7 +1864,7 @@ void StdCmdPlacement::activated(int iMsg)
             plm->clearSelection();
         }
     }
-    Gui::Control().showDialog(plm, getDocument());
+    Gui::Control().showDialog(plm);
 }
 
 bool StdCmdPlacement::isActive()

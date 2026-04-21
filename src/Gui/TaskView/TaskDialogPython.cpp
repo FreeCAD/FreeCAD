@@ -27,7 +27,7 @@
 #include <QFile>
 #include <QPointer>
 
-
+#include <App/Document.h>
 #include <Base/Interpreter.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -43,6 +43,20 @@
 
 using namespace Gui;
 using namespace Gui::TaskView;
+
+int transactionContextHelper(PyObject* docPy)
+{
+    if (docPy) {
+        return static_cast<Gui::DocumentPy*>(docPy)
+            ->getDocumentPtr()
+            ->getDocument()
+            ->currentTransactionContextId();
+    }
+    if (auto* doc = App::GetApplication().getActiveDocument()) {
+        return doc->currentTransactionContextId();
+    }
+    return App::NullTransactionContext;
+}
 
 ControlPy* ControlPy::instance = nullptr;
 
@@ -149,16 +163,14 @@ Py::Object ControlPy::showDialog(const Py::Tuple& args)
         throw Py::Exception();
     }
 
-    App::Document* doc = docPy
-        ? static_cast<Gui::DocumentPy*>(docPy)->getDocumentPtr()->getDocument()
-        : nullptr;
+    int transactionContext = transactionContextHelper(docPy);
 
-    Gui::TaskView::TaskDialog* act = Gui::Control().activeDialog(doc);
+    Gui::TaskView::TaskDialog* act = Gui::Control().activeDialog(transactionContext);
     if (act) {
         throw Py::RuntimeError("Active task dialog found");
     }
     auto dlg = new TaskDialogPython(Py::Object(arg0));
-    Gui::Control().showDialog(dlg, doc);
+    Gui::Control().showDialog(dlg, transactionContext);
     return (Py::asObject(new TaskDialogPy(dlg)));
 }
 
@@ -169,11 +181,9 @@ Py::Object ControlPy::activeDialog(const Py::Tuple& args)
         throw Py::Exception();
     }
 
-    App::Document* doc = docPy
-        ? static_cast<Gui::DocumentPy*>(docPy)->getDocumentPtr()->getDocument()
-        : nullptr;
+    int transactionContext = transactionContextHelper(docPy);
 
-    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog(doc);
+    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog(transactionContext);
     return Py::Boolean(dlg != nullptr);
 }
 
@@ -184,11 +194,9 @@ Py::Object ControlPy::activeTaskDialog(const Py::Tuple& args)
         throw Py::Exception();
     }
 
-    App::Document* doc = docPy
-        ? static_cast<Gui::DocumentPy*>(docPy)->getDocumentPtr()->getDocument()
-        : nullptr;
+    int transactionContext = transactionContextHelper(docPy);
 
-    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog(doc);
+    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog(transactionContext);
     return (dlg ? Py::asObject(new TaskDialogPy(dlg)) : Py::None());
 }
 
@@ -199,11 +207,9 @@ Py::Object ControlPy::closeDialog(const Py::Tuple& args)
         throw Py::Exception();
     }
 
-    App::Document* doc = docPy
-        ? static_cast<Gui::DocumentPy*>(docPy)->getDocumentPtr()->getDocument()
-        : nullptr;
+    int transactionContext = transactionContextHelper(docPy);
 
-    Gui::Control().closeDialog(doc);
+    Gui::Control().closeDialog(transactionContext);
     return Py::None();
 }
 
@@ -247,11 +253,9 @@ Py::Object ControlPy::isAllowedAlterDocument(const Py::Tuple& args)
         throw Py::Exception();
     }
 
-    App::Document* doc = docPy
-        ? static_cast<Gui::DocumentPy*>(docPy)->getDocumentPtr()->getDocument()
-        : nullptr;
+    int transactionContext = transactionContextHelper(docPy);
 
-    bool ok = Gui::Control().isAllowedAlterDocument(doc);
+    bool ok = Gui::Control().isAllowedAlterDocument(transactionContext);
     return Py::Boolean(ok);
 }
 
@@ -262,11 +266,9 @@ Py::Object ControlPy::isAllowedAlterView(const Py::Tuple& args)
         throw Py::Exception();
     }
 
-    App::Document* doc = docPy
-        ? static_cast<Gui::DocumentPy*>(docPy)->getDocumentPtr()->getDocument()
-        : nullptr;
+    int transactionContext = transactionContextHelper(docPy);
 
-    bool ok = Gui::Control().isAllowedAlterView(doc);
+    bool ok = Gui::Control().isAllowedAlterView(transactionContext);
     return Py::Boolean(ok);
 }
 
@@ -277,11 +279,9 @@ Py::Object ControlPy::isAllowedAlterSelection(const Py::Tuple& args)
         throw Py::Exception();
     }
 
-    App::Document* doc = docPy
-        ? static_cast<Gui::DocumentPy*>(docPy)->getDocumentPtr()->getDocument()
-        : nullptr;
+    int transactionContext = transactionContextHelper(docPy);
 
-    bool ok = Gui::Control().isAllowedAlterSelection(doc);
+    bool ok = Gui::Control().isAllowedAlterSelection(transactionContext);
     return Py::Boolean(ok);
 }
 
