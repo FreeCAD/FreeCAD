@@ -405,7 +405,7 @@ CmdSketcherCancelSketch::CmdSketcherCancelSketch()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Cancel editing");
-    sToolTipText = QT_TR_NOOP("Cancel editing the active sketch.");
+    sToolTipText = QT_TR_NOOP("Leave 'edit' mode and revert any changes");
     sWhatsThis = "Sketcher_CancelSketch";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CancelSketch";
