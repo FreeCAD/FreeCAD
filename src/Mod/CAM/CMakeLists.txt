@@ -598,14 +598,19 @@ SET(Tests_Post_SRCS
     CAMTests/post/__init__.py
     CAMTests/post/post_harness.py
     CAMTests/post/TestCentroidLegacyPost.py
+    CAMTests/post/TestCentroidPost.py
     CAMTests/post/TestDressupPost.py
     CAMTests/post/TestDxfPost.py
     CAMTests/post/TestFanucPost.py
     CAMTests/post/TestGcodeProcessingUtils.py
     CAMTests/post/TestGenericPlasma.py
     CAMTests/post/TestGenericPost.py
+    CAMTests/post/TestGrblPost.py
     CAMTests/post/TestLinuxCNCPost.py
     CAMTests/post/TestMach3Mach4LegacyPost.py
+    CAMTests/post/TestMach3Mach4Post.py
+    CAMTests/post/TestMarlinPost.py
+    CAMTests/post/TestMassoG3Post.py
     CAMTests/post/TestPostCore.py
     CAMTests/post/TestPostGCodes.py
     CAMTests/post/TestPostMCodes.py

@@ -137,8 +137,13 @@ from CAMTests.post.TestDressupPost import TestDressupPost
 from CAMTests.post.TestGenericPost import TestGenericPost
 from CAMTests.post.TestGenericPlasma import TestGenericPlasma
 from CAMTests.post.TestLinuxCNCPost import TestLinuxCNCPost
+from CAMTests.post.TestMarlinPost import TestMarlinPost
 from CAMTests.post.TestDxfPost import TestDxfPost
 from CAMTests.post.TestFanucPost import TestFanucPost
+from CAMTests.post.TestGrblPost import TestGrblPost
+from CAMTests.post.TestMassoG3Post import TestMassoG3Post
+from CAMTests.post.TestCentroidPost import TestCentroidPost
+from CAMTests.post.TestMach3Mach4Post import TestMach3Mach4Post
 from CAMTests.post.TestTestPost import TestTestPost
 from CAMTests.post.TestCentroidLegacyPost import TestCentroidLegacyPost
 from CAMTests.post.TestMach3Mach4LegacyPost import TestMach3Mach4LegacyPost
