@@ -962,7 +962,7 @@ class _MeshTransfiniteCurve(CommandManager):
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_MeshTransfiniteCurve",
-            "Creates a fixed amount of nodes on an endge with a structured algorithm",
+            "Creates a fixed number of nodes on an edge with a structured algorithm",
         )
         self.is_active = "with_gmsh_femmesh"
         self.do_activated = "add_obj_on_gui_selobj_set_edit"
