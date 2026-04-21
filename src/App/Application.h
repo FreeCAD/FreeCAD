@@ -109,6 +109,11 @@ enum class RecomputeFailure
     Exception
 };
 
+enum class RecomputeOption : int
+{
+    InteractivePreview = 1 << 0
+};
+
 struct AppExport RecomputeProgressDisplayState
 {
     std::string text;
@@ -125,6 +130,20 @@ struct AppExport RecomputeProgressDisplayState
  * singleton while preserving the existing GUI progress surface.
  */
 class RecomputeProgressHandle;
+
+class AppExport ScopedRecomputeOptions
+{
+public:
+    explicit ScopedRecomputeOptions(int options);
+    explicit ScopedRecomputeOptions(RecomputeOption option);
+    ~ScopedRecomputeOptions();
+
+    ScopedRecomputeOptions(const ScopedRecomputeOptions&) = delete;
+    ScopedRecomputeOptions& operator=(const ScopedRecomputeOptions&) = delete;
+
+private:
+    int _previous {0};
+};
 
 class AppExport RecomputeProgressScope
 {
@@ -231,6 +250,8 @@ private:
 AppExport RecomputeProgressHandle* currentRecomputeProgress();
 AppExport bool currentRecomputeWasCanceled();
 AppExport void throwIfRecomputeCanceled();
+AppExport int currentRecomputeOptions();
+AppExport bool currentRecomputeHasOption(RecomputeOption option);
 
 /// Result returned by processing a recompute request.
 struct AppExport RecomputeResult
@@ -254,7 +275,8 @@ struct AppExport RecomputeRequest
     static RecomputeRequest fromDocument(const Document& document, bool force = false, int options = 0);
     static RecomputeRequest fromDocumentObject(
         const DocumentObject& documentObject,
-        bool recursive = false
+        bool recursive = false,
+        int options = 0
     );
 
     Document* resolveDocument() const;
