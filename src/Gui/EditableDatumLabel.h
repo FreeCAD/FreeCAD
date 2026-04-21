@@ -151,7 +151,6 @@ private:
     SoPickStyle* pickStyle;
 
     Function function;
-    double originalValue;
     double editStartValue;
 };
 
