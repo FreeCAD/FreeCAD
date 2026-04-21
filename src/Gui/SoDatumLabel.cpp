@@ -1455,6 +1455,40 @@ void SoDatumLabel::drawArcLength(const SbVec3f* points, float& angle, SbVec3f& t
     glDrawArrow(geom.pnt4, geom.dirEnd, arrowWidth, arrowLength);
 }
 
+// Returns:
+// angleRad — sketch rotation angle in radians (-pi .. pi)
+// CCW is positive, CW is negative, and the angle is measured from the camera's right vector to the
+// sketch's local X axis.
+float SoDatumLabel::getSketchRotationAngle(SoState* state, const SbViewVolume& viewVolume, bool flip)
+{
+    SbMatrix m = SoModelMatrixElement::get(state);
+
+    // --- Camera basis from view volume (screen space axes) ---
+    SbVec3f camRight = viewVolume.lrf - viewVolume.llf;
+    SbVec3f camUp = viewVolume.ulf - viewVolume.llf;
+
+    camRight.normalize();
+    camUp.normalize();
+
+    SbVec3f viewDir = viewVolume.getProjectionDirection();
+
+    // --- Sketch local X axis in world space ---
+    SbVec3f x_world;
+    m.multDirMatrix(SbVec3f(1, 0, 0), x_world);
+
+    // --- Project sketch axis onto view plane ---
+    SbVec3f x_proj = x_world - viewDir * x_world.dot(viewDir);
+
+    // --- Compute angle in screen space ---
+    float cosA = x_proj.dot(camRight);
+    float sinA = x_proj.dot(camUp);
+
+    float angleRad = std::atan2(sinA, cosA);
+
+    // --- Optional flip correction (back-facing view) ---
+    return flip ? angleRad : -angleRad;
+}
+
 // NOLINTNEXTLINE
 void SoDatumLabel::drawText(SoState* state, int srcw, int srch, float angle, const SbVec3f& textOffset)
 {
@@ -1467,6 +1501,32 @@ void SoDatumLabel::drawText(SoState* state, int srcw, int srch, float angle, con
     SbVec3f z = vv.zVector();
 
     bool flip = norm.getValue().dot(z) > std::numeric_limits<float>::epsilon();
+
+    ///////////////////////////////////////////////
+    // Rotation of sketch in screen space (radians)
+    // This defines how the sketch X-axis is oriented relative to the camera projection
+    const float sketchAngle = getSketchRotationAngle(state, vv, flip);
+
+    // Combined angle in screen space
+    // This represents final text orientation relative to camera view
+    const float labelAngle = sketchAngle + angle;
+
+    // Hysteresis threshold to prevent flipping jitter near 90 degrees
+    // Without this, text would oscillate when angle is close to boundary
+    constexpr float threshold = 105
+        * (M_PI / 180);  // 90+15 degree hysteresis, similar to current rotate label logic.
+
+    if (flip) {
+        if (std::abs(labelAngle) > threshold) {
+            angle += M_PI;
+        }
+    }
+    else {
+        if (std::abs(labelAngle) < threshold) {
+            angle += M_PI;
+        }
+    }
+    ///////////////////////////////////////////////
 
     static bool init = false;
     static bool npot = false;

@@ -232,6 +232,7 @@ private:
 
 private:
     void drawImage();
+    static float getSketchRotationAngle(SoState* state, const SbViewVolume& vv, bool flip);
     float imgWidth;
     float imgHeight;
     bool glimagevalid;
