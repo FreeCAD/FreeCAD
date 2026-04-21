@@ -175,6 +175,8 @@ public:
     void saveState() const;
     void restoreState() const;
     void retranslate() const;
+    void setToolbarLayoutContextOverride(const QString& workbench, const QString& context);
+    void clearToolbarLayoutContextOverride(const QString& workbench);
 
     bool areToolBarsLocked() const;
     void setToolBarsLocked(bool locked) const;
@@ -221,6 +223,7 @@ private:
     void setupMenuBarTimer();
     void setupWidgetProducers();
     QString activeToolbarLayoutContext() const;
+    QString effectiveToolbarLayoutContext() const;
     bool rememberToolbarLayoutByWorkbench() const;
     void updateLayoutParameters(const QString& context);
     ParameterGrp::handle workbenchLayoutGroup(const QString& context) const;
@@ -238,6 +241,8 @@ private:
 private:
     QStringList toolbarKeys;
     QString toolbarLayoutContext;
+    QString toolbarLayoutContextOverrideWorkbench;
+    QString toolbarLayoutContextOverride;
     static ToolBarManager* _instance;
 
     QTimer timer;
