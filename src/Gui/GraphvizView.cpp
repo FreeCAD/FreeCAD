@@ -376,7 +376,7 @@ void GraphvizView::updateSvgItem(const App::Document& doc)
 void GraphvizView::svgFileRead(const QByteArray& data)
 {
     // Update renderer with new SVG file, and give message if something went wrong
-    if (! data.isEmpty() && renderer->load(data)) {
+    if (!data.isEmpty() && renderer->load(data)) {
         svgItem->setSharedRenderer(renderer);
     }
     else {
