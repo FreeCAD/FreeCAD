@@ -844,7 +844,7 @@ void PatternParametersWidget::onSpacingLabelClicked(Gui::EditableDatumLabel* lab
     }
     int index = std::distance(spacingLabels.begin(), it);
 
-    disconnect(label, &Gui::EditableDatumLabel::valueChanged, this, nullptr);
+    disconnect(label, &Gui::EditableDatumLabel::editingFinished, this, nullptr);
     disconnect(label, &Gui::EditableDatumLabel::focusLost, this, nullptr);
 
     if (mode == PatternMode::Extent) {
@@ -854,12 +854,8 @@ void PatternParametersWidget::onSpacingLabelClicked(Gui::EditableDatumLabel* lab
         Base::Unit unit = (type == PatternType::Linear) ? Base::Unit::Length : Base::Unit::Angle;
         label->setSpinboxValue(currentValue, unit);
 
-        connect(label, &Gui::EditableDatumLabel::valueChanged, this, [this, label](double newValue) {
-            if (!label->hasFinishedEditing) {
-                return;
-            }
-
-            disconnect(label, &Gui::EditableDatumLabel::valueChanged, this, nullptr);
+        connect(label, &Gui::EditableDatumLabel::editingFinished, this, [this, label](double newValue) {
+            disconnect(label, &Gui::EditableDatumLabel::editingFinished, this, nullptr);
             disconnect(label, &Gui::EditableDatumLabel::focusLost, this, nullptr);
 
             m_extentProp->setValue(newValue);
@@ -881,12 +877,8 @@ void PatternParametersWidget::onSpacingLabelClicked(Gui::EditableDatumLabel* lab
         Base::Unit unit = (type == PatternType::Linear) ? Base::Unit::Length : Base::Unit::Angle;
         label->setSpinboxValue(currentValue, unit);
 
-        connect(label, &Gui::EditableDatumLabel::valueChanged, this, [this, index, label](double newValue) {
-            if (!label->hasFinishedEditing) {
-                return;
-            }
-
-            disconnect(label, &Gui::EditableDatumLabel::valueChanged, this, nullptr);
+        connect(label, &Gui::EditableDatumLabel::editingFinished, this, [this, index, label](double newValue) {
+            disconnect(label, &Gui::EditableDatumLabel::editingFinished, this, nullptr);
             disconnect(label, &Gui::EditableDatumLabel::focusLost, this, nullptr);
 
             if (!m_spacingsOverrideProp) {
@@ -909,7 +901,7 @@ void PatternParametersWidget::onSpacingLabelClicked(Gui::EditableDatumLabel* lab
     }
 
     connect(label, &Gui::EditableDatumLabel::focusLost, this, [this, label]() {
-        disconnect(label, &Gui::EditableDatumLabel::valueChanged, this, nullptr);
+        disconnect(label, &Gui::EditableDatumLabel::editingFinished, this, nullptr);
         disconnect(label, &Gui::EditableDatumLabel::focusLost, this, nullptr);
         label->stopEdit(false);
     });
