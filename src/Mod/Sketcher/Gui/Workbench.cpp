@@ -44,6 +44,16 @@ std::string makeSketcherEditToolbarPersistenceKey(const std::string& toolbar)
 {
     return "ctx:SketcherWorkbench:edit:" + toolbar;
 }
+
+QString sketcherWorkbenchName()
+{
+    return QStringLiteral("SketcherWorkbench");
+}
+
+QString sketcherEditLayoutContext()
+{
+    return QStringLiteral("ctx:SketcherWorkbench:edit");
+}
 }  // namespace
 
 #if 0  // needed for Qt's lupdate utility
@@ -215,64 +225,41 @@ void Workbench::activated()
      */
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     if (isSketchInEdit(doc)) {
-        Gui::ToolBarManager::getInstance()->setState(
-            editModeToolbarKeys(),
-            Gui::ToolBarManager::State::ForceAvailable
+        auto* toolbarManager = Gui::ToolBarManager::getInstance();
+        toolbarManager->setToolbarLayoutContextOverride(
+            sketcherWorkbenchName(),
+            sketcherEditLayoutContext()
         );
 
-        Gui::ToolBarManager::getInstance()->setState(
-            nonEditModeToolbarKeys(),
-            Gui::ToolBarManager::State::ForceHidden
-        );
+        toolbarManager->setState(editModeToolbarKeys(), Gui::ToolBarManager::State::ForceAvailable);
+
+        toolbarManager->setState(nonEditModeToolbarKeys(), Gui::ToolBarManager::State::ForceHidden);
     }
 }
 
 void Workbench::enterEditMode()
 {
-    /* Ensure the state left by the non-edit mode toolbars is saved (in case of changing to edit
-     * mode) without changing workbench
-     */
-    Gui::ToolBarManager::getInstance()->setState(
-        nonEditModeToolbarKeys(),
-        Gui::ToolBarManager::State::SaveState
+    auto* toolbarManager = Gui::ToolBarManager::getInstance();
+    toolbarManager->setToolbarLayoutContextOverride(
+        sketcherWorkbenchName(),
+        sketcherEditLayoutContext()
     );
 
-    Gui::ToolBarManager::getInstance()->setState(
-        editModeToolbarKeys(),
-        Gui::ToolBarManager::State::ForceAvailable
-    );
-    Gui::ToolBarManager::getInstance()->setState(
-        nonEditModeToolbarKeys(),
-        Gui::ToolBarManager::State::ForceHidden
-    );
+    toolbarManager->setState(editModeToolbarKeys(), Gui::ToolBarManager::State::ForceAvailable);
+    toolbarManager->setState(nonEditModeToolbarKeys(), Gui::ToolBarManager::State::ForceHidden);
 }
 
 void Workbench::leaveEditMode()
 {
-    /* Ensure the state left by the edit mode toolbars is saved (in case of changing to edit mode)
-     * without changing workbench.
-     *
-     * However, do not save state if the current workbench is not the Sketcher WB, because otherwise
-     * we would be saving the state of the currently activated workbench, and the toolbars would
-     * disappear (as the toolbars of that other WB are only visible).
-     */
+    auto* toolbarManager = Gui::ToolBarManager::getInstance();
     auto* workbench = Gui::WorkbenchManager::instance()->active();
 
-    if (workbench->name() == "SketcherWorkbench") {
-        Gui::ToolBarManager::getInstance()->setState(
-            editModeToolbarKeys(),
-            Gui::ToolBarManager::State::SaveState
-        );
-    }
+    toolbarManager->clearToolbarLayoutContextOverride(sketcherWorkbenchName());
 
-    Gui::ToolBarManager::getInstance()->setState(
-        editModeToolbarKeys(),
-        Gui::ToolBarManager::State::RestoreDefault
-    );
-    Gui::ToolBarManager::getInstance()->setState(
-        nonEditModeToolbarKeys(),
-        Gui::ToolBarManager::State::RestoreDefault
-    );
+    if (workbench->name() == "SketcherWorkbench") {
+        toolbarManager->setState(editModeToolbarKeys(), Gui::ToolBarManager::State::RestoreDefault);
+        toolbarManager->setState(nonEditModeToolbarKeys(), Gui::ToolBarManager::State::RestoreDefault);
+    }
 }
 
 namespace SketcherGui

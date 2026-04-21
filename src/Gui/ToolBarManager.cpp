@@ -661,6 +661,17 @@ QString ToolBarManager::activeToolbarLayoutContext() const
     return QString::fromUtf8(active->name().c_str());
 }
 
+QString ToolBarManager::effectiveToolbarLayoutContext() const
+{
+    auto activeContext = activeToolbarLayoutContext();
+    if (!toolbarLayoutContextOverride.isEmpty() && !toolbarLayoutContextOverrideWorkbench.isEmpty()
+        && toolbarLayoutContextOverrideWorkbench == activeContext) {
+        return toolbarLayoutContextOverride;
+    }
+
+    return activeContext;
+}
+
 bool ToolBarManager::rememberToolbarLayoutByWorkbench() const
 {
     return hMainWindow->GetBool("RememberToolbarLayoutByWorkbench", false);
@@ -1007,7 +1018,7 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
     QPointer<QWidget> actionWidget = createActionWidget();
 
     saveState();
-    updateLayoutParameters(activeToolbarLayoutContext());
+    updateLayoutParameters(effectiveToolbarLayoutContext());
     this->toolbarKeys.clear();
 
     int max_width = getMainWindow()->width();
@@ -1216,7 +1227,7 @@ void ToolBarManager::saveState() const
 
 void ToolBarManager::restoreState() const
 {
-    const QString layoutContext = activeToolbarLayoutContext();
+    const QString layoutContext = effectiveToolbarLayoutContext();
     const_cast<ToolBarManager*>(this)->updateLayoutParameters(layoutContext);
     const auto statusBarParams = toolbarAreaRestoreParameters(hStatusBar, hGlobalStatusBar);
     const auto menuBarLeftParams = toolbarAreaRestoreParameters(hMenuBarLeft, hGlobalMenuBarLeft);
@@ -1543,6 +1554,45 @@ void ToolBarManager::retranslate() const
     for (ToolBar* it : toolbars) {
         QByteArray toolbarName = it->objectName().toUtf8();
         it->setWindowTitle(QApplication::translate("Workbench", (const char*)toolbarName));
+    }
+}
+
+void ToolBarManager::setToolbarLayoutContextOverride(const QString& workbench, const QString& context)
+{
+    if (toolbarLayoutContextOverrideWorkbench == workbench
+        && toolbarLayoutContextOverride == context && effectiveToolbarLayoutContext() == context) {
+        return;
+    }
+
+    bool affectsCurrentLayout = activeToolbarLayoutContext() == workbench;
+    if (affectsCurrentLayout) {
+        saveState();
+    }
+
+    toolbarLayoutContextOverrideWorkbench = workbench;
+    toolbarLayoutContextOverride = context;
+
+    if (affectsCurrentLayout) {
+        restoreState();
+    }
+}
+
+void ToolBarManager::clearToolbarLayoutContextOverride(const QString& workbench)
+{
+    if (toolbarLayoutContextOverrideWorkbench != workbench) {
+        return;
+    }
+
+    bool affectsCurrentLayout = activeToolbarLayoutContext() == workbench;
+    if (affectsCurrentLayout) {
+        saveState();
+    }
+
+    toolbarLayoutContextOverrideWorkbench.clear();
+    toolbarLayoutContextOverride.clear();
+
+    if (affectsCurrentLayout) {
+        restoreState();
     }
 }
 
