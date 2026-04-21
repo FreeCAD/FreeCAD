@@ -134,42 +134,49 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* sketcher = new Gui::ToolBarItem(root);
     sketcher->setCommand("Sketcher");
     sketcher->setPersistenceKey(makeSketcherToolbarPersistenceKey("Sketcher"));
+    sketcher->setTier(Gui::ToolBarItem::Tier::Recommended);
     addSketcherWorkbenchSketchActions(*sketcher);
 
     Gui::ToolBarItem* sketcherEditMode
         = new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);
     sketcherEditMode->setCommand("Edit Mode");
     sketcherEditMode->setPersistenceKey(makeSketcherEditToolbarPersistenceKey("Edit Mode"));
+    sketcherEditMode->setTier(Gui::ToolBarItem::Tier::Contextual);
     addSketcherWorkbenchSketchEditModeActions(*sketcherEditMode);
 
     Gui::ToolBarItem* geom
         = new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);
     geom->setCommand("Geometries");
     geom->setPersistenceKey(makeSketcherEditToolbarPersistenceKey("Geometries"));
+    geom->setTier(Gui::ToolBarItem::Tier::Contextual);
     addSketcherWorkbenchGeometries(*geom);
 
     Gui::ToolBarItem* cons
         = new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);
     cons->setCommand("Constraints");
     cons->setPersistenceKey(makeSketcherEditToolbarPersistenceKey("Constraints"));
+    cons->setTier(Gui::ToolBarItem::Tier::Contextual);
     addSketcherWorkbenchConstraints(*cons);
 
     Gui::ToolBarItem* consaccel
         = new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);
     consaccel->setCommand("Sketcher Tools");
     consaccel->setPersistenceKey(makeSketcherEditToolbarPersistenceKey("Sketcher Tools"));
+    consaccel->setTier(Gui::ToolBarItem::Tier::Contextual);
     addSketcherWorkbenchTools(*consaccel);
 
     Gui::ToolBarItem* bspline
         = new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);
     bspline->setCommand("B-Spline Tools");
     bspline->setPersistenceKey(makeSketcherEditToolbarPersistenceKey("B-Spline Tools"));
+    bspline->setTier(Gui::ToolBarItem::Tier::Contextual);
     addSketcherWorkbenchBSplines(*bspline);
 
     Gui::ToolBarItem* visual
         = new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);
     visual->setCommand("Visual Helpers");
     visual->setPersistenceKey(makeSketcherEditToolbarPersistenceKey("Visual Helpers"));
+    visual->setTier(Gui::ToolBarItem::Tier::Contextual);
     addSketcherWorkbenchVisual(*visual);
 
     return root;

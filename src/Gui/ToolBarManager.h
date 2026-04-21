@@ -62,6 +62,14 @@ public:
                       // visible.
     };
 
+    enum class Tier
+    {
+        Recommended,
+        Secondary,
+        Advanced,
+        Contextual,
+    };
+
     ToolBarItem();
     explicit ToolBarItem(
         ToolBarItem* item,
@@ -74,6 +82,8 @@ public:
     bool hasPersistenceKey() const;
     void setPersistenceKey(const std::string&);
     const std::string& persistenceKey() const;
+    void setTier(Tier tier);
+    Tier tier() const;
 
     bool hasItems() const;
     ToolBarItem* findItem(const std::string&);
@@ -94,6 +104,7 @@ public:
 private:
     std::string _name;
     std::string _persistenceKey;
+    Tier _tier = Tier::Recommended;
     QList<ToolBarItem*> _items;
 };
 
@@ -189,18 +200,30 @@ public:
     static QString toolBarScopeLabel(const QString& persistenceKey);
     static QString toolBarScopeLabel(const ToolBarItem*);
     static QString toolBarScopeLabel(const QToolBar*);
+    static ToolBarItem::Tier toolBarTier(const ToolBarItem*);
+    static ToolBarItem::Tier toolBarTier(const QToolBar*);
+    static QString toolBarTierName(ToolBarItem::Tier);
+    static QString toolBarTierLabel(ToolBarItem::Tier);
+    static QString toolBarTierLabel(const ToolBarItem*);
+    static QString toolBarTierLabel(const QToolBar*);
     static void setToolBarPersistenceKey(QToolBar*, const QString&);
+    static void setToolBarTier(QToolBar*, ToolBarItem::Tier);
 
     /** Sets up the toolbars of a given workbench. */
     void setup(ToolBarItem*);
     void saveState() const;
     void restoreState() const;
     void retranslate() const;
+    void populateToolBarMenu(QMenu* menu);
     void setToolbarLayoutContextOverride(const QString& workbench, const QString& context);
     void clearToolbarLayoutContextOverride(const QString& workbench);
     QString currentToolbarLayoutScopeLabel() const;
     QString currentToolbarLayoutResetLabel() const;
+    QString currentRecommendedToolbarLayoutResetLabel() const;
+    QString currentShowRecommendedOnlyLabel() const;
     void resetCurrentToolbarLayout();
+    void resetCurrentToolbarLayoutToRecommended();
+    void showRecommendedToolBarsOnly();
 
     bool areToolBarsLocked() const;
     void setToolBarsLocked(bool locked) const;
@@ -240,6 +263,13 @@ protected:
     ~ToolBarManager() override;
 
 private:
+    enum class CurrentLayoutScope
+    {
+        None,
+        Workbench,
+        Contextual,
+    };
+
     void setupParameters();
     void setupStatusBar();
     void setupMenuBar();
@@ -249,10 +279,18 @@ private:
     void setupResizeTimer();
     void setupMenuBarTimer();
     void setupWidgetProducers();
+    void addToolBarActionsByScope(QMenu* menu, const QList<QToolBar*>& toolbars) const;
+    void addCurrentToolbarLayoutActions(QMenu* menu);
     QString activeToolbarLayoutContext() const;
     QString effectiveToolbarLayoutContext() const;
+    CurrentLayoutScope currentToolbarLayoutScope(
+        QString* layoutContext = nullptr,
+        QString* activeContext = nullptr
+    ) const;
     bool rememberToolbarLayoutByWorkbench() const;
     bool hasSavedWorkbenchToolBarLayout(const QString& context) const;
+    bool toolbarBelongsToLayoutContext(const QToolBar* toolbar, const QString& context) const;
+    void initializeUnsavedToolbarLayoutContext(const QString& context);
     void updateLayoutParameters(const QString& context);
     ParameterGrp::handle workbenchLayoutGroup(const QString& context) const;
     ParameterGrp::handle toolbarAreaRestoreParameters(
@@ -262,6 +300,9 @@ private:
     void saveWorkbenchToolBarLayout(const QString& context) const;
     void restoreWorkbenchToolBarLayout(const QString& context) const;
     void resetMainWindowToolBarLayout() const;
+    bool recommendedToolBarVisibility(const QToolBar* toolbar) const;
+    void applyRecommendedToolBarPreferences();
+    void applyRecommendedToolBarVisibility();
 
     void addToMenu(QLayout* layout, QWidget* area, QMenu* menu);
     QLayout* findLayoutOfObject(QObject* source, QWidget* area) const;
