@@ -100,7 +100,7 @@ TopoDS_Shape getLocatedShape(const App::SubObjectT& subject, Base::Matrix4D* mat
         subject.getElementName(),
         mat
     );
-    
+
     if (shape.IsNull()) {
         Base::Console().log(
             "Part::MeasureClient::getLocatedShape: Did not retrieve shape for %s, %s\n",
@@ -109,7 +109,7 @@ TopoDS_Shape getLocatedShape(const App::SubObjectT& subject, Base::Matrix4D* mat
         );
         return {};
     }
-    
+
     return shape;
 }
 
