@@ -31,6 +31,22 @@
 
 using namespace Gui;
 
+namespace
+{
+QString widgetPersistenceKey(QWidget* widget)
+{
+    if (!widget) {
+        return {};
+    }
+
+    if (auto toolbar = qobject_cast<QToolBar*>(widget)) {
+        return ToolBarManager::toolBarPersistenceKey(toolbar);
+    }
+
+    return widget->objectName();
+}
+}  // namespace
+
 ToolBarAreaWidget::ToolBarAreaWidget(
     QWidget* parent,
     ToolBarArea area,
@@ -62,11 +78,11 @@ void ToolBarAreaWidget::addWidget(QWidget* widget)
     _layout->addWidget(widget);
     adjustParent();
 
-    QString name = widget->objectName();
+    QString name = widgetPersistenceKey(widget);
 
     if (!name.isEmpty()) {
         Base::ConnectionBlocker block(_conn);
-        _hParam->SetInt(widget->objectName().toUtf8().constData(), _layout->count() - 1);
+        _hParam->SetInt(name.toUtf8().constData(), _layout->count() - 1);
     }
 }
 
@@ -102,13 +118,18 @@ void ToolBarAreaWidget::removeWidget(QWidget* widget)
         toolbar->updateCustomGripVisibility();
     }
 
-    QString name = widget->objectName();
+    QString name = widgetPersistenceKey(widget);
     if (!name.isEmpty()) {
         Base::ConnectionBlocker block(_conn);
         _hParam->RemoveInt(name.toUtf8().constData());
     }
 
     adjustParent();
+}
+
+void ToolBarAreaWidget::setParameters(const ParameterGrp::handle& hParam)
+{
+    _hParam = hParam;
 }
 
 void ToolBarAreaWidget::adjustParent()
@@ -127,11 +148,15 @@ void ToolBarAreaWidget::saveState()
     }
 
     foreachToolBar([this](QToolBar* toolbar, int idx, ToolBarAreaWidget*) {
-        _hParam->SetInt(toolbar->objectName().toUtf8().constData(), idx);
+        auto key = ToolBarManager::toolBarPersistenceKey(toolbar);
+        _hParam->SetInt(key.toUtf8().constData(), idx);
     });
 }
 
-void ToolBarAreaWidget::restoreState(const std::map<int, QToolBar*>& toolbars)
+void ToolBarAreaWidget::restoreState(
+    const std::map<int, QToolBar*>& toolbars,
+    const ParameterGrp::handle& source
+)
 {
     for (const auto& [index, toolbar] : toolbars) {
         bool visible = toolbar->isVisible();
@@ -141,7 +166,12 @@ void ToolBarAreaWidget::restoreState(const std::map<int, QToolBar*>& toolbars)
         toolbar->setVisible(visible);
     }
 
-    for (const auto& [name, visible] : _hParam->GetBoolMap()) {
+    auto stateParams = source ? source : _hParam;
+    if (!stateParams) {
+        return;
+    }
+
+    for (const auto& [name, visible] : stateParams->GetBoolMap()) {
         auto widget = findChild<QWidget*>(QString::fromUtf8(name.c_str()));
 
         if (widget) {
