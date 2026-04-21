@@ -1976,6 +1976,10 @@ bool Application::activateWorkbench(const char* name)
         if (activeDocument()) {
             activeDocument()->setWorkbench(name);
         }
+
+        if (ok) {
+            getMainWindow()->completeWorkbenchActivation(QString::fromLatin1(name));
+        }
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text

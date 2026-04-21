@@ -1189,6 +1189,11 @@ void MainWindow::activateWorkbench(const QString& name)
     updateActions(true);
 }
 
+void MainWindow::completeWorkbenchActivation(const QString& name)
+{
+    Q_EMIT workbenchActivatedCompleted(name);
+}
+
 void MainWindow::whatsThis()
 {
     QWhatsThis::enterWhatsThisMode();

@@ -299,6 +299,10 @@ public Q_SLOTS:
      */
     void activateWorkbench(const QString&);
     /**
+     * Emits the workbenchActivatedCompleted() signal after workbench callbacks finish.
+     */
+    void completeWorkbenchActivation(const QString&);
+    /**
      * Starts the what's this mode.
      */
     void whatsThis();
@@ -431,6 +435,7 @@ Q_SIGNALS:
     void timeEvent();
     void windowStateChanged(QWidget*);
     void workbenchActivated(const QString&);
+    void workbenchActivatedCompleted(const QString&);
     void mainWindowClosed();
     void recentFileAdded(const QString& filename);
 
