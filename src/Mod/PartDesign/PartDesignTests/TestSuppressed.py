@@ -220,7 +220,7 @@ def _findTreeWidget():
     for tree in trees:
         if tree.topLevelItemCount() > 0:
             return tree
-    # no tree has items yet, return the last one (usally the model tree)
+    # no tree has items yet, return the last one (usually the model tree)
     if trees:
         return trees[-1]
     return None
