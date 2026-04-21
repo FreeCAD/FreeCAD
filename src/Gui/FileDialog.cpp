@@ -562,22 +562,6 @@ QString FileDialog::getSaveFileName(
     QWidget* parent,
     const QString& caption,
     const QString& dir,
-    const QString& filter,
-    QString* selectedFilter,
-    Options options
-)
-{
-    return getSaveFileName(parent, caption, dir, filter.split(QStringLiteral(";;")), selectedFilter, options);
-}
-
-/**
- * This is a convenience static function that will return a file name selected by the user. The file
- * does not have to exist.
- */
-QString FileDialog::getSaveFileName(
-    QWidget* parent,
-    const QString& caption,
-    const QString& dir,
     const QStringList& filters,
     QString* selectedFilter,
     Options options
@@ -730,22 +714,6 @@ QString FileDialog::getOpenFileName(
     QWidget* parent,
     const QString& caption,
     const QString& dir,
-    const QString& filter,
-    QString* selectedFilter,
-    Options options
-)
-{
-    return getOpenFileName(parent, caption, dir, filter.split(QStringLiteral(";;")), selectedFilter, options);
-}
-
-/**
- * This is a convenience static function that returns an existing file selected by the user.
- * If the user pressed Cancel, it returns a null string.
- */
-QString FileDialog::getOpenFileName(
-    QWidget* parent,
-    const QString& caption,
-    const QString& dir,
     const QStringList& filters,
     QString* selectedFilter,
     Options options
@@ -820,22 +788,6 @@ QString FileDialog::getOpenFileName(
     else {
         return {};
     }
-}
-
-/**
- * This is a convenience static function that will return one or more existing files selected by the
- * user.
- */
-QStringList FileDialog::getOpenFileNames(
-    QWidget* parent,
-    const QString& caption,
-    const QString& dir,
-    const QString& filter,
-    QString* selectedFilter,
-    Options options
-)
-{
-    return getOpenFileNames(parent, caption, dir, filter.split(QStringLiteral(";;")), selectedFilter, options);
 }
 
 /**

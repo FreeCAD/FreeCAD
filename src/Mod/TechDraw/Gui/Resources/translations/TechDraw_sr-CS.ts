@@ -76,12 +76,12 @@
   <context>
     <name>CmdTechDrawActiveView</name>
     <message>
-      <location filename="../../Command.cpp" line="696"/>
+      <location filename="../../Command.cpp" line="698"/>
       <source>TechDraw</source>
       <translation>Tehnički crteži</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="697"/>
+      <location filename="../../Command.cpp" line="699"/>
       <source>Active View</source>
       <translation>Aktivni pogled</translation>
     </message>
@@ -125,17 +125,17 @@
   <context>
     <name>CmdTechDrawArchView</name>
     <message>
-      <location filename="../../Command.cpp" line="1661"/>
+      <location filename="../../Command.cpp" line="1665"/>
       <source>TechDraw</source>
       <translation>Tehnički crteži</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1662"/>
+      <location filename="../../Command.cpp" line="1666"/>
       <source>BIM View</source>
       <translation>Umetni BIM objekat</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1663"/>
+      <location filename="../../Command.cpp" line="1667"/>
       <source>Inserts a view of a BIM section plane</source>
       <translation>Umetni presek iz BIM radnog okruženja</translation>
     </message>
@@ -143,17 +143,17 @@
   <context>
     <name>CmdTechDrawBalloon</name>
     <message>
-      <location filename="../../Command.cpp" line="1274"/>
+      <location filename="../../Command.cpp" line="1276"/>
       <source>TechDraw</source>
       <translation>Tehnički crteži</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1275"/>
+      <location filename="../../Command.cpp" line="1277"/>
       <source>Balloon Annotation</source>
       <translation>Umetni pozicionu oznaku</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1276"/>
+      <location filename="../../Command.cpp" line="1278"/>
       <source>Inserts a new balloon annotation in the selected view</source>
       <translation>Umetni pozicioni oznaku u izabrani pogled</translation>
     </message>
@@ -184,17 +184,17 @@
   <context>
     <name>CmdTechDrawClipGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="1338"/>
+      <location filename="../../Command.cpp" line="1340"/>
       <source>TechDraw</source>
       <translation>Tehnički crteži</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1339"/>
+      <location filename="../../Command.cpp" line="1341"/>
       <source>Clip Group</source>
       <translation>Grupa pogleda</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1340"/>
+      <location filename="../../Command.cpp" line="1342"/>
       <source>Inserts a new clip group for the selected view</source>
       <translation>Napravi grupu pogleda</translation>
     </message>
@@ -202,17 +202,17 @@
   <context>
     <name>CmdTechDrawClipGroupAdd</name>
     <message>
-      <location filename="../../Command.cpp" line="1375"/>
+      <location filename="../../Command.cpp" line="1377"/>
       <source>TechDraw</source>
       <translation>Tehnički crteži</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1376"/>
+      <location filename="../../Command.cpp" line="1378"/>
       <source>Add View To Clip Group</source>
       <translation>Dodaj pogled u grupu pogleda</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1377"/>
+      <location filename="../../Command.cpp" line="1379"/>
       <source>Adds the selected view to a clip group</source>
       <translation>Dodaj izabrani pogled u grupu pogleda</translation>
     </message>
@@ -220,17 +220,17 @@
   <context>
     <name>CmdTechDrawClipGroupRemove</name>
     <message>
-      <location filename="../../Command.cpp" line="1459"/>
+      <location filename="../../Command.cpp" line="1461"/>
       <source>TechDraw</source>
       <translation>Tehnički crteži</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1460"/>
+      <location filename="../../Command.cpp" line="1462"/>
       <source>Remove From Clip Group</source>
       <translation>Ukloni pogled iz grupe pogleda</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1461"/>
+      <location filename="../../Command.cpp" line="1463"/>
       <source>Removes a view based on the selected clip group</source>
       <translation>Ukloni izabrani pogled iz grupe pogleda</translation>
     </message>
@@ -238,17 +238,17 @@
   <context>
     <name>CmdTechDrawComplexSection</name>
     <message>
-      <location filename="../../Command.cpp" line="882"/>
+      <location filename="../../Command.cpp" line="884"/>
       <source>TechDraw</source>
       <translation>Tehnički crteži</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="883"/>
+      <location filename="../../Command.cpp" line="885"/>
       <source>Complex Section View</source>
       <translation>Složeni presek</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="884"/>
+      <location filename="../../Command.cpp" line="886"/>
       <source>Inserts a complex section view based on the selected view in the current page</source>
       <translation>Umetni na crtež složeni presek napravljen na osnovu izabranog pogleda</translation>
     </message>
@@ -329,17 +329,17 @@
   <context>
     <name>CmdTechDrawDetailView</name>
     <message>
-      <location filename="../../Command.cpp" line="1008"/>
+      <location filename="../../Command.cpp" line="1010"/>
       <source>TechDraw</source>
       <translation>Tehnički crteži</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1009"/>
+      <location filename="../../Command.cpp" line="1011"/>
       <source>Detail View</source>
       <translation>Detaljni pogled</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1010"/>
+      <location filename="../../Command.cpp" line="1012"/>
       <source>Inserts a new detail view based on the selected view in the current page</source>
       <translation>Umetni na crtež detaljni pogled napravljen na osnovu izabranog pogleda</translation>
     </message>
@@ -387,17 +387,17 @@ Levi klik na prazan prostor potvrdiće trenutnu kotu. Desni klik ili pritisak n
   <context>
     <name>CmdTechDrawDraftView</name>
     <message>
-      <location filename="../../Command.cpp" line="1597"/>
+      <location filename="../../Command.cpp" line="1601"/>
       <source>TechDraw</source>
       <translation>Tehnički crteži</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1598"/>
+      <location filename="../../Command.cpp" line="1602"/>
       <source>Draft View</source>
       <translation>Umetni objekat Crtanje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1600"/>
+      <location filename="../../Command.cpp" line="1604"/>
       <source>Inserts a view of a Draft object</source>
       <extracomment>&quot;Draft&quot; is a workbench and should not be translated</extracomment>
       <translation>Umetni 2D objekat radnog okruženja Crtanje</translation>
@@ -406,22 +406,22 @@ Levi klik na prazan prostor potvrdiće trenutnu kotu. Desni klik ili pritisak n
   <context>
     <name>CmdTechDrawExportPageDXF</name>
     <message>
-      <location filename="../../Command.cpp" line="1850"/>
+      <location filename="../../Command.cpp" line="1854"/>
       <source>File</source>
       <translation>Datoteka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1851"/>
+      <location filename="../../Command.cpp" line="1855"/>
       <source>Export Page as DXF</source>
       <translation>Izvezi crtež u DXF formatu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1852"/>
+      <location filename="../../Command.cpp" line="1856"/>
       <source>Exports the current page as a DXF</source>
       <translation>Izvezi trenutni crtež kao DXF</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1885"/>
+      <location filename="../../Command.cpp" line="1889"/>
       <source>Save DXF file</source>
       <translation>Sačuvaj DXF datoteku</translation>
     </message>
@@ -429,17 +429,17 @@ Levi klik na prazan prostor potvrdiće trenutnu kotu. Desni klik ili pritisak n
   <context>
     <name>CmdTechDrawExportPageSVG</name>
     <message>
-      <location filename="../../Command.cpp" line="1807"/>
+      <location filename="../../Command.cpp" line="1811"/>
       <source>File</source>
       <translation>Datoteka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1808"/>
+      <location filename="../../Command.cpp" line="1812"/>
       <source>Export Page as SVG</source>
       <translation>Izvezi crtež u SVG formatu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1809"/>
+      <location filename="../../Command.cpp" line="1813"/>
       <source>Exports the current page as an SVG</source>
       <translation>Izvezi trenutni crtež kao SVG</translation>
     </message>
@@ -1521,17 +1521,17 @@ Levi klik na prazan prostor potvrdiće trenutnu kotu. Desni klik ili pritisak n
   <context>
     <name>CmdTechDrawGeometricHatch</name>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="233"/>
+      <location filename="../../CommandDecorate.cpp" line="269"/>
       <source>TechDraw</source>
       <translation>Tehnički crteži</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="234"/>
+      <location filename="../../CommandDecorate.cpp" line="270"/>
       <source>Geometric Hatch</source>
       <translation>Geometrijska šrafura</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="235"/>
+      <location filename="../../CommandDecorate.cpp" line="271"/>
       <source>Applies a geometric hatch pattern to the selected faces</source>
       <translation>Šrafiraj izabrane površine geometrijskom šrafurom</translation>
     </message>
@@ -1539,17 +1539,17 @@ Levi klik na prazan prostor potvrdiće trenutnu kotu. Desni klik ili pritisak n
   <context>
     <name>CmdTechDrawHatch</name>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="138"/>
+      <location filename="../../CommandDecorate.cpp" line="174"/>
       <source>TechDraw</source>
       <translation>Tehnički crteži</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="139"/>
+      <location filename="../../CommandDecorate.cpp" line="175"/>
       <source>Image Hatch</source>
       <translation>Rasterska šrafura</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="140"/>
+      <location filename="../../CommandDecorate.cpp" line="176"/>
       <source>Applies a hatch pattern to the selected faces using an image file</source>
       <translation>Šrafiraj izabrane površine rasterskom šrafurom</translation>
     </message>
@@ -1593,34 +1593,39 @@ Levi klik na prazan prostor potvrdiće trenutnu kotu. Desni klik ili pritisak n
   <context>
     <name>CmdTechDrawImage</name>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="304"/>
+      <location filename="../../CommandDecorate.cpp" line="340"/>
       <source>TechDraw</source>
       <translation>Tehnički crteži</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="305"/>
+      <location filename="../../CommandDecorate.cpp" line="341"/>
       <source>Bitmap Image</source>
       <translation>Bitmap slika</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="306"/>
+      <location filename="../../CommandDecorate.cpp" line="342"/>
       <source>Inserts a bitmap from a file into the current page</source>
       <translation>Umetni na crtež rastersku sliku iz datoteke</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="308"/>
+      <location filename="../../CommandDecorate.cpp" line="344"/>
       <source>Insert bitmap from a file into a page</source>
       <translation>Umetni rastersku sliku iz datoteke u crtež</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="323"/>
-      <source>Select an image file</source>
-      <translation>Izaberi datoteku slike</translation>
+      <location filename="../../CommandDecorate.cpp" line="359"/>
+      <source>Image files (*.jpg *.jpeg *.png *.bmp)</source>
+      <translation type="unfinished">Image files (*.jpg *.jpeg *.png *.bmp)</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="325"/>
-      <source>Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</source>
-      <translation>Slikovne datoteke (*.jpg *.jpeg *.png *.bmp);;Sve datoteke (*)</translation>
+      <location filename="../../CommandDecorate.cpp" line="360"/>
+      <source>All files (*)</source>
+      <translation type="unfinished">All files (*)</translation>
+    </message>
+    <message>
+      <location filename="../../CommandDecorate.cpp" line="362"/>
+      <source>Select an image file</source>
+      <translation>Izaberi datoteku slike</translation>
     </message>
   </context>
   <context>
@@ -1744,17 +1749,17 @@ Levi klik na prazan prostor potvrdiće trenutnu kotu. Desni klik ili pritisak n
   <context>
     <name>CmdTechDrawProjectShape</name>
     <message>
-      <location filename="../../Command.cpp" line="1914"/>
+      <location filename="../../Command.cpp" line="1918"/>
       <source>TechDraw</source>
       <translation>Tehnički crteži</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1915"/>
+      <location filename="../../Command.cpp" line="1919"/>
       <source>Project Shape</source>
       <translation>Projiciraj objekat u 3D</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1916"/>
+      <location filename="../../Command.cpp" line="1920"/>
       <source>Creates a projected geometry of the selected object in the 3D view from the current camera angle</source>
       <translation>Projiciraj izabrani objekat u 3D pogledu u smeru kamere</translation>
     </message>
@@ -1762,17 +1767,17 @@ Levi klik na prazan prostor potvrdiće trenutnu kotu. Desni klik ili pritisak n
   <context>
     <name>CmdTechDrawProjectionGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="1052"/>
+      <location filename="../../Command.cpp" line="1054"/>
       <source>TechDraw</source>
       <translation>Tehnički crteži</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1053"/>
+      <location filename="../../Command.cpp" line="1055"/>
       <source>Projection Group</source>
       <translation>Grupa osnovnih pogleda</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1054"/>
+      <location filename="../../Command.cpp" line="1056"/>
       <source>Inserts multiple new linked views of the selected objects in the current page</source>
       <translation>Umetni na crtež nove povezane poglede izabranih objekata</translation>
     </message>
@@ -1852,27 +1857,27 @@ Levi klik na prazan prostor potvrdiće trenutnu kotu. Desni klik ili pritisak n
   <context>
     <name>CmdTechDrawSectionGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="727"/>
+      <location filename="../../Command.cpp" line="729"/>
       <source>TechDraw</source>
       <translation>Tehnički crteži</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="728"/>
+      <location filename="../../Command.cpp" line="730"/>
       <source>Section View (Simple or Complex)</source>
       <translation>Pun ili složeni presek</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="729"/>
+      <location filename="../../Command.cpp" line="731"/>
       <source>Inserts a simple or complex section view in the current page</source>
       <translation>Umetni pun ili složeni presek na trenutno aktivni crtež</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="793"/>
+      <location filename="../../Command.cpp" line="795"/>
       <source>Section View</source>
       <translation>Pun presek</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="797"/>
+      <location filename="../../Command.cpp" line="799"/>
       <source>Complex Section View</source>
       <translation>Složeni presek</translation>
     </message>
@@ -1880,17 +1885,17 @@ Levi klik na prazan prostor potvrdiće trenutnu kotu. Desni klik ili pritisak n
   <context>
     <name>CmdTechDrawSectionView</name>
     <message>
-      <location filename="../../Command.cpp" line="819"/>
+      <location filename="../../Command.cpp" line="821"/>
       <source>TechDraw</source>
       <translation>Tehnički crteži</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="820"/>
+      <location filename="../../Command.cpp" line="822"/>
       <source>Section View</source>
       <translation>Pun presek</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="821"/>
+      <location filename="../../Command.cpp" line="823"/>
       <source>Inserts a new section view based on the selected view in the current page</source>
       <translation>Umetni na crtež presek napravljen na osnovu izabranog pogleda</translation>
     </message>
@@ -1916,17 +1921,17 @@ Levi klik na prazan prostor potvrdiće trenutnu kotu. Desni klik ili pritisak n
   <context>
     <name>CmdTechDrawSpreadsheetView</name>
     <message>
-      <location filename="../../Command.cpp" line="1734"/>
+      <location filename="../../Command.cpp" line="1738"/>
       <source>TechDraw</source>
       <translation>Tehnički crteži</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1735"/>
+      <location filename="../../Command.cpp" line="1739"/>
       <source>Spreadsheet View</source>
       <translation>Umetni tabelu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1736"/>
+      <location filename="../../Command.cpp" line="1740"/>
       <source>Inserts a view of a spreadsheet in the current page</source>
       <translation>Umetni tabelu na trenutno aktivni crtež</translation>
     </message>
@@ -2062,17 +2067,17 @@ Levi klik na prazan prostor potvrdiće trenutnu kotu. Desni klik ili pritisak n
   <context>
     <name>CmdTechDrawSymbol</name>
     <message>
-      <location filename="../../Command.cpp" line="1532"/>
+      <location filename="../../Command.cpp" line="1534"/>
       <source>TechDraw</source>
       <translation>Tehnički crteži</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1533"/>
+      <location filename="../../Command.cpp" line="1535"/>
       <source>Insert SVG</source>
       <translation>Umetni SVG</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1534"/>
+      <location filename="../../Command.cpp" line="1536"/>
       <source>Inserts a symbol from an SVG file</source>
       <translation>Umetni simbol iz SVG datoteke</translation>
     </message>
@@ -2161,65 +2166,65 @@ Ako nijedan objekat nije izabran, otvoriće se prozor pomoću kojeg možeš izab
     </message>
     <message>
       <location filename="../../Command.cpp" line="360"/>
-      <location filename="../../Command.cpp" line="1708"/>
+      <location filename="../../Command.cpp" line="1712"/>
       <source>Create BIM view</source>
       <translation>Napravi BIM pogled</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="480"/>
+      <location filename="../../Command.cpp" line="482"/>
       <source>Create image</source>
       <translation>Napravi sliku</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="498"/>
+      <location filename="../../Command.cpp" line="500"/>
       <source>Create view</source>
       <translation>Napravi pogled</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="645"/>
+      <location filename="../../Command.cpp" line="647"/>
       <source>Create broken view</source>
       <translation>Napravi skraćeni pogled</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1893"/>
+      <location filename="../../Command.cpp" line="1897"/>
       <location filename="../../PagePrinter.cpp" line="444"/>
       <source>Save page to DXF</source>
       <translation>Sačuvaj crtež u DXF formatu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="455"/>
-      <location filename="../../Command.cpp" line="1560"/>
+      <location filename="../../Command.cpp" line="457"/>
+      <location filename="../../Command.cpp" line="1564"/>
       <source>Create Symbol</source>
       <translation>Napravi simbol</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1136"/>
+      <location filename="../../Command.cpp" line="1138"/>
       <source>Create projection group</source>
       <translation>Napravi grupu osnovnih pogleda</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1356"/>
+      <location filename="../../Command.cpp" line="1358"/>
       <source>Create clip</source>
       <translation>Napravi grupu pogleda</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1428"/>
+      <location filename="../../Command.cpp" line="1430"/>
       <source>Add clip group</source>
       <translation>Dodaj grupu pogleda</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1499"/>
+      <location filename="../../Command.cpp" line="1501"/>
       <source>Remove clip group</source>
       <translation>Ukloni grupu pogleda</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1634"/>
+      <location filename="../../Command.cpp" line="1638"/>
       <source>Create DraftView</source>
       <translation>Napravi pogled okruženja Crtanje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="342"/>
-      <location filename="../../Command.cpp" line="1760"/>
+      <location filename="../../Command.cpp" line="1764"/>
       <source>Create spreadsheet view</source>
       <translation>Napravi pogled of tabele</translation>
     </message>
@@ -2443,17 +2448,17 @@ Ako nijedan objekat nije izabran, otvoriće se prozor pomoću kojeg možeš izab
       <translation>Ažuriraj šrafuru</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="185"/>
+      <location filename="../../CommandDecorate.cpp" line="221"/>
       <source>Remove old hatch</source>
       <translation>Ukloni staru šrafuru</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="263"/>
+      <location filename="../../CommandDecorate.cpp" line="299"/>
       <source>Create GeomHatch</source>
       <translation>Napravi geometrijsku šrafuru</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="334"/>
+      <location filename="../../CommandDecorate.cpp" line="373"/>
       <source>Create Image</source>
       <translation>Napravi sliku</translation>
     </message>
@@ -3104,29 +3109,29 @@ Ako nijedan objekat nije izabran, otvoriće se prozor pomoću kojeg možeš izab
       <location filename="../../CommandAnnotate.cpp" line="1425"/>
       <location filename="../../CommandHelpers.cpp" line="87"/>
       <location filename="../../CommandHelpers.cpp" line="100"/>
-      <location filename="../../Command.cpp" line="629"/>
-      <location filename="../../Command.cpp" line="639"/>
-      <location filename="../../Command.cpp" line="856"/>
-      <location filename="../../Command.cpp" line="973"/>
-      <location filename="../../Command.cpp" line="980"/>
-      <location filename="../../Command.cpp" line="985"/>
-      <location filename="../../Command.cpp" line="1023"/>
-      <location filename="../../Command.cpp" line="1122"/>
-      <location filename="../../Command.cpp" line="1388"/>
-      <location filename="../../Command.cpp" line="1405"/>
-      <location filename="../../Command.cpp" line="1410"/>
-      <location filename="../../Command.cpp" line="1419"/>
-      <location filename="../../Command.cpp" line="1472"/>
-      <location filename="../../Command.cpp" line="1491"/>
-      <location filename="../../Command.cpp" line="1614"/>
-      <location filename="../../Command.cpp" line="1689"/>
-      <location filename="../../Command.cpp" line="1695"/>
-      <location filename="../../Command.cpp" line="1754"/>
+      <location filename="../../Command.cpp" line="631"/>
+      <location filename="../../Command.cpp" line="641"/>
+      <location filename="../../Command.cpp" line="858"/>
+      <location filename="../../Command.cpp" line="975"/>
+      <location filename="../../Command.cpp" line="982"/>
+      <location filename="../../Command.cpp" line="987"/>
+      <location filename="../../Command.cpp" line="1025"/>
+      <location filename="../../Command.cpp" line="1124"/>
+      <location filename="../../Command.cpp" line="1390"/>
+      <location filename="../../Command.cpp" line="1407"/>
+      <location filename="../../Command.cpp" line="1412"/>
+      <location filename="../../Command.cpp" line="1421"/>
+      <location filename="../../Command.cpp" line="1474"/>
+      <location filename="../../Command.cpp" line="1493"/>
+      <location filename="../../Command.cpp" line="1618"/>
+      <location filename="../../Command.cpp" line="1693"/>
+      <location filename="../../Command.cpp" line="1699"/>
+      <location filename="../../Command.cpp" line="1758"/>
       <source>Wrong selection</source>
       <translation>Pogrešan izbor</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="590"/>
+      <location filename="../../Command.cpp" line="592"/>
       <source>Empty selection</source>
       <translation>Ništa nije izabrano</translation>
     </message>
@@ -3141,44 +3146,36 @@ Ako nijedan objekat nije izabran, otvoriće se prozor pomoću kojeg možeš izab
       <translation>Ne prikazuj ovu poruku ponovo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="444"/>
+      <location filename="../../Command.cpp" line="447"/>
       <source>Select a SVG or Image file to open</source>
       <translation>Izaberi SVG ili slikovnu datoteku</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="447"/>
+      <location filename="../../Command.cpp" line="444"/>
       <source>SVG or Image files</source>
       <translation>SVG ili slikovna datoteka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="986"/>
+      <location filename="../../Command.cpp" line="988"/>
       <source>No profile object found in selection</source>
       <translation>Nije izabran objekat sa profilom</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1406"/>
+      <location filename="../../Command.cpp" line="1408"/>
       <source>Select exactly one view to add to clip group</source>
       <translation>Izaberi jedan pogled koji želiš da dodaš u grupu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1473"/>
+      <location filename="../../Command.cpp" line="1475"/>
       <source>Select exactly one view to remove from clip group</source>
       <translation>Izaberi jedan pogled koji želiš da ukloniš iz grupe</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1835"/>
+      <location filename="../../Command.cpp" line="1839"/>
       <source>FreeCAD could not find a page to export</source>
       <translation>FreeCAD nije mogao da pronađe crtež za izvoz</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1865"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1989"/>
-      <location filename="../../TaskDimRepair.cpp" line="137"/>
-      <location filename="../../TaskDimRepair.cpp" line="148"/>
-      <location filename="../../Command.cpp" line="1190"/>
-      <location filename="../../Command.cpp" line="1197"/>
-      <location filename="../../Command.cpp" line="1205"/>
-      <location filename="../../Command.cpp" line="1217"/>
       <location filename="../../CommandCreateDims.cpp" line="2001"/>
       <location filename="../../CommandCreateDims.cpp" line="2017"/>
       <location filename="../../CommandCreateDims.cpp" line="2139"/>
@@ -3187,25 +3184,33 @@ Ako nijedan objekat nije izabran, otvoriće se prozor pomoću kojeg možeš izab
       <location filename="../../CommandCreateDims.cpp" line="2364"/>
       <location filename="../../CommandCreateDims.cpp" line="2372"/>
       <location filename="../../CommandCreateDims.cpp" line="2381"/>
-      <location filename="../../CommandDecorate.cpp" line="377"/>
-      <location filename="../../CommandDecorate.cpp" line="384"/>
-      <location filename="../../CommandDecorate.cpp" line="391"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1865"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1989"/>
+      <location filename="../../CommandDecorate.cpp" line="417"/>
+      <location filename="../../CommandDecorate.cpp" line="424"/>
+      <location filename="../../CommandDecorate.cpp" line="431"/>
+      <location filename="../../Command.cpp" line="1192"/>
+      <location filename="../../Command.cpp" line="1199"/>
+      <location filename="../../Command.cpp" line="1207"/>
+      <location filename="../../Command.cpp" line="1219"/>
+      <location filename="../../TaskDimRepair.cpp" line="137"/>
+      <location filename="../../TaskDimRepair.cpp" line="148"/>
       <source>Incorrect selection</source>
       <translation>Pogrešan izbor</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="591"/>
+      <location filename="../../Command.cpp" line="593"/>
       <source>Select objects to break or a base view and break definition objects</source>
       <translation>Izaberi pogled ili objekat koji treba skratiti</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="630"/>
+      <location filename="../../Command.cpp" line="632"/>
       <source>No break objects found in this selection</source>
       <translation>Među izabranim objektima nije pronađen pogodan za skraćivanje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="640"/>
-      <location filename="../../Command.cpp" line="1123"/>
+      <location filename="../../Command.cpp" line="642"/>
+      <location filename="../../Command.cpp" line="1125"/>
       <source>No shapes, groups, or links in this selection</source>
       <translation>Nisu izabrani oblici, grupe ili veze</translation>
     </message>
@@ -3225,18 +3230,6 @@ Ako nijedan objekat nije izabran, otvoriće se prozor pomoću kojeg možeš izab
       <location filename="../../CommandAnnotate.cpp" line="1260"/>
       <location filename="../../CommandAnnotate.cpp" line="1341"/>
       <location filename="../../CommandAnnotate.cpp" line="1407"/>
-      <location filename="../../CommandStack.cpp" line="73"/>
-      <location filename="../../CommandStack.cpp" line="189"/>
-      <location filename="../../CommandStack.cpp" line="249"/>
-      <location filename="../../CommandStack.cpp" line="309"/>
-      <location filename="../../CommandExtensionPack.cpp" line="290"/>
-      <location filename="../../CommandExtensionPack.cpp" line="593"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1214"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1459"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1752"/>
-      <location filename="../../Command.cpp" line="739"/>
-      <location filename="../../Command.cpp" line="832"/>
-      <location filename="../../Command.cpp" line="895"/>
       <location filename="../../CommandCreateDims.cpp" line="1499"/>
       <location filename="../../CommandCreateDims.cpp" line="1547"/>
       <location filename="../../CommandCreateDims.cpp" line="1595"/>
@@ -3255,6 +3248,18 @@ Ako nijedan objekat nije izabran, otvoriće se prozor pomoću kojeg možeš izab
       <location filename="../../CommandExtensionDims.cpp" line="1506"/>
       <location filename="../../CommandExtensionDims.cpp" line="1875"/>
       <location filename="../../CommandExtensionDims.cpp" line="2113"/>
+      <location filename="../../CommandStack.cpp" line="73"/>
+      <location filename="../../CommandStack.cpp" line="189"/>
+      <location filename="../../CommandStack.cpp" line="249"/>
+      <location filename="../../CommandStack.cpp" line="309"/>
+      <location filename="../../CommandExtensionPack.cpp" line="290"/>
+      <location filename="../../CommandExtensionPack.cpp" line="593"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1214"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1459"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1752"/>
+      <location filename="../../Command.cpp" line="741"/>
+      <location filename="../../Command.cpp" line="834"/>
+      <location filename="../../Command.cpp" line="897"/>
       <source>Task in progress</source>
       <translation>Izvršenje zadatka u toku</translation>
     </message>
@@ -3274,9 +3279,6 @@ Ako nijedan objekat nije izabran, otvoriće se prozor pomoću kojeg možeš izab
       <location filename="../../CommandAnnotate.cpp" line="1261"/>
       <location filename="../../CommandAnnotate.cpp" line="1342"/>
       <location filename="../../CommandAnnotate.cpp" line="1408"/>
-      <location filename="../../Command.cpp" line="740"/>
-      <location filename="../../Command.cpp" line="833"/>
-      <location filename="../../Command.cpp" line="896"/>
       <location filename="../../CommandExtensionDims.cpp" line="311"/>
       <location filename="../../CommandExtensionDims.cpp" line="520"/>
       <location filename="../../CommandExtensionDims.cpp" line="808"/>
@@ -3284,74 +3286,77 @@ Ako nijedan objekat nije izabran, otvoriće se prozor pomoću kojeg možeš izab
       <location filename="../../CommandExtensionDims.cpp" line="1507"/>
       <location filename="../../CommandExtensionDims.cpp" line="1876"/>
       <location filename="../../CommandExtensionDims.cpp" line="2114"/>
+      <location filename="../../Command.cpp" line="742"/>
+      <location filename="../../Command.cpp" line="835"/>
+      <location filename="../../Command.cpp" line="898"/>
       <source>Close active task dialog and try again</source>
       <translation>Zatvori dijalog aktivnog zadatka i pokušaj ponovo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="857"/>
-      <location filename="../../Command.cpp" line="1024"/>
+      <location filename="../../Command.cpp" line="859"/>
+      <location filename="../../Command.cpp" line="1026"/>
       <source>Select at least 1 DrawViewPart object as base</source>
       <translation>Izaberi najmanje jedan pogled kao osnovni</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="974"/>
+      <location filename="../../Command.cpp" line="976"/>
       <source>No base view selected</source>
       <translation>Nije izabran osnovni pogled</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="981"/>
+      <location filename="../../Command.cpp" line="983"/>
       <source>No base view, shapes, groups, or links in this selection</source>
       <translation>Nisu izabrani oblici, grupe, veze ili osnovni pogled</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1191"/>
       <location filename="../../CommandCreateDims.cpp" line="2365"/>
+      <location filename="../../Command.cpp" line="1193"/>
       <source>Select an object first</source>
       <translation>Prvo izaberi objekat</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1198"/>
       <location filename="../../CommandCreateDims.cpp" line="2373"/>
+      <location filename="../../Command.cpp" line="1200"/>
       <source>Too many objects selected</source>
       <translation>Previše objekata je izabrano</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1206"/>
+      <location filename="../../Command.cpp" line="1208"/>
       <source>Create a page first</source>
       <translation>Prvo napravi crtež</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1218"/>
+      <location filename="../../Command.cpp" line="1220"/>
       <source>No view of a part in selection</source>
       <translation>Nije izabran pogled dela</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1389"/>
+      <location filename="../../Command.cpp" line="1391"/>
       <source>Select one clip group and one view</source>
       <translation>Izaberi jednu grupu pogleda i jedan pogled</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1871"/>
+      <location filename="../../Command.cpp" line="1875"/>
       <source>Page contains a BIM view which will not be exported. Continue?</source>
       <translation>Crtež sadrži BIM pogled koji neće biti izvezen. Nastavi?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1411"/>
+      <location filename="../../Command.cpp" line="1413"/>
       <source>Select exactly one clip group</source>
       <translation>Izaberi samo jednu grupu pogleda</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1420"/>
+      <location filename="../../Command.cpp" line="1422"/>
       <source>Clip and view must be from same page</source>
       <translation>Grupa pogleda i pogled moraju biti sa istog crteža</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1492"/>
+      <location filename="../../Command.cpp" line="1494"/>
       <source>View does not belong to a clip</source>
       <translation>Pogled ne pripada grupi pogleda</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1554"/>
+      <location filename="../../Command.cpp" line="1553"/>
       <source>Scalable vector graphic</source>
       <translation>Scalable Vector Graphic</translation>
     </message>
@@ -3361,32 +3366,32 @@ Ako nijedan objekat nije izabran, otvoriće se prozor pomoću kojeg možeš izab
       <translation>Sve datoteke</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1615"/>
+      <location filename="../../Command.cpp" line="1619"/>
       <source>Select at least one object</source>
       <translation>Izaberi bar jedan objekat</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1690"/>
+      <location filename="../../Command.cpp" line="1694"/>
       <source>Select only 1 BIM section plane</source>
       <translation>Izaberi jedan BIM presek</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1696"/>
+      <location filename="../../Command.cpp" line="1700"/>
       <source>No BIM section plane in selection</source>
       <translation>Nije izabran nijedan BIM presek</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1755"/>
+      <location filename="../../Command.cpp" line="1759"/>
       <source>Select exactly one spreadsheet object</source>
       <translation>Izaberi jedan tabelarni objekat</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1834"/>
+      <location filename="../../Command.cpp" line="1838"/>
       <source>No drawing page</source>
       <translation>Ne postoji crtež</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1870"/>
+      <location filename="../../Command.cpp" line="1874"/>
       <source>Cannot export selection</source>
       <translation>Izabrano se ne može izvesti</translation>
     </message>
@@ -3467,24 +3472,24 @@ Ako nijedan objekat nije izabran, otvoriće se prozor pomoću kojeg možeš izab
       <translation>Prvo napravi stranicu.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1551"/>
+      <location filename="../../Command.cpp" line="1556"/>
       <source>Choose an SVG file to open</source>
       <translation>Izaberi SVG datoteku za otvaranje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="447"/>
+      <location filename="../../Command.cpp" line="445"/>
       <source>All Files</source>
       <translation>Sve datoteke</translation>
     </message>
     <message>
-      <location filename="../../CommandAlign.cpp" line="53"/>
       <location filename="../../CommandCreateDims.cpp" line="2043"/>
       <location filename="../../CommandCreateDims.cpp" line="2059"/>
       <location filename="../../CommandCreateDims.cpp" line="2213"/>
       <location filename="../../CommandCreateDims.cpp" line="2228"/>
       <location filename="../../TaskDimension.cpp" line="551"/>
-      <location filename="../../CommandDecorate.cpp" line="398"/>
-      <location filename="../../CommandDecorate.cpp" line="404"/>
+      <location filename="../../CommandDecorate.cpp" line="438"/>
+      <location filename="../../CommandDecorate.cpp" line="444"/>
+      <location filename="../../CommandAlign.cpp" line="53"/>
       <source>Incorrect Selection</source>
       <translation>Pogrešan izbor</translation>
     </message>
@@ -3723,33 +3728,33 @@ Ako nijedan objekat nije izabran, otvoriće se prozor pomoću kojeg možeš izab
       <translation>Potreban je tehnički crtež za ovu komandu</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="173"/>
+      <location filename="../../CommandDecorate.cpp" line="209"/>
       <source>Replace hatch?</source>
       <translation>Zameni šrafuru?</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="174"/>
+      <location filename="../../CommandDecorate.cpp" line="210"/>
       <source>Some faces in the selection are already hatched. Replace?</source>
       <translation>Neke izabrane stranice su već šrafirane. Zameni?</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="378"/>
+      <location filename="../../CommandDecorate.cpp" line="418"/>
       <source>Select a face first</source>
       <translation>Prvo izaberi stranicu</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="385"/>
+      <location filename="../../CommandDecorate.cpp" line="425"/>
       <source>No TechDraw object in selection</source>
       <translation>Nije izabran objekat okruženje Tehnički crteži</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="392"/>
+      <location filename="../../CommandDecorate.cpp" line="432"/>
       <source>Create a page to insert</source>
       <translation>Da bi umetnuo, napravi crtež</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="399"/>
-      <location filename="../../CommandDecorate.cpp" line="405"/>
+      <location filename="../../CommandDecorate.cpp" line="439"/>
+      <location filename="../../CommandDecorate.cpp" line="445"/>
       <source>No faces to hatch in this selection</source>
       <translation>Nije izabrana stranica za šrafiranje</translation>
     </message>
@@ -3774,43 +3779,43 @@ Ako nijedan objekat nije izabran, otvoriće se prozor pomoću kojeg možeš izab
       <translation>Za ovu funkciju je potreban crtež.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="572"/>
+      <location filename="../../MDIViewPage.cpp" line="581"/>
       <source>Unable to Write File</source>
       <translation type="unfinished">Unable to Write File</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="573"/>
+      <location filename="../../MDIViewPage.cpp" line="582"/>
       <source>FreeCAD is unable to open file %1 for writing.  The file may be open in another program.</source>
       <translation type="unfinished">FreeCAD is unable to open file %1 for writing.  The file may be open in another program.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="584"/>
+      <location filename="../../MDIViewPage.cpp" line="593"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="585"/>
+      <location filename="../../MDIViewPage.cpp" line="594"/>
       <source>All Files (*.*)</source>
       <translation>Sve Datoteke (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="588"/>
+      <location filename="../../MDIViewPage.cpp" line="597"/>
       <source>Export Page as PDF</source>
       <translation>Izvezi crtež u PDF formatu</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="507"/>
-      <location filename="../../MDIViewPage.cpp" line="529"/>
+      <location filename="../../MDIViewPage.cpp" line="516"/>
+      <location filename="../../MDIViewPage.cpp" line="538"/>
       <source>All files (*.*)</source>
       <translation>Sve datoteke (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="509"/>
+      <location filename="../../MDIViewPage.cpp" line="518"/>
       <source>Export page as SVG</source>
       <translation>Izvezi crtež u SVG formatu</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="531"/>
+      <location filename="../../MDIViewPage.cpp" line="540"/>
       <source>Export page as DXF</source>
       <translation>Izvezi crtež u DXF formatu</translation>
     </message>
@@ -3955,8 +3960,8 @@ Ako nijedan objekat nije izabran, otvoriće se prozor pomoću kojeg možeš izab
       <translation>Uredi detaljni pogled</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBalloon.cpp" line="86"/>
       <location filename="../../ViewProviderDimension.cpp" line="137"/>
+      <location filename="../../ViewProviderBalloon.cpp" line="86"/>
       <source>Edit %1</source>
       <translation>Uredi %1</translation>
     </message>
@@ -4091,14 +4096,14 @@ Ako nijedan objekat nije izabran, otvoriće se prozor pomoću kojeg možeš izab
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1022"/>
-      <location filename="../../CommandExtensionPack.cpp" line="2130"/>
       <location filename="../../CommandExtensionDims.cpp" line="2329"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2130"/>
       <source>Selection is empty</source>
       <translation>Nisi ništa izabrao</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="2137"/>
       <location filename="../../CommandExtensionDims.cpp" line="2345"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2137"/>
       <source>No object selected</source>
       <translation>Nije izabran nijedan objekat</translation>
     </message>
@@ -4313,18 +4318,18 @@ ima simbol zavarivanja koji bi se pokvario.</translation>
       <translation>Ne možeš obrisati ovaj pogled jer ima jedan ili više zavisnih objekata koji će postati neispravni.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderTemplate.cpp" line="205"/>
       <location filename="../../ViewProviderLeader.cpp" line="212"/>
+      <location filename="../../ViewProviderTemplate.cpp" line="205"/>
       <location filename="../../ViewProviderPage.cpp" line="220"/>
       <location filename="../../ViewProviderWeld.cpp" line="143"/>
       <location filename="../../ViewProviderViewPart.cpp" line="382"/>
       <location filename="../../ViewProviderViewPart.cpp" line="397"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="146"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="163"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="154"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="163"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="171"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="179"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="146"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="163"/>
       <source>Object dependencies</source>
       <translation>Međuzavisnosti objekata</translation>
     </message>
@@ -6257,50 +6262,55 @@ Brzo, ali rezultat je skup kratkih pravih linija.</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="97"/>
+      <source>Toggle &amp;Grid</source>
+      <translation type="unfinished">Toggle &amp;Grid</translation>
+    </message>
+    <message>
+      <location filename="../../MDIViewPage.cpp" line="100"/>
       <source>&amp;Export SVG</source>
       <translation>&amp;Izvezi SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="101"/>
+      <location filename="../../MDIViewPage.cpp" line="104"/>
       <source>Export DXF</source>
       <translation>Izvezi DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="105"/>
+      <location filename="../../MDIViewPage.cpp" line="108"/>
       <source>Export PDF</source>
       <translation>Izvezi PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="109"/>
+      <location filename="../../MDIViewPage.cpp" line="112"/>
       <source>Print All Pages</source>
       <translation>Štampaj sve stranice</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="406"/>
+      <location filename="../../MDIViewPage.cpp" line="409"/>
       <source>Different orientation</source>
       <translation>Drugačija orijentacija</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="407"/>
+      <location filename="../../MDIViewPage.cpp" line="410"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
       <translation>Štampač koristi drugačiju orijentaciju od crteža.
 Da li želiš da nastaviš?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="416"/>
+      <location filename="../../MDIViewPage.cpp" line="419"/>
       <source>Different paper size</source>
       <translation>Drugačija veličina papira</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="417"/>
+      <location filename="../../MDIViewPage.cpp" line="420"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>Štampač koristi drugačiju veličinu papira od crteža.
 Da li želiš da nastaviš?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1130"/>
+      <location filename="../../MDIViewPage.cpp" line="1139"/>
       <source>Selected:</source>
       <translation>Izabrano:</translation>
     </message>
@@ -9835,17 +9845,17 @@ there is an open task dialog.</source>
   <context>
     <name>CmdTechDrawBrokenView</name>
     <message>
-      <location filename="../../Command.cpp" line="547"/>
+      <location filename="../../Command.cpp" line="549"/>
       <source>TechDraw</source>
       <translation>Tehnički crteži</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="548"/>
+      <location filename="../../Command.cpp" line="550"/>
       <source>Broken View</source>
       <translation>Skraćeni pogled</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="549"/>
+      <location filename="../../Command.cpp" line="551"/>
       <source>Inserts a new broken view for the selected objects or base view and break definition objects</source>
       <translation>Umetni novi skraćeni pogled izabranih objekata ili osnovnog pogleda</translation>
     </message>
@@ -10059,7 +10069,7 @@ there is an open task dialog.</source>
   <context>
     <name>TechDraw_SectionView</name>
     <message>
-      <location filename="../../Command.cpp" line="794"/>
+      <location filename="../../Command.cpp" line="796"/>
       <source>Inserts a simple section view</source>
       <translation>Umetni pun presek</translation>
     </message>
@@ -10067,7 +10077,7 @@ there is an open task dialog.</source>
   <context>
     <name>TechDraw_ComplexSection</name>
     <message>
-      <location filename="../../Command.cpp" line="799"/>
+      <location filename="../../Command.cpp" line="801"/>
       <source>Inserts a complex section view</source>
       <translation>Umetni složeni presek</translation>
     </message>
@@ -10224,14 +10234,6 @@ there is an open task dialog.</source>
     </message>
   </context>
   <context>
-    <name>TechDrawGui::TaskDlgLineDecor</name>
-    <message>
-      <location filename="../../TaskLineDecor.cpp" line="463"/>
-      <source>Restore Invisible Lines</source>
-      <translation>Obnovi nevidljive ivice</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdTechDrawToggleFrame</name>
     <message>
       <location filename="../../CommandDecorate.cpp" line="75"/>
@@ -10240,9 +10242,39 @@ there is an open task dialog.</source>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="76"/>
+      <source>Toggle View Frames</source>
+      <translation type="unfinished">Toggle View Frames</translation>
+    </message>
+    <message>
       <location filename="../../CommandDecorate.cpp" line="77"/>
-      <source>Turn View Frames On/Off</source>
-      <translation>Prikaži/Sakrij okvire oko pogleda</translation>
+      <source>Toggles visibility of view frames and vertices</source>
+      <translation type="unfinished">Toggles visibility of view frames and vertices</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawToggleGrid</name>
+    <message>
+      <location filename="../../CommandDecorate.cpp" line="138"/>
+      <source>TechDraw</source>
+      <translation>Tehnički crteži</translation>
+    </message>
+    <message>
+      <location filename="../../CommandDecorate.cpp" line="139"/>
+      <source>Toggle Grid</source>
+      <translation>Sakrij/Prikaži koordinatnu mrežu</translation>
+    </message>
+    <message>
+      <location filename="../../CommandDecorate.cpp" line="140"/>
+      <source>Toggles the grid on the active page</source>
+      <translation type="unfinished">Toggles the grid on the active page</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::TaskDlgLineDecor</name>
+    <message>
+      <location filename="../../TaskLineDecor.cpp" line="463"/>
+      <source>Restore Invisible Lines</source>
+      <translation>Obnovi nevidljive ivice</translation>
     </message>
   </context>
 </TS>

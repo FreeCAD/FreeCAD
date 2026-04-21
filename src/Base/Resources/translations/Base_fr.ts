@@ -31,12 +31,12 @@
     <message>
       <location filename="../../UnitsSchemasData.h" line="582"/>
       <source>Building Euro (cm, m², m³)</source>
-      <translation>Construction européenne (cm, m², m³)</translation>
+      <translation>Constructions européennes (cm, m², m³)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="668"/>
       <source>Building US (ft-in, sqft, cft)</source>
-      <translation>Construction états-unienne (ft-in, sqft, cft)</translation>
+      <translation>Constructions états-uniennes (ft-in, sqft, cft)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="54"/>

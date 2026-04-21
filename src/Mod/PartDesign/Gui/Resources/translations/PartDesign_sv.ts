@@ -1572,23 +1572,6 @@ Om noll, är den lika med Radius2</translation>
     </message>
   </context>
   <context>
-    <name>PartDesignGui::TaskDlgFeatureParameters</name>
-    <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="229"/>
-      <source>The feature could not be created with the given parameters.
-The geometry may be invalid or the parameters may be incompatible.
-Please adjust the parameters and try again.</source>
-      <translation>Funktionen kunde inte skapas med de angivna parametrarna.
-Geometrin kan vara ogiltig eller parametrarna kan vara inkompatibla.
-Justera parametrarna och försök igen.</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="236"/>
-      <source>Input error</source>
-      <translation>Inmatningsfel</translation>
-    </message>
-  </context>
-  <context>
     <name>PartDesignGui::TaskDlgShapeBinder</name>
     <message>
       <location filename="../../TaskShapeBinder.cpp" line="443"/>
@@ -3195,11 +3178,11 @@ mätas längs den angivna riktningen</translation>
       <translation>Inga giltiga plan i detta dokument</translation>
     </message>
     <message>
+      <location filename="../../SketchWorkflow.cpp" line="731"/>
+      <location filename="../../ViewProviderDatum.cpp" line="259"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
       <location filename="../../ViewProvider.cpp" line="137"/>
       <location filename="../../Command.cpp" line="1142"/>
-      <location filename="../../SketchWorkflow.cpp" line="731"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
-      <location filename="../../ViewProviderDatum.cpp" line="259"/>
       <source>A dialog is already open in the task panel</source>
       <translation>En dialogruta är redan öppen i uppgiftspanelen</translation>
     </message>
@@ -3239,11 +3222,11 @@ mätas längs den angivna riktningen</translation>
       <translation>Ingen skiss finns tillgänglig i dokumentet</translation>
     </message>
     <message>
+      <location filename="../../SketchWorkflow.cpp" line="732"/>
+      <location filename="../../ViewProviderDatum.cpp" line="260"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
       <location filename="../../ViewProvider.cpp" line="138"/>
       <location filename="../../Command.cpp" line="1143"/>
-      <location filename="../../SketchWorkflow.cpp" line="732"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
-      <location filename="../../ViewProviderDatum.cpp" line="260"/>
       <source>Close this dialog?</source>
       <translation>Stäng den här dialogen?</translation>
     </message>
@@ -3535,9 +3518,9 @@ För äldre dokument med Part Design-objekt som saknar en kropp kan du använda 
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="65"/>
-      <location filename="../../ViewProvider.cpp" line="94"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="227"/>
       <location filename="../../ViewProviderDressUp.cpp" line="64"/>
+      <location filename="../../ViewProvider.cpp" line="94"/>
       <source>Edit %1</source>
       <translation>Redigera %1</translation>
     </message>
@@ -4474,19 +4457,19 @@ under 90: mindre hålradie i botten
       <translation>Kan inte utföra boolesk operation med ogiltig basform</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2101"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="804"/>
       <location filename="../../../App/FeatureLoft.cpp" line="333"/>
       <location filename="../../../App/FeatureLoft.cpp" line="377"/>
       <location filename="../../../App/FeatureDraft.cpp" line="335"/>
       <location filename="../../../App/FeatureFillet.cpp" line="142"/>
       <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="804"/>
       <location filename="../../../App/FeaturePipe.cpp" line="482"/>
       <location filename="../../../App/FeaturePipe.cpp" line="531"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2101"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation type="unfinished">Result has multiple solids: enable 'Allow Compound' in the active body.</translation>
     </message>
@@ -4521,10 +4504,10 @@ under 90: mindre hålradie i botten
       <translation>Den resulterande smälta extruderingen är noll.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="766"/>
       <location filename="../../../App/FeatureLoft.cpp" line="370"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="141"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="766"/>
       <location filename="../../../App/FeaturePipe.cpp" line="523"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="141"/>
       <source>Resulting shape is not a solid</source>
       <translation>Den resulterande formen är inte en solid</translation>
     </message>
@@ -4601,8 +4584,8 @@ under 90: mindre hålradie i botten
       <translation>Skapandet misslyckades eftersom riktningen är ortogonal mot skissens normalvektor</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="479"/>
       <location filename="../../../App/FeatureRevolved.cpp" line="132"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="479"/>
       <source>Creating a face from sketch failed</source>
       <translation>Skapa en yta från skiss misslyckades</translation>
     </message>
@@ -4667,9 +4650,9 @@ Det är inte tillåtet att korsa skissentiteter i en skiss.</translation>
       <translation>Fel: Ytan måste vara plan</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2457"/>
       <location filename="../../../App/FeatureHelix.cpp" line="445"/>
       <location filename="../../../App/FeatureHelix.cpp" line="486"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2457"/>
       <source>Error: Result is not a solid</source>
       <translation>Fel: Resultatet är inte en solid</translation>
     </message>
@@ -4943,15 +4926,15 @@ Korsande skissentiteter eller flera ytor i en skiss är inte tillåtna.</transla
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="355"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="125"/>
       <location filename="../../../App/FeaturePipe.cpp" line="507"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="125"/>
       <source>Unknown operation type</source>
       <translation>Okänd operationstyp</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="363"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="133"/>
       <location filename="../../../App/FeaturePipe.cpp" line="515"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="133"/>
       <source>Failed to perform boolean operation</source>
       <translation>Misslyckades med att utföra boolesk operation</translation>
     </message>
@@ -5452,6 +5435,18 @@ Korsande skissentiteter eller flera ytor i en skiss är inte tillåtna.</transla
       <location filename="../../TaskPatternParameters.cpp" line="334"/>
       <source>Invalid selection. Select an edge, planar face, or datum line.</source>
       <translation>Ogiltigt val. Välj en kant, en plan yta eller en referenslinje.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskDlgFeatureParameters</name>
+    <message>
+      <location filename="../../TaskFeatureParameters.cpp" line="229"/>
+      <source>The feature could not be created with the given parameters.
+The geometry may be invalid or the parameters may be incompatible.
+Please adjust the parameters and try again.</source>
+      <translation>Funktionen kunde inte skapas med de angivna parametrarna.
+Geometrin kan vara ogiltig eller parametrarna kan vara inkompatibla.
+Justera parametrarna och försök igen.</translation>
     </message>
   </context>
 </TS>

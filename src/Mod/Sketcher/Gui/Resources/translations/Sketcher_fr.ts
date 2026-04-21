@@ -878,8 +878,8 @@ invalid constraints, and degenerate geometry</source>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="1276"/>
-      <location filename="../../ViewProviderSketch.cpp" line="1404"/>
       <location filename="../../CommandConstraints.cpp" line="10745"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1404"/>
       <source>Modify sketch constraints</source>
       <translation>Modifier les contraintes d'une esquisse</translation>
     </message>
@@ -1145,11 +1145,27 @@ invalid constraints, and degenerate geometry</source>
       <translation>Ne pas ancrer</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="116"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="127"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="157"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="165"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="176"/>
+      <location filename="../../CommandSketcherTools.cpp" line="393"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1037"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1366"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1376"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1438"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1970"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1980"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2044"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2254"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2264"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2311"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2376"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="171"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="244"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="329"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="423"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="491"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="580"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="634"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1023"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1144"/>
       <location filename="../../CommandConstraints.cpp" line="174"/>
       <location filename="../../CommandConstraints.cpp" line="181"/>
       <location filename="../../CommandConstraints.cpp" line="2827"/>
@@ -1278,27 +1294,11 @@ invalid constraints, and degenerate geometry</source>
       <location filename="../../CommandConstraints.cpp" line="10874"/>
       <location filename="../../CommandConstraints.cpp" line="10949"/>
       <location filename="../../CommandConstraints.cpp" line="10961"/>
-      <location filename="../../CommandSketcherTools.cpp" line="393"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1037"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1366"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1376"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1438"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1970"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1980"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2044"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2254"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2264"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2311"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2376"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="171"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="244"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="329"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="423"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="491"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="580"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="634"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1023"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1144"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="116"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="127"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="157"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="165"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="176"/>
       <source>Wrong selection</source>
       <translation>Sélection non valide</translation>
     </message>
@@ -1478,9 +1478,9 @@ ou un axe.</translation>
       <translation>Le nombre d'objets sélectionnés n'est pas 3</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="767"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="623"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1185"/>
+      <location filename="../../CommandConstraints.cpp" line="767"/>
       <source>Error</source>
       <translation>Erreur</translation>
     </message>
@@ -1873,14 +1873,14 @@ Combinaisons acceptées : deux courbes ; une extrémité et une courbe ; deux ex
       <translation>Sélectionner une contrainte dimensionnelle de l'esquisse.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="117"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="128"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="158"/>
       <location filename="../../CommandConstraints.cpp" line="10827"/>
       <location filename="../../CommandConstraints.cpp" line="10839"/>
       <location filename="../../CommandConstraints.cpp" line="10875"/>
       <location filename="../../CommandConstraints.cpp" line="10950"/>
       <location filename="../../CommandConstraints.cpp" line="10962"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="117"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="128"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="158"/>
       <source>Select constraints from the sketch.</source>
       <translation>Sélectionner les contraintes de l'esquisse</translation>
     </message>
@@ -4839,35 +4839,35 @@ L'espacement de la grille change s'il devient inférieur à la taille en pixels 
 </translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="477"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="509"/>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="264"/>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="148"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="393"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="678"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="755"/>
-      <location filename="../../DrawSketchHandlerSplitting.h" line="174"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="318"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="175"/>
       <location filename="../../DrawSketchHandlerPoint.h" line="110"/>
-      <location filename="../../DrawSketchHandlerExtend.h" line="344"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="143"/>
       <location filename="../../DrawSketchHandlerEllipse.h" line="232"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="355"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="318"/>
       <location filename="../../CommandSketcherTools.cpp" line="1315"/>
       <location filename="../../CommandSketcherTools.cpp" line="1896"/>
       <location filename="../../CommandSketcherTools.cpp" line="2333"/>
       <location filename="../../DrawSketchHandlerSlot.h" line="190"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="215"/>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="196"/>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="355"/>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="203"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="515"/>
-      <location filename="../../DrawSketchHandlerText.h" line="182"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="477"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="509"/>
       <location filename="../../DrawSketchHandlerScale.h" line="153"/>
-      <location filename="../../DrawSketchHandlerExternal.h" line="212"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="223"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="135"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="196"/>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="157"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="203"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="135"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="515"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="215"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="175"/>
+      <location filename="../../DrawSketchHandlerSplitting.h" line="174"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="264"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="143"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="223"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="212"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="148"/>
+      <location filename="../../DrawSketchHandlerText.h" line="182"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="344"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="393"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="678"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="755"/>
       <source>Error</source>
       <translation>Erreur</translation>
     </message>
@@ -4903,16 +4903,16 @@ L'espacement de la grille change s'il devient inférieur à la taille en pixels 
       <translation>La contrainte a des informations d'index non valides et est défectueuse.</translation>
     </message>
     <message>
+      <location filename="../../CommandSketcherTools.cpp" line="1101"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="519"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="662"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="910"/>
       <location filename="../../CommandConstraints.cpp" line="435"/>
       <location filename="../../CommandConstraints.cpp" line="512"/>
       <location filename="../../CommandConstraints.cpp" line="604"/>
       <location filename="../../CommandConstraints.cpp" line="688"/>
       <location filename="../../CommandConstraints.cpp" line="6633"/>
       <location filename="../../CommandConstraints.cpp" line="6835"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1101"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="519"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="662"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="910"/>
       <source>Invalid Constraint</source>
       <translation>Contrainte invalide</translation>
     </message>
@@ -4988,18 +4988,18 @@ L'espacement de la grille change s'il devient inférieur à la taille en pixels 
       <translation>Impossible d'ajouter une ligne</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="155"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="239"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="197"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="162"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="164"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="142"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="522"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="222"/>
       <location filename="../../DrawSketchHandlerRotate.h" line="182"/>
       <location filename="../../DrawSketchHandlerArc.h" line="299"/>
       <location filename="../../DrawSketchHandlerLine.h" line="150"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="239"/>
-      <location filename="../../DrawSketchHandlerSlot.h" line="197"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="222"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="522"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="162"/>
       <location filename="../../DrawSketchHandlerCircle.h" line="230"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="142"/>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="164"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="155"/>
       <source>Tool execution aborted</source>
       <translation>L'exécution de l'outil a été interrompue.</translation>
     </message>
@@ -5034,9 +5034,9 @@ L'espacement de la grille change s'il devient inférieur à la taille en pixels 
       <translation>Impossible d'ajuster une arête</translation>
     </message>
     <message>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1331"/>
       <location filename="../../EditDatumDialog.cpp" line="64"/>
       <location filename="../../EditDatumDialog.cpp" line="340"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1331"/>
       <source>Value Error</source>
       <translation>Erreur de valeur</translation>
     </message>

@@ -11,7 +11,7 @@
     <message>
       <location filename="../../FirstStartWidget.cpp" line="94"/>
       <source>Welcome to %1</source>
-      <translation>Καλωσήρθες στο %1</translation>
+      <translation>Καλώς Ορίσατε στο %1</translation>
     </message>
     <message>
       <location filename="../../FirstStartWidget.cpp" line="97"/>
@@ -181,7 +181,7 @@
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="248"/>
       <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
-      <translation>Ψάχνετε για περισσότερα θέματα? Μπορείτε να τα αποκτήσετε χρησιμοποιώντας &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</translation>
+      <translation>Ψάχνετε για περισσότερα θέματα; Μπορείτε να τα αποκτήσετε χρησιμοποιώντας το &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="255"/>

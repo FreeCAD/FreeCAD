@@ -1571,23 +1571,6 @@ If zero, it is equal to Radius2</source>
     </message>
   </context>
   <context>
-    <name>PartDesignGui::TaskDlgFeatureParameters</name>
-    <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="229"/>
-      <source>The feature could not be created with the given parameters.
-The geometry may be invalid or the parameters may be incompatible.
-Please adjust the parameters and try again.</source>
-      <translation>无法使用给定的参数创建该特征。
-几何图形可能无效或参数可能不兼容。
-请调整参数并重试。</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="236"/>
-      <source>Input error</source>
-      <translation>输入错误</translation>
-    </message>
-  </context>
-  <context>
     <name>PartDesignGui::TaskDlgShapeBinder</name>
     <message>
       <location filename="../../TaskShapeBinder.cpp" line="443"/>
@@ -3193,11 +3176,11 @@ measured along the specified direction</source>
       <translation>文档中无有效平面</translation>
     </message>
     <message>
+      <location filename="../../SketchWorkflow.cpp" line="731"/>
+      <location filename="../../ViewProviderDatum.cpp" line="259"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
       <location filename="../../ViewProvider.cpp" line="137"/>
       <location filename="../../Command.cpp" line="1142"/>
-      <location filename="../../SketchWorkflow.cpp" line="731"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
-      <location filename="../../ViewProviderDatum.cpp" line="259"/>
       <source>A dialog is already open in the task panel</source>
       <translation>一个对话框已在任务面板打开</translation>
     </message>
@@ -3237,11 +3220,11 @@ measured along the specified direction</source>
       <translation>文档无可用草图</translation>
     </message>
     <message>
+      <location filename="../../SketchWorkflow.cpp" line="732"/>
+      <location filename="../../ViewProviderDatum.cpp" line="260"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
       <location filename="../../ViewProvider.cpp" line="138"/>
       <location filename="../../Command.cpp" line="1143"/>
-      <location filename="../../SketchWorkflow.cpp" line="732"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
-      <location filename="../../ViewProviderDatum.cpp" line="260"/>
       <source>Close this dialog?</source>
       <translation>关闭此对话框？</translation>
     </message>
@@ -3536,9 +3519,9 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="65"/>
-      <location filename="../../ViewProvider.cpp" line="94"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="227"/>
       <location filename="../../ViewProviderDressUp.cpp" line="64"/>
+      <location filename="../../ViewProvider.cpp" line="94"/>
       <source>Edit %1</source>
       <translation>编辑 %1</translation>
     </message>
@@ -4474,19 +4457,19 @@ over 90: larger hole radius at the bottom</source>
       <translation>无法对无效的基础形状进行布尔操作</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2101"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="804"/>
       <location filename="../../../App/FeatureLoft.cpp" line="333"/>
       <location filename="../../../App/FeatureLoft.cpp" line="377"/>
       <location filename="../../../App/FeatureDraft.cpp" line="335"/>
       <location filename="../../../App/FeatureFillet.cpp" line="142"/>
       <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="804"/>
       <location filename="../../../App/FeaturePipe.cpp" line="482"/>
       <location filename="../../../App/FeaturePipe.cpp" line="531"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2101"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>结果有多个实体：在活动实体中启用“允许复合”</translation>
     </message>
@@ -4521,10 +4504,10 @@ over 90: larger hole radius at the bottom</source>
       <translation>结果融合的拉伸为 null。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="766"/>
       <location filename="../../../App/FeatureLoft.cpp" line="370"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="141"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="766"/>
       <location filename="../../../App/FeaturePipe.cpp" line="523"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="141"/>
       <source>Resulting shape is not a solid</source>
       <translation>结果形状不是实体</translation>
     </message>
@@ -4601,8 +4584,8 @@ over 90: larger hole radius at the bottom</source>
       <translation>创建失败，方向与草图的法线矢量正交</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="479"/>
       <location filename="../../../App/FeatureRevolved.cpp" line="132"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="479"/>
       <source>Creating a face from sketch failed</source>
       <translation>从草图创建面失败</translation>
     </message>
@@ -4667,9 +4650,9 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>错误：面必须是平面</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2457"/>
       <location filename="../../../App/FeatureHelix.cpp" line="445"/>
       <location filename="../../../App/FeatureHelix.cpp" line="486"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2457"/>
       <source>Error: Result is not a solid</source>
       <translation>错误：结果不是实体</translation>
     </message>
@@ -4942,15 +4925,15 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="355"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="125"/>
       <location filename="../../../App/FeaturePipe.cpp" line="507"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="125"/>
       <source>Unknown operation type</source>
       <translation>未知操作类型</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="363"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="133"/>
       <location filename="../../../App/FeaturePipe.cpp" line="515"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="133"/>
       <source>Failed to perform boolean operation</source>
       <translation>执行布尔操作失败</translation>
     </message>
@@ -5451,6 +5434,18 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <location filename="../../TaskPatternParameters.cpp" line="334"/>
       <source>Invalid selection. Select an edge, planar face, or datum line.</source>
       <translation>无效选择。选择一条边、一个平面或一条基准线。</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskDlgFeatureParameters</name>
+    <message>
+      <location filename="../../TaskFeatureParameters.cpp" line="229"/>
+      <source>The feature could not be created with the given parameters.
+The geometry may be invalid or the parameters may be incompatible.
+Please adjust the parameters and try again.</source>
+      <translation>无法使用给定的参数创建该特征。
+几何图形可能无效或参数可能不兼容。
+请调整参数并重试。</translation>
     </message>
   </context>
 </TS>

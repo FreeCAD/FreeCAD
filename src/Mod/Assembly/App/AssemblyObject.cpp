@@ -132,7 +132,7 @@ App::DocumentObjectExecReturn* AssemblyObject::execute()
         "User parameter:BaseApp/Preferences/Mod/Assembly"
     );
     if (hGrp->GetBool("SolveOnRecompute", true)) {
-        solve(false, false);  // No need to update jcs since recompute updated them.
+        solve(false);
     }
     return ret;
 }
@@ -145,7 +145,7 @@ void AssemblyObject::onChanged(const App::Property* prop)
     App::Part::onChanged(prop);
 }
 
-int AssemblyObject::solve(bool enableRedo, bool updateJCS)
+int AssemblyObject::solve(bool enableRedo)
 {
     ensureIdentityPlacements();
 
@@ -159,7 +159,7 @@ int AssemblyObject::solve(bool enableRedo, bool updateJCS)
         return -6;
     }
 
-    std::vector<App::DocumentObject*> joints = getJoints(updateJCS);
+    std::vector<App::DocumentObject*> joints = getJoints();
 
     removeUnconnectedJoints(joints, groundedObjs);
 
@@ -320,7 +320,7 @@ std::vector<App::DocumentObject*> AssemblyObject::getMotionsFromSimulation(App::
     return prop->getValue();
 }
 
-int Assembly::AssemblyObject::updateForFrame(size_t index, bool updateJCS)
+int Assembly::AssemblyObject::updateForFrame(size_t index)
 {
     if (!mbdAssembly) {
         return -1;
@@ -333,7 +333,7 @@ int Assembly::AssemblyObject::updateForFrame(size_t index, bool updateJCS)
 
     mbdAssembly->updateForFrame(index);
     setNewPlacements();
-    auto jointDocs = getJoints(updateJCS);
+    auto jointDocs = getJoints();
     redrawJointPlacements(jointDocs);
     return 0;
 }
@@ -419,7 +419,7 @@ void AssemblyObject::doDragStep()
         if (validateNewPlacements()) {
             setNewPlacements();
 
-            auto joints = getJoints(false);
+            auto joints = getJoints();
             for (auto* joint : joints) {
                 if (joint->Visibility.getValue()) {
                     // redraw only the moving joint as its quite slow as its python code.
@@ -536,7 +536,7 @@ void AssemblyObject::undoSolve()
     previousPositions.clear();
 
     // update joint placements:
-    getJoints(/*updateJCS*/ true, /*delBadJoints*/ false);
+    getJoints();
 }
 
 void AssemblyObject::clearUndo()
@@ -717,7 +717,7 @@ ViewGroup* AssemblyObject::getExplodedViewGroup() const
     return nullptr;
 }
 
-std::vector<App::DocumentObject*> AssemblyObject::getJoints(bool updateJCS, bool delBadJoints, bool subJoints)
+std::vector<App::DocumentObject*> AssemblyObject::getJoints(bool delBadJoints, bool subJoints)
 {
     std::vector<App::DocumentObject*> joints = {};
 
@@ -799,7 +799,7 @@ std::vector<App::DocumentObject*> AssemblyObject::getJointsOfObj(App::DocumentOb
         return {};
     }
 
-    std::vector<App::DocumentObject*> joints = getJoints(false);
+    std::vector<App::DocumentObject*> joints = getJoints();
     std::vector<App::DocumentObject*> jointsOf;
 
     for (auto joint : joints) {
@@ -819,7 +819,7 @@ std::vector<App::DocumentObject*> AssemblyObject::getJointsOfPart(App::DocumentO
         return {};
     }
 
-    std::vector<App::DocumentObject*> joints = getJoints(false);
+    std::vector<App::DocumentObject*> joints = getJoints();
     std::vector<App::DocumentObject*> jointsOf;
 
     for (auto joint : joints) {
@@ -1118,7 +1118,7 @@ bool AssemblyObject::isPartConnected(App::DocumentObject* obj)
     }
 
     auto groundedObjs = getGroundedParts();
-    std::vector<App::DocumentObject*> joints = getJoints(false);
+    std::vector<App::DocumentObject*> joints = getJoints();
 
     std::vector<ObjRef> connectedParts;
 
@@ -1789,7 +1789,7 @@ int AssemblyObject::slidingPartIndex(App::DocumentObject* joint)
     Base::Placement plc2 = getPlacementFromProp(joint, "Placement2");
 
     int slidingFound = 0;
-    for (auto* jt : getJoints(false, false)) {
+    for (auto* jt : getJoints()) {
         if (getJointType(jt) == JointType::Slider) {
             App::DocumentObject* jpart1 = getMovingPartFromRef(jt, "Reference1");
             App::DocumentObject* jpart2 = getMovingPartFromRef(jt, "Reference2");
@@ -1961,7 +1961,7 @@ std::vector<ObjRef> AssemblyObject::getDownstreamParts(
         setJointActivated(joint, false);
     }
 
-    std::vector<App::DocumentObject*> joints = getJoints(false);
+    std::vector<App::DocumentObject*> joints = getJoints();
 
     std::vector<ObjRef> connectedParts = {{part, nullptr}};
     traverseAndMarkConnectedParts(part, connectedParts, joints);

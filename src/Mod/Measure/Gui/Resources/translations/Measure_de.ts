@@ -197,7 +197,7 @@
     <message>
       <location filename="../../TaskMeasure.cpp" line="119"/>
       <source>Show Delta</source>
-      <translation type="unfinished">Show Delta</translation>
+      <translation>Differenz anzeigen</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="125"/>
@@ -242,27 +242,27 @@
     <message>
       <location filename="../../TaskMeasure.cpp" line="577"/>
       <source>%1 auto-save</source>
-      <translation type="unfinished">%1 auto-save</translation>
+      <translation>%1 Auto-Speichern</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="581"/>
       <source>%1 start new measurement</source>
-      <translation type="unfinished">%1 start new measurement</translation>
+      <translation>%1 neue Messung starten</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="581"/>
       <source>%1 add to measurement</source>
-      <translation type="unfinished">%1 add to measurement</translation>
+      <translation>%1 zur Messung hinzufügen</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="810"/>
       <source>%1 new measurement, %2 toggle auto-save</source>
-      <translation type="unfinished">%1 new measurement, %2 toggle auto-save</translation>
+      <translation>%1 neue Messung, %2 Auto-Speichern umschalten</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="815"/>
       <source>%1 add to measurement, %2 toggle auto-save</source>
-      <translation type="unfinished">%1 add to measurement, %2 toggle auto-save</translation>
+      <translation>%1 zur Messung hinzufügen, %2 Auto-Speichern umschalten</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="247"/>
@@ -336,7 +336,7 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="38"/>
       <source>Objects to measure</source>
-      <translation type="unfinished">Objects to measure</translation>
+      <translation>Zu messende Objekte</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="58"/>
@@ -346,7 +346,7 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="83"/>
       <source>Center of gravity</source>
-      <translation type="unfinished">Center of gravity</translation>
+      <translation>Schwerpunkt</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="110"/>
@@ -356,27 +356,27 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="124"/>
       <source>Select…</source>
-      <translation type="unfinished">Select…</translation>
+      <translation>Auswählen…</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="137"/>
       <source>mm, kg, kg*mm^2</source>
-      <translation type="unfinished">mm, kg, kg*mm^2</translation>
+      <translation>mm, kg, kg*mm^2</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="142"/>
       <source>m, kg, kg*m^2</source>
-      <translation type="unfinished">m, kg, kg*m^2</translation>
+      <translation>m, kg, kg*m^2</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="147"/>
       <source>in, lb, lb*in^2</source>
-      <translation type="unfinished">in, lb, lb*in^2</translation>
+      <translation>in, lb, lb*in^2</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="152"/>
       <source>ft, lb, lb*ft^2</source>
-      <translation type="unfinished">ft, lb, lb*ft^2</translation>
+      <translation>ft, lb, lb*ft^2</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="172"/>
@@ -396,7 +396,7 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="214"/>
       <source>Surface area</source>
-      <translation type="unfinished">Surface area</translation>
+      <translation>Oberfläche</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="254"/>
@@ -420,85 +420,72 @@
       <location filename="../../TaskMassProperties.ui" line="339"/>
       <location filename="../../TaskMassProperties.ui" line="472"/>
       <source>Create Datum Point</source>
-      <translation type="unfinished">Create Datum Point</translation>
+      <translation>Bezugspunkt erstellen</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="503"/>
       <source>Inertia Matrix</source>
-      <translation type="unfinished">Inertia Matrix</translation>
+      <translation>Trägheitsmatrix</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="531"/>
       <source>Jox</source>
-      <translation type="unfinished">Jox</translation>
+      <translation>Jox</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="545"/>
       <source>Jxy</source>
-      <translation type="unfinished">Jxy</translation>
+      <translation>Jxy</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="559"/>
       <source>Jzx</source>
-      <translation type="unfinished">Jzx</translation>
+      <translation>Jzx</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="573"/>
       <source>Joy</source>
-      <translation type="unfinished">Joy</translation>
+      <translation>Joy</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="587"/>
       <source>Jzy</source>
-      <translation type="unfinished">Jzy</translation>
+      <translation>Jzy</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="601"/>
       <source>Joz</source>
-      <translation type="unfinished">Joz</translation>
+      <translation>Joz</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="625"/>
       <source>Principal Moments of Inertia</source>
-      <translation type="unfinished">Principal Moments of Inertia</translation>
+      <translation>Hauptträgheitsmomente</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="650"/>
       <source>Jx</source>
-      <translation type="unfinished">Jx</translation>
+      <translation>Jx</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="677"/>
       <source>Jy</source>
-      <translation type="unfinished">Jy</translation>
+      <translation>Jy</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="704"/>
       <source>Jz</source>
-      <translation type="unfinished">Jz</translation>
+      <translation>Jz</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="749"/>
       <source>Create Principal Axes LCS</source>
-      <translation type="unfinished">Create Principal Axes LCS</translation>
+      <translation>Hauptachsen-LCS erstellen</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="790"/>
       <source>Inertia around axis</source>
-      <translation type="unfinished">Inertia around axis</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdMassProperties</name>
-    <message>
-      <location filename="../../Command.cpp" line="97"/>
-      <source>Mass Properties</source>
-      <translation type="unfinished">Mass Properties</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="98"/>
-      <source>Calculates mass properties of selected objects</source>
-      <translation type="unfinished">Calculates mass properties of selected objects</translation>
+      <translation>Trägheit um eine Achse</translation>
     </message>
   </context>
   <context>
@@ -511,22 +498,22 @@
     <message>
       <location filename="../../TaskMassProperties.cpp" line="282"/>
       <source>Physical Properties</source>
-      <translation type="unfinished">Physical Properties</translation>
+      <translation>Physikalische Eigenschaften</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.cpp" line="285"/>
       <source>Center of Gravity</source>
-      <translation type="unfinished">Center of Gravity</translation>
+      <translation>Schwerpunkt</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.cpp" line="286"/>
       <source>Center of Volume</source>
-      <translation type="unfinished">Center of Volume</translation>
+      <translation>Volumenmittelpunkt</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.cpp" line="287"/>
       <source>Inertia</source>
-      <translation type="unfinished">Inertia</translation>
+      <translation>Trägheit</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.cpp" line="359"/>
@@ -546,7 +533,20 @@
     <message>
       <location filename="../../TaskMassProperties.cpp" line="1126"/>
       <source> (Average)</source>
-      <translation type="unfinished"> (Average)</translation>
+      <translation> (Durchschnitt)</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdMassProperties</name>
+    <message>
+      <location filename="../../Command.cpp" line="97"/>
+      <source>Mass Properties</source>
+      <translation>Masse-Eigenschaften</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="98"/>
+      <source>Calculates mass properties of selected objects</source>
+      <translation>Berechnet Masseneigenschaften der ausgewählten Objekte</translation>
     </message>
   </context>
 </TS>

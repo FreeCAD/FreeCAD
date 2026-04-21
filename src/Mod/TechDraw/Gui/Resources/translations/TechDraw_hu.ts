@@ -76,12 +76,12 @@
   <context>
     <name>CmdTechDrawActiveView</name>
     <message>
-      <location filename="../../Command.cpp" line="696"/>
+      <location filename="../../Command.cpp" line="698"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="697"/>
+      <location filename="../../Command.cpp" line="699"/>
       <source>Active View</source>
       <translation>Aktív nézetet</translation>
     </message>
@@ -125,17 +125,17 @@
   <context>
     <name>CmdTechDrawArchView</name>
     <message>
-      <location filename="../../Command.cpp" line="1661"/>
+      <location filename="../../Command.cpp" line="1665"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1662"/>
+      <location filename="../../Command.cpp" line="1666"/>
       <source>BIM View</source>
       <translation>BIM nézet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1663"/>
+      <location filename="../../Command.cpp" line="1667"/>
       <source>Inserts a view of a BIM section plane</source>
       <translation>Beszúr egy BIM szelvény metszősík nézetet</translation>
     </message>
@@ -143,17 +143,17 @@
   <context>
     <name>CmdTechDrawBalloon</name>
     <message>
-      <location filename="../../Command.cpp" line="1274"/>
+      <location filename="../../Command.cpp" line="1276"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1275"/>
+      <location filename="../../Command.cpp" line="1277"/>
       <source>Balloon Annotation</source>
       <translation>Buborékjegyzet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1276"/>
+      <location filename="../../Command.cpp" line="1278"/>
       <source>Inserts a new balloon annotation in the selected view</source>
       <translation>Beszúrá egy új buborékjegyzet a kiválasztott nézetbe</translation>
     </message>
@@ -184,17 +184,17 @@
   <context>
     <name>CmdTechDrawClipGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="1338"/>
+      <location filename="../../Command.cpp" line="1340"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1339"/>
+      <location filename="../../Command.cpp" line="1341"/>
       <source>Clip Group</source>
       <translation>Kivágás csoport</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1340"/>
+      <location filename="../../Command.cpp" line="1342"/>
       <source>Inserts a new clip group for the selected view</source>
       <translation>Beszúrás egy új kivágás csoportot a kiválasztott nézethez</translation>
     </message>
@@ -202,17 +202,17 @@
   <context>
     <name>CmdTechDrawClipGroupAdd</name>
     <message>
-      <location filename="../../Command.cpp" line="1375"/>
+      <location filename="../../Command.cpp" line="1377"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1376"/>
+      <location filename="../../Command.cpp" line="1378"/>
       <source>Add View To Clip Group</source>
       <translation>Nézet hozzáadása a kivágás csoporthoz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1377"/>
+      <location filename="../../Command.cpp" line="1379"/>
       <source>Adds the selected view to a clip group</source>
       <translation>A kiválasztott nézet hozzáadása egy kivágás csoporthoz</translation>
     </message>
@@ -220,17 +220,17 @@
   <context>
     <name>CmdTechDrawClipGroupRemove</name>
     <message>
-      <location filename="../../Command.cpp" line="1459"/>
+      <location filename="../../Command.cpp" line="1461"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1460"/>
+      <location filename="../../Command.cpp" line="1462"/>
       <source>Remove From Clip Group</source>
       <translation>Eltávolítás a kivágás csoportból</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1461"/>
+      <location filename="../../Command.cpp" line="1463"/>
       <source>Removes a view based on the selected clip group</source>
       <translation>Eltávolít egy nézetet a kiválasztott kivágás csoport alapján</translation>
     </message>
@@ -238,17 +238,17 @@
   <context>
     <name>CmdTechDrawComplexSection</name>
     <message>
-      <location filename="../../Command.cpp" line="882"/>
+      <location filename="../../Command.cpp" line="884"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="883"/>
+      <location filename="../../Command.cpp" line="885"/>
       <source>Complex Section View</source>
       <translation>Összetett metszeti nézet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="884"/>
+      <location filename="../../Command.cpp" line="886"/>
       <source>Inserts a complex section view based on the selected view in the current page</source>
       <translation>Beszúr egy összetett metszeti nézetet a kijelölt nézet alapján a jelenlegi rajzlapon</translation>
     </message>
@@ -329,17 +329,17 @@
   <context>
     <name>CmdTechDrawDetailView</name>
     <message>
-      <location filename="../../Command.cpp" line="1008"/>
+      <location filename="../../Command.cpp" line="1010"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1009"/>
+      <location filename="../../Command.cpp" line="1011"/>
       <source>Detail View</source>
       <translation>Részletnézet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1010"/>
+      <location filename="../../Command.cpp" line="1012"/>
       <source>Inserts a new detail view based on the selected view in the current page</source>
       <translation>Beszúr egy új részletnézetet a kijelölt nézet alapján az aktuális rajzlapra</translation>
     </message>
@@ -387,17 +387,17 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawDraftView</name>
     <message>
-      <location filename="../../Command.cpp" line="1597"/>
+      <location filename="../../Command.cpp" line="1601"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1598"/>
+      <location filename="../../Command.cpp" line="1602"/>
       <source>Draft View</source>
       <translation>Tervrajz nézet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1600"/>
+      <location filename="../../Command.cpp" line="1604"/>
       <source>Inserts a view of a Draft object</source>
       <extracomment>&quot;Draft&quot; is a workbench and should not be translated</extracomment>
       <translation>Beszúrja egy munkaterület tervrajz objektumának nézetét</translation>
@@ -406,22 +406,22 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawExportPageDXF</name>
     <message>
-      <location filename="../../Command.cpp" line="1850"/>
+      <location filename="../../Command.cpp" line="1854"/>
       <source>File</source>
       <translation>Fájl</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1851"/>
+      <location filename="../../Command.cpp" line="1855"/>
       <source>Export Page as DXF</source>
       <translation>Oldal exportálása DXF-ként</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1852"/>
+      <location filename="../../Command.cpp" line="1856"/>
       <source>Exports the current page as a DXF</source>
       <translation>A jelenlegi oldalt DXF-fájlba exportálja</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1885"/>
+      <location filename="../../Command.cpp" line="1889"/>
       <source>Save DXF file</source>
       <translation>DXF-fájl mentése</translation>
     </message>
@@ -429,17 +429,17 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawExportPageSVG</name>
     <message>
-      <location filename="../../Command.cpp" line="1807"/>
+      <location filename="../../Command.cpp" line="1811"/>
       <source>File</source>
       <translation>Fájl</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1808"/>
+      <location filename="../../Command.cpp" line="1812"/>
       <source>Export Page as SVG</source>
       <translation>Oldal exportálása SVG-ként</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1809"/>
+      <location filename="../../Command.cpp" line="1813"/>
       <source>Exports the current page as an SVG</source>
       <translation>A jelenlegi oldalt SVG-fájlba exportálja</translation>
     </message>
@@ -1521,17 +1521,17 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawGeometricHatch</name>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="233"/>
+      <location filename="../../CommandDecorate.cpp" line="269"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="234"/>
+      <location filename="../../CommandDecorate.cpp" line="270"/>
       <source>Geometric Hatch</source>
       <translation>Geometriai kitöltés</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="235"/>
+      <location filename="../../CommandDecorate.cpp" line="271"/>
       <source>Applies a geometric hatch pattern to the selected faces</source>
       <translation>Alkalmaz egy geometriai kitöltési mintát a kiválasztott felületeken</translation>
     </message>
@@ -1539,17 +1539,17 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawHatch</name>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="138"/>
+      <location filename="../../CommandDecorate.cpp" line="174"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="139"/>
+      <location filename="../../CommandDecorate.cpp" line="175"/>
       <source>Image Hatch</source>
       <translation>Kép kitöltés</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="140"/>
+      <location filename="../../CommandDecorate.cpp" line="176"/>
       <source>Applies a hatch pattern to the selected faces using an image file</source>
       <translation>Alkalmazzon kitöltési mintát a kiválasztott felületekre egy képfájl segítségével</translation>
     </message>
@@ -1593,34 +1593,39 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawImage</name>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="304"/>
+      <location filename="../../CommandDecorate.cpp" line="340"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="305"/>
+      <location filename="../../CommandDecorate.cpp" line="341"/>
       <source>Bitmap Image</source>
       <translation>Bittérképes kép</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="306"/>
+      <location filename="../../CommandDecorate.cpp" line="342"/>
       <source>Inserts a bitmap from a file into the current page</source>
       <translation>Bittérkép beszúrása egy fájlból az aktuális oldalra</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="308"/>
+      <location filename="../../CommandDecorate.cpp" line="344"/>
       <source>Insert bitmap from a file into a page</source>
       <translation>Bittérkép beszúrása az oldalra egy fájlból</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="323"/>
-      <source>Select an image file</source>
-      <translation>Kiválaszt egy kép fájlt</translation>
+      <location filename="../../CommandDecorate.cpp" line="359"/>
+      <source>Image files (*.jpg *.jpeg *.png *.bmp)</source>
+      <translation>Raszteres kép (*.jpg, *.jpeg, *.png, *.bmp)</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="325"/>
-      <source>Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</source>
-      <translation>Kép fájlok (*.jpg *.jpeg *.png *.bmp);;Összes fájl (*)</translation>
+      <location filename="../../CommandDecorate.cpp" line="360"/>
+      <source>All files (*)</source>
+      <translation>Minden fájl (*)</translation>
+    </message>
+    <message>
+      <location filename="../../CommandDecorate.cpp" line="362"/>
+      <source>Select an image file</source>
+      <translation>Kiválaszt egy kép fájlt</translation>
     </message>
   </context>
   <context>
@@ -1744,17 +1749,17 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawProjectShape</name>
     <message>
-      <location filename="../../Command.cpp" line="1914"/>
+      <location filename="../../Command.cpp" line="1918"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1915"/>
+      <location filename="../../Command.cpp" line="1919"/>
       <source>Project Shape</source>
       <translation>Forma terv</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1916"/>
+      <location filename="../../Command.cpp" line="1920"/>
       <source>Creates a projected geometry of the selected object in the 3D view from the current camera angle</source>
       <translation>Létrehoz az aktuális kamera szögéből egy vetített geometriát a kiválasztott objektumról a 3D nézetben</translation>
     </message>
@@ -1762,17 +1767,17 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawProjectionGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="1052"/>
+      <location filename="../../Command.cpp" line="1054"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1053"/>
+      <location filename="../../Command.cpp" line="1055"/>
       <source>Projection Group</source>
       <translation>Vetítési csoport</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1054"/>
+      <location filename="../../Command.cpp" line="1056"/>
       <source>Inserts multiple new linked views of the selected objects in the current page</source>
       <translation>Többször is beszúrja a kiválasztott objektumok új, kapcsolt nézeteit az aktuális oldalra</translation>
     </message>
@@ -1852,27 +1857,27 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawSectionGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="727"/>
+      <location filename="../../Command.cpp" line="729"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="728"/>
+      <location filename="../../Command.cpp" line="730"/>
       <source>Section View (Simple or Complex)</source>
       <translation>Metszeti nézet (egyszerű vagy összetett)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="729"/>
+      <location filename="../../Command.cpp" line="731"/>
       <source>Inserts a simple or complex section view in the current page</source>
       <translation>Beszúr egy egyszerű vagy összetett metszeti nézetet az aktuális oldalra</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="793"/>
+      <location filename="../../Command.cpp" line="795"/>
       <source>Section View</source>
       <translation>Szakasz nézet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="797"/>
+      <location filename="../../Command.cpp" line="799"/>
       <source>Complex Section View</source>
       <translation>Összetett metszeti nézet</translation>
     </message>
@@ -1880,17 +1885,17 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawSectionView</name>
     <message>
-      <location filename="../../Command.cpp" line="819"/>
+      <location filename="../../Command.cpp" line="821"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="820"/>
+      <location filename="../../Command.cpp" line="822"/>
       <source>Section View</source>
       <translation>Szakasz nézet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="821"/>
+      <location filename="../../Command.cpp" line="823"/>
       <source>Inserts a new section view based on the selected view in the current page</source>
       <translation>Beszúr egy új metszeti nézetet a kijelölt nézet alapján az aktuális oldalra</translation>
     </message>
@@ -1916,17 +1921,17 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawSpreadsheetView</name>
     <message>
-      <location filename="../../Command.cpp" line="1734"/>
+      <location filename="../../Command.cpp" line="1738"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1735"/>
+      <location filename="../../Command.cpp" line="1739"/>
       <source>Spreadsheet View</source>
       <translation>Táblázat nézet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1736"/>
+      <location filename="../../Command.cpp" line="1740"/>
       <source>Inserts a view of a spreadsheet in the current page</source>
       <translation>Beszúr egy táblázatnézetet az aktuális oldalra</translation>
     </message>
@@ -2062,17 +2067,17 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawSymbol</name>
     <message>
-      <location filename="../../Command.cpp" line="1532"/>
+      <location filename="../../Command.cpp" line="1534"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1533"/>
+      <location filename="../../Command.cpp" line="1535"/>
       <source>Insert SVG</source>
       <translation>SVG beszúrása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1534"/>
+      <location filename="../../Command.cpp" line="1536"/>
       <source>Inserts a symbol from an SVG file</source>
       <translation>Jelölés beszúrása SVG-fájlból</translation>
     </message>
@@ -2160,65 +2165,65 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     </message>
     <message>
       <location filename="../../Command.cpp" line="360"/>
-      <location filename="../../Command.cpp" line="1708"/>
+      <location filename="../../Command.cpp" line="1712"/>
       <source>Create BIM view</source>
       <translation>BIM nézet létrehozása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="480"/>
+      <location filename="../../Command.cpp" line="482"/>
       <source>Create image</source>
       <translation>Kép létrehozása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="498"/>
+      <location filename="../../Command.cpp" line="500"/>
       <source>Create view</source>
       <translation>Nézet létrehozása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="645"/>
+      <location filename="../../Command.cpp" line="647"/>
       <source>Create broken view</source>
       <translation>Törött nézet létrehozása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1893"/>
+      <location filename="../../Command.cpp" line="1897"/>
       <location filename="../../PagePrinter.cpp" line="444"/>
       <source>Save page to DXF</source>
       <translation>Oldal mentése DXF-be</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="455"/>
-      <location filename="../../Command.cpp" line="1560"/>
+      <location filename="../../Command.cpp" line="457"/>
+      <location filename="../../Command.cpp" line="1564"/>
       <source>Create Symbol</source>
       <translation>Rajzjel létrehozása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1136"/>
+      <location filename="../../Command.cpp" line="1138"/>
       <source>Create projection group</source>
       <translation>Vetítési csoport létrehozása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1356"/>
+      <location filename="../../Command.cpp" line="1358"/>
       <source>Create clip</source>
       <translation>Kivágás létrehozása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1428"/>
+      <location filename="../../Command.cpp" line="1430"/>
       <source>Add clip group</source>
       <translation>Kivágás csoport hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1499"/>
+      <location filename="../../Command.cpp" line="1501"/>
       <source>Remove clip group</source>
       <translation>Kivágás csoport törlése</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1634"/>
+      <location filename="../../Command.cpp" line="1638"/>
       <source>Create DraftView</source>
       <translation>Tervrajz nézet létrehozás</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="342"/>
-      <location filename="../../Command.cpp" line="1760"/>
+      <location filename="../../Command.cpp" line="1764"/>
       <source>Create spreadsheet view</source>
       <translation>Számolótábla nézet létrehozása</translation>
     </message>
@@ -2442,17 +2447,17 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Kitöltés frissítése</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="185"/>
+      <location filename="../../CommandDecorate.cpp" line="221"/>
       <source>Remove old hatch</source>
       <translation>Régi kitöltés eltávolítása</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="263"/>
+      <location filename="../../CommandDecorate.cpp" line="299"/>
       <source>Create GeomHatch</source>
       <translation>Geometriai nyílás létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="334"/>
+      <location filename="../../CommandDecorate.cpp" line="373"/>
       <source>Create Image</source>
       <translation>Kép létrehozás</translation>
     </message>
@@ -3103,29 +3108,29 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandAnnotate.cpp" line="1425"/>
       <location filename="../../CommandHelpers.cpp" line="87"/>
       <location filename="../../CommandHelpers.cpp" line="100"/>
-      <location filename="../../Command.cpp" line="629"/>
-      <location filename="../../Command.cpp" line="639"/>
-      <location filename="../../Command.cpp" line="856"/>
-      <location filename="../../Command.cpp" line="973"/>
-      <location filename="../../Command.cpp" line="980"/>
-      <location filename="../../Command.cpp" line="985"/>
-      <location filename="../../Command.cpp" line="1023"/>
-      <location filename="../../Command.cpp" line="1122"/>
-      <location filename="../../Command.cpp" line="1388"/>
-      <location filename="../../Command.cpp" line="1405"/>
-      <location filename="../../Command.cpp" line="1410"/>
-      <location filename="../../Command.cpp" line="1419"/>
-      <location filename="../../Command.cpp" line="1472"/>
-      <location filename="../../Command.cpp" line="1491"/>
-      <location filename="../../Command.cpp" line="1614"/>
-      <location filename="../../Command.cpp" line="1689"/>
-      <location filename="../../Command.cpp" line="1695"/>
-      <location filename="../../Command.cpp" line="1754"/>
+      <location filename="../../Command.cpp" line="631"/>
+      <location filename="../../Command.cpp" line="641"/>
+      <location filename="../../Command.cpp" line="858"/>
+      <location filename="../../Command.cpp" line="975"/>
+      <location filename="../../Command.cpp" line="982"/>
+      <location filename="../../Command.cpp" line="987"/>
+      <location filename="../../Command.cpp" line="1025"/>
+      <location filename="../../Command.cpp" line="1124"/>
+      <location filename="../../Command.cpp" line="1390"/>
+      <location filename="../../Command.cpp" line="1407"/>
+      <location filename="../../Command.cpp" line="1412"/>
+      <location filename="../../Command.cpp" line="1421"/>
+      <location filename="../../Command.cpp" line="1474"/>
+      <location filename="../../Command.cpp" line="1493"/>
+      <location filename="../../Command.cpp" line="1618"/>
+      <location filename="../../Command.cpp" line="1693"/>
+      <location filename="../../Command.cpp" line="1699"/>
+      <location filename="../../Command.cpp" line="1758"/>
       <source>Wrong selection</source>
       <translation>Rossz kijelölés</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="590"/>
+      <location filename="../../Command.cpp" line="592"/>
       <source>Empty selection</source>
       <translation>Üres kijelölés</translation>
     </message>
@@ -3140,44 +3145,36 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Ne jelenjen meg ismét ez az üzenet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="444"/>
+      <location filename="../../Command.cpp" line="447"/>
       <source>Select a SVG or Image file to open</source>
       <translation>Válasszon ki egy SVG- vagy képfájlt a megnyitáshoz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="447"/>
+      <location filename="../../Command.cpp" line="444"/>
       <source>SVG or Image files</source>
       <translation>SVG vagy képfájlok</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="986"/>
+      <location filename="../../Command.cpp" line="988"/>
       <source>No profile object found in selection</source>
       <translation>Nem található szelvény objektum a kijelölésben</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1406"/>
+      <location filename="../../Command.cpp" line="1408"/>
       <source>Select exactly one view to add to clip group</source>
       <translation>Válasszon pontosan egy nézetet a kivágás csoporthoz adásra</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1473"/>
+      <location filename="../../Command.cpp" line="1475"/>
       <source>Select exactly one view to remove from clip group</source>
       <translation>Válasszon pontosan egy nézetet a kivágás csoportból eltávolításra</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1835"/>
+      <location filename="../../Command.cpp" line="1839"/>
       <source>FreeCAD could not find a page to export</source>
       <translation>A FreeCAD nem találta az exportálandó oldalt</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1865"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1989"/>
-      <location filename="../../TaskDimRepair.cpp" line="137"/>
-      <location filename="../../TaskDimRepair.cpp" line="148"/>
-      <location filename="../../Command.cpp" line="1190"/>
-      <location filename="../../Command.cpp" line="1197"/>
-      <location filename="../../Command.cpp" line="1205"/>
-      <location filename="../../Command.cpp" line="1217"/>
       <location filename="../../CommandCreateDims.cpp" line="2001"/>
       <location filename="../../CommandCreateDims.cpp" line="2017"/>
       <location filename="../../CommandCreateDims.cpp" line="2139"/>
@@ -3186,25 +3183,33 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandCreateDims.cpp" line="2364"/>
       <location filename="../../CommandCreateDims.cpp" line="2372"/>
       <location filename="../../CommandCreateDims.cpp" line="2381"/>
-      <location filename="../../CommandDecorate.cpp" line="377"/>
-      <location filename="../../CommandDecorate.cpp" line="384"/>
-      <location filename="../../CommandDecorate.cpp" line="391"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1865"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1989"/>
+      <location filename="../../CommandDecorate.cpp" line="417"/>
+      <location filename="../../CommandDecorate.cpp" line="424"/>
+      <location filename="../../CommandDecorate.cpp" line="431"/>
+      <location filename="../../Command.cpp" line="1192"/>
+      <location filename="../../Command.cpp" line="1199"/>
+      <location filename="../../Command.cpp" line="1207"/>
+      <location filename="../../Command.cpp" line="1219"/>
+      <location filename="../../TaskDimRepair.cpp" line="137"/>
+      <location filename="../../TaskDimRepair.cpp" line="148"/>
       <source>Incorrect selection</source>
       <translation>Hibás kijelölés</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="591"/>
+      <location filename="../../Command.cpp" line="593"/>
       <source>Select objects to break or a base view and break definition objects</source>
       <translation>Válasszon tárgyakat a töréshez, vagy egy alapnézetet és törést meghatározó tárgyakat</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="630"/>
+      <location filename="../../Command.cpp" line="632"/>
       <source>No break objects found in this selection</source>
       <translation>Nem található tört objektum ebben a kijelölésben</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="640"/>
-      <location filename="../../Command.cpp" line="1123"/>
+      <location filename="../../Command.cpp" line="642"/>
+      <location filename="../../Command.cpp" line="1125"/>
       <source>No shapes, groups, or links in this selection</source>
       <translation>Nincsenek formák, csoportok vagy összekötések ebben a kijelölésben</translation>
     </message>
@@ -3224,18 +3229,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandAnnotate.cpp" line="1260"/>
       <location filename="../../CommandAnnotate.cpp" line="1341"/>
       <location filename="../../CommandAnnotate.cpp" line="1407"/>
-      <location filename="../../CommandStack.cpp" line="73"/>
-      <location filename="../../CommandStack.cpp" line="189"/>
-      <location filename="../../CommandStack.cpp" line="249"/>
-      <location filename="../../CommandStack.cpp" line="309"/>
-      <location filename="../../CommandExtensionPack.cpp" line="290"/>
-      <location filename="../../CommandExtensionPack.cpp" line="593"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1214"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1459"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1752"/>
-      <location filename="../../Command.cpp" line="739"/>
-      <location filename="../../Command.cpp" line="832"/>
-      <location filename="../../Command.cpp" line="895"/>
       <location filename="../../CommandCreateDims.cpp" line="1499"/>
       <location filename="../../CommandCreateDims.cpp" line="1547"/>
       <location filename="../../CommandCreateDims.cpp" line="1595"/>
@@ -3254,6 +3247,18 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandExtensionDims.cpp" line="1506"/>
       <location filename="../../CommandExtensionDims.cpp" line="1875"/>
       <location filename="../../CommandExtensionDims.cpp" line="2113"/>
+      <location filename="../../CommandStack.cpp" line="73"/>
+      <location filename="../../CommandStack.cpp" line="189"/>
+      <location filename="../../CommandStack.cpp" line="249"/>
+      <location filename="../../CommandStack.cpp" line="309"/>
+      <location filename="../../CommandExtensionPack.cpp" line="290"/>
+      <location filename="../../CommandExtensionPack.cpp" line="593"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1214"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1459"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1752"/>
+      <location filename="../../Command.cpp" line="741"/>
+      <location filename="../../Command.cpp" line="834"/>
+      <location filename="../../Command.cpp" line="897"/>
       <source>Task in progress</source>
       <translation>A feladat folyamatban</translation>
     </message>
@@ -3273,9 +3278,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandAnnotate.cpp" line="1261"/>
       <location filename="../../CommandAnnotate.cpp" line="1342"/>
       <location filename="../../CommandAnnotate.cpp" line="1408"/>
-      <location filename="../../Command.cpp" line="740"/>
-      <location filename="../../Command.cpp" line="833"/>
-      <location filename="../../Command.cpp" line="896"/>
       <location filename="../../CommandExtensionDims.cpp" line="311"/>
       <location filename="../../CommandExtensionDims.cpp" line="520"/>
       <location filename="../../CommandExtensionDims.cpp" line="808"/>
@@ -3283,74 +3285,77 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandExtensionDims.cpp" line="1507"/>
       <location filename="../../CommandExtensionDims.cpp" line="1876"/>
       <location filename="../../CommandExtensionDims.cpp" line="2114"/>
+      <location filename="../../Command.cpp" line="742"/>
+      <location filename="../../Command.cpp" line="835"/>
+      <location filename="../../Command.cpp" line="898"/>
       <source>Close active task dialog and try again</source>
       <translation>Zárja be az aktív feladatot és próbálja később</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="857"/>
-      <location filename="../../Command.cpp" line="1024"/>
+      <location filename="../../Command.cpp" line="859"/>
+      <location filename="../../Command.cpp" line="1026"/>
       <source>Select at least 1 DrawViewPart object as base</source>
       <translation>Jelöljön ki legalább 1 AlkatrészRajzNézet objektumot a kiinduláshoz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="974"/>
+      <location filename="../../Command.cpp" line="976"/>
       <source>No base view selected</source>
       <translation>Nincs alapnézet kiválasztva</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="981"/>
+      <location filename="../../Command.cpp" line="983"/>
       <source>No base view, shapes, groups, or links in this selection</source>
       <translation>Ebben a kijelölésben nincsenek alapnézetek, formák, csoportok vagy összekötések</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1191"/>
       <location filename="../../CommandCreateDims.cpp" line="2365"/>
+      <location filename="../../Command.cpp" line="1193"/>
       <source>Select an object first</source>
       <translation>Először válasszon ki egy objektumot</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1198"/>
       <location filename="../../CommandCreateDims.cpp" line="2373"/>
+      <location filename="../../Command.cpp" line="1200"/>
       <source>Too many objects selected</source>
       <translation>Túl sok kijelölt objektum</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1206"/>
+      <location filename="../../Command.cpp" line="1208"/>
       <source>Create a page first</source>
       <translation>Először hozzon létre egy oldalt</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1218"/>
+      <location filename="../../Command.cpp" line="1220"/>
       <source>No view of a part in selection</source>
       <translation>Nincs alkatrész nézet a kiválasztásban</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1389"/>
+      <location filename="../../Command.cpp" line="1391"/>
       <source>Select one clip group and one view</source>
       <translation>Egy kivágás csoport és egy nézet kiválasztása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1871"/>
+      <location filename="../../Command.cpp" line="1875"/>
       <source>Page contains a BIM view which will not be exported. Continue?</source>
       <translation>Az oldal BIM nézetet tartalmaz, amely nem kerül exportálásra. Folytatja?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1411"/>
+      <location filename="../../Command.cpp" line="1413"/>
       <source>Select exactly one clip group</source>
       <translation>Jelöljön ki pontosan egy kivágás csoportot</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1420"/>
+      <location filename="../../Command.cpp" line="1422"/>
       <source>Clip and view must be from same page</source>
       <translation>Kivágás és a nézet azonos oldalon legyen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1492"/>
+      <location filename="../../Command.cpp" line="1494"/>
       <source>View does not belong to a clip</source>
       <translation>Nézet nem tartozik kivágáshoz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1554"/>
+      <location filename="../../Command.cpp" line="1553"/>
       <source>Scalable vector graphic</source>
       <translation>Méretezhető vektorgrafika</translation>
     </message>
@@ -3360,32 +3365,32 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Összes fájl</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1615"/>
+      <location filename="../../Command.cpp" line="1619"/>
       <source>Select at least one object</source>
       <translation>Jelöljön ki legalább egy objektumot</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1690"/>
+      <location filename="../../Command.cpp" line="1694"/>
       <source>Select only 1 BIM section plane</source>
       <translation>Csak 1 BIM metszősíkot válasszon</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1696"/>
+      <location filename="../../Command.cpp" line="1700"/>
       <source>No BIM section plane in selection</source>
       <translation>Nincs BIM metszősík a kiválasztásban</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1755"/>
+      <location filename="../../Command.cpp" line="1759"/>
       <source>Select exactly one spreadsheet object</source>
       <translation>Jelöljön ki pontosan egy táblázat objektumot</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1834"/>
+      <location filename="../../Command.cpp" line="1838"/>
       <source>No drawing page</source>
       <translation>Nincs rajz oldal</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1870"/>
+      <location filename="../../Command.cpp" line="1874"/>
       <source>Cannot export selection</source>
       <translation>Kijelölés nem exportálható</translation>
     </message>
@@ -3466,24 +3471,24 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Először hozzon létre egy oldalt.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1551"/>
+      <location filename="../../Command.cpp" line="1556"/>
       <source>Choose an SVG file to open</source>
       <translation>SVG fájl kiválasztása megnyitáshoz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="447"/>
+      <location filename="../../Command.cpp" line="445"/>
       <source>All Files</source>
       <translation>Összes fájl</translation>
     </message>
     <message>
-      <location filename="../../CommandAlign.cpp" line="53"/>
       <location filename="../../CommandCreateDims.cpp" line="2043"/>
       <location filename="../../CommandCreateDims.cpp" line="2059"/>
       <location filename="../../CommandCreateDims.cpp" line="2213"/>
       <location filename="../../CommandCreateDims.cpp" line="2228"/>
       <location filename="../../TaskDimension.cpp" line="551"/>
-      <location filename="../../CommandDecorate.cpp" line="398"/>
-      <location filename="../../CommandDecorate.cpp" line="404"/>
+      <location filename="../../CommandDecorate.cpp" line="438"/>
+      <location filename="../../CommandDecorate.cpp" line="444"/>
+      <location filename="../../CommandAlign.cpp" line="53"/>
       <source>Incorrect Selection</source>
       <translation>Hibás kijelölés</translation>
     </message>
@@ -3722,33 +3727,33 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Szükséges egy MűszakiRajz oldal ehhez a parancshoz</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="173"/>
+      <location filename="../../CommandDecorate.cpp" line="209"/>
       <source>Replace hatch?</source>
       <translation>Kitöltés lecserélése?</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="174"/>
+      <location filename="../../CommandDecorate.cpp" line="210"/>
       <source>Some faces in the selection are already hatched. Replace?</source>
       <translation>Néhány felület a kijelölésben már kitöltött. Lecseréli?</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="378"/>
+      <location filename="../../CommandDecorate.cpp" line="418"/>
       <source>Select a face first</source>
       <translation>Először válassz egy felületet</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="385"/>
+      <location filename="../../CommandDecorate.cpp" line="425"/>
       <source>No TechDraw object in selection</source>
       <translation>Nincs MűszakiRajz objektum a kiválasztásban</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="392"/>
+      <location filename="../../CommandDecorate.cpp" line="432"/>
       <source>Create a page to insert</source>
       <translation>Oldal létrehozása a beillesztéshez</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="399"/>
-      <location filename="../../CommandDecorate.cpp" line="405"/>
+      <location filename="../../CommandDecorate.cpp" line="439"/>
+      <location filename="../../CommandDecorate.cpp" line="445"/>
       <source>No faces to hatch in this selection</source>
       <translation>Nincsenek felületek a kitöltéshez ebben a kijelölésben</translation>
     </message>
@@ -3773,43 +3778,43 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Ehhez a funkcióhoz egy oldal szükséges.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="572"/>
+      <location filename="../../MDIViewPage.cpp" line="581"/>
       <source>Unable to Write File</source>
       <translation type="unfinished">Unable to Write File</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="573"/>
+      <location filename="../../MDIViewPage.cpp" line="582"/>
       <source>FreeCAD is unable to open file %1 for writing.  The file may be open in another program.</source>
       <translation type="unfinished">FreeCAD is unable to open file %1 for writing.  The file may be open in another program.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="584"/>
+      <location filename="../../MDIViewPage.cpp" line="593"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="585"/>
+      <location filename="../../MDIViewPage.cpp" line="594"/>
       <source>All Files (*.*)</source>
       <translation>Összes fájl (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="588"/>
+      <location filename="../../MDIViewPage.cpp" line="597"/>
       <source>Export Page as PDF</source>
       <translation>Oldal export mint PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="507"/>
-      <location filename="../../MDIViewPage.cpp" line="529"/>
+      <location filename="../../MDIViewPage.cpp" line="516"/>
+      <location filename="../../MDIViewPage.cpp" line="538"/>
       <source>All files (*.*)</source>
       <translation>Minden fájl (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="509"/>
+      <location filename="../../MDIViewPage.cpp" line="518"/>
       <source>Export page as SVG</source>
       <translation>Oldal export SVG formában</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="531"/>
+      <location filename="../../MDIViewPage.cpp" line="540"/>
       <source>Export page as DXF</source>
       <translation>Oldal export mint PDF</translation>
     </message>
@@ -3954,8 +3959,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Részletnézet szerkesztése</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBalloon.cpp" line="86"/>
       <location filename="../../ViewProviderDimension.cpp" line="137"/>
+      <location filename="../../ViewProviderBalloon.cpp" line="86"/>
       <source>Edit %1</source>
       <translation>%1 szerkesztése</translation>
     </message>
@@ -4090,14 +4095,14 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1022"/>
-      <location filename="../../CommandExtensionPack.cpp" line="2130"/>
       <location filename="../../CommandExtensionDims.cpp" line="2329"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2130"/>
       <source>Selection is empty</source>
       <translation>A kijelölési terület nem tartalmaz objektumokat</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="2137"/>
       <location filename="../../CommandExtensionDims.cpp" line="2345"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2137"/>
       <source>No object selected</source>
       <translation>Nincs kijelölt objektum</translation>
     </message>
@@ -4312,18 +4317,18 @@ olyan hegesztési szimbólummal rendelkezik, amely megtörne.</translation>
       <translation>Nem törölheti ezt a nézetet, mert egy vagy több nézetnek függősége van, amely megszakadna.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderTemplate.cpp" line="205"/>
       <location filename="../../ViewProviderLeader.cpp" line="212"/>
+      <location filename="../../ViewProviderTemplate.cpp" line="205"/>
       <location filename="../../ViewProviderPage.cpp" line="220"/>
       <location filename="../../ViewProviderWeld.cpp" line="143"/>
       <location filename="../../ViewProviderViewPart.cpp" line="382"/>
       <location filename="../../ViewProviderViewPart.cpp" line="397"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="146"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="163"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="154"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="163"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="171"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="179"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="146"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="163"/>
       <source>Object dependencies</source>
       <translation>Objektumfüggőségek</translation>
     </message>
@@ -6262,50 +6267,55 @@ Gyors, de az eredmény rövid egyenesek gyűjteménye.</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="97"/>
+      <source>Toggle &amp;Grid</source>
+      <translation type="unfinished">Toggle &amp;Grid</translation>
+    </message>
+    <message>
+      <location filename="../../MDIViewPage.cpp" line="100"/>
       <source>&amp;Export SVG</source>
       <translation>&amp;Exportálás SVG-be</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="101"/>
+      <location filename="../../MDIViewPage.cpp" line="104"/>
       <source>Export DXF</source>
       <translation>DXF export</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="105"/>
+      <location filename="../../MDIViewPage.cpp" line="108"/>
       <source>Export PDF</source>
       <translation>Exportálás PDF-be</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="109"/>
+      <location filename="../../MDIViewPage.cpp" line="112"/>
       <source>Print All Pages</source>
       <translation>Összes oldal nyomtatása</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="406"/>
+      <location filename="../../MDIViewPage.cpp" line="409"/>
       <source>Different orientation</source>
       <translation>Eltérő tájolású</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="407"/>
+      <location filename="../../MDIViewPage.cpp" line="410"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
       <translation>A nyomtató a rajztól eltérő tájolást használ. 
 Szeretné folytatni?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="416"/>
+      <location filename="../../MDIViewPage.cpp" line="419"/>
       <source>Different paper size</source>
       <translation>Eltérő papírméret</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="417"/>
+      <location filename="../../MDIViewPage.cpp" line="420"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>A nyomtató a rajztól eltérő méretű papír méretet használ. 
 Szeretné folytatni?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1130"/>
+      <location filename="../../MDIViewPage.cpp" line="1139"/>
       <source>Selected:</source>
       <translation>Kiválasztott:</translation>
     </message>
@@ -9842,17 +9852,17 @@ van egy nyitott feladat párbeszédpanel.</translation>
   <context>
     <name>CmdTechDrawBrokenView</name>
     <message>
-      <location filename="../../Command.cpp" line="547"/>
+      <location filename="../../Command.cpp" line="549"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="548"/>
+      <location filename="../../Command.cpp" line="550"/>
       <source>Broken View</source>
       <translation>Csonkított nézet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="549"/>
+      <location filename="../../Command.cpp" line="551"/>
       <source>Inserts a new broken view for the selected objects or base view and break definition objects</source>
       <translation>Beszúr egy új törött nézetet a kiválasztott objektumokhoz vagy az alapnézethez és a törésdefiníció objektumaihoz</translation>
     </message>
@@ -10066,7 +10076,7 @@ van egy nyitott feladat párbeszédpanel.</translation>
   <context>
     <name>TechDraw_SectionView</name>
     <message>
-      <location filename="../../Command.cpp" line="794"/>
+      <location filename="../../Command.cpp" line="796"/>
       <source>Inserts a simple section view</source>
       <translation>Egyszerű szakasz nézet beszúrása</translation>
     </message>
@@ -10074,7 +10084,7 @@ van egy nyitott feladat párbeszédpanel.</translation>
   <context>
     <name>TechDraw_ComplexSection</name>
     <message>
-      <location filename="../../Command.cpp" line="799"/>
+      <location filename="../../Command.cpp" line="801"/>
       <source>Inserts a complex section view</source>
       <translation>Összetett szakasz nézet beszúrása</translation>
     </message>
@@ -10231,14 +10241,6 @@ van egy nyitott feladat párbeszédpanel.</translation>
     </message>
   </context>
   <context>
-    <name>TechDrawGui::TaskDlgLineDecor</name>
-    <message>
-      <location filename="../../TaskLineDecor.cpp" line="463"/>
-      <source>Restore Invisible Lines</source>
-      <translation>Láthatatlan vonalak visszaállítása</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdTechDrawToggleFrame</name>
     <message>
       <location filename="../../CommandDecorate.cpp" line="75"/>
@@ -10247,9 +10249,39 @@ van egy nyitott feladat párbeszédpanel.</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="76"/>
+      <source>Toggle View Frames</source>
+      <translation type="unfinished">Toggle View Frames</translation>
+    </message>
+    <message>
       <location filename="../../CommandDecorate.cpp" line="77"/>
-      <source>Turn View Frames On/Off</source>
-      <translation>Keretek megjelenítésének be-/kikapcsolása</translation>
+      <source>Toggles visibility of view frames and vertices</source>
+      <translation type="unfinished">Toggles visibility of view frames and vertices</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawToggleGrid</name>
+    <message>
+      <location filename="../../CommandDecorate.cpp" line="138"/>
+      <source>TechDraw</source>
+      <translation>MűszakiRajz</translation>
+    </message>
+    <message>
+      <location filename="../../CommandDecorate.cpp" line="139"/>
+      <source>Toggle Grid</source>
+      <translation>Rács kapcsolása</translation>
+    </message>
+    <message>
+      <location filename="../../CommandDecorate.cpp" line="140"/>
+      <source>Toggles the grid on the active page</source>
+      <translation type="unfinished">Toggles the grid on the active page</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::TaskDlgLineDecor</name>
+    <message>
+      <location filename="../../TaskLineDecor.cpp" line="463"/>
+      <source>Restore Invisible Lines</source>
+      <translation>Láthatatlan vonalak visszaállítása</translation>
     </message>
   </context>
 </TS>

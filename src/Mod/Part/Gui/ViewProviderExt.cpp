@@ -1460,6 +1460,15 @@ void ViewProviderPartExt::updateVisual()
     TopoDS_Shape shape = getRenderedShape().getShape();
 
     if (!VisualTouched && lastRenderedShape.IsPartner(shape)) {
+        // shape unchanged so do not rebuild geometry
+        // but still re-apply materials in case colors changed
+        Gui::SoHighlightElementAction haction;
+        haction.apply(this->faceset);
+        haction.apply(this->lineset);
+        haction.apply(this->nodeset);
+        setHighlightedFaces(ShapeAppearance.getValues());
+        setHighlightedEdges(LineColorArray.getValues());
+        setHighlightedPoints(PointColorArray.getValue());
         return;
     }
 

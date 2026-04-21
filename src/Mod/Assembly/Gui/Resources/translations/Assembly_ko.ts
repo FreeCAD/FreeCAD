@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1803"/>
+      <location filename="../../../JointObject.py" line="1809"/>
       <source>Distance</source>
       <translation>거리</translation>
     </message>
@@ -170,27 +170,27 @@
       <translation>벨트</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="812"/>
+      <location filename="../../../JointObject.py" line="818"/>
       <source>Broken link in: </source>
       <translation>다음 위치의 손상된 링크: </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1622"/>
+      <location filename="../../../JointObject.py" line="1628"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>서로 다른 두 부품에서 요소 2개를 선택하세요</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1805"/>
+      <location filename="../../../JointObject.py" line="1811"/>
       <source>Radius 1</source>
       <translation>반지름 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1807"/>
+      <location filename="../../../JointObject.py" line="1813"/>
       <source>Thread pitch</source>
       <translation>나사 피치</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1809"/>
+      <location filename="../../../JointObject.py" line="1815"/>
       <source>Pitch radius</source>
       <translation>피치 반지름</translation>
     </message>
@@ -677,7 +677,7 @@ SLOPE는 각각 time = T1 및 T2 부근에서 0과 H1, 그리고 H2와 0 사이 
       <translation>조인트의 {order}번째 기준</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1231"/>
+      <location filename="../../../JointObject.py" line="1237"/>
       <source>The object to ground</source>
       <translation>고정할 대상체</translation>
     </message>
@@ -950,49 +950,49 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <translation>이 객체를 이동하고 연결된 조인트를 삭제하시겠습니까?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1103"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1104"/>
       <source>Move part</source>
       <translation>부품 이동</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1818"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1819"/>
       <source>Empty Assembly</source>
       <translation>빈 어셈블리</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1830"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1831"/>
       <source>Over-constrained:</source>
       <translation>과도한 구속:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1838"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1839"/>
       <source>Malformed joints:</source>
       <translation>잘못된 조인트:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1801"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1802"/>
       <source>and %1 more</source>
       <translation>외 %1개</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1862"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1863"/>
       <source>Solver failed to converge</source>
       <translation>솔버가 수렴하지 못했습니다</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1870"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1871"/>
       <source>Under-constrained:</source>
       <translation>구속 부족:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1872"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1873"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n 자유도</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1876"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1877"/>
       <source>Fully constrained</source>
       <translation>완전히 구속됨</translation>
     </message>

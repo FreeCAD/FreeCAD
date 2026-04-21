@@ -1531,6 +1531,7 @@ void StdCmdDelete::activated(int iMsg)
             bool more = false;
             auto sels = Selection().getSelectionEx();
             bool autoDeletion = true;
+            bool forceDeletion = false;
             for (auto& sel : sels) {
                 auto obj = sel.getObject();
                 if (!obj) {
@@ -1594,6 +1595,7 @@ void StdCmdDelete::activated(int iMsg)
                 );
                 if (ret == QMessageBox::Yes) {
                     autoDeletion = true;
+                    forceDeletion = true;
                 }
             }
             if (autoDeletion) {
@@ -1603,7 +1605,8 @@ void StdCmdDelete::activated(int iMsg)
                     if (vp) {
                         manageDocCommand(obj->getDocument());
                         // ask the ViewProvider if it wants to do some clean up
-                        if (vp->onDelete(sel.getSubNames())) {
+                        // skip if user explicitly confirmed deletion of objects with dependencies
+                        if (forceDeletion || vp->onDelete(sel.getSubNames())) {
                             docs.insert(obj->getDocument());
                             FCMD_OBJ_DOC_CMD(obj, "removeObject('" << obj->getNameInDocument() << "')");
                         }

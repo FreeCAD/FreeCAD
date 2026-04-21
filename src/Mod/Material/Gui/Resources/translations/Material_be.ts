@@ -655,14 +655,20 @@ If unchecked, they will be sorted by their name.</source>
       <translation>Абраць выяву</translation>
     </message>
     <message>
-      <location filename="../../ImageEdit.cpp" line="206"/>
-      <source>Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</source>
-      <translation>Файлы выяў (*.jpg *.jpeg *.png *.bmp);;Усе файлы (*)</translation>
+      <location filename="../../ImageEdit.cpp" line="207"/>
+      <source>Image files (*.jpg *.jpeg *.png *.bmp)</source>
+      <translation>Файлы выяў (*.jpg *.jpeg *.png *.bmp)</translation>
     </message>
     <message>
-      <location filename="../../ImageEdit.cpp" line="218"/>
-      <source>Image files (*.svg);;All files (*)</source>
-      <translation>Файлы выяў (*.svg);;Усе файлы (*)</translation>
+      <location filename="../../ImageEdit.cpp" line="208"/>
+      <location filename="../../ImageEdit.cpp" line="223"/>
+      <source>All files (*)</source>
+      <translation>Усе файлы (*)</translation>
+    </message>
+    <message>
+      <location filename="../../ImageEdit.cpp" line="222"/>
+      <source>Image files (*.svg)</source>
+      <translation>Файлы выявы (*.svg)</translation>
     </message>
   </context>
   <context>

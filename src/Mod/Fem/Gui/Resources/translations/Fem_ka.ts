@@ -714,9 +714,9 @@
       <translation>შედეგიდან მილსადენის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemPostFunction.cpp" line="269"/>
-      <source>Edit Mirror</source>
-      <translation>ანარეკლის ჩასწორება</translation>
+      <location filename="../../ViewProviderShapeExtension.cpp" line="189"/>
+      <source>Edit Shape</source>
+      <translation>მოხაზულობის ჩასწორება</translation>
     </message>
   </context>
   <context>
@@ -1099,7 +1099,7 @@ Only takes effect if 'Pipeline only' is enabled</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="159"/>
       <source>Maximum output level</source>
-      <translation type="unfinished">Maximum output level</translation>
+      <translation>მაქსიმალური გამოტანის დონე</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="181"/>
@@ -1380,7 +1380,7 @@ adding an analysis container</source>
     <message>
       <location filename="../../DlgSettingsFemGeneralImp.cpp" line="140"/>
       <source>Directory '%1' not found</source>
-      <translation type="unfinished">Directory '%1' not found</translation>
+      <translation>საქაღალდე '%1' აღმოჩენილი არაა</translation>
     </message>
   </context>
   <context>
@@ -1623,7 +1623,7 @@ FreeCAD-ის შედეგი ობიექტი: შემოტან�
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="156"/>
       <source>Stiffness matrix entries</source>
-      <translation type="unfinished">Stiffness matrix entries</translation>
+      <translation>არადრეკადობის მატრიცის ჩანაწერები</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="200"/>
@@ -2015,7 +2015,7 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="158"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>აირჩიეთ გეომეტრიის ტიპი: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="158"/>
@@ -2060,7 +2060,7 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="87"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>აირჩიეთ გეომეტრიის ტიპი: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="87"/>
@@ -2125,7 +2125,7 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="390"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>აირჩიეთ გეომეტრიის ტიპი: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="390"/>
@@ -2250,7 +2250,7 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="92"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>აირჩიეთ გეომეტრიის ტიპი: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="92"/>
@@ -2331,7 +2331,7 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="156"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>აირჩიეთ გეომეტრიის ტიპი: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="156"/>
@@ -2437,7 +2437,7 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="75"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>აირჩიეთ გეომეტრიის ტიპი: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="75"/>
@@ -2495,7 +2495,7 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="104"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>აირჩიეთ გეომეტრიის ტიპი: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="104"/>
@@ -2540,7 +2540,7 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="101"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>აირჩიეთ გეომეტრიის ტიპი: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="101"/>
@@ -2992,12 +2992,12 @@ that "MAXGS" needs to be increased.</translation>
       <translation>Ბრუნი წუთში</translation>
     </message>
     <message>
+      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
       <location filename="../ui/ElementGeometry2D.ui" line="26"/>
       <location filename="../ui/ConstraintTie.ui" line="26"/>
-      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
-      <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
       <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
       <location filename="../ui/MeshRegion.ui" line="26"/>
+      <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
       <source>Parameter</source>
       <translation>პარამეტრი</translation>
     </message>
@@ -3154,7 +3154,7 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="403"/>
       <source>Magnetic flux density</source>
-      <translation type="unfinished">Magnetic flux density</translation>
+      <translation>მაგნიტური ნაკადის სიმკვრივე</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="459"/>
@@ -3204,18 +3204,18 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="61"/>
       <location filename="../ui/CurrentDensity.ui" line="246"/>
+      <location filename="../ui/Magnetization.ui" line="39"/>
       <location filename="../ui/Electromagnetic.ui" line="113"/>
       <location filename="../ui/Electromagnetic.ui" line="432"/>
-      <location filename="../ui/Magnetization.ui" line="39"/>
       <source>Real</source>
       <translation>რეალური</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="71"/>
       <location filename="../ui/CurrentDensity.ui" line="256"/>
+      <location filename="../ui/Magnetization.ui" line="49"/>
       <location filename="../ui/Electromagnetic.ui" line="123"/>
       <location filename="../ui/Electromagnetic.ui" line="442"/>
-      <location filename="../ui/Magnetization.ui" line="49"/>
       <source>Imaginary</source>
       <translation>წარმოსახვითი</translation>
     </message>
@@ -3295,8 +3295,8 @@ Note: has no effect if a solid was selected</translation>
       <translation>კოჭის სექციის პარამეტრი</translation>
     </message>
     <message>
-      <location filename="../ui/ElementGeometry1D.ui" line="20"/>
       <location filename="../ui/ElementRotation1D.ui" line="20"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="20"/>
       <source>Cross-Section Parameter</source>
       <translation>განივი გადანაჭერის პარამეტრი</translation>
     </message>
@@ -3308,13 +3308,13 @@ Note: has no effect if a solid was selected</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry2D.ui" line="44"/>
-      <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
       <location filename="../ui/ElementGeometry1D.ui" line="48"/>
       <location filename="../ui/ElementGeometry1D.ui" line="74"/>
       <location filename="../ui/ElementGeometry1D.ui" line="111"/>
       <location filename="../ui/ElementGeometry1D.ui" line="148"/>
       <location filename="../ui/ElementGeometry1D.ui" line="174"/>
       <location filename="../ui/MeshRegion.ui" line="44"/>
+      <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
       <source>mm</source>
       <translation>მმ</translation>
     </message>
@@ -3337,6 +3337,7 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/ElementGeometry2D.ui" line="37"/>
       <location filename="../ui/ElementGeometry1D.ui" line="167"/>
+      <location filename="../ui/MeshShape.ui" line="109"/>
       <source>Thickness</source>
       <translation>სისქე</translation>
     </message>
@@ -3371,40 +3372,40 @@ Note: has no effect if a solid was selected</translation>
       <translation>T4 სისქე</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="25"/>
-      <location filename="../ui/FlowVelocity.ui" line="73"/>
-      <location filename="../ui/FlowVelocity.ui" line="131"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="25"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="73"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="131"/>
+      <location filename="../ui/FlowVelocity.ui" line="25"/>
+      <location filename="../ui/FlowVelocity.ui" line="73"/>
+      <location filename="../ui/FlowVelocity.ui" line="131"/>
       <source>Formula</source>
       <translation>ფორმულა</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="32"/>
-      <location filename="../ui/FlowVelocity.ui" line="87"/>
-      <location filename="../ui/FlowVelocity.ui" line="118"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="32"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="87"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="118"/>
+      <location filename="../ui/FlowVelocity.ui" line="32"/>
+      <location filename="../ui/FlowVelocity.ui" line="87"/>
+      <location filename="../ui/FlowVelocity.ui" line="118"/>
       <source>Unspecified</source>
       <translation>მითითებული არაა</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="42"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="42"/>
+      <location filename="../ui/FlowVelocity.ui" line="42"/>
       <source>Velocity X</source>
       <translation>აჩქარება X</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="80"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="80"/>
+      <location filename="../ui/FlowVelocity.ui" line="80"/>
       <source>Velocity Y</source>
       <translation>აჩქარება Y</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="138"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="138"/>
+      <location filename="../ui/FlowVelocity.ui" line="138"/>
       <source>Velocity Z</source>
       <translation>აჩქარება Z</translation>
     </message>
@@ -3414,14 +3415,14 @@ Note: has no effect if a solid was selected</translation>
       <translation>ნორმალი საზღვრამდე</translation>
     </message>
     <message>
-      <location filename="../ui/BodyHeatSource.ui" line="14"/>
       <location filename="../ui/CurrentDensity.ui" line="14"/>
-      <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
-      <location filename="../ui/FlowVelocity.ui" line="14"/>
-      <location filename="../ui/Electromagnetic.ui" line="14"/>
-      <location filename="../ui/InitialPressure.ui" line="14"/>
-      <location filename="../ui/Magnetization.ui" line="14"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
+      <location filename="../ui/Magnetization.ui" line="14"/>
+      <location filename="../ui/Electromagnetic.ui" line="14"/>
+      <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
+      <location filename="../ui/InitialPressure.ui" line="14"/>
+      <location filename="../ui/FlowVelocity.ui" line="14"/>
+      <location filename="../ui/BodyHeatSource.ui" line="14"/>
       <source>Analysis Feature Properties</source>
       <translation>ანალიზის თვისების მორგება</translation>
     </message>
@@ -3431,9 +3432,9 @@ Note: has no effect if a solid was selected</translation>
       <translation>სითბოს წყარო</translation>
     </message>
     <message>
-      <location filename="../ui/BodyHeatSource.ui" line="35"/>
       <location filename="../ui/CurrentDensity.ui" line="29"/>
       <location filename="../ui/ElectricChargeDensity.ui" line="25"/>
+      <location filename="../ui/BodyHeatSource.ui" line="35"/>
       <source>Mode</source>
       <translation>რეჟიმი</translation>
     </message>
@@ -3522,10 +3523,191 @@ with harmonic/oscillating driving current</translation>
       <translation>ვექტორული დენის სიმკვრივის ჩასართავად აირჩიეთ მორგებული რეჟიმი</translation>
     </message>
     <message>
+      <location filename="../ui/MeshManipulate.ui" line="43"/>
+      <location filename="../ui/MeshAdvanced.ui" line="121"/>
+      <location filename="../ui/MeshAdvanced.ui" line="526"/>
+      <location filename="../ui/MeshAdvanced.ui" line="646"/>
+      <location filename="../ui/MeshAdvanced.ui" line="682"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="150"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="147"/>
+      <source>Icon</source>
+      <translation>ხატულა</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="56"/>
+      <source>Drag the refinement, that should be altered, into the Manipulate object in the document tree</source>
+      <translation type="unfinished">Drag the refinement, that should be altered, into the Manipulate object in the document tree</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="70"/>
+      <source>Type:</source>
+      <translation>ტიპი:</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="84"/>
+      <source>Restrict</source>
+      <translation>შეზღუდვა</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="89"/>
+      <source>Threshold</source>
+      <translation>ზღვარი</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="94"/>
+      <location filename="../ui/MeshManipulate.ui" line="609"/>
+      <source>Mean</source>
+      <translation>საშუალო</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="99"/>
+      <source>Gradient</source>
+      <translation>გრადიენტი</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="104"/>
+      <source>Curvature</source>
+      <translation>სიმრუდე</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="109"/>
+      <source>Laplacian</source>
+      <translation>ლაპლასის</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="138"/>
+      <source>Restrict the application of the child refinement to the selected reference elements.</source>
+      <translation type="unfinished">Restrict the application of the child refinement to the selected reference elements.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="160"/>
+      <location filename="../ui/MeshManipulate.ui" line="173"/>
+      <source>Include the boundary of the selected reference elements</source>
+      <translation type="unfinished">Include the boundary of the selected reference elements</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="163"/>
+      <source>Include boundary</source>
+      <translation>საზღვრების ჩასმა</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="209"/>
+      <source>Apply a threshold to the child refinements value</source>
+      <translation type="unfinished">Apply a threshold to the child refinements value</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="236"/>
+      <location filename="../ui/MeshAdvanced.ui" line="210"/>
+      <location filename="../ui/MeshAdvanced.ui" line="399"/>
+      <location filename="../ui/MeshDistance.ui" line="68"/>
+      <source>Mesh size when distance &lt; DistanceMinimum</source>
+      <translation type="unfinished">Mesh size when distance &lt; DistanceMinimum</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="283"/>
+      <location filename="../ui/MeshManipulate.ui" line="527"/>
+      <location filename="../ui/MeshManipulate.ui" line="636"/>
+      <location filename="../ui/MeshManipulate.ui" line="708"/>
+      <location filename="../ui/MeshManipulate.ui" line="780"/>
+      <location filename="../ui/MeshAdvanced.ui" line="179"/>
+      <location filename="../ui/MeshDistance.ui" line="115"/>
+      <source>Distance at which the mesh size will be SizeMaximum</source>
+      <translation type="unfinished">Distance at which the mesh size will be SizeMaximum</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="308"/>
+      <source>Output size</source>
+      <translation>გამოტანის ზომა</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="346"/>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="89"/>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="217"/>
+      <location filename="../ui/MeshAdvanced.ui" line="337"/>
+      <location filename="../ui/MeshAdvanced.ui" line="430"/>
+      <location filename="../ui/MeshDistance.ui" line="178"/>
+      <source>Mesh size when distance = DistanceMaximum</source>
+      <translation type="unfinished">Mesh size when distance = DistanceMaximum</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="365"/>
+      <source>Input value</source>
+      <translation>შეყვანილი მნიშვნელობა</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="387"/>
+      <location filename="../ui/MeshAdvanced.ui" line="368"/>
+      <location filename="../ui/MeshDistance.ui" line="219"/>
+      <source>Distance up to which the mesh size will be SizeMinimum</source>
+      <translation type="unfinished">Distance up to which the mesh size will be SizeMinimum</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="434"/>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="185"/>
+      <location filename="../ui/MeshAdvanced.ui" line="257"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="91"/>
+      <location filename="../ui/MeshDistance.ui" line="266"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="59"/>
+      <source>Diagram</source>
+      <translation>დიაგრამა</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="452"/>
+      <source>Linear interpolation</source>
+      <translation>წრფივი ინტერპოლაცია</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="462"/>
+      <location filename="../ui/MeshDistance.ui" line="326"/>
+      <source>Defines if interpolation of mesh size between SizeMinimum and SizeMaximum should be a linear or a sigmoid function</source>
+      <translation type="unfinished">Defines if interpolation of mesh size between SizeMinimum and SizeMaximum should be a linear or a sigmoid function</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="472"/>
+      <source>Stop at max input</source>
+      <translation>გაჩერება მაქს. შეყვანასთან</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="493"/>
+      <source>Calculates the mean value of child refinement G:
+
+F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
+</source>
+      <translation type="unfinished">Calculates the mean value of child refinement G:
+
+F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
+</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="508"/>
+      <location filename="../ui/MeshManipulate.ui" line="617"/>
+      <location filename="../ui/MeshManipulate.ui" line="689"/>
+      <location filename="../ui/MeshManipulate.ui" line="761"/>
+      <source>Delta</source>
+      <translation>დელტა</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="565"/>
+      <source>Compute the finite difference gradient of child refinement G:
+
+F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
+</source>
+      <translation type="unfinished">Compute the finite difference gradient of child refinement G:
+
+F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
+</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="580"/>
+      <source>Kind</source>
+      <translation>ტიპი</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="594"/>
       <location filename="../ui/CurrentDensity.ui" line="78"/>
+      <location filename="../ui/Magnetization.ui" line="56"/>
       <location filename="../ui/Electromagnetic.ui" line="181"/>
       <location filename="../ui/Electromagnetic.ui" line="449"/>
-      <location filename="../ui/Magnetization.ui" line="56"/>
       <source>X</source>
       <translation>X</translation>
     </message>
@@ -3540,10 +3722,11 @@ with harmonic/oscillating driving current</translation>
       <translation>დენის სიმკვრივის X-კომპონენტის წარმოსახვითი ნაწილი</translation>
     </message>
     <message>
+      <location filename="../ui/MeshManipulate.ui" line="599"/>
       <location filename="../ui/CurrentDensity.ui" line="129"/>
+      <location filename="../ui/Magnetization.ui" line="107"/>
       <location filename="../ui/Electromagnetic.ui" line="234"/>
       <location filename="../ui/Electromagnetic.ui" line="500"/>
-      <location filename="../ui/Magnetization.ui" line="107"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
@@ -3558,10 +3741,11 @@ with harmonic/oscillating driving current</translation>
       <translation>დენის სიმკვრივის Y-კომპონენტის წარმოსახვითი ნაწილი</translation>
     </message>
     <message>
+      <location filename="../ui/MeshManipulate.ui" line="604"/>
       <location filename="../ui/CurrentDensity.ui" line="180"/>
+      <location filename="../ui/Magnetization.ui" line="158"/>
       <location filename="../ui/Electromagnetic.ui" line="287"/>
       <location filename="../ui/Electromagnetic.ui" line="551"/>
-      <location filename="../ui/Magnetization.ui" line="158"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
@@ -3601,22 +3785,32 @@ with harmonic/oscillating driving current</translation>
       <translation>ელემენტის მაქს. ზომა</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
+      <location filename="../ui/MeshManipulate.ui" line="14"/>
+      <location filename="../ui/MeshPreviewSettings.ui" line="14"/>
       <location filename="../ui/PostHistogramFieldAppEdit.ui" line="14"/>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="14"/>
+      <location filename="../ui/MeshAdvanced.ui" line="14"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="14"/>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
+      <location filename="../ui/MeshShape.ui" line="14"/>
+      <location filename="../ui/MeshDistance.ui" line="14"/>
+      <location filename="../ui/MeshPreview.ui" line="14"/>
+      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="14"/>
       <source>Form</source>
       <translation>ფორმა</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="34"/>
       <location filename="../ui/PostHistogramFieldAppEdit.ui" line="34"/>
+      <location filename="../ui/MeshAdvanced.ui" line="971"/>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="34"/>
       <source>Field</source>
       <translation>ველი</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="86"/>
       <location filename="../ui/PostHistogramFieldAppEdit.ui" line="61"/>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="86"/>
       <source>Frames</source>
       <translation>კადრები</translation>
     </message>
@@ -3626,8 +3820,8 @@ with harmonic/oscillating driving current</translation>
       <translation>ერთი ველი თითოეული ჩარჩოსთვის</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="59"/>
       <location filename="../ui/PostHistogramIndexAppEdit.ui" line="61"/>
+      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="59"/>
       <source>Index</source>
       <translation>ინდექსი</translation>
     </message>
@@ -3637,8 +3831,8 @@ with harmonic/oscillating driving current</translation>
       <translation>X ველი</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="32"/>
       <location filename="../ui/PostLineplotFieldAppEdit.ui" line="59"/>
+      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="32"/>
       <source>Y field</source>
       <translation>Y ველი</translation>
     </message>
@@ -3646,6 +3840,492 @@ with harmonic/oscillating driving current</translation>
       <location filename="../ui/PostLineplotFieldAppEdit.ui" line="93"/>
       <source>One Y field for each frame</source>
       <translation>მხოლოდ Y ველი თითოეული ჩარჩოსთვის</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreviewSettings.ui" line="26"/>
+      <source>Global refinement preview settings:</source>
+      <translation type="unfinished">Global refinement preview settings:</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreviewSettings.ui" line="35"/>
+      <location filename="../ui/MeshPreviewSettings.ui" line="51"/>
+      <source>Automatically enables the visualization of the refinement mesh size when opening a refinement task dialog.</source>
+      <translation type="unfinished">Automatically enables the visualization of the refinement mesh size when opening a refinement task dialog.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreviewSettings.ui" line="54"/>
+      <source>Auto enable on open</source>
+      <translation>ავტოჩართვა გახსნისას</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreviewSettings.ui" line="80"/>
+      <source>Determines how fine the preview mesh is. Larger number means finer mesh (smaller mesh elements)</source>
+      <translation type="unfinished">Determines how fine the preview mesh is. Larger number means finer mesh (smaller mesh elements)</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreviewSettings.ui" line="83"/>
+      <source>Preview mesh fineness</source>
+      <translation>ბადის სიზუსტის გადახედვა</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="41"/>
+      <source>Create a defined number of mesh nodes on edges with a structured algorithm.</source>
+      <translation type="unfinished">Create a defined number of mesh nodes on edges with a structured algorithm.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="111"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="260"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="283"/>
+      <source>Progression</source>
+      <translation>მიმდინარეობა</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="124"/>
+      <source>Invert</source>
+      <translation>დაბრუნება</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="137"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="222"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="245"/>
+      <source>Nodes</source>
+      <translation>კვანძები</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="150"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="250"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="273"/>
+      <source>Bump</source>
+      <translation>რელიეფი</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="163"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="245"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="268"/>
+      <source>Constant</source>
+      <translation>კონსტანტა</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="195"/>
+      <source>Coefficient</source>
+      <translation>კოეფიციენტი</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="34"/>
+      <source>Type</source>
+      <translation>ტიპი</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="48"/>
+      <source>AttractorAnisoCurve</source>
+      <translation>AttractorAnisoCurve</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="53"/>
+      <source>MathEval</source>
+      <translation>MathEval</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="58"/>
+      <source>MathEvalAniso</source>
+      <translation>MathEvalAniso</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="63"/>
+      <location filename="../ui/MeshAdvanced.ui" line="283"/>
+      <location filename="../ui/MeshDistance.ui" line="197"/>
+      <source>Distance</source>
+      <translation>დაშორება</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="68"/>
+      <location filename="../ui/MeshAdvanced.ui" line="964"/>
+      <source>Result</source>
+      <translation>შედეგი</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="100"/>
+      <source>Compute the distance to the selected reference edges and specify the mesh size independently in the direction normal and parallel to the nearest curve. For efficiency each curve is replaced by a set of Sampling points, to which the distance is actually computed.</source>
+      <translation type="unfinished">Compute the distance to the selected reference edges and specify the mesh size independently in the direction normal and parallel to the nearest curve. For efficiency each curve is replaced by a set of Sampling points, to which the distance is actually computed.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="134"/>
+      <location filename="../ui/MeshAdvanced.ui" line="695"/>
+      <source>Anisotropic mesh refinements work only with the BAMG (2D) and MMG3D (3D) algorithms</source>
+      <translation type="unfinished">Anisotropic mesh refinements work only with the BAMG (2D) and MMG3D (3D) algorithms</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="315"/>
+      <source>Size Tangent</source>
+      <translation>მხების ზომა</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="449"/>
+      <source>Size Normal</source>
+      <translation>ნორმალური ზომა</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="460"/>
+      <location filename="../ui/MeshAdvanced.ui" line="916"/>
+      <source>Sampling</source>
+      <translation>სემპლინგი</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="505"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the mesh size from a formula based on coordinates (x, y, z) and other refinements (F1, F2, etc.)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the mesh size from a formula based on coordinates (x, y, z) and other refinements (F1, F2, etc.)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="539"/>
+      <location filename="../ui/MeshAdvanced.ui" line="659"/>
+      <source>Drag refinements into the advanced mesh object in the tree to make them accessible in the Formula</source>
+      <translation type="unfinished">Drag refinements into the advanced mesh object in the tree to make them accessible in the Formula</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="569"/>
+      <location filename="../ui/MeshAdvanced.ui" line="583"/>
+      <source>Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
+functions like Sin, Log (upper case). Additionally all child refinements are
+usable via the F variable, e.g. F1, F2 etc. Supported opperators are +, -, *, /, ^.
+
+Example: "F2 + Sin(z)"</source>
+      <translation type="unfinished">Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
+functions like Sin, Log (upper case). Additionally all child refinements are
+usable via the F variable, e.g. F1, F2 etc. Supported opperators are +, -, *, /, ^.
+
+Example: "F2 + Sin(z)"</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="576"/>
+      <location filename="../ui/MeshAdvanced.ui" line="742"/>
+      <location filename="../ui/MeshAdvanced.ui" line="756"/>
+      <location filename="../ui/MeshAdvanced.ui" line="784"/>
+      <location filename="../ui/MeshAdvanced.ui" line="798"/>
+      <location filename="../ui/MeshAdvanced.ui" line="826"/>
+      <location filename="../ui/MeshAdvanced.ui" line="847"/>
+      <source>Mesh size equation</source>
+      <translation>ბადის ზომის განტოლება</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="590"/>
+      <source>EQIcon</source>
+      <translation>EQIcon</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="625"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the anisotropic mesh size from multiple formulas based on coordinates (x, y, z) and other refinements (F1, F2, etc.)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the anisotropic mesh size from multiple formulas based on coordinates (x, y, z) and other refinements (F1, F2, etc.)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="728"/>
+      <source>M12</source>
+      <translation>M12</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="735"/>
+      <location filename="../ui/MeshAdvanced.ui" line="749"/>
+      <location filename="../ui/MeshAdvanced.ui" line="777"/>
+      <location filename="../ui/MeshAdvanced.ui" line="791"/>
+      <location filename="../ui/MeshAdvanced.ui" line="819"/>
+      <location filename="../ui/MeshAdvanced.ui" line="840"/>
+      <source>Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
+functions like Sin, Log (upper case). Additionally all child refinements are
+usable via the F variable, e.g. F1, F2 etc.  Supported opperators are +, -, *, /, ^.
+
+Example: "F2 + Sin(z)"</source>
+      <translation type="unfinished">Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
+functions like Sin, Log (upper case). Additionally all child refinements are
+usable via the F variable, e.g. F1, F2 etc.  Supported opperators are +, -, *, /, ^.
+
+Example: "F2 + Sin(z)"</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="763"/>
+      <source>M33</source>
+      <translation>M33</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="770"/>
+      <source>M22</source>
+      <translation>M22</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="805"/>
+      <source>M11</source>
+      <translation>M11</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="812"/>
+      <source>M23</source>
+      <translation>M23</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="833"/>
+      <source>M13</source>
+      <translation>M13</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="904"/>
+      <source>Compute the distance to the selected reference geometry (vertex, edge and surfaces). For efficiency, curves and surfaces are replaced by a set of points</source>
+      <translation type="unfinished">Compute the distance to the selected reference geometry (vertex, edge and surfaces). For efficiency, curves and surfaces are replaced by a set of points</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="952"/>
+      <source>Uses a datafield from a FEM postprocessing pipeline as mesh size. This allows you to adapt the mesh according to the physical behaviour of the result.</source>
+      <translation type="unfinished">Uses a datafield from a FEM postprocessing pipeline as mesh size. This allows you to adapt the mesh according to the physical behaviour of the result.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="38"/>
+      <source>Creates a structured mesh in a volume guided by its transfinite surfaces.</source>
+      <translation type="unfinished">Creates a structured mesh in a volume guided by its transfinite surfaces.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="116"/>
+      <source>Select any number of 5 or 6 sided volumes</source>
+      <translation type="unfinished">Select any number of 5 or 6 sided volumes</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="163"/>
+      <source>All volume surfaces must be transfinite. If the surfaces have different mesh types (quads vs. triangles) the volume must also be meshed with mixed elements enabled.</source>
+      <translation type="unfinished">All volume surfaces must be transfinite. If the surfaces have different mesh types (quads vs. triangles) the volume must also be meshed with mixed elements enabled.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="183"/>
+      <source>Mixed mesh elements</source>
+      <translation>შერეული ბადის ელემენტები</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="205"/>
+      <source>If activated, all edges and surface belonging to the selected volumes that do not have a transfinite definitions already become transfinite automatically.
+Use strategically placed transfinite curve and surface definitions to guide the automatic algorithm.
+
+Notes:
+1. User-defined curves propagate to the opposite edges of faces, over all selected faces.
+2. Works with any number of volumes, either connected or unconnected </source>
+      <translation type="unfinished">If activated, all edges and surface belonging to the selected volumes that do not have a transfinite definitions already become transfinite automatically.
+Use strategically placed transfinite curve and surface definitions to guide the automatic algorithm.
+
+Notes:
+1. User-defined curves propagate to the opposite edges of faces, over all selected faces.
+2. Works with any number of volumes, either connected or unconnected </translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="213"/>
+      <source>Auto apply transfinite surfaces and curves</source>
+      <translation type="unfinished">Auto apply transfinite surfaces and curves</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="229"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="252"/>
+      <source>Distribution</source>
+      <translation>განაწილება</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="255"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="278"/>
+      <source>Bump Inverted</source>
+      <translation type="unfinished">Bump Inverted</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="265"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="288"/>
+      <source>Progression Inverted</source>
+      <translation>მიმდინარეობა შებრუნებულია</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="304"/>
+      <source>Surface</source>
+      <translation>ზედაპირი</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="323"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="181"/>
+      <source>Recombine</source>
+      <translation>რეკომბინაცია</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="38"/>
+      <source>Define mesh size inside and outside of the shape, with possible transition layer thickness</source>
+      <translation type="unfinished">Define mesh size inside and outside of the shape, with possible transition layer thickness</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="54"/>
+      <location filename="../ui/MeshShape.ui" line="70"/>
+      <source>Mesh size within the shape</source>
+      <translation type="unfinished">Mesh size within the shape</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="57"/>
+      <source>Size inside</source>
+      <translation>ზომა შიგნით</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="80"/>
+      <location filename="../ui/MeshShape.ui" line="96"/>
+      <source>Mesh size outside of the shape</source>
+      <translation type="unfinished">Mesh size outside of the shape</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="83"/>
+      <source>Size outside</source>
+      <translation>ზომა გარეთ</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="106"/>
+      <location filename="../ui/MeshShape.ui" line="122"/>
+      <source>Thickness of transition layer between in/out mesh sizes (added outside of the shape)</source>
+      <translation type="unfinished">Thickness of transition layer between in/out mesh sizes (added outside of the shape)</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="145"/>
+      <source>Box</source>
+      <translation>კუბი</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="150"/>
+      <source>Sphere</source>
+      <translation>სფერო</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="155"/>
+      <source>Cylinder</source>
+      <translation>ცილინდრი</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="41"/>
+      <source>Define mesh element size based on distance to chosen reference geometries.</source>
+      <translation type="unfinished">Define mesh element size based on distance to chosen reference geometries.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="140"/>
+      <source>Size</source>
+      <translation>ზომა</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="284"/>
+      <source>Interpolation</source>
+      <translation>ინტერპოლაცია</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="291"/>
+      <source>Sampling size</source>
+      <translation type="unfinished">Sampling size</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="304"/>
+      <source>Number of sampling points used to discretize curves and surfaces. For surface it is the sampling size per direction.</source>
+      <translation type="unfinished">Number of sampling points used to discretize curves and surfaces. For surface it is the sampling size per direction.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="329"/>
+      <source>Linear</source>
+      <translation>წრფივი</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="96"/>
+      <location filename="../ui/MeshPreview.ui" line="109"/>
+      <source>The smallest mesh size in the refinement, marked green in the mesh preview.</source>
+      <translation type="unfinished">The smallest mesh size in the refinement, marked green in the mesh preview.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="99"/>
+      <source>Min:</source>
+      <translation>მინ:</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="112"/>
+      <source>1.00e+02</source>
+      <translation>1.00e+02</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="138"/>
+      <location filename="../ui/MeshPreview.ui" line="151"/>
+      <source>The largest mesh size in the refinement, marked red in the mesh preview.</source>
+      <translation type="unfinished">The largest mesh size in the refinement, marked red in the mesh preview.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="141"/>
+      <source>Max:</source>
+      <translation>მაქს:</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="154"/>
+      <source>1.00e+03</source>
+      <translation>1.00e+03</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="184"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualizes the refinements mesh size output: It shows the mesh sizes given by the refinement as colors on a preview mesh. Note that the preview evaluates the refinement on a coarse mesh, therefore details smaller then the mesh size may not be visible.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualizes the refinements mesh size output: It shows the mesh sizes given by the refinement as colors on a preview mesh. Note that the preview evaluates the refinement on a coarse mesh, therefore details smaller then the mesh size may not be visible.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="187"/>
+      <source>Visualize</source>
+      <translation>ვიზუალიზაცია</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="197"/>
+      <source>...</source>
+      <translation>...</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="95"/>
+      <source>Select multiple faces with 3 or 4 edges, optional with corner vertices of 3-sided faces.</source>
+      <translation type="unfinished">Select multiple faces with 3 or 4 edges, optional with corner vertices of 3-sided faces.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="108"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;or&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;or&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="124"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a single face with more than 4 edges and additionally select the 3 or 4 corner nodes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a single face with more than 4 edges and additionally select the 3 or 4 corner nodes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="160"/>
+      <source>The opposite edges (or wires between corner points) must have an equal number of mesh nodes. The easiest way to achieve this is with transfinite curves.</source>
+      <translation type="unfinished">The opposite edges (or wires between corner points) must have an equal number of mesh nodes. The easiest way to achieve this is with transfinite curves.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="178"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="201"/>
+      <source>Define if the triangles on the surface shall be recombined into quads</source>
+      <translation type="unfinished">Define if the triangles on the surface shall be recombined into quads</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="188"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="217"/>
+      <source>Define how the triangles are oriented within the transfinite mesh (if not recombined)</source>
+      <translation type="unfinished">Define how the triangles are oriented within the transfinite mesh (if not recombined)</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="191"/>
+      <source>Triangle Orientation</source>
+      <translation>სამკუთხედის ორიენტაცია</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="227"/>
+      <source>If activated, all edges of the selected surfaces that do not have a transfinite curve defined already become transfinite automatically.
+Use strategically placed transfinite curve definitions to guide the automatic algorithm.
+
+Notes:
+1. User defined curves propagate to the opposite edges of faces, over all selected faces.
+2. Works only for 3- or 4-sided faces. Multi-sided faces need to be done manually.
+3. Works with most faces, either connected or unconnected </source>
+      <translation type="unfinished">If activated, all edges of the selected surfaces that do not have a transfinite curve defined already become transfinite automatically.
+Use strategically placed transfinite curve definitions to guide the automatic algorithm.
+
+Notes:
+1. User defined curves propagate to the opposite edges of faces, over all selected faces.
+2. Works only for 3- or 4-sided faces. Multi-sided faces need to be done manually.
+3. Works with most faces, either connected or unconnected </translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="236"/>
+      <source>Auto apply transfinite curves</source>
+      <translation type="unfinished">Auto apply transfinite curves</translation>
     </message>
   </context>
   <context>
@@ -3725,30 +4405,30 @@ with harmonic/oscillating driving current</translation>
   <context>
     <name>PlaneWidget</name>
     <message>
-      <location filename="../../PlaneWidget.ui" line="20"/>
+      <location filename="../../PlaneWidget.ui" line="32"/>
       <source>Origin</source>
       <translation>საწყისი</translation>
     </message>
     <message>
-      <location filename="../../PlaneWidget.ui" line="26"/>
-      <location filename="../../PlaneWidget.ui" line="86"/>
+      <location filename="../../PlaneWidget.ui" line="38"/>
+      <location filename="../../PlaneWidget.ui" line="98"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../../PlaneWidget.ui" line="43"/>
-      <location filename="../../PlaneWidget.ui" line="103"/>
+      <location filename="../../PlaneWidget.ui" line="55"/>
+      <location filename="../../PlaneWidget.ui" line="115"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../../PlaneWidget.ui" line="60"/>
-      <location filename="../../PlaneWidget.ui" line="120"/>
+      <location filename="../../PlaneWidget.ui" line="72"/>
+      <location filename="../../PlaneWidget.ui" line="132"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../PlaneWidget.ui" line="80"/>
+      <location filename="../../PlaneWidget.ui" line="92"/>
       <source>Normal</source>
       <translation>ნორმალური</translation>
     </message>
@@ -3767,13 +4447,13 @@ with harmonic/oscillating driving current</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemPostObject.cpp" line="899"/>
-      <location filename="../../ViewProviderFemPostFunction.cpp" line="312"/>
+      <location filename="../../ViewProviderFemPostFunction.cpp" line="155"/>
       <source>A dialog is already open in the task panel</source>
       <translation>ფანჯარა უკვე ღიაა ამოცანების პანელზე</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemPostObject.cpp" line="900"/>
-      <location filename="../../ViewProviderFemPostFunction.cpp" line="313"/>
+      <location filename="../../ViewProviderFemPostFunction.cpp" line="156"/>
       <source>Do you want to close this dialog?</source>
       <translation>ნამდვილად გსურთ ამ ფანჯრის დახურვა?</translation>
     </message>
@@ -3783,18 +4463,18 @@ with harmonic/oscillating driving current</translation>
       <translation>ბადის აგება</translation>
     </message>
     <message>
-      <location filename="../../AppFemGui.cpp" line="185"/>
-      <location filename="../../AppFemGui.cpp" line="186"/>
-      <location filename="../../AppFemGui.cpp" line="187"/>
-      <location filename="../../AppFemGui.cpp" line="188"/>
-      <location filename="../../AppFemGui.cpp" line="189"/>
-      <location filename="../../AppFemGui.cpp" line="190"/>
+      <location filename="../../AppFemGui.cpp" line="195"/>
+      <location filename="../../AppFemGui.cpp" line="196"/>
+      <location filename="../../AppFemGui.cpp" line="197"/>
+      <location filename="../../AppFemGui.cpp" line="198"/>
+      <location filename="../../AppFemGui.cpp" line="199"/>
+      <location filename="../../AppFemGui.cpp" line="200"/>
       <source>FEM</source>
       <translation>სემ</translation>
     </message>
     <message>
-      <location filename="../../AppFemGui.cpp" line="193"/>
-      <location filename="../../AppFemGui.cpp" line="194"/>
+      <location filename="../../AppFemGui.cpp" line="203"/>
+      <location filename="../../AppFemGui.cpp" line="204"/>
       <source>Import-Export</source>
       <translation>შეტანა-გატანა</translation>
     </message>
@@ -4189,27 +4869,27 @@ For possible variables, see the description box below.</source>
   <context>
     <name>SphereWidget</name>
     <message>
-      <location filename="../../SphereWidget.ui" line="26"/>
+      <location filename="../../SphereWidget.ui" line="38"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../../SphereWidget.ui" line="49"/>
+      <location filename="../../SphereWidget.ui" line="61"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../../SphereWidget.ui" line="72"/>
+      <location filename="../../SphereWidget.ui" line="84"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../SphereWidget.ui" line="112"/>
+      <location filename="../../SphereWidget.ui" line="124"/>
       <source>Radius</source>
       <translation>რადიუსი</translation>
     </message>
     <message>
-      <location filename="../../SphereWidget.ui" line="20"/>
+      <location filename="../../SphereWidget.ui" line="32"/>
       <source>Center</source>
       <translation>ცენტრი</translation>
     </message>
@@ -4260,7 +4940,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="70"/>
       <source>Box</source>
-      <translation>კუბი</translation>
+      <translation>ყუთი</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="80"/>
@@ -5605,12 +6285,12 @@ normal vector of the face is used as direction</source>
   <context>
     <name>FEM_MeshDisplayInfo</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="757"/>
+      <location filename="../../../femcommands/commands.py" line="758"/>
       <source>Display Mesh Info</source>
       <translation>ბადის ინფორმაციის ჩვენება</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="758"/>
+      <location filename="../../../femcommands/commands.py" line="759"/>
       <source>Displays FEM mesh information</source>
       <translation>სემ ბადის ინფორმაციის ჩვენება</translation>
     </message>
@@ -5618,12 +6298,12 @@ normal vector of the face is used as direction</source>
   <context>
     <name>FEM_MeshGmshFromShape</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="781"/>
+      <location filename="../../../femcommands/commands.py" line="782"/>
       <source>Mesh From Shape by Gmsh</source>
       <translation>ბადე მონახაზიდან Gmsh-ით</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="784"/>
+      <location filename="../../../femcommands/commands.py" line="785"/>
       <source>Creates a FEM mesh from a shape by Gmsh mesher</source>
       <translation>მოხაზულობიდან Gmsh-ის მეშვეობით სემ ბადის შექმნა</translation>
     </message>
@@ -5631,12 +6311,12 @@ normal vector of the face is used as direction</source>
   <context>
     <name>FEM_MeshNetgenFromShape</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="842"/>
+      <location filename="../../../femcommands/commands.py" line="843"/>
       <source>Mesh From Shape by Netgen</source>
       <translation>ბადე მონახაზიდან Netgen-ით</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="846"/>
+      <location filename="../../../femcommands/commands.py" line="847"/>
       <source>Creates a FEM mesh from a solid or face shape by Netgen internal mesher</source>
       <translation>შექმნის სემ ბადის მყარი სხეულისაგან ან ზედაპირის მოხაზულობისგან Netgen შიდა მეშერით</translation>
     </message>
@@ -5644,12 +6324,12 @@ normal vector of the face is used as direction</source>
   <context>
     <name>FEM_SolverCalculiXCcxTools</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1037"/>
+      <location filename="../../../femcommands/commands.py" line="1174"/>
       <source>Solver CalculiX Standard</source>
       <translation>ამომხსნელის CalculiX სტანდარტი</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1042"/>
+      <location filename="../../../femcommands/commands.py" line="1179"/>
       <source>Creates a standard FEM solver CalculiX with ccx tools</source>
       <translation>Cxx ხელსაწყოებით სტანდარტული CalculiX სემ ამომხსნელის შექმნა</translation>
     </message>
@@ -5657,12 +6337,12 @@ normal vector of the face is used as direction</source>
   <context>
     <name>FEM_SolverControl</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1080"/>
+      <location filename="../../../femcommands/commands.py" line="1217"/>
       <source>Solver Job Control</source>
       <translation>გადამწყვეტის ამოცანების კონტროლი</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1085"/>
+      <location filename="../../../femcommands/commands.py" line="1222"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
       <translation>ცვლის ამომხსნელის ატრიბუტებს და აწარმოებს გამოთვლებს არჩეული ამომხსნელისთვის</translation>
     </message>
@@ -5670,12 +6350,12 @@ normal vector of the face is used as direction</source>
   <context>
     <name>FEM_SolverElmer</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1097"/>
+      <location filename="../../../femcommands/commands.py" line="1234"/>
       <source>Solver Elmer</source>
       <translation>გადამწყვეტი Elmder</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1099"/>
+      <location filename="../../../femcommands/commands.py" line="1236"/>
       <source>Creates a FEM solver Elmer</source>
       <translation>სემ „Elmer“ ამოხსნელის შექმნა</translation>
     </message>
@@ -5683,12 +6363,12 @@ normal vector of the face is used as direction</source>
   <context>
     <name>FEM_SolverMystran</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1136"/>
+      <location filename="../../../femcommands/commands.py" line="1273"/>
       <source>Solver Mystran</source>
       <translation>Mystran ამომხსნელი</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1138"/>
+      <location filename="../../../femcommands/commands.py" line="1275"/>
       <source>Creates a FEM solver Mystran</source>
       <translation>სემ „Mystran“ ამოხსნელის შექმნა</translation>
     </message>
@@ -5696,12 +6376,12 @@ normal vector of the face is used as direction</source>
   <context>
     <name>FEM_SolverRun</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1148"/>
+      <location filename="../../../femcommands/commands.py" line="1285"/>
       <source>Run Solver</source>
       <translation>ამომხსნელის გაშვება</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1152"/>
+      <location filename="../../../femcommands/commands.py" line="1289"/>
       <source>Runs the calculations for the selected solver</source>
       <translation>გამოთვლების არჩეული ამომხსნელით გაშვება</translation>
     </message>
@@ -5709,12 +6389,12 @@ normal vector of the face is used as direction</source>
   <context>
     <name>FEM_SolverZ88</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1169"/>
+      <location filename="../../../femcommands/commands.py" line="1306"/>
       <source>Solver Z88</source>
       <translation>გადამწყვეტი Z88</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1171"/>
+      <location filename="../../../femcommands/commands.py" line="1308"/>
       <source>Creates a FEM solver Z88</source>
       <translation>სემ Z88 ამოხსნელისთვის ამოცანის შექმნა</translation>
     </message>
@@ -5815,42 +6495,42 @@ normal vector of the face is used as direction</source>
   <context>
     <name>GeometryElementsSelection</name>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="297"/>
+      <location filename="../../../femguiutils/selection_widgets.py" line="299"/>
       <source>Add</source>
       <translation>დამატება</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="298"/>
+      <location filename="../../../femguiutils/selection_widgets.py" line="300"/>
       <source>Remove</source>
       <translation>მოცილება</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="302"/>
+      <location filename="../../../femguiutils/selection_widgets.py" line="304"/>
       <source>Select geometry of type: {}{}{}</source>
       <translation type="unfinished">Select geometry of type: {}{}{}</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="331"/>
+      <location filename="../../../femguiutils/selection_widgets.py" line="333"/>
       <source>Click and select geometric elements to add them to the list.{}The following geometry elements can be selected: {}{}{}</source>
       <translation>დააწკაპუნეთ და აირჩიეთ გეომეტრიული ელემენტები სიაში დასამატებლად.{} გაქვთ შემდეგი გეომეტრიის ელემენტების არჩევის უფლება: {}{}{}</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="334"/>
+      <location filename="../../../femguiutils/selection_widgets.py" line="336"/>
       <source>{}If no geometry is added to the list, all remaining ones are used.</source>
       <translation>{} თუ სიაში გეომეტრიები არაა, გამოყენებული იქნება ყველა დანარჩენი.</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="310"/>
+      <location filename="../../../femguiutils/selection_widgets.py" line="312"/>
       <source>Selection mode</source>
       <translation>მონიშვნის რეჟიმი</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="295"/>
+      <location filename="../../../femguiutils/selection_widgets.py" line="297"/>
       <source>Geometry Reference Selector</source>
       <translation>გეომეტრიის მიბმის ამრჩევი</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="312"/>
+      <location filename="../../../femguiutils/selection_widgets.py" line="314"/>
       <source>Solid</source>
       <translation>მყარი</translation>
     </message>
@@ -6383,37 +7063,37 @@ No matching module was found in the current Python path.</source>
   <context>
     <name>BoxWidget</name>
     <message>
-      <location filename="../../BoxWidget.ui" line="20"/>
+      <location filename="../../BoxWidget.ui" line="32"/>
       <source>Center</source>
       <translation>ცენტრი</translation>
     </message>
     <message>
-      <location filename="../../BoxWidget.ui" line="32"/>
+      <location filename="../../BoxWidget.ui" line="44"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../../BoxWidget.ui" line="61"/>
+      <location filename="../../BoxWidget.ui" line="73"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../../BoxWidget.ui" line="84"/>
+      <location filename="../../BoxWidget.ui" line="96"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../BoxWidget.ui" line="124"/>
+      <location filename="../../BoxWidget.ui" line="136"/>
       <source>Length</source>
       <translation>სიგრძე</translation>
     </message>
     <message>
-      <location filename="../../BoxWidget.ui" line="153"/>
+      <location filename="../../BoxWidget.ui" line="165"/>
       <source>Width</source>
       <translation>სიგანე</translation>
     </message>
     <message>
-      <location filename="../../BoxWidget.ui" line="182"/>
+      <location filename="../../BoxWidget.ui" line="194"/>
       <source>Height</source>
       <translation>სიმაღლე</translation>
     </message>
@@ -6421,35 +7101,35 @@ No matching module was found in the current Python path.</source>
   <context>
     <name>CylinderWidget</name>
     <message>
-      <location filename="../../CylinderWidget.ui" line="20"/>
+      <location filename="../../CylinderWidget.ui" line="32"/>
       <source>Center</source>
       <translation>ცენტრი</translation>
     </message>
     <message>
-      <location filename="../../CylinderWidget.ui" line="26"/>
-      <location filename="../../CylinderWidget.ui" line="110"/>
+      <location filename="../../CylinderWidget.ui" line="38"/>
+      <location filename="../../CylinderWidget.ui" line="122"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../../CylinderWidget.ui" line="49"/>
-      <location filename="../../CylinderWidget.ui" line="133"/>
+      <location filename="../../CylinderWidget.ui" line="61"/>
+      <location filename="../../CylinderWidget.ui" line="145"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../../CylinderWidget.ui" line="72"/>
-      <location filename="../../CylinderWidget.ui" line="156"/>
+      <location filename="../../CylinderWidget.ui" line="84"/>
+      <location filename="../../CylinderWidget.ui" line="168"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../CylinderWidget.ui" line="104"/>
+      <location filename="../../CylinderWidget.ui" line="116"/>
       <source>Axis</source>
       <translation>ღერძი</translation>
     </message>
     <message>
-      <location filename="../../CylinderWidget.ui" line="196"/>
+      <location filename="../../CylinderWidget.ui" line="208"/>
       <source>Radius</source>
       <translation>რადიუსი</translation>
     </message>
@@ -6592,12 +7272,12 @@ No matching module was found in the current Python path.</source>
   <context>
     <name>FEM_MeshRegion</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="896"/>
+      <location filename="../../../femcommands/commands.py" line="897"/>
       <source>Mesh Refinement</source>
       <translation>ბადის გაუმჯობესება</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="897"/>
+      <location filename="../../../femcommands/commands.py" line="898"/>
       <source>Creates a FEM mesh refinement</source>
       <translation>სემ ბადის გაუმჯობესების შექმნა</translation>
     </message>
@@ -6721,7 +7401,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="277"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>აირჩიეთ გეომეტრიის ტიპი: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="277"/>
@@ -6815,11 +7495,11 @@ No matching module was found in the current Python path.</source>
       <translation>ელემენტების წაშლა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1479"/>
       <location filename="../../TaskCreateElementSet.cpp" line="241"/>
       <location filename="../../TaskCreateElementSet.cpp" line="252"/>
       <location filename="../../TaskCreateElementSet.cpp" line="515"/>
       <location filename="../../TaskCreateElementSet.cpp" line="612"/>
+      <location filename="../../Command.cpp" line="1479"/>
       <source>Wrong selection</source>
       <translation>არასწორი არჩევანი</translation>
     </message>
@@ -7029,12 +7709,12 @@ Leave blank to use default Python executable</translation>
   <context>
     <name>FEM_SolverCalculiX</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1056"/>
+      <location filename="../../../femcommands/commands.py" line="1193"/>
       <source>Solver CalculiX</source>
       <translation>ამომხსნელი CalculiX</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1061"/>
+      <location filename="../../../femcommands/commands.py" line="1198"/>
       <source>Creates a FEM solver CalculiX</source>
       <translation>სემ „CalculiX“ ამოხსნელის შექმნა</translation>
     </message>
@@ -7228,10 +7908,10 @@ Leave blank to use default Python executable</translation>
   <context>
     <name>TaskPostGlyph</name>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="37"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="37"/>
       <location filename="../ui/TaskPostGlyph.ui" line="22"/>
       <location filename="../ui/TaskPostGlyph.ui" line="38"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="37"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="37"/>
       <source>The form of the glyph</source>
       <translation>გლიფის ფორმა</translation>
     </message>
@@ -7271,12 +7951,12 @@ Leave blank to use default Python executable</translation>
       <translation>სფერო</translation>
     </message>
     <message>
+      <location filename="../ui/TaskPostGlyph.ui" line="75"/>
+      <location filename="../ui/TaskPostGlyph.ui" line="91"/>
       <location filename="../ui/TaskPostHistogram.ui" line="66"/>
       <location filename="../ui/TaskPostHistogram.ui" line="82"/>
       <location filename="../ui/TaskPostLineplot.ui" line="81"/>
       <location filename="../ui/TaskPostLineplot.ui" line="97"/>
-      <location filename="../ui/TaskPostGlyph.ui" line="75"/>
-      <location filename="../ui/TaskPostGlyph.ui" line="91"/>
       <source>Which vector field is used to orient the glyphs</source>
       <translation>რომელი ვექტორის ველი გამოიყენება გლიფების ორიენტაციისთვის</translation>
     </message>
@@ -7286,10 +7966,10 @@ Leave blank to use default Python executable</translation>
       <translation>ორიენტაცია</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="86"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="101"/>
       <location filename="../ui/TaskPostGlyph.ui" line="95"/>
       <location filename="../ui/TaskPostGlyph.ui" line="148"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="86"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="101"/>
       <source>None</source>
       <translation>არცერთი</translation>
     </message>
@@ -7310,10 +7990,10 @@ Leave blank to use default Python executable</translation>
       <translation>მონაცემები</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="176"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="155"/>
       <location filename="../ui/TaskPostGlyph.ui" line="158"/>
       <location filename="../ui/TaskPostGlyph.ui" line="176"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="176"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="155"/>
       <source>A constant multiplier the glyphs are scaled with</source>
       <translation>მუდმივი მამრავლი, რომლითაც გლიფების მასშტაბირება ხდება</translation>
     </message>
@@ -7328,9 +8008,9 @@ Leave blank to use default Python executable</translation>
       <translation>შეცვლის გადიდების კოეფიციენტს ამჟამინდელი მნიშვნელობის +-50%-ით</translation>
     </message>
     <message>
+      <location filename="../ui/TaskPostGlyph.ui" line="226"/>
       <location filename="../ui/TaskPostHistogram.ui" line="166"/>
       <location filename="../ui/TaskPostLineplot.ui" line="145"/>
-      <location filename="../ui/TaskPostGlyph.ui" line="226"/>
       <source>If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</source>
       <translation type="unfinished">If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</translation>
     </message>
@@ -7814,27 +8494,14 @@ Leave blank to use default Python executable</translation>
     </message>
   </context>
   <context>
-    <name>FEM_MeshBoundaryLayer</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="701"/>
-      <source>Mesh Boundary Layer</source>
-      <translation>ბადის სასაზღვრო ფენა</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="704"/>
-      <source>Creates a mesh boundary layer</source>
-      <translation>ბადის შემომსაზღვრელი შრის შექმნა</translation>
-    </message>
-  </context>
-  <context>
     <name>FEM_MeshClear</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="714"/>
+      <location filename="../../../femcommands/commands.py" line="715"/>
       <source>Clear FEM Mesh</source>
       <translation>სემ ბადის გასუფთავება</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="715"/>
+      <location filename="../../../femcommands/commands.py" line="716"/>
       <source>Clears the mesh of a FEM mesh object</source>
       <translation>გაასუფთავებს სემ ბადის ობიექტის ბადეს</translation>
     </message>
@@ -7842,12 +8509,12 @@ Leave blank to use default Python executable</translation>
   <context>
     <name>FEM_MeshGroup</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="831"/>
+      <location filename="../../../femcommands/commands.py" line="832"/>
       <source>Mesh Group</source>
       <translation>ბადეების ჯგუფი</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="832"/>
+      <location filename="../../../femcommands/commands.py" line="833"/>
       <source>Creates a mesh group</source>
       <translation>ბადის ჯგუფის შექმნა</translation>
     </message>
@@ -7855,12 +8522,12 @@ Leave blank to use default Python executable</translation>
   <context>
     <name>FEM_ResultShow</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="907"/>
+      <location filename="../../../femcommands/commands.py" line="1044"/>
       <source>Show Result</source>
       <translation>შედეგის ჩვენება</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="911"/>
+      <location filename="../../../femcommands/commands.py" line="1048"/>
       <source>Shows and visualizes the selected result data</source>
       <translation>ახდენს მონიშნულ შედეგი მონაცემების ჩვენებას და ვიზუალიზაციას</translation>
     </message>
@@ -7868,12 +8535,12 @@ Leave blank to use default Python executable</translation>
   <context>
     <name>FEM_ResultsPurge</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="923"/>
+      <location filename="../../../femcommands/commands.py" line="1060"/>
       <source>Purge Results</source>
       <translation>შედეგების გასუფთავება</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="927"/>
+      <location filename="../../../femcommands/commands.py" line="1064"/>
       <source>Purges all results from the active analysis</source>
       <translation>წაშლის ყველა შედეგიდან აქტიური ანალიზიდან</translation>
     </message>
@@ -7881,12 +8548,12 @@ Leave blank to use default Python executable</translation>
   <context>
     <name>FEM_PostFilterGlyph</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1207"/>
+      <location filename="../../../femcommands/commands.py" line="1344"/>
       <source>Glyph Filter</source>
       <translation>გლიფების ფილტრი</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1212"/>
+      <location filename="../../../femcommands/commands.py" line="1349"/>
       <source>Adds a post-processing filter that adds glyphs to the mesh vertices for vertex data visualization</source>
       <translation type="unfinished">Adds a post-processing filter that adds glyphs to the mesh vertices for vertex data visualization</translation>
     </message>
@@ -7930,35 +8597,35 @@ Leave blank to use default Python executable</translation>
   <context>
     <name>PostHistogramEdit</name>
     <message>
-      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="14"/>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="14"/>
       <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
+      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="14"/>
       <source>Form</source>
       <translation>ფორმა</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="75"/>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="40"/>
+      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="75"/>
       <source>Outline draw style (None does not draw outlines)</source>
       <translation>გარემოხაზულობის ხაზვის სტილი ('არცცერთი' გარემოზახულობის არდასახაზად)</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="51"/>
-      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="79"/>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="44"/>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="81"/>
+      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="51"/>
+      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="79"/>
       <source>None</source>
       <translation>არცერთი</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="129"/>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="58"/>
+      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="129"/>
       <source>Width of all lines (outline and hatch)</source>
       <translation>ყველა ხაზის სიგანე (გარემოხაზულობა და დაშტრიხვა)</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="47"/>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="77"/>
+      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="47"/>
       <source>Hatch pattern</source>
       <translation>დაშტრიხვის შაბლონი</translation>
     </message>
@@ -7978,8 +8645,8 @@ Leave blank to use default Python executable</translation>
       <translation>პანელები</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="62"/>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="122"/>
+      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="62"/>
       <source>Legend</source>
       <translation>ლეგენდა</translation>
     </message>
@@ -7989,8 +8656,8 @@ Leave blank to use default Python executable</translation>
       <translation>ყველა ხაზის სიგანე (ღეროს გარემოხაზულობა და დაშტრიხვები)</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="100"/>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="148"/>
+      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="100"/>
       <source>Color of the bars in histogram</source>
       <translation>ღეროების ფერი ჰისტოგრამაში</translation>
     </message>
@@ -8150,74 +8817,149 @@ Leave blank to use default Python executable</translation>
     </message>
   </context>
   <context>
-    <name>FemToolsCcx</name>
+    <name>FEM_ConstraintElectromagnetic</name>
     <message>
-      <location filename="../../../femtools/ccxtools.py" line="419"/>
-      <source>No or wrong CalculiX binary ccx</source>
-      <translation type="unfinished">No or wrong CalculiX binary ccx</translation>
+      <location filename="../../../femcommands/commands.py" line="268"/>
+      <source>Electromagnetic Boundary Condition</source>
+      <translation type="unfinished">Electromagnetic Boundary Condition</translation>
     </message>
     <message>
-      <location filename="../../../femtools/ccxtools.py" line="453"/>
-      <source>FEM: wrong ccx binary</source>
-      <translation type="unfinished">FEM: wrong ccx binary</translation>
-    </message>
-    <message>
-      <location filename="../../../femtools/ccxtools.py" line="466"/>
-      <source>FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</source>
-      <translation type="unfinished">FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</translation>
-    </message>
-    <message>
-      <location filename="../../../femtools/ccxtools.py" line="478"/>
-      <source>FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</source>
-      <translation type="unfinished">FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</translation>
+      <location filename="../../../femcommands/commands.py" line="272"/>
+      <source>Creates an electromagnetic boundary condition</source>
+      <translation type="unfinished">Creates an electromagnetic boundary condition</translation>
     </message>
   </context>
   <context>
-    <name>SolverElmer</name>
+    <name>FEM_MeshBoundaryLayer</name>
     <message>
-      <location filename="../ui/SolverElmer.ui" line="14"/>
-      <source>Solver Elmer Control</source>
-      <translation type="unfinished">Solver Elmer Control</translation>
+      <location filename="../../../femcommands/commands.py" line="701"/>
+      <source>2D Boundary Layer</source>
+      <translation>2D საზღვრის ფენა</translation>
     </message>
     <message>
-      <location filename="../ui/SolverElmer.ui" line="20"/>
-      <source>Working directory</source>
-      <translation>სამუშაო საქაღალდე</translation>
+      <location filename="../../../femcommands/commands.py" line="705"/>
+      <source>Adds a structured layer of mesh elmenets on 2D model boundaries</source>
+      <translation type="unfinished">Adds a structured layer of mesh elmenets on 2D model boundaries</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshClearGroups</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="735"/>
+      <source>Clear Mesh Groups</source>
+      <translation>ბადის ჯგუფების გასუფთავება</translation>
     </message>
     <message>
-      <location filename="../ui/SolverElmer.ui" line="35"/>
-      <source>Write</source>
-      <translation>ჩაწერა</translation>
+      <location filename="../../../femcommands/commands.py" line="736"/>
+      <source>Remove groups from FEM mesh</source>
+      <translation type="unfinished">Remove groups from FEM mesh</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshDistance</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="908"/>
+      <source>Distance-Based Refinement</source>
+      <translation>დაშორებაზე დაფუძნებული გაუმჯობესება</translation>
     </message>
     <message>
-      <location filename="../ui/SolverElmer.ui" line="45"/>
-      <source>Edit</source>
-      <translation>ჩასწორება</translation>
+      <location filename="../../../femcommands/commands.py" line="911"/>
+      <source>Sets mesh size based on the distance to vertices, edges, and faces</source>
+      <translation type="unfinished">Sets mesh size based on the distance to vertices, edges, and faces</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshManipulate</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="921"/>
+      <source>Manipulate Refinement</source>
+      <translation>გაუმჯობესების მანიპულაცია</translation>
     </message>
     <message>
-      <location filename="../ui/SolverElmer.ui" line="56"/>
-      <source>Path to working directory. Leave blank to use user preferences</source>
-      <translation type="unfinished">Path to working directory. Leave blank to use user preferences</translation>
+      <location filename="../../../femcommands/commands.py" line="924"/>
+      <source>Allows to manipulate the output of a refinement in various ways</source>
+      <translation type="unfinished">Allows to manipulate the output of a refinement in various ways</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshAdvanced</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="934"/>
+      <source>Advanced Refinement Types</source>
+      <translation type="unfinished">Advanced Refinement Types</translation>
     </message>
     <message>
-      <location filename="../ui/SolverElmer.ui" line="74"/>
-      <source>Solver Parameters</source>
-      <translation>ამომხსნელის პარამეტრები</translation>
+      <location filename="../../../femcommands/commands.py" line="937"/>
+      <source>Allows to define the mesh size by various advanced means</source>
+      <translation type="unfinished">Allows to define the mesh size by various advanced means</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshShape</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="947"/>
+      <source>Shape-Based Refinement</source>
+      <translation>მოხაზულობაზე დაფუძნებული გაუმჯობესება</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshSphere</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="951"/>
+      <source>Sets mesh size within and outside of a geometric shape (box, sphere, cylinder)</source>
+      <translation type="unfinished">Sets mesh size within and outside of a geometric shape (box, sphere, cylinder)</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshTransfiniteCurve</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="963"/>
+      <source>Structured Transfinite Curve</source>
+      <translation type="unfinished">Structured Transfinite Curve</translation>
     </message>
     <message>
-      <location filename="../ui/SolverElmer.ui" line="82"/>
-      <source>Simulation type</source>
-      <translation>სიმულაციის ტიპი</translation>
+      <location filename="../../../femcommands/commands.py" line="967"/>
+      <source>Creates a fixed amount of nodes on an endge with a structured algorithm</source>
+      <translation type="unfinished">Creates a fixed amount of nodes on an endge with a structured algorithm</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshTransfiniteSurface</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="979"/>
+      <source>Structured Transfinite Surface</source>
+      <translation type="unfinished">Structured Transfinite Surface</translation>
     </message>
     <message>
-      <location filename="../ui/SolverElmer.ui" line="122"/>
-      <source>Time</source>
-      <translation>დრო</translation>
+      <location filename="../../../femcommands/commands.py" line="982"/>
+      <source>Creates a structured mesh on a face</source>
+      <translation type="unfinished">Creates a structured mesh on a face</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshTransfiniteVolume</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="994"/>
+      <source>Structured Transfinite Volume</source>
+      <translation type="unfinished">Structured Transfinite Volume</translation>
     </message>
     <message>
-      <location filename="../ui/SolverElmer.ui" line="129"/>
-      <source>Solver Version</source>
-      <translation>ამომხსნელის ვერსია</translation>
+      <location filename="../../../femcommands/commands.py" line="998"/>
+      <source>Creates a structured mesh in a 4 or 5 sided volume bounded by transfinite surfaces</source>
+      <translation type="unfinished">Creates a structured mesh in a 4 or 5 sided volume bounded by transfinite surfaces</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_CompSolvers</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="1358"/>
+      <source>Solvers</source>
+      <translation>ამომხსნელები</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="1359"/>
+      <source>Creates a FEM solver</source>
+      <translation>ქმნის სემ ამომხსნელს</translation>
     </message>
   </context>
   <context>
@@ -8269,42 +9011,74 @@ Leave blank to use default Python executable</translation>
     </message>
   </context>
   <context>
-    <name>FEM_ConstraintElectromagnetic</name>
+    <name>SolverElmer</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="268"/>
-      <source>Electromagnetic Boundary Condition</source>
-      <translation type="unfinished">Electromagnetic Boundary Condition</translation>
+      <location filename="../ui/SolverElmer.ui" line="14"/>
+      <source>Solver Elmer Control</source>
+      <translation>ამომხსნელის Elmer კონტროლი</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="272"/>
-      <source>Creates an electromagnetic boundary condition</source>
-      <translation type="unfinished">Creates an electromagnetic boundary condition</translation>
+      <location filename="../ui/SolverElmer.ui" line="20"/>
+      <source>Working directory</source>
+      <translation>სამუშაო საქაღალდე</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="35"/>
+      <source>Write</source>
+      <translation>ჩაწერა</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="45"/>
+      <source>Edit</source>
+      <translation>ჩასწორება</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="56"/>
+      <source>Path to working directory. Leave blank to use user preferences</source>
+      <translation type="unfinished">Path to working directory. Leave blank to use user preferences</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="74"/>
+      <source>Solver Parameters</source>
+      <translation>ამომხსნელის პარამეტრები</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="82"/>
+      <source>Simulation type</source>
+      <translation>სიმულაციის ტიპი</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="122"/>
+      <source>Time</source>
+      <translation>დრო</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="129"/>
+      <source>Solver Version</source>
+      <translation>ამომხსნელის ვერსია</translation>
     </message>
   </context>
   <context>
-    <name>FEM_MeshClearGroups</name>
+    <name>FemToolsCcx</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="734"/>
-      <source>Clear Mesh Groups</source>
-      <translation>ბადის ჯგუფების გასუფთავება</translation>
+      <location filename="../../../femtools/ccxtools.py" line="419"/>
+      <source>No or wrong CalculiX binary ccx</source>
+      <translation type="unfinished">No or wrong CalculiX binary ccx</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="735"/>
-      <source>Remove groups from FEM mesh</source>
-      <translation type="unfinished">Remove groups from FEM mesh</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_CompSolvers</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="1221"/>
-      <source>Solvers</source>
-      <translation>ამომხსნელები</translation>
+      <location filename="../../../femtools/ccxtools.py" line="453"/>
+      <source>FEM: wrong ccx binary</source>
+      <translation>სემ: არასწორი ccx გამშვები ფაილი</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1222"/>
-      <source>Creates a FEM solver</source>
-      <translation type="unfinished">Creates a FEM solver</translation>
+      <location filename="../../../femtools/ccxtools.py" line="466"/>
+      <source>FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</source>
+      <translation type="unfinished">FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</translation>
+    </message>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="478"/>
+      <source>FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</source>
+      <translation type="unfinished">FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</translation>
     </message>
   </context>
   <context>

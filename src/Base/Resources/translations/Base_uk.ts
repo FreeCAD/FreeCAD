@@ -19,7 +19,7 @@
       <translation>Умовні позначення США (дюйми, фунти)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="679"/>
+      <location filename="../../UnitsSchemasData.h" line="681"/>
       <source>Imperial for Civil Eng (ft, lb, mph)</source>
       <translation>Імперська для цивільних інженерів (фути, фунти, милі/год)</translation>
     </message>

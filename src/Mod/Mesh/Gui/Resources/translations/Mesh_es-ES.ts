@@ -65,7 +65,7 @@
     <message>
       <location filename="../../Command.cpp" line="999"/>
       <source>Cross-Sections</source>
-      <translation type="unfinished">Cross-Sections</translation>
+      <translation>Secciones Transversales</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1000"/>
@@ -119,12 +119,12 @@
     <message>
       <location filename="../../Command.cpp" line="1132"/>
       <source>Face Info</source>
-      <translation type="unfinished">Face Info</translation>
+      <translation>Información de la cara</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1133"/>
       <source>Displays information about the selected faces</source>
-      <translation type="unfinished">Displays information about the selected faces</translation>
+      <translation>Muestra información sobre las caras seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -1602,7 +1602,7 @@ to a smoother appearance.
     <message>
       <location filename="../../MeshEditor.cpp" line="395"/>
       <source>Flip Normal</source>
-      <translation type="unfinished">Flip Normal</translation>
+      <translation>Invertir normal</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="396"/>
@@ -2271,8 +2271,8 @@ Visit https://openscad.org/ to install it.</translation>
       <translation>Mostrar colores</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1701"/>
       <location filename="../../ViewProviderCurvature.cpp" line="535"/>
+      <location filename="../../ViewProvider.cpp" line="1701"/>
       <source>Leave Info Mode</source>
       <translation>Salir del modo de información</translation>
     </message>

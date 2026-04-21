@@ -687,10 +687,10 @@ Les noms en majuscules et minuscules s'affichent avec des espaces « casse mixte
       <translation>Tous les objets seront traités en utilisant les mêmes propriétés.</translation>
     </message>
     <message>
-      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="142"/>
       <location filename="../panels/PropertyBag.ui" line="62"/>
-      <location filename="../panels/PageBaseLocationEdit.ui" line="43"/>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="72"/>
+      <location filename="../panels/PageBaseLocationEdit.ui" line="43"/>
+      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="142"/>
       <source>Add</source>
       <translation>Ajouter</translation>
     </message>
@@ -700,18 +700,29 @@ Les noms en majuscules et minuscules s'affichent avec des espaces « casse mixte
       <translation>Liste des opérations avec une géométrie de base pour la tâche actuelle</translation>
     </message>
     <message>
-      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="152"/>
       <location filename="../panels/PropertyBag.ui" line="48"/>
-      <location filename="../panels/PageBaseLocationEdit.ui" line="53"/>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="82"/>
+      <location filename="../panels/PageBaseLocationEdit.ui" line="53"/>
+      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="152"/>
       <source>Remove</source>
       <translation>Supprimer</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketExtEdit.ui" line="149"/>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="92"/>
+      <location filename="../panels/PageOpPocketExtEdit.ui" line="149"/>
       <source>Clear</source>
       <translation>Supprimer</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="124"/>
+      <source>Feature</source>
+      <translation>Entités</translation>
+    </message>
+    <message>
+      <location filename="../panels/ToolEditor.ui" line="96"/>
+      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="129"/>
+      <source>Diameter</source>
+      <translation>Diamètre</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="31"/>
@@ -757,17 +768,6 @@ ensuite possible de modifier à nouveau la liste en activant/désactivant, suppr
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="119"/>
       <source># </source>
       <translation># </translation>
-    </message>
-    <message>
-      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="124"/>
-      <source>Feature</source>
-      <translation>Entités</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="129"/>
-      <location filename="../panels/ToolEditor.ui" line="96"/>
-      <source>Diameter</source>
-      <translation>Diamètre</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="139"/>
@@ -905,8 +905,8 @@ appropriée.</translation>
       <translation>Diamètre minimum</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="314"/>
       <location filename="../panels/PageDiametersEdit.ui" line="57"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="314"/>
       <source>Max diameter</source>
       <translation>Diamètre maximum</translation>
     </message>
@@ -938,25 +938,25 @@ vitesse d'avance.</translation>
       <translation>La hauteur où le mouvement latéral de l'outil coupant n'est entravé par aucune fixation ou par la pièce/le brut lui-même.</translation>
     </message>
     <message>
-      <location filename="../panels/SetupGlobal.ui" line="255"/>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="43"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="43"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="43"/>
+      <location filename="../panels/SetupGlobal.ui" line="255"/>
       <source>Coolant Mode</source>
       <translation>Mode de lubrification</translation>
     </message>
     <message>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="59"/>
       <location filename="../panels/PageOpHelixEdit.ui" line="29"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="29"/>
       <location filename="../panels/SetupGlobal.ui" line="180"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="29"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="59"/>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="29"/>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="29"/>
       <source>Tool Controller</source>
       <translation>Contrôleur d'outil</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="33"/>
       <location filename="../panels/PageOpHelixEdit.ui" line="43"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="33"/>
       <location filename="../panels/SetupGlobal.ui" line="249"/>
       <source>Coolant</source>
       <translation>Refroidissement</translation>
@@ -1058,36 +1058,36 @@ sera effectuée en relevant l'outil à la hauteur du dégagement.</translation>
       <translation>Diamètre d'entrée minimum acceptable, exprimé en pourcentage du diamètre de l'outil.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="23"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="53"/>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="29"/>
-      <location filename="../panels/PageOpCustomEdit.ui" line="35"/>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="35"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="29"/>
-      <location filename="../panels/PageOpSlotEdit.ui" line="35"/>
-      <location filename="../panels/PageOpProbeEdit.ui" line="35"/>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="29"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="29"/>
+      <location filename="../panels/PageOpEngraveEdit.ui" line="29"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="53"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="29"/>
+      <location filename="../panels/PageOpCustomEdit.ui" line="35"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="29"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="23"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="35"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="35"/>
+      <location filename="../panels/PageOpProbeEdit.ui" line="35"/>
       <source>Tool controller</source>
       <translation>Contrôleur d'outils</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="43"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="57"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="99"/>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="53"/>
-      <location filename="../panels/PageOpCustomEdit.ui" line="59"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="57"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="57"/>
       <location filename="../panels/PageOpDrillingEdit.ui" line="97"/>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="59"/>
-      <location filename="../panels/PageOpTappingEdit.ui" line="79"/>
+      <location filename="../panels/PageOpEngraveEdit.ui" line="57"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="99"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="57"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="57"/>
+      <location filename="../panels/PageOpCustomEdit.ui" line="59"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="53"/>
+      <location filename="../panels/PageOpTappingEdit.ui" line="79"/>
       <location filename="../panels/PageOpVcarveEdit.ui" line="57"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="43"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="57"/>
       <location filename="../panels/PageOpSlotEdit.ui" line="59"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="59"/>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="43"/>
       <location filename="../panels/PageOpProbeEdit.ui" line="49"/>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="57"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="57"/>
       <source>Edit Tool Controller</source>
       <translation>Modifier le contrôleur d'outils</translation>
     </message>
@@ -1394,8 +1394,8 @@ vers le centre.</translation>
 100 % signifie que chaque découpe ne se chevauche pas.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="138"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="185"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="138"/>
       <source>Step over percent</source>
       <translation>Pourcentage de recouvrement</translation>
     </message>
@@ -1481,95 +1481,20 @@ boîte englobante doit être mise de côté.
 Ce dernier peut être utilisé pour surfacer l'ensemble de la zone du brut afin de garantir des hauteurs uniformes pour les opérations suivantes.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="81"/>
-      <source>Clearing Pattern</source>
-      <translation>Motif pour nettoyer</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="88"/>
-      <source>Pattern for clearing the face: ZigZag, Bidirectional, Directional, or Spiral</source>
-      <translation>Motif pour nettoyer la face : en zigzag, bidirectionnel, directionnel ou en spirale</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="95"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="95"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="95"/>
       <source>Cut Mode</source>
       <translation>Mode de coupe</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="102"/>
-      <source>Climb or Conventional milling direction</source>
-      <translation>Sens de fraisage en avalant ou en opposition</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="116"/>
-      <source>Rotation angle for angled facing operations</source>
-      <translation>Angle de rotation pour les opérations de parement en angle</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="119"/>
-      <source>°</source>
-      <translation>°</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="138"/>
-      <source>Reverse</source>
-      <translation>Inverser</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="141"/>
-      <source>Reverse the cutting direction for the selected pattern</source>
-      <translation>Inverse le sens de découpe du motif sélectionné.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="148"/>
-      <source>Step Over</source>
-      <translation>Pas d'avance</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="155"/>
-      <source>Stepover percentage for tool passes</source>
-      <translation>Pourcentage du pas d'avance de l'outil pour les passes de l'outil</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="180"/>
-      <source>Pass Extension</source>
-      <translation>Extension de la passe</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="187"/>
-      <source>Distance to extend cuts beyond polygon boundary for tool disengagement</source>
-      <translation>Distance à laquelle les coupes doivent dépasser les limites du polygone pour le désengagement de l'outil</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="203"/>
-      <source>Stock Extension</source>
-      <translation>Extension du brut</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="210"/>
-      <source>Extends the boundary in both direction</source>
-      <translation>Étend la limite dans les deux sens.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="226"/>
-      <source>Stock To Leave (axial)</source>
-      <translation>Brut à laisser (axial)</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="233"/>
-      <source>Stock to leave for the operation</source>
-      <translation>Brut à laisser pour l'opération</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="105"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="106"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="105"/>
       <source>Climb</source>
       <translation>Avalant</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="110"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="111"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="110"/>
       <source>Conventional</source>
       <translation>En opposition</translation>
     </message>
@@ -1579,40 +1504,40 @@ Ce dernier peut être utilisé pour surfacer l'ensemble de la zone du brut afin 
       <translation>Motif</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="36"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="50"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="60"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="92"/>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="36"/>
-      <location filename="../panels/PageOpCustomEdit.ui" line="42"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="36"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="50"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="66"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="80"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="36"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="50"/>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="36"/>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="50"/>
-      <location filename="../panels/PageOpProbeEdit.ui" line="42"/>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="36"/>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="50"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="36"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="50"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="66"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="80"/>
+      <location filename="../panels/PageOpEngraveEdit.ui" line="36"/>
+      <location filename="../panels/PageOpEngraveEdit.ui" line="50"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="60"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="92"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="36"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="50"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="36"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="50"/>
+      <location filename="../panels/PageOpCustomEdit.ui" line="42"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="36"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="36"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="50"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="36"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="50"/>
+      <location filename="../panels/PageOpProbeEdit.ui" line="42"/>
       <source>The tool and its settings to be used for this operation</source>
       <translation>L'outil et ses réglages à utiliser pour cette opération</translation>
     </message>
     <message>
-      <location filename="../panels/SetupGlobal.ui" line="261"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="85"/>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="46"/>
-      <location filename="../panels/PageOpCustomEdit.ui" line="49"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="43"/>
       <location filename="../panels/PageOpDrillingEdit.ui" line="73"/>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="52"/>
-      <location filename="../panels/PageOpTappingEdit.ui" line="58"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="43"/>
-      <location filename="../panels/PageOpSlotEdit.ui" line="52"/>
       <location filename="../panels/PageOpEngraveEdit.ui" line="43"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="85"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="43"/>
+      <location filename="../panels/PageOpCustomEdit.ui" line="49"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="46"/>
+      <location filename="../panels/PageOpTappingEdit.ui" line="58"/>
+      <location filename="../panels/SetupGlobal.ui" line="261"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="43"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="52"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="52"/>
       <source>Coolant mode</source>
       <translation>Mode de lubrification</translation>
     </message>
@@ -1659,18 +1584,8 @@ opposition, la rotation de l'outil coupant et le mouvement latéral de l'outil s
       <translation>Triangle</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="241"/>
-      <source>If selected the operation uses the outline of the selected base geometry and ignores all holes</source>
-      <translation>Si cette option est sélectionnée, l'opération utilise le contour de la géométrie de base sélectionnée et ignore tous les trous.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="244"/>
-      <source>Ignore holes</source>
-      <translation>Ignorer les trous</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="109"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="171"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="109"/>
       <source>Angle</source>
       <translation>Angle</translation>
     </message>
@@ -1700,10 +1615,20 @@ opposition, la rotation de l'outil coupant et le mouvement latéral de l'outil s
       <translation>Spécifier si cette opération utilise un point de départ</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="264"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="234"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="264"/>
       <source>Use start point</source>
       <translation>Utiliser le point de départ</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="241"/>
+      <source>If selected the operation uses the outline of the selected base geometry and ignores all holes</source>
+      <translation>Si cette option est sélectionnée, l'opération utilise le contour de la géométrie de base sélectionnée et ignore tous les trous.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="244"/>
+      <source>Ignore holes</source>
+      <translation>Ignorer les trous</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="251"/>
@@ -1721,8 +1646,8 @@ opposition, la rotation de l'outil coupant et le mouvement latéral de l'outil s
       <translation>Vérifier que les zones d'usinage qui ont déjà été détourées par des opérations précédentes seront ignorées</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="189"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="268"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="189"/>
       <source>Use rest machining</source>
       <translation>Utiliser l'usinage de repos</translation>
     </message>
@@ -1896,8 +1821,8 @@ de coupe sont inversés par rapport aux valeurs spécifiées.</translation>
       <translation>Choisir le point à utiliser sur la première entité sélectionnée</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="42"/>
       <location filename="../panels/PageOpSlotEdit.ui" line="42"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="42"/>
       <source> The tool and its settings to be used for this operation</source>
       <translation>L'outil et ses réglages à utiliser pour cette opération</translation>
     </message>
@@ -2038,11 +1963,6 @@ de coupe sont inversés par rapport aux valeurs spécifiées.</translation>
       <location filename="../panels/PageOpSlotEdit.ui" line="408"/>
       <source>Reverse cut direction</source>
       <translation>Inverser la direction de coupe</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="73"/>
-      <source>Select the algorithm to use: &apos;OCL Dropcutter*&apos;, &apos;OCL Adaptive*&apos; or &apos;Experimental&apos; (not OCL based).</source>
-      <translation>Sélectionner l'algorithme à utiliser : « OCL Dropcutter* », « OCL Adaptive* » ou « Expérimental » (non basé sur OCL).</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="86"/>
@@ -2194,13 +2114,18 @@ Rotationnel : balayage rotationnel à 4 axes</translation>
       <translation>Décalage de la profondeur</translation>
     </message>
     <message>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="73"/>
+      <source>Select the algorithm to use: &apos;OCL Dropcutter*&apos;, &apos;OCL Adaptive*&apos; or &apos;Experimental&apos; (not OCL based).</source>
+      <translation>Sélectionner l'algorithme à utiliser : « OCL Dropcutter* », « OCL Adaptive* » ou « Expérimental » (non basé sur OCL).</translation>
+    </message>
+    <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="149"/>
       <source>Boundary adjustment</source>
       <translation>Ajustement des limites</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="175"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="166"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="175"/>
       <source>Step over</source>
       <translation>Recouvrement</translation>
     </message>
@@ -2354,8 +2279,8 @@ Par défaut : 3 mm</translation>
       <translation>Orientation</translation>
     </message>
     <message>
-      <location filename="../panels/ToolEditor.ui" line="43"/>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="73"/>
+      <location filename="../panels/ToolEditor.ui" line="43"/>
       <source>Type</source>
       <translation>Type</translation>
     </message>
@@ -2637,6 +2562,81 @@ Si le rayon est plus grand que celui que la forme de l'attache elle-même prend 
       <location filename="../panels/PageOpEngraveEdit.ui" line="77"/>
       <source>Specify the vertex number of the underlying shape string at which engraving should start</source>
       <translation>Spécifie le numéro du sommet de la forme du texte à partir duquel la gravure doit commencer.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="81"/>
+      <source>Clearing Pattern</source>
+      <translation>Motif pour nettoyer</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="88"/>
+      <source>Pattern for clearing the face: ZigZag, Bidirectional, Directional, or Spiral</source>
+      <translation>Motif pour nettoyer la face : en zigzag, bidirectionnel, directionnel ou en spirale</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="102"/>
+      <source>Climb or Conventional milling direction</source>
+      <translation>Sens de fraisage en avalant ou en opposition</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="116"/>
+      <source>Rotation angle for angled facing operations</source>
+      <translation>Angle de rotation pour les opérations de parement en angle</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="119"/>
+      <source>°</source>
+      <translation>°</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="138"/>
+      <source>Reverse</source>
+      <translation>Inverser</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="141"/>
+      <source>Reverse the cutting direction for the selected pattern</source>
+      <translation>Inverse le sens de découpe du motif sélectionné.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="148"/>
+      <source>Step Over</source>
+      <translation>Pas d'avance</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="155"/>
+      <source>Stepover percentage for tool passes</source>
+      <translation>Pourcentage du pas d'avance de l'outil pour les passes de l'outil</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="180"/>
+      <source>Pass Extension</source>
+      <translation>Extension de la passe</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="187"/>
+      <source>Distance to extend cuts beyond polygon boundary for tool disengagement</source>
+      <translation>Distance à laquelle les coupes doivent dépasser les limites du polygone pour le désengagement de l'outil</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="203"/>
+      <source>Stock Extension</source>
+      <translation>Extension du brut</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="210"/>
+      <source>Extends the boundary in both direction</source>
+      <translation>Étend la limite dans les deux sens.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="226"/>
+      <source>Stock To Leave (axial)</source>
+      <translation>Brut à laisser (axial)</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="233"/>
+      <source>Stock to leave for the operation</source>
+      <translation>Brut à laisser pour l'opération</translation>
     </message>
   </context>
   <context>
@@ -3171,8 +3171,8 @@ REMARQUE : l'activation d'OpenCAMLib ici nécessite un redémarrage de FreeCAD p
       <translation>Finition de l'axe assigné</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="80"/>
       <location filename="../panels/AxisMapEdit.ui" line="20"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="80"/>
       <source>Radius</source>
       <translation>Rayon</translation>
     </message>
@@ -3237,8 +3237,8 @@ REMARQUE : l'activation d'OpenCAMLib ici nécessite un redémarrage de FreeCAD p
       <translation>Dégagements des angles</translation>
     </message>
     <message>
-      <location filename="../panels/ZCorrectEdit.ui" line="35"/>
       <location filename="../panels/DogboneEdit.ui" line="35"/>
+      <location filename="../panels/ZCorrectEdit.ui" line="35"/>
       <source>Dressup</source>
       <translation>Finition</translation>
     </message>
@@ -3483,27 +3483,27 @@ Les attaches sont automatiquement désactivées si elles se chevauchent avec l'a
   <context>
     <name>TaskPathSimulator</name>
     <message>
+      <location filename="../panels/TaskCAMSimulator.ui" line="14"/>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="14"/>
       <location filename="../panels/TaskPathSimulator.ui" line="14"/>
-      <location filename="../panels/TaskCAMSimulator.ui" line="14"/>
       <source>Path Simulator</source>
       <translation>Simulateur de parcours</translation>
     </message>
     <message>
-      <location filename="../panels/TaskPathSimulator.ui" line="229"/>
       <location filename="../panels/TaskCAMSimulator.ui" line="31"/>
+      <location filename="../panels/TaskPathSimulator.ui" line="229"/>
       <source>Accuracy</source>
       <translation>Précision</translation>
     </message>
     <message>
-      <location filename="../panels/TaskPathSimulator.ui" line="278"/>
       <location filename="../panels/TaskCAMSimulator.ui" line="86"/>
+      <location filename="../panels/TaskPathSimulator.ui" line="278"/>
       <source>Job</source>
       <translation>Tâche</translation>
     </message>
     <message>
-      <location filename="../panels/TaskPathSimulator.ui" line="55"/>
       <location filename="../panels/TaskCAMSimulator.ui" line="103"/>
+      <location filename="../panels/TaskPathSimulator.ui" line="55"/>
       <source>Activate/resume simulation</source>
       <translation>Activer/reprendre la simulation</translation>
     </message>
@@ -3518,8 +3518,8 @@ Les attaches sont automatiquement désactivées si elles se chevauchent avec l'a
       <translation>Arrêter</translation>
     </message>
     <message>
-      <location filename="../panels/TaskPathSimulator.ui" line="58"/>
       <location filename="../panels/TaskCAMSimulator.ui" line="106"/>
+      <location filename="../panels/TaskPathSimulator.ui" line="58"/>
       <source>Play</source>
       <translation>Lancer</translation>
     </message>
@@ -4272,17 +4272,17 @@ Par défaut : 3 mm</translation>
       <translation>Vitesse de rotation du mandrin</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtils.py" line="711"/>
+      <location filename="../../../PathScripts/PathUtils.py" line="723"/>
       <source>Selected tool is not a drill</source>
       <translation>L’outil sélectionné n’est pas un foret</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtils.py" line="718"/>
+      <location filename="../../../PathScripts/PathUtils.py" line="730"/>
       <source>Invalid Cutting Edge Angle %.2f, must be &gt;0° and &lt;=180°</source>
       <translation>L'angle des lèvres est non valide %.2f, il doit être > 0° et ≤ 180°</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtils.py" line="728"/>
+      <location filename="../../../PathScripts/PathUtils.py" line="740"/>
       <source>Cutting Edge Angle (%.2f) results in negative tool tip length</source>
       <translation>L'angle des lèvres (%.2f) entraîne une longueur négative de la pointe de l'outil.</translation>
     </message>
@@ -4412,8 +4412,8 @@ Par défaut : 3 mm</translation>
       <translation>Expression utilisée pour la valeur du pas de descente dans les nouvelles opérations</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Boundary.py" line="64"/>
       <location filename="../../../Path/Dressup/Tags.py" line="913"/>
+      <location filename="../../../Path/Dressup/Boundary.py" line="64"/>
       <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="57"/>
       <source>The base path to modify</source>
       <translation>Le parcours de base à modifier</translation>
@@ -4544,9 +4544,9 @@ Peut-être utile pour les opérations multi-profils, par exemple une poche avec 
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="43"/>
       <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="65"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="169"/>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="75"/>
       <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="60"/>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="169"/>
       <source>The base toolpath to modify</source>
       <translation>Le parcours de base à modifier</translation>
     </message>
@@ -4577,70 +4577,86 @@ Peut-être utile pour les opérations multi-profils, par exemple une poche avec 
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="95"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="423"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="440"/>
       <location filename="../../../Path/Op/Profile.py" line="212"/>
       <source>Set distance which will attempts to avoid unnecessary retractions</source>
       <translation>Définit la distance qui tentera d'éviter les rétractions inutiles.</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="101"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="282"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="306"/>
       <source>The style of motion into the toolpath</source>
       <translation>Le style de mouvement dans le parcours de l'outil</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="108"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="299"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="323"/>
       <source>The style of motion out of the toolpath</source>
       <translation>Le style de mouvement hors du parcours de l'outil</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="121"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="315"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="339"/>
       <source>Angle of the Lead-In (1..90)</source>
-      <translation>Angle d'entrée (1...90)</translation>
+      <translation>Angle d'entrée (1... 90)</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="127"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="323"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="347"/>
       <source>Angle of the Lead-Out (1..90)</source>
       <translation>Angle de sortie (1...90)</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="133"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="352"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="376"/>
       <source>Determine length of the Lead-In</source>
       <translation>Déterminer la longueur de l'entrée</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="139"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="367"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="391"/>
       <source>Determine length of the Lead-Out</source>
       <translation>Déterminer la longueur de la sortie</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="145"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="392"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="409"/>
       <source>Invert Lead-In direction</source>
       <translation>Inverser la direction de l'entrée</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="151"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="399"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="416"/>
       <source>Invert Lead-Out direction</source>
       <translation>Inverser la direction de la sortie</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="157"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="406"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="423"/>
       <source>Move start point</source>
       <translation>Déplacer le point de départ</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="163"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="413"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="430"/>
       <source>Move end point</source>
       <translation>Déplacer le point d'arrivée</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="172"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="455"/>
+      <source>Extends Lead-in distance
+Only for styles: Arc, Line, Perpendicular and Tangent</source>
+      <translation>Prolonge la distance d'entrée
+Uniquement pour les styles : Arc, Ligne, Perpendiculaire et Tangente</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="181"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="468"/>
+      <source>Extends Lead-out distance
+Only for styles: Arc, Line, Perpendicular and Tangent</source>
+      <translation>Prolonge la distance de sortie
+Uniquement pour les styles : Arc, Ligne, Perpendiculaire et Tangente</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="115"/>
@@ -4781,9 +4797,9 @@ Peut-être utile pour les opérations multi-profils, par exemple une poche avec 
       <translation>Liste de tous les contrôleurs d'outils pour la tâche</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="537"/>
       <location filename="../../../Path/Op/Base.py" line="195"/>
       <location filename="../../../Path/Op/Base.py" line="458"/>
+      <location filename="../../../Path/Main/Job.py" line="537"/>
       <source>Operations Cycle Time Estimation</source>
       <translation>Estimation du temps de cycle des opérations</translation>
     </message>
@@ -4863,9 +4879,9 @@ Peut-être utile pour les opérations multi-profils, par exemple une poche avec 
       <translation>Nombre de décalages des fixations</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Fixture.py" line="64"/>
       <location filename="../../../Path/Op/Base.py" line="169"/>
       <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="57"/>
+      <location filename="../../../Path/Main/Gui/Fixture.py" line="64"/>
       <source>Make False, to prevent operation from generating code</source>
       <translation>Mettre à False pour empêcher l'opération de générer du code</translation>
     </message>
@@ -4993,8 +5009,8 @@ surplombs.</translation>
       <translation>Angle du cône hélicoïdal (degrés)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1933"/>
       <location filename="../../../Path/Op/PocketShape.py" line="164"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1933"/>
       <source>Uses the outline of the base geometry.</source>
       <translation>Utiliser les contours de la géométrie de base.</translation>
     </message>
@@ -5116,9 +5132,9 @@ surplombs.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="313"/>
+      <location filename="../../../Path/Op/Slot.py" line="235"/>
       <location filename="../../../Path/Op/Waterline.py" line="463"/>
       <location filename="../../../Path/Op/Surface.py" line="418"/>
-      <location filename="../../../Path/Op/Slot.py" line="235"/>
       <source>Make True, if specifying a Start Point</source>
       <translation>Mettre à vrai si un point de départ est spécifié</translation>
     </message>
@@ -5133,8 +5149,8 @@ surplombs.</translation>
       <translation>Limite supérieure du diamètre d'usinage</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="438"/>
       <location filename="../../../CAMTests/TestTestPost.py" line="669"/>
+      <location filename="../../../Path/Op/Base.py" line="438"/>
       <source>Coolant option for this operation</source>
       <translation>Option de refroidissement pour cette opération</translation>
     </message>
@@ -5417,10 +5433,10 @@ profil.</translation>
       <translation>Exclure des zones de fraisage à l'intérieur de la surface.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Waterline.py" line="267"/>
-      <location filename="../../../Path/Op/Surface.py" line="240"/>
-      <location filename="../../../Path/Op/Profile.py" line="116"/>
       <location filename="../../../Path/Op/Pocket.py" line="67"/>
+      <location filename="../../../Path/Op/Waterline.py" line="267"/>
+      <location filename="../../../Path/Op/Profile.py" line="116"/>
+      <location filename="../../../Path/Op/Surface.py" line="240"/>
       <source>Choose how to process multiple Base Geometry features.</source>
       <translation>Choisir comment traiter plusieurs entités de géométrie de base</translation>
     </message>
@@ -5579,16 +5595,16 @@ Shoud be used only with Individually HandleMultipleFeaturesand disabled UseStart
       <translation>Afficher les objets de construction des parcours temporaires lorsque le module est en mode de débogage</translation>
     </message>
     <message>
+      <location filename="../../../Path/Op/Slot.py" line="148"/>
       <location filename="../../../Path/Op/Waterline.py" line="329"/>
       <location filename="../../../Path/Op/Surface.py" line="284"/>
-      <location filename="../../../Path/Op/Slot.py" line="148"/>
       <source>Set the geometric clearing pattern to use for the operation.</source>
       <translation>Définir le motif de détourage géométrique à utiliser pour l'opération.</translation>
     </message>
     <message>
+      <location filename="../../../Path/Op/Slot.py" line="175"/>
       <location filename="../../../Path/Op/Waterline.py" line="370"/>
       <location filename="../../../Path/Op/Surface.py" line="319"/>
-      <location filename="../../../Path/Op/Slot.py" line="175"/>
       <source>Complete the operation in a single pass at depth, or multiple passes to final depth.</source>
       <translation>Terminer l’opération en une seule passe à la profondeur ou en plusieurs passes jusqu’à la profondeur finale.</translation>
     </message>
@@ -5831,62 +5847,62 @@ Rotationnel : balayage rotationnel sur le 4ᵉ axe.</translation>
       <translation>Retour d'information : les trois plus petits intervalles identifiés dans la géométrie du parcours.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/ThreadMilling.py" line="328"/>
+      <location filename="../../../Path/Op/ThreadMilling.py" line="355"/>
       <source>Set thread orientation</source>
       <translation>Définir l'orientation du filetage</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/ThreadMilling.py" line="335"/>
+      <location filename="../../../Path/Op/ThreadMilling.py" line="362"/>
       <source>Currently only internal</source>
       <translation>Actuellement, seulement interne</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/ThreadMilling.py" line="342"/>
+      <location filename="../../../Path/Op/ThreadMilling.py" line="369"/>
       <source>Defines which standard thread was chosen</source>
       <translation>Définit quel filetage standard a été choisi</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/ThreadMilling.py" line="348"/>
+      <location filename="../../../Path/Op/ThreadMilling.py" line="375"/>
       <source>Set thread&apos;s major diameter</source>
       <translation>Définir le diamètre nominal du filetage</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/ThreadMilling.py" line="354"/>
+      <location filename="../../../Path/Op/ThreadMilling.py" line="381"/>
       <source>Set thread&apos;s minor diameter</source>
       <translation>Définir le diamètre à fond de filet</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/ThreadMilling.py" line="360"/>
+      <location filename="../../../Path/Op/ThreadMilling.py" line="387"/>
       <source>Set thread&apos;s pitch - used for metric threads</source>
       <translation>Définir le pas du filetage, utilisé pour les filets métriques</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/ThreadMilling.py" line="369"/>
+      <location filename="../../../Path/Op/ThreadMilling.py" line="396"/>
       <source>Set thread&apos;s TPI (turns per inch) - used for imperial threads</source>
       <translation>Définir le TPI (tours par pouce) du filetage, utilisé pour les filets impériaux</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/ThreadMilling.py" line="378"/>
+      <location filename="../../../Path/Op/ThreadMilling.py" line="405"/>
       <source>Override to control how loose or tight the threads are milled</source>
       <translation>Permet de contrôler l'usinage des filets et de savoir s'il y a du jeu ou pas</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/ThreadMilling.py" line="384"/>
+      <location filename="../../../Path/Op/ThreadMilling.py" line="411"/>
       <source>Set how many passes are used to cut the thread</source>
       <translation>Définir combien de passes sont utilisées pour effectuer le filetage</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/ThreadMilling.py" line="390"/>
+      <location filename="../../../Path/Op/ThreadMilling.py" line="417"/>
       <source>Direction of thread cutting operation</source>
       <translation>Direction de l'opération de l'usinage du filetage</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/ThreadMilling.py" line="399"/>
+      <location filename="../../../Path/Op/ThreadMilling.py" line="426"/>
       <source>Set to True to get lead in and lead out arcs at the start and end of the thread cut</source>
       <translation>La valeur True permet d'obtenir des arcs d'entrée et de sortie au début et à la fin du filetage.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/ThreadMilling.py" line="405"/>
+      <location filename="../../../Path/Op/ThreadMilling.py" line="432"/>
       <source>Operation to clear the inside of the thread</source>
       <translation>Opération pour nettoyer l'intérieur du filetage</translation>
     </message>
@@ -6018,15 +6034,15 @@ Rotationnel : balayage rotationnel sur le 4ᵉ axe.</translation>
       <translation>Le centre de rotation pour le motif polaire</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Copy.py" line="51"/>
       <location filename="../../../Path/Op/Gui/Array.py" line="135"/>
+      <location filename="../../../Path/Op/Gui/Copy.py" line="51"/>
       <source>The tool controller that will be used to calculate the toolpath</source>
       <translation>Le contrôleur d'outil qui sera utilisé pour calculer le parcours</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="78"/>
       <location filename="../../../Path/Op/Gui/Array.py" line="147"/>
       <location filename="../../../Path/Op/Gui/Array.py" line="221"/>
+      <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="78"/>
       <source>Operations cycle time estimation</source>
       <translation>Estimation du temps du cycle des opérations</translation>
     </message>
@@ -6178,42 +6194,42 @@ Rotationnel : balayage rotationnel sur le 4ᵉ axe.</translation>
       <translation>Enlèvement de copeaux par dent</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="131"/>
+      <location filename="../../../Path/Op/MillFacing.py" line="130"/>
       <source>Set the cut mode for the operation.</source>
       <translation>Définit le mode de coupe pour l'opération.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="140"/>
+      <location filename="../../../Path/Op/MillFacing.py" line="139"/>
       <source>Set the clearing pattern for the operation.</source>
       <translation>Définit le motif pour nettoyer pour l'opération.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="149"/>
+      <location filename="../../../Path/Op/MillFacing.py" line="148"/>
       <source>Set the angle for the operation.</source>
       <translation>Définit l'angle pour l'opération.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="158"/>
+      <location filename="../../../Path/Op/MillFacing.py" line="157"/>
       <source>Set the stepover percentage of tool diameter.</source>
       <translation>Définit le pourcentage des pas horizontaux par rapport au diamètre de l'outil.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="167"/>
+      <location filename="../../../Path/Op/MillFacing.py" line="166"/>
       <source>Set the stock to leave for the operation.</source>
       <translation>Définit le brut à laisser pour l'opération.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="176"/>
+      <location filename="../../../Path/Op/MillFacing.py" line="175"/>
       <source>Distance to extend cuts beyond polygon boundary for tool disengagement.</source>
       <translation>Distance à laquelle les coupes doivent dépasser les limites du polygone pour le désengagement de l'outil.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="185"/>
+      <location filename="../../../Path/Op/MillFacing.py" line="184"/>
       <source>Extends the boundary in both direction.</source>
       <translation>Étend la limite dans les deux sens.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="194"/>
+      <location filename="../../../Path/Op/MillFacing.py" line="193"/>
       <source>Reverse the cutting direction for the selected pattern.</source>
       <translation>Inverse la direction de coupe pour le motif sélectionné.</translation>
     </message>
@@ -6289,14 +6305,14 @@ Rotationnel : balayage rotationnel sur le 4ᵉ axe.</translation>
   <context>
     <name>PathProfile</name>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="98"/>
       <location filename="../../../Path/Op/Profile.py" line="254"/>
+      <location filename="../../../Path/Op/Helix.py" line="98"/>
       <source>Outside</source>
       <translation>Extérieur</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="97"/>
       <location filename="../../../Path/Op/Profile.py" line="255"/>
+      <location filename="../../../Path/Op/Helix.py" line="97"/>
       <source>Inside</source>
       <translation>Intérieur</translation>
     </message>
@@ -6354,11 +6370,6 @@ Rotationnel : balayage rotationnel sur le 4ᵉ axe.</translation>
       <location filename="../../../Path/Op/Profile.py" line="564"/>
       <source>Unable to create path for face(s).</source>
       <translation>Impossible de créer le parcours pour la(les) face(s).</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Profile.py" line="710"/>
-      <source>Check edge selection and Final Depth requirements for profiling open edge(s).</source>
-      <translation>Vérifier la sélection des arêtes et les exigences pour la profondeur finale du ou des arête(s) ouverte(s) à profiler.</translation>
     </message>
   </context>
   <context>
@@ -6999,7 +7010,7 @@ or tangent edges.</source>
       <translation>Arc</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1555"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1614"/>
       <source>Lead In/Out</source>
       <translation>Entrée/sortie</translation>
     </message>
@@ -7064,12 +7075,12 @@ or tangent edges.</source>
       <translation>Vertical</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="251"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="275"/>
       <source>Tool controller not selected for base operation: %s</source>
       <translation>Contrôleur d'outils non sélectionné pour l'opération de base : %s</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1559"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1618"/>
       <source>Creates entry and exit motions for a selected path</source>
       <translation>Crée des mouvements d'entrée et de sortie pour un parcours sélectionné.</translation>
     </message>
@@ -7385,44 +7396,42 @@ Sélectionner un parcours de profil</translation>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="124"/>
       <source>Warning: Incompatible Unit Schema</source>
-      <translation>Attention : schéma d'unité incompatible</translation>
+      <translation>Attention : le système d'unités est incompatible.</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="138"/>
       <source>&lt;b&gt;This document uses an improper unit schema which can result in dangerous situations and machine crashes!&lt;/b&gt;</source>
-      <translation>&lt;b&gt;Ce document utilise un schéma d'unités incorrect qui peut entraîner des situations dangereuses et des pannes de la machine-outil !&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Ce document utilise un système d'unités incorrect qui peut entraîner des situations dangereuses et des pannes de la machine-outil !&lt;/b&gt;</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="149"/>
       <source>Current unit schema &apos;{}&apos; expresses velocity in values &lt;i&gt;per second&lt;/i&gt;.</source>
-      <translation>Le schéma d'unité actuel « {} » exprime la vitesse en valeurs &lt;i&gt;par seconde&lt;/i&gt;.</translation>
+      <translation>L'actuel système d'unités « {} » exprime la vitesse en valeurs &lt;i&gt;par seconde&lt;/i&gt;.</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="161"/>
       <source>Please select a unit schema that expresses feed rates &lt;i&gt;per minute&lt;/i&gt; instead:</source>
-      <translation>Sélectionner un schéma d'unité qui exprime les débits d'alimentation en &lt;i&gt;par minute&lt;/i&gt; à la place :</translation>
+      <translation>Sélectionner un système d'unités qui exprime les débits d'alimentation en &lt;i&gt;par minute&lt;/i&gt; à la place :</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="166"/>
       <source>Recommended Unit Schemas</source>
-      <translation>Schémas d'unité recommandés</translation>
+      <translation>Système d'unités recommandé</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="190"/>
       <source>Keeping the current unit schema can result in dangerous G-code errors. For details please refer to the &lt;a href=&apos;https://wiki.freecad.org/CAM_Workbench#Units&apos;&gt;Units section&lt;/a&gt; of the CAM Workbench&apos;s wiki page.</source>
-      <translation>Le maintien du schéma d'unités actuel peut entraîner des erreurs G-code dangereuses. Pour plus de détails, voir la 
-section &lt;a href=&apos;https://wiki.freecad.org/CAM_Workbench/fr#Unit%C3%A9s&apos;&gt;Unités&lt;/a&gt; de la
-page wiki de l'atelier CAM.</translation>
+      <translation>Le maintien du système d'unités actuel peut entraîner des erreurs G-code critiques. Pour plus de détails, voir le &lt;a href=&apos;https://wiki.freecad.org/CAM_Workbench/fr#Unit%C3%A9s&apos;&gt;paragraphe Unités&lt;/a&gt; de la page wiki de l'atelier CAM.</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="198"/>
       <source>Change Unit Schema</source>
-      <translation>Changer de schéma d'unités</translation>
+      <translation>Changer de système d'unités</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="202"/>
       <source>Keep Current Schema</source>
-      <translation>Garder le schéma d'unités actuel</translation>
+      <translation>Garder l'actuel système d'unités</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="205"/>
@@ -7432,12 +7441,12 @@ page wiki de l'atelier CAM.</translation>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="234"/>
       <source>Unit Schema Changed</source>
-      <translation>Le schéma d'unités a été changé.</translation>
+      <translation>Le système d'unités a été changé.</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="235"/>
       <source>Unit schema successfully changed to &apos;{}&apos;.</source>
-      <translation>Le schéma d'unités a été modifié avec succès en « {} ».</translation>
+      <translation>Le système d'unités a été modifié avec succès en « {} ».</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="243"/>
@@ -7447,7 +7456,7 @@ page wiki de l'atelier CAM.</translation>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="244"/>
       <source>Failed to change unit schema: {}</source>
-      <translation>La modification du schéma d'unités a échoué : {}</translation>
+      <translation>La modification du système d'unités a échoué : {}</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="249"/>
@@ -7457,7 +7466,7 @@ page wiki de l'atelier CAM.</translation>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="250"/>
       <source>Please select a unit schema.</source>
-      <translation>Sélectionner un schéma d'unités</translation>
+      <translation>Sélectionner un système d'unités</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="348"/>
@@ -8111,9 +8120,9 @@ converties dans l'unité souhaitée lors du post-traitement.</translation>
       <translation>%s n’est pas un objet Modèle de base de la tâche %s</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Probe.py" line="70"/>
       <location filename="../../../Path/Op/Gui/Vcarve.py" line="176"/>
       <location filename="../../../Path/Op/Gui/ThreadMilling.py" line="112"/>
+      <location filename="../../../Path/Op/Gui/Probe.py" line="70"/>
       <source>No valid toolcontroller</source>
       <translation>Pas de contrôleur d'outils valide</translation>
     </message>
@@ -8324,9 +8333,9 @@ This will not delete the toolbits contained within it.</source>
       <translation>Faut-il supprimer la bibliothèque « {0} » ? Cela ne supprimera pas les outils qu'elle contient.</translation>
     </message>
     <message>
+      <location filename="../../../Path/Tool/toolbit/ui/browser.py" line="289"/>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="430"/>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="470"/>
-      <location filename="../../../Path/Tool/toolbit/ui/browser.py" line="289"/>
       <source>Error</source>
       <translation>Erreur</translation>
     </message>
@@ -8426,29 +8435,30 @@ bibliothèques qui les contiennent.</translation>
       <translation>{diameter} {pitch} {rotation} taraud, {flutes}-goujure, {cutting_edge_length} lèvre</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Inspect.py" line="100"/>
-      <source>CAM Inspect</source>
-      <translation>Inspection</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Tool/toolbit/models/taperedballnose.py" line="53"/>
       <source>{diameter} tip, {taper_angle} taper, {flutes}-flute tapered ball nose, {cutting_edge_height} cutting edge</source>
       <translation>{diameter} pointe, {taper_angle} angle cône, {flutes}- flûte conique arrondie, {cutting_edge_height} hauteur du bord de coupe</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1146"/>
-      <source>Exceeded length in cutTravelEnd</source>
-      <translation>Dépassement de longueur en fin de course de la coupe</translation>
+      <location filename="../../../Path/Post/Utils.py" line="226"/>
+      <source>CAM Export Gcode</source>
+      <translation>Exporter le G-code</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1167"/>
-      <source>Exceeded length in cutTravelBegin</source>
-      <translation>Dépassement de longueur en début de course de la coupe</translation>
+      <location filename="../../../Path/Post/Utils.py" line="244"/>
+      <source>Save With Changes</source>
+      <translation>Enregistrer avec les modifications</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="558"/>
-      <source>Adaptive operation couldn&apos;t determine the boundary wire. Did you select base geometry?</source>
-      <translation>L'opération adaptative n'a pas pu déterminer la polyligne de délimitation. La géométrie de base est-elle sélectionnée ?</translation>
+      <location filename="../../../Path/Post/Utils.py" line="251"/>
+      <location filename="../../../Path/Post/Utils.py" line="254"/>
+      <source>Save Without Changes</source>
+      <translation>Enregistrer sans les modifications</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Utils.py" line="252"/>
+      <source>Abort</source>
+      <translation>Interrompre</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/Processor.py" line="311"/>
@@ -8574,77 +8584,9 @@ ignorées ou donneront lieu à des avertissements.</translation>
       <translation>Affiche des boîtes de dialogue interactives pendant le post-traitement. À désactiver en cas d'exécution automatisée ou de test.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Utils.py" line="226"/>
-      <source>CAM Export Gcode</source>
-      <translation>Exporter le G-code</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Utils.py" line="244"/>
-      <source>Save With Changes</source>
-      <translation>Enregistrer avec les modifications</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Utils.py" line="251"/>
-      <location filename="../../../Path/Post/Utils.py" line="254"/>
-      <source>Save Without Changes</source>
-      <translation>Enregistrer sans les modifications</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Utils.py" line="252"/>
-      <source>Abort</source>
-      <translation>Interrompre</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/scripts/centroid_post.py" line="87"/>
-      <source>Centroid post processor</source>
-      <translation>Post-processeur Centroid</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/scripts/mach3_mach4_post.py" line="59"/>
-      <source>Mach3_Mach4 post processor</source>
-      <translation>Post-processeur Mach3_Mach4</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/scripts/grbl_post.py" line="64"/>
-      <source>Grbl post processor</source>
-      <translation>Post-processeur Grbl</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Post/scripts/masso_g3_post.py" line="63"/>
       <source>Masso G3 post processor</source>
       <translation>Post-processeur Masso G3</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/scripts/test_post.py" line="57"/>
-      <source>Test post processor</source>
-      <translation>Tester le post-processeur</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="111"/>
-      <source>Automatic Tool Changer</source>
-      <translation>Changeur automatique d'outils</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="117"/>
-      <source>Enable if machine has automatic tool changer. If disabled, tool changes will pause for manual intervention.</source>
-      <translation>Active si la machine-outil est équipée d'un changeur d'outils automatique. Si cette option est désactivée, les changements d'outils seront
-interrompus pour permettre une intervention manuelle.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="122"/>
-      <source>Automatic Spindle Control</source>
-      <translation>Contrôle automatique de la broche</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="128"/>
-      <source>Enable if machine has automatic spindle speed control. If disabled, spindle commands will prompt for manual adjustment.</source>
-      <translation>Active si la machine-outil dispose d'un contrôle automatique de la vitesse de la broche. Si cette option est désactivée, les commandes de la broche
-demanderont un réglage manuel.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="135"/>
-      <source>OpenSBP post processor for ShopBot controllers</source>
-      <translation>Post-processeur OpenSBP pour les contrôleurs ShopBot</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="91"/>
@@ -8743,6 +8685,73 @@ endroits où la torche va percer.</translation>
       <location filename="../../../Path/Post/scripts/generic_plasma_post.py" line="164"/>
       <source>Generic Plasma post processor</source>
       <translation>Post-processeur générique plasma</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/mach3_mach4_post.py" line="59"/>
+      <source>Mach3_Mach4 post processor</source>
+      <translation>Post-processeur Mach3_Mach4</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/centroid_post.py" line="87"/>
+      <source>Centroid post processor</source>
+      <translation>Post-processeur Centroid</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/grbl_post.py" line="64"/>
+      <source>Grbl post processor</source>
+      <translation>Post-processeur Grbl</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/test_post.py" line="57"/>
+      <source>Test post processor</source>
+      <translation>Tester le post-processeur</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="111"/>
+      <source>Automatic Tool Changer</source>
+      <translation>Changeur automatique d'outils</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="117"/>
+      <source>Enable if machine has automatic tool changer. If disabled, tool changes will pause for manual intervention.</source>
+      <translation>Active si la machine-outil est équipée d'un changeur d'outils automatique. Si cette option est désactivée, les changements d'outils seront
+interrompus pour permettre une intervention manuelle.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="122"/>
+      <source>Automatic Spindle Control</source>
+      <translation>Contrôle automatique de la broche</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="128"/>
+      <source>Enable if machine has automatic spindle speed control. If disabled, spindle commands will prompt for manual adjustment.</source>
+      <translation>Active si la machine-outil dispose d'un contrôle automatique de la vitesse de la broche. Si cette option est désactivée, les commandes de la broche
+demanderont un réglage manuel.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="135"/>
+      <source>OpenSBP post processor for ShopBot controllers</source>
+      <translation>Post-processeur OpenSBP pour les contrôleurs ShopBot</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1205"/>
+      <source>Exceeded length in cutTravelEnd</source>
+      <translation>Dépassement de longueur en fin de course de la coupe</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1226"/>
+      <source>Exceeded length in cutTravelBegin</source>
+      <translation>Dépassement de longueur en début de course de la coupe</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="558"/>
+      <source>Adaptive operation couldn&apos;t determine the boundary wire. Did you select base geometry?</source>
+      <translation>L'opération adaptative n'a pas pu déterminer la polyligne de délimitation. La géométrie de base est-elle sélectionnée ?</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/Inspect.py" line="100"/>
+      <source>CAM Inspect</source>
+      <translation>Inspection</translation>
     </message>
   </context>
   <context>
@@ -9296,67 +9305,67 @@ personnalisés. La sélection est limitée à un seul modèle :
   <context>
     <name>CAM_ThreadMilling</name>
     <message>
-      <location filename="../../../Path/Op/ThreadMilling.py" line="246"/>
+      <location filename="../../../Path/Op/ThreadMilling.py" line="273"/>
       <source>Custom External</source>
       <translation>Externe personnalisé</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/ThreadMilling.py" line="250"/>
+      <location filename="../../../Path/Op/ThreadMilling.py" line="277"/>
       <source>Custom Internal</source>
       <translation>Interne personnalisé</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/ThreadMilling.py" line="254"/>
+      <location filename="../../../Path/Op/ThreadMilling.py" line="281"/>
       <source>Imperial External (2A)</source>
       <translation>Extérieur impérial (2A)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/ThreadMilling.py" line="258"/>
+      <location filename="../../../Path/Op/ThreadMilling.py" line="285"/>
       <source>Imperial External (3A)</source>
       <translation>Extérieur impérial (3A)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/ThreadMilling.py" line="262"/>
+      <location filename="../../../Path/Op/ThreadMilling.py" line="289"/>
       <source>Imperial Internal (2B)</source>
       <translation>Interne impérial (2B)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/ThreadMilling.py" line="266"/>
+      <location filename="../../../Path/Op/ThreadMilling.py" line="293"/>
       <source>Imperial Internal (3B)</source>
       <translation>Interne impérial (3B)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/ThreadMilling.py" line="270"/>
+      <location filename="../../../Path/Op/ThreadMilling.py" line="297"/>
       <source>Metric External (4G6G)</source>
       <translation>Externe métrique (4G6G)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/ThreadMilling.py" line="274"/>
+      <location filename="../../../Path/Op/ThreadMilling.py" line="301"/>
       <source>Metric External (6G)</source>
       <translation>Externe métrique (6G)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/ThreadMilling.py" line="278"/>
+      <location filename="../../../Path/Op/ThreadMilling.py" line="305"/>
       <source>Metric Internal (6H)</source>
       <translation>Interne métrique (6H)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/ThreadMilling.py" line="284"/>
+      <location filename="../../../Path/Op/ThreadMilling.py" line="311"/>
       <source>LeftHand</source>
       <translation>À gauche</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/ThreadMilling.py" line="288"/>
+      <location filename="../../../Path/Op/ThreadMilling.py" line="315"/>
       <source>RightHand</source>
       <translation>À droite</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/ThreadMilling.py" line="294"/>
+      <location filename="../../../Path/Op/ThreadMilling.py" line="321"/>
       <source>Climb</source>
       <translation>Avalant</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/ThreadMilling.py" line="298"/>
+      <location filename="../../../Path/Op/ThreadMilling.py" line="325"/>
       <source>Conventional</source>
       <translation>En opposition</translation>
     </message>
@@ -9560,22 +9569,22 @@ de refroidissement.</translation>
   <context>
     <name>CAM_Post</name>
     <message>
-      <location filename="../../../Path/Post/Command.py" line="109"/>
+      <location filename="../../../Path/Post/Command.py" line="112"/>
       <source>Post Process</source>
       <translation>Post-traiter</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Command.py" line="111"/>
+      <location filename="../../../Path/Post/Command.py" line="114"/>
       <source>Post Processes the selected Job</source>
       <translation>Post-traite la tâche sélectionnée</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Command.py" line="336"/>
+      <location filename="../../../Path/Post/Command.py" line="345"/>
       <source>Post Process Selected</source>
       <translation>Post-traitement sélectionné</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Command.py" line="338"/>
+      <location filename="../../../Path/Post/Command.py" line="347"/>
       <source>Post Processes the selected operations</source>
       <translation>Post-traite les opérations sélectionnées</translation>
     </message>
@@ -9975,52 +9984,52 @@ de refroidissement.</translation>
   <context>
     <name>CAM:Simulator:Tooltips</name>
     <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="292"/>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="296"/>
       <source>Pause simulation</source>
       <translation>Mettre la simulation en pause</translation>
     </message>
     <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="294"/>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="298"/>
       <source>Play simulation</source>
       <translation>Lancer la simulation</translation>
     </message>
     <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="296"/>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="300"/>
       <source>Single step simulation</source>
       <translation>Simulation en une seule étape</translation>
     </message>
     <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="298"/>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="302"/>
       <source>Decrease simulation speed</source>
       <translation>Diminuer la vitesse de la simulation</translation>
     </message>
     <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="300"/>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="304"/>
       <source>Increase simulation speed</source>
       <translation>Augmenter la vitesse de la simulation</translation>
     </message>
     <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="302"/>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="306"/>
       <source>Show/Hide tool path</source>
       <translation>Afficher/masquer le parcours de l'outil</translation>
     </message>
     <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="303"/>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="307"/>
       <source>Toggle turn table animation</source>
       <translation>Activer/désactiver l'animation de la table</translation>
     </message>
     <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="309"/>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="313"/>
       <source>Toggle ambient occlusion</source>
       <translation>Activer/désactiver l'occlusion ambiante</translation>
     </message>
     <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="310"/>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="314"/>
       <source>Toggle view simulation/model</source>
       <translation>Activer/désactiver la vue de la simulation/modèle</translation>
     </message>
     <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="316"/>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="320"/>
       <source>Reset camera</source>
       <translation>Réinitialiser la caméra</translation>
     </message>
@@ -10028,7 +10037,7 @@ de refroidissement.</translation>
   <context>
     <name>CAMSimulator::DlgCAMSimulator</name>
     <message>
-      <location filename="../../../PathSimulator/AppGL/DlgCAMSimulator.cpp" line="139"/>
+      <location filename="../../../PathSimulator/AppGL/DlgCAMSimulator.cpp" line="141"/>
       <source>%1 - New CAM Simulator</source>
       <translation>%1 : simulateur CAM</translation>
     </message>
@@ -10197,79 +10206,79 @@ Machines/.</translation>
   <context>
     <name>ToolBitShape</name>
     <message>
-      <location filename="../../../Path/Tool/shape/models/custom.py" line="42"/>
       <location filename="../../../Path/Tool/shape/models/endmill.py" line="36"/>
-      <location filename="../../../Path/Tool/shape/models/radius.py" line="36"/>
-      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="44"/>
-      <location filename="../../../Path/Tool/shape/models/reamer.py" line="36"/>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="40"/>
       <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="34"/>
-      <location filename="../../../Path/Tool/shape/models/ballend.py" line="36"/>
+      <location filename="../../../Path/Tool/shape/models/radius.py" line="36"/>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="40"/>
+      <location filename="../../../Path/Tool/shape/models/ballend.py" line="36"/>
+      <location filename="../../../Path/Tool/shape/models/reamer.py" line="36"/>
+      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="44"/>
+      <location filename="../../../Path/Tool/shape/models/custom.py" line="42"/>
       <source>Cutting edge height</source>
       <translation>Hauteur des lèvres</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/custom.py" line="46"/>
       <location filename="../../../Path/Tool/shape/models/endmill.py" line="40"/>
-      <location filename="../../../Path/Tool/shape/models/drill.py" line="36"/>
-      <location filename="../../../Path/Tool/shape/models/radius.py" line="40"/>
-      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="48"/>
-      <location filename="../../../Path/Tool/shape/models/reamer.py" line="40"/>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="44"/>
-      <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="48"/>
       <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="38"/>
-      <location filename="../../../Path/Tool/shape/models/ballend.py" line="40"/>
+      <location filename="../../../Path/Tool/shape/models/radius.py" line="40"/>
+      <location filename="../../../Path/Tool/shape/models/drill.py" line="36"/>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="44"/>
+      <location filename="../../../Path/Tool/shape/models/ballend.py" line="40"/>
+      <location filename="../../../Path/Tool/shape/models/reamer.py" line="40"/>
+      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="48"/>
+      <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="48"/>
+      <location filename="../../../Path/Tool/shape/models/custom.py" line="46"/>
       <source>Diameter</source>
       <translation>Diamètre</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="44"/>
-      <location filename="../../../Path/Tool/shape/models/custom.py" line="50"/>
       <location filename="../../../Path/Tool/shape/models/endmill.py" line="44"/>
-      <location filename="../../../Path/Tool/shape/models/drill.py" line="40"/>
       <location filename="../../../Path/Tool/shape/models/tap.py" line="44"/>
+      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="48"/>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="42"/>
       <location filename="../../../Path/Tool/shape/models/radius.py" line="48"/>
+      <location filename="../../../Path/Tool/shape/models/drill.py" line="40"/>
+      <location filename="../../../Path/Tool/shape/models/vbit.py" line="48"/>
+      <location filename="../../../Path/Tool/shape/models/ballend.py" line="44"/>
       <location filename="../../../Path/Tool/shape/models/bullnose.py" line="52"/>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="52"/>
-      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="48"/>
       <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="52"/>
-      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="42"/>
-      <location filename="../../../Path/Tool/shape/models/ballend.py" line="44"/>
-      <location filename="../../../Path/Tool/shape/models/vbit.py" line="48"/>
+      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="44"/>
+      <location filename="../../../Path/Tool/shape/models/custom.py" line="50"/>
       <source>Flutes</source>
       <translation>Goujures</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="48"/>
-      <location filename="../../../Path/Tool/shape/models/custom.py" line="54"/>
       <location filename="../../../Path/Tool/shape/models/endmill.py" line="48"/>
-      <location filename="../../../Path/Tool/shape/models/drill.py" line="44"/>
+      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="52"/>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="46"/>
       <location filename="../../../Path/Tool/shape/models/radius.py" line="52"/>
+      <location filename="../../../Path/Tool/shape/models/drill.py" line="44"/>
+      <location filename="../../../Path/Tool/shape/models/vbit.py" line="52"/>
+      <location filename="../../../Path/Tool/shape/models/ballend.py" line="48"/>
+      <location filename="../../../Path/Tool/shape/models/reamer.py" line="44"/>
       <location filename="../../../Path/Tool/shape/models/bullnose.py" line="56"/>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="56"/>
-      <location filename="../../../Path/Tool/shape/models/reamer.py" line="44"/>
-      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="52"/>
       <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="56"/>
-      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="46"/>
-      <location filename="../../../Path/Tool/shape/models/ballend.py" line="48"/>
-      <location filename="../../../Path/Tool/shape/models/vbit.py" line="52"/>
+      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="48"/>
+      <location filename="../../../Path/Tool/shape/models/custom.py" line="54"/>
       <source>Overall tool length</source>
       <translation>Longueur totale de l'outil</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="60"/>
       <location filename="../../../Path/Tool/shape/models/tap.py" line="52"/>
+      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="56"/>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="50"/>
       <location filename="../../../Path/Tool/shape/models/radius.py" line="56"/>
+      <location filename="../../../Path/Tool/shape/models/vbit.py" line="56"/>
+      <location filename="../../../Path/Tool/shape/models/ballend.py" line="52"/>
+      <location filename="../../../Path/Tool/shape/models/reamer.py" line="48"/>
       <location filename="../../../Path/Tool/shape/models/bullnose.py" line="60"/>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="68"/>
-      <location filename="../../../Path/Tool/shape/models/reamer.py" line="48"/>
-      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="56"/>
       <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="60"/>
-      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="50"/>
-      <location filename="../../../Path/Tool/shape/models/ballend.py" line="52"/>
-      <location filename="../../../Path/Tool/shape/models/vbit.py" line="56"/>
+      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="60"/>
       <source>Shank diameter</source>
       <translation>Diamètre de la queue</translation>
     </message>
@@ -10285,8 +10294,8 @@ Machines/.</translation>
       <translation>Angle des lèvres</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/radius.py" line="60"/>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="60"/>
+      <location filename="../../../Path/Tool/shape/models/radius.py" line="60"/>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="60"/>
       <source>Tip diameter</source>
       <translation>Diamètre de la pointe</translation>
@@ -10302,14 +10311,14 @@ Machines/.</translation>
       <translation>Forme personnalisée inconnue</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="36"/>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="36"/>
+      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="36"/>
       <source>Crest height</source>
       <translation>Hauteur de la crête</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="64"/>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="40"/>
+      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="64"/>
       <source>Cutting angle</source>
       <translation>Angle de coupe</translation>
     </message>
@@ -10319,7 +10328,6 @@ Machines/.</translation>
       <translation>Hauteur de la queue-d'aronde</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="40"/>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="48"/>
       <source>Major diameter</source>
       <translation>Diamètre principal
@@ -10327,14 +10335,14 @@ Diamètre nominal
 Grand diamètre</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="52"/>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="60"/>
+      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="52"/>
       <source>Neck diameter</source>
       <translation>Diamètre du cou</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="56"/>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="64"/>
+      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="56"/>
       <source>Neck length</source>
       <translation>Longueur du cou</translation>
     </message>
@@ -10344,8 +10352,8 @@ Grand diamètre</translation>
       <translation>Queue-d'aronde</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/drill.py" line="48"/>
       <location filename="../../../Path/Tool/shape/models/tap.py" line="56"/>
+      <location filename="../../../Path/Tool/shape/models/drill.py" line="48"/>
       <source>Tip angle</source>
       <translation>Angle de la pointe</translation>
     </message>
@@ -10425,6 +10433,11 @@ Grand diamètre</translation>
       <translation>Taraud</translation>
     </message>
     <message>
+      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="40"/>
+      <source>Cutting diameter</source>
+      <translation>Diamètre de coupe</translation>
+    </message>
+    <message>
       <location filename="../../../Path/Tool/shape/models/threadmill.py" line="72"/>
       <source>Thread Mill</source>
       <translation>Fraise à fileter</translation>
@@ -10473,8 +10486,8 @@ Grand diamètre</translation>
   <context>
     <name>ToolBitToolBitShapeShapeEndMill</name>
     <message>
-      <location filename="../../../Path/Tool/shape/models/custom.py" line="58"/>
       <location filename="../../../Path/Tool/shape/models/endmill.py" line="52"/>
+      <location filename="../../../Path/Tool/shape/models/custom.py" line="58"/>
       <source>Shank diameter</source>
       <translation>Diamètre de la queue</translation>
     </message>
@@ -10640,342 +10653,6 @@ Grand diamètre</translation>
       <location filename="../../../InitGui.py" line="185"/>
       <source>Simulators</source>
       <translation>Simulateurs</translation>
-    </message>
-  </context>
-  <context>
-    <name>Waterline</name>
-    <message>
-      <location filename="../../../Path/Op/Waterline.py" line="1385"/>
-      <source>: Steps below the model&apos;s top Face will be the only ones processed.</source>
-      <translation>: Seuls les pas situés sous la face supérieure du modèle seront traitées.</translation>
-    </message>
-  </context>
-  <context>
-    <name>CAM_MIllFacing</name>
-    <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="102"/>
-      <source>New property added to</source>
-      <translation>Nouvelle propriété ajoutée à</translation>
-    </message>
-  </context>
-  <context>
-    <name>CAM_MillFacing</name>
-    <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="104"/>
-      <source>Check default value(s).</source>
-      <translation>Vérifier la/les valeur(s) par défaut.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="212"/>
-      <source>Climb</source>
-      <translation>Avalant</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="213"/>
-      <source>Conventional</source>
-      <translation>Conventionnel</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="216"/>
-      <source>ZigZag</source>
-      <translation>Zigzag</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="217"/>
-      <source>Bidirectional</source>
-      <translation>Bidirectionnel</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="218"/>
-      <source>Directional</source>
-      <translation>Directionel</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="219"/>
-      <source>Spiral</source>
-      <translation>Spirale</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/MillFacing.py" line="165"/>
-      <source>Mill Facing</source>
-      <translation>Surfacer</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/MillFacing.py" line="168"/>
-      <source>Create a Mill Facing Operation to machine the top surface of stock</source>
-      <translation>Crée une opération de surfaçage pour usiner la face supérieure du brut.</translation>
-    </message>
-  </context>
-  <context>
-    <name>DlgPostProcess</name>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="14"/>
-      <source>Post Processing</source>
-      <translation>Post-traitement</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="26"/>
-      <source>font-weight: bold; font-size: 13px;</source>
-      <translation>Style à police : gras ; taille de la police : 13 px ;</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="29"/>
-      <source>Post Processing - Job: (unknown)</source>
-      <translation>Post-traitement. Tâche : (inconnu)</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="40"/>
-      <source>Overview</source>
-      <translation>Aperçu</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="46"/>
-      <source>Machine</source>
-      <translation>Machine-outil</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="55"/>
-      <source>Machine:</source>
-      <translation>Usiner :</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="68"/>
-      <source>Machine configuration (.fcm) to use for post-processing</source>
-      <translation>Configuration de la machine-outil (.fcm) à utiliser pour le post-traitement</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="78"/>
-      <source>Fixtures</source>
-      <translation>Accessoires</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="90"/>
-      <source>Check fixtures to include in the G-code output</source>
-      <translation>Vérifier les fixations à inclure dans le résultat du G-code</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="100"/>
-      <source>Job Details</source>
-      <translation>Détails de la tâche</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="109"/>
-      <source>Author:</source>
-      <translation>Auteur :</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="116"/>
-      <source>Author name written into the G-code header comment</source>
-      <translation>Nom de l'auteur écrit dans le commentaire de l'en-tête du G-code</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="119"/>
-      <location filename="../panels/DlgPostProcess.ui" line="145"/>
-      <source>(optional)</source>
-      <translation>(facultatif)</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="126"/>
-      <source>Comment:</source>
-      <translation>Commentaire :</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="142"/>
-      <source>Arbitrary comment written into the G-code header</source>
-      <translation>Commentaire arbitraire écrit dans l'en-tête du G-code</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="155"/>
-      <location filename="../panels/DlgPostProcess.ui" line="300"/>
-      <source>Options</source>
-      <translation>Options</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="161"/>
-      <source>Generate a full sanity/setup report alongside the G-code file</source>
-      <translation>Générer un rapport complet de vérification et de configuration en même temps que le fichier G-code</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="164"/>
-      <source>Generate HTML sanity report</source>
-      <translation>Générer un rapport de vérification en HTML</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="177"/>
-      <source>Post Processor Parameters</source>
-      <translation>Paramètres du post-processeur</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="183"/>
-      <source>color: gray;</source>
-      <translation>Couleur : gris ;</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="186"/>
-      <source>(No additional parameters for this post processor)</source>
-      <translation>(Aucun paramètre supplémentaire pour ce post-processeur)</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="213"/>
-      <source>Operations</source>
-      <translation>Opérations</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="219"/>
-      <source>Check operations to include in the G-code output. Uncheck to skip.</source>
-      <translation>Cocher les opérations à inclure dans la sortie G-code. Décocher pour ignorer.</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="232"/>
-      <source>Operation</source>
-      <translation>Opération</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="237"/>
-      <source>Cycle Time</source>
-      <translation>Temps du cycle</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="247"/>
-      <source>Select All</source>
-      <translation>Tout sélectionner</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="254"/>
-      <source>Select None</source>
-      <translation>Ne rien sélectionner</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="261"/>
-      <source>Show the workplan (postable items structure)</source>
-      <translation>Afficher le plan de travail (structure des éléments à publier)</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="264"/>
-      <source>Workplan</source>
-      <translation>Plan de travail</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="284"/>
-      <source>Total estimated machining time for checked operations</source>
-      <translation>Temps total estimé d'usinage des opérations vérifiées</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="287"/>
-      <source>Total: -</source>
-      <translation>Total : -</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="324"/>
-      <location filename="../panels/DlgPostProcess.ui" line="435"/>
-      <source>color: gray; font-style: italic;</source>
-      <translation>Couleur : gris ; style de police : italique ;</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="327"/>
-      <source>(Select a machine on the Overview tab to see machine output options)</source>
-      <translation>(Sélectionner une machine-outil dans l'onglet « Aperçu » pour afficher les options de sortie de la machine-outil)</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="355"/>
-      <source>Output</source>
-      <translation>Résultat</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="363"/>
-      <source>Output folder:</source>
-      <translation>Répertoire de destination :</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="370"/>
-      <source>Folder where G-code files will be saved</source>
-      <translation>Répertoire où les fichiers G-code seront enregistrés.</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="373"/>
-      <source>(resolved when output is generated)</source>
-      <translation>(résolu lorsque le résultat est généré)</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="386"/>
-      <source>Browse...</source>
-      <translation>Parcourir...</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="397"/>
-      <source>Filename template:</source>
-      <translation>Modèle du nom du fichier :</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="404"/>
-      <source>Filename template. Substitutions: %j=job name, %d=document, %T=tool, %W=fixture, %O=operation</source>
-      <translation>Modèle du nom de fichier. Substitutions : %j=nom de tâche, %d=document, %T=outil, %W=fixation, %O=opération</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="407"/>
-      <source>e.g. %j.nc</source>
-      <translation>par ex. %j.nc</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="423"/>
-      <source>Regenerate output filenames using this template</source>
-      <translation>Recréer les noms de fichiers de résultats à l'aide de ce modèle</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="426"/>
-      <source>Apply</source>
-      <translation>Appliquer</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="438"/>
-      <source>Press &quot;Generate Output&quot; to preview G-code before saving.</source>
-      <translation>Cliquer sur « Générer un résultat » pour prévisualiser le G-code avant de l'enregistrer.</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="458"/>
-      <source>Generated output files. Select a file to view or edit its contents.</source>
-      <translation>Fichiers de résultats générés. Sélectionner un fichier pour afficher ou modifier son contenu.</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="469"/>
-      <source>G-code content for the selected file. You may edit before saving.</source>
-      <translation>Contenu du G-code pour le fichier sélectionné. Il est possible de le modifier avant de l'enregistrer.</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="482"/>
-      <source>Save to Disk</source>
-      <translation>Enregistrer sur le disque</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="505"/>
-      <source>Warnings</source>
-      <translation>Avertissements</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="511"/>
-      <source>color: green; font-weight: bold;</source>
-      <translation>Couleur : vert ; style de la police : gras ;</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="514"/>
-      <source>No issues found.</source>
-      <translation>Aucun problème a été trouvé.</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="524"/>
-      <source>Validation issues found in the job. WARNING and CAUTION items should be addressed before machining.</source>
-      <translation>Problèmes de validation détectés dans la tâche. Les points signalés par les mentions « AVERTISSEMENT » et « ATTENTION » doivent être
-corrigés avant l'usinage.</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="546"/>
-      <source>Severity</source>
-      <translation>Importance</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="551"/>
-      <source>Note</source>
-      <translation>Note</translation>
     </message>
   </context>
   <context>
@@ -11577,6 +11254,342 @@ corrigés avant l'usinage.</translation>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="2589"/>
       <source>Failed to save: {}</source>
       <translation>Échec de la sauvegarde : {}</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM_MIllFacing</name>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="101"/>
+      <source>New property added to</source>
+      <translation>Nouvelle propriété ajoutée à</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM_MillFacing</name>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="103"/>
+      <source>Check default value(s).</source>
+      <translation>Vérifier la/les valeur(s) par défaut.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="211"/>
+      <source>Climb</source>
+      <translation>Avalant</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="212"/>
+      <source>Conventional</source>
+      <translation>Conventionnel</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="215"/>
+      <source>ZigZag</source>
+      <translation>Zigzag</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="216"/>
+      <source>Bidirectional</source>
+      <translation>Bidirectionnel</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="217"/>
+      <source>Directional</source>
+      <translation>Directionel</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="218"/>
+      <source>Spiral</source>
+      <translation>Spirale</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/MillFacing.py" line="165"/>
+      <source>Mill Facing</source>
+      <translation>Surfacer</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/MillFacing.py" line="168"/>
+      <source>Create a Mill Facing Operation to machine the top surface of stock</source>
+      <translation>Crée une opération de surfaçage pour usiner la face supérieure du brut.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Waterline</name>
+    <message>
+      <location filename="../../../Path/Op/Waterline.py" line="1385"/>
+      <source>: Steps below the model&apos;s top Face will be the only ones processed.</source>
+      <translation>: Seuls les pas situés sous la face supérieure du modèle seront traitées.</translation>
+    </message>
+  </context>
+  <context>
+    <name>DlgPostProcess</name>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="14"/>
+      <source>Post Processing</source>
+      <translation>Post-traitement</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="26"/>
+      <source>font-weight: bold; font-size: 13px;</source>
+      <translation>Style à police : gras ; taille de la police : 13 px ;</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="29"/>
+      <source>Post Processing - Job: (unknown)</source>
+      <translation>Post-traitement. Tâche : (inconnu)</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="40"/>
+      <source>Overview</source>
+      <translation>Aperçu</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="46"/>
+      <source>Machine</source>
+      <translation>Machine-outil</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="55"/>
+      <source>Machine:</source>
+      <translation>Usiner :</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="68"/>
+      <source>Machine configuration (.fcm) to use for post-processing</source>
+      <translation>Configuration de la machine-outil (.fcm) à utiliser pour le post-traitement</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="78"/>
+      <source>Fixtures</source>
+      <translation>Accessoires</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="90"/>
+      <source>Check fixtures to include in the G-code output</source>
+      <translation>Vérifier les fixations à inclure dans le résultat du G-code</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="100"/>
+      <source>Job Details</source>
+      <translation>Détails de la tâche</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="109"/>
+      <source>Author:</source>
+      <translation>Auteur :</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="116"/>
+      <source>Author name written into the G-code header comment</source>
+      <translation>Nom de l'auteur écrit dans le commentaire de l'en-tête du G-code</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="119"/>
+      <location filename="../panels/DlgPostProcess.ui" line="145"/>
+      <source>(optional)</source>
+      <translation>(facultatif)</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="126"/>
+      <source>Comment:</source>
+      <translation>Commentaire :</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="142"/>
+      <source>Arbitrary comment written into the G-code header</source>
+      <translation>Commentaire arbitraire écrit dans l'en-tête du G-code</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="155"/>
+      <location filename="../panels/DlgPostProcess.ui" line="300"/>
+      <source>Options</source>
+      <translation>Options</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="161"/>
+      <source>Generate a full sanity/setup report alongside the G-code file</source>
+      <translation>Générer un rapport complet de vérification et de configuration en même temps que le fichier G-code</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="164"/>
+      <source>Generate HTML sanity report</source>
+      <translation>Générer un rapport de vérification en HTML</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="177"/>
+      <source>Post Processor Parameters</source>
+      <translation>Paramètres du post-processeur</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="183"/>
+      <source>color: gray;</source>
+      <translation>Couleur : gris ;</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="186"/>
+      <source>(No additional parameters for this post processor)</source>
+      <translation>(Aucun paramètre supplémentaire pour ce post-processeur)</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="213"/>
+      <source>Operations</source>
+      <translation>Opérations</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="219"/>
+      <source>Check operations to include in the G-code output. Uncheck to skip.</source>
+      <translation>Cocher les opérations à inclure dans la sortie G-code. Décocher pour ignorer.</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="232"/>
+      <source>Operation</source>
+      <translation>Opération</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="237"/>
+      <source>Cycle Time</source>
+      <translation>Temps du cycle</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="247"/>
+      <source>Select All</source>
+      <translation>Tout sélectionner</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="254"/>
+      <source>Select None</source>
+      <translation>Ne rien sélectionner</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="261"/>
+      <source>Show the workplan (postable items structure)</source>
+      <translation>Afficher le plan de travail (structure des éléments à publier)</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="264"/>
+      <source>Workplan</source>
+      <translation>Plan de travail</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="284"/>
+      <source>Total estimated machining time for checked operations</source>
+      <translation>Temps total estimé d'usinage des opérations vérifiées</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="287"/>
+      <source>Total: -</source>
+      <translation>Total : -</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="324"/>
+      <location filename="../panels/DlgPostProcess.ui" line="435"/>
+      <source>color: gray; font-style: italic;</source>
+      <translation>Couleur : gris ; style de police : italique ;</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="327"/>
+      <source>(Select a machine on the Overview tab to see machine output options)</source>
+      <translation>(Sélectionner une machine-outil dans l'onglet « Aperçu » pour afficher les options de sortie de la machine-outil)</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="355"/>
+      <source>Output</source>
+      <translation>Résultat</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="363"/>
+      <source>Output folder:</source>
+      <translation>Répertoire de destination :</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="370"/>
+      <source>Folder where G-code files will be saved</source>
+      <translation>Répertoire où les fichiers G-code seront enregistrés.</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="373"/>
+      <source>(resolved when output is generated)</source>
+      <translation>(résolu lorsque le résultat est généré)</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="386"/>
+      <source>Browse...</source>
+      <translation>Parcourir...</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="397"/>
+      <source>Filename template:</source>
+      <translation>Modèle du nom du fichier :</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="404"/>
+      <source>Filename template. Substitutions: %j=job name, %d=document, %T=tool, %W=fixture, %O=operation</source>
+      <translation>Modèle du nom de fichier. Substitutions : %j=nom de tâche, %d=document, %T=outil, %W=fixation, %O=opération</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="407"/>
+      <source>e.g. %j.nc</source>
+      <translation>par ex. %j.nc</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="423"/>
+      <source>Regenerate output filenames using this template</source>
+      <translation>Recréer les noms de fichiers de résultats à l'aide de ce modèle</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="426"/>
+      <source>Apply</source>
+      <translation>Appliquer</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="438"/>
+      <source>Press &quot;Generate Output&quot; to preview G-code before saving.</source>
+      <translation>Cliquer sur « Générer un résultat » pour prévisualiser le G-code avant de l'enregistrer.</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="458"/>
+      <source>Generated output files. Select a file to view or edit its contents.</source>
+      <translation>Fichiers de résultats générés. Sélectionner un fichier pour afficher ou modifier son contenu.</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="469"/>
+      <source>G-code content for the selected file. You may edit before saving.</source>
+      <translation>Contenu du G-code pour le fichier sélectionné. Il est possible de le modifier avant de l'enregistrer.</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="482"/>
+      <source>Save to Disk</source>
+      <translation>Enregistrer sur le disque</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="505"/>
+      <source>Warnings</source>
+      <translation>Avertissements</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="511"/>
+      <source>color: green; font-weight: bold;</source>
+      <translation>Couleur : vert ; style de la police : gras ;</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="514"/>
+      <source>No issues found.</source>
+      <translation>Aucun problème a été trouvé.</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="524"/>
+      <source>Validation issues found in the job. WARNING and CAUTION items should be addressed before machining.</source>
+      <translation>Problèmes de validation détectés dans la tâche. Les points signalés par les mentions « AVERTISSEMENT » et « ATTENTION » doivent être
+corrigés avant l'usinage.</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="546"/>
+      <source>Severity</source>
+      <translation>Importance</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="551"/>
+      <source>Note</source>
+      <translation>Note</translation>
     </message>
   </context>
 </TS>

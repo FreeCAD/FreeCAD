@@ -1572,23 +1572,6 @@ If zero, it is equal to Radius2</translation>
     </message>
   </context>
   <context>
-    <name>PartDesignGui::TaskDlgFeatureParameters</name>
-    <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="229"/>
-      <source>The feature could not be created with the given parameters.
-The geometry may be invalid or the parameters may be incompatible.
-Please adjust the parameters and try again.</source>
-      <translation type="unfinished">The feature could not be created with the given parameters.
-The geometry may be invalid or the parameters may be incompatible.
-Please adjust the parameters and try again.</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="236"/>
-      <source>Input error</source>
-      <translation>Chyba zadání</translation>
-    </message>
-  </context>
-  <context>
     <name>PartDesignGui::TaskDlgShapeBinder</name>
     <message>
       <location filename="../../TaskShapeBinder.cpp" line="443"/>
@@ -3195,11 +3178,11 @@ měřena ve stanoveném směru</translation>
       <translation>V tomto dokumentu nejsou platné roviny</translation>
     </message>
     <message>
+      <location filename="../../SketchWorkflow.cpp" line="731"/>
+      <location filename="../../ViewProviderDatum.cpp" line="259"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
       <location filename="../../ViewProvider.cpp" line="137"/>
       <location filename="../../Command.cpp" line="1142"/>
-      <location filename="../../SketchWorkflow.cpp" line="731"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
-      <location filename="../../ViewProviderDatum.cpp" line="259"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Dialog je již otevřen v panelu úloh</translation>
     </message>
@@ -3239,11 +3222,11 @@ měřena ve stanoveném směru</translation>
       <translation>V dokumentu není k dispozici náčrt</translation>
     </message>
     <message>
+      <location filename="../../SketchWorkflow.cpp" line="732"/>
+      <location filename="../../ViewProviderDatum.cpp" line="260"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
       <location filename="../../ViewProvider.cpp" line="138"/>
       <location filename="../../Command.cpp" line="1143"/>
-      <location filename="../../SketchWorkflow.cpp" line="732"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
-      <location filename="../../ViewProviderDatum.cpp" line="260"/>
       <source>Close this dialog?</source>
       <translation type="unfinished">Close this dialog?</translation>
     </message>
@@ -3538,9 +3521,9 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="65"/>
-      <location filename="../../ViewProvider.cpp" line="94"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="227"/>
       <location filename="../../ViewProviderDressUp.cpp" line="64"/>
+      <location filename="../../ViewProvider.cpp" line="94"/>
       <source>Edit %1</source>
       <translation>Upravit %1</translation>
     </message>
@@ -4477,19 +4460,19 @@ nad 90: větší poloměr díry ve spodní části</translation>
       <translation>Booleovskou operaci nelze provést s neplatným základním tvarem</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2101"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="804"/>
       <location filename="../../../App/FeatureLoft.cpp" line="333"/>
       <location filename="../../../App/FeatureLoft.cpp" line="377"/>
       <location filename="../../../App/FeatureDraft.cpp" line="335"/>
       <location filename="../../../App/FeatureFillet.cpp" line="142"/>
       <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="804"/>
       <location filename="../../../App/FeaturePipe.cpp" line="482"/>
       <location filename="../../../App/FeaturePipe.cpp" line="531"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2101"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation type="unfinished">Result has multiple solids: enable 'Allow Compound' in the active body.</translation>
     </message>
@@ -4524,10 +4507,10 @@ nad 90: větší poloměr díry ve spodní části</translation>
       <translation type="unfinished">Resulting fused extrusion is null.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="766"/>
       <location filename="../../../App/FeatureLoft.cpp" line="370"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="141"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="766"/>
       <location filename="../../../App/FeaturePipe.cpp" line="523"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="141"/>
       <source>Resulting shape is not a solid</source>
       <translation>Výsledný tvar není plné těleso</translation>
     </message>
@@ -4604,8 +4587,8 @@ nad 90: větší poloměr díry ve spodní části</translation>
       <translation>Vytvoření selhalo, protože směr je kolmý k normálovému vektoru náčrtu</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="479"/>
       <location filename="../../../App/FeatureRevolved.cpp" line="132"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="479"/>
       <source>Creating a face from sketch failed</source>
       <translation>Vytvoření plochy z náčrtu selhalo</translation>
     </message>
@@ -4670,9 +4653,9 @@ Protínání jednotlivých prvků v náčrtu není dovoleno.</translation>
       <translation>Chyba: Plocha musí být rovinná</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2457"/>
       <location filename="../../../App/FeatureHelix.cpp" line="445"/>
       <location filename="../../../App/FeatureHelix.cpp" line="486"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2457"/>
       <source>Error: Result is not a solid</source>
       <translation>Chyba: Výsledek není plné těleso</translation>
     </message>
@@ -4946,15 +4929,15 @@ Nejsou povoleny protínající se prvky náčrtu nebo více ploch v náčrtu.</t
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="355"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="125"/>
       <location filename="../../../App/FeaturePipe.cpp" line="507"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="125"/>
       <source>Unknown operation type</source>
       <translation>Neznámý typ operace</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="363"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="133"/>
       <location filename="../../../App/FeaturePipe.cpp" line="515"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="133"/>
       <source>Failed to perform boolean operation</source>
       <translation>Nepodařilo se provést booleovskou operaci</translation>
     </message>
@@ -5455,6 +5438,18 @@ Nejsou povoleny protínající se prvky náčrtu nebo více ploch v náčrtu.</t
       <location filename="../../TaskPatternParameters.cpp" line="334"/>
       <source>Invalid selection. Select an edge, planar face, or datum line.</source>
       <translation type="unfinished">Invalid selection. Select an edge, planar face, or datum line.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskDlgFeatureParameters</name>
+    <message>
+      <location filename="../../TaskFeatureParameters.cpp" line="229"/>
+      <source>The feature could not be created with the given parameters.
+The geometry may be invalid or the parameters may be incompatible.
+Please adjust the parameters and try again.</source>
+      <translation type="unfinished">The feature could not be created with the given parameters.
+The geometry may be invalid or the parameters may be incompatible.
+Please adjust the parameters and try again.</translation>
     </message>
   </context>
 </TS>

@@ -419,10 +419,10 @@ of that project, no matter if they are expanded or not.</source>
       <translation>Заставацца ў сістэме падчас сеансаў FreeCAD</translation>
     </message>
     <message>
-      <location filename="../ui/dialogPhases.ui" line="14"/>
-      <location filename="../ui/dialogQuantitySurveying.ui" line="14"/>
       <location filename="../ui/DialogDisplayText.ui" line="14"/>
+      <location filename="../ui/dialogPhases.ui" line="14"/>
       <location filename="../ui/dialogExport.ui" line="14"/>
+      <location filename="../ui/dialogQuantitySurveying.ui" line="14"/>
       <location filename="../ui/dialogListWidget.ui" line="14"/>
       <source>Dialog</source>
       <translation>Дыялогавае акно</translation>
@@ -483,8 +483,8 @@ of that project, no matter if they are expanded or not.</source>
       <translation>Уласцівасці IFC</translation>
     </message>
     <message>
-      <location filename="../ui/dialogIfcProperties.ui" line="182"/>
       <location filename="../ui/dialogIfcPropertiesRedux.ui" line="63"/>
+      <location filename="../ui/dialogIfcProperties.ui" line="182"/>
       <source>Delete Selected Property/Property Set</source>
       <translation>Выдаліць абраную ўласцівасць / набор уласцівасцяў</translation>
     </message>
@@ -583,8 +583,8 @@ of that project, no matter if they are expanded or not.</source>
 Новыя дакументы не будуць аўтаматычна ператвораныя ў IFC, але пераўтварэнне будзе магчыма пазней з дапамогай Утыліты → Стварыць праект IFC.</translation>
     </message>
     <message>
-      <location filename="../ui/dialogCreateProject.ui" line="30"/>
       <location filename="../ui/dialogConvertDocument.ui" line="43"/>
+      <location filename="../ui/dialogCreateProject.ui" line="30"/>
       <source>Do not ask again</source>
       <translation>Не пытаць зноў</translation>
     </message>
@@ -775,8 +775,8 @@ of that project, no matter if they are expanded or not.</source>
       <translation>Дадае гэты пласт у праект IFC</translation>
     </message>
     <message>
-      <location filename="../ui/dialogPhases.ui" line="55"/>
       <location filename="../ui/dialogLayersIFC.ui" line="46"/>
+      <location filename="../ui/dialogPhases.ui" line="55"/>
       <location filename="../ui/dialogProjectManager.ui" line="679"/>
       <source>Delete</source>
       <translation>Выдаліць</translation>
@@ -815,8 +815,8 @@ of that project, no matter if they are expanded or not.</source>
     </message>
     <message>
       <location filename="../ui/dialogPreflightResults.ui" line="103"/>
-      <location filename="../ui/dialogQuantitySurveying.ui" line="26"/>
       <location filename="../ui/dialogLayersIFC.ui" line="104"/>
+      <location filename="../ui/dialogQuantitySurveying.ui" line="26"/>
       <location filename="../ui/dialogProjectManager.ui" line="717"/>
       <source>OK</source>
       <translation>OK</translation>
@@ -1528,8 +1528,8 @@ FreeCAD створыць радок у аркушу з дадзенымі зна
 Цяпер яны будуць аўтаматычна захаваныя.</translation>
     </message>
     <message>
-      <location filename="../ui/dialogImport.ui" line="162"/>
       <location filename="../ui/dialogExport.ui" line="30"/>
+      <location filename="../ui/dialogImport.ui" line="162"/>
       <source>Ask again next time</source>
       <translation>Спытаць зноў у наступны раз</translation>
     </message>
@@ -1771,9 +1771,9 @@ FreeCAD створыць радок у аркушу з дадзенымі зна
       <translation>Поле дакладнасці</translation>
     </message>
     <message>
-      <location filename="../ui/dialogClasses.ui" line="39"/>
       <location filename="../ui/dialogWindows.ui" line="80"/>
       <location filename="../ui/dialogWindows.ui" line="182"/>
+      <location filename="../ui/dialogClasses.ui" line="39"/>
       <source>Material</source>
       <translation>Матэрыял</translation>
     </message>
@@ -3308,8 +3308,8 @@ if crashes occur when multiple cores are set.</source>
 гэта бяспечней, калі пры ўстаноўкі некалькіх ядраў адбываюцца збоі.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-sh3d-import.ui" line="67"/>
       <location filename="../ui/preferences-ifc.ui" line="135"/>
+      <location filename="../ui/preferences-sh3d-import.ui" line="67"/>
       <source>Import Options</source>
       <translation>Налады імпартавання</translation>
     </message>
@@ -3439,9 +3439,9 @@ This will slow down the import, but one can watch the import.</source>
 Гэта замарудзіць імпартаванне, але за імпартаваннем можна будзе назіраць.</translation>
     </message>
     <message>
+      <location filename="../ui/preferences-ifc.ui" line="411"/>
       <location filename="../ui/preferences-sh3d-import.ui" line="464"/>
       <location filename="../ui/preferences-sh3d-import.ui" line="467"/>
-      <location filename="../ui/preferences-ifc.ui" line="411"/>
       <source>Fit view while importing</source>
       <translation>Запаўненне выгляду пры імпартаванні</translation>
     </message>
@@ -3526,8 +3526,8 @@ If using Netgen, make sure that it is available.</source>
     </message>
     <message>
       <location filename="../ui/preferences-webgl.ui" line="26"/>
-      <location filename="../ui/preferences-dae.ui" line="26"/>
       <location filename="../ui/preferences-ifc-export.ui" line="35"/>
+      <location filename="../ui/preferences-dae.ui" line="26"/>
       <source>Export Options</source>
       <translation>Налады экспартавання</translation>
     </message>
@@ -3761,8 +3761,8 @@ Warning: The IFC standard asks for at least one building in each file. By turnin
       <translation>Экспартаваць IFC</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-sh3d-import.ui" line="26"/>
       <location filename="../ui/preferences-ifc.ui" line="26"/>
+      <location filename="../ui/preferences-sh3d-import.ui" line="26"/>
       <source>General Options</source>
       <translation>Агульныя налады</translation>
     </message>
@@ -3911,14 +3911,14 @@ The default template is located at:
   <context>
     <name>Arch</name>
     <message>
-      <location filename="../../ArchStructure.py" line="428"/>
       <location filename="../../Arch.py" line="2553"/>
+      <location filename="../../ArchStructure.py" line="428"/>
       <source>Beam</source>
       <translation>Бэлька</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="429"/>
       <location filename="../../Arch.py" line="2557"/>
+      <location filename="../../ArchStructure.py" line="429"/>
       <source>Column</source>
       <translation>Слупок</translation>
     </message>
@@ -3957,17 +3957,17 @@ The default template is located at:
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="446"/>
+      <location filename="../../bimcommands/BimWindow.py" line="431"/>
       <location filename="../../bimcommands/BimPanel.py" line="184"/>
       <location filename="../../bimcommands/BimProfile.py" line="90"/>
-      <location filename="../../bimcommands/BimWindow.py" line="431"/>
       <source>Preset</source>
       <translation>Папярэдняе ўсталяванне</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1836"/>
+      <location filename="../../ArchWall.py" line="1839"/>
+      <location filename="../../ArchPanel.py" line="576"/>
       <location filename="../../ArchStructure.py" line="455"/>
       <location filename="../../ArchStructure.py" line="1583"/>
-      <location filename="../../ArchPanel.py" line="576"/>
       <location filename="../../ArchCommands.py" line="1360"/>
       <location filename="../../ArchPrecast.py" line="1719"/>
       <location filename="../../bimcommands/BimPanel.py" line="194"/>
@@ -3976,24 +3976,24 @@ The default template is located at:
       <translation>Даўжыня</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1842"/>
+      <location filename="../../ArchWall.py" line="1845"/>
+      <location filename="../../ArchPanel.py" line="577"/>
       <location filename="../../ArchStructure.py" line="462"/>
       <location filename="../../ArchStructure.py" line="1584"/>
-      <location filename="../../ArchPanel.py" line="577"/>
-      <location filename="../../ArchPrecast.py" line="1720"/>
       <location filename="../../ArchWindow.py" line="1195"/>
+      <location filename="../../ArchPrecast.py" line="1720"/>
       <location filename="../../bimcommands/BimPanel.py" line="201"/>
       <location filename="../../bimcommands/BimWall.py" line="494"/>
       <source>Width</source>
       <translation>Шырыня</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1848"/>
+      <location filename="../../ArchWall.py" line="1851"/>
       <location filename="../../ArchStructure.py" line="469"/>
       <location filename="../../ArchStructure.py" line="1585"/>
+      <location filename="../../ArchWindow.py" line="1198"/>
       <location filename="../../ArchRoof.py" line="1084"/>
       <location filename="../../ArchPrecast.py" line="1721"/>
-      <location filename="../../ArchWindow.py" line="1198"/>
       <location filename="../../bimcommands/BimWall.py" line="501"/>
       <source>Height</source>
       <translation>Вышыня</translation>
@@ -4020,8 +4020,8 @@ The default template is located at:
       <translation>Паліганальная сетка з'яўляецца хібным суцэльным целам</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1168"/>
       <location filename="../../ArchPanel.py" line="319"/>
+      <location filename="../../ArchStructure.py" line="1168"/>
       <source>Facemaker returned an error</source>
       <translation>Майстар граняў вярнуў памылку</translation>
     </message>
@@ -4267,8 +4267,8 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Навісь</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSpace.py" line="70"/>
       <location filename="../../bimcommands/BimRoof.py" line="93"/>
+      <location filename="../../bimcommands/BimSpace.py" line="70"/>
       <source>Please select a base object</source>
       <translation>Абярыце асноўны аб'ект</translation>
     </message>
@@ -4635,37 +4635,37 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Калі птушка, да ўведзенага значэнні будзе дададзена значэнне ўласцівасці зрушэння акна</translation>
     </message>
     <message>
-      <location filename="../../ArchAxisSystem.py" line="338"/>
       <location filename="../../ArchSpace.py" line="954"/>
-      <location filename="../../ArchComponent.py" line="2417"/>
-      <location filename="../../ArchAxis.py" line="991"/>
+      <location filename="../../ArchComponent.py" line="2429"/>
       <location filename="../../ArchSectionPlane.py" line="1745"/>
+      <location filename="../../ArchAxis.py" line="991"/>
+      <location filename="../../ArchAxisSystem.py" line="338"/>
       <location filename="../../ArchWindow.py" line="1705"/>
       <source>Remove</source>
       <translation>Выдаліць</translation>
     </message>
     <message>
-      <location filename="../../ArchAxisSystem.py" line="339"/>
       <location filename="../../ArchSpace.py" line="949"/>
-      <location filename="../../ArchComponent.py" line="2418"/>
+      <location filename="../../ArchComponent.py" line="2430"/>
       <location filename="../../ArchAxis.py" line="992"/>
+      <location filename="../../ArchAxisSystem.py" line="339"/>
       <location filename="../../ArchWindow.py" line="1706"/>
       <source>Add</source>
       <translation>Дадаць</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="470"/>
-      <location filename="../../ArchMaterial.py" line="797"/>
-      <location filename="../../ArchAxisSystem.py" line="222"/>
-      <location filename="../../ArchSite.py" line="1588"/>
       <location filename="../../ArchSchedule.py" line="765"/>
-      <location filename="../../ArchGrid.py" line="384"/>
       <location filename="../../ArchIFCView.py" line="63"/>
-      <location filename="../../ArchComponent.py" line="1926"/>
-      <location filename="../../ArchAxis.py" line="824"/>
+      <location filename="../../ArchGrid.py" line="384"/>
       <location filename="../../ArchReference.py" line="717"/>
+      <location filename="../../ArchComponent.py" line="1938"/>
       <location filename="../../ArchSectionPlane.py" line="1512"/>
+      <location filename="../../ArchSite.py" line="1588"/>
+      <location filename="../../ArchAxis.py" line="824"/>
+      <location filename="../../ArchAxisSystem.py" line="222"/>
       <location filename="../../ArchWindow.py" line="1707"/>
+      <location filename="../../ArchMaterial.py" line="471"/>
+      <location filename="../../ArchMaterial.py" line="798"/>
       <source>Edit</source>
       <translation>Змяніць</translation>
     </message>
@@ -4681,20 +4681,20 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Ломаныя лініі</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2425"/>
+      <location filename="../../ArchComponent.py" line="2437"/>
       <location filename="../../ArchWindow.py" line="1713"/>
       <source>Components</source>
       <translation>Кампаненты</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="879"/>
-      <location filename="../../ArchMaterial.py" line="905"/>
       <location filename="../../ArchWindow.py" line="1715"/>
+      <location filename="../../ArchMaterial.py" line="880"/>
+      <location filename="../../ArchMaterial.py" line="906"/>
       <source>Name</source>
       <translation>Назва</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2493"/>
+      <location filename="../../ArchComponent.py" line="2505"/>
       <location filename="../../ArchCommands.py" line="1729"/>
       <location filename="../../ArchWindow.py" line="1716"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="478"/>
@@ -4702,18 +4702,18 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Тып</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="881"/>
-      <location filename="../../ArchMaterial.py" line="907"/>
-      <location filename="../../ArchStructure.py" line="1578"/>
       <location filename="../../ArchPanel.py" line="578"/>
+      <location filename="../../ArchStructure.py" line="1578"/>
       <location filename="../../ArchRoof.py" line="1082"/>
+      <location filename="../../ArchMaterial.py" line="882"/>
+      <location filename="../../ArchMaterial.py" line="908"/>
       <location filename="../../bimcommands/BimPanel.py" line="208"/>
       <source>Thickness</source>
       <translation>Таўшчыня</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1725"/>
       <location filename="../../ArchWindow.py" line="1719"/>
+      <location filename="../../ArchPrecast.py" line="1725"/>
       <location filename="../../bimcommands/BimWall.py" line="517"/>
       <source>Offset</source>
       <translation>Зрушэнне</translation>
@@ -4764,10 +4764,10 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Абраць хаця б адну вось</translation>
     </message>
     <message>
-      <location filename="../../ArchAxisSystem.py" line="337"/>
       <location filename="../../Arch.py" line="101"/>
-      <location filename="../../ArchComponent.py" line="2424"/>
+      <location filename="../../ArchComponent.py" line="2436"/>
       <location filename="../../ArchAxis.py" line="990"/>
+      <location filename="../../ArchAxisSystem.py" line="337"/>
       <source>Axes</source>
       <translation>Восі</translation>
     </message>
@@ -4777,10 +4777,10 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Кампаненты сістэмы восей</translation>
     </message>
     <message>
+      <location filename="../../importers/importWebGL.py" line="371"/>
       <location filename="../../importers/importJSON.py" line="62"/>
       <location filename="../../importers/importOBJ.py" line="301"/>
       <location filename="../../importers/importOBJ.py" line="339"/>
-      <location filename="../../importers/importWebGL.py" line="371"/>
       <source>Successfully written</source>
       <translation>Паспяхова запісана</translation>
     </message>
@@ -4886,9 +4886,9 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Стварыць шматслойны матэрыял</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="880"/>
-      <location filename="../../ArchMaterial.py" line="906"/>
       <location filename="../../Arch.py" line="530"/>
+      <location filename="../../ArchMaterial.py" line="881"/>
+      <location filename="../../ArchMaterial.py" line="907"/>
       <source>Material</source>
       <translation>Матэрыял</translation>
     </message>
@@ -4903,17 +4903,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Аб'яднаць паўторныя</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="945"/>
+      <location filename="../../ArchMaterial.py" line="946"/>
       <source>New layer</source>
       <translation>Новы пласт</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="982"/>
+      <location filename="../../ArchMaterial.py" line="983"/>
       <source>Total thickness</source>
       <translation>Агульная таўшчыня</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="996"/>
+      <location filename="../../ArchMaterial.py" line="997"/>
       <source>depends on the object</source>
       <translation>залежыць ад аб'екта</translation>
     </message>
@@ -4984,8 +4984,8 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Выдаліць дыяпазон</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="488"/>
       <location filename="../../Arch.py" line="494"/>
+      <location filename="../../ArchGrid.py" line="488"/>
       <source>Grid</source>
       <translation>Сетка</translation>
     </message>
@@ -5182,8 +5182,8 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Памылка вылічэнне фігуры</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1967"/>
       <location filename="../../ArchPanel.py" line="563"/>
+      <location filename="../../ArchStructure.py" line="1967"/>
       <source>Could not compute a shape</source>
       <translation>Не атрымалася вылічыць фігуру</translation>
     </message>
@@ -5233,8 +5233,8 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Светапразрысты фасад</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTruss.py" line="61"/>
       <location filename="../../bimcommands/BimCurtainwall.py" line="62"/>
+      <location filename="../../bimcommands/BimTruss.py" line="61"/>
       <source>Select only one base object or none</source>
       <translation>Абраць толькі адзін асноўны аб'ект, альбо нічога</translation>
     </message>
@@ -5520,12 +5520,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchReport.py" line="1024"/>
       <source>Load a saved query preset into the editor.</source>
-      <translation>Загрузіць захаваны запыт папярэдняга набору ў сродак праўкі.</translation>
+      <translation>Загрузіць захаваны запыт папярэдняга набора ў сродак праўкі.</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="1030"/>
       <source>Rename, delete, or edit your saved query presets.</source>
-      <translation>Пераназваць, выдаліць ці правіць захаваныя папярэднія наборы запытаў.</translation>
+      <translation>Пераназваць, выдаліць ці правіць захаваныя папярэднія наблоры запытаў.</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="1031"/>
@@ -5601,7 +5601,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchReport.py" line="1131"/>
       <source>Use Description as Section Header</source>
-      <translation type="unfinished">Use Description as Section Header</translation>
+      <translation>Ужыць апісанне ў якасці загалоўка падзела</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="1137"/>
@@ -5611,17 +5611,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchReport.py" line="1140"/>
       <source>Include Column Names as Headers</source>
-      <translation type="unfinished">Include Column Names as Headers</translation>
+      <translation>Уключаць назвы слупкоў у якасці загалоўкаў</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="1146"/>
       <source>Include the column headers (Label, IfcType, ...) in the spreadsheet output.</source>
-      <translation type="unfinished">Include the column headers (Label, IfcType, ...) in the spreadsheet output.</translation>
+      <translation>Уключаць загалоўкі слупкоў (Label, IfcType, ...) у вывад аркуша.</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="1147"/>
       <source>Add Empty Row After</source>
-      <translation type="unfinished">Add Empty Row After</translation>
+      <translation>Дадаць пусты радок пасля</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="1150"/>
@@ -5631,17 +5631,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchReport.py" line="1153"/>
       <source>Print Results in Bold</source>
-      <translation type="unfinished">Print Results in Bold</translation>
+      <translation>Вынікі друку вылучаныя тлустым шрыфтам</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="1156"/>
       <source>Render the result cells in bold font for emphasis.</source>
-      <translation type="unfinished">Render the result cells in bold font for emphasis.</translation>
+      <translation>Візуалізаваць выніковыя ячэйкі тлустым шрыфтам для вылучэння.</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="1166"/>
       <source>Save and Next</source>
-      <translation type="unfinished">Save and Next</translation>
+      <translation>Захаваць і наступны</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="1172"/>
@@ -5661,7 +5661,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchReport.py" line="1178"/>
       <source>Discard</source>
-      <translation type="unfinished">Discard</translation>
+      <translation>Скасаваць</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="1182"/>
@@ -5671,17 +5671,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchReport.py" line="1288"/>
       <source>--- Select a Query Preset ---</source>
-      <translation type="unfinished">--- Select a Query Preset ---</translation>
+      <translation>--- Абраць папярэдні набор запытаў ---</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="1291"/>
       <source>--- Load a Report Template ---</source>
-      <translation type="unfinished">--- Load a Report Template ---</translation>
+      <translation>--- Загрузіць шаблон справаздачы ---</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="1327"/>
       <source>Double-click to edit description in place.</source>
-      <translation type="unfinished">Double-click to edit description in place.</translation>
+      <translation>Двойчы пстрыкніце, каб правіць апісанне на месцы.</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="1342"/>
@@ -5721,47 +5721,48 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchReport.py" line="1544"/>
       <source>Copy of {original.description}</source>
-      <translation type="unfinished">Copy of {original.description}</translation>
+      <translation>Копія {original.description}</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="1601"/>
       <source>&lt;i&gt;Typing...&lt;/i&gt;</source>
-      <translation type="unfinished">&lt;i&gt;Typing...&lt;/i&gt;</translation>
+      <translation>&lt;i&gt;Піша...&lt;/i&gt;</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="1635"/>
       <source>Overwrite Query?</source>
-      <translation type="unfinished">Overwrite Query?</translation>
+      <translation>Перазапісаць запыт?</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="1639"/>
       <source>Loading a preset will overwrite the current text in the query editor. Continue?</source>
-      <translation type="unfinished">Loading a preset will overwrite the current text in the query editor. Continue?</translation>
+      <translation>Пры загрузцы папярэдняга набора бягучы тэкст у сродку праўкі запытаў будзе перазапісаны.
+Ці працягнуць?</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="1660"/>
       <source>Empty Query</source>
-      <translation type="unfinished">Empty Query</translation>
+      <translation>Пусты запыт</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="1661"/>
       <source>Cannot save an empty query as a preset.</source>
-      <translation type="unfinished">Cannot save an empty query as a preset.</translation>
+      <translation>Не атрымалася захаваць пусты запыт у якасці папярэдняга набора.</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="1666"/>
       <source>Save Query Preset</source>
-      <translation type="unfinished">Save Query Preset</translation>
+      <translation>Захаваць папярэдні набор запыту</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="1667"/>
       <source>Preset Name:</source>
-      <translation type="unfinished">Preset Name:</translation>
+      <translation>Назва папярэдняга ўсталявання:</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="1693"/>
       <source>Overwrite Report?</source>
-      <translation type="unfinished">Overwrite Report?</translation>
+      <translation>Ці перазапісаць справаздачу?</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="1697"/>
@@ -5772,47 +5773,47 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchReport.py" line="1729"/>
       <source>Empty Report</source>
-      <translation type="unfinished">Empty Report</translation>
+      <translation>Пустая справаздача</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="1730"/>
       <source>Cannot save an empty report as a template.</source>
-      <translation type="unfinished">Cannot save an empty report as a template.</translation>
+      <translation>Не атрымалася захаваць пустую справаздачу ў якасці шаблона.</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="1735"/>
       <source>Save Report Template</source>
-      <translation type="unfinished">Save Report Template</translation>
+      <translation>Захаваць шаблон справаздачы</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="1736"/>
       <source>Template Name:</source>
-      <translation type="unfinished">Template Name:</translation>
+      <translation>Назва шаблона:</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="1773"/>
       <source> (from {input_count} in pipeline)</source>
-      <translation type="unfinished"> (from {input_count} in pipeline)</translation>
+      <translation> (з {input_count} у канвеер)</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="1788"/>
       <source>Query is incomplete</source>
-      <translation type="unfinished">Query is incomplete</translation>
+      <translation>Запыт не завершаны</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="1865"/>
       <source>Query incomplete or typing...</source>
-      <translation type="unfinished">Query incomplete or typing...</translation>
+      <translation>Запыт няпоўны ці набраны з дапамогай клавіятуры…</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="2036"/>
       <source>Hide Preview</source>
-      <translation type="unfinished">Hide Preview</translation>
+      <translation>Схаваць папярэдні прагляд</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="2111"/>
       <source>Unsaved Changes</source>
-      <translation type="unfinished">Unsaved Changes</translation>
+      <translation>Незахаваныя змены</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="2115"/>
@@ -5823,12 +5824,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchReport.py" line="2172"/>
       <source>Manage {mode.capitalize()} Presets</source>
-      <translation type="unfinished">Manage {mode.capitalize()} Presets</translation>
+      <translation>Кіраваць папярэднім ўсталяваннем {mode.capitalize()}</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="2182"/>
       <source>Rename...</source>
-      <translation type="unfinished">Rename...</translation>
+      <translation>Пераназваць...</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="2183"/>
@@ -5838,7 +5839,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchReport.py" line="2184"/>
       <source>Edit Source...</source>
-      <translation type="unfinished">Edit Source...</translation>
+      <translation>Правіць крыніцу…</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="2185"/>
@@ -5848,64 +5849,66 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchReport.py" line="2247"/>
       <source>This action is only available for user-created presets.</source>
-      <translation type="unfinished">This action is only available for user-created presets.</translation>
+      <translation>Дзеянне даступна толькі для карыстальніцкіх папярэдніх усталяванняў.</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="2262"/>
       <source>Rename Preset</source>
-      <translation type="unfinished">Rename Preset</translation>
+      <translation>Пераназваць папярэдняе ўсталяванне</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="2263"/>
       <source>New name:</source>
-      <translation type="unfinished">New name:</translation>
+      <translation>Новая назва:</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="2270"/>
       <source>Name Conflict</source>
-      <translation type="unfinished">Name Conflict</translation>
+      <translation>Канфлікт назваў</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="2274"/>
       <source>A preset with this name already exists. Please choose a different name.</source>
-      <translation type="unfinished">A preset with this name already exists. Please choose a different name.</translation>
+      <translation>Папярэдняе ўсталяванне з такой назвай ужо існуе.
+Абярыце іншую назву.</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="2289"/>
       <source>Delete Preset</source>
-      <translation type="unfinished">Delete Preset</translation>
+      <translation>Выдаліць папярэдняе ўсталяванне</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="2292"/>
       <source>Are you sure you want to permanently delete the preset '{name}'?</source>
-      <translation type="unfinished">Are you sure you want to permanently delete the preset '{name}'?</translation>
+      <translation>Ці сапраўды назаўжды выдаліць папярэдняе ўсталяванне '{name}'?</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="2311"/>
       <source>File Not Found</source>
-      <translation type="unfinished">File Not Found</translation>
+      <translation>Файл не знойдзены</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="2312"/>
       <source>Could not find the preset file at:
 {file_path}</source>
-      <translation type="unfinished">Could not find the preset file at:
+      <translation>Не атрымалася знайсці файл папярэдняга ўсталявання па адрасе:
 {file_path}</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="2321"/>
       <source>Could Not Open File</source>
-      <translation type="unfinished">Could Not Open File</translation>
+      <translation>Не атрымалася адчыніць файл</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="2325"/>
       <source>FreeCAD could not open the file. Please check if you have a default text editor configured in your operating system.</source>
-      <translation type="unfinished">FreeCAD could not open the file. Please check if you have a default text editor configured in your operating system.</translation>
+      <translation>FreeCAD не атрымалася адчыніць файл.
+Праверце, ці наладжаны ў аперацыйнай сістэме першапачатковы тэкставы сродак праўкі.</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="2470"/>
       <source>BIM SQL Cheatsheet</source>
-      <translation type="unfinished">BIM SQL Cheatsheet</translation>
+      <translation>Кантрольная табліца BIM SQL</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1496"/>
@@ -5915,7 +5918,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchSchedule.py" line="988"/>
       <location filename="../../ArchSchedule.py" line="1013"/>
-      <location filename="../../ArchComponent.py" line="2494"/>
+      <location filename="../../ArchComponent.py" line="2506"/>
       <location filename="../../ArchCommands.py" line="1730"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="479"/>
       <source>Value</source>
@@ -5985,8 +5988,8 @@ Floor creation aborted.</source>
       <translation>Адлегласць</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1079"/>
       <location filename="../../ArchAxis.py" line="1002"/>
+      <location filename="../../ArchRoof.py" line="1079"/>
       <source>Angle</source>
       <translation>Вугал</translation>
     </message>
@@ -6006,22 +6009,22 @@ Floor creation aborted.</source>
       <translation>Паспяхова імпартавана</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1105"/>
+      <location filename="../../ArchComponent.py" line="1117"/>
       <source>Error computing the shape of this object</source>
       <translation>Памылка вылічэння фігуры аб'екту</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1131"/>
+      <location filename="../../ArchComponent.py" line="1143"/>
       <source>has no solid</source>
       <translation>не мае суцэльнага цела</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1140"/>
+      <location filename="../../ArchComponent.py" line="1152"/>
       <source>has an invalid shape</source>
       <translation>мае хібную фігуру</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1144"/>
+      <location filename="../../ArchComponent.py" line="1156"/>
       <location filename="../../ArchPrecast.py" line="192"/>
       <location filename="../../ArchPrecast.py" line="324"/>
       <location filename="../../ArchPrecast.py" line="444"/>
@@ -6032,7 +6035,7 @@ Floor creation aborted.</source>
       <translation>мае пустую фігуру</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1529"/>
+      <location filename="../../ArchComponent.py" line="1541"/>
       <source>Error computing areas for {self.obj.Label}: unable to project or make face with normal {face.normalAt(0, 0)}. Area values will be reset to 0.
 </source>
       <translation>Памылка пры вылічэнні абласцей для {self.obj.Label}: не атрымалася спраецыраваць ці стварыць грань з дапамогай звычайнага {face.normalAt(0, 0)}.
@@ -6040,212 +6043,63 @@ Floor creation aborted.</source>
 </translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2419"/>
+      <location filename="../../ArchComponent.py" line="2431"/>
       <source>Components of This Object</source>
       <translation>Кампаненты аб'екту</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2429"/>
+      <location filename="../../ArchComponent.py" line="2441"/>
       <source>Edit IFC Properties</source>
       <translation>Змяніць уласцівасці IFC</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2430"/>
+      <location filename="../../ArchComponent.py" line="2442"/>
       <source>Edit Standard Code</source>
       <translation>Змяніць стандартны код</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1283"/>
+      <location filename="../../ArchComponent.py" line="1295"/>
       <source>Wrong base type</source>
       <translation>Няправільны тып асновы</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="1053"/>
-      <source>Solar Diagrams</source>
-      <translation type="unfinished">Solar Diagrams</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1057"/>
-      <source>Location</source>
-      <translation>Месцазнаходжанне</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1072"/>
-      <source>The latitude of this site in decimal degrees.
-Positive values are north of the Equator, negative values are south.</source>
-      <translation type="unfinished">The latitude of this site in decimal degrees.
-Positive values are north of the Equator, negative values are south.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1073"/>
-      <source>Latitude</source>
-      <translation>Шырата</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1087"/>
-      <source>The longitude of this site in decimal degrees.
-Positive values are east of the Prime Meridian, negative values are west.</source>
-      <translation type="unfinished">The longitude of this site in decimal degrees.
-Positive values are east of the Prime Meridian, negative values are west.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1088"/>
-      <source>Longitude</source>
-      <translation>Даўгата</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1100"/>
-      <source>The UTC offset of the time zone where this site is located.
-Used when calculating the sun position.</source>
-      <translation type="unfinished">The UTC offset of the time zone where this site is located.
-Used when calculating the sun position.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1101"/>
-      <source>Time zone</source>
-      <translation type="unfinished">Time zone</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1118"/>
-      <source>The angle between the model's north and geographic north.
-Drives the compass orientation and the declination used to
-align the solar diagram and sun path.</source>
-      <translation type="unfinished">The angle between the model's north and geographic north.
-Drives the compass orientation and the declination used to
-align the solar diagram and sun path.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1119"/>
-      <source>North offset</source>
-      <translation type="unfinished">North offset</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1123"/>
-      <source>Diagrams</source>
-      <translation type="unfinished">Diagrams</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1126"/>
-      <source>Solar Diagram</source>
-      <translation type="unfinished">Solar Diagram</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1136"/>
-      <source>Shows a sun path arc diagram projected onto the site,
-computed from the site's latitude, longitude and north offset.</source>
-      <translation type="unfinished">Shows a sun path arc diagram projected onto the site,
-computed from the site's latitude, longitude and north offset.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1139"/>
-      <source>Compass</source>
-      <translation>Компас</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1147"/>
-      <source>Shows a compass rose overlay on the site,
-oriented according to the north offset.</source>
-      <translation type="unfinished">Shows a compass rose overlay on the site,
-oriented according to the north offset.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1153"/>
-      <source>Sun Position</source>
-      <translation type="unfinished">Sun Position</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1164"/>
-      <source>Shows a sphere and ray indicating the sun position
-for the selected date and time.</source>
-      <translation type="unfinished">Shows a sphere and ray indicating the sun position
-for the selected date and time.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1184"/>
-      <source>The day and month for which the sun position is shown.
-The year is ignored.</source>
-      <translation type="unfinished">The day and month for which the sun position is shown.
-The year is ignored.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1185"/>
-      <source>Date</source>
-      <translation>Дата</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1196"/>
-      <source>The time of day for which the sun position is shown,
-in 24-hour local time. Steps in half-hour increments.</source>
-      <translation type="unfinished">The time of day for which the sun position is shown,
-in 24-hour local time. Steps in half-hour increments.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1209"/>
-      <source>Hour</source>
-      <translation type="unfinished">Hour</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1214"/>
-      <source>Show Hour Labels</source>
-      <translation type="unfinished">Show Hour Labels</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1220"/>
-      <source>Shows text labels at key hours along the sun path arc</source>
-      <translation type="unfinished">Shows text labels at key hours along the sun path arc</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1233"/>
-      <source>Solar calculations require the ladybug or pysolar Python module,
-which was not found.</source>
-      <translation type="unfinished">Solar calculations require the ladybug or pysolar Python module,
-which was not found.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1243"/>
-      <source>Solar calculations unavailable.
-The ladybug or pysolar Python module is required.</source>
-      <translation type="unfinished">Solar calculations unavailable.
-The ladybug or pysolar Python module is required.</translation>
-    </message>
-    <message>
+      <location filename="../../ArchComponent.py" line="1945"/>
       <location filename="../../ArchSite.py" line="1594"/>
-      <location filename="../../ArchComponent.py" line="1933"/>
       <source>Toggle Subcomponents</source>
       <translation>Пераключыць укладзеныя кампаненты</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2063"/>
+      <location filename="../../ArchComponent.py" line="2075"/>
       <source>Closing Sketch edit</source>
       <translation>Зачыненне змены Эскізу</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2416"/>
+      <location filename="../../ArchComponent.py" line="2428"/>
       <location filename="../../ArchCommands.py" line="315"/>
       <source>Component</source>
       <translation>Кампанент</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2087"/>
+      <location filename="../../ArchComponent.py" line="2099"/>
       <source>Select a base object</source>
       <translation>Абраць аб'ект дэталі</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1408"/>
+      <location filename="../../ArchComponent.py" line="1420"/>
       <source>Could not project face{face_name} from {self.obj.Label}
 </source>
-      <translation type="unfinished">Could not project face{face_name} from {self.obj.Label}
+      <translation>Не атрымалася спраецыраваць грань {face_name} з {self.obj.Label}
 </translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1421"/>
+      <location filename="../../ArchComponent.py" line="1433"/>
       <source>Could not determine if face{face_name} from {self.obj.Label} is vertical: normalAt() failed
 </source>
-      <translation type="unfinished">Could not determine if face{face_name} from {self.obj.Label} is vertical: normalAt() failed
+      <translation>Не атрымалася вызначыць, ці з'яўляецца грань {face_name} з {self.obj.Label} вертыкальнай: няўдача normalAt()
 </translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1509"/>
+      <location filename="../../ArchComponent.py" line="1521"/>
       <source>Error computing areas for {self.obj.Label}: unable to project non-planar faces with holes. Area values will be reset to 0.
 </source>
       <translation>Памылка пры вылічэнні вобласці для {self.obj.Label}: не атрымалася спраецыраваць нядрэнныя грані з адтулінамі.
@@ -6253,82 +6107,82 @@ The ladybug or pysolar Python module is required.</translation>
 </translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2420"/>
+      <location filename="../../ArchComponent.py" line="2432"/>
       <source>Base component</source>
       <translation>Асноўны кампанент</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2421"/>
+      <location filename="../../ArchComponent.py" line="2433"/>
       <source>Additions</source>
       <translation>Дапаўненні</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2422"/>
+      <location filename="../../ArchComponent.py" line="2434"/>
       <source>Subtractions</source>
       <translation>Адыманні</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2423"/>
+      <location filename="../../ArchComponent.py" line="2435"/>
       <source>Objects</source>
       <translation>Аб'екты</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2426"/>
+      <location filename="../../ArchComponent.py" line="2438"/>
       <source>Fixtures</source>
       <translation>Арматура</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2427"/>
+      <location filename="../../ArchComponent.py" line="2439"/>
       <source>Group</source>
       <translation>Суполка</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2428"/>
+      <location filename="../../ArchComponent.py" line="2440"/>
       <source>Hosts</source>
       <translation>Размясціць</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2492"/>
+      <location filename="../../ArchComponent.py" line="2504"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="477"/>
       <source>Property</source>
       <translation>Уласцівасць</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2500"/>
+      <location filename="../../ArchComponent.py" line="2512"/>
       <source>Add property</source>
       <translation>Дадаць уласцівасць</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2504"/>
+      <location filename="../../ArchComponent.py" line="2516"/>
       <source>Add property set</source>
       <translation>Дадаць набор уласцівасцяў</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2505"/>
+      <location filename="../../ArchComponent.py" line="2517"/>
       <source>New...</source>
       <translation>Новы…</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2654"/>
+      <location filename="../../ArchComponent.py" line="2666"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="634"/>
       <source>New property</source>
       <translation>Новая ўласцівасць</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2691"/>
+      <location filename="../../ArchComponent.py" line="2703"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="683"/>
       <source>New property set</source>
       <translation>Новы набор уласцівасцяў</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2771"/>
+      <location filename="../../ArchComponent.py" line="2783"/>
       <source>Options</source>
       <translation>Налады</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2912"/>
+      <location filename="../../ArchComponent.py" line="2924"/>
       <source>Error saving property</source>
-      <translation type="unfinished">Error saving property</translation>
+      <translation>Памылка захавання ўласцівасці</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="998"/>
@@ -6434,7 +6288,7 @@ The ladybug or pysolar Python module is required.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1517"/>
       <source>Toggle Cut View</source>
-      <translation type="unfinished">Toggle Cut View</translation>
+      <translation>Пераключыць плоскасць перасеку</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1770"/>
@@ -6452,7 +6306,7 @@ The ladybug or pysolar Python module is required.</translation>
       <translation>Змяняе памер плоскасці па памеру аб'ектаў з прыведзенага вышэй спісу</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1852"/>
+      <location filename="../../ArchWall.py" line="1855"/>
       <location filename="../../bimcommands/BimWall.py" line="510"/>
       <source>Center</source>
       <translation>Па цэнтры</translation>
@@ -6463,8 +6317,8 @@ The ladybug or pysolar Python module is required.</translation>
       <translation>Цэнтруе плоскасць па аб'ектах з прыведзенага вышэй спісу</translation>
     </message>
     <message>
-      <location filename="../../ArchBuilding.py" line="214"/>
       <location filename="../../Arch.py" line="231"/>
+      <location filename="../../ArchBuilding.py" line="214"/>
       <source>Building</source>
       <translation>Будынак</translation>
     </message>
@@ -6513,7 +6367,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchSpace.py" line="920"/>
       <source>Space Type</source>
-      <translation type="unfinished">Space Type</translation>
+      <translation>Тып прасторы</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="921"/>
@@ -6523,22 +6377,22 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchSpace.py" line="922"/>
       <source>Finish Floor</source>
-      <translation type="unfinished">Finish Floor</translation>
+      <translation>Скончыць паверх</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="923"/>
       <source>Finish Walls</source>
-      <translation type="unfinished">Finish Walls</translation>
+      <translation>Скончыць сцены</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="924"/>
       <source>Finish Ceiling</source>
-      <translation type="unfinished">Finish Ceiling</translation>
+      <translation>Скончыць столь</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="932"/>
       <source>Space Tools</source>
-      <translation type="unfinished">Space Tools</translation>
+      <translation>Інструменты прасторы</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="937"/>
@@ -6570,7 +6424,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="145"/>
       <source>First Point of Wall</source>
-      <translation type="unfinished">First Point of Wall</translation>
+      <translation>Першая кропка сцяны</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="466"/>
@@ -6585,7 +6439,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="524"/>
       <source>Baseline</source>
-      <translation type="unfinished">Baseline</translation>
+      <translation>Падстава</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="530"/>
@@ -6603,13 +6457,13 @@ Building creation aborted.</source>
       <translation>Эскіз</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1872"/>
+      <location filename="../../ArchWall.py" line="1875"/>
       <location filename="../../bimcommands/BimWall.py" line="508"/>
       <source>Alignment</source>
       <translation>Выраўноўванне</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1851"/>
+      <location filename="../../ArchWall.py" line="1854"/>
       <location filename="../../bimcommands/BimWall.py" line="510"/>
       <source>Left</source>
       <translation>Злева</translation>
@@ -6617,16 +6471,16 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchWall.py" line="642"/>
       <source>Cannot create or update {obj.Label} as its length, height or width is zero, and there are no solids in its additions</source>
-      <translation type="unfinished">Cannot create or update {obj.Label} as its length, height or width is zero, and there are no solids in its additions</translation>
+      <translation>Не атрымалася стварыць ці абнавіць {obj.Label}, паколькі яго даўжыня, вышыня ці шырыня роўныя нулю, а ў яго дадатках адсутнічаюць суцэльныя целы</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1827"/>
+      <location filename="../../ArchWall.py" line="1830"/>
       <location filename="../../bimcommands/BimWall.py" line="461"/>
       <source>Wall Options</source>
-      <translation type="unfinished">Wall Options</translation>
+      <translation>Налады сцяны</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1853"/>
+      <location filename="../../ArchWall.py" line="1856"/>
       <location filename="../../bimcommands/BimWall.py" line="511"/>
       <source>Right</source>
       <translation>Справа</translation>
@@ -6648,7 +6502,7 @@ Building creation aborted.</source>
       <translation>Памылка: немагчыма змяніць асноўны аб'ект сцяны</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="2094"/>
+      <location filename="../../ArchWall.py" line="2097"/>
       <source>Flip Direction</source>
       <translation>Адваротны напрамак</translation>
     </message>
@@ -6857,8 +6711,8 @@ Building creation aborted.</source>
       <translation>Новая суполка</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="100"/>
       <location filename="../../ArchBuildingPart.py" line="1186"/>
+      <location filename="../../ArchMaterial.py" line="100"/>
       <source>Reorder Children Alphabetically</source>
       <translation>Змяніць парадак размяшчэння спадчыннікаў у алфавітным парадку</translation>
     </message>
@@ -6868,84 +6722,14 @@ Building creation aborted.</source>
       <translation>Дубліраваць узровень уверх</translation>
     </message>
     <message>
-      <location filename="../../ArchTruss.py" line="414"/>
-      <source>Height Start</source>
-      <translation type="unfinished">Height Start</translation>
+      <location filename="../../ArchEquipment.py" line="64"/>
+      <source>Model</source>
+      <translation>Мадэль</translation>
     </message>
     <message>
-      <location filename="../../ArchTruss.py" line="415"/>
-      <source>Height End</source>
-      <translation type="unfinished">Height End</translation>
-    </message>
-    <message>
-      <location filename="../../ArchTruss.py" line="416"/>
-      <source>Strut Height</source>
-      <translation type="unfinished">Strut Height</translation>
-    </message>
-    <message>
-      <location filename="../../ArchTruss.py" line="417"/>
-      <source>Strut Width</source>
-      <translation type="unfinished">Strut Width</translation>
-    </message>
-    <message>
-      <location filename="../../ArchTruss.py" line="418"/>
-      <source>Rod Sections</source>
-      <translation type="unfinished">Rod Sections</translation>
-    </message>
-    <message>
-      <location filename="../../ArchTruss.py" line="419"/>
-      <source>Rod Size</source>
-      <translation type="unfinished">Rod Size</translation>
-    </message>
-    <message>
-      <location filename="../../ArchTruss.py" line="420"/>
-      <source>Rod Mode</source>
-      <translation type="unfinished">Rod Mode</translation>
-    </message>
-    <message>
-      <location filename="../../ArchTruss.py" line="421"/>
-      <source>Rod Type</source>
-      <translation type="unfinished">Rod Type</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="732"/>
-      <source>Vertical Sections</source>
-      <translation type="unfinished">Vertical Sections</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="733"/>
-      <source>Horizontal Sections</source>
-      <translation type="unfinished">Horizontal Sections</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="734"/>
-      <source>Vertical Mullion Width</source>
-      <translation type="unfinished">Vertical Mullion Width</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="737"/>
-      <source>Vertical Mullion Height</source>
-      <translation type="unfinished">Vertical Mullion Height</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="741"/>
-      <source>Horizontal Mullion Width</source>
-      <translation type="unfinished">Horizontal Mullion Width</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="745"/>
-      <source>Horizontal Mullion Height</source>
-      <translation type="unfinished">Horizontal Mullion Height</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="747"/>
-      <source>Panel Thickness</source>
-      <translation type="unfinished">Panel Thickness</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="748"/>
-      <source>Refine</source>
-      <translation>Удасканаліць</translation>
+      <location filename="../../ArchEquipment.py" line="65"/>
+      <source>Equipment Power</source>
+      <translation>Магутнасць абсталявання</translation>
     </message>
     <message>
       <location filename="../../ArchSql.py" line="2255"/>
@@ -6959,22 +6743,236 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchSql.py" line="2312"/>
       <source>Typing...</source>
-      <translation type="unfinished">Typing...</translation>
+      <translation>Піша...</translation>
     </message>
     <message>
       <location filename="../../ArchSql.py" line="2320"/>
       <source>Query is valid, but found 0 objects.</source>
-      <translation type="unfinished">Query is valid, but found 0 objects.</translation>
+      <translation>Запыт дапушчальны, але знойдзена 0 аб'ектаў.</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="64"/>
-      <source>Model</source>
-      <translation>Мадэль</translation>
+      <location filename="../../ArchSite.py" line="1053"/>
+      <source>Solar Diagrams</source>
+      <translation>Сонечная дыяграма</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="65"/>
-      <source>Equipment Power</source>
-      <translation>Магутнасць абсталявання</translation>
+      <location filename="../../ArchSite.py" line="1057"/>
+      <source>Location</source>
+      <translation>Месцазнаходжанне</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1072"/>
+      <source>The latitude of this site in decimal degrees.
+Positive values are north of the Equator, negative values are south.</source>
+      <translation>Шырата мясцовасці паказаная ў дзесятковых градусах.
+Станоўчыя значэнні ставяцца да поўначы ад экватара, адмоўныя - на поўдзень.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1073"/>
+      <source>Latitude</source>
+      <translation>Шырата</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1087"/>
+      <source>The longitude of this site in decimal degrees.
+Positive values are east of the Prime Meridian, negative values are west.</source>
+      <translation>Даўгата мясцовасці паказаная ў дзесятковых градусах.
+Станоўчыя значэнні ставяцца на ўсход ад нулявога мерыдыяна, адмоўныя - на захад.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1088"/>
+      <source>Longitude</source>
+      <translation>Даўгата</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1100"/>
+      <source>The UTC offset of the time zone where this site is located.
+Used when calculating the sun position.</source>
+      <translation>Зрушэнне па часе UTC у гадзінным поясе, у якім размешчаная дадзеная мясцовасць.
+Ужываецца пры разліку становішча сонца.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1101"/>
+      <source>Time zone</source>
+      <translation>Гадзінны пояс</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1118"/>
+      <source>The angle between the model's north and geographic north.
+Drives the compass orientation and the declination used to
+align the solar diagram and sun path.</source>
+      <translation>Вугал паміж поўначчу мадэлі і геаграфічнай поўначчу.
+Вызначае арыентацыю па компасе і скланенне, якія ўжываюцца для выраўноўвання сонечнай дыяграмы і траекторыі руху сонца.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1119"/>
+      <source>North offset</source>
+      <translation>Зрушэнне поўначы</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1123"/>
+      <source>Diagrams</source>
+      <translation>Дыяграмы</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1126"/>
+      <source>Solar Diagram</source>
+      <translation>Сонечная дыяграма</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1136"/>
+      <source>Shows a sun path arc diagram projected onto the site,
+computed from the site's latitude, longitude and north offset.</source>
+      <translation>Паказвае дыяграму дугі сонечнай траекторыі, якая спраецыяваная на мясцовасць, разлічаную зыходзячы з шыраты, даўгаты і паўночнага зрушэння.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1139"/>
+      <source>Compass</source>
+      <translation>Компас</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1147"/>
+      <source>Shows a compass rose overlay on the site,
+oriented according to the north offset.</source>
+      <translation>Паказвае накладзеную на мясцовасць компасную ружу, арыентаваную ў адпаведнасці з зрушэннем на поўнач.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1153"/>
+      <source>Sun Position</source>
+      <translation>Становішча сонца</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1164"/>
+      <source>Shows a sphere and ray indicating the sun position
+for the selected date and time.</source>
+      <translation>Паказвае сферу і прамень, якія паказваюць становішча сонца на абраную дату і час.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1184"/>
+      <source>The day and month for which the sun position is shown.
+The year is ignored.</source>
+      <translation>Дзень і месяц, для якіх паказана становішча сонца.
+Год не ўлічваецца.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1185"/>
+      <source>Date</source>
+      <translation>Дата</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1196"/>
+      <source>The time of day for which the sun position is shown,
+in 24-hour local time. Steps in half-hour increments.</source>
+      <translation>Час сутак, для якога адлюстроўваецца становішча сонца, у 24-гадзінным рэжыме па мясцовым часе.
+Пакрокава, з крокам у паўгадзіны.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1209"/>
+      <source>Hour</source>
+      <translation>Гадзіна</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1214"/>
+      <source>Show Hour Labels</source>
+      <translation>Паказаць меткі гадзін</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1220"/>
+      <source>Shows text labels at key hours along the sun path arc</source>
+      <translation>Паказвае тэкставыя меткі ў ключавыя гадзіны наўздоўж дугі сонечнай траекторыі</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1233"/>
+      <source>Solar calculations require the ladybug or pysolar Python module,
+which was not found.</source>
+      <translation>Для разліку сонечнай энергіі патрабуецца модуль ladybug ці pysolar на Python, які не быў знойдзены.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1243"/>
+      <source>Solar calculations unavailable.
+The ladybug or pysolar Python module is required.</source>
+      <translation>Разлікі па сонечнай энергіі недаступныя.
+Патрабуецца модуль ladybug ці pysolar на Python.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="732"/>
+      <source>Vertical Sections</source>
+      <translation>Вертыкальны перасек</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="733"/>
+      <source>Horizontal Sections</source>
+      <translation>Гарызантальны перасек</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="734"/>
+      <source>Vertical Mullion Width</source>
+      <translation>Шырыня вертыкальнай стойкі</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="737"/>
+      <source>Vertical Mullion Height</source>
+      <translation>Вышыня вертыкальнай стойкі</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="741"/>
+      <source>Horizontal Mullion Width</source>
+      <translation>Шырыня гарызантальнай стойкі</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="745"/>
+      <source>Horizontal Mullion Height</source>
+      <translation>Вышыня гарызантальнай стойкі</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="747"/>
+      <source>Panel Thickness</source>
+      <translation>Таўшчыня панэлі</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="748"/>
+      <source>Refine</source>
+      <translation>Удасканаліць</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="414"/>
+      <source>Height Start</source>
+      <translation>Пачатковая вышыня</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="415"/>
+      <source>Height End</source>
+      <translation>Канцавая вышыня</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="416"/>
+      <source>Strut Height</source>
+      <translation>Вышыня стойки</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="417"/>
+      <source>Strut Width</source>
+      <translation>Шырыня стойки</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="418"/>
+      <source>Rod Sections</source>
+      <translation>Перасек стрыжаня</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="419"/>
+      <source>Rod Size</source>
+      <translation>Памер стрыжаня</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="420"/>
+      <source>Rod Mode</source>
+      <translation>Рэжым стрыжаня</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="421"/>
+      <source>Rod Type</source>
+      <translation>Тып стрыжаня</translation>
     </message>
   </context>
   <context>
@@ -7052,14 +7050,14 @@ Building creation aborted.</source>
       <translation>Кручэнне асновы вакол восі інструмента (ужываецца толькі ў тым выпадку, калі BasePerpendicularToTool зададзены ў True)</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="758"/>
       <location filename="../../ArchPanel.py" line="85"/>
+      <location filename="../../ArchStructure.py" line="758"/>
       <source>The length of this element, if not based on a profile</source>
       <translation>Даўжыня элементу, калі не заснаваны на профілі</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="768"/>
       <location filename="../../ArchPanel.py" line="95"/>
+      <location filename="../../ArchStructure.py" line="768"/>
       <source>The width of this element, if not based on a profile</source>
       <translation>Шырыня элементу, калі не заснаваны на профілі</translation>
     </message>
@@ -7070,8 +7068,8 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="272"/>
-      <location filename="../../ArchStructure.py" line="790"/>
       <location filename="../../ArchPanel.py" line="209"/>
+      <location filename="../../ArchStructure.py" line="790"/>
       <source>The normal extrusion direction of this object (keep (0,0,0) for automatic normal)</source>
       <translation>Вектар нармалі напрамку выдушвання аб'екту (пакіньце (0,0,0) для аўтаматычнага вектару нармалі)</translation>
     </message>
@@ -7092,8 +7090,8 @@ Building creation aborted.</source>
       <translation>Адлегласць зрушэння паміж цэнтральнай ліній і лініяй вузлоў</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="829"/>
       <location filename="../../ArchPanel.py" line="197"/>
+      <location filename="../../ArchStructure.py" line="829"/>
       <source>The facemaker type to use to build the profile of this object</source>
       <translation>Тып майстра граняў, які ўжываецца для стварэння профілю аб'екта</translation>
     </message>
@@ -7104,8 +7102,8 @@ Building creation aborted.</source>
       <translation>Абраныя рэбры (ці суполка рэбраў) асноўнага Эскізу архітэктуры для ўжывання пры стварэнні фігуры канструкцыі BIM (замест першапачатковага ўжывання ўсіх рэбраў асноўнай фігуры). Ўваходныя дадзеныя - гэта індэксныя нумары рэбраў ці суполак.</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="882"/>
       <location filename="../../ArchStairs.py" line="547"/>
+      <location filename="../../ArchStructure.py" line="882"/>
       <source>Select User Defined PropertySet to use in creating variant shape, with same ArchSketch </source>
       <translation>Абраць карыстальніцкі набор уласцівасцяў, які будзе ўжывацца пры стварэнні альтэрнатыўнай фігуры з тым жа Эскізам архітэктуры </translation>
     </message>
@@ -7160,8 +7158,8 @@ Building creation aborted.</source>
       <translation>URL-адрас старонкі вытворцы абсталявання</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="208"/>
       <location filename="../../ArchEquipment.py" line="113"/>
+      <location filename="../../ArchMaterial.py" line="208"/>
       <source>A standard code (MasterFormat, OmniClass,…)</source>
       <translation>Стандартны код (MasterFormat, OmniClass, …)</translation>
     </message>
@@ -7176,15 +7174,15 @@ Building creation aborted.</source>
       <translation>Электрычная магутнасць у ватах (Вт), якая неабходная абсталяванню</translation>
     </message>
     <message>
-      <location filename="../../ArchBuilding.py" line="308"/>
       <location filename="../../Arch.py" line="234"/>
       <location filename="../../Arch.py" line="307"/>
+      <location filename="../../ArchBuilding.py" line="308"/>
       <source>The type of this building</source>
       <translation>Тып будынка</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="230"/>
       <location filename="../../ArchFloor.py" line="236"/>
+      <location filename="../../ArchBuildingPart.py" line="230"/>
       <source>The height of this object</source>
       <translation>Вышыня аб'екта</translation>
     </message>
@@ -7199,26 +7197,26 @@ Building creation aborted.</source>
       <translation>Ўзровень кропкі адліку (0,0,0) узроўню</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="258"/>
       <location filename="../../ArchFloor.py" line="244"/>
+      <location filename="../../ArchBuildingPart.py" line="258"/>
       <source>The computed floor area of this floor</source>
       <translation>Вылічаная плошча паверху</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="266"/>
       <location filename="../../ArchComponent.py" line="238"/>
+      <location filename="../../ArchBuildingPart.py" line="266"/>
       <source>An optional description for this component</source>
       <translation>Неабавязковае апісанне для кампанента</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="274"/>
       <location filename="../../ArchComponent.py" line="246"/>
+      <location filename="../../ArchBuildingPart.py" line="274"/>
       <source>An optional tag for this component</source>
       <translation>Неабавязковая метка для кампанента</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="282"/>
       <location filename="../../ArchSectionPlane.py" line="968"/>
+      <location filename="../../ArchBuildingPart.py" line="282"/>
       <source>The shape of this object</source>
       <translation>Фігура аб'екту</translation>
     </message>
@@ -7238,8 +7236,8 @@ Building creation aborted.</source>
       <translation>Супастаўленне MaterialName:SolidIndexesList, якое звязвае назвы матэрыялаў з індэксамі суцэльных цел, якія будуць ужывацца, калі на аб'ект спасылаюцца ў іншых файлах</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="547"/>
       <location filename="../../ArchSectionPlane.py" line="1140"/>
+      <location filename="../../ArchBuildingPart.py" line="547"/>
       <source>The line width of this object</source>
       <translation>Шырыня лініі аб'екту</translation>
     </message>
@@ -7473,7 +7471,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchProfile.py" line="158"/>
       <source>Outside diameter</source>
-      <translation type="unfinished">Outside diameter</translation>
+      <translation>Вонкавы дыяметр</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="520"/>
@@ -7537,20 +7535,20 @@ Building creation aborted.</source>
       <translation>URL-адрас, які паказвае дадзеную мясцовасць на супастаўленым інтэрнэт-сайце</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="656"/>
       <location filename="../../ArchComponent.py" line="220"/>
+      <location filename="../../ArchSite.py" line="656"/>
       <source>Other shapes that are appended to this object</source>
       <translation>Іншыя фігуры, якія дадаюцца да аб'екта</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="666"/>
       <location filename="../../ArchComponent.py" line="230"/>
+      <location filename="../../ArchSite.py" line="666"/>
       <source>Other shapes that are subtracted from this object</source>
       <translation>Іншыя фігуры, якія адымаюцца ад аб'екту</translation>
     </message>
     <message>
+      <location filename="../../ArchComponent.py" line="325"/>
       <location filename="../../ArchSite.py" line="676"/>
-      <location filename="../../ArchComponent.py" line="313"/>
       <source>The area of the projection of this object onto the XY plane</source>
       <translation>Плошча праекцыі аб'екту на плоскасць XY</translation>
     </message>
@@ -7585,8 +7583,8 @@ Building creation aborted.</source>
       <translation>Неабавязковае зрушэнне паміж пачаткам каардынат мадэлі (0,0,0) і кропкай, названай геаграфічнымі каардынатамі</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="744"/>
       <location filename="../../ArchIFC.py" line="87"/>
+      <location filename="../../ArchSite.py" line="744"/>
       <source>The type of this object</source>
       <translation>Тып аб'екту</translation>
     </message>
@@ -8236,7 +8234,7 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="200"/>
-      <location filename="../../ArchMaterial.py" line="729"/>
+      <location filename="../../ArchMaterial.py" line="730"/>
       <source>A description for this material</source>
       <translation>Апісанне для матэрыялу</translation>
     </message>
@@ -8261,17 +8259,17 @@ Building creation aborted.</source>
       <translation>Колер матэрыялу пры абрэзцы</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="736"/>
+      <location filename="../../ArchMaterial.py" line="737"/>
       <source>The list of layer names</source>
       <translation>Спіс назваў пласта</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="743"/>
+      <location filename="../../ArchMaterial.py" line="744"/>
       <source>The list of layer materials</source>
       <translation>Спіс матэрыялаў пласта</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="750"/>
+      <location filename="../../ArchMaterial.py" line="751"/>
       <source>The list of layer thicknesses</source>
       <translation>Спіс таўшчыні пласта</translation>
     </message>
@@ -8804,8 +8802,8 @@ Building creation aborted.</source>
       <translation>Калі True, да вынікаў дадаюцца дадатковыя радкі з кожным асобным аб'ектам</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="960"/>
       <location filename="../../ArchFloor.py" line="253"/>
+      <location filename="../../ArchSectionPlane.py" line="960"/>
       <source>The placement of this object</source>
       <translation>Размяшчэнне аб'екту</translation>
     </message>
@@ -8907,45 +8905,46 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchComponent.py" line="257"/>
       <source>An optional standard (OmniClass, etc.) code for this component</source>
-      <translation type="unfinished">An optional standard (OmniClass, etc.) code for this component</translation>
+      <translation>Код кампаненту па неабавязковаму стандарту (ГОСТ, ТУ, OmniClass і гэтак далей…)</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="265"/>
+      <location filename="../../ArchComponent.py" line="276"/>
       <source>A material for this object</source>
       <translation>Матэрыял аб'екту</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="281"/>
+      <location filename="../../ArchComponent.py" line="293"/>
       <source>Specifies if moving this object moves its base instead</source>
       <translation>Вызначае, ці прывядзе зрушэнне аб'екта да зрушэння яго асновы</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="293"/>
+      <location filename="../../ArchComponent.py" line="305"/>
       <source>Specifies if this object must move together when its host is moved</source>
       <translation>Паказвае, ці павінен аб'ект рухацца разам пры руху яго вузла</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="302"/>
+      <location filename="../../ArchComponent.py" line="314"/>
       <source>The area of all vertical faces of this object</source>
       <translation>Плошча ўсіх вертыкальных граняў аб'екту</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="322"/>
+      <location filename="../../ArchComponent.py" line="334"/>
       <source>The perimeter length of the horizontal area</source>
       <translation>Даўжыня перыметру гарызантальнай плошчы</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="333"/>
+      <location filename="../../ArchComponent.py" line="345"/>
       <source>An optional higher-resolution mesh or shape for this object</source>
       <translation>Неабавязковая паліганальная сетка ці фігура з больш высокім дазволам для аб'екту</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="344"/>
+      <location filename="../../ArchComponent.py" line="356"/>
       <source>An optional axis or axis system on which this object should be duplicated</source>
       <translation>Неабавязковая вось ці сістэма восей, дзе аб'ект павінен паўтарацца</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1586"/>
+      <location filename="../../ArchComponent.py" line="1598"/>
       <source>Use the material color as this object's shape color, if available</source>
       <translation>Ужываць колер матэрыялу ў якасці колеру фігуры аб'екту, калі даступна</translation>
     </message>
@@ -9357,17 +9356,17 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchReport.py" line="493"/>
       <source>The spreadsheet for the results</source>
-      <translation type="unfinished">The spreadsheet for the results</translation>
+      <translation>Аркуш з вынікамі</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="502"/>
       <source>If True, update report when document recomputes</source>
-      <translation type="unfinished">If True, update report when document recomputes</translation>
+      <translation>Калі птушка, абнавіць справаздачу пры паўторным вылічэнні дакумента</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="530"/>
       <source>The name of the BIM Report that uses this spreadsheet</source>
-      <translation type="unfinished">The name of the BIM Report that uses this spreadsheet</translation>
+      <translation>Назва справаздачы BIM, у якім ужываецца дадзены аркуш</translation>
     </message>
   </context>
   <context>
@@ -9407,102 +9406,102 @@ Building creation aborted.</source>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../InitGui.py" line="530"/>
+      <location filename="../../InitGui.py" line="529"/>
       <source>&amp;2D Drafting</source>
       <translation>&amp;Двухмернае чарчэнне</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="531"/>
+      <location filename="../../InitGui.py" line="530"/>
       <source>&amp;3D/BIM</source>
       <translation>&amp;3D/BIM</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="509"/>
+      <location filename="../../InitGui.py" line="508"/>
       <source>Drafting Tools</source>
       <translation>Інструменты для чарчэння</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="510"/>
+      <location filename="../../InitGui.py" line="509"/>
       <source>Draft Snap</source>
       <translation>Прывязаць чарнавік</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="511"/>
+      <location filename="../../InitGui.py" line="510"/>
       <source>3D/BIM Tools</source>
       <translation>Інструменты 3D/BIM</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="512"/>
+      <location filename="../../InitGui.py" line="511"/>
       <source>Annotation Tools</source>
       <translation>Інструменты заметак</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="513"/>
+      <location filename="../../InitGui.py" line="512"/>
       <source>2D Tools</source>
       <translation>Двухмерныя інструменты</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="514"/>
+      <location filename="../../InitGui.py" line="513"/>
       <source>Manage Tools</source>
       <translation>Інструменты кіравання</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="515"/>
+      <location filename="../../InitGui.py" line="514"/>
       <source>General Tools</source>
       <translation>Агульныя інструменты</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="516"/>
+      <location filename="../../InitGui.py" line="515"/>
       <source>Object Tools</source>
       <translation>Інструменты аб'екту</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="517"/>
+      <location filename="../../InitGui.py" line="516"/>
       <source>3D Tools</source>
       <translation>Трохмерныя інструменты</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="532"/>
+      <location filename="../../InitGui.py" line="531"/>
       <source>&amp;Reinforcement Tools</source>
-      <translation type="unfinished">&amp;Reinforcement Tools</translation>
+      <translation>&amp;Інструменты для армавання</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="535"/>
+      <location filename="../../InitGui.py" line="534"/>
       <source>M&amp;odify</source>
-      <translation type="unfinished">M&amp;odify</translation>
+      <translation>&amp;Змяніць</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="537"/>
+      <location filename="../../InitGui.py" line="536"/>
       <source>Ma&amp;nage</source>
-      <translation type="unfinished">Ma&amp;nage</translation>
+      <translation>&amp;Кіраваць</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="539"/>
+      <location filename="../../InitGui.py" line="538"/>
       <source>Fas&amp;teners</source>
-      <translation type="unfinished">Fas&amp;teners</translation>
+      <translation>&amp;Крапеж</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="533"/>
+      <location filename="../../InitGui.py" line="532"/>
       <source>&amp;Annotation</source>
       <translation>З&amp;аметка</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="534"/>
+      <location filename="../../InitGui.py" line="533"/>
       <source>&amp;Snapping</source>
       <translation>&amp;Прывязка</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="538"/>
+      <location filename="../../InitGui.py" line="537"/>
       <source>&amp;Flamingo</source>
       <translation>&amp;Каркасныя канструкцыі</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="540"/>
+      <location filename="../../InitGui.py" line="539"/>
       <source>&amp;Utils</source>
       <translation>&amp;Утыліты</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="545"/>
+      <location filename="../../InitGui.py" line="544"/>
       <source>Nudge</source>
       <translation>Штуршок</translation>
     </message>
@@ -10148,8 +10147,8 @@ Building creation aborted.</source>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../ArchSite.py" line="1608"/>
       <location filename="../../ArchIFCView.py" line="73"/>
+      <location filename="../../ArchSite.py" line="1608"/>
       <location filename="../../ArchAxis.py" line="834"/>
       <source>Transform</source>
       <translation>Пераўтварыць</translation>
@@ -10158,17 +10157,17 @@ Building creation aborted.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../InitGui.py" line="597"/>
+      <location filename="../../InitGui.py" line="596"/>
       <source>BIM</source>
       <translation>BIM</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="598"/>
+      <location filename="../../InitGui.py" line="597"/>
       <source>Draft</source>
       <translation>Чарнавік</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="844"/>
+      <location filename="../../InitGui.py" line="843"/>
       <source>Import-Export</source>
       <translation>Імпарт-Экспарт</translation>
     </message>
@@ -10190,28 +10189,27 @@ Building creation aborted.</source>
       <translation>Аўтаматычнае</translation>
     </message>
     <message>
-      <location filename="../../BimStatus.py" line="153"/>
-      <source>Toggles the bottom dock panels on/off (Ctrl+0)</source>
-      <translation type="unfinished">Toggles the bottom dock panels on/off (Ctrl+0)</translation>
-    </message>
-    <message>
-      <location filename="../../BimStatus.py" line="172"/>
+      <location filename="../../BimStatus.py" line="121"/>
       <source>Toggles the BIM Views Manager on/off (Ctrl+9)</source>
-      <translation type="unfinished">Toggles the BIM Views Manager on/off (Ctrl+9)</translation>
+      <translation>Пераключае кіраўнік выглядаў BIM (&lt;Ctrl + 9&gt;)</translation>
     </message>
     <message>
-      <location filename="../../BimStatus.py" line="188"/>
+      <location filename="../../BimStatus.py" line="137"/>
       <source>Toggles the 3D View background between simple and gradient</source>
-      <translation type="unfinished">Toggles the 3D View background between simple and gradient</translation>
+      <translation>Пераключае трохмернае прадстаўленне паміж простым і градыентным</translation>
     </message>
     <message>
-      <location filename="../../BimStatus.py" line="214"/>
+      <location filename="../../BimStatus.py" line="163"/>
       <source>The value of the nudge movement (rotation is always 45°).Alt+arrows to move
 Alt+, to rotate leftAlt+. to rotate right
 Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch between auto and manual mode</source>
-      <translation type="unfinished">The value of the nudge movement (rotation is always 45°).Alt+arrows to move
-Alt+, to rotate leftAlt+. to rotate right
-Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch between auto and manual mode</translation>
+      <translation>Велічыня перамяшчэння націску (паварот заўсёды на 45°):
+&lt;Alt + стрэлкі&gt; для перамяшчэння,
+&lt;Alt + ,&gt; для павароту налева,
+&lt;Alt + ,&gt; для павароту направа,
+&lt;Alt + PgUp&gt; для павелічэння выдушвання,
+&lt;Alt + PgDown&gt; для памяншэння выдушвання,
+&lt;Alt + /&gt; для пераключэння паміж аўтаматычным і ручным рэжымамі</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="43"/>
@@ -10224,14 +10222,14 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
       <translation>BIM</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="807"/>
+      <location filename="../../InitGui.py" line="806"/>
       <source>Snapping</source>
       <translation>Прывязка</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimBox.py" line="153"/>
       <source>Box Dimensions</source>
-      <translation type="unfinished">Box Dimensions</translation>
+      <translation>Габарыты вымярэння</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimBox.py" line="156"/>
@@ -10350,15 +10348,15 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
       <translation>Стварыць новы шматслойны матэрыял</translation>
     </message>
     <message>
+      <location filename="../../bimcommands/BimIfcElements.py" line="139"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="206"/>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="247"/>
-      <location filename="../../bimcommands/BimIfcElements.py" line="139"/>
       <source>Label</source>
       <translation>Метка</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="207"/>
       <location filename="../../bimcommands/BimIfcElements.py" line="140"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="207"/>
       <source>IFC type</source>
       <translation>Тып IFC</translation>
     </message>
@@ -10368,8 +10366,8 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
       <translation>Матэрыял</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_tools.py" line="60"/>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="60"/>
+      <location filename="../../nativeifc/__init__.py" line="42"/>
       <source>IfcOpenShell was not found on this system. IFC support is disabled</source>
       <translation>IfcOpenShell не быў знойдзены ў гэтай сістэме.
 Падтрымка IFC адключаная</translation>
@@ -10454,7 +10452,7 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="186"/>
       <source>Select an IFC File</source>
-      <translation type="unfinished">Select an IFC File</translation>
+      <translation>Абраць файл IFC</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="228"/>
@@ -10505,7 +10503,7 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
     <message>
       <location filename="../../bimcommands/BimIfcProperties.py" line="685"/>
       <source>New Property Set</source>
-      <translation type="unfinished">New Property Set</translation>
+      <translation>Новы набор уласцівасцяў</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcProperties.py" line="686"/>
@@ -10671,7 +10669,7 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="675"/>
       <source>Insertion Point</source>
-      <translation type="unfinished">Insertion Point</translation>
+      <translation>Кропка ўстаўкі</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="686"/>
@@ -10754,6 +10752,26 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
       <translation>Новы матэрыял</translation>
     </message>
     <message>
+      <location filename="../../bimcommands/BimMaterial.py" line="88"/>
+      <source>Select Material</source>
+      <translation>Абраць матэрыял</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimMaterial.py" line="107"/>
+      <source>Search materials</source>
+      <translation>Знайсці матэрыялы</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimMaterial.py" line="108"/>
+      <source>Searches for materials in the list</source>
+      <translation>Выконвае пошук матэрыялаў у спісе</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimMaterial.py" line="141"/>
+      <source>New Multi-Material</source>
+      <translation>Новы шматслойны матэрыял</translation>
+    </message>
+    <message>
       <location filename="../../bimcommands/BimMaterial.py" line="148"/>
       <source>Merge Duplicates</source>
       <translation>Аб'яднаць паўторныя</translation>
@@ -10764,8 +10782,8 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
       <translation>Выдаліць неўжытыя</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="96"/>
       <location filename="../../bimcommands/BimMaterial.py" line="175"/>
+      <location filename="../../bimcommands/BimViews.py" line="96"/>
       <source>Rename</source>
       <translation>Пераназваць</translation>
     </message>
@@ -10780,30 +10798,10 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
       <translation>Аб'яднаць з…</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="92"/>
       <location filename="../../bimcommands/BimMaterial.py" line="181"/>
+      <location filename="../../bimcommands/BimViews.py" line="92"/>
       <source>Delete</source>
       <translation>Выдаліць</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="88"/>
-      <source>Select Material</source>
-      <translation type="unfinished">Select Material</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="107"/>
-      <source>Search materials</source>
-      <translation type="unfinished">Search materials</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="108"/>
-      <source>Searches for materials in the list</source>
-      <translation type="unfinished">Searches for materials in the list</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="141"/>
-      <source>New Multi-Material</source>
-      <translation type="unfinished">New Multi-Material</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="237"/>
@@ -10829,7 +10827,7 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="337"/>
       <source>Select Material to Merge To</source>
-      <translation type="unfinished">Select Material to Merge To</translation>
+      <translation>Абраць матэрыял для аб'яднання</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="382"/>
@@ -11030,17 +11028,18 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="378"/>
       <source>Zero Level Height</source>
-      <translation type="unfinished">Zero Level Height</translation>
+      <translation>Вышыня нулявога ўзроўню</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="379"/>
       <source>Level height is zero. No levels will be created.</source>
-      <translation type="unfinished">Level height is zero. No levels will be created.</translation>
+      <translation>Вышыня ўзроўню роўная нулю.
+Узроўні стварацца не будуць.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="382"/>
       <source>Please set the level height to a non-zero value.</source>
-      <translation type="unfinished">Please set the level height to a non-zero value.</translation>
+      <translation>Задайце вышыню ўзроўню на ненулявое значэнне.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="392"/>
@@ -11065,12 +11064,12 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="663"/>
       <source>Save Template File</source>
-      <translation type="unfinished">Save Template File</translation>
+      <translation>Захаваць файл шаблону</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="684"/>
       <source>Open Template File</source>
-      <translation type="unfinished">Open Template File</translation>
+      <translation>Адчыніць файл шаблону</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="798"/>
@@ -11078,8 +11077,8 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
       <translation>Шаблон паспяхова загружаны ў бягучы дакумент</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="156"/>
       <location filename="../../bimcommands/BimProjectManager.py" line="438"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="156"/>
       <source>New Group</source>
       <translation>Новая суполка</translation>
     </message>
@@ -11116,7 +11115,7 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
     <message>
       <location filename="../../bimcommands/BimSetup.py" line="631"/>
       <source>IfcOpenShell Not Found</source>
-      <translation type="unfinished">IfcOpenShell Not Found</translation>
+      <translation>IfcOpenShell не знойдзены</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSetup.py" line="635"/>
@@ -11139,7 +11138,7 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
     <message>
       <location filename="../../bimcommands/BimTDPage.py" line="62"/>
       <source>Select Page Template</source>
-      <translation type="unfinished">Select Page Template</translation>
+      <translation>Абраць шаблон старонкі</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTDPage.py" line="74"/>
@@ -11165,7 +11164,7 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
     <message>
       <location filename="../../bimcommands/BimTutorial.py" line="242"/>
       <source>BIM Tutorial - Step</source>
-      <translation type="unfinished">BIM Tutorial - Step</translation>
+      <translation>Навучальны дапаможнік BIM - крок</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimUnclone.py" line="138"/>
@@ -11255,7 +11254,7 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
     <message>
       <location filename="../../bimcommands/BimViews.py" line="161"/>
       <source>BIM Views Manager</source>
-      <translation type="unfinished">BIM Views Manager</translation>
+      <translation>Кіраўнік выглядаў BIM</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="309"/>
@@ -11290,53 +11289,53 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
       <translation>Ніякіх змяненняў для адлюстравання.</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="73"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="75"/>
       <source>IfcOpenShell Update</source>
       <translation>Абнаўленне IfcOpenShell</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="77"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="79"/>
       <source>The update is installed in your FreeCAD's user directory and will not affect the rest of your system.</source>
       <translation>Абнаўленне ўсталяванае ў карыстальніцкі каталог вашага FreeCAD і не паўплывае на астатнюю частку сістэмы.</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="79"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="81"/>
       <source>An update to your installed IfcOpenShell version is available</source>
       <translation>Даступна абнаўленне для ўсталяванай вамі версіі IfcOpenShell</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="81"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="83"/>
       <source>Would you like to install that update?</source>
       <translation>Ці жадаеце вы ўсталяваць гэтае абнаўленне?</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="85"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="87"/>
       <source>Your version of IfcOpenShell is already up to date</source>
       <translation>Вашая версія IfcOpenShell ужо абноўленая</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="88"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="90"/>
       <source>No existing IfcOpenShell installation found on this system.</source>
       <translation>У гэтай сістэме не знойдзена аніводнага існуючага ўсталявання IfcOpenShell.</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="90"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="92"/>
       <source>Would you like to install the most recent version?</source>
       <translation>Ці жадаеце вы ўсталяваць самую апошнюю версію?</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="97"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="99"/>
       <source>IfcOpenShell is not installed, and FreeCAD failed to find a suitable version to install. You can still install IfcOpenShell manually, visit https://wiki.freecad.org/IfcOpenShell for further instructions.</source>
       <translation>IfcOpenShell не ўсталяваны, а FreeCAD не атрымалася знайсці прыдатную версію для ўсталявання.
 Вы ўсё яшчэ можаце ўсталяваць IfcOpenShell уручную, наведайце старонку https://wiki.freecad.org/IfcOpenShell для атрымання далейшых інструкцый.</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="105"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="107"/>
       <source>IfcOpenShell update successfully installed.</source>
       <translation>Абнаўленне IfcOpenShell паспяхова ўсталяванае.</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="143"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="155"/>
       <source>Unable to run pip. Ensure pip is installed on your system.</source>
       <translation>Не атрымалася запусціць pip.
 Пераканайцеся, што pip усталяваны ў сістэме.</translation>
@@ -11544,18 +11543,18 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimLink.py" line="30"/>
       <source>Select an object to link</source>
-      <translation type="unfinished">Select an object to link</translation>
+      <translation>Абярыце аб'ект для сувязі</translation>
     </message>
   </context>
   <context>
     <name>Arch_RebarTools</name>
     <message>
-      <location filename="../../InitGui.py" line="415"/>
+      <location filename="../../InitGui.py" line="414"/>
       <source>Reinforcement Tools</source>
       <translation>Інструменты для армавання</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="416"/>
+      <location filename="../../InitGui.py" line="415"/>
       <source>Reinforcement tools</source>
       <translation>Інструменты для армавання</translation>
     </message>
@@ -11570,7 +11569,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimBackground.py" line="42"/>
       <source>Toggles the 3D View background between simple and gradient</source>
-      <translation type="unfinished">Toggles the 3D View background between simple and gradient</translation>
+      <translation>Пераключае трохмернае прадстаўленне паміж простым і градыентным</translation>
     </message>
   </context>
   <context>
@@ -11747,8 +11746,8 @@ Please check your FreeCAD installation or provide a custom template under menu P
       <translation>Выдаляе з сметніка ўсе аб'екты, якія не ўжываюцца іншымі карыстальнікамі</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimEmptyTrash.py" line="38"/>
       <location filename="../../bimcommands/BimTrash.py" line="78"/>
+      <location filename="../../bimcommands/BimEmptyTrash.py" line="38"/>
       <source>Empty Trash</source>
       <translation>Спустошыць сметніцу</translation>
     </message>
@@ -12199,7 +12198,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimWPCommands.py" line="87"/>
       <source>Aligns the view to the current item in BIM Views Manager or to the current working plane</source>
-      <translation type="unfinished">Aligns the view to the current item in BIM Views Manager or to the current working plane</translation>
+      <translation>Выраўноўвае выгляд па бягучым элементу ў кіраўніку выглядаў BIM, альбо на бягучай працоўнай плоскасці</translation>
     </message>
   </context>
   <context>
@@ -12283,12 +12282,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>IFC_UpdateIOS</name>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="42"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="44"/>
       <source>Shows a dialog to update IfcOpenShell</source>
       <translation>Паказвае дыялогавае акно для абнаўлення IfcOpenShell</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="44"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="46"/>
       <source>IfcOpenShell Update</source>
       <translation>Абнаўленне IfcOpenShell</translation>
     </message>
@@ -12335,32 +12334,39 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../ui/dialogSetup.ui" line="71"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check this to make FreeCAD start with a new blank document. Location in preferences: &lt;span style=" font-weight:600;"&gt;General &amp;gt; Document &amp;gt; Create new document at start up&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check this to make FreeCAD start with a new blank document. Location in preferences: &lt;span style=" font-weight:600;"&gt;General &amp;gt; Document &amp;gt; Create new document at start up&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>Птушка, каб запусціць FreeCAD з новым пустым дакументам.
+Размяшчэнне ў наладах: Агульныя → Дакумент → Стварыць новы дакумент пры запуску</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="108"/>
       <source>Major grid line every</source>
-      <translation type="unfinished">Major grid line every</translation>
+      <translation>Галоўная лінія сеткі кожныя</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="115"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The preferred unit that will be used everywhere: in dialogs, measurements and dimensions. However, any other unit can be entered anytime. Changing the default unit system anytime will not cause any modification to the model. Location in preferences: &lt;span style=" font-weight:600;"&gt;General &amp;gt; General &amp;gt; Default unit system&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The preferred unit that will be used everywhere: in dialogs, measurements and dimensions. However, any other unit can be entered anytime. Changing the default unit system anytime will not cause any modification to the model. Location in preferences: &lt;span style=" font-weight:600;"&gt;General &amp;gt; General &amp;gt; Default unit system&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>Пажаданая адзінка вымярэння, якая будзе ўжывацца ўсюды: у дыялогавых вокнах, вымярэннях і габарытах.
+Аднак у любы час можна ўвесці любую іншую адзінку вымярэння.
+Змена першапачатковай сістэмы адзінак вымярэння ў любы час не прывядзе да якіх-небудзь зменаў у мадэлі.
+Размяшчэнне ў наладах: Агульныя → Агульныя → Першапачатковая сістэма адзінак вымярэння</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="166"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The number of decimals preferred in the interface controls and measurements. Location in preferences: &lt;span style=" font-weight:600;"&gt;General &amp;gt; General &amp;gt; Number of decimals&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The number of decimals preferred in the interface controls and measurements. Location in preferences: &lt;span style=" font-weight:600;"&gt;General &amp;gt; General &amp;gt; Number of decimals&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>Колькасць знакаў пасля коскі, якую пажадана ўжываць у элементах кіравання інтэрфейсам і вымярэннях.
+Размяшчэнне ў наладах: Агульныя → Агульныя → Колькасць знакаў пасля коскі</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="176"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;How many small squares between each major line of the grid. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Grid and Snapping &amp;gt; Major lines every&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;How many small squares between each major line of the grid. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Grid and Snapping &amp;gt; Major lines every&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>Колькі маленькіх квадратаў паміж кожнымі галоўнымі лініямі сеткі.
+Размяшчэнне ў наладах: Чарнавік → Сетка і прывязка → Галоўная лінія кожныя</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="189"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default dimension style. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Texts and Dimensions &amp;gt; Start/End arrow type, TechDraw &amp;gt; Dimensions &amp;gt; Arrow style&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default dimension style. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Texts and Dimensions &amp;gt; Start/End arrow type, TechDraw &amp;gt; Dimensions &amp;gt; Arrow style&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>Першапачатковы стыль вымярэння.
+Размяшчэнне ў наладах: Чарнавік → Тэксты і вымярэнні → Памер пачатку/канца стрэлкі, Тэхнічны чарцёж → Вымярэнне → Стыль стрэлкі</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="237"/>
@@ -12370,17 +12376,19 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../ui/dialogSetup.ui" line="253"/>
       <source>3D View background</source>
-      <translation type="unfinished">3D View background</translation>
+      <translation>Фон для трохмернага прадстаўлення</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="290"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default line width. Location in preferences: &lt;span style=" font-weight:600;"&gt;Part/Part Design &amp;gt; Shape Appearance &amp;gt; Line width &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default line width. Location in preferences: &lt;span style=" font-weight:600;"&gt;Part/Part Design &amp;gt; Shape Appearance &amp;gt; Line width &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>Першапачатковая шырыня лініі.
+Размяшчэнне ў наладах: Дэталь/Праектаванне дэталі → Знешнасць фігуры → Шырыня лініі</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="303"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The number of backup files to keep when saving a file. Location in preferences: &lt;span style=" font-weight:600;"&gt;General &amp;gt; Document &amp;gt; Maximum number of backup files to keep when resaving document&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The number of backup files to keep when saving a file. Location in preferences: &lt;span style=" font-weight:600;"&gt;General &amp;gt; Document &amp;gt; Maximum number of backup files to keep when resaving document&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>Колькасць файлаў рэзервовых копій, якія неабходна пакінуць пры захаванні файла.
+Размяшчэнне ў наладах: Агульныя → Дакумент → Найбольшая колькасць файлаў рэзервовых копій, каб пакінуць пры паўторным захаванні</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="327"/>
@@ -12405,69 +12413,80 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../ui/dialogSetup.ui" line="334"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The size of the smallest square of the grid. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Grid and Snapping &amp;gt; Grid spacing&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The size of the smallest square of the grid. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Grid and Snapping &amp;gt; Grid spacing&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>Памер найменшага квадрата сеткі.
+Размяшчэнне ў наладах: Чарнавік → Сетка і прывязка → Інтэрвал паміж сеткамі</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="349"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color for construction geometry. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; General &amp;gt; Construction geometry color&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color for construction geometry. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; General &amp;gt; Construction geometry color&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>Першапачатковы колер будаўнічай геаметрыі.
+Размяшчэнне ў наладах: Чарнавік → Агульныя → Колер будаўнічай геаметрыі</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="356"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color for faces in the 3D View. Location in preferences: &lt;span style=" font-weight:600;"&gt;Part/Part Design &amp;gt; Shape Appearance &amp;gt; Shape color&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color for faces in the 3D View. Location in preferences: &lt;span style=" font-weight:600;"&gt;Part/Part Design &amp;gt; Shape Appearance &amp;gt; Shape color&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>Першапачатковы колер граней у трохмерным прадстаўленні.
+Размяшчэнне ў наладах: Дэталь/Праектаванне дэталі → Знешнасць фігуры → Колер фігуры</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="384"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color for helper objects such as axes. Location in preferences: &lt;span style=" font-weight:600;"&gt;BIM &amp;gt; Defaults &amp;gt; Helper color&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color for helper objects such as axes. Location in preferences: &lt;span style=" font-weight:600;"&gt;BIM &amp;gt; Defaults &amp;gt; Helper color&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>Першапачатковы колер для дапаможных аб'ектаў, такіх як восі.
+Размяшчэнне ў наладах: BIM → Памочнік па колерах</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="398"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color for lines in the 3D View. Location in preferences: &lt;span style=" font-weight:600;"&gt;Part/Part Design &amp;gt; Shape Appearance &amp;gt; Line color&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color for lines in the 3D View. Location in preferences: &lt;span style=" font-weight:600;"&gt;Part/Part Design &amp;gt; Shape Appearance &amp;gt; Line color&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>Першапачатковы колер ліній у трохмерным прадстаўленні.
+Размяшчэнне ў наладах: Дэталь/Праектаванне дэталі → Знешнасць фігуры → Колер лініі</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="405"/>
       <source>Gradient top</source>
-      <translation type="unfinished">Gradient top</translation>
+      <translation>Градыент уверсе</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="412"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The top color of the 3D View background gradient. Location in preferences: &lt;span style=" font-weight:600;"&gt;Display &amp;gt; Colors &amp;gt; Linear gradient&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The top color of the 3D View background gradient. Location in preferences: &lt;span style=" font-weight:600;"&gt;Display &amp;gt; Colors &amp;gt; Linear gradient&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>Верхні колер градыенту фону трохмернага выгляду.
+Размяшчэнне ў наладах: Адлюстраванне → Колеры → Лінейны градыент</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="426"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The bottom color of the 3D View background gradient. Location in preferences: &lt;span style=" font-weight:600;"&gt;Display &amp;gt; Colors &amp;gt; Linear gradient&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The bottom color of the 3D View background gradient. Location in preferences: &lt;span style=" font-weight:600;"&gt;Display &amp;gt; Colors &amp;gt; Linear gradient&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>Ніжні колер градыенту фону трохмернага выгляду.
+Размяшчэнне ў наладах: Адлюстраванне → Колеры → Лінейны градыент</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="447"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The 3D View background color when simple color is enabled. Location in preferences: &lt;span style=" font-weight:600;"&gt;Display &amp;gt; Colors &amp;gt; Simple color&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The 3D View background color when simple color is enabled. Location in preferences: &lt;span style=" font-weight:600;"&gt;Display &amp;gt; Colors &amp;gt; Simple color&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>Колер фону для трохмернага прадстаўлення, калі ўключаны просты колер.
+Размяшчэнне ў наладах: Адлюстраваць → Колеры → Просты колер</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="454"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color for texts. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Texts and Dimensions &amp;gt; Text color&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color for texts. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Texts and Dimensions &amp;gt; Text color&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>Першапачатковы колер тэксту.
+Размяшчэнне ў наладах: Чарнавік → Тэксты і вымярэнні → Колер тэксту</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="486"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default size of texts. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Texts and Dimensions &amp;gt; Font size, TechDraw &amp;gt; Dimensions &amp;gt; Font size&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default size of texts. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Texts and Dimensions &amp;gt; Font size, TechDraw &amp;gt; Dimensions &amp;gt; Font size&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>Першапачатковы памер тэксту.
+Размяшчэнне ў наладах: Чарнавік → Тэксты і вымярэнні → Памер шрыфту, Тэхнічны чарцёж → Вымярэнні → Памер шрыфту</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="543"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default dimension arrow size. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Texts and Dimensions &amp;gt; Start/End arrow size, TechDraw &amp;gt; Dimensions &amp;gt; Arrow size
             &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default dimension arrow size. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Texts and Dimensions &amp;gt; Start/End arrow size, TechDraw &amp;gt; Dimensions &amp;gt; Arrow size
-            &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>Першапачатковы стыль памеру стрэлкі.
+Размяшчэнне ў наладах: Чарнавік → Тэксты і вымярэнні → Памер пачатку/канца стрэлкі, Тэхнічны чарцёж → Вымярэнне → Памер стрэлкі</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="557"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default font. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Texts and Dimensions &amp;gt; Font name, TechDraw &amp;gt; General &amp;gt; Label font&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default font. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Texts and Dimensions &amp;gt; Font name, TechDraw &amp;gt; General &amp;gt; Label font&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>Першапачатковы шрыфт.
+Размяшчэнне ў наладах: Чарнавік → Тэксты і вымярэнні → Назва шрыфта, Тэхнічны чарцёж → Агульныя → Метка шрыфту</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="575"/>
@@ -12727,7 +12746,7 @@ IfcOpenShell неабходны для імпартавання ці экспа�
   <context>
     <name>BIM_GenericTools</name>
     <message>
-      <location filename="../../InitGui.py" line="370"/>
+      <location filename="../../InitGui.py" line="369"/>
       <source>Generic 3D Tools</source>
       <translation>Універсальныя трохмерныя інструменты</translation>
     </message>
@@ -12735,7 +12754,7 @@ IfcOpenShell неабходны для імпартавання ці экспа�
   <context>
     <name>BIM_Create2DViews</name>
     <message>
-      <location filename="../../InitGui.py" line="383"/>
+      <location filename="../../InitGui.py" line="382"/>
       <source>Create 2D Views</source>
       <translation>Стварыць двухмернае прадстаўленне</translation>
     </message>
@@ -12991,19 +13010,6 @@ select both the view and the page before executing the command.</source>
     </message>
   </context>
   <context>
-    <name>BIM_TogglePanels</name>
-    <message>
-      <location filename="../../bimcommands/BimTogglePanels.py" line="40"/>
-      <source>Toggle Bottom Panels</source>
-      <translation>Пераключыць ніжнія панэлі</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimTogglePanels.py" line="43"/>
-      <source>Toggles the bottom dock panels on/off</source>
-      <translation>Пераключыць ніжнія прымацаваныя панэлі</translation>
-    </message>
-  </context>
-  <context>
     <name>BIM_Welcome</name>
     <message>
       <location filename="../../bimcommands/BimWelcome.py" line="39"/>
@@ -13155,7 +13161,7 @@ Do you want to proceed?</source>
   <context>
     <name>BIM_ArcTools</name>
     <message>
-      <location filename="../../InitGui.py" line="240"/>
+      <location filename="../../InitGui.py" line="239"/>
       <source>Arc Tools</source>
       <translation>Інструменты дугі</translation>
     </message>
@@ -13163,7 +13169,7 @@ Do you want to proceed?</source>
   <context>
     <name>BIM_SplineTools</name>
     <message>
-      <location filename="../../InitGui.py" line="252"/>
+      <location filename="../../InitGui.py" line="251"/>
       <source>Spline Tools</source>
       <translation>Інструменты сплайну</translation>
     </message>
@@ -13171,7 +13177,7 @@ Do you want to proceed?</source>
   <context>
     <name>BIM_AxisTools</name>
     <message>
-      <location filename="../../InitGui.py" line="264"/>
+      <location filename="../../InitGui.py" line="263"/>
       <source>Axis Tools</source>
       <translation>Інструменты восей</translation>
     </message>
@@ -13179,7 +13185,7 @@ Do you want to proceed?</source>
   <context>
     <name>BIM_OffsetTools</name>
     <message>
-      <location filename="../../InitGui.py" line="277"/>
+      <location filename="../../InitGui.py" line="276"/>
       <source>Offset Tools</source>
       <translation>Інструменты зрушэння</translation>
     </message>
@@ -13187,7 +13193,7 @@ Do you want to proceed?</source>
   <context>
     <name>BIM_ArrayTools</name>
     <message>
-      <location filename="../../InitGui.py" line="295"/>
+      <location filename="../../InitGui.py" line="294"/>
       <source>Array Tools</source>
       <translation>Інструменты масіва</translation>
     </message>
@@ -13195,7 +13201,7 @@ Do you want to proceed?</source>
   <context>
     <name>BIM_BooleanTools</name>
     <message>
-      <location filename="../../InitGui.py" line="308"/>
+      <location filename="../../InitGui.py" line="307"/>
       <source>Boolean Tools</source>
       <translation>Лагічныя інструменты</translation>
     </message>
@@ -13203,7 +13209,7 @@ Do you want to proceed?</source>
   <context>
     <name>BIM_IfcManageTools</name>
     <message>
-      <location filename="../../InitGui.py" line="325"/>
+      <location filename="../../InitGui.py" line="324"/>
       <source>IFC Management</source>
       <translation>Кіраўніцтва IFC</translation>
     </message>
@@ -13211,7 +13217,7 @@ Do you want to proceed?</source>
   <context>
     <name>BIM_ReportTools</name>
     <message>
-      <location filename="../../InitGui.py" line="337"/>
+      <location filename="../../InitGui.py" line="336"/>
       <source>Report Tools</source>
       <translation>Інструменты справаздачы</translation>
     </message>
@@ -13219,9 +13225,18 @@ Do you want to proceed?</source>
   <context>
     <name>BIM_CloneTools</name>
     <message>
-      <location filename="../../InitGui.py" line="349"/>
+      <location filename="../../InitGui.py" line="348"/>
       <source>Cloning Tools</source>
       <translation>Інструменты дубліката</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIMStatusWidget</name>
+    <message>
+      <location filename="../../BimStatus.py" line="105"/>
+      <source>BIM Status Widget</source>
+      <comment>A context menu action used to show or hide this toolbar widget</comment>
+      <translation>Фішка стану BIM</translation>
     </message>
   </context>
   <context>
@@ -13316,12 +13331,11 @@ Do you want to proceed?</source>
     </message>
   </context>
   <context>
-    <name>BIMStatusWidget</name>
+    <name>BimWall</name>
     <message>
-      <location filename="../../BimStatus.py" line="129"/>
-      <source>BIM Status Widget</source>
-      <comment>A context menu action used to show or hide this toolbar widget</comment>
-      <translation>Фішка стану BIM</translation>
+      <location filename="../../bimcommands/BimWall.py" line="289"/>
+      <source>Wall Trace</source>
+      <translation>Контур сцены</translation>
     </message>
   </context>
   <context>
@@ -13335,14 +13349,6 @@ Do you want to proceed?</source>
       <location filename="../../bimcommands/BimCompound.py" line="39"/>
       <source>Creates a compound of several shapes</source>
       <translation>Стварае злучэнне з некалькіх фігур</translation>
-    </message>
-  </context>
-  <context>
-    <name>BimWall</name>
-    <message>
-      <location filename="../../bimcommands/BimWall.py" line="289"/>
-      <source>Wall Trace</source>
-      <translation>Контур сцены</translation>
     </message>
   </context>
   <context>

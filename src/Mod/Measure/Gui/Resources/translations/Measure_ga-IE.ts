@@ -489,19 +489,6 @@
     </message>
   </context>
   <context>
-    <name>StdCmdMassProperties</name>
-    <message>
-      <location filename="../../Command.cpp" line="97"/>
-      <source>Mass Properties</source>
-      <translation>Airíonna Mais</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="98"/>
-      <source>Calculates mass properties of selected objects</source>
-      <translation>Ríomhann sé airíonna maise na réad roghnaithe</translation>
-    </message>
-  </context>
-  <context>
     <name>MassPropertiesGui::TaskMassProperties</name>
     <message>
       <location filename="../../TaskMassProperties.cpp" line="279"/>
@@ -547,6 +534,19 @@
       <location filename="../../TaskMassProperties.cpp" line="1126"/>
       <source> (Average)</source>
       <translation> (Meán)</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdMassProperties</name>
+    <message>
+      <location filename="../../Command.cpp" line="97"/>
+      <source>Mass Properties</source>
+      <translation>Airíonna Mais</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="98"/>
+      <source>Calculates mass properties of selected objects</source>
+      <translation>Ríomhann sé airíonna maise na réad roghnaithe</translation>
     </message>
   </context>
 </TS>

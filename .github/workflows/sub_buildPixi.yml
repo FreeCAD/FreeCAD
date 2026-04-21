@@ -40,6 +40,10 @@ on:
         default: true
         type: boolean
         required: false
+      skipBuild:
+        default: false
+        type: boolean
+        required: false
       allowedToFail:
         default: false
         type: boolean
@@ -79,11 +83,13 @@ jobs:
 
     steps:
     - name: Harden the runner (Audit all outbound calls)
+      if: "!inputs.skipBuild"
       uses: step-security/harden-runner@f808768d1510423e83855289c910610ca9b43176 # v2.17.0
       with:
         egress-policy: audit
 
     - name: Set Platform Environment Variables
+      if: "!inputs.skipBuild"
       shell: bash -l {0}
       env:
         OPERATING_SYSTEM: ${{ runner.os }}
@@ -95,24 +101,26 @@ jobs:
         fi
 
     - name: Checkout
+      if: "!inputs.skipBuild"
       uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
     - name: Add GCC Problem Matcher
-      if: runner.os == 'Linux'
+      if: runner.os == 'Linux' && !inputs.skipBuild
       run: |
         echo "::add-matcher::${{ runner.workspace }}/FreeCAD/.github/problemMatcher/gcc.json"
 
     - name: Add Clang Problem Matcher
-      if: runner.os == 'macOS'
+      if: runner.os == 'macOS' && !inputs.skipBuild
       run: |
         echo "::add-matcher::${{ runner.workspace }}/FreeCAD/.github/problemMatcher/clang.json"
 
     - name: Add MSVC++ Problem Matcher
-      if: runner.os == 'Windows'
+      if: runner.os == 'Windows' && !inputs.skipBuild
       run: |
         echo "::add-matcher::${{ runner.workspace }}/FreeCAD/.github/problemMatcher/msvc.json"
 
     - name: Make needed directories, files and initializations
+      if: "!inputs.skipBuild"
       id: Init
       run: |
         mkdir -p ${{ env.builddir }}
@@ -120,14 +128,15 @@ jobs:
         mkdir -p ${{ env.reportdir }}
         echo "reportFile=${{ env.reportfilename }}" >> $GITHUB_OUTPUT
 
-    - uses: prefix-dev/setup-pixi@1b2de7f3351f171c8b4dfeb558c639cb58ed4ec0 # v0.9.5
+    - if: "!inputs.skipBuild"
+      uses: prefix-dev/setup-pixi@1b2de7f3351f171c8b4dfeb558c639cb58ed4ec0 # v0.9.5
       with:
         pixi-version: v0.59.0
         cache: false
 
     - name: Restore Compiler Cache
       id: cache-restore
-      if: always()
+      if: "!inputs.skipBuild"
       uses: actions/cache/restore@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
       with:
         path: ${{ env.CCACHE_DIR }}
@@ -137,26 +146,29 @@ jobs:
           FC-${{ env.cacheKey }}-
 
     - name: Print CCache statistics before build, reset stats and print config
+      if: "!inputs.skipBuild"
       run: |
         pixi run ccache -s
         pixi run ccache -z
         pixi run ccache -p
 
     - name: CMake Configure
+      if: "!inputs.skipBuild"
       run: |
         pixi run configure-${{ env.config }}
 
     - name: CMake Build
+      if: "!inputs.skipBuild"
       run: |
         pixi run build-${{ env.config }}
 
     - name: Print ccache statistics after Build
-      if: always()
+      if: "!inputs.skipBuild"
       run: |
         pixi run ccache -s
 
     - name: FreeCAD CLI tests on build dir
-      if: inputs.testOnBuildDir
+      if: inputs.testOnBuildDir && !inputs.skipBuild
       timeout-minutes: 10
       uses: ./.github/workflows/actions/runPythonTests
       with:
@@ -166,7 +178,7 @@ jobs:
         reportFile: ${{env.reportdir}}${{ env.reportfilename }}
 
     - name: FreeCAD GUI tests on build dir
-      if: runner.os == 'Linux' && inputs.testOnBuildDir
+      if: runner.os == 'Linux' && inputs.testOnBuildDir && !inputs.skipBuild
       timeout-minutes: 15
       uses: ./.github/workflows/actions/runPythonTests
       with:
@@ -176,7 +188,7 @@ jobs:
         reportFile: ${{env.reportdir}}${{ env.reportfilename }}
 
     - name: Coin node snapshot visual tests on build dir
-      if: runner.os == 'Linux' && inputs.testCoinNodeSnapshots
+      if: runner.os == 'Linux' && inputs.testCoinNodeSnapshots && !inputs.skipBuild
       timeout-minutes: 15
       uses: ./.github/workflows/actions/runPythonTests
       with:
@@ -189,7 +201,7 @@ jobs:
         reportFile: ${{env.reportdir}}${{ env.reportfilename }}
 
     - name: Upload Coin node snapshot artifacts (on failure)
-      if: failure() && runner.os == 'Linux' && inputs.testCoinNodeSnapshots
+      if: failure() && runner.os == 'Linux' && inputs.testCoinNodeSnapshots && !inputs.skipBuild
       uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       with:
         name: ${{ inputs.artifactBasename }}-${{ matrix.os }}-CoinNodeSnapshots
@@ -197,7 +209,7 @@ jobs:
 
     - name: C++ tests
       timeout-minutes: 10
-      if: runner.os != 'Windows'
+      if: runner.os != 'Windows' && !inputs.skipBuild
       uses: ./.github/workflows/actions/runCPPTests/runAllTests
       with:
         reportdir: ${{ env.reportdir }}
@@ -205,11 +217,12 @@ jobs:
         reportFile: ${{ env.reportdir }}${{ env.reportfilename }}
 
     - name: CMake Install
+      if: "!inputs.skipBuild"
       run: |
         pixi run install-${{ env.config }}
 
     - name: FreeCAD CLI tests on install
-      if: runner.os != 'Windows'
+      if: runner.os != 'Windows' && !inputs.skipBuild
       timeout-minutes: 10
       uses: ./.github/workflows/actions/runPythonTests
       with:
@@ -219,7 +232,7 @@ jobs:
         reportFile: ${{env.reportdir}}${{ env.reportfilename }}
 
     - name: FreeCAD GUI tests on install
-      # if: runner.os == 'Linux'
+      # if: runner.os == 'Linux' && !inputs.skipBuild
       # currently broken on Qt6 builds
       if: false
       timeout-minutes: 15
@@ -232,14 +245,14 @@ jobs:
 
     - name: Save Compiler Cache
       id: cache-save
-      if: always()
+      if: "!inputs.skipBuild"
       uses: actions/cache/save@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
       with:
         path: ${{ env.CCACHE_DIR }}
         key: FC-${{ env.cacheKey }}-${{ github.ref }}-${{ github.run_id }}
 
     - name: Upload logs
-      if: always()
+      if: "!inputs.skipBuild"
       uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       with:
         name: ${{ inputs.artifactBasename }}-${{ matrix.os }}-Logs
@@ -248,7 +261,7 @@ jobs:
           /var/crash/*FreeCAD*
 
     - name: Upload report
-      if: always()
+      if: "!inputs.skipBuild"
       uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       with:
         name: ${{ env.reportfilename }}
