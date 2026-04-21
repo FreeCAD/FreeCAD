@@ -102,11 +102,11 @@
 #include "BRepOffsetAPI_MakeOffsetFix.h"
 #include "ProgressIndicator.h"
 
+#include <App/Application.h>
 #include <App/ElementMap.h>
 #include <App/ElementNamingUtils.h>
 #include <Base/BoundBox.h>
 #include <Base/Exception.h>
-#include <Base/Sequencer.h>
 #include <Base/Tools.h>
 #include <SignalException.h>
 #include <ShapeAnalysis_FreeBoundsProperties.hxx>
@@ -4297,7 +4297,7 @@ TopoShape& TopoShape::makeElementXor(
         FC_THROWM(NullShapeException, "Null shape");
     }
 
-    if (Base::Sequencer().wasCanceled()) {
+    if (App::currentRecomputeWasCanceled()) {
         FC_THROWM(Base::CADKernelError, "User aborted");
     }
 
@@ -5969,7 +5969,7 @@ TopoShape& TopoShape::makeElementBoolean(
         FC_THROWM(NullShapeException, "Null shape");
     }
 
-    if (Base::Sequencer().wasCanceled()) {
+    if (App::currentRecomputeWasCanceled()) {
         FC_THROWM(Base::CADKernelError, "User aborted");
     }
 
@@ -6189,7 +6189,7 @@ TopoShape& TopoShape::makeElementBoolean(
         FCBRepAlgoAPIHelper::setAutoFuzzy(mk.get());
     }
     Part::buildWithProgress(*mk);
-    if (Base::Sequencer().wasCanceled()) {
+    if (App::currentRecomputeWasCanceled()) {
         FC_THROWM(Base::CADKernelError, "User aborted");
     }
     makeElementShape(*mk, inputs, op, elementMapPolicy);

@@ -24,12 +24,17 @@
 
 #pragma once
 
+#include <memory>
+
 #include <Message_ProgressIndicator.hxx>
 #include <Standard_Version.hxx>
 
-#include <Base/Sequencer.h>
 #include <Mod/Part/PartGlobal.h>
 
+namespace App
+{
+class RecomputeProgressHandle;
+}
 
 namespace Part
 {
@@ -46,7 +51,8 @@ public:
 
 private:
     std::size_t currentStep {0};
-    Base::SequencerLauncher progress;
+    App::RecomputeProgressHandle* progress {nullptr};
+    std::unique_ptr<App::RecomputeProgressHandle> ownedProgress;
 };
 
 template<typename Builder>

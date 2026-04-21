@@ -24,30 +24,37 @@
 
 #include "PreCompiled.h"
 
+#include <App/Application.h>
+
 #include "ProgressIndicator.h"
 
 
 using namespace Part;
 
 ProgressIndicator::ProgressIndicator()
-    : progress("Processing...", 100)
-{}
+{
+    progress = App::currentRecomputeProgress();
+    if (!progress) {
+        ownedProgress = std::make_unique<App::RecomputeProgressHandle>();
+        progress = ownedProgress.get();
+    }
+}
 
 void ProgressIndicator::Show(const Message_ProgressScope& theScope, const Standard_Boolean isForce)
 {
     (void)isForce;
     const char* name = theScope.Name();
-    progress.setText(name ? name : "Processing...");
+    progress->setText(name ? name : "Processing...");
     std::size_t current = static_cast<std::size_t>(100. * theScope.Value() / theScope.MaxValue());
     if (current != currentStep) {
         currentStep = current;
-        progress.setProgress(currentStep);
+        progress->setProgress(currentStep);
     }
 }
 
 Standard_Boolean ProgressIndicator::UserBreak()
 {
-    return progress.wasCanceled();
+    return progress->wasCanceled();
 }
 
 void ProgressIndicator::Reset()
