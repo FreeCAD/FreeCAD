@@ -65,10 +65,15 @@ std::string makeToolbarPersistenceKey(
     return scope + ":" + workbench + ":" + toolbar;
 }
 
-void setSharedToolbarPersistenceKey(ToolBarItem* item, const std::string& toolbar)
+void setSharedToolbarMetadata(
+    ToolBarItem* item,
+    const std::string& toolbar,
+    ToolBarItem::Tier tier = ToolBarItem::Tier::Recommended
+)
 {
     if (item) {
         item->setPersistenceKey(makeToolbarPersistenceKey("shared", "", toolbar));
+        item->setTier(tier);
     }
 }
 }  // namespace
@@ -325,6 +330,7 @@ void Workbench::setupCustomToolbars(
         auto bar = new ToolBarItem(root);
         bar->setCommand("Custom");
         bar->setPersistenceKey(makeToolbarPersistenceKey(scope, name(), it->GetGroupName()));
+        bar->setTier(ToolBarItem::Tier::Secondary);
 
         // get the elements of the subgroups
         std::vector<std::pair<std::string, std::string>> items
@@ -894,39 +900,39 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     // File
     auto file = new ToolBarItem(root);
     file->setCommand("File");
-    setSharedToolbarPersistenceKey(file, "File");
+    setSharedToolbarMetadata(file, "File");
     *file << "Std_New" << "Std_Open" << "Std_Save";
 
     // Edit
     auto edit = new ToolBarItem(root);
     edit->setCommand("Edit");
-    setSharedToolbarPersistenceKey(edit, "Edit");
+    setSharedToolbarMetadata(edit, "Edit");
     *edit << "Std_Undo" << "Std_Redo"
           << "Separator" << "Std_Refresh";
 
     // Clipboard
     auto clipboard = new ToolBarItem(root, ToolBarItem::DefaultVisibility::Hidden);
     clipboard->setCommand("Clipboard");
-    setSharedToolbarPersistenceKey(clipboard, "Clipboard");
+    setSharedToolbarMetadata(clipboard, "Clipboard", ToolBarItem::Tier::Secondary);
     *clipboard << "Std_Cut" << "Std_Copy" << "Std_Paste";
 
     // Workbench switcher
     auto wb = new ToolBarItem(root);
     wb->setCommand("Workbench");
-    setSharedToolbarPersistenceKey(wb, "Workbench");
+    setSharedToolbarMetadata(wb, "Workbench");
     *wb << "Std_Workbench";
 
     // Macro
     auto macro = new ToolBarItem(root, ToolBarItem::DefaultVisibility::Hidden);
     macro->setCommand("Macro");
-    setSharedToolbarPersistenceKey(macro, "Macro");
+    setSharedToolbarMetadata(macro, "Macro", ToolBarItem::Tier::Advanced);
     *macro << "Std_DlgMacroRecord" << "Std_DlgMacroExecute"
            << "Std_DlgMacroExecuteDirect";
 
     // View
     auto view = new ToolBarItem(root);
     view->setCommand("View");
-    setSharedToolbarPersistenceKey(view, "View");
+    setSharedToolbarMetadata(view, "View");
     *view << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_ViewGroup" << "Std_AlignToSelection"
           << "Separator" << "Std_DrawStyle" << "Separator"
           << "Std_Measure" << "Std_MassProperties";
@@ -934,7 +940,7 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     // Individual views
     auto individualViews = new ToolBarItem(root, ToolBarItem::DefaultVisibility::Hidden);
     individualViews->setCommand("Individual Views");
-    setSharedToolbarPersistenceKey(individualViews, "Individual Views");
+    setSharedToolbarMetadata(individualViews, "Individual Views", ToolBarItem::Tier::Advanced);
     *individualViews << "Std_ViewIsometric"
                      << "Std_ViewFront"
                      << "Std_ViewTop"
@@ -946,13 +952,13 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     // Structure
     auto structure = new ToolBarItem(root);
     structure->setCommand("Structure");
-    setSharedToolbarPersistenceKey(structure, "Structure");
+    setSharedToolbarMetadata(structure, "Structure");
     *structure << "Std_Part" << "Std_Group" << "Std_LinkActions" << "Std_VarSet";
 
     // Help
     auto help = new ToolBarItem(root);
     help->setCommand("Help");
-    setSharedToolbarPersistenceKey(help, "Help");
+    setSharedToolbarMetadata(help, "Help");
     *help << "Std_WhatsThis";
 
     return root;
