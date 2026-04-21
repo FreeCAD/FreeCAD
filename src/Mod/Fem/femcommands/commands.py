@@ -700,7 +700,7 @@ class _MeshBoundaryLayer(CommandManager):
         self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MeshBoundaryLayer", "2D Boundary Layer")
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_MeshBoundaryLayer",
-            "Adds a structured layer of mesh elmenets on 2D model boundaries",
+            "Adds a structured layer of mesh elements on 2D model boundaries",
         )
         self.is_active = "with_gmsh_femmesh"
         self.do_activated = "add_obj_on_gui_selobj_set_edit"
