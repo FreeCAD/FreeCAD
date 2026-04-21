@@ -111,6 +111,7 @@
 #include "ApplicationDirectories.h"
 #include "ApplicationDirectoriesPy.h"
 #include "ApplicationPy.h"
+#include "AsyncRecomputeDebug.h"
 #include "CleanupProcess.h"
 #include "ComplexGeoData.h"
 #include "ConsoleQtBridge.h"
@@ -257,6 +258,64 @@ bool displayStatesEqual(
         && lhs.determinate == rhs.determinate;
 }
 
+void appendRecomputeDebugLog(const char* event, const std::string& details = {})
+{
+    std::ostringstream stream;
+    stream << "[App::Recompute] " << event;
+    if (!details.empty()) {
+        stream << ' ' << details;
+    }
+    App::appendAsyncRecomputeDebugLog(stream.str());
+}
+
+std::string describeRecomputeRequest(const RecomputeRequest& request)
+{
+    std::ostringstream stream;
+    stream << "doc=" << (request.documentName.empty() ? "<none>" : request.documentName);
+    stream << " object=" << (request.documentObjectName.empty() ? "<none>" : request.documentObjectName);
+    stream << " recursive=" << request.recursive;
+    stream << " force=" << request.force;
+    stream << " options=" << request.options;
+    stream << " progress=" << request.progress.get();
+    return stream.str();
+}
+
+const char* recomputeFailureName(RecomputeFailure failure)
+{
+    switch (failure) {
+        case RecomputeFailure::None:
+            return "none";
+        case RecomputeFailure::Canceled:
+            return "canceled";
+        case RecomputeFailure::DependencyCycle:
+            return "dependency_cycle";
+        case RecomputeFailure::Exception:
+            return "exception";
+    }
+
+    return "unknown";
+}
+
+std::string describeRecomputeResult(const RecomputeResult& result)
+{
+    std::ostringstream stream;
+    stream << "success=" << result.success;
+    stream << " failure=" << recomputeFailureName(result.failure);
+    if (result.exception) {
+        stream << " message=" << result.exception->what();
+    }
+    return stream.str();
+}
+
+std::string describeProgressDisplayState(const RecomputeProgressDisplayState& state)
+{
+    std::ostringstream stream;
+    stream << "text=" << (state.text.empty() ? "<empty>" : state.text);
+    stream << " percent=" << state.percent;
+    stream << " determinate=" << state.determinate;
+    return stream.str();
+}
+
 bool documentCanRecomputeOnWorker(const Document& document)
 {
     try {
@@ -303,6 +362,7 @@ RecomputeResult processRecomputeRequest(RecomputeRequest& request)
     RecomputeResult result;
     ensureRecomputeProgressHandle(request);
     ScopedCurrentRecomputeProgress progressScope(request.progress.get());
+    appendRecomputeDebugLog("request_begin", describeRecomputeRequest(request));
 
     try {
         if (!request.documentObjectName.empty()) {
@@ -335,6 +395,8 @@ RecomputeResult processRecomputeRequest(RecomputeRequest& request)
         markCanceledRecomputeResult(result);
     }
 
+    appendRecomputeDebugLog("request_end", describeRecomputeRequest(request) + ' '
+                                               + describeRecomputeResult(result));
     return result;
 }
 
@@ -479,6 +541,7 @@ void App::RecomputeProgressHandle::activate()
 void App::RecomputeProgressHandle::cancel()
 {
     _canceled.store(true, std::memory_order_relaxed);
+    appendRecomputeDebugLog("progress_cancel", fmt::format("handle={}", fmt::ptr(this)));
 }
 
 bool App::RecomputeProgressHandle::wasCanceled() const
@@ -589,6 +652,10 @@ void App::RecomputeProgressHandle::resetDisplayState()
         observer = _displayObserver;
     }
 
+    appendRecomputeDebugLog(
+        "progress_reset",
+        fmt::format("handle={} {}", fmt::ptr(this), describeProgressDisplayState(state))
+    );
     if (observer) {
         observer(state);
     }
@@ -647,6 +714,19 @@ void App::RecomputeProgressHandle::syncDisplay()
         observer(publishedState);
     }
 
+    if (notifyObserver) {
+        appendRecomputeDebugLog(
+            "progress_state",
+            fmt::format(
+                "handle={} text_depth={} notify={} {}",
+                fmt::ptr(this),
+                textDepth,
+                notifyObserver,
+                describeProgressDisplayState(publishedState)
+            )
+        );
+    }
+
     ensureSequencer();
     if (!_sequencer) {
         return;
@@ -686,10 +766,12 @@ RecomputeRequest RecomputeRequest::fromDocument(const Document& document, bool f
     return request;
 }
 
-RecomputeRequest RecomputeRequest::fromDocumentObject(const DocumentObject& documentObject, bool recursive)
+RecomputeRequest RecomputeRequest::fromDocumentObject(
+    const DocumentObject& documentObject,
+    bool recursive
+)
 {
     RecomputeRequest request;
-
     if (const Document* document = documentObject.getDocument()) {
         request.documentName = document->getName();
     }
@@ -1338,6 +1420,15 @@ App::RecomputeCancellationResult Application::cancelRecomputeRequest(const Recom
         return recomputeRequestsMatch(request.request, req);
     });
     result.removedQueued = erased > 0;
+    appendRecomputeDebugLog(
+        "cancel_request",
+        describeRecomputeRequest(req)
+            + fmt::format(
+                " canceled_in_progress={} removed_queued={}",
+                result.canceledInProgress,
+                result.removedQueued
+            )
+    );
     return result;
 }
 
