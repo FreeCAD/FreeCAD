@@ -593,7 +593,9 @@ void TaskFeaturePick::slotDeleteDocument(const Gui::Document& doc)
 {
     origins.clear();
     int transactionContext = doc.getTransactionContext();
-    QTimer::singleShot(100, [transactionContext]() { Gui::Control().closeDialog(transactionContext); });
+    QTimer::singleShot(100, [transactionContext]() {
+        Gui::Control().closeDialog(transactionContext);
+    });
 }
 
 void TaskFeaturePick::showExternal(bool val)

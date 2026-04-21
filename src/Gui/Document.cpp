@@ -2386,7 +2386,7 @@ void Document::detachView(Gui::BaseView* pcView, bool bPassiv)
         }
 
         d->detachTransactionContext(pcView);
-        
+
         // last view?
         if (d->baseViews.empty()) {
             // decouple a passive view

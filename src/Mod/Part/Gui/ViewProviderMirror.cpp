@@ -702,7 +702,9 @@ void ViewProviderThickness::unsetEdit(int ModNum)
     if (ModNum == ViewProvider::Default) {
         // when pressing ESC make sure to close the dialog
         int transactionContext = getTransactionContext();
-        QTimer::singleShot(100, [transactionContext]() { Gui::Control().closeDialog(transactionContext); });
+        QTimer::singleShot(100, [transactionContext]() {
+            Gui::Control().closeDialog(transactionContext);
+        });
     }
     else {
         PartGui::ViewProviderPart::unsetEdit(ModNum);

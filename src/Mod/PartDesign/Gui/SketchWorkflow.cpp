@@ -722,7 +722,9 @@ private:
 
     void checkForShownDialog()
     {
-        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog(guidocument->getTransactionContext());
+        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog(
+            guidocument->getTransactionContext()
+        );
         PartDesignGui::TaskDlgFeaturePick* pickDlg
             = qobject_cast<PartDesignGui::TaskDlgFeaturePick*>(dlg);
         if (dlg && !pickDlg) {
