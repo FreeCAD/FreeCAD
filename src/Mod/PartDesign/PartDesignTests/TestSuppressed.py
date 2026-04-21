@@ -44,8 +44,6 @@ import unittest
 
 import FreeCAD
 import FreeCADGui
-import Part
-import Sketcher
 import TestSketcherApp
 
 from PySide import QtGui
