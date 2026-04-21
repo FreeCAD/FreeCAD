@@ -364,7 +364,7 @@ public:
     /**
      * \brief Corrects a face if the inner wires are in the same direction as the outer.
      *
-     * This function corrects a face if the inner wires are in the same direction as 
+     * This function corrects a face if the inner wires are in the same direction as
      * the outer wire.
      *
      * \param[in] face.
