@@ -37,10 +37,10 @@
 #include <unordered_map>
 #include <algorithm>
 
+#include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Reader.h>
-#include <Base/Sequencer.h>
 #include <Mod/Part/App/modelRefine.h>
 
 #include "FeatureTransformed.h"
@@ -394,7 +394,7 @@ App::DocumentObjectExecReturn* Transformed::execute()
         auto transformIter = transformations.cbegin();
         transformIter++;
         for (; transformIter != transformations.end(); transformIter++) {
-            if (Base::Sequencer().wasCanceled()) {
+            if (App::currentRecomputeWasCanceled()) {
                 return std::vector<TopoShape>();
             }
             auto opName = Data::indexSuffix(idx++);
@@ -439,14 +439,14 @@ App::DocumentObjectExecReturn* Transformed::execute()
                 }
                 if (!fuseShape.isNull()) {
                     auto shapes = getTransformedCompShape(supportShape, fuseShape);
-                    if (Base::Sequencer().wasCanceled()) {
+                    if (App::currentRecomputeWasCanceled()) {
                         return new App::DocumentObjectExecReturn("User aborted");
                     }
                     supportShape.makeElementFuse(shapes);
                 }
                 if (!cutShape.isNull()) {
                     auto shapes = getTransformedCompShape(supportShape, cutShape);
-                    if (Base::Sequencer().wasCanceled()) {
+                    if (App::currentRecomputeWasCanceled()) {
                         return new App::DocumentObjectExecReturn("User aborted");
                     }
                     supportShape.makeElementCut(shapes);
@@ -455,7 +455,7 @@ App::DocumentObjectExecReturn* Transformed::execute()
             break;
         case Mode::WholeShape: {
             auto shapes = getTransformedCompShape(supportShape, supportShape);
-            if (Base::Sequencer().wasCanceled()) {
+            if (App::currentRecomputeWasCanceled()) {
                 return new App::DocumentObjectExecReturn("User aborted");
             }
             supportShape.makeElementFuse(shapes);
