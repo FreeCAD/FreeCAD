@@ -2935,35 +2935,36 @@ int Document::recompute(const std::vector<DocumentObject*>& objs,
         ownedProgress = std::make_unique<RecomputeProgressHandle>();
         progress = ownedProgress.get();
     }
+    std::optional<RecomputeProgressScope> recomputeScope;
+    if (progress) {
+        recomputeScope.emplace(progress->makeScope("Recompute..."));
+    }
 
     tracker.checkpoint("pre-recompute & topo sort");
 
     try {
         std::set<DocumentObject*> filter;
         size_t idx = 0;
-        const auto updateProgress = [&](std::size_t step) {
-            if (!progress || topoSortedObjects.empty()) {
-                return;
-            }
-
-            constexpr std::size_t maxProgress = 100;
-            std::size_t current = std::min(maxProgress, (step * maxProgress) / topoSortedObjects.size());
-            progress->setProgress(current);
-        };
         // maximum two passes to allow some form of dependency inversion
         for (int passes = 0; passes < 2 && idx < topoSortedObjects.size(); ++passes) {
-            if (progress) {
-                progress->setText("Recompute...");
-                progress->setProgress(0);
-            }
             FC_LOG("Recompute pass " << passes);
             for (; idx < topoSortedObjects.size(); ++idx) {
-                if (progress && progress->wasCanceled()) {
+                std::optional<RecomputeProgressScope> objectScope;
+                if (recomputeScope) {
+                    objectScope.emplace(
+                        recomputeScope->makeStepScope(idx, topoSortedObjects.size())
+                    );
+                }
+
+                if (objectScope && objectScope->wasCanceled()) {
                     throw Base::AbortException("User aborted");
                 }
 
                 auto obj = topoSortedObjects[idx];
                 if (!obj->isAttachedToDocument() || filter.find(obj) != filter.end()) {
+                    if (objectScope) {
+                        objectScope->setProgress(100);
+                    }
                     continue;
                 }
                 // ask the object if it should be recomputed
@@ -2984,6 +2985,9 @@ int Document::recompute(const std::vector<DocumentObject*>& objs,
                         // inListRecursive from the queue then proceed
                         obj->getInListEx(filter, true);
                         filter.insert(obj);
+                        if (objectScope) {
+                            objectScope->setProgress(100);
+                        }
                         continue;
                     }
                 }
@@ -3007,7 +3011,9 @@ int Document::recompute(const std::vector<DocumentObject*>& objs,
                         }
                     }
                 }
-                updateProgress(idx + 1);
+                if (objectScope) {
+                    objectScope->setProgress(100);
+                }
             }
             // check if all objects are recomputed but still thouched
             for (size_t i = 0; i < topoSortedObjects.size(); ++i) {

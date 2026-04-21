@@ -34,6 +34,7 @@
 #include <list>
 #include <set>
 #include <map>
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <optional>
@@ -116,11 +117,12 @@ struct AppExport RecomputeProgressDisplayState
 };
 
 /**
- * @brief Request-scoped progress and cancellation bridge for recomputes.
+ * @brief Progress and cancellation bridge backed by the legacy Sequencer UI.
  *
- * The current implementation still presents progress through the legacy
- * Sequencer UI, but the handle itself is owned by a recompute request so
- * modeling code does not need to reach for the global Sequencer singleton.
+ * Recompute requests own one of these handles while they are executing, and
+ * legacy App/Part code can also create a local instance when there is no
+ * request context. This keeps modeling code off the global Sequencer
+ * singleton while preserving the existing GUI progress surface.
  */
 class RecomputeProgressHandle;
 
@@ -166,6 +168,7 @@ private:
     std::uint64_t _displayProgress {0};
     std::string _text;
 };
+
 class AppExport RecomputeProgressHandle
 {
 public:
@@ -177,12 +180,22 @@ public:
     void activate();
     void cancel();
     bool wasCanceled() const;
+    RecomputeProgressScope makeScope(const char* text = nullptr);
+    RecomputeProgressScope makeStepScope(
+        std::size_t stepIndex,
+        std::size_t totalSteps,
+        const char* text = nullptr
+    );
     void setText(const char* text);
     void setProgress(std::size_t progress);
     void setDisplayObserver(DisplayObserver observer);
     RecomputeProgressDisplayState displayState() const;
 
 private:
+    friend class RecomputeProgressScope;
+
+    static constexpr std::uint64_t ProgressScale = 10000;
+
     void ensureSequencer();
     RecomputeProgressScope makeScope(
         RecomputeProgressScope* parent,
@@ -202,6 +215,12 @@ private:
     void syncDisplay();
 
     std::atomic<bool> _canceled {false};
+    bool _hasStandaloneState {false};
+    RecomputeProgressScope* _activeScope {nullptr};
+    std::uint64_t _standaloneProgress {0};
+    std::string _standaloneText;
+    std::string _lastDisplayedText;
+    int _lastDisplayedProgress {-1};
     std::unique_ptr<Base::SequencerLauncher> _sequencer;
     mutable std::mutex _displayMutex;
     RecomputeProgressDisplayState _displayState;
