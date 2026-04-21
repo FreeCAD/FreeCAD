@@ -213,6 +213,7 @@ namespace
 {
 
 thread_local RecomputeProgressHandle* tlsCurrentRecomputeProgress = nullptr;
+thread_local int tlsCurrentRecomputeOptions = 0;
 
 class ScopedCurrentRecomputeProgress
 {
@@ -233,6 +234,24 @@ public:
 
 private:
     RecomputeProgressHandle* _previous;
+};
+
+class ScopedCurrentRecomputeOptions
+{
+public:
+    explicit ScopedCurrentRecomputeOptions(int options)
+        : _previous(tlsCurrentRecomputeOptions)
+    {
+        tlsCurrentRecomputeOptions = options;
+    }
+
+    ~ScopedCurrentRecomputeOptions()
+    {
+        tlsCurrentRecomputeOptions = _previous;
+    }
+
+private:
+    int _previous;
 };
 
 void ensureRecomputeProgressHandle(RecomputeRequest& request)
@@ -363,6 +382,7 @@ RecomputeResult processRecomputeRequest(RecomputeRequest& request)
     RecomputeResult result;
     ensureRecomputeProgressHandle(request);
     ScopedCurrentRecomputeProgress progressScope(request.progress.get());
+    ScopedCurrentRecomputeOptions optionsScope(request.options);
     appendRecomputeDebugLog("request_begin", describeRecomputeRequest(request));
 
     try {
@@ -772,6 +792,21 @@ App::RecomputeProgressHandle* App::currentRecomputeProgress()
     return tlsCurrentRecomputeProgress;
 }
 
+App::ScopedRecomputeOptions::ScopedRecomputeOptions(int options)
+    : _previous(tlsCurrentRecomputeOptions)
+{
+    tlsCurrentRecomputeOptions = options;
+}
+
+App::ScopedRecomputeOptions::ScopedRecomputeOptions(RecomputeOption option)
+    : ScopedRecomputeOptions(static_cast<int>(option))
+{}
+
+App::ScopedRecomputeOptions::~ScopedRecomputeOptions()
+{
+    tlsCurrentRecomputeOptions = _previous;
+}
+
 bool App::currentRecomputeWasCanceled()
 {
     if (auto* progress = currentRecomputeProgress()) {
@@ -793,6 +828,16 @@ void App::throwIfRecomputeCanceled()
     Base::SequencerBase::Instance().checkAbort();
 }
 
+int App::currentRecomputeOptions()
+{
+    return tlsCurrentRecomputeOptions;
+}
+
+bool App::currentRecomputeHasOption(RecomputeOption option)
+{
+    return (currentRecomputeOptions() & static_cast<int>(option)) != 0;
+}
+
 RecomputeRequest RecomputeRequest::fromDocument(const Document& document, bool force, int options)
 {
     RecomputeRequest request;
@@ -804,7 +849,8 @@ RecomputeRequest RecomputeRequest::fromDocument(const Document& document, bool f
 
 RecomputeRequest RecomputeRequest::fromDocumentObject(
     const DocumentObject& documentObject,
-    bool recursive
+    bool recursive,
+    int options
 )
 {
     RecomputeRequest request;
@@ -815,6 +861,7 @@ RecomputeRequest RecomputeRequest::fromDocumentObject(
 
     request.documentObjectName = documentObject.getNameInDocument();
     request.recursive = recursive;
+    request.options = options;
     return request;
 }
 
