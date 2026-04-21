@@ -877,27 +877,32 @@ void PatternParametersWidget::onSpacingLabelClicked(Gui::EditableDatumLabel* lab
         Base::Unit unit = (type == PatternType::Linear) ? Base::Unit::Length : Base::Unit::Angle;
         label->setSpinboxValue(currentValue, unit);
 
-        connect(label, &Gui::EditableDatumLabel::editingFinished, this, [this, index, label](double newValue) {
-            disconnect(label, &Gui::EditableDatumLabel::editingFinished, this, nullptr);
-            disconnect(label, &Gui::EditableDatumLabel::focusLost, this, nullptr);
+        connect(
+            label,
+            &Gui::EditableDatumLabel::editingFinished,
+            this,
+            [this, index, label](double newValue) {
+                disconnect(label, &Gui::EditableDatumLabel::editingFinished, this, nullptr);
+                disconnect(label, &Gui::EditableDatumLabel::focusLost, this, nullptr);
 
-            if (!m_spacingsOverrideProp) {
-                return;
-            }
-
-            std::vector<double> currentSpacings = m_spacingsOverrideProp->getValues();
-            if (static_cast<size_t>(index) < currentSpacings.size()) {
-                if (newValue == m_spacingProp->getValue()) {
-                    newValue = -1;
+                if (!m_spacingsOverrideProp) {
+                    return;
                 }
-                currentSpacings[index] = newValue;
-                m_spacingsOverrideProp->setValues(currentSpacings);
 
-                Q_EMIT parametersChanged();
+                std::vector<double> currentSpacings = m_spacingsOverrideProp->getValues();
+                if (static_cast<size_t>(index) < currentSpacings.size()) {
+                    if (newValue == m_spacingProp->getValue()) {
+                        newValue = -1;
+                    }
+                    currentSpacings[index] = newValue;
+                    m_spacingsOverrideProp->setValues(currentSpacings);
+
+                    Q_EMIT parametersChanged();
+                }
+
+                label->stopEdit();
             }
-
-            label->stopEdit();
-        });
+        );
     }
 
     connect(label, &Gui::EditableDatumLabel::focusLost, this, [this, label]() {
