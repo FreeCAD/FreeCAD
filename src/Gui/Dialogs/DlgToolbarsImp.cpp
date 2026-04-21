@@ -102,8 +102,6 @@ DlgCustomToolbars::DlgCustomToolbars(DlgCustomToolbars::Type t, QWidget* parent)
     }
 
     updateToolbarTreeHeaders();
-    ui->toolbarTreeWidget->header()->setSectionResizeMode(0, QHeaderView::Stretch);
-    ui->toolbarTreeWidget->header()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
 
     Workbench* w = WorkbenchManager::instance()->active();
     if (w) {
@@ -215,7 +213,15 @@ void DlgCustomToolbars::updateToolbarTreeHeaders()
 {
     QStringList labels;
     labels << (type == Toolbar ? tr("Toolbar") : tr("Toolbox Bar")) << tr("Scope");
+    if (type == Toolbar) {
+        labels << tr("Tier");
+    }
     ui->toolbarTreeWidget->setHeaderLabels(labels);
+    ui->toolbarTreeWidget->header()->setSectionResizeMode(0, QHeaderView::Stretch);
+    ui->toolbarTreeWidget->header()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
+    if (type == Toolbar) {
+        ui->toolbarTreeWidget->header()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
+    }
 }
 
 QString DlgCustomToolbars::customToolbarPersistenceKey(
@@ -238,6 +244,25 @@ QString DlgCustomToolbars::customToolbarPersistenceKey(
     return QStringLiteral("wb:%1:%2").arg(workbench, toolbarName);
 }
 
+QString DlgCustomToolbars::customToolbarTierLabel(const QString& toolbarName, const QString& workbench) const
+{
+    if (type != Toolbar || toolbarName.isEmpty()) {
+        return {};
+    }
+
+    const auto persistenceKey = customToolbarPersistenceKey(toolbarName, workbench);
+    if (!persistenceKey.isEmpty()) {
+        const auto toolbars = getMainWindow()->findChildren<QToolBar*>();
+        for (auto* toolbar : toolbars) {
+            if (ToolBarManager::toolBarPersistenceKey(toolbar) == persistenceKey) {
+                return ToolBarManager::toolBarTierLabel(toolbar);
+            }
+        }
+    }
+
+    return ToolBarManager::toolBarTierLabel(ToolBarItem::Tier::Secondary);
+}
+
 void DlgCustomToolbars::updateToolbarItemScope(QTreeWidgetItem* item, const QString& workbench) const
 {
     if (!item) {
@@ -248,11 +273,26 @@ void DlgCustomToolbars::updateToolbarItemScope(QTreeWidgetItem* item, const QStr
     item->setText(1, ToolBarManager::toolBarScopeLabel(persistenceKey));
 }
 
-void DlgCustomToolbars::updateToolbarItemScopes()
+void DlgCustomToolbars::updateToolbarItemTier(QTreeWidgetItem* item, const QString& workbench) const
+{
+    if (!item || type != Toolbar) {
+        return;
+    }
+
+    item->setText(2, customToolbarTierLabel(item->text(0), workbench));
+}
+
+void DlgCustomToolbars::updateToolbarItemMetadata(QTreeWidgetItem* item, const QString& workbench) const
+{
+    updateToolbarItemScope(item, workbench);
+    updateToolbarItemTier(item, workbench);
+}
+
+void DlgCustomToolbars::updateToolbarItemsMetadata()
 {
     const QString workbench = selectedWorkbench();
     for (int i = 0; i < ui->toolbarTreeWidget->topLevelItemCount(); i++) {
-        updateToolbarItemScope(ui->toolbarTreeWidget->topLevelItem(i), workbench);
+        updateToolbarItemMetadata(ui->toolbarTreeWidget->topLevelItem(i), workbench);
     }
 }
 
@@ -462,7 +502,7 @@ void DlgCustomToolbars::importCustomToolbars(const QByteArray& name)
             }
         }
 
-        updateToolbarItemScope(toplevel, QString::fromLatin1(name));
+        updateToolbarItemMetadata(toplevel, QString::fromLatin1(name));
     }
 }
 
@@ -676,7 +716,7 @@ void DlgCustomToolbars::onNewButtonClicked()
 
         auto item = new QTreeWidgetItem(ui->toolbarTreeWidget);
         item->setText(0, text);
-        updateToolbarItemScope(item, selectedWorkbench());
+        updateToolbarItemMetadata(item, selectedWorkbench());
         item->setCheckState(0, Qt::Checked);
         item->setExpanded(true);
 
@@ -744,7 +784,7 @@ void DlgCustomToolbars::onRenameButtonClicked()
             }
 
             item->setText(0, text);
-            updateToolbarItemScope(item, selectedWorkbench());
+            updateToolbarItemMetadata(item, selectedWorkbench());
             renameCustomToolbar(old_text, text);
             renamed = true;
         }
@@ -806,7 +846,7 @@ void DlgCustomToolbars::changeEvent(QEvent* e)
             }
         }
         ui->categoryBox->activated(ui->categoryBox->currentIndex());
-        updateToolbarItemScopes();
+        updateToolbarItemsMetadata();
         updateToolbarLayoutControls();
     }
     else if (e->type() == QEvent::StyleChange) {

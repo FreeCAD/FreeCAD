@@ -1586,18 +1586,8 @@ void MainWindow::onToolBarMenuAboutToShow()
 
 void MainWindow::populateToolBarMenu(QMenu* menu)
 {
-    QList<QToolBar*> toolbars = this->findChildren<QToolBar*>();
-    for (const auto& toolbar : toolbars) {
-        if (auto parent = toolbar->parentWidget()) {
-            if (parent == this || parent == statusBar() || parent->parentWidget() == statusBar()
-                || parent->parentWidget() == menuBar()) {
-                QAction* action = toolbar->toggleViewAction();
-                action->setToolTip(tr("Toggles this toolbar"));
-                action->setStatusTip(tr("Toggles this toolbar"));
-                action->setWhatsThis(tr("Toggles this toolbar"));
-                menu->addAction(action);
-            }
-        }
+    if (auto manager = ToolBarManager::getInstance()) {
+        manager->populateToolBarMenu(menu);
     }
 }
 
