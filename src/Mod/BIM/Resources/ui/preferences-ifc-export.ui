@@ -360,7 +360,7 @@ unit to work with when opening the file.</string>
    <item>
     <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
-      <string>IFC standard compliance</string>
+      <string>IFC Standard Compliance</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
@@ -389,7 +389,7 @@ Warning: The IFC standard asks for at least one building in each file. By turnin
          <string>If not checked, standard FreeCAD groups (App::DocumentObjectGroup) will not be exported as IfcGroup or IfcElementAssembly.\nTheir children will be re-parented to the container of the skipped group in the IFC structure.</string>
         </property>
         <property name="title">
-         <string>Export FreeCAD Groups</string>
+         <string>Export FreeCAD groups</string>
         </property>
         <property name="checkable">
          <bool>true</bool>

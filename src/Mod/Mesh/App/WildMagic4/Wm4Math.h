@@ -16,8 +16,7 @@
 //
 // Version: 4.0.1 (2006/08/22)
 
-#ifndef WM4MATH_H
-#define WM4MATH_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4System.h"
@@ -155,5 +154,3 @@ typedef Math<float> Mathf;
 typedef Math<double> Mathd;
 
 }
-
-#endif

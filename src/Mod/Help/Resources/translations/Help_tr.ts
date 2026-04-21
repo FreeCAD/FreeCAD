@@ -27,11 +27,11 @@ You can easily download the documentation for offline use by using the Addon
 Manager and installing the &quot;offline-documentation&quot; addon. If this
 field is left blank, FreeCAD will automatically search for the help files at
 the default location ($USERAPPDATADIR/Mod/offline-documentation).</source>
-      <translation type="unfinished">Set this to a custom URL or the folder where the help files are located.
-You can easily download the documentation for offline use by using the Addon
-Manager and installing the &quot;offline-documentation&quot; addon. If this
-field is left blank, FreeCAD will automatically search for the help files at
-the default location ($USERAPPDATADIR/Mod/offline-documentation).</translation>
+      <translation>Bunu özel bir URL'ye veya yardım dosyalarının bulunduğu klasöre ayarlayın.
+Eklentiyi kullanarak dokümantasyonu çevrimdışı kullanım için kolayca indirebilirsiniz.
+Yönetici ve "çevrimdışı dokümantasyon" eklentisinin yüklenmesi. Eğer bu
+Bu alan boş bırakılırsa, FreeCAD yardım dosyalarını otomatik olarak şu konumda arayacaktır:
+Varsayılan konum ($USERAPPDATADIR/Mod/offline-documentation).</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="53"/>
@@ -61,10 +61,10 @@ Documentation can be downloaded for offline use via the Addon Manager and instal
 &quot;offline-documentation&quot; addon. If this field is left blank, FreeCAD will
 automatically search for the help files at the default location
 ($USERAPPDATADIR/Mod/offline-documentation).</source>
-      <translation type="unfinished">Set this to a custom URL or the folder where the help files are located.
-Documentation can be downloaded for offline use via the Addon Manager and installing the
-&quot;offline-documentation&quot; addon. If this field is left blank, FreeCAD will
-automatically search for the help files at the default location
+      <translation>Bunu özel bir URL'ye veya yardım dosyalarının bulunduğu klasöre ayarlayın.
+Dokümantasyon, Eklenti Yöneticisi aracılığıyla çevrimdışı kullanım için indirilebilir ve kurulum tamamlanabilir.
+"Çevrimdışı dokümantasyon" eklentisi. Bu alan boş bırakılırsa, FreeCAD
+Yardım dosyalarını varsayılan konumda otomatik olarak ara.
 ($USERAPPDATADIR/Mod/offline-documentation).</translation>
     </message>
     <message>
@@ -157,27 +157,27 @@ Bu yalnızca yukarıda Markdown seçeneği işaretlenmişse geçerlidir.</transl
   <context>
     <name>Help</name>
     <message>
-      <location filename="../../Help.py" line="75"/>
+      <location filename="../../Help.py" line="74"/>
       <source>Contents for this page could not be retrieved. Please check settings under menu Edit → Preferences → General → Help</source>
       <translation>Bu sayfanın içeriği alınamadı. Lütfen Düzenle → Tercihler → Genel → Yardım menüsü altındaki ayarları kontrol edin</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="79"/>
+      <location filename="../../Help.py" line="78"/>
       <source>Help files location could not be determined. Please check settings under menu Edit → Preferences → General → Help</source>
       <translation>Yardım dosyalarının konumu belirlenemedi. Lütfen Düzenle → Tercihler → Genel → Yardım menüsü altındaki ayarları kontrol edin</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="83"/>
+      <location filename="../../Help.py" line="82"/>
       <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
       <translation>PySide QtWebEngineWidgets modülü kullanılamıyor. Yardım görüntüleme işlemi sistem tarayıcısı üzerinden yapılıyor</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="87"/>
+      <location filename="../../Help.py" line="86"/>
       <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
       <translation>Sisteminizde Markdown oluşturucu yüklü değil, bu nedenle bu yardım sayfası olduğu gibi görüntüleniyor. Sayfanın görüntülenmesini iyileştirmek için lütfen Markdown veya Pandoc Python modüllerini yükleyin.</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="119"/>
+      <location filename="../../Help.py" line="118"/>
       <source>Help</source>
       <translation>Yardım</translation>
     </message>
@@ -185,7 +185,7 @@ Bu yalnızca yukarıda Markdown seçeneği işaretlenmişse geçerlidir.</transl
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Help.py" line="435"/>
+      <location filename="../../Help.py" line="434"/>
       <source>General</source>
       <translation>Genel</translation>
     </message>

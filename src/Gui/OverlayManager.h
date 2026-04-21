@@ -20,8 +20,7 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef FC_OVERLAYMANAGER_H
-#define FC_OVERLAYMANAGER_H
+#pragma once
 
 #include <QObject>
 #include <QDockWidget>
@@ -198,5 +197,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // FC_OVERLAYMANAGER_H

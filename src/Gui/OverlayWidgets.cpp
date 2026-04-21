@@ -1244,12 +1244,16 @@ bool OverlayTabWidget::checkAutoHide() const
         }
     }
 
+    bool activeDocInEdit = Application::Instance->isInEdit(Application::Instance->activeDocument());
     if (autoMode == AutoMode::EditShow) {
-        return !Application::Instance->editDocument()
-            && (!Control().taskPanel() || Control().taskPanel()->isEmpty(false));
+        return !activeDocInEdit && (!Control().taskPanel() || Control().taskPanel()->isEmpty(false));
     }
 
-    if (autoMode == AutoMode::EditHide && Application::Instance->editDocument()) {
+    if (autoMode == AutoMode::TaskShow) {
+        return (!Control().taskPanel() || Control().taskPanel()->isEmpty());
+    }
+
+    if (autoMode == AutoMode::EditHide && activeDocInEdit) {
         return true;
     }
 
@@ -1398,6 +1402,9 @@ void OverlayTabWidget::setTransparent(bool enable)
         hGrp->SetBool("Transparent", enable);
     }
     actTransparent.setChecked(enable);
+    if (!enable) {
+        unsetCursor();
+    }
     OverlayManager::instance()->refresh(this);
 }
 
@@ -1545,8 +1552,10 @@ void OverlayTabWidget::setOverlayMode(bool enable)
     if (!enable && isTransparent()) {
         option = OverlayOption::ShowTab;
     }
-    else if (enable && !isTransparent()
-             && (autoMode == AutoMode::EditShow || autoMode == AutoMode::AutoHide)) {
+    else if (
+        enable && !isTransparent()
+        && (autoMode == AutoMode::EditShow || autoMode == AutoMode::AutoHide)
+    ) {
         option = OverlayOption::Disable;
     }
     else {
@@ -1836,12 +1845,10 @@ void OverlayTabWidget::removeWidget(QDockWidget* dock, QDockWidget* lastDock)
         hide();
     }
 
-    w = dock->titleBarWidget();
-    if (w && w->objectName() == QStringLiteral("OverlayTitle")) {
-        dock->setTitleBarWidget(nullptr);
-        w->deleteLater();
+    auto tw = dock->titleBarWidget();
+    if (!tw || tw->objectName() == QStringLiteral("OverlayTitle")) {
+        OverlayManager::instance()->setupTitleBar(dock);
     }
-    OverlayManager::instance()->setupTitleBar(dock);
 
     dock->setFeatures(dock->features() | QDockWidget::DockWidgetFloatable);
 

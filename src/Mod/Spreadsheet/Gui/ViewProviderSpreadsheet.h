@@ -23,8 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SPREADSHEET_ViewProviderImagePlane_H
-#define SPREADSHEET_ViewProviderImagePlane_H
+#pragma once
 
 #include <QPointer>
 
@@ -93,6 +92,3 @@ private:
 using ViewProviderSheetPython = Gui::ViewProviderFeaturePythonT<ViewProviderSheet>;
 
 }  // namespace SpreadsheetGui
-
-
-#endif  // SPREADSHEET_ViewProviderSpreadsheet_H

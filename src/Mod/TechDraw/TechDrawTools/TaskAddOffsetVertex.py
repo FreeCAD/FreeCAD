@@ -42,18 +42,18 @@ class TaskAddOffsetVertex():
         self._uiPath = App.getHomePath()
         self._uiPath = os.path.join(self._uiPath, "Mod/TechDraw/TechDrawTools/Gui/TaskAddOffsetVertex.ui")
         self.form = Gui.PySideUic.loadUi(self._uiPath)
-        self.form.setWindowTitle(translate("TechDraw_AddOffsetVertex", "Add offset vertex"))
+        self.form.setWindowTitle(translate("TechDraw_AddOffsetVertex", "Offset Vertex"))
         self.view = view
         self.vertex = vertex
 
-        App.setActiveTransaction("Add offset vertex")
+        App.ActiveDocument.openTransaction("Add offset vertex")
 
     def accept(self):
         '''slot: OK pressed'''
         point = self.vertex.Point   # this is unscaled and inverted, but is also rotated.
         # unrotate point. Note that since this is already unscaled, we need to set the
         # third parameter to False to avoid an extra descaling.
-        point = TechDraw.makeCanonicalPoint(self.view, point, False);
+        point = TechDraw.makeCanonicalPoint(self.view, point, False)
         xOffset = self.form.dSpinBoxX.value()
         yOffset = self.form.dSpinBoxY.value()
         offset = App.Vector(xOffset,yOffset,0)  # the offset is applied to the canonical
@@ -61,8 +61,8 @@ class TaskAddOffsetVertex():
                                                 # uninverted relative value.
         self.view.makeCosmeticVertex(point+offset)
         Gui.Control.closeDialog()
-        App.closeActiveTransaction()
+        App.ActiveDocument.commitTransaction()
 
     def reject(self):
-        App.closeActiveTransaction(True)
+        App.ActiveDocument.abortTransaction()
         return True

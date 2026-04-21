@@ -55,9 +55,7 @@ Log("░░░▀▀▀░▀░▀░▀▀▀░░▀░░░░░▀░░
 import sys
 import TestApp
 
-testCase = FreeCAD.ConfigGet("TestCase")
-
-testResult = TestApp.TestText(testCase)
+testResult = TestApp.RunConfiguredTextTest()
 
 Log("FreeCAD test done\n")
 

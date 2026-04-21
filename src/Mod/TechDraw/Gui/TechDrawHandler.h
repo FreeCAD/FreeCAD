@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TechDrawGUI_TechDrawHandler_H
-#define TechDrawGUI_TechDrawHandler_H
+#pragma once
 
 #include <Gui/ToolHandler.h>
 
@@ -62,6 +61,3 @@ protected:
 
 
 }  // namespace TechDrawGui
-
-
-#endif  // TechDrawGUI_TechDrawHandler_H

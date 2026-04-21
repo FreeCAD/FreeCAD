@@ -1123,9 +1123,9 @@ bool TaskDlgFemConstraintFluidBoundary::accept()
                     boundary->getHTCoeffValue()
                 );
             }
-            if (pTurbulenceModel
-                && std::string(pTurbulenceModel->getValueAsString())
-                    != "laminar") {  // Invisic and DNS flow also does not need this
+            if (
+                pTurbulenceModel && std::string(pTurbulenceModel->getValueAsString()) != "laminar"
+            ) {  // Invisic and DNS flow also does not need this
                 // update turbulence and thermal boundary settings, only if those models are
                 // activated
                 Gui::Command::doCommand(

@@ -24,6 +24,7 @@
 
 
 #include <Base/Console.h>
+#include <Base/ProgramVersion.h>
 #include <Base/Tools.h>
 
 #include <App/Document.h>
@@ -292,13 +293,21 @@ void AttachExtension::setAttacher(AttachEngine* pAttacher, bool base)
                      // onChange->changeAttacherType->onChange...
             props.attacherType->setValue(typeName);
         }
+        // Also update the visible AttacherEngine property for non-base attachers
+        // to keep it in sync with AttacherType (fixes issue #15716)
+        if (!base) {
+            const char* enumVal = classToEnum(typeName);
+            if (strcmp(AttacherEngine.getValueAsString(), enumVal) != 0) {
+                AttacherEngine.setValue(enumVal);
+            }
+        }
         updateAttacherVals(base);
     }
     else {
-        if (props.attacherType
-            && strlen(props.attacherType->getValue())
-                != 0) {  // make sure we need to change, to break recursive
-                         // onChange->changeAttacherType->onChange...
+        if (
+            props.attacherType && strlen(props.attacherType->getValue()) != 0
+        ) {  // make sure we need to change, to break recursive
+             // onChange->changeAttacherType->onChange...
             props.attacherType->setValue("");
         }
     }
@@ -522,12 +531,8 @@ void AttachExtension::handleLegacyTangentPlaneOrientation()
     }
 
     // check stored document program version (applies to v1.0 and earlier only)
-    int major, minor;
-    if (sscanf(getExtendedObject()->getDocument()->getProgramVersion(), "%d.%d", &major, &minor)
-        != 2) {
-        return;
-    }
-    if (major > 1 || (major == 1 && minor > 0)) {
+    if (Base::getVersion(getExtendedObject()->getDocument()->getProgramVersion())
+        > Base::Version::v1_0) {
         return;
     }
 
@@ -608,7 +613,7 @@ void AttachExtension::handleLegacyTangentPlaneOrientation()
 
         // convert placement and expressions according to the dominant axis
         auto makeRotatedExpression =
-            [owner](const App::Expression* expr, double angle) -> App::Expression* {
+            [owner](const App::Expression* expr, double angle) -> App::ExpressionPtr {
             if (!expr) {
                 return nullptr;
             }
@@ -621,8 +626,8 @@ void AttachExtension::handleLegacyTangentPlaneOrientation()
                 unitSafeExprStr += " - " + std::to_string(-angle);
             }
 
-            if (const App::Expression* simple = expr->eval()) {
-                if (auto ue = dynamic_cast<const App::UnitExpression*>(simple)) {
+            if (App::ExpressionPtr simple = expr->eval(); simple) {
+                if (auto ue = dynamic_cast<const App::UnitExpression*>(simple.get())) {
                     const auto& q = ue->getQuantity();
                     if (q.getUnit() == Base::Unit::Angle) {
                         unitSafeExprStr += " deg";
@@ -632,9 +637,9 @@ void AttachExtension::handleLegacyTangentPlaneOrientation()
 
             return App::ExpressionParser::parse(owner, unitSafeExprStr.c_str());
         };
-        App::Expression* newExprX = nullptr;
-        App::Expression* newExprY = nullptr;
-        App::Expression* newExprYaw = nullptr;
+        App::ExpressionPtr newExprX {};
+        App::ExpressionPtr newExprY {};
+        App::ExpressionPtr newExprYaw {};
         if (axis == 0) {  // normal mostly X
             // values
             std::swap(position.x, position.y);
@@ -689,9 +694,9 @@ void AttachExtension::handleLegacyTangentPlaneOrientation()
         // store updated placement and expressions back to the document object
 
         // expressions
-        owner->ExpressionEngine.setValue(oidX, App::ExpressionPtr(newExprX));
-        owner->ExpressionEngine.setValue(oidY, App::ExpressionPtr(newExprY));
-        owner->ExpressionEngine.setValue(oidYaw, App::ExpressionPtr(newExprYaw));
+        owner->ExpressionEngine.setValue(oidX, std::move(newExprX));
+        owner->ExpressionEngine.setValue(oidY, std::move(newExprY));
+        owner->ExpressionEngine.setValue(oidYaw, std::move(newExprYaw));
 
         // values
         placement.setPosition(position);

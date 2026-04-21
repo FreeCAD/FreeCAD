@@ -22,7 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <boost/signals2/connection.hpp>
+#include <fastsignals/connection.h>
 
 #include <QAction>
 #include <QHeaderView>
@@ -230,7 +230,7 @@ void DlgCustomKeyboardImp::populateCommandList(
     commandTreeWidget->resizeColumnToContents(3);
 }
 
-boost::signals2::connection DlgCustomKeyboardImp::initCommandList(
+fastsignals::connection DlgCustomKeyboardImp::initCommandList(
     QTreeWidget* commandTreeWidget,
     QTreeWidgetItem* separatorItem,
     QComboBox* combo
@@ -317,7 +317,7 @@ void DlgCustomKeyboardImp::initPriorityList(
     });
 }
 
-boost::signals2::connection DlgCustomKeyboardImp::initCommandWidgets(
+fastsignals::connection DlgCustomKeyboardImp::initCommandWidgets(
     QTreeWidget* commandTreeWidget,
     QTreeWidgetItem* separatorItem,
     QComboBox* comboGroups,

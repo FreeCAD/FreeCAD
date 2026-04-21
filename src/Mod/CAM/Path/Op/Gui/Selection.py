@@ -30,8 +30,11 @@ import Path
 import Path.Base.Drillable as Drillable
 import math
 
-Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
-Path.Log.trackModule(Path.Log.thisModule())
+if False:
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
+else:
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 class PathBaseGate(object):
@@ -211,11 +214,11 @@ class POCKETGate(PathBaseGate):
             pocketable = True
 
         elif obj.ShapeType == "Solid":
-            if sub and sub[0:4] == "Face":
+            if sub and sub[0:4] in ("Face", "Edge"):
                 pocketable = True
 
         elif obj.ShapeType == "Compound":
-            if sub and sub[0:4] == "Face":
+            if sub and sub[0:4] in ("Face", "Edge"):
                 pocketable = True
 
         return pocketable

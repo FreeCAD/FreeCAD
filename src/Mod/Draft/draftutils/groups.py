@@ -29,6 +29,7 @@
 The functions here are also used in the Arch Workbench as some of
 the objects created with this workbench work like groups.
 """
+
 ## @package groups
 # \ingroup draftutils
 # \brief Provides utility functions to do operations with groups.

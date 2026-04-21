@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_DLGREVOLUTION_H
-#define PARTGUI_DLGREVOLUTION_H
+#pragma once
 
 #include <Gui/InputVector.h>
 #include <Gui/Selection/Selection.h>
@@ -84,6 +83,7 @@ private:
     std::unique_ptr<Ui_DlgRevolution> ui;
     class EdgeSelection;
     EdgeSelection* filter;
+    bool filterSelection;
 };
 
 class TaskRevolution: public Gui::TaskView::TaskDialog
@@ -106,5 +106,3 @@ private:
 };
 
 }  // namespace PartGui
-
-#endif  // PARTGUI_DLGREVOLUTION_H

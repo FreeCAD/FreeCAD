@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_DrawSketchHandler_H
-#define SKETCHERGUI_DrawSketchHandler_H
+#pragma once
 
 #include <QPixmap>
 #include <QCoreApplication>
@@ -335,6 +334,10 @@ protected:
         const Base::Vector2d& Dir
     );
 
+    void openCommand(const std::string& name);
+    void commitCommand();
+    void abortCommand();
+
 protected:
     /**
      * Returns constraints icons scaled to width.
@@ -344,10 +347,8 @@ protected:
     ViewProviderSketch* sketchgui;
 
     QWidget* toolwidget;
+    int currentTransactionID {0};
 };
 
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandler_H

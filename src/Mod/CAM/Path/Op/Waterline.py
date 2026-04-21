@@ -564,6 +564,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         obj.setEditorMode("CutPattern", C)
         obj.setEditorMode("SampleInterval", G)
         obj.setEditorMode("MinSampleInterval", D)
+        obj.setEditorMode("OptimizeLinearPaths", D)
         obj.setEditorMode("LinearDeflection", expMode)
         obj.setEditorMode("AngularDeflection", expMode)
 
@@ -939,7 +940,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         if pPM is False:
             Path.Log.error("Unable to pre-process obj.Base.")
         else:
-            (FACES, VOIDS) = pPM
+            FACES, VOIDS = pPM
             self.modelSTLs = PSF.modelSTLs
             self.profileShapes = PSF.profileShapes
 
@@ -1114,7 +1115,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                     if SEG == "BRK":
                         stpOvr.append(SEG)
                     else:
-                        (A, B) = SEG  # format is ((p1, p2), (p3, p4))
+                        A, B = SEG  # format is ((p1, p2), (p3, p4))
                         P1 = FreeCAD.Vector(A[0], A[1], csHght)
                         P2 = FreeCAD.Vector(B[0], B[1], csHght)
                         stpOvr.append((P1, P2))
@@ -1125,7 +1126,7 @@ class ObjectWaterline(PathOp.ObjectOp):
             for so in range(0, len(PNTSET)):
                 stpOvr = list()
                 erFlg = False
-                (aTyp, dirFlg, ARCS) = PNTSET[so]
+                aTyp, dirFlg, ARCS = PNTSET[so]
 
                 if dirFlg == 1:  # 1
                     cMode = True  # Climb mode
@@ -1137,7 +1138,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                     if Arc == "BRK":
                         stpOvr.append("BRK")
                     else:
-                        (sp, ep, cp) = Arc
+                        sp, ep, cp = Arc
                         S = FreeCAD.Vector(sp[0], sp[1], csHght)
                         E = FreeCAD.Vector(ep[0], ep[1], csHght)
                         C = FreeCAD.Vector(cp[0], cp[1], csHght)
@@ -1226,6 +1227,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         bb = self.boundBoxes[mdlIdx]
         stl = self.modelSTLs[mdlIdx]
         depOfst = obj.DepthOffset.Value
+        optimizeLinear = obj.OptimizeLinearPaths
 
         # Prepare global holdpoint and layerEndPnt containers
         if self.holdPoint is None:
@@ -1284,6 +1286,8 @@ class ObjectWaterline(PathOp.ObjectOp):
             # Generate G-Code
             layTime = time.time()
             for loop in scanLines:
+                if optimizeLinear:
+                    loop = PathUtils.simplify3dLine(loop, tolerance=self.geoTlrnc)
                 # We pass '0.0' as layDep because Adaptive loops have their own Z embedded
                 cmds = self._loopToGcode(obj, 0.0, loop)
                 commands.extend(cmds)
@@ -1897,7 +1901,7 @@ class ObjectWaterline(PathOp.ObjectOp):
             if cont:
                 # Identify solid areas in the offset data
                 if obj.CutPattern == "Offset" or obj.CutPattern == "None":
-                    ofstSolidFacesList = self._getSolidAreasFromPlanarFaces(ofstArea)
+                    ofstSolidFacesList = self._getSolidAreasFromPlanarFaces(ofstArea.Faces)
                     if ofstSolidFacesList:
                         clearArea = Part.makeCompound(ofstSolidFacesList)
                         self.showDebugObject(clearArea, "ClearArea_{}".format(caCnt))
@@ -1918,7 +1922,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                 lastCsHght = csHght
 
                 # Clear layer as needed
-                (clrLyr, clearLastLayer) = self._clearLayer(obj, ca, lastCA, clearLastLayer)
+                clrLyr, clearLastLayer = self._clearLayer(obj, ca, lastCA, clearLastLayer)
                 if clrLyr == "Offset":
                     commands.extend(self._makeOffsetLayerPaths(obj, clearArea, csHght))
                 elif clrLyr:
@@ -1932,7 +1936,7 @@ class ObjectWaterline(PathOp.ObjectOp):
 
         if clearLastLayer and obj.ClearLastLayer != "Off":
             Path.Log.debug("... Clearning last layer")
-            (clrLyr, cLL) = self._clearLayer(obj, 1, 1, False)
+            clrLyr, cLL = self._clearLayer(obj, 1, 1, False)
             lastClearArea.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - lastClearArea.BoundBox.ZMin))
             if clrLyr == "Offset":
                 commands.extend(self._makeOffsetLayerPaths(obj, lastClearArea, lastCsHght))
@@ -2014,7 +2018,13 @@ class ObjectWaterline(PathOp.ObjectOp):
                 startVect = FreeCAD.Vector(V[0].X, V[0].Y, V[0].Z)
 
             commands.append(Path.Command("N (Wire {}.)".format(w)))
-            (cmds, endVect) = self._wireToPath(obj, wire, startVect)
+
+            # This ensures the tool is directly above the entry point before plunging,
+            # preventing diagonal moves through the material.
+            commands.append(
+                Path.Command("G0", {"X": startVect.x, "Y": startVect.y, "F": self.horizRapid})
+            )
+            cmds, endVect = self._wireToPath(obj, wire, startVect)
             commands.extend(cmds)
             commands.append(Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid}))
 
@@ -2303,14 +2313,13 @@ class ObjectWaterline(PathOp.ObjectOp):
         pathParams["feedrate"] = self.horizFeed
         pathParams["feedrate_v"] = self.vertFeed
         pathParams["verbose"] = True
-        pathParams["resume_height"] = obj.SafeHeight.Value
-        pathParams["retraction"] = obj.ClearanceHeight.Value
+        pathParams["retraction"] = obj.SafeHeight.Value
         pathParams["return_end"] = True
         # Note that emitting preambles between moves breaks some dressups and prevents path optimization on some controllers
         pathParams["preamble"] = False
         pathParams["start"] = startVect
 
-        (pp, end_vector) = Path.fromShapes(**pathParams)
+        pp, end_vector = Path.fromShapes(**pathParams)
         paths.extend(pp.Commands)
 
         self.endVector = end_vector

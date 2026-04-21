@@ -95,7 +95,7 @@ public:
 class FaceAppearances::Private
 {
 public:
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::connection;
     Ui_TaskFaceAppearances* ui;
     QPointer<Gui::View3DInventorViewer> view;
     ViewProviderPartExt* vp;
@@ -265,8 +265,7 @@ FaceAppearances::FaceAppearances(ViewProviderPartExt* vp, QWidget* parent)
     d->ui->groupBox->setTitle(QString::fromUtf8(vp->getObject()->Label.getValue()));
     d->ui->buttonCustomAppearance->setDisabled(true);
 
-    FaceSelection* gate = new FaceSelection(d->vp->getObject());
-    Gui::Selection().addSelectionGate(gate);
+    setSelectionGate();
 
     // NOLINTBEGIN
     d->connectDelDoc = Gui::Application::Instance->signalDeleteDocument.connect(
@@ -317,21 +316,21 @@ void FaceAppearances::slotUndoDocument(const Gui::Document& Doc)
 {
     if (d->doc == &Doc) {
         d->doc->resetEdit();
-        Gui::Control().closeDialog();
+        Gui::Control().closeDialog(d->doc->getDocument());
     }
 }
 
 void FaceAppearances::slotDeleteDocument(const Gui::Document& Doc)
 {
     if (d->doc == &Doc) {
-        Gui::Control().closeDialog();
+        Gui::Control().closeDialog(d->doc->getDocument());
     }
 }
 
 void FaceAppearances::slotDeleteObject(const Gui::ViewProvider& obj)
 {
     if (d->vp == &obj) {
-        Gui::Control().closeDialog();
+        Gui::Control().closeDialog(d->doc->getDocument());
     }
 }
 
@@ -511,6 +510,11 @@ void FaceAppearances::changeEvent(QEvent* e)
     if (e->type() == QEvent::LanguageChange) {
         d->ui->retranslateUi(this);
     }
+}
+void FaceAppearances::setSelectionGate()
+{
+    FaceSelection* gate = new FaceSelection(d->vp->getObject());
+    Gui::Selection().addSelectionGate(gate);
 }
 
 

@@ -32,6 +32,7 @@ in other modules of the workbench, and which require
 the graphical user interface (GUI), as they access the view providers
 of the objects or the 3D view.
 """
+
 ## @package gui_utils
 # \ingroup draftutils
 # \brief Provides utility functions that deal with GUI interactions.
@@ -128,13 +129,22 @@ def autogroup(obj):
         if active_group is None:
             # Layer/group does not exist (anymore)
             Gui.draftToolBar.setAutoGroup()  # Change active layer/group in Tray to None.
+        elif utils.get_type(active_group) == "Layer":
+            if not obj in active_group.Group:
+                active_group.Group += [obj]
+            # No return statement here as objects can be in a layer and in
+            # a normal group or group-like BIM object at the same time.
+        elif obj in active_group.InListRecursive:
             return
-        if obj in active_group.InListRecursive:
+        else:
+            if not obj in active_group.Group:
+                if hasattr(active_group, "addObject"):
+                    active_group.addObject(obj)
+                else:
+                    active_group.Group += [obj]
             return
-        if not obj in active_group.Group:
-            active_group.Group += [obj]
 
-    elif Gui.ActiveDocument.ActiveView.getActiveObject("NativeIFC") is not None:
+    if Gui.ActiveDocument.ActiveView.getActiveObject("NativeIFC") is not None:
         # NativeIFC handling
         try:
             from nativeifc import ifc_tools

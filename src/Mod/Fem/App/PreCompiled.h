@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEM_PRECOMPILED_H
-#define FEM_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -151,7 +150,7 @@
 #include <vtkAppendFilter.h>
 #include <vtkArrayCalculator.h>
 #include <vtkCellArray.h>
-#if VTK_VERSION_NUMBER >= VTK_VERSION_CHECK(9, 3, 0)
+#if VTK_VERSION_NUMBER >= VTK_VERSION_CHECK(9, 2, 20230125)
 # include <vtkCleanUnstructuredGrid.h>
 #endif
 #include <vtkCompositeDataSet.h>
@@ -208,6 +207,4 @@
 # include <NETGENPlugin_Hypothesis.hxx>
 # include <NETGENPlugin_Mesher.hxx>
 # include <NETGENPlugin_SimpleHypothesis_3D.hxx>
-#endif
-
 #endif

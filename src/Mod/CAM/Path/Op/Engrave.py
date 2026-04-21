@@ -99,15 +99,12 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
                 wires = []
                 for feature in subs:
                     sub = base.Shape.getElement(feature)
-                    if isinstance(sub, Part.Edge):
-                        edges.append(sub)
-                    elif sub.Wires:
+                    if sub.Wires:
                         wires.extend(sub.Wires)
                     else:
-                        wires.append(Part.Wire(sub.Edges))
+                        edges.extend(sub.Edges)
 
-                for sortedEdges in Part.sortEdges(edges):
-                    wires.append(Part.Wire(sortedEdges))
+                wires.extend([Part.Wire(se) for se in Part.sortEdges(edges)])
 
                 jobshapes.append(Part.makeCompound(wires))
 
@@ -119,11 +116,7 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
             Path.Log.track(self.model)
             for base in self.model:
                 Path.Log.track(base.Label)
-                if base.isDerivedFrom("Part::Part2DObject"):
-                    jobshapes.append(base.Shape)
-                elif base.isDerivedFrom("Sketcher::SketchObject"):
-                    jobshapes.append(base.Shape)
-                elif hasattr(base, "ArrayType"):
+                if base.isDerivedFrom("Part::Feature") and base.Shape.Volume == 0:
                     jobshapes.append(base.Shape)
 
         if jobshapes:

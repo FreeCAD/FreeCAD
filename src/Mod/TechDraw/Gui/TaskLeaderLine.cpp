@@ -221,7 +221,7 @@ void TaskLeaderLine::setUiPrimary()
         ui->tbBaseView->setText(QString::fromStdString(baseName));
     }
 
-    ui->pbTracker->setText(tr("Pick points"));
+    ui->pbTracker->setText(tr("Pick Points"));
     if (m_vpp->getMDIViewPage()) {
         ui->pbTracker->setEnabled(true);
         ui->pbCancelEdit->setEnabled(true);
@@ -269,7 +269,7 @@ void TaskLeaderLine::setUiEdit()
         ui->cboxEndSym->setCurrentIndex(m_lineFeat->EndSymbol.getValue());
         connect(ui->cboxEndSym, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskLeaderLine::onEndSymbolChanged);
 
-        ui->pbTracker->setText(tr("Edit points"));
+        ui->pbTracker->setText(tr("Edit Points"));
         if (m_vpp->getMDIViewPage()) {
             ui->pbTracker->setEnabled(true);
             ui->pbCancelEdit->setEnabled(true);
@@ -341,7 +341,7 @@ void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> sceneDeltas
 
     std::string PageName = m_basePage->getNameInDocument();
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Leader"));
+    int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Create Leader"));
     Command::doCommand(Command::Doc, "App.activeDocument().addObject('%s', '%s')",
                        m_leaderType.c_str(), m_leaderName.c_str());
     Command::doCommand(Command::Doc, "App.activeDocument().%s.translateLabel('DrawLeaderLine', 'LeaderLine', '%s')",
@@ -402,7 +402,7 @@ void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> sceneDeltas
     }
 
     Gui::Command::updateActive();
-    Gui::Command::commitCommand();
+    Gui::Command::commitCommand(tid);
 
     //trigger claimChildren in tree
     if (m_baseFeat) {
@@ -428,7 +428,7 @@ void TaskLeaderLine::dumpTrackerPoints(std::vector<Base::Vector3d>& tPoints) con
 void TaskLeaderLine::updateLeaderFeature()
 {
 //    Base::Console().message("TTL::updateLeaderFeature()\n");
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit Leader"));
+    int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Edit Leader"));
     //waypoints & x, y are updated by QGILeaderLine (for edits only!)
     commonFeatureUpdate();
     Base::Color ac;
@@ -438,7 +438,7 @@ void TaskLeaderLine::updateLeaderFeature()
     m_lineVP->LineStyle.setValue(ui->cboxStyle->currentIndex());
 
     Gui::Command::updateActive();
-    Gui::Command::commitCommand();
+    Gui::Command::commitCommand(tid);
 
     if (m_baseFeat) {
         m_baseFeat->requestPaint();
@@ -496,7 +496,7 @@ void TaskLeaderLine::onTrackerClicked(bool clicked)
             m_tracker->terminateDrawing();
         }
         m_pbTrackerState = TrackerAction::PICK;
-        ui->pbTracker->setText(tr("Pick points"));
+        ui->pbTracker->setText(tr("Pick Points"));
         ui->pbCancelEdit->setEnabled(false);
         enableTaskButtons(true);
 
@@ -510,7 +510,7 @@ void TaskLeaderLine::onTrackerClicked(bool clicked)
             m_qgLeader->closeEdit();
         }
         m_pbTrackerState = TrackerAction::PICK;
-        ui->pbTracker->setText(tr("Edit points"));
+        ui->pbTracker->setText(tr("Edit Points"));
         ui->pbCancelEdit->setEnabled(false);
         enableTaskButtons(true);
 
@@ -530,7 +530,7 @@ void TaskLeaderLine::onTrackerClicked(bool clicked)
         QString msg = tr("Pick a starting point for leader line");
         getMainWindow()->statusBar()->show();
         Gui::getMainWindow()->showMessage(msg, MessageDisplayTime);
-        ui->pbTracker->setText(tr("Save points"));
+        ui->pbTracker->setText(tr("Save Points"));
         ui->pbTracker->setEnabled(true);
         ui->pbCancelEdit->setEnabled(true);
         m_pbTrackerState = TrackerAction::SAVE;
@@ -565,7 +565,7 @@ void TaskLeaderLine::onTrackerClicked(bool clicked)
                 QString msg = tr("Click and drag markers to adjust leader line");
                 getMainWindow()->statusBar()->show();
                 Gui::getMainWindow()->showMessage(msg, MessageDisplayTime);
-                ui->pbTracker->setText(tr("Save changes"));
+                ui->pbTracker->setText(tr("Save Changes"));
                 ui->pbTracker->setEnabled(true);
                 ui->pbCancelEdit->setEnabled(true);
                 m_pbTrackerState = TrackerAction::SAVE;
@@ -582,7 +582,7 @@ void TaskLeaderLine::onTrackerClicked(bool clicked)
             QString msg = tr("Pick a starting point for leader line");
             getMainWindow()->statusBar()->show();
             Gui::getMainWindow()->showMessage(msg, MessageDisplayTime);
-            ui->pbTracker->setText(tr("Save changes"));
+            ui->pbTracker->setText(tr("Save Changes"));
             ui->pbTracker->setEnabled(true);
             ui->pbCancelEdit->setEnabled(true);
             m_pbTrackerState = TrackerAction::SAVE;
@@ -683,7 +683,7 @@ void TaskLeaderLine::onCancelEditClicked(bool clicked)
     }
 
     m_pbTrackerState = TrackerAction::EDIT;
-    ui->pbTracker->setText(tr("Edit points"));
+    ui->pbTracker->setText(tr("Edit Points"));
     ui->pbCancelEdit->setEnabled(false);
     enableTaskButtons(true);
 
@@ -754,7 +754,7 @@ void TaskLeaderLine::onPointEditComplete()
     m_inProgressLock = false;
 
     m_pbTrackerState = TrackerAction::EDIT;
-    ui->pbTracker->setText(tr("Edit points"));
+    ui->pbTracker->setText(tr("Edit Points"));
     ui->pbTracker->setEnabled(true);
     ui->pbCancelEdit->setEnabled(true);
     enableTaskButtons(true);
@@ -776,7 +776,7 @@ void TaskLeaderLine::abandonEditSession()
     Gui::getMainWindow()->showMessage(msg, MessageDuration);
 
     m_pbTrackerState = TrackerAction::EDIT;
-    ui->pbTracker->setText(tr("Edit points"));
+    ui->pbTracker->setText(tr("Edit Points"));
     enableTaskButtons(true);
     ui->pbTracker->setEnabled(true);
     ui->pbCancelEdit->setEnabled(false);

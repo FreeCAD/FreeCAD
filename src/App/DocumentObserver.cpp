@@ -38,38 +38,49 @@ namespace sp = std::placeholders;
 DocumentT::DocumentT() = default;
 
 DocumentT::DocumentT(Document* doc)
-{
-    document = doc->getName();
-}
+    : document {doc->getName()}
+{}
 
-DocumentT::DocumentT(const std::string& name)
-{
-    document = name;
-}
+DocumentT::DocumentT(std::string name)
+    : document {std::move(name)}
+{}
 
 DocumentT::DocumentT(const DocumentT& doc)
-{
-    document = doc.document;
-}
+    : document {doc.document}
+{}
+
+DocumentT::DocumentT(DocumentT&& doc) noexcept
+    : document {std::move(doc.document)}
+{}
 
 DocumentT::~DocumentT() = default;
 
-void DocumentT::operator=(const DocumentT& doc)
+DocumentT& DocumentT::operator=(const DocumentT& doc)
 {
-    if (this == &doc) {
-        return;
+    if (this != &doc) {
+        document = doc.document;
     }
-    document = doc.document;
+    return *this;
 }
 
-void DocumentT::operator=(const Document* doc)
+DocumentT& DocumentT::operator=(DocumentT&& doc) noexcept
+{
+    if (this != &doc) {
+        document = std::move(doc.document);
+    }
+    return *this;
+}
+
+DocumentT& DocumentT::operator=(const Document* doc)
 {
     document = doc->getName();
+    return *this;
 }
 
-void DocumentT::operator=(const std::string& name)
+DocumentT& DocumentT::operator=(const std::string& name)
 {
     document = name;
+    return *this;
 }
 
 Document* DocumentT::getDocument() const
@@ -98,7 +109,7 @@ DocumentObjectT::DocumentObjectT(const DocumentObjectT& other)
     *this = other;
 }
 
-DocumentObjectT::DocumentObjectT(DocumentObjectT&& other)
+DocumentObjectT::DocumentObjectT(DocumentObjectT&& other) noexcept
 {
     *this = std::move(other);
 }
@@ -145,7 +156,7 @@ DocumentObjectT& DocumentObjectT::operator=(const DocumentObjectT& obj)
     return *this;
 }
 
-DocumentObjectT& DocumentObjectT::operator=(DocumentObjectT&& obj)
+DocumentObjectT& DocumentObjectT::operator=(DocumentObjectT&& obj) noexcept
 {
     if (this == &obj) {
         return *this;
@@ -157,7 +168,7 @@ DocumentObjectT& DocumentObjectT::operator=(DocumentObjectT&& obj)
     return *this;
 }
 
-void DocumentObjectT::operator=(const DocumentObject* obj)
+DocumentObjectT& DocumentObjectT::operator=(const DocumentObject* obj)
 {
     if (!obj || !obj->isAttachedToDocument()) {
         object.clear();
@@ -171,9 +182,11 @@ void DocumentObjectT::operator=(const DocumentObject* obj)
         document = obj->getDocument()->getName();
         property.clear();
     }
+
+    return *this;
 }
 
-void DocumentObjectT::operator=(const Property* prop)
+DocumentObjectT& DocumentObjectT::operator=(const Property* prop)
 {
     if (!prop || !prop->hasName() || !prop->getContainer()
         || !prop->getContainer()->isDerivedFrom<App::DocumentObject>()) {
@@ -182,13 +195,14 @@ void DocumentObjectT::operator=(const Property* prop)
         document.clear();
         property.clear();
     }
-    else {
-        auto obj = static_cast<App::DocumentObject*>(prop->getContainer());
+    else if (auto obj = freecad_cast<App::DocumentObject*>(prop->getContainer())) {
         object = obj->getNameInDocument();
         label = obj->Label.getValue();
         document = obj->getDocument()->getName();
         property = prop->getName();
     }
+
+    return *this;
 }
 
 bool DocumentObjectT::operator==(const DocumentObjectT& other) const
@@ -217,8 +231,7 @@ std::string DocumentObjectT::getDocumentPython() const
 DocumentObject* DocumentObjectT::getObject() const
 {
     DocumentObject* obj = nullptr;
-    Document* doc = getDocument();
-    if (doc) {
+    if (auto doc = getDocument()) {
         obj = doc->getObject(object.c_str());
     }
     return obj;
@@ -227,6 +240,20 @@ DocumentObject* DocumentObjectT::getObject() const
 const std::string& DocumentObjectT::getObjectName() const
 {
     return object;
+}
+
+const char* DocumentObjectT::getNameInDocument() const
+{
+    return object.c_str();
+}
+
+bool DocumentObjectT::isAttachedToDocument() const
+{
+    if (auto obj = getObject()) {
+        return obj->isAttachedToDocument();
+    }
+
+    return false;
 }
 
 const std::string& DocumentObjectT::getObjectLabel() const
@@ -258,9 +285,13 @@ std::string DocumentObjectT::getPropertyPython() const
 
 Property* DocumentObjectT::getProperty() const
 {
-    auto obj = getObject();
-    if (obj) {
-        return obj->getPropertyByName(property.c_str());
+    return getPropertyByName(property.c_str());
+}
+
+Property* DocumentObjectT::getPropertyByName(const char* name) const
+{
+    if (auto obj = getObject()) {
+        return obj->getPropertyByName(name);
     }
     return nullptr;
 }
@@ -271,7 +302,7 @@ SubObjectT::SubObjectT() = default;
 
 SubObjectT::SubObjectT(const SubObjectT&) = default;
 
-SubObjectT::SubObjectT(SubObjectT&& other)
+SubObjectT::SubObjectT(SubObjectT&& other) noexcept
     : DocumentObjectT(std::move(other))
     , subname(std::move(other.subname))
 {}
@@ -294,6 +325,8 @@ SubObjectT::SubObjectT(const char* docName, const char* objName, const char* s)
     : DocumentObjectT(docName, objName)
     , subname(s ? s : "")
 {}
+
+SubObjectT::~SubObjectT() = default;
 
 bool SubObjectT::operator<(const SubObjectT& other) const
 {
@@ -323,18 +356,18 @@ SubObjectT& SubObjectT::operator=(const SubObjectT& other)
     if (this == &other) {
         return *this;
     }
-    static_cast<DocumentObjectT&>(*this) = other;
+    static_cast<DocumentObjectT&>(*this) = other;  // NOLINT
     subname = other.subname;
     return *this;
 }
 
-SubObjectT& SubObjectT::operator=(SubObjectT&& other)
+SubObjectT& SubObjectT::operator=(SubObjectT&& other) noexcept
 {
     if (this == &other) {
         return *this;
     }
-    static_cast<DocumentObjectT&>(*this) = std::move(other);
     subname = std::move(other.subname);
+    static_cast<DocumentObjectT&>(*this) = std::move(other);
     return *this;
 }
 
@@ -639,11 +672,14 @@ PropertyLinkT::PropertyLinkT(const std::vector<DocumentObject*>& objs)
         }
 
         str << "]";
+        toPython = str.str();
     }
 }
 
-PropertyLinkT::PropertyLinkT(const std::vector<DocumentObject*>& objs,
-                             const std::vector<std::string>& subNames)
+PropertyLinkT::PropertyLinkT(
+    const std::vector<DocumentObject*>& objs,
+    const std::vector<std::string>& subNames
+)
     : PropertyLinkT()
 {
     if (!objs.empty() && objs.size() == subNames.size()) {
@@ -672,6 +708,7 @@ PropertyLinkT::PropertyLinkT(const std::vector<DocumentObject*>& objs,
         }
 
         str << "]";
+        toPython = str.str();
     }
 }
 
@@ -691,7 +728,8 @@ public:
         if (doc) {
             // NOLINTBEGIN
             connectApplicationDeletedDocument = App::GetApplication().signalDeleteDocument.connect(
-                std::bind(&Private::deletedDocument, this, sp::_1));
+                std::bind(&Private::deletedDocument, this, sp::_1)
+            );
             // NOLINTEND
         }
     }
@@ -709,7 +747,7 @@ public:
     }
 
     App::Document* _document;
-    using Connection = boost::signals2::scoped_connection;
+    using Connection = fastsignals::scoped_connection;
     Connection connectApplicationDeletedDocument;
 };
 
@@ -784,12 +822,15 @@ public:
             // NOLINTBEGIN
             indocument = true;
             connectApplicationDeletedDocument = App::GetApplication().signalDeleteDocument.connect(
-                std::bind(&Private::deletedDocument, this, sp::_1));
+                std::bind(&Private::deletedDocument, this, sp::_1)
+            );
             App::Document* doc = obj->getDocument();
-            connectDocumentCreatedObject =
-                doc->signalNewObject.connect(std::bind(&Private::createdObject, this, sp::_1));
-            connectDocumentDeletedObject =
-                doc->signalDeletedObject.connect(std::bind(&Private::deletedObject, this, sp::_1));
+            connectDocumentCreatedObject = doc->signalNewObject.connect(
+                std::bind(&Private::createdObject, this, sp::_1)
+            );
+            connectDocumentDeletedObject = doc->signalDeletedObject.connect(
+                std::bind(&Private::deletedObject, this, sp::_1)
+            );
             // NOLINTEND
         }
     }
@@ -800,7 +841,7 @@ public:
 
     App::DocumentObject* object;
     bool indocument {false};
-    using Connection = boost::signals2::scoped_connection;
+    using Connection = fastsignals::scoped_connection;
     Connection connectApplicationDeletedDocument;
     Connection connectDocumentCreatedObject;
     Connection connectDocumentDeletedObject;
@@ -816,6 +857,9 @@ App::DocumentObject* DocumentObjectWeakPtrT::_get() const noexcept
 {
     return d->get();
 }
+
+DocumentObjectWeakPtrT::DocumentObjectWeakPtrT(DocumentObjectWeakPtrT&&) = default;
+DocumentObjectWeakPtrT& DocumentObjectWeakPtrT::operator=(DocumentObjectWeakPtrT&&) = default;
 
 void DocumentObjectWeakPtrT::reset()
 {
@@ -861,11 +905,14 @@ DocumentObserver::DocumentObserver()
 {
     // NOLINTBEGIN
     this->connectApplicationCreatedDocument = App::GetApplication().signalNewDocument.connect(
-        std::bind(&DocumentObserver::slotCreatedDocument, this, sp::_1));
+        std::bind(&DocumentObserver::slotCreatedDocument, this, sp::_1)
+    );
     this->connectApplicationDeletedDocument = App::GetApplication().signalDeleteDocument.connect(
-        std::bind(&DocumentObserver::slotDeletedDocument, this, sp::_1));
+        std::bind(&DocumentObserver::slotDeletedDocument, this, sp::_1)
+    );
     this->connectApplicationActivateDocument = App::GetApplication().signalActiveDocument.connect(
-        std::bind(&DocumentObserver::slotActivateDocument, this, sp::_1));
+        std::bind(&DocumentObserver::slotActivateDocument, this, sp::_1)
+    );
     // NOLINTEND
 }
 
@@ -898,15 +945,20 @@ void DocumentObserver::attachDocument(Document* doc)
 
         // NOLINTBEGIN
         this->connectDocumentCreatedObject = _document->signalNewObject.connect(
-            std::bind(&DocumentObserver::slotCreatedObject, this, sp::_1));
+            std::bind(&DocumentObserver::slotCreatedObject, this, sp::_1)
+        );
         this->connectDocumentDeletedObject = _document->signalDeletedObject.connect(
-            std::bind(&DocumentObserver::slotDeletedObject, this, sp::_1));
+            std::bind(&DocumentObserver::slotDeletedObject, this, sp::_1)
+        );
         this->connectDocumentChangedObject = _document->signalChangedObject.connect(
-            std::bind(&DocumentObserver::slotChangedObject, this, sp::_1, sp::_2));
+            std::bind(&DocumentObserver::slotChangedObject, this, sp::_1, sp::_2)
+        );
         this->connectDocumentRecomputedObject = _document->signalRecomputedObject.connect(
-            std::bind(&DocumentObserver::slotRecomputedObject, this, sp::_1));
+            std::bind(&DocumentObserver::slotRecomputedObject, this, sp::_1)
+        );
         this->connectDocumentRecomputed = _document->signalRecomputed.connect(
-            std::bind(&DocumentObserver::slotRecomputedDocument, this, sp::_1));
+            std::bind(&DocumentObserver::slotRecomputedDocument, this, sp::_1)
+        );
         // NOLINTEND
     }
 }
@@ -938,8 +990,7 @@ void DocumentObserver::slotCreatedObject(const App::DocumentObject& /*Obj*/)
 void DocumentObserver::slotDeletedObject(const App::DocumentObject& /*Obj*/)
 {}
 
-void DocumentObserver::slotChangedObject(const App::DocumentObject& /*Obj*/,
-                                         const App::Property& /*Prop*/)
+void DocumentObserver::slotChangedObject(const App::DocumentObject& /*Obj*/, const App::Property& /*Prop*/)
 {}
 
 void DocumentObserver::slotRecomputedObject(const DocumentObject& /*Obj*/)
@@ -975,7 +1026,7 @@ void DocumentObjectObserver::removeFromObservation(App::DocumentObject* obj)
     _objects.erase(obj);
 }
 
-void DocumentObjectObserver::slotCreatedDocument(const App::Document&)
+void DocumentObjectObserver::slotCreatedDocument([[maybe_unused]] const App::Document& doc)
 {}
 
 void DocumentObjectObserver::slotDeletedDocument(const App::Document& Doc)
@@ -987,13 +1038,12 @@ void DocumentObjectObserver::slotDeletedDocument(const App::Document& Doc)
     }
 }
 
-void DocumentObjectObserver::slotCreatedObject(const App::DocumentObject&)
+void DocumentObjectObserver::slotCreatedObject([[maybe_unused]] const App::DocumentObject& obj)
 {}
 
 void DocumentObjectObserver::slotDeletedObject(const App::DocumentObject& Obj)
 {
-    std::set<App::DocumentObject*>::iterator it =
-        _objects.find(const_cast<App::DocumentObject*>(&Obj));
+    auto it = _objects.find(const_cast<App::DocumentObject*>(&Obj));
     if (it != _objects.end()) {
         _objects.erase(it);
     }
@@ -1002,7 +1052,10 @@ void DocumentObjectObserver::slotDeletedObject(const App::DocumentObject& Obj)
     }
 }
 
-void DocumentObjectObserver::slotChangedObject(const App::DocumentObject&, const App::Property&)
+void DocumentObjectObserver::slotChangedObject(
+    [[maybe_unused]] const App::DocumentObject& obj,
+    [[maybe_unused]] const App::Property& prop
+)
 {}
 
 void DocumentObjectObserver::cancelObservation()

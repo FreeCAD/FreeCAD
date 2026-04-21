@@ -97,6 +97,11 @@ void ViewProviderDocumentObject::getTaskViewContent(std::vector<Gui::TaskView::T
 
 void ViewProviderDocumentObject::startRestoring()
 {
+    // Prevent hide() from overwriting the App object's already-restored Visibility.
+    Base::ObjectStatusLocker<App::Property::Status, App::Property> guard(
+        App::Property::User1,
+        &Visibility
+    );
     hide();
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
     for (Gui::ViewProviderExtension* ext : vector) {
@@ -106,6 +111,14 @@ void ViewProviderDocumentObject::startRestoring()
 
 void ViewProviderDocumentObject::finishRestoring()
 {
+    // Sync VP visibility from App object in case no GuiDocument.xml was present.
+    if (auto* obj = getObject(); obj && Visibility.getValue() != obj->Visibility.getValue()) {
+        Base::ObjectStatusLocker<App::Property::Status, App::Property> guard(
+            App::Property::User1,
+            &Visibility
+        );
+        Visibility.setValue(obj->Visibility.getValue());
+    }
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
     for (Gui::ViewProviderExtension* ext : vector) {
         ext->extensionFinishRestoring();
@@ -272,11 +285,11 @@ void ViewProviderDocumentObject::setShowable(bool enable)
 
 void ViewProviderDocumentObject::startDefaultEditMode()
 {
-    QString text = QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()));
-    Gui::Command::openCommand(text.toUtf8());
-
     Gui::Document* document = this->getDocument();
     if (document) {
+        QString text = QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()));
+        document->openCommand(text.toUtf8());  // Command is opened here and individual dialogs have
+                                               // to close it
         document->setEdit(this, ViewProvider::Default);
     }
 }
@@ -555,6 +568,7 @@ bool ViewProviderDocumentObject::canDelete(App::DocumentObject* obj) const
 
 PyObject* ViewProviderDocumentObject::getPyObject()
 {
+    requireMainThread("Gui::ViewProviderDocumentObject::getPyObject");
     if (!pyViewObject) {
         pyViewObject = new ViewProviderDocumentObjectPy(this);
     }

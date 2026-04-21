@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SRC_MOD_SPREADSHEET_APP_SHEET_H_
-#define SRC_MOD_SPREADSHEET_APP_SHEET_H_
+#pragma once
 
 #ifdef signals
 # undef signals
@@ -110,6 +109,7 @@ public:
     void splitCell(App::CellAddress address);
 
     Cell* getCell(App::CellAddress address);
+    const Cell* getCell(App::CellAddress address) const;
 
     Cell* getNewCell(App::CellAddress address);
 
@@ -170,7 +170,11 @@ public:
 
     void setForeground(App::CellAddress address, const Base::Color& color);
 
+    void clearForeground(App::CellAddress address);
+
     void setBackground(App::CellAddress address, const Base::Color& color);
+
+    void clearBackground(App::CellAddress address);
 
     void setDisplayUnit(App::CellAddress address, const std::string& unit);
 
@@ -231,15 +235,15 @@ public:
 
     // Signals
 
-    boost::signals2::signal<void(App::CellAddress)> cellUpdated;
+    fastsignals::signal<void(App::CellAddress)> cellUpdated;
 
-    boost::signals2::signal<void(App::Range)> rangeUpdated;
+    fastsignals::signal<void(App::Range)> rangeUpdated;
 
-    boost::signals2::signal<void(App::CellAddress)> cellSpanChanged;
+    fastsignals::signal<void(App::CellAddress)> cellSpanChanged;
 
-    boost::signals2::signal<void(int, int)> columnWidthChanged;
+    fastsignals::signal<void(int, int)> columnWidthChanged;
 
-    boost::signals2::signal<void(int, int)> rowHeightChanged;
+    fastsignals::signal<void(int, int)> rowHeightChanged;
 
     void renameObjectIdentifiers(
         const std::map<App::ObjectIdentifier, App::ObjectIdentifier>& paths
@@ -316,6 +320,3 @@ protected:
 using SheetPython = App::FeaturePythonT<Sheet>;
 
 }  // namespace Spreadsheet
-
-
-#endif  // SRC_MOD_SPREADSHEET_APP_SHEET_H_

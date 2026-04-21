@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VIEWPROVIDERGROUPEXTENSION_H
-#define GUI_VIEWPROVIDERGROUPEXTENSION_H
+#pragma once
 
 #include "ViewProviderExtensionPython.h"
 
@@ -59,5 +58,3 @@ private:
 using ViewProviderGroupExtensionPython = ViewProviderExtensionPythonT<Gui::ViewProviderGroupExtension>;
 
 }  // namespace Gui
-
-#endif  // GUI_VIEWPROVIDERGROUPEXTENSION_H

@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEM_CONSTRAINT_H
-#define FEM_CONSTRAINT_H
+#pragma once
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
@@ -231,13 +230,10 @@ private:
     double sizeFactor;
 
     void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop);
-    boost::signals2::connection connDocChangedObject;
+    fastsignals::connection connDocChangedObject;
 };
 
 using ConstraintPython = App::FeaturePythonT<Constraint>;
 
 
 }  // namespace Fem
-
-
-#endif  // FEM_CONSTRAINT_H

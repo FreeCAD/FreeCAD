@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_SPINBOX_H
-#define GUI_SPINBOX_H
+#pragma once
 
 #include <QSpinBox>
 #include <QValidator>
@@ -46,6 +45,7 @@ public:
 
     void bind(const App::ObjectIdentifier& _path) override;
     void setExpression(std::shared_ptr<App::Expression> expr) override;
+    int getMargin();
 
 protected:
     /*! Expression handling */
@@ -66,12 +66,14 @@ protected:
     virtual void showIcon();
     virtual void validateInput();
     void resizeWidget();
-    int getMargin();
 
     bool handleKeyEvent(const QString&);
     virtual void openFormulaDialog();
 
     void drawControl(QStyleOptionSpinBox&);
+
+private:
+    void showExpression(Number number);
 
 protected:
     QLineEdit* lineedit;
@@ -209,5 +211,3 @@ public:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_SPINBOX_H

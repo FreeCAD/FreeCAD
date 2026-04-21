@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_PROPERTYTOPOSHAPE_H
-#define PART_PROPERTYTOPOSHAPE_H
+#pragma once
 
 #include <map>
 #include <vector>
@@ -310,10 +309,7 @@ private:
 
 private:
     std::unordered_map<std::string, TopoShape> cache;
-    boost::signals2::scoped_connection connChanged;
+    fastsignals::scoped_connection connChanged;
 };
 
 }  // namespace Part
-
-
-#endif  // PART_PROPERTYTOPOSHAPE_H

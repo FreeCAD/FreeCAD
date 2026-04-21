@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_DLGBOOLEANOPERATION_H
-#define PARTGUI_DLGBOOLEANOPERATION_H
+#pragma once
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
@@ -39,7 +38,7 @@ class Property;
 namespace PartGui
 {
 
-using Connection = boost::signals2::connection;
+using Connection = fastsignals::connection;
 class Ui_DlgBooleanOperation;
 class DlgBooleanOperation: public QWidget
 {
@@ -99,5 +98,3 @@ private:
 };
 
 }  // namespace PartGui
-
-#endif  // PARTGUI_DLGBOOLEANOPERATION_H

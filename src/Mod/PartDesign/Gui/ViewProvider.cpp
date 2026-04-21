@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -90,11 +92,11 @@ bool ViewProvider::doubleClicked()
 {
     try {
         QString text = QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()));
-        Gui::Command::openCommand(text.toUtf8());
+        getDocument()->openCommand(text.toUtf8());
         Gui::cmdSetEdit(pcObject, Gui::Application::Instance->getUserEditMode());
     }
     catch (const Base::Exception&) {
-        Gui::Command::abortCommand();
+        getDocument()->abortCommand();
     }
     return true;
 }
@@ -214,11 +216,16 @@ void ViewProvider::updateData(const App::Property* prop)
         updatePreview();
     }
     else if (auto* previewExtension = getObject()->getExtensionByType<Part::PreviewExtension>(true)) {
-        if (!previewExtension->isPreviewFresh() && isEditing()) {
-            previewExtension->updatePreview();
+        if (isPreviewEnabled() && !previewExtension->isPreviewFresh() && isEditing()) {
+            // Properties can be updated in batches, where some properties trigger other updates.
+            // We don't need to compute the preview for intermediate steps. Instead of updating
+            // the preview immediately (and potentially doing it multiple times in a row), we
+            // schedule the update to happen at a more convenient time.
+            if (auto* scheduler = Base::provideService<Part::PreviewUpdateScheduler>()) {
+                scheduler->schedulePreviewRecompute(getObject());
+            }
         }
     }
-
     inherited::updateData(prop);
 }
 

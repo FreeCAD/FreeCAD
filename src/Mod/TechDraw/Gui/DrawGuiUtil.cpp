@@ -87,18 +87,18 @@ using DU = DrawUtil;
 void DrawGuiUtil::loadArrowBox(QComboBox* qcb)
 {
     qcb->clear();
+    auto mwGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/MainWindow");
 
-    auto curStyleSheet =
-        App::GetApplication()
-            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
-            ->GetASCII("StyleSheet", "None");
+    auto curStyleSheet = mwGrp->GetASCII("StyleSheet", "None");
+    auto curTheme = mwGrp->GetASCII("Theme", "None");
 
     int i = 0;
     for (; i < ArrowPropEnum::ArrowCount; i++) {
         qcb->addItem(
             QCoreApplication::translate("ArrowPropEnum", ArrowPropEnum::ArrowTypeEnums[i]));
         QIcon itemIcon(QString::fromUtf8(ArrowPropEnum::ArrowTypeIcons[i].c_str()));
-        if (isStyleSheetDark(curStyleSheet)) {
+        if (isStyleSheetDark(curStyleSheet) || isStyleSheetDark(curTheme)) {
             QColor textColor = Preferences::lightTextColor().asValue<QColor>();
             QSize iconSize(48, 48);
             QIcon itemUpdatedIcon(maskBlackPixels(itemIcon, iconSize, textColor));
@@ -113,18 +113,18 @@ void DrawGuiUtil::loadArrowBox(QComboBox* qcb)
 void DrawGuiUtil::loadBalloonShapeBox(QComboBox* qballooncb)
 {
     qballooncb->clear();
+    auto mwGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/MainWindow");
 
-    auto curStyleSheet =
-        App::GetApplication()
-            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
-            ->GetASCII("StyleSheet", "None");
+    auto curStyleSheet = mwGrp->GetASCII("StyleSheet", "None");
+    auto curTheme = mwGrp->GetASCII("Theme", "None");
 
     int i = 0;
     for (; i < BalloonPropEnum::BalloonCount; i++) {
         qballooncb->addItem(
             QCoreApplication::translate("BalloonPropEnum", BalloonPropEnum::BalloonTypeEnums[i]));
         QIcon itemIcon(QString::fromUtf8(BalloonPropEnum::BalloonTypeIcons[i].c_str()));
-        if (isStyleSheetDark(curStyleSheet)) {
+        if (isStyleSheetDark(curStyleSheet) || isStyleSheetDark(curTheme)) {
             QColor textColor = Preferences::lightTextColor().asValue<QColor>();
             QSize iconSize(48, 48);
             QIcon itemUpdatedIcon(maskBlackPixels(itemIcon, iconSize, textColor));
@@ -139,17 +139,18 @@ void DrawGuiUtil::loadBalloonShapeBox(QComboBox* qballooncb)
 void DrawGuiUtil::loadMattingStyleBox(QComboBox* qmattingcb)
 {
     qmattingcb->clear();
-    auto curStyleSheet =
-        App::GetApplication()
-            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
-            ->GetASCII("StyleSheet", "None");
+    auto mwGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/MainWindow");
+
+    auto curStyleSheet = mwGrp->GetASCII("StyleSheet", "None");
+    auto curTheme = mwGrp->GetASCII("Theme", "None");
 
     int i = 0;
     for (; i < MattingPropEnum::MattingCount; i++) {
         qmattingcb->addItem(
             QCoreApplication::translate("MattingPropEnum", MattingPropEnum::MattingTypeEnums[i]));
         QIcon itemIcon(QString::fromUtf8(MattingPropEnum::MattingTypeIcons[i].c_str()));
-        if (isStyleSheetDark(curStyleSheet)) {
+        if (isStyleSheetDark(curStyleSheet) || isStyleSheetDark(curTheme)) {
             QColor textColor = Preferences::lightTextColor().asValue<QColor>();
             QSize iconSize(48, 48);
             QIcon itemUpdatedIcon(maskBlackPixels(itemIcon, iconSize, textColor));
@@ -232,13 +233,14 @@ QIcon DrawGuiUtil::iconForLine(size_t lineNumber,
     linePen.setColor(Qt::color1);
 
     QSize lineIconSize(iconSize, iconSize);
+    auto mwGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/MainWindow");
 
-    auto curStyleSheet =
-        App::GetApplication()
-            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
-            ->GetASCII("StyleSheet", "None");
+    auto curStyleSheet = mwGrp->GetASCII("StyleSheet", "None");
+    auto curTheme = mwGrp->GetASCII("Theme", "None");
+
     QColor textColor{Qt::black};
-    if (isStyleSheetDark(curStyleSheet)) {
+    if (isStyleSheetDark(curStyleSheet) || isStyleSheetDark(curTheme)) {
         textColor = Preferences::lightTextColor().asValue<QColor>();
     }
 
@@ -247,7 +249,7 @@ QIcon DrawGuiUtil::iconForLine(size_t lineNumber,
         linePen.setWidthF(iconLineWeight * lineCount);
         painter.setPen(linePen);
         painter.drawLine(borderSize, iconSize / 2, iconSize - borderSize, iconSize / 2);
-        if (isStyleSheetDark(curStyleSheet)) {
+        if (isStyleSheetDark(curStyleSheet) || isStyleSheetDark(curTheme)) {
             QIcon lineItemIcon(bitmap);
             return QIcon(maskBlackPixels(lineItemIcon, lineIconSize, textColor));
         }
@@ -267,7 +269,7 @@ QIcon DrawGuiUtil::iconForLine(size_t lineNumber,
         painter.drawLine(borderSize, yHeight, maxLineLength, yHeight);
         yHeight += iconLineWeight;
     }
-    if (isStyleSheetDark(curStyleSheet)) {
+    if (isStyleSheetDark(curStyleSheet) || isStyleSheetDark(curTheme)) {
         QIcon lineItemIcon(bitmap);
         return QIcon(maskBlackPixels(lineItemIcon, lineIconSize, textColor));
     }

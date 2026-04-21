@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PLANEGCS_GEO_H
-#define PLANEGCS_GEO_H
+#pragma once
 
 #include "Util.h"
 #include <boost/math/constants/constants.hpp>
@@ -250,8 +249,7 @@ public:
         double b,
         double db,
         double& ret_dRadMaj
-    ) const
-        = 0;
+    ) const = 0;
     virtual double getRadMaj(double* derivparam, double& ret_dRadMaj) const = 0;
     virtual double getRadMaj() const = 0;
     // DeriVector2 CalculateNormal(Point &p, double* derivparam = 0) = 0;
@@ -416,5 +414,3 @@ public:
 
 }  // namespace GCS
 // NOLINTEND(readability-math-missing-parentheses)
-
-#endif  // PLANEGCS_GEO_H

@@ -49,6 +49,13 @@ DlgSettingsGeneral::DlgSettingsGeneral(QWidget* parent)
     , ui(new Ui_DlgSettingsGeneral)
 {
     ui->setupUi(this);
+
+    ui->fineSnapModifier->addItem(tr("Shift"), static_cast<int>(Qt::ShiftModifier));
+    ui->fineSnapModifier->addItem(tr("Ctrl"), static_cast<int>(Qt::ControlModifier));
+
+    //: Part/PartDesign settings: drag behavior mode when not holding the snap modifier key
+    ui->defaultCoarseDragBehavior->addItem(tr("Coarse"), 0);
+    ui->defaultCoarseDragBehavior->addItem(tr("Fine"), 1);
 }
 
 /**
@@ -65,6 +72,11 @@ void DlgSettingsGeneral::saveSettings()
     ui->checkAllowCompoundBody->onSave();
     ui->enableGizmos->onSave();
     ui->delayedGizmoUpdate->onSave();
+    ui->enableCoarseSnap->onSave();
+    ui->fineSnapModifier->onSave();
+    ui->defaultCoarseDragBehavior->onSave();
+    ui->coarseLinearSnapMultiplier->onSave();
+    ui->coarseRotationSnapMultiplier->onSave();
     ui->comboDefaultProfileTypeForHole->onSave();
     ui->checkShowFinalPreview->onSave();
     ui->checkShowTransparentPreview->onSave();
@@ -81,6 +93,11 @@ void DlgSettingsGeneral::loadSettings()
     ui->checkAllowCompoundBody->onRestore();
     ui->enableGizmos->onRestore();
     ui->delayedGizmoUpdate->onRestore();
+    ui->enableCoarseSnap->onRestore();
+    ui->fineSnapModifier->onRestore();
+    ui->defaultCoarseDragBehavior->onRestore();
+    ui->coarseLinearSnapMultiplier->onRestore();
+    ui->coarseRotationSnapMultiplier->onRestore();
     ui->comboDefaultProfileTypeForHole->onRestore();
     ui->checkShowFinalPreview->onRestore();
     ui->checkShowTransparentPreview->onRestore();

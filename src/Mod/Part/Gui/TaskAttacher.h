@@ -24,8 +24,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskAttacher_H
-#define GUI_TASKVIEW_TaskAttacher_H
+#pragma once
 
 #include <Gui/Selection/Selection.h>
 #include <Gui/DocumentObserver.h>
@@ -90,6 +89,9 @@ public:
         return completed;
     }
 
+Q_SIGNALS:
+    void placementUpdated();
+
 private Q_SLOTS:
     void onAttachmentOffsetChanged(double, int idx);
     void onAttachmentOffsetXChanged(double);
@@ -153,6 +155,12 @@ private:
      */
     void selectMapMode(Attacher::eMapMode mmode);
 
+    /**
+     * @brief applyBoldMode Sets bold font on the enabled list item matching boldMode,
+     * clears bold on all others.
+     */
+    void applyBoldMode(Attacher::eMapMode boldMode);
+
     void showPlacementUtilities();
 
 protected:
@@ -173,8 +181,9 @@ private:
                                                   // into listOfModes widget.
     Attacher::SuggestResult lastSuggestResult;
     bool completed;
+    bool userSelectedMode;  // true when the user has explicitly clicked a mode in the list
 
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::connection;
     Connection connectDelObject;
     Connection connectDelDocument;
 
@@ -212,7 +221,7 @@ public:
     bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
-    /// is called by the framework if the user presses the help button
+
     bool isAllowedAlterDocument() const override
     {
         return false;
@@ -235,5 +244,3 @@ protected:
 };
 
 }  // namespace PartGui
-
-#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

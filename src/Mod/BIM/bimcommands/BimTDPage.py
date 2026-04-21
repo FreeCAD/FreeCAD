@@ -59,7 +59,7 @@ class BIM_TDPage:
             templatedir = None
         filename, _ = QtGui.QFileDialog.getOpenFileName(
             QtGui.QApplication.activeWindow(),
-            translate("BIM", "Select page template"),
+            translate("BIM", "Select Page Template"),
             templatedir,
             "SVG file (*.svg)",
         )
@@ -80,19 +80,19 @@ class BIM_TDPage:
                 if txt in page.Template.EditableTexts:
                     val = page.Template.EditableTexts[txt]
                     if val:
-                        if ":" in val:
-                            val.replace(":", "/")
+                        val = val.replace(":", "/")
                         if "/" in val:
                             try:
-                                page.Scale = eval(val)
-                            except:
+                                num, den = val.split("/", 1)
+                                page.Scale = float(num) / float(den)
+                            except (ValueError, ZeroDivisionError):
                                 pass
                             else:
                                 break
                         else:
                             try:
                                 page.Scale = float(val)
-                            except:
+                            except ValueError:
                                 pass
                             else:
                                 break

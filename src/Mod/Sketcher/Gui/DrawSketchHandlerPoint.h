@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_DrawSketchHandlerPoint_H
-#define SKETCHERGUI_DrawSketchHandlerPoint_H
+#pragma once
 
 #include <Gui/BitmapFactory.h>
 #include <Gui/Notifications.h>
@@ -94,7 +93,7 @@ private:
     void executeCommands() override
     {
         try {
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch point"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch point"));
             Gui::cmdAppObjectArgs(
                 sketchgui->getObject(),
                 "addGeometry(Part.Point(App.Vector(%f,%f,0)), %s)",
@@ -103,7 +102,7 @@ private:
                 isConstructionMode() ? "True" : "False"
             );
 
-            Gui::Command::commitCommand();
+            commitCommand();
         }
         catch (const Base::Exception&) {
             Gui::NotifyError(
@@ -112,7 +111,7 @@ private:
                 QT_TRANSLATE_NOOP("Notifications", "Failed to add point")
             );
 
-            Gui::Command::abortCommand();
+            abortCommand();
         }
     }
 
@@ -304,6 +303,3 @@ void DSHPointController::addConstraints()
 }
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerPoint_H

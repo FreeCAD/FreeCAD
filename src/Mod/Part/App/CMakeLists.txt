@@ -41,6 +41,8 @@ if(FREETYPE_FOUND)
         ${Part_LIBS}
         ${FREETYPE_LIBRARIES}
     )
+
+    set(Part_LIBS ${Part_LIBS} harfbuzz::harfbuzz)
 endif(FREETYPE_FOUND)
 
 generate_from_py(Arc)
@@ -210,6 +212,8 @@ SET(Features_SRCS
     FeatureRevolution.h
     FeatureOffset.cpp
     FeatureOffset.h
+    OCCTMessagePrinter.cpp
+    OCCTMessagePrinter.h
     PartFeatures.cpp
     PartFeatures.h
     PartFeature.cpp
@@ -569,6 +573,8 @@ SET(Part_SRCS
     PreCompiled.h
     Services.cpp
     Services.h
+    SignalException.cpp
+    SignalException.h
     TopoShape.cpp
     TopoShape.h
     TopoShapeCache.cpp
@@ -596,6 +602,8 @@ SET(Part_SRCS
     FaceMakerCheese.h
     FaceMakerBullseye.cpp
     FaceMakerBullseye.h
+    FaceMakerBuildFace.cpp
+    FaceMakerBuildFace.h
     WireJoiner.cpp
     WireJoiner.h
 )

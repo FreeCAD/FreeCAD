@@ -177,7 +177,7 @@ class Arch_Panel:
 
         w = QtGui.QWidget()
         ui = FreeCADGui.UiLoader()
-        w.setWindowTitle(translate("Arch", "Panel options"))
+        w.setWindowTitle(translate("Arch", "Panel Options"))
         grid = QtGui.QGridLayout(w)
 
         # presets box

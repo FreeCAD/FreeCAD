@@ -31,7 +31,6 @@ import PathScripts.PathUtils as PathUtils
 import copy
 import math
 
-
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
 
@@ -272,24 +271,35 @@ class Tag:
 
 
 class MapWireToTag:
-    def __init__(self, edge, tag, i, maxZ, hSpeed, vSpeed):
+    def __init__(self, edge, tag, i, maxZ, hSpeed, vSpeed, tolerance):
         debugEdge(edge, "MapWireToTag(%.2f, %.2f, %.2f)" % (i.x, i.y, i.z))
         self.tag = tag
         self.maxZ = maxZ
         self.hSpeed = hSpeed
         self.vSpeed = vSpeed
+        self.tolerance = tolerance
         if Path.Geom.pointsCoincide(edge.valueAt(edge.FirstParameter), i):
             tail = edge
             self.commands = []
             debugEdge(tail, ".........=")
         elif Path.Geom.pointsCoincide(edge.valueAt(edge.LastParameter), i):
             debugEdge(edge, "++++++++ .")
-            self.commands = Path.Geom.cmdsForEdge(edge, hSpeed=self.hSpeed, vSpeed=self.vSpeed)
+            self.commands = Path.Geom.cmdsForEdge(
+                edge,
+                hSpeed=self.hSpeed,
+                vSpeed=self.vSpeed,
+                tol=tolerance,
+            )
             tail = None
         else:
             e, tail = Path.Geom.splitEdgeAt(edge, i)
             debugEdge(e, "++++++++ .")
-            self.commands = Path.Geom.cmdsForEdge(e, hSpeed=self.hSpeed, vSpeed=self.vSpeed)
+            self.commands = Path.Geom.cmdsForEdge(
+                e,
+                hSpeed=self.hSpeed,
+                vSpeed=self.vSpeed,
+                tol=tolerance,
+            )
             debugEdge(tail, ".........-")
             self.initialEdge = edge
         self.tail = tail
@@ -555,9 +565,9 @@ class MapWireToTag:
                         commands.extend(
                             Path.Geom.cmdsForEdge(
                                 e,
-                                False,
                                 hSpeed=self.hSpeed,
                                 vSpeed=self.vSpeed,
+                                tol=self.tolerance,
                             )
                         )
                 if rapid:
@@ -573,7 +583,12 @@ class MapWireToTag:
                 commands = []
                 for e in self.edges:
                     commands.extend(
-                        Path.Geom.cmdsForEdge(e, hSpeed=self.hSpeed, vSpeed=self.vSpeed)
+                        Path.Geom.cmdsForEdge(
+                            e,
+                            hSpeed=self.hSpeed,
+                            vSpeed=self.vSpeed,
+                            tol=self.tolerance,
+                        )
                     )
                 return commands
         return []
@@ -645,7 +660,7 @@ class PathData:
         self.baseWire = self.findBottomWire(self.edges)
 
     def findBottomWire(self, edges):
-        (minZ, maxZ) = self.findZLimits(edges)
+        minZ, maxZ = self.findZLimits(edges)
         self.minZ = minZ
         self.maxZ = maxZ
         bottom = [
@@ -701,7 +716,7 @@ class PathData:
         R = radius if radius else self.defaultTagRadius()
 
         # start assigning tags on the longest segment
-        (shortestEdge, longestEdge) = self.shortestAndLongestPathEdge()
+        shortestEdge, longestEdge = self.shortestAndLongestPathEdge()
         startIndex = 0
         for i in range(0, len(self.baseWire.Edges)):
             edge = self.baseWire.Edges[i]
@@ -742,12 +757,12 @@ class PathData:
 
         for i in range(startIndex + 1, len(self.baseWire.Edges)):
             edge = self.baseWire.Edges[i]
-            (currentLength, lastTagLength) = self.processEdge(
+            currentLength, lastTagLength = self.processEdge(
                 i, edge, currentLength, lastTagLength, tagDistance, minLength, edgeDict
             )
         for i in range(0, startIndex):
             edge = self.baseWire.Edges[i]
-            (currentLength, lastTagLength) = self.processEdge(
+            currentLength, lastTagLength = self.processEdge(
                 i, edge, currentLength, lastTagLength, tagDistance, minLength, edgeDict
             )
 
@@ -853,7 +868,7 @@ class PathData:
                 t
                 for t in tags
                 if Path.Geom.isRoughly(
-                    0, Part.Vertex(t.originAt(self.minZ)).distToShape(edge)[0], 0.1
+                    0, Part.Vertex(t.originAt(self.minZ)).distToShape(edge)[0], 1
                 )
             ]
             for t in sorted(
@@ -933,6 +948,16 @@ class ObjectTagDressup:
             "Tag",
             QT_TRANSLATE_NOOP("App::Property", "IDs of disabled holding tags"),
         )
+        obj.addProperty(
+            "App::PropertyBool",
+            "Approximation",
+            "Path",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Split B-Spline by arcs and ignore not vertical arcs axis (experimental).",
+            ),
+        )
+        obj.setEditorMode("Approximation", 2)  # hide
 
         self.obj = obj
         self.solids = []
@@ -962,6 +987,17 @@ class ObjectTagDressup:
 
     def onDocumentRestored(self, obj):
         self.obj = obj
+        if not hasattr(obj, "Approximation"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "Approximation",
+                "Path",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Split B-Spline by arcs and ignore not vertical arcs axis (experimental).",
+                ),
+            )
+            obj.setEditorMode("Approximation", 2)  # hide
 
     def supportsTagGeneration(self, obj):
         if not self.pathData:
@@ -1028,6 +1064,8 @@ class ObjectTagDressup:
         self.mappers = []
         mapper = None
 
+        job = PathUtils.findParentJob(obj)
+        tol = job.GeometryTolerance.Value
         tc = PathDressup.toolController(obj.Base)
         horizFeed = tc.HorizFeed.Value
         vertFeed = tc.VertFeed.Value
@@ -1062,6 +1100,7 @@ class ObjectTagDressup:
                         pathData.maxZ,
                         hSpeed=horizFeed,
                         vSpeed=vertFeed,
+                        tolerance=tol,
                     )
                     self.mappers.append(mapper)
                     edge = mapper.tail
@@ -1086,7 +1125,13 @@ class ObjectTagDressup:
                             )
                     else:
                         commands.extend(
-                            Path.Geom.cmdsForEdge(edge, hSpeed=horizFeed, vSpeed=vertFeed)
+                            Path.Geom.cmdsForEdge(
+                                edge,
+                                approximation=obj.Approximation,
+                                hSpeed=horizFeed,
+                                vSpeed=vertFeed,
+                                tol=tol,
+                            )
                         )
                 edge = None
                 t = 0

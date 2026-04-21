@@ -22,8 +22,7 @@
  **************************************************************************/
 
 
-#ifndef GUI_VIEWPROVIDERMEASUREANGLE_H
-#define GUI_VIEWPROVIDERMEASUREANGLE_H
+#pragma once
 
 #include <Mod/Measure/MeasureGlobal.h>
 
@@ -60,6 +59,12 @@ public:
     void redrawAnnotation() override;
     void positionAnno(const Measure::MeasureBase* measureObject) override;
 
+protected:
+    // label draggable in local measurement frame instead of
+    // rotating the dragger into the current view plane.
+    void onLabelMoveStart() override
+    {}
+
 private:
     // Fields
     SoSFFloat fieldAngle;  // radians.
@@ -69,6 +74,3 @@ private:
 
 
 }  // namespace MeasureGui
-
-
-#endif  // GUI_VIEWPROVIDERMEASUREANGLE_H

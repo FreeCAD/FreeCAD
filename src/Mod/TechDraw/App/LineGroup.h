@@ -22,8 +22,7 @@
 
 //! LineGroup - Classes related to processing LineGroup definition CSV files
 
-#ifndef TechDraw_LINEGROUP_H_
-#define TechDraw_LINEGROUP_H_
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -72,4 +71,3 @@ protected:
 };
 
 }
-#endif

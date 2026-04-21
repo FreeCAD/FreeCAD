@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_UTILITIES_H
-#define GUI_UTILITIES_H
+#pragma once
 
 #include <vector>
 #include <QColor>
@@ -450,6 +449,8 @@ class DocumentObject;
 namespace Gui
 {
 
+[[nodiscard]] GuiExport bool isInternalGuiTestRun();
+
 /**
  */
 class GuiExport ViewVolumeProjection: public Base::ViewProjMethod
@@ -543,5 +544,3 @@ struct TransformComponents
 }
 
 }  // namespace Gui
-
-#endif  // GUI_UTILITIES_H

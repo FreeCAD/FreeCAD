@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_PRIMITIVEFEATURE_H
-#define PART_PRIMITIVEFEATURE_H
+#pragma once
 
 #include <Mod/Part/PartGlobal.h>
 
@@ -453,6 +452,3 @@ private:
 };
 
 }  // namespace Part
-
-
-#endif  // PART_PRIMITIVEFEATURE_H

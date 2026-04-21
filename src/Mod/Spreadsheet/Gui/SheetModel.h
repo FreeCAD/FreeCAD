@@ -22,9 +22,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SHEETMODEL_H
-#define SHEETMODEL_H
+#pragma once
 
+#include "fastsignals/connection.h"
 #include <QAbstractTableModel>
 
 #include <App/Range.h>
@@ -48,6 +48,10 @@ public:
     explicit SheetModel(QObject* parent);
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
     int columnCount(const QModelIndex& parent = QModelIndex()) const override;
+    bool insertRows(int row, int count, const QModelIndex& parent = QModelIndex()) override;
+    bool insertColumns(int column, int count, const QModelIndex& parent = QModelIndex()) override;
+    bool removeRows(int row, int count, const QModelIndex& parent = QModelIndex()) override;
+    bool removeColumns(int column, int count, const QModelIndex& parent = QModelIndex()) override;
     QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
     QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
     bool setData(const QModelIndex& index, const QVariant& value, int role) override;
@@ -57,22 +61,17 @@ private Q_SLOTS:
     void setCellData(QModelIndex index, QString str);
 
 private:
+    void containSheetDataInView();
     void cellUpdated(App::CellAddress address);
     void rangeUpdated(const App::Range& range);
 
-    boost::signals2::scoped_connection cellUpdatedConnection;
-    boost::signals2::scoped_connection rangeUpdatedConnection;
+    std::vector<fastsignals::scoped_connection> connections;
     Spreadsheet::Sheet* sheet;
+    int rows, cols;
     QColor aliasBgColor;
     QColor textFgColor;
     QColor positiveFgColor;
     QColor negativeFgColor;
-
-    QVariantList columnLabels, rowLabels;
-
-    static constexpr int maxRowCount = 16384, maxColumnCount = 26 + 26 * 26;
 };
 
 }  // namespace SpreadsheetGui
-
-#endif  // SHEETMODEL_H

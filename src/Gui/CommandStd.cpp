@@ -22,6 +22,8 @@
  *                                                                          *
  ***************************************************************************/
 
+#include <boost/smart_ptr/scoped_ptr.hpp>
+
 #include <QApplication>
 #include <QMessageBox>
 #include <QRegularExpression>
@@ -171,6 +173,7 @@ Action* StdCmdRecentFiles::createAction()
     auto pcAction = new RecentFilesAction(this, getMainWindow());
     pcAction->setObjectName(QLatin1String("recentFiles"));
     pcAction->setDropDownMenu(true);
+    pcAction->setRememberLast(false);
     applyCommandData(this->className(), pcAction);
     return pcAction;
 }
@@ -214,6 +217,7 @@ Action* StdCmdRecentMacros::createAction()
     auto pcAction = new RecentMacrosAction(this, getMainWindow());
     pcAction->setObjectName(QLatin1String("recentMacros"));
     pcAction->setDropDownMenu(true);
+    pcAction->setRememberLast(false);
     applyCommandData(this->className(), pcAction);
     return pcAction;
 }

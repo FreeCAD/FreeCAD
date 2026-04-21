@@ -222,8 +222,7 @@ DistanceType getDistanceType(App::DocumentObject* joint)
             }
         }
 
-        else if (isFaceType(obj1, elt1, GeomAbs_Cylinder)
-                 || isFaceType(obj2, elt2, GeomAbs_Cylinder)) {
+        else if (isFaceType(obj1, elt1, GeomAbs_Cylinder) || isFaceType(obj2, elt2, GeomAbs_Cylinder)) {
             if (!isFaceType(obj1, elt1, GeomAbs_Cylinder)) {
                 swapJCS(joint);  // make sure cylinder is first if its not 2 cylinders.
                 std::swap(elt1, elt2);
@@ -520,14 +519,19 @@ App::DocumentObject* getObjFromProp(const App::DocumentObject* joint, const char
     return propObj->getValue();
 }
 
-App::DocumentObject* getObjFromRef(const App::DocumentObject* obj, const std::string& sub)
+App::DocumentObject* getObjFromRef(App::DocumentObject* comp, const std::string& sub)
 {
-    if (!obj) {
+    if (!comp) {
         return nullptr;
     }
 
-    const auto* doc = obj->getDocument();
-    const auto names = Base::Tools::splitSubName(sub);
+    const auto* doc = comp->getDocument();
+    auto names = Base::Tools::splitSubName(sub);
+    names.insert(names.begin(), comp->getNameInDocument());
+
+    if (names.size() <= 2) {
+        return comp;
+    }
 
     // Lambda function to check if the typeId is a BodySubObject
     const auto isBodySubObject = [](App::DocumentObject* obj) -> bool {
@@ -618,7 +622,7 @@ App::DocumentObject* getObjFromRef(const App::PropertyXLinkSub* prop)
         return nullptr;
     }
 
-    const App::DocumentObject* obj = prop->getValue();
+    App::DocumentObject* obj = prop->getValue();
     if (!obj) {
         return nullptr;
     }
@@ -631,7 +635,7 @@ App::DocumentObject* getObjFromRef(const App::PropertyXLinkSub* prop)
     return getObjFromRef(obj, subs[0]);
 }
 
-App::DocumentObject* getObjFromRef(const App::DocumentObject* joint, const char* pName)
+App::DocumentObject* getObjFromJointRef(const App::DocumentObject* joint, const char* pName)
 {
     if (!joint) {
         return nullptr;
@@ -647,13 +651,13 @@ App::DocumentObject* getLinkedObjFromRef(const App::DocumentObject* joint, const
         return nullptr;
     }
 
-    if (const auto* obj = getObjFromRef(joint, pObj)) {
+    if (const auto* obj = getObjFromJointRef(joint, pObj)) {
         return obj->getLinkedObject(true);
     }
     return nullptr;
 }
 
-App::DocumentObject* getMovingPartFromRef(
+App::DocumentObject* getMovingPartFromSel(
     const AssemblyObject* assemblyObject,
     App::DocumentObject* obj,
     const std::string& sub
@@ -710,39 +714,23 @@ App::DocumentObject* getMovingPartFromRef(
     return nullptr;
 }
 
-App::DocumentObject* getMovingPartFromRef(
-    const AssemblyObject* assemblyObject,
-    App::PropertyXLinkSub* prop
-)
+App::DocumentObject* getMovingPartFromRef(App::PropertyXLinkSub* prop)
 {
     if (!prop) {
         return nullptr;
     }
 
-    App::DocumentObject* obj = prop->getValue();
-    if (!obj) {
-        return nullptr;
-    }
-
-    const std::vector<std::string> subs = prop->getSubValues();
-    if (subs.empty()) {
-        return nullptr;
-    }
-    return getMovingPartFromRef(assemblyObject, obj, subs[0]);
+    return prop->getValue();
 }
 
-App::DocumentObject* getMovingPartFromRef(
-    const AssemblyObject* assemblyObject,
-    App::DocumentObject* joint,
-    const char* pName
-)
+App::DocumentObject* getMovingPartFromRef(App::DocumentObject* joint, const char* pName)
 {
     if (!joint) {
         return nullptr;
     }
 
     auto* prop = joint->getPropertyByName<App::PropertyXLinkSub>(pName);
-    return getMovingPartFromRef(assemblyObject, prop);
+    return getMovingPartFromRef(prop);
 }
 
 void syncPlacements(App::DocumentObject* src, App::DocumentObject* to)
@@ -755,6 +743,69 @@ void syncPlacements(App::DocumentObject* src, App::DocumentObject* to)
             plcPropLink->setValue(plcPropSource->getValue());
         }
     }
+}
+namespace
+{
+// Helper function to perform the recursive traversal. Kept in an anonymous
+// namespace as it's an implementation detail of getAssemblyComponents.
+void collectComponentsRecursively(
+    const std::vector<App::DocumentObject*>& objects,
+    std::vector<App::DocumentObject*>& results
+)
+{
+    for (auto* obj : objects) {
+        if (!obj) {
+            continue;
+        }
+
+        if (auto* asmLink = freecad_cast<Assembly::AssemblyLink*>(obj)) {
+            // If the sub-assembly is rigid, treat it as a single movable part.
+            // If it's flexible, we need to check its individual components.
+            if (asmLink->isRigid()) {
+                results.push_back(asmLink);
+            }
+            else {
+                collectComponentsRecursively(asmLink->Group.getValues(), results);
+            }
+            continue;
+        }
+        else if (obj->isLinkGroup()) {
+            auto* linkGroup = static_cast<App::Link*>(obj);
+            for (auto* elt : linkGroup->ElementList.getValues()) {
+                results.push_back(elt);
+            }
+            continue;
+        }
+        else if (auto* group = freecad_cast<App::DocumentObjectGroup*>(obj)) {
+            collectComponentsRecursively(group->Group.getValues(), results);
+            continue;
+        }
+        else if (auto* link = freecad_cast<App::Link*>(obj)) {
+            obj = link->getLinkedObject();
+            if (obj->isDerivedFrom<App::GeoFeature>()
+                && !obj->isDerivedFrom<App::LocalCoordinateSystem>()) {
+                results.push_back(link);
+            }
+        }
+
+        else if (
+            obj->isDerivedFrom<App::GeoFeature>() && !obj->isDerivedFrom<App::LocalCoordinateSystem>()
+        ) {
+            results.push_back(obj);
+        }
+    }
+}
+}  // namespace
+
+std::vector<App::DocumentObject*> getAssemblyComponents(const AssemblyObject* assembly)
+{
+    if (!assembly) {
+        return {};
+    }
+
+    std::vector<App::DocumentObject*> components;
+    collectComponentsRecursively(assembly->Group.getValues(), components);
+    return components;
 }
 
 }  // namespace Assembly

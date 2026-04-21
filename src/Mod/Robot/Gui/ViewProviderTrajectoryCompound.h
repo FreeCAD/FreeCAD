@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef ROBOT_ViewProviderTrajectoryCompound_H
-#define ROBOT_ViewProviderTrajectoryCompound_H
+#pragma once
 
 #include <Mod/Robot/RobotGlobal.h>
 
@@ -47,6 +46,3 @@ protected:
 };
 
 }  // namespace RobotGui
-
-
-#endif  // ROBOT_ViewProviderTrajectoryCompound_H

@@ -1,0 +1,3 @@
+
+custom_add_test_from_dir(libfastsignals_stress_tests libfastsignals)
+target_include_directories(libfastsignals_stress_tests PRIVATE "${CMAKE_SOURCE_DIR}/tests")

@@ -47,8 +47,7 @@
 ****************************************************************************/
 
 // clang-format off
-#ifndef QTCOLORPICKER_H
-#define QTCOLORPICKER_H
+#pragma once
 #include <QPushButton>
 #include <QtCore/QString>
 #include <QtGui/QColor>
@@ -82,7 +81,7 @@ class QT_QTCOLORPICKER_EXPORT QtColorPicker : public QPushButton
     Q_PROPERTY(bool colorDialog READ colorDialogEnabled WRITE setColorDialogEnabled) // clazy:exclude=qproperty-without-notify
 
 public:
-    QtColorPicker(QWidget *parent = nullptr,
+    QtColorPicker(QWidget *parent = nullptr, QColor defaultColor = Qt::black,
                   int columns = -1, bool enableColorDialog = true);
 
     ~QtColorPicker() override;
@@ -97,15 +96,16 @@ public:
     bool colorDialogEnabled() const;
 
     void setStandardColors();
-
-    static QColor getColor(const QPoint &pos, bool allowCustomColors = true);
+    void setDefaultColor(QColor color);
 
 public Q_SLOTS:
     void setCurrentColor(const QColor &col);
+    void clearCurrentColor();
 
 Q_SIGNALS:
     void colorChanged(const QColor &);
     void colorSet(const QColor &);
+    void colorCleared();
 
 protected:
     void paintEvent(QPaintEvent *e) override;
@@ -117,10 +117,10 @@ private Q_SLOTS:
 private:
     ColorPickerPopup *popup;
     QColor col;
+    QColor defaultColor;
+    bool colSet;
     bool withColorDialog;
     bool dirty;
-    bool firstInserted;
 };
 
-#endif
 // clang-format on

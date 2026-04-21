@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATGUI_MATERIALDELEGATE_H
-#define MATGUI_MATERIALDELEGATE_H
+#pragma once
 
 #include <QDialog>
 #include <QDir>
@@ -89,5 +88,3 @@ private:
 };
 
 }  // namespace MatGui
-
-#endif  // MATGUI_MATERIALDELEGATE_H

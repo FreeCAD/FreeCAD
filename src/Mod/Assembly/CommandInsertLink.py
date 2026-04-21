@@ -36,7 +36,6 @@ import UtilsAssembly
 import Preferences
 import CommandCreateJoint
 
-
 __title__ = "Assembly Command Insert Component"
 __author__ = "Ondsel"
 __url__ = "https://www.freecad.org"
@@ -140,7 +139,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
 
         self.buildPartList()
 
-        App.setActiveTransaction("Insert Component")
+        Gui.ActiveDocument.openCommand("Insert Component")
 
         # Listen for external deletions to keep the list in sync
         self.docObserver = InsertLinkObserver(self.onObjectDeleted)
@@ -184,13 +183,13 @@ class TaskAssemblyInsertLink(QtCore.QObject):
             )
 
         Gui.doCommandSkip(commands[:-1])  # Get rid of last \n
-        App.closeActiveTransaction()
+        Gui.ActiveDocument.commitCommand()
         return True
 
     def reject(self):
         self.deactivated()
 
-        App.closeActiveTransaction(True)
+        Gui.ActiveDocument.abortCommand()
         return True
 
     def deactivated(self):
@@ -205,8 +204,13 @@ class TaskAssemblyInsertLink(QtCore.QObject):
 
     def buildPartList(self):
         self.form.partList.clear()
+        self.doc_item_map.clear()
 
         docList = App.listDocuments().values()
+        if len(docList) > 20:
+            collapse = True
+        else:
+            collapse = False
 
         for doc in docList:
             # Create a new tree item for the document
@@ -280,7 +284,10 @@ class TaskAssemblyInsertLink(QtCore.QObject):
 
             guiDoc = Gui.getDocument(doc.Name)
             process_objects(guiDoc.TreeRootObjects, docItem)
-            self.form.partList.expandAll()
+            if collapse:
+                self.form.partList.collapseAll()
+            else:
+                self.form.partList.expandToDepth(0)
 
         self.adjustTreeWidgetSize()
 
@@ -494,7 +501,43 @@ class TaskAssemblyInsertLink(QtCore.QObject):
             if len(self.insertionStack) != 1:
                 return
 
-            self.groundedObj = self.insertionStack[0]["addedObject"]
+            targetObj = self.insertionStack[0]["addedObject"]
+
+            # If the object is a flexible AssemblyLink, we should ground its internal 'base' part
+            if targetObj.isDerivedFrom("Assembly::AssemblyLink") and not targetObj.Rigid:
+                linkedAsm = targetObj.LinkedObject
+                if linkedAsm and hasattr(linkedAsm, "Group"):
+                    srcGrounded = None
+                    # Attempt to find the grounded joint in the source assembly
+                    # We look for a joint where JointType is 'Grounded'
+                    for obj in linkedAsm.InListRecursive:
+                        if hasattr(obj, "ObjectToGround"):
+                            srcGrounded = obj.ObjectToGround
+                            break
+
+                    # Search the sub-assembly group for the link pointing to the source grounded object
+                    # Fallback to the first valid part if no grounded joint was found in source
+                    candidate = None
+                    for child in targetObj.Group:
+                        if not candidate and (
+                            child.isDerivedFrom("App::Link") or child.isDerivedFrom("Part::Feature")
+                        ):
+                            candidate = child
+
+                        if (
+                            srcGrounded
+                            and hasattr(child, "LinkedObject")
+                            and child.LinkedObject == srcGrounded
+                        ):
+                            candidate = child
+                            break
+
+                    if not candidate:  # Nothing to ground
+                        return
+
+                    targetObj = candidate
+
+            self.groundedObj = targetObj
             self.groundedJoint = CommandCreateJoint.createGroundedJoint(self.groundedObj)
 
     def increment_counter(self, item):

@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4INTERSECTOR_H
-#define WM4INTERSECTOR_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4LinComp.h"
@@ -82,5 +81,3 @@ typedef Intersector<double, Vector2<double> > Intersector2d;
 typedef Intersector<double, Vector3<double> > Intersector3d;
 
 }
-
-#endif

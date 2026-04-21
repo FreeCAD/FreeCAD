@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (C) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef VIEWPROVIDERSKETCHBASED_H_QKP3UG9A
-#define VIEWPROVIDERSKETCHBASED_H_QKP3UG9A
+#pragma once
 
 #include "ViewProvider.h"
 
@@ -66,5 +67,3 @@ private:
 };
 
 }  // namespace PartDesignGui
-
-#endif /* end of include guard: VIEWPROVIDERSKETCHBASED_H_QKP3UG9A */

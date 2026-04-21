@@ -33,6 +33,7 @@ Make sure the snapping is active so that the extrusion is done following
 the direction of a line, and up to the distance specified
 by the snapping point.
 """
+
 ## @package gui_trimex
 # \ingroup draftguitools
 # \brief Provides GUI tools to trim and extend lines.
@@ -44,20 +45,15 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import FreeCADGui as Gui
-import Draft
-import Draft_rc
 import DraftVecUtils
-import draftutils.utils as utils
-import draftutils.gui_utils as gui_utils
-import draftguitools.gui_base_original as gui_base_original
-import draftguitools.gui_tool_utils as gui_tool_utils
-import draftguitools.gui_trackers as trackers
-
+from draftfunctions import extrude
+from draftguitools import gui_base_original
+from draftguitools import gui_tool_utils
+from draftguitools import gui_trackers as trackers
+from draftutils import gui_utils
+from draftutils import utils
 from draftutils.messages import _msg, _err, _toolmsg
 from draftutils.translate import translate
-
-# The module is used to prevent complaints from code checkers (flake8)
-True if Draft_rc.__name__ else False
 
 
 class Trimex(gui_base_original.Modifier):
@@ -427,7 +423,7 @@ class Trimex(gui_base_original.Modifier):
             # print("delta", delta)
             self.doc.openTransaction("Extrude")
             Gui.addModule("Draft")
-            obj = Draft.extrude(self.obj, delta, solid=True)
+            obj = extrude.extrude(self.obj, delta, solid=True)
             self.doc.commitTransaction()
             self.obj = obj
         else:

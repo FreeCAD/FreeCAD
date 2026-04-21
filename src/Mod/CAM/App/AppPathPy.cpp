@@ -400,8 +400,10 @@ private:
         if (PyObject_TypeCheck(pShapes, &(Part::TopoShapePy::Type))) {
             shapes.push_back(static_cast<Part::TopoShapePy*>(pShapes)->getTopoShapePtr()->getShape());
         }
-        else if (PyObject_TypeCheck(pShapes, &(PyList_Type))
-                 || PyObject_TypeCheck(pShapes, &(PyTuple_Type))) {
+        else if (
+            PyObject_TypeCheck(pShapes, &(PyList_Type))
+            || PyObject_TypeCheck(pShapes, &(PyTuple_Type))
+        ) {
             Py::Sequence shapeSeq(pShapes);
             for (Py::Sequence::iterator it = shapeSeq.begin(); it != shapeSeq.end(); ++it) {
                 PyObject* item = (*it).ptr();
@@ -474,8 +476,10 @@ private:
         if (PyObject_TypeCheck(pShapes, &(Part::TopoShapePy::Type))) {
             shapes.push_back(static_cast<Part::TopoShapePy*>(pShapes)->getTopoShapePtr()->getShape());
         }
-        else if (PyObject_TypeCheck(pShapes, &(PyList_Type))
-                 || PyObject_TypeCheck(pShapes, &(PyTuple_Type))) {
+        else if (
+            PyObject_TypeCheck(pShapes, &(PyList_Type))
+            || PyObject_TypeCheck(pShapes, &(PyTuple_Type))
+        ) {
             Py::Sequence shapeSeq(pShapes);
             for (Py::Sequence::iterator it = shapeSeq.begin(); it != shapeSeq.end(); ++it) {
                 PyObject* item = (*it).ptr();

@@ -103,8 +103,8 @@ If the StringNode is to be used in a CompressedVectorNode prototype, it is recom
 @pre The @a destImageFile must have been opened in write mode (i.e. destImageFile.isWritable() must
 be true).
 
-@throw ::ErrorImageFileNotOpen
-@throw ::ErrorFileReadOnly
+@throw ::ErrorImageFileNotOpen (n/c)
+@throw ::ErrorFileReadOnly (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see StringNode::value, Node, CompressedVectorNode, CompressedVectorNode::prototype
@@ -177,7 +177,7 @@ bool StringNode::isAttached() const
 
 @return  The Unicode character string value stored.
 
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 */
 ustring StringNode::value() const
@@ -232,7 +232,7 @@ The handle @a n must be for an underlying StringNode, otherwise an exception is 
 that need to avoid the exception, use Node::type() to determine the actual type of the @a n before
 downcasting. This function must be explicitly called (c++ compiler cannot insert it automatically).
 
-@throw ::ErrorBadNodeDowncast
+@throw ::ErrorBadNodeDowncast (n/c)
 
 @see Node::type(), StringNode::operator Node()
 */

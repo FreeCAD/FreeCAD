@@ -21,18 +21,17 @@
  ***************************************************************************/
 
 
-#ifndef GUI_FILEDIALOG_H
-#define GUI_FILEDIALOG_H
+#pragma once
 
-#include <QCompleter>
 #include <QFileDialog>
 #include <QFileIconProvider>
-#include <QFileSystemModel>
 #include <QPointer>
 #include <FCGlobal.h>
 
 class QButtonGroup;
+class QCompleter;
 class QDialogButtonBox;
+class QFileSystemModel;
 class QGridLayout;
 class QGroupBox;
 class QHBoxLayout;
@@ -66,7 +65,7 @@ public:
         QWidget* parent = nullptr,
         const QString& caption = QString(),
         const QString& dir = QString(),
-        const QString& filter = QString(),
+        const QStringList& filters = QStringList(),
         QString* selectedFilter = nullptr,
         Options options = Options()
     );
@@ -74,7 +73,7 @@ public:
         QWidget* parent = nullptr,
         const QString& caption = QString(),
         const QString& dir = QString(),
-        const QString& filter = QString(),
+        const QStringList& filters = QStringList(),
         QString* selectedFilter = nullptr,
         Options options = Options()
     );
@@ -88,7 +87,7 @@ public:
         QWidget* parent = nullptr,
         const QString& caption = QString(),
         const QString& dir = QString(),
-        const QString& filter = QString(),
+        const QStringList& filters = QStringList(),
         QString* selectedFilter = nullptr,
         Options options = Options()
     );
@@ -112,7 +111,6 @@ private:
     bool hasSuffix(const QString&) const;
     static QList<QUrl> fetchSidebarUrls();
     static QString workingDirectory;
-    static void getSuffixesDescription(QStringList& suffixes, const QString* suffixDescriptions);
 };
 
 // ----------------------------------------------------------------------
@@ -315,5 +313,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_FILEDIALOG_H

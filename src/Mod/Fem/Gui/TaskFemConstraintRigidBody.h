@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskFemConstraintRigidBody_H
-#define GUI_TASKVIEW_TaskFemConstraintRigidBody_H
+#pragma once
 
 #include <QObject>
 
@@ -86,5 +85,3 @@ public:
 };
 
 }  // namespace FemGui
-
-#endif  // GUI_TASKVIEW_TaskFemConstraintRigidBody_H

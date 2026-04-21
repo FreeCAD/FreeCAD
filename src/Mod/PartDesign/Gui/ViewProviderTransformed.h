@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /******************************************************************************
  *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
@@ -21,8 +23,7 @@
  ******************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderTransformed_H
-#define PARTGUI_ViewProviderTransformed_H
+#pragma once
 
 #include "ViewProvider.h"
 
@@ -54,7 +55,7 @@ public:
     void setupContextMenu(QMenu*, QObject*, const char*) override;
 
     /// signals if the transformation contains errors
-    boost::signals2::signal<void(QString msg)> signalDiagnosis;
+    fastsignals::signal<void(QString msg)> signalDiagnosis;
 
     // Name of menu dialog
     QString menuName;
@@ -81,6 +82,3 @@ protected:
 
 
 }  // namespace PartDesignGui
-
-
-#endif  // PARTGUI_ViewProviderTransformed_H

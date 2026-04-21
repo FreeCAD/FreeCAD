@@ -15,6 +15,7 @@ from .models.radius import ToolBitRadius
 from .models.probe import ToolBitProbe
 from .models.reamer import ToolBitReamer
 from .models.slittingsaw import ToolBitSlittingSaw
+from .models.taperedballnose import ToolBitTaperedBallNose
 from .models.tap import ToolBitTap
 from .models.threadmill import ToolBitThreadMill
 from .models.vbit import ToolBitVBit
@@ -33,6 +34,7 @@ __all__ = [
     "ToolBitProbe",
     "ToolBitReamer",
     "ToolBitSlittingSaw",
+    "ToolBitTaperedBallNose",
     "ToolBitTap",
     "ToolBitThreadMill",
     "ToolBitVBit",

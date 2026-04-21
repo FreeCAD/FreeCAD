@@ -31,6 +31,7 @@ Currently it only reads the following entities:
 Currently unsupported:
 * use, image.
 """
+
 ## @package importSVG
 #  \ingroup DRAFT
 #  \brief SVG file importer and exporter
@@ -57,9 +58,11 @@ import xml.sax
 
 import FreeCAD
 import Part
-import Draft
 from DraftVecUtils import equals
 from FreeCAD import Vector
+from draftfunctions.svg import get_svg
+from draftmake import make_dimension
+from draftutils import gui_utils
 from draftutils import params
 from draftutils import utils
 from draftutils.utils import svg_precision
@@ -454,6 +457,56 @@ def getrgb(color):
     return "#" + r + g + b
 
 
+def approximateWire(wire, tolerance=0.01):
+    """approximateWire approximates any non-line/arc edges with lines or arcs.
+    Edges that are lines or circular arcs are kept as-is.
+    tolerance: Deflection tolerance for approximation. Must be positive if wire contains non-line/arc edges.
+    Returns the wire with non-line/arc edges replaced by arcs and line segments.
+    """
+    processed_edges = []
+    modified = False
+    for edge in wire.Edges:
+        curve = edge.Curve
+        if isinstance(curve, (Part.Line, Part.LineSegment, Part.Circle, Part.ArcOfCircle)):
+            # Keep lines and arcs as-is
+            processed_edges.append(edge)
+        else:
+            # Approximate with lines and arcs
+            if tolerance <= 0:
+                raise ValueError(
+                    "tolerance parameter is required to be a positive value to approximate non-line/arc edges"
+                )
+            modified = True
+
+            # Convert to BSpline first if appropriate, to enable arc fitting
+            if isinstance(curve, (Part.Ellipse, Part.Hyperbola, Part.Parabola)):
+                # Convert edge to NURBS (BSpline)
+                shape = edge.toNurbs()
+                edge = shape.Edges[0]
+            elif isinstance(curve, Part.BezierCurve):
+                # Convert BezierCurve to BSpline
+                curve = edge.Curve.toBSpline()
+                edge = curve.toShape()
+
+            if isinstance(edge.Curve, Part.BSplineCurve):
+                # Convert BSpline to arcs
+                curves = edge.Curve.toBiArcs(tolerance)
+                for curve in curves:
+                    processed_edges.append(curve.toShape())
+            else:
+                # For other curve types, fall back to discretization to line segments
+                vertices = edge.discretize(Deflection=tolerance)
+                line_edges = [
+                    Part.makeLine(vertices[i], vertices[i + 1]) for i in range(len(vertices) - 1)
+                ]
+                processed_edges.extend(line_edges)
+
+    # Reassemble the wire if any edges were replaced
+    if modified:
+        return Part.Wire(Part.__sortEdges__(processed_edges))
+    return wire
+
+
 class svgHandler(xml.sax.ContentHandler):
     """Parse SVG files and create FreeCAD objects."""
 
@@ -464,6 +517,7 @@ class svgHandler(xml.sax.ContentHandler):
         self.disableUnitScaling = params.get_param("svgDisableUnitScaling")
         self.make_cuts = params.get_param("svgMakeCuts")
         self.add_wire_for_invalid_face = params.get_param("svgAddWireForInvalidFace")
+        self.deviation = params.get_param("svgDeviation")
         self.count = 0
         self.transform = None
         self.grouptransform = []
@@ -500,21 +554,28 @@ class svgHandler(xml.sax.ContentHandler):
             if self.fill:
                 v.ShapeColor = self.fill
 
-    def __addFaceToDoc(self, named_face):
-        """Create a named document object from a name/face tuple
+    def __addShapeToDoc(self, named_shape):
+        """Create a named document object from a name/shape tuple
 
         Parameters
         ----------
-        named_face : name : str, face : Part.Face
-                     The Face/Wire to add, and its name
+        named_shape : name : str, shape : Part.Face, Part.Shell or Part.Wire
         """
-        name, face = named_face
-        if not face:
+        name, shape = named_shape
+        if not shape:
             return
 
-        face = self.applyTrans(face)
+        shape = self.applyTrans(shape)
+
+        if self.deviation:
+            aWires = [approximateWire(w, tolerance=self.deviation) for w in shape.Wires]
+            if shape.Faces:
+                shape = Part.makeFace(aWires, "Part::FaceMakerBullseye")
+            else:
+                shape = aWires[0]
+
         obj = self.doc.addObject("Part::Feature", name)
-        obj.Shape = face
+        obj.Shape = shape
         self.format(obj)
 
     def startElement(self, name, attrs):
@@ -752,7 +813,7 @@ class svgHandler(xml.sax.ContentHandler):
                 p2 = Vector(float(p2[0]), -float(p2[1]), 0)
                 p3 = data["freecad:dimpoint"]
                 p3 = Vector(float(p3[0]), -float(p3[1]), 0)
-                obj = Draft.make_dimension(p1, p2, p3)
+                obj = make_dimension.make_dimension(p1, p2, p3)
                 self.applyTrans(obj)
                 self.format(obj)
                 self.lastdim = obj
@@ -766,7 +827,7 @@ class svgHandler(xml.sax.ContentHandler):
                     svgPath.doCuts()
                 shapes = svgPath.getShapeList()
                 for named_shape in shapes:
-                    self.__addFaceToDoc(named_shape)
+                    self.__addShapeToDoc(named_shape)
 
         # Process rects
         if name == "rect":
@@ -840,6 +901,8 @@ class svgHandler(xml.sax.ContentHandler):
                     # elliptical segments
                     edges.append(esh2)
             sh = Part.Wire(edges)
+            if self.deviation:
+                sh = approximateWire(sh, tolerance=self.deviation)
             if self.fill:
                 sh = Part.Face(sh)
             sh = self.applyTrans(sh)
@@ -910,8 +973,10 @@ class svgHandler(xml.sax.ContentHandler):
             else:
                 sh = Part.Ellipse(c, ry, rx).toShape()
                 sh.rotate(c, Vector(0, 0, 1), 90)
+            sh = Part.Wire([sh])
+            if self.deviation:
+                sh = approximateWire(sh, tolerance=self.deviation)
             if self.fill:
-                sh = Part.Wire([sh])
                 sh = Part.Face(sh)
             sh = self.applyTrans(sh)
             obj = self.doc.addObject("Part::Feature", pathname)
@@ -1014,7 +1079,7 @@ class svgHandler(xml.sax.ContentHandler):
             for transform in self.grouptransform[::-1]:
                 sh = transformCopyShape(sh, transform)
             return sh
-        elif Draft.getType(sh) in ["Dimension", "LinearDimension"]:
+        elif utils.get_type(sh) in ["Dimension", "LinearDimension"]:
             pts = []
             for p in [sh.Start, sh.End, sh.Dimline]:
                 cp = Vector(p)
@@ -1290,9 +1355,9 @@ def export(exportList, filename):
         if hasattr(obj, "Shape") and obj.Shape and obj.Shape.BoundBox.isValid():
             bb.add(obj.Shape.BoundBox)
         else:
-            # if Draft.get_type(obj) in ("Text", "LinearDimension", ...)
+            # if utils.get_type(obj) in ("Text", "LinearDimension", ...)
             _wrn("'{}': no Shape, " "calculate manual bounding box".format(obj.Label))
-            bb.add(Draft.get_bbox(obj))
+            bb.add(gui_utils.get_bbox(obj))
 
     if not bb.isValid():
         _err(
@@ -1360,7 +1425,7 @@ def export(exportList, filename):
             # raw-style exports do not translate the sketch
             svg.write('<g id="%s" transform="scale(1,-1)">\n' % ob.Name)
 
-        svg.write(Draft.get_svg(ob, override=False))
+        svg.write(get_svg(ob, override=False))
         _label_enc = str(ob.Label.encode("utf8"))
         _label = _label_enc.replace("<", "&lt;").replace(">", "&gt;")
         # replace('"', "&quot;")
@@ -1372,8 +1437,8 @@ def export(exportList, filename):
     svg.close()
     if hidden_doc is not None:
         try:
-            App.closeDocument(hidden_doc.Name)
-        except:
+            FreeCAD.closeDocument(hidden_doc.Name)
+        except Exception:
             pass
 
 
@@ -1444,8 +1509,19 @@ def replace_use_with_reference(file_path):
             parent = parent_map[deftag]
             parent.remove(deftag)
 
+    current_encoding = ""
+    try:
+        with pyopen(file_path, "r", encoding="UTF-8") as f:
+            f.readline()
+            current_encoding = "UTF-8"
+    except UnicodeError:
+        with pyopen(file_path, "r", encoding="UTF-16") as f:
+            f.readline()
+            current_encoding = "UTF-16"
+    FreeCAD.Console.PrintLog(f"ImportSVG - '{file_path}' is encoded using {current_encoding}\n")
+
     # open file and read
-    svg_content = pyopen(file_path).read()
+    svg_content = pyopen(file_path, encoding=current_encoding).read()
     # register namespace before parsing
     register_svg_namespaces(svg_content)
     # parse as xml.

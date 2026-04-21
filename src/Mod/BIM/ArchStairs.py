@@ -399,14 +399,9 @@ class _Stairs(ArchComponent.Component):
             )
         landingsEnum = ["None", "At center"]
         if not obj.getEnumerationsOfProperty("Landings") == landingsEnum:
-            landingsCur = obj.Landings
             obj.Landings = landingsEnum
-            # For a new object landingsCur is None.
-            # For an object with the old enumeration it is "None", "At center" or "At each corner".
-            if landingsCur == "At center":
-                obj.Landings = landingsCur
-            else:
-                obj.Landings = "None"
+            # For an object with the old enumeration: ["None", "At center", "At each corner"],
+            # "At each corner" is automatically replaced by "None". Other values are kept.
 
         # Not implemented yet, remarked out at the moment
         # if not "Winders" in pl:
@@ -2460,6 +2455,21 @@ class _ViewProviderStairs(ArchComponent.ViewProviderComponent):
         import Arch_rc
 
         return ":/icons/Arch_Stairs_Tree.svg"
+
+    def onChanged(self, vobj, prop):
+        ArchComponent.ViewProviderComponent.onChanged(self, vobj, prop)
+
+        if prop != "Visibility":
+            return
+
+        obj = getattr(vobj, "Object", None)
+        if not obj:
+            return
+
+        for railing_name in ("RailingLeft", "RailingRight"):
+            railing = getattr(obj, railing_name, None)
+            if railing and hasattr(railing, "ViewObject"):
+                railing.ViewObject.Visibility = vobj.Visibility
 
     def claimChildren(self):
         "Define which objects will appear as children in the tree view"

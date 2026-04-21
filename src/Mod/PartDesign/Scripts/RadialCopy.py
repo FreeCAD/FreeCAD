@@ -1,9 +1,12 @@
 #! python
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # (c) 2010 Werner Mayer LGPL
 
 """
 An example for a high-level custom feature object to make a so called "radial copy".
 """
+
 __author__ = "Werner Mayer <wmayer@users.sourceforge.net>"
 
 import FreeCAD, FreeCADGui, Part, math

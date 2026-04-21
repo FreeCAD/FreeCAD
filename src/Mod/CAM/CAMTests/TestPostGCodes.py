@@ -28,7 +28,6 @@ import Path
 import CAMTests.PathTestUtils as PathTestUtils
 from Path.Post.Processor import PostProcessorFactory
 
-
 Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
 Path.Log.trackModule(Path.Log.thisModule())
 
@@ -713,12 +712,13 @@ class TestPostGCodes(PathTestUtils.PathTestBase):
 
     def test10730(self):
         """Test G73 command Generation."""
+        cmd = Path.Command("G73 X1 Y2 Z0 F123 Q1.5 R5")
+        cmd.Annotations = {"RetractMode": "G99"}
         path = [
             Path.Command("G0 X1 Y2"),
             Path.Command("G0 Z8"),
             Path.Command("G90"),
-            Path.Command("G99"),
-            Path.Command("G73 X1 Y2 Z0 F123 Q1.5 R5"),
+            cmd,
             Path.Command("G80"),
             Path.Command("G90"),
         ]
@@ -905,12 +905,14 @@ G90
 
     def test10810(self):
         """Test G81 command Generation."""
+        cmd = Path.Command("G81 X1 Y2 Z0 F123 R5")
+        cmd.Annotations = {"RetractMode": "G99"}
         path = [
             Path.Command("G0 X1 Y2"),
             Path.Command("G0 Z8"),
             Path.Command("G90"),
             Path.Command("G99"),
-            Path.Command("G81 X1 Y2 Z0 F123 R5"),
+            cmd,
             Path.Command("G80"),
             Path.Command("G90"),
         ]
@@ -1061,12 +1063,14 @@ G90
 
     def test10820(self):
         """Test G82 command Generation."""
+        cmd = Path.Command("G82 X1 Y2 Z0 F123 R5 P1.23456")
+        cmd.Annotations = {"RetractMode": "G99"}
         path = [
             Path.Command("G0 X1 Y2"),
             Path.Command("G0 Z8"),
             Path.Command("G90"),
             Path.Command("G99"),
-            Path.Command("G82 X1 Y2 Z0 F123 R5 P1.23456"),
+            cmd,
             Path.Command("G80"),
             Path.Command("G90"),
         ]
@@ -1221,12 +1225,14 @@ G90
 
     def test10830(self):
         """Test G83 command Generation."""
+        cmd = Path.Command("G83 X1 Y2 Z0 F123 Q1.5 R5")
+        cmd.Annotations = {"RetractMode": "G99"}
         path = [
             Path.Command("G0 X1 Y2"),
             Path.Command("G0 Z8"),
             Path.Command("G90"),
             Path.Command("G99"),
-            Path.Command("G83 X1 Y2 Z0 F123 Q1.5 R5"),
+            cmd,
             Path.Command("G80"),
             Path.Command("G90"),
         ]

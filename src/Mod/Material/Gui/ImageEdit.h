@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATGUI_IMAGEEDIT_H
-#define MATGUI_IMAGEEDIT_H
+#pragma once
 
 #include <memory>
 
@@ -94,11 +93,9 @@ private:
     void showPixmap();
     void showSVG();
 
-    QString selectFile(const QString& filePatterns);
+    QString selectFile(const QStringList& filePatterns);
     void onFileSelectImage();
     void onFileSelectSVG();
 };
 
 }  // namespace MatGui
-
-#endif  // MATGUI_IMAGEEDIT_H

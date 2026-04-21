@@ -91,9 +91,20 @@ void ExpressionSpinBox::showInvalidExpression(const QString& tip)
     p.setColor(QPalette::Active, QPalette::Text, Qt::red);
     lineedit->setPalette(p);
     iconLabel->setToolTip(tip);
+    iconLabel->setPixmap(getIcon(":/icons/button_invalid.svg", QSize(iconHeight, iconHeight)));
 }
 
 void ExpressionSpinBox::showValidExpression(ExpressionSpinBox::Number number)
+{
+    try {
+        showExpression(number);
+    }
+    catch (const Base::Exception& e) {
+        showInvalidExpression(QString::fromUtf8(e.what()));
+    }
+}
+
+void ExpressionSpinBox::showExpression(Number number)
 {
     std::unique_ptr<Expression> result(getExpression()->eval());
     auto* value = freecad_cast<NumberExpression*>(result.get());

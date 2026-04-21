@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef GUI_VIEWPROVIDER_MEASUREMENTBASE_H
-#define GUI_VIEWPROVIDER_MEASUREMENTBASE_H
+#pragma once
 
 #include <Mod/Measure/MeasureGlobal.h>
 
@@ -133,9 +132,13 @@ public:
     void connectToSubject(std::vector<App::DocumentObject*> subject);
 
 protected:
+    static void draggerStartCallback(void* data, SoDragger*);
     static void draggerChangedCallback(void* data, SoDragger*);
+    static void draggerFinishCallback(void* data, SoDragger*);
     void onChanged(const App::Property* prop) override;
+    virtual void onLabelMoveStart();
     virtual void onLabelMoved() {};
+    virtual void onLabelMoveFinish();
     void setLabelValue(const Base::Quantity& value);
     void setLabelValue(const QString& value);
     void setLabelTranslation(const SbVec3f& position);
@@ -159,7 +162,7 @@ protected:
     SoSeparator* pGlobalSeparator;  // Separator in the global coordinate space
     Gui::SoFrameLabel* pLabel;
     SoTranslate2Dragger* pDragger;
-    SoTransform* pDraggerOrientation;
+    SoTransform* pDraggerFrame;
     SoTransform* pLabelTranslation;
     SoBaseColor* pColor;
     SoSeparator* pRootSeparator;
@@ -168,7 +171,7 @@ protected:
     SoSeparator* pLineSeparatorSecondary;
 
 private:
-    boost::signals2::connection _mVisibilityChangedConnection;
+    fastsignals::connection _mVisibilityChangedConnection;
 };
 
 
@@ -269,5 +272,3 @@ public:
 
 
 }  // namespace MeasureGui
-
-#endif  // GUI_VIEWPROVIDER_MEASUREMENTBASE_H

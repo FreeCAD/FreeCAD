@@ -24,6 +24,7 @@
 import Part
 import Path
 import math
+import Constants
 
 from FreeCAD import Vector
 from CAMTests.PathTestUtils import PathTestBase
@@ -232,32 +233,32 @@ class TestPathGeom(PathTestBase):
         xCylinder = [
             f
             for f in Part.makeCylinder(1, 1, Vector(), Vector(1, 0, 0)).Faces
-            if type(f.Surface) == Part.Cylinder
+            if isinstance(f.Surface, Part.Cylinder)
         ][0]
         yCylinder = [
             f
             for f in Part.makeCylinder(1, 1, Vector(), Vector(0, 1, 0)).Faces
-            if type(f.Surface) == Part.Cylinder
+            if isinstance(f.Surface, Part.Cylinder)
         ][0]
         zCylinder = [
             f
             for f in Part.makeCylinder(1, 1, Vector(), Vector(0, 0, 1)).Faces
-            if type(f.Surface) == Part.Cylinder
+            if isinstance(f.Surface, Part.Cylinder)
         ][0]
         xyCylinder = [
             f
             for f in Part.makeCylinder(1, 1, Vector(), Vector(1, 1, 0)).Faces
-            if type(f.Surface) == Part.Cylinder
+            if isinstance(f.Surface, Part.Cylinder)
         ][0]
         xzCylinder = [
             f
             for f in Part.makeCylinder(1, 1, Vector(), Vector(1, 0, 1)).Faces
-            if type(f.Surface) == Part.Cylinder
+            if isinstance(f.Surface, Part.Cylinder)
         ][0]
         yzCylinder = [
             f
             for f in Part.makeCylinder(1, 1, Vector(), Vector(0, 1, 1)).Faces
-            if type(f.Surface) == Part.Cylinder
+            if isinstance(f.Surface, Part.Cylinder)
         ][0]
 
         self.assertTrue(Path.Geom.isHorizontal(xCylinder))
@@ -487,7 +488,7 @@ class TestPathGeom(PathTestBase):
         )
 
     def test40(self):
-        """Verify arc results in proper G2/3 command."""
+        """Verify arc results in proper G2/G3 command."""
         p1 = Vector(0, -10, 0)
         p2 = Vector(-10, 0, 0)
         p3 = Vector(0, +10, 0)
@@ -548,7 +549,52 @@ class TestPathGeom(PathTestBase):
         cmds = Path.Geom.cmdsForEdge(ellipse)
         # let's make sure all commands are G1 and there are more than 20 of those
         self.assertGreater(len(cmds), 20)
-        self.assertTrue(all([cmd.Name == "G1" for cmd in cmds]))
+        self.assertTrue(all(cmd.Name in Constants.GCODE_MOVE_STRAIGHT for cmd in cmds))
+
+    def test43(self):
+        """Verify ellipsis results with approximation."""
+        ellipse = Part.Edge(Part.Ellipse())
+        cmds = Path.Geom.cmdsForEdge(ellipse, approximation=True, tol=0.01)
+        # let's make sure all commands are G2 or G3 and there are less than 20 of those
+        self.assertTrue(cmds)
+        self.assertLess(len(cmds), 20)
+        self.assertTrue(all(cmd.Name in Constants.GCODE_MOVE_ARC for cmd in cmds))
+
+    def test44(self):
+        """Verify approximation deviation not horizontal arc."""
+        tol = 0.01
+        center = Vector()
+        normal = Vector(0, 0.3, 0.7)
+        radius = 10
+        circle = Part.Circle(center, normal, radius)
+        arc = Part.ArcOfCircle(circle, 0, 3.14)
+        partEdge = Part.Edge(arc)
+
+        # creates commands list and check that it is not empty
+        cmds = Path.Geom.cmdsForEdge(partEdge, approximation=True, tol=tol)
+        self.assertTrue(cmds)
+
+        # let's make sure all commands are G2 or G3 and there are less than 35 of those
+        self.assertLess(len(cmds), 35)
+        self.assertTrue(all(cmd.Name in Constants.GCODE_MOVE_ARC for cmd in cmds))
+
+        pathEdges = []
+        startPoint = partEdge.Vertexes[0].Point
+        for cmd in cmds:
+            pathEdges.append(Path.Geom.edgeForCmd(cmd, startPoint))
+            startPoint = Vector(cmd.x, cmd.y, cmd.z)
+
+        pathWire = Part.Wire(Part.__sortEdges__(pathEdges))
+
+        pathPoints = pathWire.discretize(Distance=1)
+        partPoints = partEdge.discretize(Distance=1)
+
+        # let's make sure amount of points is equal
+        self.assertEqual(len(pathPoints), len(partPoints))
+
+        for i in range(len(pathPoints)):
+            # deviation between original edge and approximated wire should be less than 2 * tol
+            self.assertLess(pathPoints[i].distanceToPoint(partPoints[i]), 2 * tol)
 
     def test50(self):
         """Verify proper wire(s) aggregation from a Path."""
@@ -673,7 +719,6 @@ class TestPathGeom(PathTestBase):
         am = Vector(459.51, 372.61, 1)
         al = Vector(491.75, 351.75, 1)
         arc = Part.Edge(Part.ArcOfCircle(af, am, al))
-        ac = arc.Curve.Center
 
         s = Vector(434.54, 378.26, 1)
         head, tail = Path.Geom.splitEdgeAt(arc, s)

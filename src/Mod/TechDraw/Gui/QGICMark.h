@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMCMARK_H
-#define DRAWINGGUI_QGRAPHICSITEMCMARK_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -58,8 +57,7 @@ protected:
 
 private:
     float m_size;
+    double m_markFuzz;
 };
 
 }
-
-#endif // DRAWINGGUI_QGRAPHICSITEMCMARK_H

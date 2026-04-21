@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef FREECAD_STARTVIEW_H
-#define FREECAD_STARTVIEW_H
+#pragma once
 
 #include <Mod/Start/StartGlobal.h>
 #include <Base/Type.h>
@@ -71,6 +70,7 @@ public:
     void newAssemblyFile();
     void newDraftFile();
     void newArchFile();
+    void recentFileAdded(const QString& filename);
 
     bool onHasMsg(const char* pMsg) const override;
 
@@ -123,5 +123,3 @@ private:
 };  // namespace StartGui
 
 }  // namespace StartGui
-
-#endif  // FREECAD_STARTVIEW_H

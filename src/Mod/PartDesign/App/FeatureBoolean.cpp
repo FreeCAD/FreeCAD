@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /******************************************************************************
  *   Copyright (c) 2013 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
@@ -153,8 +155,6 @@ App::DocumentObjectExecReturn* Boolean::execute()
         }
     }
 
-    result.bakeInTransform();
-
     result = refineShapeIfActive(result);
 
     if (!isSingleSolidRuleSatisfied(result.getShape())) {
@@ -175,7 +175,17 @@ void Boolean::updatePreviewShape()
         TopoShape base = getBaseTopoShape(true).moved(getLocation().Inverted());
         TopoShape result = Shape.getShape();
 
-        PreviewShape.setValue(base.makeElementCut(result.getShape()));
+        try {
+            PreviewShape.setValue(base.makeElementCut(result.getShape()));
+        }
+        catch (Standard_Failure& e) {
+            FC_ERR("Boolean preview failed: " << e.GetMessageString());
+            PreviewShape.setValue(base);
+        }
+        catch (Base::Exception& e) {
+            FC_ERR("Boolean preview failed: " << e.what());
+            PreviewShape.setValue(base);
+        }
         return;
     }
 
@@ -209,10 +219,6 @@ void Boolean::onChanged(const App::Property* prop)
 
     if (strcmp(prop->getName(), "Group") == 0) {
         touch();
-    }
-
-    if (strcmp(prop->getName(), "Shape") == 0) {
-        updatePreviewShape();
     }
 
     Feature::onChanged(prop);
