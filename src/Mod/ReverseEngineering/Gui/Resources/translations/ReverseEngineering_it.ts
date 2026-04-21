@@ -237,8 +237,8 @@
       <translation>Posizionamento</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineCurve.cpp" line="138"/>
       <location filename="../../FitBSplineSurface.cpp" line="242"/>
+      <location filename="../../FitBSplineCurve.cpp" line="138"/>
       <source>Fit B-spline</source>
       <translation>Adatta B-Spline</translation>
     </message>

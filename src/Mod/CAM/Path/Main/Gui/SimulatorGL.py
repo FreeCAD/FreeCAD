@@ -294,7 +294,7 @@ class CAMSimulation:
                 self.operations.append(op)
                 form.listOperations.addItem(listItem)
         if len(j.Model.OutList) > 0:
-            self.baseShape = j.Model.OutList[0].Shape
+            self.baseShape = Part.makeCompound([o.Shape for o in j.Model.OutList])
         else:
             self.baseShape = None
 
@@ -322,7 +322,7 @@ class CAMSimulation:
     def SimPlay(self):
         """Activate the simulation"""
         self.SetupSimulation()
-        self.millSim.ResetSimulation()
+        self.millSim.ResetSimulation(FreeCADGui.getDocument(self.job.Document))
         for op in self.activeOps:
             tool = PathDressup.toolController(op).Tool
             toolNumber = PathDressup.toolController(op).ToolNumber

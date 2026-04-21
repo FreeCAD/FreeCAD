@@ -92,7 +92,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Select multiple faces with 3 or 4 edges, optional with corner vertexes of 3-sided faces.</string>
+        <string>Select multiple faces with 3 or 4 edges, optional with corner vertices of 3-sided faces.</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
@@ -224,13 +224,13 @@
    <item>
     <widget class="QGroupBox" name="Automation">
      <property name="toolTip">
-      <string>If activated all edges of the selected surfaces, that do not have a transfinite curve defined already, become transfinite automatically.
+      <string>If activated, all edges of the selected surfaces that do not have a transfinite curve defined already become transfinite automatically.
 Use strategically placed transfinite curve definitions to guide the automatic algorithm.
 
 Notes:
-1. User defined curves propagated to the opposite edges of faces, over all selected faces.
-2. Works only for 3 or 4 sided faces. Multisided faces need to be done manual.
-3. Works with large any of faces, either connected or unconnected </string>
+1. User defined curves propagate to the opposite edges of faces, over all selected faces.
+2. Works only for 3- or 4-sided faces. Multi-sided faces need to be done manually.
+3. Works with most faces, either connected or unconnected </string>
      </property>
      <property name="title">
       <string>Auto apply transfinite curves</string>

@@ -182,6 +182,57 @@ a raw wire from the original shape is added</string>
         </item>
        </layout>
       </item>
+      <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_11">
+          <item>
+            <widget class="QLabel" name="label">
+              <property name="text">
+                <string>Maximum deviation for approximation of complex curves</string>
+              </property>
+            </widget>
+          </item>
+          <item>
+            <spacer name="horizontalSpacer">
+              <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+                <size>
+                  <width>40</width>
+                  <height>20</height>
+                </size>
+              </property>
+            </spacer>
+          </item>
+          <item>
+            <widget class="Gui::PrefDoubleSpinBox" name="doubleSpinBox">
+              <property name="toolTip">
+                <string>Maximum deviation for the approximation of ellipses, hyperbolas, parabolas, and
+Bézier and B-spline curves to arcs and lines. Can be useful for the CAM Workbench.
+Set to zero to disable approximation.</string>
+              </property>
+              <property name="suffix">
+                <string notr="true"> mm</string>
+              </property>
+              <property name="maximum">
+                <double>10.0</double>
+              </property>
+              <property name="decimals">
+                <number>4</number>
+              </property>
+              <property name="singleStep">
+                <double>0.01</double>
+              </property>
+              <property name="prefEntry" stdset="0">
+                <cstring>svgDeviation</cstring>
+              </property>
+              <property name="prefPath" stdset="0">
+                <cstring>Mod/Draft</cstring>
+              </property>
+            </widget>
+          </item>
+        </layout>
+      </item>
      </layout>
     </widget>
    </item>
@@ -263,9 +314,6 @@ a raw wire from the original shape is added</string>
          <widget class="QLabel" name="label">
           <property name="text">
            <string>Maximum segment length for discretized arcs</string>
-          </property>
-          <property name="buddy">
-           <cstring/>
           </property>
          </widget>
         </item>

@@ -97,7 +97,7 @@
           <item>
            <widget class="QLabel" name="label_12">
             <property name="text">
-             <string>Compute the distance to the  selected reference edges and specify the mesh size independently in the direction normal and parallel to the nearest curve. For efficiency each curve is replaced by a set of Sampling points, to which the distance is actually computed.</string>
+             <string>Compute the distance to the selected reference edges and specify the mesh size independently in the direction normal and parallel to the nearest curve. For efficiency each curve is replaced by a set of Sampling points, to which the distance is actually computed.</string>
             </property>
             <property name="wordWrap">
              <bool>true</bool>
@@ -566,9 +566,9 @@
             <item>
              <widget class="QLineEdit" name="Equation">
               <property name="toolTip">
-               <string>Available are the 3 coordinates x,y z (lower case) and the usual mathematical
+               <string>Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
 functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc.  Supported opperators are +, -, *, /, ^.
+usable via the F variable, e.g. F1, F2 etc. Supported opperators are +, -, *, /, ^.
 
 Example: &quot;F2 + Sin(z)&quot;</string>
               </property>
@@ -580,9 +580,9 @@ Example: &quot;F2 + Sin(z)&quot;</string>
             <item>
              <widget class="QLabel" name="EqIcon">
               <property name="toolTip">
-               <string>Available are the 3 coordinates x,y z (lower case) and the usual mathematical
+               <string>Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
 functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc.  Supported opperators are +, -, *, /, ^.
+usable via the F variable, e.g. F1, F2 etc. Supported opperators are +, -, *, /, ^.
 
 Example: &quot;F2 + Sin(z)&quot;</string>
               </property>
@@ -622,7 +622,7 @@ Example: &quot;F2 + Sin(z)&quot;</string>
              </sizepolicy>
             </property>
             <property name="text">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the anisotropic mesh size from multiple formuls based on coordinates (x, y, z) and other refinements (F1, F2, etc.)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the anisotropic mesh size from multiple formulas based on coordinates (x, y, z) and other refinements (F1, F2, etc.)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="wordWrap">
              <bool>true</bool>
@@ -732,7 +732,7 @@ Example: &quot;F2 + Sin(z)&quot;</string>
             <item row="2" column="4">
              <widget class="QLineEdit" name="M33">
               <property name="toolTip">
-               <string>Available are the 3 coordinates x,y z (lower case) and the usual mathematical
+               <string>Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
 functions like Sin, Log (upper case). Additionally all child refinements are
 usable via the F variable, e.g. F1, F2 etc.  Supported opperators are +, -, *, /, ^.
 
@@ -746,7 +746,7 @@ Example: &quot;F2 + Sin(z)&quot;</string>
             <item row="0" column="4">
              <widget class="QLineEdit" name="M22">
               <property name="toolTip">
-               <string>Available are the 3 coordinates x,y z (lower case) and the usual mathematical
+               <string>Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
 functions like Sin, Log (upper case). Additionally all child refinements are
 usable via the F variable, e.g. F1, F2 etc.  Supported opperators are +, -, *, /, ^.
 
@@ -774,7 +774,7 @@ Example: &quot;F2 + Sin(z)&quot;</string>
             <item row="0" column="1">
              <widget class="QLineEdit" name="M11">
               <property name="toolTip">
-               <string>Available are the 3 coordinates x,y z (lower case) and the usual mathematical
+               <string>Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
 functions like Sin, Log (upper case). Additionally all child refinements are
 usable via the F variable, e.g. F1, F2 etc.  Supported opperators are +, -, *, /, ^.
 
@@ -788,7 +788,7 @@ Example: &quot;F2 + Sin(z)&quot;</string>
             <item row="2" column="1">
              <widget class="QLineEdit" name="M13">
               <property name="toolTip">
-               <string>Available are the 3 coordinates x,y z (lower case) and the usual mathematical
+               <string>Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
 functions like Sin, Log (upper case). Additionally all child refinements are
 usable via the F variable, e.g. F1, F2 etc.  Supported opperators are +, -, *, /, ^.
 
@@ -816,7 +816,7 @@ Example: &quot;F2 + Sin(z)&quot;</string>
             <item row="1" column="4">
              <widget class="QLineEdit" name="M23">
               <property name="toolTip">
-               <string>Available are the 3 coordinates x,y z (lower case) and the usual mathematical
+               <string>Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
 functions like Sin, Log (upper case). Additionally all child refinements are
 usable via the F variable, e.g. F1, F2 etc.  Supported opperators are +, -, *, /, ^.
 
@@ -837,7 +837,7 @@ Example: &quot;F2 + Sin(z)&quot;</string>
             <item row="1" column="1">
              <widget class="QLineEdit" name="M12">
               <property name="toolTip">
-               <string>Available are the 3 coordinates x,y z (lower case) and the usual mathematical
+               <string>Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
 functions like Sin, Log (upper case). Additionally all child refinements are
 usable via the F variable, e.g. F1, F2 etc.  Supported opperators are +, -, *, /, ^.
 

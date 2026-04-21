@@ -426,8 +426,11 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::
     }
     else if (strcmp(Reason, "UseVBO") == 0) {
         if (!ignoreVBO) {
+            // Assume no value means "on" as Coin only disables
+            // VBOs for some (very old) drivers and hardware.
+            const auto useVbo = rGrp.GetBool("UseVBO", true);
             for (auto _viewer : _viewers) {
-                _viewer->setEnabledVBO(rGrp.GetBool("UseVBO", false));
+                _viewer->setEnabledVBO(useVbo);
             }
         }
     }

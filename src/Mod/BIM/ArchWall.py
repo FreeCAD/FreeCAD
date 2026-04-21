@@ -1772,6 +1772,7 @@ class _Wall(ArchComponent.Component):
         layers = self.get_layers(obj)
         width = self.get_width(obj, widths=False)
         align = obj.Align
+        wall_offset = obj.Offset.Value
 
         # Use a small default for zero dimensions to ensure a valid shape can be created.
         safe_length = obj.Length.Value or 0.5
@@ -1792,7 +1793,9 @@ class _Wall(ArchComponent.Component):
             offset = -totalwidth / 2
         elif align == "Left":
             # Per convention, 'Left' is on the geometric right (-Y direction).
-            offset = -totalwidth
+            offset = -totalwidth - wall_offset
+        elif align == "Right":
+            offset = wall_offset
 
         # Loop through all layers and create a face for each.
         for layer in layers:

@@ -191,6 +191,13 @@ public:
 private:
     void triggerClarifySelection()
     {
+        // reset navigation state so button1down doesn't stay stuck ie. gh issue #29090
+        // (the blocking QMenu::exec in ClarifySelection steals the LMB release)
+        if (currentViewer) {
+            if (auto* nav = currentViewer->navigationStyle()) {
+                nav->resetButtonState();
+            }
+        }
         Gui::Command::runCommand(Gui::Command::Gui, "Gui.runCommand('Std_ClarifySelection')");
     }
 
@@ -535,11 +542,17 @@ void View3DInventorViewer::init()
     naviCubeAnnotation->ref();
     naviCubeAnnotation->setName("naviCubeAnnotation");
 
-    auto lm = new SoLightModel;
-    lm->model = SoLightModel::BASE_COLOR;
+    auto decorationLightModel = new SoLightModel;
+    decorationLightModel->model = SoLightModel::BASE_COLOR;
 
-    auto bc = new SoBaseColor;
-    bc->rgb = SbColor(1, 1, 0);
+    auto decorationBaseColor = new SoBaseColor;
+    decorationBaseColor->rgb = SbColor(1, 1, 0);
+
+    auto foregroundLightModel = new SoLightModel;
+    foregroundLightModel->model = SoLightModel::BASE_COLOR;
+
+    auto foregroundBaseColor = new SoBaseColor;
+    foregroundBaseColor->rgb = SbColor(1, 1, 0);
 
     // NOLINTBEGIN
     cam = new SoOrthographicCamera;
@@ -554,8 +567,8 @@ void View3DInventorViewer::init()
     lightRotation->rotation.connectFrom(&cam->orientation);
 
     this->decorationroot->addChild(cam);
-    this->decorationroot->addChild(lm);
-    this->decorationroot->addChild(bc);
+    this->decorationroot->addChild(decorationLightModel);
+    this->decorationroot->addChild(decorationBaseColor);
     this->decorationroot->addChild(naviCubeAnnotation);
 
     auto threePointLightingSeparator = new SoTransformSeparator;
@@ -563,6 +576,8 @@ void View3DInventorViewer::init()
     threePointLightingSeparator->addChild(this->fillLight);
 
     this->foregroundroot->addChild(cam);
+    this->foregroundroot->addChild(foregroundLightModel);
+    this->foregroundroot->addChild(foregroundBaseColor);
 
     // NOTE: For every mouse click event the SoFCUnifiedSelection searches for the picked
     // point which causes a certain slow-down because for all objects the primitives
@@ -800,7 +815,6 @@ View3DInventorViewer::~View3DInventorViewer()
 
     if (_viewerPy) {
         static_cast<View3DInventorViewerPy*>(_viewerPy)->_viewer = nullptr;
-        Py_DECREF(_viewerPy);
     }
 
     // In the init() function we have overridden the default SoGLRenderAction with our
@@ -1102,33 +1116,10 @@ void View3DInventorViewer::resetEditingRoot(bool updateLinks)
             ViewProviderLink::updateLinks(editViewProvider);
         }
     }
-    catch (const Py::Exception& e) {
-        /* coverity[UNCAUGHT_EXCEPT] Uncaught exception */
-        // Coverity created several reports when removeViewProvider()
-        // is used somewhere in a destructor which indirectly invokes
-        // resetEditingRoot().
-        // Now theoretically Py::type can throw an exception which nowhere
-        // will be handled and thus terminates the application. So, add an
-        // extra try/catch block here.
-        try {
-            Py::Object py = Py::type(e);
-            if (py.isString()) {
-                Py::String str(py);
-                Base::Console().warning("%s\n", str.as_std_string("utf-8").c_str());
-            }
-            else {
-                Py::String str(py.repr());
-                Base::Console().warning("%s\n", str.as_std_string("utf-8").c_str());
-            }
-            // Prints message to console window if we are in interactive mode
-            PyErr_Print();
-        }
-        catch (Py::Exception& e) {
-            e.clear();
-            Base::Console().error(
-                "Unexpected exception raised in View3DInventorViewer::resetEditingRoot\n"
-            );
-        }
+    catch (const Py::Exception&) {
+        // resetEditingRoot() can be reached while tearing down view providers,
+        // so keep Python callback failures confined to traceback reporting.
+        PyErr_Print();
     }
 }
 
@@ -3512,6 +3503,62 @@ void View3DInventorViewer::setCameraType(SoType type)
     }
 
     lightRotation->rotation.connectFrom(&cam->orientation);
+}
+
+bool View3DInventorViewer::setCamera(const char* pCamera)
+{
+    SoCamera* CamViewer = getSoRenderManager()->getCamera();
+    if (!CamViewer) {
+        throw Base::RuntimeError("No camera set so far…");
+    }
+
+    SoInput in;
+    in.setBuffer(pCamera, std::strlen(pCamera));
+
+    SoNode* Cam;
+    SoDB::read(&in, Cam);
+
+    if (!Cam || !Cam->isOfType(SoCamera::getClassTypeId())) {
+        throw Base::RuntimeError("Camera settings failed to read");
+    }
+
+    // this is to make sure to reliably delete the node
+    CoinPtr<SoNode> camPtr {Cam};
+
+    // toggle between perspective and orthographic camera
+    if (Cam->getTypeId() != CamViewer->getTypeId()) {
+        setCameraType(Cam->getTypeId());
+        CamViewer = getSoRenderManager()->getCamera();
+
+        assert(Cam->getTypeId() == CamViewer->getTypeId());
+    }
+
+    // we just made sure the cameras are the same type, now we can safely downcast
+    if (Cam->getTypeId() == SoPerspectiveCamera::getClassTypeId()) {
+        auto CamViewerP = static_cast<SoPerspectiveCamera*>(CamViewer);
+        auto CamP = static_cast<SoPerspectiveCamera*>(Cam);
+
+        CamViewerP->position = CamP->position;
+        CamViewerP->orientation = CamP->orientation;
+        CamViewerP->nearDistance = CamP->nearDistance;
+        CamViewerP->farDistance = CamP->farDistance;
+        CamViewerP->focalDistance = CamP->focalDistance;
+    }
+    else if (Cam->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
+        auto CamViewerO = static_cast<SoOrthographicCamera*>(CamViewer);
+        auto CamO = static_cast<SoOrthographicCamera*>(Cam);
+
+        CamViewerO->viewportMapping = CamO->viewportMapping;
+        CamViewerO->position = CamO->position;
+        CamViewerO->orientation = CamO->orientation;
+        CamViewerO->nearDistance = CamO->nearDistance;
+        CamViewerO->farDistance = CamO->farDistance;
+        CamViewerO->focalDistance = CamO->focalDistance;
+        CamViewerO->aspectRatio = CamO->aspectRatio;
+        CamViewerO->height = CamO->height;
+    }
+
+    return true;
 }
 
 void View3DInventorViewer::moveCameraTo(const SbRotation& orientation, const SbVec3f& position, int duration)

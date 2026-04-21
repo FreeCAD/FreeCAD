@@ -93,7 +93,7 @@
        <item>
         <widget class="QLabel" name="label">
          <property name="toolTip">
-          <string>The smallest mesh size in the refinement, makred green in the mesh preview.</string>
+          <string>The smallest mesh size in the refinement, marked green in the mesh preview.</string>
          </property>
          <property name="text">
           <string>Min:</string>
@@ -106,7 +106,7 @@
        <item>
         <widget class="QLabel" name="Min">
          <property name="toolTip">
-          <string>The smallest mesh size in the refinement, makred green in the mesh preview.</string>
+          <string>The smallest mesh size in the refinement, marked green in the mesh preview.</string>
          </property>
          <property name="text">
           <string>1.00e+02</string>
@@ -135,7 +135,7 @@
        <item>
         <widget class="QLabel" name="label_2">
          <property name="toolTip">
-          <string>The largest mesh size in the refinement, makred red in the mesh preview.</string>
+          <string>The largest mesh size in the refinement, marked red in the mesh preview.</string>
          </property>
          <property name="text">
           <string>Max:</string>
@@ -148,7 +148,7 @@
        <item>
         <widget class="QLabel" name="Max">
          <property name="toolTip">
-          <string>The largest mesh size in the refinement, makred red in the mesh preview.</string>
+          <string>The largest mesh size in the refinement, marked red in the mesh preview.</string>
          </property>
          <property name="text">
           <string>1.00e+03</string>

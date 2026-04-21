@@ -63,6 +63,7 @@ public:
     /// Dragger is normally placed at the transform origin, unless explicitly overridden via
     /// ViewProviderDragger#setDraggerPlacement() method.
     App::PropertyPlacement TransformOrigin;
+    App::PropertyBool ShowPlacement;
 
     void attach(App::DocumentObject* pcObject) override;
 

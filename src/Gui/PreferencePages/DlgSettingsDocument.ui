@@ -208,6 +208,25 @@ This feature may slightly increase recomputation time.</string>
         </property>
        </widget>
       </item>
+      <item row="8" column="0">
+       <widget class="Gui::PrefCheckBox" name="prefEnableAsyncRecompute">
+        <property name="toolTip">
+         <string>This experimental feature allows more responsive GUI while recomputing features.</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Enables async document recomputation</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>EnableAsyncRecompute</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Document</cstring>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -564,6 +583,25 @@ get date suffix according to the specified format</string>
          </widget>
         </item>
        </layout>
+      </item>
+      <item row="10" column="0">
+       <widget class="Gui::PrefCheckBox" name="prefDisableVersionCheckOnSave">
+        <property name="toolTip">
+         <string>Suppresses the version mismatch warning when saving files created with an older FreeCAD version</string>
+        </property>
+        <property name="text">
+         <string>Suppress older version warning on save</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>DisableVersionCheckOnSave</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Document</cstring>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>

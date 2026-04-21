@@ -53,7 +53,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Drag the refinement, that should be altered,  into the manipulate object in the document tree</string>
+        <string>Drag the refinement, that should be altered, into the Manipulate object in the document tree</string>
        </property>
        <property name="wordWrap">
         <bool>true</bool>
@@ -157,7 +157,7 @@
              <item row="0" column="0">
               <widget class="QLabel" name="label_3">
                <property name="toolTip">
-                <string>Include the boundary of the selected erference elements</string>
+                <string>Include the boundary of the selected reference elements</string>
                </property>
                <property name="text">
                 <string>Include boundary</string>
@@ -170,7 +170,7 @@
                 <bool>true</bool>
                </property>
                <property name="toolTip">
-                <string>Include the boundary of the selected erference elements</string>
+                <string>Include the boundary of the selected reference elements</string>
                </property>
                <property name="text">
                 <string/>
@@ -743,7 +743,7 @@ F = div(norm(grad(G)))
           <item>
            <widget class="QLabel" name="label_15">
             <property name="text">
-             <string notr="true">Compute finite difference the Laplacian of child refinement G:
+             <string notr="true">Compute finite difference of the Laplacian of child refinement G:
 
 F = G(x+d,y,z) + G(x-d,y,z) + G(x,y+d,z) + G(x,y-d,z) + G(x,y,z+d) + G(x,y,z-d) - 6 * G(x,y,z)
 </string>

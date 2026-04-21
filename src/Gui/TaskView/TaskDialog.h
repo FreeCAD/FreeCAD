@@ -100,6 +100,7 @@ public:
     {
         return escapeButton;
     }
+    QDialogButtonBox::ButtonRole roleOnEscape {QDialogButtonBox::ButtonRole::RejectRole};
 
     /// Defines whether a task dialog must be closed if the document changed the
     /// active transaction.

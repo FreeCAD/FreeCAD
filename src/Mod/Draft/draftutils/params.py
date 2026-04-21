@@ -697,7 +697,9 @@ def _get_param_dictionary():
         # https://stackoverflow.com/questions/14750997/load-txt-file-from-resources-in-python
         fd = QtCore.QFile(fnm)
         if fd.open(QtCore.QIODevice.ReadOnly | QtCore.QFile.Text):
-            text = QtCore.QTextStream(fd).readAll()
+            # avoid using QTextStream due to bug in PySide6.11
+            # text = QtCore.QTextStream(fd).readAll()
+            text = fd.readAll().data().decode()
             fd.close()
         else:
             continue

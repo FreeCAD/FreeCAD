@@ -80,7 +80,7 @@
         <string>Determines how fine the preview mesh is. Larger number means finer mesh (smaller mesh elements)</string>
        </property>
        <property name="text">
-        <string>Preview mesh finess</string>
+        <string>Preview mesh fineness</string>
        </property>
       </widget>
      </item>

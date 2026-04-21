@@ -42,7 +42,7 @@
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../../MeasureCOM.py" line="62"/>
+      <location filename="../../../MeasureCOM.py" line="61"/>
       <source>Element to measure</source>
       <translation>Элемент для вымярэння</translation>
     </message>
@@ -50,7 +50,7 @@
   <context>
     <name>App::PropertyVector</name>
     <message>
-      <location filename="../../../MeasureCOM.py" line="69"/>
+      <location filename="../../../MeasureCOM.py" line="68"/>
       <source>The result location</source>
       <translation>Месцазнаходжанне выніку</translation>
     </message>
@@ -64,7 +64,7 @@
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="223"/>
-      <location filename="../../QuickMeasure.cpp" line="260"/>
+      <location filename="../../QuickMeasure.cpp" line="262"/>
       <source>Nominal distance: %1</source>
       <translation>Намінальная адлегласць: %1</translation>
     </message>
@@ -74,93 +74,93 @@
       <translation>Плошча: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="230"/>
+      <location filename="../../QuickMeasure.cpp" line="232"/>
       <source>Area: %1, Radius: %2</source>
       <translation>Плошча: %1, радыус: %2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="234"/>
+      <location filename="../../QuickMeasure.cpp" line="236"/>
       <source>Area: %1, Diameter: %2</source>
       <translation>Плошча: %1, дыяметр: %2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="243"/>
+      <location filename="../../QuickMeasure.cpp" line="245"/>
       <source>Total area: %1, Axis distance: %2</source>
       <translation>Агульная плошча: %1, адлегласць паміж восямі: %2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="248"/>
+      <location filename="../../QuickMeasure.cpp" line="250"/>
       <source>Total area: %1, Axis distance: %2, Axis angle: %3</source>
       <translation>Агульная плошча: %1, адлегласць паміж восямі: %2, вугал нахілу восі: %3</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="257"/>
+      <location filename="../../QuickMeasure.cpp" line="259"/>
       <source>Total length: %1</source>
       <translation>Агульная даўжыня: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="263"/>
+      <location filename="../../QuickMeasure.cpp" line="265"/>
       <source>Angle: %1, Total length: %2</source>
       <translation>Вугал: %1, агульная даўжыня: %2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="267"/>
+      <location filename="../../QuickMeasure.cpp" line="269"/>
       <source>Length: %1</source>
       <translation>Даўжыня: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="270"/>
+      <location filename="../../QuickMeasure.cpp" line="272"/>
       <source>Radius: %1</source>
       <translation>Радыус: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="273"/>
+      <location filename="../../QuickMeasure.cpp" line="275"/>
       <source>Diameter: %1</source>
       <translation>Дыяметр: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="276"/>
+      <location filename="../../QuickMeasure.cpp" line="278"/>
       <source>Distance: %1</source>
       <translation>Адлегласць: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="279"/>
+      <location filename="../../QuickMeasure.cpp" line="281"/>
       <source>Minimum distance: %1</source>
       <translation>Найменшая адлегласць: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="283"/>
+      <location filename="../../QuickMeasure.cpp" line="285"/>
       <source>Minimum distance: %1, Axis distance: %2</source>
       <translation>Найменшая адлегласць: %1, адлегласць паміж восямі: %2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="289"/>
+      <location filename="../../QuickMeasure.cpp" line="291"/>
       <source>Minimum distance: %1, Center distance: %2</source>
       <translation>Найменшая адлегласць: %1, адлегласць ад цэнтру: %2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="296"/>
-      <location filename="../../QuickMeasure.cpp" line="313"/>
+      <location filename="../../QuickMeasure.cpp" line="298"/>
+      <location filename="../../QuickMeasure.cpp" line="315"/>
       <source>Total length: %1, Center distance: %2</source>
       <translation>Агульная даўжыня: %1, адлегласць ад цэнтру: %2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="303"/>
+      <location filename="../../QuickMeasure.cpp" line="305"/>
       <source>Total length: %1, Center distance: %2, Axis angle: %3</source>
       <translation>Агульная даўжыня: %1, адлегласць ад цэнтру: %2, вугал нахілу восі: %3</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="318"/>
+      <location filename="../../QuickMeasure.cpp" line="320"/>
       <source>Center surface distance: %1</source>
       <translation>Адлегласць паміж цэнтрамі паверхняў: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="323"/>
+      <location filename="../../QuickMeasure.cpp" line="325"/>
       <source>Center axis distance: %1</source>
       <translation>Адлегласць паміж цэнтрамі восей: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="326"/>
+      <location filename="../../QuickMeasure.cpp" line="328"/>
       <source>Center axis distance: %1, Axis angle: %2</source>
       <translation>Адлегласць паміж цэнтрамі восей: %1, вугал нахілу восі: %2</translation>
     </message>
@@ -168,7 +168,7 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppMeasureGui.cpp" line="109"/>
+      <location filename="../../AppMeasureGui.cpp" line="115"/>
       <source>Measure</source>
       <translation>Вымярэнне</translation>
     </message>
@@ -190,69 +190,94 @@
   <context>
     <name>MeasureGui::TaskMeasure</name>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="67"/>
+      <location filename="../../TaskMeasure.cpp" line="103"/>
       <source>Measurement</source>
       <translation>Вымярэнне</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="88"/>
-      <source>Show Delta:</source>
-      <translation>Паказаць дэльту:</translation>
+      <location filename="../../TaskMeasure.cpp" line="119"/>
+      <source>Show Delta</source>
+      <translation>Паказаць дэльту</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="94"/>
+      <location filename="../../TaskMeasure.cpp" line="125"/>
       <source>Auto Save</source>
       <translation>Аўтаматычна захаваць</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="98"/>
+      <location filename="../../TaskMeasure.cpp" line="129"/>
       <source>Auto saving of the last measurement when starting a new measurement. Use the Shift key to temporarily invert the behaviour.</source>
       <translation>Аўтаматычнае захаванне вынікаў апошняга вымярэння пры запуску новага.
 Ужывайце клавішу &lt;Shift>, каб часова змяніць рэжым працы.</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="103"/>
+      <location filename="../../TaskMeasure.cpp" line="134"/>
       <source>Additive Selection</source>
       <translation>Выбар дадання</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="109"/>
+      <location filename="../../TaskMeasure.cpp" line="140"/>
       <source>If checked, new selection will be added to the measurement. If unchecked, the Ctrl key must be pressed to add a selection to the current measurement otherwise a new measurement will be started</source>
       <translation>Калі птушка, да вымярэння будзе дададзеная новая выбарка.
 Калі не птушка, неабходна націснуць клавішу &lt;Ctrl>, каб дадаць выбарку да бягучага вымярэння, у адваротным выпадку будзе запушчана новае вымярэнне</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="122"/>
+      <location filename="../../TaskMeasure.cpp" line="153"/>
       <source>Settings</source>
       <translation>Налады</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="134"/>
+      <location filename="../../TaskMeasure.cpp" line="165"/>
       <source>Auto</source>
       <translation>Аўтаматычнае</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="160"/>
-      <source>Mode:</source>
-      <translation>Рэжым:</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMeasure.cpp" line="162"/>
-      <source>Result:</source>
-      <translation>Вынік:</translation>
-    </message>
-    <message>
       <location filename="../../TaskMeasure.cpp" line="197"/>
+      <source>Mode</source>
+      <translation>Рэжым</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMeasure.cpp" line="211"/>
+      <source>Result</source>
+      <translation>Вынік</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMeasure.cpp" line="577"/>
+      <source>%1 auto-save</source>
+      <translation>%1 аўтаматычна захавана</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMeasure.cpp" line="581"/>
+      <source>%1 start new measurement</source>
+      <translation>%1 пачаць новае вымярэнне</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMeasure.cpp" line="581"/>
+      <source>%1 add to measurement</source>
+      <translation>%1 дадаць да вымярэння</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMeasure.cpp" line="810"/>
+      <source>%1 new measurement, %2 toggle auto-save</source>
+      <translation>%1 новае вымярэнне, %2 пераключыць аўтаматычнае захаванне</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMeasure.cpp" line="815"/>
+      <source>%1 add to measurement, %2 toggle auto-save</source>
+      <translation>%1 дадаць да вымярэння, %2 пераключыць аўтаматычнае захаванне</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMeasure.cpp" line="247"/>
       <source>Saves the measurement in the active document</source>
       <translation>Захоўвае вымярэнне ў бягучым дакуменце</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="203"/>
+      <location filename="../../TaskMeasure.cpp" line="253"/>
       <source>Close</source>
       <translation>Зачыніць</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="204"/>
+      <location filename="../../TaskMeasure.cpp" line="254"/>
       <source>Close the measurement task.</source>
       <translation>Зачыніць задачу вымярэння.</translation>
     </message>
@@ -260,7 +285,7 @@
   <context>
     <name>QPlatformTheme</name>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="196"/>
+      <location filename="../../TaskMeasure.cpp" line="246"/>
       <source>Save</source>
       <translation>Захаваць</translation>
     </message>
@@ -268,44 +293,262 @@
   <context>
     <name>TaskMeasure</name>
     <message>
-      <location filename="../../../InitGui.py" line="46"/>
+      <location filename="../../../InitGui.py" line="44"/>
       <source>Center of mass</source>
       <translation>Цэнтр масы</translation>
     </message>
     <message>
-      <location filename="../../../App/AppMeasure.cpp" line="115"/>
+      <location filename="../../../App/AppMeasure.cpp" line="119"/>
       <source>Distance</source>
       <translation>Адлегласць</translation>
     </message>
     <message>
-      <location filename="../../../App/AppMeasure.cpp" line="123"/>
+      <location filename="../../../App/AppMeasure.cpp" line="127"/>
       <source>Distance Free</source>
       <translation>Свабодная адлегласць</translation>
     </message>
     <message>
-      <location filename="../../../App/AppMeasure.cpp" line="131"/>
+      <location filename="../../../App/AppMeasure.cpp" line="135"/>
       <source>Angle</source>
       <translation>Вугал</translation>
     </message>
     <message>
-      <location filename="../../../App/AppMeasure.cpp" line="139"/>
+      <location filename="../../../App/AppMeasure.cpp" line="143"/>
       <source>Length</source>
       <translation>Даўжыня</translation>
     </message>
     <message>
-      <location filename="../../../App/AppMeasure.cpp" line="147"/>
+      <location filename="../../../App/AppMeasure.cpp" line="151"/>
       <source>Position</source>
       <translation>Становішча</translation>
     </message>
     <message>
-      <location filename="../../../App/AppMeasure.cpp" line="155"/>
+      <location filename="../../../App/AppMeasure.cpp" line="159"/>
       <source>Area</source>
       <translation>Плошча</translation>
     </message>
     <message>
-      <location filename="../../../App/AppMeasure.cpp" line="163"/>
+      <location filename="../../../App/AppMeasure.cpp" line="175"/>
       <source>Radius</source>
       <translation>Радыус</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskMassProperties</name>
+    <message>
+      <location filename="../../TaskMassProperties.ui" line="38"/>
+      <source>Objects to measure</source>
+      <translation>Аб'екты ў вымярэнне</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.ui" line="58"/>
+      <source>Reference</source>
+      <translation>Адносіны</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.ui" line="83"/>
+      <source>Center of gravity</source>
+      <translation>Цэнтр масы</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.ui" line="110"/>
+      <source>Custom</source>
+      <translation>Карыстальніцкі</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.ui" line="124"/>
+      <source>Select…</source>
+      <translation>Абраць…</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.ui" line="137"/>
+      <source>mm, kg, kg*mm^2</source>
+      <translation>мм, кг, кг*мм²</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.ui" line="142"/>
+      <source>m, kg, kg*m^2</source>
+      <translation>м, кг, кг*м²</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.ui" line="147"/>
+      <source>in, lb, lb*in^2</source>
+      <translation>цаля, фунт, фунт*цаля²</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.ui" line="152"/>
+      <source>ft, lb, lb*ft^2</source>
+      <translation>фут, фунт, фунт*фут²</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.ui" line="172"/>
+      <source>Volume</source>
+      <translation>Аб'ём</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.ui" line="186"/>
+      <source>Mass</source>
+      <translation>Маса</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.ui" line="200"/>
+      <source>Density</source>
+      <translation>Шчыльнасць</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.ui" line="214"/>
+      <source>Surface area</source>
+      <translation>Плошча паверхні</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.ui" line="254"/>
+      <location filename="../../TaskMassProperties.ui" line="387"/>
+      <source>X</source>
+      <translation>X</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.ui" line="281"/>
+      <location filename="../../TaskMassProperties.ui" line="414"/>
+      <source>Y</source>
+      <translation>Y</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.ui" line="308"/>
+      <location filename="../../TaskMassProperties.ui" line="441"/>
+      <source>Z</source>
+      <translation>Z</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.ui" line="339"/>
+      <location filename="../../TaskMassProperties.ui" line="472"/>
+      <source>Create Datum Point</source>
+      <translation>Стварыць апорную кропку</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.ui" line="503"/>
+      <source>Inertia Matrix</source>
+      <translation>Матрыца інэрцыі</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.ui" line="531"/>
+      <source>Jox</source>
+      <translation>Jox</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.ui" line="545"/>
+      <source>Jxy</source>
+      <translation>Jxy</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.ui" line="559"/>
+      <source>Jzx</source>
+      <translation>Jzx</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.ui" line="573"/>
+      <source>Joy</source>
+      <translation>Joy</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.ui" line="587"/>
+      <source>Jzy</source>
+      <translation>Jzy</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.ui" line="601"/>
+      <source>Joz</source>
+      <translation>Joz</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.ui" line="625"/>
+      <source>Principal Moments of Inertia</source>
+      <translation>Асноўныя моманты інэрцыі</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.ui" line="650"/>
+      <source>Jx</source>
+      <translation>Jx</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.ui" line="677"/>
+      <source>Jy</source>
+      <translation>Jy</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.ui" line="704"/>
+      <source>Jz</source>
+      <translation>Jz</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.ui" line="749"/>
+      <source>Create Principal Axes LCS</source>
+      <translation>Стварыць лакальную сістэму каардынат з галоўнымі восямі</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.ui" line="790"/>
+      <source>Inertia around axis</source>
+      <translation>Інерцыя вярчэння вакол восі</translation>
+    </message>
+  </context>
+  <context>
+    <name>MassPropertiesGui::TaskMassProperties</name>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="279"/>
+      <source>Parameters</source>
+      <translation>Налады</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="282"/>
+      <source>Physical Properties</source>
+      <translation>Фізічныя ўласцівасці</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="285"/>
+      <source>Center of Gravity</source>
+      <translation>Цэнтр масы</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="286"/>
+      <source>Center of Volume</source>
+      <translation>Цэнтр аб'ёму</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="287"/>
+      <source>Inertia</source>
+      <translation>Інерцыя</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="359"/>
+      <source>Close</source>
+      <translation>Зачыніць</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="362"/>
+      <source>Save</source>
+      <translation>Захаваць</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="366"/>
+      <source>Reset</source>
+      <translation>Скінуць</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="1126"/>
+      <source> (Average)</source>
+      <translation> (сярэдняе значэнне)</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdMassProperties</name>
+    <message>
+      <location filename="../../Command.cpp" line="97"/>
+      <source>Mass Properties</source>
+      <translation>Уласцівасці масы</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="98"/>
+      <source>Calculates mass properties of selected objects</source>
+      <translation>Вылічае ўласцівасці мас абраных аб'ектаў</translation>
     </message>
   </context>
 </TS>

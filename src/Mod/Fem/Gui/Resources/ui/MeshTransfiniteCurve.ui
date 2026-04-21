@@ -38,7 +38,7 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>Create a defined amount of mesh nodes on edges with a structured algorithm.</string>
+      <string>Create a defined number of mesh nodes on edges with a structured algorithm.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

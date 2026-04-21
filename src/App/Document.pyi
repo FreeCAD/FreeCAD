@@ -102,6 +102,16 @@ class Document(PropertyContainer):
         """
         ...
 
+    def canWriteRecoverySnapshot(self) -> bool:
+        """
+        Return whether the document is in an App-side state that allows writing
+        a recovery snapshot.
+
+        This does not account for GUI-only constraints such as an active Gui
+        transaction.
+        """
+        ...
+
     def load(self, path: str, /) -> None:
         """
         Load the document from the given path.

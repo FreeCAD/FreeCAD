@@ -26,6 +26,7 @@
 
 #include <BRepBuilderAPI_MakeShape.hxx>
 #include <BRepAlgoAPI_BuilderAlgo.hxx>
+#include <BRepTools_History.hxx>
 #include <Standard_Version.hxx>
 #include <TopoDS_Compound.hxx>
 #include <TopoDS_Face.hxx>
@@ -118,6 +119,8 @@ protected:
     std::vector<TopoDS_Shape> myShapesToReturn;
     std::vector<TopoDS_Shape> myInputFaces;
     BRepAlgoAPI_BuilderAlgo mySplitter;
+    Handle(BRepTools_History) myPreSplitHistory;
+    TopoDS_Compound myPreSplitCompound;
     TopoShape myTopoShape;
     int minElementNames = 1;
 

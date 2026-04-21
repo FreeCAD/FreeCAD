@@ -21,6 +21,8 @@
  ***************************************************************************/
 
 #include <Inventor/nodes/SoCamera.h>
+#include <algorithm>
+
 #include <QApplication>
 #include <QCheckBox>
 #include <QClipboard>
@@ -1529,6 +1531,7 @@ void StdCmdDelete::activated(int iMsg)
             bool more = false;
             auto sels = Selection().getSelectionEx();
             bool autoDeletion = true;
+            bool forceDeletion = false;
             for (auto& sel : sels) {
                 auto obj = sel.getObject();
                 if (!obj) {
@@ -1592,6 +1595,7 @@ void StdCmdDelete::activated(int iMsg)
                 );
                 if (ret == QMessageBox::Yes) {
                     autoDeletion = true;
+                    forceDeletion = true;
                 }
             }
             if (autoDeletion) {
@@ -1601,7 +1605,8 @@ void StdCmdDelete::activated(int iMsg)
                     if (vp) {
                         manageDocCommand(obj->getDocument());
                         // ask the ViewProvider if it wants to do some clean up
-                        if (vp->onDelete(sel.getSubNames())) {
+                        // skip if user explicitly confirmed deletion of objects with dependencies
+                        if (forceDeletion || vp->onDelete(sel.getSubNames())) {
                             docs.insert(obj->getDocument());
                             FCMD_OBJ_DOC_CMD(obj, "removeObject('" << obj->getNameInDocument() << "')");
                         }
@@ -1686,6 +1691,68 @@ StdCmdRefresh::StdCmdRefresh()
     }
 }
 
+namespace
+{
+
+bool shouldProceedAfterDependencyCycle()
+{
+    return QMessageBox::warning(
+               getMainWindow(),
+               QObject::tr("Dependency error"),
+               qApp->translate(
+                   "Std_Refresh",
+                   "The document contains dependency cycles.\n"
+                   "Check the report view for more details.\n\n"
+                   "Proceed?"
+               ),
+               QMessageBox::Yes,
+               QMessageBox::No
+           )
+        == QMessageBox::Yes;
+}
+
+void handleDocumentRecomputeResult(const std::string& documentName, App::RecomputeFailure failure)
+{
+    if (failure == App::RecomputeFailure::None) {
+        return;
+    }
+
+    if (failure != App::RecomputeFailure::DependencyCycle) {
+        return;
+    }
+
+    App::Document* document = App::GetApplication().getDocument(documentName.c_str());
+    if (!document) {
+        return;
+    }
+
+    if (!shouldProceedAfterDependencyCycle()) {
+        return;
+    }
+
+    // If the user wants to proceed, enqueue another recompute request without
+    // the cycle-check option so the document recomputes like the legacy path.
+    App::RecomputeRequest newRequest = App::RecomputeRequest::fromDocument(*document, /*force=*/true);
+    App::GetApplication().queueRecomputeRequest(newRequest);
+}
+
+void refreshDocumentSynchronously(App::Document& document)
+{
+    try {
+        document.recompute({}, true, nullptr, App::Document::DepNoCycle);
+    }
+    catch (Base::BadGraphError&) {
+        if (shouldProceedAfterDependencyCycle()) {
+            document.recompute({}, true);
+        }
+    }
+    catch (Base::Exception& exception) {
+        exception.reportException();
+    }
+}
+
+}  // namespace
+
 void StdCmdRefresh::activated([[maybe_unused]] int iMsg)
 {
     if (!getActiveGuiDocument()) {
@@ -1693,28 +1760,29 @@ void StdCmdRefresh::activated([[maybe_unused]] int iMsg)
     }
 
     App::AutoTransaction trans((eType & NoTransaction) ? 0 : openActiveDocumentCommand("Recompute"));
+    auto doc = getActiveGuiDocument()->getDocument();
 
-    try {
-        doCommand(Doc, "App.activeDocument().recompute(None,True,True)");
+    App::RecomputeRequest request
+        = App::RecomputeRequest::fromDocument(*doc, true, App::Document::DepNoCycle);
+
+    if (!App::GetApplication().isAsyncRecomputeEnabled()
+        || !App::GetApplication().canRecomputeRequestOnWorker(request)) {
+        refreshDocumentSynchronously(*doc);
+        return;
     }
-    catch (Base::Exception& /*e*/) {
-        auto ret = QMessageBox::warning(
-            getMainWindow(),
-            QObject::tr("Dependency Error"),
-            qApp->translate(
-                "Std_Refresh",
-                "The document contains dependency cycles.\n"
-                "Check the report view for more details.\n\n"
-                "Proceed?"
-            ),
-            QMessageBox::Yes,
-            QMessageBox::No
+
+    request.callback = [](App::RecomputeRequest& request, App::RecomputeResult& result) {
+        // Handle the result in the UI thread.
+        QMetaObject::invokeMethod(
+            qApp,
+            [documentName = request.documentName, failure = result.failure]() {
+                handleDocumentRecomputeResult(documentName, failure);
+            },
+            Qt::QueuedConnection
         );
-        if (ret == QMessageBox::No) {
-            return;
-        }
-        doCommand(Doc, "App.activeDocument().recompute(None,True)");
-    }
+    };
+
+    App::GetApplication().queueRecomputeRequest(request);
 }
 
 bool StdCmdRefresh::isActive()
