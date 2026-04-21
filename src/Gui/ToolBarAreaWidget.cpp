@@ -45,6 +45,39 @@ QString widgetPersistenceKey(QWidget* widget)
 
     return widget->objectName();
 }
+QString widgetLegacyPersistenceKey(QWidget* widget)
+{
+    auto toolbar = qobject_cast<QToolBar*>(widget);
+    if (!toolbar) {
+        return {};
+    }
+
+    const auto legacyKey = toolbar->objectName();
+    if (legacyKey.isEmpty() || legacyKey == ToolBarManager::toolBarPersistenceKey(toolbar)) {
+        return {};
+    }
+
+    return legacyKey;
+}
+
+QWidget* findRestorableWidget(ToolBarAreaWidget* area, const QString& key)
+{
+    if (!area || key.isEmpty()) {
+        return nullptr;
+    }
+
+    if (auto widget = area->findChild<QWidget*>(key)) {
+        return widget;
+    }
+
+    for (auto toolbar : area->findChildren<QToolBar*>()) {
+        if (ToolBarManager::toolBarPersistenceKey(toolbar) == key || toolbar->objectName() == key) {
+            return toolbar;
+        }
+    }
+
+    return nullptr;
+}
 }  // namespace
 
 ToolBarAreaWidget::ToolBarAreaWidget(
@@ -83,6 +116,9 @@ void ToolBarAreaWidget::addWidget(QWidget* widget)
     if (!name.isEmpty()) {
         Base::ConnectionBlocker block(_conn);
         _hParam->SetInt(name.toUtf8().constData(), _layout->count() - 1);
+        if (const auto legacyKey = widgetLegacyPersistenceKey(widget); !legacyKey.isEmpty()) {
+            _hParam->RemoveInt(legacyKey.toUtf8().constData());
+        }
     }
 }
 
@@ -122,6 +158,9 @@ void ToolBarAreaWidget::removeWidget(QWidget* widget)
     if (!name.isEmpty()) {
         Base::ConnectionBlocker block(_conn);
         _hParam->RemoveInt(name.toUtf8().constData());
+        if (const auto legacyKey = widgetLegacyPersistenceKey(widget); !legacyKey.isEmpty()) {
+            _hParam->RemoveInt(legacyKey.toUtf8().constData());
+        }
     }
 
     adjustParent();
@@ -172,7 +211,7 @@ void ToolBarAreaWidget::restoreState(
     }
 
     for (const auto& [name, visible] : stateParams->GetBoolMap()) {
-        auto widget = findChild<QWidget*>(QString::fromUtf8(name.c_str()));
+        auto widget = findRestorableWidget(this, QString::fromUtf8(name.c_str()));
 
         if (widget) {
             widget->setVisible(visible);

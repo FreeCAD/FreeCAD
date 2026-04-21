@@ -119,6 +119,125 @@ QString toolBarScopeLabel(ToolBarManager::Scope scope)
 
     return {};
 }
+QString legacyToolBarKey(const QToolBar* toolbar)
+{
+    if (!toolbar) {
+        return {};
+    }
+
+    const auto legacyKey = toolbar->objectName();
+    if (legacyKey.isEmpty() || legacyKey == ToolBarManager::toolBarPersistenceKey(toolbar)) {
+        return {};
+    }
+
+    return legacyKey;
+}
+
+QMap<QString, bool> toBoolLookup(const ParameterGrp::handle& group)
+{
+    QMap<QString, bool> values;
+    if (!group) {
+        return values;
+    }
+
+    for (const auto& [key, value] : group->GetBoolMap()) {
+        values.insert(QString::fromUtf8(key.c_str()), value);
+    }
+
+    return values;
+}
+
+QMap<QString, int> toIntLookup(const ParameterGrp::handle& group)
+{
+    QMap<QString, int> values;
+    if (!group) {
+        return values;
+    }
+
+    for (const auto& [key, value] : group->GetIntMap()) {
+        values.insert(QString::fromUtf8(key.c_str()), static_cast<int>(value));
+    }
+
+    return values;
+}
+
+template<typename T>
+bool lookupValue(const QMap<QString, T>& values, const QString& key, T* result)
+{
+    auto it = values.constFind(key);
+    if (it == values.cend()) {
+        return false;
+    }
+
+    if (result) {
+        *result = it.value();
+    }
+
+    return true;
+}
+
+template<typename T>
+bool lookupToolBarValue(
+    const QMap<QString, T>& primaryValues,
+    const QMap<QString, T>& fallbackValues,
+    const QToolBar* toolbar,
+    T* result
+)
+{
+    if (!toolbar) {
+        return false;
+    }
+
+    const auto key = ToolBarManager::toolBarPersistenceKey(toolbar);
+    if (!key.isEmpty() && lookupValue(primaryValues, key, result)) {
+        return true;
+    }
+
+    const auto legacyKey = legacyToolBarKey(toolbar);
+    if (!legacyKey.isEmpty() && lookupValue(primaryValues, legacyKey, result)) {
+        return true;
+    }
+
+    if (!key.isEmpty() && lookupValue(fallbackValues, key, result)) {
+        return true;
+    }
+
+    if (!legacyKey.isEmpty() && lookupValue(fallbackValues, legacyKey, result)) {
+        return true;
+    }
+
+    return false;
+}
+
+QStringList remapLegacyLayoutEntries(const QStringList& layout, const QMap<QString, QString>& aliases)
+{
+    QStringList normalized;
+    for (const auto& entry : layout) {
+        if (entry == QStringLiteral("Break")) {
+            normalized << entry;
+            continue;
+        }
+
+        const auto mappedEntry = aliases.value(entry, entry);
+        if (!normalized.contains(mappedEntry)) {
+            normalized << mappedEntry;
+        }
+    }
+
+    return normalized;
+}
+
+void moveToolBarPreservingVisibility(MainWindow* mainWindow, QToolBar* toolbar, Qt::ToolBarArea area)
+{
+    bool visible = toolbar->isVisible();
+    if (!visible) {
+        // QMainWindow does not reliably re-place hidden toolbars when restoring a saved layout.
+        toolbar->setVisible(true);
+    }
+
+    mainWindow->addToolBar(area, toolbar);
+    toolbar->setVisible(visible);
+}
 }  // namespace
 
 ToolBarItem::ToolBarItem()
@@ -881,6 +1000,7 @@ void ToolBarManager::restoreWorkbenchToolBarLayout(const QString& context) const
     }
 
     QMap<QString, ToolBar*> mainWindowToolbars;
+    QMap<QString, QString> legacyAliases;
     QList<ToolBar*> currentToolbars = toolBars();
     for (auto toolbar : std::as_const(currentToolbars)) {
         auto key = toolBarPersistenceKey(toolbar);
@@ -889,16 +1009,22 @@ void ToolBarManager::restoreWorkbenchToolBarLayout(const QString& context) const
         }
 
         mainWindowToolbars.insert(key, toolbar);
+        if (const auto legacyKey = legacyToolBarKey(toolbar); !legacyKey.isEmpty()) {
+            legacyAliases.insert(legacyKey, key);
+        }
     }
 
     if (mainWindowToolbars.isEmpty()) {
         return;
     }
 
-    QStringList top = splitLayoutState(group->GetASCII("Top"));
-    QStringList left = splitLayoutState(group->GetASCII("Left"));
-    QStringList right = splitLayoutState(group->GetASCII("Right"));
-    QStringList bottom = splitLayoutState(group->GetASCII("Bottom"));
+    QStringList top = remapLegacyLayoutEntries(splitLayoutState(group->GetASCII("Top")), legacyAliases);
+    QStringList left
+        = remapLegacyLayoutEntries(splitLayoutState(group->GetASCII("Left")), legacyAliases);
+    QStringList right
+        = remapLegacyLayoutEntries(splitLayoutState(group->GetASCII("Right")), legacyAliases);
+    QStringList bottom
+        = remapLegacyLayoutEntries(splitLayoutState(group->GetASCII("Bottom")), legacyAliases);
 
     QSet<QString> knownKeys;
     auto rememberKeys = [&knownKeys](const QStringList& layout) {
@@ -943,9 +1069,7 @@ void ToolBarManager::restoreWorkbenchToolBarLayout(const QString& context) const
                 continue;
             }
 
-            bool visible = toolbar->isVisible();
-            getMainWindow()->addToolBar(area, toolbar);
-            toolbar->setVisible(visible);
+            moveToolBarPreservingVisibility(getMainWindow(), toolbar, area);
         }
     };
 
@@ -1322,6 +1446,19 @@ void ToolBarManager::restoreState() const
     const auto statusBarParams = toolbarAreaRestoreParameters(hStatusBar, hGlobalStatusBar);
     const auto menuBarLeftParams = toolbarAreaRestoreParameters(hMenuBarLeft, hGlobalMenuBarLeft);
     const auto menuBarRightParams = toolbarAreaRestoreParameters(hMenuBarRight, hGlobalMenuBarRight);
+    const auto visibilityValues = toBoolLookup(hPref);
+    const auto statusBarValues = toIntLookup(hStatusBar);
+    const auto statusBarFallbackValues = hStatusBar == hGlobalStatusBar
+        ? QMap<QString, int>()
+        : toIntLookup(hGlobalStatusBar);
+    const auto menuBarLeftValues = toIntLookup(hMenuBarLeft);
+    const auto menuBarLeftFallbackValues = hMenuBarLeft == hGlobalMenuBarLeft
+        ? QMap<QString, int>()
+        : toIntLookup(hGlobalMenuBarLeft);
+    const auto menuBarRightValues = toIntLookup(hMenuBarRight);
+    const auto menuBarRightFallbackValues = hMenuBarRight == hGlobalMenuBarRight
+        ? QMap<QString, int>()
+        : toIntLookup(hGlobalMenuBarRight);
 
     std::map<int, QToolBar*> sbToolBars;
     std::map<int, QToolBar*> mbRightToolBars;
@@ -1330,23 +1467,28 @@ void ToolBarManager::restoreState() const
     for (const QString& it : toolbarKeys) {
         QToolBar* toolbar = findToolBar(toolbars, it);
         if (toolbar) {
-            QByteArray toolbarKey = toolBarPersistenceKey(toolbar).toUtf8();
             if (getToolbarPolicy(toolbar) != ToolBarItem::DefaultVisibility::Unavailable) {
-                toolbar->setVisible(hPref->GetBool(toolbarKey.constData(), toolbar->isVisible()));
+                bool visible = toolbar->isVisible();
+                if (lookupToolBarValue(visibilityValues, {}, toolbar, &visible)) {
+                    toolbar->setVisible(visible);
+                }
             }
 
-            int idx = statusBarParams->GetInt(toolbarKey.constData(), -1);
-            if (idx >= 0) {
+            int idx = -1;
+            if (lookupToolBarValue(statusBarValues, statusBarFallbackValues, toolbar, &idx)
+                && idx >= 0) {
                 sbToolBars[idx] = toolbar;
                 continue;
             }
-            idx = menuBarLeftParams->GetInt(toolbarKey.constData(), -1);
-            if (idx >= 0) {
+            idx = -1;
+            if (lookupToolBarValue(menuBarLeftValues, menuBarLeftFallbackValues, toolbar, &idx)
+                && idx >= 0) {
                 mbLeftToolBars[idx] = toolbar;
                 continue;
             }
-            idx = menuBarRightParams->GetInt(toolbarKey.constData(), -1);
-            if (idx >= 0) {
+            idx = -1;
+            if (lookupToolBarValue(menuBarRightValues, menuBarRightFallbackValues, toolbar, &idx)
+                && idx >= 0) {
                 mbRightToolBars[idx] = toolbar;
                 continue;
             }
@@ -1842,7 +1984,14 @@ void ToolBarManager::setState(const QList<QString>& names, State state)
 
 void ToolBarManager::setState(const QString& name, State state)
 {
-    auto visibility = [this, name](bool defaultvalue) {
+    QToolBar* tb = findToolBar(toolBars(), name);
+    const auto visibilityValues = toBoolLookup(hPref);
+    auto visibility = [this, name, tb, &visibilityValues](bool defaultvalue) {
+        bool value = defaultvalue;
+        if (tb && lookupToolBarValue(visibilityValues, {}, tb, &value)) {
+            return value;
+        }
+
         return hPref->GetBool(name.toStdString().c_str(), defaultvalue);
     };
 
@@ -1866,7 +2015,6 @@ void ToolBarManager::setState(const QString& name, State state)
         }
     };
 
-    QToolBar* tb = findToolBar(toolBars(), name);
     if (tb) {
 
         auto policy = getToolbarPolicy(tb);
