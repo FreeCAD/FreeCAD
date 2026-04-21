@@ -171,6 +171,18 @@ TEST_F(ApplicationTest, RecomputeProgressFallsBackToParentText)
     EXPECT_EQ(sequencer.text, "Outer");
 }
 
+TEST_F(ApplicationTest, RecomputeProgressCancelCheckpointUsesLegacySequencer)
+{
+    RecordingSequencer sequencer;
+
+    EXPECT_NO_THROW(App::throwIfRecomputeCanceled());
+    EXPECT_EQ(sequencer.checkAbortCalls, 1);
+
+    sequencer.throwOnCheckAbort = true;
+    EXPECT_THROW(App::throwIfRecomputeCanceled(), Base::AbortException);
+    EXPECT_EQ(sequencer.checkAbortCalls, 2);
+}
+
 TEST_F(ApplicationTest, RecomputeProgressActivateClearsCancellationState)
 {
     App::RecomputeProgressHandle handle;
