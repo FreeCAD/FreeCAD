@@ -103,11 +103,126 @@ class TestToolbarPersistenceGui(unittest.TestCase):
     def main_window(self):
         return FreeCADGui.getMainWindow()
 
+    def normalized_action_text(self, action):
+        return str(action.text()).replace("&", "")
+
+    def menu_action_texts(self, menu):
+        return [
+            text
+            for text in (self.normalized_action_text(action) for action in menu.actions())
+            if text
+        ]
+
+    def menu_section_texts(self, menu):
+        return [
+            text
+            for text in (
+                self.normalized_action_text(action)
+                for action in menu.actions()
+                if action.isSeparator()
+            )
+            if text
+        ]
+
+    def find_action_by_whats_this(self, whats_this):
+        for action in self.main_window().findChildren(QtGui.QAction):
+            if str(action.whatsThis()) == whats_this:
+                return action
+        return None
+
+    def toolbar_menu(self):
+        action = self.find_action_by_whats_this("Std_ToolBarMenu")
+        self.assertIsNotNone(action, "Could not find Std_ToolBarMenu action")
+        menu = action.menu()
+        self.assertIsNotNone(menu, "Std_ToolBarMenu action should own a menu")
+        return menu
+
+    def capture_popup_menu(self, popup):
+        popup.clear()
+        popup.aboutToShow.emit()
+        self.pump(120)
+        texts = self.menu_action_texts(popup)
+        sections = self.menu_section_texts(popup)
+        return sections, texts
+
+    def prepare_popup_menu(self, popup):
+        popup.clear()
+        popup.aboutToShow.emit()
+        self.pump(120)
+        return popup
+
+    def trigger_menu_action(self, popup, action_text):
+        menu = self.prepare_popup_menu(popup)
+        for action in menu.actions():
+            if self.normalized_action_text(action) == action_text:
+                action.trigger()
+                self.pump(250)
+                return
+
+        self.fail(f"Menu action '{action_text}' was not found")
+
+    def capture_status_bar_context_menu(self):
+        status_bar = self.main_window().statusBar()
+        self.assertIsNotNone(status_bar, "Main window should provide a status bar")
+
+        result = {}
+        local_pos = status_bar.rect().center()
+        global_pos = status_bar.mapToGlobal(local_pos)
+        QtGui.QCursor.setPos(global_pos)
+
+        def capture():
+            popup = QtGui.QApplication.activePopupWidget()
+            if popup is None:
+                return
+
+            result["texts"] = self.menu_action_texts(popup)
+            result["sections"] = self.menu_section_texts(popup)
+            popup.hide()
+
+        QtCore.QTimer.singleShot(150, capture)
+        event = QtGui.QMouseEvent(
+            QtCore.QEvent.MouseButtonRelease,
+            local_pos,
+            global_pos,
+            QtCore.Qt.RightButton,
+            QtCore.Qt.RightButton,
+            QtCore.Qt.NoModifier,
+        )
+        QtGui.QApplication.sendEvent(status_bar, event)
+        self.assertIn("texts", result, "Status bar context menu did not open")
+        self.pump(120)
+        return result["sections"], result["texts"]
+
     def toolbar_key(self, toolbar):
         key = toolbar.property("PersistenceKey")
         if key:
             return str(key)
         return str(toolbar.objectName())
+
+    def toolbar_tier(self, toolbar):
+        tier = toolbar.property("Tier")
+        if tier:
+            return str(tier)
+        return ""
+
+    def toolbar_tier_label(self, toolbar):
+        labels = {
+            "recommended": QtGui.QApplication.translate("MainWindow", "Recommended"),
+            "secondary": QtGui.QApplication.translate("MainWindow", "Secondary"),
+            "advanced": QtGui.QApplication.translate("MainWindow", "Advanced"),
+            "contextual": QtGui.QApplication.translate("MainWindow", "Contextual"),
+        }
+        return labels.get(self.toolbar_tier(toolbar), "")
+
+    def toolbar_menu_label(self, toolbar):
+        base_label = self.normalized_action_text(toolbar.toggleViewAction())
+        if self.toolbar_tier(toolbar) in {"recommended", "contextual"}:
+            return base_label
+
+        tier_label = self.toolbar_tier_label(toolbar)
+        if not tier_label:
+            return base_label
+        return f"{base_label} ({tier_label})"
 
     def toolbar_area_value(self, area):
         return int(getattr(area, "value", area))
@@ -121,6 +236,54 @@ class TestToolbarPersistenceGui(unittest.TestCase):
             self.toolbar_area_value(QtCore.Qt.NoToolBarArea): QtCore.Qt.NoToolBarArea,
         }
         return mapping[value]
+
+    def alternative_toolbar_area(self, toolbar):
+        current_area = self.toolbar_area_value(self.main_window().toolBarArea(toolbar))
+        for area in (
+            QtCore.Qt.RightToolBarArea,
+            QtCore.Qt.LeftToolBarArea,
+            QtCore.Qt.BottomToolBarArea,
+            QtCore.Qt.TopToolBarArea,
+        ):
+            if self.toolbar_area_value(area) != current_area:
+                return area
+
+        return QtCore.Qt.TopToolBarArea
+
+    def toolbar_area_name(self, area):
+        mapping = {
+            self.toolbar_area_value(QtCore.Qt.LeftToolBarArea): "Left",
+            self.toolbar_area_value(QtCore.Qt.RightToolBarArea): "Right",
+            self.toolbar_area_value(QtCore.Qt.TopToolBarArea): "Top",
+            self.toolbar_area_value(QtCore.Qt.BottomToolBarArea): "Bottom",
+        }
+        return mapping[self.toolbar_area_value(area)]
+
+    def backup_bool_param(self, params, key):
+        existing = key in {str(name) for name in params.GetBools()}
+        value = params.GetBool(key) if existing else False
+
+        def restore():
+            if existing:
+                params.SetBool(key, value)
+            else:
+                params.RemBool(key)
+
+        self.addCleanup(restore)
+
+    def backup_group(self, params, group_name, backup_name):
+        had_group = params.HasGroup(group_name)
+        params.RemGroup(backup_name)
+        if had_group:
+            params.GetGroup(group_name).CopyTo(params.GetGroup(backup_name))
+
+        def restore():
+            params.RemGroup(group_name)
+            if had_group:
+                params.GetGroup(backup_name).CopyTo(params.GetGroup(group_name))
+            params.RemGroup(backup_name)
+
+        self.addCleanup(restore)
 
     def all_toolbars(self):
         return list(self.main_window().findChildren(QtGui.QToolBar))
@@ -356,3 +519,384 @@ class TestToolbarPersistenceGui(unittest.TestCase):
         self.assert_toolbar_area(edit_key, QtCore.Qt.LeftToolBarArea)
         self.assert_toolbar_visibility(edit_hidden_key, False)
         self.leave_sketch_edit()
+
+    def test_unsaved_scope_falls_back_to_recommended_toolbars(self):
+        visibility_group = FreeCAD.ParamGet("User parameter:BaseApp/MainWindow/Toolbars")
+        scoped_keys = (
+            "wb:SketcherWorkbench:Sketcher",
+            "ctx:SketcherWorkbench:edit:Edit Mode",
+            "ctx:SketcherWorkbench:edit:Geometries",
+            "ctx:SketcherWorkbench:edit:Constraints",
+            "ctx:SketcherWorkbench:edit:Sketcher Tools",
+            "ctx:SketcherWorkbench:edit:B-Spline Tools",
+            "ctx:SketcherWorkbench:edit:Visual Helpers",
+        )
+        for key in ("shared:View",) + scoped_keys:
+            self.backup_bool_param(visibility_group, key)
+
+        layout_params = FreeCAD.ParamGet("User parameter:BaseApp/MainWindow/WorkbenchLayouts")
+        self.backup_group(
+            layout_params,
+            "SketcherWorkbench",
+            "__ToolbarUnsavedScopeBackup__SketcherWorkbench",
+        )
+        self.backup_group(
+            layout_params,
+            "ctx:SketcherWorkbench:edit",
+            "__ToolbarUnsavedScopeBackup__SketcherEdit",
+        )
+
+        visibility_group.SetBool("shared:View", True)
+        for key in scoped_keys:
+            visibility_group.SetBool(key, False)
+
+        layout_params.RemGroup("SketcherWorkbench")
+        layout_params.RemGroup("ctx:SketcherWorkbench:edit")
+
+        self.activate_workbench("PartWorkbench", "wb:PartWorkbench:")
+        self.activate_workbench("SketcherWorkbench", "wb:SketcherWorkbench:")
+        self.assert_toolbar_visibility("shared:View", True)
+        self.assert_toolbar_visibility("wb:SketcherWorkbench:Sketcher", True)
+
+        self.enter_sketch_edit()
+        self.assert_toolbar_visibility("shared:View", True)
+        self.assert_toolbar_visibility("ctx:SketcherWorkbench:edit:Geometries", True)
+        self.leave_sketch_edit()
+
+    def test_custom_toolbar_tier_is_loaded_from_preferences(self):
+        workbench_params = FreeCAD.ParamGet("User parameter:BaseApp/Workbench")
+        self.backup_group(
+            workbench_params,
+            "SketcherWorkbench",
+            "__ToolbarCustomTierBackup__SketcherWorkbench",
+        )
+
+        toolbar_group = workbench_params.GetGroup("SketcherWorkbench").GetGroup("Toolbar")
+        toolbar_group.Clear()
+        custom_toolbar = toolbar_group.GetGroup("Custom_1")
+        custom_toolbar.SetString("Name", "Custom Tier Test")
+        custom_toolbar.SetBool("Active", True)
+        custom_toolbar.SetString("Tier", "advanced")
+        custom_toolbar.SetString("Std_Undo", "Gui")
+
+        self.activate_workbench("PartWorkbench", "wb:PartWorkbench:")
+        self.activate_workbench("SketcherWorkbench", "wb:SketcherWorkbench:")
+
+        toolbar = self.wait_for_toolbar("wb:SketcherWorkbench:Custom Tier Test")
+        self.assertEqual(self.toolbar_tier(toolbar), "advanced")
+
+    def test_toolbar_menu_groups_and_reset_actions(self):
+        shared_label = QtGui.QApplication.translate("MainWindow", "Shared Toolbars")
+        workbench_label = QtGui.QApplication.translate("MainWindow", "Workbench Toolbars")
+        contextual_label = QtGui.QApplication.translate("MainWindow", "Contextual Toolbars")
+        reset_workbench_label = QtGui.QApplication.translate(
+            "MainWindow", "Reset Current Workbench Layout"
+        )
+        reset_contextual_label = QtGui.QApplication.translate(
+            "MainWindow", "Reset Current Contextual Layout"
+        )
+        show_recommended_only_label = QtGui.QApplication.translate(
+            "MainWindow", "Show Recommended Only"
+        )
+        recommended_reset_workbench_label = QtGui.QApplication.translate(
+            "MainWindow", "Reset To Recommended Workbench Layout"
+        )
+        recommended_reset_contextual_label = QtGui.QApplication.translate(
+            "MainWindow", "Reset To Recommended Contextual Layout"
+        )
+
+        self.activate_workbench("SketcherWorkbench", "wb:SketcherWorkbench:")
+        sketcher_toolbar_label = self.toolbar_menu_label(
+            self.wait_for_toolbar("wb:SketcherWorkbench:Sketcher")
+        )
+        clipboard_toolbar_label = self.toolbar_menu_label(self.wait_for_toolbar("shared:Clipboard"))
+        macro_toolbar_label = self.toolbar_menu_label(self.wait_for_toolbar("shared:Macro"))
+
+        sections, texts = self.capture_popup_menu(self.toolbar_menu())
+        self.assertIn(
+            shared_label, sections, "Main toolbar menu should expose shared toolbar group"
+        )
+        self.assertIn(
+            workbench_label,
+            sections,
+            "Main toolbar menu should expose workbench toolbar group in workbench mode",
+        )
+        self.assertIn(
+            sketcher_toolbar_label,
+            texts,
+            "Main toolbar menu should expose recommended tier label for workbench toolbars",
+        )
+        self.assertIn(
+            clipboard_toolbar_label,
+            texts,
+            "Main toolbar menu should expose secondary tier label for shared toolbars",
+        )
+        self.assertIn(
+            macro_toolbar_label,
+            texts,
+            "Main toolbar menu should expose advanced tier label for shared toolbars",
+        )
+        self.assertIn(
+            show_recommended_only_label,
+            texts,
+            "Main toolbar menu should expose show recommended only action in workbench mode",
+        )
+        self.assertIn(
+            reset_workbench_label,
+            texts,
+            "Main toolbar menu should expose workbench layout reset in workbench mode",
+        )
+        self.assertIn(
+            recommended_reset_workbench_label,
+            texts,
+            "Main toolbar menu should expose recommended workbench reset in workbench mode",
+        )
+
+        self.enter_sketch_edit()
+        contextual_toolbar_label = self.toolbar_menu_label(
+            self.wait_for_toolbar("ctx:SketcherWorkbench:edit:Geometries")
+        )
+        sections, texts = self.capture_popup_menu(self.toolbar_menu())
+        self.assertIn(shared_label, sections, "Main toolbar menu should keep shared toolbar group")
+        self.assertIn(
+            contextual_label,
+            sections,
+            "Main toolbar menu should expose contextual toolbar group during edit mode",
+        )
+        self.assertIn(
+            contextual_toolbar_label,
+            texts,
+            "Main toolbar menu should expose contextual tier label during edit mode",
+        )
+        self.assertIn(
+            show_recommended_only_label,
+            texts,
+            "Main toolbar menu should expose show recommended only action during edit mode",
+        )
+        self.assertIn(
+            reset_contextual_label,
+            texts,
+            "Main toolbar menu should expose contextual layout reset during edit mode",
+        )
+        self.assertIn(
+            recommended_reset_contextual_label,
+            texts,
+            "Main toolbar menu should expose recommended contextual reset during edit mode",
+        )
+
+        self.leave_sketch_edit()
+        _, texts = self.capture_status_bar_context_menu()
+        self.assertIn(
+            reset_workbench_label,
+            texts,
+            "Workbench runtime context menu should expose workbench layout reset",
+        )
+        self.assertNotIn(
+            reset_contextual_label,
+            texts,
+            "Workbench runtime context menu should not expose contextual reset outside edit mode",
+        )
+        self.assertIn(
+            recommended_reset_workbench_label,
+            texts,
+            "Workbench runtime context menu should expose recommended workbench reset",
+        )
+        self.assertIn(
+            show_recommended_only_label,
+            texts,
+            "Workbench runtime context menu should expose show recommended only action",
+        )
+        self.assertNotIn(
+            recommended_reset_contextual_label,
+            texts,
+            "Workbench runtime context menu should not expose recommended contextual reset outside edit mode",
+        )
+
+        self.enter_sketch_edit()
+        _, texts = self.capture_status_bar_context_menu()
+        self.assertIn(
+            reset_contextual_label,
+            texts,
+            "Contextual runtime context menu should expose contextual layout reset",
+        )
+        self.assertNotIn(
+            reset_workbench_label,
+            texts,
+            "Contextual runtime context menu should not expose workbench reset label",
+        )
+        self.assertIn(
+            recommended_reset_contextual_label,
+            texts,
+            "Contextual runtime context menu should expose recommended contextual reset",
+        )
+        self.assertIn(
+            show_recommended_only_label,
+            texts,
+            "Contextual runtime context menu should expose show recommended only action",
+        )
+        self.assertNotIn(
+            recommended_reset_workbench_label,
+            texts,
+            "Contextual runtime context menu should not expose recommended workbench reset",
+        )
+        self.leave_sketch_edit()
+
+    def test_toolbar_tier_metadata_is_exposed(self):
+        self.activate_workbench("SketcherWorkbench", "wb:SketcherWorkbench:")
+
+        self.assertEqual(
+            self.toolbar_tier(self.wait_for_toolbar("wb:SketcherWorkbench:Sketcher")),
+            "recommended",
+        )
+        self.assertEqual(
+            self.toolbar_tier(self.wait_for_toolbar("shared:Clipboard")),
+            "secondary",
+        )
+        self.assertEqual(
+            self.toolbar_tier(self.wait_for_toolbar("shared:Macro")),
+            "advanced",
+        )
+
+        self.enter_sketch_edit()
+        self.assertEqual(
+            self.toolbar_tier(self.wait_for_toolbar("ctx:SketcherWorkbench:edit:Geometries")),
+            "contextual",
+        )
+        self.leave_sketch_edit()
+
+    def test_recommended_toolbar_reset_restores_tier_defaults(self):
+        recommended_reset_workbench_label = QtGui.QApplication.translate(
+            "MainWindow", "Reset To Recommended Workbench Layout"
+        )
+        recommended_reset_contextual_label = QtGui.QApplication.translate(
+            "MainWindow", "Reset To Recommended Contextual Layout"
+        )
+
+        visibility_group = FreeCAD.ParamGet("User parameter:BaseApp/MainWindow/Toolbars")
+        for key in (
+            "shared:View",
+            "shared:Clipboard",
+            "shared:Macro",
+            "ctx:SketcherWorkbench:edit:Geometries",
+        ):
+            self.backup_bool_param(visibility_group, key)
+
+        layout_params = FreeCAD.ParamGet("User parameter:BaseApp/MainWindow/WorkbenchLayouts")
+        self.backup_group(
+            layout_params,
+            "SketcherWorkbench",
+            "__ToolbarRecommendedResetBackup__SketcherWorkbench",
+        )
+        self.backup_group(
+            layout_params,
+            "ctx:SketcherWorkbench:edit",
+            "__ToolbarRecommendedResetBackup__SketcherEdit",
+        )
+
+        self.activate_workbench("SketcherWorkbench", "wb:SketcherWorkbench:")
+        for key in ("shared:View", "shared:Clipboard", "shared:Macro"):
+            self.record_toolbar_state(self.wait_for_toolbar(key), "SketcherWorkbench")
+
+        self.show_toolbar("shared:Clipboard")
+        self.show_toolbar("shared:Macro")
+        self.hide_toolbar("shared:View")
+
+        self.trigger_menu_action(self.toolbar_menu(), recommended_reset_workbench_label)
+        self.assert_toolbar_visibility("shared:View", True)
+        self.assert_toolbar_visibility("shared:Clipboard", False)
+        self.assert_toolbar_visibility("shared:Macro", False)
+
+        self.enter_sketch_edit()
+        self.record_toolbar_state(
+            self.wait_for_toolbar("ctx:SketcherWorkbench:edit:Geometries"),
+            "SketcherWorkbench",
+            context="edit",
+        )
+        self.hide_toolbar("ctx:SketcherWorkbench:edit:Geometries")
+
+        self.trigger_menu_action(self.toolbar_menu(), recommended_reset_contextual_label)
+        self.assert_toolbar_visibility("ctx:SketcherWorkbench:edit:Geometries", True)
+        self.leave_sketch_edit()
+
+    def test_show_recommended_only_preserves_layout(self):
+        show_recommended_only_label = QtGui.QApplication.translate(
+            "MainWindow", "Show Recommended Only"
+        )
+
+        visibility_group = FreeCAD.ParamGet("User parameter:BaseApp/MainWindow/Toolbars")
+        for key in (
+            "shared:View",
+            "shared:Clipboard",
+            "shared:Macro",
+            "ctx:SketcherWorkbench:edit:Geometries",
+        ):
+            self.backup_bool_param(visibility_group, key)
+
+        self.activate_workbench("SketcherWorkbench", "wb:SketcherWorkbench:")
+
+        view_toolbar = self.wait_for_toolbar("shared:View")
+        self.record_toolbar_state(view_toolbar, "SketcherWorkbench")
+        self.move_toolbar("shared:View", QtCore.Qt.RightToolBarArea)
+
+        for key in ("shared:Clipboard", "shared:Macro"):
+            self.record_toolbar_state(self.wait_for_toolbar(key), "SketcherWorkbench")
+
+        self.show_toolbar("shared:Clipboard")
+        self.show_toolbar("shared:Macro")
+        self.hide_toolbar("shared:View")
+
+        self.trigger_menu_action(self.toolbar_menu(), show_recommended_only_label)
+        self.assert_toolbar_visibility("shared:View", True)
+        self.assert_toolbar_visibility("shared:Clipboard", False)
+        self.assert_toolbar_visibility("shared:Macro", False)
+        self.assert_toolbar_area("shared:View", QtCore.Qt.RightToolBarArea)
+
+        self.enter_sketch_edit()
+        contextual_key = "ctx:SketcherWorkbench:edit:Geometries"
+        self.record_toolbar_state(
+            self.wait_for_toolbar(contextual_key),
+            "SketcherWorkbench",
+            context="edit",
+        )
+        self.move_toolbar(contextual_key, QtCore.Qt.LeftToolBarArea)
+        self.hide_toolbar(contextual_key)
+
+        self.trigger_menu_action(self.toolbar_menu(), show_recommended_only_label)
+        self.assert_toolbar_visibility(contextual_key, True)
+        self.assert_toolbar_area(contextual_key, QtCore.Qt.LeftToolBarArea)
+        self.leave_sketch_edit()
+
+    def test_legacy_toolbar_names_restore_with_scoped_keys(self):
+        self.activate_workbench("SketcherWorkbench", "wb:SketcherWorkbench:")
+        toolbar = self.wait_for_toolbar("wb:SketcherWorkbench:Sketcher")
+        key = self.record_toolbar_state(toolbar, "SketcherWorkbench")
+        legacy_name = str(toolbar.objectName())
+        self.assertNotEqual(key, legacy_name, "Test requires a scoped toolbar persistence key")
+
+        target_area = self.alternative_toolbar_area(toolbar)
+        target_area_name = self.toolbar_area_name(target_area)
+        self.activate_workbench("PartWorkbench", "wb:PartWorkbench:")
+
+        visibility_params = FreeCAD.ParamGet("User parameter:BaseApp/MainWindow/Toolbars")
+        self.backup_bool_param(visibility_params, key)
+        self.backup_bool_param(visibility_params, legacy_name)
+        visibility_params.RemBool(key)
+        visibility_params.SetBool(legacy_name, False)
+
+        layout_params = FreeCAD.ParamGet("User parameter:BaseApp/MainWindow/WorkbenchLayouts")
+        self.backup_group(
+            layout_params,
+            "SketcherWorkbench",
+            "__ToolbarMigrationBackup__SketcherWorkbench",
+        )
+        workbench_layout = layout_params.GetGroup("SketcherWorkbench")
+        workbench_layout.Clear()
+        workbench_layout.SetBool("Saved", True)
+        for area_name in ("Top", "Left", "Right", "Bottom"):
+            workbench_layout.SetString(
+                area_name, legacy_name if area_name == target_area_name else ""
+            )
+
+        self.activate_workbench("SketcherWorkbench", "wb:SketcherWorkbench:")
+        self.assert_toolbar_visibility(key, False)
+        self.assert_toolbar_area(key, target_area)
