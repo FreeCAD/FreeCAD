@@ -99,6 +99,8 @@ public:
 
     //// Shows a list of all toolbars
     std::list<std::string> listToolbars() const;
+    /// Shows a list of all toolbars and their persistence identities
+    std::list<std::pair<std::string, std::string>> getToolbarIdentities() const;
     /// Shows a list of all toolbars and their commands
     std::list<std::pair<std::string, std::list<std::string>>> getToolbarItems() const;
     //// Shows a list of all menus

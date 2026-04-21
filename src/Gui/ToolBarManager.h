@@ -155,6 +155,21 @@ class GuiExport ToolBarManager: public QObject
 {
     Q_OBJECT
 public:
+    enum class Scope
+    {
+        Legacy,
+        Shared,
+        Workbench,
+        Contextual,
+    };
+
+    struct ScopeInfo
+    {
+        Scope scope = Scope::Legacy;
+        QString workbench;
+        QString context;
+    };
+
     enum class State
     {
         ForceHidden,     // Forces a toolbar to hide and hides the toggle action
@@ -168,6 +183,12 @@ public:
     static void destruct();
     static QString toolBarPersistenceKey(const ToolBarItem*);
     static QString toolBarPersistenceKey(const QToolBar*);
+    static ScopeInfo toolBarScopeInfo(const QString& persistenceKey);
+    static ScopeInfo toolBarScopeInfo(const ToolBarItem*);
+    static ScopeInfo toolBarScopeInfo(const QToolBar*);
+    static QString toolBarScopeLabel(const QString& persistenceKey);
+    static QString toolBarScopeLabel(const ToolBarItem*);
+    static QString toolBarScopeLabel(const QToolBar*);
     static void setToolBarPersistenceKey(QToolBar*, const QString&);
 
     /** Sets up the toolbars of a given workbench. */
@@ -177,6 +198,9 @@ public:
     void retranslate() const;
     void setToolbarLayoutContextOverride(const QString& workbench, const QString& context);
     void clearToolbarLayoutContextOverride(const QString& workbench);
+    QString currentToolbarLayoutScopeLabel() const;
+    QString currentToolbarLayoutResetLabel() const;
+    void resetCurrentToolbarLayout();
 
     bool areToolBarsLocked() const;
     void setToolBarsLocked(bool locked) const;
@@ -189,6 +213,9 @@ public:
 
     ToolBarArea toolBarArea(QWidget* toolBar) const;
     ToolBarAreaWidget* toolBarAreaWidget(QWidget* toolBar) const;
+
+Q_SIGNALS:
+    void toolbarLayoutContextChanged();
 
 protected:
     void setup(ToolBarItem*, QToolBar*) const;
@@ -225,6 +252,7 @@ private:
     QString activeToolbarLayoutContext() const;
     QString effectiveToolbarLayoutContext() const;
     bool rememberToolbarLayoutByWorkbench() const;
+    bool hasSavedWorkbenchToolBarLayout(const QString& context) const;
     void updateLayoutParameters(const QString& context);
     ParameterGrp::handle workbenchLayoutGroup(const QString& context) const;
     ParameterGrp::handle toolbarAreaRestoreParameters(
@@ -233,6 +261,7 @@ private:
     ) const;
     void saveWorkbenchToolBarLayout(const QString& context) const;
     void restoreWorkbenchToolBarLayout(const QString& context) const;
+    void resetMainWindowToolBarLayout() const;
 
     void addToMenu(QLayout* layout, QWidget* area, QMenu* menu);
     QLayout* findLayoutOfObject(QObject* source, QWidget* area) const;
