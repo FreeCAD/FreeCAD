@@ -131,6 +131,7 @@ ProgressIndicator::ProgressIndicator()
 {}
 
 ProgressIndicator::~ProgressIndicator() = default;
+
 void ProgressIndicator::Show(const Message_ProgressScope& theScope, const Standard_Boolean isForce)
 {
     (void)isForce;

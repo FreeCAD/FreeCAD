@@ -512,6 +512,7 @@ void App::RecomputeProgressScope::release()
     _handle = nullptr;
     _parent = nullptr;
 }
+
 App::RecomputeProgressHandle::RecomputeProgressHandle() = default;
 
 App::RecomputeProgressHandle::~RecomputeProgressHandle() = default;
@@ -550,12 +551,34 @@ bool App::RecomputeProgressHandle::wasCanceled() const
         || (_sequencer && _sequencer->wasCanceled());
 }
 
+App::RecomputeProgressScope App::RecomputeProgressHandle::makeScope(const char* text)
+{
+    if (auto* parent = _activeScope) {
+        return makeScope(parent, parent->_displayProgress, parent->_rangeEnd, text);
+    }
+
+    return makeScope(nullptr, _standaloneProgress, ProgressScale, text);
+}
+
+App::RecomputeProgressScope App::RecomputeProgressHandle::makeStepScope(
+    std::size_t stepIndex,
+    std::size_t totalSteps,
+    const char* text
+)
+{
+    return makeStepScope(_activeScope, stepIndex, totalSteps, text);
+}
+
 void App::RecomputeProgressHandle::setText(const char* text)
 {
-    ensureSequencer();
-    if (_sequencer) {
-        _sequencer->setText(text);
+    if (_activeScope) {
+        _activeScope->setText(text);
+        return;
     }
+
+    _standaloneText = text ? text : "";
+    _hasStandaloneState = true;
+    syncDisplay();
 }
 
 void App::RecomputeProgressHandle::setProgress(std::size_t progress)
@@ -784,6 +807,7 @@ RecomputeRequest RecomputeRequest::fromDocumentObject(
 )
 {
     RecomputeRequest request;
+
     if (const Document* document = documentObject.getDocument()) {
         request.documentName = document->getName();
     }

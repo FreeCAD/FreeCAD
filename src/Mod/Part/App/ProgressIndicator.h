@@ -88,7 +88,7 @@ class PartExport ProgressIndicator: public Message_ProgressIndicator
 {
 public:
     ProgressIndicator();
-    ~ProgressIndicator() override = default;
+    ~ProgressIndicator() override;
 
     void Show(const Message_ProgressScope& theScope, const Standard_Boolean isForce) override;
     Standard_Boolean UserBreak() override;
