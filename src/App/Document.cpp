@@ -66,7 +66,6 @@
 #include <Base/Tools.h>
 #include <Base/XMLTools.h>
 #include <Base/Uuid.h>
-#include <Base/Sequencer.h>
 #include <Base/Stream.h>
 #include <Base/UnitsApi.h>
 
@@ -2930,21 +2929,39 @@ int Document::recompute(const std::vector<DocumentObject*>& objs,
     ParameterGrp::handle hGrp =
         GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document");
     bool canAbort = hGrp->GetBool("CanAbortRecompute", true);
+    RecomputeProgressHandle* progress = App::currentRecomputeProgress();
+    std::unique_ptr<RecomputeProgressHandle> ownedProgress;
+    if (!progress && canAbort) {
+        ownedProgress = std::make_unique<RecomputeProgressHandle>();
+        progress = ownedProgress.get();
+    }
 
     tracker.checkpoint("pre-recompute & topo sort");
 
     try {
         std::set<DocumentObject*> filter;
         size_t idx = 0;
+        const auto updateProgress = [&](std::size_t step) {
+            if (!progress || topoSortedObjects.empty()) {
+                return;
+            }
+
+            constexpr std::size_t maxProgress = 100;
+            std::size_t current = std::min(maxProgress, (step * maxProgress) / topoSortedObjects.size());
+            progress->setProgress(current);
+        };
         // maximum two passes to allow some form of dependency inversion
         for (int passes = 0; passes < 2 && idx < topoSortedObjects.size(); ++passes) {
-            std::unique_ptr<Base::SequencerLauncher> seq;
-            if (canAbort) {
-                seq = std::make_unique<Base::SequencerLauncher>("Recompute...",
-                                                                topoSortedObjects.size());
+            if (progress) {
+                progress->setText("Recompute...");
+                progress->setProgress(0);
             }
             FC_LOG("Recompute pass " << passes);
             for (; idx < topoSortedObjects.size(); ++idx) {
+                if (progress && progress->wasCanceled()) {
+                    throw Base::AbortException("User aborted");
+                }
+
                 auto obj = topoSortedObjects[idx];
                 if (!obj->isAttachedToDocument() || filter.find(obj) != filter.end()) {
                     continue;
@@ -2990,9 +3007,7 @@ int Document::recompute(const std::vector<DocumentObject*>& objs,
                         }
                     }
                 }
-                if (seq) {
-                    seq->next(true);
-                }
+                updateProgress(idx + 1);
             }
             // check if all objects are recomputed but still thouched
             for (size_t i = 0; i < topoSortedObjects.size(); ++i) {

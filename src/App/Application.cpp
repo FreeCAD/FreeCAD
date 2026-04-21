@@ -94,6 +94,7 @@
 #include <Base/PrecisionPy.h>
 #include <Base/ProgressIndicatorPy.h>
 #include <Base/RotationPy.h>
+#include <Base/Sequencer.h>
 #include <Base/UniqueNameManager.h>
 #include <Base/TimeInfo.h>
 #include <Base/SystemHandler.h>
@@ -209,6 +210,36 @@ namespace fs = std::filesystem;
 namespace
 {
 
+thread_local RecomputeProgressHandle* tlsCurrentRecomputeProgress = nullptr;
+
+class ScopedCurrentRecomputeProgress
+{
+public:
+    explicit ScopedCurrentRecomputeProgress(RecomputeProgressHandle* handle)
+        : _previous(tlsCurrentRecomputeProgress)
+    {
+        if (handle) {
+            handle->activate();
+        }
+        tlsCurrentRecomputeProgress = handle;
+    }
+
+    ~ScopedCurrentRecomputeProgress()
+    {
+        tlsCurrentRecomputeProgress = _previous;
+    }
+
+private:
+    RecomputeProgressHandle* _previous;
+};
+
+void ensureRecomputeProgressHandle(RecomputeRequest& request)
+{
+    if (!request.progress) {
+        request.progress = std::make_shared<RecomputeProgressHandle>();
+    }
+}
+
 bool requestTargetsDocument(const RecomputeRequest& request, const std::string& documentName)
 {
     return request.documentName == documentName;
@@ -246,9 +277,20 @@ void reportRecomputeException(const Base::Exception& exception)
     exception.reportException();
 }
 
+void markCanceledRecomputeResult(RecomputeResult& result)
+{
+    result.success = false;
+    result.failure = RecomputeFailure::Canceled;
+    if (!result.exception) {
+        result.exception = std::make_unique<Base::AbortException>("User aborted");
+    }
+}
+
 RecomputeResult processRecomputeRequest(RecomputeRequest& request)
 {
     RecomputeResult result;
+    ensureRecomputeProgressHandle(request);
+    ScopedCurrentRecomputeProgress progressScope(request.progress.get());
 
     try {
         if (!request.documentObjectName.empty()) {
@@ -260,6 +302,11 @@ RecomputeResult processRecomputeRequest(RecomputeRequest& request)
             document->recompute({}, request.force, nullptr, request.options);
         }
     }
+    catch (Base::AbortException& exception) {
+        result.exception = std::make_unique<Base::AbortException>(std::move(exception));
+        result.failure = RecomputeFailure::Canceled;
+        result.success = false;
+    }
     catch (Base::BadGraphError& exception) {
         result.exception = std::make_unique<Base::BadGraphError>(std::move(exception));
         result.failure = RecomputeFailure::DependencyCycle;
@@ -270,6 +317,10 @@ RecomputeResult processRecomputeRequest(RecomputeRequest& request)
         result.exception = std::make_unique<Base::Exception>(std::move(exception));
         result.failure = RecomputeFailure::Exception;
         result.success = false;
+    }
+
+    if (request.progress && request.progress->wasCanceled() && result.failure == RecomputeFailure::None) {
+        markCanceledRecomputeResult(result);
     }
 
     return result;
@@ -288,6 +339,67 @@ Base::ConsoleObserverFile *Application::_pConsoleObserverFile = nullptr;
 
 AppExport std::map<std::string, std::string> Application::mConfig;
 std::unique_ptr<ApplicationDirectories> Application::_appDirs;
+
+App::RecomputeProgressHandle::RecomputeProgressHandle() = default;
+
+App::RecomputeProgressHandle::~RecomputeProgressHandle() = default;
+
+void App::RecomputeProgressHandle::ensureSequencer()
+{
+    if (!_sequencer) {
+        _sequencer = std::make_unique<Base::SequencerLauncher>("Processing...", 100);
+    }
+}
+
+void App::RecomputeProgressHandle::activate()
+{
+    // A progress handle can be reused for coalesced or rerun requests; start
+    // each execution attempt with a fresh cancellation state.
+    _canceled.store(false, std::memory_order_relaxed);
+    _sequencer.reset();
+    ensureSequencer();
+}
+
+void App::RecomputeProgressHandle::cancel()
+{
+    _canceled.store(true, std::memory_order_relaxed);
+}
+
+bool App::RecomputeProgressHandle::wasCanceled() const
+{
+    return _canceled.load(std::memory_order_relaxed)
+        || (_sequencer && _sequencer->wasCanceled());
+}
+
+void App::RecomputeProgressHandle::setText(const char* text)
+{
+    ensureSequencer();
+    if (_sequencer) {
+        _sequencer->setText(text);
+    }
+}
+
+void App::RecomputeProgressHandle::setProgress(std::size_t progress)
+{
+    ensureSequencer();
+    if (_sequencer) {
+        _sequencer->setProgress(progress);
+    }
+}
+
+App::RecomputeProgressHandle* App::currentRecomputeProgress()
+{
+    return tlsCurrentRecomputeProgress;
+}
+
+bool App::currentRecomputeWasCanceled()
+{
+    if (auto* progress = currentRecomputeProgress()) {
+        return progress->wasCanceled();
+    }
+
+    return Base::Sequencer().wasCanceled();
+}
 
 RecomputeRequest RecomputeRequest::fromDocument(const Document& document, bool force, int options)
 {
@@ -883,6 +995,8 @@ bool Application::canRecomputeRequestOnWorker(const RecomputeRequest& req) const
 
 void Application::queueRecomputeRequest(RecomputeRequest req)
 {
+    ensureRecomputeProgressHandle(req);
+
     if (!canRecomputeRequestOnWorker(req)) {
         RecomputeResult result;
 
@@ -945,15 +1059,28 @@ void Application::cancelRecomputeRequestsForDocument(const std::string& document
     }
 
     std::unique_lock<std::mutex> lock(_recomputeMutex);
-    _recomputeStateChanged.wait(lock, [this, &documentName] {
-        return !_recomputeDocumentsInProgress.contains(documentName);
-    });
+    while (true) {
+        if (_recomputeRequestInProgress
+            && requestTargetsDocument(_recomputeRequestInProgress->request, documentName)) {
+            if (_recomputeRequestInProgress->request.progress) {
+                _recomputeRequestInProgress->request.progress->cancel();
+            }
+            _recomputeRequestInProgress->rerunRequested = false;
+            _recomputeRequestInProgress->rerunCallbacks.clear();
+        }
 
-    // Cancellation runs on document-close boundaries, so a linear scan keeps
-    // the queue simple without affecting the steady-state worker path.
-    std::erase_if(_recomputeRequests, [&documentName](const RecomputeQueueEntry& request) {
-        return requestTargetsDocument(request.request, documentName);
-    });
+        // Cancellation runs on document-close boundaries, so a linear scan keeps
+        // the queue simple without affecting the steady-state worker path.
+        std::erase_if(_recomputeRequests, [&documentName](const RecomputeQueueEntry& request) {
+            return requestTargetsDocument(request.request, documentName);
+        });
+
+        if (!_recomputeDocumentsInProgress.contains(documentName)) {
+            break;
+        }
+
+        _recomputeStateChanged.wait(lock);
+    }
 }
 
 struct DocTiming {
