@@ -21,17 +21,17 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_1">
       <item row="0" column="0">
-       <widget class="QLabel" name="label_EditSketcherFontName">
+       <widget class="QLabel" name="label_5">
         <property name="text">
          <string>Font name</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="Gui::PrefFontBox" name="fontBox_EditSketcherFontName">
+       <widget class="Gui::PrefFontBox" name="fontBoxSketcherFontName">
         <property name="minimumSize">
          <size>
-          <width>280</width>
+          <width>250</width>
           <height>0</height>
          </size>
         </property>
@@ -87,8 +87,87 @@
         </property>
        </widget>
       </item>
-      <!-- Constraint symbol size -->
       <item row="2" column="0">
+       <widget class="QLabel" name="label_6">
+        <property name="text">
+         <string>Font preview</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignTop|Qt::AlignLeft|Qt::AlignLeading</set>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1" rowspan="2">
+       <widget class="QLabel" name="LabelFontPreview">
+        <property name="toolTip">
+         <string>Preview of a constraint text when selected font family and size is used</string>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>64</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>⌀123.45 µm (ƒ𝑥)</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Panel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Sunken</enum>
+        </property>
+        <property name="lineWidth">
+         <number>1</number>
+        </property>
+        <property name="autoFillBackground">
+         <bool>true</bool>
+        </property>
+        <property name="palette">
+         <palette>
+          <active>
+           <colorrole role="Window">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>255</red>
+              <green>255</green>
+              <blue>255</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </active>
+         </palette>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="LabelFontMessage">
+        <property name="toolTip">
+         <string>Because the selected font does not contain all characters Sketcher uses,
+the characters listed here will be drawn using a substitute font.</string>
+        </property>
+        <property name="text">
+         <string></string>
+        </property>
+        <property name="textInteractionFlags">
+         <set>Qt::TextSelectableByMouse</set>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
+        </property>
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+       </widget>
+      </item>
+      <!-- Constraint symbol size -->
+      <item row="4" column="0">
        <widget class="QLabel" name="label_ConstraintSymbolSize">
         <property name="text">
          <string>Constraint symbol size</string>
@@ -98,7 +177,7 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
+      <item row="4" column="1">
        <widget class="Gui::PrefSpinBox" name="ConstraintSymbolSize">
         <property name="toolTip">
          <string>Pixel size used to render constraint symbols</string>
@@ -123,7 +202,7 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
+      <item row="5" column="0">
        <widget class="QLabel" name="label_1">
         <property name="minimumSize">
          <size>
@@ -139,7 +218,7 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
+      <item row="5" column="1">
        <widget class="Gui::PrefDoubleSpinBox" name="viewScalingFactor">
         <property name="toolTip">
          <string>Scales the 3D view based on this factor</string>
@@ -170,7 +249,7 @@
         </property>
        </widget>
       </item>
-      <item row="4" column="0">
+      <item row="6" column="0">
        <widget class="QLabel" name="label_3">
         <property name="text">
          <string>Segments per geometry</string>
@@ -180,7 +259,7 @@
         </property>
        </widget>
       </item>
-      <item row="4" column="1">
+      <item row="6" column="1">
        <widget class="Gui::PrefSpinBox" name="SegmentsPerGeometry">
         <property name="toolTip">
          <string>The number of polygons used for geometry approximation</string>
@@ -199,7 +278,7 @@
         </property>
        </widget>
       </item>
-      <item row="5" column="0" colspan="2">
+      <item row="7" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="dialogOnDistanceConstraint">
         <property name="toolTip">
          <string>Opens a dialog to input a value for new dimensional constraints after creation</string>
@@ -218,7 +297,7 @@
         </property>
        </widget>
       </item>
-      <item row="6" column="0" colspan="2">
+      <item row="8" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="continueMode">
         <property name="toolTip">
          <string>Keeps the current Sketcher tool active after creating geometry</string>
@@ -237,7 +316,7 @@
         </property>
        </widget>
       </item>
-      <item row="7" column="0" colspan="2">
+      <item row="9" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="constraintMode">
         <property name="toolTip">
          <string>Keeps the current Sketcher constraint tool active after creating geometry</string>
@@ -256,7 +335,7 @@
         </property>
        </widget>
       </item>
-      <item row="8" column="0" colspan="2">
+      <item row="10" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="checkBoxHideUnits">
         <property name="toolTip">
          <string>Base length units will not be displayed in constraints or cursor coordinates.
@@ -273,7 +352,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
         </property>
        </widget>
       </item>
-      <item row="9" column="0">
+      <item row="11" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBoxShowCursorCoords">
         <property name="toolTip">
          <string>Shows cursor position coordinates next to the cursor while editing a sketch</string>
@@ -292,7 +371,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
         </property>
        </widget>
       </item>
-      <item row="10" column="0">
+      <item row="12" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBoxUseSystemDecimals">
         <property name="toolTip">
          <string>Cursor coordinates will use the system decimals setting instead of the short form</string>
@@ -308,7 +387,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
         </property>
        </widget>
       </item>
-      <item row="11" column="0">
+      <item row="13" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBoxShowDimensionalName">
         <property name="toolTip">
          <string>Shows names of dimensional constraints, if they exist</string>
@@ -327,7 +406,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
         </property>
        </widget>
       </item>
-      <item row="11" column="1">
+      <item row="13" column="1">
        <widget class="Gui::PrefLineEdit" name="prefDimensionalStringFormat">
         <property name="toolTip">
          <string>The format of the dimensional constraint string presentation.
@@ -582,7 +661,7 @@ Works only when &quot;Restore camera position after editing&quot; is enabled.</s
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>fontBox_EditSketcherFontName</tabstop>
+  <tabstop>fontBoxSketcherFontName</tabstop>
   <tabstop>EditSketcherFontSize</tabstop>
   <tabstop>ConstraintSymbolSize</tabstop>
   <tabstop>viewScalingFactor</tabstop>
