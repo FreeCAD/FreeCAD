@@ -48,6 +48,7 @@
 # include <list>
 # include <algorithm>
 # include <iostream>
+# include <sstream>
 # include <map>
 # include <tuple>
 # include <vector>
@@ -245,6 +246,18 @@ bool requestTargetsDocument(const RecomputeRequest& request, const std::string& 
     return request.documentName == documentName;
 }
 
+bool documentCanRecomputeOnWorker(const Document& document);
+
+bool displayStatesEqual(
+    const RecomputeProgressDisplayState& lhs,
+    const RecomputeProgressDisplayState& rhs
+)
+{
+    return lhs.text == rhs.text
+        && lhs.percent == rhs.percent
+        && lhs.determinate == rhs.determinate;
+}
+
 bool documentCanRecomputeOnWorker(const Document& document)
 {
     try {
@@ -340,6 +353,104 @@ Base::ConsoleObserverFile *Application::_pConsoleObserverFile = nullptr;
 AppExport std::map<std::string, std::string> Application::mConfig;
 std::unique_ptr<ApplicationDirectories> Application::_appDirs;
 
+App::RecomputeProgressScope::RecomputeProgressScope(
+    RecomputeProgressHandle& handle,
+    RecomputeProgressScope* parent,
+    std::uint64_t rangeStart,
+    std::uint64_t rangeEnd,
+    const char* text
+)
+    : _handle(&handle)
+    , _parent(parent)
+    , _rangeStart(rangeStart)
+    , _rangeEnd(std::max(rangeStart, rangeEnd))
+    , _displayProgress(rangeStart)
+    , _text(text ? text : "")
+{
+    _handle->activateScope(*this);
+}
+
+App::RecomputeProgressScope::RecomputeProgressScope(RecomputeProgressScope&& other) noexcept
+    : _handle(other._handle)
+    , _parent(other._parent)
+    , _rangeStart(other._rangeStart)
+    , _rangeEnd(other._rangeEnd)
+    , _displayProgress(other._displayProgress)
+    , _text(std::move(other._text))
+{
+    if (_handle && _handle->_activeScope == &other) {
+        _handle->_activeScope = this;
+    }
+
+    other._handle = nullptr;
+    other._parent = nullptr;
+}
+
+App::RecomputeProgressScope::~RecomputeProgressScope()
+{
+    release();
+}
+
+void App::RecomputeProgressScope::setText(const char* text)
+{
+    _text = text ? text : "";
+    if (_handle && _handle->_activeScope == this) {
+        _handle->syncDisplay();
+    }
+}
+
+void App::RecomputeProgressScope::setProgress(std::size_t progress)
+{
+    std::uint64_t mapped = mapProgress(progress);
+    if (mapped > _displayProgress) {
+        _displayProgress = mapped;
+    }
+
+    if (_handle && _handle->_activeScope == this) {
+        _handle->syncDisplay();
+    }
+}
+
+bool App::RecomputeProgressScope::wasCanceled() const
+{
+    return _handle && _handle->wasCanceled();
+}
+
+App::RecomputeProgressScope App::RecomputeProgressScope::makeScope(const char* text)
+{
+    return _handle->makeScope(this, _displayProgress, _rangeEnd, text);
+}
+
+App::RecomputeProgressScope App::RecomputeProgressScope::makeStepScope(
+    std::size_t stepIndex,
+    std::size_t totalSteps,
+    const char* text
+)
+{
+    return _handle->makeStepScope(this, stepIndex, totalSteps, text);
+}
+
+std::uint64_t App::RecomputeProgressScope::mapProgress(std::size_t progress) const
+{
+    constexpr std::size_t maxProgress = 100;
+    std::size_t clamped = std::min(progress, maxProgress);
+    if (_rangeEnd <= _rangeStart) {
+        return _rangeEnd;
+    }
+
+    std::uint64_t rangeSize = _rangeEnd - _rangeStart;
+    return _rangeStart + (rangeSize * clamped) / maxProgress;
+}
+
+void App::RecomputeProgressScope::release()
+{
+    if (_handle) {
+        _handle->releaseScope(*this);
+    }
+
+    _handle = nullptr;
+    _parent = nullptr;
+}
 App::RecomputeProgressHandle::RecomputeProgressHandle() = default;
 
 App::RecomputeProgressHandle::~RecomputeProgressHandle() = default;
@@ -356,6 +467,12 @@ void App::RecomputeProgressHandle::activate()
     // A progress handle can be reused for coalesced or rerun requests; start
     // each execution attempt with a fresh cancellation state.
     _canceled.store(false, std::memory_order_relaxed);
+    resetDisplayState();
+    _hasStandaloneState = false;
+    _standaloneProgress = 0;
+    _standaloneText.clear();
+    _lastDisplayedText.clear();
+    _lastDisplayedProgress = -1;
     _sequencer.reset();
     ensureSequencer();
 }
@@ -381,9 +498,169 @@ void App::RecomputeProgressHandle::setText(const char* text)
 
 void App::RecomputeProgressHandle::setProgress(std::size_t progress)
 {
+    if (_activeScope) {
+        _activeScope->setProgress(progress);
+        return;
+    }
+
+    constexpr std::size_t maxProgress = 100;
+    _standaloneProgress = (ProgressScale * std::min(progress, maxProgress)) / maxProgress;
+    _hasStandaloneState = true;
+    syncDisplay();
+}
+
+void App::RecomputeProgressHandle::setDisplayObserver(DisplayObserver observer)
+{
+    std::lock_guard<std::mutex> lock(_displayMutex);
+    _displayObserver = std::move(observer);
+}
+
+App::RecomputeProgressDisplayState App::RecomputeProgressHandle::displayState() const
+{
+    std::lock_guard<std::mutex> lock(_displayMutex);
+    return _displayState;
+}
+
+App::RecomputeProgressScope App::RecomputeProgressHandle::makeScope(
+    RecomputeProgressScope* parent,
+    std::uint64_t rangeStart,
+    std::uint64_t rangeEnd,
+    const char* text
+)
+{
+    return RecomputeProgressScope(*this, parent, rangeStart, rangeEnd, text);
+}
+
+App::RecomputeProgressScope App::RecomputeProgressHandle::makeStepScope(
+    RecomputeProgressScope* parent,
+    std::size_t stepIndex,
+    std::size_t totalSteps,
+    const char* text
+)
+{
+    if (totalSteps == 0) {
+        return makeScope(text);
+    }
+
+    std::uint64_t rangeStart = parent ? parent->_rangeStart : 0;
+    std::uint64_t rangeEnd = parent ? parent->_rangeEnd : ProgressScale;
+    std::uint64_t rangeSize = rangeEnd - rangeStart;
+    std::uint64_t childStart = rangeStart + (rangeSize * stepIndex) / totalSteps;
+    std::uint64_t childEnd = rangeStart + (rangeSize * (stepIndex + 1)) / totalSteps;
+    return makeScope(parent, childStart, childEnd, text);
+}
+
+void App::RecomputeProgressHandle::activateScope(RecomputeProgressScope& scope)
+{
+    _activeScope = &scope;
+    syncDisplay();
+}
+
+void App::RecomputeProgressHandle::releaseScope(RecomputeProgressScope& scope)
+{
+    if (scope._parent) {
+        scope._parent->_displayProgress = std::max(scope._parent->_displayProgress, scope._displayProgress);
+    }
+
+    if (_activeScope == &scope) {
+        // Restore the logical parent scope, not whichever sibling happened to
+        // be active when this scope was created. This keeps phase progress from
+        // rewinding through older siblings when scopes stay alive until the end
+        // of a larger function body.
+        _activeScope = scope._parent;
+    }
+
+    syncDisplay();
+}
+
+void App::RecomputeProgressHandle::resetDisplayState()
+{
+    DisplayObserver observer;
+    RecomputeProgressDisplayState state;
+    {
+        std::lock_guard<std::mutex> lock(_displayMutex);
+        if (_displayState.text.empty() && _displayState.percent == 0 && !_displayState.determinate) {
+            _displayStateTextDepth = 0;
+            return;
+        }
+
+        _displayState = {};
+        _displayStateTextDepth = 0;
+        state = _displayState;
+        observer = _displayObserver;
+    }
+
+    if (observer) {
+        observer(state);
+    }
+}
+
+void App::RecomputeProgressHandle::syncDisplay()
+{
+    const RecomputeProgressScope* scope = _activeScope;
+    if (!scope && !_hasStandaloneState) {
+        return;
+    }
+
+    std::uint64_t progress = scope ? scope->_displayProgress : _standaloneProgress;
+    std::string text = _standaloneText;
+    const RecomputeProgressScope* textScope = nullptr;
+    for (auto current = scope; current; current = current->_parent) {
+        if (!current->_text.empty()) {
+            text = current->_text;
+            textScope = current;
+            break;
+        }
+    }
+    int textDepth = 0;
+    for (auto current = textScope; current; current = current->_parent) {
+        ++textDepth;
+    }
+
+    int percent = static_cast<int>(std::min<std::uint64_t>(100, (progress * 100) / ProgressScale));
+    RecomputeProgressDisplayState state;
+    state.text = text;
+    state.percent = percent;
+    state.determinate = true;
+    DisplayObserver observer;
+    RecomputeProgressDisplayState publishedState;
+    bool notifyObserver = false;
+    {
+        std::lock_guard<std::mutex> lock(_displayMutex);
+        const bool suppressCompletedParentRestore =
+            _displayState.determinate && state.determinate
+            && _displayState.percent == 100 && state.percent == 100
+            && textDepth < _displayStateTextDepth && state.text != _displayState.text;
+
+        notifyObserver = !suppressCompletedParentRestore && !displayStatesEqual(_displayState, state);
+        if (notifyObserver) {
+            _displayState = state;
+            _displayStateTextDepth = textDepth;
+            observer = _displayObserver;
+        }
+        else if (!suppressCompletedParentRestore && displayStatesEqual(_displayState, state)) {
+            _displayStateTextDepth = std::max(_displayStateTextDepth, textDepth);
+        }
+
+        publishedState = _displayState;
+    }
+    if (notifyObserver && observer) {
+        observer(publishedState);
+    }
+
     ensureSequencer();
-    if (_sequencer) {
-        _sequencer->setProgress(progress);
+    if (!_sequencer) {
+        return;
+    }
+
+    if (!publishedState.text.empty() && publishedState.text != _lastDisplayedText) {
+        _sequencer->setText(publishedState.text.c_str());
+        _lastDisplayedText = publishedState.text;
+    }
+
+    if (publishedState.percent != _lastDisplayedProgress) {
+        _sequencer->setProgress(publishedState.percent);
+        _lastDisplayedProgress = publishedState.percent;
     }
 }
 
@@ -996,8 +1273,9 @@ bool Application::canRecomputeRequestOnWorker(const RecomputeRequest& req) const
 void Application::queueRecomputeRequest(RecomputeRequest req)
 {
     ensureRecomputeProgressHandle(req);
+    const bool canRunOnWorker = canRecomputeRequestOnWorker(req);
 
-    if (!canRecomputeRequestOnWorker(req)) {
+    if (!canRunOnWorker) {
         RecomputeResult result;
 
         // Requests that are not worker-safe stay on the caller thread unless a
@@ -1046,10 +1324,31 @@ void Application::queueRecomputeRequest(RecomputeRequest req)
             }
             return;
         }
-
         _recomputeRequests.push_back(std::move(queuedRequest));
     }
     notifyRecomputeWorker();
+}
+
+App::RecomputeCancellationResult Application::cancelRecomputeRequest(const RecomputeRequest& req)
+{
+    RecomputeCancellationResult result;
+    std::lock_guard<std::mutex> lock(_recomputeMutex);
+
+    if (_recomputeRequestInProgress
+        && recomputeRequestsMatch(_recomputeRequestInProgress->request, req)) {
+        if (_recomputeRequestInProgress->request.progress) {
+            _recomputeRequestInProgress->request.progress->cancel();
+        }
+        _recomputeRequestInProgress->rerunRequested = false;
+        _recomputeRequestInProgress->rerunCallbacks.clear();
+        result.canceledInProgress = true;
+    }
+
+    const auto erased = std::erase_if(_recomputeRequests, [&req](const RecomputeQueueEntry& request) {
+        return recomputeRequestsMatch(request.request, req);
+    });
+    result.removedQueued = erased > 0;
+    return result;
 }
 
 void Application::cancelRecomputeRequestsForDocument(const std::string& documentName)
@@ -1077,6 +1376,17 @@ void Application::cancelRecomputeRequestsForDocument(const std::string& document
 
         if (!_recomputeDocumentsInProgress.contains(documentName)) {
             break;
+        }
+
+        if (App::MainThreadSignalConfig::hasHooks() && App::MainThreadSignalConfig::isMainThread()
+            && App::MainThreadSignalConfig::canPumpEvents()) {
+            // Document close runs on the GUI thread. If a worker recompute is
+            // blocked in a synchronous MainThreadSignal hop, waiting without
+            // pumping the event loop deadlocks both sides.
+            lock.unlock();
+            App::MainThreadSignalConfig::pumpEvents();
+            lock.lock();
+            continue;
         }
 
         _recomputeStateChanged.wait(lock);

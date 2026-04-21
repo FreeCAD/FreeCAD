@@ -3287,9 +3287,8 @@ int Document::_recomputeFeature(DocumentObject* Feat) // NOLINT
         }
     }
     catch (Base::AbortException& e) {
-        e.reportException();
         FC_LOG("Failed to recompute " << Feat->getFullName() << ": " << e.what());
-        d->addRecomputeLog("User abort", Feat);
+        d->addRecomputeLog("User aborted", Feat);
         return -1;
     }
     catch (const Base::MemoryException& e) {
