@@ -993,7 +993,7 @@ class _MeshTransfiniteVolume(CommandManager):
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_MeshTransfiniteVolume",
-            "Creates a structured mesh in a 4 or 5 sided volume bounded by transfinite surfaces",
+            "Creates a structured mesh in a 4- or 5-sided volume bounded by transfinite surfaces",
         )
         self.is_active = "with_gmsh_femmesh"
         self.do_activated = "add_obj_on_gui_selobj_set_edit"
