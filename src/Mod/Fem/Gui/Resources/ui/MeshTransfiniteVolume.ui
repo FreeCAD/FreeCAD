@@ -113,7 +113,7 @@
    <item>
     <widget class="QLabel" name="label_2">
      <property name="text">
-      <string>Select any number of 5 or 6 sided volumes</string>
+      <string>Select any number of 5- or 6-sided volumes</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignmentFlag::AlignCenter</set>
