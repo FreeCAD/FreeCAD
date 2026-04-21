@@ -97,8 +97,11 @@ private:
     void exportCustomToolbars(const QByteArray&);
     void updateToolbarTreeHeaders();
     QString customToolbarPersistenceKey(const QString& toolbarName, const QString& workbench) const;
+    QString customToolbarTierLabel(const QString& toolbarName, const QString& workbench) const;
     void updateToolbarItemScope(QTreeWidgetItem* item, const QString& workbench) const;
-    void updateToolbarItemScopes();
+    void updateToolbarItemTier(QTreeWidgetItem* item, const QString& workbench) const;
+    void updateToolbarItemMetadata(QTreeWidgetItem* item, const QString& workbench) const;
+    void updateToolbarItemsMetadata();
     QString findToolbarIdentityCollision(
         const QString& toolbarName,
         const QTreeWidgetItem* ignoredItem = nullptr

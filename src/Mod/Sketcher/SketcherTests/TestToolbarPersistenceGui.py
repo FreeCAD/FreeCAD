@@ -216,7 +216,7 @@ class TestToolbarPersistenceGui(unittest.TestCase):
 
     def toolbar_menu_label(self, toolbar):
         base_label = self.normalized_action_text(toolbar.toggleViewAction())
-        if self.toolbar_tier(toolbar) == "recommended":
+        if self.toolbar_tier(toolbar) in {"recommended", "contextual"}:
             return base_label
 
         tier_label = self.toolbar_tier_label(toolbar)
@@ -584,6 +584,11 @@ class TestToolbarPersistenceGui(unittest.TestCase):
         )
 
         self.activate_workbench("SketcherWorkbench", "wb:SketcherWorkbench:")
+        sketcher_toolbar_label = self.toolbar_menu_label(
+            self.wait_for_toolbar("wb:SketcherWorkbench:Sketcher")
+        )
+        clipboard_toolbar_label = self.toolbar_menu_label(self.wait_for_toolbar("shared:Clipboard"))
+        macro_toolbar_label = self.toolbar_menu_label(self.wait_for_toolbar("shared:Macro"))
 
         sections, texts = self.capture_popup_menu(self.toolbar_menu())
         self.assertIn(
@@ -626,6 +631,9 @@ class TestToolbarPersistenceGui(unittest.TestCase):
         )
 
         self.enter_sketch_edit()
+        contextual_toolbar_label = self.toolbar_menu_label(
+            self.wait_for_toolbar("ctx:SketcherWorkbench:edit:Geometries")
+        )
         sections, texts = self.capture_popup_menu(self.toolbar_menu())
         self.assertIn(shared_label, sections, "Main toolbar menu should keep shared toolbar group")
         self.assertIn(

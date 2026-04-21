@@ -195,7 +195,7 @@ QString decoratedToolBarActionText(const QToolBar* toolbar)
 
     const auto text = action->text();
     const auto tier = ToolBarManager::toolBarTier(toolbar);
-    if (tier == ToolBarItem::Tier::Recommended) {
+    if (tier == ToolBarItem::Tier::Recommended || tier == ToolBarItem::Tier::Contextual) {
         return text;
     }
 
@@ -206,6 +206,7 @@ QString decoratedToolBarActionText(const QToolBar* toolbar)
 
     return QApplication::translate("MainWindow", "%1 (%2)").arg(text, tierLabel);
 }
+
 QString legacyToolBarKey(const QToolBar* toolbar)
 {
     if (!toolbar) {
@@ -1944,14 +1945,6 @@ bool ToolBarManager::showContextMenu(QObject* source)
         return false;
     }
 
-    auto addMenuVisibleItem = [&](QToolBar* toolbar, int, ToolBarAreaWidget*) {
-        auto action = toolbar->toggleViewAction();
-        if ((action->isVisible() || toolbar->isVisible()) && action->text().size()) {
-            action->setVisible(true);
-            menu.addAction(action);
-        }
-    };
-
     if (layout) {
         addToMenu(layout, area, &menu);
     }
@@ -2063,6 +2056,7 @@ void ToolBarManager::addToolBarActionsByScope(QMenu* menu, const QList<QToolBar*
     QList<QAction*> contextualActions;
     QList<QAction*> legacyActions;
     const auto toggleLabel = QApplication::translate("MainWindow", "Toggles this toolbar");
+    const auto tierLabelPrefix = QApplication::translate("MainWindow", "Tier: %1");
 
     for (auto toolbar : toolbars) {
         if (!toolbar) {
@@ -2074,23 +2068,32 @@ void ToolBarManager::addToolBarActionsByScope(QMenu* menu, const QList<QToolBar*
             continue;
         }
 
-        action->setVisible(true);
-        action->setToolTip(toggleLabel);
-        action->setStatusTip(toggleLabel);
-        action->setWhatsThis(toggleLabel);
+        auto* menuAction = new QAction(action->icon(), decoratedToolBarActionText(toolbar), menu);
+        menuAction->setCheckable(true);
+        menuAction->setChecked(toolbar->isVisible());
+        menuAction->setEnabled(action->isEnabled());
+
+        const auto tierLabel = toolBarTierLabel(toolbar);
+        const auto toolTip = tierLabel.isEmpty()
+            ? toggleLabel
+            : QStringLiteral("%1. %2").arg(toggleLabel, tierLabelPrefix.arg(tierLabel));
+        menuAction->setToolTip(toolTip);
+        menuAction->setStatusTip(toolTip);
+        menuAction->setWhatsThis(toolTip);
+        QObject::connect(menuAction, &QAction::triggered, action, &QAction::trigger);
 
         switch (toolBarScopeInfo(toolbar).scope) {
             case Scope::Shared:
-                sharedActions.push_back(action);
+                sharedActions.push_back(menuAction);
                 break;
             case Scope::Workbench:
-                workbenchActions.push_back(action);
+                workbenchActions.push_back(menuAction);
                 break;
             case Scope::Contextual:
-                contextualActions.push_back(action);
+                contextualActions.push_back(menuAction);
                 break;
             case Scope::Legacy:
-                legacyActions.push_back(action);
+                legacyActions.push_back(menuAction);
                 break;
         }
     }
@@ -2155,7 +2158,6 @@ void ToolBarManager::addCurrentToolbarLayoutActions(QMenu* menu)
         });
     }
 }
-
 bool ToolBarManager::eventFilter(QObject* source, QEvent* ev)
 {
     bool res = false;
