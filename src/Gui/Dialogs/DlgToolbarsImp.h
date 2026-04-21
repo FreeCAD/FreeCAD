@@ -72,6 +72,7 @@ protected:
     void onNewButtonClicked();
     void onRenameButtonClicked();
     void onDeleteButtonClicked();
+    void onResetLayoutButtonClicked();
 
 protected Q_SLOTS:
     void onAddMacroAction(const QByteArray&) override;
@@ -81,6 +82,7 @@ protected Q_SLOTS:
 protected:
     void changeEvent(QEvent* e) override;
     void hideEvent(QHideEvent* event) override;
+    void showEvent(QShowEvent* event) override;
     virtual void addCustomToolbar(const QString&);
     virtual void removeCustomToolbar(const QString&);
     virtual void renameCustomToolbar(const QString&, const QString&);
@@ -93,6 +95,21 @@ protected:
 private:
     void importCustomToolbars(const QByteArray&);
     void exportCustomToolbars(const QByteArray&);
+    void updateToolbarTreeHeaders();
+    QString customToolbarPersistenceKey(const QString& toolbarName, const QString& workbench) const;
+    void updateToolbarItemScope(QTreeWidgetItem* item, const QString& workbench) const;
+    void updateToolbarItemScopes();
+    QString findToolbarIdentityCollision(
+        const QString& toolbarName,
+        const QTreeWidgetItem* ignoredItem = nullptr
+    ) const;
+    QString toolbarIdentityCollisionMessage(
+        const QString& toolbarName,
+        const QString& persistenceKey
+    ) const;
+    QString selectedWorkbench() const;
+    bool isActiveWorkbenchSelection(const QString& workbench) const;
+    void updateToolbarLayoutControls();
 
 protected:
     std::unique_ptr<Ui_DlgCustomToolbars> ui;

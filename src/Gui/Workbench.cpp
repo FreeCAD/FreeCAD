@@ -562,6 +562,22 @@ std::list<std::string> Workbench::listToolbars() const
     return bars;
 }
 
+std::list<std::pair<std::string, std::string>> Workbench::getToolbarIdentities() const
+{
+    std::unique_ptr<ToolBarItem> tb(setupToolBars());
+    setupCustomToolbars(tb.get(), "Toolbar");
+    WorkbenchManipulator::changeToolBars(tb.get());
+    setupToolbarPersistenceKeys(tb.get());
+
+    std::list<std::pair<std::string, std::string>> identities;
+    QList<ToolBarItem*> items = tb->getItems();
+    for (const auto& item : items) {
+        identities.emplace_back(item->command(), item->persistenceKey());
+    }
+
+    return identities;
+}
+
 std::list<std::pair<std::string, std::list<std::string>>> Workbench::getToolbarItems() const
 {
     std::unique_ptr<ToolBarItem> tb(setupToolBars());

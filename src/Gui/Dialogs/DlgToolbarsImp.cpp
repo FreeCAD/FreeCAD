@@ -101,10 +101,9 @@ DlgCustomToolbars::DlgCustomToolbars(DlgCustomToolbars::Type t, QWidget* parent)
         }
     }
 
-    QStringList labels;
-    labels << tr("Command");
-    ui->toolbarTreeWidget->setHeaderLabels(labels);
-    ui->toolbarTreeWidget->header()->hide();
+    updateToolbarTreeHeaders();
+    ui->toolbarTreeWidget->header()->setSectionResizeMode(0, QHeaderView::Stretch);
+    ui->toolbarTreeWidget->header()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
 
     Workbench* w = WorkbenchManager::instance()->active();
     if (w) {
@@ -137,7 +136,23 @@ void DlgCustomToolbars::setupConnections()
             this, &DlgCustomToolbars::onRenameButtonClicked);
     connect(ui->deleteButton, &QPushButton::clicked,
             this, &DlgCustomToolbars::onDeleteButtonClicked);
+    connect(ui->resetLayoutButton, &QPushButton::clicked,
+            this, &DlgCustomToolbars::onResetLayoutButtonClicked);
     // clang-format on
+
+    if (auto* manager = ToolBarManager::getInstance()) {
+        connect(
+            manager,
+            &ToolBarManager::toolbarLayoutContextChanged,
+            this,
+            &DlgCustomToolbars::updateToolbarLayoutControls
+        );
+    }
+    if (auto* mainWindow = MainWindow::getInstance()) {
+        connect(mainWindow, &MainWindow::workbenchActivatedCompleted, this, [this] {
+            updateToolbarLayoutControls();
+        });
+    }
 }
 
 void DlgCustomToolbars::addCustomToolbar(const QString&)
@@ -170,6 +185,12 @@ void DlgCustomToolbars::hideEvent(QHideEvent* event)
     CustomizeActionPage::hideEvent(event);
 }
 
+void DlgCustomToolbars::showEvent(QShowEvent* event)
+{
+    updateToolbarLayoutControls();
+    CustomizeActionPage::showEvent(event);
+}
+
 void DlgCustomToolbars::onActivateCategoryBox()
 {}
 
@@ -187,6 +208,195 @@ void DlgCustomToolbars::onWorkbenchBoxActivated(int index)
 
     QByteArray workbenchname = workbench.toLatin1();
     importCustomToolbars(workbenchname);
+    updateToolbarLayoutControls();
+}
+
+void DlgCustomToolbars::updateToolbarTreeHeaders()
+{
+    QStringList labels;
+    labels << (type == Toolbar ? tr("Toolbar") : tr("Toolbox Bar")) << tr("Scope");
+    ui->toolbarTreeWidget->setHeaderLabels(labels);
+}
+
+QString DlgCustomToolbars::customToolbarPersistenceKey(
+    const QString& toolbarName,
+    const QString& workbench
+) const
+{
+    if (toolbarName.isEmpty()) {
+        return {};
+    }
+
+    if (workbench == QLatin1String("Global")) {
+        return QStringLiteral("global:%1").arg(toolbarName);
+    }
+
+    if (workbench.isEmpty()) {
+        return toolbarName;
+    }
+
+    return QStringLiteral("wb:%1:%2").arg(workbench, toolbarName);
+}
+
+void DlgCustomToolbars::updateToolbarItemScope(QTreeWidgetItem* item, const QString& workbench) const
+{
+    if (!item) {
+        return;
+    }
+
+    const auto persistenceKey = customToolbarPersistenceKey(item->text(0), workbench);
+    item->setText(1, ToolBarManager::toolBarScopeLabel(persistenceKey));
+}
+
+void DlgCustomToolbars::updateToolbarItemScopes()
+{
+    const QString workbench = selectedWorkbench();
+    for (int i = 0; i < ui->toolbarTreeWidget->topLevelItemCount(); i++) {
+        updateToolbarItemScope(ui->toolbarTreeWidget->topLevelItem(i), workbench);
+    }
+}
+
+QString DlgCustomToolbars::findToolbarIdentityCollision(
+    const QString& toolbarName,
+    const QTreeWidgetItem* ignoredItem
+) const
+{
+    const QString workbench = selectedWorkbench();
+    for (int i = 0; i < ui->toolbarTreeWidget->topLevelItemCount(); i++) {
+        const auto* item = ui->toolbarTreeWidget->topLevelItem(i);
+        if (item == ignoredItem || item->text(0) != toolbarName) {
+            continue;
+        }
+
+        return customToolbarPersistenceKey(item->text(0), workbench);
+    }
+
+    Workbench* sourceWorkbench = nullptr;
+    if (workbench == QLatin1String("Global")) {
+        sourceWorkbench = WorkbenchManager::instance()->active();
+    }
+    else {
+        sourceWorkbench = WorkbenchManager::instance()->getWorkbench(workbench.toStdString());
+    }
+
+    if (!sourceWorkbench) {
+        return {};
+    }
+
+    for (const auto& identity : sourceWorkbench->getToolbarIdentities()) {
+        if (QString::fromUtf8(identity.first.c_str()) == toolbarName) {
+            return QString::fromUtf8(identity.second.c_str());
+        }
+    }
+
+    return {};
+}
+
+QString DlgCustomToolbars::toolbarIdentityCollisionMessage(
+    const QString& toolbarName,
+    const QString& persistenceKey
+) const
+{
+    const auto scopeInfo = ToolBarManager::toolBarScopeInfo(persistenceKey);
+    QString scopeLabel = ToolBarManager::toolBarScopeLabel(persistenceKey);
+    if (scopeLabel.isEmpty()) {
+        scopeLabel = tr("toolbar");
+    }
+
+    QString detail;
+    if (!scopeInfo.workbench.isEmpty()) {
+        QString menuText = Application::Instance->workbenchMenuText(scopeInfo.workbench);
+        if (menuText == QLatin1String("<none>") || menuText.isEmpty()) {
+            menuText = scopeInfo.workbench;
+        }
+
+        detail = tr(" in %1").arg(menuText);
+    }
+
+    return tr("The toolbar name '%1' collides with an existing %2 toolbar identity%3.")
+        .arg(toolbarName, scopeLabel.toLower(), detail);
+}
+
+QString DlgCustomToolbars::selectedWorkbench() const
+{
+    return ui->workbenchBox->itemData(ui->workbenchBox->currentIndex(), Qt::UserRole).toString();
+}
+
+bool DlgCustomToolbars::isActiveWorkbenchSelection(const QString& workbench) const
+{
+    if (workbench == QLatin1String("Global")) {
+        return false;
+    }
+
+    Workbench* activeWorkbench = WorkbenchManager::instance()->active();
+    if (!activeWorkbench) {
+        return false;
+    }
+
+    return workbench == QString::fromLatin1(activeWorkbench->name().c_str());
+}
+
+void DlgCustomToolbars::updateToolbarLayoutControls()
+{
+    const bool isToolbarDialog = type == Toolbar;
+    ui->resetLayoutButton->setVisible(isToolbarDialog);
+    ui->layoutScopeLabel->setVisible(isToolbarDialog);
+    if (!isToolbarDialog) {
+        return;
+    }
+
+    const QString workbench = selectedWorkbench();
+    const bool activeSelection = isActiveWorkbenchSelection(workbench);
+    auto* manager = ToolBarManager::getInstance();
+
+    QString buttonText = tr("Reset Layout");
+    QString scopeLabel;
+    QString toolTip;
+    bool enabled = false;
+
+    if (workbench == QLatin1String("Global")) {
+        scopeLabel = tr(
+            "Layout scope: Global custom toolbars. Reset is only available for the active "
+            "workbench layout."
+        );
+        toolTip = tr("Select the active workbench to reset its toolbar layout.");
+    }
+    else if (!activeSelection) {
+        scopeLabel
+            = tr("Layout scope: %1. Activate this workbench to reset its live toolbar layout.")
+                  .arg(ui->workbenchBox->currentText());
+        toolTip = tr("Reset is only available for the active workbench layout.");
+    }
+    else if (!manager) {
+        scopeLabel = tr("Layout scope: Current workbench.");
+    }
+    else {
+        const QString currentScope = manager->currentToolbarLayoutScopeLabel();
+        const QString resetLabel = manager->currentToolbarLayoutResetLabel();
+
+        scopeLabel = currentScope.isEmpty() ? tr("Layout scope: Current workbench") : currentScope;
+        buttonText = resetLabel.isEmpty() ? tr("Reset Layout") : resetLabel;
+
+        if (resetLabel.isEmpty()) {
+            scopeLabel = tr("%1. Enable the per-workbench toolbar layout preference to reset it "
+                            "here.")
+                             .arg(scopeLabel);
+            toolTip = tr(
+                "Enable the per-workbench toolbar layout preference to reset the active "
+                "toolbar layout."
+            );
+        }
+        else {
+            enabled = true;
+            toolTip = resetLabel;
+        }
+    }
+
+    ui->resetLayoutButton->setText(buttonText);
+    ui->resetLayoutButton->setEnabled(enabled);
+    ui->resetLayoutButton->setToolTip(toolTip);
+    ui->layoutScopeLabel->setText(scopeLabel);
+    ui->layoutScopeLabel->setToolTip(toolTip);
 }
 
 void DlgCustomToolbars::importCustomToolbars(const QByteArray& name)
@@ -251,6 +461,8 @@ void DlgCustomToolbars::importCustomToolbars(const QByteArray& name)
                 }
             }
         }
+
+        updateToolbarItemScope(toplevel, QString::fromLatin1(name));
     }
 }
 
@@ -452,22 +664,19 @@ void DlgCustomToolbars::onNewButtonClicked()
         Qt::MSWindowsFixedSizeDialogHint
     );
     if (ok) {
-        // Check for duplicated name
-        for (int i = 0; i < ui->toolbarTreeWidget->topLevelItemCount(); i++) {
-            QTreeWidgetItem* toplevel = ui->toolbarTreeWidget->topLevelItem(i);
-            QString groupName = toplevel->text(0);
-            if (groupName == text) {
-                QMessageBox::warning(
-                    this,
-                    tr("Duplicated name"),
-                    tr("The toolbar name '%1' is already used").arg(text)
-                );
-                return;
-            }
+        QString collision = findToolbarIdentityCollision(text);
+        if (!collision.isEmpty()) {
+            QMessageBox::warning(
+                this,
+                tr("Duplicated name"),
+                toolbarIdentityCollisionMessage(text, collision)
+            );
+            return;
         }
 
         auto item = new QTreeWidgetItem(ui->toolbarTreeWidget);
         item->setText(0, text);
+        updateToolbarItemScope(item, selectedWorkbench());
         item->setCheckState(0, Qt::Checked);
         item->setExpanded(true);
 
@@ -493,6 +702,20 @@ void DlgCustomToolbars::onDeleteButtonClicked()
     exportCustomToolbars(workbench.toLatin1());
 }
 
+void DlgCustomToolbars::onResetLayoutButtonClicked()
+{
+    if (!ui->resetLayoutButton->isEnabled() || !isActiveWorkbenchSelection(selectedWorkbench())) {
+        updateToolbarLayoutControls();
+        return;
+    }
+
+    if (auto* manager = ToolBarManager::getInstance()) {
+        manager->resetCurrentToolbarLayout();
+    }
+
+    updateToolbarLayoutControls();
+}
+
 void DlgCustomToolbars::onRenameButtonClicked()
 {
     bool renamed = false;
@@ -510,21 +733,18 @@ void DlgCustomToolbars::onRenameButtonClicked()
             Qt::MSWindowsFixedSizeDialogHint
         );
         if (ok && text != old_text) {
-            // Check for duplicated name
-            for (int i = 0; i < ui->toolbarTreeWidget->topLevelItemCount(); i++) {
-                QTreeWidgetItem* toplevel = ui->toolbarTreeWidget->topLevelItem(i);
-                QString groupName = toplevel->text(0);
-                if (groupName == text && toplevel != item) {
-                    QMessageBox::warning(
-                        this,
-                        tr("Duplicated name"),
-                        tr("The toolbar name '%1' is already used").arg(text)
-                    );
-                    return;
-                }
+            QString collision = findToolbarIdentityCollision(text, item);
+            if (!collision.isEmpty()) {
+                QMessageBox::warning(
+                    this,
+                    tr("Duplicated name"),
+                    toolbarIdentityCollisionMessage(text, collision)
+                );
+                return;
             }
 
             item->setText(0, text);
+            updateToolbarItemScope(item, selectedWorkbench());
             renameCustomToolbar(old_text, text);
             renamed = true;
         }
@@ -573,6 +793,7 @@ void DlgCustomToolbars::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
+        updateToolbarTreeHeaders();
         int count = ui->categoryBox->count();
 
         CommandManager& cCmdMgr = Application::Instance->commandManager();
@@ -585,6 +806,8 @@ void DlgCustomToolbars::changeEvent(QEvent* e)
             }
         }
         ui->categoryBox->activated(ui->categoryBox->currentIndex());
+        updateToolbarItemScopes();
+        updateToolbarLayoutControls();
     }
     else if (e->type() == QEvent::StyleChange) {
         ui->categoryBox->activated(ui->categoryBox->currentIndex());
@@ -856,13 +1079,14 @@ void DlgCustomToolbarsImp::moveDownCustomCommand(const QString& name, const QByt
 
 void DlgCustomToolbarsImp::showEvent(QShowEvent* event)
 {
-    Q_UNUSED(event);
     // If we did this already in the constructor we wouldn't get the vertical scrollbar if needed.
     // The problem was noticed with Qt 4.1.4 but may arise with any later version.
     if (firstShow) {
         ui->categoryBox->activated(ui->categoryBox->currentIndex());
         firstShow = false;
     }
+
+    DlgCustomToolbars::showEvent(event);
 }
 
 void DlgCustomToolbarsImp::changeEvent(QEvent* e)
