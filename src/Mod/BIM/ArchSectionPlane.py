@@ -169,13 +169,8 @@ def getCutShapes(
                     if sub.Volume < 0:
                         sub = sub.reversed()  # Use reversed as sub is immutable.
                     c = sub.cut(cutvolume)
-                    s = sub.section(cutface)
-                    try:
-                        wires = DraftGeomUtils.findWires(s.Edges)
-                        tmpSshapes.extend(Part.makeFace(wires, "Part::FaceMakerBullseye").Faces)
-                    except Part.OCCError:
-                        # print "ArchView: unable to get a face"
-                        tmpSshapes.append(s)
+                    s = sub.common(cutface)
+                    tmpSshapes.extend(s.Faces)
                     shapes.extend(c.SubShapes if c.ShapeType == "Compound" else [c])
                     if showHidden:
                         c = sub.cut(invcutvolume)
