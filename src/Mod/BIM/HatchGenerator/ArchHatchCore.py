@@ -83,6 +83,43 @@ def clipShapeToBase(baseShape, tileShape, clipMode):
         return None
 
 
+def _face_fills_bbox_rectangle(face, tol=1e-6):
+    """
+    Return True only when the face completely fills its own axis-aligned bbox.
+
+    This is the conservative condition required by the SeamlessTiling Zone B
+    optimization. A single face with one outer wire is NOT sufficient: concave
+    polygons and sloped polygons can still leave large regions inside the bbox
+    that are outside the actual face.
+    """
+    if face is None:
+        return False
+
+    try:
+        if len(face.Wires) != 1:
+            return False
+    except Exception:
+        return False
+
+    try:
+        bb = face.BoundBox
+        if not bb.isValid():
+            return False
+    except Exception:
+        return False
+
+    bbox_area = bb.XLength * bb.YLength
+    if bbox_area <= tol:
+        return False
+
+    try:
+        face_area = face.Area
+    except Exception:
+        return False
+
+    return abs(face_area - bbox_area) <= max(tol, bbox_area * 1e-6)
+
+
 def _get_bbox_anchor(xmin, xmax, ymin, ymax, placement_mode):
     """
     Return the anchor point inside a bounding box for a given placement mode.
@@ -412,22 +449,25 @@ def buildHatchShape(
         #     rotated tile AABB, but 0° covers most section-hatch usage)
         #   • not randomizePlacement / not shapeDistortion  (same as broadphase
         #     cull guard — random jitter makes the bounds unreliable)
-        #   • baseShape is a single simple face with no holes  (a face with
-        #     inner wires, e.g. a wall with a window opening, can have a tile
-        #     that sits inside the bbox safe zone yet still falls inside a hole)
-        _tile_diag = math.sqrt((tile_width * patternScale) ** 2 + (tile_height * patternScale) ** 2)
+        #   • baseShape is a single face that COMPLETELY FILLS its axis-aligned
+        #     bbox in the current frame. This keeps Zone B only for true
+        #     rectangle-like bases. Concave polygons, triangles, H-shapes, and
+        #     any sloped polygon do not satisfy this and must always clip.
+        _tile_diag = math.sqrt(
+            (tile_width * patternScale) ** 2 + (tile_height * patternScale) ** 2
+        )
         try:
-            _base_is_simple = (
+            _base_is_safe_bbox_rect = (
                 rotationDeg == 0.0
                 and not randomizePlacement
                 and not shapeDistortion
                 and len(baseShape.Faces) == 1
-                and len(baseShape.Faces[0].Wires) == 1  # outer wire only, no holes
+                and _face_fills_bbox_rectangle(baseShape.Faces[0])
             )
         except Exception:
-            _base_is_simple = False
+            _base_is_safe_bbox_rect = False
 
-        if _base_is_simple:
+        if _base_is_safe_bbox_rect:
             _safe_xmin = bounding_box.XMin + _tile_diag
             _safe_xmax = bounding_box.XMax - _tile_diag
             _safe_ymin = bounding_box.YMin + _tile_diag
