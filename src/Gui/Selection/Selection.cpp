@@ -1103,6 +1103,9 @@ const Gui::SelectionGate* SelectionSingleton::getSelectionGate(const App::Docume
         return nullptr;
     }
     auto context = getSelectionContext(doc->getName());
+    if (!context.info) {
+        return nullptr;
+    }
     return context.info->gate;
 }
 

@@ -96,7 +96,7 @@ public:
     std::shared_ptr<const Node_Block> getAst()
     {
         return Ast;
-    };
+    }
 
 protected:
     std::string Filter;

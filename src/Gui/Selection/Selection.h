@@ -865,7 +865,7 @@ protected:
 
     struct SelectionAllowance
     {
-        bool allowed;
+        bool allowed {false};
         std::string reason;
     };
 

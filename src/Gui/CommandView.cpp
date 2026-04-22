@@ -3062,6 +3062,9 @@ static bool findObjectsOfTypeInBox(
             std::vector<Base::Vector3d> points;
             std::vector<Data::ComplexGeoData::Line> lines;
             data->getLinesFromSubElement(segment.get(), points, lines);
+            if (points.empty() || lines.empty()) {
+                continue;
+            }
             Base::Polygon2d loop;
             // TODO: can we assume the line returned above are in proper
             // order if the element is a face?
@@ -3118,7 +3121,7 @@ static std::vector<std::string> getBoxSelection(
         // check if both two boundary points are inside polygon, only
         // valid since we know the given polygon is a box.
         if (polygon.Contains(Base::Vector2d(bbox.MinX, bbox.MinY))
-            && polygon.Contains(Base::Vector2d(bbox.MaxX, bbox.MaxY)) && selectionGate == nullptr) {
+            && polygon.Contains(Base::Vector2d(bbox.MaxX, bbox.MaxY))) {
             ret.emplace_back("");
             return ret;
         }

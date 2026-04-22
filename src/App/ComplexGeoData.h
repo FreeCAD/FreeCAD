@@ -183,12 +183,12 @@ public:
                                         std::vector<Line>& lines) const;
 
     /**
-     * @brief Get the frist vertex from a segment.
+     * @brief Get the first vertex from a segment.
      *
      * @param[in] segment The segment to get the vertex from.
      *
      * @param[in,out] Point The point used in the segment.
-     * @retrun true if point was found
+     * @return true if point was found
      */
     virtual bool getFirstVertexFromSubElement(
         const Data::Segment* segment,
