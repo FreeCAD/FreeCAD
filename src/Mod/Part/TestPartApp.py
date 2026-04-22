@@ -1131,11 +1131,37 @@ class EmptyFace(unittest.TestCase):
             face.derivative2At(0, 0)
 
     def testCutHoles(self):
-        with self.assertRaises(ValueError):
-            face = Part.Face()
-            circle = Part.Circle()
-            wire = Part.Wire(Part.Edge(circle))
-            face.cutHoles([wire])
+        points_outer = [
+            App.Vector(0, 0, 0),
+            App.Vector(30, 0, 0),
+            App.Vector(30, 20, 0),
+            App.Vector(0, 20, 0),
+        ]
+
+        points_inner = [
+            App.Vector(5, 5, 0),
+            App.Vector(25, 5, 0),
+            App.Vector(25, 15, 0),
+            App.Vector(5, 15, 0),
+        ]
+
+        wire_outer = Part.makePolygon(points_outer + [points_outer[0]])
+        wire_inner = Part.makePolygon(points_inner + [points_inner[0]])
+        face1 = Part.Face(wire_outer)
+        face1.cutHoles([wire_inner])
+        self.assertTrue(face1.isValid())
+
+        points_inner_rev = points_inner[:]
+        points_inner_rev.reverse()
+
+        wire_outer = Part.makePolygon(points_outer + [points_outer[0]])
+        wire_inner = Part.makePolygon(points_inner_rev + [points_inner_rev[0]])
+        face2 = Part.Face(wire_outer)
+        face2.cutHoles([wire_inner])
+
+        self.assertTrue(face2.isValid())
+        self.assertEqual(face1.Area, face2.Area)
+        self.assertEqual(face1.Area, 400.0)
 
     def testUVNodes(self):
         with self.assertRaises(ValueError):
