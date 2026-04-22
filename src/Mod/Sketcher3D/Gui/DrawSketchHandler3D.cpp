@@ -25,62 +25,54 @@
 
 #include "PreCompiled.h"
 
-#include <Gui/MenuManager.h>
-#include <Gui/ToolBarManager.h>
+#include <Inventor/events/SoKeyboardEvent.h>
+#include <Inventor/nodes/SoSeparator.h>
 
-#include "WorkbenchManipulator.h"
+#include <Mod/Sketcher3D/App/Sketch3DObject.h>
+
+#include "DrawSketchHandler3D.h"
+#include "ViewProviderSketch3D.h"
 
 
 using namespace Sketcher3DGui;
 
-void WorkbenchManipulator::modifyMenuBar(Gui::MenuItem* menuBar)
-{
-    addCreateSketchToMenu(menuBar);
-}
+DrawSketchHandler3D::DrawSketchHandler3D() = default;
 
-void WorkbenchManipulator::modifyToolBars(Gui::ToolBarItem* toolBar)
-{
-    setupCreateSketchToolbar(toolBar);
-    setupEditModeToolbar(toolBar);
-}
+DrawSketchHandler3D::~DrawSketchHandler3D() = default;
 
-void WorkbenchManipulator::setupCreateSketchToolbar(Gui::ToolBarItem* toolBar)
+void DrawSketchHandler3D::activate(ViewProviderSketch3D* v)
 {
-    auto sketcher = toolBar->findItem("Sketcher");
-    if (!sketcher) {
-        return;
+    vp = v;
+    preview = new SoSeparator();
+    preview->ref();
+    if (vp) {
+        vp->getRoot()->addChild(preview);
     }
-
-    sketcher->clear();
-    *sketcher << "Sketcher_NewSketch"
-              << "Sketcher3D_CreateSketch";
+    onActivated();
 }
 
-void WorkbenchManipulator::addCreateSketchToMenu(Gui::MenuItem* menuBar)
+void DrawSketchHandler3D::quit()
 {
-    auto sketch = menuBar->findItem("S&ketch");
-    if (!sketch) {
-        return;
+    if (preview && vp) {
+        vp->getRoot()->removeChild(preview);
     }
-
-    auto add = new Gui::MenuItem();
-    add->setCommand("Sketcher3D_CreateSketch");
-    sketch->appendItem(add);
+    if (preview) {
+        preview->unref();
+        preview = nullptr;
+    }
+    vp = nullptr;
 }
 
-void WorkbenchManipulator::setupEditModeToolbar(Gui::ToolBarItem* toolBar)
+bool DrawSketchHandler3D::keyPressed(int key)
 {
-    if (!toolBar->findItem("Sketcher")) {
-        return;
+    if (key == SoKeyboardEvent::ESCAPE && vp) {
+        vp->purgeHandler();
+        return true;
     }
-
-    auto* editTb =
-        new Gui::ToolBarItem(toolBar, Gui::ToolBarItem::DefaultVisibility::Unavailable);
-    editTb->setCommand("Sketcher3D Edit");
-    *editTb << "Sketcher3D_CreatePoint"
-            << "Sketcher3D_CreateLine"
-            << "Sketcher3D_CreatePolyline"
-            << "Separator"
-            << "Sketcher3D_ConstrainCoincident";
+    return false;
 }
 
+Sketcher3D::Sketch3DObject* DrawSketchHandler3D::getSketch() const
+{
+    return vp ? vp->getSketch3DObject() : nullptr;
+}

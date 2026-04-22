@@ -27,12 +27,17 @@
 #define SKETCHER3DGUI_VIEWPROVIDERSKETCH3D_H
 
 
+#include <memory>
+
 #include <QCoreApplication>
 
+#include <Base/Vector3D.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 #include <Mod/Sketcher3D/Sketcher3DGlobal.h>
 
 class QMenu;
+class SbVec2s;
+class SoSeparator;
 
 namespace Sketcher3D
 {
@@ -42,6 +47,9 @@ class Sketch3DObject;
 namespace Sketcher3DGui
 {
 
+class DrawSketchHandler3D;
+class TaskSketcher3DTool;
+
 
 class Sketcher3DGuiExport ViewProviderSketch3D: public PartGui::ViewProviderPart
 {
@@ -49,8 +57,43 @@ class Sketcher3DGuiExport ViewProviderSketch3D: public PartGui::ViewProviderPart
     PROPERTY_HEADER_WITH_OVERRIDE(Sketcher3DGui::ViewProviderSketch3D);
 
 public:
+    /// Cardinal workplane. UI aid only, geometry
+    /// is always stored and solved in full 3D.
+    enum class ActivePlane : int
+    {
+        XY = 0,
+        YZ = 1,
+        ZX = 2,
+    };
+
     ViewProviderSketch3D();
     ~ViewProviderSketch3D() override;
+
+    ActivePlane getActivePlane() const
+    {
+        return activePlane;
+    }
+    const Base::Vector3d& getPlaneBase() const
+    {
+        return planeBase;
+    }
+    /// Move the workplane anchor point. 
+    void setPlaneBase(const Base::Vector3d& base);
+    /// Switch to the next plane (XY ->YZ -> ZX -> XY).
+    void cyclePlane();
+
+    /// Task-panel backreference so updateData() can push refreshes.
+    /// Set by TaskDlgEditSketch3D on open, cleared on close.
+    void setTaskPanel(TaskSketcher3DTool* panel)
+    {
+        taskPanel = panel;
+    }
+    TaskSketcher3DTool* getTaskPanel() const
+    {
+        return taskPanel;
+    }
+
+    void updateData(const App::Property* prop) override;
 
     Sketcher3D::Sketch3DObject* getSketch3DObject() const;
     void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
@@ -59,9 +102,45 @@ public:
         return nullptr;
     }
 
+    /// Install a creation tool. Purges any previously active handler.
+    void activateHandler(std::unique_ptr<DrawSketchHandler3D> handler);
+    /// Tear down the active handler.
+    void purgeHandler();
+    DrawSketchHandler3D* getHandler() const
+    {
+        return handler.get();
+    }
+
+    // Event forwarding from the viewer while in edit mode.
+    bool mouseButtonPressed(
+        int button,
+        bool pressed,
+        const SbVec2s& cursorPos,
+        const Gui::View3DInventorViewer* viewer
+    ) override;
+    bool mouseMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer) override;
+    bool keyPressed(bool pressed, int key) override;
+
 protected:
     bool setEdit(int ModNum) override;
     void unsetEdit(int ModNum) override;
+
+private:
+    /// Project screen-space cursor onto the sketch's XY plane (z=0).
+    /// Falls back to the focal plane if the camera ray is parallel to z=0.
+    Base::Vector3d
+    projectToSketchPlane(const SbVec2s& cursorPx, const Gui::View3DInventorViewer* viewer) const;
+
+    /// (Re)build the translucent quad showing the current active plane.
+    /// Removes any previous overlay; attaches fresh nodes to pcRoot.
+    void rebuildPlaneOverlay();
+
+    std::unique_ptr<DrawSketchHandler3D> handler;
+    TaskSketcher3DTool* taskPanel {nullptr};
+
+    ActivePlane activePlane {ActivePlane::XY};
+    Base::Vector3d planeBase {0.0, 0.0, 0.0};
+    SoSeparator* planeOverlay {nullptr};
 };
 
 }  // namespace Sketcher3DGui

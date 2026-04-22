@@ -23,64 +23,47 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+#ifndef SKETCHER3DGUI_DRAWSKETCHHANDLERLINE3D_H
+#define SKETCHER3DGUI_DRAWSKETCHHANDLERLINE3D_H
 
-#include <Gui/MenuManager.h>
-#include <Gui/ToolBarManager.h>
+#include "DrawSketchHandler3D.h"
 
-#include "WorkbenchManipulator.h"
+class SoCoordinate3;
+class SoLineSet;
+class SoSwitch;
 
-
-using namespace Sketcher3DGui;
-
-void WorkbenchManipulator::modifyMenuBar(Gui::MenuItem* menuBar)
+namespace Sketcher3DGui
 {
-    addCreateSketchToMenu(menuBar);
-}
 
-void WorkbenchManipulator::modifyToolBars(Gui::ToolBarItem* toolBar)
+class Sketcher3DGuiExport DrawSketchHandlerLine3D: public DrawSketchHandler3D
 {
-    setupCreateSketchToolbar(toolBar);
-    setupEditModeToolbar(toolBar);
-}
+public:
+    DrawSketchHandlerLine3D();
+    ~DrawSketchHandlerLine3D() override;
 
-void WorkbenchManipulator::setupCreateSketchToolbar(Gui::ToolBarItem* toolBar)
-{
-    auto sketcher = toolBar->findItem("Sketcher");
-    if (!sketcher) {
-        return;
-    }
+    bool pressButton(const Base::Vector3d& pos) override;
+    bool mouseMove(const Base::Vector3d& pos) override;
+    bool keyPressed(int key) override;
 
-    sketcher->clear();
-    *sketcher << "Sketcher_NewSketch"
-              << "Sketcher3D_CreateSketch";
-}
+protected:
+    void onActivated() override;
 
-void WorkbenchManipulator::addCreateSketchToMenu(Gui::MenuItem* menuBar)
-{
-    auto sketch = menuBar->findItem("S&ketch");
-    if (!sketch) {
-        return;
-    }
+private:
+    enum class State
+    {
+        PickFirst,
+        PickSecond,
+    };
 
-    auto add = new Gui::MenuItem();
-    add->setCommand("Sketcher3D_CreateSketch");
-    sketch->appendItem(add);
-}
+    void resetToPickFirst();
 
-void WorkbenchManipulator::setupEditModeToolbar(Gui::ToolBarItem* toolBar)
-{
-    if (!toolBar->findItem("Sketcher")) {
-        return;
-    }
+    State state {State::PickFirst};
+    Base::Vector3d startPos {0.0, 0.0, 0.0};
 
-    auto* editTb =
-        new Gui::ToolBarItem(toolBar, Gui::ToolBarItem::DefaultVisibility::Unavailable);
-    editTb->setCommand("Sketcher3D Edit");
-    *editTb << "Sketcher3D_CreatePoint"
-            << "Sketcher3D_CreateLine"
-            << "Sketcher3D_CreatePolyline"
-            << "Separator"
-            << "Sketcher3D_ConstrainCoincident";
-}
+    SoCoordinate3* rubberCoords {nullptr};
+    SoSwitch* rubberSwitch {nullptr};
+};
 
+}  // namespace Sketcher3DGui
+
+#endif  // SKETCHER3DGUI_DRAWSKETCHHANDLERLINE3D_H

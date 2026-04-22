@@ -22,6 +22,14 @@ SET(Constraint_SRCS
 )
 SOURCE_GROUP("Constraint" FILES ${Constraint_SRCS})
 
+SET(Solver_SRCS
+    GeometryMapper3D.cpp
+    GeometryMapper3D.h
+    Solver3D.cpp
+    Solver3D.h
+)
+SOURCE_GROUP("Solver" FILES ${Solver_SRCS})
+
 SET(Feature_SRCS
     Sketch3DObject.cpp
     Sketch3DObject.h
@@ -31,6 +39,7 @@ SOURCE_GROUP("Feature" FILES ${Feature_SRCS})
 SET(Sketcher3D_SRCS
     ${Module_SRCS}
     ${Constraint_SRCS}
+    ${Solver_SRCS}
     ${Feature_SRCS}
 )
 

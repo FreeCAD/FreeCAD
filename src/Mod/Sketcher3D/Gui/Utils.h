@@ -31,8 +31,13 @@
 namespace Sketcher3DGui
 {
 
+class ViewProviderSketch3D;
+
 // Returns true if a Sketch3DObject is currently being edited.
 Sketcher3DGuiExport bool isSketch3DInEdit();
+
+// Returns the ViewProviderSketch3D of the sketch currently being edited,
+Sketcher3DGuiExport ViewProviderSketch3D* getActiveSketch3DVP();
 
 }  // namespace Sketcher3DGui
 

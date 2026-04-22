@@ -27,26 +27,28 @@
 
 #include <Gui/Application.h>
 #include <Gui/Document.h>
-#include <Gui/ViewProviderDocumentObject.h>
-#include <Mod/Sketcher3D/App/Sketch3DObject.h>
 
 #include "Utils.h"
+#include "ViewProviderSketch3D.h"
 
 
 bool Sketcher3DGui::isSketch3DInEdit()
 {
+    return getActiveSketch3DVP() != nullptr;
+}
+
+Sketcher3DGui::ViewProviderSketch3D* Sketcher3DGui::getActiveSketch3DVP()
+{
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     if (!doc) {
-        return false;
+        return nullptr;
     }
     Gui::ViewProvider* vp = doc->getInEdit();
     if (!vp) {
-        return false;
+        return nullptr;
     }
-    auto* vpd = freecad_cast<Gui::ViewProviderDocumentObject*>(vp);
-    if (!vpd) {
-        return false;
+    if (!vp->isDerivedFrom<ViewProviderSketch3D>()) {
+        return nullptr;
     }
-    App::DocumentObject* obj = vpd->getObject();
-    return obj && obj->isDerivedFrom<Sketcher3D::Sketch3DObject>();
+    return static_cast<ViewProviderSketch3D*>(vp);
 }

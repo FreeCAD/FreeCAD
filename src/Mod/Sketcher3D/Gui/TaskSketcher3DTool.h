@@ -28,6 +28,8 @@
 #include <Gui/TaskView/TaskView.h>
 
 class QLabel;
+class QListWidget;
+class QListWidgetItem;
 
 namespace Sketcher3DGui
 {
@@ -42,15 +44,26 @@ public:
     explicit TaskSketcher3DTool(ViewProviderSketch3D* sketchView);
     ~TaskSketcher3DTool() override;
 
-    // Update the hint line
+    /// rebuild lists 
+    void refresh();
+
+    /// Update the hint line.
     void setHint(const QString& text);
-    // Update the status counts
-    void setStatus(int points, int lines);
+
+private Q_SLOTS:
+    void onElementRowClicked(QListWidgetItem* item);
 
 private:
-    ViewProviderSketch3D* sketchView;
-    QLabel* statusLabel;
-    QLabel* hintLabel;
+    void populateElements();
+    void populateConstraints();
+
+    ViewProviderSketch3D* sketchView {nullptr};
+
+    QLabel* hintLabel {nullptr};
+    QListWidget* elementsList {nullptr};
+    QListWidget* constraintsList {nullptr};
+    QLabel* elementsHeader {nullptr};
+    QLabel* constraintsHeader {nullptr};
 };
 
 }  // namespace Sketcher3DGui

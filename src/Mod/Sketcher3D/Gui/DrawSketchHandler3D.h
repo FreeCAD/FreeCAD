@@ -23,64 +23,68 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+#ifndef SKETCHER3DGUI_DRAWSKETCHHANDLER3D_H
+#define SKETCHER3DGUI_DRAWSKETCHHANDLER3D_H
 
-#include <Gui/MenuManager.h>
-#include <Gui/ToolBarManager.h>
+#include <Base/Vector3D.h>
+#include <Mod/Sketcher3D/Sketcher3DGlobal.h>
 
-#include "WorkbenchManipulator.h"
+class SoSeparator;
 
-
-using namespace Sketcher3DGui;
-
-void WorkbenchManipulator::modifyMenuBar(Gui::MenuItem* menuBar)
+namespace Sketcher3D
 {
-    addCreateSketchToMenu(menuBar);
+class Sketch3DObject;
 }
 
-void WorkbenchManipulator::modifyToolBars(Gui::ToolBarItem* toolBar)
+namespace Sketcher3DGui
 {
-    setupCreateSketchToolbar(toolBar);
-    setupEditModeToolbar(toolBar);
-}
 
-void WorkbenchManipulator::setupCreateSketchToolbar(Gui::ToolBarItem* toolBar)
+class ViewProviderSketch3D;
+
+class Sketcher3DGuiExport DrawSketchHandler3D
 {
-    auto sketcher = toolBar->findItem("Sketcher");
-    if (!sketcher) {
-        return;
+public:
+    DrawSketchHandler3D();
+    virtual ~DrawSketchHandler3D();
+
+    DrawSketchHandler3D(const DrawSketchHandler3D&) = delete;
+    DrawSketchHandler3D& operator=(const DrawSketchHandler3D&) = delete;
+
+    void activate(ViewProviderSketch3D* vp);
+
+    void quit();
+
+    /// pos is in sketch local 3D coords. Return
+    /// true if the handler consumed the event.
+    virtual bool pressButton(const Base::Vector3d& pos) = 0;
+
+    virtual bool mouseMove(const Base::Vector3d& /*pos*/)
+    {
+        return false;
     }
 
-    sketcher->clear();
-    *sketcher << "Sketcher_NewSketch"
-              << "Sketcher3D_CreateSketch";
-}
+    virtual bool keyPressed(int key);
 
-void WorkbenchManipulator::addCreateSketchToMenu(Gui::MenuItem* menuBar)
-{
-    auto sketch = menuBar->findItem("S&ketch");
-    if (!sketch) {
-        return;
+protected:
+    virtual void onActivated()
+    {}
+
+    Sketcher3D::Sketch3DObject* getSketch() const;
+    ViewProviderSketch3D* getSketchVP() const
+    {
+        return vp;
     }
 
-    auto add = new Gui::MenuItem();
-    add->setCommand("Sketcher3D_CreateSketch");
-    sketch->appendItem(add);
-}
-
-void WorkbenchManipulator::setupEditModeToolbar(Gui::ToolBarItem* toolBar)
-{
-    if (!toolBar->findItem("Sketcher")) {
-        return;
+    SoSeparator* getPreviewRoot() const
+    {
+        return preview;
     }
 
-    auto* editTb =
-        new Gui::ToolBarItem(toolBar, Gui::ToolBarItem::DefaultVisibility::Unavailable);
-    editTb->setCommand("Sketcher3D Edit");
-    *editTb << "Sketcher3D_CreatePoint"
-            << "Sketcher3D_CreateLine"
-            << "Sketcher3D_CreatePolyline"
-            << "Separator"
-            << "Sketcher3D_ConstrainCoincident";
-}
+private:
+    ViewProviderSketch3D* vp {nullptr};
+    SoSeparator* preview {nullptr};
+};
 
+}  // namespace Sketcher3DGui
+
+#endif  // SKETCHER3DGUI_DRAWSKETCHHANDLER3D_H

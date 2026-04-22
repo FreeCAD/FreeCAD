@@ -23,64 +23,66 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+#ifndef SKETCHER3D_GEOMETRYMAPPER3D_H
+#define SKETCHER3D_GEOMETRYMAPPER3D_H
 
-#include <Gui/MenuManager.h>
-#include <Gui/ToolBarManager.h>
+#include <map>
+#include <vector>
 
-#include "WorkbenchManipulator.h"
+#include <Mod/Sketcher3D/Sketcher3DGlobal.h>
+
+#include "GeoEnum3D.h"
 
 
-using namespace Sketcher3DGui;
-
-void WorkbenchManipulator::modifyMenuBar(Gui::MenuItem* menuBar)
+namespace Part
 {
-    addCreateSketchToMenu(menuBar);
+class Geometry;
 }
 
-void WorkbenchManipulator::modifyToolBars(Gui::ToolBarItem* toolBar)
+namespace Sketcher3D
 {
-    setupCreateSketchToolbar(toolBar);
-    setupEditModeToolbar(toolBar);
-}
 
-void WorkbenchManipulator::setupCreateSketchToolbar(Gui::ToolBarItem* toolBar)
+class Constraint3D;
+class Solver3D;
+
+/** Translation layer between Sketch3DObject stored Geometry and 
+ *  Constraint3D lists and the lower level Solver3D handles. A
+ *  mapper instance is built per recompute, populated via push(), then
+ *  discarded after writeBack().
+ */
+class Sketcher3DExport GeometryMapper3D
 {
-    auto sketcher = toolBar->findItem("Sketcher");
-    if (!sketcher) {
-        return;
-    }
+public:
+    GeometryMapper3D() = default;
 
-    sketcher->clear();
-    *sketcher << "Sketcher_NewSketch"
-              << "Sketcher3D_CreateSketch";
-}
+    /// Push geometry and constraints into the solver.
+    /// Constraints referring to null geometry are silently
+    /// dropped.
+    void push(
+        const std::vector<Part::Geometry*>& geoList,
+        const std::vector<Constraint3D>& constraints,
+        Solver3D& solver
+    );
 
-void WorkbenchManipulator::addCreateSketchToMenu(Gui::MenuItem* menuBar)
-{
-    auto sketch = menuBar->findItem("S&ketch");
-    if (!sketch) {
-        return;
-    }
+    /// After solver has run and applied, copy solved positions back into
+    /// geoList.
+    void writeBack(const Solver3D& solver, std::vector<Part::Geometry*>& geoList) const;
 
-    auto add = new Gui::MenuItem();
-    add->setCommand("Sketcher3D_CreateSketch");
-    sketch->appendItem(add);
-}
+private:
+    struct GeoMapping
+    {
+        int pointHandle {-1};  // for GeomPoint
+        int startHandle {-1};  // for GeomLineSegment start
+        int endHandle {-1};    // for GeomLineSegment end
+        int lineHandle {-1};   // for GeomLineSegment line
+    };
 
-void WorkbenchManipulator::setupEditModeToolbar(Gui::ToolBarItem* toolBar)
-{
-    if (!toolBar->findItem("Sketcher")) {
-        return;
-    }
+    /// Resolve a constraint to a solver point
+    int resolvePointHandle(const GeoElementId3D& ref) const;
 
-    auto* editTb =
-        new Gui::ToolBarItem(toolBar, Gui::ToolBarItem::DefaultVisibility::Unavailable);
-    editTb->setCommand("Sketcher3D Edit");
-    *editTb << "Sketcher3D_CreatePoint"
-            << "Sketcher3D_CreateLine"
-            << "Sketcher3D_CreatePolyline"
-            << "Separator"
-            << "Sketcher3D_ConstrainCoincident";
-}
+    std::map<int, GeoMapping> perGeo;
+};
 
+}  // namespace Sketcher3D
+
+#endif  // SKETCHER3D_GEOMETRYMAPPER3D_H
