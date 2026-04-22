@@ -300,7 +300,19 @@ class GhostHatchRenderer:
                 distributionMode=getattr(hatch_pattern_obj, "DistributionMode", "SeamlessTiling"),
                 autoScaleToFitBase=bool(getattr(hatch_pattern_obj, "AutoScaleToFitBase", False)),
                 patternScale=float(getattr(hatch_pattern_obj, "PatternScale", 1.0)),
-                rotationDeg=float(getattr(hatch_pattern_obj, "RotationDeg", 0.0)),
+                rotationDeg=(
+                    float(getattr(hatch_pattern_obj, "GridRotationDeg", getattr(hatch_pattern_obj, "RotationDeg", 0.0)))
+                    if bool(getattr(hatch_pattern_obj, "LinkTileRotationToGrid", True))
+                    else float(getattr(hatch_pattern_obj, "TileRotationDeg", getattr(hatch_pattern_obj, "RotationDeg", 0.0)))
+                ),
+                gridRotationDeg=float(
+                    getattr(hatch_pattern_obj, "GridRotationDeg", 0.0)
+                ),
+                tileRotationDeg=(
+                    float(getattr(hatch_pattern_obj, "GridRotationDeg", getattr(hatch_pattern_obj, "RotationDeg", 0.0)))
+                    if bool(getattr(hatch_pattern_obj, "LinkTileRotationToGrid", True))
+                    else float(getattr(hatch_pattern_obj, "TileRotationDeg", getattr(hatch_pattern_obj, "RotationDeg", 0.0)))
+                ),
                 baseSpacing=spacing,
                 repX=int(getattr(hatch_pattern_obj, "RepetitionsX", 5)),
                 repY=int(getattr(hatch_pattern_obj, "RepetitionsY", 5)),
@@ -380,9 +392,7 @@ class GhostHatchRenderer:
                                     pass
 
                         projected.append(local_base)
-                        transforms.append(
-                            (local_base, to_world, preview_offset_x, preview_offset_y)
-                        )
+                        transforms.append((local_base, to_world, preview_offset_x, preview_offset_y))
                     except Exception as e:
                         FreeCAD.Console.PrintWarning(f"Ghost hatch projection failed: {e}\n")
 

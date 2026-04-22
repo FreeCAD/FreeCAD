@@ -333,6 +333,8 @@ def buildHatchShape(
     autoScaleToFitBase=False,
     patternScale=1.0,
     rotationDeg=0.0,
+    gridRotationDeg=None,
+    tileRotationDeg=None,
     baseSpacing=10.0,
     repX=5,
     repY=5,
@@ -413,7 +415,13 @@ def buildHatchShape(
             else:
                 patternScale = (scale_x + scale_y) * 0.5
 
-    rotation_rad = math.radians(rotationDeg)
+    if gridRotationDeg is None:
+        gridRotationDeg = 0.0
+    if tileRotationDeg is None:
+        tileRotationDeg = rotationDeg
+
+    grid_rotation_rad = math.radians(gridRotationDeg)
+    tile_rotation_rad = math.radians(tileRotationDeg)
     effective_spacing = max(baseSpacing, 1e-6)
 
     step_x = tile_width * patternScale + effective_spacing
@@ -425,13 +433,30 @@ def buildHatchShape(
 
         grid_ref_x = offsetX
         grid_ref_y = offsetY
-        anchor_x = math.floor((bounding_box.XMin - grid_ref_x) / step_x) * step_x + grid_ref_x
-        anchor_y = math.floor((bounding_box.YMin - grid_ref_y) / step_y) * step_y + grid_ref_y
+        cos_grid = math.cos(grid_rotation_rad)
+        sin_grid = math.sin(grid_rotation_rad)
 
-        start_x = anchor_x
-        end_x = bounding_box.XMax + step_x
-        start_y = anchor_y
-        end_y = bounding_box.YMax + step_y
+        corners = [
+            (bounding_box.XMin, bounding_box.YMin),
+            (bounding_box.XMin, bounding_box.YMax),
+            (bounding_box.XMax, bounding_box.YMin),
+            (bounding_box.XMax, bounding_box.YMax),
+        ]
+        local_xs = []
+        local_ys = []
+        for cx, cy in corners:
+            rel_x = cx - grid_ref_x
+            rel_y = cy - grid_ref_y
+            local_xs.append(rel_x * cos_grid + rel_y * sin_grid)
+            local_ys.append(-rel_x * sin_grid + rel_y * cos_grid)
+
+        coverage_margin = max(step_x, step_y) + math.sqrt(
+            (tile_width * patternScale) ** 2 + (tile_height * patternScale) ** 2
+        )
+        i_start = int(math.floor((min(local_xs) - coverage_margin) / step_x))
+        i_end = int(math.ceil((max(local_xs) + coverage_margin) / step_x))
+        j_start = int(math.floor((min(local_ys) - coverage_margin) / step_y))
+        j_end = int(math.ceil((max(local_ys) + coverage_margin) / step_y))
 
         tile_count = 0
         tile_parts = []
@@ -456,7 +481,8 @@ def buildHatchShape(
         _tile_diag = math.sqrt((tile_width * patternScale) ** 2 + (tile_height * patternScale) ** 2)
         try:
             _base_is_safe_bbox_rect = (
-                rotationDeg == 0.0
+                gridRotationDeg == 0.0
+                and tileRotationDeg == 0.0
                 and not randomizePlacement
                 and not shapeDistortion
                 and len(baseShape.Faces) == 1
@@ -562,17 +588,21 @@ def buildHatchShape(
 
             return tile_shape, tile_color
 
-        x = start_x
-        while x <= end_x and tile_count < maxTiles:
-            y = start_y
-            while y <= end_y and tile_count < maxTiles:
-                tile, color = tile_and_clip(x, y, patternScale, rotation_rad, placement_mode)
+        for i in range(i_start, i_end + 1):
+            if tile_count >= maxTiles:
+                break
+            for j in range(j_start, j_end + 1):
+                if tile_count >= maxTiles:
+                    break
+                tile_x = grid_ref_x + (i * step_x * cos_grid) - (j * step_y * sin_grid)
+                tile_y = grid_ref_y + (i * step_x * sin_grid) + (j * step_y * cos_grid)
+                tile, color = tile_and_clip(
+                    tile_x, tile_y, patternScale, tile_rotation_rad, placement_mode
+                )
                 if tile and not tile.isNull():
                     tile_parts.append(tile)
                     if color:
                         tile_colors.append(color)
-                y += step_y
-            x += step_x
 
         if not tile_parts:
             return Part.makeCompound([]), 0
@@ -590,55 +620,87 @@ def buildHatchShape(
         return result, tile_count
 
     elif distributionMode == "LinearGrid":
-        if placement_mode == "Center":
-            center_x = bounding_box.Center.x
-            center_y = bounding_box.Center.y
-            start_x = center_x - (repX - 1) * step_x * 0.5
-            start_y = center_y - (repY - 1) * step_y * 0.5
-        elif placement_mode == "Origin":
-            start_x = bounding_box.XMin + offsetX
-            start_y = bounding_box.YMin + offsetY
-        else:
-            start_x = bounding_box.XMin + offsetX
-            start_y = bounding_box.YMin + offsetY
+        cos_grid = math.cos(grid_rotation_rad)
+        sin_grid = math.sin(grid_rotation_rad)
 
         tile_count = 0
         tile_parts = []
         tile_colors = []
 
-        for i in range(repX):
-            if tile_count >= maxTiles:
-                break
-            for j in range(repY):
+        if placement_mode == "Center":
+            center_x = bounding_box.Center.x + offsetX
+            center_y = bounding_box.Center.y + offsetY
+            for i in range(repX):
                 if tile_count >= maxTiles:
                     break
-                tile_x = start_x + i * step_x
-                tile_y = start_y + j * step_y
-                tile, color = make_tile_and_clip(
-                    baseShape,
-                    normed_pattern,
-                    tile_x,
-                    tile_y,
-                    patternScale,
-                    rotation_rad,
-                    randomizePlacement,
-                    randomOffsetRange,
-                    randRotMin,
-                    randRotMax,
-                    randomScaleMin,
-                    randomScaleMax,
-                    showFaces,
-                    shapeDistortion,
-                    enableColorVar,
-                    colorVarInt,
-                    placement_mode=placement_mode,
-                    clip_mode=clipMode,
-                )
-                if tile and not tile.isNull():
-                    tile_parts.append(tile)
-                    tile_count += 1
-                    if color:
-                        tile_colors.append(color)
+                for j in range(repY):
+                    if tile_count >= maxTiles:
+                        break
+                    local_i = i - (repX - 1) * 0.5
+                    local_j = j - (repY - 1) * 0.5
+                    tile_x = center_x + local_i * step_x * cos_grid - local_j * step_y * sin_grid
+                    tile_y = center_y + local_i * step_x * sin_grid + local_j * step_y * cos_grid
+                    tile, color = make_tile_and_clip(
+                        baseShape,
+                        normed_pattern,
+                        tile_x,
+                        tile_y,
+                        patternScale,
+                        tile_rotation_rad,
+                        randomizePlacement,
+                        randomOffsetRange,
+                        randRotMin,
+                        randRotMax,
+                        randomScaleMin,
+                        randomScaleMax,
+                        showFaces,
+                        shapeDistortion,
+                        enableColorVar,
+                        colorVarInt,
+                        placement_mode=placement_mode,
+                        clip_mode=clipMode,
+                    )
+                    if tile and not tile.isNull():
+                        tile_parts.append(tile)
+                        tile_count += 1
+                        if color:
+                            tile_colors.append(color)
+        else:
+            start_x = bounding_box.XMin + offsetX
+            start_y = bounding_box.YMin + offsetY
+            for i in range(repX):
+                if tile_count >= maxTiles:
+                    break
+                for j in range(repY):
+                    if tile_count >= maxTiles:
+                        break
+                    tile_x = start_x + i * step_x * cos_grid - j * step_y * sin_grid
+                    tile_y = start_y + i * step_x * sin_grid + j * step_y * cos_grid
+                    tile, color = make_tile_and_clip(
+                        baseShape,
+                        normed_pattern,
+                        tile_x,
+                        tile_y,
+                        patternScale,
+                        tile_rotation_rad,
+                        randomizePlacement,
+                        randomOffsetRange,
+                        randRotMin,
+                        randRotMax,
+                        randomScaleMin,
+                        randomScaleMax,
+                        showFaces,
+                        shapeDistortion,
+                        enableColorVar,
+                        colorVarInt,
+                        placement_mode=placement_mode,
+                        clip_mode=clipMode,
+                    )
+                    if tile and not tile.isNull():
+                        tile_parts.append(tile)
+                        tile_count += 1
+                        if color:
+                            tile_colors.append(color)
 
         if not tile_parts:
             return Part.makeCompound([]), 0
@@ -673,7 +735,7 @@ def buildHatchShape(
                 tile_x,
                 tile_y,
                 patternScale,
-                rotation_rad,
+                tile_rotation_rad,
                 randomizePlacement,
                 randomOffsetRange,
                 randRotMin,
@@ -722,7 +784,7 @@ def buildHatchShape(
                     tile_x,
                     tile_y,
                     patternScale,
-                    rotation_rad,
+                    tile_rotation_rad,
                     randomizePlacement,
                     randomOffsetRange,
                     randRotMin,
@@ -764,7 +826,7 @@ def buildHatchShape(
                 tile_x,
                 tile_y,
                 patternScale,
-                rotation_rad,
+                tile_rotation_rad,
                 randomizePlacement,
                 randomOffsetRange,
                 randRotMin,
