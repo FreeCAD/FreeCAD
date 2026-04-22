@@ -1850,6 +1850,90 @@ def apply_material_hatches(target_obj=None, material_obj=None, hatch_obj=None, r
 # Hatch Task Panel
 
 
+class CollapsibleSectionBox(QtWidgets.QWidget):
+    """Compact accordion widget with click-to-toggle section headers."""
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self._items = []
+        self._current_index = -1
+        self._layout = QtWidgets.QVBoxLayout(self)
+        self._layout.setContentsMargins(0, 0, 0, 0)
+        self._layout.setSpacing(6)
+        self.setStyleSheet(
+            """
+            QToolButton {
+                background: #e4e4e4;
+                border: 1px solid #c0c0c0;
+                border-radius: 3px;
+                padding: 6px 8px;
+                font-weight: normal;
+                color: #333333;
+                text-align: left;
+            }
+            QToolButton[expanded="true"] {
+                background: #2255aa;
+                color: white;
+                font-weight: bold;
+                border: 1px solid #1a4488;
+            }
+            QToolButton:hover:!checked {
+                background: #d0ddf0;
+                color: #1a3a7a;
+            }
+            QFrame[sectionContent="true"] {
+                border: 1px solid #d7d7d7;
+                border-top: 0;
+                border-radius: 0 0 4px 4px;
+                background: #ffffff;
+            }
+            """
+        )
+
+    def addItem(self, widget, title):
+        index = len(self._items)
+        button = QtWidgets.QToolButton(self)
+        button.setText(title)
+        button.setCheckable(True)
+        button.setChecked(False)
+        button.setToolButtonStyle(QtCore.Qt.ToolButtonTextOnly)
+        button.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
+        button.setProperty("expanded", False)
+        button.clicked.connect(lambda _checked=False, idx=index: self.toggleIndex(idx))
+
+        frame = QtWidgets.QFrame(self)
+        frame.setProperty("sectionContent", True)
+        frame_layout = QtWidgets.QVBoxLayout(frame)
+        frame_layout.setContentsMargins(6, 6, 6, 6)
+        frame_layout.setSpacing(0)
+        frame_layout.addWidget(widget)
+        frame.setVisible(False)
+
+        self._layout.addWidget(button)
+        self._layout.addWidget(frame)
+        self._items.append((button, frame, widget))
+        return index
+
+    def toggleIndex(self, index):
+        if self._current_index == index:
+            self.setCurrentIndex(-1)
+        else:
+            self.setCurrentIndex(index)
+
+    def setCurrentIndex(self, index):
+        self._current_index = index if 0 <= index < len(self._items) else -1
+        for i, (button, frame, _widget) in enumerate(self._items):
+            expanded = i == self._current_index
+            frame.setVisible(expanded)
+            button.setChecked(expanded)
+            button.setProperty("expanded", expanded)
+            button.style().unpolish(button)
+            button.style().polish(button)
+
+    def currentIndex(self):
+        return self._current_index
+
+
 class HatchTaskPanel:
     def __init__(self, hatch_obj=None):
         self.editing_obj = hatch_obj
@@ -1862,23 +1946,58 @@ class HatchTaskPanel:
         self.master_object_list = self.get_all_objects_classified()
         self.last_manual_scale = None
         self._session_warned_for = set()
+        self._recommended_scale = None
+        self.selected_base_object_names = set()
+        self.selected_pattern_object_names = set()
 
         self.form = self.create_ui()
-
         self.initial_pattern_setup()
 
         if self.editing_obj is not None:
             self._load_from_object(self.editing_obj)
 
+        self._connect_refresh_signals()
+        self._refresh_distribution_ui()
+        self._refresh_units_ui()
+        self._refresh_recipe_summary()
+        self._refresh_subtraction_status()
+        QtCore.QTimer.singleShot(100, self._update_tile_estimate)
+
+    def _connect_refresh_signals(self):
         self.baseCombo.currentIndexChanged.connect(self._update_tile_estimate)
+        self.baseCombo.currentIndexChanged.connect(self._refresh_recipe_summary)
         self.builtinPatternCombo.currentIndexChanged.connect(self._update_tile_estimate)
+        self.builtinPatternCombo.currentIndexChanged.connect(self._refresh_recipe_summary)
         self.customPatternCombo.currentIndexChanged.connect(self._update_tile_estimate)
+        self.customPatternCombo.currentIndexChanged.connect(self._refresh_recipe_summary)
         self.distCombo.currentIndexChanged.connect(self._update_tile_estimate)
+        self.distCombo.currentIndexChanged.connect(self._refresh_distribution_ui)
+        self.distCombo.currentIndexChanged.connect(self._refresh_recipe_summary)
         self.repXSpin.valueChanged.connect(self._update_tile_estimate)
         self.repYSpin.valueChanged.connect(self._update_tile_estimate)
         self.scaleSpin.valueChanged.connect(self._update_tile_estimate)
-
-        QtCore.QTimer.singleShot(100, self._update_tile_estimate)
+        self.radialCountSpin.valueChanged.connect(self._update_tile_estimate)
+        self.concentricCountSpin.valueChanged.connect(self._update_tile_estimate)
+        self.randomCountSpin.valueChanged.connect(self._update_tile_estimate)
+        if self.spacingInput is not None:
+            try:
+                self.spacingInput.valueChanged.connect(self._refresh_recipe_summary)
+            except Exception:
+                pass
+        elif self.spacingSpin is not None:
+            self.spacingSpin.valueChanged.connect(self._refresh_recipe_summary)
+        self.rotSpin.valueChanged.connect(self._refresh_recipe_summary)
+        self.offsetXSpin.valueChanged.connect(self._refresh_recipe_summary)
+        self.offsetYSpin.valueChanged.connect(self._refresh_recipe_summary)
+        self.useUnitsCheck.toggled.connect(self._refresh_units_ui)
+        self.useUnitsCheck.toggled.connect(self._refresh_recipe_summary)
+        self.unitSystemCombo.currentIndexChanged.connect(self._refresh_units_ui)
+        self.unitSystemCombo.currentIndexChanged.connect(self._refresh_recipe_summary)
+        self.useSurfaceProjectionCheck.toggled.connect(self._refresh_recipe_summary)
+        self.forceXYPlaneCheck.toggled.connect(self._refresh_recipe_summary)
+        self.hatchRoleCombo.currentIndexChanged.connect(self._refresh_recipe_summary)
+        self.patternObjectsList.itemSelectionChanged.connect(self._refresh_recipe_summary)
+        self.subtractionsTable.itemSelectionChanged.connect(self._on_subtraction_selection_changed)
 
     def _resolve_obj_name(self, text):
         if not text or not self.doc:
@@ -1891,21 +2010,92 @@ class HatchTaskPanel:
                 return obj
         return None
 
+    def _display_name_for_object(self, obj):
+        if not obj:
+            return ""
+        if getattr(obj, "Label", "") and obj.Label != obj.Name:
+            return f"{obj.Label} ({obj.Name})"
+        return obj.Name
+
+    def _combo_set_object(self, combo, obj):
+        if not obj:
+            combo.setCurrentIndex(-1)
+            return
+        idx = combo.findText(obj.Name)
+        if idx == -1:
+            combo.addItem(obj.Name)
+            idx = combo.findText(obj.Name)
+        combo.setCurrentIndex(max(idx, 0))
+
+    def _create_labeled_spin(self, minimum, maximum, value=0.0, decimals=2, step=1.0):
+        spin = QtWidgets.QDoubleSpinBox()
+        spin.setRange(minimum, maximum)
+        spin.setDecimals(decimals)
+        spin.setSingleStep(step)
+        spin.setValue(value)
+        return spin
+
+    def _shape_kind_for_object(self, obj):
+        if not obj or not hasattr(obj, "Shape"):
+            return "No Shape"
+        shape = obj.Shape
+        if shape.isNull():
+            return "Null"
+        if shape.Solids:
+            return "Solid"
+        if shape.Shells:
+            return "Shell"
+        if shape.Faces:
+            return "Face"
+        if shape.Wires:
+            return "Wire"
+        if shape.Edges:
+            return "Edge"
+        if shape.Vertexes:
+            return "Vertex"
+        return "Empty"
+
+    def _subtraction_status_for_object(self, obj):
+        if not obj or not hasattr(obj, "Shape"):
+            return "[!] Missing Shape", QtGui.QColor("#aa5500")
+        shape = obj.Shape
+        if shape.isNull():
+            return "[!] Null Shape", QtGui.QColor("#aa5500")
+        if shape.Faces or shape.Solids or shape.Shells:
+            return "[ok] Ready", QtGui.QColor("#0a7d32")
+        if shape.Wires or shape.Edges:
+            return "[!] Open-wire only", QtGui.QColor("#aa5500")
+        return "[!] Empty", QtGui.QColor("#aa5500")
+
+    def _get_list_item_object_name(self, item):
+        if item is None:
+            return ""
+        name = item.data(QtCore.Qt.UserRole)
+        if name:
+            return str(name)
+        return item.text()
+
+    def _make_object_list_item(self, obj):
+        item = QtWidgets.QListWidgetItem(self._display_name_for_object(obj))
+        item.setData(QtCore.Qt.UserRole, obj.Name)
+        tooltip = f"{obj.Name}\nType: {self.classify_object(obj)}\nShape: {self._shape_kind_for_object(obj)}"
+        item.setToolTip(tooltip)
+        return item
+
     def _estimate_tile_count(self):
         is_definition = self.hatchRoleCombo.currentIndex() == 0
         if is_definition:
             width = 200.0
             height = 200.0
         else:
-            base_name = self.baseCombo.currentText()
-            base_obj = self._resolve_obj_name(base_name)
+            base_obj = self._resolve_obj_name(self.baseCombo.currentText())
             if not base_obj or not hasattr(base_obj, "Shape") or base_obj.Shape.isNull():
-                return 0, None, "—"
+                return 0, None, "-"
             bounding_box = base_obj.Shape.BoundBox
             width = bounding_box.XLength
             height = bounding_box.YLength
             if width < 1e-6 or height < 1e-6:
-                return 0, None, "—"
+                return 0, None, "-"
 
         current_scale = self.scaleSpin.value()
         dist_mode = self.distCombo.currentText()
@@ -1922,8 +2112,7 @@ class HatchTaskPanel:
                     pattern_width = max(pattern_shape.BoundBox.XLength, 1e-6)
                     pattern_height = max(pattern_shape.BoundBox.YLength, 1e-6)
             else:
-                pattern_name = self.customPatternCombo.currentText()
-                pattern_obj = self._resolve_obj_name(pattern_name)
+                pattern_obj = self._resolve_obj_name(self.customPatternCombo.currentText())
                 if pattern_obj and hasattr(pattern_obj, "Shape") and not pattern_obj.Shape.isNull():
                     pattern_width = max(pattern_obj.Shape.BoundBox.XLength, 1e-6)
                     pattern_height = max(pattern_obj.Shape.BoundBox.YLength, 1e-6)
@@ -1939,31 +2128,31 @@ class HatchTaskPanel:
                 tiles = math.ceil(width / effective_width) * math.ceil(height / effective_height)
         elif dist_mode in ("CenteredTiling", "RelativeSpacing", "LinearGrid"):
             tiles = int(self.repXSpin.value()) * int(self.repYSpin.value())
+        elif dist_mode == "RadialDistribution":
+            tiles = int(self.radialCountSpin.value())
+        elif dist_mode == "ConcentricDistribution":
+            tiles = max(1, int(self.concentricCountSpin.value())) * 8
         elif dist_mode == "RandomDistribution":
-            tiles = int(getattr(self, "randomCountSpin", 30))
+            tiles = int(self.randomCountSpin.value())
         else:
             tiles = 50
 
         recommended_scale = None
-        if (
-            tiles > 300
-            and dist_mode == "SeamlessTiling"
-            and effective_width > 0
-            and effective_height > 0
-        ):
+        if dist_mode == "SeamlessTiling" and tiles > 300 and pattern_width > 0 and pattern_height > 0:
             target = 200
             recommended_scale = current_scale * math.sqrt(tiles / target)
-            magnitude = 10 ** math.floor(math.log10(recommended_scale))
-            recommended_scale = math.ceil(recommended_scale / magnitude) * magnitude
+            if recommended_scale > 0:
+                magnitude = 10 ** math.floor(math.log10(recommended_scale))
+                recommended_scale = math.ceil(recommended_scale / magnitude) * magnitude
 
         if tiles <= 100:
-            severity = "Light ✓"
+            severity = "Light"
         elif tiles <= 500:
             severity = "Moderate"
         elif tiles <= 2000:
-            severity = "Heavy ⚠"
+            severity = "Heavy!"
         else:
-            severity = "Very Heavy ⛔"
+            severity = "Very Heavy!!"
 
         return int(tiles), recommended_scale, severity
 
@@ -1971,11 +2160,12 @@ class HatchTaskPanel:
         tiles, recommended_scale, severity = self._estimate_tile_count()
 
         if tiles <= 0:
-            self.tileEstLabel.setText("Tiles: —")
+            self.tileEstLabel.setText("Est. tiles: -")
             self.tileRecommendBtn.setVisible(False)
+            self.statsFooterLabel.setText("Ready")
             return
 
-        self.tileEstLabel.setText(f"Est. tiles: ~{tiles:,}  [{severity}]")
+        self.tileEstLabel.setText("Est. tiles: ~%d  [%s]" % (tiles, severity))
         self._recommended_scale = recommended_scale
 
         if "Very Heavy" in severity:
@@ -1986,13 +2176,20 @@ class HatchTaskPanel:
             self.tileEstLabel.setStyleSheet("color: #888800; font-size: 10px;")
         else:
             self.tileEstLabel.setStyleSheet("color: #006600; font-size: 10px;")
+        # NOTE: "Light", "Moderate", "Heavy!", "Very Heavy!!" -- all ASCII for Windows safety
 
         show_recommend = (
             recommended_scale is not None and recommended_scale > self.scaleSpin.value() * 1.2
         )
         self.tileRecommendBtn.setVisible(show_recommend)
         if show_recommend:
-            self.tileRecommendBtn.setText(f"Rec: {recommended_scale:g}")
+            self.tileRecommendBtn.setText(f"Use {recommended_scale:g}")
+
+        stats = [f"{tiles:,} est. tiles", severity]
+        if self.editing_obj is not None and hasattr(self.editing_obj, "GenerationTime"):
+            stats.append(f"last gen {float(getattr(self.editing_obj, 'GenerationTime', 0.0)):.2f}s")
+            stats.append(f"last tiles {int(getattr(self.editing_obj, 'TileCount', 0))}")
+        self.statsFooterLabel.setText(" | ".join(stats))
 
     def on_use_recommended_scale(self):
         if self._recommended_scale:
@@ -2003,18 +2200,21 @@ class HatchTaskPanel:
         if tiles <= 2000:
             return True
 
-        warn_key = f"{self.baseCombo.currentText()}_{self.builtinPatternCombo.currentText()}_{self.scaleSpin.value()}"
+        warn_key = (
+            f"{self.baseCombo.currentText()}_{self.builtinPatternCombo.currentText()}_"
+            f"{self.customPatternCombo.currentText()}_{self.scaleSpin.value()}_{self.distCombo.currentText()}"
+        )
         if warn_key in self._session_warned_for:
             return True
 
         self._session_warned_for.add(warn_key)
 
         message = (
-            f"Estimated tile count: ~{tiles:,} — this may take a long time or freeze FreeCAD.\n\n"
+            f"Estimated tile count: ~{tiles:,} -- this may take a long time or freeze FreeCAD.\n\n"
         )
         if recommended_scale:
-            message += f"Recommended scale: {recommended_scale:g} (≈200 tiles).\n\n"
-        message += "Continue with current scale?"
+            message += f"Recommended scale: {recommended_scale:g} (~200 tiles).\n\n"
+        message += "Continue with current settings?"
 
         reply = QtWidgets.QMessageBox.warning(
             self.form,
@@ -2027,72 +2227,117 @@ class HatchTaskPanel:
     def create_ui(self):
         main_widget = QtWidgets.QWidget()
         main_layout = QtWidgets.QVBoxLayout(main_widget)
+        main_layout.setContentsMargins(8, 8, 8, 8)
+        main_layout.setSpacing(8)
+
+        summary_group = QtWidgets.QGroupBox("Hatch Summary")
+        summary_layout = QtWidgets.QVBoxLayout(summary_group)
+        summary_layout.setContentsMargins(6, 4, 6, 4)
+        summary_layout.setSpacing(2)
+        self.recipeSummaryLabel = QtWidgets.QLabel("Configure the target, recipe, and preview.")
+        self.recipeSummaryLabel.setWordWrap(True)
+        self.recipeSummaryLabel.setStyleSheet("font-weight: bold; font-size: 10px;")
+        self.summaryHintLabel = QtWidgets.QLabel(
+            "Target -> Pattern -> Placement -> Advanced -> Preview"
+        )
+        self.summaryHintLabel.setStyleSheet("color: #666666; font-size: 10px;")
+        self.summaryHintLabel.setWordWrap(True)
+        summary_layout.addWidget(self.recipeSummaryLabel)
+        summary_layout.addWidget(self.summaryHintLabel)
+        main_layout.addWidget(summary_group)
 
         scroll_area = QtWidgets.QScrollArea()
         scroll_area.setWidgetResizable(True)
         scroll_area.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         scroll_area.setFrameShape(QtWidgets.QFrame.NoFrame)
-
         scroll_content = QtWidgets.QWidget()
         scroll_layout = QtWidgets.QVBoxLayout(scroll_content)
+        scroll_layout.setContentsMargins(0, 0, 0, 0)
+        scroll_layout.setSpacing(8)
 
-        self.tabs = QtWidgets.QTabWidget()
-        self.tabs.setMinimumHeight(450)
-        self.tabs.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
-        self.main_tab = QtWidgets.QWidget()
-        self.main_tab_layout = QtWidgets.QFormLayout(self.main_tab)
-        self.advanced_tab = QtWidgets.QWidget()
-        self.advanced_tab_layout = QtWidgets.QVBoxLayout(self.advanced_tab)
-        self.tabs.addTab(self.main_tab, "Main")
-        self.tabs.addTab(self.advanced_tab, "Advanced")
-        scroll_layout.addWidget(self.tabs)
+        self.sectionsBox = CollapsibleSectionBox()
+        self.sectionsBox.setSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding
+        )
+        scroll_layout.addWidget(self.sectionsBox)
 
+        # Shared core widgets
         self.hatchRoleLabel = QtWidgets.QLabel("Mode:")
         self.hatchRoleCombo = QtWidgets.QComboBox()
         self.hatchRoleCombo.addItems(["Definition (reusable style)", "Applied (on face)"])
         self.hatchRoleCombo.setCurrentIndex(0)
         self.hatchRoleCombo.setToolTip(
-            "Definition: create a reusable hatch style to assign to materials.\n"
-            "No base face required. Pattern is previewed on a 200mm swatch.\n\n"
-            "Applied: generate hatch directly on a selected face.\n"
-            "Requires a BaseObject."
+            "Definition: create a reusable hatch style.\n"
+            "Applied: generate hatch directly on a selected base shape or extracted face."
         )
         self.hatchRoleCombo.currentIndexChanged.connect(self._on_hatch_role_changed)
 
+        self.definitionNote = QtWidgets.QLabel(
+            "Definition mode has no base target. Use it to author reusable hatch recipes."
+        )
+        self.definitionNote.setWordWrap(True)
+        self.definitionNote.setStyleSheet("color: #006600; font-style: italic;")
+
         self.baseLabel = QtWidgets.QLabel("Base Shape:")
         self.baseCombo = QtWidgets.QComboBox()
-        self.pickBaseBtn = QtWidgets.QPushButton("Pick Base Shape from Selection")
+        self.pickBaseBtn = QtWidgets.QPushButton("Pick Base from Selection")
         self.pickBaseBtn.clicked.connect(self.pick_base_shape)
 
-        self.face_extractor_group = QtWidgets.QGroupBox("Face Extractor (pick any 3D face)")
-        face_ext_layout = QtWidgets.QVBoxLayout(self.face_extractor_group)
-
-        self.face_extractor_info = QtWidgets.QLabel(
-            "Select a face on any 3D object in the viewport,\n"
-            "then click 'Pick Selected Face' to create a\n"
-            "FaceExtractor object you can use as Base Shape."
-        )
-        self.face_extractor_info.setWordWrap(True)
-        face_ext_layout.addWidget(self.face_extractor_info)
-
-        self.pickFaceBtn = QtWidgets.QPushButton("Pick Selected Face → Create FaceExtractor")
+        self.face_extractor_group = QtWidgets.QGroupBox("Face Extractor")
+        face_ext_hl = QtWidgets.QHBoxLayout(self.face_extractor_group)
+        face_ext_hl.setContentsMargins(6, 4, 6, 4)
+        face_ext_hl.setSpacing(6)
+        # Keep info compact — no paragraph so the group doesn't balloon when narrow
+        self.face_extractor_info = QtWidgets.QLabel("Click a face, then:")
+        self.pickFaceBtn = QtWidgets.QPushButton("Pick Face -> FaceExtractor")
         self.pickFaceBtn.clicked.connect(self.pick_face_and_create_extractor)
-        face_ext_layout.addWidget(self.pickFaceBtn)
-
         self.face_extractor_status = QtWidgets.QLabel("")
-        self.face_extractor_status.setStyleSheet("color: green; font-style: italic;")
-        face_ext_layout.addWidget(self.face_extractor_status)
+        self.face_extractor_status.setStyleSheet(
+            "color: green; font-style: italic; font-size: 10px;"
+        )
+        self.face_extractor_status.setWordWrap(True)
+        face_ext_hl.addWidget(self.face_extractor_info)
+        face_ext_hl.addWidget(self.pickFaceBtn)
+        face_ext_hl.addWidget(self.face_extractor_status, 1)
 
-        self.baseSearchLabel = QtWidgets.QLabel("Search:")
         self.baseSearchField = QtWidgets.QLineEdit()
-        self.baseTypeFilterLabel = QtWidgets.QLabel("Type Filter:")
+        self.baseSearchField.setPlaceholderText("Filter base objects...")
         self.baseTypeFilterCombo = QtWidgets.QComboBox()
         for category in ["All", "Sketch", "PartFeature", "Compound", "Other"]:
             self.baseTypeFilterCombo.addItem(category)
 
-        self.baseObjectsLabel = QtWidgets.QLabel("Additional Base Objects:")
         self.baseObjectsList = QtWidgets.QListWidget()
         self.baseObjectsList.setSelectionMode(QtWidgets.QAbstractItemView.MultiSelection)
+        self.baseObjectsList.setMaximumHeight(80)
+
+        self.subtractionsTable = QtWidgets.QTreeWidget()
+        self.subtractionsTable.setColumnCount(4)
+        self.subtractionsTable.setHeaderLabels(["Object", "Kind", "Shape", "Status"])
+        self.subtractionsTable.setRootIsDecorated(False)
+        self.subtractionsTable.setAlternatingRowColors(True)
+        self.subtractionsTable.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
+        self.subtractionsTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+        self.subtractionsTable.setMaximumHeight(120)
+        self.subtractionsTable.header().setStretchLastSection(False)
+        self.subtractionsTable.header().setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
+        self.subtractionsTable.header().setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
+        self.subtractionsTable.header().setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
+        self.subtractionsTable.header().setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeToContents)
+        self.subtractionsInfoLabel = QtWidgets.QLabel(
+            "Add cut-out objects from selection. Rows show the geometry class and readiness of each subtraction operand."
+        )
+        self.subtractionsInfoLabel.setWordWrap(True)
+        self.subtractionsInfoLabel.setStyleSheet("color: #666666; font-size: 11px;")
+        self.pickSubBtn = QtWidgets.QPushButton("Add from Selection")
+        self.pickSubBtn.clicked.connect(self.add_subtractions_from_selection)
+        self.removeSubBtn = QtWidgets.QPushButton("Remove Selected")
+        self.removeSubBtn.clicked.connect(self.remove_selected_subtractions)
+        self.clearSubBtn = QtWidgets.QPushButton("Clear")
+        self.clearSubBtn.clicked.connect(self.clear_subtractions)
+        self.selectSubBtn = QtWidgets.QPushButton("Select in Tree")
+        self.selectSubBtn.clicked.connect(self.select_subtraction_in_tree)
+        self.zoomSubBtn = QtWidgets.QPushButton("Zoom to Selected")
+        self.zoomSubBtn.clicked.connect(self.zoom_to_subtraction)
 
         self.patternSourceLabel = QtWidgets.QLabel("Pattern Source:")
         self.patternSourceCombo = QtWidgets.QComboBox()
@@ -2101,453 +2346,494 @@ class HatchTaskPanel:
 
         self.builtinPatternLabel = QtWidgets.QLabel("Built-in Pattern:")
         self.builtinPatternCombo = QtWidgets.QComboBox()
-        self.builtinPatternCombo.addItems(
-            [
-                "SolidFill",
-                "HorizontalLines",
-                "VerticalLines",
-                "Crosshatch",
-                "Herringbone",
-                "BrickPattern",
-                "RandomDots",
-                "OverlappingSquares",
-                "Checkerboard",
-                "CheckerboardCircles",
-                "RotatingHexagons",
-                "NestedTriangles",
-                "InterlockingCircles",
-                "RecursiveSquares",
-                "FlowerOfLife",
-                "VoronoiMesh",
-                "OffsetChecker",
-                "ZigZag",
-                "HexagonalHoriz",
-                "HexagonalVerti",
-                "HexagonalPattern",
-                "TrianglesGrid",
-                "MidEastMosaic",
-                "StarGridPattern",
-                "BasketWeave",
-                "Honeycomb",
-                "SineWave",
-                "SpaceFrame",
-                "HoneycombDual",
-                "ArtDeco",
-                "StainedGlass",
-                "PenroseTriangle",
-                "GreekKey",
-                "ChainLinks",
-                "TriangleForest",
-                "CeramicTile",
-                "CirclesGrid",
-                "PlusSigns",
-                "WavesPattern",
-                "GalaxyStarsPattern",
-                "GridDots",
-                "HexDots",
-                "FractalTree",
-                "Voronoi",
-                "FractalBranches",
-                "OrganicMaze",
-                "BiomorphicCells",
-                "RadialSunburst",
-                "Sunburst",
-                "Ziggurat",
-                "SpiralPattern",
-                "PentaflakeFractal",
-                "HilbertCurve",
-                "SierpinskiTriangle",
-                "PenroseTiling",
-                "EinsteinMonotile",
-                "LeafVeins",
-                "WoodPlanks",
-                "ParquetHerringbone",
-                "WoodGrain",
-                "DrywallOrangePeel",
-                "DrywallKnockdown",
-                "StuccoSandFloat",
-                "StuccoDash",
-                "DrywallSkipTrowel",
-                "Concrete",
-                "ConcreteStampedPattern",
-                "ConcreteSaltFinish",
-                "ConcreteFormTiePattern",
-                "ConcreteSandblastPattern",
-                "ConcreteControlJoint",
-                "ConcreteGridPattern",
-                "WoodKnotPattern",
-                "ConcreteAggregatePattern",
-                "BrushedConcrete",
-                "PebbleConcrete",
-                "CrackedConcrete",
-                "AggregateConcrete",
-                "StampedConcrete",
-                "Insulation",
-                "Rebar",
-                "RoofTiles",
-            ]
-        )
+        self.builtinPatternCombo.addItems([
+            "SolidFill", "HorizontalLines", "VerticalLines", "Crosshatch", "Herringbone",
+            "BrickPattern", "RandomDots", "OverlappingSquares", "Checkerboard",
+            "CheckerboardCircles", "RotatingHexagons", "NestedTriangles",
+            "InterlockingCircles", "RecursiveSquares", "FlowerOfLife", "VoronoiMesh",
+            "OffsetChecker", "ZigZag", "HexagonalHoriz", "HexagonalVerti", "HexagonalPattern",
+            "TrianglesGrid", "MidEastMosaic", "StarGridPattern", "BasketWeave", "Honeycomb",
+            "SineWave", "SpaceFrame", "HoneycombDual", "ArtDeco", "StainedGlass",
+            "PenroseTriangle", "GreekKey", "ChainLinks", "TriangleForest", "CeramicTile",
+            "CirclesGrid", "PlusSigns", "WavesPattern", "GalaxyStarsPattern", "GridDots",
+            "HexDots", "FractalTree", "Voronoi", "FractalBranches", "OrganicMaze",
+            "BiomorphicCells", "RadialSunburst", "Sunburst", "Ziggurat", "SpiralPattern",
+            "PentaflakeFractal", "HilbertCurve", "SierpinskiTriangle", "PenroseTiling",
+            "EinsteinMonotile", "LeafVeins", "WoodPlanks", "ParquetHerringbone", "WoodGrain",
+            "DrywallOrangePeel", "DrywallKnockdown", "StuccoSandFloat", "StuccoDash",
+            "DrywallSkipTrowel", "Concrete", "ConcreteStampedPattern", "ConcreteSaltFinish",
+            "ConcreteFormTiePattern", "ConcreteSandblastPattern", "ConcreteControlJoint",
+            "ConcreteGridPattern", "WoodKnotPattern", "ConcreteAggregatePattern",
+            "BrushedConcrete", "PebbleConcrete", "CrackedConcrete", "AggregateConcrete",
+            "StampedConcrete", "Insulation", "Rebar", "RoofTiles",
+        ])
 
         self.customPatternLabel = QtWidgets.QLabel("Custom Pattern:")
         self.customPatternCombo = QtWidgets.QComboBox()
-        self.pickCustomBtn = QtWidgets.QPushButton("Pick Custom Pattern from Selection")
+        self.pickCustomBtn = QtWidgets.QPushButton("Pick Custom from Selection")
         self.pickCustomBtn.clicked.connect(self.pick_custom_pattern)
-
-        self.patternSearchLabel = QtWidgets.QLabel("Search:")
         self.patternSearchField = QtWidgets.QLineEdit()
-        self.patternTypeFilterLabel = QtWidgets.QLabel("Type Filter:")
+        self.patternSearchField.setPlaceholderText("Filter custom pattern objects...")
         self.patternTypeFilterCombo = QtWidgets.QComboBox()
         for category in ["All", "Sketch", "PartFeature", "Compound", "Other"]:
             self.patternTypeFilterCombo.addItem(category)
 
-        self.patternObjectsLabel = QtWidgets.QLabel("Additional Pattern Objects:")
+        self.patternAvailableList = QtWidgets.QListWidget()
+        self.patternAvailableList.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
+        self.patternAvailableList.setMaximumHeight(90)
+        self.patternAvailableList.setToolTip(
+            "Filtered pattern objects available to use as the main pattern or as extra fused pattern sources."
+        )
+
         self.patternObjectsList = QtWidgets.QListWidget()
-        self.patternObjectsList.setSelectionMode(QtWidgets.QAbstractItemView.MultiSelection)
+        self.patternObjectsList.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
+        self.patternObjectsList.setMaximumHeight(90)
+        self.patternObjectsList.setToolTip(
+            "Selected extra pattern objects that will be fused into the recipe."
+        )
+        self.addPatternBtn = QtWidgets.QPushButton("Add Highlighted")
+        self.addPatternBtn.clicked.connect(self.add_selected_patterns_from_available)
+        self.addCurrentPatternBtn = QtWidgets.QPushButton("Add Current")
+        self.addCurrentPatternBtn.clicked.connect(self.add_current_pattern_to_extras)
+        self.addPatternSelectionBtn = QtWidgets.QPushButton("Add Selection")
+        self.addPatternSelectionBtn.clicked.connect(self.add_patterns_from_selection)
+        self.removePatternBtn = QtWidgets.QPushButton("Remove Selected")
+        self.removePatternBtn.clicked.connect(self.remove_selected_pattern_objects)
+        self.clearPatternBtn = QtWidgets.QPushButton("Clear")
+        self.clearPatternBtn.clicked.connect(self.clear_pattern_objects)
+        self.extraPatternInfoLabel = QtWidgets.QLabel(
+            "Use the filtered list to build a reusable multi-object pattern recipe."
+        )
+        self.extraPatternInfoLabel.setWordWrap(True)
+        self.extraPatternInfoLabel.setStyleSheet("color: #666666; font-size: 11px;")
 
         self.distLabel = QtWidgets.QLabel("Distribution Mode:")
         self.distCombo = QtWidgets.QComboBox()
-        self.distCombo.addItems(
-            [
-                "CenteredTiling",
-                "RelativeSpacing",
-                "SeamlessTiling",
-                "LinearGrid",
-                "RadialDistribution",
-                "ConcentricDistribution",
-                "RandomDistribution",
-                "AdaptiveDistribution",
-            ]
-        )
+        self.distCombo.addItems([
+            "CenteredTiling", "RelativeSpacing", "SeamlessTiling", "LinearGrid",
+            "RadialDistribution", "ConcentricDistribution", "RandomDistribution",
+            "AdaptiveDistribution",
+        ])
         self.distCombo.setCurrentText("SeamlessTiling")
 
-        self.autoScaleCheck = QtWidgets.QCheckBox("Auto Scale to Fit Base?")
+        self.autoScaleCheck = QtWidgets.QCheckBox("Auto Scale to Fit Base")
 
         self.scaleLabel = QtWidgets.QLabel("Pattern Scale:")
         self.scaleSpin = QtWidgets.QDoubleSpinBox()
         self.scaleSpin.setRange(0.0001, 1e5)
+        self.scaleSpin.setDecimals(4)
         self.scaleSpin.setValue(1.0)
         self.scaleSpin.valueChanged.connect(self.on_scale_changed)
 
-        self.scaleResetBtn = QtWidgets.QPushButton("↺")
-        self.scaleResetBtn.setToolTip("Reset to pattern default scale")
+        self.scaleResetBtn = QtWidgets.QPushButton("Reset")
+        self.scaleResetBtn.setToolTip("Reset to smart default scale")
         self.scaleResetBtn.clicked.connect(
             lambda: self.set_smart_default_scale(self.patternSourceCombo.currentIndex() == 0)
         )
-
         self.scaleRecommendBtn = QtWidgets.QPushButton("Rec")
-        self.scaleRecommendBtn.setToolTip("Set to recommended scale (≈200 tiles)")
+        self.scaleRecommendBtn.setToolTip("Set the recommended scale for preview performance")
         self.scaleRecommendBtn.clicked.connect(self.on_use_recommended_scale)
         self.scaleRecommendBtn.setFixedWidth(35)
-
-        self.tileEstLabel = QtWidgets.QLabel("Tiles: —")
+        self.tileEstLabel = QtWidgets.QLabel("Est. tiles: -")
         self.tileEstLabel.setStyleSheet("color: gray; font-size: 10px;")
-
         self.tileRecommendBtn = QtWidgets.QPushButton("Use recommended")
         self.tileRecommendBtn.setVisible(False)
         self.tileRecommendBtn.clicked.connect(self.on_use_recommended_scale)
-        self._recommended_scale = None
 
         self.rotLabel = QtWidgets.QLabel("Rotation (deg):")
         self.rotSpin = QtWidgets.QDoubleSpinBox()
-        self.rotSpin.setRange(-360, 360)
+        self.rotSpin.setRange(-360.0, 360.0)
+        self.rotSpin.setDecimals(2)
 
         self.spacingLabel = QtWidgets.QLabel("Base Spacing:")
-        self.spacingInput = FreeCADGui.UiLoader().createWidget("Gui::InputField")
-        self.spacingInput.setProperty("unitCategory", "Length")
-        self.spacingInput.setText("0 mm")
+        # Prefer the unit-aware FreeCAD InputField widget; fall back to a plain
+        # spinbox if the GUI loader is unavailable (e.g. during testing).
+        try:
+            self.spacingInput = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+            self.spacingInput.setProperty("unitCategory", "Length")
+            self.spacingInput.setText("0 mm")
+            self.spacingSpin = None  # not used when InputField is available
+        except Exception:
+            self.spacingInput = None
+            self.spacingSpin = QtWidgets.QDoubleSpinBox()
+            self.spacingSpin.setRange(0.0, 1e6)
+            self.spacingSpin.setDecimals(4)
+            self.spacingSpin.setValue(0.0)
+            self.spacingSpin.setSuffix(" mm")
+        self.useUnitsCheck = QtWidgets.QCheckBox("Interpret spacing using explicit unit system")
+        self.unitSystemCombo = QtWidgets.QComboBox()
+        self.unitSystemCombo.addItems([
+            "FreeCAD Default", "Metric (m)", "Imperial (ft)", "BIM Workbench Unit"
+        ])
+        self.spacingUnitLabel = QtWidgets.QLabel("")
+        self.spacingUnitLabel.setStyleSheet("color: #666666; font-size: 11px;")
+        self.spacingUnitLabel.setWordWrap(True)
 
-        self.repXLabel = QtWidgets.QLabel("Repetitions X:")
         self.repXSpin = QtWidgets.QSpinBox()
         self.repXSpin.setRange(1, 999)
         self.repXSpin.setValue(5)
-        self.repYLabel = QtWidgets.QLabel("Repetitions Y:")
         self.repYSpin = QtWidgets.QSpinBox()
         self.repYSpin.setRange(1, 999)
         self.repYSpin.setValue(5)
+        self.radialCountSpin = QtWidgets.QSpinBox()
+        self.radialCountSpin.setRange(1, 9999)
+        self.radialCountSpin.setValue(8)
+        self.radialRadiusSpin = self._create_labeled_spin(0.0, 1e6, 50.0, decimals=2, step=1.0)
+        self.concentricCountSpin = QtWidgets.QSpinBox()
+        self.concentricCountSpin.setRange(1, 9999)
+        self.concentricCountSpin.setValue(5)
+        self.concentricSpacingSpin = self._create_labeled_spin(0.0, 1e6, 10.0, decimals=2, step=1.0)
+        self.randomCountSpin = QtWidgets.QSpinBox()
+        self.randomCountSpin.setRange(1, 999999)
+        self.randomCountSpin.setValue(30)
 
-        self.showFacesCheck = QtWidgets.QCheckBox("Show Faces?")
-        self.showFacesCheck.setChecked(False)
-
-        self.subtractionsLabel = QtWidgets.QLabel("Subtractions (cut these out):")
-        self.subtractionsList = QtWidgets.QListWidget()
-        self.subtractionsList.setSelectionMode(QtWidgets.QAbstractItemView.MultiSelection)
-        self.pickSubBtn = QtWidgets.QPushButton("Pick Subtractions from Selection")
-        self.pickSubBtn.clicked.connect(self.pick_subtractions)
-
-        self.previewBtnMain = QtWidgets.QPushButton("Preview (quick test)")
-        self.previewBtnMain.clicked.connect(self.on_preview)
-
-        self.tileLabel = QtWidgets.QLabel("Base Tile (Optional):")
+        self.tileLabel = QtWidgets.QLabel("Base Tile:")
         self.tileCombo = QtWidgets.QComboBox()
-        self.tileCombo.addItem("")
-        self.pickTileBtn = QtWidgets.QPushButton("Pick Base Tile from Selection")
+        self.pickTileBtn = QtWidgets.QPushButton("Pick Tile from Selection")
         self.pickTileBtn.clicked.connect(self.pick_base_tile)
-
-        self.tileVisibilityCheck = QtWidgets.QCheckBox("Tile Visibility?")
+        self.tileVisibilityCheck = QtWidgets.QCheckBox("Show helper tile")
         self.tileVisibilityCheck.setChecked(True)
 
-        self.placementModeLabel = QtWidgets.QLabel("Pattern Placement Mode:")
         self.placementModeCombo = QtWidgets.QComboBox()
-        self.placementModeCombo.addItems(
-            [
-                "Origin",
-                "Center",
-                "TopLeft",
-                "TopRight",
-                "BottomLeft",
-                "BottomRight",
-                "TopCenter",
-                "BottomCenter",
-                "LeftCenter",
-                "RightCenter",
-                "Custom",
-            ]
-        )
+        self.placementModeCombo.addItems([
+            "Origin", "Center", "TopLeft", "TopRight", "BottomLeft", "BottomRight",
+            "TopCenter", "BottomCenter", "LeftCenter", "RightCenter", "Custom",
+        ])
         self.placementModeCombo.setCurrentText("Origin")
-
-        self.lockCheck = QtWidgets.QCheckBox("Lock to Base?")
-
-        self.offsetXLabel = QtWidgets.QLabel("Pattern Offset X:")
-        self.offsetXSpin = QtWidgets.QDoubleSpinBox()
-        self.offsetXSpin.setRange(-1e5, 1e5)
-        self.offsetYLabel = QtWidgets.QLabel("Pattern Offset Y:")
-        self.offsetYSpin = QtWidgets.QDoubleSpinBox()
-        self.offsetYSpin.setRange(-1e5, 1e5)
-
-        self.scaleModeLabel = QtWidgets.QLabel("Scale Mode:")
+        self.lockCheck = QtWidgets.QCheckBox("Lock to Base")
+        self.offsetXSpin = self._create_labeled_spin(-1e5, 1e5, 0.0, decimals=2, step=1.0)
+        self.offsetYSpin = self._create_labeled_spin(-1e5, 1e5, 0.0, decimals=2, step=1.0)
         self.scaleModeCombo = QtWidgets.QComboBox()
-        self.scaleModeCombo.addItems(
-            ["Absolute", "FitWidth", "FitHeight", "FitMinDim", "FitMaxDim"]
+        self.scaleModeCombo.addItems(["Absolute", "FitWidth", "FitHeight", "FitMinDim", "FitMaxDim"])
+        self.useSurfaceProjectionCheck = QtWidgets.QCheckBox(
+            "Use Surface Projection (walls, roofs, sloped faces)"
         )
+        self.useSurfaceProjectionCheck.setChecked(True)
+        self.forceXYPlaneCheck = QtWidgets.QCheckBox("Force XY Plane (legacy behavior)")
+        self.forceXYPlaneCheck.setChecked(False)
 
-        self.randomCheck = QtWidgets.QCheckBox("Randomize Placement?")
-        self.offRangeLabel = QtWidgets.QLabel("Random Offset ±:")
-        self.offRangeSpin = QtWidgets.QDoubleSpinBox()
-        self.offRangeSpin.setRange(0.0, 1e4)
-        self.rotRangeLabel = QtWidgets.QLabel("Random Rot ± (deg):")
-        self.rotRangeSpin = QtWidgets.QDoubleSpinBox()
-        self.rotRangeSpin.setRange(0.0, 360.0)
-        self.scaleMinLabel = QtWidgets.QLabel("Random Scale Min:")
-        self.scaleMinSpin = QtWidgets.QDoubleSpinBox()
-        self.scaleMinSpin.setRange(0.01, 1e4)
-        self.scaleMinSpin.setValue(1.0)
-        self.scaleMaxLabel = QtWidgets.QLabel("Random Scale Max:")
-        self.scaleMaxSpin = QtWidgets.QDoubleSpinBox()
-        self.scaleMaxSpin.setRange(0.01, 1e4)
-        self.scaleMaxSpin.setValue(1.0)
-
-        self.apply3DCheck = QtWidgets.QCheckBox("Apply to 3D Surface?")
-        self.maxTilesLabel = QtWidgets.QLabel("Max Tiles Allowed:")
+        self.randomCheck = QtWidgets.QCheckBox("Randomize Placement")
+        self.offRangeSpin = self._create_labeled_spin(0.0, 1e4, 0.0, decimals=2, step=1.0)
+        self.rotRangeSpin = self._create_labeled_spin(0.0, 360.0, 0.0, decimals=2, step=1.0)
+        self.scaleMinSpin = self._create_labeled_spin(0.01, 1e4, 1.0, decimals=3, step=0.1)
+        self.scaleMaxSpin = self._create_labeled_spin(0.01, 1e4, 1.0, decimals=3, step=0.1)
+        self.apply3DCheck = QtWidgets.QCheckBox("Apply to 3D Surface")
         self.maxTilesSpin = QtWidgets.QSpinBox()
         self.maxTilesSpin.setRange(1, 999999)
         self.maxTilesSpin.setValue(5000)
-
-        self.densityLabel = QtWidgets.QLabel("Density Factor (0-1):")
-        self.densitySpin = QtWidgets.QDoubleSpinBox()
-        self.densitySpin.setRange(0.0, 1.0)
-        self.densitySpin.setValue(1.0)
-
-        self.enableColorVarCheck = QtWidgets.QCheckBox("Enable Color Variation?")
-        self.colorVarLabel = QtWidgets.QLabel("Color Variation Intensity (0-1):")
-        self.colorVarSpin = QtWidgets.QDoubleSpinBox()
-        self.colorVarSpin.setRange(0.0, 1.0)
-        self.colorVarSpin.setValue(0.5)
-
-        self.clipModeLabel = QtWidgets.QLabel("Clip Mode:")
         self.clipModeCombo = QtWidgets.QComboBox()
         self.clipModeCombo.addItems(["BooleanOnly", "PreserveLinesNoClip"])
-
-        self.surface_projection_group = QtWidgets.QGroupBox("Surface Projection")
-        self.surface_projection_layout = QtWidgets.QFormLayout(self.surface_projection_group)
-        self.useSurfaceProjectionCheck = QtWidgets.QCheckBox(
-            "Use Surface Projection (works on walls, sloped roofs)"
-        )
-        self.useSurfaceProjectionCheck.setChecked(True)
-        self.forceXYPlaneCheck = QtWidgets.QCheckBox("Force XY Plane (old behavior)")
-        self.forceXYPlaneCheck.setChecked(False)
-        self.surface_projection_layout.addRow(self.useSurfaceProjectionCheck)
-        self.surface_projection_layout.addRow(self.forceXYPlaneCheck)
+        self.showFacesCheck = QtWidgets.QCheckBox("Show Faces")
+        self.showFacesCheck.setChecked(False)
+        self.densitySpin = self._create_labeled_spin(0.0, 1.0, 1.0, decimals=3, step=0.05)
+        self.enableColorVarCheck = QtWidgets.QCheckBox("Enable Color Variation")
+        self.colorVarSpin = self._create_labeled_spin(0.0, 1.0, 0.5, decimals=3, step=0.05)
+        self.spacingVariationSpin = self._create_labeled_spin(0.0, 1.0, 0.0, decimals=3, step=0.05)
+        self.shapeDistortionCheck = QtWidgets.QCheckBox("Enable Shape Distortion")
 
         self.previewBtn = QtWidgets.QPushButton("Preview")
         self.previewBtn.clicked.connect(self.on_preview)
-
+        self.previewBtnMain = self.previewBtn
         self.keepPreviewCheck = QtWidgets.QCheckBox("Keep preview shape (non-parametric)")
         self.keepPreviewCheck.setChecked(False)
-
         self.previewAtLocationCheck = QtWidgets.QCheckBox("Preview at surface location")
         self.previewAtLocationCheck.setChecked(True)
         self.previewAtLocationCheck.setToolTip(
-            "Checked: preview appears at the base object's 3D world position.\n"
-            "Unchecked: preview is placed at the world origin (0,0,0) — useful "
-            "for inspecting pattern detail without navigating to the object."
+            "Checked: preview appears at the base object's world position.\n"
+            "Unchecked: preview is moved to the origin for easier close-up inspection."
         )
-
-        base_row_layout = QtWidgets.QHBoxLayout()
-        base_row_layout.addWidget(self.baseSearchLabel)
-        base_row_layout.addWidget(self.baseSearchField)
-        base_row_layout.addWidget(self.baseTypeFilterLabel)
-        base_row_layout.addWidget(self.baseTypeFilterCombo)
-
-        self.main_tab_layout.insertRow(0, self.hatchRoleLabel, self.hatchRoleCombo)
-        self.definitionNote = QtWidgets.QLabel(
-            "Definition Mode: No base face required. This object can be assigned to Material.Hatch as a reusable style."
+        self.previewStatusLabel = QtWidgets.QLabel(
+            "Preview uses the same execute() path as the final hatch, limited to <=100 tiles for speed."
         )
-        self.definitionNote.setWordWrap(True)
-        self.definitionNote.setStyleSheet("color: #006600; font-style: italic; margin: 4px;")
-        self.main_tab_layout.insertRow(1, "", self.definitionNote)
+        self.previewStatusLabel.setWordWrap(True)
+        self.previewStatusLabel.setStyleSheet("color: #666666; font-size: 11px;")
 
-        self.main_tab_layout.addRow(self.baseLabel, self.baseCombo)
-        self.main_tab_layout.addRow("", self.pickBaseBtn)
-        self.main_tab_layout.addRow(self.face_extractor_group)
-        self.main_tab_layout.addRow(base_row_layout)
-        self.main_tab_layout.addRow(self.baseObjectsLabel, self.baseObjectsList)
-        self.main_tab_layout.addRow(self.patternSourceLabel, self.patternSourceCombo)
-        self.main_tab_layout.addRow(self.builtinPatternLabel, self.builtinPatternCombo)
+        # Target page
+        target_page = QtWidgets.QWidget()
+        target_layout = QtWidgets.QVBoxLayout(target_page)
+        target_layout.setContentsMargins(8, 8, 8, 8)
+        target_layout.setSpacing(8)
+        mode_group = QtWidgets.QGroupBox("Target")
+        mode_form = QtWidgets.QFormLayout(mode_group)
+        mode_form.addRow(self.hatchRoleLabel, self.hatchRoleCombo)
+        mode_form.addRow("", self.definitionNote)
+        mode_form.addRow(self.baseLabel, self.baseCombo)
+        mode_form.addRow("", self.pickBaseBtn)
 
-        pattern_row_layout = QtWidgets.QHBoxLayout()
-        pattern_row_layout.addWidget(self.patternSearchLabel)
-        pattern_row_layout.addWidget(self.patternSearchField)
-        pattern_row_layout.addWidget(self.patternTypeFilterLabel)
-        pattern_row_layout.addWidget(self.patternTypeFilterCombo)
-        self.main_tab_layout.addRow(self.customPatternLabel, self.customPatternCombo)
-        self.main_tab_layout.addRow("", self.pickCustomBtn)
-        self.main_tab_layout.addRow(pattern_row_layout)
-        self.main_tab_layout.addRow(self.patternObjectsLabel, self.patternObjectsList)
+        base_filter_row = QtWidgets.QHBoxLayout()
+        base_filter_row.addWidget(QtWidgets.QLabel("Search:"))
+        base_filter_row.addWidget(self.baseSearchField)
+        base_filter_row.addWidget(QtWidgets.QLabel("Type:"))
+        base_filter_row.addWidget(self.baseTypeFilterCombo)
+        mode_form.addRow("", base_filter_row)
+        mode_form.addRow("", self.face_extractor_group)
+        target_layout.addWidget(mode_group)
 
-        self.main_tab_layout.addRow(self.distLabel, self.distCombo)
-        self.main_tab_layout.addRow(self.autoScaleCheck)
+        multi_base_group = QtWidgets.QGroupBox("Additional Base Objects")
+        multi_base_layout = QtWidgets.QVBoxLayout(multi_base_group)
+        multi_base_hint = QtWidgets.QLabel(
+            "Select extra base objects when you want one hatch recipe to span multiple shapes."
+        )
+        multi_base_hint.setWordWrap(True)
+        multi_base_hint.setStyleSheet("color: #666666; font-size: 11px;")
+        multi_base_layout.addWidget(multi_base_hint)
+        multi_base_layout.addWidget(self.baseObjectsList)
+        target_layout.addWidget(multi_base_group)
 
+        self.subtractionsGroup = QtWidgets.QGroupBox("Subtractions")
+        sub_layout = QtWidgets.QVBoxLayout(self.subtractionsGroup)
+        sub_layout.addWidget(self.subtractionsInfoLabel)
+        sub_layout.addWidget(self.subtractionsTable)
+        sub_btn_row = QtWidgets.QHBoxLayout()
+        sub_btn_row.addWidget(self.pickSubBtn)
+        sub_btn_row.addWidget(self.removeSubBtn)
+        sub_btn_row.addWidget(self.clearSubBtn)
+        sub_btn_row.addStretch(1)
+        sub_btn_row.addWidget(self.selectSubBtn)
+        sub_btn_row.addWidget(self.zoomSubBtn)
+        sub_layout.addLayout(sub_btn_row)
+        target_layout.addWidget(self.subtractionsGroup)
+        target_layout.addStretch(1)
+        self.sectionsBox.addItem(target_page, "1. Target")
+
+        # Pattern page
+        pattern_page = QtWidgets.QWidget()
+        pattern_layout = QtWidgets.QVBoxLayout(pattern_page)
+        pattern_layout.setContentsMargins(8, 8, 8, 8)
+        pattern_layout.setSpacing(8)
+
+        source_group = QtWidgets.QGroupBox("Pattern Source")
+        source_layout = QtWidgets.QVBoxLayout(source_group)
+        source_layout.setContentsMargins(6, 6, 6, 6)
+        source_layout.setSpacing(8)
+
+        top_form = QtWidgets.QFormLayout()
+        top_form.addRow(self.patternSourceLabel, self.patternSourceCombo)
+        top_form.addRow(self.builtinPatternLabel, self.builtinPatternCombo)
+        top_form.addRow(self.customPatternLabel, self.customPatternCombo)
+        top_form.addRow("", self.pickCustomBtn)
+        source_layout.addLayout(top_form)
+
+        pattern_filter_row = QtWidgets.QHBoxLayout()
+        pattern_filter_row.addWidget(self.patternSearchField, 1)
+        pattern_filter_row.addWidget(self.patternTypeFilterCombo)
+        source_layout.addLayout(pattern_filter_row)
+
+        available_label = QtWidgets.QLabel("Available Pattern Objects")
+        available_label.setStyleSheet("font-weight: bold;")
+        source_layout.addWidget(available_label)
+        source_layout.addWidget(self.patternAvailableList)
+
+        pattern_btn_row = QtWidgets.QHBoxLayout()
+        pattern_btn_row.addWidget(self.addPatternBtn)
+        pattern_btn_row.addWidget(self.addCurrentPatternBtn)
+        pattern_btn_row.addWidget(self.addPatternSelectionBtn)
+        pattern_btn_row.addStretch(1)
+        source_layout.addLayout(pattern_btn_row)
+
+        selected_label = QtWidgets.QLabel("Selected Extra Pattern Objects")
+        selected_label.setStyleSheet("font-weight: bold;")
+        source_layout.addWidget(selected_label)
+        source_layout.addWidget(self.patternObjectsList)
+
+        pattern_selected_btn_row = QtWidgets.QHBoxLayout()
+        pattern_selected_btn_row.addWidget(self.removePatternBtn)
+        pattern_selected_btn_row.addWidget(self.clearPatternBtn)
+        pattern_selected_btn_row.addStretch(1)
+        source_layout.addLayout(pattern_selected_btn_row)
+        source_layout.addWidget(self.extraPatternInfoLabel)
+        pattern_layout.addWidget(source_group)
+
+        recipe_group = QtWidgets.QGroupBox("Recipe")
+        recipe_form = QtWidgets.QFormLayout(recipe_group)
+        recipe_form.addRow(self.distLabel, self.distCombo)
+        recipe_form.addRow("", self.autoScaleCheck)
         scale_row = QtWidgets.QHBoxLayout()
         scale_row.addWidget(self.scaleSpin)
         scale_row.addWidget(self.scaleResetBtn)
         scale_row.addWidget(self.scaleRecommendBtn)
-        self.main_tab_layout.addRow(self.scaleLabel, scale_row)
+        recipe_form.addRow(self.scaleLabel, scale_row)
+        est_row = QtWidgets.QHBoxLayout()
+        est_row.addWidget(self.tileEstLabel)
+        est_row.addStretch(1)
+        est_row.addWidget(self.tileRecommendBtn)
+        recipe_form.addRow("", est_row)
+        recipe_form.addRow("", self.showFacesCheck)
+        recipe_form.addRow(self.rotLabel, self.rotSpin)
+        spacing_row = QtWidgets.QHBoxLayout()
+        if self.spacingInput is not None:
+            spacing_row.addWidget(self.spacingInput)
+        else:
+            spacing_row.addWidget(self.spacingSpin)
+        spacing_row.addWidget(self.unitSystemCombo)
+        recipe_form.addRow(self.spacingLabel, spacing_row)
+        recipe_form.addRow("", self.useUnitsCheck)
+        recipe_form.addRow("", self.spacingUnitLabel)
+        pattern_layout.addWidget(recipe_group)
 
-        estimate_row = QtWidgets.QHBoxLayout()
-        estimate_row.addWidget(self.tileEstLabel)
-        estimate_row.addStretch()
-        estimate_row.addWidget(self.tileRecommendBtn)
-        self.main_tab_layout.addRow("", estimate_row)
+        self.gridModeGroup = QtWidgets.QGroupBox("Grid / Tiling Controls")
+        grid_form = QtWidgets.QFormLayout(self.gridModeGroup)
+        grid_form.addRow("Repetitions X:", self.repXSpin)
+        grid_form.addRow("Repetitions Y:", self.repYSpin)
+        pattern_layout.addWidget(self.gridModeGroup)
 
-        self.main_tab_layout.addRow(self.rotLabel, self.rotSpin)
-        self.main_tab_layout.addRow(self.spacingLabel, self.spacingInput)
-        self.main_tab_layout.addRow(self.repXLabel, self.repXSpin)
-        self.main_tab_layout.addRow(self.repYLabel, self.repYSpin)
-        self.main_tab_layout.addRow(self.showFacesCheck)
-        self.main_tab_layout.addRow(self.subtractionsLabel, self.subtractionsList)
-        self.main_tab_layout.addRow("", self.pickSubBtn)
-        self.main_tab_layout.addRow(self.previewAtLocationCheck)
-        self.main_tab_layout.addRow(self.previewBtnMain)
+        self.radialModeGroup = QtWidgets.QGroupBox("Radial Controls")
+        radial_form = QtWidgets.QFormLayout(self.radialModeGroup)
+        radial_form.addRow("Radial Count:", self.radialCountSpin)
+        radial_form.addRow("Radial Radius:", self.radialRadiusSpin)
+        pattern_layout.addWidget(self.radialModeGroup)
 
-        adv_scroll_area = QtWidgets.QScrollArea()
-        adv_scroll_area.setWidgetResizable(True)
-        adv_scroll_area.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-        adv_scroll_area.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.concentricModeGroup = QtWidgets.QGroupBox("Concentric Controls")
+        concentric_form = QtWidgets.QFormLayout(self.concentricModeGroup)
+        concentric_form.addRow("Concentric Count:", self.concentricCountSpin)
+        concentric_form.addRow("Concentric Spacing:", self.concentricSpacingSpin)
+        pattern_layout.addWidget(self.concentricModeGroup)
 
-        adv_scroll_content = QtWidgets.QWidget()
-        adv_vbox = QtWidgets.QVBoxLayout(adv_scroll_content)
-        adv_vbox.setSpacing(8)
-        adv_vbox.setContentsMargins(4, 4, 4, 4)
+        self.randomModeGroup = QtWidgets.QGroupBox("Random Distribution Controls")
+        random_dist_form = QtWidgets.QFormLayout(self.randomModeGroup)
+        random_dist_form.addRow("Random Count:", self.randomCountSpin)
+        pattern_layout.addWidget(self.randomModeGroup)
+        pattern_layout.addStretch(1)
+        self.sectionsBox.addItem(pattern_page, "2. Pattern")
 
-        tile_group = QtWidgets.QGroupBox("Tile Settings")
+        # Placement page
+        placement_page = QtWidgets.QWidget()
+        placement_layout = QtWidgets.QVBoxLayout(placement_page)
+        placement_layout.setContentsMargins(8, 8, 8, 8)
+        placement_layout.setSpacing(8)
+        placement_group = QtWidgets.QGroupBox("Placement & Projection")
+        placement_form = QtWidgets.QFormLayout(placement_group)
+        placement_form.addRow("Pattern Placement Mode:", self.placementModeCombo)
+        placement_form.addRow("", self.lockCheck)
+        placement_form.addRow("Pattern Offset X:", self.offsetXSpin)
+        placement_form.addRow("Pattern Offset Y:", self.offsetYSpin)
+        placement_form.addRow("Scale Mode:", self.scaleModeCombo)
+        placement_form.addRow("", self.useSurfaceProjectionCheck)
+        placement_form.addRow("", self.forceXYPlaneCheck)
+        placement_layout.addWidget(placement_group)
+
+        tile_group = QtWidgets.QGroupBox("Tile Helper")
         tile_form = QtWidgets.QFormLayout(tile_group)
-        tile_form.setFieldGrowthPolicy(QtWidgets.QFormLayout.ExpandingFieldsGrow)
         tile_form.addRow(self.tileLabel, self.tileCombo)
         tile_form.addRow("", self.pickTileBtn)
-        tile_form.addRow(self.tileVisibilityCheck)
-        adv_vbox.addWidget(tile_group)
+        tile_form.addRow("", self.tileVisibilityCheck)
+        placement_layout.addWidget(tile_group)
+        placement_layout.addStretch(1)
+        self.sectionsBox.addItem(placement_page, "3. Placement")
 
-        placement_group = QtWidgets.QGroupBox("Placement")
-        placement_form = QtWidgets.QFormLayout(placement_group)
-        placement_form.setFieldGrowthPolicy(QtWidgets.QFormLayout.ExpandingFieldsGrow)
-        placement_form.addRow(self.placementModeLabel, self.placementModeCombo)
-        placement_form.addRow(self.lockCheck)
-        placement_form.addRow(self.offsetXLabel, self.offsetXSpin)
-        placement_form.addRow(self.offsetYLabel, self.offsetYSpin)
-        placement_form.addRow(self.scaleModeLabel, self.scaleModeCombo)
-        adv_vbox.addWidget(placement_group)
+        # Advanced page
+        advanced_page = QtWidgets.QWidget()
+        advanced_layout = QtWidgets.QVBoxLayout(advanced_page)
+        advanced_layout.setContentsMargins(8, 8, 8, 8)
+        advanced_layout.setSpacing(8)
 
         rand_group = QtWidgets.QGroupBox("Randomization")
         rand_form = QtWidgets.QFormLayout(rand_group)
-        rand_form.setFieldGrowthPolicy(QtWidgets.QFormLayout.ExpandingFieldsGrow)
-        rand_form.addRow(self.randomCheck)
-        rand_form.addRow(self.offRangeLabel, self.offRangeSpin)
-        rand_form.addRow(self.rotRangeLabel, self.rotRangeSpin)
-        rand_form.addRow(self.scaleMinLabel, self.scaleMinSpin)
-        rand_form.addRow(self.scaleMaxLabel, self.scaleMaxSpin)
-        adv_vbox.addWidget(rand_group)
+        rand_form.addRow("", self.randomCheck)
+        rand_form.addRow("Random Offset +/-:", self.offRangeSpin)
+        rand_form.addRow("Random Rot +/- (deg):", self.rotRangeSpin)
+        rand_form.addRow("Random Scale Min:", self.scaleMinSpin)
+        rand_form.addRow("Random Scale Max:", self.scaleMaxSpin)
+        advanced_layout.addWidget(rand_group)
 
         render_group = QtWidgets.QGroupBox("Rendering & Performance")
         render_form = QtWidgets.QFormLayout(render_group)
-        render_form.setFieldGrowthPolicy(QtWidgets.QFormLayout.ExpandingFieldsGrow)
-        render_form.addRow(self.clipModeLabel, self.clipModeCombo)
-        render_form.addRow(self.apply3DCheck)
-        render_form.addRow(self.maxTilesLabel, self.maxTilesSpin)
-        adv_vbox.addWidget(render_group)
+        render_form.addRow("Clip Mode:", self.clipModeCombo)
+        render_form.addRow("", self.apply3DCheck)
+        render_form.addRow("Max Tiles Allowed:", self.maxTilesSpin)
+        advanced_layout.addWidget(render_group)
 
         variation_group = QtWidgets.QGroupBox("Variation")
         variation_form = QtWidgets.QFormLayout(variation_group)
-        variation_form.setFieldGrowthPolicy(QtWidgets.QFormLayout.ExpandingFieldsGrow)
-        variation_form.addRow(self.densityLabel, self.densitySpin)
-        variation_form.addRow(self.enableColorVarCheck)
-        variation_form.addRow(self.colorVarLabel, self.colorVarSpin)
-        adv_vbox.addWidget(variation_group)
+        variation_form.addRow("Density Factor:", self.densitySpin)
+        variation_form.addRow("", self.enableColorVarCheck)
+        variation_form.addRow("Color Variation Intensity:", self.colorVarSpin)
+        variation_form.addRow("Spacing Variation:", self.spacingVariationSpin)
+        variation_form.addRow("", self.shapeDistortionCheck)
+        advanced_layout.addWidget(variation_group)
+        advanced_layout.addStretch(1)
+        self.sectionsBox.addItem(advanced_page, "4. Advanced")
 
-        adv_vbox.addWidget(self.surface_projection_group)
-        adv_vbox.addWidget(self.previewAtLocationCheck)
-        adv_vbox.addWidget(self.previewBtn)
-        adv_vbox.addWidget(self.keepPreviewCheck)
-        adv_vbox.addStretch(1)
+        # Preview page
+        preview_page = QtWidgets.QWidget()
+        preview_layout = QtWidgets.QVBoxLayout(preview_page)
+        preview_layout.setContentsMargins(8, 8, 8, 8)
+        preview_layout.setSpacing(8)
+        preview_group = QtWidgets.QGroupBox("Preview")
+        preview_form = QtWidgets.QFormLayout(preview_group)
+        preview_form.addRow("", self.previewAtLocationCheck)
+        preview_form.addRow("", self.keepPreviewCheck)
+        preview_form.addRow("", self.previewStatusLabel)
+        preview_form.addRow("", self.previewBtn)
+        preview_layout.addWidget(preview_group)
+        preview_layout.addStretch(1)
+        self.sectionsBox.addItem(preview_page, "5. Preview")
 
-        adv_scroll_area.setWidget(adv_scroll_content)
-        self.advanced_tab_layout.addWidget(adv_scroll_area)
-
+        scroll_layout.addStretch(1)
         scroll_area.setWidget(scroll_content)
         main_layout.addWidget(scroll_area)
 
-        self.baseCombo.currentIndexChanged.connect(self.on_base_combo_index_changed)
-        self.baseTypeFilterCombo.currentIndexChanged.connect(self.refresh_base_combo)
-        self.baseSearchField.textChanged.connect(
-            lambda: QtCore.QTimer.singleShot(300, self.refresh_base_combo)
+        footer_group = QtWidgets.QGroupBox("Status")
+        footer_hl = QtWidgets.QHBoxLayout(footer_group)
+        footer_hl.setContentsMargins(6, 4, 6, 4)
+        footer_hl.setSpacing(6)
+        self.statsFooterLabel = QtWidgets.QLabel("Ready")
+        self.statsFooterLabel.setWordWrap(True)
+        self.statsFooterLabel.setStyleSheet("color: #444444; font-size: 10px;")
+        # Persistent preview button - always visible regardless of active section
+        self.footerPreviewBtn = QtWidgets.QPushButton("Preview")
+        self.footerPreviewBtn.setFixedWidth(72)
+        self.footerPreviewBtn.setFixedHeight(24)
+        self.footerPreviewBtn.setToolTip(
+            "Run a quick preview (<=100 tiles). "
+            "Visible in all sections so you can tweak and preview without navigating away."
         )
+        self.footerPreviewBtn.clicked.connect(self.on_preview)
+        footer_hl.addWidget(self.statsFooterLabel, 1)
+        footer_hl.addWidget(self.footerPreviewBtn)
+        main_layout.addWidget(footer_group)
 
-        self.patternTypeFilterCombo.currentIndexChanged.connect(self.refresh_custom_pattern_combo)
+        # General hookups
+        self.baseCombo.currentIndexChanged.connect(self.on_base_combo_index_changed)
+        self.baseTypeFilterCombo.currentIndexChanged.connect(self.refresh_base_views)
+        self.baseSearchField.textChanged.connect(
+            lambda: QtCore.QTimer.singleShot(250, self.refresh_base_views)
+        )
+        self.baseObjectsList.itemSelectionChanged.connect(self._on_base_objects_selection_changed)
+        self.patternTypeFilterCombo.currentIndexChanged.connect(self.refresh_pattern_views)
         self.patternSearchField.textChanged.connect(
-            lambda: QtCore.QTimer.singleShot(300, self.refresh_custom_pattern_combo)
+            lambda: QtCore.QTimer.singleShot(250, self.refresh_pattern_views)
+        )
+        self.patternAvailableList.itemDoubleClicked.connect(
+            lambda _item: self.add_selected_patterns_from_available()
         )
         self.customPatternCombo.currentIndexChanged.connect(self.on_custom_pattern_selected)
         self.tileCombo.currentIndexChanged.connect(self.on_tile_combo_index_changed)
 
-        self.refresh_base_combo()
-        self.refresh_custom_pattern_combo()
-        self.populate_multi_list(self.baseObjectsList)
-        self.populate_multi_list(self.patternObjectsList)
-        self.populate_multi_list(self.subtractionsList)
+        self.refresh_base_views()
+        self.refresh_pattern_views()
         self.populate_tile_combo()
-
         self._on_hatch_role_changed(self.hatchRoleCombo.currentIndex())
-
+        self.sectionsBox.setCurrentIndex(0)
         return main_widget
 
     def _on_hatch_role_changed(self, index):
         is_definition = index == 0
-        base_controls = [
+        target_widgets = [
             self.baseLabel,
             self.baseCombo,
             self.pickBaseBtn,
-            self.baseSearchLabel,
             self.baseSearchField,
-            self.baseTypeFilterLabel,
             self.baseTypeFilterCombo,
-            self.baseObjectsLabel,
-            self.baseObjectsList,
             self.face_extractor_group,
+            self.baseObjectsList,
+            self.subtractionsGroup,
         ]
-        for widget in base_controls:
-            if widget:
-                widget.setVisible(not is_definition)
-        if hasattr(self, "definitionNote"):
-            self.definitionNote.setVisible(is_definition)
+        for widget in target_widgets:
+            widget.setVisible(not is_definition)
+        self.definitionNote.setVisible(is_definition)
+        self.subtractionsInfoLabel.setVisible(not is_definition)
+        self._refresh_recipe_summary()
         self._update_tile_estimate()
 
     def pick_face_and_create_extractor(self):
@@ -2568,7 +2854,6 @@ class HatchTaskPanel:
         FreeCAD.ActiveDocument.openTransaction("Extract Face")
         try:
             created = make_face_extractor_from_selection()
-
             if not created:
                 FreeCAD.ActiveDocument.abortTransaction()
                 self.face_extractor_status.setText("Face extraction failed. See Report View.")
@@ -2576,22 +2861,15 @@ class HatchTaskPanel:
                 return
 
             FreeCAD.ActiveDocument.commitTransaction()
-
             self.master_object_list = self.get_all_objects_classified()
-            self.refresh_base_combo()
-
+            self.refresh_base_views()
+            self.refresh_pattern_views()
+            self.populate_tile_combo()
             first = created[0]
-            name = first.Name
-            idx = self.baseCombo.findText(name)
-            if idx == -1:
-                idx = self.baseCombo.findText(first.Label)
-            if idx >= 0:
-                self.baseCombo.setCurrentIndex(idx)
-
+            self._combo_set_object(self.baseCombo, first)
             names = ", ".join(fe.Name for fe in created)
             self.face_extractor_status.setText(f"Created: {names}")
             self.face_extractor_status.setStyleSheet("color: green; font-style: italic;")
-
         except Exception as e:
             FreeCAD.ActiveDocument.abortTransaction()
             self.face_extractor_status.setText(f"Face extraction failed: {e}")
@@ -2605,13 +2883,8 @@ class HatchTaskPanel:
                 self.form, "No selection", "Select an object in 3D view or tree."
             )
             return
-        obj = selection[0]
-        name = obj.Name
-        idx = self.baseCombo.findText(name)
-        if idx == -1:
-            self.baseCombo.addItem(name)
-            idx = self.baseCombo.findText(name)
-        self.baseCombo.setCurrentIndex(idx)
+        self._combo_set_object(self.baseCombo, selection[0])
+        self._refresh_recipe_summary()
 
     def pick_custom_pattern(self):
         selection = FreeCADGui.Selection.getSelection()
@@ -2621,24 +2894,179 @@ class HatchTaskPanel:
             )
             return
         obj = selection[0]
-        name = obj.Name
         self.patternSourceCombo.setCurrentIndex(1)
-        idx = self.customPatternCombo.findText(name)
-        if idx == -1:
-            self.customPatternCombo.addItem(name)
-            idx = self.customPatternCombo.findText(name)
-        self.customPatternCombo.setCurrentIndex(idx)
+        self._combo_set_object(self.customPatternCombo, obj)
+        self.refresh_pattern_views()
+        self._refresh_recipe_summary()
 
-    def pick_subtractions(self):
+    def add_selected_patterns_from_available(self):
+        added = False
+        for item in self.patternAvailableList.selectedItems():
+            name = self._get_list_item_object_name(item)
+            if name:
+                self.selected_pattern_object_names.add(name)
+                added = True
+        if added:
+            self.refresh_selected_pattern_objects_list()
+            self._refresh_recipe_summary()
+
+    def add_current_pattern_to_extras(self):
+        name = self.customPatternCombo.currentText().strip()
+        if not name:
+            return
+        self.selected_pattern_object_names.add(name)
+        self.refresh_selected_pattern_objects_list()
+        self._refresh_recipe_summary()
+
+    def add_patterns_from_selection(self):
         selection = FreeCADGui.Selection.getSelection()
         if not selection:
-            QtWidgets.QMessageBox.warning(self.form, "No selection", "Select one or more objects.")
+            QtWidgets.QMessageBox.warning(
+                self.form,
+                "No selection",
+                "Select one or more objects in the 3D view or tree to add as extra pattern sources.",
+            )
             return
         for obj in selection:
-            name = obj.Name
-            items = self.subtractionsList.findItems(name, QtCore.Qt.MatchExactly)
-            if not items:
-                self.subtractionsList.addItem(name)
+            if hasattr(obj, "Shape"):
+                self.selected_pattern_object_names.add(obj.Name)
+        self.refresh_selected_pattern_objects_list()
+        self._refresh_recipe_summary()
+
+    def remove_selected_pattern_objects(self):
+        removed = False
+        for item in self.patternObjectsList.selectedItems():
+            name = self._get_list_item_object_name(item)
+            if name in self.selected_pattern_object_names:
+                self.selected_pattern_object_names.remove(name)
+                removed = True
+        if removed:
+            self.refresh_selected_pattern_objects_list()
+            self._refresh_recipe_summary()
+
+    def clear_pattern_objects(self):
+        if not self.selected_pattern_object_names:
+            return
+        self.selected_pattern_object_names.clear()
+        self.refresh_selected_pattern_objects_list()
+        self._refresh_recipe_summary()
+
+    def pick_subtractions(self):
+        self.add_subtractions_from_selection()
+
+    def add_subtractions_from_selection(self):
+        selection = FreeCADGui.Selection.getSelection()
+        if not selection:
+            QtWidgets.QMessageBox.warning(
+                self.form, "No selection", "Select one or more objects to use as subtraction masks."
+            )
+            return
+        for obj in selection:
+            self._add_subtraction_object(obj)
+        self._refresh_subtraction_status()
+        self._refresh_recipe_summary()
+
+    def _add_subtraction_object(self, obj):
+        if not obj:
+            return
+        for row in range(self.subtractionsTable.topLevelItemCount()):
+            item = self.subtractionsTable.topLevelItem(row)
+            if item.data(0, QtCore.Qt.UserRole) == obj.Name:
+                return
+
+        kind = self.classify_object(obj)
+        shape_kind = self._shape_kind_for_object(obj)
+        status_text, status_color = self._subtraction_status_for_object(obj)
+        item = QtWidgets.QTreeWidgetItem([
+            self._display_name_for_object(obj), kind, shape_kind, status_text
+        ])
+        item.setData(0, QtCore.Qt.UserRole, obj.Name)
+        item.setToolTip(0, f"{obj.Name}\nLabel: {obj.Label}")
+        item.setForeground(3, QtGui.QBrush(status_color))
+        self.subtractionsTable.addTopLevelItem(item)
+
+    def _set_subtraction_objects(self, objects):
+        self.subtractionsTable.clear()
+        for obj in objects or []:
+            self._add_subtraction_object(obj)
+        self._refresh_subtraction_status()
+
+    def get_subtraction_objects(self):
+        out = []
+        for row in range(self.subtractionsTable.topLevelItemCount()):
+            item = self.subtractionsTable.topLevelItem(row)
+            obj = self.doc.getObject(item.data(0, QtCore.Qt.UserRole))
+            if obj:
+                out.append(obj)
+        return out
+
+    def remove_selected_subtractions(self):
+        selected = self.subtractionsTable.selectedItems()
+        if not selected:
+            return
+        for item in selected:
+            idx = self.subtractionsTable.indexOfTopLevelItem(item)
+            if idx >= 0:
+                self.subtractionsTable.takeTopLevelItem(idx)
+        self._refresh_subtraction_status()
+        self._refresh_recipe_summary()
+
+    def clear_subtractions(self):
+        self.subtractionsTable.clear()
+        self._refresh_subtraction_status()
+        self._refresh_recipe_summary()
+
+    def select_subtraction_in_tree(self):
+        selected = self.subtractionsTable.selectedItems()
+        if not selected:
+            return
+        FreeCADGui.Selection.clearSelection()
+        for item in selected:
+            obj = self.doc.getObject(item.data(0, QtCore.Qt.UserRole))
+            if obj:
+                FreeCADGui.Selection.addSelection(obj)
+
+    def zoom_to_subtraction(self):
+        self.select_subtraction_in_tree()
+        if FreeCAD.GuiUp:
+            try:
+                FreeCADGui.SendMsgToActiveView("ViewSelection")
+            except Exception:
+                pass
+
+    def _on_subtraction_selection_changed(self):
+        self.select_subtraction_in_tree()
+        self._refresh_subtraction_status()
+
+    def _refresh_subtraction_status(self):
+        count = self.subtractionsTable.topLevelItemCount()
+        if count == 0:
+            self.subtractionsInfoLabel.setText(
+                "No subtraction objects yet. Add cut-out shapes from selection to make holes or keep-out regions."
+            )
+            return
+        ready = 0
+        warnings = 0
+        for row in range(count):
+            item = self.subtractionsTable.topLevelItem(row)
+            obj = self.doc.getObject(item.data(0, QtCore.Qt.UserRole))
+            if not obj:
+                item.setText(3, "[!] Missing")
+                item.setForeground(3, QtGui.QBrush(QtGui.QColor("#aa5500")))
+                warnings += 1
+                continue
+            shape_kind = self._shape_kind_for_object(obj)
+            item.setText(2, shape_kind)
+            status_text, status_color = self._subtraction_status_for_object(obj)
+            item.setText(3, status_text)
+            item.setForeground(3, QtGui.QBrush(status_color))
+            if status_text.startswith("[ok]"):
+                ready += 1
+            else:
+                warnings += 1
+        self.subtractionsInfoLabel.setText(
+            f"{count} subtraction object(s) loaded -- {ready} ready, {warnings} warning(s)."
+        )
 
     def pick_base_tile(self):
         selection = FreeCADGui.Selection.getSelection()
@@ -2648,12 +3076,8 @@ class HatchTaskPanel:
             )
             return
         obj = selection[0]
-        name = obj.Name
-        idx = self.tileCombo.findText(name)
-        if idx == -1:
-            self.tileCombo.addItem(name)
-            idx = self.tileCombo.findText(name)
-        self.tileCombo.setCurrentIndex(idx)
+        self._combo_set_object(self.tileCombo, obj)
+        self._refresh_recipe_summary()
 
     def get_all_objects_classified(self):
         data = []
@@ -2668,61 +3092,143 @@ class HatchTaskPanel:
     def classify_object(self, obj):
         if obj.isDerivedFrom("Sketcher::SketchObject"):
             return "Sketch"
-        elif obj.isDerivedFrom("Part::Compound"):
+        if obj.isDerivedFrom("Part::Compound"):
             return "Compound"
-        elif obj.isDerivedFrom("Part::Feature"):
+        if obj.isDerivedFrom("Part::Feature"):
             return "PartFeature"
-        else:
-            return "Other"
+        return "Other"
 
     def filter_objects(self, search_text, category):
         results = []
         low_search = search_text.lower().strip()
         for name, cat, obj in self.master_object_list:
+            haystack = f"{name} {obj.Label}".lower()
             if category != "All" and cat != category:
                 continue
-            if low_search and low_search not in name.lower():
+            if low_search and low_search not in haystack:
                 continue
             results.append((name, cat, obj))
         return results
 
-    def refresh_base_combo(self):
-        search_text = self.baseSearchField.text()
-        category_text = self.baseTypeFilterCombo.currentText()
-        filtered_list = self.filter_objects(search_text, category_text)
-        self.baseCombo.clear()
-        for name, cat, obj in filtered_list:
-            self.baseCombo.addItem(name)
+    def _sync_selection_set_from_filtered_list(self, list_widget, backing_set):
+        visible_names = set()
+        visible_selected = set()
+        for i in range(list_widget.count()):
+            item = list_widget.item(i)
+            name = self._get_list_item_object_name(item)
+            visible_names.add(name)
+            if item.isSelected():
+                visible_selected.add(name)
+        backing_set.difference_update(visible_names)
+        backing_set.update(visible_selected)
 
-    def refresh_custom_pattern_combo(self):
-        search_text = self.patternSearchField.text()
-        category_text = self.patternTypeFilterCombo.currentText()
-        filtered_list = self.filter_objects(search_text, category_text)
+    def _populate_filtered_multiselect_list(self, list_widget, filtered_list, selected_names):
+        list_widget.clear()
+        for _name, _cat, obj in filtered_list:
+            item = self._make_object_list_item(obj)
+            list_widget.addItem(item)
+            if obj.Name in selected_names:
+                item.setSelected(True)
+
+    def _populate_named_list(self, list_widget, object_names):
+        list_widget.clear()
+        for name in object_names:
+            obj = self.doc.getObject(name)
+            if obj:
+                list_widget.addItem(self._make_object_list_item(obj))
+
+    def refresh_base_views(self):
+        current = self.baseCombo.currentText()
+        self._sync_selection_set_from_filtered_list(self.baseObjectsList, self.selected_base_object_names)
+        filtered_list = self.filter_objects(
+            self.baseSearchField.text(), self.baseTypeFilterCombo.currentText()
+        )
+        self.baseCombo.blockSignals(True)
+        self.baseCombo.clear()
+        for name, _cat, _obj in filtered_list:
+            self.baseCombo.addItem(name)
+        if current:
+            idx = self.baseCombo.findText(current)
+            if idx >= 0:
+                self.baseCombo.setCurrentIndex(idx)
+        self.baseCombo.blockSignals(False)
+        self._populate_filtered_multiselect_list(
+            self.baseObjectsList, filtered_list, self.selected_base_object_names
+        )
+
+    def refresh_selected_pattern_objects_list(self):
+        ordered_names = [
+            obj.Name for _name, _cat, obj in self.master_object_list if obj.Name in self.selected_pattern_object_names
+        ]
+        extras = [name for name in sorted(self.selected_pattern_object_names) if name not in ordered_names]
+        ordered_names.extend(extras)
+        self._populate_named_list(self.patternObjectsList, ordered_names)
+        self.extraPatternInfoLabel.setText(
+            f"{len(ordered_names)} extra pattern object(s) selected for fusion into the recipe."
+            if ordered_names
+            else "Use the filtered list to build a reusable multi-object pattern recipe."
+        )
+
+    def refresh_pattern_views(self):
+        current = self.customPatternCombo.currentText()
+        filtered_list = self.filter_objects(
+            self.patternSearchField.text(), self.patternTypeFilterCombo.currentText()
+        )
+        self.customPatternCombo.blockSignals(True)
         self.customPatternCombo.clear()
         self.customPatternCombo.addItem("")
-        for name, category, obj in filtered_list:
+        for name, _category, _obj in filtered_list:
             self.customPatternCombo.addItem(name)
-
-    def populate_multi_list(self, list_widget):
-        list_widget.clear()
-        for name, cat, obj in self.master_object_list:
-            list_widget.addItem(name)
+        if current:
+            idx = self.customPatternCombo.findText(current)
+            if idx >= 0:
+                self.customPatternCombo.setCurrentIndex(idx)
+        self.customPatternCombo.blockSignals(False)
+        self.patternAvailableList.clear()
+        for _name, _cat, obj in filtered_list:
+            self.patternAvailableList.addItem(self._make_object_list_item(obj))
+        self.refresh_selected_pattern_objects_list()
 
     def populate_tile_combo(self):
+        current = self.tileCombo.currentText()
         self.tileCombo.clear()
         self.tileCombo.addItem("")
         for name, cat, obj in self.master_object_list:
             self.tileCombo.addItem(name)
+        if current:
+            idx = self.tileCombo.findText(current)
+            if idx >= 0:
+                self.tileCombo.setCurrentIndex(idx)
+
+    def _set_list_selection_from_objects(self, list_widget, objects):
+        wanted = {obj.Name for obj in (objects or []) if obj is not None}
+        for i in range(list_widget.count()):
+            item = list_widget.item(i)
+            item.setSelected(self._get_list_item_object_name(item) in wanted)
 
     def get_selected_objects_from_list(self, list_widget):
         selected_items = list_widget.selectedItems()
         selected_objects = []
         for item in selected_items:
-            obj_name = item.text()
+            obj_name = self._get_list_item_object_name(item)
             fc_obj = self.doc.getObject(obj_name)
             if fc_obj:
                 selected_objects.append(fc_obj)
         return selected_objects
+
+    def get_all_objects_from_list(self, list_widget):
+        objects = []
+        for i in range(list_widget.count()):
+            item = list_widget.item(i)
+            obj_name = self._get_list_item_object_name(item)
+            fc_obj = self.doc.getObject(obj_name)
+            if fc_obj:
+                objects.append(fc_obj)
+        return objects
+
+    def _on_base_objects_selection_changed(self):
+        self._sync_selection_set_from_filtered_list(self.baseObjectsList, self.selected_base_object_names)
+        self._refresh_recipe_summary()
 
     def initial_pattern_setup(self):
         is_builtin = self.patternSourceCombo.currentIndex() == 0
@@ -2737,6 +3243,8 @@ class HatchTaskPanel:
         else:
             self.scaleSpin.setStyleSheet("QDoubleSpinBox { background-color: #f0f0f0; }")
         self._update_pattern_controls_visibility(show_builtin=is_builtin)
+        self._refresh_recipe_summary()
+        self._update_tile_estimate()
 
     def _update_pattern_controls_visibility(self, show_builtin=True):
         self.builtinPatternLabel.setVisible(show_builtin)
@@ -2744,13 +3252,95 @@ class HatchTaskPanel:
         show_custom = not show_builtin
         self.customPatternLabel.setVisible(show_custom)
         self.customPatternCombo.setVisible(show_custom)
-        self.patternSearchLabel.setVisible(show_custom)
-        self.patternSearchField.setVisible(show_custom)
-        self.patternTypeFilterLabel.setVisible(show_custom)
-        self.patternTypeFilterCombo.setVisible(show_custom)
         self.pickCustomBtn.setVisible(show_custom)
-        self.patternObjectsLabel.setVisible(show_custom)
+        self.patternSearchField.setVisible(show_custom)
+        self.patternTypeFilterCombo.setVisible(show_custom)
+        self.patternAvailableList.setVisible(show_custom)
         self.patternObjectsList.setVisible(show_custom)
+        self.addPatternBtn.setVisible(show_custom)
+        self.addCurrentPatternBtn.setVisible(show_custom)
+        self.addPatternSelectionBtn.setVisible(show_custom)
+        self.removePatternBtn.setVisible(show_custom)
+        self.clearPatternBtn.setVisible(show_custom)
+        self.extraPatternInfoLabel.setVisible(show_custom)
+
+    def _refresh_distribution_ui(self):
+        mode = self.distCombo.currentText()
+        show_grid = mode in ("CenteredTiling", "RelativeSpacing", "LinearGrid")
+        show_radial = mode == "RadialDistribution"
+        show_concentric = mode == "ConcentricDistribution"
+        show_random = mode == "RandomDistribution"
+
+        self.gridModeGroup.setVisible(show_grid)
+        self.radialModeGroup.setVisible(show_radial)
+        self.concentricModeGroup.setVisible(show_concentric)
+        self.randomModeGroup.setVisible(show_random)
+
+        show_spacing = mode in (
+            "CenteredTiling", "RelativeSpacing", "SeamlessTiling", "ConcentricDistribution"
+        )
+        self.spacingLabel.setVisible(show_spacing)
+
+        spacing_widget = self.spacingInput if self.spacingInput is not None else self.spacingSpin
+        if spacing_widget is not None:
+            spacing_widget.setVisible(show_spacing)
+
+        self.useUnitsCheck.setVisible(show_spacing)
+        self.unitSystemCombo.setVisible(show_spacing)
+        self.spacingUnitLabel.setVisible(show_spacing)
+
+    def _refresh_units_ui(self):
+        use_units = self.useUnitsCheck.isChecked()
+        self.unitSystemCombo.setEnabled(use_units)
+        selected = self.unitSystemCombo.currentText()
+        if not use_units:
+            suffix = "mm"
+            hint = "Base spacing is interpreted directly in FreeCAD document length units (typically mm)."
+        elif selected == "Metric (m)":
+            suffix = "m"
+            hint = "Base spacing value is stored in meters and converted to mm at generation time."
+        elif selected == "Imperial (ft)":
+            suffix = "ft"
+            hint = "Base spacing value is stored in feet and converted to mm at generation time."
+        elif selected == "BIM Workbench Unit":
+            suffix = "BIM unit"
+            hint = "Base spacing follows the BIM workbench unit conversion path."
+        else:
+            suffix = "doc unit"
+            hint = "Base spacing follows FreeCAD's default unit interpretation."
+        self.spacingUnitLabel.setText(f"Current spacing context: {suffix}. {hint}")
+
+    def _refresh_recipe_summary(self):
+        role = "Definition" if self.hatchRoleCombo.currentIndex() == 0 else "Applied"
+        if self.patternSourceCombo.currentIndex() == 0:
+            recipe_source = f"Built-in: {self.builtinPatternCombo.currentText()}"
+        else:
+            recipe_source = self.customPatternCombo.currentText().strip() or "Custom pattern not selected"
+            recipe_source = f"Custom: {recipe_source}"
+
+        if role == "Definition":
+            target = "200 mm swatch preview"
+        else:
+            base_text = self.baseCombo.currentText().strip() or "No base selected"
+            target = base_text
+
+        projection = "Surface" if self.useSurfaceProjectionCheck.isChecked() else "XY"
+        if self.forceXYPlaneCheck.isChecked():
+            projection = "Forced XY"
+
+        subtraction_count = self.subtractionsTable.topLevelItemCount()
+        self._sync_selection_set_from_filtered_list(self.baseObjectsList, self.selected_base_object_names)
+        extra_bases = len(self.selected_base_object_names)
+        extra_patterns = self.patternObjectsList.count()
+        summary = (
+            f"{role} | Target: {target} | Recipe: {recipe_source} | Mode: {self.distCombo.currentText()} "
+            f"| Projection: {projection} | Subtractions: {subtraction_count}"
+        )
+        if extra_bases:
+            summary += f" | +{extra_bases} extra base"
+        if extra_patterns:
+            summary += f" | +{extra_patterns} extra pattern"
+        self.recipeSummaryLabel.setText(summary)
 
     def set_smart_default_scale(self, is_builtin):
         default_scale = 100.0 if is_builtin else 10.0
@@ -2762,6 +3352,7 @@ class HatchTaskPanel:
     def on_scale_changed(self, value):
         self.last_manual_scale = value
         self.scaleSpin.setStyleSheet("")
+        self._refresh_recipe_summary()
 
     def on_base_combo_index_changed(self, index):
         name = self.baseCombo.itemText(index)
@@ -2786,8 +3377,13 @@ class HatchTaskPanel:
             FreeCADGui.Selection.addSelection(obj)
 
     def get_base_spacing_in_mm(self):
-        quantity = self.spacingInput.property("quantity")
-        return quantity.Value if quantity else 0.0
+        if self.spacingInput is not None:
+            try:
+                qty = self.spacingInput.property("quantity")
+                return qty.Value if qty else 0.0
+            except Exception:
+                return 0.0
+        return float(self.spacingSpin.value()) if self.spacingSpin is not None else 0.0
 
     def on_preview(self):
         if not self._check_dangerous_tile_count():
@@ -2805,12 +3401,10 @@ class HatchTaskPanel:
                 QtWidgets.QMessageBox.warning(
                     self.form,
                     "Preview Error",
-                    f"Select a valid base shape before previewing.\n"
-                    f"Could not find object '{base_name}' in document.",
+                    "Select a valid base shape before previewing.",
                 )
                 return
 
-        # Remove previous temporary preview
         if self.current_temp_preview_name:
             old = doc.getObject(self.current_temp_preview_name)
             if old:
@@ -2821,8 +3415,6 @@ class HatchTaskPanel:
         preview_name = None
 
         try:
-            # Always build a real parametric hatch so execute() runs the
-            # identical pipeline to the final hatch (correct shape + placement).
             temp_name = doc.getUniqueObjectName("_HatchPreviewTemp")
             temp_hatch = make_custom_hatch(
                 name=temp_name, role="Definition" if is_definition else "Applied"
@@ -2842,52 +3434,19 @@ class HatchTaskPanel:
                 QtWidgets.QMessageBox.warning(
                     self.form,
                     "Preview",
-                    "Preview generated an empty shape. " "Check base object and pattern settings.",
+                    "Preview generated an empty shape. Check base object and pattern settings.",
                 )
                 return
 
             show_faces = temp_hatch.ShowFaces
-
-            at_location = getattr(self, "previewAtLocationCheck", None)
-            preview_at_surface = at_location is None or at_location.isChecked() or is_definition
+            preview_at_surface = self.previewAtLocationCheck.isChecked() or is_definition
 
             if preview_at_surface:
-                # ---------------------------------------------------------- #
-                # AT SURFACE LOCATION (default, checkbox checked)             #
-                #                                                              #
-                # Keep the parametric hatch object itself as the preview.    #
-                # Its execute() already produced the correct Shape and        #
-                # Placement — no copy needed, no coordinate reconstruction.  #
-                # Future recomputes keep it correct automatically.           #
-                # ---------------------------------------------------------- #
                 preview_name = temp_name
-                temp_name = None  # don't clean up — this IS the preview
+                temp_name = None
                 preview_obj = doc.getObject(preview_name)
-
             else:
-                # ---------------------------------------------------------- #
-                # AT WORLD ORIGIN (checkbox unchecked)                        #
-                #                                                              #
-                # We cannot just shift the parametric hatch's Placement:     #
-                # execute() runs on every recompute and resets it back to the #
-                # surface location — the "bounce-back" bug.                  #
-                #                                                              #
-                # Instead:                                                    #
-                # 1. Bake the hatch's current world-space geometry into a    #
-                #    shape by applying Placement to vertices via              #
-                #    transformGeometry.                                       #
-                # 2. Shift that world-space shape so its centre lands at     #
-                #    the origin.                                              #
-                # 3. Store in a Part::Feature (no execute(), Placement is    #
-                #    stable — will never bounce back).                        #
-                # 4. Delete the parametric hatch.                            #
-                # ---------------------------------------------------------- #
-                # Reuse the same bake-to-geometry path as the subtraction fix.
-                # This keeps preview-origin behavior consistent with execute()
-                # and avoids a second copy of transformGeometry exception logic.
                 world_shape = _bake_shape_to_geometry(temp_hatch.Shape, temp_hatch.Placement)
-
-                # Shift centre to origin for close-up inspection.
                 try:
                     c = world_shape.BoundBox.Center
                     mat = FreeCAD.Matrix()
@@ -2898,24 +3457,20 @@ class HatchTaskPanel:
 
                 doc.removeObject(temp_name)
                 temp_name = None
-
                 preview_name = doc.getUniqueObjectName("HatchPreview")
                 preview_obj = doc.addObject("Part::Feature", preview_name)
                 preview_obj.Shape = world_shape
-                preview_obj.Placement = (
-                    FreeCAD.Placement()
-                )  # identity — geometry is already shifted
+                preview_obj.Placement = FreeCAD.Placement()
                 doc.recompute()
 
-            # Apply green preview style (after any recompute so display modes exist)
             if FreeCAD.GuiUp:
                 vobj = preview_obj.ViewObject
-                _LINE_COLOR = (1 / 255, 255 / 255, 1 / 255)  # #01ff01
-                _SHAPE_COLOR = (0 / 255, 204 / 255, 51 / 255)  # #00cc33
+                line_color = (1 / 255, 255 / 255, 1 / 255)
+                shape_color = (0 / 255, 204 / 255, 51 / 255)
                 safe_set_display_mode(vobj, "Flat Lines" if show_faces else "Wireframe")
-                vobj.ShapeColor = _SHAPE_COLOR
+                vobj.ShapeColor = shape_color
                 try:
-                    vobj.LineColor = _LINE_COLOR
+                    vobj.LineColor = line_color
                 except Exception:
                     pass
                 vobj.Transparency = 60
@@ -2930,18 +3485,20 @@ class HatchTaskPanel:
 
             num_edges = len(preview_obj.Shape.Edges)
             num_faces = len(preview_obj.Shape.Faces)
+            self.previewStatusLabel.setText(
+                "Preview ready | Edges: %d | Faces: %d" % (num_edges, num_faces)
+            )
             QtWidgets.QMessageBox.information(
                 self.form,
                 "Preview Generated",
-                f"Preview complete (≤100 tiles for speed).\n"
+                "Preview complete (<=100 tiles for speed).\n"
                 f"Edges: {num_edges}  Faces: {num_faces}\n\n"
                 f"{'Shape kept as non-parametric feature.' if keep else 'Shape will be removed on next preview or on Create.'}\n\n"
-                "Tip: Adjust MaxTilesAllowed in Advanced tab\n"
-                "and Base Spacing / Scale to tune density.",
+                "Tip: use the Advanced section to tune Max Tiles, clipping, and variation.",
             )
-
         except Exception as e:
             FreeCAD.Console.PrintError(f"Preview failed: {e}\n")
+            self.previewStatusLabel.setText(f"Preview failed: {e}")
             QtWidgets.QMessageBox.critical(self.form, "Preview Error", f"Preview failed:\n{str(e)}")
             for name in [temp_name, preview_name]:
                 if name:
@@ -2959,29 +3516,16 @@ class HatchTaskPanel:
     def _load_from_object(self, obj):
         try:
             role = getattr(obj, "HatchRole", "Applied")
-            if role == "Definition":
-                self.hatchRoleCombo.setCurrentIndex(0)
-            else:
-                self.hatchRoleCombo.setCurrentIndex(1)
+            self.hatchRoleCombo.setCurrentIndex(0 if role == "Definition" else 1)
 
-            if obj.BaseObject:
-                name = obj.BaseObject.Name
-                idx = self.baseCombo.findText(name)
-                if idx == -1:
-                    self.baseCombo.addItem(name)
-                    idx = self.baseCombo.findText(name)
-                self.baseCombo.setCurrentIndex(max(idx, 0))
+            if getattr(obj, "BaseObject", None):
+                self._combo_set_object(self.baseCombo, obj.BaseObject)
 
             pattern_type = getattr(obj, "PatternType", "CustomObject")
             if pattern_type == "CustomObject":
                 self.patternSourceCombo.setCurrentIndex(1)
-                if obj.PatternObject:
-                    pattern_name = obj.PatternObject.Name
-                    pattern_idx = self.customPatternCombo.findText(pattern_name)
-                    if pattern_idx == -1:
-                        self.customPatternCombo.addItem(pattern_name)
-                        pattern_idx = self.customPatternCombo.findText(pattern_name)
-                    self.customPatternCombo.setCurrentIndex(max(pattern_idx, 0))
+                if getattr(obj, "PatternObject", None):
+                    self._combo_set_object(self.customPatternCombo, obj.PatternObject)
             else:
                 self.patternSourceCombo.setCurrentIndex(0)
                 builtin_idx = self.builtinPatternCombo.findText(pattern_type)
@@ -2991,15 +3535,34 @@ class HatchTaskPanel:
             dist_idx = self.distCombo.findText(getattr(obj, "DistributionMode", "SeamlessTiling"))
             if dist_idx >= 0:
                 self.distCombo.setCurrentIndex(dist_idx)
+
             self.autoScaleCheck.setChecked(bool(getattr(obj, "AutoScaleToFitBase", False)))
             self.scaleSpin.setValue(float(getattr(obj, "PatternScale", 1.0)))
             self.rotSpin.setValue(float(getattr(obj, "RotationDeg", 0.0)))
-            spacing = getattr(obj, "BaseSpacing", 0.0)
-            self.spacingInput.setProperty(
-                "quantity", FreeCAD.Units.Quantity(spacing, FreeCAD.Units.Length)
+            _spacing = float(getattr(obj, "BaseSpacing", 0.0))
+            if self.spacingInput is not None:
+                try:
+                    self.spacingInput.setProperty(
+                        "quantity", FreeCAD.Units.Quantity(_spacing, FreeCAD.Units.Length)
+                    )
+                except Exception:
+                    pass
+            elif self.spacingSpin is not None:
+                self.spacingSpin.setValue(_spacing)
+            self.useUnitsCheck.setChecked(bool(getattr(obj, "UseUnits", False)))
+            unit_idx = self.unitSystemCombo.findText(
+                getattr(obj, "SelectedUnitSystem", "FreeCAD Default")
             )
+            if unit_idx >= 0:
+                self.unitSystemCombo.setCurrentIndex(unit_idx)
+
             self.repXSpin.setValue(int(getattr(obj, "RepetitionsX", 5)))
             self.repYSpin.setValue(int(getattr(obj, "RepetitionsY", 5)))
+            self.radialCountSpin.setValue(int(getattr(obj, "RadialCount", 8)))
+            self.radialRadiusSpin.setValue(float(getattr(obj, "RadialRadius", 50.0)))
+            self.concentricCountSpin.setValue(int(getattr(obj, "ConcentricCount", 5)))
+            self.concentricSpacingSpin.setValue(float(getattr(obj, "ConcentricSpacing", 10.0)))
+            self.randomCountSpin.setValue(int(getattr(obj, "RandomCount", 30)))
 
             scale_mode_idx = self.scaleModeCombo.findText(getattr(obj, "ScaleMode", "Absolute"))
             if scale_mode_idx >= 0:
@@ -3015,13 +3578,18 @@ class HatchTaskPanel:
 
             self.randomCheck.setChecked(bool(getattr(obj, "RandomizePlacement", False)))
             self.offRangeSpin.setValue(float(getattr(obj, "RandomOffsetRange", 0.0)))
-            self.rotRangeSpin.setValue(float(getattr(obj, "RandomRotationRange", 0.0)))
+            rot_range = float(getattr(obj, "RandomRotationRange", 0.0))
+            if not rot_range:
+                rot_min = float(getattr(obj, "RandomRotationMin", 0.0))
+                rot_max = float(getattr(obj, "RandomRotationMax", 0.0))
+                rot_range = max(abs(rot_min), abs(rot_max))
+            self.rotRangeSpin.setValue(rot_range)
             self.scaleMinSpin.setValue(float(getattr(obj, "RandomScaleMin", 1.0)))
             self.scaleMaxSpin.setValue(float(getattr(obj, "RandomScaleMax", 1.0)))
 
             self.showFacesCheck.setChecked(bool(getattr(obj, "ShowFaces", False)))
             self.apply3DCheck.setChecked(bool(getattr(obj, "ApplyTo3DSurface", False)))
-            self.maxTilesSpin.setValue(int(getattr(obj, "MaxTilesAllowed", 1000)))
+            self.maxTilesSpin.setValue(int(getattr(obj, "MaxTilesAllowed", 5000)))
             clip_mode_idx = self.clipModeCombo.findText(getattr(obj, "ClipMode", "BooleanOnly"))
             if clip_mode_idx >= 0:
                 self.clipModeCombo.setCurrentIndex(clip_mode_idx)
@@ -3029,6 +3597,8 @@ class HatchTaskPanel:
             self.densitySpin.setValue(float(getattr(obj, "DensityFactor", 1.0)))
             self.enableColorVarCheck.setChecked(bool(getattr(obj, "EnableColorVariation", False)))
             self.colorVarSpin.setValue(float(getattr(obj, "ColorVariationIntensity", 0.5)))
+            self.spacingVariationSpin.setValue(float(getattr(obj, "SpacingVariation", 0.0)))
+            self.shapeDistortionCheck.setChecked(bool(getattr(obj, "EnableShapeDistortion", False)))
 
             self.useSurfaceProjectionCheck.setChecked(
                 bool(getattr(obj, "UseSurfaceProjection", True))
@@ -3036,23 +3606,26 @@ class HatchTaskPanel:
             self.forceXYPlaneCheck.setChecked(bool(getattr(obj, "ForceXYPlane", False)))
 
             if getattr(obj, "BaseTileObject", None):
-                tile_name = obj.BaseTileObject.Name
-                tile_idx = self.tileCombo.findText(tile_name)
-                if tile_idx == -1:
-                    self.tileCombo.addItem(tile_name)
-                    tile_idx = self.tileCombo.findText(tile_name)
-                self.tileCombo.setCurrentIndex(tile_idx)
+                self._combo_set_object(self.tileCombo, obj.BaseTileObject)
             self.tileVisibilityCheck.setChecked(bool(getattr(obj, "TileVisibility", True)))
+
+            self.selected_base_object_names = {
+                extra.Name for extra in getattr(obj, "BaseObjects", []) if extra is not None
+            }
+            self.selected_pattern_object_names = {
+                extra.Name for extra in getattr(obj, "PatternObjects", []) if extra is not None
+            }
+            self.refresh_base_views()
+            self.refresh_pattern_views()
+            self._set_subtraction_objects(getattr(obj, "Subtractions", []))
 
         except Exception as e:
             FreeCAD.Console.PrintWarning(f"_load_from_object partial failure: {e}\n")
 
     def accept(self):
         self._cleanup_preview()
-
         if not self._check_dangerous_tile_count():
             return True
-
         if self.editing_obj is not None:
             self._accept_edit()
         else:
@@ -3060,14 +3633,10 @@ class HatchTaskPanel:
         return True
 
     def _apply_properties_to(self, hatch_obj):
-        if self.hatchRoleCombo.currentIndex() == 0:
-            hatch_obj.HatchRole = "Definition"
-        else:
-            hatch_obj.HatchRole = "Applied"
+        hatch_obj.HatchRole = "Definition" if self.hatchRoleCombo.currentIndex() == 0 else "Applied"
 
         if hatch_obj.HatchRole == "Applied":
-            base_name = self.baseCombo.currentText()
-            base_obj = self._resolve_obj_name(base_name)
+            base_obj = self._resolve_obj_name(self.baseCombo.currentText())
             if not base_obj or not hasattr(base_obj, "Shape"):
                 QtWidgets.QMessageBox.warning(self.form, "Error", "Invalid base object selection")
                 return False
@@ -3077,30 +3646,40 @@ class HatchTaskPanel:
 
         if self.patternSourceCombo.currentIndex() == 0:
             hatch_obj.PatternType = self.builtinPatternCombo.currentText()
+            hatch_obj.PatternObject = None
         else:
             hatch_obj.PatternType = "CustomObject"
-            pattern_name = self.customPatternCombo.currentText()
-            if pattern_name:
-                pattern_obj = self._resolve_obj_name(pattern_name)
-                if pattern_obj:
-                    hatch_obj.PatternObject = pattern_obj
+            pattern_name = self.customPatternCombo.currentText().strip()
+            hatch_obj.PatternObject = self._resolve_obj_name(pattern_name) if pattern_name else None
 
         hatch_obj.ClipMode = self.clipModeCombo.currentText()
         hatch_obj.UseSurfaceProjection = self.useSurfaceProjectionCheck.isChecked()
         hatch_obj.ForceXYPlane = self.forceXYPlaneCheck.isChecked()
-        hatch_obj.BaseObjects = self.get_selected_objects_from_list(self.baseObjectsList)
-        hatch_obj.PatternObjects = self.get_selected_objects_from_list(self.patternObjectsList)
-        hatch_obj.Subtractions = self.get_selected_objects_from_list(self.subtractionsList)
+        self._sync_selection_set_from_filtered_list(self.baseObjectsList, self.selected_base_object_names)
+        hatch_obj.BaseObjects = [
+            self.doc.getObject(name) for name in sorted(self.selected_base_object_names) if self.doc.getObject(name)
+        ]
+        hatch_obj.PatternObjects = self.get_all_objects_from_list(self.patternObjectsList)
+        hatch_obj.Subtractions = self.get_subtraction_objects()
         hatch_obj.DistributionMode = self.distCombo.currentText()
         hatch_obj.AutoScaleToFitBase = self.autoScaleCheck.isChecked()
         hatch_obj.PatternScale = float(self.scaleSpin.value())
         hatch_obj.RotationDeg = float(self.rotSpin.value())
         hatch_obj.BaseSpacing = float(self.get_base_spacing_in_mm())
+        hatch_obj.UseUnits = self.useUnitsCheck.isChecked()
+        hatch_obj.SelectedUnitSystem = self.unitSystemCombo.currentText()
         hatch_obj.RepetitionsX = int(self.repXSpin.value())
         hatch_obj.RepetitionsY = int(self.repYSpin.value())
+        hatch_obj.RadialCount = int(self.radialCountSpin.value())
+        hatch_obj.RadialRadius = float(self.radialRadiusSpin.value())
+        hatch_obj.ConcentricCount = int(self.concentricCountSpin.value())
+        hatch_obj.ConcentricSpacing = float(self.concentricSpacingSpin.value())
+        hatch_obj.RandomCount = int(self.randomCountSpin.value())
         hatch_obj.RandomizePlacement = self.randomCheck.isChecked()
         hatch_obj.RandomOffsetRange = float(self.offRangeSpin.value())
         hatch_obj.RandomRotationRange = float(self.rotRangeSpin.value())
+        hatch_obj.RandomRotationMin = -float(self.rotRangeSpin.value())
+        hatch_obj.RandomRotationMax = float(self.rotRangeSpin.value())
         hatch_obj.RandomScaleMin = float(self.scaleMinSpin.value())
         hatch_obj.RandomScaleMax = float(self.scaleMaxSpin.value())
         hatch_obj.LockToBase = self.lockCheck.isChecked()
@@ -3113,12 +3692,11 @@ class HatchTaskPanel:
         hatch_obj.DensityFactor = float(self.densitySpin.value())
         hatch_obj.EnableColorVariation = self.enableColorVarCheck.isChecked()
         hatch_obj.ColorVariationIntensity = float(self.colorVarSpin.value())
+        hatch_obj.SpacingVariation = float(self.spacingVariationSpin.value())
+        hatch_obj.EnableShapeDistortion = self.shapeDistortionCheck.isChecked()
         hatch_obj.PatternPlacementMode = self.placementModeCombo.currentText()
         tile_name = self.tileCombo.currentText().strip()
-        if tile_name:
-            tile_obj = self._resolve_obj_name(tile_name)
-            if tile_obj:
-                hatch_obj.BaseTileObject = tile_obj
+        hatch_obj.BaseTileObject = self._resolve_obj_name(tile_name) if tile_name else None
         hatch_obj.TileVisibility = self.tileVisibilityCheck.isChecked()
         return True
 
@@ -3128,7 +3706,7 @@ class HatchTaskPanel:
             hatch_objects = [o for o in self.doc.Objects if o.Name.startswith("CustomHatch")]
             max_num = 0
             for obj in hatch_objects:
-                suffix = obj.Name[len("CustomHatch") :]
+                suffix = obj.Name[len("CustomHatch"):]
                 if suffix.isdigit():
                     max_num = max(max_num, int(suffix))
             hatch_name = "CustomHatch" if max_num == 0 else f"CustomHatch{max_num + 1:03d}"
@@ -3144,8 +3722,7 @@ class HatchTaskPanel:
             QtWidgets.QMessageBox.information(
                 self.form,
                 "Success",
-                f"Hatch created!\nTime: {hatch_obj.GenerationTime:.2f}s\n"
-                f"Tiles: {hatch_obj.TileCount}",
+                f"Hatch created!\nTime: {hatch_obj.GenerationTime:.2f}s\nTiles: {hatch_obj.TileCount}",
             )
         except Exception as e:
             FreeCAD.ActiveDocument.abortTransaction()
@@ -3164,8 +3741,7 @@ class HatchTaskPanel:
             QtWidgets.QMessageBox.information(
                 self.form,
                 "Updated",
-                f"Hatch updated!\nTime: {self.editing_obj.GenerationTime:.2f}s\n"
-                f"Tiles: {self.editing_obj.TileCount}",
+                f"Hatch updated!\nTime: {self.editing_obj.GenerationTime:.2f}s\nTiles: {self.editing_obj.TileCount}",
             )
         except Exception as e:
             FreeCAD.ActiveDocument.abortTransaction()
