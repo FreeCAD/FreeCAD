@@ -842,7 +842,6 @@ class Joint:
 
         if len(refs) >= 1:
             joint.Reference1 = refs[0]
-            joint.Placement1 = self.findPlacement(joint, joint.Reference1, 0)
         else:
             joint.Reference1 = None
             joint.Placement1 = App.Placement()
