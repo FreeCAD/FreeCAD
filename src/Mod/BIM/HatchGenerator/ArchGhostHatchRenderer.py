@@ -380,7 +380,9 @@ class GhostHatchRenderer:
                                     pass
 
                         projected.append(local_base)
-                        transforms.append((local_base, to_world, preview_offset_x, preview_offset_y))
+                        transforms.append(
+                            (local_base, to_world, preview_offset_x, preview_offset_y)
+                        )
                     except Exception as e:
                         FreeCAD.Console.PrintWarning(f"Ghost hatch projection failed: {e}\n")
 

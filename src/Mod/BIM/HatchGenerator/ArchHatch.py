@@ -1860,8 +1860,7 @@ class CollapsibleSectionBox(QtWidgets.QWidget):
         self._layout = QtWidgets.QVBoxLayout(self)
         self._layout.setContentsMargins(0, 0, 0, 0)
         self._layout.setSpacing(6)
-        self.setStyleSheet(
-            """
+        self.setStyleSheet("""
             QToolButton {
                 background: #e4e4e4;
                 border: 1px solid #c0c0c0;
@@ -1887,8 +1886,7 @@ class CollapsibleSectionBox(QtWidgets.QWidget):
                 border-radius: 0 0 4px 4px;
                 background: #ffffff;
             }
-            """
-        )
+            """)
 
     def addItem(self, widget, title):
         index = len(self._items)
@@ -2138,7 +2136,12 @@ class HatchTaskPanel:
             tiles = 50
 
         recommended_scale = None
-        if dist_mode == "SeamlessTiling" and tiles > 300 and pattern_width > 0 and pattern_height > 0:
+        if (
+            dist_mode == "SeamlessTiling"
+            and tiles > 300
+            and pattern_width > 0
+            and pattern_height > 0
+        ):
             target = 200
             recommended_scale = current_scale * math.sqrt(tiles / target)
             if recommended_scale > 0:
@@ -2320,9 +2323,15 @@ class HatchTaskPanel:
         self.subtractionsTable.setMaximumHeight(120)
         self.subtractionsTable.header().setStretchLastSection(False)
         self.subtractionsTable.header().setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
-        self.subtractionsTable.header().setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
-        self.subtractionsTable.header().setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
-        self.subtractionsTable.header().setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeToContents)
+        self.subtractionsTable.header().setSectionResizeMode(
+            1, QtWidgets.QHeaderView.ResizeToContents
+        )
+        self.subtractionsTable.header().setSectionResizeMode(
+            2, QtWidgets.QHeaderView.ResizeToContents
+        )
+        self.subtractionsTable.header().setSectionResizeMode(
+            3, QtWidgets.QHeaderView.ResizeToContents
+        )
         self.subtractionsInfoLabel = QtWidgets.QLabel(
             "Add cut-out objects from selection. Rows show the geometry class and readiness of each subtraction operand."
         )
@@ -2346,27 +2355,92 @@ class HatchTaskPanel:
 
         self.builtinPatternLabel = QtWidgets.QLabel("Built-in Pattern:")
         self.builtinPatternCombo = QtWidgets.QComboBox()
-        self.builtinPatternCombo.addItems([
-            "SolidFill", "HorizontalLines", "VerticalLines", "Crosshatch", "Herringbone",
-            "BrickPattern", "RandomDots", "OverlappingSquares", "Checkerboard",
-            "CheckerboardCircles", "RotatingHexagons", "NestedTriangles",
-            "InterlockingCircles", "RecursiveSquares", "FlowerOfLife", "VoronoiMesh",
-            "OffsetChecker", "ZigZag", "HexagonalHoriz", "HexagonalVerti", "HexagonalPattern",
-            "TrianglesGrid", "MidEastMosaic", "StarGridPattern", "BasketWeave", "Honeycomb",
-            "SineWave", "SpaceFrame", "HoneycombDual", "ArtDeco", "StainedGlass",
-            "PenroseTriangle", "GreekKey", "ChainLinks", "TriangleForest", "CeramicTile",
-            "CirclesGrid", "PlusSigns", "WavesPattern", "GalaxyStarsPattern", "GridDots",
-            "HexDots", "FractalTree", "Voronoi", "FractalBranches", "OrganicMaze",
-            "BiomorphicCells", "RadialSunburst", "Sunburst", "Ziggurat", "SpiralPattern",
-            "PentaflakeFractal", "HilbertCurve", "SierpinskiTriangle", "PenroseTiling",
-            "EinsteinMonotile", "LeafVeins", "WoodPlanks", "ParquetHerringbone", "WoodGrain",
-            "DrywallOrangePeel", "DrywallKnockdown", "StuccoSandFloat", "StuccoDash",
-            "DrywallSkipTrowel", "Concrete", "ConcreteStampedPattern", "ConcreteSaltFinish",
-            "ConcreteFormTiePattern", "ConcreteSandblastPattern", "ConcreteControlJoint",
-            "ConcreteGridPattern", "WoodKnotPattern", "ConcreteAggregatePattern",
-            "BrushedConcrete", "PebbleConcrete", "CrackedConcrete", "AggregateConcrete",
-            "StampedConcrete", "Insulation", "Rebar", "RoofTiles",
-        ])
+        self.builtinPatternCombo.addItems(
+            [
+                "SolidFill",
+                "HorizontalLines",
+                "VerticalLines",
+                "Crosshatch",
+                "Herringbone",
+                "BrickPattern",
+                "RandomDots",
+                "OverlappingSquares",
+                "Checkerboard",
+                "CheckerboardCircles",
+                "RotatingHexagons",
+                "NestedTriangles",
+                "InterlockingCircles",
+                "RecursiveSquares",
+                "FlowerOfLife",
+                "VoronoiMesh",
+                "OffsetChecker",
+                "ZigZag",
+                "HexagonalHoriz",
+                "HexagonalVerti",
+                "HexagonalPattern",
+                "TrianglesGrid",
+                "MidEastMosaic",
+                "StarGridPattern",
+                "BasketWeave",
+                "Honeycomb",
+                "SineWave",
+                "SpaceFrame",
+                "HoneycombDual",
+                "ArtDeco",
+                "StainedGlass",
+                "PenroseTriangle",
+                "GreekKey",
+                "ChainLinks",
+                "TriangleForest",
+                "CeramicTile",
+                "CirclesGrid",
+                "PlusSigns",
+                "WavesPattern",
+                "GalaxyStarsPattern",
+                "GridDots",
+                "HexDots",
+                "FractalTree",
+                "Voronoi",
+                "FractalBranches",
+                "OrganicMaze",
+                "BiomorphicCells",
+                "RadialSunburst",
+                "Sunburst",
+                "Ziggurat",
+                "SpiralPattern",
+                "PentaflakeFractal",
+                "HilbertCurve",
+                "SierpinskiTriangle",
+                "PenroseTiling",
+                "EinsteinMonotile",
+                "LeafVeins",
+                "WoodPlanks",
+                "ParquetHerringbone",
+                "WoodGrain",
+                "DrywallOrangePeel",
+                "DrywallKnockdown",
+                "StuccoSandFloat",
+                "StuccoDash",
+                "DrywallSkipTrowel",
+                "Concrete",
+                "ConcreteStampedPattern",
+                "ConcreteSaltFinish",
+                "ConcreteFormTiePattern",
+                "ConcreteSandblastPattern",
+                "ConcreteControlJoint",
+                "ConcreteGridPattern",
+                "WoodKnotPattern",
+                "ConcreteAggregatePattern",
+                "BrushedConcrete",
+                "PebbleConcrete",
+                "CrackedConcrete",
+                "AggregateConcrete",
+                "StampedConcrete",
+                "Insulation",
+                "Rebar",
+                "RoofTiles",
+            ]
+        )
 
         self.customPatternLabel = QtWidgets.QLabel("Custom Pattern:")
         self.customPatternCombo = QtWidgets.QComboBox()
@@ -2409,11 +2483,18 @@ class HatchTaskPanel:
 
         self.distLabel = QtWidgets.QLabel("Distribution Mode:")
         self.distCombo = QtWidgets.QComboBox()
-        self.distCombo.addItems([
-            "CenteredTiling", "RelativeSpacing", "SeamlessTiling", "LinearGrid",
-            "RadialDistribution", "ConcentricDistribution", "RandomDistribution",
-            "AdaptiveDistribution",
-        ])
+        self.distCombo.addItems(
+            [
+                "CenteredTiling",
+                "RelativeSpacing",
+                "SeamlessTiling",
+                "LinearGrid",
+                "RadialDistribution",
+                "ConcentricDistribution",
+                "RandomDistribution",
+                "AdaptiveDistribution",
+            ]
+        )
         self.distCombo.setCurrentText("SeamlessTiling")
 
         self.autoScaleCheck = QtWidgets.QCheckBox("Auto Scale to Fit Base")
@@ -2462,9 +2543,9 @@ class HatchTaskPanel:
             self.spacingSpin.setSuffix(" mm")
         self.useUnitsCheck = QtWidgets.QCheckBox("Interpret spacing using explicit unit system")
         self.unitSystemCombo = QtWidgets.QComboBox()
-        self.unitSystemCombo.addItems([
-            "FreeCAD Default", "Metric (m)", "Imperial (ft)", "BIM Workbench Unit"
-        ])
+        self.unitSystemCombo.addItems(
+            ["FreeCAD Default", "Metric (m)", "Imperial (ft)", "BIM Workbench Unit"]
+        )
         self.spacingUnitLabel = QtWidgets.QLabel("")
         self.spacingUnitLabel.setStyleSheet("color: #666666; font-size: 11px;")
         self.spacingUnitLabel.setWordWrap(True)
@@ -2495,16 +2576,29 @@ class HatchTaskPanel:
         self.tileVisibilityCheck.setChecked(True)
 
         self.placementModeCombo = QtWidgets.QComboBox()
-        self.placementModeCombo.addItems([
-            "Origin", "Center", "TopLeft", "TopRight", "BottomLeft", "BottomRight",
-            "TopCenter", "BottomCenter", "LeftCenter", "RightCenter", "Custom",
-        ])
+        self.placementModeCombo.addItems(
+            [
+                "Origin",
+                "Center",
+                "TopLeft",
+                "TopRight",
+                "BottomLeft",
+                "BottomRight",
+                "TopCenter",
+                "BottomCenter",
+                "LeftCenter",
+                "RightCenter",
+                "Custom",
+            ]
+        )
         self.placementModeCombo.setCurrentText("Origin")
         self.lockCheck = QtWidgets.QCheckBox("Lock to Base")
         self.offsetXSpin = self._create_labeled_spin(-1e5, 1e5, 0.0, decimals=2, step=1.0)
         self.offsetYSpin = self._create_labeled_spin(-1e5, 1e5, 0.0, decimals=2, step=1.0)
         self.scaleModeCombo = QtWidgets.QComboBox()
-        self.scaleModeCombo.addItems(["Absolute", "FitWidth", "FitHeight", "FitMinDim", "FitMaxDim"])
+        self.scaleModeCombo.addItems(
+            ["Absolute", "FitWidth", "FitHeight", "FitMinDim", "FitMaxDim"]
+        )
         self.useSurfaceProjectionCheck = QtWidgets.QCheckBox(
             "Use Surface Projection (walls, roofs, sloped faces)"
         )
@@ -2977,9 +3071,9 @@ class HatchTaskPanel:
         kind = self.classify_object(obj)
         shape_kind = self._shape_kind_for_object(obj)
         status_text, status_color = self._subtraction_status_for_object(obj)
-        item = QtWidgets.QTreeWidgetItem([
-            self._display_name_for_object(obj), kind, shape_kind, status_text
-        ])
+        item = QtWidgets.QTreeWidgetItem(
+            [self._display_name_for_object(obj), kind, shape_kind, status_text]
+        )
         item.setData(0, QtCore.Qt.UserRole, obj.Name)
         item.setToolTip(0, f"{obj.Name}\nLabel: {obj.Label}")
         item.setForeground(3, QtGui.QBrush(status_color))
@@ -3139,7 +3233,9 @@ class HatchTaskPanel:
 
     def refresh_base_views(self):
         current = self.baseCombo.currentText()
-        self._sync_selection_set_from_filtered_list(self.baseObjectsList, self.selected_base_object_names)
+        self._sync_selection_set_from_filtered_list(
+            self.baseObjectsList, self.selected_base_object_names
+        )
         filtered_list = self.filter_objects(
             self.baseSearchField.text(), self.baseTypeFilterCombo.currentText()
         )
@@ -3158,9 +3254,13 @@ class HatchTaskPanel:
 
     def refresh_selected_pattern_objects_list(self):
         ordered_names = [
-            obj.Name for _name, _cat, obj in self.master_object_list if obj.Name in self.selected_pattern_object_names
+            obj.Name
+            for _name, _cat, obj in self.master_object_list
+            if obj.Name in self.selected_pattern_object_names
         ]
-        extras = [name for name in sorted(self.selected_pattern_object_names) if name not in ordered_names]
+        extras = [
+            name for name in sorted(self.selected_pattern_object_names) if name not in ordered_names
+        ]
         ordered_names.extend(extras)
         self._populate_named_list(self.patternObjectsList, ordered_names)
         self.extraPatternInfoLabel.setText(
@@ -3227,7 +3327,9 @@ class HatchTaskPanel:
         return objects
 
     def _on_base_objects_selection_changed(self):
-        self._sync_selection_set_from_filtered_list(self.baseObjectsList, self.selected_base_object_names)
+        self._sync_selection_set_from_filtered_list(
+            self.baseObjectsList, self.selected_base_object_names
+        )
         self._refresh_recipe_summary()
 
     def initial_pattern_setup(self):
@@ -3277,7 +3379,10 @@ class HatchTaskPanel:
         self.randomModeGroup.setVisible(show_random)
 
         show_spacing = mode in (
-            "CenteredTiling", "RelativeSpacing", "SeamlessTiling", "ConcentricDistribution"
+            "CenteredTiling",
+            "RelativeSpacing",
+            "SeamlessTiling",
+            "ConcentricDistribution",
         )
         self.spacingLabel.setVisible(show_spacing)
 
@@ -3315,7 +3420,9 @@ class HatchTaskPanel:
         if self.patternSourceCombo.currentIndex() == 0:
             recipe_source = f"Built-in: {self.builtinPatternCombo.currentText()}"
         else:
-            recipe_source = self.customPatternCombo.currentText().strip() or "Custom pattern not selected"
+            recipe_source = (
+                self.customPatternCombo.currentText().strip() or "Custom pattern not selected"
+            )
             recipe_source = f"Custom: {recipe_source}"
 
         if role == "Definition":
@@ -3329,7 +3436,9 @@ class HatchTaskPanel:
             projection = "Forced XY"
 
         subtraction_count = self.subtractionsTable.topLevelItemCount()
-        self._sync_selection_set_from_filtered_list(self.baseObjectsList, self.selected_base_object_names)
+        self._sync_selection_set_from_filtered_list(
+            self.baseObjectsList, self.selected_base_object_names
+        )
         extra_bases = len(self.selected_base_object_names)
         extra_patterns = self.patternObjectsList.count()
         summary = (
@@ -3655,9 +3764,13 @@ class HatchTaskPanel:
         hatch_obj.ClipMode = self.clipModeCombo.currentText()
         hatch_obj.UseSurfaceProjection = self.useSurfaceProjectionCheck.isChecked()
         hatch_obj.ForceXYPlane = self.forceXYPlaneCheck.isChecked()
-        self._sync_selection_set_from_filtered_list(self.baseObjectsList, self.selected_base_object_names)
+        self._sync_selection_set_from_filtered_list(
+            self.baseObjectsList, self.selected_base_object_names
+        )
         hatch_obj.BaseObjects = [
-            self.doc.getObject(name) for name in sorted(self.selected_base_object_names) if self.doc.getObject(name)
+            self.doc.getObject(name)
+            for name in sorted(self.selected_base_object_names)
+            if self.doc.getObject(name)
         ]
         hatch_obj.PatternObjects = self.get_all_objects_from_list(self.patternObjectsList)
         hatch_obj.Subtractions = self.get_subtraction_objects()
@@ -3706,7 +3819,7 @@ class HatchTaskPanel:
             hatch_objects = [o for o in self.doc.Objects if o.Name.startswith("CustomHatch")]
             max_num = 0
             for obj in hatch_objects:
-                suffix = obj.Name[len("CustomHatch"):]
+                suffix = obj.Name[len("CustomHatch") :]
                 if suffix.isdigit():
                     max_num = max(max_num, int(suffix))
             hatch_name = "CustomHatch" if max_num == 0 else f"CustomHatch{max_num + 1:03d}"
