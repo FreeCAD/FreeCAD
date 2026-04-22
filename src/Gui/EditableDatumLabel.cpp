@@ -498,6 +498,8 @@ void EditableDatumLabel::updateGeometry(QLineEdit* edit)
     if (!spinBox || !edit) {
         return;
     }
+    // Workaround: adjustSize() causes the cursor to jump to the end and selections to clear
+    // Save the state beforehand and restore it after the geometry update
     int pos = edit->cursorPosition();
     int selStart = edit->selectionStart();
     int selEnd = edit->selectionEnd();
