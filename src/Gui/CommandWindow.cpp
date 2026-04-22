@@ -339,6 +339,45 @@ Action* StdCmdToolBarMenu::createAction()
 }
 
 //===========================================================================
+// Std_DlgToggleTitleToolBarLock
+//===========================================================================
+DEF_STD_CMD_C(StdCmdToggleTitleToolBarLock)
+
+StdCmdToggleTitleToolBarLock::StdCmdToggleTitleToolBarLock()
+    : Command("Std_DlgToggleTitleToolBarLock")
+{
+    sGroup = "Tools";
+    sMenuText = QT_TR_NOOP("Lock menubar toolbars");
+    sToolTipText = QT_TR_NOOP("Lock menubar and status bar toolbars so they are no longer moveable");
+    sWhatsThis = "Std_DlgToggleTitleToolBarLock";
+    sStatusTip = sToolTipText;
+    eType = 0;
+}
+
+
+Action* StdCmdToggleTitleToolBarLock::createAction()
+{
+    Action* action = Command::createAction();
+
+    action->setCheckable(true);
+    action->setBlockedChecked(ToolBarManager::getInstance()->areTitleToolBarsLocked());
+
+    return action;
+}
+
+void StdCmdToggleTitleToolBarLock::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    auto manager = ToolBarManager::getInstance();
+    auto toggled = !manager->areTitleToolBarsLocked();
+
+    manager->setTitleToolBarsLocked(toggled);
+
+    getAction()->setChecked(toggled);
+}
+
+//===========================================================================
 // Std_DlgToggleToolBarLock
 //===========================================================================
 DEF_STD_CMD_C(StdCmdToggleToolBarLock)
@@ -518,6 +557,7 @@ void CreateWindowStdCommands()
     rcCmdMgr.addCommand(new StdCmdDockViewMenu());
     rcCmdMgr.addCommand(new StdCmdToolBarMenu());
     rcCmdMgr.addCommand(new StdCmdToggleToolBarLock());
+    rcCmdMgr.addCommand(new StdCmdToggleTitleToolBarLock());
     rcCmdMgr.addCommand(new StdCmdWindowsMenu());
     rcCmdMgr.addCommand(new StdCmdStatusBar());
     rcCmdMgr.addCommand(new StdCmdUserInterface());
