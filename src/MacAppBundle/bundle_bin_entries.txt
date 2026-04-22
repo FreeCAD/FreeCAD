@@ -1,0 +1,9 @@
+freecad
+freecadcmd
+ccx
+python
+pip
+pyside6-rcc
+gmsh
+dot
+unflatten

@@ -1,10 +1,10 @@
-cmake_minimum_required(VERSION 3.22)
-
-# Modern Swift QuickLook Extensions for macOS 15.0+
 # This file handles building .appex extensions using Swift
+# Required for macOS 15.0+
 
 # Configuration options (inherited from parent)
 # CMAKE_OSX_DEPLOYMENT_TARGET
+# TARGET_APP_BUNDLE
+# FREECAD_BUNDLE_ID
 
 # Check for required tools
 find_program(SWIFTC_EXECUTABLE swiftc REQUIRED)
@@ -24,13 +24,10 @@ endif()
 
 message(STATUS "Modern QuickLook: Using macOS SDK: ${MACOS_SDK_PATH}")
 
-# Bundle identifiers (inherited from parent)
-set(FREECAD_BUNDLE_ID "org.freecad.FreeCAD")
+# Bundle identifiers
 set(THUMBNAIL_BUNDLE_ID "${FREECAD_BUNDLE_ID}.quicklook.thumbnail")
 set(PREVIEW_BUNDLE_ID "${FREECAD_BUNDLE_ID}.quicklook.preview")
 
-# Paths (inherited from parent)
-set(TARGET_APP_BUNDLE "${CMAKE_BINARY_DIR}/src/MacAppBundle/FreeCAD.app")
 set(EXTENSIONS_DIR "${TARGET_APP_BUNDLE}/Contents/PlugIns")
 
 # Build directories
@@ -169,21 +166,37 @@ add_custom_target(embed_modern_extensions ALL
     COMMENT "Embedding modern extensions in main FreeCAD.app"
 )
 
+# Ad-hoc sign each .appex with its entitlements. Mirrors the signing step
+# in package/rattler-build/osx/create_bundle.sh for unsigned (local) builds:
+# without per-extension entitlements, pluginkit/LaunchServices won't actually
+# invoke the extensions for .FCStd previews. CI's official signing path
+# re-signs with a real identity via macos_sign_and_notarize.zsh.
+add_custom_target(sign_modern_extensions ALL
+    COMMAND /usr/bin/codesign --force --sign -
+        --entitlements ${CMAKE_CURRENT_SOURCE_DIR}/ThumbnailExtension.entitlements
+        ${EXTENSIONS_DIR}/FreeCADThumbnailExtension.appex
+    COMMAND /usr/bin/codesign --force --sign -
+        --entitlements ${CMAKE_CURRENT_SOURCE_DIR}/PreviewExtension.entitlements
+        ${EXTENSIONS_DIR}/FreeCADPreviewExtension.appex
+    DEPENDS embed_modern_extensions
+    COMMENT "Ad-hoc signing modern QuickLook extensions with entitlements"
+)
+
 # Main modern extensions target
 add_custom_target(FreeCADModernQuickLook ALL
-    DEPENDS embed_modern_extensions
+    DEPENDS sign_modern_extensions
     COMMENT "Modern Swift QuickLook extensions built"
 )
 
 # Install targets for modern extensions
 install(DIRECTORY ${EXTENSIONS_DIR}/FreeCADThumbnailExtension.appex
-    DESTINATION "${CMAKE_INSTALL_PREFIX}/PlugIns"
+    DESTINATION "Contents/PlugIns"
     COMPONENT ModernQuickLook
     USE_SOURCE_PERMISSIONS
 )
 
 install(DIRECTORY ${EXTENSIONS_DIR}/FreeCADPreviewExtension.appex
-    DESTINATION "${CMAKE_INSTALL_PREFIX}/PlugIns"
+    DESTINATION "Contents/PlugIns"
     COMPONENT ModernQuickLook
     USE_SOURCE_PERMISSIONS
 )

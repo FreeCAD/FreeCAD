@@ -77,6 +77,10 @@ string(TIMESTAMP PACKAGE_COPYRIGHT_YEAR "%Y")
 set(PACKAGE_VERSION "${PACKAGE_VERSION_MAJOR}.${PACKAGE_VERSION_MINOR}.${PACKAGE_VERSION_PATCH}")
 set(PACKAGE_STRING "${PROJECT_NAME} ${PACKAGE_VERSION}")
 
+# macOS bundle identifier, used for CFBundleIdentifier and derived QuickLook
+# extension bundle IDs.
+set(FREECAD_BUNDLE_ID "org.freecad.FreeCAD")
+
 # include local modules
 include(CheckCXXCompilerFlag)
 include(AddFileDependencies)

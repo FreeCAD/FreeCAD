@@ -1574,6 +1574,7 @@ endif ()
 
 target_sources(FreeCADGui PRIVATE ${FreeCADGui_SRCS})
 target_link_libraries(FreeCADGui PUBLIC ${FreeCADGui_LIBS})
+target_compile_definitions(FreeCADGui PRIVATE FREECAD_BUNDLE_ID="${FREECAD_BUNDLE_ID}")
 
 if (MSVC)
     target_compile_definitions(FreeCADGui PRIVATE WIN32_LEAN_AND_MEAN)
