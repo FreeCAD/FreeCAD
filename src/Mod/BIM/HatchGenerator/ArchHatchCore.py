@@ -453,9 +453,7 @@ def buildHatchShape(
         #     bbox in the current frame. This keeps Zone B only for true
         #     rectangle-like bases. Concave polygons, triangles, H-shapes, and
         #     any sloped polygon do not satisfy this and must always clip.
-        _tile_diag = math.sqrt(
-            (tile_width * patternScale) ** 2 + (tile_height * patternScale) ** 2
-        )
+        _tile_diag = math.sqrt((tile_width * patternScale) ** 2 + (tile_height * patternScale) ** 2)
         try:
             _base_is_safe_bbox_rect = (
                 rotationDeg == 0.0
