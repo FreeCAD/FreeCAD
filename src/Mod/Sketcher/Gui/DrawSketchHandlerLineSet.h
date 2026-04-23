@@ -1889,27 +1889,27 @@ void DSHPolyLineController::adaptParameters(Base::Vector2d onSketchPos)
 {
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
-            if (!onViewParameters[OnViewParameter::First]->isSet) {
+            auto& firstParam = onViewParameters[OnViewParameter::First];
+            auto& secondParam = onViewParameters[OnViewParameter::Second];
+
+            if (!firstParam->isSet) {
                 setOnViewParameterValue(OnViewParameter::First, onSketchPos.x);
             }
 
-            if (!onViewParameters[OnViewParameter::Second]->isSet) {
+            if (!secondParam->isSet) {
                 setOnViewParameterValue(OnViewParameter::Second, onSketchPos.y);
             }
 
             bool sameSign = onSketchPos.x * onSketchPos.y > 0.;
-            onViewParameters[OnViewParameter::First]->setLabelAutoDistanceReverse(!sameSign);
-            onViewParameters[OnViewParameter::Second]->setLabelAutoDistanceReverse(sameSign);
-            onViewParameters[OnViewParameter::First]->setPoints(
-                Base::Vector3d(),
-                toVector3d(onSketchPos)
-            );
-            onViewParameters[OnViewParameter::Second]->setPoints(
-                Base::Vector3d(),
-                toVector3d(onSketchPos)
-            );
+            firstParam->setLabelAutoDistanceReverse(!sameSign);
+            secondParam->setLabelAutoDistanceReverse(sameSign);
+            firstParam->setPoints(Base::Vector3d(), toVector3d(onSketchPos));
+            secondParam->setPoints(Base::Vector3d(), toVector3d(onSketchPos));
         } break;
         case SelectMode::SeekSecond: {
+            auto& thirdParam = onViewParameters[OnViewParameter::Third];
+            auto& fourthParam = onViewParameters[OnViewParameter::Fourth];
+
             Base::Vector2d prevPoint;
             if (!handler->points.empty()) {
                 prevPoint = handler->getLastPoint();
@@ -1919,61 +1919,58 @@ void DSHPolyLineController::adaptParameters(Base::Vector2d onSketchPos)
                 Base::Vector3d end = toVector3d(onSketchPos);
                 Base::Vector3d vec = end - start;
 
-                if (!onViewParameters[OnViewParameter::Third]->isSet) {
+                if (!thirdParam->isSet) {
                     setOnViewParameterValue(OnViewParameter::Third, vec.Length());
                 }
 
                 double range = Base::toDegrees(handler->dirChangeAngle);
-                if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
+                if (!fourthParam->isSet) {
                     setOnViewParameterValue(OnViewParameter::Fourth, range, Base::Unit::Angle);
                 }
                 else if (vec.Length() > Precision::Confusion()) {
-                    double ovpRange = onViewParameters[OnViewParameter::Fourth]->getValue();
+                    double ovpRange = fourthParam->getValue();
 
                     if (fabs(range - ovpRange) > Precision::Confusion()) {
                         setOnViewParameterValue(OnViewParameter::Fourth, range, Base::Unit::Angle);
                     }
                 }
 
-                onViewParameters[OnViewParameter::Third]->setPoints(start, end);
-                onViewParameters[OnViewParameter::Fourth]->setPoints(start, Base::Vector3d());
-                onViewParameters[OnViewParameter::Fourth]->setLabelStartAngle(
+                thirdParam->setPoints(start, end);
+                fourthParam->setPoints(start, Base::Vector3d());
+                fourthParam->setLabelStartAngle(
                     handler->previousDirectionAngle
                 );
-                onViewParameters[OnViewParameter::Fourth]->setLabelRange(handler->dirChangeAngle);
+                fourthParam->setLabelRange(handler->dirChangeAngle);
             }
             else {
+                auto& fifthParam = onViewParameters[OnViewParameter::Fifth];
+
                 Base::Vector3d start = toVector3d(handler->center);
                 Base::Vector3d end = toVector3d(onSketchPos);
                 Base::Vector3d vec = end - start;
 
-                if (!onViewParameters[OnViewParameter::Third]->isSet) {
+                if (!thirdParam->isSet) {
                     setOnViewParameterValue(OnViewParameter::Third, vec.Length());
                 }
 
                 double range = Base::toDegrees(handler->range);
-                if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
+                if (!fourthParam->isSet) {
                     setOnViewParameterValue(OnViewParameter::Fourth, range, Base::Unit::Angle);
                 }
 
-                double angle = Base::toDegrees(handler->angleToPrevious);
-                if (!onViewParameters[OnViewParameter::Fifth]->isSet) {
+                if (!fifthParam->isSet) {
+                    double angle = Base::toDegrees(handler->angleToPrevious);
                     setOnViewParameterValue(OnViewParameter::Fifth, angle, Base::Unit::Angle);
                 }
 
-                onViewParameters[OnViewParameter::Third]->setPoints(start, end);
-                onViewParameters[OnViewParameter::Fourth]->setPoints(start, Base::Vector3d());
-                onViewParameters[OnViewParameter::Fourth]->setLabelStartAngle(handler->startAngle);
-                onViewParameters[OnViewParameter::Fourth]->setLabelRange(handler->range);
+                thirdParam->setPoints(start, end);
+                fourthParam->setPoints(start, Base::Vector3d());
+                fourthParam->setLabelStartAngle(handler->startAngle);
+                fourthParam->setLabelRange(handler->range);
 
-                onViewParameters[OnViewParameter::Fifth]->setPoints(
-                    toVector3d(prevPoint),
-                    Base::Vector3d()
-                );
-                onViewParameters[OnViewParameter::Fifth]->setLabelStartAngle(
-                    handler->previousDirectionAngle
-                );
-                onViewParameters[OnViewParameter::Fifth]->setLabelRange(handler->angleToPrevious);
+                fifthParam->setPoints(toVector3d(prevPoint), Base::Vector3d());
+                fifthParam->setLabelStartAngle(handler->previousDirectionAngle);
+                fifthParam->setLabelRange(handler->angleToPrevious);
             }
         } break;
         default:
