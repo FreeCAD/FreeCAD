@@ -111,7 +111,7 @@ private:
     Handle(XCAFDoc_ColorTool) aColorTool;
     bool merge {true};
     std::string default_name;
-    std::set<int> myRefShapes;
+    std::unordered_set<TopoDS_Shape> myRefShapes;
     std::unordered_map<TopoDS_Shape, TDF_Label> shapeToLabelMap;
 };
 
