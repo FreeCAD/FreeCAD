@@ -114,48 +114,4 @@ private:
     std::unordered_set<TopoDS_Shape> myRefShapes;
     std::unordered_map<TopoDS_Shape, TDF_Label> shapeToLabelMap;
 };
-
-class ImportExport ImportOCAFCmd: public ImportOCAF
-{
-public:
-    ImportOCAFCmd(Handle(TDocStd_Document) h, App::Document* d, const std::string& name);
-    std::map<Part::Feature*, std::vector<Base::Color>> getPartColorsMap() const
-    {
-        return partColors;
-    }
-
-private:
-    void applyColors(Part::Feature* part, const std::vector<Base::Color>& colors) override;
-
-private:
-    std::map<Part::Feature*, std::vector<Base::Color>> partColors;
-};
-
-class ImportXCAF
-{
-public:
-    ImportXCAF(Handle(TDocStd_Document) h, App::Document* d, const std::string& name);
-    virtual ~ImportXCAF();
-    void loadShapes();
-
-private:
-    void createShape(const TopoDS_Shape& shape, bool perface = false, bool setname = false) const;
-    void loadShapes(const TDF_Label& label);
-    virtual void applyColors(Part::Feature*, const std::vector<Base::Color>&)
-    {}
-
-private:
-    Handle(TDocStd_Document) hdoc;
-    App::Document* doc;
-    Handle(XCAFDoc_ShapeTool) aShapeTool;
-    Handle(XCAFDoc_ColorTool) hColors;
-    std::string default_name;
-    std::map<Standard_Integer, TopoDS_Shape> mySolids;
-    std::map<Standard_Integer, TopoDS_Shape> myShells;
-    std::map<Standard_Integer, TopoDS_Shape> myCompds;
-    std::map<Standard_Integer, TopoDS_Shape> myShapes;
-    std::map<Standard_Integer, Quantity_ColorRGBA> myColorMap;
-    std::map<Standard_Integer, std::string> myNameMap;
-};
-
 }  // namespace Import
