@@ -26,6 +26,8 @@
 #include <QInputDialog>
 #include <QMenu>
 #include <QMessageBox>
+#include <QComboBox>
+#include <QSignalBlocker>
 #include <QToolBar>
 #include <QToolButton>
 
@@ -45,6 +47,18 @@
 
 
 using namespace Gui::Dialog;
+
+namespace
+{
+QString customToolbarTierName(const QTreeWidgetItem* item)
+{
+    if (!item) {
+        return {};
+    }
+
+    return item->data(2, Qt::UserRole).toString();
+}
+}  // namespace
 
 /* TRANSLATOR Gui::Dialog::DlgCustomToolbars */
 
@@ -234,36 +248,108 @@ QString DlgCustomToolbars::customToolbarPersistenceKey(
     }
 
     if (workbench == QLatin1String("Global")) {
-        return QStringLiteral("global:%1").arg(toolbarName);
+        return ToolBarManager::makeToolBarPersistenceKey(QStringLiteral("global"), {}, toolbarName);
     }
 
     if (workbench.isEmpty()) {
-        return toolbarName;
+        return ToolBarManager::makeToolBarPersistenceKey({}, {}, toolbarName);
     }
 
-    return QStringLiteral("wb:%1:%2").arg(workbench, toolbarName);
+    return ToolBarManager::makeToolBarPersistenceKey(QStringLiteral("wb"), workbench, toolbarName);
 }
 
-QString DlgCustomToolbars::customToolbarTierLabel(const QString& toolbarName, const QString& workbench) const
+Gui::ToolBarItem::Tier DlgCustomToolbars::customToolbarTier(const QTreeWidgetItem* item) const
 {
-    if (type != Toolbar || toolbarName.isEmpty()) {
-        return {};
+    if (type != Toolbar) {
+        return ToolBarItem::Tier::Secondary;
     }
 
-    const auto persistenceKey = customToolbarPersistenceKey(toolbarName, workbench);
-    if (!persistenceKey.isEmpty()) {
-        const auto toolbars = getMainWindow()->findChildren<QToolBar*>();
-        for (auto* toolbar : toolbars) {
-            if (ToolBarManager::toolBarPersistenceKey(toolbar) == persistenceKey) {
-                return ToolBarManager::toolBarTierLabel(toolbar);
+    return ToolBarManager::customToolBarTierFromName(customToolbarTierName(item));
+}
+
+void DlgCustomToolbars::setCustomToolbarTier(QTreeWidgetItem* item, ToolBarItem::Tier tier)
+{
+    if (!item || item->parent() || type != Toolbar) {
+        return;
+    }
+
+    const auto normalizedTier = ToolBarManager::normalizeCustomToolBarTier(tier);
+    const auto tierName = ToolBarManager::toolBarTierName(normalizedTier);
+    item->setData(2, Qt::UserRole, tierName);
+    item->setText(2, ToolBarManager::toolBarTierLabel(normalizedTier));
+
+    auto* combo = qobject_cast<QComboBox*>(ui->toolbarTreeWidget->itemWidget(item, 2));
+    if (!combo) {
+        combo = new QComboBox(ui->toolbarTreeWidget);
+        connect(
+            combo,
+            qOverload<int>(&QComboBox::currentIndexChanged),
+            this,
+            [this, item, combo](int index) {
+                if (index < 0) {
+                    return;
+                }
+
+                setCustomToolbarTier(
+                    item,
+                    ToolBarManager::toolBarTierFromName(combo->currentData().toString())
+                );
+                exportCustomToolbars(selectedWorkbench().toLatin1());
+                applyCustomToolbarTier(item);
             }
+        );
+        ui->toolbarTreeWidget->setItemWidget(item, 2, combo);
+    }
+
+    {
+        QSignalBlocker block(combo);
+        combo->clear();
+        combo->addItem(
+            ToolBarManager::toolBarTierLabel(ToolBarItem::Tier::Recommended),
+            ToolBarManager::toolBarTierName(ToolBarItem::Tier::Recommended)
+        );
+        combo->addItem(
+            ToolBarManager::toolBarTierLabel(ToolBarItem::Tier::Secondary),
+            ToolBarManager::toolBarTierName(ToolBarItem::Tier::Secondary)
+        );
+        combo->addItem(
+            ToolBarManager::toolBarTierLabel(ToolBarItem::Tier::Advanced),
+            ToolBarManager::toolBarTierName(ToolBarItem::Tier::Advanced)
+        );
+
+        const int index = combo->findData(tierName);
+        combo->setCurrentIndex(index >= 0 ? index : 1);
+    }
+}
+
+void DlgCustomToolbars::applyCustomToolbarTier(QTreeWidgetItem* item)
+{
+    if (!item || item->parent() || type != Toolbar) {
+        return;
+    }
+
+    const QString workbench = selectedWorkbench();
+    if (workbench != QLatin1String("Global") && !isActiveWorkbenchSelection(workbench)) {
+        return;
+    }
+
+    const auto persistenceKey = customToolbarPersistenceKey(item->text(0), workbench);
+    if (persistenceKey.isEmpty()) {
+        return;
+    }
+
+    for (auto* toolbar : getMainWindow()->findChildren<QToolBar*>()) {
+        const auto toolbarKey = ToolBarManager::toolBarPersistenceKey(toolbar);
+        if ((!toolbarKey.isEmpty() && toolbarKey == persistenceKey)
+            || toolbar->objectName() == item->text(0)) {
+            ToolBarManager::setToolBarPersistenceKey(toolbar, persistenceKey);
+            ToolBarManager::setToolBarTier(toolbar, customToolbarTier(item));
+            return;
         }
     }
-
-    return ToolBarManager::toolBarTierLabel(ToolBarItem::Tier::Secondary);
 }
 
-void DlgCustomToolbars::updateToolbarItemScope(QTreeWidgetItem* item, const QString& workbench) const
+void DlgCustomToolbars::updateToolbarItemMetadata(QTreeWidgetItem* item, const QString& workbench)
 {
     if (!item) {
         return;
@@ -271,21 +357,9 @@ void DlgCustomToolbars::updateToolbarItemScope(QTreeWidgetItem* item, const QStr
 
     const auto persistenceKey = customToolbarPersistenceKey(item->text(0), workbench);
     item->setText(1, ToolBarManager::toolBarScopeLabel(persistenceKey));
-}
-
-void DlgCustomToolbars::updateToolbarItemTier(QTreeWidgetItem* item, const QString& workbench) const
-{
-    if (!item || type != Toolbar) {
-        return;
+    if (type == Toolbar) {
+        setCustomToolbarTier(item, customToolbarTier(item));
     }
-
-    item->setText(2, customToolbarTierLabel(item->text(0), workbench));
-}
-
-void DlgCustomToolbars::updateToolbarItemMetadata(QTreeWidgetItem* item, const QString& workbench) const
-{
-    updateToolbarItemScope(item, workbench);
-    updateToolbarItemTier(item, workbench);
 }
 
 void DlgCustomToolbars::updateToolbarItemsMetadata()
@@ -461,6 +535,11 @@ void DlgCustomToolbars::importCustomToolbars(const QByteArray& name)
         auto toplevel = new QTreeWidgetItem(ui->toolbarTreeWidget);
         bool active = hGrp->GetBool("Active", true);
         toplevel->setCheckState(0, (active ? Qt::Checked : Qt::Unchecked));
+        if (type == Toolbar) {
+            const auto tierName = QString::fromUtf8(hGrp->GetASCII("Tier").c_str());
+            const auto tier = ToolBarManager::customToolBarTierFromName(tierName);
+            toplevel->setData(2, Qt::UserRole, ToolBarManager::toolBarTierName(tier));
+        }
 
         // get the elements of the subgroups
         std::vector<std::pair<std::string, std::string>> items = hGrp->GetASCIIMap();
@@ -477,6 +556,9 @@ void DlgCustomToolbars::importCustomToolbars(const QByteArray& name)
             else if (it2.first == "Name") {
                 QString toolbarName = QString::fromUtf8(it2.second.c_str());
                 toplevel->setText(0, toolbarName);
+            }
+            else if (it2.first == "Tier") {
+                continue;
             }
             else {
                 Command* pCmd = rMgr.getCommandByName(it2.first.c_str());
@@ -522,6 +604,10 @@ void DlgCustomToolbars::exportCustomToolbars(const QByteArray& workbench)
         ParameterGrp::handle hToolGrp = hGrp->GetGroup(groupName.toLatin1());
         hToolGrp->SetASCII("Name", toolbarName.constData());
         hToolGrp->SetBool("Active", toplevel->checkState(0) == Qt::Checked);
+        if (type == Toolbar) {
+            const auto tierName = ToolBarManager::toolBarTierName(customToolbarTier(toplevel));
+            hToolGrp->SetASCII("Tier", tierName.toUtf8().constData());
+        }
 
         // since we store the separators to the user parameters as (key, pair) we must
         // make sure to use a unique key because otherwise we cannot store more than
@@ -724,6 +810,7 @@ void DlgCustomToolbars::onNewButtonClicked()
         QString workbench = data.toString();
         exportCustomToolbars(workbench.toLatin1());
         addCustomToolbar(text);
+        applyCustomToolbarTier(item);
     }
 }
 
@@ -787,6 +874,7 @@ void DlgCustomToolbars::onRenameButtonClicked()
             updateToolbarItemMetadata(item, selectedWorkbench());
             renameCustomToolbar(old_text, text);
             renamed = true;
+            applyCustomToolbarTier(item);
         }
     }
 

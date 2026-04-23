@@ -28,6 +28,7 @@
 #include <Base/Console.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
+#include <Gui/ToolBarManager.h>
 #include <Gui/WorkbenchManager.h>
 #include <Mod/Sketcher/App/Constraint.h>
 
@@ -35,16 +36,6 @@ using namespace SketcherGui;
 
 namespace
 {
-std::string makeSketcherToolbarPersistenceKey(const std::string& toolbar)
-{
-    return "wb:SketcherWorkbench:" + toolbar;
-}
-
-std::string makeSketcherEditToolbarPersistenceKey(const std::string& toolbar)
-{
-    return "ctx:SketcherWorkbench:edit:" + toolbar;
-}
-
 QString sketcherWorkbenchName()
 {
     return QStringLiteral("SketcherWorkbench");
@@ -131,53 +122,58 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 {
     Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
 
-    Gui::ToolBarItem* sketcher = new Gui::ToolBarItem(root);
-    sketcher->setCommand("Sketcher");
-    sketcher->setPersistenceKey(makeSketcherToolbarPersistenceKey("Sketcher"));
-    sketcher->setTier(Gui::ToolBarItem::Tier::Recommended);
-    addSketcherWorkbenchSketchActions(*sketcher);
+    const auto workbenchName = sketcherWorkbenchName();
+    const auto editScopePath = workbenchName + QStringLiteral(":edit");
+    using ToolBarPopulator = void (*)(Gui::ToolBarItem&);
+    auto addToolbar = [root](
+                          const char* toolbarName,
+                          Gui::ToolBarItem::DefaultVisibility visibility,
+                          Gui::ToolBarItem::Tier tier,
+                          const QString& scope,
+                          const QString& scopePath,
+                          ToolBarPopulator populate
+                      ) {
+        auto* toolbar = new Gui::ToolBarItem(root, visibility);
+        toolbar->setCommand(toolbarName);
+        toolbar->setPersistenceKey(
+            Gui::ToolBarManager::makeToolBarPersistenceKey(scope, scopePath, QString::fromLatin1(toolbarName))
+                .toStdString()
+        );
+        toolbar->setTier(tier);
+        populate(*toolbar);
+        return toolbar;
+    };
+    auto addWorkbenchToolbar = [&](const char* toolbarName, ToolBarPopulator populate) {
+        return addToolbar(
+            toolbarName,
+            Gui::ToolBarItem::DefaultVisibility::Visible,
+            Gui::ToolBarItem::Tier::Recommended,
+            QStringLiteral("wb"),
+            workbenchName,
+            populate
+        );
+    };
+    auto addContextualToolbar = [&](const char* toolbarName, ToolBarPopulator populate) {
+        return addToolbar(
+            toolbarName,
+            Gui::ToolBarItem::DefaultVisibility::Unavailable,
+            Gui::ToolBarItem::Tier::Contextual,
+            QStringLiteral("ctx"),
+            editScopePath,
+            populate
+        );
+    };
 
-    Gui::ToolBarItem* sketcherEditMode
-        = new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);
-    sketcherEditMode->setCommand("Edit Mode");
-    sketcherEditMode->setPersistenceKey(makeSketcherEditToolbarPersistenceKey("Edit Mode"));
-    sketcherEditMode->setTier(Gui::ToolBarItem::Tier::Contextual);
-    addSketcherWorkbenchSketchEditModeActions(*sketcherEditMode);
-
-    Gui::ToolBarItem* geom
-        = new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);
-    geom->setCommand("Geometries");
-    geom->setPersistenceKey(makeSketcherEditToolbarPersistenceKey("Geometries"));
-    geom->setTier(Gui::ToolBarItem::Tier::Contextual);
-    addSketcherWorkbenchGeometries(*geom);
-
-    Gui::ToolBarItem* cons
-        = new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);
-    cons->setCommand("Constraints");
-    cons->setPersistenceKey(makeSketcherEditToolbarPersistenceKey("Constraints"));
-    cons->setTier(Gui::ToolBarItem::Tier::Contextual);
-    addSketcherWorkbenchConstraints(*cons);
-
-    Gui::ToolBarItem* consaccel
-        = new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);
-    consaccel->setCommand("Sketcher Tools");
-    consaccel->setPersistenceKey(makeSketcherEditToolbarPersistenceKey("Sketcher Tools"));
-    consaccel->setTier(Gui::ToolBarItem::Tier::Contextual);
-    addSketcherWorkbenchTools(*consaccel);
-
-    Gui::ToolBarItem* bspline
-        = new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);
-    bspline->setCommand("B-Spline Tools");
-    bspline->setPersistenceKey(makeSketcherEditToolbarPersistenceKey("B-Spline Tools"));
-    bspline->setTier(Gui::ToolBarItem::Tier::Contextual);
-    addSketcherWorkbenchBSplines(*bspline);
-
-    Gui::ToolBarItem* visual
-        = new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);
-    visual->setCommand("Visual Helpers");
-    visual->setPersistenceKey(makeSketcherEditToolbarPersistenceKey("Visual Helpers"));
-    visual->setTier(Gui::ToolBarItem::Tier::Contextual);
-    addSketcherWorkbenchVisual(*visual);
+    addWorkbenchToolbar("Sketcher", static_cast<ToolBarPopulator>(addSketcherWorkbenchSketchActions));
+    addContextualToolbar(
+        "Edit Mode",
+        static_cast<ToolBarPopulator>(addSketcherWorkbenchSketchEditModeActions)
+    );
+    addContextualToolbar("Geometries", static_cast<ToolBarPopulator>(addSketcherWorkbenchGeometries));
+    addContextualToolbar("Constraints", static_cast<ToolBarPopulator>(addSketcherWorkbenchConstraints));
+    addContextualToolbar("Sketcher Tools", static_cast<ToolBarPopulator>(addSketcherWorkbenchTools));
+    addContextualToolbar("B-Spline Tools", static_cast<ToolBarPopulator>(addSketcherWorkbenchBSplines));
+    addContextualToolbar("Visual Helpers", static_cast<ToolBarPopulator>(addSketcherWorkbenchVisual));
 
     return root;
 }
