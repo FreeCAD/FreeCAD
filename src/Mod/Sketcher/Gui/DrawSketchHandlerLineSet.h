@@ -1937,9 +1937,7 @@ void DSHPolyLineController::adaptParameters(Base::Vector2d onSketchPos)
 
                 thirdParam->setPoints(start, end);
                 fourthParam->setPoints(start, Base::Vector3d());
-                fourthParam->setLabelStartAngle(
-                    handler->previousDirectionAngle
-                );
+                fourthParam->setLabelStartAngle(handler->previousDirectionAngle);
                 fourthParam->setLabelRange(handler->dirChangeAngle);
             }
             else {
