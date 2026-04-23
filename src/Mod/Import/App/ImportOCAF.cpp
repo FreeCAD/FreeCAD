@@ -133,17 +133,10 @@ App::DocumentObject* ImportOCAF::loadShapes(
     bool isRef
 )
 {
-    int hash = 0;
 #ifdef HAVE_TBB
     using namespace tbb;
     task_group g;
 #endif
-    TopoDS_Shape aShape;
-
-    if (aShapeTool->GetShape(label, aShape)) {
-        hash = Part::ShapeMapHasher {}(aShape);
-    }
-
     Handle(TDataStd_Name) name;
     std::string part_name = defaultname;
     if (label.FindAttribute(TDataStd_Name::GetID(), name)) {
@@ -181,6 +174,8 @@ App::DocumentObject* ImportOCAF::loadShapes(
     }
 
 #ifdef FC_DEBUG
+    TopoDS_Shape debugShape;
+    int hash = aShapeTool->GetShape(label, debugShape) ? std::hash(debugShape) : 0;
     Base::Console().log(
         "H:%d, N:%s, T:%d, A:%d, S:%d, C:%d, SS:%d, F:%d, R:%d, C:%d, SS:%d\n",
         hash,
@@ -212,10 +207,12 @@ App::DocumentObject* ImportOCAF::loadShapes(
         return loadShapes(ref, part_loc, part_name, asm_name, true);
     }
 
-    if (isRef || myRefShapes.find(hash) == myRefShapes.end()) {
-        TopoDS_Shape aShape;
-        if (isRef && aShapeTool->GetShape(label, aShape)) {
-            myRefShapes.insert(Part::ShapeMapHasher {}(aShape));
+    TopoDS_Shape aShape;
+    bool foundaShape = aShapeTool->GetShape(label, aShape);
+
+    if (isRef || !foundaShape || !myRefShapes.contains(aShape)) {
+        if (isRef && foundaShape) {
+            myRefShapes.insert(aShape);
         }
 
         if (aShapeTool->IsSimpleShape(label)) {
@@ -223,26 +220,13 @@ App::DocumentObject* ImportOCAF::loadShapes(
                 if (!asm_name.empty()) {
                     part_name = asm_name;
                 }
-
-                if (isRef) {
-                    return createShape(label, loc, part_name);
-                }
-                else {
-                    // Note: This does not return the created shape.
-                    // This is carrying forward behaviour that may have been intentional, but looked
-                    // more like a mistake in previous code: Older code, rather than returning the
-                    // created DocumentObjects, the groups of methods accepted a vector which the
-                    // part was pushed back onto. In this particular instance rather than passing
-                    // the collection we received on to createShape, a local collection called
-                    // 'localValue' was passed, and its contents subsequently ignored. The effect of
-                    // this would be that if an Assembly directly (not through a ref) contains a
-                    // Simple Shape and that shape's label is a Free Label, that shape would be at
-                    // the top level of the FC model rather than a child of the Part corresponding
-                    // to the Assembly. I'm not sure this condition can actually exist.
-                    (void)createShape(label, part_loc, part_name);
-                }
+                App::DocumentObject* created = createShape(label, loc, part_name);
+                // If !isRef then the label is a Free label which means there are no references to it,
+                // so we want it as a top-level object in the FC drawing, so we do not return it to be included in some larger object.
+                return isRef ? created : nullptr;
             }
             // A simple shape that does not have a Free Label and is not reached through a ref.
+            // This means the shape is reachable through a ref elsewhere in the drawing.
 
             // We are not creating a list of Part::Feature in that case but just
             // a single Part::Feature which has as a Shape a Compound of the Subshapes contained
@@ -251,7 +235,7 @@ App::DocumentObject* ImportOCAF::loadShapes(
             // amount of Shape within the Tree as STEP file do mostly contain large assemblies
         }
         else {
-            // This is probably an Assembly. Either way we create its contents, and if it turns out
+            // This IsComponent (or not IsShape), probably an Assembly. Either way we create its contents, and if it turns out
             // to be an Assembly, we will create a Part and place all the contents in that Part.
             // Otherwise they will be left as top-level document objects.
             std::vector<App::DocumentObject*> localValue;
