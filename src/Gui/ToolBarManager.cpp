@@ -742,6 +742,27 @@ QString ToolBarManager::toolBarPersistenceKey(const QToolBar* toolbar)
     return toolbar->objectName();
 }
 
+QString ToolBarManager::makeToolBarPersistenceKey(
+    const QString& scope,
+    const QString& scopePath,
+    const QString& toolbar
+)
+{
+    if (toolbar.isEmpty()) {
+        return {};
+    }
+
+    QStringList segments;
+    if (!scope.isEmpty()) {
+        segments.push_back(scope);
+    }
+    if (!scopePath.isEmpty()) {
+        segments.push_back(scopePath);
+    }
+    segments.push_back(toolbar);
+    return segments.join(QLatin1Char(':'));
+}
+
 ToolBarManager::ScopeInfo ToolBarManager::toolBarScopeInfo(const QString& persistenceKey)
 {
     return makeToolBarScopeInfo(persistenceKey);
@@ -803,6 +824,34 @@ ToolBarItem::Tier ToolBarManager::toolBarTier(const QToolBar* toolbar)
     }
 
     return ToolBarItem::Tier::Recommended;
+}
+
+ToolBarItem::Tier ToolBarManager::normalizeCustomToolBarTier(ToolBarItem::Tier tier)
+{
+    switch (tier) {
+        case ToolBarItem::Tier::Recommended:
+        case ToolBarItem::Tier::Secondary:
+        case ToolBarItem::Tier::Advanced:
+            return tier;
+        case ToolBarItem::Tier::Contextual:
+            return ToolBarItem::Tier::Secondary;
+    }
+
+    return ToolBarItem::Tier::Secondary;
+}
+
+ToolBarItem::Tier ToolBarManager::customToolBarTierFromName(const QString& tierName)
+{
+    if (tierName.isEmpty()) {
+        return ToolBarItem::Tier::Secondary;
+    }
+
+    return normalizeCustomToolBarTier(parseToolBarTier(tierName));
+}
+
+ToolBarItem::Tier ToolBarManager::toolBarTierFromName(const QString& tierName)
+{
+    return parseToolBarTier(tierName);
 }
 
 QString ToolBarManager::toolBarTierName(ToolBarItem::Tier tier)

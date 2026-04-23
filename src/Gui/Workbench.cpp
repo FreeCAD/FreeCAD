@@ -52,19 +52,6 @@ using namespace Gui;
 
 namespace
 {
-std::string makeToolbarPersistenceKey(
-    const std::string& scope,
-    const std::string& workbench,
-    const std::string& toolbar
-)
-{
-    if (scope == "shared" || scope == "global") {
-        return scope + ":" + toolbar;
-    }
-
-    return scope + ":" + workbench + ":" + toolbar;
-}
-
 void setSharedToolbarMetadata(
     ToolBarItem* item,
     const std::string& toolbar,
@@ -72,7 +59,14 @@ void setSharedToolbarMetadata(
 )
 {
     if (item) {
-        item->setPersistenceKey(makeToolbarPersistenceKey("shared", "", toolbar));
+        item->setPersistenceKey(
+            ToolBarManager::makeToolBarPersistenceKey(
+                QStringLiteral("shared"),
+                {},
+                QString::fromStdString(toolbar)
+            )
+                .toStdString()
+        );
         item->setTier(tier);
     }
 }
@@ -319,6 +313,8 @@ void Workbench::setupCustomToolbars(
 {
     std::vector<Base::Reference<ParameterGrp>> hGrps = hGrp->GetGroups();
     CommandManager& rMgr = Application::Instance->commandManager();
+    const auto scopeName = QString::fromStdString(scope);
+    const auto workbenchName = QString::fromStdString(name());
     std::string separator = "Separator";
     for (const auto& it : hGrps) {
         bool active = it->GetBool("Active", true);
@@ -329,8 +325,17 @@ void Workbench::setupCustomToolbars(
 
         auto bar = new ToolBarItem(root);
         bar->setCommand("Custom");
-        bar->setPersistenceKey(makeToolbarPersistenceKey(scope, name(), it->GetGroupName()));
-        bar->setTier(ToolBarItem::Tier::Secondary);
+        bar->setPersistenceKey(
+            ToolBarManager::makeToolBarPersistenceKey(
+                scopeName,
+                workbenchName,
+                QString::fromStdString(it->GetGroupName())
+            )
+                .toStdString()
+        );
+        bar->setTier(
+            ToolBarManager::customToolBarTierFromName(QString::fromUtf8(it->GetASCII("Tier").c_str()))
+        );
 
         // get the elements of the subgroups
         std::vector<std::pair<std::string, std::string>> items
@@ -341,7 +346,17 @@ void Workbench::setupCustomToolbars(
             }
             else if (item.first == "Name") {
                 bar->setCommand(item.second);
-                bar->setPersistenceKey(makeToolbarPersistenceKey(scope, name(), item.second));
+                bar->setPersistenceKey(
+                    ToolBarManager::makeToolBarPersistenceKey(
+                        scopeName,
+                        workbenchName,
+                        QString::fromStdString(item.second)
+                    )
+                        .toStdString()
+                );
+            }
+            else if (item.first == "Tier") {
+                continue;
             }
             else {
                 Command* pCmd = rMgr.getCommandByName(item.first.c_str());
@@ -386,7 +401,14 @@ void Workbench::setupToolbarPersistenceKeys(ToolBarItem* root) const
 
     for (auto* toolbar : root->getItems()) {
         if (!toolbar->hasPersistenceKey()) {
-            toolbar->setPersistenceKey(makeToolbarPersistenceKey("wb", name(), toolbar->command()));
+            toolbar->setPersistenceKey(
+                ToolBarManager::makeToolBarPersistenceKey(
+                    QStringLiteral("wb"),
+                    QString::fromStdString(name()),
+                    QString::fromStdString(toolbar->command())
+                )
+                    .toStdString()
+            );
         }
     }
 }

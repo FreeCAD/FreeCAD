@@ -194,6 +194,11 @@ public:
     static void destruct();
     static QString toolBarPersistenceKey(const ToolBarItem*);
     static QString toolBarPersistenceKey(const QToolBar*);
+    static QString makeToolBarPersistenceKey(
+        const QString& scope,
+        const QString& scopePath,
+        const QString& toolbar
+    );
     static ScopeInfo toolBarScopeInfo(const QString& persistenceKey);
     static ScopeInfo toolBarScopeInfo(const ToolBarItem*);
     static ScopeInfo toolBarScopeInfo(const QToolBar*);
@@ -202,6 +207,9 @@ public:
     static QString toolBarScopeLabel(const QToolBar*);
     static ToolBarItem::Tier toolBarTier(const ToolBarItem*);
     static ToolBarItem::Tier toolBarTier(const QToolBar*);
+    static ToolBarItem::Tier normalizeCustomToolBarTier(ToolBarItem::Tier);
+    static ToolBarItem::Tier customToolBarTierFromName(const QString&);
+    static ToolBarItem::Tier toolBarTierFromName(const QString&);
     static QString toolBarTierName(ToolBarItem::Tier);
     static QString toolBarTierLabel(ToolBarItem::Tier);
     static QString toolBarTierLabel(const ToolBarItem*);

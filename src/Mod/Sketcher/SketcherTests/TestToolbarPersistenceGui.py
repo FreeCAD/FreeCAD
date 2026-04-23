@@ -563,6 +563,28 @@ class TestToolbarPersistenceGui(unittest.TestCase):
         self.assert_toolbar_visibility("ctx:SketcherWorkbench:edit:Geometries", True)
         self.leave_sketch_edit()
 
+    def test_custom_toolbar_tier_is_loaded_from_preferences(self):
+        workbench_params = FreeCAD.ParamGet("User parameter:BaseApp/Workbench")
+        self.backup_group(
+            workbench_params,
+            "SketcherWorkbench",
+            "__ToolbarCustomTierBackup__SketcherWorkbench",
+        )
+
+        toolbar_group = workbench_params.GetGroup("SketcherWorkbench").GetGroup("Toolbar")
+        toolbar_group.Clear()
+        custom_toolbar = toolbar_group.GetGroup("Custom_1")
+        custom_toolbar.SetString("Name", "Custom Tier Test")
+        custom_toolbar.SetBool("Active", True)
+        custom_toolbar.SetString("Tier", "advanced")
+        custom_toolbar.SetString("Std_Undo", "Gui")
+
+        self.activate_workbench("PartWorkbench", "wb:PartWorkbench:")
+        self.activate_workbench("SketcherWorkbench", "wb:SketcherWorkbench:")
+
+        toolbar = self.wait_for_toolbar("wb:SketcherWorkbench:Custom Tier Test")
+        self.assertEqual(self.toolbar_tier(toolbar), "advanced")
+
     def test_toolbar_menu_groups_and_reset_actions(self):
         shared_label = QtGui.QApplication.translate("MainWindow", "Shared Toolbars")
         workbench_label = QtGui.QApplication.translate("MainWindow", "Workbench Toolbars")

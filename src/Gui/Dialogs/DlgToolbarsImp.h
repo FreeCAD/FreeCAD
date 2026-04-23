@@ -26,6 +26,7 @@
 #pragma once
 
 #include <fastsignals/connection.h>
+#include "ToolBarManager.h"
 #include "PropertyPage.h"
 #include <memory>
 
@@ -97,10 +98,10 @@ private:
     void exportCustomToolbars(const QByteArray&);
     void updateToolbarTreeHeaders();
     QString customToolbarPersistenceKey(const QString& toolbarName, const QString& workbench) const;
-    QString customToolbarTierLabel(const QString& toolbarName, const QString& workbench) const;
-    void updateToolbarItemScope(QTreeWidgetItem* item, const QString& workbench) const;
-    void updateToolbarItemTier(QTreeWidgetItem* item, const QString& workbench) const;
-    void updateToolbarItemMetadata(QTreeWidgetItem* item, const QString& workbench) const;
+    ToolBarItem::Tier customToolbarTier(const QTreeWidgetItem* item) const;
+    void setCustomToolbarTier(QTreeWidgetItem* item, ToolBarItem::Tier tier);
+    void applyCustomToolbarTier(QTreeWidgetItem* item);
+    void updateToolbarItemMetadata(QTreeWidgetItem* item, const QString& workbench);
     void updateToolbarItemsMetadata();
     QString findToolbarIdentityCollision(
         const QString& toolbarName,
