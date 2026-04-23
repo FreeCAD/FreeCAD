@@ -389,7 +389,7 @@
     <message>
       <location filename="../../Command.cpp" line="1027"/>
       <source>Split</source>
-      <translation>Feloszt</translation>
+      <translation>Felosztás</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1028"/>
@@ -484,7 +484,7 @@
     <message>
       <location filename="../../Command.cpp" line="1853"/>
       <source>Scale</source>
-      <translation>Méretezés</translation>
+      <translation>Átméretezés</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1854"/>
@@ -682,7 +682,7 @@
       <translation>Hálócsúcsgörbület</translation>
     </message>
     <message>
-      <location filename="../../DlgSmoothing.cpp" line="169"/>
+      <location filename="../../DlgSmoothing.cpp" line="175"/>
       <source>Mesh Smoothing</source>
       <translation>Háló simítás</translation>
     </message>
@@ -717,7 +717,7 @@
       <translation>Háló méretezés</translation>
     </message>
     <message>
-      <location filename="../../DlgDecimating.cpp" line="166"/>
+      <location filename="../../DlgDecimating.cpp" line="180"/>
       <source>Mesh Decimating</source>
       <translation>Háló tizedelése</translation>
     </message>
@@ -781,12 +781,12 @@
       <location filename="../../ViewProvider.cpp" line="965"/>
       <location filename="../../ViewProvider.cpp" line="1082"/>
       <source>Trim</source>
-      <translation>Vágás</translation>
+      <translation>Levágás</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1167"/>
       <source>Split</source>
-      <translation>Feloszt</translation>
+      <translation>Felosztás</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1242"/>
@@ -794,12 +794,12 @@
       <translation>Szegmens</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1872"/>
+      <location filename="../../ViewProvider.cpp" line="1870"/>
       <source>Delete</source>
       <translation>Töröl</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="2001"/>
+      <location filename="../../ViewProvider.cpp" line="2000"/>
       <source>Fill hole</source>
       <translation>Furatokat kitölt</translation>
     </message>
@@ -1089,7 +1089,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="927"/>
       <source>Duplicated faces</source>
-      <translation>Felületek megduplázása</translation>
+      <translation>Felületek másolása</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="963"/>
@@ -1100,7 +1100,7 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="969"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="997"/>
       <source>Duplicated points</source>
-      <translation>Pontok megkettőzése</translation>
+      <translation>Pontok másolása</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1040"/>
@@ -1167,12 +1167,12 @@
     <message>
       <location filename="../../DlgRegularSolid.ui" line="14"/>
       <source>Regular Solid</source>
-      <translation>Szabályos szilárd test</translation>
+      <translation>Egyszerű test</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="29"/>
       <source>Solid</source>
-      <translation>Szilárd test</translation>
+      <translation>Test</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="42"/>
@@ -1209,7 +1209,7 @@
       <location filename="../../DlgRegularSolid.ui" line="236"/>
       <location filename="../../DlgRegularSolid.ui" line="387"/>
       <source>Length</source>
-      <translation>Hossz</translation>
+      <translation>Hosszúság</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="143"/>
@@ -1303,7 +1303,7 @@
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="20"/>
       <source>Export</source>
-      <translation>Export</translation>
+      <translation>Exportálás</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="28"/>
@@ -1519,7 +1519,7 @@ Ha a felület szöge ≥ gyűrődésszögét, a feület árnyékolást használj
     <message>
       <location filename="../../DlgSmoothing.ui" line="55"/>
       <source>Iterations</source>
-      <translation>Lépésszám</translation>
+      <translation>Ismétlések</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="72"/>
@@ -1594,22 +1594,22 @@ Ha a felület szöge ≥ gyűrődésszögét, a feület árnyékolást használj
   <context>
     <name>MeshGui::MeshFaceAddition</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="393"/>
+      <location filename="../../MeshEditor.cpp" line="394"/>
       <source>Add Triangle</source>
       <translation>Háromszög hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="394"/>
+      <location filename="../../MeshEditor.cpp" line="395"/>
       <source>Flip Normal</source>
       <translation>Aktuálisok kifordítása</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="395"/>
+      <location filename="../../MeshEditor.cpp" line="396"/>
       <source>Clear</source>
       <translation>Tiszta</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="411"/>
+      <location filename="../../MeshEditor.cpp" line="413"/>
       <source>Finish</source>
       <translation>Befejezés</translation>
     </message>
@@ -1617,7 +1617,7 @@ Ha a felület szöge ≥ gyűrődésszögét, a feület árnyékolást használj
   <context>
     <name>MeshGui::MeshFillHole</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="762"/>
+      <location filename="../../MeshEditor.cpp" line="765"/>
       <source>Finish</source>
       <translation>Befejezés</translation>
     </message>
@@ -1685,7 +1685,7 @@ Ha a felület szöge ≥ gyűrődésszögét, a feület árnyékolást használj
     <message>
       <location filename="../../RemeshGmsh.ui" line="32"/>
       <source>Meshing</source>
-      <translation>Hálólétrehozás</translation>
+      <translation>Hálózás</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="42"/>
@@ -1916,7 +1916,7 @@ Ha a felület szöge ≥ gyűrődésszögét, a feület árnyékolást használj
       <location filename="../../SegmentationBestFit.ui" line="106"/>
       <location filename="../../SegmentationBestFit.ui" line="159"/>
       <source>Minimum number of faces</source>
-      <translation>Felületek minimum száma</translation>
+      <translation>Felületek legkisebb száma</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="73"/>
@@ -2069,7 +2069,7 @@ Kérjük, látogasson el ide: https://openscad.org a telepítéshez.</translatio
     <message>
       <location filename="../../AppMeshGui.cpp" line="156"/>
       <source>Display</source>
-      <translation>Megjelenítés</translation>
+      <translation>Megjelenés</translation>
     </message>
     <message>
       <location filename="../../AppMeshGui.cpp" line="159"/>
@@ -2137,7 +2137,7 @@ Kérjük, látogasson el ide: https://openscad.org a telepítéshez.</translatio
     <message>
       <location filename="../../Command.cpp" line="371"/>
       <source>Import Mesh</source>
-      <translation>Háló importálás</translation>
+      <translation>Háló importálása</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="426"/>
@@ -2270,33 +2270,33 @@ Kérjük, látogasson el ide: https://openscad.org a telepítéshez.</translatio
       <translation>Kijelzőszín</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1701"/>
       <location filename="../../ViewProviderCurvature.cpp" line="535"/>
+      <location filename="../../ViewProvider.cpp" line="1701"/>
       <source>Leave Info Mode</source>
       <translation>Hagyja az info módot</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1771"/>
+      <location filename="../../ViewProvider.cpp" line="1770"/>
       <source>Index: %1</source>
       <translation>Index: %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1799"/>
+      <location filename="../../ViewProvider.cpp" line="1798"/>
       <source>Leave Hole-Filling Mode</source>
       <translation>Kilépés a furat kitöltő módból</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1846"/>
+      <location filename="../../ViewProvider.cpp" line="1844"/>
       <source>Leave Removal Mode</source>
       <translation>Kilépés az eltávolító módból</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1847"/>
+      <location filename="../../ViewProvider.cpp" line="1845"/>
       <source>Delete Selected Faces</source>
       <translation>Törli a kijelölt felületeket</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1848"/>
+      <location filename="../../ViewProvider.cpp" line="1846"/>
       <source>Clear Selected Faces</source>
       <translation>Törli a kijelölt felületeket</translation>
     </message>
@@ -2387,6 +2387,31 @@ Kérjük, látogasson el ide: https://openscad.org a telepítéshez.</translatio
       <location filename="../../Workbench.cpp" line="53"/>
       <source>Mesh Analyze</source>
       <translation>Háló analízis</translation>
+    </message>
+  </context>
+  <context>
+    <name>FileFormat</name>
+    <message>
+      <location filename="../../../Init.py" line="19"/>
+      <source>STL Mesh</source>
+      <translation>STL Háló</translation>
+    </message>
+    <message>
+      <location filename="../../../Init.py" line="20"/>
+      <source>Binary Mesh</source>
+      <translation>Bináris háló</translation>
+    </message>
+    <message>
+      <location filename="../../../Init.py" line="23"/>
+      <source>Alias Mesh</source>
+      <extracomment>Translation note: "Alias" in this case is a product/format name and should not be translated</extracomment>
+      <translation>Ál hálótest</translation>
+    </message>
+    <message>
+      <location filename="../../../Init.py" line="27"/>
+      <source>Object File Format Mesh</source>
+      <extracomment>Translation note: "Object File Format" is the official name and should not be translated</extracomment>
+      <translation>OBJ fájl formátumú háló</translation>
     </message>
   </context>
 </TS>

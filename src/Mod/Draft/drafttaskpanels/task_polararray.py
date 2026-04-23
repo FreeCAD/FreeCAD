@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the task panel code for the Draft PolarArray tool."""
+
 ## @package task_polararray
 # \ingroup drafttaskpanels
 # \brief Provides the task panel code for the Draft PolarArray tool.
@@ -146,7 +147,7 @@ class TaskPanelPolarArray:
         """Execute when clicking the OK button or Enter key."""
         self.selection = Gui.Selection.getSelection()
 
-        (self.number, self.angle) = self.get_number_angle()
+        self.number, self.angle = self.get_number_angle()
 
         self.axis = self.get_axis()
         self.center = self.get_center()

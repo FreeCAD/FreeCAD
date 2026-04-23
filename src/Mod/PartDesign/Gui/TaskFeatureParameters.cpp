@@ -233,7 +233,7 @@ bool TaskDlgFeatureParameters::accept()
                 );
             }
         }
-        QMessageBox::warning(Gui::getMainWindow(), tr("Input error"), errorText);
+        Base::Console().error("%s\n", errorText.toUtf8().constData());
         return false;
     }
     return true;

@@ -30,7 +30,6 @@ import json
 from FreeCAD import Units
 from PySide import QtCore, QtGui
 
-
 Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
@@ -49,6 +48,15 @@ class JobPreferencesPage:
         jobTemplate = self.form.leDefaultJobTemplate.text()
         geometryTolerance = Units.Quantity(self.form.geometryTolerance.text())
         curveAccuracy = Units.Quantity(self.form.curveAccuracy.text())
+
+        if not geometryTolerance:
+            geomTol = Units.Quantity(Path.Preferences.defaultGeometryTolerance(), Units.Length)
+            self.form.geometryTolerance.setText(geomTol.UserString)
+
+        if not curveAccuracy:
+            curveAcc = Units.Quantity(Path.Preferences.defaultLibAreaCurveAccuracy(), Units.Length)
+            self.form.curveAccuracy.setText(curveAcc.UserString)
+
         Path.Preferences.setJobDefaults(jobTemplate, geometryTolerance, curveAccuracy)
 
         if curveAccuracy:
@@ -167,9 +175,8 @@ class JobPreferencesPage:
 
         geomTol = Units.Quantity(Path.Preferences.defaultGeometryTolerance(), Units.Length)
         self.form.geometryTolerance.setText(geomTol.UserString)
-        self.form.curveAccuracy.setText(
-            Units.Quantity(Path.Preferences.defaultLibAreaCurveAccuracy(), Units.Length).UserString
-        )
+        curveAcc = Units.Quantity(Path.Preferences.defaultLibAreaCurveAccuracy(), Units.Length)
+        self.form.curveAccuracy.setText(curveAcc.UserString)
 
         self.form.leOutputFile.setText(Path.Preferences.defaultOutputFile())
         self.selectComboEntry(self.form.cboOutputPolicy, Path.Preferences.defaultOutputPolicy())

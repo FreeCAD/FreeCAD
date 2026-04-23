@@ -161,14 +161,29 @@ Sketcher::SketchObject* getSketchObject()
 bool copySelectionToClipboard(Sketcher::SketchObject* obj) {
     std::vector<int> listOfGeoId = getListOfSelectedGeoIds(true);
     if (listOfGeoId.empty()) { return false; }
-    sort(listOfGeoId.begin(), listOfGeoId.end());
 
-    //Export selected geometries as a formatted string.
+    // If a group handle is selected, ensure all its grouped geometries are copied too.
+    std::vector<int> groupMembersToAdd;
+    for (auto geoId : listOfGeoId) {
+        if (obj->isGroupHandle(geoId)) {
+            std::set<int> groupIds = obj->getGroupGeometries(geoId);
+            for (auto id : groupIds) {
+                groupMembersToAdd.push_back(id);
+            }
+        }
+    }
+    listOfGeoId.insert(listOfGeoId.end(), groupMembersToAdd.begin(), groupMembersToAdd.end());
+
+    // Sort and remove duplicates to avoid double-copying geometries
+    std::sort(listOfGeoId.begin(), listOfGeoId.end());
+    listOfGeoId.erase(std::unique(listOfGeoId.begin(), listOfGeoId.end()), listOfGeoId.end());
+
     std::vector<Part::Geometry*> shapeGeometry;
     for (auto geoId : listOfGeoId) {
         Part::Geometry* geoNew = obj->getGeometry(geoId)->copy();
         shapeGeometry.push_back(geoNew);
     }
+
     std::string geosAsStr = Sketcher::PythonConverter::convert(
         "objectStr",
         shapeGeometry,
@@ -184,22 +199,29 @@ bool copySelectionToClipboard(Sketcher::SketchObject* obj) {
                 || value == GeoEnum::VAxis || value == GeoEnum::HAxis;
         };
 
-        if (!isSelectedGeoOrAxis(listOfGeoId, constr->First)
-            || !isSelectedGeoOrAxis(listOfGeoId, constr->Second)
-            || !isSelectedGeoOrAxis(listOfGeoId, constr->Third)) {
+        bool skip = false;
+        for (int i = 0; constr->hasElement(i); ++i) {
+            if (!isSelectedGeoOrAxis(listOfGeoId, constr->getGeoId(i))) {
+                skip = true;
+                break;
+            }
+            if (constr->Type == Group || constr->Type == Text) {
+                // Note for groups, all geoIds of the group have been added.
+                // So no point in checking them all, we only check the handle (i=0)
+                break;
+            }
+        }
+        if (skip) {
             continue;
         }
 
         Constraint* temp = constr->copy();
         for (size_t j = 0; j < listOfGeoId.size(); j++) {
-            if (temp->First == listOfGeoId[j]) {
-                temp->First = j;
-            }
-            if (temp->Second == listOfGeoId[j]) {
-                temp->Second = j;
-            }
-            if (temp->Third == listOfGeoId[j]) {
-                temp->Third = j;
+            for (int i = 0; temp->hasElement(i); ++i) {
+                int geoid = temp->getGeoId(i);
+                if (geoid != GeoEnum::GeoUndef && geoid == listOfGeoId[j]) {
+                    temp->setGeoId(i, j);
+                }
             }
         }
         shapeConstraints.push_back(temp);

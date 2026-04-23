@@ -56,7 +56,9 @@ int ArcOfParabola2dPy::PyInit(PyObject* args, PyObject* /*kwds*/)
     PyObject* o;
     double u1, u2;
     PyObject* sense = Py_True;
-    if (PyArg_ParseTuple(args, "O!dd|O!", &(Part::Parabola2dPy::Type), &o, &u1, &u2, &PyBool_Type, &sense)) {
+    if (
+        PyArg_ParseTuple(args, "O!dd|O!", &(Part::Parabola2dPy::Type), &o, &u1, &u2, &PyBool_Type, &sense)
+    ) {
         try {
             Handle(Geom2d_Parabola) parabola = Handle(Geom2d_Parabola)::DownCast(
                 static_cast<Parabola2dPy*>(o)->getGeom2dParabolaPtr()->handle()
@@ -101,9 +103,8 @@ void ArcOfParabola2dPy::setFocal(Py::Float arg)
 
 Py::Object ArcOfParabola2dPy::getParabola() const
 {
-    Handle(Geom2d_TrimmedCurve) trim = Handle(Geom2d_TrimmedCurve)::DownCast(
-        getGeom2dArcOfParabolaPtr()->handle()
-    );
+    Handle(Geom2d_TrimmedCurve)
+        trim = Handle(Geom2d_TrimmedCurve)::DownCast(getGeom2dArcOfParabolaPtr()->handle());
     Handle(Geom2d_Parabola) parabola = Handle(Geom2d_Parabola)::DownCast(trim->BasisCurve());
     return Py::asObject(new Parabola2dPy(new Geom2dParabola(parabola)));
 }

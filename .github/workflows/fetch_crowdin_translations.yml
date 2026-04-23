@@ -16,7 +16,7 @@ jobs:
           token: ${{ secrets.GH_TOKEN_FOR_CROWDIN_SYNC }}
 
       - name: Install Qt ≥ 6.8
-        uses: jurplel/install-qt-action@d325aaf2a8baeeda41ad0b5d39f84a6af9bcf005
+        uses: jurplel/install-qt-action@48d3ad6db93f3627c8ee7a0454bc6f3744f7e730
         with:
           aqtversion: "==3.1.*"
           version: "6.8.3"
@@ -57,7 +57,7 @@ jobs:
           git push origin update-crowdin-translations --force
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@c0f553fe549906ede9cf27b5156039d195d2ece0
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1
         with:
           branch: update-crowdin-translations
           title: "Update translations from Crowdin"

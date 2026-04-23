@@ -67,6 +67,10 @@ void PatternParametersWidget::setupUiElements()
 
     if (type == PatternType::Polar) {
         setTitle(tr("Axis"));
+        ui->comboMode->setItemText(0, tr("Total Angle"));
+        ui->comboMode->setItemText(1, tr("Angular Spacing"));
+        ui->labelLength->setText(tr("Total Angle"));
+        ui->labelOffset->setText(tr("Angular Spacing"));
     }
 
     // Set combo box helper

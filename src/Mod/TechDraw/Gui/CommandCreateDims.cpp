@@ -208,6 +208,8 @@ public:
         , partFeat(pFeat)
         , dims({})
         , blockRemoveSel(false)
+        , AreaLeaderPoint(Base::Vector3d(0.0, 0.0, 0.0))
+        , hasAreaLeaderPoint(false)
         , tid(0)
     {
     }
@@ -475,6 +477,14 @@ public:
                 else {
                     ReferenceVector& selVector = getSelectionVector(addedRef);
                     selVector.push_back(addedRef);
+                    
+                    if (DrawUtil::getGeomTypeFromName(addedRef.getSubName())
+                        == "Face") {
+                        
+                        QPointF p = getDimPositionToBe(mousePos);
+                        AreaLeaderPoint = Base::Vector3d(Rez::appX(p.x()), Rez::appX(p.y()), 0.0);
+                        hasAreaLeaderPoint = true;
+                    }
 
                     availableDimension = AvailableDimension::FIRST;
                     bool selAllowed = makeAppropriateDimension();
@@ -593,6 +603,8 @@ protected:
 
     bool blockRemoveSel;
 
+    Base::Vector3d AreaLeaderPoint;
+    bool hasAreaLeaderPoint;
     int tid;
 
     void handleInitialSelection()
@@ -1038,6 +1050,14 @@ protected:
         DrawViewDimension* dim = dimMaker(partFeat, "Area", { ref }, {});
 
         dims.push_back(dim);
+
+        if (hasAreaLeaderPoint) {
+            dim->UseAreaLeaderPoint.setValue(true);
+            dim->AreaLeaderPoint.setValue(AreaLeaderPoint);
+            dim->recomputeFeature();
+            hasAreaLeaderPoint = false;
+        }
+
         moveDimension(mousePos, dim);
     }
 
@@ -1107,7 +1127,7 @@ protected:
             TechDraw::pointPair pp = dim->getLinearPoints();
             float dx = pp.first().x - pp.second().x;
             float dy = pp.first().y - pp.second().y;
-            int alpha = std::round(Base::toDegrees(std::abs<float>(std::atan(type == "DistanceY" ? (dx / dy) : (dy / dx)))));
+            int alpha = std::round(Base::toDegrees(std::abs(std::atan(type == "DistanceY" ? (dx / dy) : (dy / dx)))));
             std::string sAlpha = std::to_string(alpha);
             std::string formatSpec = dim->FormatSpec.getStrValue();
             formatSpec = formatSpec + " x" + sAlpha + "°";

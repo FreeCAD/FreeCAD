@@ -48,24 +48,17 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
         for prop in self._get_properties():
             prop.add_to_object(obj)
 
+        obj.addExtension("Fem::WorkerExtensionPython")
+
     def _get_properties(self):
         prop = []
 
         prop.append(
             _PropHelper(
                 type="App::PropertyLinkList",
-                name="MeshBoundaryLayerList",
-                group="Base",
-                doc="Mesh boundaries need inflation layers",
-                value=[],
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyLinkList",
-                name="MeshRegionList",
-                group="Base",
-                doc="Mesh refinments of the mesh",
+                name="MeshRefinementList",
+                group="Mesh Parameters",
+                doc="Mesh definitions for manipulating the mesh, like regions or boundary layers",
                 value=[],
             )
         )
@@ -73,7 +66,7 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
             _PropHelper(
                 type="App::PropertyLinkList",
                 name="MeshGroupList",
-                group="Base",
+                group="Mesh Parameters",
                 doc="Mesh groups of the mesh",
                 value=[],
             )
@@ -268,6 +261,15 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
                 value=["None", "All Quadrangles", "All Hexahedra", "Barycentric"],
             )
         )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyBool",
+                name="ParallelProcessing",
+                group="Mesh Parameters",
+                doc="Use multiple threads to create the mesh",
+                value=True,
+            )
+        )
 
         return prop
 
@@ -290,9 +292,10 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
                 prop.handle_change_type(
                     obj, "App::PropertyBool", lambda x: "Optimization" if x else "None"
                 )
+
             # Migrate group of properties for old projects
-            if obj.getGroupOfProperty(prop.name) == "FEM Gmsh Mesh Params":
-                obj.setGroupOfProperty(prop.name, "Mesh Parameters")
+            if obj.getGroupOfProperty(prop.name) != prop.group:
+                obj.setGroupOfProperty(prop.name, prop.group)
 
         # migrate old Part property to Shape property
         try:
@@ -308,5 +311,19 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
                 value=value_part,
             )
             prop.add_to_object(obj)
+
         except Base.PropertyError:
             pass
+
+        if not obj.hasExtension("Fem::WorkerExtensionPython"):
+            obj.addExtension("Fem::WorkerExtensionPython")
+
+        # migrate old properties to definition list
+        for prop in ["MeshBoundaryLayerList", "MeshRegionList"]:
+            try:
+                value = obj.getPropertyByName(prop)
+                obj.setPropertyStatus(prop, "-LockDynamic")
+                obj.removeProperty(prop)
+                obj.MeshRefinementList = obj.MeshRefinementList + value
+            except Base.PropertyError:
+                pass

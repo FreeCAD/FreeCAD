@@ -92,6 +92,7 @@ TaskTransform::TaskTransform(
     , ui(new Ui_TaskTransformDialog)
 {
     blockSelection(true);
+    clearDocumentScope();  // allow cross-document selection for links
 
     dragger->addStartCallback(dragStartCallback, this);
     dragger->addMotionCallback(dragMotionCallback, this);
@@ -326,8 +327,7 @@ void TaskTransform::updatePositionAndRotationUi() const
 
     auto setPositionValues = [&](const Base::Vector3d& vec, auto* x, auto* y, auto* z) {
         [[maybe_unused]]
-        auto blockers
-            = {QSignalBlocker(x), QSignalBlocker(y), QSignalBlocker(z)};
+        auto blockers = {QSignalBlocker(x), QSignalBlocker(y), QSignalBlocker(z)};
 
         x->setValue(fixNegativeZero(vec.x));
         y->setValue(fixNegativeZero(vec.y));
@@ -336,8 +336,7 @@ void TaskTransform::updatePositionAndRotationUi() const
 
     auto setRotationValues = [&](const Base::Rotation& rot, auto* x, auto* y, auto* z) {
         [[maybe_unused]]
-        auto blockers
-            = {QSignalBlocker(x), QSignalBlocker(y), QSignalBlocker(z)};
+        auto blockers = {QSignalBlocker(x), QSignalBlocker(y), QSignalBlocker(z)};
 
         double alpha, beta, gamma;
         rot.getEulerAngles(eulerSequence(), alpha, beta, gamma);

@@ -36,7 +36,7 @@ else:
 
 
 # Import exception types from the generated parser for type-safe handling.
-from generated_sql_parser import UnexpectedEOF, UnexpectedToken, VisitError
+from generated_sql_parser import UnexpectedCharacters, UnexpectedEOF, UnexpectedToken, VisitError
 import generated_sql_parser
 
 from typing import List, Tuple, Any, Optional
@@ -118,14 +118,25 @@ _CUSTOM_FRIENDLY_TOKEN_NAMES = {
 
 
 def _get_property(obj, prop_name):
-    """Gets a property from a FreeCAD object, including sub-properties."""
+    """Gets a property from a FreeCAD object, including sub-properties.
+
+    Link properties (e.g. Material) are resolved to the linked object's Label
+    so that queries like ``WHERE Material = 'Brick'`` work intuitively.
+    Nested access (e.g. ``Material.Color``) bypasses this and traverses
+    the linked object directly.
+    """
     # The property name implies sub-property access (e.g., 'Placement.Base.x')
     is_nested_property = lambda prop_name: "." in prop_name
 
     if not is_nested_property(prop_name):
         # Handle simple, direct properties first, which is the most common case.
         if hasattr(obj, prop_name):
-            return getattr(obj, prop_name)
+            value = getattr(obj, prop_name)
+            # Resolve link properties to the linked object's Label so that
+            # comparisons and SELECT columns show a human-readable name.
+            if isinstance(value, FreeCAD.DocumentObject):
+                return value.Label
+            return value
         return None
     else:
         # Handle nested properties (e.g., Placement.Base.x)
@@ -330,16 +341,9 @@ def _get_direct_children(obj, discover_hosted_elements, include_components_from_
                     if linked:
                         element_to_check = linked
 
-                element_type = _get_bim_type(element_to_check)
-                is_confirmed_hosted = False
-                if element_type == "Window":
-                    if hasattr(element_to_check, "Hosts") and obj in element_to_check.Hosts:
-                        is_confirmed_hosted = True
-                elif element_type == "Rebar":
-                    if hasattr(element_to_check, "Host") and obj == element_to_check.Host:
-                        is_confirmed_hosted = True
-
-                if is_confirmed_hosted:
+                if hasattr(element_to_check, "Hosts") and obj in element_to_check.Hosts:
+                    children.append(element_to_check)
+                elif hasattr(element_to_check, "Host") and obj == element_to_check.Host:
                     children.append(element_to_check)
 
     # 3. Geometric components from .Additions list
@@ -2092,6 +2096,12 @@ def _run_query(query_string: str, mode: str, source_objects: Optional[List] = No
         except VisitError as e:
             message = f"Transformer Error: Failed to process rule '{e.rule}'. Original error: {e.orig_exc}"
             raise BimSqlSyntaxError(message) from e
+        except UnexpectedCharacters as e:
+            message = (
+                f"Syntax Error: Unexpected character '{e.char}' at line {e.line},"
+                f" column {e.column}."
+            )
+            raise BimSqlSyntaxError(message) from e
         except UnexpectedToken as e:
             # Heuristic for a better typing experience: If the unexpected token's
             # text is a prefix of any of the keywords the parser was expecting,
@@ -2271,17 +2281,30 @@ class ReportStatement:
         self._validation_message = translate("Arch", "Ready")
         self._validation_count = 0
 
-    def validate_and_update_status(self):
-        """Runs validation for this statement's query and updates its internal status."""
+    def validate_and_update_status(self, all_statements=None, index=None):
+        """Runs validation for this statement's query and updates its internal status.
+
+        When ``all_statements`` and ``index`` are provided, the pipeline source objects are computed
+        automatically for pipelined statements.
+
+        Parameters
+        ----------
+        all_statements : list of ReportStatement, optional
+            The full ordered list of statements in the report.
+        index : int, optional
+            The position of this statement within ``all_statements``.
+        """
+        source_objects = None
+        if all_statements is not None and index is not None and index > 0 and self.is_pipelined:
+            source_objects = _execute_pipeline_for_objects(all_statements[:index])
+
         if not self.query_string.strip():
             self._validation_status = "OK"  # Empty query is valid, no error
             self._validation_message = translate("Arch", "Ready")
             self._validation_count = 0
             return
 
-        # Avoid shadowing the module-level `count` function by using a
-        # different local name for the numeric result.
-        count_result, error = count(self.query_string)
+        count_result, error = count(self.query_string, source_objects=source_objects)
 
         if error == "INCOMPLETE":
             self._validation_status = "INCOMPLETE"

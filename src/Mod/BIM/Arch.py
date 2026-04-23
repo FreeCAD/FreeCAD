@@ -47,6 +47,7 @@ wall = Arch.makeWall(length=5000, width=200, height=3000)  # mm units
 wall.recompute()
 ```
 """
+
 __title__ = "FreeCAD Arch API"
 __author__ = "Yorik van Havre"
 __url__ = "https://www.freecad.org"
@@ -68,11 +69,6 @@ translate = FreeCAD.Qt.translate
 from ArchCommands import *
 from ArchWindowPresets import *
 from ArchSql import *
-
-# TODO: migrate this one
-# Currently makeStructure, makeStructuralSystem need migration
-from ArchStructure import *
-
 
 # make functions
 
@@ -1739,6 +1735,7 @@ def makeWall(
     wall.Align = (
         align if align else ["Center", "Left", "Right"][params.get_param_arch("WallAlignment")]
     )
+    wall.Offset = offset if offset else params.get_param_arch("WallOffset")
 
     if wall.Base and FreeCAD.GuiUp:
         if Draft.getType(wall.Base) != "Space":
@@ -2136,16 +2133,17 @@ def makeWindow(
                         part_offset,
                     ]
             else:
-                # Bind properties from base obj if they exist
+                # Bind properties from base obj if they exist and have a value
                 for prop in ["Height", "Width", "Subvolume", "Tag", "Description", "Material"]:
                     for baseobj_prop in baseobj.PropertiesList:
-                        if (baseobj_prop == prop) or baseobj_prop.endswith(f"_{prop}"):
+                        if (baseobj_prop == prop or baseobj_prop.endswith(f"_{prop}")) and getattr(
+                            baseobj, baseobj_prop
+                        ):
                             window.setExpression(prop, f"{baseobj.Name}.{baseobj_prop}")
 
     if window.Base and FreeCAD.GuiUp:
         from ArchWindow import recolorize
 
-        window.Base.ViewObject.DisplayMode = "Wireframe"
         window.Base.ViewObject.hide()
         todo.ToDo.delay(recolorize, [window.Document.Name, window.Name])
 
@@ -2439,3 +2437,251 @@ def makeReport(name=None):
         FreeCADGui.ActiveDocument.setEdit(report_obj.Name, 0)
 
     return report_obj
+
+
+def makeStructure(baseobj=None, length=None, width=None, height=None, name=None):
+    """Create a parametric structural element (column, beam, or generic structure).
+
+    Creates a Structure object by extruding a base profile along its local Z axis. When no base
+    profile is given, a rectangular cross-section is generated from ``length`` and ``width``. The
+    element is automatically classified as "Beam" or "Column" based on the aspect ratio of
+    ``length`` vs ``height``.
+
+    Parameters
+    ----------
+    baseobj : App::DocumentObject, optional
+        A 2-D profile (sketch, wire, face, etc.) to use as the cross-section. When provided,
+        ``length`` and ``width`` are ignored for the cross-section shape, and the profile's own
+        dimensions may be used instead. The base object is hidden in the 3-D view after assignment.
+    length : float, optional
+        Cross-section length (X). If *both* ``length`` and ``height`` are omitted, defaults to the
+        ``StructureLength`` preference. Ignored when *baseobj* is provided (unless it lacks
+        dimension attributes).
+    width : float, optional
+        Cross-section width (Y). Defaults to the ``StructureWidth`` preference when omitted.
+    height : float, optional
+        Extrusion height (Z). Defaults to the ``StructureHeight`` preference when omitted together
+        with ``length``.
+    name : str, optional
+        Custom label for the new object. When omitted, the label is set to "Beam" or "Column"
+        depending on the aspect ratio.
+
+    Returns
+    -------
+    App::FeaturePython or None
+        The newly created Structure object, or ``None`` if there is no active
+        document.
+
+    Notes
+    -----
+    - If ``length > height``, the element is classified as IFC type "Beam"; if ``height > length``,
+      it is classified as "Column".
+    - When *baseobj* has ``Width``/``Height`` (or ``Length``/``Width``, or ``Length``/``Height``)
+      attributes, those values are transferred to the structure's cross-section dimensions.
+    """
+
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return None
+
+    structure_obj = _initializeArchObject(
+        objectType="Part::FeaturePython",
+        baseClassName="_Structure",
+        internalName="Structure",
+        defaultLabel=name if name else translate("Arch", "Structure"),
+        moduleName="ArchStructure",
+        viewProviderName="_ViewProviderStructure",
+    )
+
+    if baseobj:
+        structure_obj.Base = baseobj
+        if FreeCAD.GuiUp:
+            structure_obj.Base.ViewObject.hide()
+
+    if width:
+        structure_obj.Width = width
+    else:
+        structure_obj.Width = params.get_param_arch("StructureWidth")
+
+    # When only one of length/height is given explicitly, the other is left unset so that the
+    # baseobj block below can fill it from the profile's own dimensions. Setting a preference
+    # default here would interfere with the Length vs Height comparison that determines IfcType.
+    if height:
+        structure_obj.Height = height
+    else:
+        if not length:
+            structure_obj.Height = params.get_param_arch("StructureHeight")
+
+    if length:
+        structure_obj.Length = length
+    else:
+        if not baseobj:
+            structure_obj.Length = params.get_param_arch("StructureLength")
+
+    # When a base profile provides cross-section dimensions, transfer them to the structure. The
+    # extrusion direction is provided by supplying either length or height: the supplied value is
+    # the extrusion span, and the profile's dimensions fill in the remaining cross-section
+    # properties (Width and the unsupplied one of Length/Height).
+    if baseobj:
+        baseobj_width = 0
+        baseobj_height = 0
+        # Base objects use inconsistent property names for their two cross-section dimensions. Try
+        # the common combinations in priority order.
+        if hasattr(baseobj, "Width") and hasattr(baseobj, "Height"):
+            baseobj_width = baseobj.Width.Value
+            baseobj_height = baseobj.Height.Value
+        elif hasattr(baseobj, "Length") and hasattr(baseobj, "Width"):
+            baseobj_width = baseobj.Length.Value
+            baseobj_height = baseobj.Width.Value
+        elif hasattr(baseobj, "Length") and hasattr(baseobj, "Height"):
+            baseobj_width = baseobj.Length.Value
+            baseobj_height = baseobj.Height.Value
+
+        if baseobj_width and baseobj_height:
+            if length and not height:
+                structure_obj.Width = baseobj_width
+                structure_obj.Height = baseobj_height
+            elif height and not length:
+                structure_obj.Width = baseobj_width
+                structure_obj.Length = baseobj_height
+
+    # Classify as Beam or Column based on aspect ratio. When Length == Height, the default IfcType
+    # from _Structure.__init__ ("Beam") is preserved.
+    if structure_obj.Length > structure_obj.Height:
+        structure_obj.IfcType = "Beam"
+        structure_obj.Label = name if name else translate("Arch", "Beam")
+    elif structure_obj.Height > structure_obj.Length:
+        structure_obj.IfcType = "Column"
+        structure_obj.Label = name if name else translate("Arch", "Column")
+
+    return structure_obj
+
+
+def makeStructuralSystem(objects=[], axes=[], name=None):
+    """Create a structural system by arraying objects along one or more axes.
+
+    A StructuralSystem places a copy of each base object's shape at positions derived from the axes:
+    at the start point of each axis line when a single axis is given, or at the intersection points
+    when two or more axes are given. When no objects are provided, a system with no base is created.
+
+    Parameters
+    ----------
+    objects : list of App::DocumentObject, optional
+        Structure elements (or other shapes) to be repeated along the axes. Defaults to an empty
+        list, which creates one system with no base.
+    axes : list of App::DocumentObject
+        One or more Axis objects that define the repetition grid. At least one axis is required; the
+        function returns ``None`` if *axes* is empty.
+    name : str, optional
+        Custom label for the created system(s). Defaults to "StructuralSystem".
+
+    Returns
+    -------
+    App::FeaturePython or list of App::FeaturePython or None
+        A single system when one object is given, a list when multiple objects are given, or
+        ``None`` if *axes* is empty or there is no active document.
+    """
+
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return None
+
+    structural_systems = []
+
+    if not axes:
+        print("At least one axis must be given")
+        return None
+
+    if objects:
+        if not isinstance(objects, list):
+            objects = [objects]
+    else:
+        objects = [None]
+
+    for base_obj in objects:
+        structural_system_obj = _initializeArchObject(
+            objectType="Part::FeaturePython",
+            baseClassName="_StructuralSystem",
+            internalName="StructuralSystem",
+            defaultLabel=name if name else translate("Arch", "StructuralSystem"),
+            moduleName="ArchStructure",
+            viewProviderName="_ViewProviderStructuralSystem",
+        )
+
+        if base_obj:
+            structural_system_obj.Base = base_obj
+
+        structural_system_obj.Axes = axes
+        structural_systems.append(structural_system_obj)
+        if FreeCAD.GuiUp and base_obj:
+            base_obj.ViewObject.hide()
+            Draft.formatObject(structural_system_obj, base_obj)
+
+    FreeCAD.ActiveDocument.recompute()
+
+    if len(structural_systems) == 1:
+        return structural_systems[0]
+    else:
+        return structural_systems
+
+
+def placeAlongEdge(p1, p2, horizontal=False):
+    """Compute a Placement that orients a beam or column along an edge.
+
+    Used for both beam and column placement. The edge direction (*p1* to *p2*) defines the element's
+    span, and a right-handed coordinate frame is constructed around it. The working plane's normal
+    is used as the "up" reference: the cross product of up with the edge direction gives the
+    cross-section's sideways axis, and a second cross product completes the frame.
+
+    For beams (``horizontal=True``), the local X axis is aligned with the edge direction, so the
+    element's extrusion (along X) runs from *p1* to *p2*. For columns (``horizontal=False``), the
+    frame is built with the edge direction along Z, then rotated 90 degrees so the extrusion
+    (normally along Z) ends up running along the edge.
+
+    Parameters
+    ----------
+    p1 : FreeCAD.Vector
+        Start point of the edge. Becomes ``Placement.Base``.
+    p2 : FreeCAD.Vector
+        End point of the edge. Together with *p1*, defines the element's span direction.
+    horizontal : bool, optional
+        If ``True``, beam-style placement: the local X axis points along the edge. If ``False``
+        (default), column-style placement: the frame is rotated 90 degrees so the local Z
+        extrusion axis ends up along the edge.
+
+    Returns
+    -------
+    FreeCAD.Placement
+        A placement at *p1* with orientation derived from the edge direction. If the edge is
+        parallel to the working plane's normal, the cross product is zero and the rotation is left
+        at identity (degenerate case).
+
+    Notes
+    -----
+    The current implementation uses a single cross-product chain to construct the frame, which can
+    produce unintuitive roll (rotation around the span axis) for non-orthogonal edge directions.
+    """
+
+    import WorkingPlane
+
+    placement = FreeCAD.Placement()
+    placement.Base = p1
+
+    wp_normal = WorkingPlane.get_working_plane(update=False).axis
+    edge_direction = p2.sub(p1)
+    cross_section_horizontal = wp_normal.cross(edge_direction)
+
+    if cross_section_horizontal.Length > 0:
+        cross_section_vertical = edge_direction.cross(cross_section_horizontal)
+        if horizontal:
+            placement.Rotation = FreeCAD.Rotation(
+                edge_direction, cross_section_horizontal, cross_section_vertical, "ZXY"
+            )
+        else:
+            placement.Rotation = FreeCAD.Rotation(
+                cross_section_vertical, cross_section_horizontal, edge_direction, "ZXY"
+            )
+            placement.Rotation = FreeCAD.Rotation(
+                placement.Rotation.multVec(FreeCAD.Vector(0, 0, 1)), 90
+            ).multiply(placement.Rotation)
+    return placement

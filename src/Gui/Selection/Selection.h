@@ -253,6 +253,11 @@ public:
     void attachSelection();
     /** Detaches from the selection. */
     void detachSelection();
+    /** clears the document scope filter, allowing cross-document selection events. */
+    void clearDocumentScope()
+    {
+        documentScopeName.clear();
+    }
 
 private:
     virtual void onSelectionChanged(const SelectionChanges& msg) = 0;
@@ -264,7 +269,7 @@ private:
     std::string filterDocName;
     std::string filterObjName;
     ResolveMode resolve;
-    const char* pDocumentScopeName {nullptr};
+    std::string documentScopeName;
     bool blockedSelection;
 };
 

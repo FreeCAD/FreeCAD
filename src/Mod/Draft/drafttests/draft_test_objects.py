@@ -53,7 +53,6 @@ import Draft
 from FreeCAD import Vector
 from draftutils.messages import _msg, _wrn
 
-
 if App.GuiUp:
     import FreeCADGui as Gui
 

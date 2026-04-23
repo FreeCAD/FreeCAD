@@ -27,6 +27,7 @@ everything that goes with it (toolbar buttons, cursor icons, etc.).
 It also creates the Draft grid, which is actually a tracker
 defined by `gui_trackers.gridTracker`.
 """
+
 ## @package gui_snapper
 #  \ingroup draftguitools
 #  \brief Provides the Snapper class to define the snapping tools and modes.

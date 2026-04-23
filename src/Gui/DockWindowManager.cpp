@@ -542,7 +542,7 @@ void DockWindowManager::setup(DockWindowItems* items)
             docked.removeAt(index);
         }
 
-        if (d->overlayManager && dw && visible) {
+        if (d->overlayManager && dw && visible && !dw->titleBarWidget()) {
             d->overlayManager->setupDockWidget(dw);
         }
     }

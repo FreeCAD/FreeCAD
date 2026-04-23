@@ -184,8 +184,8 @@ Handle(Geom_Surface) Part::Tools::makeSurface(
             else if (aCur->IsKind(STANDARD_TYPE(GeomAdaptor_Curve))) {
                 // G0 constraint
                 Handle(GeomAdaptor_Curve) aHC(Handle(GeomAdaptor_Curve)::DownCast(aCur));
-                Handle(GeomPlate_CurveConstraint) aConst
-                    = new GeomPlate_CurveConstraint(aHC, 0 /*GeomAbs_G0*/, aNbPnts, aTol3d);
+                Handle(GeomPlate_CurveConstraint)
+                    aConst = new GeomPlate_CurveConstraint(aHC, 0 /*GeomAbs_G0*/, aNbPnts, aTol3d);
                 aPlateBuilder.Add(aConst);
             }
 #else
@@ -206,15 +206,16 @@ Handle(Geom_Surface) Part::Tools::makeSurface(
             else if (aCur->IsKind(STANDARD_TYPE(GeomAdaptor_HCurve))) {
                 // G0 constraint
                 Handle(GeomAdaptor_HCurve) aHC(Handle(GeomAdaptor_HCurve)::DownCast(aCur));
-                Handle(GeomPlate_CurveConstraint) aConst
-                    = new GeomPlate_CurveConstraint(aHC, 0 /*GeomAbs_G0*/, aNbPnts, aTol3d);
+                Handle(GeomPlate_CurveConstraint)
+                    aConst = new GeomPlate_CurveConstraint(aHC, 0 /*GeomAbs_G0*/, aNbPnts, aTol3d);
                 aPlateBuilder.Add(aConst);
             }
 #endif
             else if (aCur->IsKind(STANDARD_TYPE(Geom_Point))) {
                 // Point constraint
                 Handle(Geom_Point) aGP(Handle(Geom_Point)::DownCast(aCur));
-                Handle(GeomPlate_PointConstraint) aConst = new GeomPlate_PointConstraint(aGP->Pnt(), 0);
+                Handle(GeomPlate_PointConstraint)
+                    aConst = new GeomPlate_PointConstraint(aGP->Pnt(), 0);
                 aPlateBuilder.Add(aConst);
             }
             else {
@@ -512,8 +513,8 @@ void Part::Tools::getPointNormals(
         const TopoDS_Face aZeroFace = TopoDS::Face(theFace.Located(TopLoc_Location()));
         Handle(Geom_Surface) aSurf = BRep_Tool::Surface(aZeroFace);
         const Standard_Real aTol = Precision::Confusion();
-        Handle(TShort_HArray1OfShortReal) aNormals
-            = new TShort_HArray1OfShortReal(1, aPolyTri->NbNodes() * 3);
+        Handle(TShort_HArray1OfShortReal)
+            aNormals = new TShort_HArray1OfShortReal(1, aPolyTri->NbNodes() * 3);
         const Poly_Array1OfTriangle& aTriangles = aPolyTri->Triangles();
         const TColgp_Array1OfPnt2d* aNodesUV = aPolyTri->HasUVNodes() && !aSurf.IsNull()
             ? &aPolyTri->UVNodes()

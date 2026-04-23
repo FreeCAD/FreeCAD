@@ -304,10 +304,10 @@ void AttachExtension::setAttacher(AttachEngine* pAttacher, bool base)
         updateAttacherVals(base);
     }
     else {
-        if (props.attacherType
-            && strlen(props.attacherType->getValue())
-                != 0) {  // make sure we need to change, to break recursive
-                         // onChange->changeAttacherType->onChange...
+        if (
+            props.attacherType && strlen(props.attacherType->getValue()) != 0
+        ) {  // make sure we need to change, to break recursive
+             // onChange->changeAttacherType->onChange...
             props.attacherType->setValue("");
         }
     }

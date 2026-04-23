@@ -185,7 +185,7 @@ class ObjectOp(PathOp.ObjectOp):
                     center = shape.Edges[0].Curve.Center
                     if all(Path.Geom.pointsCoincide(center, e.Curve.Center) for e in shape.Edges):
                         return FreeCAD.Vector(center.x, center.y, 0)
-
+            return FreeCAD.Vector(shape.CenterOfMass.x, shape.CenterOfMass.y, 0)
         except Part.OCCError as e:
             Path.Log.error(e)
 
@@ -209,29 +209,38 @@ class ObjectOp(PathOp.ObjectOp):
         Do not overwrite, implement circularHoleExecute(obj, holes) instead."""
         Path.Log.track()
 
-        def haveLocations(self, obj):
-            if PathOp.FeatureLocations & self.opFeatures(obj):
-                return len(obj.Locations) != 0
-            return False
-
         holes = []
         for base, subs in obj.Base:
             for sub in subs:
                 Path.Log.debug("processing {} in {}".format(sub, base.Name))
-                if self.isHoleEnabled(obj, base, sub):
-                    pos = self.holePosition(base, sub)
-                    if pos:
-                        holes.append(
-                            {
-                                "x": pos.x,
-                                "y": pos.y,
-                                "d": self.holeDiameter(base, sub),
-                            }
-                        )
+                if not self.isHoleEnabled(obj, base, sub):
+                    continue
+                pos = self.holePosition(base, sub)
+                if not pos:
+                    continue
+                diam = self.holeDiameter(base, sub)
+                for hole in holes:  # check positions repeats
+                    if Path.Geom.pointsCoincide((pos.x, pos.y), (hole["x"], hole["y"])):
+                        if diam > hole["d"] and not Path.Geom.isRoughly(diam, hole["d"]):
+                            # use bigger hole and disable with less diameter
+                            name = "%s.%s" % (base.Name, hole["sub"])
+                            disabled = obj.Disabled
+                            disabled.append(name)
+                            obj.Disabled = disabled
+                            hole["d"] = diam
+                            hole["sub"] = sub
+                        else:
+                            # disable repeat with less diameter
+                            name = "%s.%s" % (base.Name, sub)
+                            disabled = obj.Disabled
+                            disabled.append(name)
+                            obj.Disabled = disabled
+                        break
+                else:  # is not a repeat, add unique position
+                    holes.append({"x": pos.x, "y": pos.y, "d": diam, "sub": sub})
 
-        if haveLocations(self, obj):
-            for location in obj.Locations:
-                holes.append({"x": location.x, "y": location.y, "d": 0})
+        for pos in getattr(obj, "Locations", []):
+            holes.append({"x": pos.x, "y": pos.y, "d": 0})
 
         if len(holes) > 0:
             if obj.SortingMode == "Automatic":
@@ -250,8 +259,9 @@ class ObjectOp(PathOp.ObjectOp):
         Must be overwritten by subclasses."""
         pass
 
-    def findAllHoles(self, obj):
-        """findAllHoles(obj) ... find all holes of all base models and assign as features."""
+    def findAllHoles(self, obj, selection=[]):
+        """findAllHoles(obj) ...
+        find all holes of all base or selected models and assign as features."""
         Path.Log.track()
         job = self.getJob(obj)
         if not job:
@@ -261,7 +271,15 @@ class ObjectOp(PathOp.ObjectOp):
         tooldiameter = obj.ToolController.Tool.Diameter.Value
 
         features = []
-        for base in self.model:
+        models = []
+        for sel in selection:
+            if sel.isDerivedFrom("Part::Feature"):
+                models.append(sel)
+        if not models:
+            models = self.model
+        for base in models:
+            if not base.isDerivedFrom("Part::Feature"):
+                continue
             features.extend(
                 Drillable.getDrillableTargets(base, toolDiameter=tooldiameter, vector=matchvector)
             )

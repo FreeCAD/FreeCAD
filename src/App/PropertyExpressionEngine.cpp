@@ -126,10 +126,10 @@ struct PropertyExpressionEngine::Private
      * @param g Graph to update. May contain additional nodes than in revNodes, because of outside
      * dependencies.
      */
-    void buildGraph(const ExpressionMap& exprs,
+    static void buildGraph(const ExpressionMap& exprs,
                     boost::unordered_map<int, App::ObjectIdentifier>& revNodes,
                     DiGraph& g,
-                    ExecuteOption option = ExecuteAll) const
+                    ExecuteOption option = ExecuteAll)
     {
         boost::unordered_map<ObjectIdentifier, int> nodes;
         std::vector<Edge> edges;
@@ -153,7 +153,7 @@ struct PropertyExpressionEngine::Private
                     continue;
                 }
             }
-            this->buildGraphStructures(expr.first, expr.second.expression, nodes, revNodes, edges);
+            buildGraphStructures(expr.first, expr.second.expression, nodes, revNodes, edges);
         }
 
         // Create graph
@@ -177,12 +177,12 @@ struct PropertyExpressionEngine::Private
         }
     }
 
-    void buildGraphStructures(
+    static void buildGraphStructures(
     const ObjectIdentifier& path,
     const std::shared_ptr<Expression> expression,
     boost::unordered_map<ObjectIdentifier, int>& nodes,
     boost::unordered_map<int, ObjectIdentifier>& revNodes,
-    std::vector<Edge>& edges) const
+    std::vector<Edge>& edges)
     {
         /* Insert target property into nodes structure */
         if (nodes.find(path) == nodes.end()) {
@@ -616,7 +616,7 @@ PropertyExpressionEngine::computeEvaluationOrder(ExecuteOption option)
     boost::unordered_map<int, ObjectIdentifier> revNodes;
     DiGraph g;
 
-    pimpl->buildGraph(expressions, revNodes, g, option);
+    Private::buildGraph(expressions, revNodes, g, option);
 
     /* Compute evaluation order for expressions */
     std::vector<int> c;
@@ -843,7 +843,7 @@ PropertyExpressionEngine::validateExpression(const ObjectIdentifier& path,
         boost::unordered_map<int, ObjectIdentifier> revNodes;
         DiGraph g;
 
-        pimpl->buildGraph(newExpressions, revNodes, g);
+        Private::buildGraph(newExpressions, revNodes, g);
     }
     catch (const Base::Exception& e) {
         return e.what();

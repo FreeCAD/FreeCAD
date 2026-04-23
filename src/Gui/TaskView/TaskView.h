@@ -127,7 +127,6 @@ class GuiExport TaskPanel: public QWidget
 public:
     explicit TaskPanel(QWidget* parent = nullptr);
     ~TaskPanel() override;
-    QSize minimumSizeHint() const override;
 
 public:
     QVBoxLayout* mainLayout;
@@ -252,7 +251,7 @@ protected:
     bool restoreWidth = false;
     int currentWidth = 0;
     ParameterGrp::handle hGrp;
-    bool showTaskWatcher;
+    bool showTaskWatcher = false;
 
     Connection connectApplicationActiveDocument;
     Connection connectApplicationDeleteDocument;

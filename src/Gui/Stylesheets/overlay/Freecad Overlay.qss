@@ -33,6 +33,10 @@ Gui--OverlaySplitterHandle {
   color: @TextForegroundColor;
 }
 
+ Gui--TreePanel QTreeView::item:disabled {
+  color: @TextDisabledColor;
+}
+
  Gui--TreePanel QTreeView:disabled  {
   color: @TextDisabledColor;
 }
@@ -43,6 +47,10 @@ Gui--PropertyEditor--PropertyEditor {
 
 Gui--OverlayTabWidget[transparent="false"]  Gui--TreePanel QTreeView::item {
   color: @TextForegroundColor;
+}
+
+Gui--OverlayTabWidget[transparent="false"]  Gui--TreePanel QTreeView::item:disabled {
+  color: @TextDisabledColor;
 }
 
 Gui--OverlayTabWidget[transparent="true"] Gui--TreePanel QTreeView::item {
