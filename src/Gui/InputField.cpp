@@ -194,6 +194,13 @@ void InputField::updateText(const Base::Quantity& quant)
     setText(QString::fromStdString(txt));
 }
 
+void InputField::notifyValueChanged()
+{
+    updateText(actQuantity);
+    Q_EMIT valueChanged(actQuantity);
+    Q_EMIT valueChanged(actQuantity.getValue());
+}
+
 void InputField::resizeEvent(QResizeEvent* /*event*/)
 {
     QSize iconSize = iconLabel->sizeHint();
@@ -471,9 +478,7 @@ void InputField::setValue(const Base::Quantity& quant)
 
     actUnit = quant.getUnit();
 
-    updateText(actQuantity);
-    Q_EMIT valueChanged(actQuantity);
-    Q_EMIT valueChanged(actQuantity.getValue());
+    notifyValueChanged();
 }
 
 void InputField::setValue(const double& value)
@@ -555,9 +560,7 @@ void InputField::setMaximum(double m)
     Maximum = m;
     if (actQuantity.getValue() > Maximum) {
         actQuantity.setValue(Maximum);
-        updateText(actQuantity);
-        Q_EMIT valueChanged(actQuantity);
-        Q_EMIT valueChanged(actQuantity.getValue());
+        notifyValueChanged();
     }
 }
 
@@ -573,9 +576,7 @@ void InputField::setMinimum(double m)
     Minimum = m;
     if (actQuantity.getValue() < Minimum) {
         actQuantity.setValue(Minimum);
-        updateText(actQuantity);
-        Q_EMIT valueChanged(actQuantity);
-        Q_EMIT valueChanged(actQuantity.getValue());
+        notifyValueChanged();
     }
 }
 
