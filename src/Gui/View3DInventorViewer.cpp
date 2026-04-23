@@ -3845,55 +3845,115 @@ void View3DInventorViewer::alignToSelection()
 
     const auto selection = Selection().getSelection(nullptr, ResolveMode::NoResolve);
 
-    // Empty selection
     if (selection.empty()) {
         return;
     }
 
-    // Too much selections
-    if (selection.size() > 1) {
-        return;
-    }
-
-    // Get the geo feature
-    App::GeoFeature* geoFeature = nullptr;
-    App::ElementNamePair elementName;
-    App::GeoFeature::resolveElement(
-        selection[0].pObject,
-        selection[0].SubName,
-        elementName,
-        true,
-        App::GeoFeature::ElementNameType::Normal,
-        nullptr,
-        nullptr,
-        &geoFeature
-    );
-    if (!geoFeature) {
-        return;
-    }
-
-    const auto globalPlacement = App::GeoFeature::getGlobalPlacement(
-        selection[0].pResolvedObject,
-        selection[0].pObject,
-        elementName.oldName
-    );
-    const auto globalRotation = globalPlacement.getRotation()
-        * geoFeature->Placement.getValue().getRotation().inverse();
-    const auto splitSubName = Base::Tools::splitSubName(elementName.oldName);
-    const auto geoFeatureSubName = !splitSubName.empty() ? splitSubName.back() : "";
-
-    Base::Vector3d alignmentZ;
+    Base::Vector3d alignmentZ(0, 0, 0);
     Base::Vector3d alignmentX(0, 0, 0);
-    if (geoFeature->getCameraAlignmentDirection(alignmentZ, alignmentX, geoFeatureSubName.c_str())) {
+    bool aligned = false;
 
-        // Find a x alignment if the geoFeature did not suggest any
-        if (alignmentX == Base::Vector3d(0, 0, 0)) {
-            Base::Rotation(-Base::Vector3d::UnitZ, alignmentZ).multVec(Base::Vector3d::UnitX, alignmentX);
+    if (selection.size() == 1) {
+        App::GeoFeature* geoFeature = nullptr;
+        App::ElementNamePair elementName;
+        App::GeoFeature::resolveElement(
+            selection[0].pObject,
+            selection[0].SubName,
+            elementName,
+            true,
+            App::GeoFeature::ElementNameType::Normal,
+            nullptr,
+            nullptr,
+            &geoFeature
+        );
+        if (!geoFeature) {
+            return;
         }
 
-        // Convert to global coordinates
-        globalRotation.multVec(alignmentZ, alignmentZ);
-        globalRotation.multVec(alignmentX, alignmentX);
+        const auto globalPlacement = App::GeoFeature::getGlobalPlacement(
+            selection[0].pResolvedObject,
+            selection[0].pObject,
+            elementName.oldName
+        );
+        const auto globalRotation = globalPlacement.getRotation()
+            * geoFeature->Placement.getValue().getRotation().inverse();
+        const auto splitSubName = Base::Tools::splitSubName(elementName.oldName);
+        const auto geoFeatureSubName = !splitSubName.empty() ? splitSubName.back() : "";
+
+        if (geoFeature->getCameraAlignmentDirection(alignmentZ, alignmentX, geoFeatureSubName.c_str())) {
+            if (alignmentX == Base::Vector3d(0, 0, 0)) {
+                Base::Rotation(-Base::Vector3d::UnitZ, alignmentZ)
+                    .multVec(Base::Vector3d::UnitX, alignmentX);
+            }
+            globalRotation.multVec(alignmentZ, alignmentZ);
+            globalRotation.multVec(alignmentX, alignmentX);
+            aligned = true;
+        }
+    }
+    else {
+        struct FeatureGroup
+        {
+            App::GeoFeature* feature = nullptr;
+            Base::Rotation globalRotation;
+            std::vector<std::string> subnames;
+        };
+        std::map<App::GeoFeature*, FeatureGroup> groups;
+
+        for (const auto& sel : selection) {
+            App::GeoFeature* gf = nullptr;
+            App::ElementNamePair elementName;
+            App::GeoFeature::resolveElement(
+                sel.pObject,
+                sel.SubName,
+                elementName,
+                true,
+                App::GeoFeature::ElementNameType::Normal,
+                nullptr,
+                nullptr,
+                &gf
+            );
+            if (!gf) {
+                continue;
+            }
+
+            auto& grp = groups[gf];
+            if (!grp.feature) {
+                grp.feature = gf;
+                const auto gp = App::GeoFeature::getGlobalPlacement(
+                    sel.pResolvedObject,
+                    sel.pObject,
+                    elementName.oldName
+                );
+                grp.globalRotation = gp.getRotation()
+                    * gf->Placement.getValue().getRotation().inverse();
+            }
+            const auto split = Base::Tools::splitSubName(elementName.oldName);
+            grp.subnames.push_back(!split.empty() ? split.back() : "");
+        }
+
+        Base::Vector3d sumZ(0, 0, 0);
+        int validCount = 0;
+        for (auto& [gf, grp] : groups) {
+            Base::Vector3d groupZ;
+            bool ok = (grp.subnames.size() == 1)
+                ? gf->getCameraAlignmentDirection(groupZ, alignmentX, grp.subnames[0].c_str())
+                : gf->getCameraAlignmentDirection(groupZ, grp.subnames);
+            if (ok) {
+                grp.globalRotation.multVec(groupZ, groupZ);
+                sumZ += groupZ;
+                ++validCount;
+            }
+        }
+
+        if (validCount == 0) {
+            return;
+        }
+        alignmentZ = sumZ.Normalize();
+        Base::Rotation(-Base::Vector3d::UnitZ, alignmentZ).multVec(Base::Vector3d::UnitX, alignmentX);
+        aligned = true;
+    }
+
+    if (aligned) {
 
         const auto cameraOrientation = getCameraOrientation();
 

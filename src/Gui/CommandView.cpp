@@ -454,7 +454,7 @@ void StdCmdFreezeViews::onSaveViews()
         getMainWindow(),
         QObject::tr("Save Frozen Views"),
         QString(),
-        QStringList(QStringLiteral("%1 (*.cam)").arg(QObject::tr("Frozen views")))
+        FileDialog::FilterList {{QObject::tr("Frozen views"), {"*.cam"}}}
     );
     if (fn.isEmpty()) {
         return;
@@ -516,7 +516,7 @@ void StdCmdFreezeViews::onRestoreViews()
         getMainWindow(),
         QObject::tr("Restore Frozen Views"),
         QString(),
-        QStringList(QStringLiteral("%1 (*.cam)").arg(QObject::tr("Frozen views")))
+        FileDialog::FilterList {{QObject::tr("Frozen views"), {"*.cam"}}}
     );
     if (fn.isEmpty()) {
         return;
@@ -2152,8 +2152,7 @@ void StdViewScreenShot::activated(int iMsg)
         QStringList filter;
         QString selFilter;
         for (QStringList::Iterator it = formats.begin(); it != formats.end(); ++it) {
-            filter << QStringLiteral("%1 %2 (*.%3)")
-                          .arg((*it).toUpper(), QObject::tr("files"), (*it).toLower());
+            filter << QStringLiteral("%1 files (*.%2)").arg(it->toUpper(), it->toLower());
             if (ext == *it) {
                 selFilter = filter.last();
             }

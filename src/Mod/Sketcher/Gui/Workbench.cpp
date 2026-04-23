@@ -112,10 +112,10 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     sketcher->setCommand("Sketcher");
     addSketcherWorkbenchSketchActions(*sketcher);
 
-    /*Gui::ToolBarItem* sketcherEditMode =
-        new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);
+    Gui::ToolBarItem* sketcherEditMode
+        = new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);
     sketcherEditMode->setCommand("Edit Mode");
-    addSketcherWorkbenchSketchEditModeActions(*sketcherEditMode);*/
+    addSketcherWorkbenchSketchEditModeActions(*sketcherEditMode);
 
     Gui::ToolBarItem* geom
         = new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);

@@ -207,6 +207,10 @@ jobs:
         name: ${{ inputs.artifactBasename }}-${{ matrix.os }}-CoinNodeSnapshots
         path: /tmp/FreeCADTesting/CoinNodeSnapshots
 
+    - name: src/Tools tests
+      if: always()
+      run: python3 -m unittest discover -s src/Tools/tests -p "test_*.py"
+
     - name: C++ tests
       timeout-minutes: 10
       if: runner.os != 'Windows' && !inputs.skipBuild
