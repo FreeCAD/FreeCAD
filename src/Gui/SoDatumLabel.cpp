@@ -1459,7 +1459,7 @@ void SoDatumLabel::drawArcLength(const SbVec3f* points, float& angle, SbVec3f& t
 // angleRad — sketch rotation angle in radians (-pi .. pi)
 // CCW is positive, CW is negative, and the angle is measured from the camera's right vector to the
 // sketch's local X axis.
-float SoDatumLabel::getSketchRotationAngle(SoState* state, const SbViewVolume& viewVolume, bool flip)
+float getSketchRotationAngle(SoState* state, const SbViewVolume& viewVolume, bool flip)
 {
     SbMatrix m = SoModelMatrixElement::get(state);
 
