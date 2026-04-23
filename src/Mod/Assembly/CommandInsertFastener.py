@@ -290,7 +290,15 @@ class TaskAssemblyInsertFastener:
             best_dia = diams[0]
             min_diff = float("inf")
             for d_str in diams:
-                d_num = ScrewMaker.Instance.getDia(d_str, False)
+                try:
+                    d_num = FastenerBase.DiaStr2Num(d_str)
+                except Exception:
+                    # Can happen if there is a data error in the fastener wb.
+                    # For instance (at time of writing) "ASME B18.3.5D UNC hexagone socket with cup point"
+                    # fails for size #7 because Fasteners wb database is actually missing an entry for #7 
+                    # in its master diameter list (DiaList.csv), even though #7 is listed as a valid size 
+                    # for this fastener in its specific dimension table
+                    continue
                 if abs(d_num - target_d) < min_diff:
                     min_diff = abs(d_num - target_d)
                     best_dia = d_str
