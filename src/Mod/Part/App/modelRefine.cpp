@@ -78,7 +78,8 @@
 
 using namespace ModelRefine;
 
-namespace {
+namespace
+{
 inline void hashCombine(size_t& seed, size_t v)
 {
     seed ^= v + 0x9e3779b9 + (seed << 6) + (seed >> 2);
@@ -314,7 +315,7 @@ void FaceEqualitySplitter::split(const FaceVectorType& faces, FaceTypedBase* obj
                     }
                 }
                 if (!foundMatch) {
-                    groups.emplace_back(FaceVectorType{face});
+                    groups.emplace_back(FaceVectorType {face});
                 }
             }
             for (auto& group : groups) {
@@ -326,12 +327,14 @@ void FaceEqualitySplitter::split(const FaceVectorType& faces, FaceTypedBase* obj
         }
 
         // Build a spatial grid of face indices.
-        struct GridHash {
-            size_t operator()(const std::tuple<long long, long long, long long>& k) const {
+        struct GridHash
+        {
+            size_t operator()(const std::tuple<long long, long long, long long>& k) const
+            {
                 size_t h = 0;
-                hashCombine(h, std::hash<long long>{}(std::get<0>(k)));
-                hashCombine(h, std::hash<long long>{}(std::get<1>(k)));
-                hashCombine(h, std::hash<long long>{}(std::get<2>(k)));
+                hashCombine(h, std::hash<long long> {}(std::get<0>(k)));
+                hashCombine(h, std::hash<long long> {}(std::get<1>(k)));
+                hashCombine(h, std::hash<long long> {}(std::get<2>(k)));
                 return h;
             }
         };
@@ -355,8 +358,11 @@ void FaceEqualitySplitter::split(const FaceVectorType& faces, FaceTypedBase* obj
             return i;
         };
         auto unite = [&](size_t a, size_t b) {
-            a = find(a); b = find(b);
-            if (a != b) parent[a] = b;
+            a = find(a);
+            b = find(b);
+            if (a != b) {
+                parent[a] = b;
+            }
         };
 
         // For each cell, check the 26 neighbors for faces that might be equal
@@ -378,14 +384,17 @@ void FaceEqualitySplitter::split(const FaceVectorType& faces, FaceTypedBase* obj
             for (int dx = -1; dx <= 1; ++dx) {
                 for (int dy = -1; dy <= 1; ++dy) {
                     for (int dz = -1; dz <= 1; ++dz) {
-                        if (dx == 0 && dy == 0 && dz == 0) continue;
-                        CellKey neighbor{cx + dx, cy + dy, cz + dz};
+                        if (dx == 0 && dy == 0 && dz == 0) {
+                            continue;
+                        }
+                        CellKey neighbor {cx + dx, cy + dy, cz + dz};
                         auto nit = grid.find(neighbor);
-                        if (nit == grid.end()) continue;
+                        if (nit == grid.end()) {
+                            continue;
+                        }
                         // Compare representative of this cell with representative
                         // of neighbor cell.
-                        if (object->isEqual(structGroup[indices[0]],
-                                            structGroup[nit->second[0]])) {
+                        if (object->isEqual(structGroup[indices[0]], structGroup[nit->second[0]])) {
                             unite(indices[0], nit->second[0]);
                         }
                     }
@@ -1010,21 +1019,33 @@ size_t FaceTypedBSpline::computeStructuralHash(const TopoDS_Face& face) const
     // Exact integer/boolean invariants — no false negatives possible.
     // These fields are all compared with == in isEqual().
     size_t h = 0;
-    hashCombine(h, std::hash<int>{}(surface->UDegree()));
-    hashCombine(h, std::hash<int>{}(surface->VDegree()));
-    hashCombine(h, std::hash<int>{}(surface->NbUPoles()));
-    hashCombine(h, std::hash<int>{}(surface->NbVPoles()));
-    hashCombine(h, std::hash<int>{}(surface->NbUKnots()));
-    hashCombine(h, std::hash<int>{}(surface->NbVKnots()));
+    hashCombine(h, std::hash<int> {}(surface->UDegree()));
+    hashCombine(h, std::hash<int> {}(surface->VDegree()));
+    hashCombine(h, std::hash<int> {}(surface->NbUPoles()));
+    hashCombine(h, std::hash<int> {}(surface->NbVPoles()));
+    hashCombine(h, std::hash<int> {}(surface->NbUKnots()));
+    hashCombine(h, std::hash<int> {}(surface->NbVKnots()));
 
     unsigned flags = 0;
-    if (surface->IsURational()) flags |= 1;
-    if (surface->IsVRational()) flags |= 2;
-    if (surface->IsUPeriodic()) flags |= 4;
-    if (surface->IsVPeriodic()) flags |= 8;
-    if (surface->IsUClosed())   flags |= 16;
-    if (surface->IsVClosed())   flags |= 32;
-    hashCombine(h, std::hash<unsigned>{}(flags));
+    if (surface->IsURational()) {
+        flags |= 1;
+    }
+    if (surface->IsVRational()) {
+        flags |= 2;
+    }
+    if (surface->IsUPeriodic()) {
+        flags |= 4;
+    }
+    if (surface->IsVPeriodic()) {
+        flags |= 8;
+    }
+    if (surface->IsUClosed()) {
+        flags |= 16;
+    }
+    if (surface->IsVClosed()) {
+        flags |= 32;
+    }
+    hashCombine(h, std::hash<unsigned> {}(flags));
 
     return h;
 }

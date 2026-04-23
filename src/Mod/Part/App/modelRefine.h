@@ -69,13 +69,20 @@ public:
     virtual bool isEqual(const TopoDS_Face& faceOne, const TopoDS_Face& faceTwo) const = 0;
     virtual GeomAbs_SurfaceType getType() const = 0;
     virtual TopoDS_Face buildFace(const FaceVectorType& faces) const = 0;
-    virtual size_t computeStructuralHash(const TopoDS_Face& /*face*/) const { return 0; }
+    virtual size_t computeStructuralHash(const TopoDS_Face& /*face*/) const
+    {
+        return 0;
+    }
 
-    struct GridKey {
+    struct GridKey
+    {
         long long x = 0, y = 0, z = 0;
         bool valid = false;
     };
-    virtual GridKey computeGridKey(const TopoDS_Face& /*face*/) const { return {}; }
+    virtual GridKey computeGridKey(const TopoDS_Face& /*face*/) const
+    {
+        return {};
+    }
 
     static GeomAbs_SurfaceType getFaceType(const TopoDS_Face& faceIn);
 
