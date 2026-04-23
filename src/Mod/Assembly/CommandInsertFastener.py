@@ -295,8 +295,8 @@ class TaskAssemblyInsertFastener:
                 except Exception:
                     # Can happen if there is a data error in the fastener wb.
                     # For instance (at time of writing) "ASME B18.3.5D UNC hexagone socket with cup point"
-                    # fails for size #7 because Fasteners wb database is actually missing an entry for #7 
-                    # in its master diameter list (DiaList.csv), even though #7 is listed as a valid size 
+                    # fails for size #7 because Fasteners wb database is actually missing an entry for #7
+                    # in its master diameter list (DiaList.csv), even though #7 is listed as a valid size
                     # for this fastener in its specific dimension table
                     continue
                 if abs(d_num - target_d) < min_diff:
