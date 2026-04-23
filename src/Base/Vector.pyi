@@ -26,8 +26,7 @@ from typing import overload, Sequence
     sq_inplace_concat=False,
     sq_inplace_repeat=False,
 )
-@class_declarations(
-    """public:
+@class_declarations("""public:
     VectorPy(const Vector3d & vec, PyTypeObject *T = &Type)
     :PyObjectBase(new Vector3d(vec),T){}
     VectorPy(const Vector3f & vec, PyTypeObject *T = &Type)
@@ -36,8 +35,7 @@ from typing import overload, Sequence
     { return *(getVectorPtr()); }
 private:
     Py::List sequence;
-        """
-)
+        """)
 class Vector(PyObjectBase):
     """
     Base.Vector class.

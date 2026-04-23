@@ -4,22 +4,22 @@
   <context>
     <name>StartGui::FirstStartWidget</name>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="92"/>
+      <location filename="../../FirstStartWidget.cpp" line="91"/>
       <source>Done</source>
       <translation>Ολοκληρώθηκε</translation>
     </message>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="95"/>
+      <location filename="../../FirstStartWidget.cpp" line="94"/>
       <source>Welcome to %1</source>
-      <translation>Καλωσήρθες στο %1</translation>
+      <translation>Καλώς Ορίσατε στο %1</translation>
     </message>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="98"/>
+      <location filename="../../FirstStartWidget.cpp" line="97"/>
       <source>Set your basic configuration options below.</source>
       <translation>Ορίστε τις βασικές επιλογές ρύθμισης παραμέτρων σας παρακάτω.</translation>
     </message>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="99"/>
+      <location filename="../../FirstStartWidget.cpp" line="98"/>
       <source>These options (and many more) can be changed later in the preferences.</source>
       <translation>Αυτές οι επιλογές (και πολλές άλλες) μπορούν να αλλάξουν αργότερα από την καρτέλα Προτιμήσεις.</translation>
     </message>
@@ -63,87 +63,87 @@
   <context>
     <name>StartGui::StartView</name>
     <message>
-      <location filename="../../StartView.cpp" line="211"/>
+      <location filename="../../StartView.cpp" line="217"/>
       <source>Open File</source>
       <translation>Άνοιγμα Αρχείου</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="221"/>
+      <location filename="../../StartView.cpp" line="227"/>
       <source>Assembly</source>
       <translation>Συγκρότημα</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="226"/>
+      <location filename="../../StartView.cpp" line="232"/>
       <source>2D Draft</source>
       <translation>2D Σχέδιο</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="226"/>
+      <location filename="../../StartView.cpp" line="232"/>
       <source>Creates a 2D Draft document</source>
       <translation>Δημιουργεί ένα δισδιάστατο (2D) προσχέδιο εγγράφου</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="229"/>
+      <location filename="../../StartView.cpp" line="235"/>
       <source>BIM/Architecture</source>
       <translation>BIM/Αρχιτεκτονική</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="206"/>
+      <location filename="../../StartView.cpp" line="212"/>
       <source>Empty File</source>
       <translation>Άδειο Αρχείο</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="207"/>
+      <location filename="../../StartView.cpp" line="213"/>
       <source>Creates a new empty FreeCAD file</source>
       <translation>Δημιουργήστε ένα κενό αρχείο FreeCAD</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="212"/>
+      <location filename="../../StartView.cpp" line="218"/>
       <source>Opens an existing CAD file or 3D model</source>
       <translation>Άνοιγμα ενός υπάρχοντος αρχείου CAD ή 3D μοντέλου</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="216"/>
+      <location filename="../../StartView.cpp" line="222"/>
       <source>Parametric Body</source>
       <translation>Παραμετρικό Σώμα</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="217"/>
+      <location filename="../../StartView.cpp" line="223"/>
       <source>Creates a body with the Part Design workbench</source>
       <translation>Δημιουργήστε ένα τμήμα με τον πάγκο εργασίας Σχεδίου Εξαρτήματος</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="222"/>
+      <location filename="../../StartView.cpp" line="228"/>
       <source>Creates an assembly project</source>
       <translation>Δημιουργία έργου συναρμολόγησης</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="230"/>
+      <location filename="../../StartView.cpp" line="236"/>
       <source>Creates an architectural project</source>
       <translation>Δημιουργήστε ένα έργο αρχιτεκτονικής</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="509"/>
+      <location filename="../../StartView.cpp" line="520"/>
       <source>New File</source>
       <translation>Νέο αρχείο</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="510"/>
+      <location filename="../../StartView.cpp" line="522"/>
       <source>Examples</source>
       <translation>Παραδείγματα</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="511"/>
+      <location filename="../../StartView.cpp" line="524"/>
       <source>Recent Files</source>
       <translation>Πρόσφατα αρχεία</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="527"/>
+      <location filename="../../StartView.cpp" line="539"/>
       <source>Open First Start Setup</source>
       <translation>Άνοιγμα Ρύθμισης Πρώτης Εκκίνησης</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="528"/>
+      <location filename="../../StartView.cpp" line="540"/>
       <source>Do not show this Start page again (start with blank screen)</source>
       <translation>Να μην εμφανιστεί ξανά αυτή η αρχική σελίδα (έναρξη με κενή οθόνη)</translation>
     </message>
@@ -151,7 +151,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../StartView.cpp" line="503"/>
+      <location filename="../../StartView.cpp" line="514"/>
       <source>Start</source>
       <translation>Εκκίνηση</translation>
     </message>
@@ -174,29 +174,29 @@
       <translation>FreeCAD Φωτεινό</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="247"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="245"/>
       <source>Theme</source>
       <translation>Θέμα</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="250"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="248"/>
       <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
-      <translation>Ψάχνετε για περισσότερα θέματα? Μπορείτε να τα αποκτήσετε χρησιμοποιώντας &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</translation>
+      <translation>Ψάχνετε για περισσότερα θέματα; Μπορείτε να τα αποκτήσετε χρησιμοποιώντας το &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="257"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="255"/>
       <source>FreeCAD Dark</source>
       <comment>Visual theme name</comment>
       <translation>FreeCAD Σκούρο</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="258"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="256"/>
       <source>FreeCAD Light</source>
       <comment>Visual theme name</comment>
       <translation>FreeCAD Φωτεινό</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="259"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="257"/>
       <source>FreeCAD Classic</source>
       <comment>Visual theme name</comment>
       <translation>FreeCAD Κλασικό</translation>
@@ -264,6 +264,19 @@ Multiple folders can be added using ";;" to separate paths.</source>
       <location filename="../../AppStartGui.cpp" line="125"/>
       <source>Start</source>
       <translation>Εκκίνηση</translation>
+    </message>
+  </context>
+  <context>
+    <name>Start::DisplayedFilesModel</name>
+    <message>
+      <location filename="../../../App/DisplayedFilesModel.cpp" line="188"/>
+      <source>Created at:</source>
+      <translation type="unfinished">Created at:</translation>
+    </message>
+    <message>
+      <location filename="../../../App/DisplayedFilesModel.cpp" line="189"/>
+      <source>Modified at:</source>
+      <translation type="unfinished">Modified at:</translation>
     </message>
   </context>
 </TS>

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 /****************************************************************************
  *                                                                          *
- *   Copyright (c) 2025 The FreeCAD Project Association AISBL               *
+ *   Copyright (c) 2026 The FreeCAD Project Association AISBL               *
  *                                                                          *
  *   This file is part of FreeCAD.                                          *
  *                                                                          *
@@ -23,14 +23,10 @@
 
 #pragma once
 
-#include <QMutex>
+#include <QtClassHelperMacros>
 #include <QObject>
-#include <QProcess>
 #include <QRunnable>
 #include <QString>
-#include <QStringList>
-
-#include <memory>
 
 namespace Start
 {
@@ -40,43 +36,34 @@ class ThumbnailSourceSignals: public QObject
     Q_OBJECT
 public:
 Q_SIGNALS:
-
     void thumbnailAvailable(const QString& file, const QByteArray& data);
 };
 
 class ThumbnailSource: public QRunnable
 {
-public:
-    explicit ThumbnailSource(QString file);
-
     // Don't make copies of a ThumbnailSource (it's probably running a process, what would it mean
     // to copy it?):
-    ThumbnailSource(ThumbnailSource&) = delete;
-    ThumbnailSource(ThumbnailSource&&) = delete;
-    ThumbnailSource operator=(const ThumbnailSource&) = delete;
-    ThumbnailSource operator=(ThumbnailSource&&) = delete;
+    Q_DISABLE_COPY_MOVE(ThumbnailSource)
+
+public:
+    using Signals = ThumbnailSourceSignals;
+
+    explicit ThumbnailSource(QString file);
+    ~ThumbnailSource() override = default;
 
     void run() override;
 
-    ThumbnailSourceSignals* signals();
+    const Signals* signals() const
+    {
+        return &_signals;
+    }
 
 private:
-    static void setupF3D();
-
+    // Having a signal QObject as part of the QRunnable ensures signal connections
+    // are properly cleaned up when the QRunnable gets destroyed as it finishes its work.
+    Signals _signals;
     QString _file;
     QString _thumbnailPath;
-    ThumbnailSourceSignals _signals;
-
-    /// Gather together all of the f3d information protected by the mutex: data in this struct
-    /// should be accessed only after a call to setupF3D() to ensure synchronization.
-    static struct F3DInstallation
-    {
-        bool initialized {false};
-        int major {0};
-        int minor {0};
-        QStringList baseArgs;
-    } _f3d;
-    static QMutex _mutex;
 };
 
 }  // namespace Start

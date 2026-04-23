@@ -38,6 +38,7 @@ import FreeCAD
 
 from femtools import femutils
 from femtools import membertools
+from femsolver.calculix.calculixutils import define_masks
 
 from PySide import QtCore  # there might be a special reason this is not guarded ?!?
 
@@ -366,7 +367,20 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             self.mesh,
             membertools.AnalysisMember(self.analysis),
         )
+        # set masks
+        masks = define_masks(self.solver)
+        meshdatagetter.mask_tria3 = masks["tria3"]
+        meshdatagetter.mask_tria6 = masks["tria6"]
+        meshdatagetter.mask_quad4 = masks["quad4"]
+        meshdatagetter.mask_quad8 = masks["quad8"]
+        meshdatagetter.mask_tetra4 = masks["tetra4"]
+        meshdatagetter.mask_tetra10 = masks["tetra10"]
+        meshdatagetter.mask_hexa8 = masks["hexa8"]
+        meshdatagetter.mask_hexa20 = masks["hexa20"]
+        meshdatagetter.mask_penta6 = masks["penta6"]
+        meshdatagetter.mask_penta15 = masks["penta15"]
         # save the sets into the member objects of the instanz meshdatagetter
+
         meshdatagetter.get_mesh_sets()
 
         # write input file
@@ -519,6 +533,8 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         ccx_stdout, ccx_stderr = p.communicate()
         ccx_stdout = ccx_stdout.decode()
         m = re.search(r"(\d+).(\d+)", ccx_stdout)
+        if m is None:
+            return (float("nan"), float("nan"))
         return (int(m.group(1)), int(m.group(2)))
 
     def ccx_run(self):

@@ -1,25 +1,35 @@
-/***************************************************************************
- *   Copyright (c) 2004 Werner Mayer <wmayer[at]users.sourceforge.net>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 51 Franklin Street,      *
- *   Fifth Floor, Boston, MA  02110-1301, USA                              *
- *                                                                         *
- ***************************************************************************/
+// SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2004 Werner Mayer <wmayer[at]users.sourceforge.net>
+// SPDX-FileNotice: Part of the FreeCAD project.
 
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
+
+
+#include <memory>
+
+#include <FCConfig.h>
+
+#ifdef FC_OS_WIN32
+// windows.h must be kept above commdlg.h and shlobj.h
+# include <windows.h>
+# include <commdlg.h>
+# include <shlobj.h>
+#endif
 
 #include <QApplication>
 #include <QButtonGroup>
@@ -27,6 +37,7 @@
 #include <QCryptographicHash>
 #include <QDialogButtonBox>
 #include <QDir>
+#include <QFileSystemModel>
 #include <QGridLayout>
 #include <QGroupBox>
 #include <QLineEdit>
@@ -40,16 +51,56 @@
 #include <QStyle>
 #include <QUrl>
 
-
 #include <Base/Parameter.h>
 #include <App/Application.h>
+#include <App/Document.h>
 
 #include "FileDialog.h"
+#include "FileDialogInternal.h"
 #include "MainWindow.h"
 #include "Tools.h"
 
 
 using namespace Gui;
+
+namespace
+{
+QString getActiveDocumentDirectory()
+{
+    App::Document* activeDoc = App::GetApplication().getActiveDocument();
+    if (!activeDoc) {
+        return {};
+    }
+
+    const QString docPath = QString::fromUtf8(activeDoc->FileName.getValue());
+    if (docPath.isEmpty()) {
+        return {};
+    }
+
+    const QFileInfo fileInfo(docPath);
+    const QString dirPath = fileInfo.absolutePath();
+    if (dirPath.isEmpty()) {
+        return {};
+    }
+
+    const QDir docDir(dirPath);
+    if (!docDir.exists()) {
+        return {};
+    }
+
+    return docDir.path();
+}
+
+QString getPreferredDialogDirectory()
+{
+    QString dirName = getActiveDocumentDirectory();
+    if (!dirName.isEmpty()) {
+        return dirName;
+    }
+
+    return FileDialog::getWorkingDirectory();
+}
+}  // namespace
 
 // An raii-helper struct to disable actions while dialogs are open
 // At least on macos, shortcuts for enabled actions will still trigger while dialogs are open
@@ -151,7 +202,7 @@ QList<QUrl> FileDialog::fetchSidebarUrls()
     list << QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
     list << QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
     list << QStandardPaths::writableLocation(QStandardPaths::PicturesLocation);
-    list << getWorkingDirectory();
+    list << getPreferredDialogDirectory();
     list << restoreLocation();
     list << QDir::currentPath();
 
@@ -206,19 +257,247 @@ void FileDialog::accept()
     QFileDialog::accept();
 }
 
-void FileDialog::getSuffixesDescription(QStringList& suffixes, const QString* suffixDescriptions)
+bool FileDialogInternal::getPreferShowFilterPatterns()
 {
-    QRegularExpression rx;
-    // start the raw string with a (
-    // match a *, a . and at least one word character (a-z, A-Z, 0-9, _) with \*\.\w+
-    // end the raw string with a )
-    rx.setPattern(QLatin1String(R"(\*\.\w+)"));
+    bool show = true;
+#ifdef FC_OS_WIN32
+    SHELLFLAGSTATE shellFlags;
+    SHGetSettings(&shellFlags, SSF_SHOWEXTENSIONS);
+    show = shellFlags.fShowExtensions;
+#endif
 
-    QRegularExpressionMatchIterator i = rx.globalMatch(*suffixDescriptions);
-    while (i.hasNext()) {
-        QRegularExpressionMatch match = i.next();
-        QString suffix = match.captured(0);
-        suffixes << suffix;
+    ParameterGrp::handle group = App::GetApplication()
+                                     .GetUserParameter()
+                                     .GetGroup("BaseApp")
+                                     ->GetGroup("Preferences")
+                                     ->GetGroup("Dialog");
+    return group->GetBool("ShowFilterPatterns", show);
+}
+
+using Filter = FileDialog::Filter;
+
+Filter Filter::AllFiles()
+{
+    return {QObject::tr("All Files"), {"*.*"}};
+}
+
+Filter Filter::fromFilterString(const QString& filter)
+{
+    const auto start = filter.lastIndexOf(QLatin1Char('('));
+    const auto end = filter.lastIndexOf(QLatin1Char(')'));
+    const auto name = filter.left(start).trimmed();
+    const auto patternsPart = filter.mid(start + 1, end - start - 1);
+    // ";" separators are explicitly not supported as this could
+    // encourage having more than one canonical string represenation.
+    return {name, patternsPart.split(QLatin1Char(' '), Qt::SkipEmptyParts)};
+}
+
+QString Filter::toFilterString() const
+{
+    return name + QStringLiteral(" (") + patterns.join(QLatin1Char(' ')) + QLatin1Char(')');
+}
+
+bool Filter::isWildcard() const
+{
+    for (const auto& pat : patterns) {
+        if (pat == "*" || pat == "*.*") {
+            return true;
+        }
+    }
+    return false;
+}
+
+QString FileDialogInternal::getFilterDisplayName(const Filter& filter, bool showPatterns)
+{
+    // Avoid overflowing the screen with an excessively long filter list (see #23139).
+    const qsizetype MaxFiltersLength = 128;
+    const qsizetype TypicalMaxPatternLength = 12;
+
+    if (!showPatterns) {
+        return filter.name;
+    }
+
+    QString formatted(filter.name);
+
+    // Deduplicate the patterns which usually come in both uppercase and lowercase variants.
+    // Keeps the first case encountered for a given pattern set.
+    // O(n^2) in complexity but the pattern lists are usually short.
+    QList<QStringView> seen;
+    seen.reserve(filter.patterns.size());
+    const auto wasSeen = [&seen](QStringView pat) -> bool {
+        for (QStringView patSeen : seen) {
+            if (patSeen.compare(pat, Qt::CaseInsensitive) == 0) {
+                return true;
+            }
+        }
+        return false;
+    };
+    QString dedupPatterns;
+    dedupPatterns.reserve(filter.patterns.length() * TypicalMaxPatternLength);
+    for (auto it = filter.patterns.cbegin(); it != filter.patterns.cend(); ++it) {
+        if (!wasSeen(*it)) {
+            seen.append(*it);
+            if (it != filter.patterns.cbegin()) {
+                dedupPatterns += QLatin1Char(' ');
+            }
+            dedupPatterns += *it;
+        }
+    }
+
+    if (dedupPatterns.size() <= MaxFiltersLength) {
+        formatted += QStringLiteral(" (");
+        formatted += dedupPatterns;
+        formatted += QLatin1Char(')');
+    }
+
+    return formatted;
+}
+
+static QString toQtFilter(const Filter& filter, bool showPatterns)
+{
+    return FileDialogInternal::getFilterDisplayName(filter, showPatterns) + QStringLiteral(" (")
+        + filter.patterns.join(QLatin1Char(' ')) + QLatin1Char(')');
+}
+
+QStringList toQtFilterList(const FileDialog::FilterList& filterList, bool showPatterns)
+{
+    QStringList qtFilters;
+    for (const auto& filter : filterList) {
+        qtFilters += toQtFilter(filter, showPatterns);
+    }
+    return qtFilters;
+}
+
+qsizetype indexOfFilterString(const FileDialog::FilterList& filterList, const QString& filterString)
+{
+    return filterList.indexOf(FileDialog::Filter::fromFilterString(filterString));
+}
+
+#ifndef FC_OS_WIN32
+QStringList FileDialogInternal::nativeFileDialog(
+    NativeFileDialogMode mode,
+    QWidget* parent,
+    const QString& caption,
+    const QString& startPath,
+    const FileDialog::FilterList& filters,
+    qsizetype& selectedFilterIndex,
+    FileDialog::Options options
+)
+{
+    const bool showPatterns = getPreferShowFilterPatterns();
+    const auto qtFilterList = toQtFilterList(filters, showPatterns);
+    QString selectedQtFilter = (selectedFilterIndex >= 0) ? qtFilterList[selectedFilterIndex] : "";
+    QStringList selected;
+    if (mode == NativeFileDialogMode::OpenSingle) {
+        selected << QFileDialog::getOpenFileName(
+            parent,
+            caption,
+            startPath,
+            qtFilterList.join(QStringLiteral(";;")),
+            &selectedQtFilter,
+            options
+        );
+    }
+    else if (mode == NativeFileDialogMode::OpenMultiple) {
+        selected << QFileDialog::getOpenFileNames(
+            parent,
+            caption,
+            startPath,
+            qtFilterList.join(QStringLiteral(";;")),
+            &selectedQtFilter,
+            options
+        );
+    }
+    else /* (mode == NativeFileDialogMode::Save) */ {
+        selected << QFileDialog::getSaveFileName(
+            parent,
+            caption,
+            startPath,
+            qtFilterList.join(QStringLiteral(";;")),
+            &selectedQtFilter,
+            options
+        );
+    }
+    selectedFilterIndex = qtFilterList.indexOf(selectedQtFilter);
+    if (selectedFilterIndex < 0) {
+        Base::Console().error(
+            "Qt-backed nativeFileDialog returned a selected filter that wasn't in the original "
+            "list, defaulting to index 0"
+        );
+        selectedFilterIndex = 0;
+    }
+    return selected;
+}
+#endif
+
+/**
+ * Modifies a path obtained as a result of a save file dialog to ensure the file
+ * name matches the selected file filter.
+ */
+void FileDialogInternal::normalizeSavePath(QString& path, const FileDialog::Filter& selectedFilter)
+{
+    // Wildcards have no rule by definition.
+    if (selectedFilter.isWildcard()) {
+        return;
+    }
+
+    // As it stands, much of FreeCAD relies on an extension always being present, so
+    // enforce extension according to selected filter if none is specified.
+    // Ideally code should be migrated to discriminating on the returned selected
+    // filter instead.
+
+    // Platform dialogs can have a variety of behaviors:
+    // * Qt/KDE changes the filter to a matching one if applicable when the user
+    //   types an extension in the file name explicitly, and some of the dialogs
+    //   feature a checkbox to auto-append an extension if absent.
+    // * Windows will never change the selected filter on its own.
+    //   1. Modern dialogs (IFileDialog and Windows::Storage::Pickers) keep typed
+    //      filenames intact *if* they have an extension 1-3 characters long, known
+    //      to HKEY_CLASSES_ROOT, or present in the filters.
+    //      Otherwise, appends the first extension of the selected filter.
+    //   2. Legacy GetSaveFileName() always keeps typed filenames intact.
+    //      However, we use it and want the modern behavior instead.
+
+    // This function uniformizes some of that.
+
+    // Discard everything up to and including directory separator.
+    const auto typedName = QStringView(path).mid(path.lastIndexOf('/') + 1);
+
+    // Check for any full-name filters first.
+    for (const auto& pat : selectedFilter.patterns) {
+        if (!pat.startsWith("*.") && typedName == pat) {
+            return;
+        }
+    }
+
+    const auto lastDot = typedName.lastIndexOf('.');
+    // typedExt includes the last dot and everything after it,
+    // as a stray dot ("abc.") may have been typed. Won't fail
+    // even in the improbable case of only "." being passed.
+    const auto typedExt = lastDot == -1 ? QStringView() : typedName.mid(lastDot);
+
+    if (typedExt.isEmpty()) {
+        // No extension, move directly to append.
+    }
+    else if (typedExt.size() == 1) {
+        // Remove stray dot then append.
+        path.chop(1);
+    }
+    else /* size() > 1 */ {
+        for (const auto& pat : selectedFilter.patterns) {
+            if (pat.startsWith("*.") && typedExt == QStringView(pat).mid(1)) {
+                // Valid extension found for the selected filter.
+                return;
+            }
+        }
+    }
+
+    // Append extension from first *.xyz-style pattern.
+    for (const auto& pat : selectedFilter.patterns) {
+        if (pat.startsWith("*.")) {
+            path.append(QStringView(pat).mid(1));
+            break;
+        }
     }
 }
 
@@ -229,49 +508,39 @@ void FileDialog::getSuffixesDescription(QStringList& suffixes, const QString* su
 QString FileDialog::getSaveFileName(
     QWidget* parent,
     const QString& caption,
-    const QString& dir,
-    const QString& filter,
-    QString* selectedFilter,
+    const QString& startPath,
+    const FilterList& filters,
+    qsizetype* selectedFilterIndex,
     Options options
 )
 {
     ActionDisabler actionDisabler {};
-
-    QString dirName = dir;
+    qsizetype actuallySelectedFilterIndex = selectedFilterIndex != nullptr ? *selectedFilterIndex
+                                                                           : -1;
+    QString suggestedPath = startPath;
     bool hasFilename = false;
-    if (dirName.isEmpty()) {
-        dirName = getWorkingDirectory();
+    if (suggestedPath.isEmpty()) {
+        suggestedPath = getPreferredDialogDirectory();
     }
     else {
-        QFileInfo fi(dir);
+        QFileInfo fi(suggestedPath);
         if (fi.isRelative()) {
-            dirName = getWorkingDirectory();
-            dirName += QLatin1String("/");
-            dirName += fi.fileName();
+            suggestedPath = getPreferredDialogDirectory();
+            suggestedPath += QStringLiteral("/");
+            suggestedPath += fi.fileName();
+            fi.setFile(suggestedPath);
         }
-        if (!fi.fileName().isEmpty()) {
+        // If the startPath points to a directory (path ends with separator, or points
+        // to existing dir), don't touch it and don't use QFileDialog::selectFile() later.
+        if (!(fi.fileName().isEmpty() || fi.isDir())) {
+            // If there is a file name at the end, make sure it matches one of the patterns
+            // of the pre-selected filter, if applicable.
             hasFilename = true;
-        }
-
-        // get the suffix for the filter: use the selected filter if there is one,
-        // otherwise find the first valid suffix in the complete list of filters
-        const QString* filterToSearch;
-        if (selectedFilter && !selectedFilter->isEmpty()) {
-            filterToSearch = selectedFilter;
-        }
-        else {
-            filterToSearch = &filter;
-        }
-
-        QStringList filterSuffixes;
-        getSuffixesDescription(filterSuffixes, filterToSearch);
-        const QString fiSuffix = fi.suffix();
-        const QString dotSuffix = QLatin1String("*.") + fiSuffix;  // To match with filterSuffixes
-        if (fiSuffix.isEmpty() || !filterSuffixes.contains(dotSuffix)) {
-            // there is no suffix or not a suffix that matches the filter, so
-            // default to the first suffix of the filter
-            if (!filterSuffixes.isEmpty()) {
-                dirName += filterSuffixes[0].mid(1);
+            if (actuallySelectedFilterIndex >= 0) {
+                FileDialogInternal::normalizeSavePath(
+                    suggestedPath,
+                    filters[actuallySelectedFilterIndex]
+                );
             }
         }
     }
@@ -281,12 +550,12 @@ QString FileDialog::getSaveFileName(
         windowTitle = FileDialog::tr("Save As");
     }
 
+    options |= QFileDialog::HideNameFilterDetails;
 
-    // NOTE: We must not change the specified file name afterwards as we may return the name of an
-    // already existing file. Hence we must extract the first matching suffix from the filter list
-    // and append it before showing the file dialog.
     QString file;
     if (DialogOptions::dontUseNativeFileDialog()) {
+        const bool showPatterns = FileDialogInternal::getPreferShowFilterPatterns();
+        const auto qtFilterList = toQtFilterList(filters, showPatterns);
         QList<QUrl> urls = fetchSidebarUrls();
 
         options |= QFileDialog::DontUseNativeDialog;
@@ -299,36 +568,68 @@ QString FileDialog::getSaveFileName(
         dlg.setIconProvider(iconprov.get());
         dlg.setFileMode(QFileDialog::AnyFile);
         dlg.setAcceptMode(QFileDialog::AcceptSave);
-        dlg.setDirectory(dirName);
+        dlg.setDirectory(suggestedPath);
         if (hasFilename) {
-            dlg.selectFile(dirName);
+            dlg.selectFile(suggestedPath);
         }
-        dlg.setNameFilters(filter.split(QLatin1String(";;")));
-        if (selectedFilter && !selectedFilter->isEmpty()) {
-            dlg.selectNameFilter(*selectedFilter);
+        dlg.setNameFilters(qtFilterList);
+        if (actuallySelectedFilterIndex >= 0) {
+            dlg.selectNameFilter(toQtFilter(filters[actuallySelectedFilterIndex], showPatterns));
         }
         dlg.onSelectedFilter(dlg.selectedNameFilter());
-        dlg.setOption(QFileDialog::HideNameFilterDetails, false);
         dlg.setOption(QFileDialog::DontConfirmOverwrite, false);
         if (dlg.exec() == QDialog::Accepted) {
-            if (selectedFilter) {
-                *selectedFilter = dlg.selectedNameFilter();
-            }
             file = dlg.selectedFiles().constFirst();
+        }
+        // Non-native QFileDialog::selectedNameFilter() always returns a filter, even if
+        // the user cancelled or the dialog wasn't shown at all.
+        // https://github.com/qt/qtbase/blob/53ff8897c5c8bc6175cf94ed24e2d2c5fa17365b/
+        // src/widgets/dialogs/qfiledialog.cpp#L1484
+        actuallySelectedFilterIndex = qtFilterList.indexOf(dlg.selectedNameFilter());
+        if (actuallySelectedFilterIndex < 0) {
+            // Log an error since this happening means the code is incorrect
+            Base::Console()
+                .error("FileDialog returned a selected filter that wasn't in the original list, defaulting to index 0");
+            actuallySelectedFilterIndex = 0;
         }
     }
     else {
-        file = QFileDialog::getSaveFileName(parent, windowTitle, dirName, filter, selectedFilter, options);
-        file = QDir::fromNativeSeparators(file);
+        const auto files = nativeFileDialog(
+            FileDialogInternal::NativeFileDialogMode::Save,
+            parent,
+            windowTitle,
+            suggestedPath,
+            filters,
+            actuallySelectedFilterIndex,
+            options
+        );
+        if (!files.isEmpty()) {
+            file = files.constFirst();
+        }
     }
 
-    if (!file.isEmpty()) {
-        setWorkingDirectory(file);
-        return file;
+    if (selectedFilterIndex != nullptr) {
+        *selectedFilterIndex = actuallySelectedFilterIndex;
     }
-    else {
+
+    if (file.isEmpty()) {
         return {};
     }
+
+    // All directory separators become "/" from here on out.
+    file = QDir::fromNativeSeparators(file);
+
+    // Changing the file path after selection is risky as we may as well land on an existing
+    // file if the platform dialog didn't enforce pattern matching and prompt the user
+    // upon overwrite. Take the path of least destruction.
+    const QString pristineUserInput(file);
+    FileDialogInternal::normalizeSavePath(file, filters[actuallySelectedFilterIndex]);
+    if (file != pristineUserInput && QFileInfo::exists(file)) {
+        file = pristineUserInput;
+    }
+
+    setWorkingDirectory(file);
+    return file;
 }
 
 /**
@@ -342,7 +643,12 @@ QString FileDialog::getExistingDirectory(
 )
 {
     ActionDisabler actionDisabler {};
-    QString path = QFileDialog::getExistingDirectory(parent, caption, dir, options);
+    QString dirName = dir;
+    if (dirName.isEmpty()) {
+        dirName = getPreferredDialogDirectory();
+    }
+
+    QString path = QFileDialog::getExistingDirectory(parent, caption, dirName, options);
     // valid path was selected
     if (!path.isEmpty()) {
         QDir d(path);
@@ -360,15 +666,15 @@ QString FileDialog::getOpenFileName(
     QWidget* parent,
     const QString& caption,
     const QString& dir,
-    const QString& filter,
-    QString* selectedFilter,
+    const FilterList& filters,
+    qsizetype* selectedFilterIndex,
     Options options
 )
 {
     ActionDisabler actionDisabler {};
     QString dirName = dir;
     if (dirName.isEmpty()) {
-        dirName = getWorkingDirectory();
+        dirName = getPreferredDialogDirectory();
     }
 
     QString windowTitle = caption;
@@ -376,8 +682,15 @@ QString FileDialog::getOpenFileName(
         windowTitle = FileDialog::tr("Open");
     }
 
+    options |= QFileDialog::HideNameFilterDetails;
+
+    qsizetype actuallySelectedFilterIndex = selectedFilterIndex != nullptr ? *selectedFilterIndex
+                                                                           : -1;
+
     QString file;
     if (DialogOptions::dontUseNativeFileDialog()) {
+        const bool showPatterns = FileDialogInternal::getPreferShowFilterPatterns();
+        const auto qtFilterList = toQtFilterList(filters, showPatterns);
         QList<QUrl> urls = fetchSidebarUrls();
 
         options |= QFileDialog::DontUseNativeDialog;
@@ -391,30 +704,50 @@ QString FileDialog::getOpenFileName(
         dlg.setFileMode(QFileDialog::ExistingFile);
         dlg.setAcceptMode(QFileDialog::AcceptOpen);
         dlg.setDirectory(dirName);
-        dlg.setNameFilters(filter.split(QLatin1String(";;")));
-        dlg.setOption(QFileDialog::HideNameFilterDetails, false);
-        if (selectedFilter && !selectedFilter->isEmpty()) {
-            dlg.selectNameFilter(*selectedFilter);
+        dlg.setNameFilters(qtFilterList);
+        if (actuallySelectedFilterIndex >= 0) {
+            dlg.selectNameFilter(toQtFilter(filters[actuallySelectedFilterIndex], showPatterns));
         }
         if (dlg.exec() == QDialog::Accepted) {
-            if (selectedFilter) {
-                *selectedFilter = dlg.selectedNameFilter();
-            }
             file = dlg.selectedFiles().constFirst();
+        }
+        // Non-native QFileDialog::selectedNameFilter() always returns a filter, even if
+        // the user cancelled or the dialog wasn't shown at all.
+        actuallySelectedFilterIndex = qtFilterList.indexOf(dlg.selectedNameFilter());
+        if (actuallySelectedFilterIndex < 0) {
+            // Log an error since this happening means the code is incorrect
+            Base::Console()
+                .error("FileDialog returned a selected filter that wasn't in the original list, defaulting to index 0");
+            actuallySelectedFilterIndex = 0;
         }
     }
     else {
-        file = QFileDialog::getOpenFileName(parent, windowTitle, dirName, filter, selectedFilter, options);
-        file = QDir::fromNativeSeparators(file);
+        const auto files = nativeFileDialog(
+            FileDialogInternal::NativeFileDialogMode::OpenSingle,
+            parent,
+            windowTitle,
+            dirName,
+            filters,
+            actuallySelectedFilterIndex,
+            options
+        );
+        if (!files.isEmpty()) {
+            file = files.constFirst();
+        }
     }
 
-    if (!file.isEmpty()) {
-        setWorkingDirectory(file);
-        return file;
+    if (selectedFilterIndex != nullptr) {
+        *selectedFilterIndex = actuallySelectedFilterIndex;
     }
-    else {
+
+    if (file.isEmpty()) {
         return {};
     }
+
+    file = QDir::fromNativeSeparators(file);
+
+    setWorkingDirectory(file);
+    return file;
 }
 
 /**
@@ -425,15 +758,15 @@ QStringList FileDialog::getOpenFileNames(
     QWidget* parent,
     const QString& caption,
     const QString& dir,
-    const QString& filter,
-    QString* selectedFilter,
+    const FilterList& filters,
+    qsizetype* selectedFilterIndex,
     Options options
 )
 {
     ActionDisabler actionDisabler {};
     QString dirName = dir;
     if (dirName.isEmpty()) {
-        dirName = getWorkingDirectory();
+        dirName = getPreferredDialogDirectory();
     }
 
     QString windowTitle = caption;
@@ -441,8 +774,15 @@ QStringList FileDialog::getOpenFileNames(
         windowTitle = FileDialog::tr("Open");
     }
 
+    options |= QFileDialog::HideNameFilterDetails;
+
+    qsizetype actuallySelectedFilterIndex = selectedFilterIndex != nullptr ? *selectedFilterIndex
+                                                                           : -1;
+
     QStringList files;
     if (DialogOptions::dontUseNativeFileDialog()) {
+        const bool showPatterns = FileDialogInternal::getPreferShowFilterPatterns();
+        const auto qtFilterList = toQtFilterList(filters, showPatterns);
         QList<QUrl> urls = fetchSidebarUrls();
 
         options |= QFileDialog::DontUseNativeDialog;
@@ -456,23 +796,40 @@ QStringList FileDialog::getOpenFileNames(
         dlg.setFileMode(QFileDialog::ExistingFiles);
         dlg.setAcceptMode(QFileDialog::AcceptOpen);
         dlg.setDirectory(dirName);
-        dlg.setNameFilters(filter.split(QLatin1String(";;")));
-        dlg.setOption(QFileDialog::HideNameFilterDetails, false);
-        if (selectedFilter && !selectedFilter->isEmpty()) {
-            dlg.selectNameFilter(*selectedFilter);
+        dlg.setNameFilters(qtFilterList);
+        if (actuallySelectedFilterIndex >= 0) {
+            dlg.selectNameFilter(toQtFilter(filters[actuallySelectedFilterIndex], showPatterns));
         }
         if (dlg.exec() == QDialog::Accepted) {
-            if (selectedFilter) {
-                *selectedFilter = dlg.selectedNameFilter();
-            }
             files = dlg.selectedFiles();
+        }
+        // Non-native QFileDialog::selectedNameFilter() always returns a filter, even if
+        // the user cancelled or the dialog wasn't shown at all.
+        actuallySelectedFilterIndex = qtFilterList.indexOf(dlg.selectedNameFilter());
+        if (actuallySelectedFilterIndex < 0) {
+            // Log an error since this happening means the code is incorrect
+            Base::Console()
+                .error("FileDialog returned a selected filter that wasn't in the original list, defaulting to index 0");
+            actuallySelectedFilterIndex = 0;
         }
     }
     else {
-        files = QFileDialog::getOpenFileNames(parent, windowTitle, dirName, filter, selectedFilter, options);
+        files = nativeFileDialog(
+            FileDialogInternal::NativeFileDialogMode::OpenMultiple,
+            parent,
+            windowTitle,
+            dirName,
+            filters,
+            actuallySelectedFilterIndex,
+            options
+        );
         for (auto& file : files) {
             file = QDir::fromNativeSeparators(file);
         }
+    }
+
+    if (selectedFilterIndex != nullptr) {
+        *selectedFilterIndex = actuallySelectedFilterIndex;
     }
 
     if (!files.isEmpty()) {
@@ -562,7 +919,7 @@ FileOptionsDialog::FileOptionsDialog(QWidget* parent, Qt::WindowFlags fl)
     extensionButton->setText(tr("Extended"));
 
     setOption(QFileDialog::DontUseNativeDialog);
-    setDirectory(FileDialog::getWorkingDirectory());
+    setDirectory(getPreferredDialogDirectory());
 
     // search for the grid layout and add the new button
     auto grid = this->findChild<QGridLayout*>();
@@ -849,7 +1206,7 @@ void FileChooser::chooseFile()
     ActionDisabler actionDisabler {};
     QString prechosenDirectory = lineEdit->text();
     if (prechosenDirectory.isEmpty()) {
-        prechosenDirectory = FileDialog::getWorkingDirectory();
+        prechosenDirectory = getPreferredDialogDirectory();
     }
 
     QFileDialog::Options dlgOpt;

@@ -280,8 +280,9 @@ void GeomFillSurface::createBezierSurface(TopoDS_Wire& aWire)
         const TopoDS_Edge hedge = TopoDS::Edge(anExp.Current());
         TopLoc_Location heloc;                                               // this will be output
         Handle(Geom_Curve) c_geom = BRep_Tool::Curve(hedge, heloc, u1, u2);  // The geometric curve
-        Handle(Geom_BezierCurve) bezier = Handle(Geom_BezierCurve)::DownCast(c_geom);  // Try to get
-                                                                                       // Bezier curve
+        Handle(Geom_BezierCurve)
+            bezier = Handle(Geom_BezierCurve)::DownCast(c_geom);  // Try to get
+                                                                  // Bezier curve
 
         if (!bezier.IsNull()) {
             bezier->Segment(u1, u2);  // DownCast(c_geom) will not trim bezier, so DIY
@@ -331,9 +332,8 @@ void GeomFillSurface::createBSplineSurface(TopoDS_Wire& aWire)
         const TopoDS_Edge& edge = TopoDS::Edge(anExp.Current());
         TopLoc_Location heloc;                                              // this will be output
         Handle(Geom_Curve) c_geom = BRep_Tool::Curve(edge, heloc, u1, u2);  // The geometric curve
-        Handle(Geom_BSplineCurve) bspline = Handle(Geom_BSplineCurve)::DownCast(
-            c_geom
-        );  // Try to get BSpline curve
+        Handle(Geom_BSplineCurve)
+            bspline = Handle(Geom_BSplineCurve)::DownCast(c_geom);  // Try to get BSpline curve
 
         gp_Trsf transf = heloc.Transformation();
         if (!bspline.IsNull()) {
@@ -357,8 +357,8 @@ void GeomFillSurface::createBSplineSurface(TopoDS_Wire& aWire)
             else {
                 // GeomConvert failed, try ShapeConstruct_Curve now
                 ShapeConstruct_Curve scc;
-                Handle(Geom_BSplineCurve) spline
-                    = scc.ConvertToBSpline(c_geom, u1, u2, Precision::Confusion());
+                Handle(Geom_BSplineCurve)
+                    spline = scc.ConvertToBSpline(c_geom, u1, u2, Precision::Confusion());
                 if (spline.IsNull()) {
                     Standard_Failure::Raise(
                         "A curve was not a B-spline and could not be converted into one."

@@ -3,7 +3,12 @@ set -euo pipefail
 
 # Add the KDE Neon repository for up-to-date and matching Qt6 and PySide packages
 # Ubuntu 24.04 does not have PySide6 packages available
-sudo wget -qO- http://archive.neon.kde.org/public.key | sudo gpg --dearmor -o /usr/share/keyrings/neon-keyring.gpg
+KEY=$(wget --retry-connrefused --waitretry=3 --tries=5 -qO- https://archive.neon.kde.org/public.key)
+if [ -z "$KEY" ]; then
+  echo "Failed to download KDE Neon GPG key" >&2
+  exit 1
+fi
+echo "$KEY" | sudo gpg --dearmor -o /usr/share/keyrings/neon-keyring.gpg
 echo "deb [signed-by=/usr/share/keyrings/neon-keyring.gpg] http://archive.neon.kde.org/user noble main" | sudo tee /etc/apt/sources.list.d/neon-qt.list
 
 # Update package lists quietly

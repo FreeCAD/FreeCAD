@@ -735,6 +735,9 @@ public:
     friend class ViewProviderSketchCoinAttorney;
     friend class ViewProviderSketchSnapAttorney;
     //@}
+
+    bool editingCancelled;
+
 protected:
     /** @name enter/exit edit mode */
     //@{
@@ -754,7 +757,7 @@ protected:
     /// get called if a subelement is double clicked while editing
     void editDoubleClicked();
     /// get called when an edge is double clicked to select/unselect the whole wire
-    void toggleWireSelelection(int geoId);
+    void toggleWireSelection(int geoId);
     //@}
 
     /** @name Solver Information */
@@ -1024,6 +1027,7 @@ private:
     int viewOrientationFactor;  // stores if sketch viewed from front or back
 
     bool blockContextMenu;
+    std::stringstream sketchBackup;
 };
 
 }  // namespace SketcherGui

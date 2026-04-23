@@ -48,15 +48,6 @@ public:
 
 public:
     void draw();
-    //void setHighlighted(bool state);
-    //double getLineWidth() { return m_lineWidth; }
-    //void setLineWidth(double w);
-    //QPainterPath shape() const;
-
-protected:
-    //QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-    double getEdgeFuzz() const;
-
 
 private:
 };

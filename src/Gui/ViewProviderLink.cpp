@@ -1644,7 +1644,7 @@ void LinkView::updateLink()
 bool LinkView::linkGetElementPicked(const SoPickedPoint* pp, std::string& subname) const
 {
     std::ostringstream ss;
-    CoinPtr<SoPath> path = pp->getPath();
+    CoinPtr<SoPath> path {pp->getPath()};
     if (!nodeArray.empty()) {
         auto idx = path->findNode(pcLinkRoot);
         if (idx < 0 || idx + 2 >= path->getLength()) {
@@ -3199,26 +3199,6 @@ void ViewProviderLink::_setupContextMenu(
         action->setToolTip(
             QObject::tr("Changes whether to show each link array element as individual objects")
         );
-    }
-
-    if ((ext->getPlacementProperty() && !ext->getPlacementProperty()->isReadOnly())
-        || (ext->getLinkPlacementProperty() && !ext->getLinkPlacementProperty()->isReadOnly())) {
-        bool found = false;
-        const auto actions = menu->actions();
-        for (auto action : actions) {
-            if (action->data().toInt() == ViewProvider::Transform) {
-                found = true;
-                break;
-            }
-        }
-        if (!found) {
-            QIcon iconObject = mergeGreyableOverlayIcons(
-                Gui::BitmapFactory().pixmap("Std_TransformManip.svg")
-            );
-            QAction* act = menu->addAction(iconObject, QObject::tr("Transform"), receiver, member);
-            act->setToolTip(QObject::tr("Transforms the object at the origin of the placement"));
-            act->setData(QVariant((int)ViewProvider::Transform));
-        }
     }
 
     if (ext->getColoredElementsProperty()) {

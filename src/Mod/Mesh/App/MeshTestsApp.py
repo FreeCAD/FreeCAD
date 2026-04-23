@@ -514,6 +514,7 @@ class PivyTestCases(unittest.TestCase):
 
     def testPrimitiveCount(self):
         if not FreeCAD.GuiUp:
+            self.skipTest("GUI not running, skipping coin3d primitive count test")
             return
         self.planarMesh.append([-16.097176, -29.891157, 15.987688])
         self.planarMesh.append([-16.176304, -29.859991, 15.947966])
@@ -526,13 +527,15 @@ class PivyTestCases(unittest.TestCase):
         from pivy import coin
         import FreeCADGui
 
-        Mesh.show(planarMeshObject)
         view = FreeCADGui.ActiveDocument.ActiveView
         view.setAxisCross(False)
         pc = coin.SoGetPrimitiveCountAction()
         pc.apply(view.getSceneGraph())
-        self.assertTrue(pc.getTriangleCount() == 2)
-        # self.assertTrue(pc.getPointCount() == 6)
+        pre_mesh_tc = pc.getTriangleCount()
+        Mesh.show(planarMeshObject)
+        pc.apply(view.getSceneGraph())
+        mesh_tc = pc.getTriangleCount() - pre_mesh_tc
+        self.assertTrue(mesh_tc == 2)
 
     def tearDown(self):
         # closing doc

@@ -47,20 +47,31 @@ cmake --build build
 mkdir -p FreeCAD.app/Contents/MacOS
 cp build/FreeCAD FreeCAD.app/Contents/MacOS/FreeCAD
 
-python_version=$(${conda_env}/bin/python -c 'import platform; print("py" + platform.python_version_tuple()[0] + platform.python_version_tuple()[1])')
-
 # Add deployment target suffix to artifact name (e.g., "-macOS11" or "-macOS15")
 deploy_target="${MACOS_DEPLOYMENT_TARGET:-11.0}"
-deploy_suffix="-macOS${deploy_target%%.*}"
-version_name="FreeCAD_${BUILD_TAG}-macOS-$(uname -m)${deploy_suffix}-${python_version}"
+version_name="FreeCAD_${BUILD_TAG}-macOS${deploy_target%%.*}-$(uname -m)"
 application_menu_name="FreeCAD_${BUILD_TAG}"
 
 echo -e "\################"
 echo -e "version_name:  ${version_name}"
 echo -e "################"
 
+# Extract Apple-compliant bundle version from version.json
+# For dev/weekly builds, append a "d" + ISO week number suffix (e.g. "1.2.0d12")
+# per Apple's CFBundleVersion spec for development builds
+bundle_version=$(python3 -c "
+import json, datetime
+d = json.load(open('../../../version.json'))
+v = f'{d[\"version_major\"]}.{d[\"version_minor\"]}.{d[\"version_patch\"]}'
+suffix = d.get('version_suffix', '')
+if suffix:
+    week = datetime.date.today().isocalendar()[1]
+    v += f'd{week}'
+print(v)
+")
+
 cp Info.plist.template ${conda_env}/../Info.plist
-sed -i "s/FREECAD_VERSION/${version_name}/" ${conda_env}/../Info.plist
+sed -i "s/FREECAD_BUNDLE_VERSION/${bundle_version}/" ${conda_env}/../Info.plist
 sed -i "s/APPLICATION_MENU_NAME/${application_menu_name}/" ${conda_env}/../Info.plist
 
 pixi list -e default > FreeCAD.app/Contents/packages.txt
@@ -105,5 +116,15 @@ fi
 sha256sum ${version_name}.dmg > ${version_name}.dmg-SHA256.txt
 
 if [[ "${UPLOAD_RELEASE}" == "true" ]]; then
-    gh release upload --clobber ${BUILD_TAG} "${version_name}.dmg" "${version_name}.dmg-SHA256.txt"
+    for attempt in 1 2 3 4 5; do
+        if gh release upload --clobber ${BUILD_TAG} "${version_name}.dmg" "${version_name}.dmg-SHA256.txt"; then
+            break
+        fi
+        if [[ $attempt -eq 5 ]]; then
+            echo "Failed to upload release after 5 attempts" >&2
+            exit 1
+        fi
+        echo "Upload attempt $attempt failed, retrying in $((attempt * 10))s..."
+        sleep $((attempt * 10))
+    done
 fi

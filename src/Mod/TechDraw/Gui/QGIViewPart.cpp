@@ -50,6 +50,7 @@
 #include "DrawGuiUtil.h"
 #include "MDIViewPage.h"
 #include "PreferencesGui.h"
+#include "QGIArrow.h"
 #include "QGICMark.h"
 #include "QGICenterLine.h"
 #include "QGIEdge.h"
@@ -63,6 +64,7 @@
 #include "ViewProviderGeomHatch.h"
 #include "ViewProviderHatch.h"
 #include "ViewProviderViewPart.h"
+#include "ViewProviderViewSection.h"
 #include "ZVALUE.h"
 #include "PathBuilder.h"
 #include "QGIBreakLine.h"
@@ -123,6 +125,12 @@ QVariant QGIViewPart::itemChange(GraphicsItemChange change, const QVariant& valu
         // we are selected, don't change anything?
     }
     else if (change == ItemSceneChange && scene()) {
+        // Disconnect the signal to prevent callbacks during teardown
+        if (m_selectionChangedConnection) {
+            QObject::disconnect(m_selectionChangedConnection);
+            // Reset the connection handle so it's not holding a stale reference
+            m_selectionChangedConnection = QMetaObject::Connection();
+        }
         // This means we are finished?
         tidy();
     }
@@ -130,6 +138,9 @@ QVariant QGIViewPart::itemChange(GraphicsItemChange change, const QVariant& valu
         if (scene()) {
             // added to scene
             m_selectionChangedConnection = connect(scene(), &QGraphicsScene::selectionChanged, this, [this]() {
+                if (!scene()) {
+                    return;
+                }
                 // When selection changes, if the mouse is not over the view,
                 // hide any non-selected vertices.
                 if (!isUnderMouse()) {
@@ -268,7 +279,7 @@ void QGIViewPart::draw()
     //this is old C/L
     drawCenterLines(true);//have to draw centerlines after border to get size correct.
     drawAllSectionLines();//same for section lines
-    
+
     prepareGeometryChange();
 }
 
@@ -513,8 +524,7 @@ void QGIViewPart::drawAllVertexes()
                 item->setRadius(getVertexSize());
                 item->setPrettyNormal();
                 item->setZValue(ZVALUE::VERTEX);
-                item->setVisible(m_isHovered || isSelected() ||
-                (vpPage->getFrameState() && PreferencesGui::getViewFrameMode() == ViewFrameMode::Manual));
+                item->setVisible(shouldShowFrame());
             }
         }
     }
@@ -714,8 +724,13 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
     if (!viewSection->hasGeometry())
         return;
 
-    auto vp = static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject()));
+    auto vp = static_cast<ViewProviderViewPart*>(getViewProvider(viewPart));
     if (!vp) {
+        return;
+    }
+
+    auto sectionVp = static_cast<ViewProviderViewSection*>(getViewProvider(viewSection));
+    if (!sectionVp) {
         return;
     }
 
@@ -778,8 +793,16 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
             sectionLine->setShowLine(false);
         }
 
-        double fontSize = Preferences::dimFontSizeMM();
-        sectionLine->setFont(getFont(), fontSize);
+        auto font = sectionVp->SectionLineFont.getValue();
+        auto fontSize = sectionVp->SectionLineFontsize.getValue();
+        auto arrowSize = sectionVp->SectionLineArrowsize.getValue();
+
+        QFont symFont;
+        symFont.setFamily(QString::fromUtf8(font));
+        symFont.setPixelSize(exactFontSize(font, std::max(1.0, fontSize)));
+
+        sectionLine->setFont(symFont);
+        sectionLine->setArrowSize(arrowSize);
         sectionLine->setZValue(ZVALUE::SECTIONLINE);
         sectionLine->setRotation(-viewPart->Rotation.getValue());
         sectionLine->draw();
@@ -795,8 +818,12 @@ void QGIViewPart::drawComplexSectionLine(TechDraw::DrawViewSection* viewSection,
         return;
     if (!viewSection)
         return;
-    auto vp = static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject()));
+    auto vp = static_cast<ViewProviderViewPart*>(getViewProvider(viewPart));
     if (!vp) {
+        return;
+    }
+    auto sectionVp = static_cast<ViewProviderViewSection*>(getViewProvider(viewSection));
+    if (!sectionVp) {
         return;
     }
 
@@ -857,8 +884,16 @@ void QGIViewPart::drawComplexSectionLine(TechDraw::DrawViewSection* viewSection,
         sectionLine->setShowLine(false);
     }
 
-    double fontSize = Preferences::dimFontSizeMM();
-    sectionLine->setFont(getFont(), fontSize);
+    auto font = sectionVp->SectionLineFont.getValue();
+    auto fontSize = sectionVp->SectionLineFontsize.getValue();
+    auto arrowSize = sectionVp->SectionLineArrowsize.getValue();
+
+    QFont symFont;
+    symFont.setFamily(QString::fromUtf8(font));
+    symFont.setPixelSize(exactFontSize(font, std::max(1.0, fontSize)));
+
+    sectionLine->setFont(symFont);
+    sectionLine->setArrowSize(arrowSize);
     sectionLine->setZValue(ZVALUE::SECTIONLINE);
     sectionLine->setRotation(-viewPart->Rotation.getValue());
     sectionLine->draw();
@@ -1341,22 +1376,36 @@ double QGIViewPart::getVertexSize() {
     return getLineWidth() * Preferences::vertexScale();
 }
 
+void QGIViewPart::updateFrameVisibility()
+{
+    QGIView::updateFrameVisibility();
+
+    bool showDecorations = shouldShowFrame();
+    
+    for (auto& child : childItems()) {
+        if (child->type() == UserType::QGIVertex) {
+            child->setVisible(showDecorations || child->isSelected());
+        }
+        if (child->type() == UserType::QGICMark) {
+            child->setVisible(showDecorations || child->isSelected() || !hideCenterMarks());
+        }
+    }
+}
 void QGIViewPart::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     QGIView::hoverEnterEvent(event);
 
+    bool showDecorations = shouldShowFrame();
+
     for (auto& child : childItems()) {
-        if (child->type() == UserType::QGIVertex || child->type() == UserType::QGICMark) {
-            child->show();
+        if (child->type() == UserType::QGIVertex) {
+            child->setVisible(showDecorations);
             continue;
         }
-        if (child->type() == UserType::QGICMark &&
-            !hideCenterMarks()) {
+        if (child->type() == UserType::QGICMark && !hideCenterMarks()) {
             child->show();
         }
-
     }
-
     update();
 }
 
@@ -1364,33 +1413,18 @@ void QGIViewPart::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     QGIView::hoverLeaveEvent(event);
 
-    if (isSelected()) {
-        // if the view is selected, we should leave things alone.
-        return;
-    }
-
-    auto vp(static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject())));
-    ViewProviderPage* vpPage = vp->getViewProviderPage();
-    if (vpPage->getFrameState() &&
-        PreferencesGui::getViewFrameMode() == ViewFrameMode::Manual) {
-        return;
-    }
-
-    bool hideCenters = hideCenterMarks();
+    bool showDecorations = shouldShowFrame();
 
     for (auto& child : childItems()) {
-        if (child->type() == UserType::QGIVertex &&
-            !child->isSelected()) {
-            child->hide();
+        if (child->type() == UserType::QGIVertex) {
+            if (child->isSelected()) continue;
+            child->setVisible(showDecorations);
             continue;
         }
 
         if (child->type() == UserType::QGICMark) {
-            if (child->isSelected()) {
-                continue;
-            }
-
-            if (hideCenters) {
+            if (child->isSelected()) continue;
+            if (hideCenterMarks() || !showDecorations) {
                 child->hide();
             }
         }

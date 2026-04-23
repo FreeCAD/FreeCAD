@@ -611,7 +611,7 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="37"/>
       <source>Chord length</source>
-      <translation>Koord lengte</translation>
+      <translation>Lengte van de koorde</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="42"/>

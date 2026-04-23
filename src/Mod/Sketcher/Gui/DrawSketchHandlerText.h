@@ -142,7 +142,7 @@ private:
             handleId = getHighestCurveIndex();
 
             std::string escText = escapeForPython(text);
-            std::string escFont = escapeForPython(font);
+            std::string escFontPath = escapeForPython(font);
             bool isHeight = constructionMethod() == ConstructionMethod::Height;
             const char* constrBoolStr = isConstructionMode() ? "True" : "False";
             const char* heightBoolStr = isHeight ? "True" : "False";
@@ -156,7 +156,7 @@ private:
                 "addConstraint(Sketcher.Constraint('Text', [%d, 0], '%s', '%s', %s))",
                 handleId,
                 escText.c_str(),
-                escFont.c_str(),
+                escFontPath.c_str(),
                 heightBoolStr
             );
 
@@ -169,7 +169,7 @@ private:
                 "%s, %s)",
                 getSketchObject()->getNameInDocument(),
                 escText.c_str(),
-                escFont.c_str(),
+                escFontPath.c_str(),
                 heightBoolStr,
                 constrBoolStr
             );
@@ -408,19 +408,19 @@ void DSHTextController::configureToolWidget()
                 }
             }
         }
-
-        onViewParameters[OnViewParameter::First]->setLabelType(Gui::SoDatumLabel::DISTANCEX);
-        onViewParameters[OnViewParameter::Second]->setLabelType(Gui::SoDatumLabel::DISTANCEY);
-
-        onViewParameters[OnViewParameter::Third]->setLabelType(
-            Gui::SoDatumLabel::DISTANCE,
-            Gui::EditableDatumLabel::Function::Dimensioning
-        );
-        onViewParameters[OnViewParameter::Fourth]->setLabelType(
-            Gui::SoDatumLabel::ANGLE,
-            Gui::EditableDatumLabel::Function::Dimensioning
-        );
     }
+
+    onViewParameters[OnViewParameter::First]->setLabelType(Gui::SoDatumLabel::DISTANCEX);
+    onViewParameters[OnViewParameter::Second]->setLabelType(Gui::SoDatumLabel::DISTANCEY);
+
+    onViewParameters[OnViewParameter::Third]->setLabelType(
+        Gui::SoDatumLabel::DISTANCE,
+        Gui::EditableDatumLabel::Function::Dimensioning
+    );
+    onViewParameters[OnViewParameter::Fourth]->setLabelType(
+        Gui::SoDatumLabel::ANGLE,
+        Gui::EditableDatumLabel::Function::Dimensioning
+    );
 
     toolWidget->setLineEditText(
         SketcherToolDefaultWidget::LineEdit::FirstEdit,

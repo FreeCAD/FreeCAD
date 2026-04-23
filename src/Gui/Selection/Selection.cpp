@@ -69,19 +69,23 @@ SelectionObserver::SelectionObserver(bool attach, ResolveMode resolve)
     , blockedSelection(false)
 {
     if (auto doc = App::GetApplication().getActiveDocument()) {
-        pDocumentScopeName = doc->getName();
+        documentScopeName = doc->getName();
     }
     if (attach) {
         attachSelection();
     }
 }
 
-SelectionObserver::SelectionObserver(const ViewProviderDocumentObject* vp, bool attach, ResolveMode resolve)
+SelectionObserver::SelectionObserver(
+    const ViewProviderDocumentObject* /*vp*/,
+    bool attach,
+    ResolveMode resolve
+)
     : resolve(resolve)
     , blockedSelection(false)
 {
     if (auto doc = App::GetApplication().getActiveDocument()) {
-        pDocumentScopeName = doc->getName();
+        documentScopeName = doc->getName();
     }
     if (attach) {
         attachSelection();
@@ -131,7 +135,7 @@ void SelectionObserver::_onSelectionChanged(const SelectionChanges& msg)
 {
     try {
         if (blockedSelection
-            || (pDocumentScopeName && msg.pDocName && strcmp(pDocumentScopeName, msg.pDocName) != 0)) {
+            || (!documentScopeName.empty() && msg.pDocName && documentScopeName != msg.pDocName)) {
             return;
         }
         onSelectionChanged(msg);
@@ -1166,7 +1170,7 @@ std::string SelectionSingleton::SelectionDescription::getSubString() const
         }
         return "'" + SubName + "'";
     }
-    return "";
+    return {};
 }
 
 bool SelectionSingleton::addSelection(
@@ -1223,8 +1227,9 @@ bool SelectionSingleton::addSelection(
             context.info->resolveMode,
             &subelement
         );
-        if (!context.info->gate
-                 ->allow(pObject ? pObject->getDocument() : temp.pDoc, pObject, subelement)) {
+        if (
+            !context.info->gate->allow(pObject ? pObject->getDocument() : temp.pDoc, pObject, subelement)
+        ) {
             if (getMainWindow()) {
                 QString msg;
                 if (context.info->gate->notAllowedReason.length() > 0) {
@@ -2041,7 +2046,7 @@ int SelectionSingleton::checkSelection(
     }
 
     pDocName = sel.pDoc->getName();
-    sel.DocName = pDocName == nullptr ? "" : pDocName;
+    sel.DocName = pDocName == nullptr ? std::string() : pDocName;
 
     if (pObjectName) {
         sel.pObject = sel.pDoc->getObject(pObjectName);
@@ -2147,7 +2152,7 @@ int SelectionSingleton::checkSelection(
 std::string SelectionSingleton::getSelectedElement(App::DocumentObject* obj, const char* pSubName) const
 {
     if (!obj) {
-        return nullptr;
+        return {};
     }
     auto context = getSelectionContext(obj->getDocument()->getName());
 
@@ -2155,7 +2160,7 @@ std::string SelectionSingleton::getSelectedElement(App::DocumentObject* obj, con
         if (selected.pObject == obj) {
             auto len = selected.SubName.length();
             if (!len) {
-                return "";
+                return {};
             }
             if (pSubName
                 && strncmp(pSubName, selected.SubName.c_str(), selected.SubName.length()) == 0) {
@@ -2165,7 +2170,7 @@ std::string SelectionSingleton::getSelectedElement(App::DocumentObject* obj, con
             }
         }
     }
-    return "";
+    return {};
 }
 
 void SelectionSingleton::slotDeletedObject(const App::DocumentObject& Obj)
@@ -2261,7 +2266,7 @@ SelectionSingleton::SelectionContext SelectionSingleton::getSelectionContext(con
     if (App::Document* doc = getDocument(pDocName)) {
         return SelectionContext {.info = &docSelectionContext[doc], .docName = doc->getName()};
     }
-    return SelectionContext {.info = nullptr, .docName = ""};
+    return SelectionContext {.info = nullptr, .docName = std::string()};
 }
 SelectionSingleton::SelectionConstContext SelectionSingleton::getSelectionContext(
     const char* pDocName
@@ -2284,7 +2289,7 @@ SelectionSingleton::SelectionConstContext SelectionSingleton::getSelectionContex
             return SelectionConstContext {.info = &foundContext->second, .docName = doc->getName()};
         }
     }
-    return SelectionConstContext {.info = nullptr, .docName = ""};
+    return SelectionConstContext {.info = nullptr, .docName = std::string()};
 }
 
 //**************************************************************************
@@ -2620,7 +2625,9 @@ PyObject* SelectionSingleton::sAddSelection(PyObject* /*self*/, PyObject* args)
     char* docname;
     char* subname = nullptr;
     float x = 0, y = 0, z = 0;
-    if (PyArg_ParseTuple(args, "ss|sfffO!", &docname, &objname, &subname, &x, &y, &z, &PyBool_Type, &clearPreselect)) {
+    if (
+        PyArg_ParseTuple(args, "ss|sfffO!", &docname, &objname, &subname, &x, &y, &z, &PyBool_Type, &clearPreselect)
+    ) {
         Selection()
             .addSelection(docname, objname, subname, x, y, z, nullptr, Base::asBoolean(clearPreselect));
         Py_Return;
@@ -2714,15 +2721,9 @@ PyObject* SelectionSingleton::sUpdateSelection(PyObject* /*self*/, PyObject* arg
     PyObject* show;
     PyObject* object;
     char* subname = nullptr;
-    if (!PyArg_ParseTuple(
-            args,
-            "O!O!|s",
-            &PyBool_Type,
-            &show,
-            &(App::DocumentObjectPy::Type),
-            &object,
-            &subname
-        )) {
+    if (
+        !PyArg_ParseTuple(args, "O!O!|s", &PyBool_Type, &show, &(App::DocumentObjectPy::Type), &object, &subname)
+    ) {
         return nullptr;
     }
 

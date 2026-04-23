@@ -123,7 +123,6 @@ protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
-    double getEdgeFuzz() const;
 
 private:
     std::vector<QPointF> m_ghostPoints;

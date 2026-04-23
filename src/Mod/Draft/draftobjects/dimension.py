@@ -95,6 +95,7 @@ So, together with what is explained in point 3, we probably need to use
 a more generic base class, while at the same time improve the way
 the link properties are used.
 """
+
 ## @package dimension
 # \ingroup draftobjects
 # \brief Provides the object code for the dimension objects.
@@ -343,18 +344,18 @@ class LinearDimension(DimensionBase):
                     # If it has one subelement, we assume an edge
                     # that can be a straight line, or a circular edge
                     subelement = sub_list[0]
-                    (obj.Start, obj.End) = measure_one_obj_edge(
+                    obj.Start, obj.End = measure_one_obj_edge(
                         linked_obj, subelement, obj.Dimline, obj.Diameter
                     )
                 elif len(sub_list) == 2:
                     # If it has two subelements, we assume a straight edge
                     # that is measured by two vertices
-                    (obj.Start, obj.End) = measure_one_obj_vertices(linked_obj, sub_list)
+                    obj.Start, obj.End = measure_one_obj_vertices(linked_obj, sub_list)
 
             elif len(obj.LinkedGeometry) == 2:
                 # If the list has two objects, it measures the distance
                 # between the two vertices in those two objects
-                (obj.Start, obj.End) = measure_two_objects(
+                obj.Start, obj.End = measure_two_objects(
                     obj.LinkedGeometry[0], obj.LinkedGeometry[1]
                 )
 

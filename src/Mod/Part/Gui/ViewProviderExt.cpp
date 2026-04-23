@@ -219,14 +219,6 @@ ViewProviderPartExt::ViewProviderPartExt()
         "Defines the style of the edges in the 3D view."
     );
     DrawStyle.setEnums(DrawStyleEnums);
-    ADD_PROPERTY_TYPE(
-        ShowPlacement,
-        (false),
-        "Display Options",
-        App::Prop_None,
-        "If true, placement of object is additionally rendered."
-    );
-
     coords = new SoCoordinate3();
     coords->ref();
     faceset = new SoBrepFaceSet();
@@ -441,11 +433,6 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
         else {
             pcLineStyle->linePattern = 0xff88;
         }
-    }
-    else if (prop == &ShowPlacement) {
-        pcPlacement->whichChild = (ShowPlacement.getValue() && Visibility.getValue())
-            ? SO_SWITCH_ALL
-            : SO_SWITCH_NONE;
     }
     else {
         // if the object was invisible and has been changed, recreate the visual
@@ -1070,8 +1057,7 @@ void ViewProviderPartExt::setupCoinGeometry(
     Base::TimeElapsed startTime;
 
     [[maybe_unused]]
-    int numTriangles
-        = 0,
+    int numTriangles = 0,
         numNodes = 0, numNorms = 0, numFaces = 0, numEdges = 0, numLines = 0;
 
     std::set<int> faceEdges;
@@ -1319,8 +1305,8 @@ void ViewProviderPartExt::setupCoinGeometry(
             if (edgeIdxSet.find(edgeIndex) != edgeIdxSet.end()) {
 
                 // this holds the indices of the edge's triangulation to the current polygon
-                Handle(Poly_PolygonOnTriangulation) aPoly
-                    = BRep_Tool::PolygonOnTriangulation(curEdge, mesh, aLoc);
+                Handle(Poly_PolygonOnTriangulation)
+                    aPoly = BRep_Tool::PolygonOnTriangulation(curEdge, mesh, aLoc);
                 if (aPoly.IsNull()) {
                     continue;  // polygon does not exist
                 }
@@ -1473,7 +1459,16 @@ void ViewProviderPartExt::updateVisual()
 {
     TopoDS_Shape shape = getRenderedShape().getShape();
 
-    if (lastRenderedShape.IsPartner(shape)) {
+    if (!VisualTouched && lastRenderedShape.IsPartner(shape)) {
+        // shape unchanged so do not rebuild geometry
+        // but still re-apply materials in case colors changed
+        Gui::SoHighlightElementAction haction;
+        haction.apply(this->faceset);
+        haction.apply(this->lineset);
+        haction.apply(this->nodeset);
+        setHighlightedFaces(ShapeAppearance.getValues());
+        setHighlightedEdges(LineColorArray.getValues());
+        setHighlightedPoints(PointColorArray.getValue());
         return;
     }
 

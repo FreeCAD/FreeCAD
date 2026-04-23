@@ -64,13 +64,11 @@ int Line2dPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         // Copy line
         Line2dPy* pcLine = static_cast<Line2dPy*>(pLine);
         // get Geom_Line of line
-        Handle(Geom2d_Line) that_line = Handle(Geom2d_Line)::DownCast(
-            pcLine->getGeom2dLinePtr()->handle()
-        );
+        Handle(Geom2d_Line)
+            that_line = Handle(Geom2d_Line)::DownCast(pcLine->getGeom2dLinePtr()->handle());
         // get Geom_Line of line
-        Handle(Geom2d_Line) this_line = Handle(Geom2d_Line)::DownCast(
-            this->getGeom2dLinePtr()->handle()
-        );
+        Handle(Geom2d_Line)
+            this_line = Handle(Geom2d_Line)::DownCast(this->getGeom2dLinePtr()->handle());
 
         // Assign the lines
         this_line->SetLin2d(that_line->Lin2d());
@@ -102,9 +100,8 @@ int Line2dPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             }
 
             // get Geom_Line of line
-            Handle(Geom2d_Line) this_line = Handle(Geom2d_Line)::DownCast(
-                this->getGeom2dLinePtr()->handle()
-            );
+            Handle(Geom2d_Line)
+                this_line = Handle(Geom2d_Line)::DownCast(this->getGeom2dLinePtr()->handle());
             Handle(Geom2d_Line) that_line = ms.Value();
             this_line->SetLin2d(that_line->Lin2d());
             return 0;
@@ -132,7 +129,8 @@ int Line2dPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
 Py::Object Line2dPy::getLocation() const
 {
-    Handle(Geom2d_Line) this_curve = Handle(Geom2d_Line)::DownCast(this->getGeom2dLinePtr()->handle());
+    Handle(Geom2d_Line)
+        this_curve = Handle(Geom2d_Line)::DownCast(this->getGeom2dLinePtr()->handle());
     gp_Pnt2d pnt = this_curve->Location();
     return Base::Vector2dPy::create(pnt.X(), pnt.Y());
 }
@@ -178,7 +176,8 @@ void Line2dPy::setLocation(Py::Object arg)
 
 Py::Object Line2dPy::getDirection() const
 {
-    Handle(Geom2d_Line) this_curve = Handle(Geom2d_Line)::DownCast(this->getGeom2dLinePtr()->handle());
+    Handle(Geom2d_Line)
+        this_curve = Handle(Geom2d_Line)::DownCast(this->getGeom2dLinePtr()->handle());
     gp_Dir2d dir = this_curve->Direction();
     return Base::Vector2dPy::create(dir.X(), dir.Y());
 }

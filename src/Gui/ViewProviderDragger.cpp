@@ -27,6 +27,7 @@
 #include <QMenu>
 #include <Inventor/draggers/SoDragger.h>
 #include <Inventor/nodes/SoPickStyle.h>
+#include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoTransform.h>
 
 #include <App/GeoFeature.h>
@@ -60,6 +61,13 @@ PROPERTY_SOURCE(Gui::ViewProviderDragger, Gui::ViewProviderDocumentObject)
 ViewProviderDragger::ViewProviderDragger()
 {
     ADD_PROPERTY_TYPE(TransformOrigin, ({}), nullptr, App::Prop_Hidden, nullptr);
+    ADD_PROPERTY_TYPE(
+        ShowPlacement,
+        (false),
+        "Display Options",
+        App::Prop_None,
+        "If true, placement of object is additionally rendered."
+    );
 
     pcPlacement = new SoSwitch;
     pcPlacement->whichChild = SO_SWITCH_NONE;
@@ -106,6 +114,11 @@ void ViewProviderDragger::onChanged(const App::Property* property)
     if (property == &TransformOrigin) {
         updateDraggerPosition();
     }
+    else if (property == &ShowPlacement || property == &Visibility) {
+        pcPlacement->whichChild = (ShowPlacement.getValue() && Visibility.getValue())
+            ? SO_SWITCH_ALL
+            : SO_SWITCH_NONE;
+    }
 
     ViewProviderDocumentObject::onChanged(property);
 }
@@ -119,14 +132,6 @@ bool ViewProviderDragger::doubleClicked()
 {
     Gui::Application::Instance->activeDocument()->setEdit(this, (int)ViewProvider::Default);
     return true;
-}
-
-void ViewProviderDragger::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
-{
-    QIcon iconObject = mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap("Std_TransformManip.svg"));
-    QAction* act = menu->addAction(iconObject, QObject::tr("Transform"), receiver, member);
-    act->setData(QVariant((int)ViewProvider::Transform));
-    ViewProviderDocumentObject::setupContextMenu(menu, receiver, member);
 }
 
 ViewProvider* ViewProviderDragger::startEditing(int mode)
@@ -365,16 +370,20 @@ Base::Rotation Gui::ViewProviderDragger::orthonormalize(
         z = x.Cross(y);
         z.Normalize();
     }
-    else if (components.testFlag(Gui::ViewProviderDragger::DraggerComponent::XRot)
-             && components.testFlag(Gui::ViewProviderDragger::DraggerComponent::ZRot)) {
+    else if (
+        components.testFlag(Gui::ViewProviderDragger::DraggerComponent::XRot)
+        && components.testFlag(Gui::ViewProviderDragger::DraggerComponent::ZRot)
+    ) {
         x.Normalize();
         z = z - x * (x * z);
         z.Normalize();
         y = z.Cross(x);
         y.Normalize();
     }
-    else if (components.testFlag(Gui::ViewProviderDragger::DraggerComponent::YRot)
-             && components.testFlag(Gui::ViewProviderDragger::DraggerComponent::ZRot)) {
+    else if (
+        components.testFlag(Gui::ViewProviderDragger::DraggerComponent::YRot)
+        && components.testFlag(Gui::ViewProviderDragger::DraggerComponent::ZRot)
+    ) {
         y.Normalize();
         z = z - y * (y * z);
         z.Normalize();

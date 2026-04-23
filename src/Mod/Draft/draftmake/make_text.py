@@ -25,6 +25,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to create Text objects."""
+
 ## @package make_text
 # \ingroup draftmake
 # \brief Provides functions to create Text objects.
