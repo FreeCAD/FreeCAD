@@ -901,7 +901,7 @@ using DSHPolyLineController = DrawSketchDefaultWidgetController<
     DrawSketchHandlerPolyLine,
     /*SelectModeT*/ StateMachines::TwoSeekEnd,
     /*PAutoConstraintSize =*/2,
-    /*OnViewParametersT =*/OnViewParameters<5, 5>,  // NOLINT
+    /*OnViewParametersT =*/OnViewParameters<4, 5>,  // NOLINT
     /*WidgetParametersT =*/WidgetParameters<0, 0>,  // NOLINT
     /*WidgetCheckboxesT =*/WidgetCheckboxes<1, 1>,  // NOLINT
     /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,  // NOLINT
@@ -1344,15 +1344,6 @@ private:
     // Direction tracking to check once OVP is locked
     Base::Vector2d capturedDirection;
 
-    void changeConstructionMethode()
-    {
-        if (constructionMethod() == ConstructionMethod::Arc) {
-            if (geoEltIds.empty()) {
-                setConstructionMethod(ConstructionMethod::Line);
-            }
-        }
-    }
-
     Base::Vector2d getLastPoint()
     {
         return points.empty() ? Base::Vector2d() : points.back();
@@ -1740,16 +1731,11 @@ void DSHPolyLineController::configureToolWidget()
         Gui::EditableDatumLabel::Function::Dimensioning
     );
 
-    if (handler->constructionMethod() == ConstructionMethod::Line) {
-        deactivateOnViewParameter(OnViewParameter::Fifth);
-    }
-    else {
+    if (handler->constructionMethod() == ConstructionMethod::Arc) {
         onViewParameters[OnViewParameter::Fifth]->setLabelType(
             Gui::SoDatumLabel::ANGLE,
             Gui::EditableDatumLabel::Function::Dimensioning
         );
-
-        activateOnViewParameter(OnViewParameter::Fifth);
     }
 
     toolWidget->setCheckboxChecked(WCheckbox::FirstBox, handler->fillet);
@@ -1788,7 +1774,9 @@ void DSHPolyLineControllerBase::doEnforceControlParameters(Base::Vector2d& onSke
                 handler->resetSeekSecond = false;
                 unsetOnViewParameter(thirdParam.get());
                 unsetOnViewParameter(fourthParam.get());
-                unsetOnViewParameter(onViewParameters[OnViewParameter::Fifth].get());
+                if (handler->constructionMethod() == ConstructionMethod::Arc) {
+                    unsetOnViewParameter(onViewParameters[OnViewParameter::Fifth].get());
+                }
                 setFocusToOnViewParameter(OnViewParameter::Third);
                 return;
             }
@@ -1821,7 +1809,9 @@ void DSHPolyLineControllerBase::doEnforceControlParameters(Base::Vector2d& onSke
                     onSketchPos = prevPoint + length * handler->capturedDirection;
                 }
                 else if (fourthParam->isSet) {
-                    double arcAngle = Base::toRadians(fourthParam->getValue());
+                    double arcAngle = Base::toRadians(
+                        fourthParam->getValue()
+                    );                    
                     onSketchPos.ProjectToLine(onSketchPos - prevPoint, handler->capturedDirection);
                     onSketchPos += prevPoint;
                 }
@@ -1862,7 +1852,9 @@ void DSHPolyLineControllerBase::doEnforceControlParameters(Base::Vector2d& onSke
                     double radius = handler->getArcCenter(center, onSketchPos);
                     int sign = radius < 0 ? -1 : 1;
                     radius = fabs(radius);
-                    double range = Base::toRadians(fourthParam->getValue());
+                    double range = Base::toRadians(
+                        fourthParam->getValue()
+                    );
                     double angle = handler->startAngle + sign * range;
                     Base::Vector2d dir(1.0, 0.0);
                     dir.Rotate(angle);
@@ -1937,7 +1929,9 @@ void DSHPolyLineController::adaptParameters(Base::Vector2d onSketchPos)
 
                 thirdParam->setPoints(start, end);
                 fourthParam->setPoints(start, Base::Vector3d());
-                fourthParam->setLabelStartAngle(handler->previousDirectionAngle);
+                fourthParam->setLabelStartAngle(
+                    handler->previousDirectionAngle
+                );
                 fourthParam->setLabelRange(handler->dirChangeAngle);
             }
             else {
@@ -1999,7 +1993,9 @@ void DSHPolyLineController::computeNextDrawSketchHandlerMode()
 
                 unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
                 unsetOnViewParameter(onViewParameters[OnViewParameter::Fourth].get());
-                unsetOnViewParameter(onViewParameters[OnViewParameter::Fifth].get());
+                if (handler->constructionMethod() == ConstructionMethod::Arc) {
+                    unsetOnViewParameter(onViewParameters[OnViewParameter::Fifth].get());
+                }
             }
         } break;
         default:
@@ -2010,9 +2006,21 @@ void DSHPolyLineController::computeNextDrawSketchHandlerMode()
 template<>
 void DSHPolyLineController::doConstructionMethodChanged()
 {
-    handler->changeConstructionMethode();
+    // First segment cannot be an arc (yet?). So if user changed the mode, we roll that back.
+    if (handler->constructionMethod() == ConstructionMethod::Arc) {
+        if (handler->geoEltIds.empty()) {
+            handler->setConstructionMethod(ConstructionMethod::Line);
+            return;
+        }
+    }
+
+    // Since line has 4 OVP but arc has 5, and because we are not reseting the whole tool,
+    // we need to reset the OVP to have the correct number.
+    resetOnViewParameters();
 
     configureToolWidget();
+
+    setModeOnViewParameters();
 
     syncConstructionMethodComboboxToHandler();
 }
@@ -2065,11 +2073,9 @@ void DSHPolyLineController::addStepConstraints()
 
     auto p3 = onViewParameters[OnViewParameter::Third]->getValue();
     auto p4 = onViewParameters[OnViewParameter::Fourth]->getValue();
-    auto p5 = onViewParameters[OnViewParameter::Fifth]->getValue();
 
     auto p3set = onViewParameters[OnViewParameter::Third]->isSet;
     auto p4set = onViewParameters[OnViewParameter::Fourth]->isSet;
-    auto p5set = onViewParameters[OnViewParameter::Fifth]->isSet;
 
     if (handler->constructionMethod() == ConstructionMethod::Line) {
         if (p3set) {
