@@ -105,6 +105,13 @@
        </item>
       </layout>
      </item>
+     <item row="2" column="0" colspan="2">
+      <widget class="QCheckBox" name="cb_reverse">
+       <property name="text">
+        <string>Reverse orientation</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>
