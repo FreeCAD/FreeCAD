@@ -59,6 +59,7 @@ class TaskAssemblyInsertFastener:
         self.form.cb_diameter.currentTextChanged.connect(self.on_diameter_changed)
         self.form.cb_length.currentTextChanged.connect(self.on_length_changed)
         self.form.sb_length.valueChanged.connect(self.on_length_changed)
+        self.form.cb_reverse.stateChanged.connect(self.on_reverse_checked)
 
         self.form.lw_type.setIconSize(QtCore.QSize(32, 32))
 
@@ -430,19 +431,30 @@ class TaskAssemblyInsertFastener:
         self.doc.recompute()
 
     def _create_links(self, fastener):
+        reverse = self.form.cb_reverse.isChecked()
+        rot = App.Rotation(App.Vector(1, 0, 0), 180) if reverse else App.Rotation()
+
         if not self.target_edges:
             link = self.assembly.newObject("App::Link", "FastenerLink")
             link.LinkedObject = fastener
             x, y = self.view.getSize()
             screenCenter = self.view.getPointOnFocalPlane(x // 2, y // 2)
             link.Placement.Base = screenCenter
+            link.Placement.Rotation = rot
             self.links.append(link)
         else:
             for edge_info in self.target_edges:
                 link = self.assembly.newObject("App::Link", "FastenerLink")
                 link.LinkedObject = fastener
-                link.Placement = App.Placement(edge_info["center"], App.Rotation())
+                link.Placement = App.Placement(edge_info["center"], rot)
                 self.links.append(link)
+
+    def on_reverse_checked(self):
+        reverse = self.form.cb_reverse.isChecked()
+        rot = App.Rotation(App.Vector(1, 0, 0), 180) if reverse else App.Rotation()
+        for link in self.links:
+            link.Placement.Rotation = rot
+            link.purgeTouched()
 
 
 class CommandInsertFastener:
