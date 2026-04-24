@@ -147,6 +147,9 @@ if (FREECAD_WARN_ERROR)
 endif()
 
 SET_BIN_DIR(tsp_solver tsp_solver /Mod/CAM)
+SET_PYTHON_PREFIX_SUFFIX(tsp_solver)
+
+INSTALL(TARGETS tsp_solver DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
 add_library(surface_generator SHARED surface_generator.cpp)
 target_include_directories(surface_generator PRIVATE
