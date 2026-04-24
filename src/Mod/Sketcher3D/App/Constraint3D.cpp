@@ -37,6 +37,8 @@
 
 using namespace Sketcher3D;
 
+TYPESYSTEM_SOURCE(Sketcher3D::Constraint3D, Base::Persistence)
+
 namespace {
 std::vector<int> parseIntegerList(const char* text)
 {
@@ -58,6 +60,11 @@ std::vector<int> parseIntegerList(const char* text)
 const char* Constraint3D::typeToString(Constraint3DType t)
 {
     return type2str[t];
+}
+
+unsigned int Constraint3D::getMemSize() const
+{
+    return static_cast<unsigned int>(sizeof(*this) + elements.capacity() * sizeof(GeoElementId3D));
 }
 
 void Constraint3D::Save(Base::Writer& writer) const

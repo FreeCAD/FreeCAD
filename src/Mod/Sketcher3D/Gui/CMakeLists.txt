@@ -2,12 +2,18 @@
 
 set(Sketcher3DGui_LIBS
     Sketcher3D
+    PartGui
     FreeCADGui
 )
 
 SET(Sketcher3DGui_SRCS
     AppSketcher3DGui.cpp
+    Command.cpp
     PreCompiled.h
+    ViewProviderSketch3D.cpp
+    ViewProviderSketch3D.h
+    WorkbenchManipulator.cpp
+    WorkbenchManipulator.h
 )
 
 add_library(Sketcher3DGui SHARED ${Sketcher3DGui_SRCS})

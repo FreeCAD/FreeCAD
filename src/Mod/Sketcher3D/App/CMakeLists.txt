@@ -22,9 +22,16 @@ SET(Constraint_SRCS
 )
 SOURCE_GROUP("Constraint" FILES ${Constraint_SRCS})
 
+SET(Feature_SRCS
+    Sketch3DObject.cpp
+    Sketch3DObject.h
+)
+SOURCE_GROUP("Feature" FILES ${Feature_SRCS})
+
 SET(Sketcher3D_SRCS
     ${Module_SRCS}
     ${Constraint_SRCS}
+    ${Feature_SRCS}
 )
 
 add_library(Sketcher3D SHARED ${Sketcher3D_SRCS})

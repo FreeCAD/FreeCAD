@@ -70,7 +70,6 @@ public:
 
     /// Return the string name for a constraint type.
     static const char* typeToString(Constraint3DType t);
-    static Constraint3DType typeFromString(const char* str, bool& ok);
 
     // Persistence
     unsigned int getMemSize() const override;

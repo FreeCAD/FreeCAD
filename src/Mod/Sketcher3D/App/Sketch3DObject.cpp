@@ -22,36 +22,41 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/PyObjectBase.h>
 
-#include "PropertyConstraint3DList.h"
+#include "PreCompiled.h"
+
+#include <Mod/Part/App/TopoShape.h>
+
 #include "Sketch3DObject.h"
 
 
-namespace Sketcher3D
+using namespace Sketcher3D;
+
+PROPERTY_SOURCE(Sketcher3D::Sketch3DObject, Part::Feature)
+
+Sketch3DObject::Sketch3DObject()
 {
-extern PyObject* initModule();
+    ADD_PROPERTY_TYPE(
+        Constraints,
+        (nullptr),
+        "Sketcher3D",
+        (App::PropertyType)(App::Prop_None),
+        "Sketcher3D constraints"
+    );
 }
 
-/* Python entry */
-PyMOD_INIT_FUNC(Sketcher3D)
+Sketch3DObject::~Sketch3DObject() = default;
+
+short Sketch3DObject::mustExecute() const
 {
-    try {
-        Base::Interpreter().runString("import Part");
+    if (Constraints.isTouched()) {
+        return 1;
     }
-    catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(nullptr);
-    }
+    return Part::Feature::mustExecute();
+}
 
-    PyObject* mod = Sketcher3D::initModule();
-
-    Sketcher3D::PropertyConstraint3DList::init();
-    Sketcher3D::Sketch3DObject::init();
-
-    Base::Console().log("Greping Sketcher3D module... done\n");
-
-    PyMOD_Return(mod);
+App::DocumentObjectExecReturn* Sketch3DObject::execute()
+{
+    // need to set shape
+    return Part::Feature::StdReturn;
 }

@@ -22,36 +22,42 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/PyObjectBase.h>
+
+#ifndef SKETCHER3D_SKETCH3DOBJECT_H
+#define SKETCHER3D_SKETCH3DOBJECT_H
+
+#include <Mod/Part/App/PartFeature.h>
+#include <Mod/Sketcher3D/Sketcher3DGlobal.h>
 
 #include "PropertyConstraint3DList.h"
-#include "Sketch3DObject.h"
 
 
 namespace Sketcher3D
 {
-extern PyObject* initModule();
-}
 
-/* Python entry */
-PyMOD_INIT_FUNC(Sketcher3D)
+/** 3D sketch document object.
+ *  Inherited Part::Feature so downstream part operations can use 
+ *  it directly.
+ */
+class Sketcher3DExport Sketch3DObject: public Part::Feature
 {
-    try {
-        Base::Interpreter().runString("import Part");
+    PROPERTY_HEADER_WITH_OVERRIDE(Sketcher3D::Sketch3DObject);
+
+public:
+    Sketch3DObject();
+    ~Sketch3DObject() override;
+
+    PropertyConstraint3DList Constraints;
+
+    const char* getViewProviderName() const override
+    {
+        return "Sketcher3DGui::ViewProviderSketch3D";
     }
-    catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(nullptr);
-    }
 
-    PyObject* mod = Sketcher3D::initModule();
+    App::DocumentObjectExecReturn* execute() override;
+    short mustExecute() const override;
+};
 
-    Sketcher3D::PropertyConstraint3DList::init();
-    Sketcher3D::Sketch3DObject::init();
+}  // namespace Sketcher3D
 
-    Base::Console().log("Greping Sketcher3D module... done\n");
-
-    PyMOD_Return(mod);
-}
+#endif  // SKETCHER3D_SKETCH3DOBJECT_H

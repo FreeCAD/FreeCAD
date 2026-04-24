@@ -22,36 +22,57 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/PyObjectBase.h>
 
-#include "PropertyConstraint3DList.h"
-#include "Sketch3DObject.h"
+#include "PreCompiled.h"
+
+#include <App/Document.h>
+#include <Gui/Application.h>
+#include <Gui/Command.h>
 
 
-namespace Sketcher3D
+namespace Sketcher3DGui
 {
-extern PyObject* initModule();
+
+DEF_STD_CMD_A(CmdSketcher3DCreateSketch)
+
+CmdSketcher3DCreateSketch::CmdSketcher3DCreateSketch()
+    : Command("Sketcher3D_CreateSketch")
+{
+    sAppModule = "Sketcher3D";
+    sGroup = QT_TR_NOOP("Sketcher3D");
+    sMenuText = QT_TR_NOOP("Create 3D sketch");
+    sToolTipText = QT_TR_NOOP("Creates a new 3D sketch");
+    sWhatsThis = "Sketcher3D_CreateSketch";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_NewSketch";
 }
 
-/* Python entry */
-PyMOD_INIT_FUNC(Sketcher3D)
+void CmdSketcher3DCreateSketch::activated(int iMsg)
 {
-    try {
-        Base::Interpreter().runString("import Part");
-    }
-    catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(nullptr);
-    }
+    Q_UNUSED(iMsg);
 
-    PyObject* mod = Sketcher3D::initModule();
+    std::string FeatName = getUniqueObjectName("Sketch3D");
 
-    Sketcher3D::PropertyConstraint3DList::init();
-    Sketcher3D::Sketch3DObject::init();
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create a new 3D sketch"));
+    doCommand(
+        Doc,
+        "App.activeDocument().addObject('Sketcher3D::Sketch3DObject', '%s')",
+        FeatName.c_str()
+    );
+    doCommand(Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
+    commitCommand();
+}
 
-    Base::Console().log("Greping Sketcher3D module... done\n");
+bool CmdSketcher3DCreateSketch::isActive()
+{
+    return hasActiveDocument();
+}
 
-    PyMOD_Return(mod);
+}  // namespace Sketcher3DGui
+
+
+void CreateSketcher3DCommands()
+{
+    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DCreateSketch());
 }

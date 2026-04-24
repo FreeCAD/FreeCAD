@@ -45,6 +45,9 @@ public:
     void setSize(int newSize) override;
     int getSize() const override;
 
+    /// Reset the list, optionally setting single constraint.
+    void setValue(const Constraint3D* lValue = nullptr);
+
     void setConstraints(const std::vector<Constraint3D>& v);
     const std::vector<Constraint3D>& getConstraints() const
     {

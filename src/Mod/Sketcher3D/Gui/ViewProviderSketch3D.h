@@ -22,36 +22,30 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/PyObjectBase.h>
 
-#include "PropertyConstraint3DList.h"
-#include "Sketch3DObject.h"
+#ifndef SKETCHER3DGUI_VIEWPROVIDERSKETCH3D_H
+#define SKETCHER3DGUI_VIEWPROVIDERSKETCH3D_H
+
+#include <Mod/Part/Gui/ViewProvider.h>
+#include <Mod/Sketcher3D/Sketcher3DGlobal.h>
 
 
-namespace Sketcher3D
+namespace Sketcher3DGui
 {
-extern PyObject* initModule();
-}
 
-/* Python entry */
-PyMOD_INIT_FUNC(Sketcher3D)
+class Sketcher3DGuiExport ViewProviderSketch3D: public PartGui::ViewProviderPart
 {
-    try {
-        Base::Interpreter().runString("import Part");
-    }
-    catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(nullptr);
-    }
+    PROPERTY_HEADER_WITH_OVERRIDE(Sketcher3DGui::ViewProviderSketch3D);
 
-    PyObject* mod = Sketcher3D::initModule();
+public:
+    ViewProviderSketch3D();
+    ~ViewProviderSketch3D() override;
 
-    Sketcher3D::PropertyConstraint3DList::init();
-    Sketcher3D::Sketch3DObject::init();
+protected:
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
+};
 
-    Base::Console().log("Greping Sketcher3D module... done\n");
+}  // namespace Sketcher3DGui
 
-    PyMOD_Return(mod);
-}
+#endif  // SKETCHER3DGUI_VIEWPROVIDERSKETCH3D_H

@@ -48,6 +48,16 @@ int PropertyConstraint3DList::getSize() const
     return static_cast<int>(_constraints.size());
 }
 
+void PropertyConstraint3DList::setValue(const Constraint3D* lValue)
+{
+    aboutToSetValue();
+    _constraints.clear();
+    if (lValue) {
+        _constraints.push_back(*lValue);
+    }
+    hasSetValue();
+}
+
 void PropertyConstraint3DList::setConstraints(const std::vector<Constraint3D>& constraints)
 {
     aboutToSetValue();

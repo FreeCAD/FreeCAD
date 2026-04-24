@@ -28,6 +28,13 @@
 #include <Base/PyObjectBase.h>
 #include <Gui/Application.h>
 #include <Gui/WidgetFactory.h>
+#include <Gui/WorkbenchManipulator.h>
+
+#include "ViewProviderSketch3D.h"
+#include "WorkbenchManipulator.h"
+
+// Command registration, defined in Command.cpp
+void CreateSketcher3DCommands();
 
 
 namespace Sketcher3DGui
@@ -39,7 +46,7 @@ public:
     Module()
         : Py::ExtensionModule<Module>("Sketcher3DGui")
     {
-        initialize("This module is the Sketcher3DGui module.");
+        initialize("Sketcher3DGui loaded.");
     }
 
     ~Module() override = default;
@@ -63,6 +70,7 @@ PyMOD_INIT_FUNC(Sketcher3DGui)
 
     try {
         Base::Interpreter().runString("import Sketcher3D");
+        Base::Interpreter().runString("import PartGui");
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
@@ -73,6 +81,13 @@ PyMOD_INIT_FUNC(Sketcher3DGui)
     Base::Console().log("Loading GUI of Sketcher3D module... done\n");
 
     // Type and command registration
+    Sketcher3DGui::ViewProviderSketch3D::init();
+
+    CreateSketcher3DCommands();
+
+    // Inject Sketcher3D commands into the Sketcher workbench
+    auto manip = std::make_shared<Sketcher3DGui::WorkbenchManipulator>();
+    Gui::WorkbenchManipulator::installManipulator(manip);
 
     PyMOD_Return(mod);
 }

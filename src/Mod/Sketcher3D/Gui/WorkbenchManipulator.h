@@ -22,36 +22,26 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/PyObjectBase.h>
 
-#include "PropertyConstraint3DList.h"
-#include "Sketch3DObject.h"
+#pragma once
+
+#include <Gui/WorkbenchManipulator.h>
 
 
-namespace Sketcher3D
+namespace Sketcher3DGui
 {
-extern PyObject* initModule();
-}
 
-/* Python entry */
-PyMOD_INIT_FUNC(Sketcher3D)
+// Injects Sketcher3D commands into the Sketcher workbench.
+
+class WorkbenchManipulator: public Gui::WorkbenchManipulator
 {
-    try {
-        Base::Interpreter().runString("import Part");
-    }
-    catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(nullptr);
-    }
+protected:
+    void modifyMenuBar(Gui::MenuItem* menuBar) override;
+    void modifyToolBars(Gui::ToolBarItem* toolBar) override;
 
-    PyObject* mod = Sketcher3D::initModule();
+private:
+    static void setupCreateSketchToolbar(Gui::ToolBarItem* toolBar);
+    static void addCreateSketchToMenu(Gui::MenuItem* menuBar);
+};
 
-    Sketcher3D::PropertyConstraint3DList::init();
-    Sketcher3D::Sketch3DObject::init();
-
-    Base::Console().log("Greping Sketcher3D module... done\n");
-
-    PyMOD_Return(mod);
-}
+}  // namespace Sketcher3DGui
