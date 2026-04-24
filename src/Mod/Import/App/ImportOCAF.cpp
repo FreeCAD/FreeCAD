@@ -220,8 +220,9 @@ App::DocumentObject* ImportOCAF::loadShapes(
                     part_name = asm_name;
                 }
                 App::DocumentObject* created = createShape(label, loc, part_name);
-                // If !isRef then the label is a Free label which means there are no references to it,
-                // so we want it as a top-level object in the FC drawing, so we do not return it to be included in some larger object.
+                // If !isRef then the label is a Free label which means there are no references to
+                // it, so we want it as a top-level object in the FC drawing, so we do not return it
+                // to be included in some larger object.
                 return isRef ? created : nullptr;
             }
             // A simple shape that does not have a Free Label and is not reached through a ref.
@@ -234,9 +235,9 @@ App::DocumentObject* ImportOCAF::loadShapes(
             // amount of Shape within the Tree as STEP file do mostly contain large assemblies
         }
         else {
-            // This IsComponent (or not IsShape), probably an Assembly. Either way we create its contents, and if it turns out
-            // to be an Assembly, we will create a Part and place all the contents in that Part.
-            // Otherwise they will be left as top-level document objects.
+            // This IsComponent (or not IsShape), probably an Assembly. Either way we create its
+            // contents, and if it turns out to be an Assembly, we will create a Part and place all
+            // the contents in that Part. Otherwise they will be left as top-level document objects.
             std::vector<App::DocumentObject*> localValue;
 
             for (TDF_ChildIterator it(label); it.More(); it.Next()) {
