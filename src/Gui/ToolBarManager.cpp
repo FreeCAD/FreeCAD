@@ -221,29 +221,30 @@ QString legacyToolBarKey(const QToolBar* toolbar)
     return legacyKey;
 }
 
-QMap<QString, bool> toBoolLookup(const ParameterGrp::handle& group)
+QString stringPropertyValue(const QObject* object, const char* propertyName)
 {
-    QMap<QString, bool> values;
-    if (!group) {
-        return values;
+    if (!object || !propertyName) {
+        return {};
     }
 
-    for (const auto& [key, value] : group->GetBoolMap()) {
-        values.insert(QString::fromUtf8(key.c_str()), value);
+    const auto property = object->property(propertyName);
+    if (!property.isValid()) {
+        return {};
     }
 
-    return values;
+    return property.toString();
 }
 
-QMap<QString, int> toIntLookup(const ParameterGrp::handle& group)
+template<typename T, typename MapGetter>
+QMap<QString, T> toLookup(const ParameterGrp::handle& group, MapGetter&& getMap)
 {
-    QMap<QString, int> values;
+    QMap<QString, T> values;
     if (!group) {
         return values;
     }
 
-    for (const auto& [key, value] : group->GetIntMap()) {
-        values.insert(QString::fromUtf8(key.c_str()), static_cast<int>(value));
+    for (const auto& [key, value] : getMap(group)) {
+        values.insert(QString::fromUtf8(key.c_str()), static_cast<T>(value));
     }
 
     return values;
@@ -723,17 +724,9 @@ QString ToolBarManager::toolBarPersistenceKey(const QToolBar* toolbar)
         return {};
     }
 
-    auto publicProperty = toolbar->property(ToolBarPublicPersistenceKeyProperty);
-    if (publicProperty.isValid()) {
-        auto key = publicProperty.toString();
-        if (!key.isEmpty()) {
-            return key;
-        }
-    }
-
-    auto property = toolbar->property(ToolBarPersistenceKeyProperty);
-    if (property.isValid()) {
-        auto key = property.toString();
+    for (const auto* propertyName :
+         {ToolBarPublicPersistenceKeyProperty, ToolBarPersistenceKeyProperty}) {
+        const auto key = stringPropertyValue(toolbar, propertyName);
         if (!key.isEmpty()) {
             return key;
         }
@@ -938,8 +931,12 @@ void ToolBarManager::setupStatusBar()
 {
     if (auto sb = getMainWindow()->statusBar()) {
         sb->installEventFilter(this);
-        statusBarAreaWidget
-            = new ToolBarAreaWidget(sb, ToolBarArea::StatusBarToolBarArea, hStatusBar, connParam);
+        statusBarAreaWidget = new ToolBarAreaWidget(
+            sb,
+            ToolBarArea::StatusBarToolBarArea,
+            hStatusBar,
+            paramHandlers.connection()
+        );
         statusBarAreaWidget->setObjectName(QStringLiteral("StatusBarArea"));
         sb->insertPermanentWidget(2, statusBarAreaWidget);
         statusBarAreaWidget->show();
@@ -954,7 +951,7 @@ void ToolBarManager::setupMenuBar()
             mb,
             ToolBarArea::LeftMenuToolBarArea,
             hMenuBarLeft,
-            connParam,
+            paramHandlers.connection(),
             &menuBarTimer
         );
         menuBarLeftAreaWidget->setObjectName(QStringLiteral("MenuBarLeftArea"));
@@ -964,7 +961,7 @@ void ToolBarManager::setupMenuBar()
             mb,
             ToolBarArea::RightMenuToolBarArea,
             hMenuBarRight,
-            connParam,
+            paramHandlers.connection(),
             &menuBarTimer
         );
         menuBarRightAreaWidget->setObjectName(QStringLiteral("MenuBarRightArea"));
@@ -995,24 +992,37 @@ void ToolBarManager::setupConnection()
     };
 
     refreshParams(nullptr);
-    connParam = App::GetApplication().GetUserParameter().signalParamChanged.connect(
-        [this,
-         refreshParams](ParameterGrp* hParam, ParameterGrp::ParamType, const char* name, const char*) {
-            if (hParam == hGeneral && name) {
-                refreshParams(name);
-            }
-            if (hParam == hPref || hParam == hStatusBar || hParam == hMenuBarRight
-                || hParam == hMenuBarLeft) {
-                if (blockRestore) {
-                    blockRestore = false;
-                }
-                else {
-                    timer.start(100);
-                }
-            }
-        },
-        fastsignals::advanced_tag()
-    );
+    paramHandlers.addHandler(hGeneral, "ToolbarIconSize", [refreshParams](const ParamKey* key) {
+        refreshParams(key ? key->key : nullptr);
+    });
+    paramHandlers.addHandler(hGeneral, "StatusBarIconSize", [refreshParams](const ParamKey* key) {
+        refreshParams(key ? key->key : nullptr);
+    });
+    paramHandlers.addHandler(hGeneral, "MenuBarIconSize", [refreshParams](const ParamKey* key) {
+        refreshParams(key ? key->key : nullptr);
+    });
+    paramHandlers.addGroupHandler(hPref, [this](const ParamKey* key) {
+        onToolbarParametersChanged(key);
+    });
+    paramHandlers.addGroupHandler(hStatusBar, [this](const ParamKey* key) {
+        onToolbarParametersChanged(key);
+    });
+    paramHandlers.addGroupHandler(hMenuBarRight, [this](const ParamKey* key) {
+        onToolbarParametersChanged(key);
+    });
+    paramHandlers.addGroupHandler(hMenuBarLeft, [this](const ParamKey* key) {
+        onToolbarParametersChanged(key);
+    });
+}
+
+void ToolBarManager::onToolbarParametersChanged(const ParamKey*)
+{
+    if (blockRestore) {
+        blockRestore = false;
+    }
+    else {
+        timer.start(100);
+    }
 }
 
 void ToolBarManager::setupTimer()
@@ -1135,7 +1145,7 @@ void ToolBarManager::initializeUnsavedToolbarLayoutContext(const QString& contex
         return;
     }
 
-    Base::ConnectionBlocker block(connParam);
+    Base::ConnectionBlocker block(paramHandlers.connection());
     const QList<ToolBar*> toolbars = toolBars();
     for (const auto& key : toolbarKeys) {
         auto toolbar = findToolBar(toolbars, key);
@@ -1398,7 +1408,7 @@ bool ToolBarManager::recommendedToolBarVisibility(const QToolBar* toolbar) const
 
 void ToolBarManager::applyRecommendedToolBarPreferences()
 {
-    Base::ConnectionBlocker block(connParam);
+    Base::ConnectionBlocker block(paramHandlers.connection());
     QList<ToolBar*> toolbars = toolBars();
     for (const auto& key : toolbarKeys) {
         auto toolbar = findToolBar(toolbars, key);
@@ -1770,28 +1780,36 @@ void ToolBarManager::saveState() const
     }
 }
 
-void ToolBarManager::restoreState() const
+void ToolBarManager::restoreState()
 {
-    const QString previousLayoutContext = const_cast<ToolBarManager*>(this)->toolbarLayoutContext;
+    const QString previousLayoutContext = toolbarLayoutContext;
     const QString layoutContext = effectiveToolbarLayoutContext();
-    const_cast<ToolBarManager*>(this)->updateLayoutParameters(layoutContext);
-    const_cast<ToolBarManager*>(this)->initializeUnsavedToolbarLayoutContext(layoutContext);
+    updateLayoutParameters(layoutContext);
+    initializeUnsavedToolbarLayoutContext(layoutContext);
     const auto statusBarParams = toolbarAreaRestoreParameters(hStatusBar, hGlobalStatusBar);
     const auto menuBarLeftParams = toolbarAreaRestoreParameters(hMenuBarLeft, hGlobalMenuBarLeft);
     const auto menuBarRightParams = toolbarAreaRestoreParameters(hMenuBarRight, hGlobalMenuBarRight);
-    const auto visibilityValues = toBoolLookup(hPref);
-    const auto statusBarValues = toIntLookup(hStatusBar);
+    const auto visibilityValues = toLookup<bool>(hPref, [](const auto& group) {
+        return group->GetBoolMap();
+    });
+    const auto statusBarValues = toLookup<int>(hStatusBar, [](const auto& group) {
+        return group->GetIntMap();
+    });
     const auto statusBarFallbackValues = hStatusBar == hGlobalStatusBar
         ? QMap<QString, int>()
-        : toIntLookup(hGlobalStatusBar);
-    const auto menuBarLeftValues = toIntLookup(hMenuBarLeft);
+        : toLookup<int>(hGlobalStatusBar, [](const auto& group) { return group->GetIntMap(); });
+    const auto menuBarLeftValues = toLookup<int>(hMenuBarLeft, [](const auto& group) {
+        return group->GetIntMap();
+    });
     const auto menuBarLeftFallbackValues = hMenuBarLeft == hGlobalMenuBarLeft
         ? QMap<QString, int>()
-        : toIntLookup(hGlobalMenuBarLeft);
-    const auto menuBarRightValues = toIntLookup(hMenuBarRight);
+        : toLookup<int>(hGlobalMenuBarLeft, [](const auto& group) { return group->GetIntMap(); });
+    const auto menuBarRightValues = toLookup<int>(hMenuBarRight, [](const auto& group) {
+        return group->GetIntMap();
+    });
     const auto menuBarRightFallbackValues = hMenuBarRight == hGlobalMenuBarRight
         ? QMap<QString, int>()
-        : toIntLookup(hGlobalMenuBarRight);
+        : toLookup<int>(hGlobalMenuBarRight, [](const auto& group) { return group->GetIntMap(); });
 
     std::map<int, QToolBar*> sbToolBars;
     std::map<int, QToolBar*> mbRightToolBars;
@@ -1838,9 +1856,9 @@ void ToolBarManager::restoreState() const
     menuBarRightAreaWidget->restoreState(mbRightToolBars, menuBarRightParams);
     menuBarLeftAreaWidget->restoreState(mbLeftToolBars, menuBarLeftParams);
 
-    const_cast<ToolBarManager*>(this)->toolbarLayoutContext = layoutContext;
+    toolbarLayoutContext = layoutContext;
     if (previousLayoutContext != layoutContext) {
-        Q_EMIT const_cast<ToolBarManager*>(this)->toolbarLayoutContextChanged();
+        Q_EMIT toolbarLayoutContextChanged();
     }
 }
 
@@ -2089,7 +2107,7 @@ void ToolBarManager::addToMenu(QLayout* layout, QWidget* area, QMenu* menu)
 
 void ToolBarManager::onToggleStatusBarWidget(QWidget* widget, bool visible)
 {
-    Base::ConnectionBlocker block(connParam);
+    Base::ConnectionBlocker block(paramHandlers.connection());
     widget->setVisible(visible);
     hStatusBar->SetBool(widget->objectName().toUtf8().constData(), widget->isVisible());
 }
@@ -2487,7 +2505,9 @@ void ToolBarManager::setState(const QList<QString>& names, State state)
 void ToolBarManager::setState(const QString& name, State state)
 {
     QToolBar* tb = findToolBar(toolBars(), name);
-    const auto visibilityValues = toBoolLookup(hPref);
+    const auto visibilityValues = toLookup<bool>(hPref, [](const auto& group) {
+        return group->GetBoolMap();
+    });
     auto visibility = [this, name, tb, &visibilityValues](bool defaultvalue) {
         bool value = defaultvalue;
         if (tb && lookupToolBarValue(visibilityValues, {}, tb, &value)) {
