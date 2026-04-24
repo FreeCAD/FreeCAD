@@ -26,7 +26,7 @@ It is recommended that the user right-click the root of the document and select 
 The user should then click the Refresh button in the main toolbar.
 </source>
       <translation>
-On suositeltavaa, että käyttäjä napsauttaa asiakirjan juurta hiiren kakkospainikkeella asiakirjan juurta ja valitsee Merkitse uudelleenlaskettavaksi.
+On suositeltavaa, että käyttäjä napsauttaa asiakirjan juurta hiiren kakkospainikkeella ja valitsee Merkitse uudelleenlaskettavaksi.
 Käyttäjän pitäisi sen jälkeen klikata Päivitä-painiketta päätyökalurivillä.
 </translation>
     </message>

@@ -362,6 +362,8 @@ private:
     bool checkTransactionID(bool undo, int iSteps);
     /// Ask for user interaction if saving has failed
     bool askIfSavingFailed(const QString&);
+    /// Warn if saving a document from an older FreeCAD version (returns false if user cancels)
+    bool warnIfOlderVersion();
 
     struct DocumentP* d;
     static int _iDocCount;

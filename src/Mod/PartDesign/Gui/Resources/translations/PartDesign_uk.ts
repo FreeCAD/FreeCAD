@@ -4347,7 +4347,7 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="159"/>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="178"/>
       <source>None</source>
-      <translation>Нічого</translation>
+      <translation>Немає</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="160"/>
@@ -4698,7 +4698,7 @@ Intersecting sketch entities in a sketch are not allowed.</source>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1752"/>
       <source>Hole error: Diameter too small</source>
-      <translation type="unfinished">Hole error: Diameter too small</translation>
+      <translation>Помилка створення отвору: Занадто малий діаметр</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1789"/>

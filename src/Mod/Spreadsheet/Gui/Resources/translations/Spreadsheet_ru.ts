@@ -4,17 +4,17 @@
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
-      <location filename="../../Command.cpp" line="954"/>
+      <location filename="../../Command.cpp" line="956"/>
       <source>Spreadsheet</source>
       <translation>Электронная таблица</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="955"/>
+      <location filename="../../Command.cpp" line="957"/>
       <source>&amp;New Spreadsheet</source>
       <translation>&amp;Новая таблица</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="956"/>
+      <location filename="../../Command.cpp" line="958"/>
       <source>Creates a new spreadsheet</source>
       <translation>Создаёт новую электронную таблицу</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdSpreadsheetAlignBottom</name>
     <message>
-      <location filename="../../Command.cpp" line="513"/>
+      <location filename="../../Command.cpp" line="515"/>
       <source>Spreadsheet</source>
       <translation>Электронная таблица</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="514"/>
+      <location filename="../../Command.cpp" line="516"/>
       <source>Align &amp;Bottom</source>
       <translation>По &amp;нижнему краю</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="515"/>
+      <location filename="../../Command.cpp" line="517"/>
       <source>Aligns cell contents to the bottom</source>
       <translation>Выравнивает содержимое ячейки по нижнему краю</translation>
     </message>
@@ -40,17 +40,17 @@
   <context>
     <name>CmdSpreadsheetAlignCenter</name>
     <message>
-      <location filename="../../Command.cpp" line="342"/>
+      <location filename="../../Command.cpp" line="344"/>
       <source>Spreadsheet</source>
       <translation>Электронная таблица</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="343"/>
+      <location filename="../../Command.cpp" line="345"/>
       <source>Align Horizontal &amp;Center</source>
       <translation>По горизонтали и центру</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="344"/>
+      <location filename="../../Command.cpp" line="346"/>
       <source>Aligns cell contents to the horizontal center</source>
       <translation>Выравнивает содержимое ячейки по горизонтали и центру</translation>
     </message>
@@ -58,17 +58,17 @@
   <context>
     <name>CmdSpreadsheetAlignLeft</name>
     <message>
-      <location filename="../../Command.cpp" line="285"/>
+      <location filename="../../Command.cpp" line="287"/>
       <source>Spreadsheet</source>
       <translation>Электронная таблица</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="286"/>
+      <location filename="../../Command.cpp" line="288"/>
       <source>Align &amp;Left</source>
       <translation>По &amp;левому краю</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="287"/>
+      <location filename="../../Command.cpp" line="289"/>
       <source>Aligns cell contents to the left</source>
       <translation>Выравнивает содержимое ячейки по левому краю</translation>
     </message>
@@ -76,17 +76,17 @@
   <context>
     <name>CmdSpreadsheetAlignRight</name>
     <message>
-      <location filename="../../Command.cpp" line="399"/>
+      <location filename="../../Command.cpp" line="401"/>
       <source>Spreadsheet</source>
       <translation>Электронная таблица</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="400"/>
+      <location filename="../../Command.cpp" line="402"/>
       <source>Align &amp;Right</source>
       <translation>По &amp;правому краю</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="401"/>
+      <location filename="../../Command.cpp" line="403"/>
       <source>Aligns cell contents to the right</source>
       <translation>Выравнивает содержимое ячейки по правому краю</translation>
     </message>
@@ -94,17 +94,17 @@
   <context>
     <name>CmdSpreadsheetAlignTop</name>
     <message>
-      <location filename="../../Command.cpp" line="456"/>
+      <location filename="../../Command.cpp" line="458"/>
       <source>Spreadsheet</source>
       <translation>Электронная таблица</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="457"/>
+      <location filename="../../Command.cpp" line="459"/>
       <source>Align &amp;Top</source>
       <translation>По &amp;верхнему краю</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="458"/>
+      <location filename="../../Command.cpp" line="460"/>
       <source>Aligns cell contents to the top</source>
       <translation>Выравнивает содержимое ячейки по верхнему краю</translation>
     </message>
@@ -112,17 +112,17 @@
   <context>
     <name>CmdSpreadsheetAlignVCenter</name>
     <message>
-      <location filename="../../Command.cpp" line="570"/>
+      <location filename="../../Command.cpp" line="572"/>
       <source>Spreadsheet</source>
       <translation>Электронная таблица</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="571"/>
+      <location filename="../../Command.cpp" line="573"/>
       <source>Align &amp;Vertical Center</source>
       <translation>По вертикали и центру</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="572"/>
+      <location filename="../../Command.cpp" line="574"/>
       <source>Aligns cell contents to the vertical center</source>
       <translation>Выравнивает содержимое ячейки по вертикали и центру</translation>
     </message>
@@ -130,17 +130,17 @@
   <context>
     <name>CmdSpreadsheetExport</name>
     <message>
-      <location filename="../../Command.cpp" line="240"/>
+      <location filename="../../Command.cpp" line="242"/>
       <source>Spreadsheet</source>
       <translation>Электронная таблица</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="241"/>
+      <location filename="../../Command.cpp" line="243"/>
       <source>&amp;Export Spreadsheet</source>
       <translation>&amp;Экспортировать таблицу</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="242"/>
+      <location filename="../../Command.cpp" line="244"/>
       <source>Exports the spreadsheet to a CSV file</source>
       <translation>Экспортирует электронную таблицу в CSV-файл</translation>
     </message>
@@ -184,17 +184,17 @@
   <context>
     <name>CmdSpreadsheetSetAlias</name>
     <message>
-      <location filename="../../Command.cpp" line="882"/>
+      <location filename="../../Command.cpp" line="884"/>
       <source>Spreadsheet</source>
       <translation>Электронная таблица</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="883"/>
+      <location filename="../../Command.cpp" line="885"/>
       <source>Set Alias</source>
       <translation>Задать псевдоним</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="884"/>
+      <location filename="../../Command.cpp" line="886"/>
       <source>Sets an alias for the selected cell</source>
       <translation>Устанавливает псевдоним для выбранной ячейки</translation>
     </message>
@@ -220,17 +220,17 @@
   <context>
     <name>CmdSpreadsheetStyleBold</name>
     <message>
-      <location filename="../../Command.cpp" line="627"/>
+      <location filename="../../Command.cpp" line="629"/>
       <source>Spreadsheet</source>
       <translation>Электронная таблица</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="628"/>
+      <location filename="../../Command.cpp" line="630"/>
       <source>&amp;Bold Text</source>
       <translation>&amp;Жирный</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="629"/>
+      <location filename="../../Command.cpp" line="631"/>
       <source>Sets the text in the selected cells bold</source>
       <translation>Форматирует текст в выделенных ячейках жирным шрифтом</translation>
     </message>
@@ -238,17 +238,17 @@
   <context>
     <name>CmdSpreadsheetStyleItalic</name>
     <message>
-      <location filename="../../Command.cpp" line="712"/>
+      <location filename="../../Command.cpp" line="714"/>
       <source>Spreadsheet</source>
       <translation>Электронная таблица</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="713"/>
+      <location filename="../../Command.cpp" line="715"/>
       <source>&amp;Italic Text</source>
       <translation>К&amp;урсив</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="714"/>
+      <location filename="../../Command.cpp" line="716"/>
       <source>Sets the text in the selected cells italic</source>
       <translation>Форматирует текст в выделенных ячейках курсивными шрифтом</translation>
     </message>
@@ -256,17 +256,17 @@
   <context>
     <name>CmdSpreadsheetStyleUnderline</name>
     <message>
-      <location filename="../../Command.cpp" line="797"/>
+      <location filename="../../Command.cpp" line="799"/>
       <source>Spreadsheet</source>
       <translation>Электронная таблица</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="798"/>
+      <location filename="../../Command.cpp" line="800"/>
       <source>&amp;Underline Text</source>
       <translation>По&amp;дчёркивание</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="799"/>
+      <location filename="../../Command.cpp" line="801"/>
       <source>Underlines the text in the selected cells</source>
       <translation>Подчёркивает текст в выбранных ячейках</translation>
     </message>
@@ -292,52 +292,52 @@
       <translation>&amp;Разделить ячейки</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="307"/>
+      <location filename="../../Command.cpp" line="309"/>
       <source>Left-align cell</source>
       <translation>Выравнивание по левому краю</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="364"/>
+      <location filename="../../Command.cpp" line="366"/>
       <source>Center cell</source>
       <translation>Выравнивание по центру</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="421"/>
+      <location filename="../../Command.cpp" line="423"/>
       <source>Right-align cell</source>
       <translation>Выравнивание по правому краю</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="478"/>
+      <location filename="../../Command.cpp" line="480"/>
       <source>Top-align cell</source>
       <translation>Выравнивание по верхнему краю</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="535"/>
+      <location filename="../../Command.cpp" line="537"/>
       <source>Bottom-align cell</source>
       <translation>Выравнивание по нижнему краю</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="592"/>
+      <location filename="../../Command.cpp" line="594"/>
       <source>Vertically center cells</source>
       <translation>Выравнивание вертикально по центру</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="667"/>
+      <location filename="../../Command.cpp" line="669"/>
       <source>Set bold text</source>
       <translation>Выделение текста полужирным</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="752"/>
+      <location filename="../../Command.cpp" line="754"/>
       <source>Set italic text</source>
       <translation>Выделение текста курсивом</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="837"/>
+      <location filename="../../Command.cpp" line="839"/>
       <source>Set underline text</source>
       <translation>Выделение текста подчеркиванием</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="967"/>
+      <location filename="../../Command.cpp" line="969"/>
       <source>Create Spreadsheet</source>
       <translation>Создание электронной таблицы</translation>
     </message>
@@ -393,16 +393,6 @@
       <translation>Очистка ячеек</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="243"/>
-      <source>Bind cells</source>
-      <translation>Связать ячейки</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBindSheet.cpp" line="297"/>
-      <source>Unbind cells</source>
-      <translation type="unfinished">Unbind cells</translation>
-    </message>
-    <message>
       <location filename="../../DlgSheetConf.cpp" line="204"/>
       <source>Setup conf table</source>
       <translation type="unfinished">Setup conf table</translation>
@@ -411,6 +401,16 @@
       <location filename="../../DlgSheetConf.cpp" line="309"/>
       <source>Unsetup conf table</source>
       <translation type="unfinished">Unsetup conf table</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.cpp" line="243"/>
+      <source>Bind cells</source>
+      <translation>Связать ячейки</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.cpp" line="297"/>
+      <source>Unbind cells</source>
+      <translation type="unfinished">Unbind cells</translation>
     </message>
   </context>
   <context>
@@ -704,13 +704,7 @@ switch the design configuration. The property will be created if not exist.</sou
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="107"/>
-      <location filename="../../Command.cpp" line="198"/>
-      <source>CSV (*.csv *.CSV);;All (*)</source>
-      <translation>CSV (*.csv *.CSV);;Все (*)</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="201"/>
+      <location filename="../../Command.cpp" line="203"/>
       <source>Import file</source>
       <translation>Импортировать файл</translation>
     </message>
@@ -732,12 +726,24 @@ Spreadsheet.my_alias_name вместо Spreadsheet.B1</translation>
       <translation>Электронная таблица</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="110"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="108"/>
+      <location filename="../../Command.cpp" line="199"/>
+      <source>CSV (*.csv *.CSV)</source>
+      <translation type="unfinished">CSV (*.csv *.CSV)</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="109"/>
+      <location filename="../../Command.cpp" line="200"/>
+      <source>All (*)</source>
+      <translation type="unfinished">All (*)</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="112"/>
       <source>Export File</source>
       <translation>Экспортировать файл</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="136"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="138"/>
       <source>Show Spreadsheet</source>
       <translation>Показать таблицу</translation>
     </message>

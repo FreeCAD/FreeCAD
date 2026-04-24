@@ -2221,7 +2221,7 @@ of the projection.</source>
       <translation>கண்ணி மாற்றவும்</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1490"/>
+      <location filename="../../TaskAttacher.cpp" line="1491"/>
       <source>Edit attachment</source>
       <translation>இணைப்பைத் திருத்தவும்</translation>
     </message>
@@ -3184,8 +3184,8 @@ Check one or more edge entities first.</source>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="29"/>
-      <source>Merges compounds during file reading (slower but higher details)</source>
-      <translation>கோப்பு வாசிப்பின் போது சேர்மங்களை ஒன்றிணைக்கிறது (மெதுவான ஆனால் அதிக விவரங்கள்)</translation>
+      <source>Merges all shapes into a single compound during import, resolving part instances and applying transforms. Increases import time but does not affect geometry accuracy or rendering quality.</source>
+      <translation type="unfinished">Merges all shapes into a single compound during import, resolving part instances and applying transforms. Increases import time but does not affect geometry accuracy or rendering quality.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="32"/>
@@ -5011,7 +5011,7 @@ the sketch plane's normal vector will be used</source>
     <message>
       <location filename="../../TaskOffset.cpp" line="228"/>
       <source>Input error</source>
-      <translation>உள்ளீடு பிழை</translation>
+      <translation type="unfinished">Input error</translation>
     </message>
   </context>
   <context>
@@ -5288,7 +5288,7 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskSweep.cpp" line="437"/>
       <source>Input error</source>
-      <translation>உள்ளீடு பிழை</translation>
+      <translation type="unfinished">Input error</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="478"/>
@@ -5807,12 +5807,12 @@ Individual boolean operation checks:</source>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1472"/>
+      <location filename="../../TaskAttacher.cpp" line="1471"/>
       <source>Attachment</source>
       <translation>இணைப்பு</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1554"/>
+      <location filename="../../TaskAttacher.cpp" line="1556"/>
       <source>Datum dialog: input error</source>
       <translation>தரவு உரையாடல்: உள்ளீடு பிழை</translation>
     </message>
@@ -6054,7 +6054,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../TaskThickness.cpp" line="297"/>
       <source>Input error</source>
-      <translation>உள்ளீடு பிழை</translation>
+      <translation type="unfinished">Input error</translation>
     </message>
   </context>
   <context>
@@ -6484,7 +6484,7 @@ Continue?</source>
       <translation>தூரத்தை உள்ளிடவும்:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1007"/>
+      <location filename="../../ViewProviderExt.cpp" line="994"/>
       <source>Appearance per Face</source>
       <translation>ஒவ்வொரு முகத்திற்கும் தோற்றம்</translation>
     </message>
@@ -6809,7 +6809,7 @@ for collision or distance filtering.</source>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="266"/>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="283"/>
       <source>Attachment</source>
-      <translation>இணைப்பு</translation>
+      <translation type="unfinished">Attachment</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="269"/>
@@ -7128,12 +7128,12 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Part::FaceMakerSimple</name>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="319"/>
+      <location filename="../../../App/FaceMaker.cpp" line="332"/>
       <source>Simple</source>
       <translation>எளிமையானது</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="324"/>
+      <location filename="../../../App/FaceMaker.cpp" line="337"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
       <translation>ஒவ்வொரு கம்பியிலிருந்தும் தனித்தனி விமான முகத்தை சுயாதீனமாக உருவாக்குகிறது. துளைகளுக்கு உதவி இல்லை; கம்பிகள் வெவ்வேறு விமானங்களில் இருக்கலாம்.</translation>
     </message>
@@ -7374,7 +7374,7 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="90"/>
       <source>Attachment</source>
-      <translation>இணைப்பு</translation>
+      <translation type="unfinished">Attachment</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="95"/>
@@ -7735,12 +7735,12 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Part::FaceMakerBuildFace</name>
     <message>
-      <location filename="../../../App/FaceMakerBuildFace.cpp" line="46"/>
+      <location filename="../../../App/FaceMakerBuildFace.cpp" line="60"/>
       <source>BuildFace facemaker</source>
       <translation type="unfinished">BuildFace facemaker</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMakerBuildFace.cpp" line="51"/>
+      <location filename="../../../App/FaceMakerBuildFace.cpp" line="65"/>
       <source>Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</source>
       <translation type="unfinished">Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</translation>
     </message>

@@ -296,12 +296,12 @@
       <location filename="../../CommandTrajectory.cpp" line="180"/>
       <location filename="../../CommandTrajectory.cpp" line="201"/>
       <location filename="../../CommandTrajectory.cpp" line="486"/>
+      <location filename="../../CommandExport.cpp" line="63"/>
+      <location filename="../../CommandExport.cpp" line="144"/>
+      <location filename="../../CommandInsertRobot.cpp" line="70"/>
       <location filename="../../Command.cpp" line="104"/>
       <location filename="../../Command.cpp" line="167"/>
       <location filename="../../Command.cpp" line="269"/>
-      <location filename="../../CommandInsertRobot.cpp" line="70"/>
-      <location filename="../../CommandExport.cpp" line="63"/>
-      <location filename="../../CommandExport.cpp" line="144"/>
       <source>Wrong selection</source>
       <translation>Погрешан избор</translation>
     </message>
@@ -337,9 +337,9 @@
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="110"/>
-      <location filename="../../Command.cpp" line="270"/>
       <location filename="../../CommandExport.cpp" line="64"/>
       <location filename="../../CommandExport.cpp" line="145"/>
+      <location filename="../../Command.cpp" line="270"/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>Изабери једног Робота и један објекат Путање.</translation>
     </message>

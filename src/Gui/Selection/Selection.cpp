@@ -76,7 +76,11 @@ SelectionObserver::SelectionObserver(bool attach, ResolveMode resolve)
     }
 }
 
-SelectionObserver::SelectionObserver(const ViewProviderDocumentObject* vp, bool attach, ResolveMode resolve)
+SelectionObserver::SelectionObserver(
+    const ViewProviderDocumentObject* /*vp*/,
+    bool attach,
+    ResolveMode resolve
+)
     : resolve(resolve)
     , blockedSelection(false)
 {
@@ -520,6 +524,31 @@ bool SelectionSingleton::needPickedList(const char* pDocName) const
         return false;
     }
     return context.info->needPickedList;
+}
+
+SelectionSingleton::SelectionAllowance SelectionSingleton::isSelectionAllowed(
+    const SelectionSingleton::SelectionContext& context,
+    const SelectionDescription& sel
+)
+{
+    if (!context.info || !context.info->gate) {
+        return {.allowed = true, .reason = ""};
+    }
+    const char* subelement = nullptr;
+    auto pObject = getObjectOfType(
+        sel,
+        App::DocumentObject::getClassTypeId(),
+        context.info->resolveMode,
+        &subelement
+    );
+
+
+    if (!context.info->gate->allow(pObject ? pObject->getDocument() : sel.pDoc, pObject, subelement)) {
+        std::string copyNotAllowedReason = context.info->gate->notAllowedReason;
+        context.info->gate->notAllowedReason.clear();
+        return {.allowed = false, .reason = copyNotAllowedReason};
+    }
+    return {.allowed = true, .reason = ""};
 }
 
 void SelectionSingleton::enablePickedList(bool enable, const char* pDocName)
@@ -1072,6 +1101,18 @@ void SelectionSingleton::addSelectionGate(Gui::SelectionGate* gate, ResolveMode 
     context.info->gate = gate;
 }
 
+const Gui::SelectionGate* SelectionSingleton::getSelectionGate(const App::Document* doc) const
+{
+    if (doc == nullptr) {
+        return nullptr;
+    }
+    auto context = getSelectionContext(doc->getName());
+    if (!context.info) {
+        return nullptr;
+    }
+    return context.info->gate;
+}
+
 // remove the active SelectionGate
 void SelectionSingleton::rmvSelectionGate(App::Document* doc)
 {
@@ -1215,36 +1256,23 @@ bool SelectionSingleton::addSelection(
 
 
     // check for a Selection Gate
-    if (context.info->gate) {
-        const char* subelement = nullptr;
-        auto pObject = getObjectOfType(
-            temp,
-            App::DocumentObject::getClassTypeId(),
-            context.info->resolveMode,
-            &subelement
-        );
-        if (
-            !context.info->gate->allow(pObject ? pObject->getDocument() : temp.pDoc, pObject, subelement)
-        ) {
-            if (getMainWindow()) {
-                QString msg;
-                if (context.info->gate->notAllowedReason.length() > 0) {
-                    msg = QObject::tr(context.info->gate->notAllowedReason.c_str());
-                }
-                else {
-                    msg = QCoreApplication::translate(
-                        "SelectionFilter",
-                        "Selection not allowed by filter"
-                    );
-                }
-                getMainWindow()->showMessage(msg);
-                Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-                mdi->setOverrideCursor(Qt::ForbiddenCursor);
+
+    const auto& selectionAllowance = isSelectionAllowed(context, temp);
+    if (!selectionAllowance.allowed) {
+        if (getMainWindow()) {
+            QString msg;
+            if (selectionAllowance.reason.length() > 0) {
+                msg = QObject::tr(selectionAllowance.reason.c_str());
             }
-            context.info->gate->notAllowedReason.clear();
-            QApplication::beep();
-            return false;
+            else {
+                msg = QCoreApplication::translate("SelectionFilter", "Selection not allowed by filter");
+            }
+            getMainWindow()->showMessage(msg);
+            Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
+            mdi->setOverrideCursor(Qt::ForbiddenCursor);
         }
+        QApplication::beep();
+        return false;
     }
 
     if (!logDisabled) {
@@ -1493,6 +1521,10 @@ bool SelectionSingleton::addSelections(
         temp.x = 0;
         temp.y = 0;
         temp.z = 0;
+
+        if (!isSelectionAllowed(context, temp).allowed) {
+            continue;
+        }
 
         if (!logDisabled && !temp.SubName.empty()) {
             temp.logged = true;
