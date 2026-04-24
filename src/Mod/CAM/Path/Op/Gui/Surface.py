@@ -92,12 +92,16 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         PathGuiUtil.updateInputField(obj, "StockToLeave", self.form.stockToLeave)
         PathGuiUtil.updateInputField(obj, "BoundaryAdjustment", self.form.boundaryAdjustment)
         PathGuiUtil.updateInputField(obj, "SampleInterval", self.form.sampleInterval)
+        PathGuiUtil.updateInputField(obj, "MinSampleInterval", self.form.minSampleInterval)
 
         if obj.StepOver != self.form.stepOver.value():
             obj.StepOver = self.form.stepOver.value()
 
         if obj.UseStartPoint != self.form.useStartPoint.isChecked():
             obj.UseStartPoint = self.form.useStartPoint.isChecked()
+
+        if obj.AdaptiveSampling != self.form.adaptiveSampling.isChecked():
+            obj.AdaptiveSampling = self.form.adaptiveSampling.isChecked()
 
         if obj.OptimizeLinearPaths != self.form.optimizeEnabled.isChecked():
             obj.OptimizeLinearPaths = self.form.optimizeEnabled.isChecked()
@@ -139,11 +143,19 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.sampleInterval.setText(
             FreeCAD.Units.Quantity(obj.SampleInterval.Value, FreeCAD.Units.Length).UserString
         )
+        self.form.minSampleInterval.setText(
+            FreeCAD.Units.Quantity(obj.MinSampleInterval.Value, FreeCAD.Units.Length).UserString
+        )
 
         if obj.UseStartPoint:
             self.form.useStartPoint.setCheckState(QtCore.Qt.Checked)
         else:
             self.form.useStartPoint.setCheckState(QtCore.Qt.Unchecked)
+
+        if obj.AdaptiveSampling:
+            self.form.adaptiveSampling.setCheckState(QtCore.Qt.Checked)
+        else:
+            self.form.adaptiveSampling.setCheckState(QtCore.Qt.Unchecked)
 
         if obj.OptimizeLinearPaths:
             self.form.optimizeEnabled.setCheckState(QtCore.Qt.Checked)
@@ -190,10 +202,12 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.stockToLeave.editingFinished)
         signals.append(self.form.stepOver.editingFinished)
         signals.append(self.form.sampleInterval.editingFinished)
+        signals.append(self.form.minSampleInterval.editingFinished)
         signals.append(self.form.accuracySlider.valueChanged)
 
         if hasattr(self.form.useStartPoint, "checkStateChanged"):  # Qt version >= 6.7.0
             signals.append(self.form.useStartPoint.checkStateChanged)
+            signals.append(self.form.adaptiveSampling.checkStateChanged)
             signals.append(self.form.optimizeEnabled.checkStateChanged)
             signals.append(self.form.keepToolDown.checkStateChanged)
             signals.append(self.form.clearPlanarOnly.checkStateChanged)
@@ -201,6 +215,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             signals.append(self.form.ignoreOuter.checkStateChanged)
         else:  # Qt version < 6.7.0
             signals.append(self.form.useStartPoint.stateChanged)
+            signals.append(self.form.adaptiveSampling.stateChanged)
             signals.append(self.form.optimizeEnabled.stateChanged)
             signals.append(self.form.keepToolDown.stateChanged)
             signals.append(self.form.clearPlanarOnly.stateChanged)
@@ -216,6 +231,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.sampleInterval.setText(
             FreeCAD.Units.Quantity(preset["sample_interval"], FreeCAD.Units.Length).UserString
         )
+        self.form.minSampleInterval.setText(
+            FreeCAD.Units.Quantity(preset["min_sample_interval"], FreeCAD.Units.Length).UserString
+        )
         self.form.accuracyDescription.setText(
             "{} - {}".format(preset["name"], preset["description"])
         )
@@ -226,6 +244,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             obj.LinearDeflection = preset["linear_deflection"]
         if hasattr(obj, "MeshSimplification"):
             obj.MeshSimplification = preset["mesh_simplification"]
+
+        self.updateVisibility()
 
     def _syncAccuracyLabel(self):
         """Check if current UI values match a preset; update slider and label accordingly."""
@@ -250,74 +270,102 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     def updateVisibility(self, sentObj=None):
         """updateVisibility(sentObj=None)... Updates visibility of Tasks panel objects."""
         strategy = self.form.strategySelect.currentData()
-        is_dropcutter = strategy == "DropCutter"
-        is_zlevel = strategy == "ZLevelHybrid"
-        # is_waterline remains for OCL-based waterline logic
+        cut_pattern = self.form.cutPattern.currentData()
 
-        # DropCutter - specific widgets
-        if is_dropcutter:
+        is_surface_pattern = (strategy == "SurfacePattern")
+        is_zlevel = (strategy == "ZLevelHybrid")
+        is_waterline = (strategy == "Waterline")
+
+        # Get the current sample interval to decide if Adaptive is useful
+        try:
+            current_si = FreeCAD.Units.Quantity(self.form.sampleInterval.text()).Value
+        except Exception:
+            current_si = 1.0  # Default if field is invalid
+
+        adaptive_threshold = 0.25
+        is_adaptive_useful = abs(current_si) >= adaptive_threshold
+
+        # Adaptive Sampling - enable/disable based on usefulness
+        can_enable_adaptive = (
+            (is_surface_pattern or is_waterline)
+            and self.form.performanceAccuracyGroup.isChecked()
+            and is_adaptive_useful
+        )
+        self.form.adaptiveSampling.setEnabled(can_enable_adaptive)
+
+        # The Min Sample Interval field is only enabled if adaptive is possible AND checked
+        is_min_sample_enabled = self.form.adaptiveSampling.isEnabled() and self.form.adaptiveSampling.isChecked()
+        self.form.minSampleInterval.setEnabled(is_min_sample_enabled)
+        self.form.minSampleInterval_label.setEnabled(is_min_sample_enabled)
+
+        # SurfacePattern - specific widgets
+        if is_surface_pattern:
             self.form.cutPattern.show()
             self.form.cutPattern_label.show()
             self.form.avoidLastX_Faces.show()
             self.form.avoidLastX_Faces_label.show()
             self.form.keepToolDown.show()
+            self.form.useStartPoint.show()
+            self.form.layerMode.show()
+            self.form.layerMode_label.show()
         else:
             self.form.cutPattern.hide()
             self.form.cutPattern_label.hide()
             self.form.avoidLastX_Faces.hide()
             self.form.avoidLastX_Faces_label.hide()
             self.form.keepToolDown.hide()
+            self.form.useStartPoint.hide()
+            self.form.layerMode.hide()
+            self.form.layerMode_label.hide()
 
-        # Z-Level Hybrid - specific widgets    
+        # Waterline - specific widgets
+        if is_waterline:
+            self.form.clearingOptionsGroup.setVisible(False)
+            self.form.boundaryAdjustment.hide()
+            self.form.boundaryAdjustment_label.hide()
+            self.form.boundBoxSelect.hide()
+            self.form.boundBoxSelect_label.hide()
+        else:
+            self.form.clearingOptionsGroup.setVisible(True)
+            self.form.boundaryAdjustment.show()
+            self.form.boundaryAdjustment_label.show()
+            self.form.boundBoxSelect.show()
+            self.form.boundBoxSelect_label.show()
+
+        # Z-Level Hybrid - specific widgets
         if is_zlevel:
-            # Hide the entire Accuracy Section (Label, Slider, and Description)
-            self.form.accuracyFrame.hide() 
-
-            # Show Z-Level Specifics
+            self.form.performanceAccuracyGroup.setVisible(False)
+            self.form.optimizationGroup.setVisible(False)
             self.form.cutPatternZLevel.show()
             self.form.cutPatternZLevel_label.show()
-            self.form.depthOffset.show()
-            self.form.depthOffset_label.show()
             self.form.stockToLeave.show()
             self.form.stockToLeave_label.show()
             self.form.clearPlanarOnly.show()
             self.form.cutPatternReversed.show()
             self.form.ignoreOuter.show()
-
-            # Hide standard Waterline/DropCutter controls
-            self.form.useStartPoint.hide()
-            self.form.sampleInterval.hide()
-            self.form.sampleInterval_label.hide()
-            self.form.optimizeEnabled.hide()
-            self.form.layerMode.hide()
-            self.form.layerMode_label.hide()
         else:
-            # Show the Accuracy Section for non-Z-Level strategies
-            self.form.accuracyFrame.show()
-
-            # Hide Z-Level Specifics
+            self.form.performanceAccuracyGroup.setVisible(True)
+            self.form.optimizationGroup.setVisible(True)
             self.form.cutPatternZLevel.hide()
             self.form.cutPatternZLevel_label.hide()
-            self.form.depthOffset.hide()
-            self.form.depthOffset_label.hide()
             self.form.stockToLeave.hide()
             self.form.stockToLeave_label.hide()
             self.form.clearPlanarOnly.hide()
             self.form.cutPatternReversed.hide()
             self.form.ignoreOuter.hide()
 
-            # Show standard controls
-            self.form.useStartPoint.show()
-            self.form.sampleInterval.show()
-            self.form.sampleInterval_label.show()
-            self.form.optimizeEnabled.show()
-            self.form.layerMode.show()
-            self.form.layerMode_label.show()
-
     def registerSignalHandlers(self, obj):
         self.form.strategySelect.currentIndexChanged.connect(self.updateVisibility)
+        self.form.cutPattern.currentIndexChanged.connect(self.updateVisibility)
+
+        if hasattr(self.form.adaptiveSampling, "checkStateChanged"):
+            self.form.adaptiveSampling.checkStateChanged.connect(self.updateVisibility)
+        else:
+            self.form.adaptiveSampling.stateChanged.connect(self.updateVisibility)
+
         self.form.accuracySlider.valueChanged.connect(self._onAccuracySliderChanged)
-        self.form.sampleInterval.editingFinished.connect(self._syncAccuracyLabel)
+        self.form.sampleInterval.editingFinished.connect(self.updateVisibility)
+        self.form.performanceAccuracyGroup.toggled.connect(self.updateVisibility)
 
 
 Command = PathOpGui.SetupOperation(

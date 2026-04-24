@@ -49,24 +49,23 @@ from Path.Base.Generator.surface_common import _get_ocl
 # ---------------------------------------------------------------------------
 
 
-def batch_dropcutter(stl, cutter, grid_points, min_z, threads=None, timer=None):
-    """Run OCL BatchDropCutter on a grid of CL-points.
+def batch_dropcutter(stl, cutter, polylines, min_z, threads=None, timer=None):
+    """Run OCL BatchDropCutter on a list of pre-discretized polylines.
 
     Uses KDTree acceleration and OpenMP parallelism (via ``setThreads()``).
-    This is the preferred method for grid-based surface scans —
-    significantly faster than creating one PathDropCutter per scan line.
+    This is the preferred method for complex, dense patterns (Spiral, Offset, etc.) as
+    it leverages OCL's internal KD-Tree for massive spatial acceleration.
 
     Args:
         stl: ``ocl.STLSurf`` mesh.
         cutter: OCL cutter object.
-        grid_points: List of ``(x, y, z)`` tuples from
-                     :func:`~surface_scan.generate_grid_points`.
+        polylines: A list of scan lines, where each line is a list of (x,y,z) tuples.
         min_z: Minimum Z depth.
         threads: Number of OpenMP threads (*None* = auto-detect).
         timer: Optional ``timer(stage_name, elapsed_seconds)`` callback.
 
     Returns:
-        List of ``(x, y, z)`` tuples with Z-heights set by drop-cutter.
+        A list of (x, y, z) tuples with Z-heights set by the drop-cutter
     """
     ocl = _get_ocl()
 
@@ -77,9 +76,12 @@ def batch_dropcutter(stl, cutter, grid_points, min_z, threads=None, timer=None):
     if threads is not None and threads > 0:
         bdc.setThreads(threads)
 
-    # Add CL-points to the batch
-    for pt in grid_points:
-        bdc.appendPoint(ocl.CLPoint(pt[0], pt[1], min_z))
+    # Flatten the list of lines into a single stream of points.
+    total_points = 0
+    for line in polylines:
+        for pt in line:
+            bdc.appendPoint(ocl.CLPoint(pt[0], pt[1], min_z))
+            total_points += 1
 
     t0 = time.time()
     bdc.run()
@@ -88,7 +90,7 @@ def batch_dropcutter(stl, cutter, grid_points, min_z, threads=None, timer=None):
     if timer:
         timer("batch_dropcutter", t1 - t0)
 
-    Path.Log.debug("batch_dropcutter: {} points in {:.3f}s".format(len(grid_points), t1 - t0))
+    Path.Log.debug("batch_dropcutter: {} points in {:.3f}s".format(total_points, t1 - t0))
 
     # Extract results
     results = []
@@ -189,52 +191,6 @@ def adaptive_path_dropcutter(stl, cutter, ocl_path, min_z, sampling, min_samplin
     Path.Log.debug("adaptive_path_dropcutter: {:.3f}s".format(t1 - t0))
 
     return [(cl.x, cl.y, cl.z) for cl in apdc.getCLPoints()]
-
-
-# ---------------------------------------------------------------------------
-# CL-point filtering via LineCLFilter
-# ---------------------------------------------------------------------------
-
-
-def filter_cl_points(cl_points, tolerance, timer=None):
-    """Use OCL LineCLFilter to remove collinear CL-points.
-
-    Replaces the manual ``isOnLineSegment`` checks and
-    ``OptimizeLinearPaths`` logic currently in SurfaceSupport.py.
-
-    Args:
-        cl_points: List of ``(x, y, z)`` tuples.
-        tolerance: Collinearity tolerance (mm).
-        timer: Optional callback.
-
-    Returns:
-        Filtered list of ``(x, y, z)`` tuples.
-    """
-    ocl = _get_ocl()
-
-    if len(cl_points) < 3:
-        return list(cl_points)
-
-    f = ocl.LineCLFilter()
-    f.setTolerance(tolerance)
-
-    for pt in cl_points:
-        f.addCLPoint(ocl.CLPoint(pt[0], pt[1], pt[2]))
-
-    t0 = time.time()
-    f.run()
-    t1 = time.time()
-
-    if timer:
-        timer("filter_cl_points", t1 - t0)
-
-    result = [(cl.x, cl.y, cl.z) for cl in f.getCLPoints()]
-
-    Path.Log.debug(
-        "filter_cl_points: {} -> {} points in {:.3f}s".format(len(cl_points), len(result), t1 - t0)
-    )
-
-    return result
 
 
 # ---------------------------------------------------------------------------
@@ -387,21 +343,56 @@ def scan_lines_to_gcode(
     return commands
 
 
-def grid_to_scan_lines(grid_points, nx, ny):
-    """Reshape a flat grid of CL-points into scan lines.
+def apply_multipass(scan_lines, start_depth, final_depth, step_down):
+    """
+    Splits and clamps full-depth scan lines into multiple Z-levels for roughing.
 
     Args:
-        grid_points: Flat list of ``(x, y, z)`` tuples from
-                     :func:`batch_dropcutter`.
-        nx: Number of points per row (X direction).
-        ny: Number of rows (Y direction).
+        scan_lines: List of scan lines, each a list of (x,y,z) tuples at full depth.
+        start_depth: Top Z level to start cutting.
+        final_depth: Final target Z level.
+        step_down: Maximum depth per pass.
 
     Returns:
-        List of scan lines, each a list of ``(x, y, z)`` tuples.
+        A flat list of scan lines ordered by layer, suitable for scan_lines_to_gcode.
     """
-    lines = []
-    for j in range(ny):
-        start = j * nx
-        end = start + nx
-        lines.append(list(grid_points[start:end]))
-    return lines
+    if step_down <= 0.0 or final_depth >= start_depth:
+        return scan_lines
+
+    # Generate depth levels from top to bottom
+    depthparams = []
+    curr_z = start_depth - step_down
+    while curr_z > final_depth + 1e-5:
+        depthparams.append(curr_z)
+        curr_z -= step_down
+
+    # Ensure final depth is always the last pass
+    if not depthparams or abs(depthparams[-1] - final_depth) > 1e-5:
+        depthparams.append(final_depth)
+
+    all_multipass_lines = []
+
+    for i, layDep in enumerate(depthparams):
+        prvDep = start_depth if i == 0 else depthparams[i-1]
+
+        for line in scan_lines:
+            current_segment = []
+            for pt in line:
+                x, y, z = pt
+
+                # Check if the point is above the already-cleared material (adding a tiny 
+                # tolerance to prevent floating point noise from falsely lifting the tool)
+                if z > prvDep + 1e-4:
+                    if current_segment:
+                        # End the current cutting segment because we hit the "air"
+                        all_multipass_lines.append(current_segment)
+                        current_segment = []
+                else:
+                    # Point is cutting material. Clamp to the current layer depth
+                    new_z = layDep if z < layDep else z
+                    current_segment.append((x, y, new_z))
+
+            if current_segment:
+                all_multipass_lines.append(current_segment)
+
+    return all_multipass_lines

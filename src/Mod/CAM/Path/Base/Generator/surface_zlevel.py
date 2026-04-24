@@ -227,11 +227,6 @@ def zlevel_hybrid_stack(
     is_3d = tool_params["is_threeD"]
     num_slices = int(accuracy_val) if is_3d else 1
 
-    # Cache state
-    prev_fp = None
-    cached_cut_area = None
-    cache_is_safe = False
-
     # 2. Pre-load C++ engine
     area_engine = Path.Area()
     area_engine.setPlane(wpc)
@@ -280,24 +275,16 @@ def zlevel_hybrid_stack(
         fusion = Path.Area()
         fusion.setPlane(wpc)
 
-        hit_cache = False
-        # Cache is safe only if we are on a standard wall (Pure) and fully submerged
-        cache_is_safe = (status == "Pure") and (dist_submerged >= c_rad)
-
-        for idx, (h, r_theo) in enumerate(unique_steps):
+        for h, r_theo in unique_steps:
             r_comp = r_theo + stock_to_leave
 
             # Synchronized Slicing
             slice_z = max(modelBottom + 1e-5, min(z_target + h + slice_bias, modelTop - 1e-5))
 
-            # Cache probe: If idx=0 and is_3d, take current slice + one slice deeper
-            is_probe = (idx == 0 and cache_is_safe and is_3d)
-            target_heights = [slice_z, slice_z - c_rad] if is_probe else [slice_z]
-
             # Trigger C++ Slicing with dynamic offset
             params["Offset"] = r_comp
             area_engine.setParams(**params)
-            sections = area_engine.makeSections(mode=0, project=False, heights=target_heights)
+            sections = area_engine.makeSections(mode=0, project=False, heights=[slice_z])
 
             if not sections:
                 indicator.next()
@@ -309,96 +296,70 @@ def zlevel_hybrid_stack(
                 indicator.next()
                 continue
 
-            # Cache validation
-            if idx == 0 and cache_is_safe and cached_cut_area is not None:
-                hit_cache, prev_fp = _validate_cache(
-                    sections,
-                    sub_face,
-                    prev_fp,
-                    is_probe
-                )
-                if hit_cache:
-                    break
-
             # Move results to machine plane for dissolved fusion
             sub_face.translate(FreeCAD.Vector(0, 0, -sub_face.BoundBox.ZMin))
             fusion.add(sub_face)
 
         # C. Boolean resolution
-        total_shift = z_target + z_offset
+        try:
+            # currentSilhouette is the union of all 3D contact points at this depth
+            currentSilhouette = fusion.getShape()
+        except Exception as e:
+            # Log the error and skip this specific layer to keep the recompute alive
+            Path.Log.error(f"Z-Level Hybrid: Silhouette resolution failed at Z={round(z_target, 3)}. Error: {str(e)}")
+            indicator.next()
+            continue
 
-        if hit_cache:
-            # Rapid Path: Reuse previous clearing result
-            final_cut = cached_cut_area.copy()
+        if hasattr(currentSilhouette, "removeSplitter"):
+            currentSilhouette = currentSilhouette.removeSplitter()
+
+        # Clearing engine (Clipper Booleans)
+        layer_engine = Path.Area()
+        layer_engine.setPlane(wpc)
+
+        if status == "Extra":
+            # Surgical Floor Mode: Only clear the floor geometry, ignore stock boundary
+            if floor_geo:
+                layer_engine.add(floor_geo)
+                layer_engine.add(currentSilhouette, op=1)  # Subtract model
+
+        else:
+            # Standard Mode: Material = (Stock - Model) - TrimMask
+            layer_engine.add(borderFace)
+            layer_engine.add(currentSilhouette, op=1)
+
+            # Rest Machining: subtract material cleared in layers above
+            if allPrevComp:
+                layer_engine.add(allPrevComp, op=1)
+
+        if trimFace:
+            layer_engine.add(trimFace, op=1)
+
+        try:
+            cutArea = layer_engine.getShape()
+        except Exception as e:
+            Path.Log.error(f"Z-Level Hybrid: Layer engine failed at Z={round(z_target, 3)}. Error: {str(e)}")
+            indicator.next()
+            continue
+
+        # Reconciliation & Translation
+        if cutArea:
+            total_shift = z_target + z_offset
+
+            final_cut = cutArea.copy()
             final_cut.translate(FreeCAD.Vector(0, 0, total_shift))
 
             # Store target G-code depth, calculated geometry, and metadata
             stack.append((total_shift, final_cut, status))
-        else:
-            try:
-                # currentSilhouette is the union of all 3D contact points at this depth
-                currentSilhouette = fusion.getShape()
-            except Exception as e:
-                # Log the error and skip this specific layer to keep the recompute alive
-                Path.Log.error(f"Z-Level Hybrid: Silhouette resolution failed at Z={round(z_target, 3)}. Error: {str(e)}")
-                indicator.next()
-                continue
 
-            if hasattr(currentSilhouette, "removeSplitter"):
-                currentSilhouette = currentSilhouette.removeSplitter()
-
-            # Clearing engine (Clipper Booleans)
-            layer_engine = Path.Area()
-            layer_engine.setPlane(wpc)
-
-            if status == "Extra":
-                # Surgical Floor Mode: Only clear the floor geometry, ignore stock boundary
-                if floor_geo:
-                    layer_engine.add(floor_geo)
-                    layer_engine.add(currentSilhouette, op=1)  # Subtract model
-
-                if trimFace:
-                    layer_engine.add(trimFace, op=1)
-
-            else:
-                # Standard Mode: Material = (Stock - Model) - TrimMask
-                layer_engine.add(borderFace)
-                layer_engine.add(currentSilhouette, op=1)
-
-                if trimFace:
-                    layer_engine.add(trimFace, op=1)
-
-                # Rest Machining: subtract material cleared in layers above
-                if allPrevComp:
-                    layer_engine.add(allPrevComp, op=1)
-
-            try:
-                cutArea = layer_engine.getShape()
-            except Exception as e:
-                Path.Log.error(f"Z-Level Hybrid: Layer engine failed at Z={round(z_target, 3)}. Error: {str(e)}")
-                indicator.next()
-                continue
-
-            # Reconciliation & Translation
-            if cutArea:
-                # Cache cutArea
-                if cache_is_safe:
-                    cached_cut_area = cutArea.copy()
-
-                final_cut = cutArea.copy()
-                final_cut.translate(FreeCAD.Vector(0, 0, total_shift))
-
-                # Store target G-code depth, calculated geometry, and metadata
-                stack.append((total_shift, final_cut, status))
-
-                # Update Persistent Mask (strictly model silhouette to keep pockets open)
-                allPrevComp = _update_machining_mask(
-                    wpc, 
-                    allPrevComp, 
-                    currentSilhouette, 
-                    status, 
-                    floor_geo
-                )
+            # Update Persistent Mask (strictly model silhouette to keep pockets open)
+            allPrevComp = _update_machining_mask(
+                wpc, 
+                allPrevComp, 
+                currentSilhouette, 
+                status, 
+                floor_geo
+            )
 
         indicator.next()
 
@@ -488,51 +449,9 @@ def _generate_sampling_plan(
 
     # 5. Clean, Unique, and Sort
     # Rounding to 6 decimals prevents duplicate slices caused by floating point noise.
-    # Sorted descending (reverse=True) so the loop starts at the equator for the cache probe.
-    unique_steps = sorted({(round(h, 6), round(r, 6)) for h, r in plan}, reverse=True)
+    unique_steps = {(round(h, 6), round(r, 6)) for h, r in plan}
 
     return unique_steps
-
-def _validate_cache(
-    sections,
-    sub_face,
-    prev_fp,
-    is_probe
-):
-    """Generates slice fingerprints and validates the Verticality Cache.
-
-    Args:
-        sections (list): The list of Path.Area.Section objects from makeSections.
-        sub_face (Part.Shape): The 2D geometry of the current sub-sample
-        is_probe (bool): True if this iteration is intended to validate the cache.
-        prev_fp (tuple): The geometric fingerprint from the previous machined layer.
-
-    Returns:
-        tuple: (hit_cache [bool], current_fp [tuple], current_shape [Part.Shape])
-        - hit_cache: True if the wall is vertical and geometry matches the cache.
-        - current_fp: The fingerprint of the current slice to store for the next layer.
-    """
-
-    # Helper to generate fingerprint
-    def _get_fingerprint(s):
-        bb = s.BoundBox
-        return (s.Area, bb.XMin)
-
-    current_fp = _get_fingerprint(sub_face)
-
-    # Validate cache only during the first sub-sample (the probe)
-    if is_probe and len(sections) > 1:  # is_3d
-        # Check 'Future' slice (Z - Radius) provided by the double-slice probe
-        probe_sub_face = sections[1].getShape()
-        if probe_sub_face and not probe_sub_face.isNull():
-            check_fp = _get_fingerprint(probe_sub_face)
-    else:  # Flat endmill
-        check_fp = current_fp
-
-    if prev_fp == check_fp:
-        return True, prev_fp
-        
-    return False, current_fp
 
 def _update_machining_mask(
     wpc,

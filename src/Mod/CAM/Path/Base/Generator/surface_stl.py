@@ -50,7 +50,7 @@ except ImportError:
 # Try to import C++ implementation
 try:
     # Import the compiled C++ extension module
-    import surface_stl as _stl_cpp
+    import surface_generator as _stl_cpp
 
     _HAS_CPP = True
     Path.Log.info("surface_stl: Using C++ accelerated implementation")
@@ -129,8 +129,8 @@ def _apply_pre_clipping(shape, final_depth):
     Returns:
         Clipped Part.Shape (or original if clipping fails)
     """
-    if final_depth is None or final_depth >= 0:
-        Path.Log.debug("surface_stl: Pre-clipping disabled (final_depth is None or >= 0)")
+    if final_depth is None:
+        Path.Log.debug("surface_stl: Pre-clipping disabled (final_depth is None)")
         return shape
 
     # Check for empty or null shape
@@ -147,7 +147,7 @@ def _apply_pre_clipping(shape, final_depth):
         margin = max(bounds.DiagonalLength, 100.0)  # Large margin
 
         # Box extends from final_depth up to well above the shape
-        box_min = FreeCAD.Vector(bounds.XMin - margin, bounds.YMin - margin, final_depth - margin)
+        box_min = FreeCAD.Vector(bounds.XMin - margin, bounds.YMin - margin, final_depth)
         box_max = FreeCAD.Vector(bounds.XMax + margin, bounds.YMax + margin, bounds.ZMax + margin)
         clipping_box = Part.makeBox(
             box_max.x - box_min.x, box_max.y - box_min.y, box_max.z - box_min.z, box_min
@@ -289,6 +289,7 @@ def shape_to_stl(
     timer=None,
     mesh_simplification=1,
     final_depth=None,
+    use_cpp=False,
 ):
     """Convert a Part.Shape / Compound to ocl.STLSurf using raw arrays.
 
@@ -322,7 +323,7 @@ def shape_to_stl(
 
     # Tessellation phase
     tess_start = time.perf_counter()
-    if _HAS_CPP:
+    if _HAS_CPP and use_cpp:  # use_cpp - Waterline and shape_to_stl_cpp issue not yet solved
         try:
             verts, faces = _shape_to_stl_cpp(shape, linear_deflection, angular_deflection, timer)
         except RuntimeError as e:

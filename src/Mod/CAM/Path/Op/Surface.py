@@ -69,9 +69,8 @@ class ObjectSurface(PathOp.ObjectOp):
     """Unified 3D surfacing operation.
 
     Strategies:
-    - DropCutter: 3D surface finishing via drop-cutter along scan patterns
-    - Waterline: Constant-Z contours via OCL push-cutter + Weave
-    - AdaptiveWaterline: Adaptive-sampling variant of Waterline
+    - SurfacePattern: 3D surface finishing via pattern projection
+    - Waterline: Constant-Z contours via OCL
     - Z-Level Hybrid: Z-Level Waterline contours via shape slicing (no OCL, fallback)
     """
 
@@ -82,7 +81,8 @@ class ObjectSurface(PathOp.ObjectOp):
             "angular_deflection": 0.5,  # Coarse chordal deviation for minimal mesh density
             "linear_deflection": 0.1,  # Relaxed for rough previews (avoids over-precision)
             "mesh_simplification": 7,  # Maximum reduction to speed up
-            "sample_interval": 3.0,  # Sparse sampling for fast computation
+            "sample_interval": 1.5,  # Sparse sampling for fast computation
+            "min_sample_interval": 0.3,  # Minimum sparse sampling for fast computation
             "description": "Quick toolpath verification and rough prototypes",
         },
         2: {  # Very Fast
@@ -90,7 +90,8 @@ class ObjectSurface(PathOp.ObjectOp):
             "angular_deflection": 0.4,
             "linear_deflection": 0.075,
             "mesh_simplification": 6,  # Aggressive reduction
-            "sample_interval": 2.5,
+            "sample_interval": 1.0,
+            "min_sample_interval": 0.20,
             "description": "Rapid roughing with basic verification",
         },
         3: {  # Fast
@@ -98,7 +99,8 @@ class ObjectSurface(PathOp.ObjectOp):
             "angular_deflection": 0.3,
             "linear_deflection": 0.05,
             "mesh_simplification": 5,  # Strong reduction
-            "sample_interval": 2.0,
+            "sample_interval": 0.5,
+            "min_sample_interval": 0.10,
             "description": "Efficient processing for initial prototypes",
         },
         4: {  # Balanced
@@ -106,7 +108,8 @@ class ObjectSurface(PathOp.ObjectOp):
             "angular_deflection": 0.2,
             "linear_deflection": 0.025,
             "mesh_simplification": 4,  # Moderate reduction
-            "sample_interval": 1.5,
+            "sample_interval": 0.25,
+            "min_sample_interval": 0.05,
             "description": "Good compromise—fast with solid results for commercial work",
         },
         5: {  # Good Accuracy
@@ -114,7 +117,8 @@ class ObjectSurface(PathOp.ObjectOp):
             "angular_deflection": 0.15,
             "linear_deflection": 0.015,
             "mesh_simplification": 3,  # Balanced reduction
-            "sample_interval": 1.0,
+            "sample_interval": 0.1,
+            "min_sample_interval": 0.05,
             "description": "Reliable quality for most commercial machines, still quick",
         },
         6: {  # High Accuracy
@@ -122,7 +126,8 @@ class ObjectSurface(PathOp.ObjectOp):
             "angular_deflection": 0.1,
             "linear_deflection": 0.01,
             "mesh_simplification": 2,  # Light reduction
-            "sample_interval": 0.5,
+            "sample_interval": 0.07,
+            "min_sample_interval": 0.05,
             "description": "Detailed surfacing for typical commercial tolerances",
         },
         7: {  # Ultra High Accuracy - For precision commercial jobs
@@ -130,7 +135,8 @@ class ObjectSurface(PathOp.ObjectOp):
             "angular_deflection": 0.05,  # Fine chordal for smooth curves
             "linear_deflection": 0.005,  # Precise but not sub-micron (matches standard high-end commercial)
             "mesh_simplification": 1,  # Minimal reduction
-            "sample_interval": 0.1,  # Dense sampling for quality finishes
+            "sample_interval": 0.05,  # Dense sampling for quality finishes
+            "min_sample_interval": 0.05,
             "description": "High quality for detailed commercial work, moderate processing time",
         },
     }
@@ -186,9 +192,9 @@ class ObjectSurface(PathOp.ObjectOp):
                 "Strategy",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Select the 3D surfacing strategy: DropCutter for scan-based finishing, "
-                    "Waterline/AdaptiveWaterline for constant-Z contours, "
-                    "or Z-Lvel Hybrid for non-OCL fallback.",
+                    "Select the 3D surfacing strategy: Surface Pattern for projection-based finishing, "
+                    "Waterline for constant-Z contours, "
+                    "or Z-Level Hybrid for non-OCL fallback.",
                 ),
             ),
             # -- Mesh Conversion --
@@ -335,6 +341,24 @@ class ObjectSurface(PathOp.ObjectOp):
                 ),
             ),
             (
+                "App::PropertyBool",
+                "AdaptiveSampling",
+                "Clearing Options",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Dynamically adjusts sampling density in high-curvature areas.",
+                ),
+            ),
+            (
+                "App::PropertyDistance",
+                "MinSampleInterval",
+                "Clearing Options",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Set the minimum sampling resolution for Adaptive Sampling.",
+                ),
+            ),
+            (
                 "App::PropertyFloat",
                 "StepOver",
                 "Clearing Options",
@@ -430,9 +454,8 @@ class ObjectSurface(PathOp.ObjectOp):
 
         enums = {
             "Strategy": [
-                (translate("CAM_Surface", "DropCutter"), "DropCutter"),
+                (translate("CAM_Surface", "Surface Pattern"), "SurfacePattern"),
                 (translate("CAM_Surface", "Waterline"), "Waterline"),
-                (translate("CAM_Surface", "AdaptiveWaterline"), "AdaptiveWaterline"),
                 (translate("CAM_Surface", "Z-Level Hybrid"), "ZLevelHybrid"),
             ],
             "BoundBox": [
@@ -491,12 +514,13 @@ class ObjectSurface(PathOp.ObjectOp):
         """opPropertyDefaults(obj, job) ... returns a dictionary of default values
         for the operation's properties."""
         defaults = {
-            "Strategy": "DropCutter",
+            "Strategy": "SurfacePattern",
+            "AdaptiveSampling": False,
             "OptimizeLinearPaths": True,
             "KeepToolDown": True,
             "UseStartPoint": False,
-            "CutPatternReversed": False,
             "StartPoint": FreeCAD.Vector(0.0, 0.0, obj.ClearanceHeight.Value),
+            "CutPatternReversed": False,
             "LayerMode": "Single-pass",
             "CutMode": "Conventional",
             "CutPattern": "Line",
@@ -506,9 +530,10 @@ class ObjectSurface(PathOp.ObjectOp):
             "IgnoreOuter": False,
             "StockToLeave": 0.0,
             "StepOver": 50.0,
-            "CutPatternAngle": 45.0,
+            "CutPatternAngle": 0.0,
             "DepthOffset": 0.0,
-            "SampleInterval": 1.0,
+            "SampleInterval": 1.00,
+            "MinSampleInterval": 0.20,
             "BoundaryAdjustment": 0.0,
             "AvoidLastX_Faces": 0,
             "PatternCenterCustom": FreeCAD.Vector(0.0, 0.0, 0.0),
@@ -538,32 +563,43 @@ class ObjectSurface(PathOp.ObjectOp):
         show = 0
         hide = 2
 
+        strategy = getattr(obj, "Strategy", "SurfacePattern")
+        is_surface_pattern = (strategy == "SurfacePattern")
+        is_zlevel = (strategy == "ZLevelHybrid")
+        is_waterline = (strategy == "Waterline")
+
         # Logic Groups:
         # A: Z-Level Hybrid specific properties
-        # B: DropCutter/Mesh-specific properties
+        # B: SurfacePattern/Mesh-specific properties
         # C: Pattern-dependent settings (StepOver, etc.)
-        A, B, C = hide, show, show
+        A = show if is_zlevel else hide
+        B = hide if is_zlevel else show
+        C = show if is_surface_pattern else hide
 
-        strategy = getattr(obj, "Strategy", "DropCutter")
-        is_dropcutter = (strategy == "DropCutter")
-        is_zlevel = (strategy == "ZLevelHybrid")
+        # SurfacePattern specific contexts
+        obj.setEditorMode("AvoidLastX_Faces", show if is_surface_pattern else hide)
+        obj.setEditorMode("StartPoint", show if is_surface_pattern else hide)
+        obj.setEditorMode("UseStartPoint", show if is_surface_pattern else hide)
+        obj.setEditorMode("CutPattern", show if is_surface_pattern else hide)
+        obj.setEditorMode("CutPatternAngle", show if is_surface_pattern else hide)
+        obj.setEditorMode("BoundBox", show if is_surface_pattern else hide)
+        obj.setEditorMode("KeepToolDown", show if is_surface_pattern else hide)
+        obj.setEditorMode("GapThreshold", show if is_surface_pattern else hide)
+        obj.setEditorMode("LayerMode", show if is_surface_pattern else hide)
 
-        # DropCutter context
-        obj.setEditorMode("CutPattern", show if is_dropcutter else hide)
-        obj.setEditorMode("CutPatternAngle", show if is_dropcutter else hide)
+        # Adaptive Sampling Logic
+        can_adaptive = is_waterline or is_surface_pattern
+        obj.setEditorMode("AdaptiveSampling", show if can_adaptive else hide)
 
-        # Pattern center is relevant for circular/spiral patterns in dropcutter
-        pattern_needs_center = (
-            is_dropcutter
-            and hasattr(obj, "CutPattern")
-            and obj.CutPattern in ["Circular", "CircularZigZag", "Spiral", "Offset"]
-        )
+        is_adaptive = getattr(obj, "AdaptiveSampling", False) and can_adaptive
+        obj.setEditorMode("MinSampleInterval", show if is_adaptive else hide)
+
+        # Pattern center is relevant for circular/spiral patterns in SurfacePattern
+        pattern_needs_center = is_surface_pattern and not obj.CutPattern in["Line", "ZigZag"]
         obj.setEditorMode("PatternCenterAt", show if pattern_needs_center else hide)
         obj.setEditorMode("PatternCenterCustom", show if pattern_needs_center else hide)
 
-        # ZLevelHybrid context
         if is_zlevel:
-            A, B = show, hide
             z_pattern = getattr(obj, "CutPatternZLevel", "None")
             C = hide if z_pattern == "None" else show
 
@@ -571,35 +607,30 @@ class ObjectSurface(PathOp.ObjectOp):
         obj.setEditorMode("ClearPlanarOnly", A)
         obj.setEditorMode("IgnoreOuter", A)
         obj.setEditorMode("StockToLeave", A)
-        obj.setEditorMode("CutPatternAngle", A)
         obj.setEditorMode("CutPatternZLevel", A)
         obj.setEditorMode("SamplingAccuracy", A)
 
         # Apply Visibility to Mesh/OCL Group (B)
-        obj.setEditorMode("LayerMode", B)
         obj.setEditorMode("AngularDeflection", B)
         obj.setEditorMode("LinearDeflection", B)
         obj.setEditorMode("MeshSimplification", B)
-        obj.setEditorMode("AvoidLastX_Faces", B)
-        obj.setEditorMode("GapThreshold", B)
-        obj.setEditorMode("KeepToolDown", B)
         obj.setEditorMode("OptimizeLinearPaths", B)
         obj.setEditorMode("SampleInterval", B)
 
         # Apply Visibility to Common/Contextual Group (C)
         obj.setEditorMode("StepOver", C)
         obj.setEditorMode("CutPatternReversed", C)
+        obj.setEditorMode("CutPatternAngle", C)
 
         # Global Properties
         obj.setEditorMode("CutMode", show)
         obj.setEditorMode("DepthOffset", show)
-        obj.setEditorMode("BoundBox", show)
-        obj.setEditorMode("LayerMode", show if not is_zlevel else hide)
+        obj.setEditorMode("BoundaryAdjustment", show if not is_waterline else hide)
 
     def opOnChanged(self, obj, prop):
         if hasattr(self, "propertiesReady"):
             if self.propertiesReady:
-                if prop in ["Strategy", "CutPattern", "CutPatternZLevel"]:
+                if prop in["Strategy", "CutPattern", "CutPatternZLevel", "AdaptiveSampling"]:
                     self.setEditorProperties(obj)
                 elif prop == "MeshSimplification":
                     if hasattr(obj, "MeshSimplification"):
@@ -626,6 +657,8 @@ class ObjectSurface(PathOp.ObjectOp):
             obj.MeshSimplification = preset["mesh_simplification"]
         if hasattr(obj, "SampleInterval"):
             obj.SampleInterval = preset["sample_interval"]
+        if hasattr(obj, "MinSampleInterval"):
+            obj.MinSampleInterval = preset["min_sample_interval"]
 
     def get_accuracy_level(self, obj):
         """Determine accuracy level from current property values.
@@ -644,6 +677,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 and hasattr(obj, "LinearDeflection")
                 and hasattr(obj, "MeshSimplification")
                 and hasattr(obj, "SampleInterval")
+                and hasattr(obj, "MinSampleInterval")
             ):
 
                 if (
@@ -651,6 +685,7 @@ class ObjectSurface(PathOp.ObjectOp):
                     and obj.LinearDeflection == preset["linear_deflection"]
                     and obj.MeshSimplification == preset["mesh_simplification"]
                     and obj.SampleInterval == preset["sample_interval"]
+                    and obj.MinSampleInterval == preset["min_sample_interval"]
                 ):
                     return level
 
@@ -732,13 +767,17 @@ class ObjectSurface(PathOp.ObjectOp):
             obj.SampleInterval.Value = 25.4
             Path.Log.error("Sample interval limits are 0.0001 to 25.4 millimeters.")
 
+        # Limit min sample interval
+        if obj.MinSampleInterval.Value < 0.0001:
+            obj.MinSampleInterval.Value = 0.0001
+            Path.Log.error("Min sample interval limits are 0.0001 to 25.4 millimeters.")
+        if obj.MinSampleInterval.Value > 25.4:
+            obj.MinSampleInterval.Value = 25.4
+            Path.Log.error("Min sample interval limits are 0.0001 to 25.4 millimeters.")
+
         # Limit cut pattern angle
-        if obj.CutPatternAngle < -360.0:
+        if obj.CutPatternAngle < -360.0 or obj.CutPatternAngle >= 360.0:
             obj.CutPatternAngle = 0.0
-            Path.Log.error("Cut pattern angle limits are +-360 degrees.")
-        if obj.CutPatternAngle >= 360.0:
-            obj.CutPatternAngle = 0.0
-            Path.Log.error("Cut pattern angle limits are +-360 degrees.")
 
         # Limit StepOver to natural number percentage
         if obj.StepOver > 100.0:
@@ -856,7 +895,7 @@ class ObjectSurface(PathOp.ObjectOp):
         extract_start = time.time()
         all_faces = []
         total_subs = 0
-        for base, subs in obj.Base:#obj.Base:#self.baseShapes(obj):
+        for base, subs in obj.Base:
             Path.Log.debug("_getSelectedFaces: base={}, subs={}".format(base.Label, subs))
             for sub in subs:
                 # Skip empty sub-element names - they indicate whole object selection
@@ -886,33 +925,11 @@ class ObjectSurface(PathOp.ObjectOp):
         avoid_start = time.time()
         avoid = obj.AvoidLastX_Faces if hasattr(obj, "AvoidLastX_Faces") else 0
         if avoid > 0 and avoid < len(all_faces):
-            cut_faces = all_faces[: len(all_faces) - avoid]
-            avoided = all_faces[len(all_faces) - avoid :]
-            Path.Log.info(
-                "AvoidLastX_Faces: cutting {} faces, avoiding {} faces".format(
-                    len(cut_faces), len(avoided)
-                )
-            )
-            result = cut_faces
+            return all_faces[: len(all_faces) - avoid]
         elif avoid >= len(all_faces):
-            Path.Log.warning(
-                "AvoidLastX_Faces ({}) >= selected faces ({}). No faces to cut.".format(
-                    avoid, len(all_faces)
-                )
-            )
-            result = []
-        else:
-            result = all_faces
-        avoid_time = time.time() - avoid_start
+            return []
 
-        total_time = time.time() - start_time
-        Path.Log.info(
-            "_getSelectedFaces: TOTAL {:.3f}s (extract: {:.3f}s, avoid: {:.3f}s) -> {} faces".format(
-                total_time, extract_time, avoid_time, len(result)
-            )
-        )
-
-        return result
+        return all_faces
 
     def _getBoundBox(self, obj, job, selected_faces=None):
         """Get the bounding box for the operation based on BoundBox property.
@@ -946,335 +963,176 @@ class ObjectSurface(PathOp.ObjectOp):
         Path.Log.debug("_getBoundBox: using model BB: {}".format(bb))
         return bb
 
-    def _circular_to_gcode(self, obj, circle, cutter, stl, sample_interval, depth_offset=0.0):
-        """Generate G-code for a circular scan pattern.
+    def _executeSurfacePattern(self, obj, job, stl, cutter, tool_diam, bb, selected_faces=None):
+        """
+        Executes the Surface Pattern (projection) strategy.
 
-        Runs drop-cutter to obtain Z heights around the circle, then emits
-        G2/G3 arcs for segments that lie in the XY plane (constant Z) and
-        G1 linear moves for segments where Z varies.
+        This is the primary function for generating toolpaths by projecting a 2D pattern
+        onto a 3D STL mesh. It follows a highly optimized, multi-stage pipeline:
 
         Args:
-            obj: The 3D Surface operation object.
-            circle: Dict with 'center' (x,y), 'radius', 'direction' (1=CCW, -1=CW).
-            cutter: OCL cutter object.
-            stl: OCL STL surface.
-            sample_interval: Sampling distance along the arc.
-            depth_offset: Z offset applied to all points.
+            obj (Path::FeaturePython): The 3D Surface operation object.
+            job (Path::Job): The parent Job object.
+            stl (ocl.STLSurf): The primary OCL mesh for the toolpath calculation.
+            safe_stl (ocl.STLSurf): A secondary OCL mesh including check surfaces, used for
+                                   collision-safe "Keep Tool Down" transitions.
+            cutter (ocl.Cutter): The OCL representation of the tool.
+            tool_diam (float): The diameter of the active tool.
+            bb (BoundBox): The bounding box of the entire operation area.
+            selected_faces (list, optional): A list of Part.Face objects if the user
+                                             has made a specific selection. Defaults to None.
 
         Returns:
-            List of ``Path.Command``.
+            list: A list of Path.Command objects representing the final G-code.
         """
-        import math
+        cmds = []
 
-        cx, cy = circle["center"]
-        r = circle["radius"]
-        direction = circle["direction"]
+        step_over = tool_diam * (float(obj.StepOver) / 100.0)
+        cut_climb = obj.CutMode == "Climb"
 
-        # Sample points around the circle
-        n_pts = max(int(2 * math.pi * r / sample_interval), 16)
-        pts = []
-        for i in range(n_pts + 1):
-            angle = 2 * math.pi * i / n_pts
-            if direction < 0:
-                angle = -angle
-            pts.append(
-                ocl.Point(cx + r * math.cos(angle), cy + r * math.sin(angle), obj.FinalDepth.Value)
+        final_depth = obj.FinalDepth.Value
+        depth_offset = obj.DepthOffset.Value
+        sample_interval = obj.SampleInterval.Value
+        pattern_reverse = obj.CutPatternReversed
+        pattern = obj.CutPattern if hasattr(obj, "CutPattern") else "Line"
+        is_adaptive = getattr(obj, "AdaptiveSampling", False)
+
+        if pattern_reverse:
+            cut_climb = not cut_climb
+
+        # Generate the pattern mask (boundary face)
+        boundary_adj = obj.BoundaryAdjustment.Value if hasattr(obj, "BoundaryAdjustment") else 0.0
+        boundary_face = surface_common.generate_pattern_mask(
+            job, obj, selected_faces, tool_diam / 2.0, boundary_adj
+        )
+        if boundary_face:
+            b_bb = boundary_face.BoundBox
+            scan_bb = surface_scan.BBox(b_bb.XMin, b_bb.XMax, b_bb.YMin, b_bb.YMax)
+        else:
+            # Fallback
+            scan_bb = surface_scan.BBox(bb.XMin, bb.XMax, bb.YMin, bb.YMax)
+
+        # Generate 2D scan lines based on pattern
+        angle = obj.CutPatternAngle if hasattr(obj, "CutPatternAngle") else 0.0
+        raw_scan_lines = []
+
+        if pattern == "Offset":
+            if boundary_face:
+                raw_scan_lines = surface_scan.generate_offset_scan_lines(
+                    boundary_face,
+                    step_over,
+                    sample_interval,
+                    pattern_reverse
+                )
+            else:
+                Path.Log.warning("Offset pattern requires a valid boundary. Aborting.")
+                return []
+
+        else:  # (Line, ZigZag, Circular, CircularZigZag, Spiral)
+            center = (scan_bb.center[0], scan_bb.center[1])
+            is_zigzag = pattern in ("ZigZag", "CircularZigZag")
+
+            tolerance = obj.LinearDeflection.Value if hasattr(obj, "LinearDeflection") else 0.005
+
+            raw_scan_lines = surface_scan.fast_generate_pattern(
+                pattern,
+                scan_bb,
+                center,
+                step_over,
+                sample_interval, 
+                angle,
+                is_zigzag,
+                pattern_reverse,
+                boundary_face,
+                tolerance
             )
 
-        # Drop-cutter for Z heights
+        # Build one combined OCL path
         path_obj = ocl.Path()
-        for i in range(len(pts) - 1):
-            path_obj.append(ocl.Line(pts[i], pts[i + 1]))
 
-        results = surface_dropcutter.path_dropcutter(
-            stl, cutter, path_obj, obj.FinalDepth.Value, sample_interval
-        )
+        for line in raw_scan_lines:
+            if len(line) < 2: continue
+            for i in range(len(line) - 1):
+                p1 = ocl.Point(line[i][0], line[i][1], final_depth)
+                p2 = ocl.Point(line[i+1][0], line[i+1][1], final_depth)
+                path_obj.append(ocl.Line(p1, p2))
 
-        if not results:
-            return []
+        # Project scan lines to 3D surface
+        results_flat = []
+
+        adaptive_threshold = 0.25  # Switch to Standard DropCutter beyond this point
+        is_truly_adaptive = is_adaptive and sample_interval >= adaptive_threshold
+
+        if is_adaptive and not is_truly_adaptive:
+            Path.Log.info(
+                f"SampleInterval ({sample_interval:.3f}mm) is below the adaptive threshold (0.25mm)."
+            )
+            Path.Log.info("Switching to faster standard dropcutter for this high-density path.")
+
+        if is_truly_adaptive:  # AdaptivePathDropCutter
+            min_sampling = obj.MinSampleInterval.Value if hasattr(obj, "MinSampleInterval") else sample_interval / 10.0
+
+            results_flat = surface_dropcutter.adaptive_path_dropcutter(
+                stl,
+                cutter,
+                path_obj,
+                final_depth,
+                sample_interval,
+                min_sampling
+            )
+        else:
+            if pattern in ("Line", "ZigZag"):  # PathDropCutter
+                results_flat = surface_dropcutter.path_dropcutter(
+                    stl,
+                    cutter,
+                    path_obj,
+                    final_depth,
+                    sample_interval
+                )
+            else:  # (Circular, Spiral, Offset) - BatchDropCutter
+                results_flat = surface_dropcutter.batch_dropcutter(
+                    stl,
+                    cutter,
+                    raw_scan_lines,
+                    final_depth
+                )
+
+        # Reconstruct & optimize the results
+        scan_lines = surface_scan.reconstruct_scan_lines(results_flat, sample_interval * 2.5)
 
         if obj.OptimizeLinearPaths:
-            tol = obj.GapThreshold.Value if hasattr(obj.GapThreshold, "Value") else 0.005
-            results = surface_dropcutter.filter_cl_points(results, tol)
+            scan_lines = [
+                surface_common.filter_cl_points(line, 0.005) for line in scan_lines
+            ]
 
-        if not results:
-            return []
+        # Apply Multi-pass roughing
+        if getattr(obj, "LayerMode", "Single-pass") == "Multi-pass":
+            scan_lines = surface_dropcutter.apply_multipass(
+                scan_lines,
+                obj.StartDepth.Value,
+                obj.FinalDepth.Value,
+                obj.StepDown.Value
+            )
 
-        cmds = []
-        z_tol = 0.001  # tolerance for "same Z" comparison
-        g_arc = "G3" if direction > 0 else "G2"
-
-        # Rapid to first point
-        first = results[0]
-        cmds.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid}))
-        cmds.append(Path.Command("G0", {"X": first[0], "Y": first[1], "F": self.horizRapid}))
-        cmds.append(Path.Command("G1", {"Z": first[2] + depth_offset, "F": self.vertFeed}))
-
-        # Walk through results, grouping consecutive co-planar-Z segments
-        # into G2/G3 arcs and emitting G1 where Z changes.
-        i = 1
-        while i < len(results):
-            pt = results[i]
-
-            if abs(pt[2] - results[i - 1][2]) > z_tol:
-                # Z changed — emit G1
-                cmds.append(
-                    Path.Command(
-                        "G1",
-                        {
-                            "X": pt[0],
-                            "Y": pt[1],
-                            "Z": pt[2] + depth_offset,
-                            "F": self.horizFeed,
-                        },
-                    )
-                )
-                i += 1
-            else:
-                # Start of a co-planar arc segment
-                arc_start_idx = i - 1
-                arc_z = results[arc_start_idx][2]
-                while i < len(results) and abs(results[i][2] - arc_z) <= z_tol:
-                    i += 1
-                # arc runs from arc_start_idx to i-1
-                arc_end_idx = i - 1
-
-                if arc_end_idx == arc_start_idx:
-                    # Single point — shouldn't happen, but safety
-                    continue
-
-                # Emit a G2/G3 arc from results[arc_start_idx] to results[arc_end_idx]
-                start_pt = results[arc_start_idx]
-                end_pt = results[arc_end_idx]
-
-                # IJK: vector from arc start to circle center (incremental mode)
-                cmds.append(
-                    Path.Command(
-                        g_arc,
-                        {
-                            "X": end_pt[0],
-                            "Y": end_pt[1],
-                            "Z": arc_z + depth_offset,
-                            "I": cx - start_pt[0],
-                            "J": cy - start_pt[1],
-                            "F": self.horizFeed,
-                        },
-                    )
-                )
-
-        return cmds
-
-    def _executeDropCutter(self, obj, job, stl, cutter, tool_diam, bb, selected_faces=None):
-        """Execute the DropCutter strategy using Phase 1 generators.
-
-        Flow:
-        1. Generate scan pattern from bounding box
-        2. Run batch drop-cutter on the grid
-        3. Filter points to face boundary (if selected faces)
-        4. Filter collinear points
-        5. Convert to G-code
-        """
-        startTime = time.time()
-        cmds = []
-        Path.Log.track()
-
-        Path.Log.debug(f"OCL cutter diameter: {tool_diam}, StepOver property: {obj.StepOver}%")
-        step_over = tool_diam * (float(obj.StepOver) / 100.0)
-        Path.Log.debug(f"Calculated stepover distance: {step_over}")
-        sample_interval = obj.SampleInterval.Value
-        Path.Log.debug(f"SampleInterval (sampling distance along path): {sample_interval}")
-        cut_climb = obj.CutMode == "Climb"
-        if obj.CutPatternReversed:
-            cut_climb = not cut_climb
-        depth_offset = (
-            obj.DepthOffset.Value if hasattr(obj.DepthOffset, "Value") else float(obj.DepthOffset)
+        # Generate G-Code
+        opt_transitions = getattr(obj, "KeepToolDown", False)
+        cmds = surface_dropcutter.scan_lines_to_gcode(
+            scan_lines,
+            horiz_feed=self.horizFeed,
+            vert_rapid=self.vertRapid,
+            horiz_rapid=self.horizRapid,
+            safe_z=obj.SafeHeight.Value,
+            clearance_z=obj.ClearanceHeight.Value,
+            depth_offset=depth_offset,
+            optimize_transitions=opt_transitions,
+            safe_stl=stl if opt_transitions else None,
+            cutter=cutter if opt_transitions else None,
         )
 
-        # Build scan BBox
-        scan_bb = surface_scan.BBox(bb.XMin, bb.XMax, bb.YMin, bb.YMax)
-
-        pattern = obj.CutPattern if hasattr(obj, "CutPattern") else "Line"
-
-        if pattern in ("Line", "ZigZag"):
-            # NEW: Use boundary-aware scan line generation (legacy strategy adapted)
-            # This avoids expensive filtering by generating lines that already respect boundaries
-            if selected_faces:
-                boundary_adj = (
-                    obj.BoundaryAdjustment.Value if hasattr(obj, "BoundaryAdjustment") else 0.0
-                )
-
-                boundary_start = time.time()
-                boundary_face = surface_common.make_boundary_face(
-                    selected_faces, tool_diam / 2.0, boundary_adj
-                )
-                boundary_face_time = time.time() - boundary_start
-                Path.Log.info(f"Boundary face creation: {boundary_face_time:.4f}s")
-
-                # Generate boundary-aware scan lines directly
-                scan_start = time.time()
-                scan_lines = surface_common.generate_boundary_aware_scan_lines(
-                    boundary_face, sample_interval, step_over, (bb.XMin, bb.XMax, bb.YMin, bb.YMax)
-                )
-                scan_time = time.time() - scan_start
-                Path.Log.info(f"Boundary-aware scan generation: {scan_time:.4f}s")
-
-                # Convert scan lines to points for batch dropcutter
-                points = []
-                for line in scan_lines:
-                    points.extend(line)
-
-                # Run batch dropcutter on boundary-aware points
-                batch_start = time.time()
-                results = surface_dropcutter.batch_dropcutter(
-                    stl, cutter, points, obj.FinalDepth.Value
-                )
-                batch_time = time.time() - batch_start
-                Path.Log.info(
-                    f"Batch drop-cutter: {batch_time:.4f}s, {len(points)} points → {len(results)} results"
-                )
-
-                # Update scan lines with dropcutter results
-                result_idx = 0
-                for line_idx, line in enumerate(scan_lines):
-                    new_line = []
-                    for _ in line:
-                        if result_idx < len(results):
-                            new_line.append(results[result_idx])
-                            result_idx += 1
-                    scan_lines[line_idx] = new_line
-            else:
-                # Fallback to grid generation if no boundary
-                grid_start = time.time()
-                grid, (nx, ny) = surface_scan.generate_grid_points(
-                    scan_bb, sample_interval, step_over, min_z=obj.FinalDepth.Value
-                )
-                grid_time = time.time() - grid_start
-                Path.Log.info(f"Grid generation: {grid_time:.4f}s, {len(grid)} points ({nx}x{ny})")
-
-                Path.Log.info(
-                    "DropCutter: {} grid points ({}x{}), pattern={}".format(
-                        len(grid), nx, ny, pattern
-                    )
-                )
-
-                # Run batch drop-cutter
-                batch_start = time.time()
-                results = surface_dropcutter.batch_dropcutter(
-                    stl, cutter, grid, obj.FinalDepth.Value
-                )
-                batch_time = time.time() - batch_start
-                Path.Log.info(
-                    f"Batch drop-cutter: {batch_time:.4f}s, {len(grid)} points → {len(results)} results"
-                )
-
-                # Reshape into scan lines
-                reshape_start = time.time()
-                scan_lines = surface_dropcutter.grid_to_scan_lines(results, nx=nx, ny=ny)
-                reshape_time = time.time() - reshape_start
-                Path.Log.info(f"Grid to scan lines: {reshape_time:.4f}s")
-
-            # Apply zigzag direction reversal
-            if pattern == "ZigZag":
-                for i in range(len(scan_lines)):
-                    if i % 2 == 1:
-                        scan_lines[i] = list(reversed(scan_lines[i]))
-
-            # Filter collinear points if optimization is enabled
-            if obj.OptimizeLinearPaths:
-                tolerance = obj.GapThreshold.Value if hasattr(obj.GapThreshold, "Value") else 0.005
-                scan_lines = [
-                    surface_dropcutter.filter_cl_points(line, tolerance) for line in scan_lines
-                ]
-
-            # Convert to G-code
-            gcode_start = time.time()
-            opt_transitions = getattr(obj, "KeepToolDown", False)
-            Path.Log.info(f"KeepToolDown={opt_transitions}")
-            cmds = surface_dropcutter.scan_lines_to_gcode(
-                scan_lines,
-                horiz_feed=self.horizFeed,
-                vert_rapid=self.vertRapid,
-                horiz_rapid=self.horizRapid,
-                safe_z=obj.SafeHeight.Value,
-                clearance_z=obj.ClearanceHeight.Value,
-                depth_offset=depth_offset,
-                optimize_transitions=opt_transitions,
-                safe_stl=stl if opt_transitions else None,
-                cutter=cutter if opt_transitions else None,
-            )
-            gcode_time = time.time() - gcode_start
-            Path.Log.info(f"G-code generation: {gcode_time:.4f}s, {len(cmds)} commands")
-
-        elif pattern in ("Circular", "CircularZigZag"):
-            # Circular scan patterns - use G2/G3 commands
-            center = (scan_bb.center[0], scan_bb.center[1])
-            max_radius = scan_bb.diagonal / 2.0
-
-            if pattern == "Circular":
-                circles = surface_scan.generate_circular_scan(
-                    center,
-                    max_radius,
-                    step_over,
-                    tool_diam,
-                    reversed=obj.CutPatternReversed,
-                )
-            else:
-                circles = surface_scan.generate_circular_zigzag_scan(
-                    center,
-                    max_radius,
-                    step_over,
-                    tool_diam,
-                )
-
-            # For each circle, generate G2/G3 commands
-            for circle in circles:
-                circle_cmds = self._circular_to_gcode(
-                    obj, circle, cutter, stl, sample_interval, depth_offset
-                )
-                cmds.extend(circle_cmds)
-
-        elif pattern == "Spiral":
-            center = (scan_bb.center[0], scan_bb.center[1])
-            max_radius = scan_bb.diagonal / 2.0
-
-            spiral_pts = surface_scan.generate_spiral_scan(
-                center,
-                max_radius,
-                step_over,
-                sample_interval,
-                reversed=obj.CutPatternReversed,
-            )
-
-            # Create OCL path from spiral points
-            path_obj = ocl.Path()
-            ocl_pts = [ocl.Point(p[0], p[1], obj.FinalDepth.Value) for p in spiral_pts]
-            for i in range(len(ocl_pts) - 1):
-                path_obj.append(ocl.Line(ocl_pts[i], ocl_pts[i + 1]))
-
-            results = surface_dropcutter.path_dropcutter(
-                stl, cutter, path_obj, obj.FinalDepth.Value, sample_interval
-            )
-
-            if obj.OptimizeLinearPaths:
-                tolerance = obj.GapThreshold.Value if hasattr(obj.GapThreshold, "Value") else 0.005
-                results = surface_dropcutter.filter_cl_points(results, tolerance)
-
-            cmds = surface_dropcutter.points_to_gcode(
-                results,
-                horiz_feed=self.horizFeed,
-                vert_rapid=self.vertRapid,
-                horiz_rapid=self.horizRapid,
-                safe_z=obj.SafeHeight.Value,
-                clearance_z=obj.ClearanceHeight.Value,
-                depth_offset=depth_offset,
-            )
-
-        elapsed = time.time() - startTime
-
         return cmds
 
-    def _executeWaterline(self, obj, job, stl, cutter, tool_diam, bb, adaptive=False):
-        """Execute the Waterline or AdaptiveWaterline strategy using Phase 1 generators.
+    def _executeWaterline(self, obj, job, stl, cutter, tool_diam, bb, is_adaptive=False):
+        """Execute the Waterline strategy using Phase 1 generators.
 
         Flow:
         1. Calculate Z-height range from depths
@@ -1283,33 +1141,52 @@ class ObjectSurface(PathOp.ObjectOp):
         """
         startTime = time.time()
 
-        sampling = obj.SampleInterval.Value
+        sample_interval = obj.SampleInterval.Value
+        min_sampling = obj.MinSampleInterval.Value
         min_z = obj.FinalDepth.Value
         max_z = obj.StartDepth.Value
+        depth_offset = obj.DepthOffset.Value
         step_down = obj.StepDown.Value
         cut_climb = obj.CutMode == "Climb"
+
+        adaptive_threshold = 0.25  # If SampleInterval is already this fine, standard dropcutter is faster.
+        is_truly_adaptive = is_adaptive and sample_interval >= adaptive_threshold
+
+        if is_adaptive and not is_truly_adaptive:
+            Path.Log.info(
+                f"SampleInterval ({sample_interval:.3f}mm) is below the adaptive threshold ({adaptive_threshold}mm)."
+            )
+            Path.Log.info("Switching to faster standard dropcutter for this high-density path.")
+
         if obj.CutPatternReversed:
             cut_climb = not cut_climb
-        depth_offset = (
-            obj.DepthOffset.Value if hasattr(obj.DepthOffset, "Value") else float(obj.DepthOffset)
-        )
 
         Path.Log.info(
-            "Waterline: min_z={:.2f}, max_z={:.2f}, step_down={:.2f}, adaptive={}".format(
-                min_z, max_z, step_down, adaptive
+            "Waterline: min_z={:.2f}, max_z={:.2f}, step_down={:.2f}, is_truly_adaptive={}".format(
+                min_z, max_z, step_down, is_truly_adaptive
             )
         )
 
         wl_data = surface_waterline.waterline_stack(
             stl,
             cutter,
-            sampling,
+            sample_interval,
+            min_sampling,
             min_z=min_z,
             max_z=max_z,
             step_down=step_down,
-            adaptive=adaptive,
+            adaptive=is_truly_adaptive,
             depth_offset=depth_offset,
         )
+
+        # Filter collinear points if optimization is enabled
+        if obj.OptimizeLinearPaths:
+            tolerance = obj.GapThreshold.Value if hasattr(obj.GapThreshold, "Value") else 0.005
+            for zh in wl_data:
+                filter_loop = []
+                for loop in wl_data[zh]:
+                    filter_loop.append(surface_common.filter_cl_points(loop, tolerance))
+                wl_data[zh] = filter_loop
 
         cmds = surface_waterline.waterline_to_gcode(
             wl_data,
@@ -1345,14 +1222,6 @@ class ObjectSurface(PathOp.ObjectOp):
         7. Convert the resulting geometry stack into optimized G-code Path commands.
         """
 
-        def _makeExtendedBoundBox(wBB, bbBfr, zDep):
-            """Creates a large rectangular wire around the stock."""
-            p1 = FreeCAD.Vector(wBB.XMin - bbBfr, wBB.YMin - bbBfr, zDep)
-            p2 = FreeCAD.Vector(wBB.XMax + bbBfr, wBB.YMin - bbBfr, zDep)
-            p3 = FreeCAD.Vector(wBB.XMax + bbBfr, wBB.YMax + bbBfr, zDep)
-            p4 = FreeCAD.Vector(wBB.XMin - bbBfr, wBB.YMax + bbBfr, zDep)
-            return Part.makePolygon([p1, p2, p3, p4, p1])
-
         def _getZLevelToolParams():
             """Specialized helper for Z-Level Hybrid math requirements."""
             tool = obj.ToolController.Tool
@@ -1382,6 +1251,14 @@ class ObjectSurface(PathOp.ObjectOp):
                 "is_threeD": is_3d
             }
 
+        def _makeExtendedBoundBox(wBB, bbBfr, zDep):
+            """Creates a large rectangular wire around the stock."""
+            p1 = FreeCAD.Vector(wBB.XMin - bbBfr, wBB.YMin - bbBfr, zDep)
+            p2 = FreeCAD.Vector(wBB.XMax + bbBfr, wBB.YMin - bbBfr, zDep)
+            p3 = FreeCAD.Vector(wBB.XMax + bbBfr, wBB.YMax + bbBfr, zDep)
+            p4 = FreeCAD.Vector(wBB.XMin - bbBfr, wBB.YMax + bbBfr, zDep)
+            return Part.makePolygon([p1, p2, p3, p4, p1])
+
         def _getZLevelTrimFace(shape, borderFace, tool_params, wpc):
             """Calculates the 'Outside World' mask to clip the toolpath."""
 
@@ -1389,11 +1266,12 @@ class ObjectSurface(PathOp.ObjectOp):
             # make_boundary_face(faces, radius, extra_offset)
             radius = -tool_params["radius"]
             adj = obj.BoundaryAdjustment.Value - 0.01
+            offset = radius + adj
 
             if obj.BoundBox == "Stock":
-                bbFace = surface_common.make_boundary_face(job.Stock.Shape.Faces, radius, adj)
+                bbFace = surface_common.make_boundary_face(job.Stock.Shape.Faces, offset)
             else:
-                bbFace = surface_common.make_boundary_face(shape.Faces, radius, adj)
+                bbFace = surface_common.make_boundary_face(shape.Faces, offset)
 
             trim_engine = Path.Area()
             trim_engine.setPlane(wpc)
@@ -1414,19 +1292,6 @@ class ObjectSurface(PathOp.ObjectOp):
             return []
 
         shape = models[0].Shape if len(models) == 1 else models[0].Shape.multiFuse([m.Shape for m in models[1:]])
-
-        if not shape:
-            all_shapes = []
-            for base, subs in obj.Base:#self.baseShapes(obj):
-                if base.Shape and not base.Shape.isNull():
-                    all_shapes.append(base.Shape)
-            if not all_shapes:
-                Path.Log.error("Z-Level Hybrid: No geometry found to process.")
-                return []
-            if len(all_shapes) == 1:
-                shape = all_shapes[0]
-            else:
-                shape = all_shapes[0].multiFuse(all_shapes[1:])
 
         # 2. Extract ToolBit parameters
         tool_params = _getZLevelToolParams()
@@ -1471,7 +1336,7 @@ class ObjectSurface(PathOp.ObjectOp):
         # 4. Boundary preparation
         buffer = radius * 10.0
         border_poly = _makeExtendedBoundBox(job.Stock.Shape.BoundBox, buffer, 0.0)
-        borderFace = Part.Face(border_poly)
+        borderFace = Part.makeFace(border_poly)
         trimFace = _getZLevelTrimFace(shape, borderFace, tool_params, wpc)
 
         import Path.Base.Generator.surface_zlevel as surface_zlevel
@@ -1539,12 +1404,22 @@ class ObjectSurface(PathOp.ObjectOp):
         self.opApplyPropertyLimits(obj)
 
         strategy = obj.Strategy
+        is_adaptive = getattr(obj, "AdaptiveSampling", False)
 
         # Extract selected faces and apply AvoidLastX_Faces filtering
         faces_start = time.time()
         selected_faces = self._getSelectedFaces(obj)
         faces_time = time.time() - faces_start
         Path.Log.info("opExecute: face selection took {:.3f}s".format(faces_time))
+
+        if strategy in ["ZLevelHybrid", "Waterline"]:
+            selected_faces = []
+
+        # Z-Level Hybrid doesn't need OCL cutter or STL
+        if strategy == "ZLevelHybrid":
+            cmds = self._executeZLevelHybrid(obj, JOB)
+            self.commandlist.extend(cmds)
+            return
 
         if hasattr(obj, "Base") and obj.Base and not selected_faces:
             # Check if this is whole-model selection (empty sub-elements) vs actual face selection
@@ -1568,12 +1443,6 @@ class ObjectSurface(PathOp.ObjectOp):
                 Path.Log.debug("Surface: Processing whole model (no specific face selection)")
                 # Continue with whole model processing
 
-        # Z-Level Hybrid doesn't need OCL cutter or STL
-        if strategy == "ZLevelHybrid":
-            cmds = self._executeZLevelHybrid(obj, JOB)
-            self.commandlist.extend(cmds)
-            return
-
         # Extract tool parameters and create OCL cutter
         tool_start = time.time()
         tool_params = self._extractToolParams(obj)
@@ -1594,6 +1463,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 translate("CAM_Surface", "Error creating OCL cutter from tool parameters.")
             )
             return
+
         tool_diam = cutter.getDiameter()
         Path.Log.info(
             "Surface OCL cutter created: getDiameter()={}, StepOver={}%, "
@@ -1606,12 +1476,13 @@ class ObjectSurface(PathOp.ObjectOp):
         bbox_time = time.time() - bbox_start
         Path.Log.info("opExecute: bounding box took {:.3f}s".format(bbox_time))
 
+        # Fallback to the Job's Model Group if no Base geometry is specified in the operation
+        base_objs = [base for base, subs in obj.Base] if hasattr(obj, "Base") and obj.Base else JOB.Model.Group
+
         # Create STL from model shapes
-        # Use baseShapes() for 3+2 multi-axis support - shapes are auto-transformed
         stl_start = time.time()
         stl = None
-        for base, subs in obj.Base:#self.baseShapes(obj):
-            # For Surface, we only care about the base shape, not subs
+        for base in base_objs:
             model_shape = base.Shape
 
             if hasattr(base, "TypeId") and base.TypeId.startswith("Mesh"):
@@ -1622,7 +1493,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 stl = surface_stl.mesh_to_stl(points, facets)
             else:
                 # Check which STL method will be used
-                if hasattr(surface_stl, "_HAS_CPP") and surface_stl._HAS_CPP:
+                if hasattr(surface_stl, "_HAS_CPP") and surface_stl._HAS_CPP and strategy == "SurfacePattern":
                     Path.Log.info("opExecute: Using C++ accelerated STL conversion")
                 else:
                     Path.Log.info("opExecute: Using Python fallback STL conversion")
@@ -1633,8 +1504,9 @@ class ObjectSurface(PathOp.ObjectOp):
                     obj.AngularDeflection.Value,
                     mesh_simplification=getattr(obj, "MeshSimplification", 1),
                     final_depth=obj.OpFinalDepth.Value if hasattr(obj, "OpFinalDepth") else None,
+                    use_cpp = (strategy == "SurfacePattern")
                 )
-            break  # Use first model for now
+            break  # Fix that
         stl_time = time.time() - stl_start
         Path.Log.info("opExecute: STL creation took {:.3f}s".format(stl_time))
 
@@ -1671,22 +1543,15 @@ class ObjectSurface(PathOp.ObjectOp):
 
         # Dispatch to strategy
         cmds = []
-        if strategy == "DropCutter":
+        if strategy == "SurfacePattern":
             strategy_start = time.time()
-            cmds = self._executeDropCutter(obj, JOB, stl, cutter, tool_diam, bb, selected_faces)
+            cmds = self._executeSurfacePattern(obj, JOB, stl, cutter, tool_diam, bb, selected_faces)
             strategy_time = time.time() - strategy_start
             Path.Log.info(
                 f"DropCutter strategy completed in {strategy_time:.2f}s, {len(cmds)} commands"
             )
         elif strategy == "Waterline":
-            strategy_start = time.time()
-            cmds = self._executeWaterline(obj, JOB, stl, cutter, tool_diam, bb, adaptive=False)
-            strategy_time = time.time() - strategy_start
-            Path.Log.info(
-                f"Waterline strategy completed in {strategy_time:.2f}s, {len(cmds)} commands"
-            )
-        elif strategy == "AdaptiveWaterline":
-            cmds = self._executeWaterline(obj, JOB, stl, cutter, tool_diam, bb, adaptive=True)
+            cmds = self._executeWaterline(obj, JOB, stl, cutter, tool_diam, bb, is_adaptive=is_adaptive)
 
         self.commandlist.extend(cmds)
 
@@ -1712,18 +1577,17 @@ def SetupProperties():
     setup.append("CutPatternReversed")
     setup.append("DepthOffset")
     setup.append("LayerMode")
-    setup.append("SampleInterval")
     setup.append("StepOver")
     setup.append("OptimizeLinearPaths")
-    # --- Z-Level Hybrid Specific Properties ---
     setup.append("CutPatternZLevel")
     setup.append("SamplingAccuracy")
     setup.append("StockToLeave")
     setup.append("ClearPlanarOnly")
     setup.append("IgnoreOuter")
-    # --- Optimization and Mesh ---
     setup.append("OptimizeLinearPaths")
     setup.append("SampleInterval")
+    setup.append("AdaptiveSampling")
+    setup.append("MinSampleInterval")
     setup.append("LinearDeflection")
     setup.append("AngularDeflection")
     setup.append("MeshSimplification")

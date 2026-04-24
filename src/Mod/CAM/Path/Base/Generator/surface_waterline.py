@@ -43,7 +43,6 @@ else:
 
 from Path.Base.Generator.surface_common import _get_ocl
 
-
 # ---------------------------------------------------------------------------
 # OCL Waterline (push-cutter + Weave)
 # ---------------------------------------------------------------------------
@@ -104,7 +103,7 @@ def waterline(stl, cutter, sampling, z, threads=None, timer=None):
 # ---------------------------------------------------------------------------
 
 
-def adaptive_waterline(stl, cutter, sampling, z, min_sampling=None, threads=None, timer=None):
+def adaptive_waterline(stl, cutter, sampling, min_sampling, z, threads=None, timer=None):
     """Run OCL AdaptiveWaterline at a single Z-height.
 
     Adaptive-sampling variant that refines fiber density where the
@@ -117,7 +116,6 @@ def adaptive_waterline(stl, cutter, sampling, z, min_sampling=None, threads=None
         sampling: Base fiber spacing (mm).
         z: Z-height for this waterline slice.
         min_sampling: Minimum sampling interval for adaptive refinement.
-                      If *None*, defaults to ``sampling / 10``.
         threads: Number of OpenMP threads.
         timer: Optional callback.
 
@@ -125,9 +123,6 @@ def adaptive_waterline(stl, cutter, sampling, z, min_sampling=None, threads=None
         List of loops.  Each loop is a list of ``(x, y, z)`` tuples.
     """
     ocl = _get_ocl()
-
-    if min_sampling is None:
-        min_sampling = sampling / 10.0
 
     awl = ocl.AdaptiveWaterline()
     awl.setSTL(stl)
@@ -168,13 +163,13 @@ def waterline_stack(
     stl,
     cutter,
     sampling,
+    min_sampling,
     min_z,
     max_z,
     step_down,
     adaptive=False,
-    min_sampling=None,
-    threads=None,
     depth_offset=0.0,
+    threads=None,
     timer=None,
 ):
     """Generate waterline contours at multiple Z-heights.
@@ -187,11 +182,11 @@ def waterline_stack(
         stl: ``ocl.STLSurf`` mesh.
         cutter: OCL cutter object.
         sampling: Fiber spacing (mm).
+        min_sampling: Minimum sampling for adaptive mode.
         min_z: Final depth (lowest Z).
         max_z: Start depth (highest Z).
         step_down: Step-down increment between layers.
         adaptive: If True, use AdaptiveWaterline.
-        min_sampling: Minimum sampling for adaptive mode.
         threads: OpenMP thread count.
         depth_offset: Z offset applied to all output points.
         timer: Optional callback.
@@ -223,8 +218,8 @@ def waterline_stack(
                 stl,
                 cutter,
                 sampling,
+                min_sampling,
                 zh,
-                min_sampling=min_sampling,
                 threads=threads,
                 timer=timer,
             )
@@ -267,67 +262,6 @@ def waterline_stack(
 
 
 # ---------------------------------------------------------------------------
-# Slice-based waterline (no OCL required)
-# ---------------------------------------------------------------------------
-
-
-def slice_waterline(shape, min_z, max_z, step_down):
-    """Extract waterlines using FreeCAD ``shape.slice()`` (no OCL required).
-
-    Fallback for when OCL is not installed.  Uses OCCT's cross-section
-    algorithm to slice the shape at each Z-height.
-
-    Args:
-        shape: A ``Part.Shape`` object.
-        min_z: Final depth.
-        max_z: Start depth.
-        step_down: Step-down increment.
-
-    Returns:
-        Ordered dict mapping ``z_height`` -> list of wires.
-        Each wire is a list of ``(x, y, z)`` tuples extracted from
-        the wire vertices.
-    """
-    import FreeCAD
-    from collections import OrderedDict
-
-    z_heights = []
-    z = max_z
-    while z >= min_z - 1e-6:
-        z_heights.append(z)
-        z -= step_down
-    if z_heights and abs(z_heights[-1] - min_z) > 1e-6:
-        z_heights.append(min_z)
-
-    result = OrderedDict()
-
-    for zh in z_heights:
-        try:
-            wires = shape.slice(FreeCAD.Vector(0, 0, 1), zh)
-        except Exception as e:
-            Path.Log.warning("slice_waterline: failed at z={:.3f}: {}".format(zh, e))
-            continue
-
-        if not wires:
-            continue
-
-        loops = []
-        for wire in wires:
-            pts = []
-            for vertex in wire.Vertexes:
-                pts.append((vertex.X, vertex.Y, vertex.Z))
-            # Close the loop if needed
-            if pts and pts[0] != pts[-1]:
-                pts.append(pts[0])
-            loops.append(pts)
-
-        if loops:
-            result[zh] = loops
-
-    return result
-
-
-# ---------------------------------------------------------------------------
 # G-code generation from waterline data
 # ---------------------------------------------------------------------------
 
@@ -364,6 +298,7 @@ def waterline_to_gcode(
     commands = []
     commands.append(Path.Command("G0", {"Z": clearance_z, "F": vert_rapid}))
 
+    is_first = True
     for z_height, loops in waterline_data.items():
         for loop in loops:
             if not loop:
@@ -371,13 +306,17 @@ def waterline_to_gcode(
 
             # Optionally reverse for climb cutting
             pts = list(loop)
+            # Connect the last and the first points to close the loop
+            pts.append(pts[0])
+
             if cut_climb:
                 pts.reverse()
 
             first = pts[0]
 
             # Rapid to start of loop
-            commands.append(Path.Command("G0", {"Z": safe_z, "F": vert_rapid}))
+            if not is_first:  # Stay in clearance_z if is_first
+                commands.append(Path.Command("G0", {"Z": safe_z, "F": vert_rapid}))
             commands.append(Path.Command("G0", {"X": first[0], "Y": first[1], "F": horiz_rapid}))
 
             # Cut the loop
@@ -391,47 +330,6 @@ def waterline_to_gcode(
 
             # Retract after loop
             commands.append(Path.Command("G0", {"Z": safe_z, "F": vert_rapid}))
-
-    return commands
-
-
-def loop_to_gcode(loop, horiz_feed, vert_rapid, horiz_rapid, safe_z, cut_climb=False):
-    """Convert a single waterline loop to ``Path.Command`` list.
-
-    Args:
-        loop: List of ``(x, y, z)`` tuples forming a closed contour.
-        horiz_feed: Horizontal feed rate.
-        vert_rapid: Vertical rapid feed rate.
-        horiz_rapid: Horizontal rapid feed rate.
-        safe_z: Safe height for travel moves.
-        cut_climb: If True, reverse loop direction.
-
-    Returns:
-        List of ``Path.Command``.
-    """
-    if not loop:
-        return []
-
-    pts = list(loop)
-    if cut_climb:
-        pts.reverse()
-
-    commands = []
-    first = pts[0]
-
-    # Rapid to start
-    commands.append(Path.Command("G0", {"X": first[0], "Y": first[1], "F": horiz_rapid}))
-
-    # Cut the loop
-    for pt in pts:
-        commands.append(
-            Path.Command(
-                "G1",
-                {"X": pt[0], "Y": pt[1], "Z": pt[2], "F": horiz_feed},
-            )
-        )
-
-    # Retract
-    commands.append(Path.Command("G0", {"Z": safe_z, "F": vert_rapid}))
+            is_first = False
 
     return commands

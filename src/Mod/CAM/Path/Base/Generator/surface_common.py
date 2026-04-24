@@ -47,9 +47,9 @@ else:
 # OCL import helper
 # ---------------------------------------------------------------------------
 
+
 _ocl = None
 _meshpart = None
-
 
 def _get_ocl():
     """Lazily import OCL, trying both package names."""
@@ -91,6 +91,7 @@ def _get_meshpart():
 # ---------------------------------------------------------------------------
 # OCL Cutter creation
 # ---------------------------------------------------------------------------
+
 
 # Map of FreeCAD ToolBit shape types to OCL cutter factory names
 _TOOL_TYPE_MAP = {
@@ -407,214 +408,6 @@ def mesh_to_stl(mesh_points, mesh_facets, timer=None):
     return stl
 
 
-# ---------------------------------------------------------------------------
-# Boundary creation utilities
-# ---------------------------------------------------------------------------
-
-
-def make_boundary_face(selected_faces, tool_radius, boundary_adjustment=0.0):
-    """Create a flat XY boundary face from selected faces for point containment testing.
-
-    Projects the outer wires of selected faces onto the XY plane (Z=0),
-    offsets outward by tool_radius + boundary_adjustment, and returns
-    a flat Part.Face for isInside() testing.
-
-    Args:
-        selected_faces: List of Part.Face objects to create boundary from
-        tool_radius: Tool radius for offset calculation
-        boundary_adjustment: Additional boundary adjustment offset
-
-    Returns:
-        Part.Face object for boundary testing, or None if creation fails
-    """
-    if not selected_faces:
-        return None
-
-    try:
-        # Collect outer wires from all selected faces using TechDraw outline method
-        wires = []
-
-        # Create a compound of all selected faces
-        face_compound = Part.Compound(selected_faces)
-
-        # Use TechDraw.findShapeOutline to get the true 2D outline
-        import TechDraw
-
-        # Project onto XY plane (Z=1 direction)
-        outer_wire = TechDraw.findShapeOutline(face_compound, 1, FreeCAD.Vector(0, 0, 1))
-        Path.Log.debug(f"Boundary: TechDraw outline found with {len(outer_wire.Edges)} edges")
-
-        # Discretize the outer wire to get clean points
-        discretized_wire = []
-        for edge in outer_wire.Edges:
-            pts = edge.discretize(Deflection=0.1)
-            flat_pts = [FreeCAD.Vector(p.x, p.y, 0.0) for p in pts]
-            discretized_wire.extend(flat_pts)
-
-        # Remove duplicate points
-        unique_pts = []
-        seen = set()
-        for pt in discretized_wire:
-            pt_key = (round(pt.x, 6), round(pt.y, 6))
-            if pt_key not in seen:
-                seen.add(pt_key)
-                unique_pts.append(pt)
-
-        # Create a clean wire from the unique points
-        if len(unique_pts) >= 3:
-            # Close the polygon by adding the first point at the end
-            if unique_pts[0] != unique_pts[-1]:
-                unique_pts.append(unique_pts[0])
-
-            clean_wire = Part.makePolygon(unique_pts)
-            wires.append(clean_wire)
-            Path.Log.debug(f"Boundary: Created clean wire with {len(unique_pts)} points")
-        else:
-            Path.Log.warning("Boundary: Not enough points to create wire from TechDraw outline")
-            return None
-
-        if not wires:
-            return None
-
-        # Make a compound of all wires and create a face
-        compound = Part.Compound(wires)
-        offset = tool_radius + boundary_adjustment
-
-        # Debug the original compound bounds
-        original_bb = compound.BoundBox
-        Path.Log.debug(
-            f"Boundary: Original compound bounds: X[{original_bb.XMin:.3f}, {original_bb.XMax:.3f}], Y[{original_bb.YMin:.3f}, {original_bb.YMax:.3f}]"
-        )
-
-        # Use libarea-based offsetting
-        import PathScripts.PathUtils as PathUtils
-
-        Path.Log.debug(
-            f"Boundary: Calling getOffsetArea with offset={offset}, compound type={type(compound)}"
-        )
-
-        offset_shape = PathUtils.getOffsetArea(
-            compound,
-            offset,
-            removeHoles=False,  # Keep holes for boundary testing
-            tolerance=0.01,  # Small tolerance for clean geometry
-            plane=compound,  # Use the compound itself as the plane (like Profile.py)
-        )
-
-        if offset_shape is None or offset_shape is False:
-            Path.Log.error("Boundary: getOffsetArea failed - returned None or False")
-            return None
-
-        Path.Log.debug(
-            f"Boundary: getOffsetArea returned {type(offset_shape)} with {len(offset_shape.Edges)} edges"
-        )
-        Path.Log.debug("Boundary: Used libarea getOffsetArea() for offsetting")
-
-        # Debug the offset shape bounds
-        offset_bb = offset_shape.BoundBox
-        Path.Log.debug(
-            f"Boundary: Offset shape bounds: X[{offset_bb.XMin:.3f}, {offset_bb.XMax:.3f}], Y[{offset_bb.YMin:.3f}, {offset_bb.YMax:.3f}], offset={offset:.3f}"
-        )
-        Path.Log.debug(
-            f"Boundary: Offset shape type: {type(offset_shape)}, ShapeType: {getattr(offset_shape, 'ShapeType', 'N/A')}"
-        )
-
-        # Create a face from the offset shape
-        boundary_face = Part.makeFace(offset_shape)
-        Path.Log.debug("Boundary: Created face using makeFace()")
-        Path.Log.info(
-            "Boundary face created: {} edges, offset={:.3f}".format(len(offset_shape.Edges), offset)
-        )
-
-        return boundary_face
-
-    except Exception as e:
-        Path.Log.warning("Failed to create boundary face: {}".format(e))
-        return None
-
-
-def generate_boundary_aware_scan_lines(boundary_face, sample_interval, stepover, bounds):
-    """Generate scan lines that already respect boundary (legacy strategy adapted).
-
-    This function creates scan lines that are clipped to the boundary during generation,
-    avoiding the need for expensive post-processing filtering. It adapts the legacy
-    PathGeometryGenerator approach to work with the new Surface architecture.
-
-    Args:
-        boundary_face: Part.Face defining the boundary
-        sample_interval: Distance between sample points along scan lines
-        stepover: Distance between scan lines
-        bounds: Bounding box (XMin, XMax, YMin, YMax)
-
-    Returns:
-        List of scan lines (each line is a list of (x,y,z) tuples)
-    """
-    if boundary_face is None:
-        return []
-
-    # Get boundary bounds for scan line generation
-    bb = boundary_face.BoundBox
-    x_min, x_max = bb.XMin, bb.XMax
-    y_min, y_max = bb.YMin, bb.YMax
-
-    # Generate scan lines using legacy approach
-    scan_lines = []
-
-    # Calculate number of scan lines based on stepover
-    num_lines = int((y_max - y_min) / stepover) + 1
-
-    Path.Log.debug(f"Boundary-aware generation: {num_lines} lines, stepover={stepover}")
-
-    for line_idx in range(num_lines):
-        y = y_min + line_idx * stepover
-
-        # Create scan line from left to right across boundary bounds
-        start_pt = (x_min, y, 0.0)
-        end_pt = (x_max, y, 0.0)
-
-        # Create line geometry
-        line_geom = Part.makeLine(
-            FreeCAD.Vector(start_pt[0], start_pt[1], start_pt[2]),
-            FreeCAD.Vector(end_pt[0], end_pt[1], end_pt[2]),
-        )
-
-        # Intersect with boundary to clip the line
-        try:
-            # Create intersection compound
-            line_compound = Part.Compound([line_geom])
-
-            # Find intersection with boundary
-            intersection = boundary_face.common(line_compound)
-
-            if intersection and hasattr(intersection, "Edges") and len(intersection.Edges) > 0:
-                # Extract points from intersected edges
-                line_points = []
-
-                for edge in intersection.Edges:
-                    # Sample points along the edge at sample_interval
-                    edge_length = edge.Length  # Property, not method
-                    num_samples = max(2, int(edge_length / sample_interval) + 1)
-
-                    for i in range(num_samples):
-                        param = i / (num_samples - 1)  # 0.0 to 1.0
-                        # Use valueAt with correct parameter calculation
-                        pt = edge.valueAt(
-                            edge.FirstParameter + param * (edge.LastParameter - edge.FirstParameter)
-                        )
-                        line_points.append((pt.x, pt.y, pt.z))
-
-                # Add line if we have valid points
-                if len(line_points) >= 2:
-                    scan_lines.append(line_points)
-
-        except Exception as e:
-            Path.Log.debug(f"Boundary-aware generation: Failed to process line {line_idx}: {e}")
-            continue
-
-    Path.Log.info(f"Boundary-aware generation: {len(scan_lines)} scan lines generated")
-    return scan_lines
-
-
 def _make_safe_pdc(safe_stl, cutter, safe_z):
     """Create a reusable PathDropCutter for transition probing."""
     ocl = _get_ocl()
@@ -729,3 +522,165 @@ def _dropcutter_transition(start, end, pdc, cutter, safe_z, horiz_feed):
         z = max(pt.z, z_floor)
         commands.append(Path.Command("G1", {"X": pt.x, "Y": pt.y, "Z": z, "F": horiz_feed}))
     return commands
+
+
+# ---------------------------------------------------------------------------
+# CL-point filtering via LineCLFilter
+# ---------------------------------------------------------------------------
+
+
+def filter_cl_points(cl_points, tolerance, timer=None):
+    """Use OCL LineCLFilter to remove collinear CL-points.
+
+    Replaces the manual ``isOnLineSegment`` checks and
+    ``OptimizeLinearPaths`` logic currently in SurfaceSupport.py.
+
+    Args:
+        cl_points: List of ``(x, y, z)`` tuples.
+        tolerance: Collinearity tolerance (mm).
+        timer: Optional callback.
+
+    Returns:
+        Filtered list of ``(x, y, z)`` tuples.
+    """
+    ocl = _get_ocl()
+
+    if len(cl_points) < 3:
+        return list(cl_points)
+
+    f = ocl.LineCLFilter()
+    f.setTolerance(tolerance)
+
+    for pt in cl_points:
+        f.addCLPoint(ocl.CLPoint(pt[0], pt[1], pt[2]))
+
+    t0 = time.time()
+    f.run()
+    t1 = time.time()
+
+    if timer:
+        timer("filter_cl_points", t1 - t0)
+
+    result = [(cl.x, cl.y, cl.z) for cl in f.getCLPoints()]
+
+    Path.Log.debug(
+        "filter_cl_points: {} -> {} points in {:.3f}s".format(len(cl_points), len(result), t1 - t0)
+    )
+
+    return result
+
+
+# ---------------------------------------------------------------------------
+# Boundary creation utilities
+# ---------------------------------------------------------------------------
+
+
+def make_boundary_face(selected_faces, offset, tolerance=0.005):
+    """
+    Creates a mathematically precise 2D boundary face (mask) on the XY plane.
+
+    This function takes an array of 3D faces, projects their absolute silhouette
+    onto the Z=0 plane, and cleanly offsets that silhouette using ClipperLib.
+    It guarantees a contiguous, non-crisscrossing polygon that smoothly matches
+    the user's exact accuracy settings.
+
+    Args:
+        faces_to_mask (list): A list of Part.Face objects to derive the silhouette from.
+        offset (float): The expansion (positive) or contraction (negative) distance.
+        tolerance (float): The deflection tolerance used for drawing smooth arcs. 
+                           Derived directly from the user's LinearDeflection property.
+
+    Returns:
+        Part.Face: A single, flat 2D face on the XY plane representing the clipping boundary.
+                   Returns None if geometry extraction or offsetting fails.
+    """
+    import TechDraw
+    import PathScripts.PathUtils as PathUtils
+
+    if not selected_faces:
+        return None
+
+    try:
+        # Create a single compound of the 3D faces to find the global silhouette
+        compound = Part.Compound(selected_faces)
+
+        # Extract the exact 2D projection outline looking down the Z-axis
+        outer_wire = TechDraw.findShapeOutline(compound, 1, FreeCAD.Vector(0, 0, 1))
+
+        # Fallback if the TechDraw projection module fails on complex geometry
+        if not outer_wire or not hasattr(outer_wire, "Edges") or len(outer_wire.Edges) == 0:
+            outer_wire = compound 
+
+        # Let PathUtils (ClipperLib) handle the offsetting natively. 
+        # This guarantees NO crisscrossing points and uses the exact slider tolerance!
+        offset_shape = PathUtils.getOffsetArea(
+            outer_wire,
+            offset,
+            removeHoles=False,
+            tolerance=tolerance,
+            plane=Part.makeCircle(2.0)  # Flat XY reference plane ensures Z=0 behavior
+        )
+
+        if offset_shape is None:
+            return None
+
+        # Convert the offset 2D wire into a solid masking face
+        boundary_face = Part.makeFace(offset_shape)
+
+        # Ensure the mask is completely flat at Z=0 for boolean intersections
+        if boundary_face.BoundBox.ZMin != 0.0:
+            boundary_face.translate(FreeCAD.Vector(0, 0, -boundary_face.BoundBox.ZMin))
+
+        return boundary_face
+
+    except Exception as e:
+        Path.Log.warning(f"Failed to create smooth boundary face: {e}")
+        return None
+
+
+def generate_pattern_mask(job, obj, selected_faces, tool_radius, boundary_adj):
+    """
+    Acts as the main router for generating a toolpath containment mask.
+
+    This determines whether to mask against specific selected faces or the entire
+    model/stock bounding volume. It enforces "Inside Containment" by mathematically
+    shrinking the footprint inwards by the tool's radius so the cutter never gouges
+    the unselected exterior geometry.
+
+    Args:
+        job (Path.Job): The parent Job object containing the model and stock.
+        obj (Path.Operation): The current 3D Surface operation feature.
+        selected_faces (list): A list of Part.Face objects specifically selected by the user.
+        tool_radius (float): The radius of the active cutter.
+        boundary_adj (float): An explicit user-provided offset override.
+
+    Returns:
+        Part.Face: The final 2D clipping boundary used by the C++ engine.
+    """
+    faces_to_mask = []
+
+    if selected_faces:
+        faces_to_mask = selected_faces
+    else:
+        # If no faces are explicitly selected, we assume a "Whole Model" operation.
+        # We check if the user wants to limit by Stock bounds, otherwise we use the base Model.
+        if obj.BoundBox == "Stock" and job.Stock:
+            faces_to_mask = job.Stock.Shape.Faces
+        else:
+            base_objs = [base for base, subs in obj.Base] if hasattr(obj, "Base") and obj.Base else job.Model.Group
+            for base in base_objs:
+                if hasattr(base, "Shape"):
+                    faces_to_mask.extend(base.Shape.Faces)
+
+    if not faces_to_mask:
+        return None
+
+    # To keep the tool completely inside the boundary, we must shrink the
+    # boundary mask inwards by exactly the tool radius.
+    offset = -tool_radius + boundary_adj
+
+    # Grab the high-precision linear deflection set by the user's Accuracy slider
+    # so the boundary resolution perfectly matches the STL mesh resolution.
+    tolerance = obj.LinearDeflection.Value if hasattr(obj, "LinearDeflection") else 0.005
+
+    return make_boundary_face(faces_to_mask, offset, tolerance)

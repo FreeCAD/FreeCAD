@@ -22,16 +22,23 @@
 
 """Scan pattern generation for 3D surface operations.
 
-Generates 2D scan paths (line, zigzag, circular, spiral) as sequences of
-(x, y) points or arc definitions.  These are pure-geometry functions that
-work with bounding-box parameters — no FreeCAD document access.
-
-The scan paths are later fed to OCL drop-cutter algorithms which project
-them onto the 3D model to produce cutter-location points.
+Acts as a high-performance bridge to the C++ surface_generator module.
+Passes bounding boxes, centers, and high-resolution boundary polygons
+to C++ for instant pattern generation and exact binary-search clipping.
 """
 
 import math
 import Path
+
+try:
+    import surface_generator as _pattern_cpp
+    Path.Log.info("Successfully loaded C++ surface generator module.")
+except ImportError as e:
+    Path.Log.critical("Failed to load the critical C++ surface generator module!")
+    Path.Log.critical("The 3D Surface operation will be non-functional.")
+    Path.Log.critical(f"Error details: {e}")
+    # Re-raise the error to halt module loading.
+    raise e
 
 __title__ = "Surface Scan Pattern Generator"
 __author__ = "sliptonic (Brad Collette)"
@@ -91,353 +98,209 @@ class BBox:
 
 
 # ---------------------------------------------------------------------------
-# Line scan
+# Scan lines reconstruction
 # ---------------------------------------------------------------------------
 
 
-def generate_line_scan(bbox, step_over, tool_diameter, angle=0.0, reversed=False):
-    """Generate parallel line scan paths over a bounding box.
+def reconstruct_scan_lines(flat_points, gap_threshold):
+    """
+    Reconstructs a flat list of 3D points back into continuous toolpath segments.
 
-    Lines are spaced by *step_over* and oriented along the X axis by
-    default.  An optional *angle* (degrees) rotates the entire pattern
-    around the bounding-box center.
+    OCL's PathDropCutter returns a single, continuous stream of points. This helper
+    function intelligently groups those points back into discrete scan lines by detecting
+    large "jumps" (rapids) where the tool lifted and moved to a new cutting area.
 
     Args:
-        bbox: :class:`BBox` or FreeCAD BoundBox-like object.
-        step_over: Distance between adjacent scan lines (mm).
-        tool_diameter: Tool diameter — used to extend lines beyond the
-                       bounding box so the full cutter sweeps the edges.
-        angle: Rotation angle in degrees (0 = lines along X).
-        reversed: If True, reverse the order of scan lines.
+        flat_points (list): A flat list of (x, y, z) tuples from the OCL engine.
+        gap_threshold (float): The minimum distance between two points to be considered a "jump".
+                               Typically set to a value slightly larger than the sample_interval.
 
     Returns:
-        List of scan lines.  Each scan line is a list of two ``(x, y)``
-        tuples representing the line endpoints.
+        list: A nested list of scan lines, where each line is a list of continuous
+              (x, y, z) tuples.
     """
-    if not isinstance(bbox, BBox):
-        bbox = BBox.from_bbox(bbox)
-
-    if step_over <= 0:
-        raise ValueError("step_over must be positive, got {}".format(step_over))
-
-    diag = bbox.diagonal
-    line_len = diag + 2.0 * tool_diameter
-    half_diag = math.ceil(line_len / 2.0)
-    num_passes = int(math.ceil(line_len / step_over)) + 1
-    half_passes = int(math.ceil(num_passes / 2.0))
-
-    cx, cy = bbox.center
-    cos_a = math.cos(math.radians(angle))
-    sin_a = math.sin(math.radians(angle))
+    if not flat_points:
+        return []
 
     lines = []
-    for i in range(-half_passes + 1, half_passes + 1):
-        # Unrotated line at y-offset
-        y_off = i * step_over
-        x1, y1 = -half_diag, y_off
-        x2, y2 = half_diag, y_off
+    current_line = [flat_points[0]]
 
-        # Rotate around origin then translate to bbox center
-        p1 = (
-            cx + x1 * cos_a - y1 * sin_a,
-            cy + x1 * sin_a + y1 * cos_a,
-        )
-        p2 = (
-            cx + x2 * cos_a - y2 * sin_a,
-            cy + x2 * sin_a + y2 * cos_a,
-        )
-        lines.append([p1, p2])
+    for i in range(1, len(flat_points)):
+        # Calculate the 2D distance between the current and previous point
+        dist = math.hypot(flat_points[i][0] - flat_points[i-1][0], flat_points[i][1] - flat_points[i-1][1])
 
-    if reversed:
-        lines.reverse()
+        # If the distance is greater than our threshold, it signifies a rapid move (a break in the path)
+        if dist > gap_threshold:
+            if len(current_line) >= 2:
+                lines.append(current_line)
+            current_line = []
+        current_line.append(flat_points[i])
+
+    if len(current_line) >= 2:
+        lines.append(current_line)
 
     return lines
 
 
 # ---------------------------------------------------------------------------
-# Zigzag scan
+# Pattern Generators & C++ Bridge
 # ---------------------------------------------------------------------------
 
 
-def generate_zigzag_scan(bbox, step_over, tool_diameter, angle=0.0, reversed=False):
-    """Generate zigzag scan paths (alternating direction).
-
-    Same geometry as :func:`generate_line_scan` but alternating lines
-    have their endpoints swapped so the cutter travels in a continuous
-    back-and-forth pattern.
-
-    Returns:
-        List of scan lines, each a list of two ``(x, y)`` tuples.
+def generate_offset_scan_lines(boundary_face, stepover, sample_interval, reversed_pattern=False):
     """
-    lines = generate_line_scan(bbox, step_over, tool_diameter, angle=angle, reversed=reversed)
-
-    for i, line in enumerate(lines):
-        if i % 2 == 1:
-            line.reverse()
-
-    return lines
-
-
-# ---------------------------------------------------------------------------
-# Circular scan
-# ---------------------------------------------------------------------------
-
-
-def generate_circular_scan(
-    center,
-    max_radius,
-    step_over,
-    tool_diameter,
-    min_radius=None,
-    reversed=False,
-):
-    """Generate concentric circular scan paths.
-
-    Each circle is returned as a dict with ``center``, ``radius``, and
-    ``direction`` (+1 = CCW, -1 = CW).
+    Generates concentric toolpath rings that progressively shrink inwards from a boundary.
+    
+    Unlike standard geometric patterns (which use C++), Offset patterns natively rely on
+    the shape of the boundary itself. This function uses the OpenCASCADE/ClipperLib engine
+    via PathUtils to repeatedly collapse the boundary geometry inward by the stepover amount.
 
     Args:
-        center: ``(x, y)`` center of the circular pattern.
-        max_radius: Maximum radius to cover (typically half the bounding
-                    box diagonal plus tool radius).
-        step_over: Radial distance between concentric circles.
-        tool_diameter: Tool diameter for minimum-radius calculation.
-        min_radius: Override minimum radius.  If *None*, derived from
-                    tool diameter.
-        reversed: If True, scan from outside in.
+        boundary_face (Part.Face): The outermost boundary mask to shrink.
+        stepover (float): The radial distance to shrink the geometry for each subsequent pass.
+        sample_interval (float): The distance between points along the resulting rings.
+        reversed_pattern (bool): If True, cuts from the inside out (reverses the ring order).
 
     Returns:
-        List of dicts, each with keys ``center``, ``radius``,
-        ``direction``.
+        list: A nested list of scan lines, where each line is a list of (x, y, z) tuples 
+              forming an offset ring.
     """
-    if step_over <= 0:
-        raise ValueError("step_over must be positive")
+    import PathScripts.PathUtils as PathUtils
 
-    if min_radius is None:
-        min_radius = tool_diameter * 0.45
+    if boundary_face is None or boundary_face.isNull():
+        return []
 
-    circles = []
-    num_passes = int(math.ceil(max_radius / step_over)) + 1
+    offset_lines = []
+    current_offset = 0.0
 
-    for i in range(1, num_passes + 1):
-        r = i * step_over
-        if r >= min_radius:
-            circles.append(
-                {
-                    "center": center,
-                    "radius": r,
-                    "direction": 1,  # CCW
-                }
-            )
+    while True:
+        # Using a negative offset mathematically shrinks the geometry inwards
+        offset_shape = PathUtils.getOffsetArea(
+            boundary_face, 
+            current_offset, 
+            removeHoles=False, 
+            tolerance=0.01, 
+            plane=boundary_face
+        )
 
-    if reversed:
-        circles.reverse()
+        # If the shape collapses entirely or errors out, we've reached the absolute center
+        if not offset_shape or offset_shape.isNull() or len(offset_shape.Wires) == 0:
+            break
 
-    return circles
+        layer_lines = []
+        for wire in offset_shape.Wires:
+            # Discretize the wire into a smooth array of coordinates
+            pts = wire.discretize(Distance=sample_interval)
+            if len(pts) < 2:
+                continue
+
+            # Ensure perfectly closed loops by connecting the final point back to the start
+            if wire.isClosed() and (pts[0] - pts[-1]).Length > 1e-5:
+                pts.append(pts[0])
+
+            line_points =[(p.x, p.y, 0.0) for p in pts]
+            layer_lines.append(line_points)
+
+        if not layer_lines:
+            break
+
+        offset_lines.extend(layer_lines)
+        current_offset -= stepover
+
+    if reversed_pattern:
+        offset_lines.reverse()
+
+    return offset_lines
 
 
-def generate_circular_zigzag_scan(
-    center,
-    max_radius,
-    step_over,
-    tool_diameter,
-    min_radius=None,
-    reversed=False,
-):
-    """Generate concentric circular scan paths with alternating direction.
-
-    Same as :func:`generate_circular_scan` but alternating circles have
-    opposite winding direction (CCW / CW).
+def extract_polygons_from_face(boundary_face, tolerance=0.005):
     """
-    circles = generate_circular_scan(
-        center,
-        max_radius,
-        step_over,
-        tool_diameter,
-        min_radius=min_radius,
-        reversed=reversed,
-    )
-    for i, c in enumerate(circles):
-        c["direction"] = 1 if i % 2 == 0 else -1
+    Converts the wires of a Part.Face into raw 2D point arrays for the C++ Ray-Caster.
+    
+    This function takes the mathematical boundaries computed by OpenCASCADE and discretizes
+    them into a dense array of[x, y] coordinates. This prepares the boundary data in a format
+    that can be instantly passed across the SWIG/PyBind boundary into C++ without heavy objects.
 
-    return circles
+    Args:
+        boundary_face (Part.Face): The 2D boundary mask generated by surface_common.
+        tolerance (float): The LinearDeflection accuracy. A tighter tolerance creates
+                           smoother polygons, guaranteeing precision when C++ snaps to the edge.
+
+    Returns:
+        list: A nested list of polygons in the format [[[x1, y1], [x2, y2], ...], ...]
+    """
+    polygons = []
+    if not boundary_face or boundary_face.isNull():
+        return polygons
+
+    for wire in boundary_face.Wires:
+        # Use high precision to ensure the C++ ray-caster sees a perfectly smooth curve
+        pts = wire.discretize(Deflection=tolerance)
+        poly = [[p.x, p.y] for p in pts]
+        if len(poly) > 2:
+            polygons.append(poly)
+
+    return polygons
 
 
-# ---------------------------------------------------------------------------
-# Spiral scan
-# ---------------------------------------------------------------------------
-
-
-def generate_spiral_scan(
-    center,
-    max_radius,
-    step_over,
+def fast_generate_pattern(
+    pattern_type,
+    bbox, center,
+    stepover,
     sample_interval,
-    reversed=False,
+    angle,
+    is_zigzag,
+    reversed_pattern,
+    boundary_face,
+    tolerance=0.005
 ):
-    """Generate an Archimedean spiral scan path from center outward.
-
-    The spiral is returned as a list of ``(x, y)`` points sampled at
-    approximately *sample_interval* arc-length spacing.
+    """
+    Bridges Python to the ultrafast C++ generation and clipping module.
+    
+    This acts as the master router for Line, ZigZag, Circular, and Spiral patterns. It 
+    extracts the boundaries, forwards all mathematical parameters to the compiled C++ engine,
+    and returns perfectly clipped, high-resolution scan lines.
 
     Args:
-        center: ``(x, y)`` center of the spiral.
-        max_radius: Maximum radius to cover.
-        step_over: Radial distance per full revolution.
-        sample_interval: Approximate arc-length between sample points.
-        reversed: If True, spiral from outside in.
+        pattern_type (str): The requested pattern ("Line", "ZigZag", "Circular", "Spiral", etc.)
+        bbox (BBox): The axis-aligned boundary limits of the operation.
+        center (tuple): The (X, Y) origin point for radial patterns (Circular/Spiral).
+        stepover (float): The distance between adjacent toolpaths in mm.
+        sample_interval (float): The requested distance between points along a continuous path segment.
+        angle (float): The rotation angle in degrees (used by Line/ZigZag).
+        is_zigzag (bool): True if the tool should continuously alternate direction.
+        reversed_pattern (bool): True if the toolpath order should be flipped (e.g., Outside-In).
+        boundary_face (Part.Face): The 2D mask used to clip the toolpaths.
+        tolerance (float): The mesh accuracy tolerance for polygon extraction.
 
     Returns:
-        List of ``(x, y)`` tuples forming the spiral path.
+        list: A nested list of successfully clipped and ordered scan lines, where each line 
+              is a list of (x, y, z) tuples.
     """
-    if step_over <= 0:
-        raise ValueError("step_over must be positive")
-    if sample_interval <= 0:
-        raise ValueError("sample_interval must be positive")
 
-    two_pi = 2.0 * math.pi
-    # Archimedean spiral: r = b * theta, where b = step_over / (2*pi)
-    b = step_over / two_pi
-    stop_radians = max_radius / b if b > 0 else 0
+    polys = extract_polygons_from_face(boundary_face, tolerance)
 
-    cx, cy = center
-    points = []
-    theta = 0.0
-    loop_count = 0
-    loop_radians = 0.0
-
-    while theta <= stop_radians:
-        r = b * theta
-        x = cx + r * math.cos(theta)
-        y = cy + r * math.sin(theta)
-        points.append((x, y))
-
-        # Adaptive step angle: smaller steps at larger radii
-        current_radius = max((loop_count + 1) * step_over, step_over)
-        step_angle = sample_interval / current_radius
-        theta += step_angle
-        loop_radians += step_angle
-
-        if loop_radians > two_pi:
-            loop_count += 1
-            loop_radians -= two_pi
-
-    if reversed:
-        points.reverse()
-
-    return points
-
-
-# ---------------------------------------------------------------------------
-# Grid point generation for BatchDropCutter
-# ---------------------------------------------------------------------------
-
-
-def generate_grid_points(bbox, step_over_x, step_over_y, min_z=0.0):
-    """Generate a regular grid of (x, y, z) points for BatchDropCutter.
-
-    Unlike the line-based scans, this produces individual points suitable
-    for OCL's ``BatchDropCutter`` which processes them all in one
-    optimized batch with KDTree acceleration.
-
-    Args:
-        bbox: :class:`BBox` or FreeCAD BoundBox-like object.
-        step_over_x: Grid spacing in X direction (mm).
-        step_over_y: Grid spacing in Y direction (mm).
-        min_z: Initial Z value for all points (will be updated by
-               drop-cutter).
-
-    Returns:
-        List of ``(x, y, z)`` tuples and the grid dimensions as
-        ``(nx, ny)`` tuple.
-    """
-    if not isinstance(bbox, BBox):
-        bbox = BBox.from_bbox(bbox)
-
-    nx = int(math.ceil(bbox.x_length / step_over_x)) + 1
-    ny = int(math.ceil(bbox.y_length / step_over_y)) + 1
-
-    points = []
-    for j in range(ny):
-        y = bbox.ymin + j * step_over_y
-        if y > bbox.ymax:
-            y = bbox.ymax
-        for i in range(nx):
-            x = bbox.xmin + i * step_over_x
-            if x > bbox.xmax:
-                x = bbox.xmax
-            points.append((x, y, min_z))
-
-    return points, (nx, ny)
-
-
-# ---------------------------------------------------------------------------
-# OCL Path construction helpers
-# ---------------------------------------------------------------------------
-
-
-def lines_to_ocl_path(scan_lines, min_z):
-    """Convert scan lines to an ``ocl.Path`` of ``ocl.Line`` segments.
-
-    Each scan line is a list of ``(x, y)`` endpoint pairs.  This creates
-    one ``ocl.Line`` per scan line.
-
-    Args:
-        scan_lines: Output from :func:`generate_line_scan` or similar.
-        min_z: Z value for all path points.
-
-    Returns:
-        An ``ocl.Path`` object.
-    """
-    from Path.Base.Generator.surface_common import _get_ocl
-
-    ocl = _get_ocl()
-    path = ocl.Path()
-
-    for line in scan_lines:
-        p1 = ocl.Point(line[0][0], line[0][1], min_z)
-        p2 = ocl.Point(line[1][0], line[1][1], min_z)
-        path.append(ocl.Line(p1, p2))
-
-    return path
-
-
-def circles_to_ocl_path(circles, min_z):
-    """Convert circular scan data to an ``ocl.Path`` of ``ocl.Arc`` segments.
-
-    Each circle dict must have ``center``, ``radius``, and ``direction``.
-
-    Args:
-        circles: Output from :func:`generate_circular_scan`.
-        min_z: Z value for all path points.
-
-    Returns:
-        An ``ocl.Path`` object.
-    """
-    from Path.Base.Generator.surface_common import _get_ocl
-
-    ocl = _get_ocl()
-    path = ocl.Path()
-
-    for c in circles:
-        cx, cy = c["center"]
-        r = c["radius"]
-        d = c["direction"]  # +1 CCW, -1 CW
-
-        # Create a near-full-circle arc (small gap to avoid degenerate arc)
-        gap_angle = 0.005  # radians, ~0.3 degrees
-        sp = ocl.Point(cx + r, cy, min_z)
-        ep = ocl.Point(
-            cx + r * math.cos(gap_angle),
-            cy - r * math.sin(gap_angle),
-            min_z,
+    if pattern_type in ("Line", "ZigZag"):
+        # C++ now returns just the clipped endpoints for maximum OCL performance
+        return _pattern_cpp.generate_linear_pattern_cpp(
+            bbox.xmin, bbox.xmax, bbox.ymin, bbox.ymax,
+            stepover, angle, is_zigzag, reversed_pattern, polys
         )
-        cp = ocl.Point(cx, cy, min_z)
 
-        if d > 0:
-            arc = ocl.Arc(sp, ep, cp, True)  # CCW
-        else:
-            arc = ocl.Arc(ep, sp, cp, False)  # CW
-        path.append(arc)
+    elif pattern_type in ("Circular", "CircularZigZag"):
+        # C++ calculates the exact distance to the furthest corner dynamically
+        return _pattern_cpp.generate_circular_pattern_cpp(
+            bbox.xmin, bbox.xmax, bbox.ymin, bbox.ymax,
+            center[0], center[1], 
+            stepover, sample_interval, is_zigzag, reversed_pattern, polys
+        )
 
-    return path
+    elif pattern_type == "Spiral":
+        # C++ calculates the exact distance to the furthest corner dynamically
+        return _pattern_cpp.generate_spiral_pattern_cpp(
+            bbox.xmin, bbox.xmax, bbox.ymin, bbox.ymax,
+            center[0], center[1], 
+            stepover, sample_interval, reversed_pattern, polys
+        )
+
+    return []

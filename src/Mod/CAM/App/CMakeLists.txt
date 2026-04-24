@@ -148,25 +148,25 @@ endif()
 
 SET_BIN_DIR(tsp_solver tsp_solver /Mod/CAM)
 
-add_library(surface_stl SHARED surface_stl.cpp)
-target_include_directories(surface_stl PRIVATE
+add_library(surface_generator SHARED surface_generator.cpp)
+target_include_directories(surface_generator PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${pybind11_INCLUDE_DIR}
     ${OCC_INCLUDE_DIR}
     ${CMAKE_SOURCE_DIR}/src/Mod/Part/App
 )
-target_link_libraries(surface_stl PRIVATE
+target_link_libraries(surface_generator PRIVATE
     pybind11::module
     Python3::Python
     ${OCC_LIBRARIES}
     Part
 )
-add_dependencies(surface_stl Part)
+add_dependencies(surface_generator Part)
 if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(surface_stl)
+    target_compile_warn_error(surface_generator)
 endif()
 
-SET_BIN_DIR(surface_stl surface_stl /Mod/CAM)
-SET_PYTHON_PREFIX_SUFFIX(surface_stl)
+SET_BIN_DIR(surface_generator surface_generator /Mod/CAM)
+SET_PYTHON_PREFIX_SUFFIX(surface_generator)
 
-INSTALL(TARGETS surface_stl DESTINATION ${CMAKE_INSTALL_LIBDIR})
+INSTALL(TARGETS surface_generator DESTINATION ${CMAKE_INSTALL_LIBDIR})
