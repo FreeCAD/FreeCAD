@@ -279,7 +279,9 @@ def zlevel_hybrid_stack(
                 fusion.add(sub_face)
             except Exception as e:
                 # Log the error and skip this specific sub-face to keep the recompute alive
-                Path.Log.error(f"Z-Level Hybrid: Sub-Face slicing failed at Z={round(z_target, 3)}. Error: {str(e)}")
+                Path.Log.error(
+                    f"Z-Level Hybrid: Sub-Face slicing failed at Z={round(z_target, 3)}. Error: {str(e)}"
+                )
                 continue
 
         # C. Boolean resolution
