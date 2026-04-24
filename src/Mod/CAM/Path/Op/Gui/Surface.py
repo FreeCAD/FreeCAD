@@ -61,7 +61,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             ("boundBoxSelect", "BoundBox"),
             ("layerMode", "LayerMode"),
             ("cutPattern", "CutPattern"),
-            ("cutPatternZLevel", "CutPatternZLevel")
+            ("cutPatternZLevel", "CutPatternZLevel"),
         ]
         enumTups = PathSurface.ObjectSurface.propertyEnumerations(dataType="raw")
         PathGuiUtil.populateCombobox(form, enumTups, comboToPropertyMap)
@@ -272,9 +272,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         strategy = self.form.strategySelect.currentData()
         cut_pattern = self.form.cutPattern.currentData()
 
-        is_surface_pattern = (strategy == "SurfacePattern")
-        is_zlevel = (strategy == "ZLevelHybrid")
-        is_waterline = (strategy == "Waterline")
+        is_surface_pattern = strategy == "SurfacePattern"
+        is_zlevel = strategy == "ZLevelHybrid"
+        is_waterline = strategy == "Waterline"
 
         # Get the current sample interval to decide if Adaptive is useful
         try:
@@ -294,7 +294,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.adaptiveSampling.setEnabled(can_enable_adaptive)
 
         # The Min Sample Interval field is only enabled if adaptive is possible AND checked
-        is_min_sample_enabled = self.form.adaptiveSampling.isEnabled() and self.form.adaptiveSampling.isChecked()
+        is_min_sample_enabled = (
+            self.form.adaptiveSampling.isEnabled() and self.form.adaptiveSampling.isChecked()
+        )
         self.form.minSampleInterval.setEnabled(is_min_sample_enabled)
         self.form.minSampleInterval_label.setEnabled(is_min_sample_enabled)
 

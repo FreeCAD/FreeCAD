@@ -43,7 +43,6 @@ else:
 
 from Path.Base.Generator.surface_common import _get_ocl
 
-
 # ---------------------------------------------------------------------------
 # BatchDropCutter — grid-based surface scan
 # ---------------------------------------------------------------------------
@@ -373,14 +372,14 @@ def apply_multipass(scan_lines, start_depth, final_depth, step_down):
     all_multipass_lines = []
 
     for i, layDep in enumerate(depthparams):
-        prvDep = start_depth if i == 0 else depthparams[i-1]
+        prvDep = start_depth if i == 0 else depthparams[i - 1]
 
         for line in scan_lines:
             current_segment = []
             for pt in line:
                 x, y, z = pt
 
-                # Check if the point is above the already-cleared material (adding a tiny 
+                # Check if the point is above the already-cleared material (adding a tiny
                 # tolerance to prevent floating point noise from falsely lifting the tool)
                 if z > prvDep + 1e-4:
                     if current_segment:

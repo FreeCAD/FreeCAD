@@ -24,9 +24,9 @@
 """Z-Level Hybrid (constant-Z contour) generation using native geometry.
 
 Implements a high-performance, geometric-only alternative to OCL-based operations.
-Utilizes FreeCAD's native slicing kernel combined with the Path.Area (ClipperLib) 
-C++ engine for precise tool radius compensation, linear radius sub-sampling, 
-and robust layer-wise masking. Automatically detects and reconciles CAD floors 
+Utilizes FreeCAD's native slicing kernel combined with the Path.Area (ClipperLib)
+C++ engine for precise tool radius compensation, linear radius sub-sampling,
+and robust layer-wise masking. Automatically detects and reconciles CAD floors
 to provide a complete hybrid finishing strategy for both steep walls and flat areas.
 """
 
@@ -35,23 +35,17 @@ import FreeCAD
 import Part
 import Path
 
-
 # ---------------------------------------------------------------------------
 # Depth categorization
 # ---------------------------------------------------------------------------
 
 
-def categorize_floor_steps(
-    shape,
-    start_z,
-    final_z,
-    step_down
-):
+def categorize_floor_steps(shape, start_z, final_z, step_down):
     """Reconciles physical model floors with calculated step-down heights.
 
-    This function generates a top-down list of Z-depths starting from start_z 
-    to final_z. It then analyzes the model geometry to find horizontal faces 
-    (floors) and categorizes each depth as 'Pure' (standard step), 'Mixed' 
+    This function generates a top-down list of Z-depths starting from start_z
+    to final_z. It then analyzes the model geometry to find horizontal faces
+    (floors) and categorizes each depth as 'Pure' (standard step), 'Mixed'
     (step lands on a floor), or 'Extra' (floor exists between standard steps).
 
     Args:
@@ -100,17 +94,13 @@ def categorize_floor_steps(
     final_depth_logic.sort(key=lambda x: x[0], reverse=True)
     return final_depth_logic
 
-def _get_fused_floor_geometry(
-    shape,
-    start_z,
-    final_z,
-    tolerance=0.001
-):
+
+def _get_fused_floor_geometry(shape, start_z, final_z, tolerance=0.001):
     """Identifies and fuses upward-facing horizontal faces within the machining range.
 
-    Iterates through all faces of the shape, filtering for planar surfaces 
-    whose normal vector points strictly toward the tool (+Z). It performs 
-    an accessibility check to ensure the floor is not occluded by geometry 
+    Iterates through all faces of the shape, filtering for planar surfaces
+    whose normal vector points strictly toward the tool (+Z). It performs
+    an accessibility check to ensure the floor is not occluded by geometry
     above it and fuses coincident faces at the same height into single regions.
 
     Args:
@@ -157,7 +147,7 @@ def _get_fused_floor_geometry(
                 if (z >= z_min - tolerance) and (z <= z_max + tolerance):
                     f_copy = face.copy()
                     f_copy.translate(FreeCAD.Vector(0, 0, -f_copy.BoundBox.ZMin))
-    
+
                     if z not in floor_accumulator:
                         floor_accumulator[z] = []
                     floor_accumulator[z].append(f_copy)
@@ -189,7 +179,7 @@ def zlevel_hybrid_stack(
     stock_to_leave,
     accuracy_val,
     z_offset,
-    wpc
+    wpc,
 ):
     """Calculates a stack of 2D clearing areas using geometric slicing and Clipper Booleans.
 
@@ -198,7 +188,7 @@ def zlevel_hybrid_stack(
     and resolves the final machining area using a persistent C++ masking engine.
     Uses a dual Squeeze-and-Snap strategy: Pack samples at the tool tip to handle
     high-curvature contact, and snap samples to model floors for precise transitions.
-    Linear radius sampling is performed equator-first to enable geometric 
+    Linear radius sampling is performed equator-first to enable geometric
     caching on vertical walls.
 
     Args:
@@ -241,7 +231,9 @@ def zlevel_hybrid_stack(
 
     # 3. Identify critical snapping depths (Top and floors)
     modelBottom, modelTop = proc_shape.BoundBox.ZMin, proc_shape.BoundBox.ZMax
-    critical_heights = {round(h, 6) for h, status, _ in categorizedSteps if status in ["Mixed", "Extra"]}
+    critical_heights = {
+        round(h, 6) for h, status, _ in categorizedSteps if status in ["Mixed", "Extra"]
+    }
     critical_heights.add(round(modelTop, 6))
 
     # Progress Indicator
@@ -263,12 +255,7 @@ def zlevel_hybrid_stack(
 
         # A. Generate sampling plan (Height, Radius pairs)
         unique_steps = _generate_sampling_plan(
-            z_target,
-            dist_submerged,
-            tol,
-            critical_heights,
-            num_slices,
-            tool_params
+            z_target, dist_submerged, tol, critical_heights, num_slices, tool_params
         )
 
         # B. Geometric Fusion with Lazy Cache Validation
@@ -306,7 +293,9 @@ def zlevel_hybrid_stack(
             currentSilhouette = fusion.getShape()
         except Exception as e:
             # Log the error and skip this specific layer to keep the recompute alive
-            Path.Log.error(f"Z-Level Hybrid: Silhouette resolution failed at Z={round(z_target, 3)}. Error: {str(e)}")
+            Path.Log.error(
+                f"Z-Level Hybrid: Silhouette resolution failed at Z={round(z_target, 3)}. Error: {str(e)}"
+            )
             indicator.next()
             continue
 
@@ -338,7 +327,9 @@ def zlevel_hybrid_stack(
         try:
             cutArea = layer_engine.getShape()
         except Exception as e:
-            Path.Log.error(f"Z-Level Hybrid: Layer engine failed at Z={round(z_target, 3)}. Error: {str(e)}")
+            Path.Log.error(
+                f"Z-Level Hybrid: Layer engine failed at Z={round(z_target, 3)}. Error: {str(e)}"
+            )
             indicator.next()
             continue
 
@@ -354,11 +345,7 @@ def zlevel_hybrid_stack(
 
             # Update Persistent Mask (strictly model silhouette to keep pockets open)
             allPrevComp = _update_machining_mask(
-                wpc, 
-                allPrevComp, 
-                currentSilhouette, 
-                status, 
-                floor_geo
+                wpc, allPrevComp, currentSilhouette, status, floor_geo
             )
 
         indicator.next()
@@ -366,13 +353,9 @@ def zlevel_hybrid_stack(
     indicator.stop()
     return stack
 
+
 def _generate_sampling_plan(
-    z_target,
-    dist_submerged,
-    tol,
-    critical_heights,
-    num_slices,
-    tool_params
+    z_target, dist_submerged, tol, critical_heights, num_slices, tool_params
 ):
     """Generates a sorted, unique list of (height, radius) sampling pairs.
 
@@ -402,7 +385,7 @@ def _generate_sampling_plan(
         if profile == "Bullnose":
             if r_target <= (R - c_rad):
                 return 0.0
-            return c_rad - math.sqrt(max(0, c_rad**2 - (r_target - (R - c_rad))**2))
+            return c_rad - math.sqrt(max(0, c_rad**2 - (r_target - (R - c_rad)) ** 2))
         return 0.0
 
     def _get_r_from_h(h_target):
@@ -410,15 +393,15 @@ def _generate_sampling_plan(
         if not is_3d:
             return R
         if profile == "Ballend":
-            return math.sqrt(max(0, R**2 - (R - h_target)**2))
+            return math.sqrt(max(0, R**2 - (R - h_target) ** 2))
         if profile == "Bullnose":
             if h_target < c_rad:
-                return (R - c_rad) + math.sqrt(max(0, c_rad**2 - (c_rad - h_target)**2))
+                return (R - c_rad) + math.sqrt(max(0, c_rad**2 - (c_rad - h_target) ** 2))
             return R
         return R
 
     plan = []
-    
+
     # 1. Extract Tool Geometry
     R = tool_params["radius"]
     c_rad = tool_params["c_rad"]
@@ -453,13 +436,8 @@ def _generate_sampling_plan(
 
     return unique_steps
 
-def _update_machining_mask(
-    wpc,
-    allPrevComp,
-    currentSilhouette,
-    status,
-    floor_geo
-):
+
+def _update_machining_mask(wpc, allPrevComp, currentSilhouette, status, floor_geo):
     """Updates the persistent cumulative mask with new cleared areas.
 
     This function maintains a 'shadow' of all material processed in layers
@@ -517,7 +495,7 @@ def zlevel_hybrid_to_gcode(
     ignore_outer,
     clear_planar_only,
     step_over,
-    radius
+    radius,
 ):
     """Converts the geometry stack into G-code Path Commands.
 
@@ -593,16 +571,15 @@ def zlevel_hybrid_to_gcode(
                 V = wire.Vertexes
                 lv = len(V) - 1
                 # Start at the end vertex for Climb to move backward through CCW wire
-                start_p = FreeCAD.Vector(V[lv].X, V[lv].Y, V[lv].Z) if cut_climb else FreeCAD.Vector(V[0].X, V[0].Y, V[0].Z)
+                start_p = (
+                    FreeCAD.Vector(V[lv].X, V[lv].Y, V[lv].Z)
+                    if cut_climb
+                    else FreeCAD.Vector(V[0].X, V[0].Y, V[0].Z)
+                )
 
                 # Generate the wire-following path
-                commands.extend(_generate_wire_path(
-                    wire,
-                    z_target,
-                    safe_hght,
-                    start_p,
-                    feed_params
-                    )
+                commands.extend(
+                    _generate_wire_path(wire, z_target, safe_hght, start_p, feed_params)
                 )
 
         # B: Cut pattern
@@ -631,7 +608,7 @@ def zlevel_hybrid_to_gcode(
                 step_over,
                 radius,
                 feed_params,
-                safe_hght
+                safe_hght,
             )
             commands.extend(pattern_cmds)
 
@@ -646,6 +623,7 @@ def zlevel_hybrid_to_gcode(
     Path.Log.info(f"Z-Level Hybrid: G-code generation complete. {len(commands)} commands.")
     return commands
 
+
 def _generatePattern(
     cutArea,
     cut_pattern,
@@ -656,7 +634,7 @@ def _generatePattern(
     step_over,
     radius,
     feed_params,
-    safe_hght
+    safe_hght,
 ):
     """Generates high-speed infill patterns using the native C++ Path.Area engine.
 
@@ -716,9 +694,9 @@ def _generatePattern(
     # 4. Configure C++ Solver Parameters
     extra_offset = radius - step_over
     params = engine.getParams()
-    params['PocketMode'] = pattern_mode
-    params['PocketStepover'] = step_over
-    params['PocketExtraOffset'] = -extra_offset
+    params["PocketMode"] = pattern_mode
+    params["PocketStepover"] = step_over
+    params["PocketExtraOffset"] = -extra_offset
     params["Angle"] = float(pattern_angle)
     params["ToolRadius"] = radius
     params["FromCenter"] = reverse_pattern
@@ -748,27 +726,15 @@ def _generatePattern(
         start_p = wire.Vertexes[0].Point
 
         # Generate the wire-following path
-        commands.extend(_generate_wire_path(
-            wire,
-            z_target,
-            safe_hght,
-            start_p,
-            feed_params
-            )
-        )
+        commands.extend(_generate_wire_path(wire, z_target, safe_hght, start_p, feed_params))
 
         # Safety Retract after each segment (island or ring)
         commands.append(Path.Command("G0", {"Z": safe_hght, "F": v_rapid}))
 
     return commands
 
-def _generate_wire_path(
-    wire,
-    z_target,
-    safe_hght,
-    start_p,
-    feed_params
-):
+
+def _generate_wire_path(wire, z_target, safe_hght, start_p, feed_params):
     """Standardizes G-code generation for a single wire segment.
 
     Args:
@@ -795,7 +761,7 @@ def _generate_wire_path(
     commands.append(Path.Command("G0", {"X": start_p.x, "Y": start_p.y, "F": h_rapid}))
     # Move to depth (plunge)
     commands.append(Path.Command("G1", {"Z": z_target, "F": v_feed}))
-        
+
     path_params = {
         "shapes": [wire],
         "feedrate": h_feed,
@@ -803,7 +769,7 @@ def _generate_wire_path(
         "preamble": False,
         "verbose": True,
         "retraction": safe_hght,
-        "resume_height": safe_hght
+        "resume_height": safe_hght,
     }
 
     try:

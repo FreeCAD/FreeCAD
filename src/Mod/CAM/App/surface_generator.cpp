@@ -145,7 +145,7 @@ std::pair<std::vector<std::array<double, 3>>, std::vector<std::array<int, 3>>> s
 
             // Skip degenerate triangles
             if (p1_equals_p2 || p1_equals_p3 || p2_equals_p3) {
-               continue;
+                continue;
             }
 
             // Get deduplicated vertex indices
@@ -175,27 +175,36 @@ std::pair<std::vector<std::array<double, 3>>, std::vector<std::array<int, 3>>> s
 // Fast 2D Pattern Generation & Binary Search Boundary Clipping
 // -------------------------------------------------------------------------
 
-struct PolyBounds {
+struct PolyBounds
+{
     double xmin, xmax, ymin, ymax;
 };
 
 // Extremely fast PIP using Bounding Box Pre-check
-bool isInsideFast(double x, double y,
-                  const std::vector<std::vector<std::array<double, 2>>>& polygons,
-                  const std::vector<PolyBounds>& bounds)
+bool isInsideFast(
+    double x,
+    double y,
+    const std::vector<std::vector<std::array<double, 2>>>& polygons,
+    const std::vector<PolyBounds>& bounds
+)
 {
-    if (polygons.empty()) return true;
+    if (polygons.empty()) {
+        return true;
+    }
     bool inside = false;
     for (size_t p = 0; p < polygons.size(); ++p) {
         if (x < bounds[p].xmin || x > bounds[p].xmax || y < bounds[p].ymin || y > bounds[p].ymax) {
-            continue; // Skip ray-cast if completely outside this polygon's bounds
+            continue;  // Skip ray-cast if completely outside this polygon's bounds
         }
 
         const auto& poly = polygons[p];
-        if (poly.size() < 3) continue;
+        if (poly.size() < 3) {
+            continue;
+        }
         for (size_t i = 0, j = poly.size() - 1; i < poly.size(); j = i++) {
-            if (((poly[i][1] > y) != (poly[j][1] > y)) &&
-                (x < (poly[j][0] - poly[i][0]) * (y - poly[i][1]) / (poly[j][1] - poly[i][1]) + poly[i][0])) {
+            if (((poly[i][1] > y) != (poly[j][1] > y))
+                && (x < (poly[j][0] - poly[i][0]) * (y - poly[i][1]) / (poly[j][1] - poly[i][1])
+                        + poly[i][0])) {
                 inside = !inside;
             }
         }
@@ -204,15 +213,24 @@ bool isInsideFast(double x, double y,
 }
 
 // Helper to pre-calculate bounding boxes for polygons
-std::vector<PolyBounds> calculate_bounds(const std::vector<std::vector<std::array<double, 2>>>& polygons) {
+std::vector<PolyBounds> calculate_bounds(const std::vector<std::vector<std::array<double, 2>>>& polygons)
+{
     std::vector<PolyBounds> bounds(polygons.size());
     for (size_t p = 0; p < polygons.size(); ++p) {
         double min_x = 1e9, max_x = -1e9, min_y = 1e9, max_y = -1e9;
         for (const auto& pt : polygons[p]) {
-            if (pt[0] < min_x) min_x = pt[0];
-            if (pt[0] > max_x) max_x = pt[0];
-            if (pt[1] < min_y) min_y = pt[1];
-            if (pt[1] > max_y) max_y = pt[1];
+            if (pt[0] < min_x) {
+                min_x = pt[0];
+            }
+            if (pt[0] > max_x) {
+                max_x = pt[0];
+            }
+            if (pt[1] < min_y) {
+                min_y = pt[1];
+            }
+            if (pt[1] > max_y) {
+                max_y = pt[1];
+            }
         }
         bounds[p] = {min_x, max_x, min_y, max_y};
     }
@@ -221,47 +239,55 @@ std::vector<PolyBounds> calculate_bounds(const std::vector<std::vector<std::arra
 
 // Binary Search (Bisection) to find the exact boundary edge with 0.001mm tolerance!
 std::array<double, 3> find_exact_edge(
-    std::array<double, 3> p_in, std::array<double, 3> p_out,
+    std::array<double, 3> p_in,
+    std::array<double, 3> p_out,
     const std::vector<std::vector<std::array<double, 2>>>& polygons,
-    const std::vector<PolyBounds>& bounds)
+    const std::vector<PolyBounds>& bounds
+)
 {
     std::array<double, 3> p_mid;
-    int max_iters = 20; // Safety failsafe to prevent infinite loops from floating point noise
+    int max_iters = 20;  // Safety failsafe to prevent infinite loops from floating point noise
 
     // Stop exactly when the gap between the points is 0.005mm or less
     while (max_iters-- > 0 && std::hypot(p_out[0] - p_in[0], p_out[1] - p_in[1]) > 0.005) {
         p_mid = {(p_in[0] + p_out[0]) / 2.0, (p_in[1] + p_out[1]) / 2.0, 0.0};
 
         if (isInsideFast(p_mid[0], p_mid[1], polygons, bounds)) {
-            p_in = p_mid; // Midpoint is inside, move the inner bound outwards
-        } else {
-            p_out = p_mid; // Midpoint is outside, move the outer bound inwards
+            p_in = p_mid;  // Midpoint is inside, move the inner bound outwards
+        }
+        else {
+            p_out = p_mid;  // Midpoint is outside, move the outer bound inwards
         }
     }
-    return p_in; // Return the last known safe point exactly on the boundary
+    return p_in;  // Return the last known safe point exactly on the boundary
 }
 
 // Applies the Bisection clipping to any generated polyline
 std::vector<std::vector<std::array<double, 3>>> clip_polyline_bisection(
     const std::vector<std::array<double, 3>>& polyline,
     const std::vector<std::vector<std::array<double, 2>>>& polygons,
-    const std::vector<PolyBounds>& bounds)
+    const std::vector<PolyBounds>& bounds
+)
 {
     std::vector<std::vector<std::array<double, 3>>> results;
     std::vector<std::array<double, 3>> current_segment;
 
-    if (polyline.empty()) return results;
+    if (polyline.empty()) {
+        return results;
+    }
 
     bool prev_inside = isInsideFast(polyline[0][0], polyline[0][1], polygons, bounds);
-    if (prev_inside) current_segment.push_back(polyline[0]);
+    if (prev_inside) {
+        current_segment.push_back(polyline[0]);
+    }
 
     for (size_t i = 1; i < polyline.size(); ++i) {
         bool curr_inside = isInsideFast(polyline[i][0], polyline[i][1], polygons, bounds);
 
         if (curr_inside != prev_inside) {
             // Crossed boundary! Execute Binary Search.
-            std::array<double, 3> p_in  = prev_inside ? polyline[i-1] : polyline[i];
-            std::array<double, 3> p_out = prev_inside ? polyline[i] : polyline[i-1];
+            std::array<double, 3> p_in = prev_inside ? polyline[i - 1] : polyline[i];
+            std::array<double, 3> p_out = prev_inside ? polyline[i] : polyline[i - 1];
 
             std::array<double, 3> edge_pt = find_exact_edge(p_in, p_out, polygons, bounds);
 
@@ -270,18 +296,22 @@ std::vector<std::vector<std::array<double, 3>>> clip_polyline_bisection(
                 current_segment.push_back(edge_pt);
                 results.push_back(current_segment);
                 current_segment.clear();
-            } else {
+            }
+            else {
                 // Entering the boundary
                 current_segment.push_back(edge_pt);
-                current_segment.push_back(polyline[i]); // also add the current inside point
+                current_segment.push_back(polyline[i]);  // also add the current inside point
             }
-        } else if (curr_inside) {
+        }
+        else if (curr_inside) {
             // Safely continuing inside the boundary
             current_segment.push_back(polyline[i]);
         }
         prev_inside = curr_inside;
     }
-    if (!current_segment.empty()) results.push_back(current_segment);
+    if (!current_segment.empty()) {
+        results.push_back(current_segment);
+    }
     return results;
 }
 
@@ -290,12 +320,19 @@ std::vector<std::vector<std::array<double, 3>>> clip_polyline_bisection(
 // -------------------------------------------------------------------------
 
 std::vector<std::vector<std::array<double, 3>>> generate_linear_pattern_cpp(
-    double xmin, double xmax, double ymin, double ymax,
-    double stepover, double angle_deg, bool is_zigzag, bool reversed,
-    const std::vector<std::vector<std::array<double, 2>>>& polygons)
+    double xmin,
+    double xmax,
+    double ymin,
+    double ymax,
+    double stepover,
+    double angle_deg,
+    bool is_zigzag,
+    bool reversed,
+    const std::vector<std::vector<std::array<double, 2>>>& polygons
+)
 {
     std::vector<std::vector<std::array<double, 3>>> final_endpoints;
-    std::vector<PolyBounds> bounds = calculate_bounds(polygons); 
+    std::vector<PolyBounds> bounds = calculate_bounds(polygons);
 
     double angle_rad = angle_deg * M_PI / 180.0;
     double cos_a = std::cos(angle_rad);
@@ -314,7 +351,7 @@ std::vector<std::vector<std::array<double, 3>>> generate_linear_pattern_cpp(
         double end_y = cy + diag * sin_a + y_off * cos_a;
 
         // Use a small number of samples, just enough to detect boundary crossings
-        int num_samples = 200; 
+        int num_samples = 200;
         std::vector<std::array<double, 3>> raw_line(num_samples + 1);
         for (int j = 0; j <= num_samples; ++j) {
             double t = static_cast<double>(j) / num_samples;
@@ -327,11 +364,16 @@ std::vector<std::vector<std::array<double, 3>>> generate_linear_pattern_cpp(
         for (size_t k = 1; k < raw_line.size(); ++k) {
             bool curr_inside = isInsideFast(raw_line[k][0], raw_line[k][1], polygons, bounds);
             if (curr_inside != prev_inside) {
-                if (!prev_inside) { // Entering
-                    segments.push_back({find_exact_edge(raw_line[k], raw_line[k-1], polygons, bounds)});
-                } else { // Exiting
+                if (!prev_inside) {  // Entering
+                    segments.push_back(
+                        {find_exact_edge(raw_line[k], raw_line[k - 1], polygons, bounds)}
+                    );
+                }
+                else {  // Exiting
                     if (!segments.empty() && segments.back().size() == 1) {
-                         segments.back().push_back(find_exact_edge(raw_line[k-1], raw_line[k], polygons, bounds));
+                        segments.back().push_back(
+                            find_exact_edge(raw_line[k - 1], raw_line[k], polygons, bounds)
+                        );
                     }
                 }
             }
@@ -343,21 +385,37 @@ std::vector<std::vector<std::array<double, 3>>> generate_linear_pattern_cpp(
         }
 
         if (is_zigzag && (i % 2 != 0)) {
-            for(auto& seg : segments) std::reverse(seg.begin(), seg.end());
+            for (auto& seg : segments) {
+                std::reverse(seg.begin(), seg.end());
+            }
             std::reverse(segments.begin(), segments.end());
         }
-        for(const auto& seg : segments) if (seg.size() == 2) final_endpoints.push_back(seg);
+        for (const auto& seg : segments) {
+            if (seg.size() == 2) {
+                final_endpoints.push_back(seg);
+            }
+        }
     }
 
-    if (reversed) std::reverse(final_endpoints.begin(), final_endpoints.end());
+    if (reversed) {
+        std::reverse(final_endpoints.begin(), final_endpoints.end());
+    }
     return final_endpoints;
 }
 
 std::vector<std::vector<std::array<double, 3>>> generate_circular_pattern_cpp(
-    double xmin, double xmax, double ymin, double ymax,
-    double cx, double cy, double stepover, double sample_interval,
-    bool is_zigzag, bool reversed,
-    const std::vector<std::vector<std::array<double, 2>>>& polygons)
+    double xmin,
+    double xmax,
+    double ymin,
+    double ymax,
+    double cx,
+    double cy,
+    double stepover,
+    double sample_interval,
+    bool is_zigzag,
+    bool reversed,
+    const std::vector<std::vector<std::array<double, 2>>>& polygons
+)
 {
     std::vector<std::vector<std::array<double, 3>>> scan_lines;
     std::vector<PolyBounds> bounds = calculate_bounds(polygons);
@@ -370,8 +428,12 @@ std::vector<std::vector<std::array<double, 3>>> generate_circular_pattern_cpp(
 
     int num_passes = static_cast<int>(std::ceil(max_radius / stepover)) + 1;
     std::vector<int> passes;
-    for (int i = 1; i <= num_passes; ++i) passes.push_back(i);
-    if (reversed) std::reverse(passes.begin(), passes.end());
+    for (int i = 1; i <= num_passes; ++i) {
+        passes.push_back(i);
+    }
+    if (reversed) {
+        std::reverse(passes.begin(), passes.end());
+    }
 
     int pass_idx = 0;
     for (int i : passes) {
@@ -382,21 +444,33 @@ std::vector<std::vector<std::array<double, 3>>> generate_circular_pattern_cpp(
         std::vector<std::array<double, 3>> raw_ring;
         for (int j = 0; j <= n_pts; ++j) {
             double a = 2.0 * M_PI * j / n_pts;
-            if (cw) a = -a;
+            if (cw) {
+                a = -a;
+            }
             raw_ring.push_back({cx + r * std::cos(a), cy + r * std::sin(a), 0.0});
         }
 
         auto clipped_segments = clip_polyline_bisection(raw_ring, polygons, bounds);
-        for (auto& seg : clipped_segments) scan_lines.push_back(seg);
+        for (auto& seg : clipped_segments) {
+            scan_lines.push_back(seg);
+        }
         pass_idx++;
     }
     return scan_lines;
 }
 
 std::vector<std::vector<std::array<double, 3>>> generate_spiral_pattern_cpp(
-    double xmin, double xmax, double ymin, double ymax,
-    double cx, double cy, double stepover, double sample_interval, bool reversed,
-    const std::vector<std::vector<std::array<double, 2>>>& polygons)
+    double xmin,
+    double xmax,
+    double ymin,
+    double ymax,
+    double cx,
+    double cy,
+    double stepover,
+    double sample_interval,
+    bool reversed,
+    const std::vector<std::vector<std::array<double, 2>>>& polygons
+)
 {
     std::vector<std::vector<std::array<double, 3>>> scan_lines;
     std::vector<PolyBounds> bounds = calculate_bounds(polygons);
@@ -430,7 +504,9 @@ std::vector<std::vector<std::array<double, 3>>> generate_spiral_pattern_cpp(
         }
     }
 
-    if (reversed) std::reverse(raw_points.begin(), raw_points.end());
+    if (reversed) {
+        std::reverse(raw_points.begin(), raw_points.end());
+    }
 
     scan_lines = clip_polyline_bisection(raw_points, polygons, bounds);
     return scan_lines;
@@ -442,12 +518,15 @@ PYBIND11_MODULE(surface_generator, m)
     m.doc() = "C++ helper for 3D Surface operations";
 
     m.def(
-        "shape_tessellate_fast", &shape_tessellate_fast,
-        py::arg("shape"), py::arg("linear_deflection"), py::arg("angular_deflection"), py::arg("timer_callback") = py::none()
+        "shape_tessellate_fast",
+        &shape_tessellate_fast,
+        py::arg("shape"),
+        py::arg("linear_deflection"),
+        py::arg("angular_deflection"),
+        py::arg("timer_callback") = py::none()
     );
 
     m.def("generate_linear_pattern_cpp", &generate_linear_pattern_cpp);
     m.def("generate_circular_pattern_cpp", &generate_circular_pattern_cpp);
     m.def("generate_spiral_pattern_cpp", &generate_spiral_pattern_cpp);
 }
-

@@ -277,9 +277,8 @@ class ObjectSurface(PathOp.ObjectOp):
                 "CutPatternZLevel",
                 "Clearing Options",
                 QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "Set the geometric clearing pattern to use for the operation."
-                    ),
+                    "App::Property", "Set the geometric clearing pattern to use for the operation."
+                ),
             ),
             (
                 "App::PropertyFloat",
@@ -372,13 +371,17 @@ class ObjectSurface(PathOp.ObjectOp):
                 "App::PropertyEnumeration",
                 "SamplingAccuracy",
                 "Clearing Options",
-                QT_TRANSLATE_NOOP("App::Property", "Number of sub-slices for 3D tool compensation."),
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "Number of sub-slices for 3D tool compensation."
+                ),
             ),
             (
                 "App::PropertyDistance",
                 "StockToLeave",
                 "Clearing Options",
-                QT_TRANSLATE_NOOP("App::Property", "Material to leave on the part in the XY plane."),
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "Material to leave on the part in the XY plane."
+                ),
             ),
             (
                 "App::PropertyBool",
@@ -564,9 +567,9 @@ class ObjectSurface(PathOp.ObjectOp):
         hide = 2
 
         strategy = getattr(obj, "Strategy", "SurfacePattern")
-        is_surface_pattern = (strategy == "SurfacePattern")
-        is_zlevel = (strategy == "ZLevelHybrid")
-        is_waterline = (strategy == "Waterline")
+        is_surface_pattern = strategy == "SurfacePattern"
+        is_zlevel = strategy == "ZLevelHybrid"
+        is_waterline = strategy == "Waterline"
 
         # Logic Groups:
         # A: Z-Level Hybrid specific properties
@@ -595,7 +598,7 @@ class ObjectSurface(PathOp.ObjectOp):
         obj.setEditorMode("MinSampleInterval", show if is_adaptive else hide)
 
         # Pattern center is relevant for circular/spiral patterns in SurfacePattern
-        pattern_needs_center = is_surface_pattern and not obj.CutPattern in["Line", "ZigZag"]
+        pattern_needs_center = is_surface_pattern and not obj.CutPattern in ["Line", "ZigZag"]
         obj.setEditorMode("PatternCenterAt", show if pattern_needs_center else hide)
         obj.setEditorMode("PatternCenterCustom", show if pattern_needs_center else hide)
 
@@ -630,7 +633,7 @@ class ObjectSurface(PathOp.ObjectOp):
     def opOnChanged(self, obj, prop):
         if hasattr(self, "propertiesReady"):
             if self.propertiesReady:
-                if prop in["Strategy", "CutPattern", "CutPatternZLevel", "AdaptiveSampling"]:
+                if prop in ["Strategy", "CutPattern", "CutPatternZLevel", "AdaptiveSampling"]:
                     self.setEditorProperties(obj)
                 elif prop == "MeshSimplification":
                     if hasattr(obj, "MeshSimplification"):
@@ -1019,10 +1022,7 @@ class ObjectSurface(PathOp.ObjectOp):
         if pattern == "Offset":
             if boundary_face:
                 raw_scan_lines = surface_scan.generate_offset_scan_lines(
-                    boundary_face,
-                    step_over,
-                    sample_interval,
-                    pattern_reverse
+                    boundary_face, step_over, sample_interval, pattern_reverse
                 )
             else:
                 Path.Log.warning("Offset pattern requires a valid boundary. Aborting.")
@@ -1039,22 +1039,23 @@ class ObjectSurface(PathOp.ObjectOp):
                 scan_bb,
                 center,
                 step_over,
-                sample_interval, 
+                sample_interval,
                 angle,
                 is_zigzag,
                 pattern_reverse,
                 boundary_face,
-                tolerance
+                tolerance,
             )
 
         # Build one combined OCL path
         path_obj = ocl.Path()
 
         for line in raw_scan_lines:
-            if len(line) < 2: continue
+            if len(line) < 2:
+                continue
             for i in range(len(line) - 1):
                 p1 = ocl.Point(line[i][0], line[i][1], final_depth)
-                p2 = ocl.Point(line[i+1][0], line[i+1][1], final_depth)
+                p2 = ocl.Point(line[i + 1][0], line[i + 1][1], final_depth)
                 path_obj.append(ocl.Line(p1, p2))
 
         # Project scan lines to 3D surface
@@ -1070,48 +1071,35 @@ class ObjectSurface(PathOp.ObjectOp):
             Path.Log.info("Switching to faster standard dropcutter for this high-density path.")
 
         if is_truly_adaptive:  # AdaptivePathDropCutter
-            min_sampling = obj.MinSampleInterval.Value if hasattr(obj, "MinSampleInterval") else sample_interval / 10.0
+            min_sampling = (
+                obj.MinSampleInterval.Value
+                if hasattr(obj, "MinSampleInterval")
+                else sample_interval / 10.0
+            )
 
             results_flat = surface_dropcutter.adaptive_path_dropcutter(
-                stl,
-                cutter,
-                path_obj,
-                final_depth,
-                sample_interval,
-                min_sampling
+                stl, cutter, path_obj, final_depth, sample_interval, min_sampling
             )
         else:
             if pattern in ("Line", "ZigZag"):  # PathDropCutter
                 results_flat = surface_dropcutter.path_dropcutter(
-                    stl,
-                    cutter,
-                    path_obj,
-                    final_depth,
-                    sample_interval
+                    stl, cutter, path_obj, final_depth, sample_interval
                 )
             else:  # (Circular, Spiral, Offset) - BatchDropCutter
                 results_flat = surface_dropcutter.batch_dropcutter(
-                    stl,
-                    cutter,
-                    raw_scan_lines,
-                    final_depth
+                    stl, cutter, raw_scan_lines, final_depth
                 )
 
         # Reconstruct & optimize the results
         scan_lines = surface_scan.reconstruct_scan_lines(results_flat, sample_interval * 2.5)
 
         if obj.OptimizeLinearPaths:
-            scan_lines = [
-                surface_common.filter_cl_points(line, 0.005) for line in scan_lines
-            ]
+            scan_lines = [surface_common.filter_cl_points(line, 0.005) for line in scan_lines]
 
         # Apply Multi-pass roughing
         if getattr(obj, "LayerMode", "Single-pass") == "Multi-pass":
             scan_lines = surface_dropcutter.apply_multipass(
-                scan_lines,
-                obj.StartDepth.Value,
-                obj.FinalDepth.Value,
-                obj.StepDown.Value
+                scan_lines, obj.StartDepth.Value, obj.FinalDepth.Value, obj.StepDown.Value
             )
 
         # Generate G-Code
@@ -1149,7 +1137,9 @@ class ObjectSurface(PathOp.ObjectOp):
         step_down = obj.StepDown.Value
         cut_climb = obj.CutMode == "Climb"
 
-        adaptive_threshold = 0.25  # If SampleInterval is already this fine, standard dropcutter is faster.
+        adaptive_threshold = (
+            0.25  # If SampleInterval is already this fine, standard dropcutter is faster.
+        )
         is_truly_adaptive = is_adaptive and sample_interval >= adaptive_threshold
 
         if is_adaptive and not is_truly_adaptive:
@@ -1244,12 +1234,7 @@ class ObjectSurface(PathOp.ObjectOp):
             else:
                 return None
 
-            return {
-                "radius": radius,
-                "c_rad": c_rad,
-                "profile": shape_type,
-                "is_threeD": is_3d
-            }
+            return {"radius": radius, "c_rad": c_rad, "profile": shape_type, "is_threeD": is_3d}
 
         def _makeExtendedBoundBox(wBB, bbBfr, zDep):
             """Creates a large rectangular wire around the stock."""
@@ -1291,7 +1276,11 @@ class ObjectSurface(PathOp.ObjectOp):
             Path.Log.error("Z-Level Hybrid: No model found in Job.")
             return []
 
-        shape = models[0].Shape if len(models) == 1 else models[0].Shape.multiFuse([m.Shape for m in models[1:]])
+        shape = (
+            models[0].Shape
+            if len(models) == 1
+            else models[0].Shape.multiFuse([m.Shape for m in models[1:]])
+        )
 
         # 2. Extract ToolBit parameters
         tool_params = _getZLevelToolParams()
@@ -1317,20 +1306,20 @@ class ObjectSurface(PathOp.ObjectOp):
         pattern_options = {
             "cut_climb": obj.CutMode == "Climb",
             "cut_pattern": getattr(obj, "CutPatternZLevel", "None"),
-            "pattern_angle": getattr(obj, "CutPatternAngle" , "45"),
-            "reverse_pattern": getattr(obj, "CutPatternReversed", False)
+            "pattern_angle": getattr(obj, "CutPatternAngle", "45"),
+            "reverse_pattern": getattr(obj, "CutPatternReversed", False),
         }
 
         height_params = {
             "safe_hght": obj.SafeHeight.Value,
-            "clearance_hght": obj.ClearanceHeight.Value
+            "clearance_hght": obj.ClearanceHeight.Value,
         }
 
         feed_params = {
             "horizFeed": self.horizFeed,
             "vertFeed": self.vertFeed,
             "horizRapid": self.horizRapid,
-            "vertRapid": self.vertRapid
+            "vertRapid": self.vertRapid,
         }
 
         # 4. Boundary preparation
@@ -1340,12 +1329,10 @@ class ObjectSurface(PathOp.ObjectOp):
         trimFace = _getZLevelTrimFace(shape, borderFace, tool_params, wpc)
 
         import Path.Base.Generator.surface_zlevel as surface_zlevel
+
         # 5. Depth categorization
         cat_steps = surface_zlevel.categorize_floor_steps(
-            shape,
-            obj.OpStartDepth.Value,
-            obj.OpFinalDepth.Value,
-            obj.StepDown.Value
+            shape, obj.OpStartDepth.Value, obj.OpFinalDepth.Value, obj.StepDown.Value
         )
 
         # 6. Generate Geometry Stack
@@ -1358,7 +1345,7 @@ class ObjectSurface(PathOp.ObjectOp):
             stock_to_leave,
             accuracy_val,
             depth_offset,
-            wpc
+            wpc,
         )
 
         # 7. Convert to G-Code
@@ -1370,7 +1357,7 @@ class ObjectSurface(PathOp.ObjectOp):
             ignore_outer,
             clear_planar_only,
             step_over,
-            radius
+            radius,
         )
 
         elapsed = time.time() - startTime
@@ -1477,7 +1464,11 @@ class ObjectSurface(PathOp.ObjectOp):
         Path.Log.info("opExecute: bounding box took {:.3f}s".format(bbox_time))
 
         # Fallback to the Job's Model Group if no Base geometry is specified in the operation
-        base_objs = [base for base, subs in obj.Base] if hasattr(obj, "Base") and obj.Base else JOB.Model.Group
+        base_objs = (
+            [base for base, subs in obj.Base]
+            if hasattr(obj, "Base") and obj.Base
+            else JOB.Model.Group
+        )
 
         # Create STL from model shapes
         stl_start = time.time()
@@ -1493,7 +1484,11 @@ class ObjectSurface(PathOp.ObjectOp):
                 stl = surface_stl.mesh_to_stl(points, facets)
             else:
                 # Check which STL method will be used
-                if hasattr(surface_stl, "_HAS_CPP") and surface_stl._HAS_CPP and strategy == "SurfacePattern":
+                if (
+                    hasattr(surface_stl, "_HAS_CPP")
+                    and surface_stl._HAS_CPP
+                    and strategy == "SurfacePattern"
+                ):
                     Path.Log.info("opExecute: Using C++ accelerated STL conversion")
                 else:
                     Path.Log.info("opExecute: Using Python fallback STL conversion")
@@ -1504,7 +1499,7 @@ class ObjectSurface(PathOp.ObjectOp):
                     obj.AngularDeflection.Value,
                     mesh_simplification=getattr(obj, "MeshSimplification", 1),
                     final_depth=obj.OpFinalDepth.Value if hasattr(obj, "OpFinalDepth") else None,
-                    use_cpp = (strategy == "SurfacePattern")
+                    use_cpp=(strategy == "SurfacePattern"),
                 )
             break  # Fix that
         stl_time = time.time() - stl_start
@@ -1551,7 +1546,9 @@ class ObjectSurface(PathOp.ObjectOp):
                 f"DropCutter strategy completed in {strategy_time:.2f}s, {len(cmds)} commands"
             )
         elif strategy == "Waterline":
-            cmds = self._executeWaterline(obj, JOB, stl, cutter, tool_diam, bb, is_adaptive=is_adaptive)
+            cmds = self._executeWaterline(
+                obj, JOB, stl, cutter, tool_diam, bb, is_adaptive=is_adaptive
+            )
 
         self.commandlist.extend(cmds)
 

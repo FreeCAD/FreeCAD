@@ -51,6 +51,7 @@ else:
 _ocl = None
 _meshpart = None
 
+
 def _get_ocl():
     """Lazily import OCL, trying both package names."""
     global _ocl
@@ -587,7 +588,7 @@ def make_boundary_face(selected_faces, offset, tolerance=0.005):
     Args:
         faces_to_mask (list): A list of Part.Face objects to derive the silhouette from.
         offset (float): The expansion (positive) or contraction (negative) distance.
-        tolerance (float): The deflection tolerance used for drawing smooth arcs. 
+        tolerance (float): The deflection tolerance used for drawing smooth arcs.
                            Derived directly from the user's LinearDeflection property.
 
     Returns:
@@ -609,16 +610,16 @@ def make_boundary_face(selected_faces, offset, tolerance=0.005):
 
         # Fallback if the TechDraw projection module fails on complex geometry
         if not outer_wire or not hasattr(outer_wire, "Edges") or len(outer_wire.Edges) == 0:
-            outer_wire = compound 
+            outer_wire = compound
 
-        # Let PathUtils (ClipperLib) handle the offsetting natively. 
+        # Let PathUtils (ClipperLib) handle the offsetting natively.
         # This guarantees NO crisscrossing points and uses the exact slider tolerance!
         offset_shape = PathUtils.getOffsetArea(
             outer_wire,
             offset,
             removeHoles=False,
             tolerance=tolerance,
-            plane=Part.makeCircle(2.0)  # Flat XY reference plane ensures Z=0 behavior
+            plane=Part.makeCircle(2.0),  # Flat XY reference plane ensures Z=0 behavior
         )
 
         if offset_shape is None:
@@ -667,7 +668,11 @@ def generate_pattern_mask(job, obj, selected_faces, tool_radius, boundary_adj):
         if obj.BoundBox == "Stock" and job.Stock:
             faces_to_mask = job.Stock.Shape.Faces
         else:
-            base_objs = [base for base, subs in obj.Base] if hasattr(obj, "Base") and obj.Base else job.Model.Group
+            base_objs = (
+                [base for base, subs in obj.Base]
+                if hasattr(obj, "Base") and obj.Base
+                else job.Model.Group
+            )
             for base in base_objs:
                 if hasattr(base, "Shape"):
                     faces_to_mask.extend(base.Shape.Faces)

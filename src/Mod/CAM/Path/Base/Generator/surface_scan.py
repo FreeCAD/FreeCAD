@@ -32,6 +32,7 @@ import Path
 
 try:
     import surface_generator as _pattern_cpp
+
     Path.Log.info("Successfully loaded C++ surface generator module.")
 except ImportError as e:
     Path.Log.critical("Failed to load the critical C++ surface generator module!")
@@ -127,7 +128,9 @@ def reconstruct_scan_lines(flat_points, gap_threshold):
 
     for i in range(1, len(flat_points)):
         # Calculate the 2D distance between the current and previous point
-        dist = math.hypot(flat_points[i][0] - flat_points[i-1][0], flat_points[i][1] - flat_points[i-1][1])
+        dist = math.hypot(
+            flat_points[i][0] - flat_points[i - 1][0], flat_points[i][1] - flat_points[i - 1][1]
+        )
 
         # If the distance is greater than our threshold, it signifies a rapid move (a break in the path)
         if dist > gap_threshold:
@@ -150,7 +153,7 @@ def reconstruct_scan_lines(flat_points, gap_threshold):
 def generate_offset_scan_lines(boundary_face, stepover, sample_interval, reversed_pattern=False):
     """
     Generates concentric toolpath rings that progressively shrink inwards from a boundary.
-    
+
     Unlike standard geometric patterns (which use C++), Offset patterns natively rely on
     the shape of the boundary itself. This function uses the OpenCASCADE/ClipperLib engine
     via PathUtils to repeatedly collapse the boundary geometry inward by the stepover amount.
@@ -162,7 +165,7 @@ def generate_offset_scan_lines(boundary_face, stepover, sample_interval, reverse
         reversed_pattern (bool): If True, cuts from the inside out (reverses the ring order).
 
     Returns:
-        list: A nested list of scan lines, where each line is a list of (x, y, z) tuples 
+        list: A nested list of scan lines, where each line is a list of (x, y, z) tuples
               forming an offset ring.
     """
     import PathScripts.PathUtils as PathUtils
@@ -176,11 +179,7 @@ def generate_offset_scan_lines(boundary_face, stepover, sample_interval, reverse
     while True:
         # Using a negative offset mathematically shrinks the geometry inwards
         offset_shape = PathUtils.getOffsetArea(
-            boundary_face, 
-            current_offset, 
-            removeHoles=False, 
-            tolerance=0.01, 
-            plane=boundary_face
+            boundary_face, current_offset, removeHoles=False, tolerance=0.01, plane=boundary_face
         )
 
         # If the shape collapses entirely or errors out, we've reached the absolute center
@@ -198,7 +197,7 @@ def generate_offset_scan_lines(boundary_face, stepover, sample_interval, reverse
             if wire.isClosed() and (pts[0] - pts[-1]).Length > 1e-5:
                 pts.append(pts[0])
 
-            line_points =[(p.x, p.y, 0.0) for p in pts]
+            line_points = [(p.x, p.y, 0.0) for p in pts]
             layer_lines.append(line_points)
 
         if not layer_lines:
@@ -216,7 +215,7 @@ def generate_offset_scan_lines(boundary_face, stepover, sample_interval, reverse
 def extract_polygons_from_face(boundary_face, tolerance=0.005):
     """
     Converts the wires of a Part.Face into raw 2D point arrays for the C++ Ray-Caster.
-    
+
     This function takes the mathematical boundaries computed by OpenCASCADE and discretizes
     them into a dense array of[x, y] coordinates. This prepares the boundary data in a format
     that can be instantly passed across the SWIG/PyBind boundary into C++ without heavy objects.
@@ -245,19 +244,20 @@ def extract_polygons_from_face(boundary_face, tolerance=0.005):
 
 def fast_generate_pattern(
     pattern_type,
-    bbox, center,
+    bbox,
+    center,
     stepover,
     sample_interval,
     angle,
     is_zigzag,
     reversed_pattern,
     boundary_face,
-    tolerance=0.005
+    tolerance=0.005,
 ):
     """
     Bridges Python to the ultrafast C++ generation and clipping module.
-    
-    This acts as the master router for Line, ZigZag, Circular, and Spiral patterns. It 
+
+    This acts as the master router for Line, ZigZag, Circular, and Spiral patterns. It
     extracts the boundaries, forwards all mathematical parameters to the compiled C++ engine,
     and returns perfectly clipped, high-resolution scan lines.
 
@@ -274,7 +274,7 @@ def fast_generate_pattern(
         tolerance (float): The mesh accuracy tolerance for polygon extraction.
 
     Returns:
-        list: A nested list of successfully clipped and ordered scan lines, where each line 
+        list: A nested list of successfully clipped and ordered scan lines, where each line
               is a list of (x, y, z) tuples.
     """
 
@@ -283,24 +283,46 @@ def fast_generate_pattern(
     if pattern_type in ("Line", "ZigZag"):
         # C++ now returns just the clipped endpoints for maximum OCL performance
         return _pattern_cpp.generate_linear_pattern_cpp(
-            bbox.xmin, bbox.xmax, bbox.ymin, bbox.ymax,
-            stepover, angle, is_zigzag, reversed_pattern, polys
+            bbox.xmin,
+            bbox.xmax,
+            bbox.ymin,
+            bbox.ymax,
+            stepover,
+            angle,
+            is_zigzag,
+            reversed_pattern,
+            polys,
         )
 
     elif pattern_type in ("Circular", "CircularZigZag"):
         # C++ calculates the exact distance to the furthest corner dynamically
         return _pattern_cpp.generate_circular_pattern_cpp(
-            bbox.xmin, bbox.xmax, bbox.ymin, bbox.ymax,
-            center[0], center[1], 
-            stepover, sample_interval, is_zigzag, reversed_pattern, polys
+            bbox.xmin,
+            bbox.xmax,
+            bbox.ymin,
+            bbox.ymax,
+            center[0],
+            center[1],
+            stepover,
+            sample_interval,
+            is_zigzag,
+            reversed_pattern,
+            polys,
         )
 
     elif pattern_type == "Spiral":
         # C++ calculates the exact distance to the furthest corner dynamically
         return _pattern_cpp.generate_spiral_pattern_cpp(
-            bbox.xmin, bbox.xmax, bbox.ymin, bbox.ymax,
-            center[0], center[1], 
-            stepover, sample_interval, reversed_pattern, polys
+            bbox.xmin,
+            bbox.xmax,
+            bbox.ymin,
+            bbox.ymax,
+            center[0],
+            center[1],
+            stepover,
+            sample_interval,
+            reversed_pattern,
+            polys,
         )
 
     return []
