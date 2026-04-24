@@ -46,14 +46,9 @@ DlgSheetConf::DlgSheetConf(Sheet* sheet, Range range, QWidget* parent)
 {
     ui->setupUi(this);
 
-    if (range.colCount() == 1) {
-        auto to = range.to();
-        to.setCol(CellAddress::MAX_COLUMNS - 1);
-        range = Range(range.from(), to);
-    }
-
     ui->lineEditStart->setText(QString::fromLatin1(range.from().toString().c_str()));
     ui->lineEditEnd->setText(QString::fromLatin1(range.to().toString().c_str()));
+    ui->verticalCheckBox->setChecked(range.from().col() == range.to().col());
 
     ui->lineEditProp->setDocumentObject(sheet, false);
 
@@ -90,22 +85,35 @@ App::Property* DlgSheetConf::prepare(
     from = sheet->getCellAddress(ui->lineEditStart->text().trimmed().toLatin1().constData());
     to = sheet->getCellAddress(ui->lineEditEnd->text().trimmed().toLatin1().constData());
 
-    if (from.col() >= to.col()) {
-        FC_THROWM(Base::RuntimeError, "Invalid cell range");
+    // rangeConf is supposed to hold the range of string cells, each holding
+    // the name of a configuration. The '-' / '|' below indicates a growing but
+    // continuous row / column (respectively), so that we can auto include new
+    // configurations. We'll bind the string list to a PropertyEnumeration for
+    // dynamical switching of the configuration.
+
+    if (ui->verticalCheckBox->isChecked()) {
+        if (from.row() >= to.row()) {
+            FC_THROWM(Base::RuntimeError, "Invalid cell range");
+        }
+
+        // Setup column as parameters, and row as configurations
+        to.setCol(from.col());
+
+        CellAddress confFrom(from.row(), from.col() + 1);
+        rangeConf = confFrom.toString();
+        rangeConf += ":-";
+    } else {
+        if (from.col() >= to.col()) {
+            FC_THROWM(Base::RuntimeError, "Invalid cell range");
+        }
+
+        // Setup row as parameters, and column as configurations
+        to.setRow(from.row());
+
+        CellAddress confFrom(from.row() + 1, from.col());
+        rangeConf = confFrom.toString();
+        rangeConf += ":|";
     }
-
-    // Setup row as parameters, and column as configurations
-    to.setRow(from.row());
-
-    CellAddress confFrom(from.row() + 1, from.col());
-    rangeConf = confFrom.toString();
-    // rangeConf is supposed to hold the range of string cells, each
-    // holding the name of a configuration. The '|' below indicates a
-    // growing but continuous column, so that we can auto include new
-    // configurations. We'll bind the string list to a
-    // PropertyEnumeration for dynamical switching of the
-    // configuration.
-    rangeConf += ":|";
 
     if (!init) {
         std::string exprTxt(ui->lineEditProp->text().trimmed().toUtf8().constData());
@@ -263,24 +271,43 @@ void DlgSheetConf::accept()
             prop->getFullName()
         );
 
-        // Adjust the range to skip the first cell
-        range = Range(from.row(), from.col() + 1, to.row(), to.col());
+        if (ui->verticalCheckBox->isChecked()) {
+            // Adjust the range to skip the first cell
+            range = Range(from.row() + 1, from.col(), to.row(), to.col());
 
-        // Formulate expression to calculate the row binding using
-        // PropertyEnumeration
-        Gui::cmdAppObjectArgs(
-            sheet,
-            "setExpression('.cells.Bind.%s.%s', "
-            "'tuple(.cells, <<%s>> + str(hiddenref(%s)+%d), <<%s>> + str(hiddenref(%s)+%d))')",
-            range.from().toString(CellAddress::Cell::ShowRowColumn),
-            range.to().toString(CellAddress::Cell::ShowRowColumn),
-            range.from().toString(CellAddress::Cell::ShowColumn),
-            prop->getFullName(),
-            from.row() + 2,
-            range.to().toString(CellAddress::Cell::ShowColumn),
-            prop->getFullName(),
-            from.row() + 2
-        );
+            // Formulate expression to calculate the column binding using
+            // PropertyEnumeration
+            Gui::cmdAppObjectArgs(
+                sheet,
+                "setExpression('.cells.Bind.%1$s.%2$s', "
+                "'tuple(.cells; "
+                "((%3$d+hiddenref(%4$s)) < 26 ? <<>> : <<%%c>> %% (65+sum(0;floor((%3$d+hiddenref(%4$s))/26)-1))) + <<%%c>> %% (65+(%3$d+hiddenref(%4$s))%%26) + str(%5$d); "
+                "((%3$d+hiddenref(%4$s)) < 26 ? <<>> : <<%%c>> %% (65+sum(0;floor((%3$d+hiddenref(%4$s))/26)-1))) + <<%%c>> %% (65+(%3$d+hiddenref(%4$s))%%26) + str(%6$d))')",
+                range.from().toString(CellAddress::Cell::ShowRowColumn),
+                range.to().toString(CellAddress::Cell::ShowRowColumn),
+                from.col() + 1,
+                prop->getFullName(),
+                range.from().row() + 1,
+                range.to().row() + 1
+            );
+        } else {
+            // Adjust the range to skip the first cell
+            range = Range(from.row(), from.col() + 1, to.row(), to.col());
+
+            // Formulate expression to calculate the row binding using
+            // PropertyEnumeration
+            Gui::cmdAppObjectArgs(
+                sheet,
+                "setExpression('.cells.Bind.%1$s.%2$s', "
+                "'tuple(.cells; <<%5$s>> + str(%3$d+hiddenref(%4$s)); <<%6$s>> + str(%3$d+hiddenref(%4$s)))')",
+                range.from().toString(CellAddress::Cell::ShowRowColumn),
+                range.to().toString(CellAddress::Cell::ShowRowColumn),
+                from.row() + 2,
+                prop->getFullName(),
+                range.from().toString(CellAddress::Cell::ShowColumn),
+                range.to().toString(CellAddress::Cell::ShowColumn)
+            );
+        }
 
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
         sheet->getDocument()->commitTransaction();
