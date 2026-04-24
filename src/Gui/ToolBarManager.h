@@ -351,6 +351,7 @@ public:
 
 Q_SIGNALS:
     void toolbarLayoutContextChanged();
+    void toolbarLayoutRestored(const QString& context);
 
 protected:
     void setup(ToolBarItem*, QToolBar*) const;
