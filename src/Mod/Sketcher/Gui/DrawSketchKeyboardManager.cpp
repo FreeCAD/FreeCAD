@@ -97,7 +97,9 @@ void DrawSketchKeyboardManager::detectKeyboardEventHandlingMode(QKeyEvent* keyEv
     auto match = rx.match(keyEvent->text());
     if (keyEvent->key() == Qt::Key_Enter || keyEvent->key() == Qt::Key_Return
         || keyEvent->key() == Qt::Key_Minus || keyEvent->key() == Qt::Key_Period
-        || keyEvent->key() == Qt::Key_Comma
+        || keyEvent->key() == Qt::Key_Comma || keyEvent->key() == Qt::Key_Left
+        || keyEvent->key() == Qt::Key_Right || keyEvent->key() == Qt::Key_Up
+        || keyEvent->key() == Qt::Key_Down
         || match.hasMatch()
         // double check for backspace as there may be windows/unix inconsistencies
         || keyEvent->key() == Qt::Key_Backspace || keyEvent->matches(QKeySequence::Backspace)
