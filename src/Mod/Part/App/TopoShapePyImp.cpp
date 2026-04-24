@@ -979,8 +979,9 @@ PyObject* TopoShapePy::ancestorsOfType(PyObject* args) const
     }
 
     try {
-        const TopoDS_Shape& containingShape = *getTopoShapePtr();
-        const TopoDS_Shape& descendentShape = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr()->getShape();
+        const TopoDS_Shape& containingShape = getTopoShapePtr()->getShape();
+        const TopoDS_Shape& descendentShape
+            = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr()->getShape();
         if (containingShape.IsNull() || descendentShape.IsNull()) {
             PyErr_SetString(PyExc_ValueError, "Shape is null");
             return nullptr;
