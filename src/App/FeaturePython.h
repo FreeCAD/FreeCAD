@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_FEATUREPYTHON_H
-#define APP_FEATUREPYTHON_H
+#pragma once
 
 #include <App/GeoFeature.h>
 #include <App/PropertyPythonObject.h>
@@ -84,6 +83,8 @@ public:
 
     int canLoadPartial() const;
 
+    ValueT supportsAsyncRecompute() const;
+
     /// return true to activate tree view group object handling
     ValueT hasChildElement() const;
     /// Get sub-element visibility
@@ -118,6 +119,7 @@ private:
     FC_PY_ELEMENT(allowDuplicateLabel)                                                             \
     FC_PY_ELEMENT(redirectSubName)                                                                 \
     FC_PY_ELEMENT(canLoadPartial)                                                                  \
+    FC_PY_ELEMENT(supportsAsyncRecompute)                                                          \
     FC_PY_ELEMENT(hasChildElement)                                                                 \
     FC_PY_ELEMENT(isElementVisible)                                                                \
     FC_PY_ELEMENT(setElementVisible)                                                               \
@@ -344,6 +346,15 @@ public:
         return FeatureT::canLoadPartial();
     }
 
+    bool canRecomputeOnWorker() const override
+    {
+        if (!FeatureT::canRecomputeOnWorker()) {
+            return false;
+        }
+
+        return imp->supportsAsyncRecompute() == FeaturePythonImp::Accepted;
+    }
+
     /**
      * @brief Called when a property is edited by the user.
      *
@@ -460,5 +471,3 @@ using FeaturePython = FeaturePythonT<DocumentObject>;
 using GeometryPython = FeaturePythonT<GeoFeature>;
 
 }  // namespace App
-
-#endif  // APP_FEATUREPYTHON_H

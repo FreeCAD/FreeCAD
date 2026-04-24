@@ -22,9 +22,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_SOBREPPOINTSET_H
-#define PARTGUI_SOBREPPOINTSET_H
+#pragma once
 
+#include <Inventor/fields/SoMFInt32.h>
+#include <Inventor/fields/SoSFColor.h>
 #include <Inventor/nodes/SoPointSet.h>
 #include <memory>
 #include <vector>
@@ -35,6 +36,7 @@
 class SoCoordinateElement;
 class SoGLCoordinateElement;
 class SoTextureCoordinateBundle;
+class SoIndexedPointSet;
 
 namespace PartGui
 {
@@ -56,8 +58,13 @@ public:
         viewProvider = vp;
     }
 
+    SoMFInt32 highlightCoordIndex;
+    SoMFInt32 selectionCoordIndex;
+    SoSFColor highlightColor;
+    SoSFColor selectionColor;
+
 protected:
-    ~SoBrepPointSet() override = default;
+    ~SoBrepPointSet() override;
     void GLRender(SoGLRenderAction* action) override;
     void GLRenderBelowPath(SoGLRenderAction* action) override;
     void doAction(SoAction* action) override;
@@ -75,12 +82,10 @@ private:
     SelContextPtr selContext2;
     Gui::SoFCSelectionCounter selCounter;
     uint32_t packedColor {0};
+    SoIndexedPointSet* overlayPointSet {nullptr};
 
     // backreference to viewprovider that owns this node
     ViewProviderPartExt* viewProvider = nullptr;
 };
 
 }  // namespace PartGui
-
-
-#endif  // PARTGUI_SOBREPPOINTSET_H

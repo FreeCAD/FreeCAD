@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef BASE_BOUNDBOX_H
-#define BASE_BOUNDBOX_H
+#pragma once
 
 #include <array>
 #include <limits>
@@ -1173,5 +1172,3 @@ using BoundBox3f = BoundBox3<float>;
 using BoundBox3d = BoundBox3<double>;
 
 }  // namespace Base
-
-#endif  // BASE_BOUNDBOX_H

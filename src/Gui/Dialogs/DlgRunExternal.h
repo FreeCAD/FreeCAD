@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_DIALOG_DlgRunExternal_H
-#define GUI_DIALOG_DlgRunExternal_H
+#pragma once
 
 #include <memory>
 #include <QDialog>
@@ -70,5 +69,3 @@ private:
 
 }  // namespace Dialog
 }  // namespace Gui
-
-#endif  // GUI_DIALOG_DlgRunExternal_H

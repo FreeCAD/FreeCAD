@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_InformationOverlayCoinConverter_H
-#define SKETCHERGUI_InformationOverlayCoinConverter_H
+#pragma once
 
 #include <vector>
 
@@ -135,7 +134,7 @@ private:
     // Node Position in the Coin Scenograph for the different types of nodes
     enum class TextNodePosition
     {
-        TextCoordinates = 0,
+        TextCoordinates = 2,
         TextInformation = 3
     };
 
@@ -220,6 +219,3 @@ private:
 
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_InformationOverlayCoinConverter_H

@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TASKDIALOG_H
-#define GUI_TASKVIEW_TASKDIALOG_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -101,6 +100,7 @@ public:
     {
         return escapeButton;
     }
+    QDialogButtonBox::ButtonRole roleOnEscape {QDialogButtonBox::ButtonRole::RejectRole};
 
     /// Defines whether a task dialog must be closed if the document changed the
     /// active transaction.
@@ -210,6 +210,13 @@ public:
     /// is called by the framework if the user press the redo button
     virtual void onRedo();
 
+    /// Called by the framework when it becomes the shown dialog
+    /// of the stacked task panel (e.g. when it's document becomes active)
+    virtual void activate();
+    /// Called by the framework when it stops being the shown dialog
+    /// of the stacked task panel (e.g. when it's document stops being active)
+    virtual void deactivate();
+
     void emitDestructionSignal()
     {
         Q_EMIT aboutToBeDestroyed();
@@ -253,5 +260,3 @@ private:
 
 }  // namespace TaskView
 }  // namespace Gui
-
-#endif  // GUI_TASKVIEW_TASKDIALOG_H

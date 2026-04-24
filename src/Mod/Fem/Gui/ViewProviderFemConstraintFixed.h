@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEWPROVIDERFEMCONSTRAINTFIXED_H
-#define GUI_VIEWPROVIDERFEMCONSTRAINTFIXED_H
+#pragma once
 
 #include "ViewProviderFemConstraintOnBoundary.h"
 
@@ -46,6 +45,3 @@ protected:
 };
 
 }  // namespace FemGui
-
-
-#endif  // GUI_VIEWPROVIDERFEMCONSTRAINTFIXED_H

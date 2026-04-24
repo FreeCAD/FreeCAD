@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_DrawSketchController_H
-#define SKETCHERGUI_DrawSketchController_H
+#pragma once
 
 #include <Base/Console.h>
 #include <Base/Tools2D.h>
@@ -670,7 +669,11 @@ protected:
     {
         Gui::View3DInventorViewer* viewer = handler->getViewer();
 
-        auto doc = Gui::Application::Instance->editDocument();
+        auto doc = viewer->getDocument();
+        if (!doc->getInEdit()) {
+            return;
+        }
+
         auto placement = Base::Placement(doc->getEditingTransform());
 
         onViewParameters.clear();
@@ -690,13 +693,20 @@ protected:
                                  )
                                  .get();
 
+            const auto handleParameterValueChanged = [this, parameter, i](double value) {
+                parameter->setColor(colorManager.dimConstrColor);
+                onViewValueChanged(i, value);
+            };
+
             QObject::connect(
                 parameter,
                 &Gui::EditableDatumLabel::valueChanged,
-                [this, parameter, i](double value) {
-                    parameter->setColor(colorManager.dimConstrColor);
-                    onViewValueChanged(i, value);
-                }
+                handleParameterValueChanged
+            );
+            QObject::connect(
+                parameter,
+                &Gui::EditableDatumLabel::editingFinished,
+                handleParameterValueChanged
             );
 
             // this gets triggered whenever user deletes content in OVP, we remove the
@@ -890,6 +900,3 @@ private:
 
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchController_H

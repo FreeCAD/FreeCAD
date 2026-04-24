@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef ASSEMBLY_AssemblyUtils_H
-#define ASSEMBLY_AssemblyUtils_H
+#pragma once
 
 #include <GeomAbs_CurveType.hxx>
 #include <GeomAbs_SurfaceType.hxx>
@@ -189,8 +188,6 @@ AssemblyExport std::vector<std::string> getSubAsList(
     const char* propName
 );
 AssemblyExport void syncPlacements(App::DocumentObject* src, App::DocumentObject* to);
+AssemblyExport double getJointCurrentValue(App::DocumentObject* joint, bool isAngle);
 
 }  // namespace Assembly
-
-
-#endif  // ASSEMBLY_AssemblyUtils_H

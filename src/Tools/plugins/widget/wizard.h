@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef WIZARD_H
-#define WIZARD_H
+#pragma once
 
 
 #include <QDialog>
@@ -117,5 +116,3 @@ public:
 protected:
     QObject* createExtension(QObject* object, const QString& iid, QObject* parent) const;
 };
-
-#endif

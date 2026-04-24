@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SRC_MOD_SPREADSHEET_APP_SHEET_H_
-#define SRC_MOD_SPREADSHEET_APP_SHEET_H_
+#pragma once
 
 #ifdef signals
 # undef signals
@@ -171,7 +170,11 @@ public:
 
     void setForeground(App::CellAddress address, const Base::Color& color);
 
+    void clearForeground(App::CellAddress address);
+
     void setBackground(App::CellAddress address, const Base::Color& color);
+
+    void clearBackground(App::CellAddress address);
 
     void setDisplayUnit(App::CellAddress address, const std::string& unit);
 
@@ -317,6 +320,3 @@ protected:
 using SheetPython = App::FeaturePythonT<Sheet>;
 
 }  // namespace Spreadsheet
-
-
-#endif  // SRC_MOD_SPREADSHEET_APP_SHEET_H_

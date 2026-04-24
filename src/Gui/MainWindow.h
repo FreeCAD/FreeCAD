@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_MAINWINDOW_H
-#define GUI_MAINWINDOW_H
+#pragma once
 
 #include <QEvent>
 #include <QMainWindow>
@@ -314,8 +313,6 @@ protected:
     void changeEvent(QEvent* e) override;
 
 private:
-    bool checkFirstRun();
-    void moveToDefaultPosition(QRect rect, QPoint pos);
     void setupDockWindows();
     bool setupTaskView();
     bool setupSelectionView();
@@ -390,6 +387,7 @@ Q_SIGNALS:
     void windowStateChanged(QWidget*);
     void workbenchActivated(const QString&);
     void mainWindowClosed();
+    void recentFileAdded(const QString& filename);
 
 private:
     /// some kind of singleton
@@ -464,5 +462,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_MAINWINDOW_H

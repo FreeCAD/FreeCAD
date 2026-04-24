@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_TEXTDOCUMENT_H
-#define APP_TEXTDOCUMENT_H
+#pragma once
 
 #include "DocumentObject.h"
 #include "PropertyStandard.h"
@@ -58,6 +57,3 @@ private:
 };
 
 }  // namespace App
-
-
-#endif

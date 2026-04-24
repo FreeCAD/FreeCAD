@@ -29,11 +29,14 @@
 #include <Inventor/nodes/SoSwitch.h>
 
 #include <QEvent>
+#include <QFontMetrics>
 #include <QKeyEvent>
 #include <QPixmap>
 #include <QLabel>
+#include <QLineEdit>
 #include <QHBoxLayout>
 #include <QString>
+#include <QTimer>
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -41,6 +44,8 @@
 #include <Gui/View3DInventorViewer.h>
 
 #include "EditableDatumLabel.h"
+#include "Base/Console.h"
+#include "Gui/QuantitySpinBox.h"
 
 
 using namespace Gui;
@@ -69,6 +74,7 @@ EditableDatumLabel::EditableDatumLabel(
     , lockIconLabel(nullptr)
     , cameraSensor(nullptr)
     , function(Function::Positioning)
+    , editStartValue(0.0)
 {
     // NOLINTBEGIN
     root = new SoSwitch;
@@ -175,6 +181,11 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
     spinBox->setAutoNormalize(false);
     spinBox->setKeyboardTracking(true);
     spinBox->installEventFilter(this);
+    spinBox->setAutoAdjustWidth(true);
+    spinBox->setMaxExpectedDigits(16);
+    spinBox->setValue(Base::Quantity(val, Base::Unit::Length));
+    value = val;
+    editStartValue = val;
 
     if (eventFilteringObj) {
         spinBox->installEventFilter(eventFilteringObj);
@@ -185,53 +196,85 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
     }
 
     spinBox->show();
-    setSpinboxValue(val);
-    // Note: adjustSize apparently uses the Min/Max values to set the size. So if we don't set them
-    // to INT_MAX, the spinbox are much too big.
-    spinBox->adjustSize();
+    if (auto* edit = spinBox->findChild<QLineEdit*>()) {
+        updateGeometry(edit);
+    }
     setFocusToSpinbox();
-
-    const auto validateAndFinish = [this]() {
-        // this event can be fired after spinBox was already disposed
-        // in such case we need to skip processing that event
+    QTimer::singleShot(0, this, [this]() {
         if (!spinBox) {
             return;
         }
+        positionSpinbox();
+        setFocusToSpinbox();
+    });
 
-        if (!spinBox->hasValidInput()) {
-            // unset parameters in DrawSketchController, this is needed in a case
-            // when user removes values we reset state of the OVP
-            Q_EMIT this->parameterUnset();
-            return;
+    connect(
+        spinBox,
+        qOverload<double>(&QuantitySpinBox::valueChanged),
+        this,
+        &EditableDatumLabel::handleSpinBoxValueChanged
+    );
+    if (auto* edit = spinBox->findChild<QLineEdit*>()) {
+        connect(edit, &QLineEdit::textChanged, this, [this, edit]() { this->updateGeometry(edit); });
+    }
+}
+
+bool EditableDatumLabel::syncValueFromSpinBox(bool emitParameterUnset)
+{
+    if (!spinBox) {
+        return false;
+    }
+
+    if (!spinBox->hasValidInput()) {
+        if (emitParameterUnset) {
+            setLockedAppearance(false);
+            Q_EMIT parameterUnset();
         }
+        return false;
+    }
 
-        value = spinBox->rawValue();
+    value = spinBox->rawValue();
+    isSet = true;
 
-        isSet = true;
+    if (hasFinishedEditing) {
+        setLockedAppearance(true);
+    }
 
-        if (this->hasFinishedEditing) {
-            this->setLockedAppearance(true);
-        }
+    return true;
+}
 
-        Q_EMIT this->valueChanged(value);
-    };
-
-    connect(spinBox, qOverload<double>(&QuantitySpinBox::valueChanged), this, validateAndFinish);
+void EditableDatumLabel::handleSpinBoxValueChanged()
+{
+    if (syncValueFromSpinBox()) {
+        Q_EMIT valueChanged(value);
+    }
 }
 
 bool EditableDatumLabel::eventFilter(QObject* watched, QEvent* event)
 {
     if (event->type() == QEvent::KeyPress) {
         auto* keyEvent = static_cast<QKeyEvent*>(event);
+        if (keyEvent->key() == Qt::Key_Escape) {
+            if (qobject_cast<QAbstractSpinBox*>(watched)) {
+                this->value = this->editStartValue;
+                this->isSet = false;
+                this->hasFinishedEditing = false;
+                this->setLockedAppearance(false);
+                this->setSpinboxValue(this->editStartValue);
+                this->stopEdit();
+                Q_EMIT this->editingCanceled(this->value);
+                return true;
+            }
+        }
         if (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter
             || keyEvent->key() == Qt::Key_Tab) {
 
-            if (auto* spinBox = qobject_cast<QAbstractSpinBox*>(watched)) {
+            if (qobject_cast<QAbstractSpinBox*>(watched)) {
                 // if tab has been pressed and user did not type anything previously,
                 // then just cycle but don't lock anything, otherwise we lock the label
                 if (keyEvent->key() == Qt::Key_Tab && !this->isSet) {
                     if (!this->spinBox->hasValidInput()) {
-                        Q_EMIT this->spinBox->valueChanged(this->value);
+                        syncValueFromSpinBox();
                         return true;
                     }
                     return false;
@@ -243,9 +286,15 @@ bool EditableDatumLabel::eventFilter(QObject* watched, QEvent* event)
                     return true;
                 }
                 else {
-                    // regular enter
+                    // regular enter or tab with edited input accepts the current value.
                     this->hasFinishedEditing = true;
-                    Q_EMIT this->spinBox->valueChanged(this->value);
+
+                    if (!syncValueFromSpinBox()) {
+                        return true;
+                    }
+
+                    const double finishedValue = value;
+                    Q_EMIT this->editingFinished(finishedValue);
                     return true;
                 }
             }
@@ -298,17 +347,19 @@ double EditableDatumLabel::getValue() const
 
 void EditableDatumLabel::setSpinboxValue(double val, const Base::Unit& unit)
 {
+    value = val;
+
     if (!spinBox) {
-        Base::Console().developerWarning(
-            "EditableDatumLabel::setSpinboxValue",
-            "Spinbox doesn't exist in"
-        );
+        Base::Quantity quantity(val, unit);
+        double factor {};
+        std::string unitStr;
+        std::string valueStr = quantity.getUserString(factor, unitStr);
+        label->string = SbString(valueStr.c_str());
         return;
     }
 
     QSignalBlocker block(spinBox);
     spinBox->setValue(Base::Quantity(val, unit));
-    value = val;
     positionSpinbox();
 
     if (spinBox->hasFocus()) {
@@ -331,6 +382,17 @@ void EditableDatumLabel::setFocusToSpinbox()
     }
 }
 
+void EditableDatumLabel::clearSelection()
+{
+    if (!spinBox) {
+        return;
+    }
+
+    if (auto* edit = spinBox->findChild<QLineEdit*>()) {
+        edit->deselect();
+    }
+}
+
 void EditableDatumLabel::positionSpinbox()
 {
     if (!spinBox) {
@@ -342,8 +404,12 @@ void EditableDatumLabel::positionSpinbox()
     }
 
     QSize wSize = spinBox->size();
-    QSize vSize = viewer->size();
+    QWidget* parent = spinBox->parentWidget();
+    QSize vSize = parent ? parent->size() : viewer->size();
     QPoint pxCoord = viewer->toQPoint(viewer->getPointOnViewport(getTextCenterPoint()));
+    if (parent && parent != viewer) {
+        pxCoord = viewer->mapTo(parent, pxCoord);
+    }
 
     int posX = std::min(std::max(pxCoord.x() - wSize.width() / 2, 0), vSize.width() - wSize.width());
     int posY = std::min(std::max(pxCoord.y() - wSize.height() / 2, 0), vSize.height() - wSize.height());
@@ -364,8 +430,9 @@ void EditableDatumLabel::positionSpinbox()
 
     // Update lock icon position inside the spinbox if it exists and is visible
     if (lockIconLabel && lockIconLabel->isVisible()) {
-        int iconSize = 14;
-        int padding = 4;
+        const QFontMetrics fm(spinBox->fontMetrics());
+        int iconSize = fm.height();
+        int padding = spinBox->getMargin();
         QSize spinboxSize = spinBox->size();
         lockIconLabel->setGeometry(
             spinboxSize.width() - iconSize - padding,
@@ -422,6 +489,24 @@ void EditableDatumLabel::setPlacement(const Base::Placement& plc)
     Base::Vector3d RN(0, 0, 1);
     RN = plc.getRotation().multVec(RN);
     label->norm.setValue(SbVec3f(float(RN.x), float(RN.y), float(RN.z)));
+}
+
+void EditableDatumLabel::updateGeometry()
+{
+    if (!spinBox) {
+        return;
+    }
+    updateGeometry(spinBox->findChild<QLineEdit*>());
+}
+
+void EditableDatumLabel::updateGeometry(QLineEdit* edit)
+{
+    if (!spinBox || !edit) {
+        return;
+    }
+    int pos = edit->cursorPosition();
+    spinBox->adjustSize();
+    edit->setCursorPosition(pos);
 }
 
 // NOLINTNEXTLINE
@@ -505,61 +590,55 @@ void EditableDatumLabel::setLabelAutoDistanceReverse(bool val)
 
 void EditableDatumLabel::setSpinboxVisibleToMouse(bool val)
 {
+    if (!spinBox) {
+        return;
+    }
     spinBox->setAttribute(Qt::WA_TransparentForMouseEvents, !val);
 }
 
 void EditableDatumLabel::setLockedAppearance(bool locked)
 {
+    if (!locked) {
+        this->hasFinishedEditing = false;
+    }
+    if (!spinBox) {
+        return;
+    }
+    const QFontMetrics fm(spinBox->fontMetrics());
+    int iconSize = fm.height();
+    int padding = spinBox->getMargin();
     if (locked) {
-        if (spinBox) {
+        spinBox->addIconSpace(true);
+        spinBox->adjustSize();
+        // create lock icon label it it doesn't exist, if it does - show it
+        if (!lockIconLabel) {
+            lockIconLabel = new QLabel(spinBox);
+            lockIconLabel->setAttribute(Qt::WA_TransparentForMouseEvents, true);
+            lockIconLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
-            // create lock icon label it it doesn't exist, if it does - show it
-            if (!lockIconLabel) {
-                lockIconLabel = new QLabel(spinBox);
-                lockIconLabel->setAttribute(Qt::WA_TransparentForMouseEvents, true);
-                lockIconLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+            // load icon and scale it to fit in spinbox
+            QPixmap lockIcon = Gui::BitmapFactory().pixmap("Constraint_Lock");
+            QPixmap scaledIcon
+                = lockIcon.scaled(iconSize, iconSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+            lockIconLabel->setPixmap(scaledIcon);
 
-                // load icon and scale it to fit in spinbox
-                QPixmap lockIcon = Gui::BitmapFactory().pixmap("Constraint_Lock");
-                QPixmap scaledIcon
-                    = lockIcon.scaled(14, 14, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-                lockIconLabel->setPixmap(scaledIcon);
-
-                // position lock icon inside the spinbox
-                int iconSize = 14;
-                int padding = 4;
-                QSize spinboxSize = spinBox->size();
-                lockIconLabel->setGeometry(
-                    spinboxSize.width() - iconSize - padding,
-                    (spinboxSize.height() - iconSize) / 2,
-                    iconSize,
-                    iconSize
-                );
-                // style spinbox and add padding for lock
-                QString styleSheet = QString::fromLatin1(
-                                         "QSpinBox { "
-                                         "padding-right: %1px; "
-                                         "}"
-                )
-                                         .arg(iconSize + padding + 2);
-
-                spinBox->setStyleSheet(styleSheet);
-            }
-
-            lockIconLabel->show();
+            // position lock icon inside the spinbox
+            QSize spinboxSize = spinBox->size();
+            lockIconLabel->setGeometry(
+                spinboxSize.width() - iconSize - padding,
+                (spinboxSize.height() - iconSize) / 2,
+                iconSize,
+                iconSize
+            );
         }
+        lockIconLabel->show();
     }
     else {
-        this->hasFinishedEditing = false;
-
-        // if spinbox exists, reset its appearance
-        if (spinBox) {
-            spinBox->setStyleSheet(QString());
-
-            // hide lock icon if it exists for later reuse
-            if (lockIconLabel) {
-                lockIconLabel->hide();
-            }
+        // hide lock icon if it exists for later reuse
+        if (lockIconLabel) {
+            lockIconLabel->hide();
+            spinBox->addIconSpace(false);
+            spinBox->adjustSize();
         }
     }
 }

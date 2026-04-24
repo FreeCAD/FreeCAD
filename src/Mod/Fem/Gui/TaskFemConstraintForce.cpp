@@ -37,6 +37,7 @@
 #include <Mod/Fem/App/FemConstraintForce.h>
 #include <Mod/Fem/App/FemTools.h>
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/DatumFeature.h>
 
 #include "TaskFemConstraintForce.h"
 #include "ui_TaskFemConstraintForce.h"
@@ -273,17 +274,9 @@ std::pair<App::DocumentObject*, std::string> TaskFemConstraintForce::getDirectio
     Gui::SelectionObject selectionElement = selection.at(0);
 
     // Line or Plane
-    Base::Type line = Base::Type::fromName("PartDesign::Line");
-    Base::Type plane = Base::Type::fromName("PartDesign::Plane");
-    if (selectionElement.isObjectTypeOf(App::Line::getClassTypeId())
-        || selectionElement.isObjectTypeOf(App::Plane::getClassTypeId())) {
-        link = std::make_pair(selectionElement.getObject(), std::string());
-    }
-    else if (selectionElement.isObjectTypeOf(line)) {
-        link = std::make_pair(selectionElement.getObject(), std::string("Edge1"));
-    }
-    else if (selectionElement.isObjectTypeOf(plane)) {
-        link = std::make_pair(selectionElement.getObject(), std::string("Face1"));
+    const auto selObj = selectionElement.getObject();
+    if (selObj->isDerivedFrom<App::DatumElement>() || selObj->isDerivedFrom<Part::Datum>()) {
+        link = std::make_pair(selObj, std::string());
     }
     // Sub-element of Part object
     else if (selectionElement.isObjectTypeOf(Part::Feature::getClassTypeId())) {

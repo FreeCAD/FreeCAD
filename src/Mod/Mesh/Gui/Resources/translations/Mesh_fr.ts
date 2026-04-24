@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="755"/>
       <source>Add Triangle</source>
-      <translation>Ajout d'un triangle</translation>
+      <translation>Ajouter un triangle</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="756"/>
       <source>Adds a triangle manually to a mesh</source>
-      <translation>Ajoute un triangle manuellement à un maillage</translation>
+      <translation>Ajoute un triangle manuellement à un maillage.</translation>
     </message>
   </context>
   <context>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../Command.cpp" line="174"/>
       <source>Creates a boolean difference of the selected meshes</source>
-      <translation>Crée une différence booléenne de maillages sélectionnés.</translation>
+      <translation>Crée une différence booléenne des maillages sélectionnés.</translation>
     </message>
   </context>
   <context>
@@ -178,7 +178,7 @@
     <message>
       <location filename="../../Command.cpp" line="401"/>
       <source>Exports a mesh to a file</source>
-      <translation>Exporte un maillage vers un fichier</translation>
+      <translation>Exporte un maillage vers un fichier.</translation>
     </message>
   </context>
   <context>
@@ -209,7 +209,7 @@
     <message>
       <location filename="../../Command.cpp" line="1581"/>
       <source>Fill Holes</source>
-      <translation>Remplir les trous</translation>
+      <translation>Remplir des trous</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1582"/>
@@ -227,7 +227,7 @@
     <message>
       <location filename="../../Command.cpp" line="1455"/>
       <source>Flip Normals</source>
-      <translation>Inverser les normales‏‎</translation>
+      <translation>Inverser des normales‏‎</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1456"/>
@@ -682,7 +682,7 @@
       <translation>Déterminer la courbure des sommets du maillage</translation>
     </message>
     <message>
-      <location filename="../../DlgSmoothing.cpp" line="169"/>
+      <location filename="../../DlgSmoothing.cpp" line="175"/>
       <source>Mesh Smoothing</source>
       <translation>Lisser un maillage</translation>
     </message>
@@ -717,7 +717,7 @@
       <translation>Mettre à l'échelle le maillage</translation>
     </message>
     <message>
-      <location filename="../../DlgDecimating.cpp" line="166"/>
+      <location filename="../../DlgDecimating.cpp" line="180"/>
       <source>Mesh Decimating</source>
       <translation>Décimer un maillage</translation>
     </message>
@@ -764,7 +764,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1196"/>
       <source>Repair Mesh</source>
-      <translation>Réparation du maillage</translation>
+      <translation>Réparer un maillage</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.cpp" line="164"/>
@@ -794,12 +794,12 @@
       <translation>Segment</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1872"/>
+      <location filename="../../ViewProvider.cpp" line="1870"/>
       <source>Delete</source>
       <translation>Supprimer</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="2001"/>
+      <location filename="../../ViewProvider.cpp" line="2000"/>
       <source>Fill hole</source>
       <translation>Remplir le trou</translation>
     </message>
@@ -1590,22 +1590,22 @@ Avec l'ombrage plat, les normales de la surface ne sont pas définies par les so
   <context>
     <name>MeshGui::MeshFaceAddition</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="393"/>
-      <source>Add Triangle</source>
-      <translation>Ajout d'un triangle</translation>
-    </message>
-    <message>
       <location filename="../../MeshEditor.cpp" line="394"/>
-      <source>Flip Normal</source>
-      <translation>Inverser la normale</translation>
+      <source>Add Triangle</source>
+      <translation>Ajouter un triangle</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="395"/>
+      <source>Flip Normal</source>
+      <translation>Inverser une normale</translation>
+    </message>
+    <message>
+      <location filename="../../MeshEditor.cpp" line="396"/>
       <source>Clear</source>
       <translation>Supprimer</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="411"/>
+      <location filename="../../MeshEditor.cpp" line="413"/>
       <source>Finish</source>
       <translation>Terminer</translation>
     </message>
@@ -1613,7 +1613,7 @@ Avec l'ombrage plat, les normales de la surface ne sont pas définies par les so
   <context>
     <name>MeshGui::MeshFillHole</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="762"/>
+      <location filename="../../MeshEditor.cpp" line="765"/>
       <source>Finish</source>
       <translation>Terminer</translation>
     </message>
@@ -2048,8 +2048,7 @@ Avec l'ombrage plat, les normales de la surface ne sont pas définies par les so
       <location filename="../../Command.cpp" line="321"/>
       <source>OpenSCAD cannot be found on the system.
 Visit https://openscad.org/ to install it.</source>
-      <translation>OpenSCAD est introuvable sur le système.
-Consulter le site https://openscad.org/ pour l'installer.</translation>
+      <translation>OpenSCAD est introuvable sur le système. Voir le site https://openscad.org/ pour l'installer.</translation>
     </message>
   </context>
   <context>
@@ -2193,7 +2192,7 @@ Consulter le site https://openscad.org/ pour l'installer.</translation>
     <message>
       <location filename="../../Command.cpp" line="449"/>
       <source>Export Mesh</source>
-      <translation>Exporter le maillage</translation>
+      <translation>Exporter un maillage</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="498"/>
@@ -2228,12 +2227,12 @@ Consulter le site https://openscad.org/ pour l'installer.</translation>
     <message>
       <location filename="../../Command.cpp" line="1596"/>
       <source>Fill Holes</source>
-      <translation>Remplir les trous</translation>
+      <translation>Remplir des trous</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1597"/>
       <source>Fill holes with maximum number of edges</source>
-      <translation>Remplir les trous avec un nombre maximum de contours </translation>
+      <translation>Remplir les trous avec un nombre maximum de contours</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1870"/>
@@ -2253,46 +2252,46 @@ Consulter le site https://openscad.org/ pour l'installer.</translation>
     <message>
       <location filename="../../ViewProvider.cpp" line="796"/>
       <source>Display Components</source>
-      <translation>Affichage des composants</translation>
+      <translation>Afficher les composants</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="804"/>
       <source>Display Segments</source>
-      <translation>Affichage des segments</translation>
+      <translation>Afficher les segments</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="812"/>
       <source>Display Colors</source>
-      <translation>Affichage des couleurs</translation>
+      <translation>Afficher les couleurs</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1701"/>
       <location filename="../../ViewProviderCurvature.cpp" line="535"/>
+      <location filename="../../ViewProvider.cpp" line="1701"/>
       <source>Leave Info Mode</source>
       <translation>Quitter le mode Information</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1771"/>
+      <location filename="../../ViewProvider.cpp" line="1770"/>
       <source>Index: %1</source>
       <translation>Index : %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1799"/>
+      <location filename="../../ViewProvider.cpp" line="1798"/>
       <source>Leave Hole-Filling Mode</source>
       <translation>Quitter le mode de remplissage des trous</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1846"/>
+      <location filename="../../ViewProvider.cpp" line="1844"/>
       <source>Leave Removal Mode</source>
       <translation>Quitter le mode de suppression</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1847"/>
+      <location filename="../../ViewProvider.cpp" line="1845"/>
       <source>Delete Selected Faces</source>
       <translation>Supprimer les faces sélectionnées</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1848"/>
+      <location filename="../../ViewProvider.cpp" line="1846"/>
       <source>Clear Selected Faces</source>
       <translation>Effacer les faces sélectionnées</translation>
     </message>
@@ -2372,7 +2371,7 @@ Consulter le site https://openscad.org/ pour l'installer.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>Mesh Cutting</source>
-      <translation>Coupe du maillage</translation>
+      <translation>Découpe du maillage</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
@@ -2383,6 +2382,31 @@ Consulter le site https://openscad.org/ pour l'installer.</translation>
       <location filename="../../Workbench.cpp" line="53"/>
       <source>Mesh Analyze</source>
       <translation>Analyse du maillage</translation>
+    </message>
+  </context>
+  <context>
+    <name>FileFormat</name>
+    <message>
+      <location filename="../../../Init.py" line="19"/>
+      <source>STL Mesh</source>
+      <translation>Maillage STL</translation>
+    </message>
+    <message>
+      <location filename="../../../Init.py" line="20"/>
+      <source>Binary Mesh</source>
+      <translation>Maillage binaire</translation>
+    </message>
+    <message>
+      <location filename="../../../Init.py" line="23"/>
+      <source>Alias Mesh</source>
+      <extracomment>Translation note: "Alias" in this case is a product/format name and should not be translated</extracomment>
+      <translation>Maillage Alias d'Autodesk</translation>
+    </message>
+    <message>
+      <location filename="../../../Init.py" line="27"/>
+      <source>Object File Format Mesh</source>
+      <extracomment>Translation note: "Object File Format" is the official name and should not be translated</extracomment>
+      <translation>Maillage du format du fichier de l'objet</translation>
     </message>
   </context>
 </TS>

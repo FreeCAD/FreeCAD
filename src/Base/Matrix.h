@@ -23,17 +23,14 @@
  ***************************************************************************/
 
 
-#ifndef BASE_MATRIX_H
-#define BASE_MATRIX_H
+#pragma once
 
 #include <array>
 #include <cmath>
 #include <string>
 
 #include "Vector3D.h"
-#ifndef FC_GLOBAL_H
-# include <FCGlobal.h>
-#endif
+#include <FCGlobal.h>
 
 
 namespace Base
@@ -445,6 +442,3 @@ inline void Matrix4D::setDiagonal(const Vector3d& vec)
 }
 
 }  // namespace Base
-
-
-#endif  // BASE_MATRIX_H

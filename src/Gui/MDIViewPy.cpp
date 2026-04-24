@@ -179,7 +179,6 @@ Py::Object MDIViewPy::redoActions(const Py::Tuple& args)
 
 Py::Object MDIViewPy::sendMessage(const Py::Tuple& args)
 {
-    const char** ppReturn = nullptr;
     char* psMsgStr;
     if (!PyArg_ParseTuple(args.ptr(), "s;Message string needed (string)", &psMsgStr)) {
         throw Py::Exception();
@@ -188,7 +187,7 @@ Py::Object MDIViewPy::sendMessage(const Py::Tuple& args)
     try {
         bool ok = false;
         if (_view) {
-            ok = _view->onMsg(psMsgStr, ppReturn);
+            ok = _view->onMsg(psMsgStr);
         }
         return Py::Boolean(ok);
     }

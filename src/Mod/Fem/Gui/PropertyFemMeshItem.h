@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEMGUI_PROPERTY_FEMMESH_ITEM_H
-#define FEMGUI_PROPERTY_FEMMESH_ITEM_H
+#pragma once
 
 #include <Gui/propertyeditor/PropertyItem.h>
 
@@ -82,6 +81,3 @@ private:
 };
 
 }  // namespace FemGui
-
-
-#endif  // FEMGUI_PROPERTY_FEMMESH_ITEM_H

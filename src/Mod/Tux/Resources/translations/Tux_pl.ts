@@ -110,10 +110,9 @@
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="674"/>
-      <source>Navigation indicator</source>
+      <source>Navigation Indicator</source>
       <comment>A context menu action used to show or hide the &apos;Navigation indicator&apos; toolbar widget</comment>
-      <translation>
-Wskaźnik nawigacji</translation>
+      <translation>Wskaźnik nawigacji</translation>
     </message>
   </context>
 </TS>

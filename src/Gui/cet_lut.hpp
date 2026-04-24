@@ -30,10 +30,8 @@
 /*************************************************************************************/
 
 #pragma once
-#ifndef _CET_LUT_HPP_
-# define _CET_LUT_HPP_
 
-# include <array>
+#include <array>
 
 // 8 bit CET luts as {R,G,B,R,G,B,...}
 // see https://colorcet.com/gallery.html for more details
@@ -2652,5 +2650,3 @@ static constexpr std::array<uint8_t, 768> CBD1 = {
     0x1a, 0xab, 0x92, 0x17, 0xaa, 0x92, 0x14, 0xa9, 0x91, 0x11, 0xa8, 0x90, 0x0d, 0xa8, 0x90, 0x08
 };
 }  // namespace CET
-
-#endif  //_CET_LUT_HPP_

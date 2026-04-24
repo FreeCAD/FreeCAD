@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # **************************************************************************
 #   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
 #                                                                         *
@@ -36,6 +38,7 @@ from PySide.QtGui import QApplication
 
 from PartDesignTests.TestMaterial import TestMaterial
 from PartDesignTests.TestActiveObject import TestActiveObject
+from PartDesignTests.TestSuppressed import TestSuppressedStrikethrough
 
 
 # timer runs this class in order to access modal dialog

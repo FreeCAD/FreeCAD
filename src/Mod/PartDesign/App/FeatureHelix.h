@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_Helix_H
-#define PARTDESIGN_Helix_H
+#pragma once
 
 #include <App/PropertyUnits.h>
 #include "FeatureSketchBased.h"
@@ -132,6 +133,3 @@ public:
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PART_Helix_H

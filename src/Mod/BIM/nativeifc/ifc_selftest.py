@@ -44,7 +44,7 @@ from . import ifc_layers
 from . import ifc_psets
 from . import ifc_objects
 from . import ifc_generator
-
+from . import ifc_types
 
 IFC_FILE_PATH = None  # downloaded IFC file path
 FCSTD_FILE_PATH = None  # saved FreeCAD file
@@ -91,6 +91,18 @@ def compare(file1, file2):
     return res
 
 
+def get_schema_descendant_names(schema_name, root_name):
+    schema = ifcopenshell.ifcopenshell_wrapper.schema_by_name(schema_name)
+    declaration = schema.declaration_by_name(root_name)
+    descendants = []
+    stack = list(declaration.subtypes())
+    while stack:
+        current = stack.pop()
+        descendants.append(current.name())
+        stack.extend(current.subtypes())
+    return sorted(set(descendants))
+
+
 class NativeIFCTest(unittest.TestCase):
 
     def setUp(self):
@@ -105,6 +117,13 @@ class NativeIFCTest(unittest.TestCase):
     def tearDown(self):
         FreeCAD.closeDocument("IfcTest")
         pass
+
+    def assertClassEnumMatchesFamily(self, obj, root_name):
+        ifcfile = ifc_tools.get_ifcfile(obj)
+        schema_name = ifcfile.wrapped_data.schema_name()
+        expected = get_schema_descendant_names(schema_name, root_name)
+        actual = sorted(obj.getEnumerationsOfProperty("Class"))
+        self.assertEqual(actual, expected)
 
     def test01_ImportCoinSingle(self):
         FreeCAD.Console.PrintMessage("NativeIFC 01: Importing single object, coin mode...")
@@ -226,6 +245,56 @@ class NativeIFCTest(unittest.TestCase):
         FreeCAD.getDocument("IfcTest").recompute()
         self.assertTrue(obj.StepId != oldid, "ChangeIFCSchema failed")
 
+    def test08b_ClassListUsesActiveSchema(self):
+        FreeCAD.Console.PrintMessage("NativeIFC 08b: IFC class list uses full schema...")
+        clearObjects()
+        fp = getIfcFilePath()
+        ifc_import.insert(
+            fp,
+            "IfcTest",
+            strategy=2,
+            shapemode=0,
+            switchwb=0,
+            silent=True,
+            singledoc=SINGLEDOC,
+        )
+        wall = next(
+            o
+            for o in FreeCAD.getDocument("IfcTest").Objects
+            if getattr(o, "IfcClass", "") in ("IfcWall", "IfcWallStandardCase")
+        )
+        self.assertClassEnumMatchesFamily(wall, "IfcProduct")
+
+    def test08c_IFC2X3TypeClassListUsesTypeFamily(self):
+        FreeCAD.Console.PrintMessage("NativeIFC 08c: IFC2X3 type class list uses full schema...")
+        clearObjects()
+        doc = FreeCAD.ActiveDocument
+        proj = ifc_tools.create_document(doc, silent=True)
+        proj.Proxy.silent = True
+        proj.Schema = "IFC2X3"
+        doc.recompute()
+        site = ifc_tools.aggregate(Arch.makeSite(), proj)
+        building = ifc_tools.aggregate(Arch.makeBuilding(), site)
+        storey = ifc_tools.aggregate(Arch.makeFloor(), building)
+        wall = Arch.makeWall(None, 200, 400, 20)
+        wall = ifc_tools.aggregate(wall, storey)
+        doc.recompute()
+        self.assertTrue(ifc_types.is_typable(wall), "IFC2X3 wall should be typable")
+        ask_again = PARAMS.GetBool("ConvertTypeAskAgain", True)
+        keep_original = PARAMS.GetBool("ConvertTypeKeepOriginal", False)
+        try:
+            PARAMS.SetBool("ConvertTypeAskAgain", False)
+            PARAMS.SetBool("ConvertTypeKeepOriginal", True)
+            ifc_types.convert_to_type(wall, keep_object=True)
+            doc.recompute()
+        finally:
+            PARAMS.SetBool("ConvertTypeAskAgain", ask_again)
+            PARAMS.SetBool("ConvertTypeKeepOriginal", keep_original)
+        self.assertTrue(
+            getattr(wall, "Type", None), "Wall type conversion did not create a type object"
+        )
+        self.assertClassEnumMatchesFamily(wall.Type, "IfcTypeProduct")
+
     def test09_CreateBIMObjects(self):
         FreeCAD.Console.PrintMessage("NativeIFC 09: Creating BIM objects...")
         doc = FreeCAD.ActiveDocument
@@ -340,6 +409,60 @@ class NativeIFCTest(unittest.TestCase):
         res = ifcopenshell.util.element.get_material(elem)
         mats_after = ifcfile.by_type("IfcMaterialDefinition")
         self.assertTrue(len(mats_after) == len(mats_before) + 1, "Materials failed")
+
+    def test13b_MaterialLayerLogical(self):
+        FreeCAD.Console.PrintMessage("NativeIFC 13b: Material layer logical values...")
+        clearObjects()
+        proj = ifc_tools.create_document(FreeCAD.getDocument("IfcTest"), silent=True)
+        ifcfile = ifc_tools.get_ifcfile(proj)
+        material_set = ifc_tools.api_run(
+            "material.add_material_set",
+            ifcfile,
+            name="Layer Set",
+            set_type="IfcMaterialLayerSet",
+        )
+        material = ifc_tools.api_run("material.add_material", ifcfile, name="Layer Material")
+        layer_unknown = ifc_tools.api_run(
+            "material.add_layer",
+            ifcfile,
+            layer_set=material_set,
+            material=material,
+            name="Unknown Layer",
+        )
+        ifc_tools.api_run(
+            "material.edit_layer",
+            ifcfile,
+            layer=layer_unknown,
+            attributes={"LayerThickness": 42, "IsVentilated": "UNKNOWN"},
+        )
+        layer_true = ifc_tools.api_run(
+            "material.add_layer",
+            ifcfile,
+            layer_set=material_set,
+            material=material,
+            name="True Layer",
+        )
+        ifc_tools.api_run(
+            "material.edit_layer",
+            ifcfile,
+            layer=layer_true,
+            attributes={"LayerThickness": 21, "IsVentilated": True},
+        )
+        ifc_materials.create_material(material_set, proj, recursive=True)
+        layer_unknown_obj = ifc_tools.get_object(layer_unknown, FreeCAD.getDocument("IfcTest"))
+        layer_true_obj = ifc_tools.get_object(layer_true, FreeCAD.getDocument("IfcTest"))
+        self.assertTrue(layer_unknown_obj is not None, "Logical UNKNOWN layer import failed")
+        self.assertTrue(layer_true_obj is not None, "Logical TRUE layer import failed")
+        self.assertTrue(
+            layer_unknown_obj.getTypeIdOfProperty("IsVentilated") == "App::PropertyBool",
+            "Logical UNKNOWN type failed",
+        )
+        self.assertTrue(
+            layer_true_obj.getTypeIdOfProperty("IsVentilated") == "App::PropertyBool",
+            "Logical TRUE type failed",
+        )
+        self.assertTrue(layer_unknown_obj.IsVentilated is False, "Logical UNKNOWN value failed")
+        self.assertTrue(layer_true_obj.IsVentilated is True, "Logical TRUE value failed")
 
     def test14_Layers(self):
         FreeCAD.Console.PrintMessage("NativeIFC 14: Layers...")

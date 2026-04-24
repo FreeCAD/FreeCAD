@@ -255,7 +255,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *aligning << "TechDraw_AlignVertexesHorizontally";
 
     // main menu
-    draw->setCommand("TechDraw");
+    draw->setCommand("Tech&Draw");
     *draw << pages;
     *draw << "Separator";
     *draw << views;
@@ -387,9 +387,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 
     Gui::ToolBarItem* anno = new Gui::ToolBarItem(root);
     anno->setCommand("TechDraw Annotation");
-    *anno << "TechDraw_Annotation";
-    *anno << "TechDraw_LeaderLine";
     *anno << "TechDraw_RichTextAnnotation";
+    *anno << "TechDraw_LeaderLine";
     *anno << "TechDraw_CosmeticVertexGroup";
     *anno << "TechDraw_CenterLineGroup";
     *anno << "TechDraw_2PointCosmeticLine";

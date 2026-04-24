@@ -6,8 +6,7 @@
  ***************************************************************************/
 
 
-#ifndef __JtReader_h__
-#define __JtReader_h__
+#pragma once
 
 
 /** simple facet structure */
@@ -35,5 +34,3 @@ unsigned int iterSize(void);
 
 /** clears the internal structure */
 void clearData(void);
-
-#endif  // __JtReader_h__

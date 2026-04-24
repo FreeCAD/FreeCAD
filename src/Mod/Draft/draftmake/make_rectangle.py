@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to create Rectangle objects."""
+
 ## @package make_rectangle
 # \ingroup draftmake
 # \brief This module provides the code for Draft make_rectangle function.

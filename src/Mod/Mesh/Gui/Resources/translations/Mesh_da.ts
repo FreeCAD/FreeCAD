@@ -610,7 +610,7 @@
     <message>
       <location filename="../../Command.cpp" line="87"/>
       <source>Union</source>
-      <translation type="unfinished">Union</translation>
+      <translation>Forbind</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="88"/>
@@ -682,7 +682,7 @@
       <translation type="unfinished">Mesh VertexCurvature</translation>
     </message>
     <message>
-      <location filename="../../DlgSmoothing.cpp" line="169"/>
+      <location filename="../../DlgSmoothing.cpp" line="175"/>
       <source>Mesh Smoothing</source>
       <translation type="unfinished">Mesh Smoothing</translation>
     </message>
@@ -717,7 +717,7 @@
       <translation type="unfinished">Mesh scale</translation>
     </message>
     <message>
-      <location filename="../../DlgDecimating.cpp" line="166"/>
+      <location filename="../../DlgDecimating.cpp" line="180"/>
       <source>Mesh Decimating</source>
       <translation type="unfinished">Mesh Decimating</translation>
     </message>
@@ -794,12 +794,12 @@
       <translation type="unfinished">Segment</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1872"/>
+      <location filename="../../ViewProvider.cpp" line="1870"/>
       <source>Delete</source>
       <translation>Slette</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="2001"/>
+      <location filename="../../ViewProvider.cpp" line="2000"/>
       <source>Fill hole</source>
       <translation type="unfinished">Fill hole</translation>
     </message>
@@ -973,7 +973,7 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="255"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="424"/>
       <source>No selection</source>
-      <translation>Ingen valg</translation>
+      <translation>Ingen valgt</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="454"/>
@@ -1172,7 +1172,7 @@
     <message>
       <location filename="../../DlgRegularSolid.ui" line="29"/>
       <source>Solid</source>
-      <translation type="unfinished">Solid</translation>
+      <translation>Massivt emne</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="42"/>
@@ -1265,7 +1265,7 @@
     <message>
       <location filename="../../DlgRegularSolid.ui" line="809"/>
       <source>&amp;Create</source>
-      <translation>&amp; Opret</translation>
+      <translation>&amp;Opret</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="812"/>
@@ -1285,12 +1285,12 @@
       <location filename="../../DlgRegularSolidImp.cpp" line="203"/>
       <location filename="../../DlgRegularSolidImp.cpp" line="211"/>
       <source>Create %1</source>
-      <translation>Oprette %1</translation>
+      <translation>Opret %1</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolidImp.cpp" line="122"/>
       <source>No active document</source>
-      <translation>Ingen aktive dokument</translation>
+      <translation>Ingen aktiv dokument</translation>
     </message>
   </context>
   <context>
@@ -1595,22 +1595,22 @@ to a smoother appearance.
   <context>
     <name>MeshGui::MeshFaceAddition</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="393"/>
+      <location filename="../../MeshEditor.cpp" line="394"/>
       <source>Add Triangle</source>
       <translation type="unfinished">Add Triangle</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="394"/>
+      <location filename="../../MeshEditor.cpp" line="395"/>
       <source>Flip Normal</source>
       <translation type="unfinished">Flip Normal</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="395"/>
+      <location filename="../../MeshEditor.cpp" line="396"/>
       <source>Clear</source>
       <translation>Ryd</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="411"/>
+      <location filename="../../MeshEditor.cpp" line="413"/>
       <source>Finish</source>
       <translation>Afslut</translation>
     </message>
@@ -1618,7 +1618,7 @@ to a smoother appearance.
   <context>
     <name>MeshGui::MeshFillHole</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="762"/>
+      <location filename="../../MeshEditor.cpp" line="765"/>
       <source>Finish</source>
       <translation>Afslut</translation>
     </message>
@@ -1663,7 +1663,7 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="308"/>
       <source>No selection</source>
-      <translation>Ingen valg</translation>
+      <translation>Ingen valgt</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="308"/>
@@ -1686,7 +1686,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="32"/>
       <source>Meshing</source>
-      <translation type="unfinished">Meshing</translation>
+      <translation>Oprettelse af mesh</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="42"/>
@@ -1826,7 +1826,7 @@ to a smoother appearance.
     <message>
       <location filename="../../Segmentation.ui" line="37"/>
       <source>Plane</source>
-      <translation type="unfinished">Plane</translation>
+      <translation>Plan</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="46"/>
@@ -1878,7 +1878,7 @@ to a smoother appearance.
     <message>
       <location filename="../../Segmentation.ui" line="163"/>
       <source>Sphere</source>
-      <translation type="unfinished">Sphere</translation>
+      <translation>Kugle</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="226"/>
@@ -1891,7 +1891,7 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.ui" line="20"/>
       <source>Plane</source>
-      <translation type="unfinished">Plane</translation>
+      <translation>Plan</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="14"/>
@@ -1927,7 +1927,7 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.ui" line="126"/>
       <source>Sphere</source>
-      <translation type="unfinished">Sphere</translation>
+      <translation>Kugle</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="376"/>
@@ -2271,33 +2271,33 @@ Visit https://openscad.org/ to install it.</translation>
       <translation type="unfinished">Display Colors</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1701"/>
       <location filename="../../ViewProviderCurvature.cpp" line="535"/>
+      <location filename="../../ViewProvider.cpp" line="1701"/>
       <source>Leave Info Mode</source>
       <translation>Forlad Informationstilstand</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1771"/>
+      <location filename="../../ViewProvider.cpp" line="1770"/>
       <source>Index: %1</source>
       <translation type="unfinished">Index: %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1799"/>
+      <location filename="../../ViewProvider.cpp" line="1798"/>
       <source>Leave Hole-Filling Mode</source>
       <translation type="unfinished">Leave Hole-Filling Mode</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1846"/>
+      <location filename="../../ViewProvider.cpp" line="1844"/>
       <source>Leave Removal Mode</source>
       <translation type="unfinished">Leave Removal Mode</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1847"/>
+      <location filename="../../ViewProvider.cpp" line="1845"/>
       <source>Delete Selected Faces</source>
       <translation type="unfinished">Delete Selected Faces</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1848"/>
+      <location filename="../../ViewProvider.cpp" line="1846"/>
       <source>Clear Selected Faces</source>
       <translation type="unfinished">Clear Selected Faces</translation>
     </message>
@@ -2388,6 +2388,31 @@ Visit https://openscad.org/ to install it.</translation>
       <location filename="../../Workbench.cpp" line="53"/>
       <source>Mesh Analyze</source>
       <translation type="unfinished">Mesh Analyze</translation>
+    </message>
+  </context>
+  <context>
+    <name>FileFormat</name>
+    <message>
+      <location filename="../../../Init.py" line="19"/>
+      <source>STL Mesh</source>
+      <translation type="unfinished">STL Mesh</translation>
+    </message>
+    <message>
+      <location filename="../../../Init.py" line="20"/>
+      <source>Binary Mesh</source>
+      <translation type="unfinished">Binary Mesh</translation>
+    </message>
+    <message>
+      <location filename="../../../Init.py" line="23"/>
+      <source>Alias Mesh</source>
+      <extracomment>Translation note: "Alias" in this case is a product/format name and should not be translated</extracomment>
+      <translation type="unfinished">Alias Mesh</translation>
+    </message>
+    <message>
+      <location filename="../../../Init.py" line="27"/>
+      <source>Object File Format Mesh</source>
+      <extracomment>Translation note: "Object File Format" is the official name and should not be translated</extracomment>
+      <translation type="unfinished">Object File Format Mesh</translation>
     </message>
   </context>
 </TS>

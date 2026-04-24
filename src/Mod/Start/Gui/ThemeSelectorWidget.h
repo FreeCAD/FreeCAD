@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef FREECAD_START_THEMESELECTORWIDGET_H
-#define FREECAD_START_THEMESELECTORWIDGET_H
+#pragma once
 
 #include <QWidget>
 #include <array>
@@ -65,5 +64,3 @@ private:
 };
 
 }  // namespace StartGui
-
-#endif  // FREECAD_START_THEMESELECTORWIDGET_H

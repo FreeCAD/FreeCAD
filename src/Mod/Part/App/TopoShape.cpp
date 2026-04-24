@@ -24,6 +24,7 @@
 
 #include <FCConfig.h>
 
+#include <TopoDS_Shape.hxx>
 #include <array>
 #include <cmath>
 #include <cstdlib>
@@ -168,6 +169,7 @@
 #include <Base/Exception.h>
 #include <Base/Placement.h>
 #include <Base/Tools.h>
+#include <Base/Vector3D.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
 
@@ -178,6 +180,7 @@
 #include "encodeFilename.h"
 #include "FaceMakerBullseye.h"
 #include "Interface.h"
+#include "WireJoiner.h"
 #include "modelRefine.h"
 #include "PartPyCXX.h"
 #include "Tools.h"
@@ -2153,8 +2156,8 @@ TopoDS_Shape TopoShape::makeTube(double radius, double tol, int cont, int maxdeg
     aCirc->Rotate(gp::OZ(), std::numbers::pi / 2.);
 
     // perpendicular section
-    Handle(Law_Function) myEvol
-        = ::CreateBsFunction(myPath->FirstParameter(), myPath->LastParameter(), theRadius);
+    Handle(Law_Function)
+        myEvol = ::CreateBsFunction(myPath->FirstParameter(), myPath->LastParameter(), theRadius);
     Handle(GeomFill_SectionLaw) aSec = new GeomFill_EvolvedSection(aCirc, myEvol);
     Handle(GeomFill_LocationLaw) aLoc = new GeomFill_CurveAndTrihedron(new GeomFill_CorrectedFrenet);
     aLoc->SetCurve(myPath);
@@ -3028,8 +3031,8 @@ TopoDS_Shape TopoShape::makeOffset2D(
         std::list<TopoDS_Wire> offsetWires;
         // interestingly, if wires are removed, empty compounds are returned by MakeOffset (as of
         // OCC 7.0.0) so, we just extract all nesting
-        Handle(TopTools_HSequenceOfShape) seq
-            = ShapeExtend_Explorer().SeqFromCompound(offsetShape, Standard_True);
+        Handle(TopTools_HSequenceOfShape)
+            seq = ShapeExtend_Explorer().SeqFromCompound(offsetShape, Standard_True);
         TopoDS_Iterator it(offsetShape);
         for (int i = 0; i < seq->Length(); ++i) {
             offsetWires.push_back(TopoDS::Wire(seq->Value(i + 1)));
@@ -3147,8 +3150,10 @@ TopoDS_Shape TopoShape::makeOffset2D(
                     v3.Reverse();
                     v4.Reverse();
                 }
-                else if ((fabs(gp_Vec(BRep_Tool::Pnt(v2), BRep_Tool::Pnt(v4)).Magnitude() - fabs(offset))
-                          <= BRep_Tool::Tolerance(v2) + BRep_Tool::Tolerance(v4))) {
+                else if (
+                    (fabs(gp_Vec(BRep_Tool::Pnt(v2), BRep_Tool::Pnt(v4)).Magnitude() - fabs(offset))
+                     <= BRep_Tool::Tolerance(v2) + BRep_Tool::Tolerance(v4))
+                ) {
                     // orientation is as expected, nothing to do
                 }
                 else {
@@ -3204,7 +3209,8 @@ TopoDS_Shape TopoShape::makeOffset2D(
             }
 
             ShapeExtend_Explorer xp;
-            Handle(TopTools_HSequenceOfShape) result_leaves = xp.SeqFromCompound(result, Standard_True);
+            Handle(TopTools_HSequenceOfShape)
+                result_leaves = xp.SeqFromCompound(result, Standard_True);
             for (int i = 0; i < result_leaves->Length(); ++i) {
                 shapesToReturn.push_back(result_leaves->Value(i + 1));
             }
@@ -3999,6 +4005,22 @@ void TopoShape::getLinesFromSubElement(
 
         getLinesFromSubShape(shape, vertices, lines);
     }
+}
+
+bool TopoShape::getFirstVertexFromSubElement(const Data::Segment* element, Base::Vector3d& Point) const
+{
+    if (element->is<ShapeSegment>()) {
+        const TopoDS_Shape& shape = static_cast<const ShapeSegment*>(element)->Shape;
+        if (shape.IsNull()) {
+            return false;
+        }
+        for (TopExp_Explorer xp(shape, TopAbs_VERTEX, TopAbs_EDGE); xp.More(); xp.Next()) {
+            gp_Pnt p = BRep_Tool::Pnt(TopoDS::Vertex(xp.Current()));
+            Point = Base::Vector3d {Base::convertTo<Base::Vector3d>(p)};
+            return true;
+        }
+    }
+    return false;
 }
 
 void TopoShape::getFacesFromSubElement(

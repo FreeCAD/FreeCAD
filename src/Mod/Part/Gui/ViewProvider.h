@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_VIEWPROVIDERPART_H
-#define PARTGUI_VIEWPROVIDERPART_H
+#pragma once
 
 #include <utility>
 
@@ -83,6 +82,3 @@ protected:
 };
 
 }  // namespace PartGui
-
-
-#endif  // PARTGUI_VIEWPROVIDERPART_H

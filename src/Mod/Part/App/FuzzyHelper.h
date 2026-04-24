@@ -22,8 +22,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef PART_FUZZYHELPER_H
-#define PART_FUZZYHELPER_H
+#pragma once
 
 #include <Mod/Part/PartGlobal.h>
 #include <functional>
@@ -42,5 +41,3 @@ void PartExport withBooleanFuzzy(double base, std::function<void()> func);
 }  // namespace FuzzyHelper
 
 }  // namespace Part
-
-#endif  // PART_FUZZYHELPER_H

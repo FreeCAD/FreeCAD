@@ -61,7 +61,7 @@ bool QGIProjGroup::autoDistributeEnabled() const
 
 
 // note that we are not actually handling any of these events (ie we don't return true, and we don't
-// set the the event to ignore) here.
+// set the event to ignore) here.
 bool QGIProjGroup::sceneEventFilter(QGraphicsItem* watched, QEvent *event)
 {
     auto qvpart = dynamic_cast<QGIViewPart*>(watched);
@@ -246,7 +246,7 @@ QList<QGIViewPart*> QGIProjGroup::secondaryQViews() const
         if (!qview) {
             continue;
         }
-        result.emplace_back(qview);
+        result.append(qview);
     }
     return result;
 }

@@ -25,6 +25,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the task panel code for the Draft ShapeString tool."""
+
 ## @package task_shapestring
 # \ingroup drafttaskpanels
 # \brief Provides the task panel code for the Draft ShapeString tool.
@@ -133,8 +134,9 @@ class ShapeStringTaskPanel:
         self.form.sbZ.setProperty("rawValue", point.z)
         self.display_point_active = False
 
-    def escape_string(self, string):
-        return string.replace("\\", "\\\\").replace('"', '\\"')
+    @staticmethod
+    def quote_string(string):
+        return repr(string)
 
     def platform_win_dialog(self, flag):
         """Handle the type of dialog depending on the platform."""
@@ -231,8 +233,8 @@ class ShapeStringTaskPanelCmd(ShapeStringTaskPanel):
         Gui.addModule("Draft")
         Gui.addModule("WorkingPlane")
         cmd = "Draft.make_shapestring("
-        cmd += 'String="' + self.escape_string(self.text) + '", '
-        cmd += 'FontFile="' + self.escape_string(self.font_file) + '", '
+        cmd += "String=" + self.quote_string(self.text) + ", "
+        cmd += "FontFile=" + self.quote_string(self.font_file) + ", "
         cmd += "Size=" + str(self.height) + ", "
         cmd += "Tracking=0.0"
         cmd += ")"
@@ -270,9 +272,9 @@ class ShapeStringTaskPanelEdit(ShapeStringTaskPanel):
 
     def accept(self):
 
-        Gui.doCommand('ss = FreeCAD.ActiveDocument.getObject("' + self.obj.Name + '")')
-        Gui.doCommand('ss.String="' + self.escape_string(self.text) + '"')
-        Gui.doCommand('ss.FontFile="' + self.escape_string(self.font_file) + '"')
+        Gui.doCommand("ss = FreeCAD.ActiveDocument.getObject(" + repr(self.obj.Name) + ")")
+        Gui.doCommand("ss.String=" + self.quote_string(self.text))
+        Gui.doCommand("ss.FontFile=" + self.quote_string(self.font_file))
         Gui.doCommand("ss.Size=" + str(self.height))
         Gui.doCommand("ss.Placement.Base=" + toString(self.point))
         Gui.doCommand("FreeCAD.ActiveDocument.recompute()")

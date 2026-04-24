@@ -122,6 +122,7 @@ TaskAttacher::TaskAttacher(
     , ui(new Ui_TaskAttacher)
     , visibilityFunc(visFunc)
     , completed(false)
+    , userSelectedMode(false)
 {
     // check if we are attachable
     if (!ViewProvider->getObject()->hasExtension(Part::AttachExtension::getExtensionClassTypeId())) {
@@ -594,6 +595,8 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         SubAndObjName pair = {msg.pObjectName, msg.pSubName};
         addToReference(pair);
+
+        Q_EMIT placementUpdated();
     }
 }
 
@@ -673,6 +676,7 @@ void TaskAttacher::addToReference(const std::vector<SubAndObjName>& pairs)
     }
 
     try {
+        userSelectedMode = false;
         updateListOfModes();
         eMapMode mmode = getActiveMapMode();  // will be mmDeactivated, if selected or if no modes
                                               // are available
@@ -736,6 +740,8 @@ void TaskAttacher::onAttachmentOffsetChanged(double /*val*/, int idx)
 
     pcAttach->AttachmentOffset.setValue(pl);
     updatePreview();
+
+    Q_EMIT placementUpdated();
 }
 
 void TaskAttacher::onAttachmentOffsetXChanged(double val)
@@ -778,6 +784,8 @@ void TaskAttacher::onCheckFlip(bool on)
         = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
     pcAttach->MapReversed.setValue(on);
     ViewProvider->getObject()->recomputeFeature();
+
+    Q_EMIT placementUpdated();
 }
 
 void TaskAttacher::onButtonRef(const bool checked, unsigned idx)
@@ -794,6 +802,8 @@ void TaskAttacher::onButtonRef(const bool checked, unsigned idx)
     updateRefButton(1);
     updateRefButton(2);
     updateRefButton(3);
+
+    Q_EMIT placementUpdated();
 }
 
 void TaskAttacher::onButtonRef1(const bool checked)
@@ -824,7 +834,10 @@ void TaskAttacher::onModeSelect()
 
     Part::AttachExtension* pcAttach
         = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
-    pcAttach->MapMode.setValue(getActiveMapMode());
+    eMapMode activeMode = getActiveMapMode();
+    pcAttach->MapMode.setValue(activeMode);
+    userSelectedMode = true;
+    applyBoldMode(activeMode);
     updatePreview();
 }
 
@@ -855,6 +868,7 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
             }
         }
         pcAttach->AttachmentSupport.setValues(newrefs, newrefnames);
+        userSelectedMode = false;
         updateListOfModes();
         pcAttach->MapMode.setValue(getActiveMapMode());
         selectMapMode(getActiveMapMode());
@@ -873,6 +887,7 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
         ui->lineRef4->setText(refstrings[3]);
         ui->lineRef4->setProperty("RefName", QByteArray(newrefnames[3].c_str()));
         updateReferencesUI();
+        Q_EMIT placementUpdated();
         return;
     }
 
@@ -958,11 +973,14 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
         refnames.emplace_back(subElement);
     }
     pcAttach->AttachmentSupport.setValues(refs, refnames);
+    userSelectedMode = false;
     updateListOfModes();
     pcAttach->MapMode.setValue(getActiveMapMode());
     selectMapMode(getActiveMapMode());
 
     updateReferencesUI();
+
+    Q_EMIT placementUpdated();
 }
 
 void TaskAttacher::updateRefButton(int idx)
@@ -1142,6 +1160,12 @@ void TaskAttacher::updateListOfModes()
         }
     }
 
+    // determine which mode to bold: user's explicit choice takes priority, else suggest best fit
+    eMapMode activeSavedMode = eMapMode(pcAttach->MapMode.getValue());
+    eMapMode boldMode = (userSelectedMode || activeSavedMode != mmDeactivated)
+        ? activeSavedMode
+        : this->lastSuggestResult.bestFitMode;
+
     // populate list
     ui->listOfModes->blockSignals(true);
     ui->listOfModes->clear();
@@ -1186,8 +1210,8 @@ void TaskAttacher::updateListOfModes()
                     item->setText(tr("%1 (add more references)").arg(item->text()));
                 }
             }
-            else if (mmode == this->lastSuggestResult.bestFitMode) {
-                // suggested mode - make bold
+            else if (mmode == boldMode) {
+                // active or suggested mode - make bold
                 QFont fnt = item->font();
                 fnt.setBold(true);
                 item->setFont(fnt);
@@ -1216,14 +1240,27 @@ void TaskAttacher::selectMapMode(eMapMode mmode)
     ui->listOfModes->blockSignals(false);
 }
 
+void TaskAttacher::applyBoldMode(eMapMode boldMode)
+{
+    for (int i = 0; i < ui->listOfModes->count(); ++i) {
+        QListWidgetItem* item = ui->listOfModes->item(i);
+        if (!(item->flags() & Qt::ItemFlag::ItemIsEnabled)) {
+            continue;
+        }
+        QFont fnt = item->font();
+        fnt.setBold(modesInList[i] == boldMode);
+        item->setFont(fnt);
+    }
+}
+
 void TaskAttacher::showPlacementUtilities()
 {
     if (auto planarViewProvider = freecad_cast<PartGui::ViewProvider2DObject*>(ViewProvider)) {
         overrides.override(planarViewProvider->ShowPlane, true);
     }
 
-    if (auto partViewProvider = freecad_cast<PartGui::ViewProviderPartExt*>(ViewProvider)) {
-        overrides.override(partViewProvider->ShowPlacement, true);
+    if (auto draggerViewProvider = freecad_cast<Gui::ViewProviderDragger*>(ViewProvider)) {
+        overrides.override(draggerViewProvider->ShowPlacement, true);
     }
 }
 
@@ -1365,7 +1402,9 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
             return;
         }
 
-        auto editDoc = Gui::Application::Instance->editDocument();
+        Gui::Document* editDoc = Gui::Application::Instance->isInEdit(ViewProvider->getDocument())
+            ? ViewProvider->getDocument()
+            : nullptr;
         App::DocumentObject* editObj = ViewProvider->getObject();
         std::string editSubName;
         auto sels = Gui::Selection().getSelection(nullptr, Gui::ResolveMode::NoResolve, true);
@@ -1446,8 +1485,11 @@ TaskDlgAttacher::~TaskDlgAttacher()
 
 void TaskDlgAttacher::open()
 {
-    if (!Gui::Command::hasPendingCommand()) {
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit attachment"));
+    Gui::DocumentT doc(getDocumentName());
+    if (Gui::Document* document = doc.getDocument()) {
+        if (!document->hasPendingCommand()) {
+            document->openCommand(QT_TRANSLATE_NOOP("Command", "Edit attachment"));
+        }
     }
 }
 
@@ -1506,7 +1548,7 @@ bool TaskDlgAttacher::accept()
         );
         Gui::cmdAppObject(obj, "recompute()");
 
-        Gui::Command::commitCommand();
+        document->commitCommand();
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(
@@ -1532,7 +1574,7 @@ bool TaskDlgAttacher::reject()
     Gui::Document* document = doc.getDocument();
     if (document) {
         // roll back the done things
-        Gui::Command::abortCommand();
+        document->abortCommand();
         Gui::Command::doCommand(Gui::Command::Doc, "%s.recompute()", doc.getAppDocumentPython().c_str());
     }
 

@@ -23,6 +23,7 @@
  ***************************************************************************/
 
 #include <QDesktopServices>
+#include <QDirIterator>
 #include <QInputDialog>
 #include <QLabel>
 #include <QMessageBox>
@@ -189,7 +190,16 @@ void DlgMacroExecuteImp::setupConnections()
 QStringList DlgMacroExecuteImp::filterFiles(const QString& folder)
 {
     QDir dir(folder, QLatin1String("*.FCMacro *.py"));
-    QStringList unfiltered = dir.entryList();              // all .fcmacro and .py files
+    QStringList unfiltered;  // all .fcmacro and .py files
+    QDirIterator it(
+        dir.path(),
+        QStringList() << "*.FCMacro" << "*.py",
+        QDir::Files,
+        QDirIterator::Subdirectories
+    );
+    while (it.hasNext()) {
+        unfiltered += dir.relativeFilePath(it.next());
+    }
     QString fileFilter = ui->LineEditFind->text();         // used to search by filename
     QString searchText = ui->LineEditFindInFiles->text();  // used to search in file content
 
@@ -413,9 +423,24 @@ void DlgMacroExecuteImp::accept()
 void DlgMacroExecuteImp::onFileChooserFileNameChanged(const QString& fn)
 {
     if (!fn.isEmpty()) {
-        // save the path in the parameters
         this->macroPath = fn;
-        getWindowParameter()->SetASCII("MacroPath", fn.toUtf8());
+        std::filesystem::path chosenPath(fn.toStdString());
+        if (chosenPath.filename().empty()) {
+            chosenPath = chosenPath.parent_path();
+        }
+        std::filesystem::path userMacroDir(App::Application::getUserMacroDir());
+        if (userMacroDir.filename().empty()) {
+            userMacroDir = userMacroDir.parent_path();
+        }
+        if (chosenPath != userMacroDir) {
+            // Save the path in the parameters, but only if it is NOT the default value
+            getWindowParameter()->SetASCII("MacroPath", fn.toUtf8());
+        }
+        else {
+            // If the user specifically chose the default path, actually remove the setting (this
+            // could happen if the user was trying to "undo" setting a custom path).
+            getWindowParameter()->RemoveASCII("MacroPath");
+        }
         // fill the list box
         fillUpList();
     }

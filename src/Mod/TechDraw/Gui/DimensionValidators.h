@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAW_DIMENSIONVALIDATORS_H
-#define TECHDRAW_DIMENSIONVALIDATORS_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 #include <Mod/TechDraw/App/DrawViewDimension.h>
@@ -50,12 +49,12 @@ enum class DimensionGeometry {
     isVertical,
     isDiagonal,
     isCircle,
-    isEllipse,
+    isEllipse,          // 5
     isBSplineCircle,
     isBSpline,
     isAngle,
     isAngle3Pt,
-    isMultiEdge,
+    isMultiEdge,        // 10
     isZLimited,
     isHybrid,
     isFace,
@@ -104,7 +103,6 @@ bool  refsMatchToken(const ReferenceVector& refs, const std::string& matchToken)
 DimensionGeometry lineOrientation(const Base::Vector3d& point0,
                                   const Base::Vector3d& point1);
 
+bool isValidSubElement(const std::string& subElementName);
 
 }
-#endif //TECHDRAW_DIMENSIONVALIDATORS_H
-

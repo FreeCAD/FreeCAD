@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 include_directories(
     SYSTEM
     ${CMAKE_SOURCE_DIR}/src/3rdParty/json/single_include/nlohmann/
@@ -79,6 +81,8 @@ SET(FeaturesSketchBased_SRCS
     FeaturePad.h
     FeaturePocket.cpp
     FeaturePocket.h
+    FeatureRevolved.cpp
+    FeatureRevolved.h
     FeatureRevolution.cpp
     FeatureRevolution.h
     FeatureGroove.cpp

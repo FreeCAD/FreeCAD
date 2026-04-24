@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef PROPERTYEDITOR_H
-#define PROPERTYEDITOR_H
+#pragma once
 
 #include <unordered_set>
 
@@ -155,6 +154,8 @@ private:
     // and return the index of that cell if found
     QModelIndex indexResizable(QPoint mouse_pos);
 
+    App::Document* propertyDocument(App::PropertyContainer* cont) const;
+
 private:
     PropertyItemDelegate* delegate;
     PropertyModel* propertyModel;
@@ -192,5 +193,3 @@ private:
 
 }  // namespace PropertyEditor
 }  // namespace Gui
-
-#endif  // PROPERTYEDITOR_H

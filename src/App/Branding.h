@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_BRANDING_H
-#define APP_BRANDING_H
+#pragma once
 
 #include <string>
 #include <QDomDocument>
@@ -54,5 +53,3 @@ private:
 };
 
 }  // namespace App
-
-#endif  // APP_BRANDING_H

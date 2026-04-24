@@ -23,12 +23,9 @@
  ***************************************************************************/
 
 
-#ifndef SRC_BASE_TOOLS_H_
-#define SRC_BASE_TOOLS_H_
+#pragma once
 
-#ifndef FC_GLOBAL_H
-# include <FCGlobal.h>
-#endif
+#include <FCGlobal.h>
 #include <algorithm>
 #include <cmath>
 #include <numbers>
@@ -38,6 +35,10 @@
 #include <fastsignals/signal.h>
 
 class QString;
+
+#include <string_view>
+#include <vector>
+#include <fastsignals/signal.h>
 
 namespace Base
 {
@@ -346,14 +347,28 @@ struct BaseExport Tools
      */
     static std::string getIdentifier(const std::string& name);
     static std::wstring widen(const std::string& str);
+
+    /**
+     * Locale-dependent, per-character "narrowing" of a std::wstring into a std::string using the
+     * C++ locale facet std::ctype<char>. Characters outside the locale's representable set get
+     * replaced with 0, producing embedded NULs (and corrupt the string). Use with caution! Most
+     * code should prefer wstringToString().
+     */
     static std::string narrow(const std::wstring& str);
+
+#ifdef FC_OS_WIN32
+    /**
+     * True UTF-16 to UTF-8 conversion. Handles full Unicode range, including surrogate pairs. Only
+     * needed on Windows, and internally uses a Win32 API call to do its work.
+     */
+    static std::string wstringToString(const std::wstring& str);
+#endif
+
     static std::string escapedUnicodeFromUtf8(const char* s);
     static std::string escapedUnicodeToUtf8(const std::string& s);
     static std::string escapeQuotesFromString(const std::string& s);
 
-    static QString escapeEncodeString(const QString& s);
     static std::string escapeEncodeString(const std::string& s);
-    static QString escapeEncodeFilename(const QString& s);
     static std::string escapeEncodeFilename(const std::string& s);
 
     /**
@@ -383,7 +398,16 @@ struct BaseExport Tools
      */
     static std::string joinList(const std::vector<std::string>& vec, const std::string& sep = ", ");
 
+    /**
+     * @brief currentDateTimeString
+     * @return Current time formatted as an ISO 8601 UTC timestamp, ending in 'Z'.
+     */
     static std::string currentDateTimeString();
+
+    static bool isCLocaleName(std::string_view localeName);
+    static void setOperatingSystemNumericLocale(std::string_view localeName);
+    static std::string getOperatingSystemNumericLocale();
+    static void setIcuDefaultLocale(std::string_view icuLocaleId);
 
     static std::vector<std::string> splitSubName(const std::string& subname);
 };
@@ -428,6 +452,3 @@ template<class... Ts>
 Overloads(Ts...) -> Overloads<Ts...>;
 
 }  // namespace Base
-
-
-#endif  // SRC_BASE_TOOLS_H_

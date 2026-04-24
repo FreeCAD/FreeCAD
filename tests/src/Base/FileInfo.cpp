@@ -2,14 +2,14 @@
 #include <Base/FileInfo.h>
 #include <Base/Stream.h>
 #include <Base/TimeInfo.h>
+#include <src/TempDirectory.h>
 
 class FileInfoTest: public ::testing::Test
 {
 protected:
     FileInfoTest()
     {
-        tmp.setFile(Base::FileInfo::getTempPath() + "fctest");
-        tmp.createDirectory();
+        tmp.setFile(tempDir.string());
 
         file.setFile(tmp.filePath() + "/test.txt");
         dir.setFile(tmp.filePath() + "/subdir");
@@ -30,6 +30,7 @@ protected:
     }
 
 protected:
+    tests::TempDirectory tempDir {"fctest"};
     Base::FileInfo tmp;
     Base::FileInfo file;
     Base::FileInfo dir;
@@ -82,9 +83,12 @@ TEST_F(FileInfoTest, TestSetPermission)
     EXPECT_TRUE(file.isReadable());
     EXPECT_FALSE(file.isWritable());
 
+#ifndef _WIN32
+    // Windows ACLs do not support write-only files: removing read permission has no effect.
     file.setPermissions(Base::FileInfo::WriteOnly);
     EXPECT_FALSE(file.isReadable());
     EXPECT_TRUE(file.isWritable());
+#endif
 
     file.setPermissions(Base::FileInfo::ReadWrite);
     EXPECT_TRUE(file.isReadable());
@@ -113,7 +117,12 @@ TEST_F(FileInfoTest, TestCheckDirectory)
 
 TEST_F(FileInfoTest, TestSize)
 {
+#ifdef _WIN32
+    // Text mode writes \r\n on Windows, so "Test\n" becomes 6 bytes.
+    EXPECT_EQ(file.size(), 6);
+#else
     EXPECT_EQ(file.size(), 5);
+#endif
 }
 
 TEST_F(FileInfoTest, TestLastModified)
@@ -147,3 +156,101 @@ TEST_F(FileInfoTest, TestCopyFile)
     EXPECT_TRUE(file.copyTo(copy.filePath().c_str()));
     EXPECT_TRUE(copy.deleteFile());
 }
+
+// Tests for pathToString / stringToPath UTF-8 round-trip (PR #28222)
+
+class FileInfoPathConversionTest: public ::testing::Test
+{
+};
+
+TEST_F(FileInfoPathConversionTest, RoundTripAsciiPath)
+{
+    std::string utf8 = "/some/simple/path";
+    auto fsPath = Base::FileInfo::stringToPath(utf8);
+    std::string result = Base::FileInfo::pathToString(fsPath);
+    EXPECT_EQ(result, utf8);
+}
+
+TEST_F(FileInfoPathConversionTest, RoundTripNonAsciiPath)
+{
+    // German umlaut, common in Windows usernames (the exact bug scenario)
+    std::string utf8 = "/home/m\xc3\xbcller/Documents";  // müller in UTF-8
+    auto fsPath = Base::FileInfo::stringToPath(utf8);
+    std::string result = Base::FileInfo::pathToString(fsPath);
+    EXPECT_EQ(result, utf8);
+}
+
+TEST_F(FileInfoPathConversionTest, RoundTripChineseCharacters)
+{
+    // CJK characters: 用户 (user) in UTF-8
+    std::string utf8 = "/home/\xe7\x94\xa8\xe6\x88\xb7/data";
+    auto fsPath = Base::FileInfo::stringToPath(utf8);
+    std::string result = Base::FileInfo::pathToString(fsPath);
+    EXPECT_EQ(result, utf8);
+}
+
+TEST_F(FileInfoPathConversionTest, RoundTripAccentedCharacters)
+{
+    // French accented characters: café in UTF-8
+    std::string utf8 = "/tmp/caf\xc3\xa9/file.txt";
+    auto fsPath = Base::FileInfo::stringToPath(utf8);
+    std::string result = Base::FileInfo::pathToString(fsPath);
+    EXPECT_EQ(result, utf8);
+}
+
+TEST_F(FileInfoPathConversionTest, RoundTripEmptyString)
+{
+    std::string utf8;
+    auto fsPath = Base::FileInfo::stringToPath(utf8);
+    std::string result = Base::FileInfo::pathToString(fsPath);
+    EXPECT_EQ(result, utf8);
+}
+
+TEST_F(FileInfoPathConversionTest, PathToStringPreservesUtf8)
+{
+    // Construct a path from a wide string directly and verify pathToString produces valid UTF-8
+    std::filesystem::path p = Base::FileInfo::stringToPath("/tmp/\xc3\xa4\xc3\xb6\xc3\xbc");  // äöü
+    std::string result = Base::FileInfo::pathToString(p);
+    // Verify the UTF-8 bytes are preserved
+    EXPECT_NE(result.find("\xc3\xa4"), std::string::npos);  // ä
+    EXPECT_NE(result.find("\xc3\xb6"), std::string::npos);  // ö
+    EXPECT_NE(result.find("\xc3\xbc"), std::string::npos);  // ü
+}
+
+TEST_F(FileInfoPathConversionTest, StringToPathProducesValidPath)
+{
+    // Verify that stringToPath produces a path that can be appended to
+    std::string utf8 = "/home/\xc3\xbc\x73\x65r";  // üser
+    auto fsPath = Base::FileInfo::stringToPath(utf8);
+    auto child = fsPath / "subdir";
+    std::string childStr = Base::FileInfo::pathToString(child);
+    // The child path should contain both the parent with non-ASCII and the appended segment
+    EXPECT_NE(childStr.find("\xc3\xbc"), std::string::npos);
+    EXPECT_NE(childStr.find("subdir"), std::string::npos);
+}
+
+#ifdef _WIN32  // NOTE FC_OS_WIN32 is not available in the test code
+TEST_F(FileInfoPathConversionTest, WidePathToUtf8)
+{
+    // Simulate a path obtained from the Windows OS (e.g. GetModuleFileNameW), which arrives as a
+    // UTF-16 wide string. Verify pathToString encodes it as UTF-8.
+    // L"C:\\Users\\müller" -- ü is U+00FC
+    std::filesystem::path widePath(L"C:\\Users\\m\u00FCller\\Documents");
+    std::string result = Base::FileInfo::pathToString(widePath);
+    // Must contain the UTF-8 encoding of ü (0xC3 0xBC), not the ANSI mangled version
+    EXPECT_NE(result.find("\xc3\xbc"), std::string::npos);
+    EXPECT_NE(result.find("Documents"), std::string::npos);
+}
+
+TEST_F(FileInfoPathConversionTest, NaivePathStringLosesNonAscii)
+{
+    // Demonstrate the actual bug: on Windows, fs::path::string() converts to the ANSI codepage,
+    // which mangles non-ASCII characters. This is what the old code did (before PR #28222) and why
+    // pathToString is needed.
+    std::filesystem::path widePath(L"C:\\Users\\m\u00FCller");
+    std::string naive = widePath.string();                      // ANSI codepage on Windows
+    std::string safe = Base::FileInfo::pathToString(widePath);  // UTF-8
+    // The naive .string() result will differ from the correct UTF-8 encoding
+    EXPECT_NE(naive, safe);
+}
+#endif

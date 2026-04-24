@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef POINTS_POINTPROPERTIES_H
-#define POINTS_POINTPROPERTIES_H
+#pragma once
 
 #include <vector>
 
@@ -239,6 +238,3 @@ private:
 };
 
 }  // namespace Points
-
-
-#endif  // POINTS_POINTPROPERTIES_H

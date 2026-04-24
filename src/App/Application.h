@@ -23,8 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SRC_APP_APPLICATION_H_
-#define SRC_APP_APPLICATION_H_
+#pragma once
 
 #include <fastsignals/signal.h>
 #include <QtCore/qtextstream.h>
@@ -35,11 +34,22 @@
 #include <list>
 #include <set>
 #include <map>
+#include <memory>
 #include <string>
+#include <optional>
+
+#include <functional>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+#include <atomic>
+
+#include <Base/Exception.h>
 
 #include <Base/Observer.h>
 #include <Base/Parameter.h>
 #include <Base/ProgressIndicator.h>
+#include "TransactionDefs.h"
 
 // forward declarations
 using PyObject = struct _object;
@@ -88,6 +98,50 @@ struct DocumentInitFlags {
 };
 
 /**
+ * @brief Failure category for async recompute processing.
+ */
+enum class RecomputeFailure
+{
+    None,
+    DependencyCycle,
+    Exception
+};
+
+/// Result returned by processing a recompute request.
+struct AppExport RecomputeResult
+{
+    bool success {true};
+    RecomputeFailure failure {RecomputeFailure::None};
+    std::unique_ptr<Base::Exception> exception;
+};
+
+/// Stable, queueable work item for document or object recompute.
+struct AppExport RecomputeRequest
+{
+    static RecomputeRequest fromDocument(const Document& document, bool force = false, int options = 0);
+    static RecomputeRequest fromDocumentObject(
+        const DocumentObject& documentObject,
+        bool recursive = false
+    );
+
+    Document* resolveDocument() const;
+    DocumentObject* resolveDocumentObject() const;
+
+    // Stable identifiers are queued instead of raw pointers so worker-side
+    // resolution cannot dereference destroyed documents or objects. The
+    // internal document name is assigned once at creation time and does not
+    // change afterwards, so queued requests do not need to track
+    // signalRenameDocument.
+    std::string documentName;
+    std::string documentObjectName;
+    bool force {false};
+    int options {0};
+    bool recursive {false};
+    // Callback to be invoked when recompute is complete.
+    std::function<void(RecomputeRequest&, RecomputeResult&)> callback {};
+};
+
+/**
  * @brief The class that represents the whole application.
  * @ingroup ApplicationGroup
  *
@@ -129,6 +183,15 @@ public:
     App::Document* newDocument(const char* proposedName = nullptr,
                                const char* proposedLabel = nullptr,
                                DocumentInitFlags CreateFlags = DocumentInitFlags());
+
+    /**
+     * @brief Closes the document and removes it from the application.
+     *
+     * @param[in] doc The document to close.
+     * @return Returns true if the document was found and closed, false otherwise.
+     */
+    bool closeDocument(const Document* doc);
+
     /**
      * @brief Closes the document and removes it from the application.
      *
@@ -136,7 +199,6 @@ public:
      * @return Returns true if the document was found and closed, false otherwise.
      */
     bool closeDocument(const char* name);
-
     /**
      * @brief Acquire a unique document name from a proposed name.
      *
@@ -194,6 +256,8 @@ public:
      * @return Return the document with the given name, or `nullptr` if not found.
      */
     App::Document* getDocument(const char *Name) const;
+
+    App::Document* getDocumentOrActive(const char *Name) const;
 
     /// %Path matching modes for getDocumentByPath()
     enum class PathMatchMode
@@ -281,9 +345,11 @@ public:
     /**
      * @brief Setup a pending application-wide active transaction.
      *
-     * Call this function to setup an application-wide transaction. All current
-     * pending transactions of opening documents will be committed first.
-     * However, no new transaction is created by this call. Any subsequent
+     * Call this function to setup a transaction in the currently active document
+     * if no document is active, a global transaction is created. If the current 
+     * active document already has a transaction setup it will either commit the
+     * current transaction or rename it, depending on the tmpName flag of the 
+     * currently setup transaction. No new transaction is created by this call. Any subsequent
      * changes in any current opening document will auto create a transaction
      * with the given name and ID. If more than one document is changed, the
      * transactions will share the same ID, and will be undo/redo together.
@@ -295,32 +361,43 @@ public:
      *
      * @return The new transaction ID.
      */
-    int setActiveTransaction(const char* name, bool persist = false);
+    int setActiveTransaction(TransactionName name);
+    int openGlobalTransaction(TransactionName name);
+    int getGlobalTransaction() const;
+    bool transactionIsActive(int tid) const;
+    std::string getTransactionName(int tid) const;
+    bool transactionTmpName(int tid) const;
+    Document* transactionInitiator(int tid) const;
+    std::optional<TransactionDescription> transactionDescription(int tid) const;
+    void setTransactionDescription(int tid, const TransactionDescription& desc);
+    void setTransactionName(int tid, const TransactionName& name);
 
-    /**
-     * @brief Get the current active transaction name and ID.
+    /** Commit/abort current active transactions
      *
      * If there is no active transaction, an empty string is returned.
      *
-     * @param[out] tid If not `nullptr`, the current active transaction ID is
-     * returned through this pointer.
-     * @return The current active transaction name.
-     */
-    const char* getActiveTransaction(int* tid = nullptr) const;
-
-    /**
-     * @brief Commit/abort current active transactions.
-     *
      * @param[in] abort: whether to abort or commit the transactions
-     * @param[in] id: by default 0 meaning that the current active transaction ID is used.
-     *
-     * Besides calling this function directly, it will be called by
-     * automatically if 1) any new transaction is created with a different ID,
-     * or 2) any transaction with the current active transaction ID is either
-     * committed or aborted.
+     * @param[in] id: by default 0 meaning that the current global transaction ID is used.
+     * 
+     * Bsides calling this function directly, it will be called by automatically
+     * if 1) any new transaction is created with a different ID, or 2) any
+     * transaction with the current active transaction ID is either committed or
+     * aborted
+     * returns true if it succeeded in closing the transaction
      */
-    void closeActiveTransaction(bool abort=false, int id=0);
-    /// @}
+    bool closeActiveTransaction(TransactionCloseMode mode = TransactionCloseMode::Commit, int id=0);
+
+    /// Internally call closeActiveTransaction(), but it makes the call site clearer
+    bool commitTransaction(int tid);
+    bool abortTransaction(int tid);
+    //@}
+
+    // Returns if document and object recomputes should be done async.
+    bool isAsyncRecomputeEnabled();
+    bool canRecomputeRequestOnWorker(const RecomputeRequest& req) const;
+
+    // Adds a recompute request to the processing queue.
+    void queueRecomputeRequest(RecomputeRequest req);
 
     // NOLINTBEGIN
     // clang-format off
@@ -561,7 +638,7 @@ public:
      *
      * @param[in] extension The file type extension.
      */
-    std::vector<std::string> getImportModules(const char* extension) const;
+    std::vector<std::string> getImportModules(const std::string& extension) const;
 
     /// Get a list of all import modules.
     std::vector<std::string> getImportModules() const;
@@ -572,7 +649,7 @@ public:
      * @param[in] Module The module name.
      * @return A list of file types (extensions) supported by the module.
      */
-    std::vector<std::string> getImportTypes(const char* Module) const;
+    std::vector<std::string> getImportTypes(const std::string& Module) const;
 
     /// Get a list of all import filetypes represented as extensions.
     std::vector<std::string> getImportTypes() const;
@@ -583,7 +660,7 @@ public:
      * @param[in] extension The file type represented by its extension.
      * @return A map of filter description to module name.
      */
-    std::map<std::string, std::string> getImportFilters(const char* extension) const;
+    std::map<std::string, std::string> getImportFilters(const std::string& extension) const;
 
     /// Get a mapping of all import filters to their modules.
     std::map<std::string, std::string> getImportFilters() const;
@@ -596,6 +673,22 @@ public:
     void addExportType(const char* filter, const char* moduleName);
 
     /**
+     * @brief Register an export filetype with a translatable description
+     *
+     * @param[in] description A translatable string describing the file type. Must not contain the
+     * list of extensions.
+     * @param[in] extensions A list of supported extensions. Do not include the "*.", only the
+     * extension itself. For example, "txt", not "*.txt".
+     * @param[in] moduleName The name of the module handling the export.
+     */
+    void addTranslatableExportType(const std::string &description,
+                                   const std::vector<std::string> &extensions,
+                                   const std::string &moduleName);
+
+    /// Intended to be called when the language is changed, this retranslates the export type.
+    void retranslateExportTypes();
+
+    /**
      * @copydoc changeImportModule
      */
     void changeExportModule(const char* filter, const char* oldModuleName, const char* newModuleName);
@@ -605,7 +698,7 @@ public:
      *
      * @copydetails getImportModules
      */
-    std::vector<std::string> getExportModules(const char* extension) const;
+    std::vector<std::string> getExportModules(const std::string& extension) const;
 
     /// Get a list of all export modules.
     std::vector<std::string> getExportModules() const;
@@ -613,9 +706,9 @@ public:
     /**
      * @brief Get a list of filetypes that are supported by a module for export.
      *
-     * @copydetails App::Application::getImportTypes(const char*) const
+     * @copydetails App::Application::getImportTypes(const std::string&) const
      */
-    std::vector<std::string> getExportTypes(const char* Module) const;
+    std::vector<std::string> getExportTypes(const std::string& Module) const;
 
     /// Get a list of all export filetypes.
     std::vector<std::string> getExportTypes() const;
@@ -623,9 +716,9 @@ public:
     /**
      * @brief Get the export filters with modules of a given filetype.
      *
-     * @copydetails App::Application::getImportFilters(const char*) const
+     * @copydetails App::Application::getImportFilters(const std::string&) const
      */
-    std::map<std::string, std::string> getExportFilters(const char* extension) const;
+    std::map<std::string, std::string> getExportFilters(const std::string& extension) const;
 
     /// Get a mapping of all export filters to their modules.
     std::map<std::string, std::string> getExportFilters() const;
@@ -766,59 +859,6 @@ public:
     /// @}
 
     /**
-     * @name Verbosity Information
-     *
-     * @{
-     */
-
-    /**
-     * @brief Get verbose information about the application.
-     *
-     * @param[in,out] str The text stream to write the information to.
-     * @param[in] mConfig The application configuration.
-     */
-    static void getVerboseCommonInfo(QTextStream& str, const std::map<std::string,std::string>& mConfig);
-
-    /**
-     * @brief Get verbose information about add-ons.
-     *
-     * @copydetails getVerboseCommonInfo
-     */
-    static void getVerboseAddOnsInfo(QTextStream& str, const std::map<std::string,std::string>& mConfig);
-
-    /**
-     * @brief Add module info to the verbose output.
-     *
-     * This function is used to add information about a single add-on.
-     *
-     * @param[in,out] str The text stream to write the information to.
-     * @param[in] modPath The path of the module.
-     * @param[in,out] firstMod Whether this is the first module being added.
-     */
-    static void addModuleInfo(QTextStream& str, const QString& modPath, bool& firstMod);
-
-    /// Get a pretty formatted product information string.
-    static QString prettyProductInfoWrapper();
-
-    /**
-     * @brief Get a value from a map or an empty string.
-     *
-     * @param[in] map The map to search.
-     * @param[in] key The key to search for.
-     * @return Returns the value if found, or an empty string otherwise.
-     */
-    static QString getValueOrEmpty(const std::map<std::string, std::string>& map, const std::string& key);
-
-    /**
-     * Constant that request verbose version information to be printed.
-     *
-     * If an exception has this message, it means that we will print verbosee
-     * version information.
-     */
-    static constexpr const char* verboseVersionEmitMessage{"verbose_version"};
-    /// @}
-
-    /**
      * @name Link handling
      *
      * @{
@@ -953,59 +993,6 @@ private:
     static void setupPythonTypes();
     static void setupPythonException(PyObject*);
 
-    // clang-format off
-    // static python wrapper of the exported functions
-    static PyObject* sGetParam          (PyObject *self, PyObject *args);
-    static PyObject* sSaveParameter     (PyObject *self, PyObject *args);
-    static PyObject* sGetVersion        (PyObject *self, PyObject *args);
-    static PyObject* sGetConfig         (PyObject *self, PyObject *args);
-    static PyObject* sSetConfig         (PyObject *self, PyObject *args);
-    static PyObject* sDumpConfig        (PyObject *self, PyObject *args);
-    static PyObject* sAddImportType     (PyObject *self, PyObject *args);
-    static PyObject* sChangeImportModule(PyObject *self, PyObject *args);
-    static PyObject* sGetImportType     (PyObject *self, PyObject *args);
-    static PyObject* sAddExportType     (PyObject *self, PyObject *args);
-    static PyObject* sChangeExportModule(PyObject *self, PyObject *args);
-    static PyObject* sGetExportType     (PyObject *self, PyObject *args);
-    static PyObject* sGetResourcePath   (PyObject *self, PyObject *args);
-    static PyObject* sGetLibraryPath    (PyObject *self, PyObject *args);
-    static PyObject* sGetTempPath       (PyObject *self, PyObject *args);
-    static PyObject* sGetUserCachePath  (PyObject *self, PyObject *args);
-    static PyObject* sGetUserConfigPath (PyObject *self, PyObject *args);
-    static PyObject* sGetUserAppDataPath(PyObject *self, PyObject *args);
-    static PyObject* sGetUserMacroPath  (PyObject *self, PyObject *args);
-    static PyObject* sGetHelpPath       (PyObject *self, PyObject *args);
-    static PyObject* sGetHomePath       (PyObject *self, PyObject *args);
-
-    static PyObject* sLoadFile          (PyObject *self,PyObject *args);
-    static PyObject* sOpenDocument      (PyObject *self,PyObject *args, PyObject *kwd);
-    static PyObject* sSaveDocument      (PyObject *self,PyObject *args);
-    static PyObject* sSaveDocumentAs    (PyObject *self,PyObject *args);
-    static PyObject* sNewDocument       (PyObject *self,PyObject *args, PyObject *kwd);
-    static PyObject* sCloseDocument     (PyObject *self,PyObject *args);
-    static PyObject* sActiveDocument    (PyObject *self,PyObject *args);
-    static PyObject* sSetActiveDocument (PyObject *self,PyObject *args);
-    static PyObject* sGetDocument       (PyObject *self,PyObject *args);
-    static PyObject* sListDocuments     (PyObject *self,PyObject *args);
-    static PyObject* sAddDocObserver    (PyObject *self,PyObject *args);
-    static PyObject* sRemoveDocObserver (PyObject *self,PyObject *args);
-    static PyObject *sIsRestoring       (PyObject *self,PyObject *args);
-
-    static PyObject *sSetLogLevel       (PyObject *self,PyObject *args);
-    static PyObject *sGetLogLevel       (PyObject *self,PyObject *args);
-
-    static PyObject *sCheckLinkDepth    (PyObject *self,PyObject *args);
-    static PyObject *sGetLinksTo        (PyObject *self,PyObject *args);
-
-    static PyObject *sGetDependentObjects(PyObject *self,PyObject *args);
-
-    static PyObject *sSetActiveTransaction  (PyObject *self,PyObject *args);
-    static PyObject *sGetActiveTransaction  (PyObject *self,PyObject *args);
-    static PyObject *sCloseActiveTransaction(PyObject *self,PyObject *args);
-    static PyObject *sCheckAbort(PyObject *self,PyObject *args);
-    static PyMethodDef    Methods[];
-    // clang-format on
-
     friend class ApplicationObserver;
 
     /* Private Init, Destruct, and Access methods */
@@ -1040,6 +1027,7 @@ private:
         std::string filter;
         std::string module;
         std::vector<std::string> types;
+        bool translatable = false;
     };
 
     // open ending information
@@ -1059,6 +1047,26 @@ private:
     // missing object
     std::map<std::string,std::set<std::string> > _docReloadAttempts;
 
+    // Worker thread for processing pending recompute requests
+    std::thread _recomputeThread;
+    // Protects the queued/in-progress recompute state below
+    std::mutex _recomputeMutex;
+    std::deque<RecomputeRequest> _recomputeRequests;
+    std::set<std::string> _recomputeDocumentsInProgress;
+    std::condition_variable _recomputeRequestAvailable;
+    std::condition_variable _recomputeStateChanged;
+    // Separate from the mutex-protected queue state so shutdown can request a
+    // worker stop and wake waiters without first taking _recomputeMutex.
+    std::atomic<bool> _stopRecomputeThread{false};
+
+    // Worker thread function that processes _recomputeRequests
+    void recomputeWorker();
+    // Helper to notify the worker thread when new requests are available
+    void notifyRecomputeWorker();
+    // Drop queued requests for a document and wait for any active recompute of
+    // that document to finish before closing it
+    void cancelRecomputeRequestsForDocument(const std::string& documentName);
+
     bool _isRestoring{false};
     bool _allowPartial{false};
     bool _isClosingAll{false};
@@ -1068,10 +1076,16 @@ private:
 
     friend class AutoTransaction;
 
-    std::string _activeTransactionName;
-    int _activeTransactionID{0};
-    int _activeTransactionGuard{0};
-    bool _activeTransactionTmpName{false};
+    std::map<int, TransactionDescription> _activeTransactionDescriptions; // Maps transaction ID to transaction name
+    
+    int currentlyClosingID {0};
+
+    // This is the transaction ID for a global transaction
+    // Documents will take this ID if it is non-zero
+    // and generate their own otherwise
+    int _globalTransactionID { 0 };
+    bool _globalTransactionTmpName {false};
+    std::string _globalTransactionName;
 
     Base::ProgressIndicator _progressIndicator;
 
@@ -1088,6 +1102,3 @@ inline App::Application &GetApplication(){
 }
 
 } // namespace App
-
-
-#endif // SRC_APP_APPLICATION_H_

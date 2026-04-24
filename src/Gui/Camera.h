@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef GUI_CAMERA_H
-#define GUI_CAMERA_H
+#pragma once
 
 #include <Inventor/SbRotation.h>
 #include <Base/Rotation.h>
@@ -64,5 +63,3 @@ public:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_CAMERA_H

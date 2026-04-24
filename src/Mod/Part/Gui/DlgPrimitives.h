@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_DLGPRIMITIVES_H
-#define PARTGUI_DLGPRIMITIVES_H
+#pragma once
 
 #include <memory>
 #include <QEventLoop>
@@ -489,5 +488,3 @@ private:
 };
 
 }  // namespace PartGui
-
-#endif  // PARTGUI_DLGPRIMITIVES_H

@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4TSTRINGHASHTABLE_H
-#define WM4TSTRINGHASHTABLE_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 
@@ -83,5 +82,3 @@ private:
 }
 
 #include "Wm4TStringHashTable.inl"
-
-#endif

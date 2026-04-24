@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_Loft_H
-#define PARTDESIGN_Loft_H
+#pragma once
 
 #include "FeatureSketchBased.h"
 
@@ -90,6 +91,3 @@ public:
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PART_Loft_H

@@ -38,7 +38,6 @@ if App.GuiUp:
 import UtilsAssembly
 import Preferences
 
-
 __title__ = "Assembly Command Create Exploded View"
 __author__ = "Ondsel"
 __url__ = "https://www.freecad.org"
@@ -126,6 +125,12 @@ class ExplodedView:
 
         return positions
 
+    def explodeTemporarily(self, viewObj):
+        self.initialPlcs = UtilsAssembly.saveAssemblyPartsPlacements(self.getAssembly(viewObj))
+        self.applyMoves(viewObj)
+        for move in viewObj.Group:
+            move.Visibility = True
+
     def getAssembly(self, viewObj):
         for obj in viewObj.InList:
             if obj.isDerivedFrom("Assembly::AssemblyObject"):
@@ -161,6 +166,9 @@ class ExplodedView:
             return
 
         UtilsAssembly.restoreAssemblyPartsPlacements(self.getAssembly(viewObj), self.initialPlcs)
+
+        for move in viewObj.Group:
+            move.Visibility = False
 
     def _calculateExplodedPlacements(self, viewObj):
         """
@@ -464,6 +472,7 @@ class ExplodedViewStep:
             if move.ViewObject:
                 endPos = UtilsAssembly.getCenterOfBoundingBox([obj], [ref])
                 positions.append([startPos, endPos])
+            obj.purgeTouched()
 
         if move.ViewObject:
             move.ViewObject.Proxy.redrawLines(move, positions)
@@ -618,14 +627,15 @@ class TaskAssemblyCreateView(QtCore.QObject):
         self.initialPlcs = UtilsAssembly.saveAssemblyPartsPlacements(self.assembly)
 
         if viewObj:
-            App.setActiveTransaction("Edit Exploded View")
+            Gui.ActiveDocument.openCommand("Edit Exploded View")
+
             self.viewObj = viewObj
             for move in self.viewObj.Group:
                 move.Visibility = True
             self.onMovesChanged()
 
         else:
-            App.setActiveTransaction("Create Exploded View")
+            Gui.ActiveDocument.openCommand("Create Exploded View")
             self.createExplodedViewObject()
 
         Gui.Selection.addSelectionGate(
@@ -647,6 +657,8 @@ class TaskAssemblyCreateView(QtCore.QObject):
         self.currentStep = None
         self.radialExplosion = False
 
+        self.viewObj.purgeTouched()
+
     def accept(self):
         self.deactivate()
         UtilsAssembly.restoreAssemblyPartsPlacements(self.assembly, self.initialPlcs)
@@ -657,12 +669,15 @@ class TaskAssemblyCreateView(QtCore.QObject):
             more = UtilsAssembly.generatePropertySettings(move)
             commands = commands + more
         Gui.doCommand(commands[:-1])  # Don't use the last \n
-        App.closeActiveTransaction()
+        Gui.ActiveDocument.commitCommand()
+
+        self.viewObj.purgeTouched()
+
         return True
 
     def reject(self):
         self.deactivate()
-        App.closeActiveTransaction(True)
+        Gui.ActiveDocument.abortCommand()
         App.activeDocument().recompute()
         return True
 

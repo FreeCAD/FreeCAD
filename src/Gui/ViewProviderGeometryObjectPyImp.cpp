@@ -21,18 +21,15 @@
  *                                                                         *
  **************************************************************************/
 
-
 #include <sstream>
-
 
 #include <App/GeoFeature.h>
 #include <App/MaterialPy.h>
 #include <App/PropertyStandard.h>
 
+// generated out of ViewProviderGeometryObject.pyi
 #include "ViewProviderGeometryObjectPy.h"
-
 #include "ViewProviderGeometryObjectPy.cpp"
-
 
 using namespace Gui;
 

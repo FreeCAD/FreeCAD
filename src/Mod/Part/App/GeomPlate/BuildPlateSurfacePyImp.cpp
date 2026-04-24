@@ -336,9 +336,8 @@ PyObject* BuildPlateSurfacePy::curveConstraint(PyObject* args) const
     }
 
     try {
-        Handle(GeomPlate_CurveConstraint) hCC = getGeomPlate_BuildPlateSurfacePtr()->CurveConstraint(
-            index
-        );
+        Handle(GeomPlate_CurveConstraint)
+            hCC = getGeomPlate_BuildPlateSurfacePtr()->CurveConstraint(index);
         if (hCC.IsNull()) {
             Py_Return;
         }
@@ -360,9 +359,8 @@ PyObject* BuildPlateSurfacePy::pointConstraint(PyObject* args) const
     }
 
     try {
-        Handle(GeomPlate_PointConstraint) hPC = getGeomPlate_BuildPlateSurfacePtr()->PointConstraint(
-            index
-        );
+        Handle(GeomPlate_PointConstraint)
+            hPC = getGeomPlate_BuildPlateSurfacePtr()->PointConstraint(index);
         if (hPC.IsNull()) {
             Py_Return;
         }

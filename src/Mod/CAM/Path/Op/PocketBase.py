@@ -29,7 +29,6 @@ import Path.Op.Base as PathOp
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
-
 __title__ = "Base CAM Pocket Operation"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
@@ -74,6 +73,10 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                 (translate("CAM_Pocket", "Line"), "Line"),
                 (translate("CAM_Pocket", "Grid"), "Grid"),
             ],  # Fill Pattern
+            "SortingMode": [
+                (translate("CAM_Pocket", "Automatic"), "Automatic"),
+                (translate("CAM_Pocket", "Manual"), "Manual"),
+            ],
         }
 
         if dataType == "raw":
@@ -106,9 +109,6 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         if len(obj.Base) == 0:
             return
         super().opExecute(obj)
-
-    def areaOpSetDefaultValues(self, obj, job):
-        obj.PocketLastStepOver = 0
 
     def pocketInvertExtraOffset(self):
         """pocketInvertExtraOffset() ... return True if ExtraOffset's direction is inward.
@@ -172,18 +172,12 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             QT_TRANSLATE_NOOP("App::Property", "Use 3D Sorting of Path"),
         )
         obj.addProperty(
-            "App::PropertyBool",
-            "KeepToolDown",
-            "Pocket",
-            QT_TRANSLATE_NOOP("App::Property", "Attempts to avoid unnecessary retractions."),
-        )
-        obj.addProperty(
-            "App::PropertyPercent",
-            "PocketLastStepOver",
+            "App::PropertyLength",
+            "RetractThreshold",
             "Pocket",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Last Stepover Radius.  If 0, 50% of cutter is used. Tuning this can be used to improve stepover for some shapes",
+                "Set distance which will attempts to avoid unnecessary retractions.",
             ),
         )
         obj.addProperty(
@@ -195,15 +189,31 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                 "Skips machining regions that have already been cleared by previous operations.",
             ),
         )
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "SortingMode",
+            "Path",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Order processing of the shapes"
+                "\nAutomatic: uses nearest neighbour algorithm to sort shapes"
+                "\nManual: uses order of shapes selection",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "ForceMaxStepOver",
+            "Pocket",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Force maximum stepover even if not all area is cleared. Without this flag set, the stepover may be reduced (for large stepover, >50%) to ensure full area coverage.",
+            ),
+        )
 
         for n in self.pocketPropertyEnumerations():
             setattr(obj, n[0], n[1])
 
         self.initPocketOp(obj)
-
-    def areaOpRetractTool(self, obj):
-        Path.Log.debug("retracting tool: %d" % (not obj.KeepToolDown))
-        return not obj.KeepToolDown
 
     def areaOpUseProjection(self, obj):
         """areaOpUseProjection(obj) ... return False"""
@@ -225,7 +235,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             extraOffset = 0 - extraOffset
         params["PocketExtraOffset"] = extraOffset
         params["ToolRadius"] = self.radius
-        params["PocketLastStepover"] = obj.PocketLastStepOver
+        params["ForceMaxStepover"] = obj.ForceMaxStepOver
 
         Pattern = {
             "ZigZag": 1,
@@ -245,18 +255,6 @@ class ObjectPocket(PathAreaOp.ObjectOp):
 
     def opOnDocumentRestored(self, obj):
         super().opOnDocumentRestored(obj)
-        if not hasattr(obj, "PocketLastStepOver"):
-            obj.addProperty(
-                "App::PropertyPercent",
-                "PocketLastStepOver",
-                "Pocket",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "Last Stepover Radius.  If 0, 50% of cutter is used. Tuning this can be used to improve stepover for some shapes",
-                ),
-            )
-            obj.PocketLastStepOver = 0
-
         if not hasattr(obj, "UseRestMachining"):
             obj.addProperty(
                 "App::PropertyBool",
@@ -267,7 +265,38 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                     "Skips machining regions that have already been cleared by previous operations.",
                 ),
             )
-
+        if not hasattr(obj, "ForceMaxStepOver"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "ForceMaxStepOver",
+                "Pocket",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Force maximum stepover even if not all area is cleared. Without this flag set, the stepover may be reduced (for large stepover, >50%) to ensure full area coverage.",
+                ),
+            )
+        if not hasattr(obj, "RetractThreshold"):
+            obj.addProperty(
+                "App::PropertyLength",
+                "RetractThreshold",
+                "Pocket",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Set distance which will attempts to avoid unnecessary retractions.",
+                ),
+            )
+        if not hasattr(obj, "SortingMode"):
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "SortingMode",
+                "Path",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Order processing of the shapes"
+                    "\nAutomatic: uses nearest neighbour algorithm to sort shapes"
+                    "\nManual: uses order of shapes selection",
+                ),
+            )
         if hasattr(obj, "OffsetPattern"):
             obj.setGroupOfProperty("OffsetPattern", "Pocket")
             obj.renameProperty("OffsetPattern", "ClearingPattern")
@@ -275,6 +304,12 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             obj.removeProperty("RestMachiningRegions")
         if hasattr(obj, "RestMachiningRegionsNeedRecompute"):
             obj.removeProperty("RestMachiningRegionsNeedRecompute")
+        if hasattr(obj, "KeepToolDown"):
+            if obj.KeepToolDown:
+                obj.setExpression("RetractThreshold", "1 * OpToolDiameter")
+            obj.removeProperty("KeepToolDown")
+        if hasattr(obj, "PocketLastStepOver"):
+            obj.removeProperty("PocketLastStepOver")
 
         Path.Log.track()
 
@@ -296,7 +331,6 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         #
         if obj.MinTravel and obj.UseStartPoint and obj.StartPoint is not None:
             params["sort_mode"] = 3
-            params["threshold"] = self.radius * 2
         return params
 
 
@@ -309,5 +343,4 @@ def SetupProperties():
     setup.append("ClearingPattern")
     setup.append("StartAt")
     setup.append("MinTravel")
-    setup.append("KeepToolDown")
     return setup
