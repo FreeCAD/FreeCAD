@@ -35,6 +35,8 @@
 #include <FCGlobal.h>
 #include <Base/Parameter.h>
 
+#include "ParamHandler.h"
+
 class QAction;
 class QLayout;
 class QMenu;
@@ -220,7 +222,7 @@ public:
     /** Sets up the toolbars of a given workbench. */
     void setup(ToolBarItem*);
     void saveState() const;
-    void restoreState() const;
+    void restoreState();
     void retranslate() const;
     void populateToolBarMenu(QMenu* menu);
     void setToolbarLayoutContextOverride(const QString& workbench, const QString& context);
@@ -287,6 +289,7 @@ private:
     void setupResizeTimer();
     void setupMenuBarTimer();
     void setupWidgetProducers();
+    void onToolbarParametersChanged(const ParamKey*);
     void addToolBarActionsByScope(QMenu* menu, const QList<QToolBar*>& toolbars) const;
     void addCurrentToolbarLayoutActions(QMenu* menu);
     QString activeToolbarLayoutContext() const;
@@ -327,7 +330,7 @@ private:
     QTimer menuBarTimer;
     QTimer sizeTimer;
     QTimer resizeTimer;
-    fastsignals::advanced_scoped_connection connParam;
+    ParamHandlers paramHandlers;
     ToolBarAreaWidget* statusBarAreaWidget = nullptr;
     ToolBarAreaWidget* menuBarLeftAreaWidget = nullptr;
     ToolBarAreaWidget* menuBarRightAreaWidget = nullptr;
