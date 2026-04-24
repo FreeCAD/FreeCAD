@@ -482,7 +482,7 @@ class ViewProviderDraft(object):
         # option. This option makes no sense for objects without a face or that
         # can only have a single face.
         # To override the default menu this function must return `True`.
-        
+
         if tp in (
             "Wire",
             "Circle",
