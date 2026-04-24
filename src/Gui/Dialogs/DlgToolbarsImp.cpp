@@ -153,15 +153,7 @@ void DlgCustomToolbars::setupConnections()
     // clang-format on
 
     if (auto* manager = ToolBarManager::getInstance()) {
-        connect(
-            manager,
-            &ToolBarManager::toolbarLayoutContextChanged,
-            this,
-            &DlgCustomToolbars::updateToolbarLayoutControls
-        );
-    }
-    if (auto* mainWindow = MainWindow::getInstance()) {
-        connect(mainWindow, &MainWindow::workbenchActivatedCompleted, this, [this] {
+        connect(manager, &ToolBarManager::toolbarLayoutRestored, this, [this](const QString&) {
             updateToolbarLayoutControls();
         });
     }
