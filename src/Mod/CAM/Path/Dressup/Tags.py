@@ -667,7 +667,7 @@ class _RapidEdges:
 
     def markRapid(self, edge):
         key = self._get_coords_key(edge)
-        if key:
+        if key is not None:
             self.rapid_coords.add(key)
 
 
@@ -858,7 +858,7 @@ class PathData:
         tagCount = 0
         currentLength += edge.Length
         if edge.Length >= minLength:
-            steps = max(0, int((currentLength - lastTagLength - 1) // tagDistance))
+            steps = max(0, math.ceil((currentLength - lastTagLength) / tagDistance) - 1)
             tagCount += steps
             lastTagLength += steps * tagDistance
             if tagCount > 0:
