@@ -256,9 +256,10 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
                     dia = obj.Proxy.holeDiameter(base, sub)
                     diameterQty = FreeCAD.Units.Quantity(dia, FreeCAD.Units.Length)
                     diaString = diameterQty.getUserPreferred("Length")[0]
-                    prec = int(diameterQty.Format["Precision"] / 2)
-                    posXString = f"{pos[0]:.{prec}f}"
-                    posYString = f"{pos[1]:.{prec}f}"
+                    posXQty = FreeCAD.Units.Quantity(pos[0], FreeCAD.Units.Length)
+                    posXString = posXQty.getUserPreferred("Length")[0]
+                    posYQty = FreeCAD.Units.Quantity(pos[1], FreeCAD.Units.Length)
+                    posYString = posYQty.getUserPreferred("Length")[0]
                 else:
                     diaString = "---"
                     posXString = "---"
