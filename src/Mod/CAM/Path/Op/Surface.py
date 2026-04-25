@@ -527,7 +527,7 @@ class ObjectSurface(PathOp.ObjectOp):
             "LayerMode": "Single-pass",
             "CutMode": "Conventional",
             "CutPattern": "Line",
-            "CutPatternZLevel": "None",
+            "CutPatternZLevel": "ZigZag",
             "PatternCenterAt": "CenterOfMass",
             "ClearPlanarOnly": False,
             "IgnoreOuter": False,
@@ -603,7 +603,7 @@ class ObjectSurface(PathOp.ObjectOp):
         obj.setEditorMode("PatternCenterCustom", show if pattern_needs_center else hide)
 
         if is_zlevel:
-            z_pattern = getattr(obj, "CutPatternZLevel", "None")
+            z_pattern = getattr(obj, "CutPatternZLevel", "ZigZag")
             C = hide if z_pattern == "None" else show
 
         # Apply Visibility to Z-Level Group (A)
@@ -1116,7 +1116,7 @@ class ObjectSurface(PathOp.ObjectOp):
 
         return cmds
 
-    def _executeWaterline(self, obj, job, stl, cutter, tool_diam, bb, is_adaptive=False):
+    def _executeWaterline(self, obj, job, stl, cutter, tool_diam, is_adaptive=False):
         """Execute the Waterline strategy using Phase 1 generators.
 
         Flow:
@@ -1192,7 +1192,7 @@ class ObjectSurface(PathOp.ObjectOp):
 
         return cmds
 
-    def _executeZLevelHybrid(self, obj, job):
+    def _executeZLevelHybrid(self, obj, job, base_objs, tool_params):
         """Execute the Z-Level Hybrid strategy (no OCL required).
 
         A high-precision geometric finishing strategy that operates directly on
@@ -1202,35 +1202,12 @@ class ObjectSurface(PathOp.ObjectOp):
         Flow:
         1. Prepare and fuse model geometry into a manifold shape.
         2. Extract ToolBit parameters for specific 3D profile math.
-        3. Arguments and Dictionaries preparation
+        3. Data preparation
         4. Generate master boundary (TrimFace) and stable background pool.
         5. Categorize depths, reconciling standard steps with physical model floors.
         6. Dispatch to surface_zlevel generator for C++ accelerated geometry stacking.
         7. Convert the resulting geometry stack into optimized G-code Path commands.
         """
-
-        def _getZLevelToolParams():
-            """Specialized helper for Z-Level Hybrid math requirements."""
-            tool = obj.ToolController.Tool
-            dia = float(tool.Diameter)
-            shape_type = getattr(tool, "ShapeType")
-            radius = dia / 2.0
-
-            is_3d = False
-            c_rad = 0.0
-            if "Ballend" in shape_type:
-                is_3d = True
-                c_rad = radius
-            elif "Bullnose" in shape_type:
-                is_3d = True
-                c_rad = float(getattr(tool, "CornerRadius", 0.0))
-            elif "Endmill" in shape_type:
-                is_3d = False
-                c_rad = 0.0
-            else:
-                return None
-
-            return {"radius": radius, "c_rad": c_rad, "profile": shape_type, "is_threeD": is_3d}
 
         def _makeExtendedBoundBox(wBB, bbBfr, zDep):
             """Creates a large rectangular wire around the stock."""
@@ -1240,14 +1217,13 @@ class ObjectSurface(PathOp.ObjectOp):
             p4 = FreeCAD.Vector(wBB.XMin - bbBfr, wBB.YMax + bbBfr, zDep)
             return Part.makePolygon([p1, p2, p3, p4, p1])
 
-        def _getZLevelTrimFace(shape, borderFace, tool_params, wpc):
+        def _getZLevelTrimFace(shape, borderFace, radius, wpc):
             """Calculates the 'Outside World' mask to clip the toolpath."""
 
             # In Z-Level Hybrid, we always use the entire model silhouette
             # make_boundary_face(faces, radius, extra_offset)
-            radius = -tool_params["radius"]
             adj = obj.BoundaryAdjustment.Value - 0.01
-            offset = radius + adj
+            offset = adj - radius
 
             if obj.BoundBox == "Stock":
                 bbFace = surface_common.make_boundary_face(job.Stock.Shape.Faces, offset)
@@ -1267,20 +1243,20 @@ class ObjectSurface(PathOp.ObjectOp):
         startTime = time.time()
 
         # 1. Geometry prep - Exclusively use the whole model
-        models = job.Model.Group
-        if not models:
+        for base in base_objs:
+            shape = base.Shape
+        if not shape:
             Path.Log.error("Z-Level Hybrid: No model found in Job.")
             return []
 
-        shape = (
-            models[0].Shape
-            if len(models) == 1
-            else models[0].Shape.multiFuse([m.Shape for m in models[1:]])
-        )
-
         # 2. Extract ToolBit parameters
-        tool_params = _getZLevelToolParams()
-        if tool_params is None:
+        dia = tool_params.get("diameter", 0.0)
+        radius = dia / 2.0
+        shape_type = tool_params.get("tool_type", "")
+        c_rad = tool_params.get("corner_radius", 0.0)
+        is_3d = "ballend" in shape_type or "bullnose" in shape_type
+
+        if dia == 0.0 or not is_3d and "endmill" not in shape_type:
             error_msg = translate(
                 "Surface",
                 "Operation failed: A Tool Type has been selected that is not supported by Z-Level Hybrid Algorithm.",
@@ -1288,9 +1264,8 @@ class ObjectSurface(PathOp.ObjectOp):
             FreeCAD.Console.PrintError(error_msg + "\n")
             return []
 
-        # 3. Arguments and Dictionaries preparation
+        # 3. Data preparation
         wpc = Part.makeCircle(2.0, FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(0, 0, 1))
-        radius = tool_params["radius"]
 
         clear_planar_only = getattr(obj, "ClearPlanarOnly", True)
         depth_offset = obj.DepthOffset.Value
@@ -1299,9 +1274,16 @@ class ObjectSurface(PathOp.ObjectOp):
         step_over = (obj.StepOver / 100.0) * (radius * 2)
         stock_to_leave = obj.StockToLeave.Value
 
+        zlevel_tool_params = {
+            "radius": radius,
+            "c_rad": c_rad,
+            "profile": shape_type,
+            "is_threeD": is_3d
+        }
+
         pattern_options = {
             "cut_climb": obj.CutMode == "Climb",
-            "cut_pattern": getattr(obj, "CutPatternZLevel", "None"),
+            "cut_pattern": getattr(obj, "CutPatternZLevel", "ZigZag"),
             "pattern_angle": getattr(obj, "CutPatternAngle", "45"),
             "reverse_pattern": getattr(obj, "CutPatternReversed", False),
         }
@@ -1322,7 +1304,7 @@ class ObjectSurface(PathOp.ObjectOp):
         buffer = radius * 10.0
         border_poly = _makeExtendedBoundBox(job.Stock.Shape.BoundBox, buffer, 0.0)
         borderFace = Part.makeFace(border_poly)
-        trimFace = _getZLevelTrimFace(shape, borderFace, tool_params, wpc)
+        trimFace = _getZLevelTrimFace(shape, borderFace, radius, wpc)
 
         import Path.Base.Generator.surface_zlevel as surface_zlevel
 
@@ -1337,7 +1319,7 @@ class ObjectSurface(PathOp.ObjectOp):
             cat_steps,
             borderFace,
             trimFace,
-            tool_params,
+            zlevel_tool_params,
             stock_to_leave,
             accuracy_val,
             depth_offset,
@@ -1366,18 +1348,27 @@ class ObjectSurface(PathOp.ObjectOp):
     def opExecute(self, obj):
         """Main execution method for 3D Surface operation.
 
-        Dispatches to the appropriate strategy based on obj.Strategy:
-        1. Extract tool parameters and create OCL cutter
-        2. Prepare geometry (baseShapes handles multi-axis transform)
-        3. Create STL mesh from model
-        4. Dispatch to strategy-specific execution method
-        5. Append commands to self.commandlist
+        This function orchestrates the entire toolpath generation process by following a
+        clean, multi-phase pipeline:
+
+        1.  Universal Setup: Initializes the Job, applies property limits, updates
+            depths from the Base geometry, and extracts core parameters like the
+            strategy and tool information. This phase runs for all strategies.
+        2.  Data Preparation: Intelligently prepares only the necessary geometric
+            data (STL meshes, OCL cutters, boundary boxes) based on the specific
+            requirements of the selected strategy.
+        3.  Strategy Dispatch: A simple, clean router that calls the appropriate
+            backend execution function (e.g., _executeSurfacePattern, _executeWaterline)
+            and passes it the prepared data.
+        4.  G-Code Finalization: Assembles the final command list by prepending
+            standard headers and startup moves to the commands returned by the
+            strategy function.
         """
         Path.Log.track()
 
         startTime = time.time()
 
-        # Identify parent Job
+        # Universal Setup
         JOB = PathUtils.findParentJob(obj)
         if JOB is None:
             Path.Log.error(translate("CAM_Surface", "No JOB"))
@@ -1388,122 +1379,87 @@ class ObjectSurface(PathOp.ObjectOp):
 
         strategy = obj.Strategy
         is_adaptive = getattr(obj, "AdaptiveSampling", False)
-
-        # Extract selected faces and apply AvoidLastX_Faces filtering
-        faces_start = time.time()
-        selected_faces = self._getSelectedFaces(obj)
-        faces_time = time.time() - faces_start
-        Path.Log.info("opExecute: face selection took {:.3f}s".format(faces_time))
-
-        if strategy in ["ZLevelHybrid", "Waterline"]:
-            selected_faces = []
-
-        # Z-Level Hybrid doesn't need OCL cutter or STL
-        if strategy == "ZLevelHybrid":
-            cmds = self._executeZLevelHybrid(obj, JOB)
-            self.commandlist.extend(cmds)
-            return
-
-        if hasattr(obj, "Base") and obj.Base and not selected_faces:
-            # Check if this is whole-model selection (empty sub-elements) vs actual face selection
-            has_face_selections = False
-            for base, subs in obj.Base:
-                for sub in subs:
-                    if sub:  # Non-empty sub-element means actual face selection
-                        has_face_selections = True
-                        break
-                if has_face_selections:
-                    break
-
-            if has_face_selections:
-                # User selected specific faces but all were avoided
-                Path.Log.warning(
-                    "Surface: User selected faces but all were avoided by AvoidLastX_Faces. Using whole model."
-                )
-                # Don't return - continue with whole model processing
-            else:
-                # This is whole-model selection (empty sub-elements), which is normal
-                Path.Log.debug("Surface: Processing whole model (no specific face selection)")
-                # Continue with whole model processing
-
-        # Extract tool parameters and create OCL cutter
-        tool_start = time.time()
         tool_params = self._extractToolParams(obj)
-        cutter = surface_common.make_ocl_cutter(
-            tool_params["tool_type"],
-            tool_params["diameter"],
-            edge_height=tool_params["edge_height"],
-            corner_radius=tool_params["corner_radius"],
-            flat_radius=tool_params["flat_radius"],
-            edge_angle=tool_params["edge_angle"],
-            length_offset=tool_params["length_offset"],
-        )
-        tool_time = time.time() - tool_start
-        Path.Log.info("opExecute: tool creation took {:.3f}s".format(tool_time))
+        tool_diam = tool_params.get("diameter", 0.0)
 
-        if cutter is None:
-            Path.Log.error(
-                translate("CAM_Surface", "Error creating OCL cutter from tool parameters.")
+        base_objs = [base for base, subs in obj.Base] if hasattr(obj, "Base") and obj.Base else JOB.Model.Group
+
+        # Data preparation (Based on Strategy Needs)
+        # Define what each strategy requires
+        needs_ocl_cutter = strategy in ["SurfacePattern", "Waterline"]
+        needs_stl = strategy in ["SurfacePattern", "Waterline"]
+        needs_face_selection = strategy == "SurfacePattern"
+
+        if needs_face_selection:
+            selected_faces = None
+            selected_faces = self._getSelectedFaces(obj)
+            # Get bounding box (constrained to selected faces if available)
+            bb = self._getBoundBox(obj, JOB, selected_faces)
+
+        if needs_ocl_cutter:
+            cutter = None
+            cutter = surface_common.make_ocl_cutter(
+                tool_params["tool_type"],
+                tool_params["diameter"],
+                edge_height=tool_params["edge_height"],
+                corner_radius=tool_params["corner_radius"],
+                flat_radius=tool_params["flat_radius"],
+                edge_angle=tool_params["edge_angle"],
+                length_offset=tool_params["length_offset"],
             )
-            return
-
-        tool_diam = cutter.getDiameter()
-        Path.Log.info(
-            "Surface OCL cutter created: getDiameter()={}, StepOver={}%, "
-            "stepover_dist={}".format(tool_diam, obj.StepOver, tool_diam * (obj.StepOver / 100.0))
-        )
-
-        # Get bounding box (constrained to selected faces if available)
-        bbox_start = time.time()
-        bb = self._getBoundBox(obj, JOB, selected_faces)
-        bbox_time = time.time() - bbox_start
-        Path.Log.info("opExecute: bounding box took {:.3f}s".format(bbox_time))
-
-        # Fallback to the Job's Model Group if no Base geometry is specified in the operation
-        base_objs = (
-            [base for base, subs in obj.Base]
-            if hasattr(obj, "Base") and obj.Base
-            else JOB.Model.Group
-        )
-
-        # Create STL from model shapes
-        stl_start = time.time()
-        stl = None
-        for base in base_objs:
-            model_shape = base.Shape
-
-            if hasattr(base, "TypeId") and base.TypeId.startswith("Mesh"):
-                Path.Log.info("opExecute: Using mesh-based STL conversion")
-                mesh = base.Mesh
-                points = [tuple(p) for p in mesh.Points]
-                facets = [tuple(f) for f in mesh.Facets]
-                stl = surface_stl.mesh_to_stl(points, facets)
-            else:
-                # Check which STL method will be used
-                if (
-                    hasattr(surface_stl, "_HAS_CPP")
-                    and surface_stl._HAS_CPP
-                    and strategy == "SurfacePattern"
-                ):
-                    Path.Log.info("opExecute: Using C++ accelerated STL conversion")
-                else:
-                    Path.Log.info("opExecute: Using Python fallback STL conversion")
-
-                stl = surface_stl.shape_to_stl(
-                    model_shape,
-                    obj.LinearDeflection.Value,
-                    obj.AngularDeflection.Value,
-                    mesh_simplification=getattr(obj, "MeshSimplification", 1),
-                    final_depth=obj.OpFinalDepth.Value if hasattr(obj, "OpFinalDepth") else None,
-                    use_cpp=(strategy == "SurfacePattern"),
+            if cutter is None:
+                Path.Log.error(
+                    translate("CAM_Surface", "Error creating OCL cutter from tool parameters.")
                 )
-            break  # Fix that
-        stl_time = time.time() - stl_start
-        Path.Log.info("opExecute: STL creation took {:.3f}s".format(stl_time))
+                return
 
-        if stl is None:
-            Path.Log.error(translate("CAM_Surface", "Failed to create STL from model."))
-            return
+            tool_diam = cutter.getDiameter()
+            Path.Log.info(
+                "Surface OCL cutter created: getDiameter()={}, StepOver={}%, "
+                "stepover_dist={}".format(tool_diam, obj.StepOver, tool_diam * (obj.StepOver / 100.0))
+            )
+
+        if needs_stl:
+            if not base_objs:
+                Path.Log.error(translate("CAM_Surface", "No base models found to process."))
+                return
+
+            stl = None
+            stl_start = time.time()
+            for base in base_objs:
+                model_shape = base.Shape
+
+                if hasattr(base, "TypeId") and base.TypeId.startswith("Mesh"):
+                    Path.Log.info("opExecute: Using mesh-based STL conversion")
+                    mesh = base.Mesh
+                    points = [tuple(p) for p in mesh.Points]
+                    facets = [tuple(f) for f in mesh.Facets]
+                    stl = surface_stl.mesh_to_stl(points, facets)
+                else:
+                    # Check which STL method will be used
+                    if hasattr(surface_stl, "_HAS_CPP") and surface_stl._HAS_CPP and strategy == "SurfacePattern":
+                        Path.Log.info("opExecute: Using C++ accelerated STL conversion")
+                    else:
+                        Path.Log.info("opExecute: Using Python fallback STL conversion")
+
+                    stl = surface_stl.shape_to_stl(
+                        model_shape,
+                        obj.LinearDeflection.Value,
+                        obj.AngularDeflection.Value,
+                        mesh_simplification=getattr(obj, "MeshSimplification", 1),
+                        final_depth=obj.OpFinalDepth.Value if hasattr(obj, "OpFinalDepth") else None,
+                        use_cpp = (strategy == "SurfacePattern")
+                    )
+                break
+            stl_time = time.time() - stl_start
+            Path.Log.info("opExecute: STL creation took {:.3f}s".format(stl_time))
+
+            if stl is None:
+                Path.Log.error(translate("CAM_Surface", "Failed to create STL from model."))
+                return
+
+            # Create the Safe STL for transition avoidance
+            safe_stl = None  # --- Upcoming ---
 
         # Begin GCode for operation with basic information
         if obj.Comment != "":
@@ -1542,10 +1498,9 @@ class ObjectSurface(PathOp.ObjectOp):
                 f"DropCutter strategy completed in {strategy_time:.2f}s, {len(cmds)} commands"
             )
         elif strategy == "Waterline":
-            cmds = self._executeWaterline(
-                obj, JOB, stl, cutter, tool_diam, bb, is_adaptive=is_adaptive
-            )
-
+            cmds = self._executeWaterline(obj, JOB, stl, cutter, tool_diam, is_adaptive=is_adaptive)
+        elif strategy == "ZLevelHybrid":
+            cmds = self._executeZLevelHybrid(obj, JOB, base_objs, tool_params)
         self.commandlist.extend(cmds)
 
         elapsed = time.time() - startTime

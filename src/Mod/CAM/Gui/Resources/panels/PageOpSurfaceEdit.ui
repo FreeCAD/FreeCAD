@@ -134,7 +134,7 @@
       <bool>true</bool>
      </property>
      <property name="checked">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
      <layout class="QGridLayout" name="gridLayout_1">
       <item row="0" column="0" colspan="2">
@@ -275,7 +275,7 @@ Does not affect the toolpath point spacing (Sample Interval).</string>
       <bool>true</bool>
      </property>
      <property name="checked">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
@@ -386,7 +386,7 @@ Does not affect the toolpath point spacing (Sample Interval).</string>
       <bool>true</bool>
      </property>
      <property name="checked">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
       <item row="0" column="0">
@@ -454,7 +454,7 @@ Does not affect the toolpath point spacing (Sample Interval).</string>
       <bool>true</bool>
      </property>
      <property name="checked">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
      <layout class="QGridLayout" name="gridLayout_4">
       <item row="0" column="0">

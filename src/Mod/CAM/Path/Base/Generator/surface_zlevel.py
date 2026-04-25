@@ -270,34 +270,32 @@ def zlevel_hybrid_stack(
             # Trigger C++ Slicing with dynamic offset
             params["Offset"] = r_comp
             area_engine.setParams(**params)
-            try:
-                sections = area_engine.makeSections(mode=0, project=False, heights=[slice_z])
-                sub_face = sections[0].getShape()
-                # Move results to machine plane for dissolved fusion
-                if sub_face:
-                    sub_face.translate(FreeCAD.Vector(0, 0, -sub_face.BoundBox.ZMin))
-                    fusion.add(sub_face)
-            except Exception as e:
-                # Log the error and skip this specific sub-face to keep the recompute alive
-                Path.Log.error(
-                    f"Z-Level Hybrid: Sub-Face slicing failed at Z={round(z_target, 3)}. Error: {str(e)}"
-                )
+
+            sections = area_engine.makeSections(mode=0, project=False, heights=[slice_z])
+            sub_face = sections[0].getShape()
+
+            if not sub_face:
                 continue
+            # Move results to machine plane for dissolved fusion
+            sub_face.translate(FreeCAD.Vector(0, 0, -sub_face.BoundBox.ZMin))
+            fusion.add(sub_face)
 
         # C. Boolean resolution
+        currentSilhouette = None
         try:
             # currentSilhouette is the union of all 3D contact points at this depth
             currentSilhouette = fusion.getShape()
+
+            if hasattr(currentSilhouette, "removeSplitter"):
+                currentSilhouette = currentSilhouette.removeSplitter()
         except Exception as e:
-            # Log the error and skip this specific layer to keep the recompute alive
-            Path.Log.error(
-                f"Z-Level Hybrid: Silhouette resolution failed at Z={round(z_target, 3)}. Error: {str(e)}"
+            Path.Log.error(f"Z-Level Hybrid: Silhouette fusion failed at Z={round(z_target, 3)}. Error: {str(e)}")
+            # We can't proceed with this layer, but we MUST update the mask to prevent errors on subsequent layers
+            allPrevComp = _update_machining_mask(
+                wpc, allPrevComp, currentSilhouette, status, floor_geo
             )
             indicator.next()
             continue
-
-        if hasattr(currentSilhouette, "removeSplitter"):
-            currentSilhouette = currentSilhouette.removeSplitter()
 
         # Clearing engine (Clipper Booleans)
         layer_engine = Path.Area()
@@ -324,11 +322,8 @@ def zlevel_hybrid_stack(
         try:
             cutArea = layer_engine.getShape()
         except Exception as e:
-            Path.Log.error(
-                f"Z-Level Hybrid: Layer engine failed at Z={round(z_target, 3)}. Error: {str(e)}"
-            )
-            indicator.next()
-            continue
+            Path.Log.error(f"Z-Level Hybrid: Layer engine failed at Z={round(z_target, 3)}. Error: {str(e)}")
+            cutArea = None
 
         # Reconciliation & Translation
         if cutArea:
