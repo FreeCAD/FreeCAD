@@ -150,7 +150,9 @@ def reconstruct_scan_lines(flat_points, gap_threshold):
 # ---------------------------------------------------------------------------
 
 
-def generate_offset_scan_lines(boundary_face, stepover, sample_interval, reversed_pattern=False, climb=False):
+def generate_offset_scan_lines(
+    boundary_face, stepover, sample_interval, reversed_pattern=False, climb=False
+):
     """
     Generates concentric toolpath rings that progressively shrink inwards from a boundary.
 
