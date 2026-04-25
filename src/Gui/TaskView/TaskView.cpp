@@ -411,7 +411,10 @@ void TaskView::keyPressEvent(QKeyEvent* ke)
                 }
             }
         }
-        else if (ke->key() == Qt::Key_Escape && active->ActiveDialog && active->ActiveDialog->isEscapeButtonEnabled()) {
+        else if (
+            ke->key() == Qt::Key_Escape && active->ActiveDialog
+            && active->ActiveDialog->isEscapeButtonEnabled()
+        ) {
             // get only the buttons of the button box
             QDialogButtonBox* box = active->ActiveCtrl->standardButtons();
             QList<QAbstractButton*> list = box->buttons();
@@ -598,7 +601,7 @@ bool TaskView::showDialog(TaskDialog* dlg, App::Document* doc)
         return false;
     }
     TaskInfo outInfo {.Document = doc};
-    
+
     // first create the control element, set it up and wire it:
     outInfo.ActiveCtrl = new TaskEditControl(this);
     outInfo.ActiveCtrl->buttonBox->setStandardButtons(dlg->getStandardButtons());
@@ -611,7 +614,8 @@ bool TaskView::showDialog(TaskDialog* dlg, App::Document* doc)
 
     if (foundTaskInfo == taskInfos.end()) {
         outInfo.taskPanel = new TaskPanel(this);
-    } else {
+    }
+    else {
         outInfo.taskPanel = foundTaskInfo->taskPanel;
         foundTaskInfo->taskPanel = nullptr;
         delete foundTaskInfo->ActiveCtrl;
@@ -1030,8 +1034,9 @@ void TaskView::restoreActionStyle()
 void TaskView::addContextualPanel(QWidget* panel, App::Document* doc)
 {
     auto foundTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
-    if (!panel || (foundTaskInfo != taskInfos.end()
-        && foundTaskInfo->taskPanel->contextualPanels.contains(panel))) {
+    if (!panel
+        || (foundTaskInfo != taskInfos.end()
+            && foundTaskInfo->taskPanel->contextualPanels.contains(panel))) {
         return;
     }
 
@@ -1043,7 +1048,8 @@ void TaskView::addContextualPanel(QWidget* panel, App::Document* doc)
         taskInfos.push_back(outInfo);
         addWidget(taskPanel);
         setShownTaskInfo(taskInfos.size() - 1);
-    } else {
+    }
+    else {
         taskPanel = foundTaskInfo->taskPanel;
     }
 
