@@ -307,7 +307,7 @@ void DrawViewPart::partExec(TopoDS_Shape& shape)
 }
 
 //! prepare the shape for HLR processing by centering, scaling and rotating it
-GeometryObjectPtr DrawViewPart::makeGeometryForShape(TopoDS_Shape& shape)
+GeometryObjectPtr DrawViewPart::makeGeometryForShape(const TopoDS_Shape& shape)
 {
     // if we use the passed reference directly, the centering doesn't work.  Maybe the underlying OCC TShape
     // isn't modified?  using a copy works and the referenced shape (from getSourceShape in execute())
@@ -343,7 +343,7 @@ TopoDS_Shape DrawViewPart::centerScaleRotate(const DrawViewPart *dvp, TopoDS_Sha
 }
 
 //! create a geometry object and trigger the HLR process in another thread
-TechDraw::GeometryObjectPtr DrawViewPart::buildGeometryObject(TopoDS_Shape& shape,
+TechDraw::GeometryObjectPtr DrawViewPart::buildGeometryObject(const TopoDS_Shape& shape,
                                                               const gp_Ax2& viewAxis)
 {
     TechDraw::GeometryObjectPtr go(
