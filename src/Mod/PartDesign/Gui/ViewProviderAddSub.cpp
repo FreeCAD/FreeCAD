@@ -139,8 +139,8 @@ void ViewProviderAddSub::updateAddSubShapeIndicator()
         int numTriangles = 0, numNodes = 0, numNorms = 0, numFaces = 0;
         TopExp_Explorer Ex;
         for (Ex.Init(cShape, TopAbs_FACE); Ex.More(); Ex.Next()) {
-            Handle(Poly_Triangulation) mesh
-                = BRep_Tool::Triangulation(TopoDS::Face(Ex.Current()), aLoc);
+            Handle(Poly_Triangulation)
+                mesh = BRep_Tool::Triangulation(TopoDS::Face(Ex.Current()), aLoc);
             // Note: we must also count empty faces
             if (!mesh.IsNull()) {
                 numTriangles += mesh->NbTriangles();
