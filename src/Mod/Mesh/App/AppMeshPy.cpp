@@ -246,7 +246,7 @@ private:
         if (lastDot == std::string::npos || lastDot == outputFileName.length() - 1) {
             outputFileName += ".3mf";
         }
-        
+
         // Construct list of objects to export before making the Exporter, so
         // we don't get empty exports if the list can't be constructed.
         Py::Sequence list(objects);
