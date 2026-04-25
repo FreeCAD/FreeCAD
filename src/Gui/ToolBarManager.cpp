@@ -72,38 +72,150 @@ QStringList splitLayoutState(const std::string& value)
     return QString::fromUtf8(value.c_str()).split(QLatin1Char(','), Qt::SkipEmptyParts);
 }
 
-ToolBarManager::ScopeInfo makeToolBarScopeInfo(const QString& persistenceKey)
+struct ToolBarLayoutEntry
 {
-    ToolBarManager::ScopeInfo info;
+    bool toolbarBreak = false;
+    QString serializedKey;
+    ToolBarManager::PersistenceId id;
+};
+
+struct ToolBarLayoutState
+{
+    bool saved = false;
+    QList<ToolBarLayoutEntry> top;
+    QList<ToolBarLayoutEntry> left;
+    QList<ToolBarLayoutEntry> right;
+    QList<ToolBarLayoutEntry> bottom;
+};
+
+QString serializeToolBarPersistenceId(const ToolBarManager::PersistenceId& id);
+
+ToolBarManager::PersistenceId makeToolBarPersistenceId(const QString& persistenceKey)
+{
+    ToolBarManager::PersistenceId id;
     if (persistenceKey.isEmpty()) {
-        return info;
+        return id;
     }
 
     const auto parts = persistenceKey.split(QLatin1Char(':'), Qt::KeepEmptyParts);
     if (parts.isEmpty()) {
-        return info;
+        return id;
     }
 
     const auto scope = parts.front();
     if (scope == QLatin1String("shared") || scope == QLatin1String("global")) {
-        info.scope = ToolBarManager::Scope::Shared;
-        return info;
+        id.scopeId.scope = ToolBarManager::Scope::Shared;
+        id.toolbar = parts.back();
+        id.sharedPrefix = (scope == QLatin1String("global"))
+            ? ToolBarManager::PersistenceId::SharedPrefix::Global
+            : ToolBarManager::PersistenceId::SharedPrefix::Shared;
+        return id;
     }
 
     if (scope == QLatin1String("wb") && parts.size() >= 3) {
-        info.scope = ToolBarManager::Scope::Workbench;
-        info.workbench = parts.at(1);
-        return info;
+        id.scopeId.scope = ToolBarManager::Scope::Workbench;
+        id.scopeId.workbench = parts.at(1);
+        id.toolbar = parts.back();
+        return id;
     }
 
     if (scope == QLatin1String("ctx") && parts.size() >= 4) {
-        info.scope = ToolBarManager::Scope::Contextual;
-        info.workbench = parts.at(1);
-        info.context = parts.mid(0, parts.size() - 1).join(QLatin1Char(':'));
-        return info;
+        id.scopeId.scope = ToolBarManager::Scope::Contextual;
+        id.scopeId.workbench = parts.at(1);
+        id.scopeId.context = parts.mid(2, parts.size() - 3).join(QLatin1Char(':'));
+        id.toolbar = parts.back();
+        return id;
     }
 
-    return info;
+    id.toolbar = parts.back();
+    return id;
+}
+
+QString layoutEntryKey(const ToolBarLayoutEntry& entry)
+{
+    if (entry.toolbarBreak) {
+        return QStringLiteral("Break");
+    }
+
+    if (!entry.serializedKey.isEmpty()) {
+        return entry.serializedKey;
+    }
+
+    return serializeToolBarPersistenceId(entry.id);
+}
+
+ToolBarLayoutEntry makeToolBarLayoutEntry(const QString& entry)
+{
+    if (entry == QStringLiteral("Break")) {
+        ToolBarLayoutEntry layoutEntry;
+        layoutEntry.toolbarBreak = true;
+        return layoutEntry;
+    }
+
+    ToolBarLayoutEntry layoutEntry;
+    layoutEntry.serializedKey = entry;
+    layoutEntry.id = makeToolBarPersistenceId(entry);
+    return layoutEntry;
+}
+
+ToolBarLayoutEntry makeToolBarLayoutEntry(const ToolBarManager::PersistenceId& id)
+{
+    ToolBarLayoutEntry layoutEntry;
+    layoutEntry.id = id;
+    return layoutEntry;
+}
+
+QList<ToolBarLayoutEntry> readToolBarLayoutEntries(const std::string& value)
+{
+    QList<ToolBarLayoutEntry> entries;
+    for (const auto& entry : splitLayoutState(value)) {
+        entries.push_back(makeToolBarLayoutEntry(entry));
+    }
+    return entries;
+}
+
+void writeToolBarLayoutEntries(
+    const ParameterGrp::handle& group,
+    const char* key,
+    const QList<ToolBarLayoutEntry>& entries
+)
+{
+    QStringList layout;
+    for (const auto& entry : entries) {
+        const auto serializedKey = layoutEntryKey(entry);
+        if (!serializedKey.isEmpty()) {
+            layout << serializedKey;
+        }
+    }
+    group->SetASCII(key, layout.join(QLatin1Char(',')).toUtf8().constData());
+}
+
+ToolBarLayoutState readToolBarLayoutState(const ParameterGrp::handle& group)
+{
+    if (!group) {
+        return {};
+    }
+
+    return {
+        .saved = group->GetBool("Saved", false),
+        .top = readToolBarLayoutEntries(group->GetASCII("Top")),
+        .left = readToolBarLayoutEntries(group->GetASCII("Left")),
+        .right = readToolBarLayoutEntries(group->GetASCII("Right")),
+        .bottom = readToolBarLayoutEntries(group->GetASCII("Bottom")),
+    };
+}
+
+void writeToolBarLayoutState(const ParameterGrp::handle& group, const ToolBarLayoutState& state)
+{
+    if (!group) {
+        return;
+    }
+
+    group->SetBool("Saved", state.saved);
+    writeToolBarLayoutEntries(group, "Top", state.top);
+    writeToolBarLayoutEntries(group, "Left", state.left);
+    writeToolBarLayoutEntries(group, "Right", state.right);
+    writeToolBarLayoutEntries(group, "Bottom", state.bottom);
 }
 
 QString toolBarScopeLabel(ToolBarManager::Scope scope)
@@ -121,6 +233,76 @@ QString toolBarScopeLabel(ToolBarManager::Scope scope)
 
     return {};
 }
+
+QString serializeToolBarPersistenceId(const ToolBarManager::PersistenceId& id)
+{
+    if (id.toolbar.isEmpty()) {
+        return {};
+    }
+
+    QStringList segments;
+    switch (id.scopeId.scope) {
+        case ToolBarManager::Scope::Shared:
+            segments.push_back(
+                id.sharedPrefix == ToolBarManager::PersistenceId::SharedPrefix::Global
+                    ? QStringLiteral("global")
+                    : QStringLiteral("shared")
+            );
+            break;
+        case ToolBarManager::Scope::Workbench:
+            if (id.scopeId.workbench.isEmpty()) {
+                return {};
+            }
+            segments.push_back(QStringLiteral("wb"));
+            segments.push_back(id.scopeId.workbench);
+            break;
+        case ToolBarManager::Scope::Contextual:
+            if (id.scopeId.workbench.isEmpty() || id.scopeId.context.isEmpty()) {
+                return {};
+            }
+            segments.push_back(QStringLiteral("ctx"));
+            segments.push_back(id.scopeId.workbench);
+            segments.push_back(id.scopeId.context);
+            break;
+        case ToolBarManager::Scope::Legacy:
+            break;
+    }
+
+    segments.push_back(id.toolbar);
+    return segments.join(QLatin1Char(':'));
+}
+
+QString serializeLayoutContextId(const ToolBarManager::ToolbarScopeId& scopeId)
+{
+    switch (scopeId.scope) {
+        case ToolBarManager::Scope::Workbench:
+            if (scopeId.workbench.isEmpty() || !scopeId.context.isEmpty()) {
+                return {};
+            }
+            return scopeId.workbench;
+        case ToolBarManager::Scope::Contextual:
+            if (scopeId.workbench.isEmpty() || scopeId.context.isEmpty()) {
+                return {};
+            }
+            return QStringLiteral("ctx:%1:%2").arg(scopeId.workbench, scopeId.context);
+        case ToolBarManager::Scope::Legacy:
+        case ToolBarManager::Scope::Shared:
+            return {};
+    }
+
+    return {};
+}
+
+bool isValidToolbarLayoutContext(const ToolBarManager::ToolbarScopeId& scopeId)
+{
+    return !serializeLayoutContextId(scopeId).isEmpty();
+}
+
+ToolBarManager::ToolbarScopeId usableToolbarLayoutContext(const ToolBarManager::ToolbarScopeId& scopeId)
+{
+    return isValidToolbarLayoutContext(scopeId) ? scopeId : ToolBarManager::ToolbarScopeId {};
+}
+
 ToolBarItem::Tier defaultToolBarTier(ToolBarItem::DefaultVisibility visibility)
 {
     switch (visibility) {
@@ -298,18 +480,23 @@ bool lookupToolBarValue(
     return false;
 }
 
-QStringList remapLegacyLayoutEntries(const QStringList& layout, const QMap<QString, QString>& aliases)
+QList<ToolBarLayoutEntry> remapLegacyLayoutEntries(
+    const QList<ToolBarLayoutEntry>& layout,
+    const QMap<QString, QString>& aliases
+)
 {
-    QStringList normalized;
+    QList<ToolBarLayoutEntry> normalized;
+    QSet<QString> knownKeys;
     for (const auto& entry : layout) {
-        if (entry == QStringLiteral("Break")) {
+        if (entry.toolbarBreak) {
             normalized << entry;
             continue;
         }
 
-        const auto mappedEntry = aliases.value(entry, entry);
-        if (!normalized.contains(mappedEntry)) {
-            normalized << mappedEntry;
+        const auto mappedEntry = aliases.value(layoutEntryKey(entry), layoutEntryKey(entry));
+        if (!knownKeys.contains(mappedEntry)) {
+            normalized << makeToolBarLayoutEntry(mappedEntry);
+            knownKeys.insert(mappedEntry);
         }
     }
 
@@ -735,45 +922,67 @@ QString ToolBarManager::toolBarPersistenceKey(const QToolBar* toolbar)
     return toolbar->objectName();
 }
 
-QString ToolBarManager::makeToolBarPersistenceKey(
-    const QString& scope,
-    const QString& scopePath,
-    const QString& toolbar
-)
+ToolBarManager::PersistenceId ToolBarManager::toolBarPersistenceId(const QString& persistenceKey)
 {
-    if (toolbar.isEmpty()) {
+    return makeToolBarPersistenceId(persistenceKey);
+}
+
+ToolBarManager::PersistenceId ToolBarManager::toolBarPersistenceId(const ToolBarItem* item)
+{
+    return toolBarPersistenceId(toolBarPersistenceKey(item));
+}
+
+ToolBarManager::PersistenceId ToolBarManager::toolBarPersistenceId(const QToolBar* toolbar)
+{
+    return toolBarPersistenceId(toolBarPersistenceKey(toolbar));
+}
+
+ToolBarManager::ToolbarScopeId ToolBarManager::layoutContextId(const QString& context)
+{
+    if (context.isEmpty()) {
         return {};
     }
 
-    QStringList segments;
-    if (!scope.isEmpty()) {
-        segments.push_back(scope);
+    if (context.startsWith(QStringLiteral("ctx:"))) {
+        const auto parts = context.split(QLatin1Char(':'), Qt::KeepEmptyParts);
+        if (parts.size() >= 3) {
+            return {Scope::Contextual, parts.at(1), parts.mid(2).join(QLatin1Char(':'))};
+        }
+
+        return {};
     }
-    if (!scopePath.isEmpty()) {
-        segments.push_back(scopePath);
-    }
-    segments.push_back(toolbar);
-    return segments.join(QLatin1Char(':'));
+
+    return ToolbarScopeId::forWorkbench(context);
 }
 
-ToolBarManager::ScopeInfo ToolBarManager::toolBarScopeInfo(const QString& persistenceKey)
+QString ToolBarManager::makeToolBarLayoutContext(const ToolbarScopeId& scopeId)
 {
-    return makeToolBarScopeInfo(persistenceKey);
+    return serializeLayoutContextId(scopeId);
 }
 
-ToolBarManager::ScopeInfo ToolBarManager::toolBarScopeInfo(const ToolBarItem* item)
+QString ToolBarManager::makeToolBarPersistenceKey(const PersistenceId& id)
 {
-    return toolBarScopeInfo(toolBarPersistenceKey(item));
+    return serializeToolBarPersistenceId(id);
 }
 
-ToolBarManager::ScopeInfo ToolBarManager::toolBarScopeInfo(const QToolBar* toolbar)
+ToolBarManager::ToolbarScopeId ToolBarManager::toolBarScopeId(const QString& persistenceKey)
 {
-    return toolBarScopeInfo(toolBarPersistenceKey(toolbar));
+    return toolBarPersistenceId(persistenceKey).toolbarScopeId();
+}
+
+ToolBarManager::ToolbarScopeId ToolBarManager::toolBarScopeId(const ToolBarItem* item)
+{
+    return toolBarScopeId(toolBarPersistenceKey(item));
+}
+
+ToolBarManager::ToolbarScopeId ToolBarManager::toolBarScopeId(const QToolBar* toolbar)
+{
+    return toolBarScopeId(toolBarPersistenceKey(toolbar));
 }
 
 QString ToolBarManager::toolBarScopeLabel(const QString& persistenceKey)
 {
-    return ::toolBarScopeLabel(toolBarScopeInfo(persistenceKey).scope);
+    return ::toolBarScopeLabel(toolBarScopeId(persistenceKey).scope);
 }
 
 QString ToolBarManager::toolBarScopeLabel(const ToolBarItem* item)
@@ -811,7 +1020,7 @@ ToolBarItem::Tier ToolBarManager::toolBarTier(const QToolBar* toolbar)
         return parseToolBarTier(publicProperty.toString());
     }
 
-    auto scope = toolBarScopeInfo(toolbar).scope;
+    auto scope = toolBarScopeId(toolbar).scope;
     if (scope == Scope::Contextual) {
         return ToolBarItem::Tier::Contextual;
     }
@@ -1065,21 +1274,21 @@ void Gui::ToolBarManager::setupWidgetProducers()
     new WidgetProducer<Gui::ToolBar>;
 }
 
-QString ToolBarManager::activeToolbarLayoutContext() const
+ToolBarManager::ToolbarScopeId ToolBarManager::activeToolbarLayoutContext() const
 {
     auto active = WorkbenchManager::instance()->active();
     if (!active) {
         return {};
     }
 
-    return QString::fromUtf8(active->name().c_str());
+    return ToolbarScopeId::forWorkbench(QString::fromUtf8(active->name().c_str()));
 }
 
-QString ToolBarManager::effectiveToolbarLayoutContext() const
+ToolBarManager::ToolbarScopeId ToolBarManager::effectiveToolbarLayoutContext() const
 {
     auto activeContext = activeToolbarLayoutContext();
     if (!toolbarLayoutContextOverride.isEmpty() && !toolbarLayoutContextOverrideWorkbench.isEmpty()
-        && toolbarLayoutContextOverrideWorkbench == activeContext) {
+        && toolbarLayoutContextOverrideWorkbench == activeContext.workbench) {
         return toolbarLayoutContextOverride;
     }
 
@@ -1087,18 +1296,19 @@ QString ToolBarManager::effectiveToolbarLayoutContext() const
 }
 
 ToolBarManager::CurrentLayoutScope ToolBarManager::currentToolbarLayoutScope(
-    QString* layoutContext,
-    QString* activeContext
+    ToolbarScopeId* layoutContext,
+    ToolbarScopeId* activeContext
 ) const
 {
     const auto currentLayoutContext = effectiveToolbarLayoutContext();
     if (layoutContext) {
-        *layoutContext = currentLayoutContext;
+        *layoutContext = usableToolbarLayoutContext(currentLayoutContext);
     }
 
-    if (currentLayoutContext.isEmpty()) {
+    const auto usableContext = usableToolbarLayoutContext(currentLayoutContext);
+    if (usableContext.isEmpty()) {
         if (activeContext) {
-            activeContext->clear();
+            *activeContext = {};
         }
         return CurrentLayoutScope::None;
     }
@@ -1108,8 +1318,8 @@ ToolBarManager::CurrentLayoutScope ToolBarManager::currentToolbarLayoutScope(
         *activeContext = currentActiveContext;
     }
 
-    return currentLayoutContext == currentActiveContext ? CurrentLayoutScope::Workbench
-                                                        : CurrentLayoutScope::Contextual;
+    return usableContext.scope == Scope::Contextual ? CurrentLayoutScope::Contextual
+                                                    : CurrentLayoutScope::Workbench;
 }
 
 bool ToolBarManager::rememberToolbarLayoutByWorkbench() const
@@ -1117,31 +1327,36 @@ bool ToolBarManager::rememberToolbarLayoutByWorkbench() const
     return hMainWindow->GetBool("RememberToolbarLayoutByWorkbench", false);
 }
 
-bool ToolBarManager::hasSavedWorkbenchToolBarLayout(const QString& context) const
+bool ToolBarManager::hasSavedWorkbenchToolBarLayout(const ToolbarScopeId& context) const
 {
-    auto group = workbenchLayoutGroup(context);
-    return group && group->GetBool("Saved", false);
-}
-
-bool ToolBarManager::toolbarBelongsToLayoutContext(const QToolBar* toolbar, const QString& context) const
-{
-    if (!toolbar || context.isEmpty()) {
+    const auto usableContext = usableToolbarLayoutContext(context);
+    if (usableContext.isEmpty()) {
         return false;
     }
 
-    const auto scopeInfo = toolBarScopeInfo(toolbar);
-    if (context.startsWith(QStringLiteral("ctx:"))) {
-        return scopeInfo.scope == Scope::Contextual
-            && context == QStringLiteral("ctx:%1:%2").arg(scopeInfo.workbench, scopeInfo.context);
-    }
-
-    return scopeInfo.scope == Scope::Workbench && scopeInfo.workbench == context;
+    auto group = workbenchLayoutGroup(usableContext);
+    return group && group->GetBool("Saved", false);
 }
 
-void ToolBarManager::initializeUnsavedToolbarLayoutContext(const QString& context)
+bool ToolBarManager::toolbarBelongsToLayoutContext(
+    const QToolBar* toolbar,
+    const ToolbarScopeId& context
+) const
 {
-    if (!rememberToolbarLayoutByWorkbench() || context.isEmpty()
-        || hasSavedWorkbenchToolBarLayout(context)) {
+    const auto usableContext = usableToolbarLayoutContext(context);
+    if (!toolbar || usableContext.isEmpty()) {
+        return false;
+    }
+
+    const auto toolbarScope = toolBarScopeId(toolbar);
+    return toolbarScope == usableContext;
+}
+
+void ToolBarManager::initializeUnsavedToolbarLayoutContext(const ToolbarScopeId& context)
+{
+    const auto usableContext = usableToolbarLayoutContext(context);
+    if (!rememberToolbarLayoutByWorkbench() || usableContext.isEmpty()
+        || hasSavedWorkbenchToolBarLayout(usableContext)) {
         return;
     }
 
@@ -1149,7 +1364,7 @@ void ToolBarManager::initializeUnsavedToolbarLayoutContext(const QString& contex
     const QList<ToolBar*> toolbars = toolBars();
     for (const auto& key : toolbarKeys) {
         auto toolbar = findToolBar(toolbars, key);
-        if (!toolbar || !toolbarBelongsToLayoutContext(toolbar, context)) {
+        if (!toolbar || !toolbarBelongsToLayoutContext(toolbar, usableContext)) {
             continue;
         }
 
@@ -1162,16 +1377,18 @@ void ToolBarManager::initializeUnsavedToolbarLayoutContext(const QString& contex
     }
 }
 
-ParameterGrp::handle ToolBarManager::workbenchLayoutGroup(const QString& context) const
+ParameterGrp::handle ToolBarManager::workbenchLayoutGroup(const ToolbarScopeId& context) const
 {
-    if (!rememberToolbarLayoutByWorkbench() || context.isEmpty()) {
+    const auto usableContext = usableToolbarLayoutContext(context);
+    if (!rememberToolbarLayoutByWorkbench() || usableContext.isEmpty()) {
         return {};
     }
 
-    return hWorkbenchLayouts->GetGroup(context.toUtf8().constData());
+    const auto contextKey = makeToolBarLayoutContext(usableContext);
+    return hWorkbenchLayouts->GetGroup(contextKey.toUtf8().constData());
 }
 
-void ToolBarManager::updateLayoutParameters(const QString& context)
+void ToolBarManager::updateLayoutParameters(const ToolbarScopeId& context)
 {
     auto workbenchGroup = workbenchLayoutGroup(context);
 
@@ -1213,7 +1430,7 @@ ParameterGrp::handle ToolBarManager::toolbarAreaRestoreParameters(
     return fallback;
 }
 
-void ToolBarManager::saveWorkbenchToolBarLayout(const QString& context) const
+void ToolBarManager::saveWorkbenchToolBarLayout(const ToolbarScopeId& context) const
 {
     auto group = workbenchLayoutGroup(context);
     if (!group) {
@@ -1225,7 +1442,7 @@ void ToolBarManager::saveWorkbenchToolBarLayout(const QString& context) const
         int primary;
         int secondary;
         bool toolbarBreak;
-        QString key;
+        PersistenceId id;
     };
 
     QList<ToolBarPosition> top;
@@ -1243,48 +1460,62 @@ void ToolBarManager::saveWorkbenchToolBarLayout(const QString& context) const
         bool toolbarBreak = getMainWindow()->toolBarBreak(toolbar);
         switch (getMainWindow()->toolBarArea(toolbar)) {
             case Qt::TopToolBarArea:
-                top.push_back({geometry.y(), geometry.x(), toolbarBreak, key});
+                top.push_back(
+                    {geometry.y(), geometry.x(), toolbarBreak, toolBarPersistenceId(toolbar)}
+                );
                 break;
             case Qt::LeftToolBarArea:
-                left.push_back({geometry.x(), geometry.y(), toolbarBreak, key});
+                left.push_back(
+                    {geometry.x(), geometry.y(), toolbarBreak, toolBarPersistenceId(toolbar)}
+                );
                 break;
             case Qt::RightToolBarArea:
-                right.push_back({-geometry.x(), geometry.y(), toolbarBreak, key});
+                right.push_back(
+                    {-geometry.x(), geometry.y(), toolbarBreak, toolBarPersistenceId(toolbar)}
+                );
                 break;
             case Qt::BottomToolBarArea:
-                bottom.push_back({-geometry.y(), geometry.x(), toolbarBreak, key});
+                bottom.push_back(
+                    {-geometry.y(), geometry.x(), toolbarBreak, toolBarPersistenceId(toolbar)}
+                );
                 break;
             default:
                 break;
         }
     }
 
-    auto save = [group](const char* key, QList<ToolBarPosition>& positions) {
+    auto save = [](QList<ToolBarPosition>& positions) {
         std::sort(positions.begin(), positions.end(), [](const auto& lhs, const auto& rhs) {
             return std::tie(lhs.primary, lhs.secondary) < std::tie(rhs.primary, rhs.secondary);
         });
 
-        QStringList layout;
+        QList<ToolBarLayoutEntry> layout;
         for (const auto& position : std::as_const(positions)) {
             if (position.toolbarBreak) {
-                layout << QStringLiteral("Break");
+                layout << makeToolBarLayoutEntry(QStringLiteral("Break"));
             }
-            layout << position.key;
+            layout << makeToolBarLayoutEntry(position.id);
         }
-        group->SetASCII(key, layout.join(QLatin1Char(',')).toUtf8().constData());
+        return layout;
     };
 
-    group->SetBool("Saved", true);
-    save("Top", top);
-    save("Left", left);
-    save("Right", right);
-    save("Bottom", bottom);
+    writeToolBarLayoutState(
+        group,
+        {
+            .saved = true,
+            .top = save(top),
+            .left = save(left),
+            .right = save(right),
+            .bottom = save(bottom),
+        }
+    );
 }
 
-void ToolBarManager::restoreWorkbenchToolBarLayout(const QString& context) const
+void ToolBarManager::restoreWorkbenchToolBarLayout(const ToolbarScopeId& context) const
 {
     auto group = workbenchLayoutGroup(context);
-    if (!group || !group->GetBool("Saved", false)) {
+    const auto layoutState = readToolBarLayoutState(group);
+    if (!group || !layoutState.saved) {
         return;
     }
 
@@ -1307,17 +1538,15 @@ void ToolBarManager::restoreWorkbenchToolBarLayout(const QString& context) const
         return;
     }
 
-    QStringList top = remapLegacyLayoutEntries(splitLayoutState(group->GetASCII("Top")), legacyAliases);
-    QStringList left
-        = remapLegacyLayoutEntries(splitLayoutState(group->GetASCII("Left")), legacyAliases);
-    QStringList right
-        = remapLegacyLayoutEntries(splitLayoutState(group->GetASCII("Right")), legacyAliases);
-    QStringList bottom
-        = remapLegacyLayoutEntries(splitLayoutState(group->GetASCII("Bottom")), legacyAliases);
+    auto top = remapLegacyLayoutEntries(layoutState.top, legacyAliases);
+    auto left = remapLegacyLayoutEntries(layoutState.left, legacyAliases);
+    auto right = remapLegacyLayoutEntries(layoutState.right, legacyAliases);
+    auto bottom = remapLegacyLayoutEntries(layoutState.bottom, legacyAliases);
 
     QSet<QString> knownKeys;
-    auto rememberKeys = [&knownKeys](const QStringList& layout) {
-        for (const auto& key : layout) {
+    auto rememberKeys = [&knownKeys](const QList<ToolBarLayoutEntry>& layout) {
+        for (const auto& entry : layout) {
+            const auto key = layoutEntryKey(entry);
             if (key != QStringLiteral("Break")) {
                 knownKeys.insert(key);
             }
@@ -1328,26 +1557,29 @@ void ToolBarManager::restoreWorkbenchToolBarLayout(const QString& context) const
     rememberKeys(right);
     rememberKeys(bottom);
 
-    auto appendMissing =
-        [&mainWindowToolbars, &knownKeys, this](QStringList& layout, Qt::ToolBarArea area) {
-            for (auto toolbar : toolBars()) {
-                auto key = toolBarPersistenceKey(toolbar);
-                if (!mainWindowToolbars.contains(key) || knownKeys.contains(key)) {
-                    continue;
-                }
-                if (getMainWindow()->toolBarArea(toolbar) == area) {
-                    layout << key;
-                    knownKeys.insert(key);
-                }
+    auto appendMissing = [&mainWindowToolbars,
+                          &knownKeys,
+                          this](QList<ToolBarLayoutEntry>& layout, Qt::ToolBarArea area) {
+        for (auto toolbar : toolBars()) {
+            auto key = toolBarPersistenceKey(toolbar);
+            if (!mainWindowToolbars.contains(key) || knownKeys.contains(key)) {
+                continue;
             }
-        };
+            if (getMainWindow()->toolBarArea(toolbar) == area) {
+                layout << makeToolBarLayoutEntry(toolBarPersistenceId(toolbar));
+                knownKeys.insert(key);
+            }
+        }
+    };
     appendMissing(top, Qt::TopToolBarArea);
     appendMissing(left, Qt::LeftToolBarArea);
     appendMissing(right, Qt::RightToolBarArea);
     appendMissing(bottom, Qt::BottomToolBarArea);
 
-    auto restore = [&mainWindowToolbars, this](const QStringList& layout, Qt::ToolBarArea area) {
-        for (const auto& key : layout) {
+    auto restore = [&mainWindowToolbars,
+                    this](const QList<ToolBarLayoutEntry>& layout, Qt::ToolBarArea area) {
+        for (const auto& entry : layout) {
+            const auto key = layoutEntryKey(entry);
             if (key == QStringLiteral("Break")) {
                 getMainWindow()->addToolBarBreak(area);
                 continue;
@@ -1782,8 +2014,8 @@ void ToolBarManager::saveState() const
 
 void ToolBarManager::restoreState()
 {
-    const QString previousLayoutContext = toolbarLayoutContext;
-    const QString layoutContext = effectiveToolbarLayoutContext();
+    const auto previousLayoutContext = toolbarLayoutContext;
+    const auto layoutContext = effectiveToolbarLayoutContext();
     updateLayoutParameters(layoutContext);
     initializeUnsavedToolbarLayoutContext(layoutContext);
     const auto statusBarParams = toolbarAreaRestoreParameters(hStatusBar, hGlobalStatusBar);
@@ -1860,6 +2092,7 @@ void ToolBarManager::restoreState()
     if (previousLayoutContext != layoutContext) {
         Q_EMIT toolbarLayoutContextChanged();
     }
+    Q_EMIT toolbarLayoutRestored(makeToolBarLayoutContext(layoutContext));
 }
 
 bool ToolBarManager::addToolBarToArea(QObject* source, QMouseEvent* ev)
@@ -2149,7 +2382,7 @@ void ToolBarManager::addToolBarActionsByScope(QMenu* menu, const QList<QToolBar*
         menuAction->setWhatsThis(toolTip);
         QObject::connect(menuAction, &QAction::triggered, action, &QAction::trigger);
 
-        switch (toolBarScopeInfo(toolbar).scope) {
+        switch (toolBarScopeId(toolbar).scope) {
             case Scope::Shared:
                 sharedActions.push_back(menuAction);
                 break;
@@ -2335,15 +2568,16 @@ QString ToolBarManager::currentToolbarLayoutScopeLabel() const
 
 void ToolBarManager::resetCurrentToolbarLayout()
 {
-    QString layoutContext;
-    QString activeContext;
+    ToolbarScopeId layoutContext;
+    ToolbarScopeId activeContext;
     const auto scope = currentToolbarLayoutScope(&layoutContext, &activeContext);
     if (scope == CurrentLayoutScope::None || !rememberToolbarLayoutByWorkbench()) {
         return;
     }
 
-    if (hWorkbenchLayouts->HasGroup(layoutContext.toUtf8().constData())) {
-        hWorkbenchLayouts->RemoveGrp(layoutContext.toUtf8().constData());
+    const auto layoutContextKey = makeToolBarLayoutContext(layoutContext);
+    if (hWorkbenchLayouts->HasGroup(layoutContextKey.toUtf8().constData())) {
+        hWorkbenchLayouts->RemoveGrp(layoutContextKey.toUtf8().constData());
     }
 
     const bool hasWorkbenchFallback = scope == CurrentLayoutScope::Contextual
@@ -2359,10 +2593,7 @@ void ToolBarManager::resetCurrentToolbarLayout()
     restoreState();
 }
 
-void ToolBarManager::setToolbarLayoutContextOverride(
-    const QString& workbench,
-    const QString& context
-) void ToolBarManager::resetCurrentToolbarLayoutToRecommended()
+void ToolBarManager::resetCurrentToolbarLayoutToRecommended()
 {
     if (currentRecommendedToolbarLayoutResetLabel().isEmpty()) {
         return;
@@ -2385,18 +2616,29 @@ void ToolBarManager::showRecommendedToolBarsOnly()
 
 void ToolBarManager::setToolbarLayoutContextOverride(const QString& workbench, const QString& context)
 {
+    setToolbarLayoutContextOverride(workbench, layoutContextId(context));
+}
+
+void ToolBarManager::setToolbarLayoutContextOverride(
+    const QString& workbench,
+    const ToolbarScopeId& context
+)
+{
+    const auto usableContext = usableToolbarLayoutContext(context);
+
     if (toolbarLayoutContextOverrideWorkbench == workbench
-        && toolbarLayoutContextOverride == context && effectiveToolbarLayoutContext() == context) {
+        && toolbarLayoutContextOverride == usableContext
+        && effectiveToolbarLayoutContext() == usableContext) {
         return;
     }
 
-    bool affectsCurrentLayout = activeToolbarLayoutContext() == workbench;
+    bool affectsCurrentLayout = activeToolbarLayoutContext().workbench == workbench;
     if (affectsCurrentLayout) {
         saveState();
     }
 
     toolbarLayoutContextOverrideWorkbench = workbench;
-    toolbarLayoutContextOverride = context;
+    toolbarLayoutContextOverride = usableContext;
 
     if (affectsCurrentLayout) {
         restoreState();
@@ -2409,13 +2651,13 @@ void ToolBarManager::clearToolbarLayoutContextOverride(const QString& workbench)
         return;
     }
 
-    bool affectsCurrentLayout = activeToolbarLayoutContext() == workbench;
+    bool affectsCurrentLayout = activeToolbarLayoutContext().workbench == workbench;
     if (affectsCurrentLayout) {
         saveState();
     }
 
     toolbarLayoutContextOverrideWorkbench.clear();
-    toolbarLayoutContextOverride.clear();
+    toolbarLayoutContextOverride = {};
 
     if (affectsCurrentLayout) {
         restoreState();
@@ -2577,6 +2819,18 @@ void ToolBarManager::setState(const QString& name, State state)
             saveVisibility(show, policy);
         }
     }
+}
+
+void ToolBarManager::setState(const QList<PersistenceId>& ids, State state)
+{
+    for (const auto& id : ids) {
+        setState(id, state);
+    }
+}
+
+void ToolBarManager::setState(const PersistenceId& id, State state)
+{
+    setState(makeToolBarPersistenceKey(id), state);
 }
 
 #include "moc_ToolBarManager.cpp"

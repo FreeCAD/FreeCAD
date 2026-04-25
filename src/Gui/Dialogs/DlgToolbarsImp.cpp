@@ -248,14 +248,22 @@ QString DlgCustomToolbars::customToolbarPersistenceKey(
     }
 
     if (workbench == QLatin1String("Global")) {
-        return ToolBarManager::makeToolBarPersistenceKey(QStringLiteral("global"), {}, toolbarName);
+        return ToolBarManager::makeToolBarPersistenceKey(
+            {ToolBarManager::Scope::Shared,
+             toolbarName,
+             {},
+             {},
+             ToolBarManager::PersistenceId::SharedPrefix::Global}
+        );
     }
 
     if (workbench.isEmpty()) {
-        return ToolBarManager::makeToolBarPersistenceKey({}, {}, toolbarName);
+        return ToolBarManager::makeToolBarPersistenceKey({ToolBarManager::Scope::Legacy, toolbarName});
     }
 
-    return ToolBarManager::makeToolBarPersistenceKey(QStringLiteral("wb"), workbench, toolbarName);
+    return ToolBarManager::makeToolBarPersistenceKey(
+        {ToolBarManager::Scope::Workbench, toolbarName, workbench}
+    );
 }
 
 Gui::ToolBarItem::Tier DlgCustomToolbars::customToolbarTier(const QTreeWidgetItem* item) const
@@ -411,7 +419,7 @@ QString DlgCustomToolbars::toolbarIdentityCollisionMessage(
     const QString& persistenceKey
 ) const
 {
-    const auto scopeInfo = ToolBarManager::toolBarScopeInfo(persistenceKey);
+    const auto scopeInfo = ToolBarManager::toolBarScopeId(persistenceKey);
     QString scopeLabel = ToolBarManager::toolBarScopeLabel(persistenceKey);
     if (scopeLabel.isEmpty()) {
         scopeLabel = tr("toolbar");

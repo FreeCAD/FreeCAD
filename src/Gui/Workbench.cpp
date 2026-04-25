@@ -60,11 +60,8 @@ void setSharedToolbarMetadata(
 {
     if (item) {
         item->setPersistenceKey(
-            ToolBarManager::makeToolBarPersistenceKey(
-                QStringLiteral("shared"),
-                {},
-                QString::fromStdString(toolbar)
-            )
+            ToolBarManager::makeToolBarPersistenceKey({ToolBarManager::Scope::Shared,
+                                                       QString::fromStdString(toolbar)})
                 .toStdString()
         );
         item->setTier(tier);
@@ -286,7 +283,7 @@ void Workbench::setupCustomToolbars(ToolBarItem* root, const char* toolbar) cons
         const auto customGroup = workbenchGroup->GetGroup(name.c_str());
         if (customGroup->HasGroup(toolbar)) {
             const auto customToolbarGroup = customGroup->GetGroup(toolbar);
-            setupCustomToolbars(root, customToolbarGroup, "wb");
+            setupCustomToolbars(root, customToolbarGroup, CustomToolBarScope::Workbench);
         }
     }
 
@@ -300,7 +297,7 @@ void Workbench::setupCustomToolbars(ToolBarItem* root, const char* toolbar) cons
         const auto globalGroup = workbenchGroup->GetGroup("Global");
         if (globalGroup->HasGroup(toolbar)) {
             const auto customToolbarGroup = globalGroup->GetGroup(toolbar);
-            setupCustomToolbars(root, customToolbarGroup, "global");
+            setupCustomToolbars(root, customToolbarGroup, CustomToolBarScope::Global);
         }
     }
 }
@@ -308,13 +305,34 @@ void Workbench::setupCustomToolbars(ToolBarItem* root, const char* toolbar) cons
 void Workbench::setupCustomToolbars(
     ToolBarItem* root,
     const Base::Reference<ParameterGrp> hGrp,
-    const std::string& scope
+    CustomToolBarScope scope
 ) const
 {
     std::vector<Base::Reference<ParameterGrp>> hGrps = hGrp->GetGroups();
     CommandManager& rMgr = Application::Instance->commandManager();
-    const auto scopeName = QString::fromStdString(scope);
     const auto workbenchName = QString::fromStdString(name());
+    auto makeCustomToolbarPersistenceKey = [&](const QString& toolbarName) {
+        switch (scope) {
+            case CustomToolBarScope::Global:
+                return ToolBarManager::makeToolBarPersistenceKey(
+                    {ToolBarManager::Scope::Shared,
+                     toolbarName,
+                     {},
+                     {},
+                     ToolBarManager::PersistenceId::SharedPrefix::Global}
+                );
+            case CustomToolBarScope::Legacy:
+                return ToolBarManager::makeToolBarPersistenceKey(
+                    {ToolBarManager::Scope::Legacy, toolbarName}
+                );
+            case CustomToolBarScope::Workbench:
+                return ToolBarManager::makeToolBarPersistenceKey(
+                    {ToolBarManager::Scope::Workbench, toolbarName, workbenchName}
+                );
+        }
+
+        return QString {};
+    };
     std::string separator = "Separator";
     for (const auto& it : hGrps) {
         bool active = it->GetBool("Active", true);
@@ -326,12 +344,7 @@ void Workbench::setupCustomToolbars(
         auto bar = new ToolBarItem(root);
         bar->setCommand("Custom");
         bar->setPersistenceKey(
-            ToolBarManager::makeToolBarPersistenceKey(
-                scopeName,
-                workbenchName,
-                QString::fromStdString(it->GetGroupName())
-            )
-                .toStdString()
+            makeCustomToolbarPersistenceKey(QString::fromStdString(it->GetGroupName())).toStdString()
         );
         bar->setTier(
             ToolBarManager::customToolBarTierFromName(QString::fromUtf8(it->GetASCII("Tier").c_str()))
@@ -347,12 +360,7 @@ void Workbench::setupCustomToolbars(
             else if (item.first == "Name") {
                 bar->setCommand(item.second);
                 bar->setPersistenceKey(
-                    ToolBarManager::makeToolBarPersistenceKey(
-                        scopeName,
-                        workbenchName,
-                        QString::fromStdString(item.second)
-                    )
-                        .toStdString()
+                    makeCustomToolbarPersistenceKey(QString::fromStdString(item.second)).toStdString()
                 );
             }
             else if (item.first == "Tier") {
@@ -402,11 +410,9 @@ void Workbench::setupToolbarPersistenceKeys(ToolBarItem* root) const
     for (auto* toolbar : root->getItems()) {
         if (!toolbar->hasPersistenceKey()) {
             toolbar->setPersistenceKey(
-                ToolBarManager::makeToolBarPersistenceKey(
-                    QStringLiteral("wb"),
-                    QString::fromStdString(name()),
-                    QString::fromStdString(toolbar->command())
-                )
+                ToolBarManager::makeToolBarPersistenceKey({ToolBarManager::Scope::Workbench,
+                                                           QString::fromStdString(toolbar->command()),
+                                                           QString::fromStdString(name())})
                     .toStdString()
             );
         }

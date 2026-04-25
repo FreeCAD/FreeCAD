@@ -24,6 +24,7 @@
 #pragma once
 
 #include <string>
+#include <utility>
 #include <fastsignals/signal.h>
 
 #include <QStringList>
@@ -66,9 +67,13 @@ public:
 
     enum class Tier
     {
+        /** Primary toolbar users should normally see in the default layout. */
         Recommended,
+        /** Useful toolbar that is hidden from the recommended default layout. */
         Secondary,
+        /** Specialized toolbar intended for explicit opt-in. */
         Advanced,
+        /** Toolbar whose availability is controlled by a contextual mode. */
         Contextual,
     };
 
@@ -168,21 +173,114 @@ class GuiExport ToolBarManager: public QObject
 {
     Q_OBJECT
 public:
+    /** Toolbar persistence scope used to separate global, workbench and contextual layouts. */
     enum class Scope
     {
+        /** Historical name-based toolbar identity without scoped persistence metadata. */
         Legacy,
+        /** Toolbar shared outside a specific workbench or contextual mode. */
         Shared,
+        /** Toolbar owned by a specific workbench layout. */
         Workbench,
+        /** Toolbar owned by a contextual mode inside a specific workbench. */
         Contextual,
     };
 
-    struct ScopeInfo
+    /** Identifies the toolbar layout scope currently being saved or restored. */
+    struct ToolbarScopeId
     {
+        /** Scope kind for this layout id. */
         Scope scope = Scope::Legacy;
+        /** Workbench name for workbench and contextual scopes. */
         QString workbench;
+        /** Context name for contextual scopes, such as edit mode. */
         QString context;
+
+        /** Return a workbench layout scope. */
+        static ToolbarScopeId forWorkbench(QString workbench)
+        {
+            return {Scope::Workbench, std::move(workbench), {}};
+        }
+
+        /** Return a contextual layout scope inside a workbench. */
+        static ToolbarScopeId forContextual(QString workbench, QString context)
+        {
+            return {Scope::Contextual, std::move(workbench), std::move(context)};
+        }
+
+        bool operator==(const ToolbarScopeId& other) const
+        {
+            return scope == other.scope && workbench == other.workbench && context == other.context;
+        }
+        bool operator!=(const ToolbarScopeId& other) const
+        {
+            return !(*this == other);
+        }
+
+        /** Return true when this is the default, unset scope id. */
+        bool isEmpty() const
+        {
+            return scope == Scope::Legacy && workbench.isEmpty() && context.isEmpty();
+        }
     };
 
+    /** Stable toolbar identity used for layout persistence and migration. */
+    struct PersistenceId
+    {
+        /** Serialized prefix used by shared toolbar identities. */
+        enum class SharedPrefix
+        {
+            /** Standard shared toolbar prefix. */
+            Shared,
+            /** Legacy global toolbar prefix accepted for compatibility. */
+            Global,
+        };
+
+        PersistenceId() = default;
+        PersistenceId(
+            ToolbarScopeId scopeId,
+            QString toolbar,
+            SharedPrefix sharedPrefix = SharedPrefix::Shared
+        )
+            : scopeId(std::move(scopeId))
+            , toolbar(std::move(toolbar))
+            , sharedPrefix(sharedPrefix)
+        {}
+        PersistenceId(
+            Scope scope,
+            QString toolbar,
+            QString workbench = {},
+            QString context = {},
+            SharedPrefix sharedPrefix = SharedPrefix::Shared
+        )
+            : PersistenceId(
+                  ToolbarScopeId {scope, std::move(workbench), std::move(context)},
+                  std::move(toolbar),
+                  sharedPrefix
+              )
+        {}
+
+        /** Scope that owns this toolbar identity. */
+        ToolbarScopeId scopeId;
+        /** Stable toolbar id inside the owning scope. */
+        QString toolbar;
+        /** Prefix used when serializing shared toolbar identities. */
+        SharedPrefix sharedPrefix = SharedPrefix::Shared;
+
+        /** Return true when no toolbar id is set. */
+        bool isEmpty() const
+        {
+            return toolbar.isEmpty();
+        }
+
+        /** Return the layout scope for this toolbar identity. */
+        ToolbarScopeId toolbarScopeId() const
+        {
+            return scopeId;
+        }
+    };
+
+    /** Toolbar state transition requested during workbench or context changes. */
     enum class State
     {
         ForceHidden,     // Forces a toolbar to hide and hides the toggle action
@@ -196,14 +294,15 @@ public:
     static void destruct();
     static QString toolBarPersistenceKey(const ToolBarItem*);
     static QString toolBarPersistenceKey(const QToolBar*);
-    static QString makeToolBarPersistenceKey(
-        const QString& scope,
-        const QString& scopePath,
-        const QString& toolbar
-    );
-    static ScopeInfo toolBarScopeInfo(const QString& persistenceKey);
-    static ScopeInfo toolBarScopeInfo(const ToolBarItem*);
-    static ScopeInfo toolBarScopeInfo(const QToolBar*);
+    static PersistenceId toolBarPersistenceId(const QString& persistenceKey);
+    static PersistenceId toolBarPersistenceId(const ToolBarItem*);
+    static PersistenceId toolBarPersistenceId(const QToolBar*);
+    static ToolbarScopeId layoutContextId(const QString& context);
+    static QString makeToolBarLayoutContext(const ToolbarScopeId& scopeId);
+    static QString makeToolBarPersistenceKey(const PersistenceId&);
+    static ToolbarScopeId toolBarScopeId(const QString& persistenceKey);
+    static ToolbarScopeId toolBarScopeId(const ToolBarItem*);
+    static ToolbarScopeId toolBarScopeId(const QToolBar*);
     static QString toolBarScopeLabel(const QString& persistenceKey);
     static QString toolBarScopeLabel(const ToolBarItem*);
     static QString toolBarScopeLabel(const QToolBar*);
@@ -226,6 +325,7 @@ public:
     void retranslate() const;
     void populateToolBarMenu(QMenu* menu);
     void setToolbarLayoutContextOverride(const QString& workbench, const QString& context);
+    void setToolbarLayoutContextOverride(const QString& workbench, const ToolbarScopeId& context);
     void clearToolbarLayoutContextOverride(const QString& workbench);
     QString currentToolbarLayoutScopeLabel() const;
     QString currentToolbarLayoutResetLabel() const;
@@ -240,6 +340,8 @@ public:
 
     void setState(const QList<QString>& names, State state);
     void setState(const QString& name, State state);
+    void setState(const QList<PersistenceId>& ids, State state);
+    void setState(const PersistenceId& id, State state);
 
     int toolBarIconSize(QWidget* widget = nullptr) const;
     void setupToolBarIconSize();
@@ -292,24 +394,24 @@ private:
     void onToolbarParametersChanged(const ParamKey*);
     void addToolBarActionsByScope(QMenu* menu, const QList<QToolBar*>& toolbars) const;
     void addCurrentToolbarLayoutActions(QMenu* menu);
-    QString activeToolbarLayoutContext() const;
-    QString effectiveToolbarLayoutContext() const;
+    ToolbarScopeId activeToolbarLayoutContext() const;
+    ToolbarScopeId effectiveToolbarLayoutContext() const;
     CurrentLayoutScope currentToolbarLayoutScope(
-        QString* layoutContext = nullptr,
-        QString* activeContext = nullptr
+        ToolbarScopeId* layoutContext = nullptr,
+        ToolbarScopeId* activeContext = nullptr
     ) const;
     bool rememberToolbarLayoutByWorkbench() const;
-    bool hasSavedWorkbenchToolBarLayout(const QString& context) const;
-    bool toolbarBelongsToLayoutContext(const QToolBar* toolbar, const QString& context) const;
-    void initializeUnsavedToolbarLayoutContext(const QString& context);
-    void updateLayoutParameters(const QString& context);
-    ParameterGrp::handle workbenchLayoutGroup(const QString& context) const;
+    bool hasSavedWorkbenchToolBarLayout(const ToolbarScopeId& context) const;
+    bool toolbarBelongsToLayoutContext(const QToolBar* toolbar, const ToolbarScopeId& context) const;
+    void initializeUnsavedToolbarLayoutContext(const ToolbarScopeId& context);
+    void updateLayoutParameters(const ToolbarScopeId& context);
+    ParameterGrp::handle workbenchLayoutGroup(const ToolbarScopeId& context) const;
     ParameterGrp::handle toolbarAreaRestoreParameters(
         const ParameterGrp::handle& current,
         const ParameterGrp::handle& fallback
     ) const;
-    void saveWorkbenchToolBarLayout(const QString& context) const;
-    void restoreWorkbenchToolBarLayout(const QString& context) const;
+    void saveWorkbenchToolBarLayout(const ToolbarScopeId& context) const;
+    void restoreWorkbenchToolBarLayout(const ToolbarScopeId& context) const;
     void resetMainWindowToolBarLayout() const;
     bool recommendedToolBarVisibility(const QToolBar* toolbar) const;
     void applyRecommendedToolBarPreferences();
@@ -321,9 +423,9 @@ private:
 
 private:
     QStringList toolbarKeys;
-    QString toolbarLayoutContext;
+    ToolbarScopeId toolbarLayoutContext;
     QString toolbarLayoutContextOverrideWorkbench;
-    QString toolbarLayoutContextOverride;
+    ToolbarScopeId toolbarLayoutContextOverride;
     static ToolBarManager* _instance;
 
     QTimer timer;
