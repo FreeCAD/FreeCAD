@@ -10,16 +10,22 @@
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/Feature.h>
 
-class GeoFeatureGroupTest : public ::testing::Test {
+class GeoFeatureGroupTest: public ::testing::Test
+{
 protected:
-    static void SetUpTestSuite() { tests::initApplication(); }
+    static void SetUpTestSuite()
+    {
+        tests::initApplication();
+    }
 
-    void SetUp() override {
+    void SetUp() override
+    {
         _docName = App::GetApplication().getUniqueDocumentName("GeoTest");
         _doc = App::GetApplication().newDocument(_docName.c_str(), "testUser");
     }
 
-    void TearDown() override {
+    void TearDown() override
+    {
         App::GetApplication().closeDocument(_docName.c_str());
     }
 
@@ -27,7 +33,8 @@ protected:
     std::string _docName;
 };
 
-TEST_F(GeoFeatureGroupTest, testIsLinkValidForDocumentObjectGroup) {
+TEST_F(GeoFeatureGroupTest, testIsLinkValidForDocumentObjectGroup)
+{
     auto group = _doc->addObject<App::DocumentObjectGroup>("Group");
 
     auto body1 = _doc->addObject<PartDesign::Body>("Body1");
@@ -42,7 +49,8 @@ TEST_F(GeoFeatureGroupTest, testIsLinkValidForDocumentObjectGroup) {
     EXPECT_TRUE(App::GeoFeatureGroupExtension::isLinkValid(prop));
 }
 
-TEST_F(GeoFeatureGroupTest, testIsLinkValidCrossFailure) {
+TEST_F(GeoFeatureGroupTest, testIsLinkValidCrossFailure)
+{
     auto body1 = _doc->addObject<PartDesign::Body>("Body1");
     auto body2 = _doc->addObject<PartDesign::Body>("Body2");
 
