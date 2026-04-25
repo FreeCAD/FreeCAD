@@ -598,7 +598,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             "global_clearance": clearanceHeight,
             "solids": solids,
             "tool_diameter": tooldiameter,
-            "tolerance": abs(safeHeight - obj.StartDepth.Value),
+            "safety_margin": 10,
         }
 
         obj.Direction = _caclulatePathDirection(obj)

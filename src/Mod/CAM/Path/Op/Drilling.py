@@ -292,12 +292,17 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             v2 = FreeCAD.Vector(hole["x"], hole["y"], obj.FinalDepth.Value - endoffset)
             edgelist.append(Part.makeLine(v1, v2))
 
-        # build list of solids for collision detection.
-        # Include base objects from job
-        solids = []
-        for base in self.job.Model.Group:
-            solids.append(base.Shape)
-        tolerance = abs(safe_height - obj.StartDepth.Value)
+        # Prepare linking parameters
+        solids = [base.Shape for base in self.job.Model.Group]
+        linkingArgs = {
+            "start_position": None,
+            "target_position": None,
+            "local_clearance": safe_height,
+            "global_clearance": obj.ClearanceHeight.Value,
+            "solids": solids,
+            "tool_diameter": self.tool.Diameter.Value,
+            "safety_margin": 10,
+        }
 
         # http://linuxcnc.org/docs/html/gcode/g-code.html#gcode:g98-g99
 
@@ -339,15 +344,10 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 # Check if direct move at retract plane would collide with model
                 current_pos = machinestate.getPosition()
                 target_at_safe_height = FreeCAD.Vector(startPoint.x, startPoint.y, safe_height)
-                linking_moves = linking.get_linking_moves(
-                    start_position=current_pos,
-                    target_position=target_at_safe_height,
-                    local_clearance=safe_height,
-                    global_clearance=obj.ClearanceHeight.Value,
-                    solids=solids,
-                    tool_diameter=self.tool.Diameter,
-                    tolerance=tolerance,
-                )
+                linkingArgs["start_position"] = current_pos
+                linkingArgs["target_position"] = target_at_safe_height
+                linking_moves = linking.get_linking_moves(**linkingArgs)
+
                 """if linking_moves contains only 2 commands this means
                 it not contains vertical moves to clearance height
                 and this commands should be skipped"""

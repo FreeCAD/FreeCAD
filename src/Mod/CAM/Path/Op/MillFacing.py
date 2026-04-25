@@ -281,6 +281,7 @@ class ObjectMillFacing(PathOp.ObjectOp):
             "global_clearance": obj.ClearanceHeight.Value,
             "solids": solids,
             "tool_diameter": tool_diameter,
+            "safety_margin": 10,
         }
 
         # Determine the step-downs
