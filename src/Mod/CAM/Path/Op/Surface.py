@@ -1381,6 +1381,7 @@ class ObjectSurface(PathOp.ObjectOp):
         is_adaptive = getattr(obj, "AdaptiveSampling", False)
         tool_params = self._extractToolParams(obj)
         tool_diam = tool_params.get("diameter", 0.0)
+        selected_faces, cutter, stl, bb = None, None, None, None
 
         base_objs = (
             [base for base, subs in obj.Base]
@@ -1395,13 +1396,11 @@ class ObjectSurface(PathOp.ObjectOp):
         needs_face_selection = strategy == "SurfacePattern"
 
         if needs_face_selection:
-            selected_faces = None
             selected_faces = self._getSelectedFaces(obj)
             # Get bounding box (constrained to selected faces if available)
             bb = self._getBoundBox(obj, JOB, selected_faces)
 
         if needs_ocl_cutter:
-            cutter = None
             cutter = surface_common.make_ocl_cutter(
                 tool_params["tool_type"],
                 tool_params["diameter"],
@@ -1430,7 +1429,6 @@ class ObjectSurface(PathOp.ObjectOp):
                 Path.Log.error(translate("CAM_Surface", "No base models found to process."))
                 return
 
-            stl = None
             stl_start = time.time()
             for base in base_objs:
                 model_shape = base.Shape
