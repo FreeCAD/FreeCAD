@@ -91,6 +91,79 @@ class WorkbenchTestCase(unittest.TestCase):
         wbs = FreeCADGui.listWorkbenches()
         self.assertTrue(not "UnitWorkbench" in wbs, "Test on removing workbench handler failed")
 
+    def testToolbarOptions(self):
+        import __main__
+
+        class UnitWorkbench(__main__.Workbench):
+            MenuText = "Unittest"
+            ToolTip = "Unittest"
+
+            def Initialize(self):
+                cmds = ["Test_Test"]
+                self.appendToolbar(
+                    "My Unittest",
+                    cmds,
+                    FreeCADGui.ToolbarOptions(
+                        id="MyUnittestToolbar",
+                        scope=FreeCADGui.ToolbarScopeId.contextual("UnitWorkbench", "edit"),
+                        tier=self.ToolbarTier.Contextual,
+                        visibility=self.ToolbarVisibility.Unavailable,
+                    ),
+                )
+
+            def GetClassName(self):
+                return "Gui::PythonWorkbench"
+
+        FreeCADGui.addWorkbench(UnitWorkbench())
+        try:
+            FreeCADGui.activateWorkbench("UnitWorkbench")
+            FreeCADGui.updateGui()
+
+            identities = FreeCADGui.activeWorkbench().getToolbarIdentities()
+            self.assertEqual(identities["My Unittest"], "ctx:UnitWorkbench:edit:MyUnittestToolbar")
+
+            main_window = FreeCADGui.getMainWindow()
+            toolbars = main_window.findChildren(QtWidgets.QToolBar)
+            toolbar = next(
+                tb
+                for tb in toolbars
+                if tb.property("PersistenceKey") == "ctx:UnitWorkbench:edit:MyUnittestToolbar"
+            )
+
+            self.assertEqual(toolbar.property("Tier"), "contextual")
+            self.assertEqual(
+                toolbar.toggleViewAction().property("DefaultVisibility"),
+                int(FreeCADGui.ToolbarVisibility.Unavailable),
+            )
+            self.assertFalse(toolbar.toggleViewAction().isVisible())
+        finally:
+            FreeCADGui.removeWorkbench("UnitWorkbench")
+
+    def testToolbarOptionsPreservePythonAttributeErrors(self):
+        import __main__
+
+        class ExplodingOptions:
+            @property
+            def scope(self):
+                raise RuntimeError("toolbar options boom")
+
+        class UnitWorkbench(__main__.Workbench):
+            MenuText = "Unittest"
+            ToolTip = "Unittest"
+
+            def Initialize(self):
+                self.appendToolbar("My Unittest", ["Test_Test"], ExplodingOptions())
+
+            def GetClassName(self):
+                return "Gui::PythonWorkbench"
+
+        FreeCADGui.addWorkbench(UnitWorkbench())
+        try:
+            with self.assertRaisesRegex(RuntimeError, "toolbar options boom"):
+                FreeCADGui.activateWorkbench("UnitWorkbench")
+        finally:
+            FreeCADGui.removeWorkbench("UnitWorkbench")
+
     def testInvalidType(self):
         class MyExtWorkbench(FreeCADGui.Workbench):
             def Initialize(self):

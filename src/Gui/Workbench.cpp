@@ -1343,10 +1343,35 @@ void PythonBaseWorkbench::clearContextMenu()
 
 void PythonBaseWorkbench::appendToolbar(const std::string& bar, const std::list<std::string>& items) const
 {
+    appendToolbar(bar, items, {});
+}
+
+void PythonBaseWorkbench::appendToolbar(
+    const std::string& bar,
+    const std::list<std::string>& items,
+    const ToolBarOptions& options
+) const
+{
     ToolBarItem* item = _toolBar->findItem(bar);
     if (!item) {
-        item = new ToolBarItem(_toolBar);
+        item = new ToolBarItem(
+            _toolBar,
+            options.visibility.value_or(ToolBarItem::DefaultVisibility::Visible)
+        );
         item->setCommand(bar);
+    }
+    else if (options.visibility) {
+        item->visibilityPolicy = *options.visibility;
+    }
+
+    if (options.persistenceId) {
+        item->setPersistenceKey(
+            ToolBarManager::makeToolBarPersistenceKey(*options.persistenceId).toStdString()
+        );
+    }
+
+    if (options.tier) {
+        item->setTier(*options.tier);
     }
 
     for (const auto& it : items) {
