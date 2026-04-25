@@ -24,7 +24,289 @@
 #include "PythonWorkbenchPy.h"
 #include "PythonWorkbenchPy.cpp"
 
+#include <array>
+
+#include <Base/PyWrapParseTupleAndKeywords.h>
+
 using namespace Gui;
+
+namespace
+{
+bool isValidToolbarScopeValue(long value)
+{
+    switch (static_cast<ToolBarManager::Scope>(value)) {
+        case ToolBarManager::Scope::Legacy:
+        case ToolBarManager::Scope::Shared:
+        case ToolBarManager::Scope::Workbench:
+        case ToolBarManager::Scope::Contextual:
+            return true;
+    }
+
+    return false;
+}
+
+bool isValidToolbarTierValue(long value)
+{
+    switch (static_cast<ToolBarItem::Tier>(value)) {
+        case ToolBarItem::Tier::Recommended:
+        case ToolBarItem::Tier::Secondary:
+        case ToolBarItem::Tier::Advanced:
+        case ToolBarItem::Tier::Contextual:
+            return true;
+    }
+
+    return false;
+}
+
+bool isValidToolbarVisibilityValue(long value)
+{
+    switch (static_cast<ToolBarItem::DefaultVisibility>(value)) {
+        case ToolBarItem::DefaultVisibility::Visible:
+        case ToolBarItem::DefaultVisibility::Hidden:
+        case ToolBarItem::DefaultVisibility::Unavailable:
+            return true;
+    }
+
+    return false;
+}
+
+bool parseStringList(PyObject* object, std::list<std::string>& items, const char* errorMessage)
+{
+    if (PyList_Check(object)) {
+        int nItems = PyList_Size(object);
+        for (int i = 0; i < nItems; ++i) {
+            PyObject* item = PyList_GetItem(object, i);
+            if (PyUnicode_Check(item)) {
+                const char* pItem = PyUnicode_AsUTF8(item);
+                items.emplace_back(pItem);
+            }
+        }
+        return true;
+    }
+
+    if (PyUnicode_Check(object)) {
+        const char* pItem = PyUnicode_AsUTF8(object);
+        items.emplace_back(pItem);
+        return true;
+    }
+
+    PyErr_SetString(PyExc_TypeError, errorMessage);
+    return false;
+}
+
+PyObject* getOptionalAttr(PyObject* object, const char* name)
+{
+    if (!object || object == Py_None) {
+        return nullptr;
+    }
+
+    PyObject* attr = PyObject_GetAttrString(object, name);
+    if (!attr) {
+        if (PyErr_ExceptionMatches(PyExc_AttributeError)) {
+            PyErr_Clear();
+        }
+        return nullptr;
+    }
+
+    return attr;
+}
+
+template<typename Validator>
+bool parseEnumValue(PyObject* object, const char* name, Validator validator, int* value, bool* present)
+{
+    PyObject* attr = getOptionalAttr(object, name);
+    if (!attr) {
+        if (PyErr_Occurred()) {
+            return false;
+        }
+        if (present) {
+            *present = false;
+        }
+        return true;
+    }
+
+    if (attr == Py_None) {
+        Py_DECREF(attr);
+        if (present) {
+            *present = false;
+        }
+        return true;
+    }
+
+    PyObject* number = PyNumber_Long(attr);
+    Py_DECREF(attr);
+    if (!number) {
+        PyErr_Format(PyExc_TypeError, "Expected %s to be an integer enum value", name);
+        return false;
+    }
+
+    const long parsedValue = PyLong_AsLong(number);
+    Py_DECREF(number);
+    if (PyErr_Occurred()) {
+        return false;
+    }
+    if (!validator(parsedValue)) {
+        PyErr_Format(PyExc_ValueError, "Invalid %s enum value", name);
+        return false;
+    }
+
+    if (present) {
+        *present = true;
+    }
+    if (value) {
+        *value = static_cast<int>(parsedValue);
+    }
+    return true;
+}
+
+bool parseUnicodeValue(PyObject* object, const char* name, QString* value)
+{
+    PyObject* attr = getOptionalAttr(object, name);
+    if (!attr) {
+        if (PyErr_Occurred()) {
+            return false;
+        }
+        return true;
+    }
+
+    if (attr == Py_None) {
+        Py_DECREF(attr);
+        return true;
+    }
+
+    if (!PyUnicode_Check(attr)) {
+        Py_DECREF(attr);
+        PyErr_Format(PyExc_TypeError, "Expected %s to be a string", name);
+        return false;
+    }
+
+    if (value) {
+        *value = QString::fromUtf8(PyUnicode_AsUTF8(attr));
+    }
+    Py_DECREF(attr);
+    return true;
+}
+
+bool parseToolbarScopeId(PyObject* object, std::optional<ToolBarManager::ToolbarScopeId>* scopeId)
+{
+    PyObject* scopeObject = getOptionalAttr(object, "scope");
+    if (!scopeObject) {
+        return !PyErr_Occurred();
+    }
+
+    if (scopeObject == Py_None) {
+        Py_DECREF(scopeObject);
+        return true;
+    }
+
+    int scopeValue = 0;
+    bool hasScopeValue = false;
+    if (!parseEnumValue(scopeObject, "scope", isValidToolbarScopeValue, &scopeValue, &hasScopeValue)) {
+        Py_DECREF(scopeObject);
+        return false;
+    }
+    if (!hasScopeValue) {
+        Py_DECREF(scopeObject);
+        PyErr_SetString(PyExc_ValueError, "ToolbarScopeId.scope is required");
+        return false;
+    }
+
+    QString workbench;
+    if (!parseUnicodeValue(scopeObject, "workbench", &workbench)) {
+        Py_DECREF(scopeObject);
+        return false;
+    }
+
+    QString context;
+    if (!parseUnicodeValue(scopeObject, "context", &context)) {
+        Py_DECREF(scopeObject);
+        return false;
+    }
+
+    if (scopeId) {
+        *scopeId = ToolBarManager::ToolbarScopeId {
+            static_cast<ToolBarManager::Scope>(scopeValue),
+            workbench,
+            context
+        };
+    }
+
+    Py_DECREF(scopeObject);
+    return true;
+}
+
+bool parseToolbarOptions(
+    PythonWorkbenchPy* self,
+    PyObject* optionsObject,
+    PythonBaseWorkbench::ToolBarOptions* options
+)
+{
+    if (!optionsObject || optionsObject == Py_None) {
+        return true;
+    }
+
+    QString toolbarId;
+    if (!parseUnicodeValue(optionsObject, "id", &toolbarId)) {
+        return false;
+    }
+
+    int tierValue = 0;
+    bool hasTier = false;
+    if (!parseEnumValue(optionsObject, "tier", isValidToolbarTierValue, &tierValue, &hasTier)) {
+        return false;
+    }
+    if (hasTier) {
+        options->tier = static_cast<ToolBarItem::Tier>(tierValue);
+    }
+
+    int visibilityValue = 0;
+    bool hasVisibility = false;
+    if (!parseEnumValue(
+            optionsObject,
+            "visibility",
+            isValidToolbarVisibilityValue,
+            &visibilityValue,
+            &hasVisibility
+        )) {
+        return false;
+    }
+    if (hasVisibility) {
+        options->visibility = static_cast<ToolBarItem::DefaultVisibility>(visibilityValue);
+    }
+
+    std::optional<ToolBarManager::ToolbarScopeId> scopeId;
+    if (!parseToolbarScopeId(optionsObject, &scopeId)) {
+        return false;
+    }
+
+    if (!toolbarId.isEmpty()) {
+        if (scopeId) {
+            options->persistenceId = ToolBarManager::PersistenceId(*scopeId, std::move(toolbarId));
+        }
+        else {
+            options->persistenceId = ToolBarManager::PersistenceId(
+                ToolBarManager::Scope::Workbench,
+                std::move(toolbarId),
+                QString::fromStdString(self->getPythonBaseWorkbenchPtr()->name())
+            );
+        }
+
+        if (ToolBarManager::makeToolBarPersistenceKey(*options->persistenceId).isEmpty()) {
+            PyErr_SetString(PyExc_ValueError, "Invalid ToolbarOptions id/scope combination");
+            return false;
+        }
+    }
+    else if (scopeId) {
+        PyErr_SetString(
+            PyExc_ValueError,
+            "ToolbarOptions.scope requires ToolbarOptions.id to define a stable toolbar identity"
+        );
+        return false;
+    }
+
+    return true;
+}
+}  // namespace
 
 /** @class PythonWorkbenchPy
  * The workbench Python class provides additional methods for manipulation of python
@@ -219,33 +501,31 @@ PyObject* PythonWorkbenchPy::removeContextMenu(PyObject* args)
 }
 
 /** Appends a new toolbar */
-PyObject* PythonWorkbenchPy::appendToolbar(PyObject* args)
+PyObject* PythonWorkbenchPy::appendToolbar(PyObject* args, PyObject* kwd)
 {
     PY_TRY
     {
         PyObject* pObject;
+        PyObject* pOptions = Py_None;
         char* psToolBar;
-        if (!PyArg_ParseTuple(args, "sO", &psToolBar, &pObject)) {
-            return nullptr;
-        }
-        if (!PyList_Check(pObject)) {
-            PyErr_SetString(PyExc_AssertionError, "Expected a list as second argument");
+        static const std::array<const char*, 4> kwlist {"name", "cmds", "options", nullptr};
+        if (
+            !Base::Wrapped_ParseTupleAndKeywords(args, kwd, "sO|O", kwlist, &psToolBar, &pObject, &pOptions)
+        ) {
             return nullptr;
         }
 
         std::list<std::string> items;
-        int nSize = PyList_Size(pObject);
-        for (int i = 0; i < nSize; ++i) {
-            PyObject* item = PyList_GetItem(pObject, i);
-            if (PyUnicode_Check(item)) {
-                const char* pItem = PyUnicode_AsUTF8(item);
-                items.emplace_back(pItem);
-            }
-            else {
-                continue;
-            }
+        if (!parseStringList(pObject, items, "Expected a list or string as second argument")) {
+            return nullptr;
         }
-        getPythonBaseWorkbenchPtr()->appendToolbar(psToolBar, items);
+
+        PythonBaseWorkbench::ToolBarOptions options;
+        if (!parseToolbarOptions(this, pOptions, &options)) {
+            return nullptr;
+        }
+
+        getPythonBaseWorkbenchPtr()->appendToolbar(psToolBar, items, options);
 
         Py_Return;
     }
@@ -358,7 +638,7 @@ PyObject* PythonWorkbenchPy::RemoveContextMenu(PyObject* args)
 
 PyObject* PythonWorkbenchPy::AppendToolbar(PyObject* args)
 {
-    return appendToolbar(args);
+    return appendToolbar(args, nullptr);
 }
 
 PyObject* PythonWorkbenchPy::RemoveToolbar(PyObject* args)
