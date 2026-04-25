@@ -61,6 +61,18 @@ class TestVersionInfo(unittest.TestCase):
         version = make_version(suffix="RC1")
         self.assertEqual(version.rpm, "1.2.0~RC1")
 
+    def test_conda_version_with_suffix(self):
+        version = make_version(suffix="dev")
+        self.assertEqual(version.conda, "1.2.0dev")
+
+    def test_conda_version_without_suffix(self):
+        version = make_version(suffix="")
+        self.assertEqual(version.conda, "1.2.0")
+
+    def test_conda_version_rc(self):
+        version = make_version(suffix="RC1")
+        self.assertEqual(version.conda, "1.2.0RC1")
+
     def test_lowercase_name(self):
         version = make_version(name="FreeCAD")
         self.assertEqual(version.lowercase_name, "freecad")
@@ -210,7 +222,7 @@ class TestSyncRattlerBuildPixiToml(unittest.TestCase):
             version = make_version()
             result, changed = sync_rattler_build_pixi_toml(filepath, version)
             self.assertTrue(changed)
-            self.assertIn('version = "1.2.0-dev"', result)
+            self.assertIn('version = "1.2.0dev"', result)
             self.assertIn('name = "freecad"', result)
             self.assertIn('description = "FreeCAD"', result)
 
@@ -246,7 +258,7 @@ class TestSyncRecipeYaml(unittest.TestCase):
             version = make_version()
             result, changed = sync_recipe_yaml(filepath, version)
             self.assertTrue(changed)
-            self.assertIn('version: "1.2.0-dev"', result)
+            self.assertIn('version: "1.2.0dev"', result)
             self.assertIn("name: freecad", result)
 
     def test_preserves_version_template_reference(self):
