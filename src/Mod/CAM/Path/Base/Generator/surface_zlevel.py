@@ -289,7 +289,9 @@ def zlevel_hybrid_stack(
             if hasattr(currentSilhouette, "removeSplitter"):
                 currentSilhouette = currentSilhouette.removeSplitter()
         except Exception as e:
-            Path.Log.error(f"Z-Level Hybrid: Silhouette fusion failed at Z={round(z_target, 3)}. Error: {str(e)}")
+            Path.Log.error(
+                f"Z-Level Hybrid: Silhouette fusion failed at Z={round(z_target, 3)}. Error: {str(e)}"
+            )
             # We can't proceed with this layer, but we MUST update the mask to prevent errors on subsequent layers
             allPrevComp = _update_machining_mask(
                 wpc, allPrevComp, currentSilhouette, status, floor_geo
@@ -322,7 +324,9 @@ def zlevel_hybrid_stack(
         try:
             cutArea = layer_engine.getShape()
         except Exception as e:
-            Path.Log.error(f"Z-Level Hybrid: Layer engine failed at Z={round(z_target, 3)}. Error: {str(e)}")
+            Path.Log.error(
+                f"Z-Level Hybrid: Layer engine failed at Z={round(z_target, 3)}. Error: {str(e)}"
+            )
             cutArea = None
 
         # Reconciliation & Translation

@@ -1278,7 +1278,7 @@ class ObjectSurface(PathOp.ObjectOp):
             "radius": radius,
             "c_rad": c_rad,
             "profile": shape_type,
-            "is_threeD": is_3d
+            "is_threeD": is_3d,
         }
 
         pattern_options = {
@@ -1382,7 +1382,11 @@ class ObjectSurface(PathOp.ObjectOp):
         tool_params = self._extractToolParams(obj)
         tool_diam = tool_params.get("diameter", 0.0)
 
-        base_objs = [base for base, subs in obj.Base] if hasattr(obj, "Base") and obj.Base else JOB.Model.Group
+        base_objs = (
+            [base for base, subs in obj.Base]
+            if hasattr(obj, "Base") and obj.Base
+            else JOB.Model.Group
+        )
 
         # Data preparation (Based on Strategy Needs)
         # Define what each strategy requires
@@ -1416,7 +1420,9 @@ class ObjectSurface(PathOp.ObjectOp):
             tool_diam = cutter.getDiameter()
             Path.Log.info(
                 "Surface OCL cutter created: getDiameter()={}, StepOver={}%, "
-                "stepover_dist={}".format(tool_diam, obj.StepOver, tool_diam * (obj.StepOver / 100.0))
+                "stepover_dist={}".format(
+                    tool_diam, obj.StepOver, tool_diam * (obj.StepOver / 100.0)
+                )
             )
 
         if needs_stl:
@@ -1437,7 +1443,11 @@ class ObjectSurface(PathOp.ObjectOp):
                     stl = surface_stl.mesh_to_stl(points, facets)
                 else:
                     # Check which STL method will be used
-                    if hasattr(surface_stl, "_HAS_CPP") and surface_stl._HAS_CPP and strategy == "SurfacePattern":
+                    if (
+                        hasattr(surface_stl, "_HAS_CPP")
+                        and surface_stl._HAS_CPP
+                        and strategy == "SurfacePattern"
+                    ):
                         Path.Log.info("opExecute: Using C++ accelerated STL conversion")
                     else:
                         Path.Log.info("opExecute: Using Python fallback STL conversion")
@@ -1447,8 +1457,10 @@ class ObjectSurface(PathOp.ObjectOp):
                         obj.LinearDeflection.Value,
                         obj.AngularDeflection.Value,
                         mesh_simplification=getattr(obj, "MeshSimplification", 1),
-                        final_depth=obj.OpFinalDepth.Value if hasattr(obj, "OpFinalDepth") else None,
-                        use_cpp = (strategy == "SurfacePattern")
+                        final_depth=(
+                            obj.OpFinalDepth.Value if hasattr(obj, "OpFinalDepth") else None
+                        ),
+                        use_cpp=(strategy == "SurfacePattern"),
                     )
                 break
             stl_time = time.time() - stl_start
