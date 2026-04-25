@@ -131,6 +131,13 @@ protected:
     void addPermanentMenuItems(MenuItem*) const;
 
 private:
+    enum class CustomToolBarScope
+    {
+        Legacy,
+        Workbench,
+        Global,
+    };
+
     /**
      * The method imports the user defined toolbars or toolbox bars and creates
      * a ToolBarItem tree structure.
@@ -139,7 +146,7 @@ private:
     void setupCustomToolbars(
         ToolBarItem* root,
         const Base::Reference<ParameterGrp> hGrp,
-        const std::string& scope
+        CustomToolBarScope scope
     ) const;
     void setupToolbarPersistenceKeys(ToolBarItem* root) const;
     void setupCustomShortcuts() const;
