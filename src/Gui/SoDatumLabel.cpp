@@ -1458,10 +1458,20 @@ void SoDatumLabel::drawArcLength(const SbVec3f* points, float& angle, SbVec3f& t
 
 namespace
 {
-// Returns:
-// angleRad — sketch rotation angle in radians (-pi .. pi)
-// CCW is positive, CW is negative, and the angle is measured from the camera's right vector to the
-// sketch's local X axis.
+/*!
+ * \brief Compute sketch rotation angle in screen space.
+ *
+ * Calculates the rotation of the sketch relative to the camera view.
+ * The angle is measured from the camera right vector to the sketch's local X axis.
+ *
+ * \param state Current Coin3D traversal state used to retrieve view and model matrices.
+ * \param viewVolume Active view volume describing the camera projection and orientation.
+ * \param flip If true, the resulting angle is inverted to account for back-facing view direction.
+ *
+ * \return Rotation angle in radians in the range [-pi, pi].
+ *         Positive values correspond to counter-clockwise (CCW) rotation,
+ *         negative values correspond to clockwise (CW) rotation.
+ */
 float getSketchRotationAngle(SoState* state, const SbViewVolume& viewVolume, bool flip)
 {
     // --- Camera basis from view volume (screen space axes) ---
@@ -1500,7 +1510,6 @@ void SoDatumLabel::drawText(SoState* state, int srcw, int srch, float angle, con
 
     bool flip = norm.getValue().dot(z) > std::numeric_limits<float>::epsilon();
 
-    ///////////////////////////////////////////////
     const float sketchAngle = getSketchRotationAngle(state, vv, flip);
     const float labelAngle = sketchAngle + angle;
 
@@ -1517,7 +1526,6 @@ void SoDatumLabel::drawText(SoState* state, int srcw, int srch, float angle, con
             angle += std::numbers::pi;
         }
     }
-    ///////////////////////////////////////////////
 
     static bool init = false;
     static bool npot = false;
