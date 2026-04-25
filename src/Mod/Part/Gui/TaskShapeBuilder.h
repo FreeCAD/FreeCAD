@@ -42,7 +42,6 @@ public:
 
     bool accept();
     bool reject();
-    void setSelectionGate();
 
 private:
     void onCreateButtonClicked();

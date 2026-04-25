@@ -35,7 +35,6 @@
 #include <Gui/Control.h>
 #include <Gui/UiLoader.h>
 #include <Gui/PythonWrapper.h>
-#include <Gui/DocumentPy.h>
 
 #include "TaskDialogPython.h"
 #include "TaskView.h"
@@ -143,67 +142,43 @@ Py::Object ControlPy::repr()
 
 Py::Object ControlPy::showDialog(const Py::Tuple& args)
 {
-    PyObject* arg0 = nullptr;
-    PyObject* docPy = nullptr;
-    if (!PyArg_ParseTuple(args.ptr(), "O|O!", &arg0, &(Gui::DocumentPy::Type), &docPy)) {
+    PyObject* arg0;
+    if (!PyArg_ParseTuple(args.ptr(), "O", &arg0)) {
         throw Py::Exception();
     }
-
-    App::Document* doc = docPy
-        ? static_cast<Gui::DocumentPy*>(docPy)->getDocumentPtr()->getDocument()
-        : nullptr;
-
-    Gui::TaskView::TaskDialog* act = Gui::Control().activeDialog(doc);
+    Gui::TaskView::TaskDialog* act = Gui::Control().activeDialog();
     if (act) {
         throw Py::RuntimeError("Active task dialog found");
     }
     auto dlg = new TaskDialogPython(Py::Object(arg0));
-    Gui::Control().showDialog(dlg, doc);
+    Gui::Control().showDialog(dlg);
     return (Py::asObject(new TaskDialogPy(dlg)));
 }
 
 Py::Object ControlPy::activeDialog(const Py::Tuple& args)
 {
-    PyObject* docPy = nullptr;
-    if (!PyArg_ParseTuple(args.ptr(), "|O!", &(Gui::DocumentPy::Type), &docPy)) {
+    if (!PyArg_ParseTuple(args.ptr(), "")) {
         throw Py::Exception();
     }
-
-    App::Document* doc = docPy
-        ? static_cast<Gui::DocumentPy*>(docPy)->getDocumentPtr()->getDocument()
-        : nullptr;
-
-    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog(doc);
+    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     return Py::Boolean(dlg != nullptr);
 }
 
 Py::Object ControlPy::activeTaskDialog(const Py::Tuple& args)
 {
-    PyObject* docPy = nullptr;
-    if (!PyArg_ParseTuple(args.ptr(), "|O!", &(Gui::DocumentPy::Type), &docPy)) {
+    if (!PyArg_ParseTuple(args.ptr(), "")) {
         throw Py::Exception();
     }
-
-    App::Document* doc = docPy
-        ? static_cast<Gui::DocumentPy*>(docPy)->getDocumentPtr()->getDocument()
-        : nullptr;
-
-    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog(doc);
+    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     return (dlg ? Py::asObject(new TaskDialogPy(dlg)) : Py::None());
 }
 
 Py::Object ControlPy::closeDialog(const Py::Tuple& args)
 {
-    PyObject* docPy = nullptr;
-    if (!PyArg_ParseTuple(args.ptr(), "|O!", &(Gui::DocumentPy::Type), &docPy)) {
+    if (!PyArg_ParseTuple(args.ptr(), "")) {
         throw Py::Exception();
     }
-
-    App::Document* doc = docPy
-        ? static_cast<Gui::DocumentPy*>(docPy)->getDocumentPtr()->getDocument()
-        : nullptr;
-
-    Gui::Control().closeDialog(doc);
+    Gui::Control().closeDialog();
     return Py::None();
 }
 
@@ -242,46 +217,28 @@ Py::Object ControlPy::clearTaskWatcher(const Py::Tuple& args)
 
 Py::Object ControlPy::isAllowedAlterDocument(const Py::Tuple& args)
 {
-    PyObject* docPy = nullptr;
-    if (!PyArg_ParseTuple(args.ptr(), "|O!", &(Gui::DocumentPy::Type), &docPy)) {
+    if (!PyArg_ParseTuple(args.ptr(), "")) {
         throw Py::Exception();
     }
-
-    App::Document* doc = docPy
-        ? static_cast<Gui::DocumentPy*>(docPy)->getDocumentPtr()->getDocument()
-        : nullptr;
-
-    bool ok = Gui::Control().isAllowedAlterDocument(doc);
+    bool ok = Gui::Control().isAllowedAlterDocument();
     return Py::Boolean(ok);
 }
 
 Py::Object ControlPy::isAllowedAlterView(const Py::Tuple& args)
 {
-    PyObject* docPy = nullptr;
-    if (!PyArg_ParseTuple(args.ptr(), "|O!", &(Gui::DocumentPy::Type), &docPy)) {
+    if (!PyArg_ParseTuple(args.ptr(), "")) {
         throw Py::Exception();
     }
-
-    App::Document* doc = docPy
-        ? static_cast<Gui::DocumentPy*>(docPy)->getDocumentPtr()->getDocument()
-        : nullptr;
-
-    bool ok = Gui::Control().isAllowedAlterView(doc);
+    bool ok = Gui::Control().isAllowedAlterView();
     return Py::Boolean(ok);
 }
 
 Py::Object ControlPy::isAllowedAlterSelection(const Py::Tuple& args)
 {
-    PyObject* docPy = nullptr;
-    if (!PyArg_ParseTuple(args.ptr(), "|O!", &(Gui::DocumentPy::Type), &docPy)) {
+    if (!PyArg_ParseTuple(args.ptr(), "")) {
         throw Py::Exception();
     }
-
-    App::Document* doc = docPy
-        ? static_cast<Gui::DocumentPy*>(docPy)->getDocumentPtr()->getDocument()
-        : nullptr;
-
-    bool ok = Gui::Control().isAllowedAlterSelection(doc);
+    bool ok = Gui::Control().isAllowedAlterSelection();
     return Py::Boolean(ok);
 }
 

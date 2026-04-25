@@ -2146,7 +2146,7 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
             plm *= this->attachmentOffset;
             return plm;
         } break;
-        case mmMidpoint: {
+        case mmMidpoint: {  
             Base::Placement placement;
 
             // special case for planes

@@ -1412,9 +1412,7 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
             return;
         }
 
-        Gui::Document* editDoc = Gui::Application::Instance->isInEdit(ViewProvider->getDocument())
-            ? ViewProvider->getDocument()
-            : nullptr;
+        auto editDoc = Gui::Application::Instance->editDocument();
         App::DocumentObject* editObj = ViewProvider->getObject();
         std::string editSubName;
         auto sels = Gui::Selection().getSelection(nullptr, Gui::ResolveMode::NoResolve, true);
@@ -1568,7 +1566,7 @@ void TaskDlgAttacher::handleMouseButtonCB(void* userdata, SoEventCallback* cb)
             if (viewer) {
                 viewer->setSelectionEnabled(true);
             }
-            Gui::Control().accept(doc);
+            Gui::Control().accept();
         });
         return;
     }
@@ -1583,11 +1581,8 @@ void TaskDlgAttacher::handleMouseButtonCB(void* userdata, SoEventCallback* cb)
 
 void TaskDlgAttacher::open()
 {
-    Gui::DocumentT doc(getDocumentName());
-    if (Gui::Document* document = doc.getDocument()) {
-        if (!document->hasPendingCommand()) {
-            document->openCommand(QT_TRANSLATE_NOOP("Command", "Edit attachment"));
-        }
+    if (!Gui::Command::hasPendingCommand()) {
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit attachment"));
     }
 }
 
@@ -1646,7 +1641,7 @@ bool TaskDlgAttacher::accept()
         );
         Gui::cmdAppObject(obj, "recompute()");
 
-        document->commitCommand();
+        Gui::Command::commitCommand();
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(
@@ -1672,7 +1667,7 @@ bool TaskDlgAttacher::reject()
     Gui::Document* document = doc.getDocument();
     if (document) {
         // roll back the done things
-        document->abortCommand();
+        Gui::Command::abortCommand();
         Gui::Command::doCommand(Gui::Command::Doc, "%s.recompute()", doc.getAppDocumentPython().c_str());
     }
 

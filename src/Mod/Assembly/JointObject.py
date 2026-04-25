@@ -1235,7 +1235,7 @@ class ViewProviderJoint:
         return None
 
     def doubleClicked(self, vobj):
-        App.ActiveDocument.abortTransaction()  # Close the auto-transaction
+        App.closeActiveTransaction(True)  # Close the auto-transaction
 
         task = Gui.Control.activeTaskDialog()
         if task:
@@ -1583,7 +1583,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             self.creating = False
             self.joint = jointObj
             self.jointName = jointObj.Label
-            Gui.ActiveDocument.openCommand("Edit " + self.jointName + " Joint")
+            App.setActiveTransaction("Edit " + self.jointName + " Joint")
 
             self.updateTaskboxFromJoint()
             self.visibilityBackup = self.joint.Visibility
@@ -1593,9 +1593,9 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             self.creating = True
             self.jointName = self.jForm.jointType.currentText().replace(" ", "")
             if self.activeType == "Part":
-                Gui.ActiveDocument.openCommand("Transform")
+                App.setActiveTransaction("Transform")
             else:
-                Gui.ActiveDocument.openCommand("Create " + self.jointName + " Joint")
+                App.setActiveTransaction("Create " + self.jointName + " Joint")
 
             self.refs = []
             self.presel_ref = None
@@ -1683,12 +1683,12 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
 
         self.assembly.recompute(True)
 
-        Gui.ActiveDocument.commitCommand()
+        App.closeActiveTransaction()
         return True
 
     def reject(self):
         self.deactivate()
-        Gui.ActiveDocument.abortCommand()
+        App.closeActiveTransaction(True)
         self.assembly.recompute(True)
         return True
 
@@ -1701,7 +1701,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         Gui.Selection.removeSelectionGate()
         Gui.Selection.removeObserver(self)
         Gui.Selection.setSelectionStyle(Gui.Selection.SelectionStyle.NormalSelection)
-        App.ActiveDocument.abortTransaction()
+        App.closeActiveTransaction(True)
 
     def deactivate(self):
         global activeTask

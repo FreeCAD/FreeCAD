@@ -919,18 +919,18 @@ protected:
         try {
             // add auto-constraints
             if (owncommand) {
-                openCommand(QT_TRANSLATE_NOOP("Command", "Add Auto-Constraints"));
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Auto-Constraints"));
             }
 
             tryAddAutoConstraints();
 
             if (owncommand) {
-                commitCommand();
+                Gui::Command::commitCommand();
             }
         }
         catch (const Base::PyException&) {
             if (owncommand) {
-                abortCommand();
+                Gui::Command::abortCommand();
             }
         }
     }

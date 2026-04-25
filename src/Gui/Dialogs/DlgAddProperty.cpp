@@ -920,9 +920,7 @@ void DlgAddProperty::valueChanged()
  */
 void DlgAddProperty::openTransaction()
 {
-    transactionID = App::GetApplication().setActiveTransaction(
-        App::TransactionName {.name = "Add property", .temporary = false}
-    );
+    transactionID = App::GetApplication().setActiveTransaction("Add property");
 }
 
 void DlgAddProperty::critical(const QString& title, const QString& text)
@@ -995,12 +993,7 @@ void DlgAddProperty::closeTransaction(TransactionOption option)
         return;
     }
 
-    if (option == TransactionOption::Abort) {
-        App::GetApplication().abortTransaction(transactionID);
-    }
-    else {
-        App::GetApplication().commitTransaction(transactionID);
-    }
+    App::GetApplication().closeActiveTransaction(static_cast<bool>(option), transactionID);
     transactionID = 0;
 }
 

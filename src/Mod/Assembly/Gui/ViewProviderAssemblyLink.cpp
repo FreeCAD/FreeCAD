@@ -165,14 +165,14 @@ void ViewProviderAssemblyLink::setupContextMenu(QMenu* menu, QObject* receiver, 
 
     func->trigger(act, [this]() {
         auto* assemblyLink = dynamic_cast<Assembly::AssemblyLink*>(getObject());
-        getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Toggle Rigid"));
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Toggle Rigid"));
         Gui::cmdAppObjectArgs(
             assemblyLink,
             "Rigid = %s",
             assemblyLink->Rigid.getValue() ? "False" : "True"
         );
 
-        getDocument()->commitCommand();
+        Gui::Command::commitCommand();
         Gui::Selection().clearSelection();
     });
 

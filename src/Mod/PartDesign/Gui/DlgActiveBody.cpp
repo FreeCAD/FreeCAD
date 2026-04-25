@@ -99,9 +99,9 @@ void DlgActiveBody::accept()
     }
     else {
         // A transaction must be created as otherwise the undo/redo is broken
-        _doc->openTransaction(QT_TRANSLATE_NOOP("Command", "Add a Body"));
+        App::GetApplication().setActiveTransaction(QT_TRANSLATE_NOOP("Command", "Add a Body"), true);
         activeBody = makeBody(_doc);
-        _doc->commitTransaction();
+        App::GetApplication().closeActiveTransaction();
     }
 
     QDialog::accept();

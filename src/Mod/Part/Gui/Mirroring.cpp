@@ -201,7 +201,6 @@ public:
 Mirroring::Mirroring(QWidget* parent)
     : QWidget(parent)
     , ui(new Ui_Mirroring)
-    , filterSelection(true)
 {
     ui->setupUi(this);
     constexpr double max = std::numeric_limits<double>::max();
@@ -220,7 +219,8 @@ Mirroring::Mirroring(QWidget* parent)
 
     connect(ui->selectButton, &QPushButton::clicked, this, &Mirroring::onSelectButtonClicked);
 
-    setSelectionGate();
+    MirrorPlaneSelection* gate = new MirrorPlaneSelection();
+    Gui::Selection().addSelectionGate(gate);
 }
 
 /*
@@ -232,12 +232,11 @@ void Mirroring::onSelectButtonClicked()
 {
     if (!ui->selectButton->isChecked()) {
         Gui::Selection().rmvSelectionGate();
-        filterSelection = false;
         ui->selectButton->setText(tr("Select Reference"));
     }
     else {
-        filterSelection = true;
-        setSelectionGate();
+        MirrorPlaneSelection* gate = new MirrorPlaneSelection();
+        Gui::Selection().addSelectionGate(gate);
         ui->selectButton->setText(tr("Selecting"));
     }
 }
@@ -303,7 +302,6 @@ void Mirroring::findShapes()
 bool Mirroring::reject()
 {
     Gui::Selection().rmvSelectionGate();
-    filterSelection = false;
     return true;
 }
 
@@ -393,15 +391,7 @@ bool Mirroring::accept()
     activeDoc->commitTransaction();
     activeDoc->recompute();
     Gui::Selection().rmvSelectionGate();
-    filterSelection = false;
     return true;
-}
-void Mirroring::setSelectionGate()
-{
-    if (filterSelection) {
-        MirrorPlaneSelection* gate = new MirrorPlaneSelection();
-        Gui::Selection().addSelectionGate(gate);
-    }
 }
 
 // ---------------------------------------

@@ -89,7 +89,6 @@ struct DocumentP
     bool _isClosing;
     bool _isModified;
     bool _isTransacting;
-    bool _isActive;
     bool _changeViewTouchDocument;
     bool _editWantsRestore;
     bool _editWantsRestorePrevious;
@@ -101,7 +100,6 @@ struct DocumentP
     ViewProviderDocumentObject* _editViewProviderParent;
     std::string _editSubname;
     std::string _editSubElement;
-    std::string _workbenchName;  // Name of the workbench acting on this document
     Base::Matrix4D _editingTransform;
     View3DInventorViewer* _editingViewer;
     std::set<const App::DocumentObject*> _editObjs;
@@ -285,8 +283,6 @@ struct DocumentP
     {
         _editingObject = sobj;
         _editMode = ModNum;
-        _editViewProvider = svp;  // Used to resolve start editing (find the document in edit from
-                                  // within the viewprovider)
         _editViewProvider = svp->startEditing(ModNum);
         if (!_editViewProvider) {
             _editViewProviderParent = nullptr;
@@ -316,7 +312,7 @@ struct DocumentP
 
     void setDocumentNameOfTaskDialog(App::Document* doc)
     {
-        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog(_pcDocument);
+        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
         if (dlg) {
             dlg->setDocumentName(doc->getName());
         }
@@ -435,7 +431,6 @@ Document::Document(App::Document* pcDocument, Application* app)
     d->_isClosing = false;
     d->_isModified = false;
     d->_isTransacting = false;
-    d->_isActive = false;
     d->_pcAppWnd = app;
     d->_pcDocument = pcDocument;
     d->_editViewProvider = nullptr;
@@ -690,6 +685,7 @@ bool Document::trySetEdit(Gui::ViewProvider* p, int ModNum, const char* subname)
     d->setEditingViewerIfPossible(view3d, ModNum);
     d->signalEditMode();
 
+    App::AutoTransaction::setEnable(false);
     return true;
 }
 
@@ -716,7 +712,7 @@ void Document::resetEdit()
     Gui::ViewProvider* vpToRestore = d->_editViewProviderPrevious;
     bool shouldRestorePrevious = d->_editWantsRestorePrevious;
 
-    Application::Instance->unsetEditDocument(this);
+    Application::Instance->setEditDocument(nullptr);
 
     if (vpIsNotNull && vpHasChanged && shouldRestorePrevious) {
         setEdit(vpToRestore, modeToRestore);
@@ -753,16 +749,18 @@ void Document::_resetEdit()
 
         // The logic below is not necessary anymore, because this method is
         // changed into a private one,  _resetEdit(). And the exposed
-        // resetEdit() above calls into Application->unsetEditDocument() which
+        // resetEdit() above calls into Application->setEditDocument(0) which
         // will prevent recursive calling.
 
-        App::GetApplication().commitTransaction(getDocument()->getBookedTransactionID());
+        App::GetApplication().closeActiveTransaction();
     }
     d->_editViewProviderParent = nullptr;
     d->_editingViewer = nullptr;
     d->_editObjs.clear();
     d->_editingObject = nullptr;
-    Application::Instance->unsetEditDocument(this);
+    if (Application::Instance->editDocument() == this) {
+        Application::Instance->setEditDocument(nullptr);
+    }
 }
 
 ViewProvider* Document::getInEdit(
@@ -794,10 +792,6 @@ ViewProvider* Document::getInEdit(
     }
 
     return nullptr;
-}
-ViewProvider* Document::getEditViewProvider() const
-{
-    return d->_editViewProvider;
 }
 
 void Document::setInEdit(ViewProviderDocumentObject* parentVp, const char* subname)
@@ -1060,11 +1054,12 @@ void Document::slotDeletedObject(const App::DocumentObject& Obj)
     if (d->_editViewProvider == viewProvider || d->_editViewProviderParent == viewProvider) {
         _resetEdit();
     }
-    else {
-        Application::Instance->unsetEditDocumentIf([&viewProvider](Gui::Document* editdoc) {
-            return editdoc->d->_editViewProvider == viewProvider
-                || editdoc->d->_editViewProviderParent == viewProvider;
-        });
+    else if (Application::Instance->editDocument()) {
+        auto editDoc = Application::Instance->editDocument();
+        if (editDoc->d->_editViewProvider == viewProvider
+            || editDoc->d->_editViewProviderParent == viewProvider) {
+            Application::Instance->setEditDocument(nullptr);
+        }
     }
 
     handleChildren3D(viewProvider, true);
@@ -1087,13 +1082,15 @@ void Document::slotDeletedObject(const App::DocumentObject& Obj)
 
 void Document::beforeDelete()
 {
-    Application::Instance->unsetEditDocumentIf([this](Gui::Document* editDoc) {
+    auto editDoc = Application::Instance->editDocument();
+    if (editDoc) {
         auto vp = freecad_cast<ViewProviderDocumentObject*>(editDoc->d->_editViewProvider);
         auto vpp = freecad_cast<ViewProviderDocumentObject*>(editDoc->d->_editViewProviderParent);
-
-        return editDoc == this || (vp && vp->getDocument() == this)
-            || (vpp && vpp->getDocument() == this);
-    });
+        if (editDoc == this || (vp && vp->getDocument() == this)
+            || (vpp && vpp->getDocument() == this)) {
+            Application::Instance->setEditDocument(nullptr);
+        }
+    }
     for (auto& v : d->_ViewProviderMap) {
         v.second->beforeDelete();
     }
@@ -1240,18 +1237,6 @@ void Document::slotSkipRecompute(const App::Document& doc, const std::vector<App
         return;
     }
     App::DocumentObject* obj = nullptr;
-
-    if (Gui::Application::Instance->isInEdit(this)) {
-        auto vp = freecad_cast<ViewProviderDocumentObject*>(getInEdit());
-        if (vp) {
-            obj = vp->getObject();
-        }
-    }
-    if (objs.size() > 1 || App::GetApplication().getActiveDocument() != &doc
-        || !doc.testStatus(App::Document::AllowPartialRecompute)) {
-        return;
-    }
-
     auto editDoc = Application::Instance->editDocument();
     if (editDoc) {
         auto vp = freecad_cast<ViewProviderDocumentObject*>(editDoc->getInEdit());
@@ -1306,14 +1291,6 @@ void Document::setModified(bool b)
 bool Document::isModified() const
 {
     return d->_isModified;
-}
-void Document::setWorkbench(const std::string& name)
-{
-    d->_workbenchName = name;
-}
-std::string Document::workbench() const
-{
-    return d->_workbenchName;
 }
 
 bool Document::isAboutToClose() const
@@ -1384,17 +1361,6 @@ std::vector<std::pair<ViewProviderDocumentObject*, int>> Document::getViewProvid
 App::Document* Document::getDocument() const
 {
     return d->_pcDocument;
-}
-void Document::setIsActive(bool active)
-{
-    d->_isActive = active;
-    if (d->_editViewProvider) {
-        d->_editViewProvider->setActive(active);
-    }
-}
-bool Document::isActive() const
-{
-    return d->_isActive;
 }
 
 static bool checkCanonicalPath(const std::map<App::Document*, bool>& docs)
@@ -1658,7 +1624,7 @@ bool Document::save()
             for (auto doc : docs) {
                 // Changed 'mustExecute' status may be triggered by saving external document
                 if (!dmap[doc] && doc->mustExecute()) {
-                    App::AutoTransaction trans(doc, "Recompute");
+                    App::AutoTransaction trans("Recompute");
                     Command::doCommand(
                         Command::Doc,
                         "App.getDocument(\"%s\").recompute()",
@@ -1807,7 +1773,7 @@ void Document::saveAll()
         try {
             // Changed 'mustExecute' status may be triggered by saving external document
             if (!dmap[doc] && doc->mustExecute()) {
-                App::AutoTransaction trans(doc, "Recompute");
+                App::AutoTransaction trans("Recompute");
                 Command::doCommand(Command::Doc, "App.getDocument('%s').recompute()", doc->getName());
             }
             Command::doCommand(Command::Doc, "App.getDocument('%s').save()", doc->getName());
@@ -2574,8 +2540,8 @@ bool Document::canClose(bool checkModify, bool checkLink)
         // If a task dialog is open that doesn't allow other commands to modify
         // the document it must be closed by resetting the edit mode of the
         // corresponding view provider.
-        if (!Gui::Control().isAllowedAlterDocument(getDocument())) {
-            std::string name = Gui::Control().activeDialog(getDocument())->getDocumentName();
+        if (!Gui::Control().isAllowedAlterDocument()) {
+            std::string name = Gui::Control().activeDialog()->getDocumentName();
             if (name == this->getDocument()->getName()) {
                 // getInEdit() only checks if the currently active MDI view is
                 // a 3D view and that it is in edit mode. However, when closing a
@@ -2845,9 +2811,9 @@ Gui::MDIView* Document::getEditingViewOfViewProvider(Gui::ViewProvider* vp) cons
  *  operation default is the command name.
  *  @see CommitCommand(),AbortCommand()
  */
-int Document::openCommand(const char* sName)
+void Document::openCommand(const char* sName)
 {
-    return getDocument()->openTransaction(App::TransactionName {.name = sName, .temporary = false});
+    getDocument()->openTransaction(sName);
 }
 
 void Document::commitCommand()

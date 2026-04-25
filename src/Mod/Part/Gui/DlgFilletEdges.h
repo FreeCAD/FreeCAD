@@ -106,7 +106,6 @@ public:
     );
     ~DlgFilletEdges() override;
     bool accept();
-    void setSelectionGate();
 
 protected:
     void findShapes();

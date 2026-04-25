@@ -209,7 +209,7 @@ private:
                 int filletGeoId = getHighestCurveIndex() + (isChamfer ? 2 : 1);
                 // create fillet at point
                 try {
-                    openCommand(QT_TRANSLATE_NOOP("Command", "Create fillet"));
+                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create fillet"));
                     Gui::cmdAppObjectArgs(
                         obj,
                         "fillet(%d,%d,%f,%s,%s,%s)",
@@ -225,7 +225,7 @@ private:
                         Gui::cmdAppObjectArgs(obj, "toggleConstruction(%d) ", filletGeoId);
                     }
 
-                    commitCommand();
+                    Gui::Command::commitCommand();
                 }
                 catch (const Base::Exception& e) {
                     Gui::NotifyUserError(
@@ -233,7 +233,7 @@ private:
                         QT_TRANSLATE_NOOP("Notifications", "Failed to create fillet"),
                         e.what()
                     );
-                    abortCommand();
+                    Gui::Command::abortCommand();
                 }
 
                 tryAutoRecomputeIfNotSolve(obj);
@@ -267,7 +267,7 @@ private:
 
             // create fillet between lines
             try {
-                openCommand(QT_TRANSLATE_NOOP("Command", "Create fillet"));
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create fillet"));
                 Gui::cmdAppObjectArgs(
                     obj,
                     "fillet(%d,%d,App.Vector(%f,%f,0),App.Vector(%f,%f,0),%f,%s,%s,%s)",
@@ -282,7 +282,7 @@ private:
                     preserveCorner ? "True" : "False",
                     isChamfer ? "True" : "False"
                 );
-                commitCommand();
+                Gui::Command::commitCommand();
             }
             catch (const Base::CADKernelError& e) {
                 if (e.getTranslatable()) {
@@ -293,12 +293,12 @@ private:
                     );
                 }
                 Gui::Selection().clearSelection();
-                abortCommand();
+                Gui::Command::abortCommand();
             }
             catch (const Base::ValueError& e) {
                 Gui::TranslatedUserError(sketchgui, tr("Value Error"), tr(e.getMessage().c_str()));
                 Gui::Selection().clearSelection();
-                abortCommand();
+                Gui::Command::abortCommand();
             }
 
             tryAutoRecompute(obj);

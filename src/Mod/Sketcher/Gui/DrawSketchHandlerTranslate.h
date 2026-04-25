@@ -119,7 +119,7 @@ private:
     void executeCommands() override
     {
         try {
-            openCommand(QT_TRANSLATE_NOOP("Command", "Translate geometries"));
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Translate geometries"));
 
             expressionHelper.storeOriginalExpressions(sketchgui->getSketchObject(), listOfGeoIds);
 
@@ -139,7 +139,7 @@ private:
                 deleteOriginalGeos();
             }
 
-            commitCommand();
+            Gui::Command::commitCommand();
         }
         catch (const Base::Exception& e) {
             e.reportException();
@@ -149,7 +149,7 @@ private:
                 QT_TRANSLATE_NOOP("Notifications", "Failed to translate")
             );
 
-            abortCommand();
+            Gui::Command::abortCommand();
             THROWM(
                 Base::RuntimeError,
                 QT_TRANSLATE_NOOP(

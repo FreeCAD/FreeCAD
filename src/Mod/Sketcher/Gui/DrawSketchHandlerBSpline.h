@@ -96,7 +96,7 @@ public:
     void activated() override
     {
         DrawSketchHandlerBSplineBase::activated();
-        openCommand(QT_TRANSLATE_NOOP("Command", "Add Sketch B-Spline"));
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Sketch B-Spline"));
     }
 
 private:
@@ -130,7 +130,7 @@ private:
     {
         if (geoIds.size() == 1) {
             // if we just have one point and we can not close anything
-            abortCommand();
+            Gui::Command::abortCommand();
             return;
         }
 
@@ -385,7 +385,7 @@ private:
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "exposeInternalGeometry(%d)", currentgeoid);
             }
 
-            commitCommand();
+            Gui::Command::commitCommand();
         }
         catch (const Base::Exception&) {
             Gui::NotifyError(
@@ -393,7 +393,7 @@ private:
                 QT_TRANSLATE_NOOP("Notifications", "Error"),
                 QT_TRANSLATE_NOOP("Notifications", "Error creating B-spline")
             );
-            abortCommand();
+            Gui::Command::abortCommand();
 
             tryAutoRecomputeIfNotSolve(sketchgui->getSketchObject());
 
@@ -621,9 +621,9 @@ private:
 
     void onReset() override
     {
-        abortCommand();
+        Gui::Command::abortCommand();
         tryAutoRecomputeIfNotSolve(sketchgui->getSketchObject());
-        openCommand(QT_TRANSLATE_NOOP("Command", "Add Sketch B-Spline"));
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Sketch B-Spline"));
 
         SplineDegree = 3;
         geoIds.clear();
@@ -680,7 +680,7 @@ private:
             );
             // some commands might have already deleted some constraints/geometries but not
             // others
-            abortCommand();
+            Gui::Command::abortCommand();
 
             sketchgui->getSketchObject()->solve();
 
@@ -756,7 +756,7 @@ private:
                 QT_TRANSLATE_NOOP("Notifications", "Error adding B-spline pole/knot")
             );
 
-            abortCommand();
+            Gui::Command::abortCommand();
 
             sketchgui->getSketchObject()->solve();
 
@@ -768,9 +768,9 @@ private:
     void changeConstructionMethode()
     {
         // Restart the command
-        abortCommand();
+        Gui::Command::abortCommand();
         tryAutoRecomputeIfNotSolve(sketchgui->getSketchObject());
-        openCommand(QT_TRANSLATE_NOOP("Command", "Add Sketch B-Spline"));
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Sketch B-Spline"));
 
         // Restore keyboard focus after command restart
         if (Gui::Document* doc = Gui::Application::Instance->activeDocument()) {

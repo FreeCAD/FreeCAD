@@ -30,7 +30,6 @@
 
 #include "Mod/Spreadsheet/App/Sheet.h"
 #include "Mod/Spreadsheet/Gui/SpreadsheetView.h"
-#include <App/Document.h>
 #include <App/Range.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
@@ -163,7 +162,7 @@ void WorkbenchHelper::setForegroundColor(const QColor& color)
 
     std::vector<Range>::const_iterator i = ranges.begin();
 
-    sheet->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Set text color"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Set text color"));
     for (; i != ranges.end(); ++i) {
         Gui::Command::doCommand(
             Gui::Command::Doc,
@@ -175,7 +174,7 @@ void WorkbenchHelper::setForegroundColor(const QColor& color)
             color.blueF()
         );
     }
-    sheet->getDocument()->commitTransaction();
+    Gui::Command::commitCommand();
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
 }
 
@@ -203,7 +202,7 @@ void SpreadsheetGui::WorkbenchHelper::clearForegroundColor()
 
     std::vector<Range>::const_iterator i = ranges.begin();
 
-    sheet->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Clear text color"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Clear text color"));
     for (; i != ranges.end(); ++i) {
         Gui::Command::doCommand(
             Gui::Command::Doc,
@@ -212,7 +211,7 @@ void SpreadsheetGui::WorkbenchHelper::clearForegroundColor()
             i->rangeString().c_str()
         );
     }
-    sheet->getDocument()->commitTransaction();
+    Gui::Command::commitCommand();
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
 }
 
@@ -240,7 +239,7 @@ void WorkbenchHelper::setBackgroundColor(const QColor& color)
 
     std::vector<Range>::const_iterator i = ranges.begin();
 
-    sheet->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Set background color"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Set background color"));
     for (; i != ranges.end(); ++i) {
         Gui::Command::doCommand(
             Gui::Command::Doc,
@@ -252,7 +251,7 @@ void WorkbenchHelper::setBackgroundColor(const QColor& color)
             color.blueF()
         );
     }
-    sheet->getDocument()->commitTransaction();
+    Gui::Command::commitCommand();
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
 }
 
@@ -280,7 +279,7 @@ void SpreadsheetGui::WorkbenchHelper::clearBackgroundColor()
 
     std::vector<Range>::const_iterator i = ranges.begin();
 
-    sheet->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Clear background color"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Clear background color"));
     for (; i != ranges.end(); ++i) {
         Gui::Command::doCommand(
             Gui::Command::Doc,
@@ -289,7 +288,7 @@ void SpreadsheetGui::WorkbenchHelper::clearBackgroundColor()
             i->rangeString().c_str()
         );
     }
-    sheet->getDocument()->commitTransaction();
+    Gui::Command::commitCommand();
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
 }
 

@@ -94,7 +94,7 @@ void ViewProviderSections::unsetEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
         // when pressing ESC make sure to close the dialog
-        QTimer::singleShot(0, [] { Gui::Control().closeDialog(nullptr); });
+        QTimer::singleShot(0, &Gui::Control(), &Gui::ControlSingleton::closeDialog);
     }
     else {
         PartGui::ViewProviderSpline::unsetEdit(ModNum);
@@ -194,13 +194,15 @@ void ViewProviderSections::highlightReferences(ShapeType type, const References&
 class SectionsPanel::ShapeSelection: public Gui::SelectionFilterGate
 {
 public:
-    ShapeSelection(SectionsPanel::SelectionMode mode, Surface::Sections* editedObject)
+    ShapeSelection(SectionsPanel::SelectionMode& mode, Surface::Sections* editedObject)
         : Gui::SelectionFilterGate(nullPointer())
         , mode(mode)
         , editedObject(editedObject)
     {}
     ~ShapeSelection() override
-    {}
+    {
+        mode = SectionsPanel::None;
+    }
     /**
      * Allow the user to pick only edges.
      */
@@ -251,7 +253,7 @@ private:
     }
 
 private:
-    SectionsPanel::SelectionMode mode;
+    SectionsPanel::SelectionMode& mode;
     Surface::Sections* editedObject;
 };
 
@@ -336,12 +338,6 @@ void SectionsPanel::setEditedObject(Surface::Sections* fea)
     // attach this document observer
     attachDocument(Gui::Application::Instance->getDocument(doc));
 }
-void SectionsPanel::setSelectionGate()
-{
-    if (selectionMode != None) {
-        Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
-    }
-}
 
 void SectionsPanel::changeEvent(QEvent* e)
 {
@@ -379,10 +375,10 @@ void SectionsPanel::clearSelection()
 
 void SectionsPanel::checkOpenCommand()
 {
-    if (checkCommand && !editedObject->getDocument()->hasPendingTransaction()) {
+    if (checkCommand && !Gui::Command::hasPendingCommand()) {
         std::string Msg("Edit ");
         Msg += editedObject->Label.getValue();
-        editedObject->getDocument()->openTransaction(Msg.c_str());
+        Gui::Command::openCommand(Msg.c_str());
         checkCommand = false;
     }
 }
@@ -454,7 +450,8 @@ void SectionsPanel::onButtonEdgeAddToggled(bool checked)
 {
     if (checked) {
         selectionMode = AppendEdge;
-        setSelectionGate();
+        // 'selectionMode' is passed by reference and changed when the filter is deleted
+        Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
     }
     else if (selectionMode == AppendEdge) {
         exitSelectionMode();
@@ -465,7 +462,8 @@ void SectionsPanel::onButtonEdgeRemoveToggled(bool checked)
 {
     if (checked) {
         selectionMode = RemoveEdge;
-        setSelectionGate();
+        // 'selectionMode' is passed by reference and changed when the filter is deleted
+        Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
     }
     else if (selectionMode == RemoveEdge) {
         exitSelectionMode();
@@ -620,13 +618,11 @@ void SectionsPanel::exitSelectionMode()
     // 'selectionMode' is passed by reference to the filter and changed when the filter is deleted
     Gui::Selection().clearSelection();
     Gui::Selection().rmvSelectionGate();
-    selectionMode = None;
 }
 
 // ----------------------------------------------------------------------------
 
 TaskSections::TaskSections(ViewProviderSections* vp, Surface::Sections* obj)
-    : editedObj(obj)
 {
     // first task box
     widget1 = new SectionsPanel(vp, obj);
@@ -635,10 +631,6 @@ TaskSections::TaskSections(ViewProviderSections* vp, Surface::Sections* obj)
 
 void TaskSections::setEditedObject(Surface::Sections* obj)
 {
-    if (editedObj != nullptr && obj != editedObj) {
-        editedObj->getDocument()->commitTransaction();
-    }
-    editedObj = obj;
     widget1->setEditedObject(obj);
 }
 
@@ -651,7 +643,7 @@ bool TaskSections::accept()
 {
     bool ok = widget1->accept();
     if (ok) {
-        editedObj->getDocument()->commitTransaction();
+        Gui::Command::commitCommand();
         Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
         Gui::Command::updateActive();
     }
@@ -663,7 +655,7 @@ bool TaskSections::reject()
 {
     bool ok = widget1->reject();
     if (ok) {
-        editedObj->getDocument()->abortTransaction();
+        Gui::Command::abortCommand();
         Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
         Gui::Command::updateActive();
     }

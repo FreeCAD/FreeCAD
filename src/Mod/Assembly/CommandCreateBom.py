@@ -115,7 +115,7 @@ class TaskAssemblyCreateBom(QtCore.QObject):
         pref = Preferences.preferences()
 
         if bomObj:
-            Gui.ActiveDocument.openCommand("Edit Bill Of Materials")
+            App.setActiveTransaction("Edit Bill Of Materials")
 
             for name in bomObj.columnsNames:
                 if name in ColumnNames:
@@ -126,7 +126,7 @@ class TaskAssemblyCreateBom(QtCore.QObject):
 
             self.bomObj = bomObj
         else:
-            Gui.ActiveDocument.openCommand("Create Bill Of Materials")
+            App.setActiveTransaction("Create Bill Of Materials")
 
             # Add the columns
             for name in TranslatedColumnNames:
@@ -152,7 +152,7 @@ class TaskAssemblyCreateBom(QtCore.QObject):
 
     def accept(self):
         self.deactivate()
-        Gui.ActiveDocument.commitCommand()
+        App.closeActiveTransaction()
 
         self.bomObj.recompute()
 
@@ -162,7 +162,7 @@ class TaskAssemblyCreateBom(QtCore.QObject):
 
     def reject(self):
         self.deactivate()
-        Gui.ActiveDocument.abortCommand()
+        App.closeActiveTransaction(True)
         return True
 
     def deactivate(self):

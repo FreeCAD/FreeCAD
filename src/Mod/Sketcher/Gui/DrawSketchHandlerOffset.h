@@ -427,7 +427,7 @@ private:
             return;
         }
 
-        openCommand(QT_TRANSLATE_NOOP("Command", "Offset"));
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Offset"));
 
         // Create geos
         Obj->addGeometry(std::move(geometriesToAdd));
@@ -442,7 +442,7 @@ private:
             makeOffsetConstraint(listOfOffsetGeoIds);
         }
 
-        commitCommand();
+        Gui::Command::commitCommand();
     }
 
     void jointOffsetCurves(std::vector<int>& listOfOffsetGeoIds)

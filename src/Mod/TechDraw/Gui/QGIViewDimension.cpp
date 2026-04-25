@@ -37,10 +37,8 @@
 #include <Base/Parameter.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
-#include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Mod/TechDraw/App/DrawComplexSection.h>
-#include <Gui/Document.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawViewDimension.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
@@ -333,14 +331,12 @@ void QGIViewDimension::datumLabelDragFinished()
     }
 
     double x = Rez::appX(datumLabel->X()), y = Rez::appX(datumLabel->Y());
-
-    int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Drag Dimension"));
-
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Drag Dimension"));
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.X = %f",
                             dim->getNameInDocument(), x);
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Y = %f",
                             dim->getNameInDocument(), -y);
-    Gui::Command::commitCommand(tid);
+    Gui::Command::commitCommand();
 }
 
 //this is for formatting and finding centers, not display

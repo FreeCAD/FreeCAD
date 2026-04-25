@@ -35,7 +35,6 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <App/Transactions.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Selection/Selection.h>
@@ -70,7 +69,7 @@ TaskDressUpParameters::TaskDressUpParameters(
     , DressUpView(DressUpView)
 {
     // remember initial transaction ID
-    transactionID = DressUpView->getObject()->getDocument()->getBookedTransactionID();
+    App::GetApplication().getActiveTransaction(&transactionID);
 
     selectionMode = none;
 }
@@ -87,16 +86,16 @@ void TaskDressUpParameters::setupTransaction()
         return;
     }
 
-    int tid = DressUpView->getObject()->getDocument()->getBookedTransactionID();
-    if (tid != App::NullTransaction && tid == transactionID) {
+    int tid = 0;
+    App::GetApplication().getActiveTransaction(&tid);
+    if (tid && tid == transactionID) {
         return;
     }
 
     // open a transaction if none is active
-    // where is this transaction committed - theo-vt?
     std::string n("Edit ");
     n += DressUpView->getObject()->Label.getValue();
-    transactionID = DressUpView->getObject()->getDocument()->openTransaction(n.c_str());
+    transactionID = App::GetApplication().setActiveTransaction(n.c_str());
 }
 
 void TaskDressUpParameters::referenceSelected(const Gui::SelectionChanges& msg, QListWidget* widget)
@@ -453,6 +452,8 @@ void TaskDressUpParameters::setSelectionMode(selectionModes mode)
     setButtons(mode);
 
     if (mode == none) {
+        Gui::Selection().rmvSelectionGate();
+
         // remove any highlights and selections
         DressUpView->highlightReferences(false);
 
@@ -463,6 +464,11 @@ void TaskDressUpParameters::setSelectionMode(selectionModes mode)
         }
     }
     else {
+        AllowSelectionFlags allow;
+        allow.setFlag(AllowSelection::EDGE, allowEdges);
+        allow.setFlag(AllowSelection::FACE, allowFaces);
+        Gui::Selection().addSelectionGate(new ReferenceSelection(this->getBase(), allow));
+
         DressUpView->highlightReferences(true);
 
         // selection must come from the previous feature, we also need to remember the currently
@@ -470,20 +476,8 @@ void TaskDressUpParameters::setSelectionMode(selectionModes mode)
         previouslyShownViewProvider = DressUpView->getBodyViewProvider()->getShownViewProvider();
         DressUpView->showPreviousFeature(true);
     }
-    setSelectionGate();
+
     Gui::Selection().clearSelection();
-}
-void TaskDressUpParameters::setSelectionGate()
-{
-    if (selectionMode == none) {
-        Gui::Selection().rmvSelectionGate();
-    }
-    else {
-        AllowSelectionFlags allow;
-        allow.setFlag(AllowSelection::EDGE, allowEdges);
-        allow.setFlag(AllowSelection::FACE, allowFaces);
-        Gui::Selection().addSelectionGate(new ReferenceSelection(this->getBase(), allow));
-    }
 }
 
 //**************************************************************************

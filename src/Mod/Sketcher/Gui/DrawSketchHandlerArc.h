@@ -282,18 +282,18 @@ private:
         try {
             createShape(false);
 
-            openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc"));
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc"));
 
             commandAddShapeGeometryAndConstraints();
 
-            commitCommand();
+            Gui::Command::commitCommand();
         }
         catch (const Base::Exception&) {
             /*Gui::NotifyError(sketchgui,
                 QT_TRANSLATE_NOOP("Notifications", "Error"),
                 QT_TRANSLATE_NOOP("Notifications", "Failed to add arc"));*/
 
-            abortCommand();
+            Gui::Command::abortCommand();
             THROWM(
                 Base::RuntimeError,
                 QT_TRANSLATE_NOOP(

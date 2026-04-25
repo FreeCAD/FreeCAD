@@ -514,16 +514,10 @@ void TaskFeaturePick::onSelectionChanged(const Gui::SelectionChanges& msg)
                 item->setSelected(true);
 
                 if (msg.Type == Gui::SelectionChanges::AddSelection) {
-                    std::string docNameCopy = documentName;
                     if (isSingleSelectionEnabled()) {
                         QMetaObject::invokeMethod(
                             qobject_cast<Gui::ControlSingleton*>(&Gui::Control()),
-                            [docNameCopy] {
-                                Gui::Control().accept(
-                                    Gui::Application::Instance->getDocument(docNameCopy.c_str())
-                                        ->getDocument()
-                                );
-                            },
+                            "accept",
                             Qt::QueuedConnection
                         );
                     }
@@ -563,14 +557,9 @@ void TaskFeaturePick::onDoubleClick(QListWidgetItem* item)
     Gui::Selection().addSelection(documentName.c_str(), t.toLatin1());
     doSelection = false;
 
-    std::string docNameCopy = documentName;
     QMetaObject::invokeMethod(
         qobject_cast<Gui::ControlSingleton*>(&Gui::Control()),
-        [docNameCopy] {
-            Gui::Control().accept(
-                Gui::Application::Instance->getDocument(docNameCopy.c_str())->getDocument()
-            );
-        },
+        "accept",
         Qt::QueuedConnection
     );
 }
@@ -582,18 +571,17 @@ void TaskFeaturePick::slotDeletedObject(const Gui::ViewProviderDocumentObject& O
     }
 }
 
-void TaskFeaturePick::slotUndoDocument(const Gui::Document& doc)
+void TaskFeaturePick::slotUndoDocument(const Gui::Document&)
 {
     if (origins.empty()) {
-        QTimer::singleShot(100, [&doc]() { Gui::Control().closeDialog(doc.getDocument()); });
+        QTimer::singleShot(100, &Gui::Control(), &Gui::ControlSingleton::closeDialog);
     }
 }
 
-void TaskFeaturePick::slotDeleteDocument(const Gui::Document& doc)
+void TaskFeaturePick::slotDeleteDocument(const Gui::Document&)
 {
     origins.clear();
-    App::Document* docPtr = doc.getDocument();
-    QTimer::singleShot(100, [docPtr]() { Gui::Control().closeDialog(docPtr); });
+    QTimer::singleShot(100, &Gui::Control(), &Gui::ControlSingleton::closeDialog);
 }
 
 void TaskFeaturePick::showExternal(bool val)

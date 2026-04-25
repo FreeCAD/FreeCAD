@@ -214,7 +214,7 @@ bool TaskDlgFeatureParameters::accept()
         }
 
         Gui::cmdGuiDocument(feature, "resetEdit()");
-        feature->getDocument()->commitTransaction();
+        Gui::Command::commitCommand();
     }
     catch (const Base::Exception& e) {
         QString errorText = QString::fromUtf8(e.what());
@@ -262,7 +262,7 @@ bool TaskDlgFeatureParameters::reject()
     }
 
     // roll back the done things which may delete the feature
-    document->abortTransaction();
+    Gui::Command::abortCommand();
 
     // if abort command deleted the object make the previous feature visible again
     if (weakptr.expired()) {

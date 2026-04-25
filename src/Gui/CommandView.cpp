@@ -22,11 +22,6 @@
 
 #include <cstddef>
 #include <sstream>
-#include <string>
-#include <unordered_set>
-#include <vector>
-#include <tuple>
-
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/nodes/SoPerspectiveCamera.h>
@@ -639,34 +634,7 @@ void StdCmdFreezeViews::languageChange()
 // Std_ToggleClipPlane
 //===========================================================================
 
-class StdCmdToggleClipPlane: public Gui::Command
-{
-public:
-    StdCmdToggleClipPlane();
-    virtual ~StdCmdToggleClipPlane()
-    {}
-    virtual const char* className() const
-    {
-        return "StdCmdToggleClipPlane";
-    }
-
-protected:
-    virtual void activated(int iMsg);
-    virtual bool isActive(void);
-    virtual Gui::Action* createAction(void);
-
-private:
-    StdCmdToggleClipPlane(const StdCmdToggleClipPlane&) = delete;
-    StdCmdToggleClipPlane(StdCmdToggleClipPlane&&) = delete;
-    StdCmdToggleClipPlane& operator=(const StdCmdToggleClipPlane&) = delete;
-    StdCmdToggleClipPlane& operator=(StdCmdToggleClipPlane&&) = delete;
-
-    void garbageCollect();
-    bool hasClipping(App::Document* doc) const;
-
-private:
-    std::vector<std::pair<App::Document*, QPointer<Gui::Dialog::Clipping>>> clippings;
-};
+DEF_STD_CMD_AC(StdCmdToggleClipPlane)
 
 StdCmdToggleClipPlane::StdCmdToggleClipPlane()
     : Command("Std_ToggleClipPlane")
@@ -689,15 +657,11 @@ Action* StdCmdToggleClipPlane::createAction()
 void StdCmdToggleClipPlane::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    App::Document* doc = getActiveDocument();
-    if (!doc) {
-        return;
-    }
-    garbageCollect();  // remove dead pointers
-    if (!hasClipping(doc)) {
+    static QPointer<Gui::Dialog::Clipping> clipping = nullptr;
+    if (!clipping) {
         auto view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
         if (view) {
-            clippings.push_back(std::make_pair(doc, Gui::Dialog::Clipping::makeDockWidget(view, doc)));
+            clipping = Gui::Dialog::Clipping::makeDockWidget(view);
         }
     }
 }
@@ -706,31 +670,6 @@ bool StdCmdToggleClipPlane::isActive()
 {
     auto view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
     return view ? true : false;
-}
-
-void StdCmdToggleClipPlane::garbageCollect()
-{
-    // We assume the vector to be small
-    std::vector<std::pair<App::Document*, QPointer<Gui::Dialog::Clipping>>> newClippings;
-    newClippings.reserve(clippings.size());
-    std::copy_if(
-        clippings.begin(),
-        clippings.end(),
-        std::back_inserter(newClippings),
-        [](const std::pair<App::Document*, QPointer<Gui::Dialog::Clipping>>& clipPair) -> bool {
-            return clipPair.second != nullptr;
-        }
-    );
-    clippings = newClippings;
-}
-bool StdCmdToggleClipPlane::hasClipping(App::Document* doc) const
-{
-    return std::ranges::find(
-               clippings,
-               doc,
-               &std::pair<App::Document*, QPointer<Gui::Dialog::Clipping>>::first
-           )
-        != clippings.end();
 }
 
 //===========================================================================
@@ -3105,8 +3044,7 @@ static std::vector<std::string> getBoxSelection(
         return ret;
     }
 
-    App::Document* doc = App::GetApplication().getActiveDocument();
-    const auto selectionGate = SelectionSingleton::instance().getSelectionGate(doc);
+    const auto selectionGate = SelectionSingleton::instance().getSelectionGate();
 
     // DO NOT check this view object Visibility, let the caller do this. Because
     // we may be called by upper object hierarchy that manages our visibility.
@@ -3579,7 +3517,7 @@ StdCmdTextureMapping::StdCmdTextureMapping()
 void StdCmdTextureMapping::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::Control().showDialog(new Gui::Dialog::TaskTextureMapping, getDocument());
+    Gui::Control().showDialog(new Gui::Dialog::TaskTextureMapping);
 }
 
 bool StdCmdTextureMapping::isActive()

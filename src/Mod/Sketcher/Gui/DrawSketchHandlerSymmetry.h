@@ -137,7 +137,7 @@ private:
     void executeCommands() override
     {
         try {
-            openCommand(QT_TRANSLATE_NOOP("Command", "Symmetry geometries"));
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Symmetry geometries"));
 
             SketchObject* Obj = sketchgui->getSketchObject();
             createSymConstraints = !deleteOriginal && createSymConstraints;
@@ -148,7 +148,7 @@ private:
             }
             tryAutoRecomputeIfNotSolve(Obj);
 
-            commitCommand();
+            Gui::Command::commitCommand();
         }
         catch (const Base::Exception& e) {
             e.reportException();
@@ -158,7 +158,7 @@ private:
                 QT_TRANSLATE_NOOP("Notifications", "Failed to create symmetry")
             );
 
-            abortCommand();
+            Gui::Command::abortCommand();
             THROWM(
                 Base::RuntimeError,
                 QT_TRANSLATE_NOOP(

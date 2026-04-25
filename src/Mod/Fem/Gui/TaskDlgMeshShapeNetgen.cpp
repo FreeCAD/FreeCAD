@@ -65,9 +65,9 @@ TaskDlgMeshShapeNetgen::~TaskDlgMeshShapeNetgen() = default;
 void TaskDlgMeshShapeNetgen::open()
 {
     // a transaction is already open at creation time of the mesh
-    if (!ViewProviderFemMeshShapeNetgen->getDocument()->hasPendingCommand()) {
+    if (!Gui::Command::hasPendingCommand()) {
         QString msg = tr("Edit FEM mesh");
-        FemMeshShapeNetgenObject->getDocument()->openTransaction((const char*)msg.toUtf8());
+        Gui::Command::openCommand((const char*)msg.toUtf8());
     }
 }
 
@@ -90,7 +90,6 @@ void TaskDlgMeshShapeNetgen::clicked(int button)
 
 bool TaskDlgMeshShapeNetgen::accept()
 {
-    App::Document* doc = FemMeshShapeNetgenObject->getDocument();
     try {
         if (param->touched) {
             Gui::WaitCursor wc;
@@ -113,15 +112,14 @@ bool TaskDlgMeshShapeNetgen::accept()
         }
 
         // FemSetNodesObject->Label.setValue(name->name);
-        doc->commitTransaction();
-
+        App::Document* doc = FemMeshShapeNetgenObject->getDocument();
         Gui::cmdAppDocument(doc, "recompute()");
         Gui::cmdGuiDocument(doc, "resetEdit()");
+        Gui::Command::commitCommand();
 
         return true;
     }
     catch (const Base::Exception& e) {
-        doc->abortTransaction();
         Base::Console().warning("TaskDlgMeshShapeNetgen::accept(): %s\n", e.what());
     }
 
@@ -135,8 +133,8 @@ bool TaskDlgMeshShapeNetgen::reject()
     //     //if(doc)
     //     //    doc->resetEdit();
     // param->MeshViewProvider->resetHighlightNodes();
+    Gui::Command::abortCommand();
     App::Document* doc = FemMeshShapeNetgenObject->getDocument();
-    doc->abortTransaction();
     Gui::cmdGuiDocument(doc, "resetEdit()");
     Gui::cmdAppDocument(doc, "recompute()");
 

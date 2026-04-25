@@ -33,6 +33,7 @@
 #include <QPoint>
 #include <QPixmap>
 
+#include <App/AutoTransaction.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
@@ -210,7 +211,6 @@ public:
         , blockRemoveSel(false)
         , AreaLeaderPoint(Base::Vector3d(0.0, 0.0, 0.0))
         , hasAreaLeaderPoint(false)
-        , tid(0)
     {
     }
     ~TDHandlerDimension()
@@ -243,9 +243,7 @@ public:
             mdi->setDimensionsSelectability(false);
         }
         Gui::Selection().setSelectionStyle(Gui::SelectionSingleton::SelectionStyle::GreedySelection);
-
-        tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Insert dimension"));
-
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Insert dimension"));
         handleInitialSelection();
     }
 
@@ -256,7 +254,7 @@ public:
             mdi->setDimensionsSelectability(true);
         }
         Gui::Selection().setSelectionStyle(Gui::SelectionSingleton::SelectionStyle::NormalSelection);
-        Gui::Command::abortCommand(tid);
+        Gui::Command::abortCommand();
     }
 
     void keyPressEvent(QKeyEvent* event) override
@@ -605,7 +603,6 @@ protected:
 
     Base::Vector3d AreaLeaderPoint;
     bool hasAreaLeaderPoint;
-    int tid;
 
     void handleInitialSelection()
     {
@@ -639,7 +636,7 @@ protected:
         // Ask for the value of datum dimensions
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/TechDraw");
 
-        Gui::Command::commitCommand(tid);
+        Gui::Command::commitCommand();
 
         // Touch the parent feature so the dimension in tree view appears as a child
         partFeat->touch(true);
@@ -1357,15 +1354,15 @@ protected:
 
     void restartCommand(const char* cstrName) {
         specialDimension = SpecialDimension::None;
-        Gui::Command::abortCommand(tid);
-        tid  = Gui::Command::openActiveDocumentCommand(cstrName);
+        Gui::Command::abortCommand();
+        Gui::Command::openCommand(cstrName);
 
         dims.clear();
     }
 
     void clearAndRestartCommand() {
-        Gui::Command::abortCommand(tid);
-        tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Dimension"));
+        Gui::Command::abortCommand();
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Dimension"));
         specialDimension = SpecialDimension::None;
         mousePos = QPoint(0,0);
         clearRefVectors();
@@ -1404,6 +1401,7 @@ CmdTechDrawDimension::CmdTechDrawDimension()
 void CmdTechDrawDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+    App::AutoTransaction::setEnable(false);
 
     ReferenceVector references2d;
     ReferenceVector references3d;
@@ -1993,14 +1991,14 @@ void execExtent(Gui::Command* cmd, const std::string& dimType)
     } else if (dimType == "DistanceY") {
         commandString = QT_TRANSLATE_NOOP("Command", "Create Dimension DistanceY");
     }
-    cmd->openCommand(QT_TRANSLATE_NOOP("Command", commandString));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", commandString));
 
     bool result = _checkDrawViewPart(cmd);
     if (!result) {
         QMessageBox::warning(Gui::getMainWindow(),
                              QObject::tr("Incorrect Selection"),
                              QObject::tr("No view of a part in selection."));
-        cmd->abortCommand();
+        Gui::Command::abortCommand();
         return;
     }
     ReferenceVector references2d;
@@ -2016,7 +2014,7 @@ void execExtent(Gui::Command* cmd, const std::string& dimType)
                 QMessageBox::warning(Gui::getMainWindow(),
                     QObject::tr("Incorrect Selection"),
                     QObject::tr("Selection contains both 2D and 3D geometry"));
-                cmd->abortCommand();
+                Gui::Command::abortCommand();
                 return;
             }
         }
@@ -2042,7 +2040,7 @@ void execExtent(Gui::Command* cmd, const std::string& dimType)
         QMessageBox::warning(Gui::getMainWindow(),
                              QObject::tr("Incorrect Selection"),
                              QObject::tr("Cannot make 2D extent dimension from selection"));
-        cmd->abortCommand();
+        Gui::Command::abortCommand();
         return;
     }
 
@@ -2058,7 +2056,7 @@ void execExtent(Gui::Command* cmd, const std::string& dimType)
             QMessageBox::warning(Gui::getMainWindow(),
                                  QObject::tr("Incorrect Selection"),
                                  QObject::tr("Cannot make 3D extent dimension from selection"));
-            cmd->abortCommand();
+            Gui::Command::abortCommand();
             return;
         }
     }
@@ -2069,7 +2067,7 @@ void execExtent(Gui::Command* cmd, const std::string& dimType)
     else {
         DrawDimHelper::makeExtentDim3d(partFeat, dimType, references3d);
     }
-    cmd->commitCommand();
+    Gui::Command::commitCommand();
 }
 
 //===========================================================================
@@ -2284,11 +2282,11 @@ void execDim(Gui::Command* cmd, std::string type, StringVector acceptableGeometr
 DrawViewDimension* dimensionMaker(TechDraw::DrawViewPart* dvp, std::string dimType,
                                   ReferenceVector references2d, ReferenceVector references3d)
 {
-    int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Create dimension"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create dimension"));
 
     TechDraw::DrawViewDimension* dim = dimMaker(dvp, dimType, references2d, references3d);
 
-    Gui::Command::commitCommand(tid);
+    Gui::Command::commitCommand();
 
     // Touch the parent feature so the dimension in tree view appears as a child
     dvp->touch(true);

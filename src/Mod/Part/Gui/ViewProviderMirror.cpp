@@ -328,7 +328,7 @@ bool ViewProviderFillet::setEdit(int ModNum)
 void ViewProviderFillet::unsetEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
-        Gui::Control().closeDialog(getDocument()->getDocument());
+        Gui::Control().closeDialog();
     }
     else {
         ViewProviderPart::unsetEdit(ModNum);
@@ -449,7 +449,7 @@ bool ViewProviderChamfer::setEdit(int ModNum)
 void ViewProviderChamfer::unsetEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
-        Gui::Control().closeDialog(getDocument()->getDocument());
+        Gui::Control().closeDialog();
     }
     else {
         ViewProviderPart::unsetEdit(ModNum);
@@ -572,14 +572,14 @@ void ViewProviderOffset::setupContextMenu(QMenu* menu, QObject* receiver, const 
 bool ViewProviderOffset::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
-        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog(getDocument()->getDocument());
+        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
         TaskOffset* offsetDlg = qobject_cast<TaskOffset*>(dlg);
         if (offsetDlg && offsetDlg->getObject() != this->getObject()) {
             offsetDlg = nullptr;  // another pad left open its task panel
         }
         if (dlg && !offsetDlg) {
             if (dlg->canClose()) {
-                Gui::Control().closeDialog(getDocument()->getDocument());
+                Gui::Control().closeDialog();
             }
             else {
                 return false;
@@ -591,13 +591,10 @@ bool ViewProviderOffset::setEdit(int ModNum)
 
         // start the edit dialog
         if (offsetDlg) {
-            Gui::Control().showDialog(offsetDlg, getDocument()->getDocument());
+            Gui::Control().showDialog(offsetDlg);
         }
         else {
-            Gui::Control().showDialog(
-                new TaskOffset(getObject<Part::Offset>()),
-                getDocument()->getDocument()
-            );
+            Gui::Control().showDialog(new TaskOffset(getObject<Part::Offset>()));
         }
 
         return true;
@@ -611,7 +608,7 @@ void ViewProviderOffset::unsetEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
         // when pressing ESC make sure to close the dialog
-        Gui::Control().closeDialog(nullptr);
+        Gui::Control().closeDialog();
     }
     else {
         PartGui::ViewProviderPart::unsetEdit(ModNum);
@@ -662,14 +659,14 @@ void ViewProviderThickness::setupContextMenu(QMenu* menu, QObject* receiver, con
 bool ViewProviderThickness::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
-        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog(getDocument()->getDocument());
+        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
         TaskThickness* thicknessDlg = qobject_cast<TaskThickness*>(dlg);
         if (thicknessDlg && thicknessDlg->getObject() != this->getObject()) {
             thicknessDlg = nullptr;  // another pad left open its task panel
         }
         if (dlg && !thicknessDlg) {
             if (dlg->canClose()) {
-                Gui::Control().closeDialog(getDocument()->getDocument());
+                Gui::Control().closeDialog();
             }
             else {
                 return false;
@@ -681,37 +678,24 @@ bool ViewProviderThickness::setEdit(int ModNum)
 
         // start the edit dialog
         if (thicknessDlg) {
-            Gui::Control().showDialog(thicknessDlg, getDocument()->getDocument());
+            Gui::Control().showDialog(thicknessDlg);
         }
         else {
-            Gui::Control().showDialog(
-                new TaskThickness(getObject<Part::Thickness>()),
-                getDocument()->getDocument()
-            );
+            Gui::Control().showDialog(new TaskThickness(getObject<Part::Thickness>()));
         }
 
         return true;
     }
-
-    return ViewProviderPart::setEdit(ModNum);
+    else {
+        return ViewProviderPart::setEdit(ModNum);
+    }
 }
 
 void ViewProviderThickness::unsetEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
         // when pressing ESC make sure to close the dialog
-        std::string docName;
-        if (auto* guiDoc = getDocument()) {
-            if (auto* appDoc = guiDoc->getDocument()) {
-                docName = appDoc->getName();
-            }
-        }
-        QTimer::singleShot(100, [docName]() {
-            auto* doc = App::GetApplication().getDocument(docName.c_str());
-            if (doc) {
-                Gui::Control().closeDialog(doc);
-            }
-        });
+        QTimer::singleShot(0, &Gui::Control(), &Gui::ControlSingleton::closeDialog);
     }
     else {
         PartGui::ViewProviderPart::unsetEdit(ModNum);

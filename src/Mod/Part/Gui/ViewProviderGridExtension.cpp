@@ -253,6 +253,10 @@ void GridExtensionP::computeGridSize(const Gui::View3DInventorViewer* viewer)
 
 void GridExtensionP::createGrid(bool cameraUpdate)
 {
+    auto view = dynamic_cast<Gui::View3DInventor*>(
+        Gui::Application::Instance->editDocument()->getActiveView()
+    );
+
     if (!view) {
         return;
     }
@@ -471,7 +475,7 @@ void GridExtensionP::setEnabled(Gui::View3DInventor* view_)
 
 bool GridExtensionP::getEnabled()
 {
-    return view != nullptr;
+  return view != nullptr;
 }
 
 void GridExtensionP::createEditModeInventorNodes()

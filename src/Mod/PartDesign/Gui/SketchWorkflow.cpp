@@ -751,8 +751,7 @@ private:
 
     void checkForShownDialog()
     {
-        App::Document* appdocument = guidocument->getDocument();
-        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog(appdocument);
+        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
         PartDesignGui::TaskDlgFeaturePick* pickDlg
             = qobject_cast<PartDesignGui::TaskDlgFeaturePick*>(dlg);
         if (dlg && !pickDlg) {

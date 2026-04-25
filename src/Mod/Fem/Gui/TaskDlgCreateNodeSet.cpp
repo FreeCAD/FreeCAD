@@ -21,7 +21,6 @@
  ***************************************************************************/
 
 
-#include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Gui/Application.h>
@@ -74,12 +73,10 @@ bool TaskDlgCreateNodeSet::accept()
         param->MeshViewProvider->resetHighlightNodes();
         FemSetNodesObject->Label.setValue(name->name);
         Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
-        FemSetNodesObject->getDocument()->commitTransaction();
 
         return true;
     }
     catch (const Base::Exception& e) {
-        FemSetNodesObject->getDocument()->abortTransaction();
         Base::Console().warning("TaskDlgCreateNodeSet::accept(): %s\n", e.what());
     }
 
@@ -93,7 +90,7 @@ bool TaskDlgCreateNodeSet::reject()
     // if(doc)
     //     doc->resetEdit();
     param->MeshViewProvider->resetHighlightNodes();
-    FemSetNodesObject->getDocument()->abortTransaction();
+    Gui::Command::abortCommand();
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
 
     return true;

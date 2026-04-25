@@ -503,11 +503,11 @@ private:
 
             createShape(false);
 
-            openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch box"));
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch box"));
 
             commandAddShapeGeometryAndConstraints();
 
-            commitCommand();
+            Gui::Command::commitCommand();
         }
         catch (const Base::Exception&) {
             Gui::NotifyError(
@@ -516,7 +516,7 @@ private:
                 QT_TRANSLATE_NOOP("Notifications", "Failed to add box")
             );
 
-            abortCommand();
+            Gui::Command::abortCommand();
             THROWM(
                 Base::RuntimeError,
                 QT_TRANSLATE_NOOP(

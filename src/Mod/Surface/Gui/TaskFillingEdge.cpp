@@ -56,13 +56,15 @@ namespace SurfaceGui
 class FillingEdgePanel::ShapeSelection: public Gui::SelectionFilterGate
 {
 public:
-    ShapeSelection(FillingEdgePanel::SelectionMode mode, Surface::Filling* editedObject)
+    ShapeSelection(FillingEdgePanel::SelectionMode& mode, Surface::Filling* editedObject)
         : Gui::SelectionFilterGate(nullPointer())
         , mode(mode)
         , editedObject(editedObject)
     {}
     ~ShapeSelection() override
-    {}
+    {
+        mode = FillingEdgePanel::None;
+    }
     /**
      * Allow the user to pick only edges.
      */
@@ -113,7 +115,7 @@ private:
     }
 
 private:
-    FillingEdgePanel::SelectionMode mode;
+    FillingEdgePanel::SelectionMode& mode;
     Surface::Filling* editedObject;
 };
 
@@ -187,12 +189,6 @@ void FillingEdgePanel::appendButtons(Gui::ButtonGroup* buttonGroup)
 {
     buttonGroup->addButton(ui->buttonUnboundEdgeAdd, int(SelectionMode::AppendEdge));
     buttonGroup->addButton(ui->buttonUnboundEdgeRemove, int(SelectionMode::RemoveEdge));
-}
-void FillingEdgePanel::setSelectionGate()
-{
-    if (selectionMode != None) {
-        Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
-    }
 }
 
 // stores object pointer, its old fill type and adjusts radio buttons according to it.
@@ -285,10 +281,10 @@ void FillingEdgePanel::clearSelection()
 
 void FillingEdgePanel::checkOpenCommand()
 {
-    if (checkCommand && !editedObject->getDocument()->hasPendingTransaction()) {
+    if (checkCommand && !Gui::Command::hasPendingCommand()) {
         std::string Msg("Edit ");
         Msg += editedObject->Label.getValue();
-        editedObject->getDocument()->openTransaction(Msg.c_str());
+        Gui::Command::openCommand(Msg.c_str());
         checkCommand = false;
     }
 }
@@ -358,8 +354,9 @@ bool FillingEdgePanel::reject()
 void FillingEdgePanel::onButtonUnboundEdgeAddToggled(bool checked)
 {
     if (checked) {
+        // 'selectionMode' is passed by reference and changed when the filter is deleted
+        Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
         selectionMode = AppendEdge;
-        setSelectionGate();
     }
     else if (selectionMode == AppendEdge) {
         exitSelectionMode();
@@ -369,8 +366,9 @@ void FillingEdgePanel::onButtonUnboundEdgeAddToggled(bool checked)
 void FillingEdgePanel::onButtonUnboundEdgeRemoveToggled(bool checked)
 {
     if (checked) {
+        // 'selectionMode' is passed by reference and changed when the filter is deleted
+        Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
         selectionMode = RemoveEdge;
-        setSelectionGate();
     }
     else if (selectionMode == RemoveEdge) {
         exitSelectionMode();
@@ -688,7 +686,6 @@ void FillingEdgePanel::exitSelectionMode()
     // 'selectionMode' is passed by reference to the filter and changed when the filter is deleted
     Gui::Selection().clearSelection();
     Gui::Selection().rmvSelectionGate();
-    selectionMode = None;
 }
 
 #include "moc_TaskFillingEdge.cpp"

@@ -287,7 +287,7 @@ public:
 
             try {
 
-                openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc of hyperbola"));
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc of hyperbola"));
 
                 // Add arc of hyperbola, point and constrain point as focus2. We add focus2 for it
                 // to balance the intrinsic focus1, in order to balance out the intrinsic invisible
@@ -318,14 +318,14 @@ public:
                     QT_TRANSLATE_NOOP("Notifications", "Error"),
                     QT_TRANSLATE_NOOP("Notifications", "Cannot create arc of hyperbola")
                 );
-                abortCommand();
+                Gui::Command::abortCommand();
 
                 tryAutoRecomputeIfNotSolve(sketchgui->getObject<Sketcher::SketchObject>());
 
                 return false;
             }
 
-            commitCommand();
+            Gui::Command::commitCommand();
 
             // add auto constraints for the center point
             if (!sugConstr1.empty()) {

@@ -744,7 +744,6 @@ StdCmdNew::StdCmdNew()
     sStatusTip = sToolTipText;
     sPixmap = "document-new";
     sAccel = keySequenceToAccel(QKeySequence::New);
-    eType = NoTransaction;
 }
 
 void StdCmdNew::activated(int iMsg)
@@ -1496,50 +1495,34 @@ void StdCmdDelete::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    int tid = 0;
+    std::set<App::Document*> docs;
     try {
-        std::set<App::Document*> docs;
-        std::vector<App::TransactionLocker> tlocks;
-        auto manageDocCommand = [&tid, &tlocks](App::Document* doc) {
-            // The tid will not be updated if non-zero
-            tid = doc->openTransaction(QT_TRANSLATE_NOOP("Command", "Delete"), tid);
-            tlocks.emplace_back(doc);
-        };
-
+        openCommand(QT_TRANSLATE_NOOP("Command", "Delete"));
         if (getGuiApplication()->sendHasMsgToFocusView(getName())) {
-            // no command has been opened yet so we can skip this commit
-            // commitCommand();
+            commitCommand();
             return;
         }
-        // Ensure that the document from which we send the command
-        // can undo it (e.g delete a subobject of an assembly
-        // from the assembly file)
-        manageDocCommand(getActiveGuiDocument()->getDocument());
+
+        App::TransactionLocker tlock;
 
         Gui::getMainWindow()->setUpdatesEnabled(false);
-
-        bool deletedSelectionOfEditDocument = false;
-        std::vector<Gui::Document*> editDocs = Application::Instance->editDocuments();
-        for (auto& editDoc : editDocs) {
-            auto vpedit = freecad_cast<ViewProviderDocumentObject*>(editDoc->getInEdit());
-
-            // In practice, no ViewProviderDocumentObject accepts deletion in edit - 2025-06-17
-            if (vpedit && !vpedit->acceptDeletionsInEdit()) {
-                for (auto& sel : Selection().getSelectionEx(editDoc->getDocument()->getName())) {
-                    if (sel.getObject() == vpedit->getObject()) {
-                        if (!sel.getSubNames().empty()) {
-                            deletedSelectionOfEditDocument = true;
-                            manageDocCommand(editDoc->getDocument());
-                            vpedit->onDelete(sel.getSubNames());
-                            docs.insert(editDoc->getDocument());
-                        }
-                        break;
+        auto editDoc = Application::Instance->editDocument();
+        ViewProviderDocumentObject* vpedit = nullptr;
+        if (editDoc) {
+            vpedit = freecad_cast<ViewProviderDocumentObject*>(editDoc->getInEdit());
+        }
+        if (vpedit && !vpedit->acceptDeletionsInEdit()) {
+            for (auto& sel : Selection().getSelectionEx(editDoc->getDocument()->getName())) {
+                if (sel.getObject() == vpedit->getObject()) {
+                    if (!sel.getSubNames().empty()) {
+                        vpedit->onDelete(sel.getSubNames());
+                        docs.insert(editDoc->getDocument());
                     }
+                    break;
                 }
             }
         }
-
-        if (!deletedSelectionOfEditDocument) {
+        else {
             std::set<QString> affectedLabels;
             bool more = false;
             auto sels = Selection().getSelectionEx();
@@ -1616,7 +1599,6 @@ void StdCmdDelete::activated(int iMsg)
                     auto obj = sel.getObject();
                     Gui::ViewProvider* vp = Application::Instance->getViewProvider(obj);
                     if (vp) {
-                        manageDocCommand(obj->getDocument());
                         // ask the ViewProvider if it wants to do some clean up
                         // skip if user explicitly confirmed deletion of objects with dependencies
                         if (vp->onDelete(sel.getSubNames()) || forceDeletion) {
@@ -1651,8 +1633,6 @@ void StdCmdDelete::activated(int iMsg)
             QString::fromLatin1(e.what())
         );
         e.reportException();
-        App::GetApplication().abortTransaction(tid);
-        tid = 0;
     }
     catch (...) {
         QMessageBox::critical(
@@ -1660,11 +1640,8 @@ void StdCmdDelete::activated(int iMsg)
             QObject::tr("Delete Failed"),
             QStringLiteral("Unknown error")
         );
-        App::GetApplication().abortTransaction(tid);
-        tid = 0;
     }
-
-    App::GetApplication().commitTransaction(tid);
+    commitCommand();
     Gui::getMainWindow()->setUpdatesEnabled(true);
     Gui::getMainWindow()->update();
 }
@@ -1772,7 +1749,7 @@ void StdCmdRefresh::activated([[maybe_unused]] int iMsg)
         return;
     }
 
-    App::AutoTransaction trans((eType & NoTransaction) ? 0 : openActiveDocumentCommand("Recompute"));
+    App::AutoTransaction trans((eType & NoTransaction) ? nullptr : "Recompute");
     auto doc = getActiveGuiDocument()->getDocument();
 
     App::RecomputeRequest request
@@ -1877,7 +1854,7 @@ void StdCmdPlacement::activated(int iMsg)
             plm->clearSelection();
         }
     }
-    Gui::Control().showDialog(plm, getDocument());
+    Gui::Control().showDialog(plm);
 }
 
 bool StdCmdPlacement::isActive()
@@ -2284,10 +2261,9 @@ protected:
             return;
         }
 
-        int tid = App::NullTransaction;
+        openCommand(QT_TRANSLATE_NOOP("Command", "Paste expressions"));
         try {
             for (auto& v : exprs) {
-                tid = v.first->openTransaction(QT_TRANSLATE_NOOP("Command", "Paste expressions"), tid);
                 for (auto& v2 : v.second) {
                     auto& expressions = v2.second;
                     auto old = v2.first->getExpressions();
@@ -2304,13 +2280,13 @@ protected:
                     }
                 }
             }
-            App::GetApplication().commitTransaction(tid);
+            commitCommand();
         }
         catch (const Base::Exception& e) {
-            App::GetApplication().abortTransaction(tid);
+            abortCommand();
             QMessageBox::critical(
                 getMainWindow(),
-                QObject::tr("Failed to paste expressions"),
+                QObject::tr("Failed to Paste Expressions"),
                 QString::fromLatin1(e.what())
             );
             e.reportException();

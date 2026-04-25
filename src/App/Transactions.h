@@ -30,7 +30,6 @@
 #include <Base/Factory.h>
 #include <Base/Persistence.h>
 #include <App/PropertyContainer.h>
-#include "TransactionDefs.h"
 
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/hashed_index.hpp>
@@ -62,7 +61,6 @@ class AppExport Transaction: public Base::Persistence
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
-
 public:
     /**
      * @brief Construct a transaction.
@@ -73,7 +71,7 @@ public:
      * transactions from different document, so that they can be undone/redone
      * together.
      */
-    explicit Transaction(int id = NullTransaction);
+    explicit Transaction(int id = 0);
 
     ~Transaction() override;
 

@@ -1510,9 +1510,6 @@ Gui--PropertyEditor--PropertyEditor {
   qproperty-groupBackground: @GeneralHeaderBackgroundColor;
 }
 
-Gui--TaskView--TaskPanel QSint--ActionPanel {
-  background-color: transparent;
-}
 
 /* Action group */
 QFrame[class="panel"] {}
