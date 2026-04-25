@@ -241,6 +241,12 @@ private:
         std::string outputFileName(fileNamePy);
         PyMem_Free(fileNamePy);
 
+        // --- Add .3mf as default if the user doesn't enter a format ---
+        size_t lastDot = outputFileName.find_last_of('.');
+        if (lastDot == std::string::npos || lastDot == outputFileName.length() - 1) {
+            outputFileName += ".3mf";
+        }
+        
         // Construct list of objects to export before making the Exporter, so
         // we don't get empty exports if the list can't be constructed.
         Py::Sequence list(objects);
