@@ -4,7 +4,8 @@
 
 #include "FeatureSketchBased.h"
 
-namespace PartDesign {
+namespace PartDesign
+{
 
 class PartDesignExport Thread: public ProfileBased
 {
@@ -19,4 +20,4 @@ private:
     void addThreadType();
 };
 
-}
+}  // namespace PartDesign

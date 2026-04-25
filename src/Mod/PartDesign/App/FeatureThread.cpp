@@ -17,6 +17,7 @@ void Thread::onChanged(const App::Property* prop)
     ProfileBased::onChanged(prop);
 }
 
-void Thread::addThreadType(){}
+void Thread::addThreadType()
+{}
 
-}
+}  // namespace PartDesign
