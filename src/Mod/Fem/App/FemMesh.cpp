@@ -1678,8 +1678,7 @@ void FemMesh::read(const char* FileName)
     }
 }
 
-void FemMesh::readVTKWithGroups(const char* FileName,
-                                const char* vtk_group_cell_array)
+void FemMesh::readVTKWithGroups(const char* FileName, const char* vtk_group_cell_array)
 {
 #ifdef FC_USE_VTK
     Base::FileInfo File(FileName);
@@ -1705,17 +1704,15 @@ void FemMesh::writeVTK(const std::string& fileName, bool highest) const
 #endif
 }
 
-void FemMesh::writeVTKWithGroups(const std::string& FileName,
-                                 const std::string& vtk_group_cell_array,
-                                 std::map<std::string, int> name_to_id,
-                                 bool highest)
+void FemMesh::writeVTKWithGroups(
+    const std::string& FileName,
+    const std::string& vtk_group_cell_array,
+    std::map<std::string, int> name_to_id,
+    bool highest
+)
 {
 #ifdef FC_USE_VTK
-    FemVTKTools::writeVTKMeshWithGroups(FileName,
-                                        this,
-                                        vtk_group_cell_array,
-                                        name_to_id,
-                                        highest);
+    FemVTKTools::writeVTKMeshWithGroups(FileName, this, vtk_group_cell_array, name_to_id, highest);
 #endif
 }
 

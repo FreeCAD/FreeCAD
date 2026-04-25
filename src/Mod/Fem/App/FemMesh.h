@@ -211,8 +211,7 @@ public:
     // the cell data array, the name is the entry. Int and String array are
     // supported. String array creates groups names according to the string,
     // int array leads to groups with the string version of the integer as name.
-    void readVTKWithGroups(const char* FileName,
-                           const char* vtk_group_cell_array);
+    void readVTKWithGroups(const char* FileName, const char* vtk_group_cell_array);
 
     void write(const char* FileName) const;
     void writeABAQUS(
@@ -232,10 +231,12 @@ public:
     //        1. Only element/cell groups are supported, no node groups and no mixed groups
     //        2. Elements can only be in a single group, groups can not overlap
     //        3. Element IDs in the mesh need to be continious and start with ID 1
-    void writeVTKWithGroups(const std::string& FileName,
-                            const std::string& vtk_group_cell_array,
-                            std::map<std::string, int> name_to_id,
-                            bool highest = true);
+    void writeVTKWithGroups(
+        const std::string& FileName,
+        const std::string& vtk_group_cell_array,
+        std::map<std::string, int> name_to_id,
+        bool highest = true
+    );
     void writeZ88(const std::string& FileName) const;
 
 private:

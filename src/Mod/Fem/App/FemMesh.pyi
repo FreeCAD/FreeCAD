@@ -100,10 +100,9 @@ class FemMesh(ComplexGeoData):
         ...
 
     @constmethod
-    def write(self, file_name: str,
-                    highest: bool,
-                    vtk_cell_group_array: str,
-                    vtk_group_id_map: dict) -> None:
+    def write(
+        self, file_name: str, highest: bool, vtk_cell_group_array: str, vtk_group_id_map: dict
+    ) -> None:
         """
         Write out various FEM mesh file formats.
 

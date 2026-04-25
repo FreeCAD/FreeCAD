@@ -1134,8 +1134,9 @@ PyObject* FemMeshPy::read(PyObject* args, PyObject* kwds)
 
     char* Name;
     char* ArrayName = nullptr;
-    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "et|et", kwlist,
-                                    "utf-8", &Name, "utf-8", &ArrayName)) {
+    if (
+        !Base::Wrapped_ParseTupleAndKeywords(args, kwds, "et|et", kwlist, "utf-8", &Name, "utf-8", &ArrayName)
+    ) {
         return nullptr;
     }
     std::string EncodedName = std::string(Name);
@@ -1148,12 +1149,11 @@ PyObject* FemMeshPy::read(PyObject* args, PyObject* kwds)
     }
 
     try {
-        if(EncodedArrayName.empty()) {
+        if (EncodedArrayName.empty()) {
             getFemMeshPtr()->read(EncodedName.c_str());
         }
         else {
-            getFemMeshPtr()->readVTKWithGroups(EncodedName.c_str(),
-                                               EncodedArrayName.c_str());
+            getFemMeshPtr()->readVTKWithGroups(EncodedName.c_str(), EncodedArrayName.c_str());
         }
     }
     catch (const std::exception& e) {
@@ -1166,16 +1166,25 @@ PyObject* FemMeshPy::read(PyObject* args, PyObject* kwds)
 PyObject* FemMeshPy::write(PyObject* args, PyObject* kwds) const
 {
 
-    static const std::array<const char*, 5> kwlist  {"file_name", "highest",
-                                                     "vtk_cell_group_array",
-                                                     "vtk_group_id_map", nullptr};
+    static const std::array<const char*, 5>
+        kwlist {"file_name", "highest", "vtk_cell_group_array", "vtk_group_id_map", nullptr};
 
     char* Name;
     PyObject* Highest = nullptr;
     char* ArrayName = nullptr;
     PyObject* PyGroupMap = nullptr;
-    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "et|OetO", kwlist, "utf-8", &Name,
-                                        &Highest, "utf-8", &ArrayName, &PyGroupMap)) {
+    if (!Base::Wrapped_ParseTupleAndKeywords(
+            args,
+            kwds,
+            "et|OetO",
+            kwlist,
+            "utf-8",
+            &Name,
+            &Highest,
+            "utf-8",
+            &ArrayName,
+            &PyGroupMap
+        )) {
         return nullptr;
     }
 
@@ -1186,9 +1195,9 @@ PyObject* FemMeshPy::write(PyObject* args, PyObject* kwds) const
         EncodedArrayName = std::string(ArrayName);
         PyMem_Free(ArrayName);
 
-        if(PyGroupMap != nullptr) {
+        if (PyGroupMap != nullptr) {
             Py::Dict pymap(PyGroupMap);
-            for(auto it = pymap.begin(); it != pymap.end(); ++it) {
+            for (auto it = pymap.begin(); it != pymap.end(); ++it) {
                 auto group_name = Py::String((*it).first);
                 auto group_index = Py::Int((*it).second);
                 GroupMap[group_name.as_std_string()] = group_index.as_long();
@@ -1209,10 +1218,12 @@ PyObject* FemMeshPy::write(PyObject* args, PyObject* kwds) const
             getFemMeshPtr()->write(EncodedName.c_str());
         }
         else {
-            getFemMeshPtr()->writeVTKWithGroups(EncodedName.c_str(),
-                                                EncodedArrayName.c_str(),
-                                                GroupMap,
-                                                parsed_highest);
+            getFemMeshPtr()->writeVTKWithGroups(
+                EncodedName.c_str(),
+                EncodedArrayName.c_str(),
+                GroupMap,
+                parsed_highest
+            );
         }
     }
     catch (const std::exception& e) {

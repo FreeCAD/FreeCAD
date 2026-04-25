@@ -400,10 +400,12 @@ class GmshTools(ObjectTools):
     def get_group_data(self):
         # mesh group objects.
         geom = self.obj.Shape.getPropertyOfGeometry()
-        self.group_elements = {"Vertex" : len(geom.Vertexes),
-                               "Edge" : len(geom.Edges),
-                               "Face" : len(geom.Faces),
-                               "Solid" : len(geom.Solids)}
+        self.group_elements = {
+            "Vertex": len(geom.Vertexes),
+            "Edge": len(geom.Edges),
+            "Face": len(geom.Faces),
+            "Solid": len(geom.Solids),
+        }
 
     def postprocess_groups(self):
         # The created groups are for shape elements only: vertex, face, edge and solid
@@ -429,7 +431,9 @@ class GmshTools(ObjectTools):
                         for element in new_group_elements[ge]:
                             for grp_idx in fem_mesh.Groups:
                                 if fem_mesh.getGroupName(grp_idx) == element:
-                                    fem_mesh.addGroupElements(new_group, list(fem_mesh.getGroupElements(grp_idx)))
+                                    fem_mesh.addGroupElements(
+                                        new_group, list(fem_mesh.getGroupElements(grp_idx))
+                                    )
                                     break
                     else:
                         Console.PrintError("  A group with this name exists already.\n")
@@ -446,19 +450,20 @@ class GmshTools(ObjectTools):
 
             new_group_elements = meshtools.get_analysis_group_elements(self.analysis, self.part_obj)
             for ge in new_group_elements:
-                    if ge not in self.group_elements:
-                        self.group_elements[ge] = True
+                if ge not in self.group_elements:
+                    self.group_elements[ge] = True
 
-                        # build the group!
-                        new_group = fem_mesh.addGroup(ge, "All")
-                        for element in new_group_elements[ge]:
-                            for grp_idx in fem_mesh.Groups:
-                                if fem_mesh.getGroupName(grp_idx) == element:
-                                    fem_mesh.addGroupElements(new_group, list(fem_mesh.getGroupElements(grp_idx)))
-                                    break
-                    else:
-                        Console.PrintError("  A group with this name exists already.\n")
-
+                    # build the group!
+                    new_group = fem_mesh.addGroup(ge, "All")
+                    for element in new_group_elements[ge]:
+                        for grp_idx in fem_mesh.Groups:
+                            if fem_mesh.getGroupName(grp_idx) == element:
+                                fem_mesh.addGroupElements(
+                                    new_group, list(fem_mesh.getGroupElements(grp_idx))
+                                )
+                                break
+                else:
+                    Console.PrintError("  A group with this name exists already.\n")
 
     def rename_groups(self):
         # salomemesh adds a suffix to the names of element groups if there are also nodes
@@ -480,7 +485,6 @@ class GmshTools(ObjectTools):
                 if fem_mesh.getGroupName(gidx) == old_name:
                     fem_mesh.renameGroup(gidx, group)
                     break
-
 
     def version(self):
         self.get_gmsh_command()
@@ -1440,7 +1444,7 @@ class GmshTools(ObjectTools):
         # we use the element index of FreeCAD which starts with 1 (example: "Face1"),
         # same as Gmsh. For unit test we need them to have a fixed order
 
-        phy_tag = 0;
+        phy_tag = 0
         self.group_indices = {}
 
         if self.group_elements:
@@ -1461,12 +1465,14 @@ class GmshTools(ObjectTools):
                         phy_shape = "Point"
 
                 geo.write(f"For i In {{1:{element_count} }}\n")
-                geo.write(f'\tPhysical {phy_shape}(Sprintf("{group}%g", i), {phy_tag}+i) = {{i}};\n')
+                geo.write(
+                    f'\tPhysical {phy_shape}(Sprintf("{group}%g", i), {phy_tag}+i) = {{i}};\n'
+                )
                 geo.write("EndFor\n")
 
                 # store physical tags for later rename
                 for i in range(element_count):
-                    self.group_indices[group+str(i+1)] = phy_tag+1
+                    self.group_indices[group + str(i + 1)] = phy_tag + 1
                     phy_tag += 1
 
             geo.write("\n")

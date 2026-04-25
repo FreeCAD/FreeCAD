@@ -323,7 +323,8 @@ void FemVTKTools::importVTKMesh(vtkSmartPointer<vtkDataSet> dataset, FemMesh* me
     }
 }
 
-struct group_definition {
+struct group_definition
+{
     std::set<int> elements;
     int dimension;
 };
@@ -353,7 +354,7 @@ void FemVTKTools::importVTKCellGroup(vtkSmartPointer<vtkDataSet> grid, FemMesh* 
         auto intarray = vtkIntArray::SafeDownCast(cell_array);
 
         // extract the groups with the respective elements
-        for (int i=0; i<intarray->GetNumberOfTuples(); i++) {
+        for (int i = 0; i < intarray->GetNumberOfTuples(); i++) {
 
             // remember: element ids in SMESH are continious from nodes to cells.
             // in VTK nodes and cells have seperated 0 started indexes
@@ -368,7 +369,7 @@ void FemVTKTools::importVTKCellGroup(vtkSmartPointer<vtkDataSet> grid, FemMesh* 
                     Base::Console().error("Cells in group are not of same dimension\n", arrayname);
                     return;
                 }
-                int_group_map[value].elements.insert(i+1);
+                int_group_map[value].elements.insert(i + 1);
             }
             else {
                 auto dim = grid->GetCell(i)->GetCellDimension();
@@ -378,9 +379,9 @@ void FemVTKTools::importVTKCellGroup(vtkSmartPointer<vtkDataSet> grid, FemMesh* 
             }
         }
         // add it to the mesh
-        for(auto& item : int_group_map) {
+        for (auto& item : int_group_map) {
             std::string element_type;
-            switch(item.second.dimension) {
+            switch (item.second.dimension) {
                 case 0:
                     element_type = "0DElement";
                     break;
@@ -394,7 +395,8 @@ void FemVTKTools::importVTKCellGroup(vtkSmartPointer<vtkDataSet> grid, FemMesh* 
                     element_type = "Volume";
                     break;
             }
-            auto group_id = mesh->addGroup(element_type, std::to_string(item.first).c_str(), item.first);
+            auto group_id
+                = mesh->addGroup(element_type, std::to_string(item.first).c_str(), item.first);
             mesh->addGroupElements(group_id, item.second.elements);
         }
     }
@@ -405,7 +407,7 @@ void FemVTKTools::importVTKCellGroup(vtkSmartPointer<vtkDataSet> grid, FemMesh* 
         auto strarray = vtkStringArray::SafeDownCast(cell_array);
 
         // extract the groups with the respective elements
-        for (int i=0; i<strarray->GetNumberOfTuples(); i++) {
+        for (int i = 0; i < strarray->GetNumberOfTuples(); i++) {
 
             auto value = strarray->GetValue(i);
             if (value.empty()) {
@@ -419,7 +421,7 @@ void FemVTKTools::importVTKCellGroup(vtkSmartPointer<vtkDataSet> grid, FemMesh* 
                     Base::Console().error("Cells in group are not of same dimension\n", arrayname);
                     return;
                 }
-                string_group_map[value].elements.insert(i+1);
+                string_group_map[value].elements.insert(i + 1);
             }
             else {
                 auto dim = grid->GetCell(i)->GetCellDimension();
@@ -429,9 +431,9 @@ void FemVTKTools::importVTKCellGroup(vtkSmartPointer<vtkDataSet> grid, FemMesh* 
             }
         }
         // add it to the mesh
-        for(auto& item : string_group_map) {
+        for (auto& item : string_group_map) {
             std::string element_type;
-            switch(item.second.dimension) {
+            switch (item.second.dimension) {
                 case 0:
                     element_type = "0DElement";
                     break;
@@ -729,14 +731,18 @@ void FemVTKTools::writeVTKMesh(const char* filename, const FemMesh* mesh, bool h
     Base::Console().log("    %f: Done \n", Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 }
 
-void FemVTKTools::writeVTKMeshWithGroups(std::string Filename,
-                                        FemMesh* mesh,
-                                        std::string group_array,
-                                        std::map<std::string, int> index_map,
-                                        bool highest)
+void FemVTKTools::writeVTKMeshWithGroups(
+    std::string Filename,
+    FemMesh* mesh,
+    std::string group_array,
+    std::map<std::string, int> index_map,
+    bool highest
+)
 {
     Base::TimeElapsed Start;
-    Base::Console().log("Start: write VTK unstructuredGrid from FemMesh including groups======================\n");
+    Base::Console().log(
+        "Start: write VTK unstructuredGrid from FemMesh including groups======================\n"
+    );
     Base::FileInfo f(Filename);
 
     vtkSmartPointer<vtkUnstructuredGrid> grid = vtkSmartPointer<vtkUnstructuredGrid>::New();
@@ -763,9 +769,7 @@ void FemVTKTools::writeVTKMeshWithGroups(std::string Filename,
             }
 
             auto type = groupDS->GetType();
-            if ((type == SMDSAbs_Node) ||
-                (type == SMDSAbs_Ball) ||
-                (type == SMDSAbs_All)) {
+            if ((type == SMDSAbs_Node) || (type == SMDSAbs_Ball) || (type == SMDSAbs_All)) {
                 // we only support VTK cell type group (0DElement, Edge,Face,Volume)
                 continue;
             }
@@ -775,10 +779,12 @@ void FemVTKTools::writeVTKMeshWithGroups(std::string Filename,
             auto aElemIter = groupDS->GetElements();
             while (aElemIter->more()) {
                 const SMDS_MeshElement* aElem = aElemIter->next();
-                if(aElem->GetID() > grid->GetNumberOfCells()) {
-                    throw std::runtime_error("VTK group export: Cells ids need to be continious and start with index 1.");
+                if (aElem->GetID() > grid->GetNumberOfCells()) {
+                    throw std::runtime_error(
+                        "VTK group export: Cells ids need to be continious and start with index 1."
+                    );
                 }
-                cell_sarray->SetValue(aElem->GetID()-1, name);
+                cell_sarray->SetValue(aElem->GetID() - 1, name);
             }
         }
         cell_array = cell_sarray;
@@ -788,7 +794,7 @@ void FemVTKTools::writeVTKMeshWithGroups(std::string Filename,
         cell_iarray->SetNumberOfComponents(1);
         cell_iarray->SetName(group_array.c_str());
         cell_iarray->SetNumberOfTuples(grid->GetNumberOfCells());
-        for(int i=0; i<grid->GetNumberOfCells(); i++) {
+        for (int i = 0; i < grid->GetNumberOfCells(); i++) {
             cell_iarray->SetValue(i, -1);
         }
 
@@ -804,9 +810,8 @@ void FemVTKTools::writeVTKMeshWithGroups(std::string Filename,
                 throw std::runtime_error("VTK group export: Failed to add group elements.");
             }
 
-            if ((groupDS->GetType() == SMDSAbs_Node) ||
-                (groupDS->GetType() == SMDSAbs_Ball) ||
-                (groupDS->GetType() == SMDSAbs_All)) {
+            if ((groupDS->GetType() == SMDSAbs_Node) || (groupDS->GetType() == SMDSAbs_Ball)
+                || (groupDS->GetType() == SMDSAbs_All)) {
                 // we only support VTK cell type group
                 continue;
             }
@@ -816,10 +821,12 @@ void FemVTKTools::writeVTKMeshWithGroups(std::string Filename,
             auto aElemIter = groupDS->GetElements();
             while (aElemIter->more()) {
                 const SMDS_MeshElement* aElem = aElemIter->next();
-                if(aElem->GetID() > grid->GetNumberOfCells()) {
-                    throw std::runtime_error("VTK group export: Cells ids need to be continious and start with index 1.");
+                if (aElem->GetID() > grid->GetNumberOfCells()) {
+                    throw std::runtime_error(
+                        "VTK group export: Cells ids need to be continious and start with index 1."
+                    );
                 }
-                cell_iarray->SetValue(aElem->GetID()-1, id);
+                cell_iarray->SetValue(aElem->GetID() - 1, id);
             }
         }
         cell_array = cell_iarray;
