@@ -32,7 +32,6 @@ to provide a complete hybrid finishing strategy for both steep walls and flat ar
 
 import math
 import FreeCAD
-import Part
 import Path
 
 # ---------------------------------------------------------------------------
@@ -275,8 +274,9 @@ def zlevel_hybrid_stack(
                 sections = area_engine.makeSections(mode=0, project=False, heights=[slice_z])
                 sub_face = sections[0].getShape()
                 # Move results to machine plane for dissolved fusion
-                sub_face.translate(FreeCAD.Vector(0, 0, -sub_face.BoundBox.ZMin))
-                fusion.add(sub_face)
+                if sub_face:
+                    sub_face.translate(FreeCAD.Vector(0, 0, -sub_face.BoundBox.ZMin))
+                    fusion.add(sub_face)
             except Exception as e:
                 # Log the error and skip this specific sub-face to keep the recompute alive
                 Path.Log.error(

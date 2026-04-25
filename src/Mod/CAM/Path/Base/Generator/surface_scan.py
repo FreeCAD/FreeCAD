@@ -95,7 +95,7 @@ class BBox:
 
     @property
     def diagonal(self):
-        return math.sqrt(self.x_length**2 + self.y_length**2)
+        return math.hypot(self.x_length, self.y_length)
 
 
 # ---------------------------------------------------------------------------
@@ -150,7 +150,7 @@ def reconstruct_scan_lines(flat_points, gap_threshold):
 # ---------------------------------------------------------------------------
 
 
-def generate_offset_scan_lines(boundary_face, stepover, sample_interval, reversed_pattern=False):
+def generate_offset_scan_lines(boundary_face, stepover, sample_interval, reversed_pattern=False, climb=False):
     """
     Generates concentric toolpath rings that progressively shrink inwards from a boundary.
 
@@ -192,6 +192,8 @@ def generate_offset_scan_lines(boundary_face, stepover, sample_interval, reverse
             pts = wire.discretize(Distance=sample_interval)
             if len(pts) < 2:
                 continue
+            if not climb:
+                pts.reverse()
 
             # Ensure perfectly closed loops by connecting the final point back to the start
             if wire.isClosed() and (pts[0] - pts[-1]).Length > 1e-5:
@@ -251,6 +253,7 @@ def fast_generate_pattern(
     angle,
     is_zigzag,
     reversed_pattern,
+    climb,
     boundary_face,
     tolerance=0.005,
 ):

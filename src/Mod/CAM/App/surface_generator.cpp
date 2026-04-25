@@ -42,6 +42,7 @@
 #include <stdexcept>
 #include <Python.h>
 #include <unordered_map>
+#include <limits>
 
 // Include the TopoShapePy header using the full path
 #include <Mod/Part/App/TopoShapePy.h>
@@ -217,7 +218,11 @@ std::vector<PolyBounds> calculate_bounds(const std::vector<std::vector<std::arra
 {
     std::vector<PolyBounds> bounds(polygons.size());
     for (size_t p = 0; p < polygons.size(); ++p) {
-        double min_x = 1e9, max_x = -1e9, min_y = 1e9, max_y = -1e9;
+        double min_x = std::numeric_limits<double>::max();
+        double max_x = std::numeric_limits<double>::lowest();
+        double min_y = std::numeric_limits<double>::max();
+        double max_y = std::numeric_limits<double>::lowest();
+
         for (const auto& pt : polygons[p]) {
             if (pt[0] < min_x) {
                 min_x = pt[0];

@@ -702,8 +702,6 @@ class ObjectSurface(PathOp.ObjectOp):
         self.initOpProperties(obj, warn=True)
         self.opApplyPropertyDefaults(obj, job, self.addNewProps)
 
-        mode = 2 if Path.Log.getLevel(Path.Log.thisModule()) != 4 else 0
-
         # Repopulate enumerations in case of changes
         ENUMS = self.propertyEnumerations()
         for n in ENUMS:
@@ -883,8 +881,6 @@ class ObjectSurface(PathOp.ObjectOp):
         """
         import time
 
-        start_time = time.time()
-
         Path.Log.debug(
             "_getSelectedFaces: hasattr Base={}, Base={}".format(
                 hasattr(obj, "Base"), obj.Base if hasattr(obj, "Base") else "N/A"
@@ -1022,7 +1018,7 @@ class ObjectSurface(PathOp.ObjectOp):
         if pattern == "Offset":
             if boundary_face:
                 raw_scan_lines = surface_scan.generate_offset_scan_lines(
-                    boundary_face, step_over, sample_interval, pattern_reverse
+                    boundary_face, step_over, sample_interval, pattern_reverse, cut_climb
                 )
             else:
                 Path.Log.warning("Offset pattern requires a valid boundary. Aborting.")
@@ -1043,6 +1039,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 angle,
                 is_zigzag,
                 pattern_reverse,
+                cut_climb,
                 boundary_face,
                 tolerance,
             )
@@ -1228,9 +1225,8 @@ class ObjectSurface(PathOp.ObjectOp):
                 is_3d = True
                 c_rad = float(getattr(tool, "CornerRadius", 0.0))
             elif "Endmill" in shape_type:
-                profile = "Endmill"
+                is_3d = False
                 c_rad = 0.0
-                is_threeD = False
             else:
                 return None
 
