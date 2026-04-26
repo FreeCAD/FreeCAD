@@ -91,6 +91,7 @@ class Snapper:
 
     def __init__(self):
         self.activeview = None
+        self.view = None
         self.toolbar = None
         self.lastObj = []
         self.lastObjSubelements = []
@@ -1294,6 +1295,58 @@ class Snapper:
             if toolbar:
                 toolbar.hide()
 
+    def _clear_point_callbacks(self, view=None):
+        """Remove the current point-picking callbacks, if any."""
+        had_callbacks = bool(self.callbackClick or self.callbackMove)
+        if view is None:
+            view = self.view or gui_utils.get_3d_view()
+
+        try:
+            if view and self.callbackClick:
+                view.removeEventCallbackPivy(
+                    coin.SoMouseButtonEvent.getClassTypeId(), self.callbackClick
+                )
+            if view and self.callbackMove:
+                view.removeEventCallbackPivy(
+                    coin.SoLocation2Event.getClassTypeId(), self.callbackMove
+                )
+            if had_callbacks:
+                # Next line fixes https://github.com/FreeCAD/FreeCAD/issues/10469:
+                gui_utils.end_all_events()
+        except RuntimeError:
+            # the view has been deleted already
+            pass
+
+        self.callbackClick = None
+        self.callbackMove = None
+
+    def _teardown_point_request(self):
+        """Finish the current point-picking request and restore the Draft UI."""
+        self._clear_point_callbacks()
+        self.off()
+        toolbar = getattr(Gui, "draftToolBar", None)
+        if toolbar:
+            toolbar.offUi()
+
+    def _dispatch_point_callback(self, callback, point, obj=None):
+        """Invoke a point-picking callback with the expected argument shape."""
+        if not callback:
+            return
+        if len(inspect.getfullargspec(callback).args) > 1:
+            callback(point, obj)
+        else:
+            callback(point)
+
+    def cancelPointRequest(self):
+        """Cancel the current point-picking request and restore the Draft UI."""
+        self._teardown_point_request()
+        gui_doc = Gui.ActiveDocument
+        if gui_doc and gui_doc.getInEdit() is not None:
+            # Explicit point-request teardown can bypass DraftToolBar.finish(),
+            # so leave edit mode here as well.
+            gui_doc.resetEdit()
+        self.pt = None
+
     def setSelectMode(self, mode):
         """Set the snapper into select mode (hides snapping temporarily)."""
         self.selectMode = mode
@@ -1424,32 +1477,24 @@ class Snapper:
         title is the title of the point task box mode is the dialog box
         you want (default is point, you can also use wire and line)
 
-        If getPoint() is invoked without any argument, nothing is done
-        but the callbacks are removed, so it can be used as a cancel function.
+        If getPoint() is invoked without any argument, only the existing
+        callbacks are cleared for backward compatibility. Prefer
+        cancelPointRequest() for explicit teardown.
         """
+        no_point_request_args = all(
+            arg is None for arg in (last, callback, movecallback, extradlg, title)
+        )
+        if mode == "point" and no_point_request_args:
+            self._clear_point_callbacks()
+            return
+
         self.pt = None
         self.holdPoints = []
         self.ui = Gui.draftToolBar
-        self.view = gui_utils.get_3d_view()
 
-        # remove any previous leftover callbacks
-        try:
-            if self.callbackClick:
-                self.view.removeEventCallbackPivy(
-                    coin.SoMouseButtonEvent.getClassTypeId(), self.callbackClick
-                )
-            if self.callbackMove:
-                self.view.removeEventCallbackPivy(
-                    coin.SoLocation2Event.getClassTypeId(), self.callbackMove
-                )
-            if self.callbackClick or self.callbackMove:
-                # Next line fixes https://github.com/FreeCAD/FreeCAD/issues/10469:
-                gui_utils.end_all_events()
-        except RuntimeError:
-            # the view has been deleted already
-            pass
-        self.callbackClick = None
-        self.callbackMove = None
+        # Remove callbacks from the view that owns them before switching views.
+        self._clear_point_callbacks(view=self.view)
+        self.view = gui_utils.get_3d_view()
 
         def move(event_cb):
             if not self.ui.mouse:
@@ -1485,60 +1530,18 @@ class Snapper:
                     accept()
 
         def accept():
-            try:
-                if self.callbackClick:
-                    self.view.removeEventCallbackPivy(
-                        coin.SoMouseButtonEvent.getClassTypeId(), self.callbackClick
-                    )
-                if self.callbackMove:
-                    self.view.removeEventCallbackPivy(
-                        coin.SoLocation2Event.getClassTypeId(), self.callbackMove
-                    )
-                if self.callbackClick or self.callbackMove:
-                    # Next line fixes https://github.com/FreeCAD/FreeCAD/issues/10469:
-                    gui_utils.end_all_events()
-            except RuntimeError:
-                # the view has been deleted already
-                pass
-            self.callbackClick = None
-            self.callbackMove = None
-            Gui.Snapper.off()
-            self.ui.offUi()
-            if callback:
-                if len(inspect.getfullargspec(callback).args) > 1:
-                    obj = None
-                    if self.snapInfo and ("Object" in self.snapInfo) and self.snapInfo["Object"]:
-                        obj = App.ActiveDocument.getObject(self.snapInfo["Object"])
-                    callback(self.pt, obj)
-                else:
-                    callback(self.pt)
+            point = self.pt
+            self._teardown_point_request()
+            obj = None
+            if self.snapInfo and ("Object" in self.snapInfo) and self.snapInfo["Object"]:
+                obj = App.ActiveDocument.getObject(self.snapInfo["Object"])
+            self._dispatch_point_callback(callback, point, obj)
             self.pt = None
 
         def cancel():
-            try:
-                if self.callbackClick:
-                    self.view.removeEventCallbackPivy(
-                        coin.SoMouseButtonEvent.getClassTypeId(), self.callbackClick
-                    )
-                if self.callbackMove:
-                    self.view.removeEventCallbackPivy(
-                        coin.SoLocation2Event.getClassTypeId(), self.callbackMove
-                    )
-                if self.callbackClick or self.callbackMove:
-                    # Next line fixes https://github.com/FreeCAD/FreeCAD/issues/10469:
-                    gui_utils.end_all_events()
-            except RuntimeError:
-                # the view has been deleted already
-                pass
-            self.callbackClick = None
-            self.callbackMove = None
-            Gui.Snapper.off()
-            self.ui.offUi()
-            if callback:
-                if len(inspect.getfullargspec(callback).args) > 1:
-                    callback(None, None)
-                else:
-                    callback(None)
+            self._teardown_point_request()
+            self._dispatch_point_callback(callback, None, None)
+            self.pt = None
 
         # adding callback functions
         if mode == "line":
