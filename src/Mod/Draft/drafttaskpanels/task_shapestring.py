@@ -210,9 +210,10 @@ class ShapeStringTaskPanel:
         if self.pointPicked:
             Gui.HintManager.hide()
         else:
-            Gui.HintManager.show(
+            hints = [
                 Gui.InputHint(translate("draft", "%1 pick point"), Gui.UserInput.MouseLeft)
-            )
+            ] + gui_tool_utils._get_hint_mod_snap()
+            Gui.HintManager.show(*hints)
 
 
 class ShapeStringTaskPanelCmd(ShapeStringTaskPanel):
