@@ -1464,12 +1464,11 @@ void View3DInventorViewer::updateFPSLabel()
         return;
     }
 
-    std::stringstream stream;
-    stream.precision(1);
-    stream.setf(std::ios::fixed | std::ios::showpoint);
-    stream << framesPerSecond[0] << " ms / " << framesPerSecond[1] << " fps";
-
-    fpsCounter->setText(QString::fromStdString(stream.str()));
+    fpsCounter->setText(
+        QString::fromStdString(
+            fmt::format("{:.1f} ms / {:.1f} fps", framesPerSecond[0], framesPerSecond[1])
+        )
+    );
 
     // update color from user preference (only when it changes)
     ParameterGrp::handle hGrpView = App::GetApplication().GetParameterGroupByPath(
