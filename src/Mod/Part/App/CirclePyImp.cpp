@@ -72,11 +72,12 @@ int CirclePy::PyInit(PyObject* args, PyObject* kwds)
     PyObject* pCirc;
     double dist;
     static const std::array<const char*, 3> keywords_cd {"Circle", "Distance", nullptr};
-    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!d", keywords_cd, &(CirclePy::Type), &pCirc, &dist)) {
+    if (
+        Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!d", keywords_cd, &(CirclePy::Type), &pCirc, &dist)
+    ) {
         CirclePy* pcCircle = static_cast<CirclePy*>(pCirc);
-        Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(
-            pcCircle->getGeomCirclePtr()->handle()
-        );
+        Handle(Geom_Circle)
+            circle = Handle(Geom_Circle)::DownCast(pcCircle->getGeomCirclePtr()->handle());
         GC_MakeCircle mc(circle->Circ(), dist);
         if (!mc.IsDone()) {
             PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(mc.Status()));
@@ -120,9 +121,8 @@ int CirclePy::PyInit(PyObject* args, PyObject* kwds)
     PyErr_Clear();
     if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!", keywords_c, &(CirclePy::Type), &pCirc)) {
         CirclePy* pcCircle = static_cast<CirclePy*>(pCirc);
-        Handle(Geom_Circle) circ1 = Handle(Geom_Circle)::DownCast(
-            pcCircle->getGeomCirclePtr()->handle()
-        );
+        Handle(Geom_Circle)
+            circ1 = Handle(Geom_Circle)::DownCast(pcCircle->getGeomCirclePtr()->handle());
         Handle(Geom_Circle) circ2 = Handle(Geom_Circle)::DownCast(this->getGeomCirclePtr()->handle());
         circ2->SetCirc(circ1->Circ());
         return 0;

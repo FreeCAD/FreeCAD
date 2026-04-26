@@ -76,7 +76,7 @@ public:
     void onUpdate() override
     {}
 
-    bool onMsg(const char* pMsg, const char** ppReturn) override;
+    bool onMsg(const char* pMsg) override;
     bool onHasMsg(const char* pMsg) const override;
 
     bool canClose() override;
@@ -135,7 +135,7 @@ public:
     PythonEditorView(PythonEditor* editor, QWidget* parent);
     ~PythonEditorView() override;
 
-    bool onMsg(const char* pMsg, const char** ppReturn) override;
+    bool onMsg(const char* pMsg) override;
     bool onHasMsg(const char* pMsg) const override;
 
 public Q_SLOTS:
@@ -164,7 +164,7 @@ protected:
     void changeEvent(QEvent*) override;
 
 public Q_SLOTS:
-    void activate();
+    void activate(const QString& prefill = QString());
     void deactivate();
     void findPrevious();
     void findNext();

@@ -109,9 +109,8 @@ int Line2dSegmentPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         // Copy line
         Line2dPy* pcLine = static_cast<Line2dPy*>(pLine);
         // get Geom_Line of line
-        Handle(Geom2d_Line) that_line = Handle(Geom2d_Line)::DownCast(
-            pcLine->getGeom2dLinePtr()->handle()
-        );
+        Handle(Geom2d_Line)
+            that_line = Handle(Geom2d_Line)::DownCast(pcLine->getGeom2dLinePtr()->handle());
         // get Geom_Line of line segment
         Handle(Geom2d_TrimmedCurve) this_curv = Handle(Geom2d_TrimmedCurve)::DownCast(
             this->getGeom2dLineSegmentPtr()->handle()
@@ -206,9 +205,8 @@ PyObject* Line2dSegmentPy::setParameterRange(PyObject* args)
 
 Py::Object Line2dSegmentPy::getStartPoint() const
 {
-    Handle(Geom2d_TrimmedCurve) this_curve = Handle(Geom2d_TrimmedCurve)::DownCast(
-        this->getGeom2dLineSegmentPtr()->handle()
-    );
+    Handle(Geom2d_TrimmedCurve)
+        this_curve = Handle(Geom2d_TrimmedCurve)::DownCast(this->getGeom2dLineSegmentPtr()->handle());
     gp_Pnt2d pnt = this_curve->StartPoint();
     return Base::Vector2dPy::create(pnt.X(), pnt.Y());
 }
@@ -216,9 +214,8 @@ Py::Object Line2dSegmentPy::getStartPoint() const
 void Line2dSegmentPy::setStartPoint(Py::Object arg)
 {
     gp_Pnt2d p1, p2;
-    Handle(Geom2d_TrimmedCurve) this_curv = Handle(Geom2d_TrimmedCurve)::DownCast(
-        this->getGeom2dLineSegmentPtr()->handle()
-    );
+    Handle(Geom2d_TrimmedCurve)
+        this_curv = Handle(Geom2d_TrimmedCurve)::DownCast(this->getGeom2dLineSegmentPtr()->handle());
     p2 = this_curv->EndPoint();
 
     PyObject* p = arg.ptr();
@@ -262,9 +259,8 @@ void Line2dSegmentPy::setStartPoint(Py::Object arg)
 
 Py::Object Line2dSegmentPy::getEndPoint() const
 {
-    Handle(Geom2d_TrimmedCurve) this_curve = Handle(Geom2d_TrimmedCurve)::DownCast(
-        this->getGeom2dLineSegmentPtr()->handle()
-    );
+    Handle(Geom2d_TrimmedCurve)
+        this_curve = Handle(Geom2d_TrimmedCurve)::DownCast(this->getGeom2dLineSegmentPtr()->handle());
     gp_Pnt2d pnt = this_curve->EndPoint();
     return Base::Vector2dPy::create(pnt.X(), pnt.Y());
 }
@@ -272,9 +268,8 @@ Py::Object Line2dSegmentPy::getEndPoint() const
 void Line2dSegmentPy::setEndPoint(Py::Object arg)
 {
     gp_Pnt2d p1, p2;
-    Handle(Geom2d_TrimmedCurve) this_curv = Handle(Geom2d_TrimmedCurve)::DownCast(
-        this->getGeom2dLineSegmentPtr()->handle()
-    );
+    Handle(Geom2d_TrimmedCurve)
+        this_curv = Handle(Geom2d_TrimmedCurve)::DownCast(this->getGeom2dLineSegmentPtr()->handle());
     p1 = this_curv->StartPoint();
 
     PyObject* p = arg.ptr();

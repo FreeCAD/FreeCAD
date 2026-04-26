@@ -23,12 +23,15 @@
 #pragma once
 
 #include "GuiAbstractNativeEvent.h"
+#include <memory>
 
 class QMainWindow;
+class QSocketNotifier;
 
 namespace Gui
 {
 class GUIApplicationNativeEventAware;
+class DeadzoneCache;
 
 class GuiNativeEvent: public GuiAbstractNativeEvent
 {
@@ -42,6 +45,10 @@ private:
     GuiNativeEvent();
     GuiNativeEvent(const GuiNativeEvent&);
     GuiNativeEvent& operator=(const GuiNativeEvent&);
+
+    std::unique_ptr<DeadzoneCache> dzCache;
+    QSocketNotifier* spnavNotifier {nullptr};
+
 private Q_SLOTS:
     void pollSpacenav();
 };

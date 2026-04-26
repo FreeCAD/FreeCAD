@@ -24,6 +24,8 @@
 
 import FreeCAD
 import Path
+import Path.Dressup.Utils as PathDressup
+import PathScripts.PathUtils as PathUtils
 import math
 
 # lazily loaded modules
@@ -175,12 +177,66 @@ def orientWire(w, forward=True):
     return wire
 
 
-def offsetWire(wire, base, offset, forward, Side=None):
-    """offsetWire(wire, base, offset, forward) ... offsets the wire away from base and orients the wire accordingly.
+def approximateWire(wire, tolerance=0.01):
+    """approximateWire approximates any non-line/arc edges with lines or arcs.
+    Edges that are lines or circular arcs are kept as-is.
+    tolerance: Deflection tolerance for approximation. Must be positive if wire contains non-line/arc edges.
+    Returns the wire with non-line/arc edges replaced by arcs and line segments.
+    """
+    processed_edges = []
+    modified = False
+    for edge in wire.Edges:
+        curve = edge.Curve
+        if isinstance(curve, (Part.Line, Part.LineSegment, Part.Circle, Part.ArcOfCircle)):
+            # Keep lines and arcs as-is
+            processed_edges.append(edge)
+        else:
+            # Approximate with lines and arcs
+            if tolerance <= 0:
+                raise ValueError(
+                    "tolerance parameter is required to be a positive value to approximate non-line/arc edges"
+                )
+            modified = True
+
+            # Convert to BSpline first if appropriate, to enable arc fitting
+            if isinstance(curve, (Part.Ellipse, Part.Hyperbola, Part.Parabola)):
+                # Convert edge to NURBS (BSpline)
+                shape = edge.toNurbs()
+                edge = shape.Edges[0]
+            elif isinstance(curve, Part.BezierCurve):
+                # Convert BezierCurve to BSpline
+                curve = edge.Curve.toBSpline()
+                edge = curve.toShape()
+
+            if isinstance(edge.Curve, Part.BSplineCurve):
+                # Convert BSpline to arcs
+                curves = edge.Curve.toBiArcs(tolerance)
+                for curve in curves:
+                    processed_edges.append(curve.toShape())
+            else:
+                # For other curve types, fall back to discretization to line segments
+                vertices = edge.discretize(Deflection=tolerance)
+                line_edges = [
+                    Part.makeLine(vertices[i], vertices[i + 1]) for i in range(len(vertices) - 1)
+                ]
+                processed_edges.extend(line_edges)
+
+    # Reassemble the wire if any edges were replaced
+    if modified:
+        return Part.Wire(Part.__sortEdges__(processed_edges))
+    return wire
+
+
+def offsetWire(wire, base, offset, forward, Side=None, tolerance=0.01):
+    """offsetWire ... offsets the wire away from base and orients the wire accordingly.
     The function tries to avoid most of the pitfalls of Part.makeOffset2D which is possible because all offsetting
     happens in the XY plane.
+    tolerance: Deflection tolerance for discretization. Must be positive if wire contains non-line/arc edges.
     """
     Path.Log.track("offsetWire")
+
+    # Pre-process the wire: approximate any non-line/arc edges with arcs and lines
+    wire = approximateWire(wire, tolerance)
 
     if len(wire.Edges) == 1:
         edge = wire.Edges[0]
@@ -189,70 +245,69 @@ def offsetWire(wire, base, offset, forward, Side=None):
             # it's a full circle and there are some problems with that, see
             # https://www.freecad.org/wiki/Part%20Offset2D
             # it's easy to construct them manually though
-            z = -1 if forward else 1
-            new_edge = Part.makeCircle(curve.Radius + offset, curve.Center, FreeCAD.Vector(0, 0, z))
-            if base.isInside(new_edge.Vertexes[0].Point, offset / 2, True):
-                if offset > curve.Radius or Path.Geom.isRoughly(offset, curve.Radius):
+            center = curve.Center
+            radius = curve.Radius
+            axis = FreeCAD.Vector(0, 0, -1) if forward else FreeCAD.Vector(0, 0, 1)
+            checkSidePoint = FreeCAD.Vector(center.x + radius + tolerance * 2, center.y, center.z)
+            if base.isInside(checkSidePoint, tolerance, True):
+                if offset > radius or Path.Geom.isRoughly(offset, radius):
                     # offsetting a hole by its own radius (or more) makes the hole vanish
                     return None
                 if Side:
                     Side[0] = "Inside"
-                    print("inside")
-                new_edge = Part.makeCircle(
-                    curve.Radius - offset, curve.Center, FreeCAD.Vector(0, 0, -z)
-                )
+                new_edge = Part.makeCircle(radius - offset, center, axis)  # inside
+            else:
+                new_edge = Part.makeCircle(radius + offset, center, axis)  # outside
 
             return Part.Wire([new_edge])
 
         if isinstance(curve, Part.Circle) and not wire.isClosed():
             # Process arc segment
-            z = -1 if forward else 1
-            l1 = math.sqrt(
-                (edge.Vertexes[0].Point.x - curve.Center.x) ** 2
-                + (edge.Vertexes[0].Point.y - curve.Center.y) ** 2
-            )
-            l2 = math.sqrt(
-                (edge.Vertexes[1].Point.x - curve.Center.x) ** 2
-                + (edge.Vertexes[1].Point.y - curve.Center.y) ** 2
-            )
+            center = curve.Center
+            radius = curve.Radius
+            point1 = edge.firstVertex().Point
+            point2 = edge.lastVertex().Point
+
+            l1 = math.hypot((point1.x - center.x), (point1.y - center.y))
+            l2 = math.hypot((point2.x - center.x), (point2.y - center.y))
 
             # Calculate angles based on x-axis (0 - PI/2)
-            start_angle = math.acos((edge.Vertexes[0].Point.x - curve.Center.x) / l1)
-            end_angle = math.acos((edge.Vertexes[1].Point.x - curve.Center.x) / l2)
+            start_angle = math.acos((point1.x - center.x) / l1)
+            end_angle = math.acos((point2.x - center.x) / l2)
 
             # Angles are based on x-axis (Mirrored on x-axis) -> negative y value means negative angle
-            if edge.Vertexes[0].Point.y < curve.Center.y:
+            if point1.y < center.y:
                 start_angle *= -1
-            if edge.Vertexes[1].Point.y < curve.Center.y:
+            if point2.y < center.y:
                 end_angle *= -1
 
-            if (
-                edge.Vertexes[0].Point.x > curve.Center.x
-                or edge.Vertexes[1].Point.x > curve.Center.x
-            ) and curve.AngleXU < 0:
-                tmp = start_angle
-                start_angle = end_angle
-                end_angle = tmp
+            if curve.Axis.z < 0:
+                start_angle, end_angle = end_angle, start_angle
 
-            # Inside / Outside
-            if base.isInside(edge.Vertexes[0].Point, offset / 2, True):
-                offset *= -1
+            # check if arc should be created on other side
+            vec1 = point1 - center
+            len1 = math.hypot(vec1.x, vec1.y)
+            len2 = len1 + tolerance * 2
+            vec2 = vec1 * len2 / len1
+            checkSidePoint = center + vec2
+
+            axis = FreeCAD.Vector(0, 0, 1)
+
+            if base.isInside(checkSidePoint, tolerance, True):
+                if offset > radius or Path.Geom.isRoughly(offset, radius):
+                    # inner offset should not be equal or greater than arc radius
+                    return None
                 if Side:
                     Side[0] = "Inside"
-
-            # Create new arc
-            if curve.AngleXU > 0:
-                edge = Part.ArcOfCircle(
-                    Part.Circle(curve.Center, FreeCAD.Vector(0, 0, 1), curve.Radius + offset),
-                    start_angle,
-                    end_angle,
-                ).toShape()
+                circle = Part.Circle(center, axis, radius - offset)  # inside
             else:
-                edge = Part.ArcOfCircle(
-                    Part.Circle(curve.Center, FreeCAD.Vector(0, 0, 1), curve.Radius - offset),
-                    start_angle,
-                    end_angle,
-                ).toShape()
+                circle = Part.Circle(center, axis, radius + offset)  # outside
+
+            arc = Part.ArcOfCircle(circle, start_angle, end_angle)
+            edge = arc.toShape()
+            if forward:
+                # default arc is CCW, so edge should be flipped to get forward direction
+                edge = Path.Geom.flipEdge(edge)
 
             return Part.Wire([edge])
 
@@ -345,7 +400,8 @@ def offsetWire(wire, base, offset, forward, Side=None):
         if not longestWire or longestWire.Length < w.Length:
             longestWire = w
 
-    debugWire("outside", Part.Wire(outside))
+    if len(outside) >= 2:
+        debugWire("outside", Part.Wire(outside))
     debugWire("longest", longestWire)
 
     def isCircleAt(edge, center):
@@ -398,15 +454,16 @@ def offsetWire(wire, base, offset, forward, Side=None):
     # figure out if all the left sided edges or the right sided edges are the ones
     # that are 'outside'. However, we return the full side.
     edges = leftSideEdges
-    for e in longestWire.Edges:
-        for e0 in rightSideEdges:
-            if Path.Geom.edgesMatch(e, e0):
-                edges = rightSideEdges
-                Path.Log.debug("#use right side edges")
-                if not forward:
-                    Path.Log.debug("#reverse")
-                    edges.reverse()
-                return orientWire(Part.Wire(edges), None)
+    if longestWire:
+        for e in longestWire.Edges:
+            for e0 in rightSideEdges:
+                if Path.Geom.edgesMatch(e, e0):
+                    edges = rightSideEdges
+                    Path.Log.debug("#use right side edges")
+                    if not forward:
+                        Path.Log.debug("#reverse")
+                        edges.reverse()
+                    return orientWire(Part.Wire(edges), None)
 
     # at this point we have the correct edges and they are in the order for forward
     # traversal (climb milling). If that's not what we want just reverse the order,
@@ -417,3 +474,29 @@ def offsetWire(wire, base, offset, forward, Side=None):
         edges.reverse()
 
     return orientWire(Part.Wire(edges), None)
+
+
+def getClearedAreas(currentOp, bbox):
+    """
+    Returns the cleared area relevant to the operation
+    - currentOp: the operation we are checking for. Only operations performed
+      before this operation will be considered
+    - bbox: the cleared region is only generated where it is close enough to
+      impact the bbox region
+    """
+    clearedAreas = []
+    job = currentOp.Proxy.job
+    z = bbox.ZMin + job.GeometryTolerance.getValueAs("mm")
+    for op in job.Operations.Group:
+        baseOp = PathDressup.baseOp(op)
+        if baseOp.Name == currentOp.Name:
+            break
+        if getattr(op, "RestMachiningPass", None):
+            op = baseOp
+        if getattr(baseOp, "Active", False) and op.Path:
+            tool = baseOp.ToolController.Tool
+            diameter = tool.Diameter.getValueAs("mm")
+            # for drills, dz translates to the full width part of the tool
+            dz = 0 if not hasattr(tool, "TipAngle") else -PathUtils.drillTipLength(tool)
+            clearedAreas.append(op.Path.getClearedArea(diameter, z + dz, bbox))
+    return clearedAreas

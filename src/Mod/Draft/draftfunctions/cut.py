@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to create a cut object from two objects."""
+
 ## @package cut
 # \ingroup draftfunctions
 # \brief Provides functions to create a cut object from two objects.

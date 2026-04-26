@@ -79,7 +79,8 @@ bool MeasureRadius::isValidSelection(const App::MeasureSelection& selection)
     }
 
     if (type != App::MeasureElementType::CIRCLE && type != App::MeasureElementType::ARC
-        && type != App::MeasureElementType::CYLINDER && type != App::MeasureElementType::DISC) {
+        && type != App::MeasureElementType::CYLINDER && type != App::MeasureElementType::DISC
+        && type != App::MeasureElementType::TORUS && type != App::MeasureElementType::SPHERE) {
         return false;
     }
 
@@ -98,7 +99,8 @@ bool MeasureRadius::isPrioritizedSelection(const App::MeasureSelection& selectio
     auto type = App::MeasureManager::getMeasureElementType(element);
 
     if (type == App::MeasureElementType::CIRCLE || type == App::MeasureElementType::ARC
-        || type == App::MeasureElementType::CYLINDER || type == App::MeasureElementType::DISC) {
+        || type == App::MeasureElementType::CYLINDER || type == App::MeasureElementType::DISC
+        || type == App::MeasureElementType::TORUS || type == App::MeasureElementType::SPHERE) {
         return true;
     }
 

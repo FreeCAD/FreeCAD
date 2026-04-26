@@ -331,7 +331,7 @@ public:
      *
      * @return The evaluated expression.
      */
-    Expression* eval() const;
+    ExpressionPtr eval() const;
 
     /**
      * @brief Convert the expression to a string.
@@ -362,10 +362,10 @@ public:
      *
      * @return The parsed expression.
      */
-    static Expression* parse(const App::DocumentObject * owner, const std::string& buffer);
+    static ExpressionPtr parse(const App::DocumentObject* owner, const std::string& buffer);
 
     /// Copy an expression.
-    Expression * copy() const;
+    ExpressionPtr copy() const;
 
     /**
      * @brief Get the operator priority.
@@ -486,7 +486,7 @@ public:
      *
      * @return The simplified expression.
      */
-    virtual Expression * simplify() const = 0;
+    virtual ExpressionPtr simplify() const = 0;
 
     /// Visit the expression with a visitor.
     void visit(ExpressionVisitor & v);

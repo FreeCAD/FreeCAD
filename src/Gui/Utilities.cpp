@@ -28,12 +28,19 @@
 #include <QItemSelectionModel>
 
 
+#include <App/Application.h>
 #include <App/DocumentObject.h>
 
 #include "Utilities.h"
 
 
 using namespace Gui;
+
+
+bool Gui::isInternalGuiTestRun()
+{
+    return App::Application::Config()["RunMode"] == "Internal";
+}
 
 
 ViewVolumeProjection::ViewVolumeProjection(const SbViewVolume& vv)

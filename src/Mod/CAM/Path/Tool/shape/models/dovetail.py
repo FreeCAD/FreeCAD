@@ -28,7 +28,6 @@ from .base import ToolBitShape
 
 class ToolBitShapeDovetail(ToolBitShape):
     name = "Dovetail"
-    aliases = ("dovetail",)
 
     @classmethod
     def schema(cls) -> Mapping[str, Tuple[str, str]]:

@@ -236,8 +236,6 @@ void CmdSketcherNewSketch::activated(int iMsg)
     if (bAttach) {
 
         std::vector<Gui::SelectionObject> objects = Gui::Selection().getSelectionEx();
-        // assert (objects.size() == 1); //should have been filtered out by SuggestAutoMapMode
-        // Gui::SelectionObject &sel_support = objects[0];
         App::PropertyLinkSubList support;
         Gui::Selection().getAsPropertyLinkSubList(support);
         std::string supportString = support.getPyReprString();
@@ -273,6 +271,7 @@ void CmdSketcherNewSketch::activated(int iMsg)
                           FeatName.c_str());
             }
         }
+        commitCommand();
     }
     else {
         // ask user for orientation
@@ -315,6 +314,7 @@ void CmdSketcherNewSketch::activated(int iMsg)
                   FeatName.c_str(),
                   AttachEngine::getModeName(Attacher::mmDeactivated).c_str());
         doCommand(Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
+        commitCommand();
     }
 }
 
@@ -365,7 +365,7 @@ CmdSketcherLeaveSketch::CmdSketcherLeaveSketch()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Leave Sketch");
-    sToolTipText = QT_TR_NOOP("Exits the active sketch");
+    sToolTipText = QT_TR_NOOP("Finish editing the active sketch. You can also press Escape to exit.");
     sWhatsThis = "Sketcher_LeaveSketch";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_LeaveSketch";
@@ -394,6 +394,76 @@ bool CmdSketcherLeaveSketch::isActive()
 {
     return isSketchInEdit(getActiveGuiDocument());
 }
+
+// Cancel sketch edition
+
+DEF_STD_CMD_A(CmdSketcherCancelSketch)
+
+CmdSketcherCancelSketch::CmdSketcherCancelSketch()
+    : Command("Sketcher_CancelSketch")
+{
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("Cancel Editing");
+    sToolTipText = QT_TR_NOOP("Leave 'edit' mode and revert any changes");
+    sWhatsThis = "Sketcher_CancelSketch";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_CancelSketch";
+    eType = 0;
+}
+
+void CmdSketcherCancelSketch::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    Gui::Document* doc = getActiveGuiDocument();
+    if (!doc) {
+        return;
+    }
+
+    auto* vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+    if (!vp) {
+        return;
+    }
+
+    if (vp->getSketchMode() != ViewProviderSketch::STATUS_NONE) {
+        vp->purgeHandler();
+    }
+
+    vp->editingCancelled = true;
+    doCommand(Gui, "Gui.activeDocument().resetEdit()");
+    vp->editingCancelled = false;
+}
+
+bool CmdSketcherCancelSketch::isActive()
+{
+    return isSketchInEdit(getActiveGuiDocument());
+}
+
+//===========================================================================
+// Sketcher_LeaveGroup
+//===========================================================================
+class CmdSketcherLeaveGroup : public Gui::GroupCommand
+{
+public:
+    CmdSketcherLeaveGroup() : GroupCommand("Sketcher_LeaveGroup")
+    {
+        sAppModule = "Sketcher";
+        sGroup = "Sketcher";
+        sMenuText = QT_TR_NOOP("Leave");
+        sToolTipText = QT_TR_NOOP("Leave the sketch editing mode.");
+        sWhatsThis = "Sketcher_LeaveGroup";
+        sStatusTip = sToolTipText;
+        eType = 0;
+
+        setCheckable(false);
+        setRememberLast(false);
+
+        addCommand("Sketcher_LeaveSketch");
+        addCommand("Sketcher_CancelSketch");
+    }
+
+    const char* className() const override { return "CmdSketcherLeaveGroup"; }
+};
 
 DEF_STD_CMD_A(CmdSketcherStopOperation)
 
@@ -561,6 +631,7 @@ void CmdSketcherReorientSketch::activated(int iMsg)
         r[2],
         r[3]);
     doCommand(Gui, "Gui.ActiveDocument.setEdit('%s')", sketch->getNameInDocument());
+    commitCommand();
 }
 
 bool CmdSketcherReorientSketch::isActive()
@@ -761,6 +832,7 @@ void CmdSketcherMapSketch::activated(int iMsg)
             Gui::cmdAppObjectArgs(
                 sketch, "MapMode = \"%s\"", AttachEngine::getModeName(suggMapMode).c_str());
             Gui::cmdAppObjectArgs(sketch, "AttachmentSupport = %s", supportString.c_str());
+            // commitCommand();
             commitCommand();
             doCommand(Gui, "App.activeDocument().recompute()");
         }
@@ -769,6 +841,7 @@ void CmdSketcherMapSketch::activated(int iMsg)
             Gui::cmdAppObjectArgs(
                 sketch, "MapMode = \"%s\"", AttachEngine::getModeName(suggMapMode).c_str());
             Gui::cmdAppObjectArgs(sketch, "AttachmentSupport = None");
+            // commitCommand();
             commitCommand();
             doCommand(Gui, "App.activeDocument().recompute()");
         }
@@ -809,13 +882,11 @@ CmdSketcherViewSketch::CmdSketcherViewSketch()
 void CmdSketcherViewSketch::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::Document* doc = getActiveGuiDocument();
-    SketcherGui::ViewProviderSketch* vp =
-        dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-    if (vp) {
+
+    if (Gui::Application::Instance->isInEdit(getActiveGuiDocument())) {
         runCommand(Gui,
                    "Gui.ActiveDocument.ActiveView.setCameraOrientation("
-                   "App.Placement(Gui.editDocument().EditingTransform).Rotation.Q)");
+                   "App.Placement(Gui.ActiveDocument.EditingTransform).Rotation.Q)");
     }
 }
 
@@ -983,6 +1054,7 @@ void CmdSketcherMirrorSketch::activated(int iMsg)
         delete tempsketch;
     }
 
+    commitCommand();
     doCommand(Gui, "App.activeDocument().recompute()");
 }
 
@@ -1080,6 +1152,8 @@ void CmdSketcherMergeSketches::activated(int iMsg)
     doCommand(Doc,
               "App.activeDocument().ActiveObject.Placement = App.activeDocument().%s.Placement",
               selection.front().getFeatName());
+
+    commitCommand();
     doCommand(Doc, "App.activeDocument().recompute()");
 }
 
@@ -1111,8 +1185,9 @@ void CmdSketcherViewSection::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     QString cmdStr =
-        QLatin1String("ActiveSketch.ViewObject.TempoVis.sketchClipPlane(ActiveSketch, None, %1)\n");
+        QLatin1String("ActiveSketch.ViewObject.TempoVis.sketchClipPlane(ActiveSketch, Gui.ActiveDocument, None, %1)\n");
     Gui::Document* doc = getActiveGuiDocument();
+
     bool revert = false;
     if (doc) {
         SketcherGui::ViewProviderSketch* vp =
@@ -1831,8 +1906,10 @@ void CreateSketcherCommands()
     Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
 
     rcCmdMgr.addCommand(new CmdSketcherNewSketch());
+    rcCmdMgr.addCommand(new CmdSketcherCancelSketch());
     rcCmdMgr.addCommand(new CmdSketcherEditSketch());
     rcCmdMgr.addCommand(new CmdSketcherLeaveSketch());
+    rcCmdMgr.addCommand(new CmdSketcherLeaveGroup());
     rcCmdMgr.addCommand(new CmdSketcherStopOperation());
     rcCmdMgr.addCommand(new CmdSketcherReorientSketch());
     rcCmdMgr.addCommand(new CmdSketcherMapSketch());

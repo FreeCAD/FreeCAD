@@ -222,8 +222,10 @@ public:
             setAngleSnapping(true, centerPoint);
             Mode = SelectMode::Second;
         }
-        else if (Mode == SelectMode::Second
-                 && (centerPoint - onSketchPos).Length() >= Precision::Confusion()) {
+        else if (
+            Mode == SelectMode::Second
+            && (centerPoint - onSketchPos).Length() >= Precision::Confusion()
+        ) {
             EditCurve[1] = onSketchPos;
             axisPoint = onSketchPos;
             Mode = SelectMode::Third;
@@ -233,8 +235,10 @@ public:
             arcAngle = 0.;
             Mode = SelectMode::Fourth;
         }
-        else if (Mode == SelectMode::Fourth && centerPoint != onSketchPos && arcAngle != 0
-                 && abs(arcAngle) != 2 * pi) {
+        else if (
+            Mode == SelectMode::Fourth && centerPoint != onSketchPos && arcAngle != 0
+            && abs(arcAngle) != 2 * pi
+        ) {
             endPoint = onSketchPos;
 
             setAngleSnapping(false);
@@ -323,7 +327,7 @@ public:
             int currentgeoid = getHighestCurveIndex();
 
             try {
-                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc of ellipse"));
+                openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc of ellipse"));
 
                 Gui::cmdAppObjectArgs(
                     sketchgui->getObject(),
@@ -351,14 +355,14 @@ public:
                     QT_TRANSLATE_NOOP("Notifications", "Error"),
                     QT_TRANSLATE_NOOP("Notifications", "Failed to add arc of ellipse")
                 );
-                Gui::Command::abortCommand();
+                abortCommand();
 
                 tryAutoRecomputeIfNotSolve(sketchgui->getObject<Sketcher::SketchObject>());
 
                 return false;
             }
 
-            Gui::Command::commitCommand();
+            commitCommand();
 
             // add auto constraints for the center point
             if (!sugConstr1.empty()) {

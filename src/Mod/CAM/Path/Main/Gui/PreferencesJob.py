@@ -30,7 +30,6 @@ import json
 from FreeCAD import Units
 from PySide import QtCore, QtGui
 
-
 Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
@@ -47,8 +46,15 @@ class JobPreferencesPage:
 
     def saveSettings(self):
         jobTemplate = self.form.leDefaultJobTemplate.text()
-        geometryTolerance = Units.Quantity(self.form.geometryTolerance.text())
-        curveAccuracy = Units.Quantity(self.form.curveAccuracy.text())
+        geometryTolerance = self.form.geometryTolerance.property("rawValue")
+        curveAccuracy = self.form.curveAccuracy.property("rawValue")
+
+        if not geometryTolerance:
+            geometryTolerance = Path.Preferences.defaultGeometryTolerance()
+
+        if not curveAccuracy:
+            curveAccuracy = Path.Preferences.defaultLibAreaCurveAccuracy()
+
         Path.Preferences.setJobDefaults(jobTemplate, geometryTolerance, curveAccuracy)
 
         if curveAccuracy:
@@ -149,7 +155,7 @@ class JobPreferencesPage:
         self.form.leDefaultJobTemplate.setText(Path.Preferences.defaultJobTemplate())
 
         blacklist = Path.Preferences.postProcessorBlacklist()
-        for processor in Path.Preferences.allAvailablePostProcessors():
+        for processor in Path.Preferences.allAvailableLegacyPostProcessors():
             item = QtGui.QListWidgetItem(processor)
             if processor in blacklist:
                 item.setCheckState(QtCore.Qt.CheckState.Unchecked)
@@ -165,10 +171,15 @@ class JobPreferencesPage:
 
         self.form.defaultPostProcessorArgs.setText(Path.Preferences.defaultPostProcessorArgs())
 
-        geomTol = Units.Quantity(Path.Preferences.defaultGeometryTolerance(), Units.Length)
-        self.form.geometryTolerance.setText(geomTol.UserString)
-        self.form.curveAccuracy.setText(
-            Units.Quantity(Path.Preferences.defaultLibAreaCurveAccuracy(), Units.Length).UserString
+        self.form.geometryTolerance.setProperty("unit", "mm")
+        self.form.curveAccuracy.setProperty("unit", "mm")
+        self.form.geometryTolerance.setProperty("decimals", 8)
+        self.form.curveAccuracy.setProperty("decimals", 8)
+        self.form.geometryTolerance.setProperty(
+            "rawValue", Path.Preferences.defaultGeometryTolerance()
+        )
+        self.form.curveAccuracy.setProperty(
+            "rawValue", Path.Preferences.defaultLibAreaCurveAccuracy()
         )
 
         self.form.leOutputFile.setText(Path.Preferences.defaultOutputFile())

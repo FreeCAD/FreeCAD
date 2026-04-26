@@ -65,7 +65,7 @@
     <message>
       <location filename="../../Command.cpp" line="999"/>
       <source>Cross-Sections</source>
-      <translation type="unfinished">Cross-Sections</translation>
+      <translation>Secciones Transversales</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1000"/>
@@ -119,12 +119,12 @@
     <message>
       <location filename="../../Command.cpp" line="1132"/>
       <source>Face Info</source>
-      <translation type="unfinished">Face Info</translation>
+      <translation>Información de la cara</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1133"/>
       <source>Displays information about the selected faces</source>
-      <translation type="unfinished">Displays information about the selected faces</translation>
+      <translation>Muestra información sobre las caras seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -178,7 +178,7 @@
     <message>
       <location filename="../../Command.cpp" line="401"/>
       <source>Exports a mesh to a file</source>
-      <translation type="unfinished">Exports a mesh to a file</translation>
+      <translation>Exporta una malla a un archivo</translation>
     </message>
   </context>
   <context>
@@ -304,7 +304,7 @@
     <message>
       <location filename="../../Command.cpp" line="346"/>
       <source>Imports a mesh from a file</source>
-      <translation type="unfinished">Imports a mesh from a file</translation>
+      <translation>Importa una malla desde un archivo</translation>
     </message>
   </context>
   <context>
@@ -430,7 +430,7 @@
     <message>
       <location filename="../../Command.cpp" line="1229"/>
       <source>Refinement</source>
-      <translation type="unfinished">Refinement</translation>
+      <translation>Refinamiento</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1230"/>
@@ -466,7 +466,7 @@
     <message>
       <location filename="../../Command.cpp" line="1181"/>
       <source>Remove Components</source>
-      <translation type="unfinished">Remove Components</translation>
+      <translation>Eliminar componentes</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1182"/>
@@ -682,7 +682,7 @@
       <translation>Curvar vértices de malla</translation>
     </message>
     <message>
-      <location filename="../../DlgSmoothing.cpp" line="169"/>
+      <location filename="../../DlgSmoothing.cpp" line="175"/>
       <source>Mesh Smoothing</source>
       <translation>Suavizar malla</translation>
     </message>
@@ -717,7 +717,7 @@
       <translation>Escala de Malla</translation>
     </message>
     <message>
-      <location filename="../../DlgDecimating.cpp" line="166"/>
+      <location filename="../../DlgDecimating.cpp" line="180"/>
       <source>Mesh Decimating</source>
       <translation>Diezmado de Malla</translation>
     </message>
@@ -764,7 +764,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1196"/>
       <source>Repair Mesh</source>
-      <translation type="unfinished">Repair Mesh</translation>
+      <translation>Reparar malla</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.cpp" line="164"/>
@@ -794,12 +794,12 @@
       <translation>Segmento</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1872"/>
+      <location filename="../../ViewProvider.cpp" line="1870"/>
       <source>Delete</source>
       <translation>Eliminar</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="2001"/>
+      <location filename="../../ViewProvider.cpp" line="2000"/>
       <source>Fill hole</source>
       <translation>Rellenar hueco</translation>
     </message>
@@ -863,7 +863,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="745"/>
       <source>Mesh Information</source>
-      <translation type="unfinished">Mesh Information</translation>
+      <translation>Información de la malla</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="772"/>
@@ -873,7 +873,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="805"/>
       <source>Number of edges</source>
-      <translation type="unfinished">Number of edges</translation>
+      <translation>Número de aristas</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="838"/>
@@ -888,7 +888,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="14"/>
       <source>Evaluate and Repair Mesh</source>
-      <translation type="unfinished">Evaluate and Repair Mesh</translation>
+      <translation>Evaluar y reparar malla</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="37"/>
@@ -1231,7 +1231,7 @@
       <location filename="../../DlgRegularSolid.ui" line="273"/>
       <location filename="../../DlgRegularSolid.ui" line="424"/>
       <source>Edge length</source>
-      <translation type="unfinished">Edge length</translation>
+      <translation>Longitud de aristas</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="293"/>
@@ -1240,7 +1240,7 @@
       <location filename="../../DlgRegularSolid.ui" line="642"/>
       <location filename="../../DlgRegularSolid.ui" line="746"/>
       <source>Sampling</source>
-      <translation type="unfinished">Sampling</translation>
+      <translation>Muestreo</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="353"/>
@@ -1443,12 +1443,12 @@ se utiliza al grabar un archivo en formato AMF</translation>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="14"/>
       <source>Mesh View</source>
-      <translation type="unfinished">Mesh View</translation>
+      <translation>Vista de malla</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="35"/>
       <source>Default Appearance for New Meshes</source>
-      <translation type="unfinished">Default Appearance for New Meshes</translation>
+      <translation>Apariencia predeterminada para las nuevas mallas</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="251"/>
@@ -1525,12 +1525,12 @@ to a smoother appearance.
     <message>
       <location filename="../../DlgSmoothing.ui" line="72"/>
       <source>Lambda</source>
-      <translation type="unfinished">Lambda</translation>
+      <translation>Lambda</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="95"/>
       <source>Mu</source>
-      <translation type="unfinished">Mu</translation>
+      <translation>Mu</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="118"/>
@@ -1595,22 +1595,22 @@ to a smoother appearance.
   <context>
     <name>MeshGui::MeshFaceAddition</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="393"/>
+      <location filename="../../MeshEditor.cpp" line="394"/>
       <source>Add Triangle</source>
       <translation>Añadir triángulo</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="394"/>
+      <location filename="../../MeshEditor.cpp" line="395"/>
       <source>Flip Normal</source>
-      <translation type="unfinished">Flip Normal</translation>
+      <translation>Invertir normal</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="395"/>
+      <location filename="../../MeshEditor.cpp" line="396"/>
       <source>Clear</source>
       <translation>Borrar</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="411"/>
+      <location filename="../../MeshEditor.cpp" line="413"/>
       <source>Finish</source>
       <translation>Finalizar</translation>
     </message>
@@ -1618,7 +1618,7 @@ to a smoother appearance.
   <context>
     <name>MeshGui::MeshFillHole</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="762"/>
+      <location filename="../../MeshEditor.cpp" line="765"/>
       <source>Finish</source>
       <translation>Terminado</translation>
     </message>
@@ -1739,7 +1739,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemoveComponents.ui" line="14"/>
       <source>Remove Components</source>
-      <translation type="unfinished">Remove Components</translation>
+      <translation>Eliminar componentes</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="20"/>
@@ -2268,36 +2268,36 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../ViewProvider.cpp" line="812"/>
       <source>Display Colors</source>
-      <translation type="unfinished">Display Colors</translation>
+      <translation>Mostrar colores</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1701"/>
       <location filename="../../ViewProviderCurvature.cpp" line="535"/>
+      <location filename="../../ViewProvider.cpp" line="1701"/>
       <source>Leave Info Mode</source>
       <translation>Salir del modo de información</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1771"/>
+      <location filename="../../ViewProvider.cpp" line="1770"/>
       <source>Index: %1</source>
       <translation>Índice: %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1799"/>
+      <location filename="../../ViewProvider.cpp" line="1798"/>
       <source>Leave Hole-Filling Mode</source>
       <translation type="unfinished">Leave Hole-Filling Mode</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1846"/>
+      <location filename="../../ViewProvider.cpp" line="1844"/>
       <source>Leave Removal Mode</source>
       <translation type="unfinished">Leave Removal Mode</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1847"/>
+      <location filename="../../ViewProvider.cpp" line="1845"/>
       <source>Delete Selected Faces</source>
       <translation type="unfinished">Delete Selected Faces</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1848"/>
+      <location filename="../../ViewProvider.cpp" line="1846"/>
       <source>Clear Selected Faces</source>
       <translation type="unfinished">Clear Selected Faces</translation>
     </message>
@@ -2334,7 +2334,7 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="89"/>
       <source>Mesh Info</source>
-      <translation type="unfinished">Mesh Info</translation>
+      <translation>Información de la malla</translation>
     </message>
   </context>
   <context>
@@ -2362,12 +2362,12 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>Mesh Tools</source>
-      <translation type="unfinished">Mesh Tools</translation>
+      <translation>Herramientas de la malla</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
       <source>Mesh Modify</source>
-      <translation type="unfinished">Mesh Modify</translation>
+      <translation>Modificación de la malla</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
@@ -2377,7 +2377,7 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>Mesh Cutting</source>
-      <translation type="unfinished">Mesh Cutting</translation>
+      <translation>Corte de la malla</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
@@ -2387,7 +2387,32 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
       <source>Mesh Analyze</source>
-      <translation type="unfinished">Mesh Analyze</translation>
+      <translation>Análisis de la malla</translation>
+    </message>
+  </context>
+  <context>
+    <name>FileFormat</name>
+    <message>
+      <location filename="../../../Init.py" line="19"/>
+      <source>STL Mesh</source>
+      <translation type="unfinished">STL Mesh</translation>
+    </message>
+    <message>
+      <location filename="../../../Init.py" line="20"/>
+      <source>Binary Mesh</source>
+      <translation>Malla binaria</translation>
+    </message>
+    <message>
+      <location filename="../../../Init.py" line="23"/>
+      <source>Alias Mesh</source>
+      <extracomment>Translation note: "Alias" in this case is a product/format name and should not be translated</extracomment>
+      <translation>Alias de la malla</translation>
+    </message>
+    <message>
+      <location filename="../../../Init.py" line="27"/>
+      <source>Object File Format Mesh</source>
+      <extracomment>Translation note: "Object File Format" is the official name and should not be translated</extracomment>
+      <translation type="unfinished">Object File Format Mesh</translation>
     </message>
   </context>
 </TS>

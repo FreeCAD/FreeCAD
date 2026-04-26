@@ -194,11 +194,6 @@ typedef unsigned __int64    uint64_t;
 //**************************************************************************
 // Qt
 
-// Make sure to explicitly use the correct conversion
-#ifndef QT_NO_CAST_FROM_ASCII
-# define QT_NO_CAST_FROM_ASCII
-#endif
-
 #ifndef QT_NO_KEYWORDS
 # define QT_NO_KEYWORDS
 #endif

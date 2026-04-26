@@ -31,6 +31,7 @@
 #include <App/Metadata.h>
 #include <Base/Color.h>
 #include <Base/Console.h>
+#include <Base/ProgramVersion.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
@@ -524,7 +525,7 @@ std::vector<App::DocumentObject*> ViewProviderDrawingView::claimChildren() const
 void ViewProviderDrawingView::fixColorAlphaValues()
 {
     if (!Preferences::fixColorAlphaOnLoad() ||
-        checkMiniumumDocumentVersion(1, 1)) {
+        checkMinimumDocumentVersion(Base::Version::v1_1)) {
         return;
     }
 
@@ -550,27 +551,12 @@ void ViewProviderDrawingView::fixColorAlphaValues()
     }
 }
 
-
-//! true if document toBeChecked was written by a program with version >= minMajor.minMinor.
-//! note that we can not check point releases as only the major and minor are recorded in the Document.xml
-//! file.
-//! (ex <Document SchemaVersion="4" ProgramVersion="1.2R44322 +1 (Git)" FileVersion="1" StringHasher="1">)
-bool ViewProviderDrawingView::checkMiniumumDocumentVersion(App::Document* toBeChecked,
-                                                           int minMajor,
-                                                           int minMinor)
+bool ViewProviderDrawingView::checkMinimumDocumentVersion(App::Document* toBeChecked,
+                                                           Base::Version minVersion)
 {
     const char* docVersionText = toBeChecked->getProgramVersion();
-    int docMajor{0};
-    int docMinor{0};
-    // stole this bit from App::AttachExtension.
-    // NOLINTNEXTLINE
-    if (sscanf(docVersionText, "%d.%d", &docMajor, &docMinor) != 2) {
-        Base::Console().warning("Failed to retrieve document version number for %s\n",
-                    toBeChecked ? toBeChecked->getName() : "noname");
-        return false;   // ?? should we fail here? the file appears broken.
-    }
-
-    return std::tie(docMajor, docMinor) >= std::tie(minMajor, minMinor);
+    Base::Version documentVersion = Base::getVersion(docVersionText);
+    return documentVersion >= minVersion;
 }
 
 

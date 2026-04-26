@@ -6,99 +6,99 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="35"/>
       <source>General OpenSCAD Settings</source>
-      <translation type="unfinished">General OpenSCAD Settings</translation>
+      <translation>பொது OpenSCAD அமைப்புகள்</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="43"/>
       <source>OpenSCAD executable</source>
-      <translation type="unfinished">OpenSCAD executable</translation>
+      <translation>OpenSCAD இயங்கக்கூடியது</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="56"/>
       <source>The path to the OpenSCAD executable</source>
-      <translation type="unfinished">The path to the OpenSCAD executable</translation>
+      <translation>OpenSCAD இயங்கக்கூடிய பாதை</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="82"/>
       <source>Print debug information in the Console</source>
-      <translation type="unfinished">Print debug information in the Console</translation>
+      <translation>கன்சோலில் பிழைத்திருத்தத் தகவலை அச்சிடவும்</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="99"/>
       <source>If this is checked, Features will claim their children in the tree view</source>
-      <translation type="unfinished">If this is checked, Features will claim their children in the tree view</translation>
+      <translation>இது சரிபார்க்கப்பட்டால், நற்பொருத்தங்கள் மரக் காட்சியில் தங்கள் குழந்தைகளை உரிமை கோரும்</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="119"/>
       <source>If this is checked, Multmatrix Object will be Parametric</source>
-      <translation type="unfinished">If this is checked, Multmatrix Object will be Parametric</translation>
+      <translation>இதைச் சரிபார்த்தால், Multmatrix ஆப்செக்ட் அளவுருவாக இருக்கும்</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="122"/>
       <source>Use Multmatrix Feature</source>
-      <translation type="unfinished">Use Multmatrix Feature</translation>
+      <translation>Multmatrix அம்சத்தைப் பயன்படுத்தவும்</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="139"/>
       <location filename="../ui/openscadprefs-base.ui" line="162"/>
       <source>The maximum number of faces of a polygon, prism or frustum. If fn is greater than this value the object is considered to be a circular. Set to 0 for no limit</source>
-      <translation type="unfinished">The maximum number of faces of a polygon, prism or frustum. If fn is greater than this value the object is considered to be a circular. Set to 0 for no limit</translation>
+      <translation>பலகோணம், ப்ரிசம் அல்லது ஃபிரச்டம் ஆகியவற்றின் முகங்களின் அதிகபட்ச எண்ணிக்கை. fn இந்த மதிப்பை விட அதிகமாக இருந்தால், பொருள் ஒரு வட்டமாக கருதப்படுகிறது. வரம்பு இல்லாமல் 0 என அமைக்கவும்</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="142"/>
       <source>Maximum number of faces for polygons (fn)</source>
-      <translation type="unfinished">Maximum number of faces for polygons (fn)</translation>
+      <translation>பலகோணங்களுக்கான முகங்களின் அதிகபட்ச எண்ணிக்கை (fn)</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="195"/>
       <source>The transfer mechanism for getting data to and from OpenSCAD</source>
-      <translation type="unfinished">The transfer mechanism for getting data to and from OpenSCAD</translation>
+      <translation>OpenSCAD லிருந்து தரவைப் பெறுவதற்கான பரிமாற்ற வழிமுறை</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="205"/>
       <source>Standard temp directory</source>
-      <translation type="unfinished">Standard temp directory</translation>
+      <translation>நிலையான வெப்பநிலை அடைவு</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="210"/>
       <source>User-specified directory</source>
-      <translation type="unfinished">User-specified directory</translation>
+      <translation>பயனர் குறிப்பிட்ட கோப்பகம்</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="215"/>
       <source>stdout pipe (requires OpenSCAD &gt;= 2021.1)</source>
-      <translation type="unfinished">stdout pipe (requires OpenSCAD &gt;= 2021.1)</translation>
+      <translation>stdout குழாய் (OpenSCAD&gt;= 2021.1 தேவை)</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="227"/>
       <source>Transfer directory</source>
-      <translation type="unfinished">Transfer directory</translation>
+      <translation>பரிமாற்ற அடைவு</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="243"/>
       <source>The path to the directory for transferring files to and from OpenSCAD</source>
-      <translation type="unfinished">The path to the directory for transferring files to and from OpenSCAD</translation>
+      <translation>OpenSCAD க்கு கோப்புகளை மாற்றுவதற்கான கோப்பகத்திற்கான பாதை</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="269"/>
       <source>Maximum fragment size</source>
-      <translation type="unfinished">Maximum fragment size</translation>
+      <translation>அதிகபட்ச துண்டு அளவு</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="292"/>
       <source>angle (fa)</source>
-      <translation type="unfinished">angle (fa)</translation>
+      <translation>கோணம் (fa)</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="388"/>
       <source>Convexity</source>
-      <translation type="unfinished">Convexity</translation>
+      <translation>குவிவு</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="289"/>
       <location filename="../ui/openscadprefs-base.ui" line="299"/>
       <source>Minimum angle for a fragment</source>
-      <translation type="unfinished">Minimum angle for a fragment</translation>
+      <translation>ஒரு துண்டுக்கான குறைந்தபட்ச கோணம்</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="14"/>
@@ -108,59 +108,59 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="74"/>
       <source>OpenSCAD Import</source>
-      <translation type="unfinished">OpenSCAD Import</translation>
+      <translation>OpenSCAD இறக்குமதி</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="102"/>
       <source>Use ViewProviders in Tree View</source>
-      <translation type="unfinished">Use ViewProviders in Tree View</translation>
+      <translation>ட்ரீ வியூவில் ViewProviders ஐப் பயன்படுத்தவும்</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="182"/>
       <source>Send to OpenSCAD via</source>
-      <translation type="unfinished">Send to OpenSCAD via</translation>
+      <translation>மூலம் OpenSCAD க்கு அனுப்பவும்</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="261"/>
       <source>OpenSCAD Export</source>
-      <translation type="unfinished">OpenSCAD Export</translation>
+      <translation>OpenSCAD ஏற்றுமதி</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="331"/>
       <location filename="../ui/openscadprefs-base.ui" line="356"/>
       <source>Minimum size of a fragment</source>
-      <translation type="unfinished">Minimum size of a fragment</translation>
+      <translation>ஒரு துண்டின் குறைந்தபட்ச அளவு</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="334"/>
       <source>size (fs)</source>
-      <translation type="unfinished">size (fs)</translation>
+      <translation>அளவு (fs)</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="362"/>
       <source>mm</source>
-      <translation type="unfinished">mm</translation>
+      <translation>மிமீ</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="425"/>
       <source>Mesh fallback</source>
-      <translation type="unfinished">Mesh fallback</translation>
+      <translation>மெச் ஃபால்பேக்</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="445"/>
       <location filename="../ui/openscadprefs-base.ui" line="462"/>
       <source>Deflection</source>
-      <translation type="unfinished">Deflection</translation>
+      <translation>விலகல்</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="448"/>
       <source>deflection</source>
-      <translation type="unfinished">deflection</translation>
+      <translation>விலகல்</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="455"/>
       <source>Triangulation settings</source>
-      <translation type="unfinished">Triangulation settings</translation>
+      <translation>முக்கோண அமைப்புகள்</translation>
     </message>
   </context>
   <context>
@@ -168,23 +168,23 @@
     <message>
       <location filename="../../InitGui.py" line="132"/>
       <source>It looks like you may be using a Snap version of OpenSCAD.</source>
-      <translation type="unfinished">It looks like you may be using a Snap version of OpenSCAD.</translation>
+      <translation>நீங்கள் OpenSCAD இன் Snap பதிப்பைப் பயன்படுத்துவது போல் தெரிகிறது.</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="137"/>
       <location filename="../../InitGui.py" line="150"/>
       <source>If OpenSCAD execution fails to load the temporary file, use FreeCAD's OpenSCAD Workbench Preferences to change the transfer mechanism.</source>
-      <translation type="unfinished">If OpenSCAD execution fails to load the temporary file, use FreeCAD's OpenSCAD Workbench Preferences to change the transfer mechanism.</translation>
+      <translation>OpenSCAD செயல்படுத்தல் தற்காலிக கோப்பை ஏற்றத் தவறினால், பரிமாற்ற பொறிமுறையை மாற்ற FreeCAD இன் OpenSCAD வொர்க்பெஞ்ச் விருப்பங்களைப் பயன்படுத்தவும்.</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="145"/>
       <source>It looks like you may be using a sandboxed version of FreeCAD.</source>
-      <translation type="unfinished">It looks like you may be using a sandboxed version of FreeCAD.</translation>
+      <translation>நீங்கள் FreeCAD இன் சாண்ட்பாக்ச் செய்யப்பட்ட பதிப்பைப் பயன்படுத்துவது போல் தெரிகிறது.</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="94"/>
       <source>Unable to explode %s</source>
-      <translation type="unfinished">Unable to explode %s</translation>
+      <translation>%sஐ வெடிக்க முடியவில்லை</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="335"/>
@@ -205,7 +205,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="368"/>
       <source>Save</source>
-      <translation type="unfinished">Save</translation>
+      <translation>சேமி</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="336"/>
@@ -216,98 +216,98 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="371"/>
       <source>as Mesh</source>
-      <translation type="unfinished">as Mesh</translation>
+      <translation>மெச் என</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="353"/>
       <location filename="../../OpenSCADCommands.py" line="372"/>
       <source>Add OpenSCAD Element</source>
-      <translation type="unfinished">Add OpenSCAD Element</translation>
+      <translation>OpenSCAD உறுப்பைச் சேர்க்கவும்</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="141"/>
       <source>Converts edges to faces</source>
-      <translation type="unfinished">Converts edges to faces</translation>
+      <translation>விளிம்புகளை முகங்களாக மாற்றுகிறது</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="303"/>
       <source>Select 3 objects first</source>
-      <translation type="unfinished">Select 3 objects first</translation>
+      <translation>முதலில் 3 பொருட்களைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="337"/>
       <source>Clear Code</source>
-      <translation type="unfinished">Clear Code</translation>
+      <translation>குறியீட்டை அழிக்கவும்</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="338"/>
       <source>Open…</source>
-      <translation type="unfinished">Open…</translation>
+      <translation>திற…</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="339"/>
       <source>Save…</source>
-      <translation type="unfinished">Save…</translation>
+      <translation>சேமி...</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="340"/>
       <source>as mesh</source>
-      <translation type="unfinished">as mesh</translation>
+      <translation>கண்ணி என</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="429"/>
       <source>Open file</source>
-      <translation type="unfinished">Open file</translation>
+      <translation>கோப்பை திற</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="431"/>
       <location filename="../../OpenSCADCommands.py" line="445"/>
       <source>OpenSCAD Files</source>
-      <translation type="unfinished">OpenSCAD Files</translation>
+      <translation>OpenSCAD கோப்புகள்</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="443"/>
       <source>Save file</source>
-      <translation type="unfinished">Save file</translation>
+      <translation>கோப்பை சேமி</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="457"/>
       <location filename="../../OpenSCADCommands.py" line="486"/>
       <source>Perform</source>
-      <translation type="unfinished">Perform</translation>
+      <translation>நிகழ்த்து</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="483"/>
       <location filename="../../OpenSCADCommands.py" line="487"/>
       <source>Mesh Boolean</source>
-      <translation type="unfinished">Mesh Boolean</translation>
+      <translation>மெச் பூலியன்</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="488"/>
       <source>Minkowski sum</source>
-      <translation type="unfinished">Minkowski sum</translation>
+      <translation>மின்கோவ்ச்கி தொகை</translation>
     </message>
     <message>
       <location filename="../../OpenSCADUtils.py" line="650"/>
       <source>OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</source>
-      <translation type="unfinished">OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</translation>
+      <translation>OpenSCAD கோப்பில் 2D மற்றும் 3D வடிவங்கள் உள்ளன. இந்த இறக்குமதியாளரில் இது ஆதரிக்கப்படவில்லை, எல்லா வடிவங்களும் ஒரே பரிமாணத்தைக் கொண்டிருக்க வேண்டும்.</translation>
     </message>
     <message>
       <location filename="../../OpenSCADUtils.py" line="661"/>
       <source>Error: either all shapes must be 2D or all shapes must be 3D</source>
-      <translation type="unfinished">Error: either all shapes must be 2D or all shapes must be 3D</translation>
+      <translation>பிழை: அனைத்து வடிவங்களும் 2D ஆக இருக்க வேண்டும் அல்லது அனைத்து வடிவங்களும் 3D ஆக இருக்க வேண்டும்</translation>
     </message>
     <message>
       <location filename="../../importCSG.py" line="518"/>
       <location filename="../../importCSG.py" line="1390"/>
       <source>Unsupported Function</source>
-      <translation type="unfinished">Unsupported Function</translation>
+      <translation>ஆதரிக்கப்படாத செயல்பாடு</translation>
     </message>
     <message>
       <location filename="../../importCSG.py" line="518"/>
       <location filename="../../importCSG.py" line="1390"/>
       <source>Press OK</source>
-      <translation type="unfinished">Press OK</translation>
+      <translation>சரி என்பதை அழுத்தவும்</translation>
     </message>
   </context>
   <context>
@@ -315,12 +315,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="102"/>
       <source>Explode Group</source>
-      <translation type="unfinished">Explode Group</translation>
+      <translation>வெடிக்கும் குழு</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="105"/>
       <source>Explodes a fusion or compound and applies random colors</source>
-      <translation type="unfinished">Explodes a fusion or compound and applies random colors</translation>
+      <translation>ஒரு இணைவு அல்லது கலவையை வெடித்து சீரற்ற வண்ணங்களைப் பயன்படுத்துகிறது</translation>
     </message>
   </context>
   <context>
@@ -328,12 +328,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="118"/>
       <source>Color Shapes</source>
-      <translation type="unfinished">Color Shapes</translation>
+      <translation>வண்ண வடிவங்கள்</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="121"/>
       <source>Colors shapes by validity and type</source>
-      <translation type="unfinished">Colors shapes by validity and type</translation>
+      <translation>செல்லுபடியாகும் மற்றும் வகை மூலம் நிறங்கள் வடிவங்கள்</translation>
     </message>
   </context>
   <context>
@@ -341,12 +341,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="158"/>
       <source>Refine Shape Feature</source>
-      <translation type="unfinished">Refine Shape Feature</translation>
+      <translation>செம்மை வடிவ நற்பொருத்தம்</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="161"/>
       <source>Creates a refined shape</source>
-      <translation type="unfinished">Creates a refined shape</translation>
+      <translation>சுத்திகரிக்கப்பட்ட வடிவத்தை உருவாக்குகிறது</translation>
     </message>
   </context>
   <context>
@@ -354,12 +354,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="268"/>
       <source>Increase Tolerance Feature</source>
-      <translation type="unfinished">Increase Tolerance Feature</translation>
+      <translation>சகிப்புத்தன்மை அம்சத்தை அதிகரிக்கவும்</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="271"/>
       <source>Creates a feature to increase the tolerance</source>
-      <translation type="unfinished">Creates a feature to increase the tolerance</translation>
+      <translation>சகிப்புத்தன்மையை அதிகரிக்க ஒரு அம்சத்தை உருவாக்குகிறது</translation>
     </message>
   </context>
   <context>
@@ -367,12 +367,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="285"/>
       <source>Expand Placements</source>
-      <translation type="unfinished">Expand Placements</translation>
+      <translation>இடங்களை விரிவாக்குங்கள்</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="288"/>
       <source>Expands all placements downwards in the Tree View</source>
-      <translation type="unfinished">Expands all placements downwards in the Tree View</translation>
+      <translation>ட்ரீ வியூவில் அனைத்து இடங்களையும் கீழ்நோக்கி விரிவுபடுத்துகிறது</translation>
     </message>
   </context>
   <context>
@@ -380,12 +380,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="306"/>
       <source>Replace Object</source>
-      <translation type="unfinished">Replace Object</translation>
+      <translation>பொருளை மாற்றவும்</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="309"/>
       <source>Replaces an object in the Tree View</source>
-      <translation type="unfinished">Replaces an object in the Tree View</translation>
+      <translation>ட்ரீ வியூவில் ஒரு பொருளை மாற்றுகிறது</translation>
     </message>
   </context>
   <context>
@@ -393,12 +393,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="319"/>
       <source>Remove Objects and Children</source>
-      <translation type="unfinished">Remove Objects and Children</translation>
+      <translation>பொருட்களையும் குழந்தைகளையும் அகற்று</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="322"/>
       <source>Removes the selected objects and all children that are not referenced by other objects</source>
-      <translation type="unfinished">Removes the selected objects and all children that are not referenced by other objects</translation>
+      <translation>தேர்ந்தெடுக்கப்பட்ட பொருட்களையும் மற்ற பொருள்களால் குறிப்பிடப்படாத அனைத்து குழந்தைகளையும் நீக்குகிறது</translation>
     </message>
   </context>
   <context>
@@ -406,12 +406,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="567"/>
       <source>Hull</source>
-      <translation type="unfinished">Hull</translation>
+      <translation>கடலுடல்</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="570"/>
       <source>Creates a hull</source>
-      <translation type="unfinished">Creates a hull</translation>
+      <translation>மேலோட்டத்தை உருவாக்குகிறது</translation>
     </message>
   </context>
   <context>
@@ -419,12 +419,12 @@
     <message>
       <location filename="../../InitGui.py" line="154"/>
       <source>OpenSCAD Tools</source>
-      <translation type="unfinished">OpenSCAD Tools</translation>
+      <translation>OpenSCAD கருவிகள்</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="158"/>
       <source>Frequently-used Part WB tools</source>
-      <translation type="unfinished">Frequently-used Part WB tools</translation>
+      <translation>அடிக்கடி பயன்படுத்தப்படும் பகுதி WB கருவிகள்</translation>
     </message>
   </context>
   <context>
@@ -432,7 +432,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="138"/>
       <source>Convert Edges to Faces</source>
-      <translation type="unfinished">Convert Edges to Faces</translation>
+      <translation>விளிம்புகளை முகங்களாக மாற்றவும்</translation>
     </message>
   </context>
   <context>
@@ -440,12 +440,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="188"/>
       <source>Mirror Mesh Feature</source>
-      <translation type="unfinished">Mirror Mesh Feature</translation>
+      <translation>மிரர் மெச் நற்பொருத்தம்</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="191"/>
       <source>Mirrors the mesh</source>
-      <translation type="unfinished">Mirrors the mesh</translation>
+      <translation>கண்ணியைப் பிரதிபலிக்கிறது</translation>
     </message>
   </context>
   <context>
@@ -453,12 +453,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="217"/>
       <source>Scale Mesh Feature</source>
-      <translation type="unfinished">Scale Mesh Feature</translation>
+      <translation>அளவிலான மெச் நற்பொருத்தம்</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="221"/>
       <source>Scales the mesh</source>
-      <translation type="unfinished">Scales the mesh</translation>
+      <translation>கண்ணியை அளவிடுகிறது</translation>
     </message>
   </context>
   <context>
@@ -466,12 +466,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="247"/>
       <source>Resize Mesh Feature</source>
-      <translation type="unfinished">Resize Mesh Feature</translation>
+      <translation>மெச் அம்சத்தின் அளவை மாற்றவும்</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="251"/>
       <source>Resizes the mesh</source>
-      <translation type="unfinished">Resizes the mesh</translation>
+      <translation>கண்ணி அளவை மாற்றுகிறது</translation>
     </message>
   </context>
   <context>
@@ -479,12 +479,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="531"/>
       <source>Add OpenSCAD Element</source>
-      <translation type="unfinished">Add OpenSCAD Element</translation>
+      <translation>OpenSCAD உறுப்பைச் சேர்க்கவும்</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="535"/>
       <source>Adds an OpenSCAD element based on entered OpenSCAD code using the OpenSCAD binary</source>
-      <translation type="unfinished">Adds an OpenSCAD element based on entered OpenSCAD code using the OpenSCAD binary</translation>
+      <translation>OpenSCAD பைனரியைப் பயன்படுத்தி உள்ளிட்ட OpenSCAD குறியீட்டின் அடிப்படையில் OpenSCAD உறுப்பைச் சேர்க்கிறது</translation>
     </message>
   </context>
   <context>
@@ -492,12 +492,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="546"/>
       <source>Mesh Boolean</source>
-      <translation type="unfinished">Mesh Boolean</translation>
+      <translation>மெச் பூலியன்</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="550"/>
       <source>Performs a boolean operation using the OpenSCAD binary</source>
-      <translation type="unfinished">Performs a boolean operation using the OpenSCAD binary</translation>
+      <translation>OpenSCAD பைனரியைப் பயன்படுத்தி பூலியன் செயல்பாட்டைச் செய்கிறது</translation>
     </message>
   </context>
   <context>
@@ -505,12 +505,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="587"/>
       <source>Minkowski Sum</source>
-      <translation type="unfinished">Minkowski Sum</translation>
+      <translation>மின்கோவ்ச்கி தொகை</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="590"/>
       <source>Creates a Minkowski sum</source>
-      <translation type="unfinished">Creates a Minkowski sum</translation>
+      <translation>மின்கோவ்ச்கி தொகையை உருவாக்குகிறது</translation>
     </message>
   </context>
 </TS>

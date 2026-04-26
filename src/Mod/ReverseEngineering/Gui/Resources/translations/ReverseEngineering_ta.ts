@@ -6,17 +6,17 @@
     <message>
       <location filename="../../Command.cpp" line="246"/>
       <source>Reverse Engineering</source>
-      <translation type="unfinished">Reverse Engineering</translation>
+      <translation>தலைகீழ் பொறியியல்</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="247"/>
       <source>Cylinder</source>
-      <translation type="unfinished">Cylinder</translation>
+      <translation>கலன்</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="248"/>
       <source>Approximates a cylinder</source>
-      <translation type="unfinished">Approximates a cylinder</translation>
+      <translation>தோராயமாக ஒரு சிலிண்டர்</translation>
     </message>
   </context>
   <context>
@@ -24,17 +24,17 @@
     <message>
       <location filename="../../Command.cpp" line="141"/>
       <source>Reverse Engineering</source>
-      <translation type="unfinished">Reverse Engineering</translation>
+      <translation>தலைகீழ் பொறியியல்</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="142"/>
       <source>Plane</source>
-      <translation type="unfinished">Plane</translation>
+      <translation>தளம்</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="143"/>
       <source>Approximates a plane</source>
-      <translation type="unfinished">Approximates a plane</translation>
+      <translation>தோராயமாக ஒரு வானூர்தி</translation>
     </message>
   </context>
   <context>
@@ -42,17 +42,17 @@
     <message>
       <location filename="../../Command.cpp" line="362"/>
       <source>Reverse Engineering</source>
-      <translation type="unfinished">Reverse Engineering</translation>
+      <translation>தலைகீழ் பொறியியல்</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="363"/>
       <source>Polynomial Surface</source>
-      <translation type="unfinished">Polynomial Surface</translation>
+      <translation>பல்லுறுப்புக்கோவை மேற்பரப்பு</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="364"/>
       <source>Approximates a polynomial surface</source>
-      <translation type="unfinished">Approximates a polynomial surface</translation>
+      <translation>தோராயமாக ஒரு பல்லுறுப்புக்கோவை மேற்பரப்பு</translation>
     </message>
   </context>
   <context>
@@ -60,17 +60,17 @@
     <message>
       <location filename="../../Command.cpp" line="314"/>
       <source>Reverse Engineering</source>
-      <translation type="unfinished">Reverse Engineering</translation>
+      <translation>தலைகீழ் பொறியியல்</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="315"/>
       <source>Sphere</source>
-      <translation type="unfinished">Sphere</translation>
+      <translation>கோளம்</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="316"/>
       <source>Approximates a sphere</source>
-      <translation type="unfinished">Approximates a sphere</translation>
+      <translation>தோராயமாக ஒரு கோளம்</translation>
     </message>
   </context>
   <context>
@@ -78,17 +78,17 @@
     <message>
       <location filename="../../Command.cpp" line="102"/>
       <source>Reverse Engineering</source>
-      <translation type="unfinished">Reverse Engineering</translation>
+      <translation>தலைகீழ் பொறியியல்</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="103"/>
       <source>Approximate B-Spline Surface…</source>
-      <translation type="unfinished">Approximate B-Spline Surface…</translation>
+      <translation>தோராயமான பி-ச்ப்லைன் மேற்பரப்பு…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="104"/>
       <source>Approximates a B-spline surface</source>
-      <translation type="unfinished">Approximates a B-spline surface</translation>
+      <translation>தோராயமாக ஒரு பி-ச்ப்லைன் மேற்பரப்பு</translation>
     </message>
   </context>
   <context>
@@ -96,17 +96,17 @@
     <message>
       <location filename="../../Command.cpp" line="531"/>
       <source>Reverse Engineering</source>
-      <translation type="unfinished">Reverse Engineering</translation>
+      <translation>தலைகீழ் பொறியியல்</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="532"/>
       <source>Wire From Mesh Boundary…</source>
-      <translation type="unfinished">Wire From Mesh Boundary…</translation>
+      <translation>மெச் எல்லையில் இருந்து கம்பி…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="533"/>
       <source>Creates a wire from mesh boundaries</source>
-      <translation type="unfinished">Creates a wire from mesh boundaries</translation>
+      <translation>கண்ணி எல்லைகளிலிருந்து கம்பியை உருவாக்குகிறது</translation>
     </message>
   </context>
   <context>
@@ -114,17 +114,17 @@
     <message>
       <location filename="../../Command.cpp" line="596"/>
       <source>Reverse Engineering</source>
-      <translation type="unfinished">Reverse Engineering</translation>
+      <translation>தலைகீழ் பொறியியல்</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="597"/>
       <source>Poisson…</source>
-      <translation type="unfinished">Poisson…</translation>
+      <translation>விசம்…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="598"/>
       <source>Performs Poisson surface reconstruction</source>
-      <translation type="unfinished">Performs Poisson surface reconstruction</translation>
+      <translation>பாய்சன் மேற்பரப்பு புனரமைப்பு செய்கிறது</translation>
     </message>
   </context>
   <context>
@@ -132,17 +132,17 @@
     <message>
       <location filename="../../Command.cpp" line="419"/>
       <source>Reverse Engineering</source>
-      <translation type="unfinished">Reverse Engineering</translation>
+      <translation>தலைகீழ் பொறியியல்</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="420"/>
       <source>Mesh Segmentation…</source>
-      <translation type="unfinished">Mesh Segmentation…</translation>
+      <translation>மெச் பிரிவு…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="421"/>
       <source>Creates separate mesh segments based on surface types</source>
-      <translation type="unfinished">Creates separate mesh segments based on surface types</translation>
+      <translation>மேற்பரப்பு வகைகளின் அடிப்படையில் தனி மெச் பிரிவுகளை உருவாக்குகிறது</translation>
     </message>
   </context>
   <context>
@@ -150,17 +150,17 @@
     <message>
       <location filename="../../Command.cpp" line="481"/>
       <source>Reverse Engineering</source>
-      <translation type="unfinished">Reverse Engineering</translation>
+      <translation>தலைகீழ் பொறியியல்</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="482"/>
       <source>From Components</source>
-      <translation type="unfinished">From Components</translation>
+      <translation>கூறுகளிலிருந்து</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="483"/>
       <source>Creates mesh segments from components</source>
-      <translation type="unfinished">Creates mesh segments from components</translation>
+      <translation>கூறுகளிலிருந்து கண்ணி பிரிவுகளை உருவாக்குகிறது</translation>
     </message>
   </context>
   <context>
@@ -168,17 +168,17 @@
     <message>
       <location filename="../../Command.cpp" line="451"/>
       <source>Reverse Engineering</source>
-      <translation type="unfinished">Reverse Engineering</translation>
+      <translation>தலைகீழ் பொறியியல்</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="452"/>
       <source>Manual Segmentation…</source>
-      <translation type="unfinished">Manual Segmentation…</translation>
+      <translation>கைமுறையாகப் பிரித்தல்…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="453"/>
       <source>Creates mesh segments manually</source>
-      <translation type="unfinished">Creates mesh segments manually</translation>
+      <translation>கண்ணி பிரிவுகளை கைமுறையாக உருவாக்குகிறது</translation>
     </message>
   </context>
   <context>
@@ -186,22 +186,22 @@
     <message>
       <location filename="../../Command.cpp" line="633"/>
       <source>Reverse Engineering</source>
-      <translation type="unfinished">Reverse Engineering</translation>
+      <translation>தலைகீழ் பொறியியல்</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="634"/>
       <source>Structured Point Clouds</source>
-      <translation type="unfinished">Structured Point Clouds</translation>
+      <translation>கட்டமைக்கப்பட்ட புள்ளி மேகங்கள்</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="635"/>
       <source>Triangulates structured point clouds</source>
-      <translation type="unfinished">Triangulates structured point clouds</translation>
+      <translation>கட்டமைக்கப்பட்ட புள்ளி மேகங்களை முக்கோணமாக்குகிறது</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="636"/>
       <source>Triangulation of structured point clouds</source>
-      <translation type="unfinished">Triangulation of structured point clouds</translation>
+      <translation>கட்டமைக்கப்பட்ட புள்ளி மேகங்களின் முக்கோணம்</translation>
     </message>
   </context>
   <context>
@@ -209,27 +209,27 @@
     <message>
       <location filename="../../Command.cpp" line="224"/>
       <source>Fit plane</source>
-      <translation type="unfinished">Fit plane</translation>
+      <translation>பொருத்தமான வானூர்தி</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="256"/>
       <source>Fit cylinder</source>
-      <translation type="unfinished">Fit cylinder</translation>
+      <translation>ஃபிட் சிலிண்டர்</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="324"/>
       <source>Fit sphere</source>
-      <translation type="unfinished">Fit sphere</translation>
+      <translation>ஃபிட் கோளம்</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="373"/>
       <source>Fit polynomial surface</source>
-      <translation type="unfinished">Fit polynomial surface</translation>
+      <translation>பொருத்து பல்லுறுப்புக்கோவை மேற்பரப்பு</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="646"/>
       <source>View triangulation</source>
-      <translation type="unfinished">View triangulation</translation>
+      <translation>முக்கோணத்தைப் பார்க்கவும்</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="160"/>
@@ -240,17 +240,17 @@
       <location filename="../../FitBSplineSurface.cpp" line="242"/>
       <location filename="../../FitBSplineCurve.cpp" line="138"/>
       <source>Fit B-spline</source>
-      <translation type="unfinished">Fit B-spline</translation>
+      <translation>ஃபிட் பி-ச்ப்லைன்</translation>
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="87"/>
       <source>Poisson reconstruction</source>
-      <translation type="unfinished">Poisson reconstruction</translation>
+      <translation>நஞ்சு புனரமைப்பு</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.cpp" line="265"/>
       <source>Segmentation</source>
-      <translation type="unfinished">Segmentation</translation>
+      <translation>பிரிவு</translation>
     </message>
   </context>
   <context>
@@ -259,78 +259,78 @@
       <location filename="../../FitBSplineSurface.ui" line="26"/>
       <location filename="../../FitBSplineSurface.ui" line="93"/>
       <source>Degree</source>
-      <translation type="unfinished">Degree</translation>
+      <translation>பட்டம்</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="55"/>
       <location filename="../../FitBSplineSurface.ui" line="122"/>
       <source>Control points</source>
-      <translation type="unfinished">Control points</translation>
+      <translation>கட்டுப்பாட்டு புள்ளிகள்</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="14"/>
       <source>Fit B-Spline Surface</source>
-      <translation type="unfinished">Fit B-Spline Surface</translation>
+      <translation>பி-ச்ப்லைன் மேற்பரப்பு பொருத்தவும்</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="20"/>
       <source>U-Direction</source>
-      <translation type="unfinished">U-Direction</translation>
+      <translation>யு-திசை</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="87"/>
       <source>V-Direction</source>
-      <translation type="unfinished">V-Direction</translation>
+      <translation>வி-திசை</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="154"/>
       <source>Settings</source>
-      <translation type="unfinished">Settings</translation>
+      <translation>அமைப்புகள்</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="160"/>
       <source>Iterations</source>
-      <translation type="unfinished">Iterations</translation>
+      <translation>மறு செய்கைகள்</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="189"/>
       <source>Size factor</source>
-      <translation type="unfinished">Size factor</translation>
+      <translation>அளவு காரணி</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="218"/>
       <source>User-defined u/v directions</source>
-      <translation type="unfinished">User-defined u/v directions</translation>
+      <translation>பயனர் வரையறுக்கப்பட்ட u/v திசைகள்</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="231"/>
       <source>Create Placement</source>
-      <translation type="unfinished">Create Placement</translation>
+      <translation>இடத்தை உருவாக்கவும்</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="247"/>
       <source>Total weight</source>
-      <translation type="unfinished">Total weight</translation>
+      <translation>மொத்த எடை</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="238"/>
       <source>Smoothing</source>
-      <translation type="unfinished">Smoothing</translation>
+      <translation>மென்மையாக்கும்</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="276"/>
       <source>Length of gradient</source>
-      <translation type="unfinished">Length of gradient</translation>
+      <translation>சாய்வு நீளம்</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="305"/>
       <source>Bending energy</source>
-      <translation type="unfinished">Bending energy</translation>
+      <translation>வளைக்கும் ஆற்றல்</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="334"/>
       <source>Curvature variation</source>
-      <translation type="unfinished">Curvature variation</translation>
+      <translation>வளைவு மாறுபாடு</translation>
     </message>
   </context>
   <context>
@@ -339,17 +339,17 @@
       <location filename="../../FitBSplineSurface.cpp" line="171"/>
       <location filename="../../FitBSplineSurface.cpp" line="249"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>உள்ளீடு பிழை</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="215"/>
       <source>Wrong selection</source>
-      <translation type="unfinished">Wrong selection</translation>
+      <translation>தவறான தேர்வு</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="216"/>
       <source>Select a single placement object to get the local orientation.</source>
-      <translation type="unfinished">Select a single placement object to get the local orientation.</translation>
+      <translation>உள்ளக நோக்குநிலையைப் பெற, ஒரு வேலை வாய்ப்புப் பொருளைத் தேர்ந்தெடுக்கவும்.</translation>
     </message>
   </context>
   <context>
@@ -357,27 +357,27 @@
     <message>
       <location filename="../../Poisson.ui" line="14"/>
       <source>Poisson</source>
-      <translation type="unfinished">Poisson</translation>
+      <translation>நஞ்சு</translation>
     </message>
     <message>
       <location filename="../../Poisson.ui" line="20"/>
       <source>Parameters</source>
-      <translation type="unfinished">Parameters</translation>
+      <translation>அளவுருக்கள்</translation>
     </message>
     <message>
       <location filename="../../Poisson.ui" line="26"/>
       <source>Octree depth</source>
-      <translation type="unfinished">Octree depth</translation>
+      <translation>ஆக்ட்ரீ ஆழம்</translation>
     </message>
     <message>
       <location filename="../../Poisson.ui" line="46"/>
       <source>Solver divide</source>
-      <translation type="unfinished">Solver divide</translation>
+      <translation>கரைப்பான் பிரிப்பு</translation>
     </message>
     <message>
       <location filename="../../Poisson.ui" line="66"/>
       <source>Samples per node</source>
-      <translation type="unfinished">Samples per node</translation>
+      <translation>ஒரு முனைக்கு மாதிரிகள்</translation>
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="94"/>
@@ -392,22 +392,22 @@
       <location filename="../../Command.cpp" line="120"/>
       <location filename="../../Command.cpp" line="612"/>
       <source>Wrong selection</source>
-      <translation type="unfinished">Wrong selection</translation>
+      <translation>தவறான தேர்வு</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="82"/>
       <source>Select a point cloud.</source>
-      <translation type="unfinished">Select a point cloud.</translation>
+      <translation>புள்ளி மேகத்தைத் தேர்ந்தெடுக்கவும்.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="121"/>
       <source>Select a point cloud or mesh.</source>
-      <translation type="unfinished">Select a point cloud or mesh.</translation>
+      <translation>புள்ளி முகில் அல்லது கண்ணியைத் தேர்ந்தெடுக்கவும்.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="613"/>
       <source>Select a single point cloud.</source>
-      <translation type="unfinished">Select a single point cloud.</translation>
+      <translation>ஒற்றை புள்ளி மேகத்தைத் தேர்ந்தெடுக்கவும்.</translation>
     </message>
   </context>
   <context>
@@ -415,7 +415,7 @@
     <message>
       <location filename="../../Command.cpp" line="671"/>
       <source>View triangulation failed</source>
-      <translation type="unfinished">View triangulation failed</translation>
+      <translation>முக்கோணத்தைப் பார்க்க முடியவில்லை</translation>
     </message>
   </context>
   <context>
@@ -423,42 +423,42 @@
     <message>
       <location filename="../../Segmentation.ui" line="14"/>
       <source>Mesh Segmentation</source>
-      <translation type="unfinished">Mesh Segmentation</translation>
+      <translation>கண்ணி பிரிவு</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="20"/>
       <source>Smooth mesh</source>
-      <translation type="unfinished">Smooth mesh</translation>
+      <translation>மென்மையான கண்ணி</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="37"/>
       <source>Plane</source>
-      <translation type="unfinished">Plane</translation>
+      <translation>தளம்</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="46"/>
       <source>Curvature tolerance</source>
-      <translation type="unfinished">Curvature tolerance</translation>
+      <translation>வளைவு சகிப்புத்தன்மை</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="63"/>
       <source>Distance to plane</source>
-      <translation type="unfinished">Distance to plane</translation>
+      <translation>விமானத்திற்கான தூரம்</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="80"/>
       <source>Minimum number of faces</source>
-      <translation type="unfinished">Minimum number of faces</translation>
+      <translation>முகங்களின் குறைந்தபட்ச எண்ணிக்கை</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="100"/>
       <source>Create mesh from unused triangles</source>
-      <translation type="unfinished">Create mesh from unused triangles</translation>
+      <translation>பயன்படுத்தப்படாத முக்கோணங்களிலிருந்து கண்ணி உருவாக்கவும்</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="107"/>
       <source>Create compound</source>
-      <translation type="unfinished">Create compound</translation>
+      <translation>கலவையை உருவாக்கவும்</translation>
     </message>
   </context>
   <context>
@@ -471,37 +471,37 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="41"/>
       <source>Region</source>
-      <translation type="unfinished">Region</translation>
+      <translation>பிராந்தியம்</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="61"/>
       <source>All</source>
-      <translation type="unfinished">All</translation>
+      <translation>அனைத்தும்</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="81"/>
       <source>Components</source>
-      <translation type="unfinished">Components</translation>
+      <translation>கூறுகள்</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="88"/>
       <source>&lt; faces than</source>
-      <translation type="unfinished">&lt; faces than</translation>
+      <translation>&lt; முகங்கள் விட</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="14"/>
       <source>Manual Mesh Segmentation</source>
-      <translation type="unfinished">Manual Mesh Segmentation</translation>
+      <translation>கையேடு மெச் பிரிவு</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="98"/>
       <source>Pick Triangle</source>
-      <translation type="unfinished">Pick Triangle</translation>
+      <translation>முக்கோணத்தைத் தேர்ந்தெடுங்கள்</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="105"/>
       <source>Select whole component</source>
-      <translation type="unfinished">Select whole component</translation>
+      <translation>முழு கூறுகளையும் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="112"/>
@@ -511,68 +511,68 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="122"/>
       <source>Plane</source>
-      <translation type="unfinished">Plane</translation>
+      <translation>தளம்</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="128"/>
       <location filename="../../SegmentationManual.ui" line="181"/>
       <location filename="../../SegmentationManual.ui" line="234"/>
       <source>Detect</source>
-      <translation type="unfinished">Detect</translation>
+      <translation>கண்டறியவும்</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="135"/>
       <location filename="../../SegmentationManual.ui" line="188"/>
       <location filename="../../SegmentationManual.ui" line="241"/>
       <source>Tolerance</source>
-      <translation type="unfinished">Tolerance</translation>
+      <translation>பொறுமை</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="155"/>
       <location filename="../../SegmentationManual.ui" line="208"/>
       <location filename="../../SegmentationManual.ui" line="261"/>
       <source>Minimum number of faces</source>
-      <translation type="unfinished">Minimum number of faces</translation>
+      <translation>முகங்களின் குறைந்தபட்ச எண்ணிக்கை</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="175"/>
       <source>Cylinder</source>
-      <translation type="unfinished">Cylinder</translation>
+      <translation>கலன்</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="228"/>
       <source>Sphere</source>
-      <translation type="unfinished">Sphere</translation>
+      <translation>கோளம்</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="281"/>
       <source>Region Options</source>
-      <translation type="unfinished">Region Options</translation>
+      <translation>பிராந்திய விருப்பங்கள்</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="297"/>
       <source>Respect only triangles with screen-facing normals</source>
-      <translation type="unfinished">Respect only triangles with screen-facing normals</translation>
+      <translation>திரையை எதிர்கொள்ளும் இயல்பான முக்கோணங்களை மட்டும் மதிக்கவும்</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="287"/>
       <source>Respect only visible triangles</source>
-      <translation type="unfinished">Respect only visible triangles</translation>
+      <translation>தெரியும் முக்கோணங்களை மட்டும் மதிக்கவும்</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="310"/>
       <source>Segmentation</source>
-      <translation type="unfinished">Segmentation</translation>
+      <translation>பிரிவு</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="316"/>
       <source>Cut segment from mesh</source>
-      <translation type="unfinished">Cut segment from mesh</translation>
+      <translation>கண்ணியிலிருந்து பகுதியை வெட்டுங்கள்</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="326"/>
       <source>Hide segment</source>
-      <translation type="unfinished">Hide segment</translation>
+      <translation>பகுதியை மறை</translation>
     </message>
   </context>
   <context>
@@ -588,7 +588,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="35"/>
       <source>Reverse Engineering</source>
-      <translation type="unfinished">Reverse Engineering</translation>
+      <translation>தலைகீழ் பொறியியல்</translation>
     </message>
   </context>
   <context>
@@ -596,42 +596,42 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="14"/>
       <source>Fit B-Spline Curve</source>
-      <translation type="unfinished">Fit B-Spline Curve</translation>
+      <translation>பி-ச்ப்லைன் வளைவைப் பொருத்தவும்</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="20"/>
       <source>Parameters</source>
-      <translation type="unfinished">Parameters</translation>
+      <translation>அளவுருக்கள்</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="26"/>
       <source>Maximum degree</source>
-      <translation type="unfinished">Maximum degree</translation>
+      <translation>அதிகபட்ச பட்டம்</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="37"/>
       <source>Chord length</source>
-      <translation type="unfinished">Chord length</translation>
+      <translation>நாண் நீளம்</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="42"/>
       <source>Centripetal</source>
-      <translation type="unfinished">Centripetal</translation>
+      <translation>மையவிலக்கு</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="47"/>
       <source>Iso-Parametric</source>
-      <translation type="unfinished">Iso-Parametric</translation>
+      <translation>ஐசோ-பாராமெட்ரிக்</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="55"/>
       <source>Continuity</source>
-      <translation type="unfinished">Continuity</translation>
+      <translation>தொடர்ச்சி</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="88"/>
       <source>Parametrization type</source>
-      <translation type="unfinished">Parametrization type</translation>
+      <translation>அளவுரு வகை</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="96"/>
@@ -661,42 +661,42 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="121"/>
       <source>C3</source>
-      <translation type="unfinished">C3</translation>
+      <translation>Tz</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="126"/>
       <source>CN</source>
-      <translation type="unfinished">CN</translation>
+      <translation>சிஎன்</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="134"/>
       <source>Minimum degree</source>
-      <translation type="unfinished">Minimum degree</translation>
+      <translation>குறைந்தபட்ச பட்டம்</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="141"/>
       <source>Closed curve</source>
-      <translation type="unfinished">Closed curve</translation>
+      <translation>மூடிய வளைவு</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="151"/>
       <source>Smoothing</source>
-      <translation type="unfinished">Smoothing</translation>
+      <translation>மென்மையாக்கும்</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="160"/>
       <source>Torsion</source>
-      <translation type="unfinished">Torsion</translation>
+      <translation>முறுக்கு</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="167"/>
       <source>Curve length</source>
-      <translation type="unfinished">Curve length</translation>
+      <translation>வளைவு நீளம்</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="174"/>
       <source>Curvature</source>
-      <translation type="unfinished">Curvature</translation>
+      <translation>வளைமை</translation>
     </message>
   </context>
   <context>
@@ -704,17 +704,17 @@
     <message>
       <location filename="../../Command.cpp" line="67"/>
       <source>Reverse Engineering</source>
-      <translation type="unfinished">Reverse Engineering</translation>
+      <translation>தலைகீழ் பொறியியல்</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="68"/>
       <source>Approximate B-Spline Curve…</source>
-      <translation type="unfinished">Approximate B-Spline Curve…</translation>
+      <translation>தோராயமான பி-ச்ப்லைன் வளைவு…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="69"/>
       <source>Approximates a B-spline curve</source>
-      <translation type="unfinished">Approximates a B-spline curve</translation>
+      <translation>தோராயமாக ஒரு பி-ச்ப்லைன் வளைவு</translation>
     </message>
   </context>
   <context>

@@ -26,6 +26,7 @@
 
 #include "../../SketcherGlobal.h"
 #include "Geo.h"
+#include <optional>
 
 // This enables debugging code intended to extract information to file bug reports against Eigen,
 // not for production code
@@ -125,7 +126,6 @@ public:
     int tag;
     // indicates that pvec has changed and saved pointers must be reconstructed (currently used only
     // in AngleViaPoint)
-    bool pvecChangedFlag;
     bool driving;
     Alignment internalAlignment;
 
@@ -171,6 +171,7 @@ public:
 
     virtual ConstraintType getTypeId();
     virtual void rescale(double coef = 1.);
+    virtual void reconstructGeomPointers();
 
     // error and gradient combined. Values are returned through pointers.
     virtual void errorgrad(double* err, double* grad, double* param)
@@ -503,6 +504,8 @@ public:
 class ConstraintP2LDistance: public Constraint
 {
 private:
+    bool ccw;
+
     double* p0x()
     {
         return pvec[0];
@@ -532,9 +535,10 @@ private:
         return pvec[6];
     }
     double value();
+    double signed_value();
 
 public:
-    ConstraintP2LDistance(Point& p, Line& l, double* d);
+    ConstraintP2LDistance(Point& p, Line& l, double* d, bool ccw);
 #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
     ConstraintP2LDistance()
     {}
@@ -716,6 +720,7 @@ private:
 public:
     ConstraintPerpendicular(Line& l1, Line& l2);
     ConstraintPerpendicular(Point& l1p1, Point& l1p2, Point& l2p1, Point& l2p2);
+    ConstraintPerpendicular(Point& l1p1, Point& l1p2, Line& l2);
 #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
     ConstraintPerpendicular()
     {}
@@ -927,7 +932,7 @@ private:
     Line l;
     Ellipse e;
     // writes pointers in pvec to the parameters of crv1, crv2 and poa
-    void ReconstructGeomPointers();
+    void reconstructGeomPointers() override;
     void errorgrad(double* err, double* grad, double* param) override;
 
 public:
@@ -944,7 +949,7 @@ public:
 private:
     void errorgrad(double* err, double* grad, double* param) override;
     // writes pointers in pvec to the parameters of crv1, crv2 and poa
-    void ReconstructGeomPointers();
+    void reconstructGeomPointers() override;
     Ellipse e;
     Point p;
     InternalAlignmentType AlignmentType;
@@ -963,7 +968,7 @@ public:
 private:
     void errorgrad(double* err, double* grad, double* param) override;
     // writes pointers in pvec to the parameters of crv1, crv2 and poa
-    void ReconstructGeomPointers();
+    void reconstructGeomPointers() override;
     Hyperbola e;
     Point p;
     InternalAlignmentType AlignmentType;
@@ -975,7 +980,7 @@ private:
     MajorRadiusConic* e1;
     MajorRadiusConic* e2;
     // writes pointers in pvec to the parameters of crv1, crv2 and poa
-    void ReconstructGeomPointers();
+    void reconstructGeomPointers() override;
     void errorgrad(double* err, double* grad, double* param) override;
 
 public:
@@ -989,7 +994,7 @@ private:
     ArcOfParabola* e1;
     ArcOfParabola* e2;
     // writes pointers in pvec to the parameters of crv1, crv2 and poa
-    void ReconstructGeomPointers();
+    void reconstructGeomPointers() override;
     void errorgrad(double* err, double* grad, double* param) override;
 
 public:
@@ -1011,7 +1016,7 @@ private:
     }
     void errorgrad(double* err, double* grad, double* param) override;
     // writes pointers in pvec to the parameters of crv1, crv2 and poa
-    void ReconstructGeomPointers();
+    void reconstructGeomPointers() override;
     Curve* crv;
     Point p;
 
@@ -1081,7 +1086,7 @@ class ConstraintPointOnParabola: public Constraint
 private:
     void errorgrad(double* err, double* grad, double* param) override;
     // writes pointers in pvec to the parameters of crv1, crv2 and poa
-    void ReconstructGeomPointers();
+    void reconstructGeomPointers() override;
     Parabola* parab;
     Point p;
 
@@ -1117,7 +1122,7 @@ private:
     // easily shallow-copied by C++, so no pointer type here and no delete is necessary.
     Point poa;
     // writes pointers in pvec to the parameters of crv1, crv2 and poa
-    void ReconstructGeomPointers();
+    void reconstructGeomPointers() override;
 
 public:
     ConstraintAngleViaPoint(Curve& acrv1, Curve& acrv2, Point p, double* angle);
@@ -1151,7 +1156,7 @@ private:
     Point poa1;
     Point poa2;
     // writes pointers in pvec to the parameters of crv1, crv2 and poa
-    void ReconstructGeomPointers();
+    void reconstructGeomPointers() override;
 
 public:
     ConstraintAngleViaTwoPoints(Curve& acrv1, Curve& acrv2, Point p1, Point p2, double* angle);
@@ -1190,7 +1195,7 @@ private:
     Point poa;
     bool flipn1, flipn2;
     // writes pointers in pvec to the parameters of crv1, crv2 and poa
-    void ReconstructGeomPointers();
+    void reconstructGeomPointers() override;
     void errorgrad(double* err, double* grad, double* param) override;
 
 public:
@@ -1233,7 +1238,8 @@ private:
     Point poa;  // poa=point of angle //needs to be reconstructed if pvec was redirected/reverted.
                 // The point is easily shallow-copied by C++, so no pointer type here and no delete
                 // is necessary.
-    void ReconstructGeomPointers();  // writes pointers in pvec to the parameters of crv1, crv2 and poa
+    void reconstructGeomPointers() override;  // writes pointers in pvec to the parameters of crv1,
+                                              // crv2 and poa
 public:
     // We assume first curve needs param1
     ConstraintAngleViaPointAndParam(Curve& acrv1, Curve& acrv2, Point p, double* param1, double* angle);
@@ -1273,7 +1279,8 @@ private:
     Point poa;  // poa=point of angle //needs to be reconstructed if pvec was redirected/reverted.
                 // The point is easily shallow-copied by C++, so no pointer type here and no delete
                 // is necessary.
-    void ReconstructGeomPointers();  // writes pointers in pvec to the parameters of crv1, crv2 and poa
+    void reconstructGeomPointers() override;  // writes pointers in pvec to the parameters of crv1,
+                                              // crv2 and poa
 public:
     ConstraintAngleViaPointAndTwoParams(
         Curve& acrv1,
@@ -1296,7 +1303,7 @@ private:
     Line l1;
     Line l2;
     // writes pointers in pvec to the parameters of line1, line2
-    void ReconstructGeomPointers();
+    void reconstructGeomPointers() override;
     void errorgrad(double* err, double* grad, double* param) override;
 
 public:
@@ -1306,20 +1313,23 @@ public:
 
 class ConstraintC2CDistance: public Constraint
 {
+public:
 private:
     Circle c1;
     Circle c2;
+    std::optional<bool> c1Bigger;
+
     double* distance()
     {
         return pvec[0];
     }
     // writes pointers in pvec to the parameters of c1, c2
-    void ReconstructGeomPointers();
+    void reconstructGeomPointers() override;
     void errorgrad(double* err, double* grad, double* param) override;
     void evaluate() override;
 
 public:
-    ConstraintC2CDistance(Circle& c1, Circle& c2, double* d);
+    ConstraintC2CDistance(Circle& c1, Circle& c2, double* d, std::optional<bool> c1Bigger);
     ConstraintType getTypeId() override;
 };
 
@@ -1329,19 +1339,22 @@ class ConstraintC2LDistance: public Constraint
 private:
     Circle circle;
     Line line;
+    bool ccw;
+    bool internal;
+
     double* distance()
     {
         return pvec[0];
     }
     // writes pointers in pvec to the parameters of c, l
-    void ReconstructGeomPointers();
+    void reconstructGeomPointers() override;
 
-    double value(double& deriValue, double* param);
+    double signed_value(double& deriValue, double* param);
     void errorgrad(double* err, double* grad, double* param) override;
     void evaluate() override;
 
 public:
-    ConstraintC2LDistance(Circle& c, Line& l, double* d);
+    ConstraintC2LDistance(Circle& c, Line& l, double* d, bool ccw, bool internal);
     ConstraintType getTypeId() override;
 };
 
@@ -1355,7 +1368,7 @@ private:
     {
         return pvec[0];
     }
-    void ReconstructGeomPointers();  // writes pointers in pvec to the parameters of c
+    void reconstructGeomPointers() override;  // writes pointers in pvec to the parameters of c
     double value(double& deriValue, double* param);
     void errorgrad(double* err, double* grad, double* param) override;
     void evaluate() override;
@@ -1374,7 +1387,7 @@ private:
     {
         return pvec[0];
     }
-    void ReconstructGeomPointers();  // writes pointers in pvec to the parameters of a
+    void reconstructGeomPointers() override;  // writes pointers in pvec to the parameters of a
     void normalizedAngles(double& start, double& end) const;
     void errorgrad(double* err, double* grad, double* param) override;
     void evaluate() override;

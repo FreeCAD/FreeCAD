@@ -63,13 +63,12 @@ void DlgPartImportIgesImp::OnApply()
 
 void DlgPartImportIgesImp::onChooseFileName()
 {
-    QString fn = Gui::FileDialog::getOpenFileName(
-                     Gui::getMainWindow(),
-                     QString(),
-                     QString(),
-                     QStringLiteral("%1 (*.igs *.iges);;%2 (*.*)")
-    )
-                     .arg(tr("IGES"), tr("All Files"));
+    const Gui::FileDialog::FilterList filterList {
+        {QStringLiteral("IGES"), {"*.igs", "*.iges"}},
+        Gui::FileDialog::Filter::AllFiles(),
+    };
+    QString fn
+        = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(), filterList);
     if (!fn.isEmpty()) {
         ui->FileName->setText(fn);
     }

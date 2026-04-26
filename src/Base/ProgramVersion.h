@@ -43,6 +43,7 @@ enum class Version : std::uint8_t
     v0_22,
     v1_0,
     v1_1,
+    v1_2,
     v1_x,
 };
 
@@ -64,6 +65,7 @@ inline Version getVersion(std::string_view str)
         {.name="0.22", .version=Version::v0_22},
         {.name="1.0" , .version=Version::v1_0 },
         {.name="1.1" , .version=Version::v1_1 },
+        {.name="1.2" , .version=Version::v1_2 },
     };
     // clang-format on
     auto it = std::ranges::find_if(items, [str](const auto& item) {
