@@ -527,7 +527,7 @@ class ObjectSurface(PathOp.ObjectOp):
             "LayerMode": "Single-pass",
             "CutMode": "Conventional",
             "CutPattern": "Line",
-            "CutPatternZLevel": "ZigZag",
+            "CutPatternZLevel": "None",
             "PatternCenterAt": "CenterOfMass",
             "ClearPlanarOnly": False,
             "IgnoreOuter": False,
@@ -585,7 +585,6 @@ class ObjectSurface(PathOp.ObjectOp):
         obj.setEditorMode("UseStartPoint", show if is_surface_pattern else hide)
         obj.setEditorMode("CutPattern", show if is_surface_pattern else hide)
         obj.setEditorMode("CutPatternAngle", show if is_surface_pattern else hide)
-        obj.setEditorMode("BoundBox", show if is_surface_pattern else hide)
         obj.setEditorMode("KeepToolDown", show if is_surface_pattern else hide)
         obj.setEditorMode("GapThreshold", show if is_surface_pattern else hide)
         obj.setEditorMode("LayerMode", show if is_surface_pattern else hide)
@@ -603,7 +602,7 @@ class ObjectSurface(PathOp.ObjectOp):
         obj.setEditorMode("PatternCenterCustom", show if pattern_needs_center else hide)
 
         if is_zlevel:
-            z_pattern = getattr(obj, "CutPatternZLevel", "ZigZag")
+            z_pattern = getattr(obj, "CutPatternZLevel", "None")
             C = hide if z_pattern == "None" else show
 
         # Apply Visibility to Z-Level Group (A)
@@ -629,6 +628,7 @@ class ObjectSurface(PathOp.ObjectOp):
         obj.setEditorMode("CutMode", show)
         obj.setEditorMode("DepthOffset", show)
         obj.setEditorMode("BoundaryAdjustment", show if not is_waterline else hide)
+        obj.setEditorMode("BoundBox", show if not is_waterline else hide)
 
     def opOnChanged(self, obj, prop):
         if hasattr(self, "propertiesReady"):
@@ -1254,7 +1254,7 @@ class ObjectSurface(PathOp.ObjectOp):
         radius = dia / 2.0
         shape_type = tool_params.get("tool_type", "")
         c_rad = tool_params.get("corner_radius", 0.0)
-        is_3d = "ballend" in shape_type or "bullnose" in shape_type
+        is_3d = True if shape_type in ["ballend", "bullnose"] else False
 
         if dia == 0.0 or not is_3d and "endmill" not in shape_type:
             error_msg = translate(
@@ -1283,7 +1283,7 @@ class ObjectSurface(PathOp.ObjectOp):
 
         pattern_options = {
             "cut_climb": obj.CutMode == "Climb",
-            "cut_pattern": getattr(obj, "CutPatternZLevel", "ZigZag"),
+            "cut_pattern": getattr(obj, "CutPatternZLevel", "None"),
             "pattern_angle": getattr(obj, "CutPatternAngle", "45"),
             "reverse_pattern": getattr(obj, "CutPatternReversed", False),
         }
@@ -1310,7 +1310,7 @@ class ObjectSurface(PathOp.ObjectOp):
 
         # 5. Depth categorization
         cat_steps = surface_zlevel.categorize_floor_steps(
-            shape, obj.OpStartDepth.Value, obj.OpFinalDepth.Value, obj.StepDown.Value
+            shape, obj.StartDepth.Value, obj.FinalDepth.Value, obj.StepDown.Value
         )
 
         # 6. Generate Geometry Stack

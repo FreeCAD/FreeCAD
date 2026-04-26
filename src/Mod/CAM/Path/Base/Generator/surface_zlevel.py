@@ -135,6 +135,13 @@ def _get_fused_floor_geometry(shape, start_z, final_z, tolerance=0.001):
         except:
             return False
 
+    FACE_COUNT_THRESHOLD = 250
+    if len(shape.Faces) > FACE_COUNT_THRESHOLD:
+        Path.Log.info(
+            f"Shape has >{FACE_COUNT_THRESHOLD} faces. Skipping slow planar floor detection for performance."
+        )
+        return {}
+
     floor_accumulator = {}
     abs_top = shape.BoundBox.ZMax
     z_min, z_max = min(start_z, final_z), max(start_z, final_z)
@@ -272,10 +279,11 @@ def zlevel_hybrid_stack(
             area_engine.setParams(**params)
 
             sections = area_engine.makeSections(mode=0, project=False, heights=[slice_z])
+            if not sections:
+                continue
+
             sub_face = sections[0].getShape()
 
-            if not sub_face:
-                continue
             # Move results to machine plane for dissolved fusion
             sub_face.translate(FreeCAD.Vector(0, 0, -sub_face.BoundBox.ZMin))
             fusion.add(sub_face)
@@ -291,10 +299,6 @@ def zlevel_hybrid_stack(
         except Exception as e:
             Path.Log.error(
                 f"Z-Level Hybrid: Silhouette fusion failed at Z={round(z_target, 3)}. Error: {str(e)}"
-            )
-            # We can't proceed with this layer, but we MUST update the mask to prevent errors on subsequent layers
-            allPrevComp = _update_machining_mask(
-                wpc, allPrevComp, currentSilhouette, status, floor_geo
             )
             indicator.next()
             continue
@@ -353,81 +357,104 @@ def zlevel_hybrid_stack(
 def _generate_sampling_plan(
     z_target, dist_submerged, tol, critical_heights, num_slices, tool_params
 ):
-    """Generates a sorted, unique list of (height, radius) sampling pairs.
+    """Generates a sorted, unique list of (height, radius) sampling pairs for 3D tool compensation.
 
-    This helper function implements the core 'Squeeze-and-Snap' strategy. It calculates
-    a distribution of points along the tool's corner profile to ensure accurate
-    3D contact resolution.
+    This function implements the core 'Squeeze-and-Snap' strategy. It calculates a
+    distribution of sample points along the tool's corner profile to ensure the generated
+    silhouette accurately reflects the tool's 3D shape at a given depth.
 
     Args:
         z_target (float): The target machining depth for the current layer.
         dist_submerged (float): Vertical distance from the tool tip to the model top.
-        tol (float): Geometric tolerance.
-        critical_heights (list): Absolute Z-heights of physical model floors/top.
-        num_slices (int): Base number of samples requested via Accuracy setting.
+        tol (float): Geometric tolerance for floating point comparisons.
+        critical_heights (set): Absolute Z-heights of physical model floors/top.
+        num_slices (int): Base number of samples to generate along the tool profile.
         tool_params (dict): Tool geometry containing 'radius', 'c_rad', 'profile', 'is_threeD'.
 
     Returns:
-        list: Tuples [(h, r), ...] sorted descending (Equator to Tip) for cache probing.
+        set: A unique set of (height, radius) tuples representing the points to sample.
     """
 
-    # Internal Math Helpers
-    def _get_h_from_r(r_target):
-        """Inverse Math: Finds height h for a specific radius r."""
-        if not is_3d or r_target <= 1e-7:
-            return 0.0
-        if profile == "Ballend":
-            return R - math.sqrt(max(0, R**2 - r_target**2))
-        if profile == "Bullnose":
-            if r_target <= (R - c_rad):
-                return 0.0
-            return c_rad - math.sqrt(max(0, c_rad**2 - (r_target - (R - c_rad)) ** 2))
-        return 0.0
-
-    def _get_r_from_h(h_target):
-        """Forward Math: Finds radius r for a specific height h."""
-        if not is_3d:
-            return R
-        if profile == "Ballend":
-            return math.sqrt(max(0, R**2 - (R - h_target) ** 2))
-        if profile == "Bullnose":
-            if h_target < c_rad:
-                return (R - c_rad) + math.sqrt(max(0, c_rad**2 - (c_rad - h_target) ** 2))
-            return R
-        return R
-
-    plan = []
-
-    # 1. Extract Tool Geometry
+    # 1. Setup & Geometry normalization
+    # Extract core tool geometry parameters
     R = tool_params["radius"]
     c_rad = tool_params["c_rad"]
     profile = tool_params["profile"]
     is_3d = tool_params["is_threeD"]
 
-    # 2. Determine Local Contact Window
-    # Widest radius reachable in current submerged contact zone
+    # A Ball Endmill is mathematically equivalent to a Bullnose tool where the corner radius
+    # is equal to the tool radius. Normalizing c_rad here allows us to use 
+    # the same 'bullnose' formulas for both tool types, simplifying the math.
+    if "ballend" in profile:
+        c_rad = R
+
+    # 2. Internal math helpers
+    # These functions calculate the 3D profile of the tool using the Pythagorean theorem
+
+    def _get_h_from_r(r_target):
+        """Inverse Math: For a given horizontal radius (r_target), find the vertical height (h) on the tool's corner."""
+        if not is_3d:
+            return 0.0
+
+        if "bull" in profile or "ball" in profile:
+            flat_radius = R - c_rad
+            # If the target radius is on the flat bottom part of the tool, the height is 0
+            if r_target <= flat_radius + 1e-7:
+                return 0.0
+            # Otherwise, calculate height on the curve using the equation for a circle
+            return c_rad - math.sqrt(max(0, c_rad**2 - (r_target - flat_radius) ** 2))
+
+        return 0.0
+
+    def _get_r_from_h(h_target):
+        """Forward Math: For a given vertical height (h_target), find the horizontal radius (r) on the tool's corner."""
+        if not is_3d:
+            return R
+
+        if "bullnose" in profile or "ballend" in profile:
+            flat_radius = R - c_rad
+            # If the height is within the curved portion, calculate the radius
+            if h_target < c_rad:
+                return flat_radius + math.sqrt(max(0, c_rad**2 - (c_rad - h_target) ** 2))
+            # If the height is above the corner radius, the tool is at its maximum radius
+            return R
+        return R
+
+    # 3. Generate the Sampling plan
+    plan = []
+
+    # Determine the widest radius of the tool currently in contact with the model
     max_r = _get_r_from_h(dist_submerged) if dist_submerged < c_rad else R
-    # The vertical 'ceiling' of tool contact for this layer
-    h_ceiling = min(c_rad, dist_submerged - tol) if is_3d else 0.0
 
-    # 3. Squeeze Logic (Linear Radius Steps)
-    # We divide the available horizontal reach into equal steps.
-    for i in range(num_slices):
-        r_theo = (max_r / (num_slices - 1)) * i if num_slices > 1 else max_r
-        # Find the vertical height h on the tool that corresponds to this radius
-        plan.append((_get_h_from_r(r_theo), r_theo))
+    if num_slices > 1:  # This block handles 3D tools (Ballnose, Bullnose)
 
-    # 4. Geometric Feature Snapping (The Snap)
-    # Check if any model floors exist between the current tip and the contact ceiling
-    for ch in critical_heights:
-        rel_h = ch - z_target
-        # Only snap if the feature is within the tool's active contact zone
-        if 0.0001 < rel_h < (h_ceiling - 0.0001):
-            # For a snapped height, calculate the corresponding theoretical radius
-            plan.append((rel_h, _get_r_from_h(rel_h)))
+        # Calculate the vertical 'ceiling' of the tool's 3D profile that is in contact
+        h_ceiling = min(c_rad, dist_submerged - tol) if is_3d else 0.0
 
-    # 5. Clean, Unique, and Sort
-    # Rounding to 6 decimals prevents duplicate slices caused by floating point noise.
+        # A) Squeeze Logic: Generate evenly spaced samples along the tool's contact radius
+        min_r = R - c_rad if "bullnose" in profile or "ballend" in profile else 0.0
+        squeeze_range = max_r - min_r
+
+        for i in range(num_slices):
+            # Linearly interpolate between the minimum contact radius and the maximum
+            r_theo = min_r + (squeeze_range / (num_slices - 1)) * i
+            plan.append((_get_h_from_r(r_theo), r_theo))
+
+        # B) Snap Logic: Add extra, precise samples that land exactly on physical model floors
+        for ch in critical_heights:
+            rel_h = ch - z_target
+            # Only snap if the floor is within the tool's active 3D contact zone for this layer
+            if 0.0001 < rel_h < (h_ceiling - 0.0001):
+                plan.append((rel_h, _get_r_from_h(rel_h)))
+
+    else:  # This block handles simple 2D tools (Flat Endmills)
+        # A flat endmill only needs one sample point at its maximum contact radius
+        plan.append((0.0, max_r))
+
+    # 4. Finalize and return
+    # Convert the plan to a set to automatically remove any duplicate sample points
+    # that may have been generated by the squeeze and snap logic. Rounding prevents
+    # minor floating-point noise from creating unnecessary extra samples.
     unique_steps = {(round(h, 6), round(r, 6)) for h, r in plan}
 
     return unique_steps
