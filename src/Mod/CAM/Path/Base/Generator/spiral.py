@@ -167,7 +167,7 @@ def generate(
     stepAngle = math.tau / turnDivider  # step angle for rotate
     stepAngle = -stepAngle if direction == "CCW" else stepAngle
     turns = math.ceil(round((outer_radius - inner_radius) / step, 6))  # amount of spiral turns
-    iters = round(math.tau * turns / abs(stepAngle))
+    iters = turns * turnDivider
     stepRadius = (outer_radius - inner_radius) / iters  # changes spiral radius on each step
     stepRadius = -stepRadius if startAt == "Outside" else stepRadius
     angle = math.pi / 2 - dir_angle_rad
@@ -193,6 +193,7 @@ def generate(
         count += 1
 
     i = 0
+    assert (len(arcPoints) - 3) % 2 == 0
     while i <= len(arcPoints) - 3:
         arcEnd = arcPoints[i + 2]
         arcCenter = getArcCenter(arcPoints[i], arcPoints[i + 1], arcPoints[i + 2])

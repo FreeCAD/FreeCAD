@@ -100,6 +100,7 @@ namespace SketcherGui
 class EditModeCoinManager;
 class SnapManager;
 class DrawSketchHandler;
+class ViewProviderSketchCommandConstraintsAttorney;
 
 using GeoList = Sketcher::GeoList;
 using GeoListFacade = Sketcher::GeoListFacade;
@@ -734,6 +735,7 @@ public:
     friend class ViewProviderSketchDrawSketchHandlerAttorney;
     friend class ViewProviderSketchCoinAttorney;
     friend class ViewProviderSketchSnapAttorney;
+    friend class ViewProviderSketchCommandConstraintsAttorney;
     //@}
 
     bool editingCancelled;

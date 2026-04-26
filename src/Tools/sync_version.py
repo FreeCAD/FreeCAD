@@ -70,6 +70,11 @@ class VersionInfo:
         return f"{self.simple}~{self.suffix}" if self.suffix else self.simple
 
     @property
+    def conda(self) -> str:
+        """Version with suffix appended directly per conda convention, e.g. "1.2.0dev"."""
+        return f"{self.simple}{self.suffix}" if self.suffix else self.simple
+
+    @property
     def lowercase_name(self) -> str:
         """Lowercased project name, e.g. "freecad"."""
         return self.name.lower()
@@ -120,7 +125,7 @@ def sync_rattler_build_pixi_toml(filepath: Path, version: VersionInfo) -> tuple[
     """
     content = filepath.read_text(encoding="utf-8")
     updated = content
-    updated = replace_in_toml_section(updated, "[package]", "version", version.complete)
+    updated = replace_in_toml_section(updated, "[package]", "version", version.conda)
     updated = replace_in_toml_section(updated, "[package]", "name", version.lowercase_name)
     updated = replace_in_toml_section(updated, "[package]", "description", version.name)
     return updated, updated != content
@@ -139,7 +144,7 @@ def sync_recipe_yaml(filepath: Path, version: VersionInfo) -> tuple[str, bool]:
     # context:\n  version: "1.2.0dev"
     updated = re.sub(
         r'(context:\s*\n\s*version:\s*)"[^"]*"',
-        rf'\g<1>"{version.complete}"',
+        rf'\g<1>"{version.conda}"',
         updated,
     )
 

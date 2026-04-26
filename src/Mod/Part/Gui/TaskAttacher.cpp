@@ -25,10 +25,15 @@
 
 
 #include <sstream>
+#include <QApplication>
 #include <QMessageBox>
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
+#include <QTimer>
 #include <Standard_Failure.hxx>
+
+#include <Inventor/events/SoMouseButtonEvent.h>
+#include <Inventor/nodes/SoEventCallback.h>
 
 
 #include <App/Application.h>
@@ -40,7 +45,11 @@
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
+#include <Gui/Control.h>
 #include <Gui/Document.h>
+#include <Gui/MainWindow.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 #include <Gui/DocumentObserver.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/ViewProvider.h>
@@ -1471,14 +1480,85 @@ TaskDlgAttacher::TaskDlgAttacher(
         parameter = new TaskAttacher(ViewProvider, nullptr, QString(), tr("Attachment"));
         Content.push_back(parameter);
     }
+
+    // Double-click on a valid attachment element in the 3D view confirms the dialog
+    if (onAccept) {
+        auto* view3d = qobject_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow());
+        if (view3d) {
+            dblClickViewer = view3d->getViewer();
+            dblClickViewer->addEventCallback(
+                SoMouseButtonEvent::getClassTypeId(),
+                &TaskDlgAttacher::handleMouseButtonCB,
+                this
+            );
+        }
+    }
 }
 
 TaskDlgAttacher::~TaskDlgAttacher()
 {
+    if (dblClickViewer) {
+        // Re-enable selection in case it was disabled for a double-click that never completed
+        dblClickViewer->setSelectionEnabled(true);
+        dblClickViewer->removeEventCallback(
+            SoMouseButtonEvent::getClassTypeId(),
+            &TaskDlgAttacher::handleMouseButtonCB,
+            this
+        );
+    }
     if (accepted && onAccept) {
         onAccept();
     }
-};
+}
+
+void TaskDlgAttacher::handleMouseButtonCB(void* userdata, SoEventCallback* cb)
+{
+    auto* self = static_cast<TaskDlgAttacher*>(userdata);
+    const SoEvent* ev = cb->getEvent();
+    if (!ev->isOfType(SoMouseButtonEvent::getClassTypeId())) {
+        return;
+    }
+    const auto* mbe = static_cast<const SoMouseButtonEvent*>(ev);
+
+    if (mbe->getButton() != SoMouseButtonEvent::BUTTON1 || mbe->getState() != SoButtonEvent::DOWN) {
+        return;
+    }
+
+    const SbVec2s pos = mbe->getPosition();
+    const SbTime now = SbTime::getTimeOfDay();
+    const float dci = static_cast<float>(QApplication::doubleClickInterval()) / 1000.0F;
+    constexpr int dblClickRadius = 5;
+
+    const bool inWindow = SbVec2f(pos - self->lastClickPos).length() < dblClickRadius
+        && (now - self->lastClickTime).getValue() < dci;
+
+    auto* pcAttach = self->ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
+    const bool validState = pcAttach && !pcAttach->AttachmentSupport.getValues().empty()
+        && pcAttach->MapMode.getValue() != mmDeactivated;
+
+    if (inWindow && validState && self->dblClickViewer) {
+        // Block SoFCUnifiedSelection from processing second click (would add the parent object instead)
+        self->dblClickViewer->setSelectionEnabled(false);
+
+        // Anti-retrigger: park tracking far away and reset time
+        self->lastClickTime = SbTime();
+        self->lastClickPos = SbVec2s(-16000, -16000);
+
+        auto* doc = self->ViewProvider->getDocument()->getDocument();
+        QPointer<Gui::View3DInventorViewer> viewer = self->dblClickViewer;
+        QTimer::singleShot(0, [doc, viewer]() {
+            if (viewer) {
+                viewer->setSelectionEnabled(true);
+            }
+            Gui::Control().accept(doc);
+        });
+        return;
+    }
+
+    // Not a double-click
+    self->lastClickTime = now;
+    self->lastClickPos = pos;
+}
 
 //==== calls from the TaskView ===============================================================
 

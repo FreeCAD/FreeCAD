@@ -165,6 +165,7 @@ void DisplayedFilesModel::addFile(const QString& filePath)
             &DisplayedFilesModel::processNewFcstdInfo
         );
         QThreadPool::globalInstance()->start(runner);
+        return;
     }
     const QStringList ignoredExtensions {
         QLatin1String("fcmacro"),

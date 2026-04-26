@@ -188,7 +188,17 @@ void InputField::updateText(const Base::Quantity& quant)
     std::string unitStr;
     std::string txt = quant.getUserString(dFactor, unitStr);
     actUnitValue = quant.getValue() / dFactor;
+    // Block signals to prevent newInput from re-parsing the display text
+    // and overwriting actQuantity with a precision-truncated value.
+    QSignalBlocker blocker(this);
     setText(QString::fromStdString(txt));
+}
+
+void InputField::notifyValueChanged()
+{
+    updateText(actQuantity);
+    Q_EMIT valueChanged(actQuantity);
+    Q_EMIT valueChanged(actQuantity.getValue());
 }
 
 void InputField::resizeEvent(QResizeEvent* /*event*/)
@@ -468,7 +478,7 @@ void InputField::setValue(const Base::Quantity& quant)
 
     actUnit = quant.getUnit();
 
-    updateText(quant);
+    notifyValueChanged();
 }
 
 void InputField::setValue(const double& value)
@@ -522,7 +532,7 @@ void InputField::setRawText(const QString& text)
 {
     Base::Quantity quant = Base::Quantity::parse(text.toStdString());
     // Input and then format the quantity
-    newInput(QString::fromStdString(quant.getUserString()));
+    newInput(QString::fromStdString(quant.getSafeUserString()));
     updateText(actQuantity);
 }
 
@@ -550,7 +560,7 @@ void InputField::setMaximum(double m)
     Maximum = m;
     if (actQuantity.getValue() > Maximum) {
         actQuantity.setValue(Maximum);
-        updateText(actQuantity);
+        notifyValueChanged();
     }
 }
 
@@ -566,7 +576,7 @@ void InputField::setMinimum(double m)
     Minimum = m;
     if (actQuantity.getValue() < Minimum) {
         actQuantity.setValue(Minimum);
-        updateText(actQuantity);
+        notifyValueChanged();
     }
 }
 
