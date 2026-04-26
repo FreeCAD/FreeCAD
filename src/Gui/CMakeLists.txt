@@ -1369,8 +1369,11 @@ SET(Selection_SRCS
     Selection/SelectionObject.h
     Selection/SelectionObject.cpp
     Selection/SelectionObserver.h
+    Selection/SelectionObserver.cpp
     Selection/Selection.h
     Selection/Selection.cpp
+    Selection/SelectionStack.cpp
+    Selection/SelectionVisibility.cpp
     Selection/SelectionPy.h
     Selection/SelectionPyImp.cpp
     Selection/SelectionTypes.h
