@@ -99,7 +99,7 @@ class PartDesignExport AdditiveBox: public Box
 
     AdditiveBox()
     {
-        addSubType = FeatureAddSub::Additive;
+        addSubType = FeatureAddSub::Type::Additive;
     }
 };
 
@@ -109,7 +109,7 @@ class PartDesignExport SubtractiveBox: public Box
 
     SubtractiveBox()
     {
-        addSubType = FeatureAddSub::Subtractive;
+        addSubType = FeatureAddSub::Type::Subtractive;
     }
 };
 
@@ -139,7 +139,7 @@ class PartDesignExport AdditiveCylinder: public Cylinder
 
     AdditiveCylinder()
     {
-        addSubType = FeatureAddSub::Additive;
+        addSubType = FeatureAddSub::Type::Additive;
     }
 };
 
@@ -149,7 +149,7 @@ class PartDesignExport SubtractiveCylinder: public Cylinder
 
     SubtractiveCylinder()
     {
-        addSubType = FeatureAddSub::Subtractive;
+        addSubType = FeatureAddSub::Type::Subtractive;
     }
 };
 
@@ -182,7 +182,7 @@ class PartDesignExport AdditiveSphere: public Sphere
 
     AdditiveSphere()
     {
-        addSubType = FeatureAddSub::Additive;
+        addSubType = FeatureAddSub::Type::Additive;
     }
 };
 
@@ -192,7 +192,7 @@ class PartDesignExport SubtractiveSphere: public Sphere
 
     SubtractiveSphere()
     {
-        addSubType = FeatureAddSub::Subtractive;
+        addSubType = FeatureAddSub::Type::Subtractive;
     }
 };
 
@@ -224,7 +224,7 @@ class PartDesignExport AdditiveCone: public Cone
 
     AdditiveCone()
     {
-        addSubType = FeatureAddSub::Additive;
+        addSubType = FeatureAddSub::Type::Additive;
     }
 };
 
@@ -234,7 +234,7 @@ class PartDesignExport SubtractiveCone: public Cone
 
     SubtractiveCone()
     {
-        addSubType = FeatureAddSub::Subtractive;
+        addSubType = FeatureAddSub::Type::Subtractive;
     }
 };
 
@@ -269,7 +269,7 @@ class PartDesignExport AdditiveEllipsoid: public Ellipsoid
 
     AdditiveEllipsoid()
     {
-        addSubType = FeatureAddSub::Additive;
+        addSubType = FeatureAddSub::Type::Additive;
     }
 };
 
@@ -279,7 +279,7 @@ class PartDesignExport SubtractiveEllipsoid: public Ellipsoid
 
     SubtractiveEllipsoid()
     {
-        addSubType = FeatureAddSub::Subtractive;
+        addSubType = FeatureAddSub::Type::Subtractive;
     }
 };
 
@@ -313,7 +313,7 @@ class PartDesignExport AdditiveTorus: public Torus
 
     AdditiveTorus()
     {
-        addSubType = FeatureAddSub::Additive;
+        addSubType = FeatureAddSub::Type::Additive;
     }
 };
 
@@ -323,7 +323,7 @@ class PartDesignExport SubtractiveTorus: public Torus
 
     SubtractiveTorus()
     {
-        addSubType = FeatureAddSub::Subtractive;
+        addSubType = FeatureAddSub::Type::Subtractive;
     }
 };
 
@@ -353,7 +353,7 @@ class PartDesignExport AdditivePrism: public Prism
 
     AdditivePrism()
     {
-        addSubType = FeatureAddSub::Additive;
+        addSubType = FeatureAddSub::Type::Additive;
     }
 };
 
@@ -363,7 +363,7 @@ class PartDesignExport SubtractivePrism: public Prism
 
     SubtractivePrism()
     {
-        addSubType = FeatureAddSub::Subtractive;
+        addSubType = FeatureAddSub::Type::Subtractive;
     }
 };
 
@@ -402,7 +402,7 @@ class PartDesignExport AdditiveWedge: public Wedge
 
     AdditiveWedge()
     {
-        addSubType = FeatureAddSub::Additive;
+        addSubType = FeatureAddSub::Type::Additive;
     }
 };
 
@@ -412,7 +412,7 @@ class PartDesignExport SubtractiveWedge: public Wedge
 
     SubtractiveWedge()
     {
-        addSubType = FeatureAddSub::Subtractive;
+        addSubType = FeatureAddSub::Type::Subtractive;
     }
 };
 

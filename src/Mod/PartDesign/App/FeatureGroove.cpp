@@ -38,7 +38,7 @@ PROPERTY_SOURCE(PartDesign::Groove, PartDesign::Revolved)
 
 Groove::Groove()
 {
-    addSubType = FeatureAddSub::Subtractive;
+    addSubType = FeatureAddSub::Type::Subtractive;
     const double fullAngle = 360.0;
     const double emptyAngle = 0.0;
 

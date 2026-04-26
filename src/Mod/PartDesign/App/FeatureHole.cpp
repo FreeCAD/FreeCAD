@@ -550,7 +550,7 @@ const App::PropertyQuantityConstraint::Constraints clearanceRange
 
 Hole::Hole()
 {
-    addSubType = FeatureAddSub::Subtractive;
+    addSubType = FeatureAddSub::Type::Subtractive;
 
     readCutDefinitions();
 
@@ -2023,11 +2023,16 @@ App::DocumentObjectExecReturn* Hole::execute()
         bool retry = true;
         const char* maker;
         switch (getAddSubType()) {
-            case Additive:
+            case Type::Additive:
                 maker = Part::OpCodes::Fuse;
                 break;
             default:
-                maker = Part::OpCodes::Cut;
+                if (Outside.getValue()) {
+                    maker = Part::OpCodes::Common;
+                }
+                else {
+                    maker = Part::OpCodes::Cut;
+                }
         }
         try {
             if (base.isNull()) {
