@@ -547,6 +547,23 @@ protected:
         std::string& subNamePrefix,
         bool reportErrors
     ) const;
+    SelectionCheckResult resolveSelectionDocument(
+        const char* pDocName,
+        SelectionDescription& sel,
+        bool reportErrors
+    ) const;
+    SelectionCheckResult resolveSelectionObject(
+        const char* pObjectName,
+        SelectionDescription& sel,
+        bool reportErrors
+    ) const;
+    SelectionCheckResult resolveSelectionSubElement(
+        const char*& pSubName,
+        ResolveMode resolve,
+        SelectionDescription& sel,
+        std::string& subNamePrefix,
+        bool reportErrors
+    ) const;
     const std::list<SelectionDescription>* selectionListForCheck(
         const char* pDocName,
         const std::list<SelectionDescription>* selList
@@ -558,6 +575,26 @@ protected:
         ResolveMode resolve,
         const SelectionDescription& sel,
         const std::list<SelectionDescription>& selList
+    );
+    static bool matchesSelectionIdentity(
+        const SelectionDescription& selected,
+        const char* pDocName,
+        const SelectionDescription& sel
+    );
+    static bool matchesExactSelection(const SelectionDescription& selected, const char* pSubName);
+    static bool matchesNewStyleSelection(
+        const SelectionDescription& selected,
+        const std::string& subNamePrefix,
+        ResolveMode resolve
+    );
+    static bool matchesOldStyleSelection(
+        const SelectionDescription& selected,
+        const char* pSubName,
+        const SelectionDescription& sel
+    );
+    static bool selectedElementContainsSubName(
+        const SelectionDescription& selected,
+        const char* pSubName
     );
 
     std::vector<Gui::SelectionObject> getObjectList(

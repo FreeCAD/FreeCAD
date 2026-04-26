@@ -172,6 +172,49 @@ TEST_F(SelectionInTest, ReturnsSelectedChildAfterContainer)
     EXPECT_TRUE(selections.front().getPickedPoints().empty());
 }
 
+TEST_F(SelectionInTest, GetSelectedElementReturnsExactSubName)
+{
+    ASSERT_TRUE(
+        testSelection()
+            .addSelectionDescription(doc->getName(), leaf->getNameInDocument(), "Edge1", 1.0F, 2.0F, 3.0F)
+    );
+
+    EXPECT_EQ(testSelection().getSelectedElement(leaf, "Edge1"), "Edge1");
+}
+
+TEST_F(SelectionInTest, GetSelectedElementReturnsSelectedParentForNestedSubName)
+{
+    ASSERT_TRUE(selectLeafThroughRoot());
+    auto nestedSubName = selectedSubName() + "Edge1";
+
+    EXPECT_EQ(testSelection().getSelectedElement(root, nestedSubName.c_str()), selectedSubName());
+}
+
+TEST_F(SelectionInTest, GetSelectedElementRejectsPartialSubNamePrefix)
+{
+    ASSERT_TRUE(
+        testSelection()
+            .addSelectionDescription(doc->getName(), leaf->getNameInDocument(), "Edge1", 1.0F, 2.0F, 3.0F)
+    );
+
+    EXPECT_TRUE(testSelection().getSelectedElement(leaf, "Edge10").empty());
+}
+
+TEST_F(SelectionInTest, GetSelectedElementReturnsEmptyForNullObject)
+{
+    EXPECT_TRUE(testSelection().getSelectedElement(nullptr, "Edge1").empty());
+}
+
+TEST_F(SelectionInTest, GetSelectedElementReturnsEmptyForWholeObjectSelection)
+{
+    ASSERT_TRUE(
+        testSelection()
+            .addSelectionDescription(doc->getName(), leaf->getNameInDocument(), nullptr, 1.0F, 2.0F, 3.0F)
+    );
+
+    EXPECT_TRUE(testSelection().getSelectedElement(leaf, "Edge1").empty());
+}
+
 TEST_F(SelectionFilterTest, TestAcceptsMatchingTypeAndSubElementPrefix)
 {
     Gui::SelectionFilter filter("SELECT App::FeatureTest SUBELEMENT Edge");

@@ -147,6 +147,23 @@ class SelectionSingletonTestCase(unittest.TestCase):
             [("add", self.doc.Name, box.Name, "Face1", (1.0, 2.0, 3.0))],
         )
 
+    def test_invalid_object_selection_is_ignored_without_notification(self):
+        events = []
+
+        class Observer:
+            def addSelection(self, document, obj, sub, point):
+                events.append(("add", document, obj, sub, point))
+
+        observer = Observer()
+        FreeCADGui.Selection.addObserver(observer, 0)
+        try:
+            FreeCADGui.Selection.addSelection(self.doc.Name, "MissingObject", "Face1")
+        finally:
+            FreeCADGui.Selection.removeObserver(observer)
+
+        self.assertEqual(events, [])
+        self.assertFalse(FreeCADGui.Selection.hasSelection(self.doc.Name, 0))
+
     def test_selection_gate_rejects_without_selection_change_or_notification(self):
         gate_calls = []
         events = []
@@ -425,6 +442,36 @@ class SelectionSingletonTestCase(unittest.TestCase):
         self.assertTrue(FreeCADGui.Selection.isSelected(box, "Face2", 0))
         self.assertEqual(len(selection), 1)
         self.assertEqual(list(selection[0].SubElementNames), ["Face2"])
+        self.assertEqual(
+            [(point.x, point.y, point.z) for point in selection[0].PickedPoints],
+            [(4.0, 5.0, 6.0)],
+        )
+
+    def test_remove_selection_subelement_requires_whole_prefix_match(self):
+        events = []
+
+        class Observer:
+            def removeSelection(self, document, obj, sub):
+                events.append(("remove", document, obj, sub))
+
+        box = self.make_box("RemovePartialPrefixBox")
+        FreeCADGui.Selection.addSelection(box, "Edge1", 1.0, 2.0, 3.0)
+        FreeCADGui.Selection.addSelection(box, "Edge10", 4.0, 5.0, 6.0)
+
+        observer = Observer()
+        FreeCADGui.Selection.addObserver(observer, 0)
+        try:
+            FreeCADGui.Selection.removeSelection(box, "Edge1")
+        finally:
+            FreeCADGui.Selection.removeObserver(observer)
+
+        selection = FreeCADGui.Selection.getSelectionEx(self.doc.Name, 0)
+
+        self.assertEqual(events, [("remove", self.doc.Name, box.Name, "Edge1")])
+        self.assertFalse(FreeCADGui.Selection.isSelected(box, "Edge1", 0))
+        self.assertTrue(FreeCADGui.Selection.isSelected(box, "Edge10", 0))
+        self.assertEqual(len(selection), 1)
+        self.assertEqual(list(selection[0].SubElementNames), ["Edge10"])
         self.assertEqual(
             [(point.x, point.y, point.z) for point in selection[0].PickedPoints],
             [(4.0, 5.0, 6.0)],

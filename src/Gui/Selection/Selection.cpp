@@ -2225,6 +2225,25 @@ SelectionSingleton::SelectionCheckResult SelectionSingleton::resolveSelectionDes
     bool reportErrors
 ) const
 {
+    auto result = resolveSelectionDocument(pDocName, sel, reportErrors);
+    if (result != SelectionCheckResult::Available) {
+        return result;
+    }
+
+    result = resolveSelectionObject(pObjectName, sel, reportErrors);
+    if (result != SelectionCheckResult::Available) {
+        return result;
+    }
+
+    return resolveSelectionSubElement(pSubName, resolve, sel, subNamePrefix, reportErrors);
+}
+
+SelectionSingleton::SelectionCheckResult SelectionSingleton::resolveSelectionDocument(
+    const char* pDocName,
+    SelectionDescription& sel,
+    bool reportErrors
+) const
+{
     sel.pDoc = getDocument(pDocName);
     if (!sel.pDoc) {
         if (reportErrors) {
@@ -2233,9 +2252,18 @@ SelectionSingleton::SelectionCheckResult SelectionSingleton::resolveSelectionDes
         return SelectionCheckResult::Invalid;
     }
 
-    pDocName = sel.pDoc->getName();
-    sel.DocName = pDocName == nullptr ? std::string() : pDocName;
+    const char* resolvedDocName = sel.pDoc->getName();
+    sel.DocName = resolvedDocName == nullptr ? std::string() : resolvedDocName;
 
+    return SelectionCheckResult::Available;
+}
+
+SelectionSingleton::SelectionCheckResult SelectionSingleton::resolveSelectionObject(
+    const char* pObjectName,
+    SelectionDescription& sel,
+    bool reportErrors
+) const
+{
     if (pObjectName) {
         sel.pObject = sel.pDoc->getObject(pObjectName);
     }
@@ -2251,6 +2279,18 @@ SelectionSingleton::SelectionCheckResult SelectionSingleton::resolveSelectionDes
     if (sel.pObject->testStatus(App::ObjectStatus::Remove)) {
         return SelectionCheckResult::Invalid;
     }
+
+    return SelectionCheckResult::Available;
+}
+
+SelectionSingleton::SelectionCheckResult SelectionSingleton::resolveSelectionSubElement(
+    const char*& pSubName,
+    ResolveMode resolve,
+    SelectionDescription& sel,
+    std::string& subNamePrefix,
+    bool reportErrors
+) const
+{
     if (pSubName) {
         sel.SubName = pSubName;
     }
@@ -2324,35 +2364,64 @@ SelectionSingleton::SelectionCheckResult SelectionSingleton::findSelectionMatch(
     }
 
     for (const auto& s : selList) {
-        if (s.DocName == pDocName && s.FeatName == sel.FeatName) {
-            if (s.SubName == pSubName) {
-                return SelectionCheckResult::Selected;
-            }
-            if (resolve > ResolveMode::OldStyleElement
-                && boost::starts_with(s.SubName, subNamePrefix)) {
-                return SelectionCheckResult::Selected;
-            }
+        if (!matchesSelectionIdentity(s, pDocName, sel)) {
+            continue;
+        }
+        if (matchesExactSelection(s, pSubName)
+            || matchesNewStyleSelection(s, subNamePrefix, resolve)) {
+            return SelectionCheckResult::Selected;
         }
     }
     if (resolve == ResolveMode::OldStyleElement) {
         for (const auto& s : selList) {
-            if (s.pResolvedObject != sel.pResolvedObject) {
-                continue;
-            }
-            if (!pSubName[0]) {
-                return SelectionCheckResult::Selected;
-            }
-            if (!s.elementName.newName.empty()) {
-                if (s.elementName.newName == sel.elementName.newName) {
-                    return SelectionCheckResult::Selected;
-                }
-            }
-            else if (s.SubName == sel.elementName.oldName) {
+            if (matchesOldStyleSelection(s, pSubName, sel)) {
                 return SelectionCheckResult::Selected;
             }
         }
     }
     return SelectionCheckResult::Available;
+}
+
+bool SelectionSingleton::matchesSelectionIdentity(
+    const SelectionDescription& selected,
+    const char* pDocName,
+    const SelectionDescription& sel
+)
+{
+    return selected.DocName == pDocName && selected.FeatName == sel.FeatName;
+}
+
+bool SelectionSingleton::matchesExactSelection(const SelectionDescription& selected, const char* pSubName)
+{
+    return selected.SubName == pSubName;
+}
+
+bool SelectionSingleton::matchesNewStyleSelection(
+    const SelectionDescription& selected,
+    const std::string& subNamePrefix,
+    ResolveMode resolve
+)
+{
+    return resolve > ResolveMode::OldStyleElement
+        && boost::starts_with(selected.SubName, subNamePrefix);
+}
+
+bool SelectionSingleton::matchesOldStyleSelection(
+    const SelectionDescription& selected,
+    const char* pSubName,
+    const SelectionDescription& sel
+)
+{
+    if (selected.pResolvedObject != sel.pResolvedObject) {
+        return false;
+    }
+    if (!pSubName[0]) {
+        return true;
+    }
+    if (!selected.elementName.newName.empty()) {
+        return selected.elementName.newName == sel.elementName.newName;
+    }
+    return selected.SubName == sel.elementName.oldName;
 }
 
 std::string SelectionSingleton::getSelectedElement(App::DocumentObject* obj, const char* pSubName) const
@@ -2363,20 +2432,26 @@ std::string SelectionSingleton::getSelectedElement(App::DocumentObject* obj, con
     auto context = getSelectionContext(obj->getDocument()->getName());
 
     for (auto selected : context.info->selList) {
-        if (selected.pObject == obj) {
-            auto len = selected.SubName.length();
-            if (!len) {
-                return {};
-            }
-            if (pSubName
-                && strncmp(pSubName, selected.SubName.c_str(), selected.SubName.length()) == 0) {
-                if (pSubName[len] == 0 || pSubName[len - 1] == '.') {
-                    return selected.SubName;
-                }
-            }
+        if (selected.pObject == obj && selectedElementContainsSubName(selected, pSubName)) {
+            return selected.SubName;
         }
     }
     return {};
+}
+
+bool SelectionSingleton::selectedElementContainsSubName(
+    const SelectionDescription& selected,
+    const char* pSubName
+)
+{
+    auto len = selected.SubName.length();
+    if (!len || !pSubName) {
+        return false;
+    }
+    if (strncmp(pSubName, selected.SubName.c_str(), len) != 0) {
+        return false;
+    }
+    return pSubName[len] == 0 || pSubName[len - 1] == '.';
 }
 
 std::vector<SelectionChanges> SelectionSingleton::removeDeletedObjectSelections(
