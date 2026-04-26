@@ -1731,7 +1731,7 @@ class MachineFactory:
         """Register a directory containing addon machine definition files.
 
         Called by ``_scan_installed_addon_dirs()`` when an addon's
-        ``package.xml`` declares ``<Machine>`` content.  May also be
+        ``package.xml`` declares ``<machine>`` content.  May also be
         called directly via ``Path.Preferences.addAddonAssetPath()``
         for programmatic registration.
 
@@ -1899,7 +1899,7 @@ class MachineFactory:
     def _scan_installed_addon_dirs(cls) -> None:
         """Scan FreeCAD Mod directories for machine addons via package.xml content.
 
-        Finds every installed addon whose package.xml declares a ``<Machine>``
+        Finds every installed addon whose package.xml declares a ``<machine>``
         content element inside ``<content>`` and registers the corresponding
         subdirectory.
 
@@ -1933,8 +1933,8 @@ class MachineFactory:
                         continue
 
                     content = meta.Content
-                    if "Machine" in content:
-                        for item in content["Machine"]:
+                    if "machine" in content:
+                        for item in content["machine"]:
                             subdir = item.Subdirectory or item.Name
                             machines_dir = entry / subdir
                             if machines_dir.is_dir():
