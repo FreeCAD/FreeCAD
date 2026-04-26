@@ -70,20 +70,14 @@ Base::Reference<ParameterGrp> getGizmoParameterGroup()
     return hGrp;
 }
 
-Qt::KeyboardModifiers getFineSnapModifier()
+Qt::KeyboardModifier getFineSnapModifier()
 {
-    auto modifier = static_cast<Qt::KeyboardModifier>(
-        getGizmoParameterGroup()->GetInt("FineSnapModifier", static_cast<long>(Qt::ShiftModifier))
-    );
-    if (modifier == Qt::ControlModifier) {
-        return modifier;
-    }
-    return Qt::ShiftModifier;
+    return GizmoContainer::getFineSnapModifier();
 }
 
 bool isCoarseSnapEnabled()
 {
-    return getGizmoParameterGroup()->GetBool("EnableCoarseSnap", true);
+    return GizmoContainer::isCoarseSnapEnabled();
 }
 
 int getCoarseLinearSnapMultiplier()
@@ -104,11 +98,10 @@ int getCoarseRotationSnapMultiplier()
 
 DefaultDragBehavior getDefaultDragBehavior()
 {
-    int behavior = getGizmoParameterGroup()->GetInt(
-        "DefaultCoarseDragBehavior",
-        static_cast<int>(DefaultDragBehavior::Coarse)
-    );
-    return static_cast<DefaultDragBehavior>(behavior);
+    if (GizmoContainer::isCoarseByDefault()) {
+        return DefaultDragBehavior::Coarse;
+    }
+    return DefaultDragBehavior::Fine;
 }
 
 double snapToStep(double value, double step)
@@ -323,7 +316,7 @@ void LinearGizmo::draggingContinued()
 
     auto fineModifier = getFineSnapModifier();
     auto modifiers = QApplication::queryKeyboardModifiers();
-    bool fineModifierPressed = (modifiers & fineModifier) == fineModifier;
+    bool fineModifierPressed = modifiers == fineModifier;
     bool coarseByDefault = getDefaultDragBehavior() == DefaultDragBehavior::Coarse;
     bool useCoarseSnap = coarseByDefault != fineModifierPressed;
 
@@ -528,7 +521,7 @@ void RotationGizmo::draggingContinued()
 
     auto fineModifier = getFineSnapModifier();
     auto modifiers = QApplication::queryKeyboardModifiers();
-    bool fineModifierPressed = (modifiers & fineModifier) == fineModifier;
+    bool fineModifierPressed = modifiers == fineModifier;
     bool coarseByDefault = getDefaultDragBehavior() == DefaultDragBehavior::Coarse;
     bool useCoarseSnap = coarseByDefault != fineModifierPressed;
 
@@ -856,6 +849,31 @@ bool GizmoContainer::isEnabled()
     static auto hGrp = getGizmoParameterGroup();
 
     return hGrp->GetBool("EnableGizmos", true);
+}
+
+bool GizmoContainer::isCoarseSnapEnabled()
+{
+    return getGizmoParameterGroup()->GetBool("EnableCoarseSnap", true);
+}
+
+Qt::KeyboardModifier GizmoContainer::getFineSnapModifier()
+{
+    auto modifier = static_cast<Qt::KeyboardModifier>(
+        getGizmoParameterGroup()->GetInt("FineSnapModifier", static_cast<long>(Qt::ShiftModifier))
+    );
+    if (modifier == Qt::ControlModifier) {
+        return modifier;
+    }
+    return Qt::ShiftModifier;
+}
+
+bool GizmoContainer::isCoarseByDefault()
+{
+    return getGizmoParameterGroup()->GetInt(
+               "DefaultCoarseDragBehavior",
+               static_cast<int>(DefaultDragBehavior::Coarse)
+           )
+        == static_cast<int>(DefaultDragBehavior::Coarse);
 }
 
 std::unique_ptr<GizmoContainer> GizmoContainer::create(

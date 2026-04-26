@@ -130,22 +130,12 @@ void TaskFeatureParameters::showDraggerHints()
     if (!Gui::GizmoContainer::isEnabled()) {
         return;
     }
-
-    static auto hGrp = App::GetApplication().GetUserParameter().GetGroup(
-        "BaseApp/Preferences/Gui/Gizmos"
-    );
-    if (!hGrp->GetBool("EnableCoarseSnap", true)) {
+    if (!Gui::GizmoContainer::isCoarseSnapEnabled()) {
         return;
     }
 
-    auto modifier = static_cast<Qt::KeyboardModifier>(
-        hGrp->GetInt("FineSnapModifier", static_cast<long>(Qt::ShiftModifier))
-    );
-    if (modifier != Qt::ControlModifier) {
-        modifier = Qt::ShiftModifier;
-    }
-
-    bool coarseByDefault = hGrp->GetInt("DefaultCoarseDragBehavior", 0) == 0;
+    auto modifier = Gui::GizmoContainer::getFineSnapModifier();
+    bool coarseByDefault = Gui::GizmoContainer::isCoarseByDefault();
 
     using UserInput = Gui::InputHint::UserInput;
     UserInput key = UserInput::ModifierShift;

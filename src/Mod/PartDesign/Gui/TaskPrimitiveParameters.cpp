@@ -1042,20 +1042,13 @@ void TaskBoxPrimitives::setupGizmos()
 
     setGizmoPositions();
 
-    static auto hGrp = App::GetApplication().GetUserParameter().GetGroup(
-        "BaseApp/Preferences/Gui/Gizmos"
-    );
-    if (hGrp->GetBool("EnableCoarseSnap", true)) {
-        auto mod = static_cast<Qt::KeyboardModifier>(
-            hGrp->GetInt("FineSnapModifier", static_cast<long>(Qt::ShiftModifier))
-        );
-        if (mod != Qt::ControlModifier) {
-            mod = Qt::ShiftModifier;
-        }
-        bool coarseByDefault = hGrp->GetInt("DefaultCoarseDragBehavior", 0) == 0;
+    if (Gui::GizmoContainer::isCoarseSnapEnabled()) {
+        auto modifier = Gui::GizmoContainer::getFineSnapModifier();
+        bool coarseByDefault = Gui::GizmoContainer::isCoarseByDefault();
+
         using UserInput = Gui::InputHint::UserInput;
         UserInput key = UserInput::ModifierShift;
-        if (mod == Qt::ControlModifier) {
+        if (modifier == Qt::ControlModifier) {
             key = UserInput::ModifierCtrl;
         }
 
