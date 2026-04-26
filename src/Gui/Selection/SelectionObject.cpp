@@ -31,7 +31,6 @@
 
 #include "SelectionObject.h"
 #include "Selection.h"
-#include "Application.h"
 #include "Command.h"
 
 

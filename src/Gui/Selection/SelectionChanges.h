@@ -26,6 +26,7 @@
 #include <utility>
 
 #include <App/DocumentObject.h>
+#include <App/DocumentObserver.h>
 #include <FCGlobal.h>
 
 namespace Gui

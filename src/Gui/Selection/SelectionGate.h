@@ -23,6 +23,8 @@
 #pragma once
 
 #include <string>
+#include <unordered_set>
+#include <vector>
 
 #include <FCGlobal.h>
 
@@ -44,6 +46,17 @@ class GuiExport SelectionGate
 public:
     virtual ~SelectionGate() = default;
     virtual bool allow(App::Document*, App::DocumentObject*, const char*) = 0;
+    /** @brief filter all available types
+     *  @param allTypesForGeometry Every type available to select (ex. {"Vertex", "Edge"})
+     *  @returns a set of filtered types (ex. {"Vertex"})
+     */
+    virtual std::unordered_set<std::string> getGatedTypes(
+        const std::vector<const char*>& allTypesForGeometry
+    ) const
+    {
+        (void)allTypesForGeometry;
+        return {};
+    }
 
     /**
      * @brief notAllowedReason is a string that sets the message to be

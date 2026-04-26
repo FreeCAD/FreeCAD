@@ -27,10 +27,8 @@
 #endif
 
 #include <algorithm>
-#include <sstream>
 #include <string_view>
 #include <unordered_set>
-
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
 #include <App/DocumentObject.h>

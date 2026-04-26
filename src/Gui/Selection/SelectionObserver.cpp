@@ -52,6 +52,9 @@ SelectionObserver::SelectionObserver(const ViewProviderDocumentObject*, bool att
     : resolve(resolve)
     , blockedSelection(false)
 {
+    // FIXME: Scope this constructor to the passed view provider's document.
+    // It currently uses the active document instead, so callers opened on a
+    // non-active document can observe the wrong selection stream.
     if (auto doc = App::GetApplication().getActiveDocument()) {
         documentScopeName = doc->getName();
     }

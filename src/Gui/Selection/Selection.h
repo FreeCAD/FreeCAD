@@ -33,7 +33,6 @@
 #include <vector>
 
 #include <App/DocumentObject.h>
-#include <App/DocumentObserver.h>
 #include <Base/Observer.h>
 
 #include "SelectionChanges.h"
@@ -574,8 +573,6 @@ protected:
         const std::list<SelectionDescription>* selList
     ) const;
     static SelectionCheckResult findSelectionMatch(
-        const char* pDocName,
-        const char* pSubName,
         const std::string& subNamePrefix,
         ResolveMode resolve,
         const SelectionDescription& sel,
@@ -583,7 +580,6 @@ protected:
     );
     static bool matchesSelectionIdentity(
         const SelectionDescription& selected,
-        const char* pDocName,
         const SelectionDescription& sel
     );
     static bool matchesExactSelection(const SelectionDescription& selected, const char* pSubName);
@@ -728,6 +724,12 @@ protected:
     bool removeDeletedObjectFromPickedList(SelectionInfo& info, const App::DocumentObject& obj);
     SelStackItem selectionStackItem(const SelectionContext& context) const;
     bool restoreSelectionStackItem(const SelStackItem& item);
+    bool prepareSelectionDescription(
+        const char* pDocName,
+        const char* pObjectName,
+        const char* pSubName,
+        SelectionDescription& sel
+    ) const;
     bool prepareSelectionAdd(
         const char* pDocName,
         const char* pObjectName,
@@ -738,7 +740,7 @@ protected:
         SelectionDescription& sel
     ) const;
     void logSelectionAdd(SelectionDescription& sel, bool clearPreselect) const;
-    void commitSelectionAdd(SelectionContext& context, const SelectionDescription& sel);
+    void appendSelectionDescription(SelectionContext& context, const SelectionDescription& sel);
     void notifySingleSelectionAdded(const SelectionContext& context, const SelectionDescription& sel);
     void logBulkSelection(
         const char* pDocName,
@@ -803,11 +805,17 @@ protected:
         const std::list<SelectionDescription>& selections,
         const char* pDocName
     ) const;
-    void logDocumentClearSelection(const std::string& docName, bool clearPreSelect) const;
-    void logCompleteClearSelection(bool clearPreSelect) const;
+    void logClearSelection(
+        const SelectionContext& context,
+        bool clearCompleteSelection,
+        bool clearPreSelect
+    ) const;
     static bool isCompleteSelectionClearRequest(const char* pDocName);
-    void clearDocumentPreselectionIfRequested(const SelectionContext& context, bool clearPreSelect);
-    void clearCompletePreselectionIfRequested(bool clearPreSelect);
+    void clearPreselectionIfRequested(
+        const SelectionContext& context,
+        bool clearCompleteSelection,
+        bool clearPreSelect
+    );
     void notifySelectionCleared(const std::string& docName);
     void clearPickedList(SelectionContext& context);
     void replacePickedList(SelectionContext& context, const std::vector<SelObj>& pickedList);
@@ -864,12 +872,7 @@ protected:
     SelectionAllowance isSelectionAllowed(
         const SelectionContext& context,
         const SelectionDescription& sel
-    );
-    // Preselection helpers, it's a mess, needs clarifying -theo-vt
-    std::string DocName;
-    std::string FeatName;
-    std::string SubName;
-    float hx {0.0f}, hy {0.0f}, hz {0.0f};
+    ) const;
     PreselectionState preselection;
     SelectionChanges CurrentPreselection;
 

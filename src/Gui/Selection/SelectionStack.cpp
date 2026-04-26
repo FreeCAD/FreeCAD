@@ -204,6 +204,9 @@ std::vector<SelectionObject> SelectionSingleton::selStackGet(
         if (index >= (int)context.info->selStackForward.size()) {
             return {};
         }
+        // FIXME: Negative indices are documented as forward-stack lookups, so
+        // this should index selStackForward here. Add coverage for the
+        // negative-index path before changing the lookup.
         item = &context.info->selStackBack[context.info->selStackForward.size() - 1 - index];
     }
 
