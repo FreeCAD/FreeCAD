@@ -34,6 +34,7 @@
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
+#include <Gui/InputHint.h>
 #include <Gui/MainWindow.h>
 #include <Gui/ViewProviderCoordinateSystem.h>
 #include <Gui/Inventor/Draggers/Gizmo.h>
@@ -382,6 +383,8 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
  */
 TaskBoxPrimitives::~TaskBoxPrimitives()
 {
+    Gui::getMainWindow()->hideHints();
+
     // hide the parts coordinate system axis for selection
     try {
         auto obj = getObject();
@@ -1038,6 +1041,37 @@ void TaskBoxPrimitives::setupGizmos()
     }
 
     setGizmoPositions();
+
+    static auto hGrp = App::GetApplication().GetUserParameter().GetGroup(
+        "BaseApp/Preferences/Gui/Gizmos"
+    );
+    if (hGrp->GetBool("EnableCoarseSnap", true)) {
+        auto mod = static_cast<Qt::KeyboardModifier>(
+            hGrp->GetInt("FineSnapModifier", static_cast<long>(Qt::ShiftModifier))
+        );
+        if (mod != Qt::ControlModifier) {
+            mod = Qt::ShiftModifier;
+        }
+        bool coarseByDefault = hGrp->GetInt("DefaultCoarseDragBehavior", 0) == 0;
+        using UserInput = Gui::InputHint::UserInput;
+        UserInput key = UserInput::ModifierShift;
+        if (mod == Qt::ControlModifier) {
+            key = UserInput::ModifierCtrl;
+        }
+
+        QString message;
+        if (coarseByDefault) {
+            message = tr("%1 fine dragging");
+        }
+        else {
+            message = tr("%1 coarse dragging");
+        }
+
+        Gui::getMainWindow()->showHints({{
+            .message = message,
+            .sequences = {{key}},
+        }});
+    }
 }
 
 void TaskBoxPrimitives::setGizmoPositions()

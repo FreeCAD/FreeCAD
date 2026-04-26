@@ -26,9 +26,12 @@
 #include <QMessageBox>
 
 
+#include <App/Application.h>
 #include <App/DocumentObserver.h>
 #include <Gui/Application.h>
 #include <Gui/CommandT.h>
+#include <Gui/InputHint.h>
+#include <Gui/Inventor/Draggers/Gizmo.h>
 #include <Gui/MainWindow.h>
 #include <Gui/BitmapFactory.h>
 #include <Mod/PartDesign/App/Feature.h>
@@ -115,6 +118,58 @@ TaskFeatureParameters::TaskFeatureParameters(
 {
     Gui::Document* doc = vp->getDocument();
     this->attachDocument(doc);
+}
+
+TaskFeatureParameters::~TaskFeatureParameters()
+{
+    hideDraggerHints();
+}
+
+void TaskFeatureParameters::showDraggerHints()
+{
+    if (!Gui::GizmoContainer::isEnabled()) {
+        return;
+    }
+
+    static auto hGrp = App::GetApplication().GetUserParameter().GetGroup(
+        "BaseApp/Preferences/Gui/Gizmos"
+    );
+    if (!hGrp->GetBool("EnableCoarseSnap", true)) {
+        return;
+    }
+
+    auto modifier = static_cast<Qt::KeyboardModifier>(
+        hGrp->GetInt("FineSnapModifier", static_cast<long>(Qt::ShiftModifier))
+    );
+    if (modifier != Qt::ControlModifier) {
+        modifier = Qt::ShiftModifier;
+    }
+
+    bool coarseByDefault = hGrp->GetInt("DefaultCoarseDragBehavior", 0) == 0;
+
+    using UserInput = Gui::InputHint::UserInput;
+    UserInput key = UserInput::ModifierShift;
+    if (modifier == Qt::ControlModifier) {
+        key = UserInput::ModifierCtrl;
+    }
+
+    QString message;
+    if (coarseByDefault) {
+        message = tr("%1 fine dragging");
+    }
+    else {
+        message = tr("%1 coarse dragging");
+    }
+
+    Gui::getMainWindow()->showHints({{
+        .message = message,
+        .sequences = {{key}},
+    }});
+}
+
+void TaskFeatureParameters::hideDraggerHints()
+{
+    Gui::getMainWindow()->hideHints();
 }
 
 void TaskFeatureParameters::slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj)
