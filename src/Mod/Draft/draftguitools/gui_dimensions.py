@@ -588,7 +588,7 @@ class Dimension(gui_base_original.Creator):
 
     def get_hints(self):
 
-        position_txt = translate("draft", "%1 pick dimension postion")
+        position_txt = translate("draft", "%1 pick dimension position")
 
         if hasattr(Gui, "Snapper") and Gui.Snapper.selectMode:
             # Edge selection mode: update hints for clarity.
