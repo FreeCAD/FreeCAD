@@ -76,6 +76,16 @@ def _get_hint_mod_constrain():
     return [Gui.InputHint(translate("draft", "%1 constrain"), key)]
 
 
+def _get_hint_mod_constrain_dimension_linear():
+    key = _HINT_MOD_KEYS[params.get_param("modconstrain")]
+    return [Gui.InputHint(translate("draft", "%1 horizontal/vertical dimension"), key)]
+
+
+def _get_hint_mod_constrain_dimension_radial():
+    key = _HINT_MOD_KEYS[params.get_param("modconstrain")]
+    return [Gui.InputHint(translate("draft", "%1 radial dimension"), key)]
+
+
 def _get_hint_mod_snap():
     if params.get_param("alwaysSnap"):
         return []
@@ -126,6 +136,15 @@ def _get_hint_continue():
     if pattern.fullmatch(shortcut):
         key = getattr(Gui.UserInput, "Key" + shortcut)
         return [Gui.InputHint(translate("draft", "%1 toggle continue"), key)]
+    return []
+
+
+def _get_hint_select_edge():
+    pattern = re.compile("[A-Z]")
+    shortcut = params.get_param("inCommandShortcutSelectEdge").upper()
+    if pattern.fullmatch(shortcut):
+        key = getattr(Gui.UserInput, "Key" + shortcut)
+        return [Gui.InputHint(translate("draft", "%1 select edge"), key)]
     return []
 
 
