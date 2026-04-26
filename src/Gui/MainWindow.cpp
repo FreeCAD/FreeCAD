@@ -227,11 +227,13 @@ public:
         unitChanged();
         getWindowParameter()->Attach(this);
 
-        Gui::Application::Instance->signalActiveDocument.connect(
-            [this](const Gui::Document&) { unitChanged(); });
+        Gui::Application::Instance->signalActiveDocument.connect([this](const Gui::Document&) {
+            unitChanged();
+        });
 
-        Gui::Application::Instance->signalDeleteDocument.connect(
-            [this](const Gui::Document&) { unitChanged(); });
+        Gui::Application::Instance->signalDeleteDocument.connect([this](const Gui::Document&) {
+            unitChanged();
+        });
         updateFixedWidth();
         setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
     }
@@ -253,10 +255,8 @@ public:
         Q_UNUSED(rCaller)
 
         // Preferences change triggers these
-        if (strcmp(sReason, "UserSchema") == 0 ||
-            strcmp(sReason, "Units") == 0 ||
-            strcmp(sReason, "IgnoreProjectSchema") == 0)
-        {
+        if (strcmp(sReason, "UserSchema") == 0 || strcmp(sReason, "Units") == 0
+            || strcmp(sReason, "IgnoreProjectSchema") == 0) {
             QTimer::singleShot(0, this, [this]() {
                 retranslateUi();
                 unitChanged();
@@ -269,9 +269,10 @@ public:
             retranslateUi();
             unitChanged();
         }
-        else if (event->type() == QEvent::FontChange ||
-                 event->type() == QEvent::ApplicationFontChange ||
-                 event->type() == QEvent::StyleChange) {
+        else if (
+            event->type() == QEvent::FontChange || event->type() == QEvent::ApplicationFontChange
+            || event->type() == QEvent::StyleChange
+        ) {
             QPushButton::changeEvent(event);
             updateFixedWidth();
             return;
@@ -309,8 +310,7 @@ private:
         int maxWidth = 0;
         const auto abbreviations = Base::UnitsApi::getAbbreviations();
         for (const auto& abbreviation : abbreviations) {
-            maxWidth = std::max(maxWidth,
-                                fm.horizontalAdvance(QString::fromStdString(abbreviation)));
+            maxWidth = std::max(maxWidth, fm.horizontalAdvance(QString::fromStdString(abbreviation)));
         }
 
         QStyleOptionComboBox opt;
@@ -319,9 +319,10 @@ private:
         opt.editable = false;
         opt.frame = true;
 
-        fixedWidthValue =
-            style()->sizeFromContents(QStyle::CT_ComboBox, &opt, QSize(maxWidth, fm.height()), this)
-                .width();
+        fixedWidthValue
+            = style()
+                  ->sizeFromContents(QStyle::CT_ComboBox, &opt, QSize(maxWidth, fm.height()), this)
+                  .width();
         setMinimumWidth(fixedWidthValue);
         setMaximumWidth(fixedWidthValue);
     }
@@ -329,19 +330,22 @@ private:
     void unitChanged()
     {
         auto actions = menu()->actions();
-        if (actions.empty())
+        if (actions.empty()) {
             return;
+        }
 
         int userSchema = getWindowParameter()->GetInt("UserSchema", 0);
 
         App::Document* doc = App::GetApplication().getActiveDocument();
 
-        if (doc)
+        if (doc) {
             userSchema = doc->UnitSystem.getValue();
+        }
 
         // clamp safely
-        if (userSchema < 0 || userSchema >= actions.size())
+        if (userSchema < 0 || userSchema >= actions.size()) {
             userSchema = 0;
+        }
 
         actions[userSchema]->setChecked(true);
         QAction* act = actions[userSchema];
