@@ -21,6 +21,7 @@ list(APPEND PartGui_LIBS
 )
 
 generate_from_py(ViewProviderPartExt)
+generate_from_py(ViewProviderPreviewExtension)
 
 set (Part_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Part_translation.qrc)
 qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
@@ -160,6 +161,8 @@ SET(PartGui_SRCS
     ViewProviderAttachExtension.cpp
     ViewProviderPreviewExtension.h
     ViewProviderPreviewExtension.cpp
+    ViewProviderPreviewExtension.pyi
+    ViewProviderPreviewExtensionPyImp.cpp
     ViewProviderDatum.cpp
     ViewProviderDatum.h
     ViewProviderExt.cpp
