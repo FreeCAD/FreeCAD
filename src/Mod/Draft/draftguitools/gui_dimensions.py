@@ -592,53 +592,49 @@ class Dimension(gui_base_original.Creator):
 
         if hasattr(Gui, "Snapper") and Gui.Snapper.selectMode:
             # Edge selection mode: update hints for clarity.
-            hints = [
-                Gui.InputHint(translate("draft", "%1 select edge"), Gui.UserInput.MouseLeft)
-            ]
+            hints = [Gui.InputHint(translate("draft", "%1 select edge"), Gui.UserInput.MouseLeft)]
         elif self.center is not None:
             # 2 straight edges that intersect have been selected: angular dimension.
-            hints = [
-                Gui.InputHint(position_txt, Gui.UserInput.MouseLeft)
-            ]
+            hints = [Gui.InputHint(position_txt, Gui.UserInput.MouseLeft)]
         elif self.arcmode:
             # 1 circular edge has been selected.
-            hints = [
-                Gui.InputHint(position_txt, Gui.UserInput.MouseLeft)
-            ]
+            hints = [Gui.InputHint(position_txt, Gui.UserInput.MouseLeft)]
             hints += gui_tool_utils._get_hint_mod_constrain_dimension_radial()
         elif self.edges:
             # 1 straight edge has been selected: linear or angular dimension.
-            hints = [
-                Gui.InputHint(position_txt, Gui.UserInput.MouseLeft)
-            ]
+            hints = [Gui.InputHint(position_txt, Gui.UserInput.MouseLeft)]
             hints += gui_tool_utils._get_hint_mod_constrain_dimension_linear()
             hints += gui_tool_utils._get_hint_select_edge()
         elif self.chain is not None:
             # 1st linear dimension is defined, chain points can be picked.
             hints = [
-                Gui.InputHint(translate("draft", "%1 pick next dimension point"), Gui.UserInput.MouseLeft),
+                Gui.InputHint(
+                    translate("draft", "%1 pick next dimension point"), Gui.UserInput.MouseLeft
+                ),
                 Gui.InputHint(translate("draft", "%1 finish"), Gui.UserInput.KeyEscape),
             ]
         elif len(self.node) == 0:
             # 0 points picked.
             hints = [
-                Gui.InputHint(translate("draft", "%1 pick first dimension point"), Gui.UserInput.MouseLeft)
+                Gui.InputHint(
+                    translate("draft", "%1 pick first dimension point"), Gui.UserInput.MouseLeft
+                )
             ]
             hints += gui_tool_utils._get_hint_mod_snap()
             hints += gui_tool_utils._get_hint_select_edge()
         elif len(self.node) == 1:
             # 1 point picked.
             hints = [
-                Gui.InputHint(translate("draft", "%1 pick second dimension point"), Gui.UserInput.MouseLeft)
+                Gui.InputHint(
+                    translate("draft", "%1 pick second dimension point"), Gui.UserInput.MouseLeft
+                )
             ]
             hints += gui_tool_utils._get_hint_xyz_constrain()
             hints += gui_tool_utils._get_hint_mod_constrain()
             hints += gui_tool_utils._get_hint_mod_snap()
         else:
             # 2 points picked.
-            hints = [
-                Gui.InputHint(position_txt, Gui.UserInput.MouseLeft)
-            ]
+            hints = [Gui.InputHint(position_txt, Gui.UserInput.MouseLeft)]
             hints += gui_tool_utils._get_hint_mod_constrain_dimension_linear()
 
         return hints
