@@ -26,6 +26,8 @@
 
 #include <deque>
 #include <list>
+#include <map>
+#include <set>
 #include <string>
 #include <unordered_set>
 #include <vector>
@@ -565,6 +567,21 @@ protected:
         ResolveMode resolve,
         bool single = false
     ) const;
+    static bool appendSelectionSubElement(
+        SelectionObject& selection,
+        const char* subelement,
+        const SelectionDescription& sel,
+        ResolveMode resolve
+    );
+    static bool appendObjectListEntry(
+        std::vector<SelectionObject>& selections,
+        std::map<App::DocumentObject*, size_t>& objectIndices,
+        App::DocumentObject* obj,
+        const char* subelement,
+        const SelectionDescription& sel,
+        ResolveMode resolve,
+        bool single
+    );
 
     static App::DocumentObject* getObjectOfType(
         const SelectionDescription& sel,
@@ -605,6 +622,42 @@ protected:
         const SelectionInfo* info;
         std::string docName;
     };
+    struct VisibilitySelection
+    {
+        std::string DocName;
+        std::string FeatName;
+        std::string SubName;
+        VisibilitySelection(
+            const std::string& docName,
+            const std::string& featName,
+            const std::string& subName
+        )
+            : DocName(docName)
+            , FeatName(featName)
+            , SubName(subName)
+        {}
+    };
+    struct VisibilityTarget
+    {
+        App::DocumentObject* object {nullptr};
+        App::DocumentObject* parent {nullptr};
+        std::string elementName;
+    };
+    enum class VisibilityElementResult
+    {
+        Handled,
+        Fallback
+    };
+    using VisibilityFilter = std::set<std::pair<App::DocumentObject*, App::DocumentObject*>>;
+    struct VisibilityOperation
+    {
+        explicit VisibilityOperation(int visible)
+            : visible(visible)
+        {}
+
+        int visible;
+        VisibilityFilter filter;
+    };
     std::vector<SelectionChanges> removeDeletedObjectSelections(
         SelectionInfo& info,
         const App::DocumentObject& obj
@@ -612,6 +665,31 @@ protected:
     bool removeDeletedObjectFromPickedList(SelectionInfo& info, const App::DocumentObject& obj);
     SelStackItem selectionStackItem(const SelectionContext& context) const;
     bool restoreSelectionStackItem(const SelStackItem& item);
+    void logBulkSelection(
+        const char* pDocName,
+        const char* pObjectName,
+        const std::vector<std::string>& subNames
+    ) const;
+    bool appendBulkSelection(
+        SelectionContext& context,
+        const char* pDocName,
+        const char* pObjectName,
+        const std::string& pSubName,
+        std::vector<std::string>* loggedSubNames
+    );
+    void notifyBulkSelectionAdded(const SelectionContext& context, const SelectionDescription& sel);
+    std::vector<VisibilitySelection> visibilitySelectionSnapshot(const SelectionContext& context) const;
+    bool resolveVisibilityTarget(const VisibilitySelection& sel, VisibilityTarget& target) const;
+    VisibilityElementResult applyElementVisibility(
+        const VisibilitySelection& sel,
+        const VisibilityTarget& target,
+        VisibilityOperation& operation
+    );
+    void applyObjectVisibility(
+        const VisibilitySelection& sel,
+        App::DocumentObject* obj,
+        VisibilityOperation& operation
+    );
 
     // Returns a selection context or nullptr if the document is not found
     SelectionContext getSelectionContext(const char* pDocName);

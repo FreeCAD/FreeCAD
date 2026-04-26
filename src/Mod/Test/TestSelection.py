@@ -340,6 +340,23 @@ class SelectionSingletonTestCase(unittest.TestCase):
         self.assertFalse(FreeCADGui.Selection.isSelected(box, "Face1", 0))
         self.assertTrue(FreeCADGui.Selection.isSelected(box, "Face2", 0))
 
+    def test_set_visible_hides_shows_and_toggles_selected_object(self):
+        box = self.make_box("SetVisibleBox")
+
+        FreeCADGui.Selection.addSelection(box)
+
+        FreeCADGui.Selection.setVisible(False)
+        self.assertFalse(box.ViewObject.Visibility)
+        self.assertTrue(FreeCADGui.Selection.isSelected(box, "", 0))
+
+        FreeCADGui.Selection.setVisible(True)
+        self.assertTrue(box.ViewObject.Visibility)
+        self.assertTrue(FreeCADGui.Selection.isSelected(box, "", 0))
+
+        FreeCADGui.Selection.setVisible()
+        self.assertFalse(box.ViewObject.Visibility)
+        self.assertTrue(FreeCADGui.Selection.isSelected(box, "", 0))
+
     def test_single_selection_flag_rejects_multiple_entries(self):
         first = self.doc.addObject("App::FeaturePython", "First")
         second = self.doc.addObject("App::FeaturePython", "Second")

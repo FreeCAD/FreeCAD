@@ -1791,40 +1791,31 @@ void SelectionSingleton::rmvSelection(
     notifySelectionRemovals(changes);
 }
 
-struct SelInfo
+int SelectionSingleton::visibilityValue(VisibleState vis)
 {
-    std::string DocName;
-    std::string FeatName;
-    std::string SubName;
-    SelInfo(const std::string& docName, const std::string& featName, const std::string& subName)
-        : DocName(docName)
-        , FeatName(featName)
-        , SubName(subName)
-    {}
-};
-
-void SelectionSingleton::setVisible(VisibleState vis, const char* pDocName)
-{
-    std::set<std::pair<App::DocumentObject*, App::DocumentObject*>> filter;
-    int visible;
     switch (vis) {
         case VisShow:
-            visible = 1;
-            break;
+            return 1;
         case VisToggle:
-            visible = -1;
-            break;
+            return -1;
         default:
-            visible = 0;
+            return 0;
     }
+}
 
-    auto context = getSelectionContext(pDocName);
-    if (!context.info) {
-        return;
+bool SelectionSingleton::requestedVisibility(int visible, bool currentVisible)
+{
+    if (visible >= 0) {
+        return visible != 0;
     }
+    return !currentVisible;
+}
 
-    // Copy the selection in case it changes during this function
-    std::vector<SelInfo> sels;
+std::vector<SelectionSingleton::VisibilitySelection> SelectionSingleton::visibilitySelectionSnapshot(
+    const SelectionContext& context
+) const
+{
+    std::vector<VisibilitySelection> sels;
     sels.reserve(context.info->selList.size());
     for (auto& sel : context.info->selList) {
         if (sel.DocName.empty() || sel.FeatName.empty() || !sel.pObject) {
@@ -1832,96 +1823,124 @@ void SelectionSingleton::setVisible(VisibleState vis, const char* pDocName)
         }
         sels.emplace_back(sel.DocName, sel.FeatName, sel.SubName);
     }
+    return sels;
+}
+
+bool SelectionSingleton::resolveVisibilityTarget(
+    const VisibilitySelection& sel,
+    VisibilityTarget& target
+) const
+{
+    target = VisibilityTarget {};
+
+    App::Document* doc = App::GetApplication().getDocument(sel.DocName.c_str());
+    if (!doc) {
+        return false;
+    }
+    App::DocumentObject* obj = doc->getObject(sel.FeatName.c_str());
+    if (!obj) {
+        return false;
+    }
+
+    target.object = obj->resolve(sel.SubName.c_str(), &target.parent, &target.elementName);
+    return target.object && target.object->isAttachedToDocument()
+        && (!target.parent || target.parent->isAttachedToDocument());
+}
+
+SelectionSingleton::VisibilityElementResult SelectionSingleton::applyElementVisibility(
+    const VisibilitySelection& sel,
+    const VisibilityTarget& target,
+    int visible,
+    VisibilityFilter& filter
+)
+{
+    if (!target.parent) {
+        return VisibilityElementResult::FallBack;
+    }
+
+    if (!filter.insert(std::make_pair(target.object, target.parent)).second) {
+        return VisibilityElementResult::Handled;
+    }
+
+    int visElement = target.parent->isElementVisible(target.elementName.c_str());
+    if (visElement < 0) {
+        return VisibilityElementResult::FallBack;
+    }
+
+    if (visElement > 0) {
+        visElement = 1;
+    }
+    if (visible >= 0) {
+        if (visElement == visible) {
+            return VisibilityElementResult::Handled;
+        }
+        visElement = visible;
+    }
+    else {
+        visElement = !visElement;
+    }
+
+    if (!visElement) {
+        updateSelection(false, sel.DocName.c_str(), sel.FeatName.c_str(), sel.SubName.c_str());
+    }
+    target.parent->setElementVisible(target.elementName.c_str(), visElement ? true : false);
+    if (visElement) {
+        updateSelection(true, sel.DocName.c_str(), sel.FeatName.c_str(), sel.SubName.c_str());
+    }
+    return VisibilityElementResult::Handled;
+}
+
+void SelectionSingleton::applyObjectVisibility(
+    const VisibilitySelection& sel,
+    App::DocumentObject* obj,
+    int visible,
+    VisibilityFilter& filter
+)
+{
+    if (!filter.insert(std::make_pair(obj, static_cast<App::DocumentObject*>(nullptr))).second) {
+        return;
+    }
+
+    auto vp = Application::Instance->getViewProvider(obj);
+
+    if (vp) {
+        bool visObject = requestedVisibility(visible, vp->isShow());
+
+        if (visObject) {
+            vp->show();
+            updateSelection(visObject, sel.DocName.c_str(), sel.FeatName.c_str(), sel.SubName.c_str());
+        }
+        else {
+            updateSelection(visObject, sel.DocName.c_str(), sel.FeatName.c_str(), sel.SubName.c_str());
+            vp->hide();
+        }
+    }
+}
+
+void SelectionSingleton::setVisible(VisibleState vis, const char* pDocName)
+{
+    VisibilityFilter filter;
+    int visible = visibilityValue(vis);
+
+    auto context = getSelectionContext(pDocName);
+    if (!context.info) {
+        return;
+    }
+
+    // Copy the selection in case it changes during this function.
+    auto sels = visibilitySelectionSnapshot(context);
 
     for (auto& sel : sels) {
-        App::Document* doc = App::GetApplication().getDocument(sel.DocName.c_str());
-        if (!doc) {
-            continue;
-        }
-        App::DocumentObject* obj = doc->getObject(sel.FeatName.c_str());
-        if (!obj) {
+        VisibilityTarget target;
+        if (!resolveVisibilityTarget(sel, target)) {
             continue;
         }
 
-        // get parent object
-        App::DocumentObject* parent = nullptr;
-        std::string elementName;
-        obj = obj->resolve(sel.SubName.c_str(), &parent, &elementName);
-        if (!obj || !obj->isAttachedToDocument() || (parent && !parent->isAttachedToDocument())) {
-            continue;
-        }
-        // try call parent object's setElementVisible
-        if (parent) {
-            // prevent setting the same object visibility more than once
-            if (!filter.insert(std::make_pair(obj, parent)).second) {
-                continue;
-            }
-            int visElement = parent->isElementVisible(elementName.c_str());
-            if (visElement >= 0) {
-                if (visElement > 0) {
-                    visElement = 1;
-                }
-                if (visible >= 0) {
-                    if (visElement == visible) {
-                        continue;
-                    }
-                    visElement = visible;
-                }
-                else {
-                    visElement = !visElement;
-                }
-
-                if (!visElement) {
-                    updateSelection(
-                        false,
-                        sel.DocName.c_str(),
-                        sel.FeatName.c_str(),
-                        sel.SubName.c_str()
-                    );
-                }
-                parent->setElementVisible(elementName.c_str(), visElement ? true : false);
-                if (visElement) {
-                    updateSelection(true, sel.DocName.c_str(), sel.FeatName.c_str(), sel.SubName.c_str());
-                }
-                continue;
-            }
-
-            // Fall back to direct object visibility setting
-        }
-        if (!filter.insert(std::make_pair(obj, static_cast<App::DocumentObject*>(nullptr))).second) {
+        if (applyElementVisibility(sel, target, visible, filter) == VisibilityElementResult::Handled) {
             continue;
         }
 
-        auto vp = Application::Instance->getViewProvider(obj);
-
-        if (vp) {
-            bool visObject;
-            if (visible >= 0) {
-                visObject = visible ? true : false;
-            }
-            else {
-                visObject = !vp->isShow();
-            }
-
-            if (visObject) {
-                vp->show();
-                updateSelection(
-                    visObject,
-                    sel.DocName.c_str(),
-                    sel.FeatName.c_str(),
-                    sel.SubName.c_str()
-                );
-            }
-            else {
-                updateSelection(
-                    visObject,
-                    sel.DocName.c_str(),
-                    sel.FeatName.c_str(),
-                    sel.SubName.c_str()
-                );
-                vp->hide();
-            }
-        }
+        applyObjectVisibility(sel, target.object, visible, filter);
     }
 }
 
