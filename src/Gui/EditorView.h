@@ -164,7 +164,7 @@ protected:
     void changeEvent(QEvent*) override;
 
 public Q_SLOTS:
-    void activate();
+    void activate(const QString& prefill = QString());
     void deactivate();
     void findPrevious();
     void findNext();

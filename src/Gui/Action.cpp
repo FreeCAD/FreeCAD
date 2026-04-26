@@ -32,6 +32,7 @@
 #include <QToolBar>
 #include <QToolButton>
 #include <QToolTip>
+#include <QRegularExpression>
 
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
@@ -582,16 +583,27 @@ void ActionGroup::onToggled(bool check)
  */
 void ActionGroup::onActivated(QAction* act)
 {
+    int index = groupAction()->actions().indexOf(act);
+    this->setIcon(act->icon());
     if (_rememberLast) {
-        int index = groupAction()->actions().indexOf(act);
-
-        this->setIcon(act->icon());
         if (!this->_isMode) {
             this->action()->setToolTip(act->toolTip());
         }
         this->setProperty("defaultAction", QVariant(index));
-        command()->invoke(index, Command::TriggerChildAction);
     }
+    else {
+        // for Std_RecentMacros and Std_RecentFiles
+        if (!this->_isMode) {
+            QString str = act->text();
+            // remove index from toolTip text
+            static const QRegularExpression regex(QString::fromUtf8("^&?[0-9]+ "));
+            str = str.remove(regex);
+            this->setToolTip(act->toolTip(), str);
+        }
+        // recent index is always 0
+        this->setProperty("defaultAction", QVariant(0));
+    }
+    command()->invoke(index, Command::TriggerChildAction);
 }
 
 /**
@@ -599,21 +611,30 @@ void ActionGroup::onActivated(QAction* act)
  */
 void ActionGroup::onHovered(QAction* act)
 {
-    const auto topLevelWidgets = QApplication::topLevelWidgets();
+    if (!act) {
+        return;
+    }
+
+    // Try to get the menu directly from the action's associated objects.
+    // This avoids traversing the widget tree with findChildren, which can
+    // crash if called during widget destruction when synthetic enter/leave
+    // events are processed.
     QMenu* foundMenu = nullptr;
 
-    for (QWidget* widget : topLevelWidgets) {
-        QList<QMenu*> menus = widget->findChildren<QMenu*>();
-
-        for (QMenu* menu : menus) {
-            if (menu->isVisible() && menu->actions().contains(act)) {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    // Use associatedObjects() which includes non-widget associated objects.
+    const auto associatedObjects = act->associatedObjects();
+    for (QObject* obj : associatedObjects) {
+#else
+    // Use associatedWidgets() for Qt < 6.0 (associatedObjects() requires Qt 6.0+).
+    const auto associatedWidgets = act->associatedWidgets();
+    for (QWidget* obj : associatedWidgets) {
+#endif
+        if (auto* menu = qobject_cast<QMenu*>(obj)) {
+            if (menu->isVisible()) {
                 foundMenu = menu;
                 break;
             }
-        }
-
-        if (foundMenu) {
-            break;
         }
     }
 

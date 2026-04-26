@@ -217,7 +217,6 @@ bool TaskDlgFeatureParameters::accept()
         feature->getDocument()->commitTransaction();
     }
     catch (const Base::Exception& e) {
-        feature->getDocument()->abortTransaction();
         QString errorText = QString::fromUtf8(e.what());
         QString statusText = QString::fromUtf8(getObject()->getStatusString());
 
@@ -234,7 +233,7 @@ bool TaskDlgFeatureParameters::accept()
                 );
             }
         }
-        QMessageBox::warning(Gui::getMainWindow(), tr("Input error"), errorText);
+        Base::Console().error("%s\n", errorText.toUtf8().constData());
         return false;
     }
     return true;

@@ -30,6 +30,7 @@ These functions are used by different command classes in the `DraftTools`
 module. We assume that the graphical interface was already loaded
 as they operate on selections and graphical properties.
 """
+
 ## @package gui_tool_utils
 # \ingroup draftguitools
 # \brief Provides utility functions that are used by many Draft Gui Commands.
@@ -46,7 +47,6 @@ from draftutils import params
 from draftutils import utils
 from draftutils.messages import _wrn
 from draftutils.translate import translate
-
 
 # Set modifier keys from the parameter database
 MODS = ["shift", "ctrl", "alt"]

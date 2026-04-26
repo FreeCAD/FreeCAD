@@ -40,7 +40,7 @@ public:
     ConstraintInitialTemperature();
 
     // Temperature parameters
-    App::PropertyTemperature initialTemperature;
+    App::PropertyTemperature InitialTemperature;
     App::PropertyBool EnableFinalTemperature;
     App::PropertyTemperature FinalTemperature;
 
@@ -54,10 +54,10 @@ public:
     const char* getViewProviderName() const override;
 
 protected:
-    void handleChangedPropertyType(
+    void handleChangedPropertyName(
         Base::XMLReader& reader,
-        const char* TypeName,
-        App::Property* prop
+        const char* typeName,
+        const char* propName
     ) override;
     void onChanged(const App::Property* prop) override;
 };

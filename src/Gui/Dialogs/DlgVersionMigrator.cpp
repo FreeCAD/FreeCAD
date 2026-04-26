@@ -187,7 +187,7 @@ int DlgVersionMigrator::exec()
         calculateMigrationSize();
         QDialog::exec();
         if (sizeCalculationWorkerThread && sizeCalculationWorkerThread->isRunning()) {
-            sizeCalculationWorkerThread->quit();
+            sizeCalculationWorkerThread->requestInterruption();
         }
     }
     return 0;
@@ -204,14 +204,33 @@ public:
         auto dir = App::Application::directories()->getUserAppDataDir();
         uintmax_t size = 0;
         auto thisThread = QThread::currentThread();
-        for (auto& entry : fs::recursive_directory_iterator(dir)) {
+        std::error_code errorCode;
+        auto iterator = fs::recursive_directory_iterator(
+            dir,
+            fs::directory_options::skip_permission_denied,
+            errorCode
+        );
+        if (errorCode) {
+            Q_EMIT(sizeFound(0));
+            Q_EMIT(finished());
+            return;
+        }
+        for (auto it = fs::begin(iterator); it != fs::end(iterator); it.increment(errorCode)) {
+            if (errorCode) {
+                errorCode.clear();
+                continue;
+            }
             if (thisThread->isInterruptionRequested()) {
                 Q_EMIT(cancelled());
                 Q_EMIT(finished());
                 return;
             }
-            if (fs::is_regular_file(entry.status())) {
-                size += fs::file_size(entry.path());
+            if (it->is_regular_file(errorCode) && !errorCode) {
+                auto fileSize = fs::file_size(it->path(), errorCode);
+                if (!errorCode) {
+                    size += fileSize;
+                }
+                errorCode.clear();
             }
         }
         Q_EMIT(sizeFound(size));
@@ -237,9 +256,19 @@ void PathMigrationWorker::run()
 {
     try {
         App::GetApplication().GetUserParameter().SaveDocument();
-        App::Application::directories()->migrateAllPaths({_userAppDir, _configDir});
+        auto result = App::Application::directories()->migrateAllPaths({_userAppDir, _configDir});
         replaceOccurrencesInPreferences();
-        Q_EMIT(complete());
+        if (!result.failedPaths.empty()) {
+            writeMigrationLog(result.failedPaths);
+            QStringList skippedList;
+            for (const auto& path : result.failedPaths) {
+                skippedList.append(QString::fromStdString(Base::FileInfo::pathToString(path)));
+            }
+            Q_EMIT(completedWithWarnings(skippedList));
+        }
+        else {
+            Q_EMIT(complete());
+        }
     }
     catch (const Base::Exception& e) {
         Base::Console().error("Error migrating configuration data: %s\n", e.what());
@@ -333,6 +362,28 @@ void PathMigrationWorker::replaceInContents(
     }
 }
 
+void PathMigrationWorker::writeMigrationLog(const std::vector<std::filesystem::path>& skippedPaths)
+{
+    auto logName = "migration-to-"
+        + App::ApplicationDirectories::versionStringForPath(_major, _minor) + ".log";
+    auto logPath = locateNewPreferences().parent_path() / logName;
+    try {
+        std::ofstream log(logPath);
+        log << "Migration completed with " << skippedPaths.size() << " skipped file(s):\n\n";
+        for (const auto& path : skippedPaths) {
+            log << "  " << Base::FileInfo::pathToString(path) << "\n";
+        }
+        log << "\nSee the FreeCAD Report View for additional details.\n";
+    }
+    catch (const std::exception& e) {
+        Base::Console().warning(
+            "Migration: could not write log to '%s': %s\n",
+            Base::FileInfo::pathToString(logPath).c_str(),
+            e.what()
+        );
+    }
+}
+
 void DlgVersionMigrator::calculateMigrationSize()
 {
     sizeCalculationWorkerThread = new QThread(mainWindow);
@@ -362,7 +413,7 @@ void DlgVersionMigrator::share()
 {
     markCurrentVersionAsDoNotMigrate();
     if (sizeCalculationWorkerThread && sizeCalculationWorkerThread->isRunning()) {
-        sizeCalculationWorkerThread->quit();
+        sizeCalculationWorkerThread->requestInterruption();
     }
     close();
 }
@@ -379,12 +430,14 @@ void DlgVersionMigrator::showSizeOfMigration(uintmax_t size)
 void DlgVersionMigrator::migrate()
 {
     hide();
+    int major = std::stoi(App::Application::Config()["BuildVersionMajor"]);
+    int minor = std::stoi(App::Application::Config()["BuildVersionMinor"]);
     auto* workerThread = new QThread(mainWindow);
     auto* worker = new PathMigrationWorker(
         App::Application::getUserConfigPath(),
         App::Application::getUserAppDataDir(),
-        std::stoi(App::Application::Config()["BuildVersionMajor"]),
-        std::stoi(App::Application::Config()["BuildVersionMinor"])
+        major,
+        minor
     );
     worker->moveToThread(workerThread);
     connect(workerThread, &QThread::started, worker, &PathMigrationWorker::run);
@@ -392,17 +445,65 @@ void DlgVersionMigrator::migrate()
     connect(worker, &PathMigrationWorker::finished, worker, &QObject::deleteLater);
     connect(workerThread, &QThread::finished, workerThread, &QObject::deleteLater);
 
+    QStringList skippedFiles;
     auto migrationRunning = new QMessageBox(this);
     migrationRunning->setWindowTitle(QObject::tr("Migrating"));
     migrationRunning->setText(QObject::tr("Migrating configuration data and addons…"));
     migrationRunning->setStandardButtons(QMessageBox::NoButton);
     connect(worker, &PathMigrationWorker::complete, migrationRunning, &QMessageBox::accept);
+    connect(
+        worker,
+        &PathMigrationWorker::completedWithWarnings,
+        migrationRunning,
+        [migrationRunning, &skippedFiles](QStringList paths) {
+            skippedFiles = std::move(paths);
+            migrationRunning->accept();
+        }
+    );
     connect(worker, &PathMigrationWorker::failed, migrationRunning, &QMessageBox::reject);
 
     workerThread->start();
     migrationRunning->exec();
 
     if (migrationRunning->result() == QDialog::Accepted) {
+        if (!skippedFiles.isEmpty()) {
+            // Some of these file paths might be very long, so truncate them to a reasonable
+            // (arbitrary) length of 70 chars.
+            constexpr int maxDisplayLength = 70;
+            constexpr int prefixLength = maxDisplayLength / 3;
+            constexpr int suffixLength = maxDisplayLength - prefixLength - 1;  // 1 for ellipsis
+            QStringList truncated;
+            for (const auto& path : skippedFiles) {
+                if (path.length() > maxDisplayLength) {
+                    truncated.append(
+                        path.left(prefixLength) + QStringLiteral("…") + path.right(suffixLength)
+                    );
+                }
+                else {
+                    truncated.append(path);
+                }
+            }
+            auto warning = new QMessageBox(mainWindow);
+            warning->setIcon(QMessageBox::Warning);
+            warning->setWindowTitle(QObject::tr("Migration completed with warnings"));
+            auto logFileName = QStringLiteral("migration-to-")
+                + QString::fromStdString(
+                                   App::ApplicationDirectories::versionStringForPath(major, minor)
+                )
+                + QStringLiteral(".log");
+            warning->setText(
+                QObject::tr(
+                    "%n file(s) could not be copied and were skipped. "
+                    "A full list has been saved to %1 in your new configuration directory.",
+                    "",
+                    static_cast<int>(skippedFiles.size())
+                )
+                    .arg(logFileName)
+            );
+            warning->setDetailedText(truncated.join(QStringLiteral("\n")));
+            warning->setStandardButtons(QMessageBox::Ok);
+            warning->exec();
+        }
         restart(tr("Migration complete"));
     }
     else {

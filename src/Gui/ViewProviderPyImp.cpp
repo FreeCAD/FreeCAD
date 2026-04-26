@@ -39,6 +39,7 @@
 
 #include "PythonWrapper.h"
 #include "SoFCDB.h"
+#include "SoFullPathHelper.h"
 
 // generated out of ViewProvider.pyi
 #include "ViewProviderPy.h"
@@ -226,7 +227,9 @@ PyObject* ViewProviderPy::canDropObject(PyObject* args, PyObject* kw)
     PyObject* pyElements = Py_None;
     const char* subname = nullptr;
     static const std::array<const char*, 5> kwlist {"obj", "owner", "subname", "elem", nullptr};
-    if (!Base::Wrapped_ParseTupleAndKeywords(args, kw, "|OOsO", kwlist, &obj, &owner, &subname, &pyElements)) {
+    if (
+        !Base::Wrapped_ParseTupleAndKeywords(args, kw, "|OOsO", kwlist, &obj, &owner, &subname, &pyElements)
+    ) {
         return nullptr;
     }
 
@@ -636,7 +639,7 @@ PyObject* ViewProviderPy::getDetailPath(PyObject* args) const
         throw Base::TypeError("'path' must be a coin.SoPath");
     }
     SoDetail* det = nullptr;
-    if (!getViewProviderPtr()->getDetailPath(sub, static_cast<SoFullPath*>(pPath), append, det)) {
+    if (!getViewProviderPtr()->getDetailPath(sub, Gui::toFullPath(pPath), append, det)) {
         delete det;
         Py_Return;
     }

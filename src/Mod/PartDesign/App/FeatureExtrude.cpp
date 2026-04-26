@@ -36,6 +36,7 @@
 #include <TopoDS_Shape.hxx>
 
 #include <App/Document.h>
+#include <App/ObjectIdentifier.h>
 #include <Base/Tools.h>
 #include <Mod/Part/App/ExtrusionHelper.h>
 #include "Mod/Part/App/TopoShapeOpCode.h"
@@ -980,6 +981,29 @@ void FeatureExtrude::onDocumentRestored()
         double origL2 = Length2.getValue();
         Length.setValue(origL2);
         Length2.setValue(origL);
+
+        App::ObjectIdentifier lengthPath(Length);
+        App::ObjectIdentifier length2Path(Length2);
+
+        // Rename Length <-> Length2 in all expressions before swapping which expression lives on
+        // which property. This avoids cyclic dependencies and fixes cross-object references.
+        std::map<App::ObjectIdentifier, App::ObjectIdentifier> renames;
+        renames[lengthPath] = length2Path;
+        renames[length2Path] = lengthPath;
+        getDocument()->renameObjectIdentifiers(renames);
+
+        auto exprL = getExpression(lengthPath);
+        auto exprL2 = getExpression(length2Path);
+        if (exprL.expression || exprL2.expression) {
+            clearExpression(lengthPath);
+            clearExpression(length2Path);
+            if (exprL.expression) {
+                setExpression(length2Path, exprL.expression);
+            }
+            if (exprL2.expression) {
+                setExpression(lengthPath, exprL2.expression);
+            }
+        }
     }
     else if (Midplane.getValue()) {
         Midplane.setValue(false);

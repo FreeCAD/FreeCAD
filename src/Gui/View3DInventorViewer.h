@@ -31,6 +31,7 @@
 
 #include <QCursor>
 #include <QImage>
+#include <QLabel>
 
 #include <Inventor/SbRotation.h>
 #include <Inventor/nodes/SoEnvironment.h>
@@ -65,6 +66,7 @@ class QSurfaceFormat;
 class SoTranslation;
 class SoTransform;
 class SoText2;
+class SoAnnotation;
 
 class SoSeparator;
 class SoShapeHints;
@@ -132,6 +134,15 @@ public:
         DisallowZooming = 32, /**< switch off the zooming. */
     };
     //@}
+
+    /// Declares why the viewer scene is being traversed so screen-only
+    /// decorations can be excluded from capture and export paths.
+    enum class RenderIntent
+    {
+        LiveInteractive,
+        RasterCapture,
+        VectorExport
+    };
 
     /** @name Render mode
      */
@@ -212,7 +223,14 @@ public:
     RenderType getRenderType() const;
     void renderToFramebuffer(QOpenGLFramebufferObject*);
     QImage grabFramebuffer();
-    void imageFromFramebuffer(int width, int height, int samples, const QColor& bgcolor, QImage& img);
+    void imageFromFramebuffer(
+        int width,
+        int height,
+        int samples,
+        const QColor& bgcolor,
+        QImage& img,
+        RenderIntent intent = RenderIntent::LiveInteractive
+    );
 
     void setViewing(bool enable) override;
     virtual void setCursorEnabled(bool enable);
@@ -275,8 +293,20 @@ public:
      * Creates an image with width \a width and height \a height of the current scene graph
      * using a multi-sampling of \a sample and exports the rendered scenegraph to an image.
      */
-    void savePicture(int width, int height, int sample, const QColor& bg, QImage& img) const;
-    void saveGraphic(int pagesize, const QColor&, SoVectorizeAction* va) const;
+    void savePicture(
+        int width,
+        int height,
+        int sample,
+        const QColor& bg,
+        QImage& img,
+        RenderIntent intent = RenderIntent::LiveInteractive
+    ) const;
+    void saveGraphic(
+        int pagesize,
+        const QColor&,
+        SoVectorizeAction* va,
+        RenderIntent intent = RenderIntent::VectorExport
+    ) const;
     //@}
     /**
      * Writes the current scenegraph to an Inventor file, either in ascii or binary.
@@ -443,6 +473,7 @@ public:
         bool moveToCenter = false
     ) const;
     void setCameraType(SoType type) override;
+    bool setCamera(const char* pCamera);
     void moveCameraTo(const SbRotation& orientation, const SbVec3f& position, int duration = -1);
     /**
      * Zooms the viewport to the size of the bounding box.
@@ -543,10 +574,19 @@ private:
     static void interactionLoggerCB(void* ud, SoAction* action);
 
 private:
+    class ScopedRenderIntent;
     static void selectCB(void* viewer, SoPath* path);
+    // A small intent stack lets nested export/capture code paths temporarily
+    // override the default live-view traversal behavior.
+    void pushRenderIntentOverride(RenderIntent intent) const;
+    void popRenderIntentOverride() const;
+    RenderIntent currentRenderIntent() const;
+    static bool shouldRenderDecorations(RenderIntent intent);
+
     static void deselectCB(void* viewer, SoPath* path);
     static SoPath* pickFilterCB(void* viewer, const SoPickedPoint* pp);
     void initialize();
+    void syncNaviCubeVisibility();
     void drawAxisCross();
     static void drawArrow();
     static void drawSingleBackground(const QColor&);
@@ -556,6 +596,7 @@ private:
 
 private:
     NaviCube* naviCube;
+    SoAnnotation* naviCubeAnnotation;
     std::set<ViewProvider*> _ViewProviderSet;
     std::map<SoSeparator*, ViewProvider*> _ViewProviderMap;
     std::list<GLGraphicsItem*> graphicsItems;
@@ -563,6 +604,9 @@ private:
     SoFCBackgroundGradient* pcBackGround;
     SoSeparator* backgroundroot;
     SoSeparator* foregroundroot;
+    // Dedicated root for viewer-owned HUD/decorations that should not be
+    // treated as model content during capture/export traversals.
+    SoSeparator* decorationroot;
 
     SoDirectionalLight* backlight;
     SoDirectionalLight* fillLight;
@@ -603,8 +647,13 @@ private:
 
     // stuff needed to draw the fps counter
     bool fpsEnabled;
+    QLabel* fpsCounter = nullptr;
+    unsigned long previousAxisLetterColor = 0;
     bool vboEnabled;
     bool naviCubeEnabled;
+    // Screen-only viewer decorations such as the navicube are rendered only
+    // when the active render intent allows them.
+    mutable std::vector<RenderIntent> renderIntentOverrideStack;
 
     Base::Color m_xColor;
     Base::Color m_yColor;

@@ -66,13 +66,10 @@ else:
     # \endcond
 
 
-def addToComponent(compobject, addobject, mod=None):
-    """Add an object to a component's properties.
+def addToComponent(compobject, addobject, prop):
+    """Add an object to a component's property.
 
-    Does not run if the addobject already exists in the component's properties.
-    Adds the object to the first property found of Base, Group, or Hosts.
-
-    If mod is provided, adds the object to that property instead.
+    Does not run if the addobject already exists in the component's OutListRecursive.
 
     Parameters
     ----------
@@ -80,52 +77,31 @@ def addToComponent(compobject, addobject, mod=None):
         The component object to add the object to.
     addobject: <App::DocumentObject>
         The object to add to the component.
-    mod: str, optional
+    prop: str
         The property to add the object to.
     """
 
     import Draft
 
+    if not hasattr(compobject, prop):
+        return
     if compobject == addobject:
         return
-    # first check zis already there
-    found = False
-    attribs = ["Additions", "Objects", "Components", "Subtractions", "Base", "Group", "Hosts"]
-    for a in attribs:
-        if hasattr(compobject, a):
-            if a == "Base":
-                if addobject == getattr(compobject, a):
-                    found = True
-            else:
-                if addobject in getattr(compobject, a):
-                    found = True
-    if not found:
-        if mod:
-            if hasattr(compobject, mod):
-                if mod == "Base":
-                    setattr(compobject, mod, addobject)
-                    addobject.ViewObject.hide()
-                elif mod == "Axes":
-                    if Draft.getType(addobject) == "Axis":
-                        l = getattr(compobject, mod)
-                        l.append(addobject)
-                        setattr(compobject, mod, l)
-                else:
-                    l = getattr(compobject, mod)
-                    l.append(addobject)
-                    setattr(compobject, mod, l)
-                    if mod != "Objects":
-                        addobject.ViewObject.hide()
-                        if Draft.getType(compobject) == "PanelSheet":
-                            addobject.Placement.move(compobject.Placement.Base.negative())
-        else:
-            for a in attribs[:3]:
-                if hasattr(compobject, a):
-                    l = getattr(compobject, a)
-                    l.append(addobject)
-                    setattr(compobject, a, l)
-                    addobject.ViewObject.hide()
-                    break
+    if addobject in compobject.OutListRecursive:
+        return
+
+    if prop == "Base":
+        setattr(compobject, prop, addobject)
+        addobject.Visibility = False
+    elif prop == "Axes":
+        if Draft.getType(addobject) == "Axis":
+            setattr(compobject, prop, getattr(compobject, prop) + [addobject])
+    else:
+        setattr(compobject, prop, getattr(compobject, prop) + [addobject])
+        if prop not in ("Hosts", "Objects"):
+            addobject.Visibility = False
+            if Draft.getType(compobject) == "PanelSheet":
+                addobject.Placement.move(compobject.Placement.Base.negative())
 
 
 def removeFromComponent(compobject, subobject):
@@ -283,12 +259,24 @@ class Component(ArchIFC.IfcProduct):
             )
         if not "Material" in pl:
             obj.addProperty(
-                "App::PropertyLink",
+                "App::PropertyLinkGlobal",
                 "Material",
                 "Component",
                 QT_TRANSLATE_NOOP("App::Property", "A material for this object"),
                 locked=True,
             )
+        elif obj.getTypeIdOfProperty("Material") == "App::PropertyLink":
+            mat = obj.Material
+            obj.setPropertyStatus("Material", "-LockDynamic")
+            obj.removeProperty("Material")
+            obj.addProperty(
+                "App::PropertyLinkGlobal",
+                "Material",
+                "Component",
+                QT_TRANSLATE_NOOP("App::Property", "A material for this object"),
+                locked=True,
+            )
+            obj.Material = mat
         if "BaseMaterial" in pl:
             obj.Material = obj.BaseMaterial
             obj.removeProperty("BaseMaterial")
@@ -399,13 +387,12 @@ class Component(ArchIFC.IfcProduct):
 
         if self.clone(obj):
             return
-        if self.ensureBase(obj) is False:
-            # This will fall through if the Component object has no base, allowing the base shapeto
-            # be cleared
+        if getattr(obj, "Base", None) is None:
+            # Do not modify Arch_Components without a Base object.
             return
 
-        # Only proceed if a Base object is linked and contains valid geometry.
-        if obj.Base and hasattr(obj.Base, "Shape") and not obj.Base.Shape.isNull():
+        if hasattr(obj.Base, "Shape") and not obj.Base.Shape.isNull():
+            # The Base object contains valid geometry.
             # Create a standalone shape as a deep copy of the base geometry, to avoid modifying
             # the original source.
             base_shape = Part.Shape(obj.Base.Shape)
@@ -422,8 +409,7 @@ class Component(ArchIFC.IfcProduct):
             final_shape = self.processSubShapes(obj, base_shape, obj.Placement)
             self.applyShape(obj, final_shape, obj.Placement, allownosolid=True)
         else:
-            # Clear the shape if the base has been removed. This avoids leaving a stale shape that
-            # is not updated when the base is removed.
+            # Clear the shape to avoid leaving a stale shape.
             obj.Shape = Part.Shape()
 
     def dumps(self):
@@ -2350,23 +2336,21 @@ class ComponentTaskPanel:
     def addElement(self):
         """This method is run as a callback when the user selects the add button.
 
-        Get the object selected in the 3D view, and get the attribute folder
+        Get the objects selected in the 3D view, and get the attribute folder
         selected in the tree widget.
 
-        Add the object selected in the 3D view to the attribute associated with
+        Add the objects selected in the 3D view to the attribute associated with
         the selected folder, by using function addToComponent().
         """
-
         it = self.tree.currentItem()
         if it:
-            mod = None
-            for a in self.attribs:
-                if it.text(0) == getattr(self, "tree" + a).text(0):
-                    mod = a
-            for o in FreeCADGui.Selection.getSelection():
-                addToComponent(self.obj, o, mod)
-            self.obj.recompute()
-        self.update()
+            for prop in self.attribs:
+                if it.text(0) == getattr(self, "tree" + prop).text(0):
+                    for o in FreeCADGui.Selection.getSelection():
+                        addToComponent(self.obj, o, prop)
+                    self.obj.recompute()
+                    self.update()
+                    break
 
     def removeElement(self):
         """

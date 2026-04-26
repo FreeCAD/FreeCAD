@@ -628,8 +628,9 @@ TopoShape ProfileBased::getTopoShapeSupportFace() const
     if (!sketch) {
         shape = getTopoShapeVerifiedFace(true);
     }
-    else if (sketch->MapMode.getValue() == Attacher::mmFlatFace
-             && sketch->AttachmentSupport.getValue()) {
+    else if (
+        sketch->MapMode.getValue() == Attacher::mmFlatFace && sketch->AttachmentSupport.getValue()
+    ) {
         const auto& Support = sketch->AttachmentSupport;
         App::DocumentObject* ref = Support.getValue();
         shape = Part::Feature::getTopoShape(
@@ -908,6 +909,47 @@ void ProfileBased::getUpToFace(
     BRepExtrema_DistShapeShape distSS(sketchshape.getShape(), face);
     if (distSS.Value() < Precision::Confusion()) {
         throw Base::ValueError("SketchBased: Up to face: Must not intersect sketch!");
+    }
+}
+
+void ProfileBased::getUpToFace(
+    TopoShape& upToFace,
+    const TopoShape& support,
+    const TopoShape& sketchshape,
+    const std::string& method,
+    const gp_Ax1& axis
+)
+{
+    if ((method == "UpToLast") || (method == "UpToFirst")) {
+        std::vector<Part::cutTopoShapeFaces> cfaces
+            = Part::findAllFacesCutBy(support, sketchshape, axis);
+        if (cfaces.empty()) {
+            throw Base::ValueError("SketchBased: No faces found in this direction");
+        }
+
+        // Find nearest/furthest face
+        std::sort(cfaces.begin(), cfaces.end(), [](const auto& it1, const auto& it2) {
+            return it1.distsq < it2.distsq;
+        });
+        upToFace = (method == "UpToLast" ? cfaces.back().face : cfaces.front().face);
+    }
+
+    if (upToFace.shapeType(true) != TopAbs_FACE) {
+        if (!upToFace.hasSubShape(TopAbs_FACE)) {
+            throw Base::ValueError("SketchBased: Up to face: No face found");
+        }
+        upToFace = upToFace.getSubTopoShape(TopAbs_FACE, 1);
+    }
+
+    TopoDS_Face face = TopoDS::Face(upToFace.getShape());
+
+    // Check that the upToFace does not intersect the sketch face and
+    // is not normal to the rotation axis
+    BRepAdaptor_Surface adapt(face);
+    if (adapt.GetType() == GeomAbs_Plane) {
+        if (axis.Direction().IsParallel(adapt.Plane().Axis().Direction(), Precision::Confusion())) {
+            throw Base::ValueError("SketchBased: Up to face: Must not be normal to rotation axis!");
+        }
     }
 }
 

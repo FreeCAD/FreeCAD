@@ -216,8 +216,9 @@ public:
             EditCurve.resize(2);
             Mode = SelectMode::Second;
         }
-        else if (Mode == SelectMode::Second
-                 && (centerPoint - onSketchPos).Length() > Precision::Confusion()) {
+        else if (
+            Mode == SelectMode::Second && (centerPoint - onSketchPos).Length() > Precision::Confusion()
+        ) {
             EditCurve[1] = onSketchPos;
             axisPoint = onSketchPos;
             EditCurve.resize(33);

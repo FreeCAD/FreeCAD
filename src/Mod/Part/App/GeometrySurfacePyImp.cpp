@@ -322,7 +322,9 @@ PyObject* GeometrySurfacePy::projectPoint(PyObject* args, PyObject* kwds) const
     PyObject* v;
     const char* meth = "NearestPoint";
     static const std::array<const char*, 3> kwlist {"Point", "Method", nullptr};
-    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!|s", kwlist, &Base::VectorPy::Type, &v, &meth)) {
+    if (
+        !Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!|s", kwlist, &Base::VectorPy::Type, &v, &meth)
+    ) {
         return nullptr;
     }
 
@@ -940,9 +942,8 @@ PyObject* GeometrySurfacePy::intersect(PyObject* args) const
 
 Py::Object GeometrySurfacePy::getRotation() const
 {
-    Handle(Geom_ElementarySurface) s = Handle(Geom_ElementarySurface)::DownCast(
-        getGeometryPtr()->handle()
-    );
+    Handle(Geom_ElementarySurface)
+        s = Handle(Geom_ElementarySurface)::DownCast(getGeometryPtr()->handle());
     if (!s) {
         return Py::Object();
     }

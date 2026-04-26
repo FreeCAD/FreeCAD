@@ -11,7 +11,7 @@
     <message>
       <location filename="../../Command.cpp" line="277"/>
       <source>Cross-Sections</source>
-      <translation type="unfinished">Cross-Sections</translation>
+      <translation>Secciones Transversales</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="278"/>
@@ -197,7 +197,7 @@
     <message>
       <location filename="../../CurveOnMesh.cpp" line="615"/>
       <source>Wrong mesh selected</source>
-      <translation type="unfinished">Wrong mesh selected</translation>
+      <translation>Seleccionada malla equivocada</translation>
     </message>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="655"/>
@@ -590,12 +590,12 @@ Select a different shape.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="90"/>
       <source>Unwrap Face</source>
-      <translation type="unfinished">Unwrap Face</translation>
+      <translation>Desenvolver cara</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="93"/>
       <source>Finds a flat representation of a face</source>
-      <translation type="unfinished">Finds a flat representation of a face</translation>
+      <translation>Encuentra una representación plana de una cara</translation>
     </message>
   </context>
 </TS>

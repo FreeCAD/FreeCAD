@@ -21,6 +21,8 @@
  ***************************************************************************/
 
 #include <Inventor/nodes/SoCamera.h>
+#include <algorithm>
+
 #include <QApplication>
 #include <QCheckBox>
 #include <QClipboard>
@@ -61,6 +63,7 @@
 #include "Placement.h"
 #include "Tools.h"
 #include "Transform.h"
+#include "Tree.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
 #include "ViewProvider.h"
@@ -96,57 +99,83 @@ void StdCmdOpen::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     // fill the list of registered endings
-    QString formatList;
-    const char* supported = QT_TR_NOOP("Supported formats");
-    const char* allFiles = QT_TR_NOOP("All files (*.*)");
-    formatList = QObject::tr(supported);
-    formatList += QLatin1String(" (");
+    FileDialog::FilterList formatList;
 
-    std::vector<std::string> filetypes = App::GetApplication().getImportTypes();
-    // Make sure FCStd is the very first fileformat
-    auto it = std::ranges::find(filetypes, "FCStd");
-    if (it != filetypes.end()) {
-        filetypes.erase(it);
-        filetypes.insert(filetypes.begin(), "FCStd");
+    FileDialog::Filter allSupportedFormats {QObject::tr("Supported formats"), {}};
+    // Cram all formats FreeCAD can import under one label
+    const auto filetypes = App::GetApplication().getImportTypes();
+    for (const auto& type : filetypes) {
+        allSupportedFormats.patterns.append(QStringLiteral("*.") + QString::fromStdString(type));
     }
-    for (it = filetypes.begin(); it != filetypes.end(); ++it) {
-        formatList += QLatin1String(" *.");
-        formatList += QLatin1String(it->c_str());
-    }
+    allSupportedFormats.patterns.append("*.FCBak");
+    formatList.append(allSupportedFormats);
 
-    formatList += QLatin1String(");;");
-
-    std::map<std::string, std::string> FilterList = App::GetApplication().getImportFilters();
-    std::map<std::string, std::string>::iterator jt;
-    // Make sure the format name for FCStd is the very first in the list
-    for (jt = FilterList.begin(); jt != FilterList.end(); ++jt) {
-        if (jt->first.find("*.FCStd") != std::string::npos) {
-            formatList += QLatin1String(jt->first.c_str());
-            formatList += QLatin1String(";;");
-            FilterList.erase(jt);
+    const auto importFilters = App::GetApplication().getImportFilters();
+    // Make sure FCStd is the second entry in the format list
+    auto fcstdIt = importFilters.cend();
+    for (auto it = importFilters.cbegin(); it != importFilters.cend(); ++it) {
+        if (const auto fc = it->first.find("*.FCStd"); fc != std::string::npos) {
+            fcstdIt = it;
+            QString fcstdFilter = QString::fromStdString(it->first);
+            if (!fcstdFilter.contains(QStringLiteral("*.FCBak"), Qt::CaseInsensitive)) {
+                fcstdFilter.replace(")", QStringLiteral(" *.FCBak)"));
+            }
+            formatList.append(FileDialog::Filter::fromFilterString(fcstdFilter));
             break;
         }
     }
-    for (jt = FilterList.begin(); jt != FilterList.end(); ++jt) {
-        formatList += QLatin1String(jt->first.c_str());
-        formatList += QLatin1String(";;");
+    for (auto it = importFilters.cbegin(); it != importFilters.cend(); ++it) {
+        if (it != fcstdIt) {
+            formatList.append(FileDialog::Filter::fromFilterString(QString::fromStdString(it->first)));
+        }
     }
-    formatList += QObject::tr(allFiles);
 
-    QString selectedFilter;
+    formatList.append(FileDialog::Filter::AllFiles());
+
+    qsizetype selectedFilterIndex = -1;
     QStringList fileList = FileDialog::getOpenFileNames(
         getMainWindow(),
         QObject::tr("Open Document"),
         QString(),
         formatList,
-        &selectedFilter
+        &selectedFilterIndex
+    );
+    if (fileList.isEmpty()) {
+        return;
+    }
+
+    // Open backup files as native documents (same data format as FCStd).
+    for (const QString& file : fileList) {
+        if (!file.endsWith(QStringLiteral(".FCBak"), Qt::CaseInsensitive)) {
+            continue;
+        }
+
+        getGuiApplication()->setStatus(Gui::Application::UserInitiatedOpenDocument, true);
+        getGuiApplication()->open(file.toUtf8(), "FreeCAD");
+        getGuiApplication()->setStatus(Gui::Application::UserInitiatedOpenDocument, false);
+
+        App::Document* doc = App::GetApplication().getActiveDocument();
+        getGuiApplication()->checkPartialRestore(doc);
+        getGuiApplication()->checkRestoreError(doc);
+    }
+
+    fileList.erase(
+        std::remove_if(
+            fileList.begin(),
+            fileList.end(),
+            [](const QString& file) {
+                return file.endsWith(QStringLiteral(".FCBak"), Qt::CaseInsensitive);
+            }
+        ),
+        fileList.end()
     );
     if (fileList.isEmpty()) {
         return;
     }
 
     // load the files with the associated modules
-    SelectModule::Dict dict = SelectModule::importHandler(fileList, selectedFilter);
+    SelectModule::Dict dict
+        = SelectModule::importHandler(fileList, formatList[selectedFilterIndex].toFilterString());
     if (dict.isEmpty()) {
         QMessageBox::critical(
             getMainWindow(),
@@ -196,51 +225,52 @@ void StdCmdImport::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     // fill the list of registered endings
-    QString formatList;
-    const char* supported = QT_TR_NOOP("Supported formats");
-    const char* allFiles = QT_TR_NOOP("All files (*.*)");
-    formatList = QObject::tr(supported);
-    formatList += QLatin1String(" (");
+    FileDialog::FilterList formatList;
 
-    std::vector<std::string> filetypes = App::GetApplication().getImportTypes();
-    std::vector<std::string>::const_iterator it;
-    for (it = filetypes.begin(); it != filetypes.end(); ++it) {
-        if (*it != "FCStd") {
-            // ignore the project file format
-            formatList += QLatin1String(" *.");
-            formatList += QLatin1String(it->c_str());
+    FileDialog::Filter allSupportedFormats {QObject::tr("Supported formats"), {}};
+    const auto filetypes = App::GetApplication().getImportTypes();
+    for (const auto& type : filetypes) {
+        if (type != "FCStd") {
+            allSupportedFormats.patterns.append(QStringLiteral("*.") + QString::fromStdString(type));
+        }
+    }
+    formatList.append(allSupportedFormats);
+
+    const auto importFilters = App::GetApplication().getImportFilters();
+    for (auto it = importFilters.cbegin(); it != importFilters.cend(); ++it) {
+        if (it->first.find("*.FCStd") == std::string::npos) {
+            formatList.append(FileDialog::Filter::fromFilterString(QString::fromStdString(it->first)));
         }
     }
 
-    formatList += QLatin1String(");;");
-
-    std::map<std::string, std::string> FilterList = App::GetApplication().getImportFilters();
-    std::map<std::string, std::string>::const_iterator jt;
-    for (jt = FilterList.begin(); jt != FilterList.end(); ++jt) {
-        // ignore the project file format
-        if (jt->first.find("(*.FCStd)") == std::string::npos) {
-            formatList += QLatin1String(jt->first.c_str());
-            formatList += QLatin1String(";;");
-        }
-    }
-    formatList += QObject::tr(allFiles);
+    formatList.append(FileDialog::Filter::AllFiles());
 
     Base::Reference<ParameterGrp> hPath = App::GetApplication()
                                               .GetUserParameter()
                                               .GetGroup("BaseApp")
                                               ->GetGroup("Preferences")
                                               ->GetGroup("General");
-    QString selectedFilter = QString::fromStdString(hPath->GetASCII("FileImportFilter"));
+    const auto lastImportFilterName = QString::fromStdString(hPath->GetASCII("FileImportFilter"));
+    qsizetype selectedFilterIndex = -1;
+    for (qsizetype i = 0; i < formatList.size(); ++i) {
+        if (formatList[i].name == lastImportFilterName) {
+            selectedFilterIndex = i;
+            break;
+        }
+    }
+
     QStringList fileList = FileDialog::getOpenFileNames(
         getMainWindow(),
         QObject::tr("Import File"),
         QString(),
         formatList,
-        &selectedFilter
+        &selectedFilterIndex
     );
     if (!fileList.isEmpty()) {
-        hPath->SetASCII("FileImportFilter", selectedFilter.toLatin1().constData());
-        SelectModule::Dict dict = SelectModule::importHandler(fileList, selectedFilter);
+        const auto& selectedFilter = formatList[selectedFilterIndex];
+        hPath->SetASCII("FileImportFilter", selectedFilter.name.toLatin1().constData());
+        SelectModule::Dict dict
+            = SelectModule::importHandler(fileList, selectedFilter.toFilterString());
 
         bool emptyDoc = (getActiveGuiDocument()->getDocument()->countObjects() == 0);
         // load the files with the associated modules
@@ -446,27 +476,30 @@ void StdCmdExport::activated(int iMsg)
     bool filenameWasGenerated = false;
 
     // fill the list of registered suffixes
-    QStringList filterList;
+    FileDialog::FilterList filterList;
     std::map<std::string, std::string> filterMap = App::GetApplication().getExportFilters();
     for (const auto& filter : filterMap) {
         // ignore the project file format
-        if (filter.first.find("(*.FCStd)") == std::string::npos) {
-            filterList << QString::fromStdString(filter.first);
+        if (filter.first.find("*.FCStd") == std::string::npos) {
+            filterList.append(
+                FileDialog::Filter::fromFilterString(QString::fromStdString(filter.first))
+            );
         }
     }
-    QString formatList = filterList.join(QLatin1String(";;"));
     Base::Reference<ParameterGrp> hPath = App::GetApplication()
                                               .GetUserParameter()
                                               .GetGroup("BaseApp")
                                               ->GetGroup("Preferences")
                                               ->GetGroup("General");
-    QString selectedFilter;
-
-    if (!exportInfo.filter.empty()) {
-        selectedFilter = QString::fromStdString(exportInfo.filter);
-    }
-    else {
-        selectedFilter = QString::fromStdString(hPath->GetASCII("FileExportFilter"));
+    const auto lastExportFilterName = QString::fromStdString(
+        !exportInfo.filterName.empty() ? exportInfo.filterName : hPath->GetASCII("FileExportFilter")
+    );
+    qsizetype selectedFilterIndex = -1;
+    for (qsizetype i = 0; i < filterList.size(); ++i) {
+        if (filterList[i].name == lastExportFilterName) {
+            selectedFilterIndex = i;
+            break;
+        }
     }
 
     // Create a default filename for the export
@@ -517,13 +550,15 @@ void StdCmdExport::activated(int iMsg)
         getMainWindow(),
         QObject::tr("Export File"),
         defaultFilename,
-        formatList,
-        &selectedFilter
+        filterList,
+        &selectedFilterIndex
     );
     if (!filename.isEmpty()) {
-        hPath->SetASCII("FileExportFilter", selectedFilter.toLatin1().constData());
+        const auto& selectedFilter = filterList[selectedFilterIndex];
+        hPath->SetASCII("FileExportFilter", selectedFilter.name.toLatin1().constData());
 
-        SelectModule::Dict dict = SelectModule::exportHandler(filename, selectedFilter);
+        SelectModule::Dict dict
+            = SelectModule::exportHandler(filename, selectedFilter.toFilterString());
         // export the files with the associated modules
         for (SelectModule::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
             getGuiApplication()->exportTo(it.key().toUtf8(), doc->getName(), it.value().toLatin1());
@@ -542,7 +577,7 @@ void StdCmdExport::activated(int iMsg)
 
         exportInfo.filename = filename.toStdString();
         exportInfo.object = toExport;
-        exportInfo.filter = selectedFilter.toStdString();
+        exportInfo.filterName = selectedFilter.name.toStdString();
         exportInfo.generatedName = filenameWasGenerated;
 
         doc->setExportInfo(exportInfo);
@@ -581,9 +616,9 @@ void StdCmdMergeProjects::activated(int iMsg)
     QString exe = qApp->applicationName();
     QString project = FileDialog::getOpenFileName(
         Gui::getMainWindow(),
-        QString::fromUtf8(QT_TR_NOOP("Merge Document")),
+        QObject::tr("Merge Document"),
         FileDialog::getWorkingDirectory(),
-        QString::fromUtf8(QT_TR_NOOP("%1 document (*.FCStd)")).arg(exe)
+        FileDialog::FilterList {{QObject::tr("%1 document").arg(exe), {"*.FCStd"}}}
     );
     if (!project.isEmpty()) {
         FileDialog::setWorkingDirectory(project);
@@ -593,8 +628,8 @@ void StdCmdMergeProjects::activated(int iMsg)
         if (proj == info) {
             QMessageBox::critical(
                 Gui::getMainWindow(),
-                QString::fromUtf8(QT_TR_NOOP("Merge Document")),
-                QString::fromUtf8(QT_TR_NOOP("Cannot merge document with itself."))
+                QObject::tr("Merge Document"),
+                QObject::tr("Cannot merge document with itself.")
             );
             return;
         }
@@ -670,12 +705,11 @@ void StdCmdExportDependencyGraph::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     App::Document* doc = App::GetApplication().getActiveDocument();
-    QString format = QStringLiteral("%1 (*.gv)").arg(Gui::GraphvizView::tr("Graphviz format"));
     QString fn = Gui::FileDialog::getSaveFileName(
         Gui::getMainWindow(),
         Gui::GraphvizView::tr("Export Graph"),
         QString(),
-        format
+        FileDialog::FilterList {{QStringLiteral("Graphviz"), {"*.gv"}}}
     );
     if (!fn.isEmpty()) {
         QFile file(fn);
@@ -750,6 +784,15 @@ StdCmdSave::StdCmdSave()
 void StdCmdSave::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+
+    if (App::Document* doc = App::GetApplication().getActiveDocument()) {
+        Base::FileInfo filename(doc->FileName.getValue());
+        if (filename.hasExtension("fcbak")) {
+            Gui::Command::doCommand(Gui::Command::Gui, "Gui.runCommand('Std_SaveAs')");
+            return;
+        }
+    }
+
     doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"Save\")");
 }
 
@@ -1409,6 +1452,12 @@ void StdCmdSelectAll::activated(int iMsg)
         }
     }
 
+    // try to use TreeWidget's own select all because it handles the grouping stuff
+    if (auto* tree = TreeWidget::instance()) {
+        tree->selectAll();
+        return;
+    }
+
     // fallback to doc level select
     SelectionSingleton& rSel = Selection();
     App::Document* doc = App::GetApplication().getActiveDocument();
@@ -1495,6 +1544,7 @@ void StdCmdDelete::activated(int iMsg)
             bool more = false;
             auto sels = Selection().getSelectionEx();
             bool autoDeletion = true;
+            bool forceDeletion = false;
             for (auto& sel : sels) {
                 auto obj = sel.getObject();
                 if (!obj) {
@@ -1558,6 +1608,7 @@ void StdCmdDelete::activated(int iMsg)
                 );
                 if (ret == QMessageBox::Yes) {
                     autoDeletion = true;
+                    forceDeletion = true;
                 }
             }
             if (autoDeletion) {
@@ -1567,7 +1618,8 @@ void StdCmdDelete::activated(int iMsg)
                     if (vp) {
                         manageDocCommand(obj->getDocument());
                         // ask the ViewProvider if it wants to do some clean up
-                        if (vp->onDelete(sel.getSubNames())) {
+                        // skip if user explicitly confirmed deletion of objects with dependencies
+                        if (forceDeletion || vp->onDelete(sel.getSubNames())) {
                             docs.insert(obj->getDocument());
                             FCMD_OBJ_DOC_CMD(obj, "removeObject('" << obj->getNameInDocument() << "')");
                         }
@@ -1652,6 +1704,68 @@ StdCmdRefresh::StdCmdRefresh()
     }
 }
 
+namespace
+{
+
+bool shouldProceedAfterDependencyCycle()
+{
+    return QMessageBox::warning(
+               getMainWindow(),
+               QObject::tr("Dependency error"),
+               qApp->translate(
+                   "Std_Refresh",
+                   "The document contains dependency cycles.\n"
+                   "Check the report view for more details.\n\n"
+                   "Proceed?"
+               ),
+               QMessageBox::Yes,
+               QMessageBox::No
+           )
+        == QMessageBox::Yes;
+}
+
+void handleDocumentRecomputeResult(const std::string& documentName, App::RecomputeFailure failure)
+{
+    if (failure == App::RecomputeFailure::None) {
+        return;
+    }
+
+    if (failure != App::RecomputeFailure::DependencyCycle) {
+        return;
+    }
+
+    App::Document* document = App::GetApplication().getDocument(documentName.c_str());
+    if (!document) {
+        return;
+    }
+
+    if (!shouldProceedAfterDependencyCycle()) {
+        return;
+    }
+
+    // If the user wants to proceed, enqueue another recompute request without
+    // the cycle-check option so the document recomputes like the legacy path.
+    App::RecomputeRequest newRequest = App::RecomputeRequest::fromDocument(*document, /*force=*/true);
+    App::GetApplication().queueRecomputeRequest(newRequest);
+}
+
+void refreshDocumentSynchronously(App::Document& document)
+{
+    try {
+        document.recompute({}, true, nullptr, App::Document::DepNoCycle);
+    }
+    catch (Base::BadGraphError&) {
+        if (shouldProceedAfterDependencyCycle()) {
+            document.recompute({}, true);
+        }
+    }
+    catch (Base::Exception& exception) {
+        exception.reportException();
+    }
+}
+
+}  // namespace
+
 void StdCmdRefresh::activated([[maybe_unused]] int iMsg)
 {
     if (!getActiveGuiDocument()) {
@@ -1659,28 +1773,29 @@ void StdCmdRefresh::activated([[maybe_unused]] int iMsg)
     }
 
     App::AutoTransaction trans((eType & NoTransaction) ? 0 : openActiveDocumentCommand("Recompute"));
+    auto doc = getActiveGuiDocument()->getDocument();
 
-    try {
-        doCommand(Doc, "App.activeDocument().recompute(None,True,True)");
+    App::RecomputeRequest request
+        = App::RecomputeRequest::fromDocument(*doc, true, App::Document::DepNoCycle);
+
+    if (!App::GetApplication().isAsyncRecomputeEnabled()
+        || !App::GetApplication().canRecomputeRequestOnWorker(request)) {
+        refreshDocumentSynchronously(*doc);
+        return;
     }
-    catch (Base::Exception& /*e*/) {
-        auto ret = QMessageBox::warning(
-            getMainWindow(),
-            QObject::tr("Dependency Error"),
-            qApp->translate(
-                "Std_Refresh",
-                "The document contains dependency cycles.\n"
-                "Check the report view for more details.\n\n"
-                "Proceed?"
-            ),
-            QMessageBox::Yes,
-            QMessageBox::No
+
+    request.callback = [](App::RecomputeRequest& request, App::RecomputeResult& result) {
+        // Handle the result in the UI thread.
+        QMetaObject::invokeMethod(
+            qApp,
+            [documentName = request.documentName, failure = result.failure]() {
+                handleDocumentRecomputeResult(documentName, failure);
+            },
+            Qt::QueuedConnection
         );
-        if (ret == QMessageBox::No) {
-            return;
-        }
-        doCommand(Doc, "App.activeDocument().recompute(None,True)");
-    }
+    };
+
+    App::GetApplication().queueRecomputeRequest(request);
 }
 
 bool StdCmdRefresh::isActive()
@@ -1768,9 +1883,14 @@ void StdCmdPlacement::activated(int iMsg)
 bool StdCmdPlacement::isActive()
 {
     std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(
-        App::GeoFeature::getClassTypeId()
+        App::GeoFeature::getClassTypeId(),
+        nullptr,
+        ResolveMode::FollowLink
     );
-    return !(sel.empty() || std::ranges::any_of(sel, [](auto obj) { return obj->isFreezed(); }));
+    return !(sel.empty() || std::ranges::any_of(sel, [](auto obj) {
+                 auto* prop = obj->getPlacementProperty();
+                 return obj->isFreezed() || !prop || prop->isReadOnly();
+             }));
 }
 
 //===========================================================================
@@ -1796,7 +1916,9 @@ void StdCmdTransformManip::activated(int iMsg)
         getActiveGuiDocument()->resetEdit();
     }
     std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(
-        App::GeoFeature::getClassTypeId()
+        App::GeoFeature::getClassTypeId(),
+        nullptr,
+        ResolveMode::FollowLink
     );
     Gui::ViewProvider* vp = Application::Instance->getViewProvider(sel.front());
     // FIXME: Need a way to force 'Transform' edit mode
@@ -1809,9 +1931,14 @@ void StdCmdTransformManip::activated(int iMsg)
 bool StdCmdTransformManip::isActive()
 {
     std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(
-        App::GeoFeature::getClassTypeId()
+        App::GeoFeature::getClassTypeId(),
+        nullptr,
+        ResolveMode::FollowLink
     );
-    return (sel.size() == 1 && !sel.front()->isFreezed());
+    return (
+        sel.size() == 1 && !sel.front()->isFreezed() && sel.front()->getPlacementProperty()
+        && !sel.front()->getPlacementProperty()->isReadOnly()
+    );
 }
 
 //===========================================================================

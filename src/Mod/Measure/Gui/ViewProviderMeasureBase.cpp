@@ -24,6 +24,8 @@
 #include "Gui/Application.h"
 #include "Gui/MDIView.h"
 
+#include <functional>
+
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/nodes/SoAnnotation.h>
 #include <Inventor/nodes/SoBaseColor.h>
@@ -39,9 +41,10 @@
 #include <Inventor/engines/SoConcatenate.h>
 #include <Inventor/SbViewportRegion.h>
 
-
+#include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
+#include <Base/UnitsApi.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
 #include <Gui/ViewParams.h>
@@ -105,6 +108,27 @@ ViewProviderMeasureBase::ViewProviderMeasureBase()
         App::Prop_None,
         "Size of measurement text"
     );
+    ADD_PROPERTY_TYPE(
+        ArrowHeight,
+        (Preferences::defaultArrowHeight()),
+        agroup,
+        App::Prop_None,
+        "Height of arrow indicators"
+    );
+    ADD_PROPERTY_TYPE(
+        ArrowRadius,
+        (Preferences::defaultArrowRadius()),
+        agroup,
+        App::Prop_None,
+        "Radius of arrow indicators"
+    );
+    ADD_PROPERTY_TYPE(
+        LabelPosition,
+        (Base::Vector3d(0, 0, 0)),
+        agroup,
+        App::Prop_None,
+        "Position of measurement label"
+    );
     // NOLINTEND
 
     pGlobalSeparator = new SoSeparator();
@@ -130,14 +154,15 @@ ViewProviderMeasureBase::ViewProviderMeasureBase()
     SoSeparator* dragSeparator = new SoSeparator();
     pDragger = new SoTranslate2Dragger();
     pDragger->ref();
-    pDraggerOrientation = new SoTransform();
-    pDraggerOrientation->ref();
-    dragSeparator->addChild(pDraggerOrientation);
+    pDraggerFrame = new SoTransform();
+    pDraggerFrame->ref();
+    dragSeparator->addChild(pDraggerFrame);
     dragSeparator->addChild(pDragger);
 
     // Transform drag location by dragger local orientation and connect to labelTranslation
     auto matrixEngine = new SoComposeMatrix();
-    matrixEngine->rotation.connectFrom(&pDraggerOrientation->rotation);
+    matrixEngine->translation.connectFrom(&pDraggerFrame->translation);
+    matrixEngine->rotation.connectFrom(&pDraggerFrame->rotation);
     auto transformEngine = new SoTransformVec3f();
     transformEngine->vector.connectFrom(&pDragger->translation);
     transformEngine->matrix.connectFrom(&matrixEngine->matrix);
@@ -182,7 +207,8 @@ ViewProviderMeasureBase::ViewProviderMeasureBase()
     auto dragger = pDragger;
 
     dragger->addValueChangedCallback(draggerChangedCallback, this);
-
+    dragger->addStartCallback(draggerStartCallback, this);
+    dragger->addFinishCallback(draggerFinishCallback, this);
 
     // Use the label node as the transform handle
     SoSearchAction sa;
@@ -207,17 +233,24 @@ ViewProviderMeasureBase::ViewProviderMeasureBase()
     FontSize.touch();
     LineColor.touch();
     fieldFontSize.setValue(FontSize.getValue());
+    // Arrow properties
+    ArrowHeight.touch();
+    ArrowRadius.touch();
+    fieldArrowHeight.setValue(ArrowHeight.getValue());
+    fieldArrowRadius.setValue(ArrowRadius.getValue());
 }
 
 ViewProviderMeasureBase::~ViewProviderMeasureBase()
 {
     pDragger->removeValueChangedCallback(draggerChangedCallback, this);
+    pDragger->removeStartCallback(draggerStartCallback, this);
+    pDragger->removeFinishCallback(draggerFinishCallback, this);
     _mVisibilityChangedConnection.disconnect();
     pGlobalSeparator->unref();
     pLabel->unref();
     pColor->unref();
     pDragger->unref();
-    pDraggerOrientation->unref();
+    pDraggerFrame->unref();
     pLabelTranslation->unref();
     pTextSeparator->unref();
     pLineSeparator->unref();
@@ -243,6 +276,10 @@ void ViewProviderMeasureBase::setDisplayMode(const char* ModeName)
 
 void ViewProviderMeasureBase::finishRestoring()
 {
+    // Restore dragger position from saved property
+    Base::Vector3d pos = LabelPosition.getValue();
+    pDragger->translation.setValue(SbVec3f(pos.x, pos.y, pos.z));
+
     if (Visibility.getValue() && isSubjectVisible()) {
         show();
     }
@@ -269,6 +306,12 @@ void ViewProviderMeasureBase::onChanged(const App::Property* prop)
         pLabel->size = FontSize.getValue();
         fieldFontSize.setValue(FontSize.getValue());
     }
+    else if (prop == &ArrowHeight) {
+        fieldArrowHeight.setValue(ArrowHeight.getValue());
+    }
+    else if (prop == &ArrowRadius) {
+        fieldArrowRadius.setValue(ArrowRadius.getValue());
+    }
 
     ViewProviderDocumentObject::onChanged(prop);
 }
@@ -279,6 +322,46 @@ void ViewProviderMeasureBase::draggerChangedCallback(void* data, SoDragger*)
     me->onLabelMoved();
 }
 
+void ViewProviderMeasureBase::draggerStartCallback(void* data, SoDragger*)
+{
+    auto me = static_cast<ViewProviderMeasureBase*>(data);
+    me->onLabelMoveStart();
+}
+
+void ViewProviderMeasureBase::draggerFinishCallback(void* data, SoDragger*)
+{
+    auto me = static_cast<ViewProviderMeasureBase*>(data);
+    me->onLabelMoveFinish();
+}
+
+void ViewProviderMeasureBase::onLabelMoveStart()
+{
+    Gui::View3DInventor* view = nullptr;
+    try {
+        view = dynamic_cast<Gui::View3DInventor*>(this->getActiveView());
+    }
+    catch (const Base::RuntimeError&) {
+        return;
+    }
+    if (!view) {
+        return;
+    }
+
+    auto* cam = view->getViewer()->getSoRenderManager()->getCamera();
+    if (!cam) {
+        return;
+    }
+
+    pDraggerFrame->rotation.setValue(cam->orientation.getValue());
+}
+
+void ViewProviderMeasureBase::onLabelMoveFinish()
+{
+    SbVec3f currentLabelPos = pLabelTranslation->translation.getValue();
+    pDragger->translation.setValue(SbVec3f(0.0f, 0.0f, 0.0f));
+    pDraggerFrame->translation.setValue(currentLabelPos);
+}
+
 void ViewProviderMeasureBase::setLabelValue(const Base::Quantity& value)
 {
     pLabel->string.setValue(value.getUserString().c_str());
@@ -286,7 +369,8 @@ void ViewProviderMeasureBase::setLabelValue(const Base::Quantity& value)
 
 void ViewProviderMeasureBase::setLabelValue(const QString& value)
 {
-    auto lines = value.split(QStringLiteral("\n"));
+    const auto userString = Base::UnitsApi::toUnicodeSuperscript(value.toStdString());
+    const auto lines = QString::fromStdString(userString).split(QStringLiteral("\n"));
 
     int i = 0;
     for (auto& it : lines) {
@@ -297,8 +381,8 @@ void ViewProviderMeasureBase::setLabelValue(const QString& value)
 
 void ViewProviderMeasureBase::setLabelTranslation(const SbVec3f& position)
 {
-    // Set the dragger translation to keep it in sync with pLabelTranslation
-    pDragger->translation.setValue(position);
+    pDraggerFrame->translation.setValue(position);
+    pDragger->translation.setValue(SbVec3f(0.0f, 0.0f, 0.0f));
 }
 
 
@@ -345,28 +429,10 @@ void ViewProviderMeasureBase::updateIcon()
     pLabel->setIcon(Gui::BitmapFactory().pixmapFromSvg(sPixmap, QSize(20, 20), colorMap));
 }
 
-void ViewProviderMeasureBase::syncDraggerOrientationToView()
-{
-    Gui::View3DInventor* view = nullptr;
-    try {
-        view = dynamic_cast<Gui::View3DInventor*>(this->getActiveView());
-    }
-    catch (const Base::RuntimeError&) {
-        return;
-    }
-    if (view) {
-        auto* cam = view->getViewer()->getSoRenderManager()->getCamera();
-        if (cam) {
-            pDraggerOrientation->rotation.connectFrom(&cam->orientation);
-        }
-    }
-}
-
 void ViewProviderMeasureBase::attach(App::DocumentObject* pcObj)
 {
     ViewProviderDocumentObject::attach(pcObj);
     updateIcon();
-    syncDraggerOrientationToView();
 }
 
 
@@ -430,15 +496,18 @@ void ViewProviderMeasureBase::connectToSubject(App::DocumentObject* subject)
         _mVisibilityChangedConnection.disconnect();
     }
 
-    // NOLINTBEGIN
-    auto bndVisibility = std::bind(
-        &ViewProviderMeasureBase::onSubjectVisibilityChanged,
-        this,
-        std::placeholders::_1,
-        std::placeholders::_2
+    App::Document* document = subject->getDocument();
+    if (!document) {
+        return;
+    }
+
+    _mVisibilityChangedConnection = document->signalChangedObject.connect(
+        [this, subject](const App::DocumentObject& obj, const App::Property& prop) {
+            if (&obj == subject) {
+                onSubjectVisibilityChanged(obj, prop);
+            }
+        }
     );
-    // NOLINTEND
-    _mVisibilityChangedConnection = subject->signalChanged.connect(bndVisibility);
 }
 
 //! connect to the subject to receive visibility updates
@@ -641,8 +710,6 @@ ViewProviderMeasure::ViewProviderMeasure()
     );
     points->numPoints = 1;
     lineSep->addChild(points);
-
-    syncDraggerOrientationToView();
 }
 
 ViewProviderMeasure::~ViewProviderMeasure()
@@ -659,27 +726,7 @@ void ViewProviderMeasure::positionAnno(const Measure::MeasureBase* measureObject
     Base::Vector3d textPos = getTextPosition();
     auto srcVec = SbVec3f(textPos.x, textPos.y, textPos.z);
 
-    // Translate the position by the local dragger matrix (pDraggerOrientation)
-    Gui::View3DInventor* view = nullptr;
-    try {
-        view = dynamic_cast<Gui::View3DInventor*>(this->getActiveView());
-    }
-    catch (const Base::RuntimeError&) {
-        Base::Console().log("ViewProviderMeasure::positionAnno: Could not get active view\n");
-    }
-
-    if (!view) {
-        return;
-    }
-
-    Gui::View3DInventorViewer* viewer = view->getViewer();
-    auto gma = SoGetMatrixAction(viewer->getSoRenderManager()->getViewportRegion());
-    gma.apply(pDraggerOrientation);
-    auto mat = gma.getMatrix();
-    SbVec3f destVec(0, 0, 0);
-    mat.multVecMatrix(srcVec, destVec);
-
-    setLabelTranslation(destVec);
+    setLabelTranslation(srcVec);
     updateView();
 }
 

@@ -85,17 +85,45 @@ bool ViewProviderAssemblyLink::setEdit(int mode)
 bool ViewProviderAssemblyLink::doubleClicked()
 {
     auto* link = freecad_cast<AssemblyLink*>(getObject());
-
     if (!link) {
         return true;
     }
     auto* assembly = link->getLinkedAssembly();
+    if (!assembly) {
+        return true;
+    }
 
     auto* vpa = freecad_cast<ViewProviderAssembly*>(
         Gui::Application::Instance->getViewProvider(assembly)
     );
     if (!vpa) {
         return true;
+    }
+
+    auto doc = assembly->getDocument();
+    auto guiDoc = vpa->getDocument();
+    if (!doc || !guiDoc) {
+        return true;
+    }
+
+    Gui::MDIView* mdi = guiDoc->getActiveView();
+
+    // Ensure the linked assembly document is fully loaded and has a view
+    if (doc->testStatus(App::Document::PartialDoc) || !mdi) {
+        Gui::Application::Instance->reopen(doc);
+
+        // reopening invalidates the pointer.
+        auto* assembly = link->getLinkedAssembly();
+        if (!assembly) {
+            return true;
+        }
+
+        vpa = freecad_cast<ViewProviderAssembly*>(
+            Gui::Application::Instance->getViewProvider(assembly)
+        );
+        if (!vpa) {
+            return true;
+        }
     }
 
     return vpa->doubleClicked();

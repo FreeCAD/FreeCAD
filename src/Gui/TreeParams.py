@@ -19,6 +19,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Auto code generator for parameters in Preferences/TreeView"""
+
 import sys
 from os import path
 

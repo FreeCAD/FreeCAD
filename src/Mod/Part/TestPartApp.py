@@ -1156,3 +1156,78 @@ class EmptyFace(unittest.TestCase):
         with self.assertRaises(ValueError):
             face = Part.Face()
             face.ParameterRange
+
+
+class PartExtrusionTests(unittest.TestCase):
+
+    def setUp(self):
+        self.Doc = FreeCAD.newDocument("PartExtrusionTest")
+
+    def _make_face_with_hole(self):
+        """Create a 10x10 face with a 6x6 centered hole."""
+        outer = Part.makePolygon(
+            [
+                Base.Vector(-5, -5, 0),
+                Base.Vector(5, -5, 0),
+                Base.Vector(5, 5, 0),
+                Base.Vector(-5, 5, 0),
+                Base.Vector(-5, -5, 0),
+            ]
+        )
+        inner = Part.makePolygon(
+            [
+                Base.Vector(-3, -3, 0),
+                Base.Vector(3, -3, 0),
+                Base.Vector(3, 3, 0),
+                Base.Vector(-3, 3, 0),
+                Base.Vector(-3, -3, 0),
+            ]
+        )
+        return Part.makeFace([outer, inner], "Part::FaceMakerBullseye")
+
+    @staticmethod
+    def _frustum_volume(height, bottom_area, top_area):
+        """Volume of a frustum: h/3 * (A1 + A2 + sqrt(A1*A2))."""
+        return height / 3 * (bottom_area + top_area + math.sqrt(bottom_area * top_area))
+
+    def testExtrudeTaperInverted(self):
+        """With Inverted taper (Part::Extrusion default), the outer grows
+        while the hole shrinks."""
+        base_feature = self.Doc.addObject("Part::Feature", "Base")
+        base_feature.Shape = self._make_face_with_hole()
+        extrusion = self.Doc.addObject("Part::Extrusion", "Extrude")
+        extrusion.Base = base_feature
+        extrusion.LengthFwd = 10
+        extrusion.Solid = True
+        extrusion.TaperAngle = 10
+        self.Doc.recompute()
+
+        self.assertTrue(extrusion.Shape.isValid())
+        offset = 10 * math.tan(math.radians(10))
+        outer = self._frustum_volume(10, 10 * 10, (10 + 2 * offset) * (10 + 2 * offset))
+        hole = self._frustum_volume(10, 6 * 6, (6 - 2 * offset) * (6 - 2 * offset))
+        expected_volume = outer - hole  # ~1204
+        self.assertAlmostEqual(extrusion.Shape.Volume, expected_volume, places=1)
+
+    def testExtrudeTaperSameAsOuter(self):
+        """Regression test for issue #28709: with SameAsOuter taper (the
+        PartDesign path), both wires must taper in the same direction."""
+        base_feature = self.Doc.addObject("Part::Feature", "Base")
+        base_feature.Shape = self._make_face_with_hole()
+        extrusion = self.Doc.addObject("Part::Extrusion", "Extrude")
+        extrusion.Base = base_feature
+        extrusion.LengthFwd = 10
+        extrusion.Solid = True
+        extrusion.TaperAngle = 10
+        extrusion.InnerWireTaper = "SameAsOuter"
+        self.Doc.recompute()
+
+        self.assertTrue(extrusion.Shape.isValid())
+        offset = 10 * math.tan(math.radians(10))
+        outer = self._frustum_volume(10, 10 * 10, (10 + 2 * offset) * (10 + 2 * offset))
+        hole = self._frustum_volume(10, 6 * 6, (6 + 2 * offset) * (6 + 2 * offset))
+        expected_volume = outer - hole  # ~781
+        self.assertAlmostEqual(extrusion.Shape.Volume, expected_volume, places=1)
+
+    def tearDown(self):
+        FreeCAD.closeDocument("PartExtrusionTest")

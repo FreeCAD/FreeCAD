@@ -54,6 +54,7 @@
 #include <QWhatsThis>
 #include <QWindow>
 #include <QPushButton>
+#include <string>
 
 
 #if defined(Q_OS_WIN)
@@ -107,6 +108,7 @@
 #include "StatusBarLabel.h"
 #include "ToolBarManager.h"
 #include "ToolBoxManager.h"
+#include "Utilities.h"
 #include "Tree.h"
 #include "WaitCursor.h"
 #include "WorkbenchManager.h"
@@ -421,9 +423,32 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     d->sizeLabel = new DimensionWidget(statusBar());
 
     statusBar()->addWidget(d->actionLabel, 1);
+
     QProgressBar* progressBar = Gui::SequencerBar::instance()->getProgressBar(statusBar());
     statusBar()->addPermanentWidget(progressBar, 0);
     statusBar()->addPermanentWidget(d->sizeLabel, 0);
+
+    // Toggle bottom panels button. Must be added after progressBar and sizeLabel so it appears as
+    // the rightmost permanent widget.
+    auto* toggleBottomPanelsButton = new QToolButton(statusBar());
+    toggleBottomPanelsButton->setObjectName(QStringLiteral("toggleBottomPanelsButton"));
+    int iconSize = App::GetApplication()
+                       .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
+                       ->GetInt("ToolbarIconSize", 24);
+    toggleBottomPanelsButton->setIconSize(QSize(iconSize, iconSize));
+    toggleBottomPanelsButton->setIcon(BitmapFactory().pixmap("Std_ToggleBottomPanels"));
+    toggleBottomPanelsButton->setCheckable(true);
+    // Starts checked because FreeCAD shows bottom panels by default on first launch. On subsequent
+    // launches the command restores the persisted state, but that happens after this point, so
+    // the button state is always an approximation until the first toggle.
+    toggleBottomPanelsButton->setChecked(true);
+    //: Tooltip for the status bar button that toggles bottom dock panels
+    toggleBottomPanelsButton->setToolTip(tr("Toggles the bottom dock panels"));
+    toggleBottomPanelsButton->setAutoRaise(true);
+    connect(toggleBottomPanelsButton, &QToolButton::clicked, this, []() {
+        Application::Instance->commandManager().runCommandByName("Std_ToggleBottomPanels");
+    });
+    statusBar()->addPermanentWidget(toggleBottomPanelsButton);
 
     // hint label
     d->hintLabel = new InputHintWidget(statusBar());
@@ -499,6 +524,12 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
 
 MainWindow::~MainWindow()
 {
+    // QWidget teardown may still emit subWindowActivated while child MDI
+    // windows are being destroyed. Disconnect first so shutdown cannot re-enter
+    // MainWindow slots after derived destruction has started.
+    if (d->mdiArea) {
+        disconnect(d->mdiArea, &QMdiArea::subWindowActivated, this, &MainWindow::onWindowActivated);
+    }
     delete d->status;
     delete d;
     instance = nullptr;
@@ -654,36 +685,6 @@ bool MainWindow::setupPythonConsole()
 
     return false;
 }
-
-bool MainWindow::checkFirstRun()
-{
-    ParameterGrp::handle hGrpRF = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/RecentFiles"
-    );
-    auto RecentFilesCount = hGrpRF->GetInt("RecentFiles");
-    ParameterGrp::handle hGrpFS2024 = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Start"
-    );
-    auto firstStart = hGrpFS2024->GetBool("FirstStart2024", true);  // NOLINT
-    if (firstStart && RecentFilesCount < 1) {
-        return true;
-    }
-    return false;
-}
-
-
-void MainWindow::moveToDefaultPosition(QRect rect, QPoint pos)
-{
-    int x1 {}, x2 {}, y1 {}, y2 {};
-    // make sure that the main window is not totally out of the visible rectangle
-    rect.getCoords(&x1, &y1, &x2, &y2);
-    const int offsetX = 30;
-    const int offsetY = 10;
-    pos.setX(qMin(qMax(pos.x(), x1 - this->width() + offsetX), x2 - offsetX));
-    pos.setY(qMin(qMax(pos.y(), y1 - offsetY), y2 - offsetY));
-    this->move(pos);
-}
-
 
 bool MainWindow::updateTreeView(bool show)
 {
@@ -1094,6 +1095,25 @@ void MainWindow::showDocumentation(const QString& help)
     }
 }
 
+static View3DInventorViewer* spaceballMotionEventTarget()
+{
+    // check if the active window has a 3d view
+
+    if (auto viewer = getMainWindow()->activeWindow()->findChild<View3DInventorViewer*>()) {
+        return viewer;
+    }
+
+    // check active view for the document
+
+    if (Gui::Document* doc = Application::Instance->activeDocument()) {
+        if (auto view = dynamic_cast<View3DInventor*>(doc->getActiveView())) {
+            return view->getViewer();
+        }
+    }
+
+    return nullptr;
+}
+
 bool MainWindow::event(QEvent* e)
 {
     if (e->type() == QEvent::EnterWhatsThisMode) {
@@ -1150,7 +1170,12 @@ bool MainWindow::event(QEvent* e)
                 return true;
             }
             else {
-                Application::Instance->commandManager().runCommandByName(commandName.c_str());
+                Command* cmd = Application::Instance->commandManager().getCommandByName(
+                    commandName.c_str()
+                );
+                if (cmd) {
+                    cmd->invoke(1);
+                }
             }
         }
         else {
@@ -1163,15 +1188,7 @@ bool MainWindow::event(QEvent* e)
             return true;
         }
         motionEvent->setHandled(true);
-        Gui::Document* doc = Application::Instance->activeDocument();
-        if (!doc) {
-            return true;
-        }
-        auto temp = dynamic_cast<View3DInventor*>(doc->getActiveView());
-        if (!temp) {
-            return true;
-        }
-        View3DInventorViewer* view = temp->getViewer();
+        View3DInventorViewer* view = spaceballMotionEventTarget();
         if (view) {
             Spaceball::MotionEvent anotherEvent(*motionEvent);
             qApp->sendEvent(view, &anotherEvent);
@@ -1710,6 +1727,8 @@ void MainWindow::processMessages(const QList<QString>& msg)
         for (const auto& file : files) {
             QString filename = QString::fromUtf8(file.c_str(), file.size());
             FileDialog::setWorkingDirectory(filename);
+            QFileInfo fi(filename);
+            appendRecentFile(fi.absoluteFilePath());
         }
     }
     catch (const Base::SystemExitException&) {
@@ -1719,29 +1738,31 @@ void MainWindow::processMessages(const QList<QString>& msg)
 void MainWindow::delayedStartup()
 {
     // automatically run unit tests in Gui
-    if (App::Application::Config()["RunMode"] == "Internal") {
-        QTimer::singleShot(1000, this, [] {
-            try {
-                string command = "import sys\n"
-                                 "import FreeCAD\n"
-                                 "import QtUnitGui\n\n"
-                                 "testCase = FreeCAD.ConfigGet(\"TestCase\")\n"
-                                 "QtUnitGui.addTest(testCase)\n"
-                                 "QtUnitGui.setTest(testCase)\n"
-                                 "result = QtUnitGui.runTest()\n"
-                                 "sys.stdout.flush()\n";
-                if (App::Application::Config()["ExitTests"] == "yes") {
-                    command += "sys.exit(0 if result else 1)";
-                }
-                Base::Interpreter().runString(command.c_str());
+    if (Gui::isInternalGuiTestRun()) {
+        try {
+            // Command-line GUI tests should not depend on the interactive QtUnitGui
+            // dialog. In headless runs such as QT_QPA_PLATFORM=offscreen/minimal,
+            // that dialog path can hang before the test body executes. Run the
+            // embedded text-based GUI test script directly once startup reaches
+            // delayedStartup().
+            Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADGuiTest"));
+            if (App::Application::Config()["ExitTests"] == "yes") {
+                Base::Interpreter().runString(
+                    "import sys\n"
+                    "sys.exit(0 if test_result.wasSuccessful() else 1)\n"
+                );
             }
-            catch (const Base::SystemExitException&) {
-                throw;
-            }
-            catch (const Base::Exception& e) {
-                e.reportException();
-            }
-        });
+        }
+        catch (const Base::SystemExitException&) {
+            // Properly quit the Qt event loop before propagating the exception
+            QApplication::quit();
+            throw;
+        }
+        catch (const Base::Exception& e) {
+            e.reportException();
+            QApplication::quit();
+            throw;
+        }
         return;
     }
 
@@ -1752,6 +1773,8 @@ void MainWindow::delayedStartup()
         for (const auto& file : files) {
             QString filename = QString::fromUtf8(file.c_str(), file.size());
             FileDialog::setWorkingDirectory(filename);
+            QFileInfo fi(filename);
+            appendRecentFile(fi.absoluteFilePath());
         }
     }
     catch (const Base::SystemExitException&) {
@@ -1860,6 +1883,7 @@ void MainWindow::appendRecentFile(const QString& filename)
     auto recent = this->findChild<RecentFilesAction*>(QStringLiteral("recentFiles"));
     if (recent) {
         recent->appendFile(filename);
+        Q_EMIT recentFileAdded(filename);
     }
 }
 
@@ -1983,56 +2007,75 @@ void MainWindow::loadWindowSettings()
     QString qtver = QStringLiteral("Qt%1.%2").arg(major).arg(minor);
     QSettings config(vendor, application);
 
+    // Put window in center of screen position by default (e.g. first run and safe-mode)
+    // Note that pos refers to frameGeometry(), while size refers to geometry()
+    QSize frameSizeDiff = frameSize() - size();
     QRect rect = QApplication::primaryScreen()->availableGeometry();
-    int maxHeight = rect.height();
-    int maxWidth = rect.width();
+    QSize winSize
+        = (QSize(1800, 1000).boundedTo(rect.size()) - frameSizeDiff).expandedTo(minimumSize());
+    QPoint winPos = rect.center() - QRect({}, (winSize + frameSizeDiff) / 2).bottomRight();
 
+    // Read stored values from config (deprecated, not written since 1.0rc1)
     config.beginGroup(qtver);
-    QPoint pos = config.value(QStringLiteral("Position"), this->pos()).toPoint();
-    maxWidth -= pos.x();
-    maxHeight -= pos.y();
-    QSize size = config.value(QStringLiteral("Size"), QSize(maxWidth, maxHeight)).toSize();
+    winPos = config.value(QStringLiteral("Position"), winPos).toPoint();
+    winSize = config.value(QStringLiteral("Size"), winSize).toSize();
     bool max = config.value(QStringLiteral("Maximized"), false).toBool();
     bool showStatusBar = config.value(QStringLiteral("StatusBar"), true).toBool();
     QByteArray windowState = config.value(QStringLiteral("MainWindowState")).toByteArray();
     config.endGroup();
 
-
-    std::string geometry = d->hGrp->GetASCII("Geometry");
-    std::istringstream iss(geometry);
-    int x, y, w, h;
-    if (iss >> x >> y >> w >> h) {
-        pos = QPoint(x, y);
-        size = QSize(w, h);
+    // Read stored values from user parameters
+    std::istringstream iss(d->hGrp->GetASCII("Geometry"));
+    if (int x, y, w, h; iss >> x >> y >> w >> h) {
+        winPos = QPoint(x, y);
+        winSize = QSize(w, h);
     }
-
     max = d->hGrp->GetBool("Maximized", max);
     showStatusBar = d->hGrp->GetBool("StatusBar", showStatusBar);
-    std::string wstate = d->hGrp->GetASCII("MainWindowState");
-    if (!wstate.empty()) {
+    if (auto wstate = d->hGrp->GetASCII("MainWindowState"); !wstate.empty()) {
         windowState = QByteArray::fromBase64(wstate.c_str());
     }
 
-    resize(size);
-    // TODO: Hotfix to be removed as soon as possible after 1.1.0 Release
-#ifdef FC_OS_WIN64
-    if (checkFirstRun()) {
-        const int topLeftXY = 10;
-        this->move(topLeftXY, topLeftXY);
+    winSize = winSize.expandedTo(minimumSize());
+
+    // Check that no part of window outside all screens
+    QRect winGeometry = QRect(winPos, winSize + frameSizeDiff);
+    const auto screens = QApplication::screens();
+    auto invisible = QPolygon(winGeometry);
+    for (auto s : screens) {
+        invisible = invisible.subtracted(s->geometry().adjusted(-10, -10, 10, 10));
     }
-    else {
-        moveToDefaultPosition(rect, pos);
+    if (!invisible.empty()) {
+        // If not, move it inside the most overlapped or closest screen
+        // Union of screens are not considered, as it e.g. may have holes in general case
+        QRect screen {};
+        for (int screenArea = 0; auto s : screens) {
+            auto overlap = s->availableGeometry().intersected(winGeometry);
+            int overlapArea = overlap.width() * overlap.height();
+            if (overlapArea > screenArea) {
+                screen = s->availableGeometry();
+                screenArea = overlapArea;
+            }
+        }
+        if (screen.isEmpty()) {
+            for (int screenDist = -1; auto s : screens) {
+                auto dist = (winGeometry.center() - s->availableGeometry().center()).manhattanLength();
+                if (screenDist == -1 || dist < screenDist) {
+                    screen = s->availableGeometry();
+                    screenDist = dist;
+                }
+            }
+        }
+        winSize = winSize.boundedTo(screen.size() - frameSizeDiff).expandedTo(minimumSize());
+        winGeometry = QRect(winPos, winSize + frameSizeDiff);
+        winPos.setX(qMax(qMin(winPos.x(), screen.right() - winGeometry.width()), screen.x()));
+        winPos.setY(qMax(qMin(winPos.y(), screen.bottom() - winGeometry.height()), screen.y()));
     }
-#else
-    // TODO: Hotfix to be removed as soon as possible after 1.1.0 Release
-    if (QGuiApplication::platformName() == QString::fromStdString("wayland") && checkFirstRun()) {
-        const int topLeftXY = 10;
-        this->move(topLeftXY, topLeftXY);
-    }
-    else {  // all Linux x11 and Mac
-        moveToDefaultPosition(rect, pos);
-    }
-#endif
+
+    // Scale before move reducing, or vice versa, so a dpi change wont make window to be moved
+    resize(winSize.boundedTo(size()));
+    move(winPos);
+    resize(winSize);
 
     Base::StateLocker guard(d->_restoring);
 
@@ -2103,13 +2146,6 @@ void MainWindow::saveWindowSettings(bool canDelay)
         d->saveStateTimer.start(100);
         return;
     }
-
-    QString vendor = QString::fromUtf8(App::Application::Config()["ExeVendor"].c_str());
-    QString application = QString::fromUtf8(App::Application::Config()["ExeName"].c_str());
-    int major = (QT_VERSION >> 0x10) & 0xff;
-    int minor = (QT_VERSION >> 0x08) & 0xff;
-    QString qtver = QStringLiteral("Qt%1.%2").arg(major).arg(minor);
-    QSettings config(vendor, application);
 
     Base::ConnectionBlocker block(d->connParam);
     d->hGrp->SetBool("Maximized", this->isMaximized());
@@ -2239,9 +2275,10 @@ QMimeData* MainWindow::createMimeDataFromSelection() const
     // if less than ~10 MB
     bool use_buffer = (memsize < 0xA00000);
     QByteArray res;
+    std::string buffer;
     if (use_buffer) {
         try {
-            res.reserve(memsize);
+            buffer.reserve(memsize);
         }
         catch (const std::bad_alloc&) {
             use_buffer = false;
@@ -2252,12 +2289,13 @@ QMimeData* MainWindow::createMimeDataFromSelection() const
     QString mime;
     if (use_buffer) {
         mime = hasXLink ? _MimeDocObjX : _MimeDocObj;
-        Base::ByteArrayOStreambuf buf(res);
-        std::ostream str(&buf);
+        Base::StringOStreambuf sbuf(buffer);
+        std::ostream str(&sbuf);
         // need this instance to call MergeDocuments::Save()
         App::Document* doc = sel.front()->getDocument();
         MergeDocuments mimeView(doc);
         doc->exportObjects(sel, str);
+        res = QByteArray(buffer.data(), static_cast<int>(buffer.size()));
     }
     else {
         mime = hasXLink ? _MimeDocObjXFile : _MimeDocObjFile;
@@ -2388,9 +2426,10 @@ void MainWindow::insertFromMimeData(const QMimeData* mimeData)
     }
     if (!fromDoc) {
         QByteArray res = mimeData->data(format);
+        std::string buffer(res.constData(), static_cast<std::size_t>(res.size()));
 
         doc->openTransaction("Paste");
-        Base::ByteArrayIStreambuf buf(res);
+        Base::StringIStreambuf buf(buffer);
         std::istream in(nullptr);
         in.rdbuf(&buf);
         MergeDocuments mimeView(doc);

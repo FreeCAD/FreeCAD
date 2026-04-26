@@ -37,6 +37,8 @@ class NavlibInterface;
 
 namespace Gui
 {
+GuiExport void requireMainThread(const char* api);
+
 class ApplicationPy;
 class BaseView;
 class CommandManager;
@@ -280,9 +282,6 @@ public:
     void tryClose(QCloseEvent* e);
     //@}
 
-    /// get verbose DPI and style info
-    static void getVerboseDPIStyleInfo(QTextStream& str);
-
     /// whenever GUI is about to start with the main window hidden
     static bool hiddenMainWindow();
     /// return the status bits
@@ -352,6 +351,7 @@ private:
     /// workbench python dictionary
     PyObject* _pcWorkbenchDictionary;
     NavlibInterface* pNavlibInterface;
+    static void init3DMouse(MainWindow* mainWindow, QApplication* qtApp);
 
     friend class ApplicationPy;
 };

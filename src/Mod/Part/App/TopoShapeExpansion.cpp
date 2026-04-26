@@ -98,14 +98,15 @@
 #include "FaceMaker.h"
 #include "Geometry.h"
 #include "BRepOffsetAPI_MakeOffsetFix.h"
-#include "Base/BoundBox.h"
-#include "Base/Exception.h"
-#include "Base/Tools.h"
-#include <SignalException.h>
-#include "OCCTProgressIndicator.h"
+#include "ProgressIndicator.h"
 
 #include <App/ElementMap.h>
 #include <App/ElementNamingUtils.h>
+#include <Base/BoundBox.h>
+#include <Base/Exception.h>
+#include <Base/Sequencer.h>
+#include <Base/Tools.h>
+#include <SignalException.h>
 #include <ShapeAnalysis_FreeBoundsProperties.hxx>
 #include <BRepFeat_MakeRevol.hxx>
 
@@ -427,9 +428,10 @@ std::vector<TopoShape> TopoShape::findSubShapesWithSharedVertex(
                         }
                         auto options2 = options;
                         options2.setFlag(Data::SearchOption::SingleResult);
-                        if (ss.isNull() || s.isNull() || ss.shapeType() != s.shapeType()
-                            || ss.findSubShapesWithSharedVertex(s, nullptr, options2, tol, atol)
-                                   .empty()) {
+                        if (
+                            ss.isNull() || s.isNull() || ss.shapeType() != s.shapeType()
+                            || ss.findSubShapesWithSharedVertex(s, nullptr, options2, tol, atol).empty()
+                        ) {
                             found = false;
                             break;
                         }
@@ -1826,8 +1828,9 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                         continue;
                     }
                 }
-                else if (it == newNames.end()
-                         || !boost::starts_with(it->first.getType(), info.shapetype)) {
+                else if (
+                    it == newNames.end() || !boost::starts_with(it->first.getType(), info.shapetype)
+                ) {
                     break;
                 }
                 else {
@@ -2467,7 +2470,7 @@ TopoShape& TopoShape::makeElementPipeShell(
     }
     else {
 #if OCC_VERSION_HEX >= 0x070600
-        mkPipeShell.Build(OCCTProgressIndicator::getAppIndicator().Start());
+        mkPipeShell.Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
         mkPipeShell.Build();
 #endif
@@ -2579,7 +2582,7 @@ TopoShape& TopoShape::makeElementOffset(
         aGenerator.AddWire(TopoDS::Wire(originalWire.getShape()));
         aGenerator.AddWire(offsetWire);
 #if OCC_VERSION_HEX >= 0x070600
-        aGenerator.Build(OCCTProgressIndicator::getAppIndicator().Start());
+        aGenerator.Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
         aGenerator.Build();
 #endif
@@ -2986,8 +2989,10 @@ TopoShape& TopoShape::makeElementOffset2D(
                     v3.Reverse();
                     v4.Reverse();
                 }
-                else if ((fabs(gp_Vec(BRep_Tool::Pnt(v2), BRep_Tool::Pnt(v4)).Magnitude() - fabs(offset))
-                          <= BRep_Tool::Tolerance(v2) + BRep_Tool::Tolerance(v4))) {
+                else if (
+                    (fabs(gp_Vec(BRep_Tool::Pnt(v2), BRep_Tool::Pnt(v4)).Magnitude() - fabs(offset))
+                     <= BRep_Tool::Tolerance(v2) + BRep_Tool::Tolerance(v4))
+                ) {
                     // orientation is as expected, nothing to do
                 }
                 else {
@@ -3014,11 +3019,10 @@ TopoShape& TopoShape::makeElementOffset2D(
                 // add final joining edge
                 mkWire.Add(BRepBuilderAPI_MakeEdge(v3, v1).Edge());
 #if OCC_VERSION_HEX >= 0x070600
-                mkWire.Build(OCCTProgressIndicator::getAppIndicator().Start());
+                mkWire.Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
                 mkWire.Build();
 #endif
-
                 wiresForMakingFaces.push_back(
                     TopoShape(Tag, Hasher).makeElementShape(mkWire, openWires, op)
                 );
@@ -3908,7 +3912,7 @@ TopoShape& TopoShape::makeElementFilledFace(
     }
 
 #if OCC_VERSION_HEX >= 0x070600
-    maker.Build(OCCTProgressIndicator::getAppIndicator().Start());
+    maker.Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
     maker.Build();
 #endif
@@ -4206,7 +4210,7 @@ TopoShape& TopoShape::makeElementGeneralFuse(
     }
     mkGFA.SetNonDestructive(Standard_True);
 #if OCC_VERSION_HEX >= 0x070600
-    mkGFA.Build(OCCTProgressIndicator::getAppIndicator().Start());
+    mkGFA.Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
     mkGFA.Build();
 #endif
@@ -4245,7 +4249,7 @@ TopoShape& TopoShape::makeElementXor(const std::vector<TopoShape>& shapes, const
         FC_THROWM(NullShapeException, "Null shape");
     }
 
-    if (OCCTProgressIndicator::getAppIndicator().UserBreak()) {
+    if (Base::Sequencer().wasCanceled()) {
         FC_THROWM(Base::CADKernelError, "User aborted");
     }
 
@@ -4433,7 +4437,7 @@ TopoShape& TopoShape::makeElementLoft(
                                                // #edges, orientation, "origin" to match.
 
 #if OCC_VERSION_HEX >= 0x070600
-    aGenerator.Build(OCCTProgressIndicator::getAppIndicator().Start());
+    aGenerator.Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
     aGenerator.Build();
 #endif
@@ -4769,7 +4773,7 @@ TopoShape& TopoShape::makeElementDraft(
     } while (retry && !done);
 
 #if OCC_VERSION_HEX >= 0x070600
-    mkDraft.Build(OCCTProgressIndicator::getAppIndicator().Start());
+    mkDraft.Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
     mkDraft.Build();
 #endif
@@ -4822,7 +4826,7 @@ TopoShape& TopoShape::makeElementFace(
         }
     }
 #if OCC_VERSION_HEX >= 0x070600
-    mkFace->Build(OCCTProgressIndicator::getAppIndicator().Start());
+    mkFace->Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
     mkFace->Build();
 #endif
@@ -5065,10 +5069,10 @@ TopoShape& TopoShape::makeElementBSplineFace(
         for (const auto& e : edges) {
             const TopoDS_Edge& edge = TopoDS::Edge(e.getShape());
             TopLoc_Location heloc;  // this will be output
-            Handle(Geom_Curve) c_geom = BRep_Tool::Curve(edge, heloc, u1, u2);  // The geometric curve
-            Handle(Geom_BSplineCurve) bspline = Handle(Geom_BSplineCurve)::DownCast(
-                c_geom
-            );  // Try to get BSpline curve
+            Handle(Geom_Curve)
+                c_geom = BRep_Tool::Curve(edge, heloc, u1, u2);  // The geometric curve
+            Handle(Geom_BSplineCurve)
+                bspline = Handle(Geom_BSplineCurve)::DownCast(c_geom);  // Try to get BSpline curve
             if (!bspline.IsNull()) {
                 gp_Trsf transf = heloc.Transformation();
                 bspline->Transform(transf);  // apply original transformation to control points
@@ -5097,8 +5101,8 @@ TopoShape& TopoShape::makeElementBSplineFace(
                 else {
                     // BRepBuilderAPI_NurbsConvert failed, try ShapeConstruct_Curve now
                     ShapeConstruct_Curve scc;
-                    Handle(Geom_BSplineCurve) spline
-                        = scc.ConvertToBSpline(c_geom, u1, u2, Precision::Confusion());
+                    Handle(Geom_BSplineCurve)
+                        spline = scc.ConvertToBSpline(c_geom, u1, u2, Precision::Confusion());
                     if (spline.IsNull()) {
                         Standard_Failure::Raise(
                             "A curve was not a B-spline and could not be converted into one."
@@ -5827,16 +5831,16 @@ TopoShape& TopoShape::makeElementBoolean(
         FC_THROWM(Base::CADKernelError, "no maker");
     }
 
-    if (!op) {
-        op = maker;
-    }
-
     if (shapes.empty()) {
         FC_THROWM(NullShapeException, "Null shape");
     }
 
-    if (OCCTProgressIndicator::getAppIndicator().UserBreak()) {
+    if (Base::Sequencer().wasCanceled()) {
         FC_THROWM(Base::CADKernelError, "User aborted");
+    }
+
+    if (!op) {
+        op = maker;
     }
 
     if (strcmp(maker, Part::OpCodes::Compound) == 0) {
@@ -6008,11 +6012,11 @@ TopoShape& TopoShape::makeElementBoolean(
         FCBRepAlgoAPIHelper::setAutoFuzzy(mk.get());
     }
 #if OCC_VERSION_HEX >= 0x070600
-    mk->Build(OCCTProgressIndicator::getAppIndicator().Start());
+    mk->Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
     mk->Build();
 #endif
-    if (OCCTProgressIndicator::getAppIndicator().UserBreak()) {
+    if (Base::Sequencer().wasCanceled()) {
         FC_THROWM(Base::CADKernelError, "User aborted");
     }
     makeElementShape(*mk, inputs, op);

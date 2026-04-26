@@ -494,9 +494,10 @@ def getSVG(
                     "stroke-width": "SVGLINEWIDTH",
                     "stroke-dasharray": "SVGHIDDENPATTERN",
                 }
+                svgcache += '<g transform="scale(-1,1)">\n'
                 svgcache += TechDraw.projectToSVG(
                     hshapes,
-                    direction,
+                    -direction,
                     hStyle=style,
                     h0Style=style,
                     h1Style=style,
@@ -504,6 +505,7 @@ def getSVG(
                     v0Style=style,
                     v1Style=style,
                 )
+                svgcache += "</g>\n"
             if sshapes:
                 if showFill:
                     # svgcache += fillpattern
@@ -1347,17 +1349,10 @@ class _ViewProviderSectionPlane:
 
     def updateData(self, obj, prop):
         vobj = obj.ViewObject
-        if prop in ["Placement"]:
+        if prop in ["Placement", "Shape"]:
             self.onChanged(vobj, "DisplayLength")
-
-            # Defer the clipping plane update until after the current event
-            # loop finishes. This ensures the scene graph has been updated with the
-            # new placement before we try to recalculate the clip plane.
             if vobj and hasattr(vobj, "CutView") and vobj.CutView:
-                from PySide import QtCore
-
-                # We use a lambda to pass the vobj argument to the delayed function.
-                QtCore.QTimer.singleShot(0, lambda: self.refreshCutView(vobj))
+                self.refreshCutView(vobj)
         elif prop == "Label":
             if hasattr(obj.ViewObject, "ShowLabel") and obj.ViewObject.ShowLabel:
                 self.txt.string = obj.Label
@@ -1478,6 +1473,11 @@ class _ViewProviderSectionPlane:
                 self.txtfont.size = vobj.FontSize.Value
         return
 
+    def onDelete(self, vobj, subelements):
+
+        vobj.CutView = False
+        return True
+
     def dumps(self):
 
         return None
@@ -1516,7 +1516,7 @@ class _ViewProviderSectionPlane:
         menu.addAction(actionEdit)
 
         actionToggleCutview = QtGui.QAction(
-            QtGui.QIcon(":/icons/Draft_Edit.svg"), translate("Arch", "Toggle Cutview"), menu
+            QtGui.QIcon(":/icons/Arch_CutPlane.svg"), translate("Arch", "Toggle Cut View"), menu
         )
         actionToggleCutview.triggered.connect(lambda: self.toggleCutview(vobj))
         menu.addAction(actionToggleCutview)

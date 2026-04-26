@@ -28,6 +28,7 @@ from Machine.models.machine import Machine
 import FreeCAD
 import Path
 import Path.Post.Command as PathCommand
+import Path.Post.PostList as PostList
 import Path.Post.Utils as PostUtils
 import Path.Main.Job as PathJob
 import Path.Tool.Controller as PathToolController
@@ -135,7 +136,7 @@ class TestFileNameGenerator(unittest.TestCase):
 
         tc = PathToolController.Create("TC_Test_Tool", tool, 5)
         tc.Label = "TC: 6mm Endmill"
-        cls.job.addObject(tc)
+        cls.job.Proxy.addToolController(tc)
 
         # Create a simple mock operation for testing operation-related substitutions
         profile_op = cls.doc.addObject("Path::FeaturePython", "TestProfile")
@@ -454,7 +455,7 @@ class TestExport2Integration(unittest.TestCase):
 
         tc = PathToolController.Create("TC_Test_Tool", tool, 1)
         tc.Label = "TC: 6mm Endmill"
-        cls.job.addObject(tc)
+        cls.job.Proxy.addToolController(tc)
 
         profile_op = cls.doc.addObject("Path::FeaturePython", "TestProfile")
         profile_op.Label = "TestProfile"
@@ -1238,39 +1239,61 @@ class TestExport2Integration(unittest.TestCase):
 
     def test110_tool_length_offset_enabled(self):
         """
-        Test that _expand_tool_length_offset adds G43 after M6 when enabled.
+        Test that _expand_tool_length_offset adds G43 after M6 in a tool controller path.
 
-        When output_tool_length_offset=True and the operation path contains
-        an M6 tool change, G43 is injected immediately after it.
+        G43 (tool length offset) must be injected immediately after M6 in the tool
+        controller postable's path.  M6 belongs in the tool_controller postable — not
+        in operation paths — so the test builds a postlist directly rather than using
+        the full export2 pipeline.
 
-        Expected:
-            BEFORE: M6 T1
-                    G0 X10 Y20 Z5
+        Given:  A tool_controller postable whose path is [M6 T1]
+                followed by an operation postable [G0 ...]
+        When:   _expand_tool_length_offset is called with output_tool_length_offset=True
+        Then:   The tool_controller path becomes [M6 T1, G43 H1]
 
-            AFTER:  M6 T1
-                    G43 H1
-                    G0 X10 Y20 Z5
+        Example:
+            BEFORE TC path:  M6 T1
+            AFTER TC path:   M6 T1
+                             G43 H1
         """
         config = self._get_full_machine_config()
         config["output"]["output_tool_length_offset"] = True
         machine = Machine.from_dict(config)
+        post = self._create_postprocessor(machine)
 
-        with self._modify_operation_path(
-            [
-                Path.Command("M6", {"T": 1}),
-                Path.Command("G0", {"X": 10.0, "Y": 20.0, "Z": 5.0}),
-                Path.Command("G1", {"X": 20.0, "Y": 30.0, "Z": -5.0, "F": 100.0}),
-            ]
-        ):
-            results = self._run_export2(machine)
-            gcode = self._get_all_gcode(results)
-            lines = [line.strip() for line in gcode.split("\n") if line.strip()]
+        tc_item = PostList.Postable(
+            item_type="tool_controller",
+            label="6mm Endmill",
+            path=Path.Path([Path.Command("M6", {"T": 1})]),
+            source=None,
+            data={"tool_number": 1},
+        )
+        op_item = PostList.Postable(
+            item_type="operation",
+            label="TestProfile",
+            path=Path.Path(
+                [
+                    Path.Command("G0", {"X": 10.0, "Y": 20.0, "Z": 5.0}),
+                    Path.Command("G1", {"X": 20.0, "Y": 30.0, "Z": -5.0, "F": 100.0}),
+                ]
+            ),
+            source=None,
+            data={},
+        )
+        postables = [("allitems", [tc_item, op_item])]
 
-            g43_lines = [line for line in lines if line.startswith("G43")]
-            self.assertGreater(len(g43_lines), 0, "Should have G43 tool length offset command")
+        post._expand_tool_length_offset(postables)
 
-            for g43_line in g43_lines:
-                self.assertIn("H", g43_line, f"G43 should have H parameter: {g43_line}")
+        tc_commands = [cmd.Name for cmd in tc_item.path.Commands]
+        self.assertIn("G43", tc_commands, "G43 should be injected into TC path after M6")
+
+        m6_idx = tc_commands.index("M6")
+        self.assertEqual(
+            tc_commands[m6_idx + 1], "G43", "G43 must immediately follow M6 in TC path"
+        )
+        g43_cmd = tc_item.path.Commands[m6_idx + 1]
+        self.assertIn("H", g43_cmd.Parameters, "G43 should carry an H (tool number) parameter")
+        self.assertEqual(g43_cmd.Parameters["H"], 1, "G43 H value must match the T number in M6")
 
     def test111_tool_length_offset_disabled(self):
         """
@@ -1593,6 +1616,99 @@ class TestExport2Integration(unittest.TestCase):
             )
             self.assertEqual(
                 suppressed_count, 3, f"Should have 3 suppressed G1 moves, found {suppressed_count}"
+            )
+
+    def test128b_bare_command_suppressed_when_all_params_duplicate(self):
+        """
+        Test that a command is fully suppressed when all its parameters are
+        duplicates, rather than emitting a bare command name.
+
+        Expected:
+            G0 X10 Y10 Z5     <- first move, all params output
+            G0 X10 Y10 Z5     <- identical, ALL params suppressed -> entire line dropped
+        """
+        machine = self._create_machine(
+            parameters=False, line_numbers=False, comments_enabled=False, output_header=False
+        )
+
+        with self._modify_operation_path(
+            [
+                Path.Command("G0", {"X": 10.0, "Y": 10.0, "Z": 5.0}),
+                Path.Command("G0", {"X": 10.0, "Y": 10.0, "Z": 5.0}),
+            ]
+        ):
+            results = self._run_export2(machine)
+            gcode = self._get_first_section_gcode(results)
+            lines = [
+                l.strip() for l in gcode.split("\n") if l.strip() and not l.strip().startswith("(")
+            ]
+
+            # There should be no bare "G0" line (command with no parameters)
+            bare_g0 = [l for l in lines if l == "G0"]
+            self.assertEqual(
+                len(bare_g0),
+                0,
+                f"Bare G0 with no parameters should be suppressed, found: {bare_g0}",
+            )
+
+    def test130_modal_state_reset_after_tool_change(self):
+        """
+        Test that modal state resets after tool change so parameters are not
+        suppressed as duplicates.
+
+        When duplicates.parameters=False, the second M3 S6000 and G4 P4.000
+        after a tool change must still include S and P parameters even though
+        they are numerically identical to the first occurrence.
+
+        Expected:
+            M6 T2
+            M3 S6000
+            G4 P4.000
+            G0 X10 Y10 Z5
+            M5
+            M6 T3
+            M3 S6000    <- S must NOT be suppressed
+            G4 P4.000   <- P must NOT be suppressed
+        """
+        machine = self._create_machine(
+            parameters=False, line_numbers=False, comments_enabled=False, output_header=False
+        )
+
+        with self._modify_operation_path(
+            [
+                Path.Command("M6", {"T": 2}),
+                Path.Command("M3", {"S": 6000.0}),
+                Path.Command("G4", {"P": 4.0}),
+                Path.Command("G0", {"X": 10.0, "Y": 10.0, "Z": 5.0}),
+                Path.Command("M5"),
+                Path.Command("M6", {"T": 3}),
+                Path.Command("M3", {"S": 6000.0}),
+                Path.Command("G4", {"P": 4.0}),
+                Path.Command("G0", {"X": 20.0, "Y": 20.0, "Z": 5.0}),
+            ]
+        ):
+            results = self._run_export2(machine)
+            gcode = self._get_first_section_gcode(results)
+            lines = [
+                l.strip() for l in gcode.split("\n") if l.strip() and not l.strip().startswith("(")
+            ]
+
+            # Find the second M3 line (after second M6)
+            m3_lines = [l for l in lines if l.startswith("M3")]
+            self.assertGreaterEqual(
+                len(m3_lines), 2, f"Should have at least 2 M3 lines, got: {m3_lines}"
+            )
+            self.assertIn(
+                "S", m3_lines[1], f"Second M3 must include S parameter, got: '{m3_lines[1]}'"
+            )
+
+            # Find the second G4 line
+            g4_lines = [l for l in lines if l.startswith("G4")]
+            self.assertGreaterEqual(
+                len(g4_lines), 2, f"Should have at least 2 G4 lines, got: {g4_lines}"
+            )
+            self.assertIn(
+                "P", g4_lines[1], f"Second G4 must include P parameter, got: '{g4_lines[1]}'"
             )
 
     # ===== 140-149: G-code blocks insertion tests =====

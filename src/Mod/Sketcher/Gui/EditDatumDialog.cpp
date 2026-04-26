@@ -49,6 +49,8 @@
 #include "SketcherSettings.h"
 #include "ui_InsertDatum.h"
 
+#include <Precision.hxx>
+#include <cmath>
 #include <numeric>
 
 
@@ -464,8 +466,10 @@ void EditDatumDialog::performAutoScale(double newDatum)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning"
     );
-    long autoScaleMode
-        = hGrp->GetInt("AutoScaleMode", static_cast<int>(SketcherGui::AutoScaleMode::Always));
+    long autoScaleMode = hGrp->GetInt(
+        "AutoScaleMode",
+        static_cast<int>(SketcherGui::AutoScaleMode::WhenNoScaleFeatureIsVisible)
+    );
 
     // There is a single constraint in the sketch so it can
     // be used as a reference to scale the geometries around the origin
@@ -487,7 +491,16 @@ void EditDatumDialog::performAutoScale(double newDatum)
             }
 
             double oldDatum = sketch->getDatum(ConstrNbr);
+            if (!std::isfinite(newDatum) || !std::isfinite(oldDatum)
+                || std::abs(oldDatum) <= Precision::Confusion()) {
+                return;
+            }
+
             double scaleFactor = newDatum / oldDatum;
+            if (!std::isfinite(scaleFactor) || scaleFactor <= Precision::Confusion()
+                || std::abs(scaleFactor - 1.0) <= Precision::Confusion()) {
+                return;
+            }
             centerScale(scaleFactor);
 
             // Some constraints cannot be scaled so the actual datum constraint

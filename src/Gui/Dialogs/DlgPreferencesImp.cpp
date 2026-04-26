@@ -32,6 +32,7 @@
 #include <QComboBox>
 #include <QCursor>
 #include <QDebug>
+#include <QFontComboBox>
 #include <QFrame>
 #include <QGroupBox>
 #include <QLabel>
@@ -1698,6 +1699,19 @@ void PreferencesSearchController::searchWidgetType(
 
         // search throughout combobox items
         if constexpr (std::is_same_v<WidgetType, QComboBox>) {
+
+            // check if widget is marked with "doNotSearch" aka. do not search
+            QVariant doNotSearch = widget->property("doNotSearch");
+            if (doNotSearch.isValid() && doNotSearch.toBool()) {
+                return;  // skip search items in this combobox
+            }
+
+            // skip QFontComboBox widgets (including PrefFontBox), ie. used in draft wb
+            // these auto-populate with system fonts
+            if (qobject_cast<QFontComboBox*>(widget)) {
+                return;
+            }
+
             for (int i = 0; i < widget->count(); ++i) {
                 QString itemText = widget->itemText(i);
                 if (!itemText.isEmpty()) {

@@ -60,7 +60,7 @@ def check_for_an_adaptive_op(
     opHorizRapid: float
     opVertRapid: float
 
-    (adaptiveOp, opHorizRapid, opVertRapid) = adaptive_op_variables
+    adaptiveOp, opHorizRapid, opVertRapid = adaptive_op_variables
     if values["OUTPUT_ADAPTIVE"] and adaptiveOp and command in values["RAPID_MOVES"]:
         if opHorizRapid and opVertRapid:
             return "G1"
@@ -708,8 +708,12 @@ def parse_a_path(values: Values, gcode: Gcode, pathobj) -> None:
     )
     adaptive_op_variables = determine_adaptive_op(values, pathobj)
 
-    # Apply arc splitting if requested
     path_to_process = pathobj.Path
+
+    # Process canned cycles for drilling operations
+    path_to_process = PostUtils.cannedCycleTerminator(path_to_process)
+
+    # Apply arc splitting if requested
     if values["SPLIT_ARCS"]:
         path_to_process = PostUtils.splitArcs(path_to_process)
 
@@ -813,7 +817,7 @@ def set_adaptive_op_speed(
     opVertRapid: float
     param_num: str
 
-    (adaptiveOp, opHorizRapid, opVertRapid) = adaptive_op_variables
+    adaptiveOp, opHorizRapid, opVertRapid = adaptive_op_variables
     if (
         values["OUTPUT_ADAPTIVE"]
         and adaptiveOp
