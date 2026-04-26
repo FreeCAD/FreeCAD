@@ -1152,7 +1152,9 @@ enum SelType
     SelHAxis = 8,
     SelVAxis = 16,
     SelEdgeOrAxis = SelEdge | SelHAxis | SelVAxis,
-    SelExternalEdge = 32
+    SelExternalEdge = 32,
+    SelArc = 64,
+    SelExternalArc = 128
 };
 
 /**
@@ -1184,10 +1186,11 @@ public:
         std::string element(sSubName);
         if ((allowedSelTypes & SelRoot && element.substr(0, 9) == "RootPoint")
             || (allowedSelTypes & SelVertex && element.substr(0, 6) == "Vertex")
-            || (allowedSelTypes & SelEdge && element.substr(0, 4) == "Edge")
+            || ((allowedSelTypes & (SelEdge | SelArc)) && element.substr(0, 4) == "Edge")
             || (allowedSelTypes & SelHAxis && element.substr(0, 6) == "H_Axis")
             || (allowedSelTypes & SelVAxis && element.substr(0, 6) == "V_Axis")
-            || (allowedSelTypes & SelExternalEdge && element.substr(0, 12) == "ExternalEdge")) {
+            || ((allowedSelTypes & (SelExternalEdge | SelExternalArc))
+                && element.substr(0, 12) == "ExternalEdge")) {
             return true;
         }
 
@@ -1321,10 +1324,19 @@ public:
             newSelType = SelVertex;
             ss << "Vertex" << VtId + 1;
         }
-        else if (allowedSelTypes & SelEdge && CrvId >= 0) {
-            selIdPair.GeoId = CrvId;
-            newSelType = SelEdge;
-            ss << "Edge" << CrvId + 1;
+        else if ((allowedSelTypes & (SelEdge | SelArc)) && CrvId >= 0) {
+            const Part::Geometry* geom = sketchgui->getSketchObject()->getGeometry(CrvId);
+
+            if ((allowedSelTypes & SelArc) && geom && isArcOfCircle(*geom)) {
+                selIdPair.GeoId = CrvId;
+                newSelType = SelArc;
+                ss << "Edge" << CrvId + 1;
+            }
+            else if (allowedSelTypes & SelEdge) {
+                selIdPair.GeoId = CrvId;
+                newSelType = SelEdge;
+                ss << "Edge" << CrvId + 1;
+            }
         }
         else if (allowedSelTypes & SelHAxis && CrsId == 1) {
             selIdPair.GeoId = Sketcher::GeoEnum::HAxis;
@@ -1336,11 +1348,21 @@ public:
             newSelType = SelVAxis;
             ss << "V_Axis";
         }
-        else if (allowedSelTypes & SelExternalEdge && CrvId <= Sketcher::GeoEnum::RefExt) {
+        else if ((allowedSelTypes & (SelExternalEdge | SelExternalArc))
+                 && CrvId <= Sketcher::GeoEnum::RefExt) {
             // TODO: Figure out how this works
-            selIdPair.GeoId = CrvId;
-            newSelType = SelExternalEdge;
-            ss << "ExternalEdge" << Sketcher::GeoEnum::RefExt + 1 - CrvId;
+            const Part::Geometry* geom = sketchgui->getSketchObject()->getGeometry(CrvId);
+
+            if ((allowedSelTypes & SelExternalArc) && geom && isArcOfCircle(*geom)) {
+                selIdPair.GeoId = CrvId;
+                newSelType = SelExternalArc;
+                ss << "ExternalEdge" << Sketcher::GeoEnum::RefExt + 1 - CrvId;
+            }
+            else if (allowedSelTypes & SelExternalEdge) {
+                selIdPair.GeoId = CrvId;
+                newSelType = SelExternalEdge;
+                ss << "ExternalEdge" << Sketcher::GeoEnum::RefExt + 1 - CrvId;
+            }
         }
 
         if (selIdPair.GeoId == GeoEnum::GeoUndef) {
@@ -9410,7 +9432,9 @@ CmdSketcherConstrainAngle::CmdSketcherConstrainAngle()
                            {SelVertexOrRoot, SelEdgeOrAxis, SelEdge},
                            {SelVertexOrRoot, SelEdge, SelExternalEdge},
                            {SelVertexOrRoot, SelExternalEdge, SelEdge},
-                           {SelVertexOrRoot, SelExternalEdge, SelExternalEdge}};
+                           {SelVertexOrRoot, SelExternalEdge, SelExternalEdge},
+                           {SelArc},
+                           {SelExternalArc}};
 }
 
 void CmdSketcherConstrainAngle::activated(int iMsg)
@@ -9709,6 +9733,39 @@ void CmdSketcherConstrainAngle::applyConstraint(std::vector<SelIdPair>& selSeq, 
             GeoId2 = selSeq.at(2).GeoId;
             GeoId3 = selSeq.at(0).GeoId;
             PosId3 = selSeq.at(0).PosId;
+            break;
+        }
+        case 15:// {SelArc}
+        case 16:// {SelExternalArc}
+        {
+            GeoId1 = selSeq.at(0).GeoId;
+
+            const Part::Geometry* geom = Obj->getGeometry(GeoId1);
+            if (geom && isArcOfCircle(*geom)) {
+                auto arc = static_cast<const Part::GeomArcOfCircle*>(geom);
+                double angle = arc->getAngle(/*EmulateCCWXY=*/true);
+
+                openCommand(QT_TRANSLATE_NOOP("Command", "Add angle constraint"));
+                Gui::cmdAppObjectArgs(Obj,
+                                      "addConstraint(Sketcher.Constraint('Angle',%d,%f))",
+                                      GeoId1,
+                                      angle);
+
+                if (GeoId1 <= Sketcher::GeoEnum::RefExt || constraintCreationMode == Reference) {
+                    const std::vector<Sketcher::Constraint*>& ConStr = Obj->Constraints.getValues();
+
+                    Gui::cmdAppObjectArgs(Obj,
+                                          "setDriving(%d,%s)",
+                                          ConStr.size() - 1,
+                                          "False");
+                    finishDatumConstraint(this, Obj, false);
+                }
+                else {
+                    finishDatumConstraint(this, Obj, true);
+                }
+
+                return;
+            }
             break;
         }
     }
