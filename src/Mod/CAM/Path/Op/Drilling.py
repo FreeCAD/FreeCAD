@@ -300,9 +300,14 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             "local_clearance": safe_height,
             "global_clearance": obj.ClearanceHeight.Value,
             "solids": solids,
-            "tool_diameter": self.tool.Diameter.Value,
-            "safety_margin": 10,
+            "tool_shape": None,
+            "tool_diameter": None,
+            "safety_margin": obj.LinkingSafetyMargin.Value,
         }
+        if obj.LinkingMode == "Safest":
+            linkingArgs["tool_shape"] = obj.ToolController.Tool.BitBody.Shape
+        elif obj.LinkingMode == "Compromise":
+            linkingArgs["tool_diameter"] = obj.ToolController.Tool.Diameter.Value
 
         # http://linuxcnc.org/docs/html/gcode/g-code.html#gcode:g98-g99
 

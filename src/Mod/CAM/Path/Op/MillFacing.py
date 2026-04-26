@@ -71,6 +71,7 @@ class ObjectMillFacing(PathOp.ObjectOp):
             | PathOp.FeatureHeights
             | PathOp.FeatureStepDown
             | PathOp.FeatureCoolant
+            | PathOp.FeatureLinking
         )
 
     def initOperation(self, obj):
@@ -280,9 +281,14 @@ class ObjectMillFacing(PathOp.ObjectOp):
             "local_clearance": obj.SafeHeight.Value,
             "global_clearance": obj.ClearanceHeight.Value,
             "solids": solids,
-            "tool_diameter": tool_diameter,
-            "safety_margin": 10,
+            "tool_shape": None,
+            "tool_diameter": None,
+            "safety_margin": obj.LinkingSafetyMargin.Value,
         }
+        if obj.LinkingMode == "Safest":
+            linkingArgs["tool_shape"] = obj.ToolController.Tool.BitBody.Shape
+        elif obj.LinkingMode == "Compromise":
+            linkingArgs["tool_diameter"] = tool_diameter
 
         # Determine the step-downs
         finish_step = 0.0  # No finish step for facing
