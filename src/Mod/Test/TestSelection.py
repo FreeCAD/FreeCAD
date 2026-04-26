@@ -417,6 +417,118 @@ class SelectionSingletonTestCase(unittest.TestCase):
             ],
         )
 
+    def test_observer_can_remove_selection_during_add_notification(self):
+        events = []
+
+        box = self.make_box("ObserverRemoveDuringAddBox")
+
+        class Observer:
+            def __init__(self):
+                self.removed = False
+
+            def addSelection(self, document, obj, sub, point):
+                events.append(("add", document, obj, sub, point))
+                if not self.removed:
+                    self.removed = True
+                    FreeCADGui.Selection.removeSelection(box, sub)
+
+            def removeSelection(self, document, obj, sub):
+                events.append(("remove", document, obj, sub))
+
+        observer = Observer()
+        FreeCADGui.Selection.addObserver(observer, 0)
+        try:
+            FreeCADGui.Selection.addSelection(box, "Face1", 1.0, 2.0, 3.0, False)
+        finally:
+            FreeCADGui.Selection.removeObserver(observer)
+
+        self.assertEqual(
+            events,
+            [
+                ("add", self.doc.Name, box.Name, "Face1", (1.0, 2.0, 3.0)),
+                ("remove", self.doc.Name, box.Name, "Face1"),
+            ],
+        )
+        self.assertFalse(FreeCADGui.Selection.hasSelection(self.doc.Name, 0))
+
+    def test_observer_can_clear_selection_during_add_notification(self):
+        events = []
+        doc_name = self.doc.Name
+
+        box = self.make_box("ObserverClearDuringAddBox")
+
+        class Observer:
+            def __init__(self):
+                self.cleared = False
+
+            def addSelection(self, document, obj, sub, point):
+                events.append(("add", document, obj, sub, point))
+                if not self.cleared:
+                    self.cleared = True
+                    FreeCADGui.Selection.clearSelection(doc_name)
+
+            def clearSelection(self, document):
+                events.append(("clear", document))
+
+        observer = Observer()
+        FreeCADGui.Selection.addObserver(observer, 0)
+        try:
+            FreeCADGui.Selection.addSelection(box, "Face1", 1.0, 2.0, 3.0, False)
+        finally:
+            FreeCADGui.Selection.removeObserver(observer)
+
+        self.assertEqual(
+            events,
+            [
+                ("add", self.doc.Name, box.Name, "Face1", (1.0, 2.0, 3.0)),
+                ("clear", self.doc.Name),
+            ],
+        )
+        self.assertFalse(FreeCADGui.Selection.hasSelection(self.doc.Name, 0))
+
+    def test_stale_remove_notification_is_suppressed_after_observer_readds_selection(self):
+        events = []
+
+        box = self.make_box("ObserverReaddDuringAddBox")
+
+        class Observer:
+            def __init__(self):
+                self.readded = False
+
+            def addSelection(self, document, obj, sub, point):
+                events.append(("add", document, obj, sub, point))
+                if not self.readded:
+                    self.readded = True
+                    FreeCADGui.Selection.removeSelection(box, sub)
+                    FreeCADGui.Selection.addSelection(box, sub, 4.0, 5.0, 6.0, False)
+
+            def removeSelection(self, document, obj, sub):
+                events.append(("remove", document, obj, sub))
+
+        observer = Observer()
+        FreeCADGui.Selection.addObserver(observer, 0)
+        try:
+            FreeCADGui.Selection.addSelection(box, "Face1", 1.0, 2.0, 3.0, False)
+        finally:
+            FreeCADGui.Selection.removeObserver(observer)
+
+        selection = FreeCADGui.Selection.getSelectionEx(self.doc.Name, 0)
+
+        self.assertEqual(
+            events,
+            [
+                ("add", self.doc.Name, box.Name, "Face1", (1.0, 2.0, 3.0)),
+                ("add", self.doc.Name, box.Name, "Face1", (4.0, 5.0, 6.0)),
+            ],
+        )
+        self.assertTrue(FreeCADGui.Selection.isSelected(box, "Face1", 0))
+        self.assertEqual(len(selection), 1)
+        self.assertEqual(list(selection[0].SubElementNames), ["Face1"])
+        self.assertEqual(
+            [(point.x, point.y, point.z) for point in selection[0].PickedPoints],
+            [(4.0, 5.0, 6.0)],
+        )
+
     def test_remove_selection_subelement_leaves_other_subelements(self):
         events = []
 

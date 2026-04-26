@@ -502,6 +502,11 @@ protected:
     {
         notify(SelectionChanges(Chng));
     }
+    bool selectionChangeIsCurrent(const SelectionChanges& msg) const;
+    bool preselectionChangeIsCurrent(const SelectionChanges& msg) const;
+    bool notificationShouldDispatch(const SelectionChanges& msg) const;
+    void dispatchSelectionNotification(const SelectionChanges& msg);
+    void drainNotificationQueue();
 
     struct SelectionDescription
     {
@@ -723,6 +728,18 @@ protected:
     bool removeDeletedObjectFromPickedList(SelectionInfo& info, const App::DocumentObject& obj);
     SelStackItem selectionStackItem(const SelectionContext& context) const;
     bool restoreSelectionStackItem(const SelStackItem& item);
+    bool prepareSelectionAdd(
+        const char* pDocName,
+        const char* pObjectName,
+        const char* pSubName,
+        float x,
+        float y,
+        float z,
+        SelectionDescription& sel
+    ) const;
+    void logSelectionAdd(SelectionDescription& sel, bool clearPreselect) const;
+    void commitSelectionAdd(SelectionContext& context, const SelectionDescription& sel);
+    void notifySingleSelectionAdded(const SelectionContext& context, const SelectionDescription& sel);
     void logBulkSelection(
         const char* pDocName,
         const char* pObjectName,
@@ -765,6 +782,22 @@ protected:
         SelectionContext& context,
         const SelectionDescription& sel
     );
+    static bool matchesSelectionRemoval(
+        const SelectionDescription& selected,
+        const SelectionDescription& removal
+    );
+    static bool matchesSelectionRemovalObject(
+        const SelectionDescription& selected,
+        const SelectionDescription& removal
+    );
+    static bool matchesSelectionRemovalSubElement(
+        const SelectionDescription& selected,
+        const SelectionDescription& removal
+    );
+    static bool removalCoversSelectedSubElement(
+        const std::string& selectedSubName,
+        const std::string& removalSubName
+    );
     bool clearDocumentSelectionEntries(SelectionContext& context);
     void notifyViewProvidersOfClearSelection(
         const std::list<SelectionDescription>& selections,
@@ -772,6 +805,10 @@ protected:
     ) const;
     void logDocumentClearSelection(const std::string& docName, bool clearPreSelect) const;
     void logCompleteClearSelection(bool clearPreSelect) const;
+    static bool isCompleteSelectionClearRequest(const char* pDocName);
+    void clearDocumentPreselectionIfRequested(const SelectionContext& context, bool clearPreSelect);
+    void clearCompletePreselectionIfRequested(bool clearPreSelect);
+    void notifySelectionCleared(const std::string& docName);
     void clearPickedList(SelectionContext& context);
     void replacePickedList(SelectionContext& context, const std::vector<SelObj>& pickedList);
     void notifySelectionRemovals(std::vector<SelectionChanges>& changes);
