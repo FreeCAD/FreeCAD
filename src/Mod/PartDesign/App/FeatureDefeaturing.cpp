@@ -20,6 +20,11 @@
  ******************************************************************************/
 
 
+#include <BRepAlgoAPI_Cut.hxx>
+#include <BRepAlgoAPI_Defeaturing.hxx>
+#include <BRepAlgoAPI_Fuse.hxx>
+#include <TopTools_ListOfShape.hxx>
+
 #include <Base/Exception.h>
 #include <Mod/Part/App/TopoShape.h>
 
@@ -60,16 +65,23 @@ App::DocumentObjectExecReturn* Defeaturing::execute()
         return App::DocumentObject::StdReturn;
     }
 
-    std::vector<TopoDS_Shape> faceShapes;
-    faceShapes.reserve(faces.size());
-    for (const auto& f : faces) {
-        faceShapes.push_back(f.getShape());
-    }
-
     this->positionByBaseFeature();
 
     try {
-        TopoDS_Shape result = baseShape.defeaturing(faceShapes);
+        BRepAlgoAPI_Defeaturing defeat;
+        defeat.SetRunParallel(true);
+        defeat.SetShape(baseShape.getShape());
+        for (const auto& f : faces) {
+            defeat.AddFaceToRemove(f.getShape());
+        }
+        defeat.Build();
+        if (!defeat.IsDone()) {
+            Standard_SStream ss;
+            defeat.DumpErrors(ss);
+            throw Base::RuntimeError(ss.str().c_str());
+        }
+
+        TopoDS_Shape result = defeat.Shape();
         if (result.IsNull()) {
             return new App::DocumentObjectExecReturn(
                 QT_TRANSLATE_NOOP("Exception", "Defeaturing failed: result is null")
@@ -92,4 +104,84 @@ App::DocumentObjectExecReturn* Defeaturing::execute()
     }
 
     return App::DocumentObject::StdReturn;
+}
+
+void Defeaturing::updatePreviewShape()
+{
+    Part::TopoShape resultShape = Shape.getShape();
+    if (resultShape.isNull()) {
+        PreviewShape.setValue(TopoDS_Shape());
+        return;
+    }
+
+    Part::TopoShape baseShape;
+    try {
+        baseShape = getBaseTopoShape();
+    }
+    catch (...) {
+        PreviewShape.setValue(TopoDS_Shape());
+        return;
+    }
+
+    baseShape.setTransform(Base::Matrix4D());
+    resultShape.setTransform(Base::Matrix4D());
+
+    try {
+        // Removed volume: material in base but not in result (e.g. defeature a fillet)
+        BRepAlgoAPI_Cut removedCut;
+        removedCut.SetRunParallel(true);
+        TopTools_ListOfShape args1, tools1;
+        args1.Append(baseShape.getShape());
+        tools1.Append(resultShape.getShape());
+        removedCut.SetArguments(args1);
+        removedCut.SetTools(tools1);
+        removedCut.Build();
+
+        // Added volume: material in result but not in base (e.g. defeature a hole)
+        BRepAlgoAPI_Cut addedCut;
+        addedCut.SetRunParallel(true);
+        TopTools_ListOfShape args2, tools2;
+        args2.Append(resultShape.getShape());
+        tools2.Append(baseShape.getShape());
+        addedCut.SetArguments(args2);
+        addedCut.SetTools(tools2);
+        addedCut.Build();
+
+        bool hasRemoved = removedCut.IsDone() && !removedCut.Shape().IsNull();
+        bool hasAdded = addedCut.IsDone() && !addedCut.Shape().IsNull();
+
+        if (!hasRemoved && !hasAdded) {
+            PreviewShape.setValue(TopoDS_Shape());
+            return;
+        }
+
+        TopoDS_Shape previewShape;
+        if (hasRemoved && hasAdded) {
+            BRepAlgoAPI_Fuse fuse;
+            fuse.SetRunParallel(true);
+            TopTools_ListOfShape fuseArgs, fuseTools;
+            fuseArgs.Append(removedCut.Shape());
+            fuseTools.Append(addedCut.Shape());
+            fuse.SetArguments(fuseArgs);
+            fuse.SetTools(fuseTools);
+            fuse.Build();
+            if (!fuse.IsDone() || fuse.Shape().IsNull()) {
+                previewShape = removedCut.Shape();
+            }
+            else {
+                previewShape = fuse.Shape();
+            }
+        }
+        else if (hasRemoved) {
+            previewShape = removedCut.Shape();
+        }
+        else {
+            previewShape = addedCut.Shape();
+        }
+
+        PreviewShape.setValue(Part::TopoShape(previewShape));
+    }
+    catch (...) {
+        PreviewShape.setValue(TopoDS_Shape());
+    }
 }

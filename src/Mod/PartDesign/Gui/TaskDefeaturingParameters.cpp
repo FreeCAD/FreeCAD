@@ -130,6 +130,7 @@ TaskDlgDefeaturingParameters::TaskDlgDefeaturingParameters(ViewProviderDefeaturi
     parameter = new TaskDefeaturingParameters(DressUpView);
 
     Content.push_back(parameter);
+    Content.push_back(preview);
 }
 
 TaskDlgDefeaturingParameters::~TaskDlgDefeaturingParameters() = default;

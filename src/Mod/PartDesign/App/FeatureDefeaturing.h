@@ -36,6 +36,7 @@ public:
 
     App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
+    void updatePreviewShape() override;
 
     const char* getViewProviderName() const override
     {
