@@ -383,7 +383,7 @@ def _generate_sampling_plan(
     is_3d = tool_params["is_threeD"]
 
     # A Ball Endmill is mathematically equivalent to a Bullnose tool where the corner radius
-    # is equal to the tool radius. Normalizing c_rad here allows us to use 
+    # is equal to the tool radius. Normalizing c_rad here allows us to use
     # the same 'bullnose' formulas for both tool types, simplifying the math.
     if "ballend" in profile:
         c_rad = R
