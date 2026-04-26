@@ -24,9 +24,39 @@
 #include "PreviewExtension.h"
 
 #include <App/DocumentObject.h>
+#include <App/ExtensionPython.h>
+#include <Base/PyObjectBase.h>
 
 EXTENSION_PROPERTY_SOURCE(Part::PreviewExtension, App::DocumentObjectExtension)
+
+namespace Part
+{
+
+template<typename ExtensionT>
+App::DocumentObjectExecReturn* PreviewExtensionPythonT<ExtensionT>::recomputePreview()
+{
+    EXTENSION_PROXY_NOARG(recomputePreview)
+
+    static App::DocumentObjectExecReturn error("");
+
+    if (!result.isNone() && result.isString()) {
+        error.Why = Py::String(result);
+        return &error;
+    }
+
+    if (!result.isNone()) {
+        return App::DocumentObject::StdReturn;
+    }
+
+    return ExtensionT::recomputePreview();
+}
+
+template class PartExport PreviewExtensionPythonT<PreviewExtension>;
+
+}  // namespace Part
+
 EXTENSION_PROPERTY_SOURCE_TEMPLATE(Part::PreviewExtensionPython, Part::PreviewExtension)
+template class PartExport App::ExtensionPythonT<Part::PreviewExtensionPythonT<Part::PreviewExtension>>;
 
 Part::PreviewExtension::PreviewExtension()
 {
