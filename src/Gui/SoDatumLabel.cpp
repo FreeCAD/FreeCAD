@@ -1474,25 +1474,25 @@ namespace
  */
 float getSketchRotationAngle(SoState* state, const SbViewVolume& viewVolume, bool flip)
 {
-    // --- Camera basis from view volume (screen space axes) ---
+    // Camera basis from view volume (screen space axes
     SbVec3f camRight = viewVolume.lrf - viewVolume.llf;
     SbVec3f camUp = viewVolume.ulf - viewVolume.llf;
 
     camRight.normalize();
     camUp.normalize();
 
-    // --- Sketch local X axis in world space ---
+    // Sketch local X axis in world space
     const SbMatrix& m = SoModelMatrixElement::get(state);
     SbVec3f xWorld;
     m.multDirMatrix(SbVec3f(1, 0, 0), xWorld);
 
-    // --- Compute angle in screen space ---
+    // Compute angle in screen space
     float cosA = xWorld.dot(camRight);
     float sinA = xWorld.dot(camUp);
 
     float angleRad = std::atan2(sinA, cosA);
 
-    // --- Optional flip correction (back-facing view) ---
+    // Optional flip correction (back-facing view)
     return flip ? angleRad : -angleRad;
 }
 }  // unnamed namespace
