@@ -582,6 +582,27 @@ protected:
         ResolveMode resolve,
         bool single
     );
+    struct SelectionInResult
+    {
+        App::DocumentObject* root {nullptr};
+        std::string subName;
+    };
+    bool selectionInResult(
+        SelectionObject& sel,
+        const std::string& subName,
+        App::DocumentObject* container,
+        Base::Type typeId,
+        App::Document*& doc,
+        bool& containerPassed,
+        SelectionInResult& result
+    ) const;
+    static bool appendSelectionInResult(
+        std::vector<SelectionObject>& selections,
+        std::map<App::DocumentObject*, size_t>& objectIndices,
+        const SelectionInResult& result,
+        const Base::Vector3d& pickedPoint,
+        bool single
+    );
 
     static App::DocumentObject* getObjectOfType(
         const SelectionDescription& sel,

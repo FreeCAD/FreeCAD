@@ -44,6 +44,107 @@
 
 using namespace Gui;
 
+namespace
+{
+
+std::size_t minimumCount(const Node_Object& object)
+{
+    return object.Slice ? object.Slice->Min : 1;
+}
+
+std::size_t maximumCount(const Node_Object& object)
+{
+    return object.Slice ? object.Slice->Max : 1;
+}
+
+bool countInRange(std::size_t count, std::size_t min, std::size_t max)
+{
+    return count >= min && count <= max;
+}
+
+std::vector<SelectionObject> selectionForFilterObject(
+    const Node_Object& object,
+    App::DocumentObject* container
+)
+{
+    if (container) {
+        return Gui::Selection().getSelectionIn(container, object.ObjectType);
+    }
+    return Gui::Selection().getSelectionEx(nullptr, object.ObjectType);
+}
+
+bool subNameMatchesFilter(const std::string& subName, const std::string& filterSubName)
+{
+    return subName.find(filterSubName) == 0;
+}
+
+bool subNameMatchesFilter(const char* subName, const std::string& filterSubName)
+{
+    return std::string(subName).find(filterSubName) == 0;
+}
+
+bool selectedObjectCountMatches(
+    const std::vector<SelectionObject>& selections,
+    std::size_t min,
+    std::size_t max
+)
+{
+    return countInRange(selections.size(), min, max);
+}
+
+bool selectedSubElementCountMatches(
+    const std::vector<SelectionObject>& selections,
+    const std::string& filterSubName,
+    std::size_t min,
+    std::size_t max
+)
+{
+    std::size_t subCount = 0;
+    for (const auto& selection : selections) {
+        const std::vector<std::string>& subNames = selection.getSubNames();
+        if (subNames.empty()) {
+            return false;
+        }
+        for (const auto& subName : subNames) {
+            if (!subNameMatchesFilter(subName, filterSubName)) {
+                return false;
+            }
+        }
+        subCount += subNames.size();
+    }
+
+    return countInRange(subCount, min, max);
+}
+
+bool selectionMatchesFilterObject(const std::vector<SelectionObject>& selections, const Node_Object& object)
+{
+    const auto min = minimumCount(object);
+    const auto max = maximumCount(object);
+
+    if (object.SubName.empty()) {
+        return selectedObjectCountMatches(selections, min, max);
+    }
+    return selectedSubElementCountMatches(selections, object.SubName, min, max);
+}
+
+bool objectMatchesFilter(App::DocumentObject* object, const Node_Object& filterObject)
+{
+    return object->isDerivedFrom(filterObject.ObjectType);
+}
+
+bool objectSubNameMatchesFilter(const char* subName, const Node_Object& filterObject)
+{
+    if (!subName) {
+        return true;
+    }
+    if (filterObject.SubName.empty()) {
+        return true;
+    }
+    return subNameMatchesFilter(subName, filterObject.SubName);
+}
+
+}  // namespace
+
 // suppress annoying warnings from generated source files
 #ifdef _MSC_VER
 # pragma warning(disable : 4003)
@@ -196,45 +297,11 @@ bool SelectionFilter::match()
     Result.clear();
 
     for (const auto& it : Ast->Objects) {
-        std::size_t min = 1;
-        std::size_t max = 1;
+        std::vector<Gui::SelectionObject> temp = selectionForFilterObject(*it, container);
 
-        if (it->Slice) {
-            min = it->Slice->Min;
-            max = it->Slice->Max;
+        if (!selectionMatchesFilterObject(temp, *it)) {
+            return false;
         }
-        std::vector<Gui::SelectionObject> temp = container
-            ? Gui::Selection().getSelectionIn(container, it->ObjectType)
-            : Gui::Selection().getSelectionEx(nullptr, it->ObjectType);
-
-        // test if subnames present
-        if (it->SubName.empty()) {
-            // if no subnames the count of the object get tested
-            if (temp.size() < min || temp.size() > max) {
-                return false;
-            }
-        }
-        else {
-            // if subnames present count all subs over the selected object of type
-            std::size_t subCount = 0;
-            for (const auto& it2 : temp) {
-                const std::vector<std::string>& subNames = it2.getSubNames();
-                if (subNames.empty()) {
-                    return false;
-                }
-                for (const auto& subName : subNames) {
-                    if (subName.find(it->SubName) != 0) {
-                        return false;
-                    }
-                }
-                subCount += subNames.size();
-            }
-
-            if (subCount < min || subCount > max) {
-                return false;
-            }
-        }
-
         Result.push_back(temp);
     }
     return true;
@@ -247,16 +314,8 @@ bool SelectionFilter::test(App::DocumentObject* pObj, const char* sSubName)
     }
 
     for (const auto& it : Ast->Objects) {
-        if (pObj->isDerivedFrom(it->ObjectType)) {
-            if (!sSubName) {
-                return true;
-            }
-            if (it->SubName.empty()) {
-                return true;
-            }
-            if (std::string(sSubName).find(it->SubName) == 0) {
-                return true;
-            }
+        if (objectMatchesFilter(pObj, *it) && objectSubNameMatchesFilter(sSubName, *it)) {
+            return true;
         }
     }
     return false;
@@ -375,23 +434,54 @@ private:
     YY_BUFFER_STATE my_string_buffer;
 };
 
+class ParserState
+{
+public:
+    ParserState(SelectionFilter& filter, const char* filterText)
+        : bufferCleaner(SelectionFilter_scan_string(filterText))
+    {
+        // be aware that this parser is not reentrant! Don't use with Threats!!!
+        assert(!ActFilter);
+        ActFilter = &filter;
+        TopBlock = nullptr;
+    }
+
+    ~ParserState()
+    {
+        ActFilter = nullptr;
+        TopBlock = nullptr;
+        StringFactory::instance()->clear();
+    }
+
+    void parse()
+    {
+        /*int my_parse_result =*/yyparse();
+    }
+
+    std::shared_ptr<Node_Block> takeBlock()
+    {
+        std::shared_ptr<Node_Block> block(TopBlock);
+        TopBlock = nullptr;
+        return block;
+    }
+
+    ParserState(const ParserState&) = delete;
+    ParserState(ParserState&&) = delete;
+    ParserState& operator=(const ParserState&) = delete;
+    ParserState& operator=(ParserState&&) = delete;
+
+private:
+    StringBufferCleaner bufferCleaner;
+};
+
 }  // namespace SelectionParser
 
 bool SelectionFilter::parse()
 {
     Errors = "";
-    SelectionParser::YY_BUFFER_STATE my_string_buffer = SelectionParser::SelectionFilter_scan_string(
-        Filter.c_str()
-    );
-    SelectionParser::StringBufferCleaner cleaner(my_string_buffer);
-    // be aware that this parser is not reentrant! Don't use with Threats!!!
-    assert(!ActFilter);
-    ActFilter = this;
-    /*int my_parse_result =*/SelectionParser::yyparse();
-    ActFilter = nullptr;
-    Ast.reset(TopBlock);
-    TopBlock = nullptr;
-    SelectionParser::StringFactory::instance()->clear();
+    SelectionParser::ParserState parser(*this, Filter.c_str());
+    parser.parse();
+    Ast = parser.takeBlock();
 
     if (Errors.empty()) {
         return true;

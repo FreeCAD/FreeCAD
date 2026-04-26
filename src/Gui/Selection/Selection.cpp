@@ -332,89 +332,127 @@ std::vector<Gui::SelectionObject> SelectionSingleton::getSelectionIn(
         = getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(), ResolveMode::NoResolve, single);
 
     std::vector<SelectionObject> ret;
-    std::map<App::DocumentObject*, size_t> SortMap;
+    std::map<App::DocumentObject*, size_t> objectIndices;
 
     for (auto& sel : sels) {
         auto* rootObj = sel.getObject();
         App::Document* doc = rootObj->getDocument();
         std::vector<std::string> subs = sel.getSubNames();
-        bool objPassed = false;
+        bool containerPassed = false;
 
         for (size_t i = 0; i < subs.size(); ++i) {
-            auto& sub = subs[i];
-            App::DocumentObject* newRootObj = nullptr;
-            std::string newSub = "";
-
-            std::vector<std::string> names = Base::Tools::splitSubName(sub);
-
-            if (container == rootObj) {
-                objPassed = true;
+            SelectionInResult result;
+            if (!selectionInResult(sel, subs[i], container, typeId, doc, containerPassed, result)) {
+                continue;
             }
-
-            if (rootObj->isLink()) {
-                // Update doc in case its an external link.
-                doc = rootObj->getLinkedObject()->getDocument();
-            }
-
-            for (auto& name : names) {
-                App::DocumentObject* obj = doc->getObject(name.c_str());
-                if (!obj) {  // We reached the element name (for example 'edge1')
-                    newSub += name;
-                    break;
-                }
-
-                if (objPassed) {
-                    if (!newRootObj) {
-                        // We are the first object after the container is passed.
-                        newRootObj = obj;
-                    }
-                    else {
-                        newSub += name + ".";
-                    }
-                }
-
-                if (obj == container) {
-                    objPassed = true;
-                }
-                if (obj->isLink()) {
-                    // Update doc in case its an external link.
-                    doc = obj->getLinkedObject()->getDocument();
-                }
-            }
-
-            if (newRootObj) {
-                // Make sure selected object is of correct type
-                auto* lastObj = newRootObj->resolve(newSub.c_str());
-                if (!lastObj || !lastObj->isDerivedFrom(typeId)) {
-                    continue;
-                }
-
-                auto it = SortMap.find(newRootObj);
-                if (it != SortMap.end()) {
-                    // only add sub-element
-                    if (newSub != "") {
-                        ret[it->second].SubNames.emplace_back(newSub);
-                        ret[it->second].SelPoses.emplace_back(sel.SelPoses[i]);
-                    }
-                }
-                else {
-                    if (single && !ret.empty()) {
-                        ret.clear();
-                        break;
-                    }
-                    // create a new entry
-                    ret.emplace_back(newRootObj);
-                    if (newSub != "") {
-                        ret.back().SubNames.emplace_back(newSub);
-                        ret.back().SelPoses.emplace_back(sel.SelPoses[i]);
-                    }
-                    SortMap.insert(std::make_pair(newRootObj, ret.size() - 1));
-                }
+            if (!appendSelectionInResult(ret, objectIndices, result, sel.SelPoses[i], single)) {
+                break;
             }
         }
     }
 
     return ret;
+}
+
+bool SelectionSingleton::selectionInResult(
+    SelectionObject& sel,
+    const std::string& subName,
+    App::DocumentObject* container,
+    Base::Type typeId,
+    App::Document*& doc,
+    bool& containerPassed,
+    SelectionInResult& result
+) const
+{
+    result = SelectionInResult {};
+
+    auto* rootObj = sel.getObject();
+    App::DocumentObject* newRootObj = nullptr;
+    std::string newSub;
+
+    std::vector<std::string> names = Base::Tools::splitSubName(subName);
+
+    if (container == rootObj) {
+        containerPassed = true;
+    }
+
+    if (rootObj->isLink()) {
+        // Update doc in case its an external link.
+        doc = rootObj->getLinkedObject()->getDocument();
+    }
+
+    for (auto& name : names) {
+        App::DocumentObject* obj = doc->getObject(name.c_str());
+        if (!obj) {  // We reached the element name (for example 'edge1')
+            newSub += name;
+            break;
+        }
+
+        if (containerPassed) {
+            if (!newRootObj) {
+                // We are the first object after the container is passed.
+                newRootObj = obj;
+            }
+            else {
+                newSub += name + ".";
+            }
+        }
+
+        if (obj == container) {
+            containerPassed = true;
+        }
+        if (obj->isLink()) {
+            // Update doc in case its an external link.
+            doc = obj->getLinkedObject()->getDocument();
+        }
+    }
+
+    if (!newRootObj) {
+        return false;
+    }
+
+    // Make sure selected object is of correct type
+    auto* lastObj = newRootObj->resolve(newSub.c_str());
+    if (!lastObj || !lastObj->isDerivedFrom(typeId)) {
+        return false;
+    }
+
+    result.root = newRootObj;
+    result.subName = std::move(newSub);
+    return true;
+}
+
+bool SelectionSingleton::appendSelectionInResult(
+    std::vector<SelectionObject>& selections,
+    std::map<App::DocumentObject*, size_t>& objectIndices,
+    const SelectionInResult& result,
+    const Base::Vector3d& pickedPoint,
+    bool single
+)
+{
+    auto it = objectIndices.find(result.root);
+    if (it != objectIndices.end()) {
+        // only add sub-element
+        if (!result.subName.empty()) {
+            selections[it->second].SubNames.emplace_back(result.subName);
+            selections[it->second].SelPoses.emplace_back(pickedPoint);
+        }
+        return true;
+    }
+
+    if (single && !selections.empty()) {
+        selections.clear();
+        return false;
+    }
+
+    // create a new entry
+    selections.emplace_back(result.root);
+    if (!result.subName.empty()) {
+        selections.back().SubNames.emplace_back(result.subName);
+        selections.back().SelPoses.emplace_back(pickedPoint);
+    }
+    objectIndices.insert(std::make_pair(result.root, selections.size() - 1));
+    return true;
 }
 
 std::vector<SelectionObject> SelectionSingleton::getSelectionEx(
