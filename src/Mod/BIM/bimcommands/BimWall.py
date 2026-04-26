@@ -53,7 +53,7 @@ class Arch_Wall:
 
     def __init__(self):
         self.tracker = None
-        self._reset_interactive_state()
+        self._reset_interactive_buffers()
 
     def GetResources(self):
         """Returns a dictionary with the visual aspects of the Arch Wall tool."""
@@ -73,33 +73,34 @@ class Arch_Wall:
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
         return v
 
-    def _reset_interactive_state(self):
+    def _reset_interactive_buffers(self):
+        """Clear Arch Wall's local interactive buffers."""
         self.points = []
         self.existing = []
         self.Length = None
 
-    def _teardown_interactive(self):
-        """Tear down the interactive wall session.
-
-        Order matters: the active Draft command must be cleared before snapper
-        teardown so Draft can fully restore command-owned UI state.
-        """
+    def _teardown_interactive_session(self):
+        """Tear down the active interactive wall session."""
         tracker = self.tracker
         self.tracker = None
         if tracker is not None:
             tracker.finalize()
 
+        # Clear the active Draft command before Snapper teardown, because
+        # cancelPointRequest() can close the Draft UI and reset edit mode.
+        # If Draft still sees this command as active, that cleanup path can
+        # re-enter finish() while teardown is already in progress.
         FreeCAD.activeDraftCommand = None
 
         snapper = getattr(FreeCADGui, "Snapper", None)
         if snapper is not None:
             snapper.cancelPointRequest()
 
-        self._reset_interactive_state()
+        self._reset_interactive_buffers()
 
     def cancel_interactive(self):
         """Cancel the current interactive wall creation session."""
-        self._teardown_interactive()
+        self._teardown_interactive_session()
 
     def finish(self, cont=False, closed=False):
         """Finish the interactive wall command.
@@ -142,7 +143,7 @@ class Arch_Wall:
             self.baseline_mode = WallBaselineMode.NONE
         self.AUTOJOIN = params.get_param_arch("autoJoinWalls")
         sel = FreeCADGui.Selection.getSelectionEx()
-        self._reset_interactive_state()
+        self._reset_interactive_buffers()
         self.wp = None
 
         if sel:
@@ -440,7 +441,7 @@ class Arch_Wall:
         self.doc.commitTransaction()
         self.doc.recompute()
         continue_mode = FreeCADGui.draftToolBar.continueMode
-        self._teardown_interactive()
+        self._teardown_interactive_session()
         if continue_mode:
             self.Activated()
 

@@ -1321,7 +1321,12 @@ class Snapper:
         self.callbackMove = None
 
     def _teardown_point_request(self):
-        """Finish the current point-picking request and restore the Draft UI."""
+        """Tear down the current point-picking session.
+
+        This clears callbacks, turns the Snapper off, and closes the Draft
+        toolbar UI. It does not reset edit mode; cancelPointRequest() owns
+        that explicit-cancel path.
+        """
         self._clear_point_callbacks()
         self.off()
         toolbar = getattr(Gui, "draftToolBar", None)
@@ -1338,12 +1343,12 @@ class Snapper:
             callback(point)
 
     def cancelPointRequest(self):
-        """Cancel the current point-picking request and restore the Draft UI."""
+        """Explicitly cancel the current point-picking request."""
         self._teardown_point_request()
         gui_doc = Gui.ActiveDocument
         if gui_doc and gui_doc.getInEdit() is not None:
-            # Explicit point-request teardown can bypass DraftToolBar.finish(),
-            # so leave edit mode here as well.
+            # This explicit cancel path can bypass DraftToolBar.finish(), so
+            # leave edit mode here as well.
             gui_doc.resetEdit()
         self.pt = None
 
