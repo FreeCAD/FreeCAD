@@ -102,6 +102,9 @@ class PreviewExtensionPythonT: public ExtensionT
 public:
     PreviewExtensionPythonT() = default;
     ~PreviewExtensionPythonT() override = default;
+
+protected:
+    App::DocumentObjectExecReturn* recomputePreview() override;
 };
 
 using PreviewExtensionPython = App::ExtensionPythonT<PreviewExtensionPythonT<PreviewExtension>>;

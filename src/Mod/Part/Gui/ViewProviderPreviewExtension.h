@@ -80,13 +80,12 @@ public:
     ViewProviderPreviewExtension();
 
     /// Returns shape that should be used as the preview
-    virtual Part::TopoShape getPreviewShape() const
-    {
-        return Part::TopoShape();
-    };
+    virtual Part::TopoShape getPreviewShape() const;
 
     void extensionAttach(App::DocumentObject*) override;
     void extensionBeforeDelete() override;
+
+    PyObject* getExtensionPyObject() override;
 
     /// Returns whatever preview is enabled or not
     bool isPreviewEnabled() const
@@ -98,6 +97,7 @@ public:
 
 protected:
     void extensionOnChanged(const App::Property* prop) override;
+    void extensionUpdateData(const App::Property* prop) override;
 
     /// attaches preview to the scene graph
     virtual void attachPreview();
