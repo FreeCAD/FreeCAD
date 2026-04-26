@@ -802,7 +802,14 @@ protected:
         std::string getSubString() const;
     };
 
-    int checkSelection(
+    enum class SelectionCheckResult
+    {
+        Invalid,
+        Available,
+        Selected
+    };
+
+    SelectionCheckResult checkSelection(
         const char* pDocName,
         const char* pObjectName,
         const char* pSubName,
@@ -862,6 +869,40 @@ protected:
     // Returns a selection context or nullptr if the document is not found
     SelectionContext getSelectionContext(const char* pDocName);
     SelectionConstContext getSelectionContext(const char* pDocName) const;
+    void clearPickedList(SelectionContext& context);
+    void replacePickedList(SelectionContext& context, const std::vector<SelObj>& pickedList);
+    void notifySelectionRemovals(std::vector<SelectionChanges>& changes);
+
+    struct PreselectionState
+    {
+        std::string docName;
+        std::string objectName;
+        std::string subName;
+
+        bool empty() const
+        {
+            return docName.empty();
+        }
+
+        bool matches(const char* document, const char* object, const char* subElement) const
+        {
+            return docName == document && objectName == object && subName == subElement;
+        }
+
+        void set(const std::string& document, const char* object, const char* subElement)
+        {
+            docName = document;
+            objectName = object;
+            subName = subElement;
+        }
+
+        void reset()
+        {
+            docName.clear();
+            objectName.clear();
+            subName.clear();
+        }
+    };
 
     static SelectionSingleton* _pcSingleton;
 
@@ -889,6 +930,7 @@ protected:
     std::string FeatName;
     std::string SubName;
     float hx {0.0f}, hy {0.0f}, hz {0.0f};
+    PreselectionState preselection;
     SelectionChanges CurrentPreselection;
 
 
