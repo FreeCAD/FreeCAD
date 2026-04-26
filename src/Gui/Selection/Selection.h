@@ -536,6 +536,27 @@ protected:
         SelectionDescription& sel,
         const std::list<SelectionDescription>* selList = nullptr
     ) const;
+    SelectionCheckResult resolveSelectionDescription(
+        const char* pDocName,
+        const char* pObjectName,
+        const char*& pSubName,
+        ResolveMode resolve,
+        SelectionDescription& sel,
+        std::string& subNamePrefix,
+        bool reportErrors
+    ) const;
+    const std::list<SelectionDescription>* selectionListForCheck(
+        const char* pDocName,
+        const std::list<SelectionDescription>* selList
+    ) const;
+    static SelectionCheckResult findSelectionMatch(
+        const char* pDocName,
+        const char* pSubName,
+        const std::string& subNamePrefix,
+        ResolveMode resolve,
+        const SelectionDescription& sel,
+        const std::list<SelectionDescription>& selList
+    );
 
     std::vector<Gui::SelectionObject> getObjectList(
         const char* pDocName,
@@ -584,10 +605,37 @@ protected:
         const SelectionInfo* info;
         std::string docName;
     };
+    std::vector<SelectionChanges> removeDeletedObjectSelections(
+        SelectionInfo& info,
+        const App::DocumentObject& obj
+    );
+    bool removeDeletedObjectFromPickedList(SelectionInfo& info, const App::DocumentObject& obj);
+    SelStackItem selectionStackItem(const SelectionContext& context) const;
+    bool restoreSelectionStackItem(const SelStackItem& item);
 
     // Returns a selection context or nullptr if the document is not found
     SelectionContext getSelectionContext(const char* pDocName);
     SelectionConstContext getSelectionContext(const char* pDocName) const;
+    bool selectionGateAllows(const SelectionContext& context, const SelectionDescription& sel) const;
+    bool preselectionGateAllows(
+        const SelectionContext& context,
+        App::Document* pDoc,
+        const char* pDocName,
+        const char* pObjectName,
+        const char* pSubName,
+        SelectionChanges::MsgSource signal
+    ) const;
+    std::vector<SelectionChanges> removeSelectionMatches(
+        SelectionContext& context,
+        const SelectionDescription& sel
+    );
+    bool clearDocumentSelectionEntries(SelectionContext& context);
+    void notifyViewProvidersOfClearSelection(
+        const std::list<SelectionDescription>& selections,
+        const char* pDocName
+    ) const;
+    void logDocumentClearSelection(const std::string& docName, bool clearPreSelect) const;
+    void logCompleteClearSelection(bool clearPreSelect) const;
     void clearPickedList(SelectionContext& context);
     void replacePickedList(SelectionContext& context, const std::vector<SelObj>& pickedList);
     void notifySelectionRemovals(std::vector<SelectionChanges>& changes);
