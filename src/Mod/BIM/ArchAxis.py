@@ -159,9 +159,7 @@ def get_axis_bubble_data(obj, vobj):
                     pla_inv.multVec(obj.Shape.Edges[i * 2 + 1].Vertexes[0].Point),
                 ]
             else:
-                verts = [
-                    pla_inv.multVec(v.Point) for v in obj.Shape.Edges[i].Vertexes
-                ]
+                verts = [pla_inv.multVec(v.Point) for v in obj.Shape.Edges[i].Vertexes]
 
             arrow = None
             if p == "Start":
@@ -642,10 +640,7 @@ class _ViewProviderAxis:
                         self.bubbledata = bubbles
                         pla_inv = obj.Placement.inverse()
                         for i, cir in enumerate(bubbles):
-                            local_pts = [
-                                pla_inv.multVec(v.Point)
-                                for v in cir.Vertexes
-                            ]
+                            local_pts = [pla_inv.multVec(v.Point) for v in cir.Vertexes]
                             if hasattr(cir, "Curve") and isinstance(cir.Curve, Part.Circle):
                                 local_center = pla_inv.multVec(cir.Curve.Center)
                                 local_cir = Part.makeCircle(cir.Curve.Radius, local_center)
@@ -750,9 +745,7 @@ class _ViewProviderAxis:
                 pla_inv = obj.Placement.inverse()
                 for i in range(n):
                     if obj.Labels[i]:
-                        vert = pla_inv.multVec(
-                            obj.Shape.Edges[i * i_factor].Vertexes[0].Point
-                        )
+                        vert = pla_inv.multVec(obj.Shape.Edges[i * i_factor].Vertexes[0].Point)
                         if hasattr(vobj, "LabelOffset"):
                             pl = FreeCAD.Placement(vobj.LabelOffset)
                             pl.Base = vert.add(pl.Base)
