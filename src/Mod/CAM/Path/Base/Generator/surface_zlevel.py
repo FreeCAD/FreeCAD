@@ -34,6 +34,13 @@ import math
 import FreeCAD
 import Path
 
+if False:
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
+else:
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+
+
 # ---------------------------------------------------------------------------
 # Depth categorization
 # ---------------------------------------------------------------------------
@@ -242,15 +249,10 @@ def zlevel_hybrid_stack(
     }
     critical_heights.add(round(modelTop, 6))
 
-    # Progress Indicator
-    indicator = FreeCAD.Base.ProgressIndicator()
-    indicator.start("Z-Level Hybrid: Processing Geometry...", len(categorizedSteps))
-
     # 4. Main layer loop
     for z_target, status, floor_geo in categorizedSteps:
 
         if z_target > (modelTop - tol):
-            indicator.next()
             continue
 
         # The depth at which the tool has submerged from the modelTop
@@ -300,7 +302,6 @@ def zlevel_hybrid_stack(
             Path.Log.error(
                 f"Z-Level Hybrid: Silhouette fusion failed at Z={round(z_target, 3)}. Error: {str(e)}"
             )
-            indicator.next()
             continue
 
         # Clearing engine (Clipper Booleans)
@@ -348,9 +349,6 @@ def zlevel_hybrid_stack(
                 wpc, allPrevComp, currentSilhouette, status, floor_geo
             )
 
-        indicator.next()
-
-    indicator.stop()
     return stack
 
 
@@ -560,16 +558,10 @@ def zlevel_hybrid_to_gcode(
     pattern_angle = pattern_options.get("pattern_angle", 0.0)
     reverse_pattern = pattern_options.get("reverse_pattern", False)
 
-    # Progress Indicator setup
-    stLen = len(stack)
-    indicator = FreeCAD.Base.ProgressIndicator()
-    indicator.start("Z-Level Hybrid: Generating G-Code...", stLen)
-
     # 2. Main Layer Processing
     for z_target, cutArea, status in stack:
 
         if not cutArea or cutArea.isNull() or not cutArea.Wires:
-            indicator.next()
             continue
 
         # Cut pattern reversed
@@ -635,10 +627,7 @@ def zlevel_hybrid_to_gcode(
             )
             commands.extend(pattern_cmds)
 
-        indicator.next()
-
     # 3. Finalize Operation
-    indicator.stop()
 
     # Return to clearance height
     commands.append(Path.Command("G0", {"Z": clear_hght, "F": v_rapid}))
