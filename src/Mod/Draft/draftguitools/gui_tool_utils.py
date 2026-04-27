@@ -145,7 +145,9 @@ def _get_hint_select_edge():
     shortcut = params.get_param("inCommandShortcutSelectEdge").upper()
     if pattern.fullmatch(shortcut):
         shortcut_key = getattr(Gui.UserInput, "Key" + shortcut)
-        return [Gui.InputHint(translate("draft", "%1 / hold %2 select edge"), shortcut_key, mod_key)]
+        return [
+            Gui.InputHint(translate("draft", "%1 / hold %2 select edge"), shortcut_key, mod_key)
+        ]
     return [Gui.InputHint(translate("draft", "Hold %1 select edge"), mod_key)]
 
 
