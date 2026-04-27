@@ -715,13 +715,13 @@ void Pipe::buildPipePath(
 PROPERTY_SOURCE(PartDesign::AdditivePipe, PartDesign::Pipe)
 AdditivePipe::AdditivePipe()
 {
-    addSubType = Type::Additive;
+    defineAdditive();
 }
 
 PROPERTY_SOURCE(PartDesign::SubtractivePipe, PartDesign::Pipe)
 SubtractivePipe::SubtractivePipe()
 {
-    addSubType = Type::Subtractive;
+    defineSubtractive();
 }
 
 void Pipe::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop)

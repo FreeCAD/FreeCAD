@@ -53,6 +53,18 @@ FeatureAddSub::FeatureAddSub()
     ADD_PROPERTY(Outside, (false));
 }
 
+void FeatureAddSub::defineAdditive()
+{
+    addSubType = Type::Additive;
+    Outside.setStatus(App::Property::Status::Hidden, true);
+}
+
+void FeatureAddSub::defineSubtractive()
+{
+    addSubType = Type::Subtractive;
+    Outside.setStatus(App::Property::Status::Hidden, false);
+}
+
 void FeatureAddSub::onChanged(const App::Property* property)
 {
     Feature::onChanged(property);
@@ -178,7 +190,7 @@ PROPERTY_SOURCE(PartDesign::FeatureAdditivePython, PartDesign::FeatureAddSubPyth
 
 FeatureAdditivePython::FeatureAdditivePython()
 {
-    addSubType = Type::Additive;
+    defineAdditive();
 }
 
 FeatureAdditivePython::~FeatureAdditivePython() = default;
@@ -188,7 +200,7 @@ PROPERTY_SOURCE(PartDesign::FeatureSubtractivePython, PartDesign::FeatureAddSubP
 
 FeatureSubtractivePython::FeatureSubtractivePython()
 {
-    addSubType = Type::Subtractive;
+    defineSubtractive();
 }
 
 FeatureSubtractivePython::~FeatureSubtractivePython() = default;

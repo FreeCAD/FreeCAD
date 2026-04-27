@@ -550,7 +550,7 @@ const App::PropertyQuantityConstraint::Constraints clearanceRange
 
 Hole::Hole()
 {
-    addSubType = FeatureAddSub::Type::Subtractive;
+    defineSubtractive();
 
     readCutDefinitions();
 

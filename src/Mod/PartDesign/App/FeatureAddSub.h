@@ -61,6 +61,8 @@ public:
 
 protected:
     Type addSubType {Type::Additive};
+    void defineAdditive();
+    void defineSubtractive();
 };
 
 using FeatureAddSubPython = App::FeaturePythonT<FeatureAddSub>;

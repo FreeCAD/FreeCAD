@@ -70,7 +70,7 @@ const App::PropertyAngle::Constraints Helix::floatAngle = {-89.0, 89.0, 1.0};
 
 Helix::Helix()
 {
-    addSubType = FeatureAddSub::Type::Additive;
+    defineAdditive();
     auto initialMode = HelixMode::pitch_height_angle;
 
     const char* group = "Helix";
@@ -836,13 +836,11 @@ void Helix::setReadWriteStatusForMode(HelixMode inputMode)
 PROPERTY_SOURCE(PartDesign::AdditiveHelix, PartDesign::Helix)
 AdditiveHelix::AdditiveHelix()
 {
-    addSubType = Type::Additive;
-    Outside.setStatus(App::Property::Hidden, true);
+    defineAdditive();
 }
 
 PROPERTY_SOURCE(PartDesign::SubtractiveHelix, PartDesign::Helix)
 SubtractiveHelix::SubtractiveHelix()
 {
-    addSubType = Type::Subtractive;
-    Outside.setStatus(App::Property::Hidden, false);
+    defineSubtractive();
 }
