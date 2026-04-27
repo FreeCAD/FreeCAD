@@ -73,24 +73,24 @@ _HINT_MOD_KEYS = [Gui.UserInput.KeyShift, Gui.UserInput.KeyControl, Gui.UserInpu
 
 def _get_hint_mod_constrain():
     key = _HINT_MOD_KEYS[params.get_param("modconstrain")]
-    return [Gui.InputHint(translate("draft", "%1 constrain"), key)]
+    return [Gui.InputHint(translate("draft", "Hold %1 constrain"), key)]
 
 
 def _get_hint_mod_constrain_dimension_linear():
     key = _HINT_MOD_KEYS[params.get_param("modconstrain")]
-    return [Gui.InputHint(translate("draft", "%1 horizontal/vertical dimension"), key)]
+    return [Gui.InputHint(translate("draft", "Hold %1 horizontal/vertical dimension"), key)]
 
 
 def _get_hint_mod_constrain_dimension_radial():
     key = _HINT_MOD_KEYS[params.get_param("modconstrain")]
-    return [Gui.InputHint(translate("draft", "%1 radial dimension"), key)]
+    return [Gui.InputHint(translate("draft", "Hold %1 radial dimension"), key)]
 
 
 def _get_hint_mod_snap():
     if params.get_param("alwaysSnap"):
         return []
     key = _HINT_MOD_KEYS[params.get_param("modsnap")]
-    return [Gui.InputHint(translate("draft", "%1 snap"), key)]
+    return [Gui.InputHint(translate("draft", "Hold %1 snap"), key)]
 
 
 def _get_hint_xyz_constrain():
