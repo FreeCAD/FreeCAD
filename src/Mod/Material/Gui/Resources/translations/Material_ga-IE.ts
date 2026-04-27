@@ -649,14 +649,20 @@ Mura bhfuil tic sa bhosca seo, déanfar iad a shórtáil de réir a n-ainm.</tra
       <translation>Roghnaigh íomhá</translation>
     </message>
     <message>
-      <location filename="../../ImageEdit.cpp" line="206"/>
-      <source>Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</source>
-      <translation>Comhaid íomhá (*.jpg *.jpeg *.png *.bmp);;Gach comhad (*)</translation>
+      <location filename="../../ImageEdit.cpp" line="207"/>
+      <source>Image files (*.jpg *.jpeg *.png *.bmp)</source>
+      <translation>Comhaid íomhá (*.jpg *.jpeg *.png *.bmp)</translation>
     </message>
     <message>
-      <location filename="../../ImageEdit.cpp" line="218"/>
-      <source>Image files (*.svg);;All files (*)</source>
-      <translation>Comhaid íomhá (*.svg);;Gach comhad (*)</translation>
+      <location filename="../../ImageEdit.cpp" line="208"/>
+      <location filename="../../ImageEdit.cpp" line="223"/>
+      <source>All files (*)</source>
+      <translation>Gach comhad (*)</translation>
+    </message>
+    <message>
+      <location filename="../../ImageEdit.cpp" line="222"/>
+      <source>Image files (*.svg)</source>
+      <translation>Image files (*.svg)</translation>
     </message>
   </context>
   <context>

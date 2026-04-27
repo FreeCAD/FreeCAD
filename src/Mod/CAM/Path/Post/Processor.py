@@ -537,11 +537,12 @@ class PostProcessor:
         }
         self.reinitialize()
 
+        self._operations = []
         if isinstance(job, dict):
             # process only selected operations
             self._job = job["job"]
             self._operations = job["operations"]
-        else:
+        if not self._operations:
             # get all operations from 'Operations' group
             self._operations = (
                 getattr(self._job.Operations, "Group", []) if self._job is not None else []

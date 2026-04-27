@@ -2270,8 +2270,8 @@ Visit https://openscad.org/ to install it.</translation>
       <translation type="unfinished">Display Colors</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1701"/>
       <location filename="../../ViewProviderCurvature.cpp" line="535"/>
+      <location filename="../../ViewProvider.cpp" line="1701"/>
       <source>Leave Info Mode</source>
       <translation type="unfinished">Leave Info Mode</translation>
     </message>

@@ -1585,13 +1585,12 @@ void Application::unsetEditDocument(Gui::Document* pcDocument)
 }
 void Application::unsetEditDocumentIf(const std::function<bool(Gui::Document*)>& eval)
 {
-    std::erase_if(d->editDocuments, [&](Gui::Document* doc) {
-        if (eval(doc)) {
-            doc->_resetEdit();
-            return true;
-        }
-        return false;
-    });
+    std::vector<Gui::Document*> matched, unmatched;
+    ranges::partition_copy(d->editDocuments, back_inserter(matched), back_inserter(unmatched), eval);
+    std::swap(d->editDocuments, unmatched);
+    for (auto doc : matched) {
+        doc->_resetEdit();
+    }
     updateActions();
 }
 Gui::MDIView* Application::editViewOfNode(SoNode* node) const

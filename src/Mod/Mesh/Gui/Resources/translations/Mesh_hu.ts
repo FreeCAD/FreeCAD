@@ -2270,8 +2270,8 @@ Kérjük, látogasson el ide: https://openscad.org a telepítéshez.</translatio
       <translation>Kijelzőszín</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1701"/>
       <location filename="../../ViewProviderCurvature.cpp" line="535"/>
+      <location filename="../../ViewProvider.cpp" line="1701"/>
       <source>Leave Info Mode</source>
       <translation>Hagyja az info módot</translation>
     </message>

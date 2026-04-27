@@ -4,7 +4,7 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="481"/>
+      <location filename="../../Application.cpp" line="614"/>
       <source>Unnamed</source>
       <translation>Adsız</translation>
     </message>
@@ -20,7 +20,7 @@
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../Document.cpp" line="1218"/>
+      <location filename="../../Document.cpp" line="1255"/>
       <source>
 It is recommended that the user right-click the root of the document and select Mark to recompute.
 The user should then click the Refresh button in the main toolbar.
@@ -65,7 +65,7 @@ Kullanıcının belgenin kök dizinine sağ tıklayıp "Yeniden hesaplamak için
     <message>
       <location filename="../../Datums.cpp" line="273"/>
       <source>Origin-Point</source>
-      <translation type="unfinished">Origin-Point</translation>
+      <translation>Merkez nokta</translation>
     </message>
   </context>
   <context>

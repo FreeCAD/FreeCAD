@@ -19,7 +19,7 @@
     <message>
       <location filename="../../../CommandInsertLink.py" line="55"/>
       <source>&lt;p&gt;Inserts a component into the active assembly. This will create dynamic links to parts, bodies, primitives, and assemblies. To insert external components, make sure that the file is &lt;b&gt;open in the current session&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Insert by left clicking items in the list.&lt;/li&gt;&lt;li&gt;Remove by right clicking items in the list.&lt;/li&gt;&lt;li&gt;Press shift to add several instances of the component while clicking on the view.&lt;/li&gt;&lt;/ul&gt;</source>
-      <translation>&lt;p&gt;Inserta un componente en el ensamblaje activo. Esto creará enlaces dinámicos a piezas, cuerpos, primitivos y ensamblajes. Para insertar componentes externos, asegúrese de que el archivo esté &lt;b&gt;abierto en la sesión actual&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Inserte haciendo clic izquierdo en los elementos de la lista.&lt;/li&gt;&lt;li&gt;Elimine haciendo clic derecho en los elementos de la lista.&lt;/li&gt;&lt;li&gt;Pulse Shift para añadir varias instancias del componente mientras hace clic en la vista.&lt;/li&gt;&lt;/ul&gt;</translation>
+      <translation>&lt;p&gt;Inserta un componente en el ensamblaje activo. Esto creará enlaces dinámicos a piezas, cuerpos, primitivas y ensamblajes. Para insertar componentes externos, asegúrese de que el archivo esté &lt;b&gt;abierto en la sesión actual&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Inserte haciendo clic izquierdo en los elementos de la lista.&lt;/li&gt;&lt;li&gt;Elimine haciendo clic derecho en los elementos de la lista.&lt;/li&gt;&lt;li&gt;Pulse Shift para añadir varias instancias del componente mientras hace clic en la vista.&lt;/li&gt;&lt;/ul&gt;</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertLink.py" line="80"/>
@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1803"/>
+      <location filename="../../../JointObject.py" line="1809"/>
       <source>Distance</source>
       <translation>Distancia</translation>
     </message>
@@ -170,27 +170,27 @@
       <translation>Correa</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="812"/>
+      <location filename="../../../JointObject.py" line="818"/>
       <source>Broken link in: </source>
       <translation>Enlace roto en: </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1622"/>
+      <location filename="../../../JointObject.py" line="1628"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>Seleccione 2 elementos de 2 partes separadas</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1805"/>
+      <location filename="../../../JointObject.py" line="1811"/>
       <source>Radius 1</source>
       <translation>Radio 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1807"/>
+      <location filename="../../../JointObject.py" line="1813"/>
       <source>Thread pitch</source>
       <translation>Paso de rosca</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1809"/>
+      <location filename="../../../JointObject.py" line="1815"/>
       <source>Pitch radius</source>
       <translation>Radio de paso</translation>
     </message>
@@ -678,7 +678,7 @@ SLOPE define la agudeza de la transición entre 0 y H1 y H2 a 0 sobre el tiempo 
       <translation>La referencia {order} de la articulación</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1231"/>
+      <location filename="../../../JointObject.py" line="1237"/>
       <source>The object to ground</source>
       <translation>El objeto a fijar</translation>
     </message>
@@ -950,42 +950,42 @@ Los archivos se llaman "runPreDrag. smt" y "dragging.log" y están ubicados en e
       <translation>¿Quiere mover el objeto y eliminar las uniones asociadas?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1103"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1104"/>
       <source>Move part</source>
       <translation>Mover parte</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1818"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1819"/>
       <source>Empty Assembly</source>
       <translation>Ensamblaje vacío</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1830"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1831"/>
       <source>Over-constrained:</source>
       <translation>Sobre-restringido:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1838"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1839"/>
       <source>Malformed joints:</source>
       <translation>Articulaciones malformadas:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1801"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1802"/>
       <source>and %1 more</source>
       <translation>y %1 más</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1862"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1863"/>
       <source>Solver failed to converge</source>
       <translation>El solver falló al converger</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1870"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1871"/>
       <source>Under-constrained:</source>
       <translation>Sub-restringido:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1872"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1873"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n grado de libertad</numerusform>
@@ -993,7 +993,7 @@ Los archivos se llaman "runPreDrag. smt" y "dragging.log" y están ubicados en e
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1876"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1877"/>
       <source>Fully constrained</source>
       <translation>Totalmente restringido</translation>
     </message>
@@ -1336,7 +1336,7 @@ Los archivos se llaman "runPreDrag. smt" y "dragging.log" y están ubicados en e
     <message>
       <location filename="../../../CommandCreateJoint.py" line="109"/>
       <source>Creates a revolute joint allowing rotation around a single axis between selected parts</source>
-      <translation type="unfinished">Creates a revolute joint allowing rotation around a single axis between selected parts</translation>
+      <translation>Crea una articulación de revolución que permite la rotación alrededor de un único eje entre las piezas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -1349,7 +1349,7 @@ Los archivos se llaman "runPreDrag. smt" y "dragging.log" y están ubicados en e
     <message>
       <location filename="../../../CommandCreateJoint.py" line="132"/>
       <source>Creates a cylindrical joint that allows rotation around and translation along a single axis between assembled parts</source>
-      <translation type="unfinished">Creates a cylindrical joint that allows rotation around and translation along a single axis between assembled parts</translation>
+      <translation>Crea una articulación cilíndrica que permite la rotación alrededor y la traslación a lo largo de un eje único entre las piezas ensambladas</translation>
     </message>
   </context>
   <context>
@@ -1362,7 +1362,7 @@ Los archivos se llaman "runPreDrag. smt" y "dragging.log" y están ubicados en e
     <message>
       <location filename="../../../CommandCreateJoint.py" line="155"/>
       <source>Creates a slider joint that allows linear movement along a single axis, but restricts rotation between selected parts</source>
-      <translation type="unfinished">Creates a slider joint that allows linear movement along a single axis, but restricts rotation between selected parts</translation>
+      <translation>Crea una articulación deslizante que permite el movimiento lineal a lo largo de un eje único, pero restringe la rotación entre las piezas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -1435,7 +1435,7 @@ Los archivos se llaman "runPreDrag. smt" y "dragging.log" y están ubicados en e
     <message>
       <location filename="../../../CommandCreateJoint.py" line="294"/>
       <source>Rack and Pinion Joint</source>
-      <translation type="unfinished">Rack and Pinion Joint</translation>
+      <translation>Unión piñón y cremallera</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="300"/>
@@ -1518,12 +1518,12 @@ Los archivos se llaman "runPreDrag. smt" y "dragging.log" y están ubicados en e
     <message>
       <location filename="../../../CommandInsertLink.py" line="222"/>
       <source>Partially loaded</source>
-      <translation type="unfinished">Partially loaded</translation>
+      <translation>Parcialmente cargado</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertLink.py" line="615"/>
       <source>Fully load document</source>
-      <translation type="unfinished">Fully load document</translation>
+      <translation>Documento totalmente cargado</translation>
     </message>
   </context>
   <context>
@@ -1568,7 +1568,7 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../Commands.cpp" line="102"/>
       <source>Go to linked Assembly</source>
-      <translation type="unfinished">Go to linked Assembly</translation>
+      <translation>Ir a ensamblaje enlazado</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="103"/>
@@ -1586,7 +1586,7 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../Commands.cpp" line="166"/>
       <source>Select conflicting constraints</source>
-      <translation type="unfinished">Select conflicting constraints</translation>
+      <translation>Seleccionar restricciones conflictivas</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="167"/>
@@ -1640,7 +1640,7 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../Commands.cpp" line="268"/>
       <source>Select components with DoFs</source>
-      <translation type="unfinished">Select components with DoFs</translation>
+      <translation>Selecciona componentes con grados de libertad</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="269"/>

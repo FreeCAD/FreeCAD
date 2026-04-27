@@ -842,7 +842,6 @@ class Joint:
 
         if len(refs) >= 1:
             joint.Reference1 = refs[0]
-            joint.Placement1 = self.findPlacement(joint, joint.Reference1, 0)
         else:
             joint.Reference1 = None
             joint.Placement1 = App.Placement()
@@ -850,7 +849,9 @@ class Joint:
 
         if len(refs) >= 2:
             joint.Reference2 = refs[1]
-            joint.Placement2 = self.findPlacement(joint, joint.Reference2, 1)
+
+            self.ensureUnconnectedIsSecondRef(joint)
+
             if joint.JointType in JointUsingPreSolve:
                 self.preSolve(joint)
             elif joint.JointType in JointParallelForbidden:
@@ -1033,6 +1034,48 @@ class Joint:
             part1.Placement = UtilsAssembly.applyRotationToPlacementAlongAxis(
                 part1.Placement, 10, rotation_axis
             )
+
+    def ensureUnconnectedIsSecondRef(self, joint):
+        # Several joints are not solving properly if the part connected to ground is not the first.
+        # See https://github.com/FreeCAD/FreeCAD/issues/29355 for instance.
+        # This function swap the references if possible to avoid those issues.
+        assembly = self.getAssembly(joint)
+        if not assembly or assembly.Type != "Assembly":
+            return
+
+        part1 = UtilsAssembly.getMovingPart(joint.Reference1)
+        part2 = UtilsAssembly.getMovingPart(joint.Reference2)
+
+        if not part1 or not part2:
+            return
+
+        # Temporarily suppress the joint to avoid evaluating it as a valid connection
+        suppressed_backup = joint.Suppressed
+        joint.Suppressed = True
+        part1Connected = assembly.isPartConnected(part1)
+        part2Connected = assembly.isPartConnected(part2)
+        joint.Suppressed = suppressed_backup
+
+        # If only part1 is unconnected and part2 is connected, swap references and related properties
+        if not part1Connected and part2Connected:
+            ref1 = joint.Reference1
+            joint.Reference1 = joint.Reference2
+            joint.Reference2 = ref1
+
+            plc1 = joint.Placement1
+            joint.Placement1 = joint.Placement2
+            joint.Placement2 = plc1
+
+            off1 = joint.Offset1
+            joint.Offset1 = joint.Offset2
+            joint.Offset2 = off1
+
+            det1 = joint.Detach1
+            joint.Detach1 = joint.Detach2
+            joint.Detach2 = det1
+
+            if activeTask and activeTask.joint == joint:
+                activeTask.updateTaskboxFromJoint()
 
     def areJcsSameDir(self, joint):
         globalJcsPlc1 = UtilsAssembly.getJcsGlobalPlc(joint.Placement1, joint.Reference1)

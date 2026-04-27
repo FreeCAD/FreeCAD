@@ -1948,7 +1948,13 @@ bool Document::save()
             LastModifiedBy.setValue(Author.c_str());
         }
 
-        return saveToFile(FileName.getValue());
+        bool result = saveToFile(FileName.getValue());
+        if (result) {
+            d->programVersion = Application::Config()["BuildVersionMajor"] + "."
+                + Application::Config()["BuildVersionMinor"] + "R"
+                + Application::Config()["BuildRevision"];
+        }
+        return result;
     }
 
     return false;

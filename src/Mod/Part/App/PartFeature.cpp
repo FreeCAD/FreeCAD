@@ -25,7 +25,9 @@
 
 #include <sstream>
 #include <Bnd_Box.hxx>
+#include <BRep_Builder.hxx>
 #include <BRepAdaptor_Curve.hxx>
+#include <TopoDS_Compound.hxx>
 #include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
 #include <Mod/Part/App/FCBRepAlgoAPI_Common.h>
 #include <BRepBndLib.hxx>
@@ -1878,31 +1880,82 @@ bool Feature::getCameraAlignmentDirection(
 
     // Edge direction
     const size_t edgeCount = topoShape.countSubShapes(TopAbs_EDGE);
-    if (edgeCount == 1) {
-        if (topoShape.isLinearEdge()) {
-            if (const std::unique_ptr<Geometry> geometry
-                = Geometry::fromShape(topoShape.getSubShape(TopAbs_EDGE, 1), true)) {
-                if (const auto geomLine = static_cast<GeomCurve*>(geometry.get())->toLine()) {
-                    directionZ = geomLine->getDir().Normalize();
-                    return true;
-                }
-            }
-        }
-        else {
-            // Planar curves
-            if (gp_Pln plane; topoShape.findPlane(plane)) {
-                directionZ = Base::Vector3d(
-                                 plane.Axis().Direction().X(),
-                                 plane.Axis().Direction().Y(),
-                                 plane.Axis().Direction().Z()
-                )
-                                 .Normalize();
+    if (edgeCount == 1 && topoShape.isLinearEdge()) {
+        if (const std::unique_ptr<Geometry> geometry
+            = Geometry::fromShape(topoShape.getSubShape(TopAbs_EDGE, 1), true)) {
+            if (const auto geomLine = static_cast<GeomCurve*>(geometry.get())->toLine()) {
+                directionZ = geomLine->getDir().Normalize();
                 return true;
             }
         }
     }
+    if (edgeCount >= 1) {
+        if (gp_Pln plane; topoShape.findPlane(plane)) {
+            directionZ = Base::convertTo<Base::Vector3d>(plane.Axis().Direction());
+            return true;
+        }
+    }
 
     return GeoFeature::getCameraAlignmentDirection(directionZ, directionX, subname);
+}
+
+bool Feature::getCameraAlignmentDirection(
+    Base::Vector3d& directionZ,
+    const std::vector<std::string>& subnames
+) const
+{
+    if (subnames.empty()) {
+        Base::Vector3d unused;
+        return getCameraAlignmentDirection(directionZ, unused, static_cast<const char*>(nullptr));
+    }
+
+    std::vector<std::string> faceSubnames;
+    std::vector<TopoDS_Shape> edgeShapes;
+    bool hasOther = false;
+
+    for (const auto& sub : subnames) {
+        const auto shape = getTopoShape(
+            this,
+            ShapeOptions(
+                ShapeOption::NeedSubElement | ShapeOption::ResolveLink | ShapeOption::Transform
+            ),
+            sub.c_str()
+        );
+        if (shape.isNull()) {
+            continue;
+        }
+        switch (shape.getShape().ShapeType()) {
+            case TopAbs_FACE:
+                faceSubnames.push_back(sub);
+                break;
+            case TopAbs_EDGE:
+                edgeShapes.push_back(shape.getShape());
+                break;
+            default:
+                hasOther = true;
+                break;
+        }
+    }
+
+    if (!faceSubnames.empty()) {
+        return GeoFeature::getCameraAlignmentDirection(directionZ, faceSubnames);
+    }
+
+    if (!edgeShapes.empty() && !hasOther) {
+        BRep_Builder builder;
+        TopoDS_Compound compound;
+        builder.MakeCompound(compound);
+        for (const auto& edge : edgeShapes) {
+            builder.Add(compound, edge);
+        }
+        gp_Pln plane;
+        if (TopoShape(compound).findPlane(plane)) {
+            directionZ = Base::convertTo<Base::Vector3d>(plane.Axis().Direction());
+            return true;
+        }
+    }
+
+    return GeoFeature::getCameraAlignmentDirection(directionZ, subnames);
 }
 
 void Feature::guessNewLink(std::string& replacementName, DocumentObject* base, const char* oldLink)

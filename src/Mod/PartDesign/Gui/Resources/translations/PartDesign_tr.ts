@@ -2992,7 +2992,7 @@ belirlenen yön boyunca ölçülecek</translation>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="404"/>
       <source>Normal sketch axis</source>
-      <translation type="unfinished">Normal sketch axis</translation>
+      <translation>Çizime dik eksen</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="403"/>

@@ -222,14 +222,13 @@ protected:
      *  variables. It should be rewritten at a different place.
      */
     const Base::Vector3d getDirection(const App::PropertyLinkSub& direction);
+    virtual void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop);
 
 private:
     /**
      * @brief Symbol size factor determined from the size of the shape.
      */
     double sizeFactor;
-
-    void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop);
     fastsignals::connection connDocChangedObject;
 };
 
