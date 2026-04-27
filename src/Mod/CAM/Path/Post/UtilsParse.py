@@ -425,23 +425,19 @@ def drill_translate(
         # force absolute coordinates during cycles
         gcode.append(f"{linenumber(values)}G90")
 
-    # Build initial position from the last known motion location
+    # TODO: Defaulting to 0.0 when an axis is missing from motion_location
+    # silently degrades G98 safe-height retract (max(initial_z, R) uses 0
+    # instead of the real tool height). Consider requiring a valid initial
+    # position and warning when motion_location is incomplete.
     initial_position = {
         "X": motion_location.get("X", 0.0),
         "Y": motion_location.get("Y", 0.0),
         "Z": motion_location.get("Z", 0.0),
     }
 
-    # Build drill parameters, converting to absolute if in G91 mode
+    # Per ADR-002, Path Command coordinates are always absolute.
+    # No G91-to-absolute conversion is needed.
     drill_params = {k: params[k] for k in params if k in ("X", "Y", "Z", "R", "F", "Q", "P")}
-    if values["MOTION_MODE"] == "G91":
-        for axis in ("X", "Y"):
-            if axis in drill_params:
-                drill_params[axis] += initial_position[axis]
-        if "Z" in drill_params:
-            drill_params["Z"] += initial_position["Z"]
-        if "R" in drill_params:
-            drill_params["R"] += initial_position["Z"]
 
     # Validate R >= Z (preserve original error comment)
     if drill_params.get("R", 0.0) < drill_params.get("Z", 0.0):
@@ -452,7 +448,6 @@ def drill_translate(
     # Create expander and expand the drill cycle
     expander = DrillCycleExpander(
         retract_mode=drill_retract_mode,
-        motion_mode="G90",
         initial_position=initial_position,
     )
     expanded = expander.expand_command(Path.Command(command, drill_params))
