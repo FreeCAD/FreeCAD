@@ -610,12 +610,13 @@ bool TaskMeasure::apply(bool reset)
 bool TaskMeasure::reject()
 {
     removeObject();
-    closeDialog();
 
-    // Abort transaction
+    // Commit after removing the preview measurement so only intended changes (sector flip)
+    // remain in the document transaction.
     if (mTargetDoc) {
-        mTargetDoc->abortCommand();
+        mTargetDoc->commitCommand();
     }
+    closeDialog();
     return false;
 }
 

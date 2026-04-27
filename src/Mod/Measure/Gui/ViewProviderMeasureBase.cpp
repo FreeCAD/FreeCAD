@@ -278,7 +278,7 @@ void ViewProviderMeasureBase::finishRestoring()
 {
     // Restore dragger position from saved property
     Base::Vector3d pos = LabelPosition.getValue();
-    pDragger->translation.setValue(SbVec3f(pos.x, pos.y, pos.z));
+    setLabelTranslation(toSbVec3f(pos));
 
     if (Visibility.getValue() && isSubjectVisible()) {
         show();
@@ -358,8 +358,9 @@ void ViewProviderMeasureBase::onLabelMoveStart()
 void ViewProviderMeasureBase::onLabelMoveFinish()
 {
     SbVec3f currentLabelPos = pLabelTranslation->translation.getValue();
-    pDragger->translation.setValue(SbVec3f(0.0f, 0.0f, 0.0f));
     pDraggerFrame->translation.setValue(currentLabelPos);
+    pDragger->translation.setValue(SbVec3f(0.0f, 0.0f, 0.0f));
+    LabelPosition.setValue(Base::Vector3d(currentLabelPos[0], currentLabelPos[1], currentLabelPos[2]));
 }
 
 void ViewProviderMeasureBase::setLabelValue(const Base::Quantity& value)
