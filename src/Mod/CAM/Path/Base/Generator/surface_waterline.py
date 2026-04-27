@@ -197,6 +197,10 @@ def waterline_stack(
     """
     from collections import OrderedDict
 
+    # Add a small epsilon to the slicing Z-level to avoid Z-fighting
+    # with simplified planar meshes.
+    epsilon = 0.001
+
     # Compute Z-heights from max_z down to min_z
     z_heights = []
     z = max_z
@@ -212,7 +216,8 @@ def waterline_stack(
 
     t0 = time.time()
 
-    for zh in z_heights:
+    for z in z_heights:
+        zh = z + epsilon
         if adaptive:
             loops = adaptive_waterline(
                 stl,
