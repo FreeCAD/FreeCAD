@@ -102,7 +102,8 @@ App::Property* DlgSheetConf::prepare(
         CellAddress confFrom(from.row(), from.col() + 1);
         rangeConf = confFrom.toString();
         rangeConf += ":-";
-    } else {
+    }
+    else {
         if (from.col() >= to.col()) {
             FC_THROWM(Base::RuntimeError, "Invalid cell range");
         }
@@ -281,8 +282,12 @@ void DlgSheetConf::accept()
                 sheet,
                 "setExpression('.cells.Bind.%1$s.%2$s', "
                 "'tuple(.cells; "
-                "((%3$d+hiddenref(%4$s)) < 26 ? <<>> : <<%%c>> %% (65+sum(0;floor((%3$d+hiddenref(%4$s))/26)-1))) + <<%%c>> %% (65+(%3$d+hiddenref(%4$s))%%26) + str(%5$d); "
-                "((%3$d+hiddenref(%4$s)) < 26 ? <<>> : <<%%c>> %% (65+sum(0;floor((%3$d+hiddenref(%4$s))/26)-1))) + <<%%c>> %% (65+(%3$d+hiddenref(%4$s))%%26) + str(%6$d))')",
+                "((%3$d+hiddenref(%4$s)) < 26 ? <<>> : <<%%c>> %% "
+                "(65+sum(0;floor((%3$d+hiddenref(%4$s))/26)-1))) + <<%%c>> %% "
+                "(65+(%3$d+hiddenref(%4$s))%%26) + str(%5$d); "
+                "((%3$d+hiddenref(%4$s)) < 26 ? <<>> : <<%%c>> %% "
+                "(65+sum(0;floor((%3$d+hiddenref(%4$s))/26)-1))) + <<%%c>> %% "
+                "(65+(%3$d+hiddenref(%4$s))%%26) + str(%6$d))')",
                 range.from().toString(CellAddress::Cell::ShowRowColumn),
                 range.to().toString(CellAddress::Cell::ShowRowColumn),
                 from.col() + 1,
@@ -290,7 +295,8 @@ void DlgSheetConf::accept()
                 range.from().row() + 1,
                 range.to().row() + 1
             );
-        } else {
+        }
+        else {
             // Adjust the range to skip the first cell
             range = Range(from.row(), from.col() + 1, to.row(), to.col());
 
@@ -299,7 +305,8 @@ void DlgSheetConf::accept()
             Gui::cmdAppObjectArgs(
                 sheet,
                 "setExpression('.cells.Bind.%1$s.%2$s', "
-                "'tuple(.cells; <<%5$s>> + str(%3$d+hiddenref(%4$s)); <<%6$s>> + str(%3$d+hiddenref(%4$s)))')",
+                "'tuple(.cells; <<%5$s>> + str(%3$d+hiddenref(%4$s)); <<%6$s>> + "
+                "str(%3$d+hiddenref(%4$s)))')",
                 range.from().toString(CellAddress::Cell::ShowRowColumn),
                 range.to().toString(CellAddress::Cell::ShowRowColumn),
                 from.row() + 2,
