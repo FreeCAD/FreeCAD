@@ -2221,7 +2221,7 @@ der Projektion.</translation>
       <translation>Netz umwandeln</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1490"/>
+      <location filename="../../TaskAttacher.cpp" line="1491"/>
       <source>Edit attachment</source>
       <translation>Befestigung bearbeiten</translation>
     </message>
@@ -3184,8 +3184,8 @@ Wählen Sie zunächst eine oder mehrere Kantenentitäten aus.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="29"/>
-      <source>Merges compounds during file reading (slower but higher details)</source>
-      <translation>Vereinigt Verbundobjekte während des Dateilesen (langsamer, aber mit mehr Details)</translation>
+      <source>Merges all shapes into a single compound during import, resolving part instances and applying transforms. Increases import time but does not affect geometry accuracy or rendering quality.</source>
+      <translation>Führt beim Import alle Formen zu einem einzigen Verbundobjekt zusammen, wobei Teilinstanzen aufgelöst und Transformationen angewendet werden. Dies verlängert die Importdauer, hat jedoch keinen Einfluss auf die Genauigkeit der Geometrie oder die Rendering-Qualität.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="32"/>
@@ -5801,12 +5801,12 @@ Einzelne Überprüfungen boolescher Verknüpfungen:</translation>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1472"/>
+      <location filename="../../TaskAttacher.cpp" line="1471"/>
       <source>Attachment</source>
       <translation>Befestigen</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1554"/>
+      <location filename="../../TaskAttacher.cpp" line="1556"/>
       <source>Datum dialog: input error</source>
       <translation>Bezugs-Dialog: Eingabefehler</translation>
     </message>
@@ -6478,7 +6478,7 @@ Fortfahren?</translation>
       <translation>Abstand eingeben:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1007"/>
+      <location filename="../../ViewProviderExt.cpp" line="994"/>
       <source>Appearance per Face</source>
       <translation>Aussehen per Fläche</translation>
     </message>
@@ -7122,12 +7122,12 @@ oder mit den Formen innerhalb einer Verbindung durch.
   <context>
     <name>Part::FaceMakerSimple</name>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="319"/>
+      <location filename="../../../App/FaceMaker.cpp" line="332"/>
       <source>Simple</source>
       <translation>Einfach</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="324"/>
+      <location filename="../../../App/FaceMaker.cpp" line="337"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
       <translation>Erstellt für jeden Kantenzug unabhängig voneinander eine separate Ebene. Keine Unterstützung für Löcher; Kantenzüge können sich auf verschiedenen Ebenen befinden.</translation>
     </message>
@@ -7729,12 +7729,12 @@ oder mit den Formen innerhalb einer Verbindung durch.
   <context>
     <name>Part::FaceMakerBuildFace</name>
     <message>
-      <location filename="../../../App/FaceMakerBuildFace.cpp" line="46"/>
+      <location filename="../../../App/FaceMakerBuildFace.cpp" line="60"/>
       <source>BuildFace facemaker</source>
       <translation>BuildFace-Flächenersteller</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMakerBuildFace.cpp" line="51"/>
+      <location filename="../../../App/FaceMakerBuildFace.cpp" line="65"/>
       <source>Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</source>
       <translation>Teilt Kanten an Schnittpunkten und ermittelt alle begrenzten Flächenbereiche. Verarbeitet beliebige, sich überlappende Geometrie.</translation>
     </message>

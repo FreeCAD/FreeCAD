@@ -3602,7 +3602,7 @@ Den här funktionen är trasig och kan inte redigeras.</translation>
     <message>
       <location filename="../../WorkflowManager.cpp" line="175"/>
       <source>Make the migration automatically?</source>
-      <translation>Gör du migreringen automatiskt?</translation>
+      <translation>Ska migreringen göras automatiskt?</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="178"/>

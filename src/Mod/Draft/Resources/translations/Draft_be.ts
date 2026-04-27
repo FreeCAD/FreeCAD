@@ -2096,42 +2096,56 @@ a raw wire from the original shape is added</source>
 Тыповыя значэння знаходзяцца ў дыяпазоне ад 1 да 5.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="205"/>
+      <location filename="../ui/preferences-svg.ui" line="190"/>
+      <source>Maximum deviation for approximation of complex curves</source>
+      <translation>Найбольшае адхіленне для набліжэння складаных крывых</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="210"/>
+      <source>Maximum deviation for the approximation of ellipses, hyperbolas, parabolas, and
+Bézier and B-spline curves to arcs and lines. Can be useful for the CAM Workbench.
+Set to zero to disable approximation.</source>
+      <translation>Найбольшае адхіленне для набліжэння эліпсаў, гіпербал, парабал, крывых Без'е і B-сплайнаў у дугі і прамыя.
+Можа быць карысна для варштату CAM.
+Задаць значэнне "нуль", каб адключыць набліжэнне.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="256"/>
       <source>Export style</source>
       <translation>Экспартаваць стыль</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="212"/>
+      <location filename="../ui/preferences-svg.ui" line="263"/>
       <source>Style of SVG file to write when exporting a sketch</source>
       <translation>Стыль файла SVG для запісу пры экспартаванні эскізу</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="225"/>
+      <location filename="../ui/preferences-svg.ui" line="276"/>
       <source>Translated (for print &amp; display)</source>
       <translation>Перанесці (для друку і адлюстравання)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="230"/>
+      <location filename="../ui/preferences-svg.ui" line="281"/>
       <source>Raw (for CAM)</source>
       <translation>Сырыя дадзеныя (для аўтаматызаваных сістэм)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="242"/>
+      <location filename="../ui/preferences-svg.ui" line="293"/>
       <source>All white lines will appear in black in the SVG for better readability against white backgrounds</source>
       <translation>Усе белыя лініі будуць адлюстраваныя чорным колерам у SVG для лепшай чытальнасці на белым фоне</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="245"/>
+      <location filename="../ui/preferences-svg.ui" line="296"/>
       <source>Convert white line color to black</source>
       <translation>Пераўтварыць белы колер лініі ў чорны</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="265"/>
+      <location filename="../ui/preferences-svg.ui" line="316"/>
       <source>Maximum segment length for discretized arcs</source>
       <translation>Найбольшая даўжыня адрэзкаў дыскрэтызацыі дуг</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="288"/>
+      <location filename="../ui/preferences-svg.ui" line="336"/>
       <source>Versions of OpenCASCADE older than version 6.8 don't support arc projection.
 In this case arcs will be discretized into small line segments.
 This value is the maximum segment length.</source>
@@ -2456,7 +2470,7 @@ instead of Draft or Part objects. This overrides the 'Import As' setting</source
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="504"/>
-      <location filename="../ui/preferences-svg.ui" line="191"/>
+      <location filename="../ui/preferences-svg.ui" line="242"/>
       <source>Export Options</source>
       <translation>Налады экспартавання</translation>
     </message>
@@ -3773,7 +3787,7 @@ or try saving to a lower DWG version.</source>
       <location filename="../../draftguitools/gui_labels.py" line="195"/>
       <location filename="../../draftguitools/gui_labels.py" line="222"/>
       <source>Pick endpoint of leader line</source>
-      <translation>Выберыце канчатковую кропку лініі зноскі</translation>
+      <translation>Выберыце канцавую кропку лініі зноскі</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="205"/>
@@ -4072,7 +4086,12 @@ or try saving to a lower DWG version.</source>
       <translation>%1 выбраць трэццю кропку</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_subelements.py" line="118"/>
+      <location filename="../../draftguitools/gui_subelements.py" line="87"/>
+      <source>Only Draft lines, wires, and curves can be highlighted</source>
+      <translation>Можна вылучыць толькі лініі, ломаныя лініі і крывыя чарнавіка</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_subelements.py" line="119"/>
       <source>Select an object to edit</source>
       <translation>Абярыце аб'ект для змены</translation>
     </message>
@@ -4559,7 +4578,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="843"/>
       <source>Endpoint of Bézier curve cannot be smoothed</source>
-      <translation>Канчатковая кропка крывой Без'е не можа быць згладжаная</translation>
+      <translation>Канцавая кропка крывой Без'е не можа быць згладжаная</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="911"/>
@@ -4702,7 +4721,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="253"/>
       <source>Pick end point of displacement</source>
-      <translation>Выберыце канчатковую кропку зрушэння</translation>
+      <translation>Выберыце канцавую кропку зрушэння</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="525"/>
@@ -4743,7 +4762,7 @@ The final angle will be the base angle plus this amount.</source>
       <location filename="../../draftguitools/gui_mirror.py" line="168"/>
       <location filename="../../draftguitools/gui_mirror.py" line="195"/>
       <source>Pick end point of mirror line</source>
-      <translation>Абярыце канчатковую кропку лініі сіметрыі</translation>
+      <translation>Абярыце канцавую кропку лініі сіметрыі</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_clone.py" line="86"/>
@@ -5081,7 +5100,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftobjects/patharray.py" line="640"/>
       <source>End Offset too large for path length minus Start Offset. Using 0 instead.</source>
-      <translation>Канчатковае зрушэнне занадта вялікае для даўжыні траекторыі за мінусам пачатковага зрушэння.
+      <translation>Канцавое зрушэнне занадта вялікае для даўжыні траекторыі за мінусам пачатковага зрушэння.
 Замест гэтага ўжываецца нуль.</translation>
     </message>
     <message>
@@ -6251,12 +6270,12 @@ from menu Tools → Addon Manager</source>
   <context>
     <name>ImportSVG</name>
     <message>
-      <location filename="../../importSVG.py" line="1264"/>
+      <location filename="../../importSVG.py" line="1326"/>
       <source>Unknown SVG export style, switching to Translated</source>
       <translation>Невядомы стыль экспартавання SVG, пераключэнне на перакладзены</translation>
     </message>
     <message>
-      <location filename="../../importSVG.py" line="1305"/>
+      <location filename="../../importSVG.py" line="1367"/>
       <source>The export list contains no object with a valid bounding box</source>
       <translation>Спіс экспартавання не ўтрымлівае аб'екта з дапушчальнымі габарытамі</translation>
     </message>
@@ -6804,7 +6823,7 @@ set True for fusion or False for compound</source>
       <location filename="../../draftobjects/circle.py" line="55"/>
       <source>End angle of the arc (for a full circle, 
                 give it same value as First Angle)</source>
-      <translation>Канчатковы вугал дугі (для поўнай акружнасці задайце яму тое ж значэнне, што і першаму вуглу)</translation>
+      <translation>Канцавы вугал дугі (для поўнай акружнасці задайце яму тое ж значэнне, што і першаму вуглу)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/circle.py" line="58"/>
@@ -7388,7 +7407,7 @@ This property is read-only, as the number depends on the points in 'Point Object
       <source>End angle of the elliptical arc 
 
                 (for a full circle, give it same value as First Angle)</source>
-      <translation>Канчатковы кут эліптычнай дугі 
+      <translation>Канцавы вугал эліптычнай дугі
 
                 (для поўнай акружнасці задайце яму тое ж значэнне, што і першаму вуглу)</translation>
     </message>
@@ -7415,7 +7434,7 @@ This property is read-only, as the number depends on the points in 'Point Object
     <message>
       <location filename="../../draftobjects/fillet.py" line="58"/>
       <source>The end point of this line.</source>
-      <translation>Канчатковая кропка лініі.</translation>
+      <translation>Канцавая кропка лініі.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/fillet.py" line="63"/>
@@ -7486,7 +7505,7 @@ If it is a diameter dimension it will be a point that lies on the arc.</source>
 
 If it is a radius or diameter dimension
 it will be a point that lies on the arc.</source>
-      <translation>Канчатковая кропка лініі вымярэння.
+      <translation>Канцавая кропка лініі вымярэння.
 
 Для вымярэння радыусу ці дыяметру гэта кропка, якая ляжыць на дузе.</translation>
     </message>
@@ -7529,7 +7548,7 @@ The arc is drawn counter-clockwise.</source>
       <location filename="../../draftobjects/dimension.py" line="529"/>
       <source>Ending angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</source>
-      <translation>Канчатковы вугал лініі вымярэння (дугі акружнасці).
+      <translation>Канцавы вугал лініі вымярэння (дугі акружнасці).
 Дуга чэрціцца супраць гадзінніка.</translation>
     </message>
     <message>
@@ -7635,7 +7654,7 @@ the 'First Angle' and 'Last Angle' properties.</source>
     <message>
       <location filename="../../draftobjects/wire.py" line="71"/>
       <source>The end point of this line</source>
-      <translation>Канчатковая кропка лініі</translation>
+      <translation>Канцавая кропка лініі</translation>
     </message>
     <message>
       <location filename="../../draftobjects/wire.py" line="74"/>
@@ -8452,12 +8471,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="180"/>
       <source>Snap Endpoint</source>
-      <translation>Прывязаць у канчатковай кропцы</translation>
+      <translation>Прывязаць у канцавой кропцы</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="181"/>
       <source>Snaps to the endpoints of edges</source>
-      <translation>Прывязвае ў канчатковай кропцы рэбраў</translation>
+      <translation>Прывязвае ў канцавой кропцы рэбраў</translation>
     </message>
   </context>
   <context>
@@ -8496,7 +8515,7 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="238"/>
       <source>Snaps to an imaginary line that extends beyond the endpoints of straight edges</source>
-      <translation>Прывязвае да ўяўнай лініі, якая выходзіць за межы канчатковых кропак прамых рэбраў</translation>
+      <translation>Прывязвае да ўяўнай лініі, якая выходзіць за межы канцавых кропак прамых рэбраў</translation>
     </message>
   </context>
   <context>

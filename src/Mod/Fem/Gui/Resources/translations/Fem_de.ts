@@ -1099,7 +1099,7 @@ Ist nur wirksam, wenn 'Nur Pipeline' aktiviert ist</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="159"/>
       <source>Maximum output level</source>
-      <translation type="unfinished">Maximum output level</translation>
+      <translation>Maximale Ausgabestufe</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="181"/>
@@ -1274,35 +1274,35 @@ die Beschränkung oder das Material angewendet wird.</translation>
       <location filename="../../DlgSettingsFemGeneral.ui" line="79"/>
       <source>Create a directory in the same folder in which the FCStd file of the document is located. Use Subfolder for each object
 (e.g. for a file ./mydoc.FCStd and a solver with the label Elmer002 use ./mydoc/Elmer002).</source>
-      <translation type="unfinished">Create a directory in the same folder in which the FCStd file of the document is located. Use Subfolder for each object
-(e.g. for a file ./mydoc.FCStd and a solver with the label Elmer002 use ./mydoc/Elmer002).</translation>
+      <translation>Erstelle ein Verzeichnis in demselben Ordner, in dem sich die FCStd-Datei des Dokuments befindet. Verwende für jedes Objekt einen Unterordner
+(z. B. für eine Datei ./mydoc.FCStd und einen Löser mit der Bezeichnung Elmer002 ./mydoc/Elmer002) verwenden.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="99"/>
       <source>Custom directory</source>
-      <translation type="unfinished">Custom directory</translation>
+      <translation>Benutzerdefiniertes Verzeichnis</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="102"/>
       <source>Create own subdirectory for each object. Name directory after the solver label prefixed with the document name.
 Leave blank to use user home directory.</source>
-      <translation type="unfinished">Create own subdirectory for each object. Name directory after the solver label prefixed with the document name.
-Leave blank to use user home directory.</translation>
+      <translation>Für jedes Objekt ein eigenes Unterverzeichnis erstellen. Das Verzeichnis nach der Löser-Bezeichnung benennen, der der Dokumentname vorangestellt wird.
+Das Feld leerlassen, um das Benutzer-Home-Verzeichnis zu verwenden.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="161"/>
       <source>Input File Editor</source>
-      <translation type="unfinished">Input File Editor</translation>
+      <translation>Eingabedatei-Editor</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="178"/>
       <source>Editor path</source>
-      <translation type="unfinished">Editor path</translation>
+      <translation>Editorpfad</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="188"/>
       <source>Leave blank to use default FreeCAD internal editor</source>
-      <translation type="unfinished">Leave blank to use default FreeCAD internal editor</translation>
+      <translation>Das Feld leer lassen, um den standardmäßigen internen Editor von FreeCAD zu verwenden</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="217"/>
@@ -1627,7 +1627,7 @@ FreeCAD-Ergebnisobjekt: Die importierten Daten werden in ein FreeCAD FEM-Ergebni
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="200"/>
       <source>Coincidence vector entries</source>
-      <translation type="unfinished">Coincidence vector entries</translation>
+      <translation>Einträge im Koinzidenzvektor</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="213"/>
@@ -1668,7 +1668,7 @@ dass „MAXGS“ erhöht werden muss.</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="88"/>
       <source>Simple Cholesky</source>
-      <translation type="unfinished">Simple Cholesky</translation>
+      <translation>Einfacher Cholesky</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="106"/>
@@ -1826,7 +1826,7 @@ dass „MAXGS“ erhöht werden muss.</translation>
   <context>
     <name>FemGui::TaskDlgPost</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="394"/>
+      <location filename="../../TaskPostBoxes.cpp" line="403"/>
       <source>Input error</source>
       <translation>Eingabefehler</translation>
     </message>
@@ -2657,12 +2657,12 @@ dass „MAXGS“ erhöht werden muss.</translation>
   <context>
     <name>FemGui::TaskPostDataAlongLine</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="678"/>
+      <location filename="../../TaskPostBoxes.cpp" line="687"/>
       <source>Data Along a Line Options</source>
       <translation>Daten entlang einer Linie-Optionen</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1086"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1095"/>
       <source>Length</source>
       <comment>X-Axis plot label</comment>
       <translation>Länge</translation>
@@ -2671,12 +2671,12 @@ dass „MAXGS“ erhöht werden muss.</translation>
   <context>
     <name>FemGui::TaskPostDataAtPoint</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1120"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1129"/>
       <source>Data at Point Options</source>
       <translation>Daten an Punkt-Optionen</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1461"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1470"/>
       <source>%1 at (%2; %3; %4) is: %5 %6</source>
       <translation>%1 bei (%2; %3; %4) ist: %5 %6</translation>
     </message>
@@ -2684,7 +2684,7 @@ dass „MAXGS“ erhöht werden muss.</translation>
   <context>
     <name>FemGui::TaskPostFunction</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="526"/>
+      <location filename="../../TaskPostBoxes.cpp" line="535"/>
       <source>Implicit function</source>
       <translation>Implizite Funktion</translation>
     </message>
@@ -3123,12 +3123,12 @@ Hinweis: Hat keine Auswirkung, wenn ein Festkörper ausgewählt wurde</translati
     <message>
       <location filename="../ui/Electromagnetic.ui" line="348"/>
       <source>Far field approximation assuming spherical symmetry</source>
-      <translation type="unfinished">Far field approximation assuming spherical symmetry</translation>
+      <translation>Fernfeldnäherung unter der Annahme sphärischer Symmetrie</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="351"/>
       <source>Far field</source>
-      <translation type="unfinished">Far field</translation>
+      <translation>Fernfeld</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="361"/>
@@ -3153,7 +3153,7 @@ Hinweis: Hat keine Auswirkung, wenn ein Festkörper ausgewählt wurde</translati
     <message>
       <location filename="../ui/Electromagnetic.ui" line="403"/>
       <source>Magnetic flux density</source>
-      <translation type="unfinished">Magnetic flux density</translation>
+      <translation>Magnetische Flussdichte</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="459"/>
@@ -3540,7 +3540,7 @@ harmonischem/oszillierendem Antriebsstrom verwendet</translation>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="70"/>
       <source>Type:</source>
-      <translation type="unfinished">Type:</translation>
+      <translation>Typ:</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="84"/>
@@ -3561,7 +3561,7 @@ harmonischem/oszillierendem Antriebsstrom verwendet</translation>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="99"/>
       <source>Gradient</source>
-      <translation type="unfinished">Gradient</translation>
+      <translation>Gradient</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="104"/>
@@ -3592,7 +3592,7 @@ harmonischem/oszillierendem Antriebsstrom verwendet</translation>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="209"/>
       <source>Apply a threshold to the child refinements value</source>
-      <translation type="unfinished">Apply a threshold to the child refinements value</translation>
+      <translation>Einen Schwellenwert auf den Wert der untergeordneten Verfeinerungen anwenden</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="236"/>
@@ -3616,7 +3616,7 @@ harmonischem/oszillierendem Antriebsstrom verwendet</translation>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="308"/>
       <source>Output size</source>
-      <translation type="unfinished">Output size</translation>
+      <translation>Ausgabegröße</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="346"/>
@@ -3849,12 +3849,12 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
       <location filename="../ui/MeshPreviewSettings.ui" line="35"/>
       <location filename="../ui/MeshPreviewSettings.ui" line="51"/>
       <source>Automatically enables the visualization of the refinement mesh size when opening a refinement task dialog.</source>
-      <translation type="unfinished">Automatically enables the visualization of the refinement mesh size when opening a refinement task dialog.</translation>
+      <translation>Aktiviert automatisch die Anzeige der Verfeinerungsgittergröße beim Öffnen eines Dialogs für eine Verfeinerungsaufgabe.</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreviewSettings.ui" line="54"/>
       <source>Auto enable on open</source>
-      <translation type="unfinished">Auto enable on open</translation>
+      <translation>Beim Öffnen automatisch aktivieren</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreviewSettings.ui" line="80"/>
@@ -3869,7 +3869,7 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="41"/>
       <source>Create a defined number of mesh nodes on edges with a structured algorithm.</source>
-      <translation type="unfinished">Create a defined number of mesh nodes on edges with a structured algorithm.</translation>
+      <translation>Mithilfe eines strukturierten Algorithmus eine festgelegte Anzahl von Netzknoten an den Kanten erstellen.</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="111"/>
@@ -3945,7 +3945,7 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="100"/>
       <source>Compute the distance to the selected reference edges and specify the mesh size independently in the direction normal and parallel to the nearest curve. For efficiency each curve is replaced by a set of Sampling points, to which the distance is actually computed.</source>
-      <translation type="unfinished">Compute the distance to the selected reference edges and specify the mesh size independently in the direction normal and parallel to the nearest curve. For efficiency each curve is replaced by a set of Sampling points, to which the distance is actually computed.</translation>
+      <translation>Den Abstand zu den ausgewählten Referenzkanten berechnen und die Gittergröße unabhängig voneinander in Richtung senkrecht und parallel zur nächstgelegenen Kurve festlegen. Aus Effizienzgründen wird jede Kurve durch eine Reihe von Abtastpunkten ersetzt, zu denen der Abstand tatsächlich berechnet wird.</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="134"/>
@@ -3978,7 +3978,7 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
       <location filename="../ui/MeshAdvanced.ui" line="539"/>
       <location filename="../ui/MeshAdvanced.ui" line="659"/>
       <source>Drag refinements into the advanced mesh object in the tree to make them accessible in the Formula</source>
-      <translation type="unfinished">Drag refinements into the advanced mesh object in the tree to make them accessible in the Formula</translation>
+      <translation>Die Verfeinerungen in das erweiterte Netzobjekt in der Baumstruktur ziehen, damit sie in der Formel verfügbar sind</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="569"/>
@@ -4081,12 +4081,12 @@ Beispiel: „F2 + Sin(z)“</translation>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="116"/>
       <source>Select any number of 5 or 6 sided volumes</source>
-      <translation type="unfinished">Select any number of 5 or 6 sided volumes</translation>
+      <translation>Eine beliebige Anzahl von 5- oder 6-seitigen Bänden auswählen</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="163"/>
       <source>All volume surfaces must be transfinite. If the surfaces have different mesh types (quads vs. triangles) the volume must also be meshed with mixed elements enabled.</source>
-      <translation type="unfinished">All volume surfaces must be transfinite. If the surfaces have different mesh types (quads vs. triangles) the volume must also be meshed with mixed elements enabled.</translation>
+      <translation>Alle Volumenflächen müssen transfinit sein. Wenn die Flächen unterschiedliche Netztypen aufweisen (Vierecke vs. Dreiecke), muss das Volumen ebenfalls mit aktivierter Option für gemischte Elemente vernetzt werden.</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="183"/>
@@ -4111,7 +4111,7 @@ Notes:
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="213"/>
       <source>Auto apply transfinite surfaces and curves</source>
-      <translation type="unfinished">Auto apply transfinite surfaces and curves</translation>
+      <translation>Transfinite Flächen und Kurven automatisch anwenden</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="229"/>
@@ -4145,13 +4145,13 @@ Notes:
     <message>
       <location filename="../ui/MeshShape.ui" line="38"/>
       <source>Define mesh size inside and outside of the shape, with possible transition layer thickness</source>
-      <translation type="unfinished">Define mesh size inside and outside of the shape, with possible transition layer thickness</translation>
+      <translation>Die Maschenweite innerhalb und außerhalb der Form festlegen, gegebenenfalls mit einer Übergangsschichtdicke</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="54"/>
       <location filename="../ui/MeshShape.ui" line="70"/>
       <source>Mesh size within the shape</source>
-      <translation type="unfinished">Mesh size within the shape</translation>
+      <translation>Maschenweite innerhalb der Form</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="57"/>
@@ -4162,7 +4162,7 @@ Notes:
       <location filename="../ui/MeshShape.ui" line="80"/>
       <location filename="../ui/MeshShape.ui" line="96"/>
       <source>Mesh size outside of the shape</source>
-      <translation type="unfinished">Mesh size outside of the shape</translation>
+      <translation>Maschenweiter außerhalb der Form</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="83"/>
@@ -4173,7 +4173,7 @@ Notes:
       <location filename="../ui/MeshShape.ui" line="106"/>
       <location filename="../ui/MeshShape.ui" line="122"/>
       <source>Thickness of transition layer between in/out mesh sizes (added outside of the shape)</source>
-      <translation type="unfinished">Thickness of transition layer between in/out mesh sizes (added outside of the shape)</translation>
+      <translation>Dicke der Übergangsschicht zwischen den Maschenweiten am Ein- und Ausgang (außerhalb der Form hinzugefügt)</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="145"/>
@@ -4193,7 +4193,7 @@ Notes:
     <message>
       <location filename="../ui/MeshDistance.ui" line="41"/>
       <source>Define mesh element size based on distance to chosen reference geometries.</source>
-      <translation type="unfinished">Define mesh element size based on distance to chosen reference geometries.</translation>
+      <translation>Die Größe der Netzelemente anhand des Abstands zu den ausgewählten Referenzgeometrien festlegen.</translation>
     </message>
     <message>
       <location filename="../ui/MeshDistance.ui" line="140"/>
@@ -4255,7 +4255,7 @@ Notes:
     <message>
       <location filename="../ui/MeshPreview.ui" line="184"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualizes the refinements mesh size output: It shows the mesh sizes given by the refinement as colors on a preview mesh. Note that the preview evaluates the refinement on a coarse mesh, therefore details smaller then the mesh size may not be visible.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualizes the refinements mesh size output: It shows the mesh sizes given by the refinement as colors on a preview mesh. Note that the preview evaluates the refinement on a coarse mesh, therefore details smaller then the mesh size may not be visible.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualisiert die Ausgabe der Verfeinerungsgittergröße: Die durch die Verfeinerung ermittelten Gittergrößen werden als Farben auf einem Vorschaugitter dargestellt. Es muss beachtet werden, dass die Vorschau die Verfeinerung auf einem groben Gitter berechnet; daher sind Details, die kleiner als die Gittergröße sind, möglicherweise nicht sichtbar.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="187"/>
@@ -4270,7 +4270,7 @@ Notes:
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="95"/>
       <source>Select multiple faces with 3 or 4 edges, optional with corner vertices of 3-sided faces.</source>
-      <translation type="unfinished">Select multiple faces with 3 or 4 edges, optional with corner vertices of 3-sided faces.</translation>
+      <translation>Mehrere Flächen mit drei oder vier Kanten auswählen, optional mit Eckpunkten von dreiseitigen Flächen.</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="108"/>
@@ -4324,7 +4324,7 @@ Notes:
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="236"/>
       <source>Auto apply transfinite curves</source>
-      <translation type="unfinished">Auto apply transfinite curves</translation>
+      <translation>Transfinite Kurven automatisch anwenden</translation>
     </message>
   </context>
   <context>
@@ -4352,7 +4352,7 @@ Notes:
     <message>
       <location filename="../ui/MeshGmsh.ui" line="56"/>
       <source>Path to working directory. Leave blank to use user preferences</source>
-      <translation type="unfinished">Path to working directory. Leave blank to use user preferences</translation>
+      <translation>Pfad zum Arbeitsverzeichnis. Leer lassen, um Benutzereinstellungen zu verwenden</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="80"/>
@@ -8208,7 +8208,7 @@ Leer lassen, um die Standard-Python-Ausführungsdatei zu verwenden</translation>
   <context>
     <name>FemGui::TaskPostFrames</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="554"/>
+      <location filename="../../TaskPostBoxes.cpp" line="563"/>
       <source>Result Frames</source>
       <translation>Ergebnisrahmen</translation>
     </message>
@@ -8216,7 +8216,7 @@ Leer lassen, um die Standard-Python-Ausführungsdatei zu verwenden</translation>
   <context>
     <name>FemGui::TaskPostCalculator</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="2248"/>
+      <location filename="../../TaskPostBoxes.cpp" line="2257"/>
       <source>Calculator options</source>
       <translation>Rechneroptionen</translation>
     </message>
@@ -8681,7 +8681,7 @@ Leer lassen, um die Standard-Python-Ausführungsdatei zu verwenden</translation>
   <context>
     <name>FemGui::TaskPostDisplay</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="453"/>
+      <location filename="../../TaskPostBoxes.cpp" line="462"/>
       <source>Result Display Options</source>
       <translation>Ergebnisanzeigeoptionen</translation>
     </message>
@@ -8689,7 +8689,7 @@ Leer lassen, um die Standard-Python-Ausführungsdatei zu verwenden</translation>
   <context>
     <name>FemGui::TaskPostBranch</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="623"/>
+      <location filename="../../TaskPostBoxes.cpp" line="632"/>
       <source>Branch Behaviour</source>
       <translation>Verhalten des Zweigs</translation>
     </message>
@@ -8697,7 +8697,7 @@ Leer lassen, um die Standard-Python-Ausführungsdatei zu verwenden</translation>
   <context>
     <name>FemGui::TaskPostClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1495"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1504"/>
       <source>Clip Region, Choose Implicit Function</source>
       <translation>Zuschnittbereich, implizite Funktion auswählen</translation>
     </message>
@@ -8705,7 +8705,7 @@ Leer lassen, um die Standard-Python-Ausführungsdatei zu verwenden</translation>
   <context>
     <name>FemGui::TaskPostContours</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1646"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1655"/>
       <source>Contours Filter Options</source>
       <translation>Konturenfilter-Optionen</translation>
     </message>
@@ -8713,7 +8713,7 @@ Leer lassen, um die Standard-Python-Ausführungsdatei zu verwenden</translation>
   <context>
     <name>FemGui::TaskPostCut</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1810"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1819"/>
       <source>Function Cut, Choose Implicit Function</source>
       <translation>Funktion Ausschneiden, Implizite Funktion auswählen</translation>
     </message>
@@ -8721,7 +8721,7 @@ Leer lassen, um die Standard-Python-Ausführungsdatei zu verwenden</translation>
   <context>
     <name>FemGui::TaskPostScalarClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1943"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1952"/>
       <source>Scalar Clip Options</source>
       <translation>Skalare Zuschnitt-Optionen</translation>
     </message>
@@ -8729,7 +8729,7 @@ Leer lassen, um die Standard-Python-Ausführungsdatei zu verwenden</translation>
   <context>
     <name>FemGui::TaskPostWarpVector</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="2067"/>
+      <location filename="../../TaskPostBoxes.cpp" line="2076"/>
       <source>Warp Options</source>
       <translation>Verformungsoptionen</translation>
     </message>
@@ -8827,7 +8827,7 @@ Leer lassen, um die Standard-Python-Ausführungsdatei zu verwenden</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="272"/>
       <source>Creates an electromagnetic boundary condition</source>
-      <translation type="unfinished">Creates an electromagnetic boundary condition</translation>
+      <translation>Erzeugt eine elektromagnetische Randbedingung</translation>
     </message>
   </context>
   <context>
@@ -8835,12 +8835,12 @@ Leer lassen, um die Standard-Python-Ausführungsdatei zu verwenden</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="701"/>
       <source>2D Boundary Layer</source>
-      <translation type="unfinished">2D Boundary Layer</translation>
+      <translation>2D-Begrenzungsschicht</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="705"/>
       <source>Adds a structured layer of mesh elmenets on 2D model boundaries</source>
-      <translation type="unfinished">Adds a structured layer of mesh elmenets on 2D model boundaries</translation>
+      <translation>Fügt eine strukturierte Ebene aus Netzelementen an den Rändern des 2D-Modells hinzu</translation>
     </message>
   </context>
   <context>
@@ -8861,12 +8861,12 @@ Leer lassen, um die Standard-Python-Ausführungsdatei zu verwenden</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="908"/>
       <source>Distance-Based Refinement</source>
-      <translation type="unfinished">Distance-Based Refinement</translation>
+      <translation>Entfernungsbasierte Verfeinerung</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="911"/>
       <source>Sets mesh size based on the distance to vertices, edges, and faces</source>
-      <translation type="unfinished">Sets mesh size based on the distance to vertices, edges, and faces</translation>
+      <translation>Legt die Maschenweite anhand des Abstands zu Eckpunkten, Kanten und Flächen fest</translation>
     </message>
   </context>
   <context>
@@ -8874,12 +8874,12 @@ Leer lassen, um die Standard-Python-Ausführungsdatei zu verwenden</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="921"/>
       <source>Manipulate Refinement</source>
-      <translation type="unfinished">Manipulate Refinement</translation>
+      <translation>Verfeinerung bearbeiten</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="924"/>
       <source>Allows to manipulate the output of a refinement in various ways</source>
-      <translation type="unfinished">Allows to manipulate the output of a refinement in various ways</translation>
+      <translation>Ermöglicht es, die Ausgabe einer Verfeinerung auf verschiedene Weise zu bearbeiten</translation>
     </message>
   </context>
   <context>
@@ -8887,12 +8887,12 @@ Leer lassen, um die Standard-Python-Ausführungsdatei zu verwenden</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="934"/>
       <source>Advanced Refinement Types</source>
-      <translation type="unfinished">Advanced Refinement Types</translation>
+      <translation>Erweiterte Verfeinerungsarten</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="937"/>
       <source>Allows to define the mesh size by various advanced means</source>
-      <translation type="unfinished">Allows to define the mesh size by various advanced means</translation>
+      <translation>Ermöglicht die Festlegung der Maschenweite mithilfe verschiedener fortschrittlicher Methoden</translation>
     </message>
   </context>
   <context>
@@ -8900,7 +8900,7 @@ Leer lassen, um die Standard-Python-Ausführungsdatei zu verwenden</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="947"/>
       <source>Shape-Based Refinement</source>
-      <translation type="unfinished">Shape-Based Refinement</translation>
+      <translation>Formbasierte Verfeinerung</translation>
     </message>
   </context>
   <context>
@@ -8908,7 +8908,7 @@ Leer lassen, um die Standard-Python-Ausführungsdatei zu verwenden</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="951"/>
       <source>Sets mesh size within and outside of a geometric shape (box, sphere, cylinder)</source>
-      <translation type="unfinished">Sets mesh size within and outside of a geometric shape (box, sphere, cylinder)</translation>
+      <translation>Legt die Maschenweite innerhalb und außerhalb einer geometrischen Form (Quader, Kugel, Zylinder) fest</translation>
     </message>
   </context>
   <context>
@@ -8916,7 +8916,7 @@ Leer lassen, um die Standard-Python-Ausführungsdatei zu verwenden</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="963"/>
       <source>Structured Transfinite Curve</source>
-      <translation type="unfinished">Structured Transfinite Curve</translation>
+      <translation>Strukturierte transfinite Kurve</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="967"/>
@@ -8929,12 +8929,12 @@ Leer lassen, um die Standard-Python-Ausführungsdatei zu verwenden</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="979"/>
       <source>Structured Transfinite Surface</source>
-      <translation type="unfinished">Structured Transfinite Surface</translation>
+      <translation>Strukturierte transfinite Fläche</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="982"/>
       <source>Creates a structured mesh on a face</source>
-      <translation type="unfinished">Creates a structured mesh on a face</translation>
+      <translation>Erstellt ein strukturiertes Netz auf einer Fläche</translation>
     </message>
   </context>
   <context>
@@ -8942,12 +8942,12 @@ Leer lassen, um die Standard-Python-Ausführungsdatei zu verwenden</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="994"/>
       <source>Structured Transfinite Volume</source>
-      <translation type="unfinished">Structured Transfinite Volume</translation>
+      <translation>Strukturiertes transfinites Volumen</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="998"/>
       <source>Creates a structured mesh in a 4 or 5 sided volume bounded by transfinite surfaces</source>
-      <translation type="unfinished">Creates a structured mesh in a 4 or 5 sided volume bounded by transfinite surfaces</translation>
+      <translation>Erzeugt ein strukturiertes Netz in einem 4- oder 5-seitigen Volumen, das von transfiniten Flächen begrenzt wird</translation>
     </message>
   </context>
   <context>

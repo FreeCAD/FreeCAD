@@ -308,12 +308,12 @@
     <message>
       <location filename="../../Command.cpp" line="54"/>
       <source>Select VRML file for Robot</source>
-      <translation type="unfinished">Select VRML file for Robot</translation>
+      <translation>აირჩიეთ VRML ფაილი რობოტისთვის</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="56"/>
       <source>VRML Files (*.wrl *.vrml)</source>
-      <translation type="unfinished">VRML Files (*.wrl *.vrml)</translation>
+      <translation>VRML ფაილები (*.wrl *.vrml)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="68"/>

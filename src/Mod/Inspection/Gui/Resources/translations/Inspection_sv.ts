@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="76"/>
       <source>Inspects distance information</source>
-      <translation>Kontrollerar information om avstånd</translation>
+      <translation>Inspekterar avståndsinformation</translation>
     </message>
   </context>
   <context>

@@ -430,7 +430,7 @@
     <message>
       <location filename="../../DlgBindSheet.cpp" line="297"/>
       <source>Unbind cells</source>
-      <translation type="unfinished">Unbind cells</translation>
+      <translation>Ta bort bindning mellan celler</translation>
     </message>
   </context>
   <context>
@@ -438,7 +438,7 @@
     <message>
       <location filename="../../DlgBindSheet.ui" line="14"/>
       <source>Bind Spreadsheet Cells</source>
-      <translation>Binda kalkylbladets celler</translation>
+      <translation>Bind kalkylbladsceller</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="22"/>
@@ -548,8 +548,8 @@ by that property.
 </source>
       <translation>Startcellens adress.
 
-Den första kolumnen i intervallet antas innehålla en lista med konfigurationsnamn
-namn, som kommer att användas för att generera en stränglista och binda till den givna
+Den första kolumnen i intervallet antas innehålla en lista med konfigurationsnamn, 
+som kommer att användas för att generera en stränglista och binda till den givna
 egenskapen så att användaren kan byta konfiguration dynamiskt.
 
 Den första raden i intervallet kommer att bindas till den rad som (indirekt) väljs
@@ -569,8 +569,8 @@ by that property.
 </source>
       <translation>Adress till slutcellen.
 
-Den första kolumnen i intervallet antas innehålla en lista med konfigurationsnamn
-namn, som kommer att användas för att generera en stränglista och binda till den givna
+Den första kolumnen i intervallet antas innehålla en lista med konfigurationsnamn, 
+som kommer att användas för att generera en stränglista och binda till den givna
 egenskapen så att användaren kan byta konfiguration dynamiskt.
 
 Den första raden i intervallet kommer att bindas till den rad som (indirekt) väljs
@@ -951,7 +951,7 @@ Fortsätta?</translation>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="283"/>
       <source>Bind Spreadsheet Cells</source>
-      <translation>Binda kalkylbladets celler</translation>
+      <translation>Bind kalkylbladsceller</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="284"/>
@@ -1014,7 +1014,7 @@ Standardvärde: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="48"/>
       <source>Defines a default zoom level for table view from 60% to 160%</source>
-      <translation>Definierar en standardzoomnivå för tabellvyn från 60% to 160%</translation>
+      <translation>Definierar en standardzoomnivå för tabellvyn från 60% till 160%</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="76"/>

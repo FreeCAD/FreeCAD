@@ -600,7 +600,7 @@
       <location filename="../../AttacherTexts.cpp" line="363"/>
       <source>Plane is made tangent to surface at vertex.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Plana görs tangent till ytan vid toppunktet.</translation>
+      <translation>Plana görs tangent till ytan vid toppunkten.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="371"/>
@@ -785,7 +785,7 @@
       <location filename="../../AttacherTexts.cpp" line="102"/>
       <source>X' Y' plane is parallel to the plane (object's XY) and passes through the vertex.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>X' Y' planet är parallellt med planet (objektets XY) och går genom toppunktet.</translation>
+      <translation>X' Y' planet är parallellt med planet (objektets XY) och går genom toppunkten.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="111"/>
@@ -809,7 +809,7 @@
       <location filename="../../AttacherTexts.cpp" line="121"/>
       <source>X' Y' plane is made tangent to surface at vertex.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>X' Y' planet görs tangent till ytan vid toppunktet.</translation>
+      <translation>X' Y' planet görs tangent till ytan vid toppunkten.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="129"/>
@@ -931,7 +931,7 @@
       <location filename="../../AttacherTexts.cpp" line="230"/>
       <source>Match origin with first Vertex. Align Z' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Matcha ursprunget med första vertexen. Rikta in Z'- och X'-axlarna mot toppunktet/längs linjen.</translation>
+      <translation>Matcha ursprunget med första vertexen. Rikta in Z'- och X'-axlarna mot toppunkten/längs linjen.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="239"/>
@@ -943,7 +943,7 @@
       <location filename="../../AttacherTexts.cpp" line="240"/>
       <source>Match origin with first Vertex. Align Z' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Matcha ursprunget med första vertexen. Rikta in Z'- och Y'-axlarna mot toppunktet/längs linjen.</translation>
+      <translation>Matcha ursprunget med första vertexen. Rikta in Z'- och Y'-axlarna mot toppunkten/längs linjen.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="249"/>
@@ -956,7 +956,7 @@
       <location filename="../../AttacherTexts.cpp" line="250"/>
       <source>Match origin with first Vertex. Align X' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Matcha ursprunget med första vertexen. Rikta in X'- och Y'-axlarna mot toppunktet/längs linjen.</translation>
+      <translation>Matcha ursprunget med första vertexen. Rikta in X'- och Y'-axlarna mot toppunkten/längs linjen.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="259"/>
@@ -968,7 +968,7 @@
       <location filename="../../AttacherTexts.cpp" line="260"/>
       <source>Match origin with first Vertex. Align X' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Matcha ursprunget med första vertexen. Rikta in X'- och Z'-axlarna mot toppunktet/längs linjen.</translation>
+      <translation>Matcha ursprunget med första vertexen. Rikta in X'- och Z'-axlarna mot toppunkten/längs linjen.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="269"/>
@@ -980,7 +980,7 @@
       <location filename="../../AttacherTexts.cpp" line="270"/>
       <source>Match origin with first Vertex. Align Y' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Matcha ursprunget med första vertexen. Rikta in Y'- och Z'-axlarna mot toppunktet/längs linjen.</translation>
+      <translation>Matcha ursprunget med första vertexen. Rikta in Y'- och Z'-axlarna mot toppunkten/längs linjen.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="279"/>
@@ -993,7 +993,7 @@
       <location filename="../../AttacherTexts.cpp" line="280"/>
       <source>Match origin with first Vertex. Align Y' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Matcha ursprunget med första vertexen. Rikta in Y'- och X'-axlarna mot toppunktet/längs linjen.</translation>
+      <translation>Matcha ursprunget med första vertexen. Rikta in Y'- och X'-axlarna mot toppunkten/längs linjen.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="470"/>
@@ -1017,13 +1017,13 @@
       <location filename="../../AttacherTexts.cpp" line="481"/>
       <source>Match origin with first Vertex. Align normal and vertical plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Matcha ursprung med första vertex. Rikta in normal- och vertikalplanets axel mot toppunktet/längs linjen.</translation>
+      <translation>Matcha ursprung med första vertex. Rikta in normal- och vertikalplanets axel mot toppunkten/längs linjen.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="491"/>
       <source>Match origin with first Vertex. Align horizontal and vertical plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Matcha ursprung med första vertex. Rikta in horisontella och vertikala planaxlar mot toppunktet/längs linjen.</translation>
+      <translation>Matcha ursprung med första vertex. Rikta in horisontella och vertikala planaxlar mot toppunkten/längs linjen.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="500"/>
@@ -1035,7 +1035,7 @@
       <location filename="../../AttacherTexts.cpp" line="501"/>
       <source>Match origin with first Vertex. Align horizontal plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Matcha ursprung med första vertex. Rikta in horisontalplanets axel och normal mot toppunktet/längs linjen.</translation>
+      <translation>Matcha ursprung med första vertex. Rikta in horisontalplanets axel och normal mot toppunkten/längs linjen.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="510"/>
@@ -1047,13 +1047,13 @@
       <location filename="../../AttacherTexts.cpp" line="511"/>
       <source>Match origin with first Vertex. Align vertical plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Matcha ursprung med första vertex. Rikta in vertikalplanets axel och normal mot toppunktet/längs linjen.</translation>
+      <translation>Matcha ursprung med första vertex. Rikta in vertikalplanets axel och normal mot toppunkten/längs linjen.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="521"/>
       <source>Match origin with first Vertex. Align vertical and horizontal plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Matcha ursprung med första vertex. Rikta in vertikala och horisontella planaxlar mot toppunktet/längs linjen.</translation>
+      <translation>Matcha ursprung med första vertex. Rikta in vertikala och horisontella planaxlar mot toppunkten/längs linjen.</translation>
     </message>
   </context>
   <context>
@@ -2388,7 +2388,7 @@ Anmärkning: Placeringen uttrycks i det lokala utrymmet för det objekt som fäs
     <message>
       <location filename="../../CrossSections.ui" line="20"/>
       <source>Guiding Plane</source>
-      <translation>Styrande flygplan</translation>
+      <translation>Styrande plan</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="26"/>

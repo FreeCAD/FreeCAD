@@ -177,7 +177,7 @@
     <message>
       <location filename="../../../JointObject.py" line="1628"/>
       <source>Select 2 elements from 2 separate parts</source>
-      <translation type="unfinished">Select 2 elements from 2 separate parts</translation>
+      <translation>Selecione 2 elementos de 2 partes distintas</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1811"/>

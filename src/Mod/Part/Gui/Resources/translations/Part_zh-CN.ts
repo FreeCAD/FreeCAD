@@ -1822,12 +1822,12 @@
     <message>
       <location filename="../../Command.cpp" line="220"/>
       <source>Primitive</source>
-      <translation>原始</translation>
+      <translation>基础图元</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="222"/>
       <source>Creates solid geometric primitives parametrically</source>
-      <translation>参数化创建实体几何图元</translation>
+      <translation>参数化地创建实体基础几何体</translation>
     </message>
   </context>
   <context>
@@ -2219,7 +2219,7 @@ of the projection.</source>
       <translation>转换网格</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1490"/>
+      <location filename="../../TaskAttacher.cpp" line="1491"/>
       <source>Edit attachment</source>
       <translation>编辑附加</translation>
     </message>
@@ -3179,8 +3179,8 @@ Check one or more edge entities first.</source>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="29"/>
-      <source>Merges compounds during file reading (slower but higher details)</source>
-      <translation>在文件读取期间合并复合体（较慢但细节更高）</translation>
+      <source>Merges all shapes into a single compound during import, resolving part instances and applying transforms. Increases import time but does not affect geometry accuracy or rendering quality.</source>
+      <translation>导入过程中将所有形状合并成一个复合体，解析零件实例并应用变换。这会增加导入时间，但不会影响几何精度或渲染质量。</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="32"/>
@@ -3379,12 +3379,12 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="14"/>
       <source>Geometric Primitives</source>
-      <translation>几何图元</translation>
+      <translation>基础几何图元</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="23"/>
       <source>Select the type of geometric primitive to create</source>
-      <translation>选择要创建的几何图元类型</translation>
+      <translation>选择要创建的基础几何图元类型</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="36"/>
@@ -3450,7 +3450,7 @@ Check one or more edge entities first.</source>
       <location filename="../../DlgPrimitives.ui" line="126"/>
       <location filename="../../DlgPrimitives.cpp" line="1579"/>
       <source>Spiral</source>
-      <translation>螺旋</translation>
+      <translation>螺旋线</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="135"/>
@@ -5791,12 +5791,12 @@ Individual boolean operation checks:</source>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1472"/>
+      <location filename="../../TaskAttacher.cpp" line="1471"/>
       <source>Attachment</source>
       <translation>附件</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1554"/>
+      <location filename="../../TaskAttacher.cpp" line="1556"/>
       <source>Datum dialog: input error</source>
       <translation>基准对话框：输入错误</translation>
     </message>
@@ -6467,7 +6467,7 @@ Continue?</source>
       <translation>输入距离：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1007"/>
+      <location filename="../../ViewProviderExt.cpp" line="994"/>
       <source>Appearance per Face</source>
       <translation>每面外观</translation>
     </message>
@@ -7108,12 +7108,12 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Part::FaceMakerSimple</name>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="319"/>
+      <location filename="../../../App/FaceMaker.cpp" line="332"/>
       <source>Simple</source>
       <translation>简易</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="324"/>
+      <location filename="../../../App/FaceMaker.cpp" line="337"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
       <translation>独立地从每根导线分离平面面。不支持孔; 电线可以在不同的平面上。</translation>
     </message>
@@ -7715,12 +7715,12 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Part::FaceMakerBuildFace</name>
     <message>
-      <location filename="../../../App/FaceMakerBuildFace.cpp" line="46"/>
+      <location filename="../../../App/FaceMakerBuildFace.cpp" line="60"/>
       <source>BuildFace facemaker</source>
       <translation>BuildFace 面生成器</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMakerBuildFace.cpp" line="51"/>
+      <location filename="../../../App/FaceMakerBuildFace.cpp" line="65"/>
       <source>Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</source>
       <translation>在交叉处分割边线，并找出所有封闭的面区域。能够处理任意重叠的几何体。</translation>
     </message>

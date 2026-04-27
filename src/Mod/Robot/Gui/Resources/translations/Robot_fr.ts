@@ -119,12 +119,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="92"/>
       <source>Insert in Trajectory</source>
-      <translation type="unfinished">Insert in Trajectory</translation>
+      <translation>Insérer dans la trajectoire</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="93"/>
       <source>Inserts the robot tool location into the trajectory</source>
-      <translation type="unfinished">Inserts the robot tool location into the trajectory</translation>
+      <translation>Insérer la position de l'outil du robot dans la trajectoire</translation>
     </message>
   </context>
   <context>
@@ -137,7 +137,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="165"/>
       <source>Insert in Trajectory</source>
-      <translation type="unfinished">Insert in Trajectory</translation>
+      <translation>Insérer dans la trajectoire</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="166"/>
@@ -227,12 +227,12 @@
     <message>
       <location filename="../../Command.cpp" line="245"/>
       <source>Simulate Trajectory</source>
-      <translation type="unfinished">Simulate Trajectory</translation>
+      <translation>Simuler la trajectoire</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="246"/>
       <source>Simulates robot movement along a selected trajectory</source>
-      <translation type="unfinished">Simulates robot movement along a selected trajectory</translation>
+      <translation>Simuler le mouvoment du robot le long d'une trajectoire sélectionnée</translation>
     </message>
   </context>
   <context>
@@ -263,12 +263,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="443"/>
       <source>Dress-Up Trajectory</source>
-      <translation type="unfinished">Dress-Up Trajectory</translation>
+      <translation>Mise en forme de la trajectoire</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="444"/>
       <source>Creates a dress-up object that overrides aspects of a trajectory</source>
-      <translation type="unfinished">Creates a dress-up object that overrides aspects of a trajectory</translation>
+      <translation>Créer un objet de mise en forme qui remplace certains aspects d'une trajectoire</translation>
     </message>
   </context>
   <context>
@@ -276,7 +276,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>Trajectory Tools</source>
-      <translation type="unfinished">Trajectory Tools</translation>
+      <translation>Outils de trajectoire</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
@@ -848,7 +848,7 @@ pour utiliser cette commande. Consultez la documentation pour plus de détails.<
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="165"/>
       <source>Use orientation</source>
-      <translation type="unfinished">Use orientation</translation>
+      <translation>Utiliser l'orientation</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="170"/>
@@ -876,7 +876,7 @@ pour utiliser cette commande. Consultez la documentation pour plus de détails.<
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>Export Trajectory</source>
-      <translation type="unfinished">Export Trajectory</translation>
+      <translation>Exporter la trajectoire</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
