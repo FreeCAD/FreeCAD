@@ -107,7 +107,7 @@ def _get_hint_xyz_constrain():
         key_y = getattr(Gui.UserInput, "Key" + shortcut_y)
         key_z = getattr(Gui.UserInput, "Key" + shortcut_z)
         return [
-            Gui.InputHint(translate("draft", "%1/%2/%3 switch constraint"), key_x, key_y, key_z)
+            Gui.InputHint(translate("draft", "%1 / %2 / %3 switch constraint"), key_x, key_y, key_z)
         ]
     return []
 
@@ -140,12 +140,13 @@ def _get_hint_continue():
 
 
 def _get_hint_select_edge():
+    mod_key = _HINT_MOD_KEYS[params.get_param("modalt")]
     pattern = re.compile("[A-Z]")
     shortcut = params.get_param("inCommandShortcutSelectEdge").upper()
     if pattern.fullmatch(shortcut):
-        key = getattr(Gui.UserInput, "Key" + shortcut)
-        return [Gui.InputHint(translate("draft", "%1 select edge"), key)]
-    return []
+        shortcut_key = getattr(Gui.UserInput, "Key" + shortcut)
+        return [Gui.InputHint(translate("draft", "%1 / hold %2 select edge"), shortcut_key, mod_key)]
+    return [Gui.InputHint(translate("draft", "Hold %1 select edge"), mod_key)]
 
 
 def format_unit(exp, unit="mm"):
