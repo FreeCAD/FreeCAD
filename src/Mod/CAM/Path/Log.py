@@ -89,7 +89,9 @@ class ModuleLogger:
         if not self.willLogAt(level):
             return None
 
-        message = ("{}.{}: " + str(msg)).format(self.getModule(), Level.toString(level), *args)
+        message = ("{}.{}: " + str(msg)).format(
+            self.getModule(), Level.toString(level), *args
+        )
 
         if _useConsole:
             message += "\n"
@@ -220,7 +222,7 @@ def untrackAllModules():
 
     _trackAll = False
 
-    for module in _moduleLoggers:
+    for module in _moduleLoggers.values():
         module.disableTracking()
 
 # deprecated methods:
@@ -241,7 +243,7 @@ def setLevel(level, module=None):
         if level == Level.RESET:
             _defaultLogLevel = Level.NOTICE
 
-            for module in _moduleLoggers:
+            for module in _moduleLoggers.values():
                 module.setLevel(Level.RESET)
         else:
             _defaultLogLevel = level
