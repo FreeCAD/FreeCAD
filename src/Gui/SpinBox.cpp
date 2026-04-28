@@ -649,6 +649,47 @@ void DoubleSpinBox::resizeEvent(QResizeEvent* event)
     resizeWidget();
 }
 
+QValidator::State DoubleSpinBox::validate(QString& input, int& pos) const
+{
+    QString decPt = locale().decimalPoint();
+    if (input.contains(decPt)) {
+        int decIdx = input.indexOf(decPt);
+        int decimalPlaces = input.length() - decIdx - decPt.length();
+        if (decimalPlaces > decimals()) {
+            int trailingZeros = 0;
+            for (int i = input.length() - 1; i >= 0 && input[i] == QLatin1Char('0'); --i) {
+                ++trailingZeros;
+            }
+            int toStrip = qMin(trailingZeros, decimalPlaces - decimals());
+            if (toStrip > 0) {
+                QString stripped = input.left(input.length() - toStrip);
+                int newPos = qMin(pos, stripped.length());
+                if (QDoubleSpinBox::validate(stripped, newPos) == QValidator::Acceptable) {
+                    input = stripped;
+                    pos = newPos;
+                    return QValidator::Acceptable;
+                }
+            }
+        }
+    }
+    return QDoubleSpinBox::validate(input, pos);
+}
+
+double DoubleSpinBox::valueFromText(const QString& text) const
+{
+    QString copy = text;
+    QString decPt = locale().decimalPoint();
+    if (copy.contains(decPt)) {
+        while (copy.endsWith(QLatin1Char('0'))) {
+            copy.chop(1);
+        }
+        if (copy.endsWith(decPt)) {
+            copy.chop(decPt.size());
+        }
+    }
+    return QDoubleSpinBox::valueFromText(copy);
+}
+
 void DoubleSpinBox::keyPressEvent(QKeyEvent* event)
 {
     if (!handleKeyEvent(event->text())) {
