@@ -48,91 +48,6 @@ else:
 translate = FreeCAD.Qt.translate
 
 
-def endPoints(edgeOrWire):
-    """endPoints(edgeOrWire) ... return the first and last point of the wire or the edge, assuming the argument is not a closed wire."""
-    if Part.Wire == type(edgeOrWire):
-        # edges = edgeOrWire.Edges
-        pts = [e.valueAt(e.FirstParameter) for e in edgeOrWire.Edges]
-        pts.extend([e.valueAt(e.LastParameter) for e in edgeOrWire.Edges])
-        unique = []
-        for p in pts:
-            cnt = len([p2 for p2 in pts if Path.Geom.pointsCoincide(p, p2)])
-            if 1 == cnt:
-                unique.append(p)
-
-        return unique
-
-    pfirst = edgeOrWire.valueAt(edgeOrWire.FirstParameter)
-    plast = edgeOrWire.valueAt(edgeOrWire.LastParameter)
-    if Path.Geom.pointsCoincide(pfirst, plast):
-        return None
-
-    return [pfirst, plast]
-
-
-def includesPoint(p, pts):
-    """includesPoint(p, pts) ... answer True if the collection of pts includes the point p"""
-    for pt in pts:
-        if Path.Geom.pointsCoincide(p, pt):
-            return True
-
-    return False
-
-
-def selectOffsetWire(feature, wires):
-    """selectOffsetWire(feature, wires) ... returns the Wire in wires which is does not intersect with feature"""
-    closest = None
-    for w in wires:
-        dist = feature.distToShape(w)[0]
-        if closest is None or dist > closest[0]:
-            closest = (dist, w)
-
-    if closest is not None:
-        return closest[1]
-
-    return None
-
-
-def extendWire(feature, wire, length):
-    """extendWire(wire, length) ... return a closed Wire which extends wire by length"""
-    Path.Log.track(length)
-
-    if not length or length == 0:
-        return None
-
-    try:
-        off2D = wire.makeOffset2D(length)
-    except FreeCAD.Base.FreeCADError as ee:
-        Path.Log.debug(ee)
-        return None
-    endPts = endPoints(wire)  # Assumes wire is NOT closed
-    if endPts:
-        edges = [
-            e
-            for e in off2D.Edges
-            if Part.Circle != type(e.Curve) or not includesPoint(e.Curve.Center, endPts)
-        ]
-        wires = [Part.Wire(e) for e in Part.sortEdges(edges)]
-        offset = selectOffsetWire(feature, wires)
-        ePts = endPoints(offset)
-        if ePts and len(ePts) > 1:
-            l0 = (ePts[0] - endPts[0]).Length
-            l1 = (ePts[1] - endPts[0]).Length
-            edges = wire.Edges
-            if l0 < l1:
-                edges.append(Part.Edge(Part.LineSegment(endPts[0], ePts[0])))
-                edges.extend(offset.Edges)
-                edges.append(Part.Edge(Part.LineSegment(endPts[1], ePts[1])))
-            else:
-                edges.append(Part.Edge(Part.LineSegment(endPts[1], ePts[0])))
-                edges.extend(offset.Edges)
-                edges.append(Part.Edge(Part.LineSegment(endPts[0], ePts[1])))
-
-            return Part.Wire(edges)
-
-    return None
-
-
 def createExtension(obj, extObj, extFeature, extSub):
     return Extension(
         obj,
@@ -144,29 +59,17 @@ def createExtension(obj, extObj, extFeature, extSub):
     )
 
 
-def readObjExtensionFeature(obj):
-    """readObjExtensionFeature(obj)...
-    Return three item string tuples (base name, feature, subfeature) extracted from obj.ExtensionFeature
-    """
-    extensions = []
-
-    for extObj, features in obj.ExtensionFeature:
-        for sub in features:
-            extFeature, extSub = sub.split(":")
-            extensions.append((extObj.Name, extFeature, extSub))
-    return extensions
-
-
-def getExtensions(obj):
+def getExtensions(obj, virtFeatures=[]):
     Path.Log.debug("getExtenstions()")
     extensions = []
-    i = 0
 
     for extObj, features in obj.ExtensionFeature:
         for sub in features:
             extFeature, extSub = sub.split(":")
             extensions.append(createExtension(obj, extObj, extFeature, extSub))
-            i = i + 1
+    for base, virtFace, virtEdge in virtFeatures:
+        extensions.append(createExtension(obj, base, virtFace, virtEdge))
+
     return extensions
 
 
@@ -175,53 +78,12 @@ def setExtensions(obj, extensions):
     obj.ExtensionFeature = [(ext.obj, ext.getSubLink()) for ext in extensions]
 
 
-def getStandardAngle(x, y):
-    """getStandardAngle(x, y)...
-    Return standard degree angle given x and y values of vector."""
-    angle = math.degrees(math.atan2(y, x))
-    if angle < 0.0:
-        return angle + 360.0
-    return angle
-
-
-def arcAdjustmentAngle(arc1, arc2):
-    """arcAdjustmentAngle(arc1, arc2)...
-    Return adjustment angle to apply to arc2 in order to align it with arc1.
-    Arcs must have same center point."""
-    center = arc1.Curve.Center
-    cntr2 = arc2.Curve.Center
-
-    # Verify centers of arcs are same
-    if center.sub(cntr2).Length > 0.0000001:
-        return None
-
-    # Calculate midpoint of arc1, and standard angle from center to that midpoint
-    midPntArc1 = arc1.valueAt(
-        arc1.FirstParameter + (arc1.LastParameter - arc1.FirstParameter) / 2.0
-    )
-    midPntVect1 = midPntArc1.sub(center)
-    ang1 = getStandardAngle(midPntVect1.x, midPntVect1.y)
-
-    # Calculate midpoint of arc2, and standard angle from center to that midpoint
-    midPntArc2 = arc2.valueAt(
-        arc2.FirstParameter + (arc2.LastParameter - arc2.FirstParameter) / 2.0
-    )
-    midPntVect2 = midPntArc2.sub(center)
-    ang2 = getStandardAngle(midPntVect2.x, midPntVect2.y)
-
-    # Return adjustment angle to apply to arc2 in order to align with arc1
-    return ang1 - ang2
-
-
 class Extension(object):
     DirectionNormal = 0
     DirectionX = 1
     DirectionY = 2
 
     def __init__(self, op, obj, feature, sub, length, direction):
-        Path.Log.debug(
-            "Extension(%s, %s, %s, %.2f, %s" % (obj.Label, feature, sub, length, direction)
-        )
         self.op = op
         self.obj = obj
         self.feature = feature
@@ -230,15 +92,29 @@ class Extension(object):
         self.direction = direction
         self.extFaces = None
         self.isDebug = True if Path.Log.getLevel(Path.Log.thisModule()) == 4 else False
-
-        self.avoid = False
-        if sub.startswith("Avoid_"):
-            self.avoid = True
-
         self.wire = None
+        self.avoid = False
+
+        if isinstance(feature, str):
+            self.face = obj.Shape.getElement(feature)
+            self.edges = self.getEdges(obj, sub)
+        elif isinstance(feature, Part.Face):
+            self.face = feature
+            self.edges = [sub]
+        else:
+            self.avoid = True
 
     def getSubLink(self):
         return "%s:%s" % (self.feature, self.sub)
+
+    def getEdges(self, obj, sub):
+        if "Wire" in sub:
+            numbers = [nr for nr in sub[5:-1].split(",")]
+        else:
+            numbers = [sub[4:]]
+        names = [f"Edge{nr}" for nr in numbers]
+
+        return [obj.Shape.getElement(sub) for sub in names]
 
     def _extendEdge(self, feature, e0, direction):
         Path.Log.track(feature, e0, direction)
@@ -257,30 +133,15 @@ class Extension(object):
             self.wire = wire
             return wire
 
-        return extendWire(feature, Part.Wire([e0]), self.length.Value)
-
-    def _getEdgeNumbers(self):
-        if "Wire" in self.sub:
-            numbers = [nr for nr in self.sub[5:-1].split(",")]
-        else:
-            numbers = [self.sub[4:]]
-
-        Path.Log.debug("_getEdgeNumbers() -> %s" % numbers)
-        return numbers
-
-    def _getEdgeNames(self):
-        return ["Edge%s" % nr for nr in self._getEdgeNumbers()]
-
-    def _getEdges(self):
-        return [self.obj.Shape.getElement(sub) for sub in self._getEdgeNames()]
+        return self.extendWire(feature, Part.Wire([e0]), self.length.Value)
 
     def _getDirectedNormal(self, p0, normal):
         poffPlus = p0 + 0.01 * normal
         poffMinus = p0 - 0.01 * normal
-        if not self.obj.Shape.isInside(poffPlus, 0.005, True):
+        if not self.face.isInside(poffPlus, 0.005, True):
             return normal
 
-        if not self.obj.Shape.isInside(poffMinus, 0.005, True):
+        if not self.face.isInside(poffMinus, 0.005, True):
             return normal.negative()
 
         return None
@@ -289,7 +150,6 @@ class Extension(object):
         e0 = wire.Edges[0]
         midparam = e0.FirstParameter + 0.5 * (e0.LastParameter - e0.FirstParameter)
         tangent = e0.tangentAt(midparam)
-        Path.Log.track("tangent", tangent, self.feature, self.sub)
         normal = tangent.cross(FreeCAD.Vector(0, 0, 1))
         if Path.Geom.pointsCoincide(normal, FreeCAD.Vector(0, 0, 0)):
             return None
@@ -322,18 +182,18 @@ class Extension(object):
         Path.Log.track()
 
         length = self.length.Value
-        if Path.Geom.isRoughly(0, length) or not self.sub:
-            Path.Log.debug("no extension, length=%.2f, sub=%s" % (length, self.sub))
+        if Path.Geom.isRoughly(0, length) or not self.edges:
+            Path.Log.debug("no extension, length=%.2f" % length)
             return None
 
-        feature = self.obj.Shape.getElement(self.feature)
-        edges = self._getEdges()
+        feature = self.face
+        edges = self.edges
         sub = Part.Wire(Part.sortEdges(edges)[0])
 
         if 1 == len(edges):
             Path.Log.debug("Extending single edge wire")
             edge = edges[0]
-            if Part.Circle == type(edge.Curve):
+            if isinstance(edge.Curve, Part.Circle):
                 Path.Log.debug("is Part.Circle")
                 circle = edge.Curve
                 # for a circle we have to figure out if it's a hole or a cylinder
@@ -360,7 +220,7 @@ class Extension(object):
                     )
 
                     # Determine if rotational alignment is necessary for new arc
-                    rotationAdjustment = arcAdjustmentAngle(edge, e3)
+                    rotationAdjustment = self.arcAdjustmentAngle(edge, e3)
                     if not Path.Geom.isRoughly(rotationAdjustment, 0.0):
                         e3.rotate(
                             edge.Curve.Center,
@@ -368,7 +228,7 @@ class Extension(object):
                             rotationAdjustment,
                         )
 
-                    if endPoints(edge):
+                    if self.endPoints(edge):
                         Path.Log.debug("Make section of donut")
                         # need to construct the arc slice
                         e0 = Part.makeLine(
@@ -395,7 +255,7 @@ class Extension(object):
 
                 Path.Log.debug("radius < 0 - extend inward")
                 # the extension is bigger than the hole - so let's just cover the whole hole
-                if endPoints(edge):
+                if self.endPoints(edge):
                     # if the resulting arc is smaller than the radius, create a pie slice
                     Path.Log.track()
                     center = circle.Center
@@ -408,7 +268,6 @@ class Extension(object):
 
             else:
                 Path.Log.debug("else is NOT Part.Circle")
-                Path.Log.track(self.feature, self.sub, type(edge.Curve), endPoints(edge))
                 direction = self._getDirection(sub)
                 if direction is None:
                     return None
@@ -437,7 +296,7 @@ class Extension(object):
             return off2D
 
         Path.Log.debug("Extending multi-edge open wire")
-        extendedWire = extendWire(feature, sub, length)
+        extendedWire = self.extendWire(feature, sub, length)
         if extendedWire is None:
             return extendedWire
 
@@ -452,9 +311,9 @@ class Extension(object):
         """
         # Add original outer wire to cut faces if necessary
         edgeFace = Part.Face(Part.Wire([edge]))
-        edgeFace.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - edgeFace.BoundBox.ZMin))
+        edgeFace.translate(FreeCAD.Vector(0.0, 0.0, -edgeFace.BoundBox.ZMin))
         extWireFace = Part.Face(extWire)
-        extWireFace.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - extWireFace.BoundBox.ZMin))
+        extWireFace.translate(FreeCAD.Vector(0.0, 0.0, -extWireFace.BoundBox.ZMin))
 
         if extWireFace.Area >= edgeFace.Area:
             extensionFace = extWireFace.cut(edgeFace)
@@ -463,6 +322,124 @@ class Extension(object):
         extensionFace.translate(FreeCAD.Vector(0.0, 0.0, edge.BoundBox.ZMin))
 
         return extensionFace
+
+    def getStandardAngle(self, x, y):
+        """getStandardAngle(x, y)...
+        Return standard degree angle given x and y values of vector."""
+        angle = math.degrees(math.atan2(y, x))
+        if angle < 0.0:
+            return angle + 360.0
+        return angle
+
+    def arcAdjustmentAngle(self, arc1, arc2):
+        """arcAdjustmentAngle(arc1, arc2)...
+        Return adjustment angle to apply to arc2 in order to align it with arc1.
+        Arcs must have same center point."""
+        center = arc1.Curve.Center
+        cntr2 = arc2.Curve.Center
+
+        # Verify centers of arcs are same
+        if center.sub(cntr2).Length > 1e-7:
+            return None
+
+        # Calculate midpoint of arc1, and standard angle from center to that midpoint
+        midPntArc1 = arc1.valueAt(
+            arc1.FirstParameter + (arc1.LastParameter - arc1.FirstParameter) / 2.0
+        )
+        midPntVect1 = midPntArc1.sub(center)
+        ang1 = self.getStandardAngle(midPntVect1.x, midPntVect1.y)
+
+        # Calculate midpoint of arc2, and standard angle from center to that midpoint
+        midPntArc2 = arc2.valueAt(
+            arc2.FirstParameter + (arc2.LastParameter - arc2.FirstParameter) / 2.0
+        )
+        midPntVect2 = midPntArc2.sub(center)
+        ang2 = self.getStandardAngle(midPntVect2.x, midPntVect2.y)
+
+        # Return adjustment angle to apply to arc2 in order to align with arc1
+        return ang1 - ang2
+
+    def extendWire(self, feature, wire, length):
+        """extendWire(wire, length) ... return a closed Wire which extends wire by length"""
+        Path.Log.track(length)
+
+        if not length or length == 0:
+            return None
+
+        try:
+            off2D = wire.makeOffset2D(length)
+        except FreeCAD.Base.FreeCADError as ee:
+            Path.Log.debug(ee)
+            return None
+        endPts = self.endPoints(wire)  # Assumes wire is NOT closed
+        if endPts:
+            edges = [
+                e
+                for e in off2D.Edges
+                if not isinstance(e.Curve, Part.Circle)
+                or not self.includesPoint(e.Curve.Center, endPts)
+            ]
+            wires = [Part.Wire(e) for e in Part.sortEdges(edges)]
+            offset = self.selectOffsetWire(feature, wires)
+            ePts = self.endPoints(offset)
+            if ePts and len(ePts) > 1:
+                l0 = (ePts[0] - endPts[0]).Length
+                l1 = (ePts[1] - endPts[0]).Length
+                edges = wire.Edges
+                if l0 < l1:
+                    edges.append(Part.Edge(Part.LineSegment(endPts[0], ePts[0])))
+                    edges.extend(offset.Edges)
+                    edges.append(Part.Edge(Part.LineSegment(endPts[1], ePts[1])))
+                else:
+                    edges.append(Part.Edge(Part.LineSegment(endPts[1], ePts[0])))
+                    edges.extend(offset.Edges)
+                    edges.append(Part.Edge(Part.LineSegment(endPts[0], ePts[1])))
+
+                return Part.Wire(edges)
+
+        return None
+
+    def endPoints(self, edgeOrWire):
+        """endPoints(edgeOrWire) ... return the first and last point of the wire or the edge, assuming the argument is not a closed wire."""
+        if isinstance(edgeOrWire, Part.Wire):
+            # edges = edgeOrWire.Edges
+            pts = [e.valueAt(e.FirstParameter) for e in edgeOrWire.Edges]
+            pts.extend([e.valueAt(e.LastParameter) for e in edgeOrWire.Edges])
+            unique = []
+            for p in pts:
+                cnt = len([p2 for p2 in pts if Path.Geom.pointsCoincide(p, p2)])
+                if 1 == cnt:
+                    unique.append(p)
+
+            return unique
+
+        pfirst = edgeOrWire.valueAt(edgeOrWire.FirstParameter)
+        plast = edgeOrWire.valueAt(edgeOrWire.LastParameter)
+        if Path.Geom.pointsCoincide(pfirst, plast):
+            return None
+
+        return [pfirst, plast]
+
+    def includesPoint(self, p, pts):
+        """includesPoint(p, pts) ... answer True if the collection of pts includes the point p"""
+        for pt in pts:
+            if Path.Geom.pointsCoincide(p, pt):
+                return True
+
+        return False
+
+    def selectOffsetWire(self, feature, wires):
+        """selectOffsetWire(feature, wires) ... returns the Wire in wires which is does not intersect with feature"""
+        closest = None
+        for w in wires:
+            dist = feature.distToShape(w)[0]
+            if closest is None or dist > closest[0]:
+                closest = (dist, w)
+
+        if closest is not None:
+            return closest[1]
+
+        return None
 
 
 # Eclass
