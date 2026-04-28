@@ -651,7 +651,7 @@ void ConstraintView::contextMenuEvent(QContextMenuEvent* event)
 
     // This does the same as a double-click and thus it should be the first action and with bold
     // text
-    QAction* change = menu.addAction(tr("Change Value"), this, &ConstraintView::modifyCurrentItem);
+    QAction* change = menu.addAction(tr("Edit Value"), this, &ConstraintView::modifyCurrentItem);
     change->setEnabled(isQuantity);
     menu.setDefaultAction(change);
 

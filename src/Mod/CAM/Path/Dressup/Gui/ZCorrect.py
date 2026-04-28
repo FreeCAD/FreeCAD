@@ -1,30 +1,24 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2018 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# -*- coding: utf-8 -*
-# ***************************************************************************
-# *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# *   Bilinear interpolation code modified heavily from the interpolation   *
-# *   library https://github.com/pmav99/interpolation                      *
-# *   Copyright (c) 2013 by Panagiotis Mavrogiorgos                         *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
+
 import FreeCAD
 import FreeCADGui
 import Path
@@ -33,6 +27,8 @@ import Path.Dressup.Utils as PathDressup
 
 from PySide import QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
+
+import os
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -70,7 +66,6 @@ class ObjectDressup:
             "ProbeData",
             QT_TRANSLATE_NOOP("App::Property", "The point file from the surface probing."),
         )
-        obj.Proxy = self
         obj.addProperty("Part::PropertyPartShape", "interpSurface", "Path")
         obj.addProperty(
             "App::PropertyDistance",
@@ -87,18 +82,17 @@ class ObjectDressup:
                 "break segments into smaller segments of this length.",
             ),
         )
+        obj.Proxy = self
         obj.ArcInterpolate = 0.1
         obj.SegInterpolate = 1.0
 
     def dumps(self):
-        return None
+        return
 
     def loads(self, state):
-        return None
+        return
 
     def onChanged(self, obj, prop):
-        if str(prop) == "probefile":
-            self._loadFile(obj, obj.probefile)
         if prop == "Path" and obj.ViewObject:
             obj.ViewObject.signalChangeIcon()
 
@@ -107,114 +101,150 @@ class ObjectDressup:
         p2 = FreeCAD.Vector(x, y, -100.0)
 
         vertical_line = Part.Line(p1, p2)
-        points, curves = vertical_line.intersectCS(surface)
+        points, _ = vertical_line.intersectCS(surface)
         return points[0].Z
 
-    def _loadFile(self, obj, filename):
+    def _getinterpSurface(self, obj):
+        filename = obj.probefile
         if not filename:
             return
 
-        f1 = open(filename, "r")
+        if not os.path.isfile(filename):
+            Path.Log.warning(
+                translate("CAM_DressupZCorrect", "Probe file not found: %s") % filename
+            )
+            return
 
-        try:
-            pointlist = []
-            for line in f1.readlines():
-                if line == "\n":
-                    continue
-                w = line.split()
+        with open(filename, "r") as file:
+            lines = file.readlines()
+
+        pointlist = []
+        skipped = []
+        for i, line in enumerate(lines):
+            w = line.replace(",", ".").split()
+            if len(w) < 3:
+                skipped.append(i + 1)
+                continue
+            try:
                 xval = round(float(w[0]), 2)
                 yval = round(float(w[1]), 2)
                 zval = round(float(w[2]), 2)
+            except ValueError:
+                skipped.append(i + 1)
+                continue
+            pointlist.append((xval, yval, zval))
 
-                pointlist.append([xval, yval, zval])
-            Path.Log.debug(pointlist)
+        if skipped:
+            Path.Log.warning(
+                translate("CAM_DressupZCorrect", "Incorrect lines in file: %s\n%s")
+                % (filename, skipped)
+            )
 
-            cols = list(zip(*pointlist))
-            Path.Log.debug("cols: {}".format(cols))
-            yindex = list(sorted(set(cols[1])))
-            Path.Log.debug("yindex: {}".format(yindex))
-
-            array = []
-            for y in yindex:
-                points = sorted([p for p in pointlist if p[1] == y])
-                inner = []
-                for p in points:
-                    inner.append(FreeCAD.Vector(p[0], p[1], p[2]))
-                array.append(inner)
-
-            intSurf = Part.BSplineSurface()
-            intSurf.interpolate(array)
-
-            obj.interpSurface = intSurf.toShape()
-        except Exception:
-            raise ValueError("File does not contain appropriate point data")
-
-    def execute(self, obj):
-        sampleD = obj.SegInterpolate.Value
-        curveD = obj.ArcInterpolate.Value
-
-        if obj.interpSurface.isNull():  # No valid probe data.  return unchanged path
-            obj.Path = PathUtils.getPathWithPlacement(obj.Base)
+        if len(pointlist) < 3:
+            obj.interpSurface = Part.Shape()
+            Path.Log.warning(
+                translate("CAM_DressupZCorrect", "Not enough points (%s) got from file: %s")
+                % (len(pointlist), filename)
+            )
             return
 
-        surface = obj.interpSurface.toNurbs().Faces[0].Surface
+        cols = list(zip(*pointlist))
+        yindex = list(sorted(set(cols[1])))
 
-        if obj.Base:
-            if obj.Base.isDerivedFrom("Path::Feature"):
-                if obj.Base.Path:
-                    path = PathUtils.getPathWithPlacement(obj.Base)
-                    if path.Commands:
-                        pathlist = path.Commands
+        Path.Log.debug(pointlist)
+        Path.Log.debug("cols: {}".format(cols))
+        Path.Log.debug("yindex: {}".format(yindex))
 
-                        newcommandlist = []
-                        currLocation = {"X": 0, "Y": 0, "Z": 0, "F": 0}
+        array = []
+        for y in yindex:
+            points = sorted([p for p in pointlist if p[1] == y])
+            array.append([FreeCAD.Vector(p[0], p[1], p[2]) for p in points])
 
-                        for c in pathlist:
-                            Path.Log.debug(c)
-                            Path.Log.debug("     curLoc:{}".format(currLocation))
-                            newparams = dict(c.Parameters)
-                            zval = newparams.get("Z", currLocation["Z"])
-                            if c.Name in Path.Geom.CmdMoveMill:
-                                curVec = FreeCAD.Vector(
-                                    currLocation["X"],
-                                    currLocation["Y"],
-                                    currLocation["Z"],
-                                )
-                                arcwire = Path.Geom.edgeForCmd(c, curVec)
-                                if arcwire is None:
-                                    continue
-                                if c.Name in Path.Geom.CmdMoveArc:
-                                    pointlist = arcwire.discretize(Deflection=curveD)
-                                else:
-                                    disc_number = int(arcwire.Length / sampleD)
-                                    if disc_number > 1:
-                                        pointlist = arcwire.discretize(
-                                            Number=int(arcwire.Length / sampleD)
-                                        )
-                                    else:
-                                        pointlist = [v.Point for v in arcwire.Vertexes]
-                                for point in pointlist:
-                                    offset = self._bilinearInterpolate(surface, point.x, point.y)
+        intSurf = Part.BSplineSurface()
+        try:
+            intSurf.interpolate(array)
+            obj.interpSurface = intSurf.toShape()
+        except Exception:
+            obj.interpSurface = Part.Shape()
+            Path.Log.warning(
+                translate("CAM_DressupZCorrect", "Failed to create surface from probe data: %s")
+                % filename
+            )
 
-                                    commandparams = {
-                                        "X": point.x,
-                                        "Y": point.y,
-                                        "Z": point.z + offset,
-                                    }
-                                    if "F" in newparams.keys():
-                                        commandparams["F"] = newparams["F"]
-                                    newcommand = Path.Command("G1", commandparams)
+        return
 
-                                    newcommandlist.append(newcommand)
-                                    currLocation.update(newcommand.Parameters)
-                                    currLocation["Z"] = zval
+    def execute(self, obj):
+        if not obj.Base or not obj.Base.isDerivedFrom("Path::Feature") or not obj.Base.Path:
+            obj.Path = Path.Path()
+            return
 
-                            else:
-                                # Non Feed Command
-                                newcommandlist.append(c)
-                                currLocation.update(c.Parameters)
-                        path = Path.Path(newcommandlist)
+        path = PathUtils.getPathWithPlacement(obj.Base)
+        if not path.Commands:
+            obj.Path = Path.Path()
+            return
+
+        self._getinterpSurface(obj)
+        if obj.interpSurface.isNull():
+            # returns base path if no valid probe data
+            obj.Path = path
+            return
+
+        face = obj.interpSurface.toNurbs().Faces[0]
+        surface = face.Surface
+        bb = face.BoundBox
+        bb.ZMax = 0
+        bb.ZMin = 0
+
+        newcommandlist = []
+        currLocation = {"X": 0, "Y": 0, "Z": 0, "F": 0}
+        for cmd in path.Commands:
+            Path.Log.debug(cmd)
+            Path.Log.debug("     curLoc:{}".format(currLocation))
+            newparams = dict(cmd.Parameters)
+            zval = newparams.get("Z", currLocation["Z"])
+            if cmd.Name not in Path.Geom.CmdMoveMill:
+                # non mill command
+                newcommandlist.append(cmd)
+                currLocation.update(cmd.Parameters)
+            else:
+                curVec = FreeCAD.Vector(currLocation["X"], currLocation["Y"], currLocation["Z"])
+                edge = Path.Geom.edgeForCmd(cmd, curVec)
+                if edge is None:
+                    continue
+                if cmd.Name in Path.Geom.CmdMoveArc:
+                    pointlist = edge.discretize(Deflection=obj.ArcInterpolate.Value)
+                else:
+                    disc_number = int(edge.Length / obj.SegInterpolate.Value)
+                    if disc_number > 1:
+                        pointlist = edge.discretize(Number=disc_number)
+                    else:
+                        pointlist = [v.Point for v in edge.Vertexes]
+
+                for point in pointlist:
+                    if not bb.isInside(FreeCAD.Vector(point.x, point.y, 0)):
                         obj.Path = path
+                        pointStr = f"({round(point.x, 3)}, {round(point.y, 3)})"
+                        bbMin = f"XMin={round(bb.XMin, 3)}, YMin={round(bb.YMin, 3)}"
+                        bbMax = f"XMax={round(bb.XMax, 3)}, YMax={round(bb.YMax, 3)}"
+                        Path.Log.warning(
+                            translate(
+                                "CAM_DressupZCorrect",
+                                "Path point %s is outside of the probe area %s, %s",
+                            )
+                            % (pointStr, bbMin, bbMax)
+                        )
+                        return
+
+                    offset = self._bilinearInterpolate(surface, point.x, point.y)
+                    commandparams = {"X": point.x, "Y": point.y, "Z": point.z + offset}
+                    if "F" in newparams.keys():
+                        commandparams["F"] = newparams["F"]
+                    newcommand = Path.Command("G1", commandparams)
+                    newcommandlist.append(newcommand)
+                    currLocation.update(newcommand.Parameters)
+                    currLocation["Z"] = zval
+
+        obj.Path = Path.Path(newcommandlist)
 
 
 class TaskPanel:
@@ -268,7 +298,6 @@ class TaskPanel:
 
     def setFields(self):
         self.form.ProbePointFileName.setText(self.obj.probefile)
-
         self.updateUI()
 
     def open(self):
@@ -312,10 +341,13 @@ class ViewProviderDressup:
         return [self.obj.Base]
 
     def setEdit(self, vobj, mode=0):
-        FreeCADGui.Control.closeDialog()
-        panel = TaskPanel(vobj.Object)
-        FreeCADGui.Control.showDialog(panel)
-        panel.setupUi()
+        if mode == 1:
+            FreeCADGui.runCommand("Std_TransformManip")
+        elif mode == 0:
+            FreeCADGui.Control.closeDialog()
+            panel = TaskPanel(vobj.Object)
+            FreeCADGui.Control.showDialog(panel)
+            panel.setupUi()
         return True
 
     def dumps(self):

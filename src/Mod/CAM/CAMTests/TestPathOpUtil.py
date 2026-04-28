@@ -149,17 +149,19 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         small = getWireInside(obj)
         self.assertRoughly(10, small.Edges[0].Curve.Radius)
 
-        wire = PathOpUtil.offsetWire(small, obj.Shape, 3, True, tolerance=0)
+        wire = PathOpUtil.offsetWire(small, obj.Shape, 3, forward=True)
         self.assertIsNotNone(wire)
         self.assertEqual(1, len(wire.Edges))
         self.assertRoughly(7, wire.Edges[0].Curve.Radius)
-        self.assertCoincide(Vector(0, 0, 1), wire.Edges[0].Curve.Axis)
+        # default circle is CCW, so should be flipped to get forward direction
+        self.assertCoincide(Vector(0, 0, -1), wire.Edges[0].Curve.Axis)
 
-        wire = PathOpUtil.offsetWire(small, obj.Shape, 9.9, True, tolerance=0)
+        wire = PathOpUtil.offsetWire(small, obj.Shape, 9.9, forward=True)
         self.assertIsNotNone(wire)
         self.assertEqual(1, len(wire.Edges))
         self.assertRoughly(0.1, wire.Edges[0].Curve.Radius)
-        self.assertCoincide(Vector(0, 0, 1), wire.Edges[0].Curve.Axis)
+        # default circle is CCW, so should be flipped to get forward direction
+        self.assertCoincide(Vector(0, 0, -1), wire.Edges[0].Curve.Axis)
 
     def test12(self):
         """Check offsetting a circular hole by the radius or more makes the hole vanish."""
@@ -167,10 +169,10 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
 
         small = getWireInside(obj)
         self.assertRoughly(10, small.Edges[0].Curve.Radius)
-        wire = PathOpUtil.offsetWire(small, obj.Shape, 10, True, tolerance=0)
+        wire = PathOpUtil.offsetWire(small, obj.Shape, 10, forward=True)
         self.assertIsNone(wire)
 
-        wire = PathOpUtil.offsetWire(small, obj.Shape, 15, True, tolerance=0)
+        wire = PathOpUtil.offsetWire(small, obj.Shape, 15, forward=True)
         self.assertIsNone(wire)
 
     def test13(self):
@@ -180,16 +182,19 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         big = getWireOutside(obj)
         self.assertRoughly(20, big.Edges[0].Curve.Radius)
 
-        wire = PathOpUtil.offsetWire(big, obj.Shape, 10, True, tolerance=0)
+        wire = PathOpUtil.offsetWire(big, obj.Shape, 10, forward=True)
         self.assertIsNotNone(wire)
         self.assertEqual(1, len(wire.Edges))
+        # old radius 20 mm, offset +10 mm, new radius should be 30 mm
         self.assertRoughly(30, wire.Edges[0].Curve.Radius)
+        # default circle is CCW, so should be flipped to get forward direction
         self.assertCoincide(Vector(0, 0, -1), wire.Edges[0].Curve.Axis)
 
-        wire = PathOpUtil.offsetWire(big, obj.Shape, 20, True, tolerance=0)
+        wire = PathOpUtil.offsetWire(big, obj.Shape, 20, forward=True)
         self.assertIsNotNone(wire)
         self.assertEqual(1, len(wire.Edges))
         self.assertRoughly(40, wire.Edges[0].Curve.Radius)
+        # default circle is CCW, so should be flipped to get forward direction
         self.assertCoincide(Vector(0, 0, -1), wire.Edges[0].Curve.Axis)
 
     def test14(self):
@@ -208,12 +213,13 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         # make sure there is a placement and I didn't mess up the model
         self.assertFalse(Path.Geom.pointsCoincide(Vector(), w.Edges[0].Placement.Base))
 
-        wire = PathOpUtil.offsetWire(w, obj.Shape, 2, True, tolerance=0)
+        wire = PathOpUtil.offsetWire(w, obj.Shape, 2, forward=True)
         self.assertIsNotNone(wire)
         self.assertEqual(1, len(wire.Edges))
         self.assertRoughly(8, wire.Edges[0].Curve.Radius)
         self.assertCoincide(Vector(0, 0, 0), wire.Edges[0].Curve.Center)
-        self.assertCoincide(Vector(0, 0, 1), wire.Edges[0].Curve.Axis)
+        # default circle is CCW, so should be flipped to get forward direction
+        self.assertCoincide(Vector(0, 0, -1), wire.Edges[0].Curve.Axis)
 
     def test15(self):
         """Check offsetting a cylinder with Placement."""
@@ -231,11 +237,12 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         # make sure there is a placement and I didn't mess up the model
         self.assertFalse(Path.Geom.pointsCoincide(Vector(), w.Edges[0].Placement.Base))
 
-        wire = PathOpUtil.offsetWire(w, obj.Shape, 2, True, tolerance=0)
+        wire = PathOpUtil.offsetWire(w, obj.Shape, 2, forward=True)
         self.assertIsNotNone(wire)
         self.assertEqual(1, len(wire.Edges))
         self.assertRoughly(22, wire.Edges[0].Curve.Radius)
         self.assertCoincide(Vector(0, 0, 0), wire.Edges[0].Curve.Center)
+        # default circle is CCW, so should be flipped to get forward direction
         self.assertCoincide(Vector(0, 0, -1), wire.Edges[0].Curve.Axis)
 
     def test20(self):
@@ -257,7 +264,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
             ],
         )
 
-        wire = PathOpUtil.offsetWire(small, obj.Shape, 3, True, tolerance=0)
+        wire = PathOpUtil.offsetWire(small, obj.Shape, 3, forward=True)
         self.assertIsNotNone(wire)
         self.assertEqual(3, len(wire.Edges))
         self.assertTrue(wire.isClosed())
@@ -289,7 +296,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
                 Vector(0, y, 0),
             ],
         )
-        wire = PathOpUtil.offsetWire(small, obj.Shape, 5, True, tolerance=0)
+        wire = PathOpUtil.offsetWire(small, obj.Shape, 5, forward=True)
         self.assertIsNone(wire)
 
     def test22(self):
@@ -311,7 +318,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
             ],
         )
 
-        wire = PathOpUtil.offsetWire(big, obj.Shape, 5, True, tolerance=0)
+        wire = PathOpUtil.offsetWire(big, obj.Shape, 5, forward=True)
         self.assertIsNotNone(wire)
         self.assertEqual(6, len(wire.Edges))
         lastAngle = None
@@ -344,7 +351,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         """Check offsetting a cylinder."""
         obj = self.doc.getObjectsByLabel("circle-cut")[0]
 
-        wire = PathOpUtil.offsetWire(getWire(obj.Tool), getPositiveShape(obj), 3, True, tolerance=0)
+        wire = PathOpUtil.offsetWire(getWire(obj.Tool), getPositiveShape(obj), 3, forward=True)
         self.assertEqual(1, len(wire.Edges))
         edge = wire.Edges[0]
         self.assertCoincide(Vector(), edge.Curve.Center)
@@ -352,9 +359,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         self.assertRoughly(33, edge.Curve.Radius)
 
         # the other way around everything's the same except the axis is negative
-        wire = PathOpUtil.offsetWire(
-            getWire(obj.Tool), getPositiveShape(obj), 3, False, tolerance=0
-        )
+        wire = PathOpUtil.offsetWire(getWire(obj.Tool), getPositiveShape(obj), 3, forward=False)
         self.assertEqual(1, len(wire.Edges))
         edge = wire.Edges[0]
         self.assertCoincide(Vector(), edge.Curve.Center)
@@ -365,7 +370,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         """Check offsetting a box."""
         obj = self.doc.getObjectsByLabel("square-cut")[0]
 
-        wire = PathOpUtil.offsetWire(getWire(obj.Tool), getPositiveShape(obj), 3, True, tolerance=0)
+        wire = PathOpUtil.offsetWire(getWire(obj.Tool), getPositiveShape(obj), 3, forward=True)
         self.assertEqual(8, len(wire.Edges))
         self.assertEqual(4, len([e for e in wire.Edges if isinstance(e.Curve, Part.Line)]))
         self.assertEqual(4, len([e for e in wire.Edges if isinstance(e.Curve, Part.Circle)]))
@@ -381,9 +386,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         self.assertTrue(PathOpUtil.isWireClockwise(wire))
 
         # change offset orientation
-        wire = PathOpUtil.offsetWire(
-            getWire(obj.Tool), getPositiveShape(obj), 3, False, tolerance=0
-        )
+        wire = PathOpUtil.offsetWire(getWire(obj.Tool), getPositiveShape(obj), 3, forward=False)
         self.assertEqual(8, len(wire.Edges))
         self.assertEqual(4, len([e for e in wire.Edges if isinstance(e.Curve, Part.Line)]))
         self.assertEqual(4, len([e for e in wire.Edges if isinstance(e.Curve, Part.Circle)]))
@@ -402,7 +405,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         """Check offsetting a triangle."""
         obj = self.doc.getObjectsByLabel("triangle-cut")[0]
 
-        wire = PathOpUtil.offsetWire(getWire(obj.Tool), getPositiveShape(obj), 3, True, tolerance=0)
+        wire = PathOpUtil.offsetWire(getWire(obj.Tool), getPositiveShape(obj), 3, forward=True)
         self.assertEqual(6, len(wire.Edges))
         self.assertEqual(3, len([e for e in wire.Edges if isinstance(e.Curve, Part.Line)]))
         self.assertEqual(3, len([e for e in wire.Edges if isinstance(e.Curve, Part.Circle)]))
@@ -415,9 +418,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
                 self.assertCoincide(Vector(0, 0, -1), e.Curve.Axis)
 
         # change offset orientation
-        wire = PathOpUtil.offsetWire(
-            getWire(obj.Tool), getPositiveShape(obj), 3, False, tolerance=0
-        )
+        wire = PathOpUtil.offsetWire(getWire(obj.Tool), getPositiveShape(obj), 3, forward=False)
         self.assertEqual(6, len(wire.Edges))
         self.assertEqual(3, len([e for e in wire.Edges if isinstance(e.Curve, Part.Line)]))
         self.assertEqual(3, len([e for e in wire.Edges if isinstance(e.Curve, Part.Circle)]))
@@ -432,7 +433,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         """Check offsetting a shape."""
         obj = self.doc.getObjectsByLabel("shape-cut")[0]
 
-        wire = PathOpUtil.offsetWire(getWire(obj.Tool), getPositiveShape(obj), 3, True, tolerance=0)
+        wire = PathOpUtil.offsetWire(getWire(obj.Tool), getPositiveShape(obj), 3, forward=True)
         self.assertEqual(6, len(wire.Edges))
         self.assertEqual(3, len([e for e in wire.Edges if isinstance(e.Curve, Part.Line)]))
         self.assertEqual(3, len([e for e in wire.Edges if isinstance(e.Curve, Part.Circle)]))
@@ -446,9 +447,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
                 self.assertCoincide(Vector(0, 0, -1), e.Curve.Axis)
 
         # change offset orientation
-        wire = PathOpUtil.offsetWire(
-            getWire(obj.Tool), getPositiveShape(obj), 3, False, tolerance=0
-        )
+        wire = PathOpUtil.offsetWire(getWire(obj.Tool), getPositiveShape(obj), 3, forward=False)
         self.assertEqual(6, len(wire.Edges))
         self.assertEqual(3, len([e for e in wire.Edges if isinstance(e.Curve, Part.Line)]))
         self.assertEqual(3, len([e for e in wire.Edges if isinstance(e.Curve, Part.Circle)]))
@@ -463,28 +462,28 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         """Check offsetting a cylindrical hole."""
         obj = self.doc.getObjectsByLabel("circle-cut")[0]
 
-        wire = PathOpUtil.offsetWire(getWire(obj.Tool), getNegativeShape(obj), 3, True, tolerance=0)
+        wire = PathOpUtil.offsetWire(getWire(obj.Tool), getNegativeShape(obj), 3, forward=True)
         self.assertEqual(1, len(wire.Edges))
         edge = wire.Edges[0]
         self.assertCoincide(Vector(), edge.Curve.Center)
-        self.assertCoincide(Vector(0, 0, +1), edge.Curve.Axis)
+        # default circle is CCW, so should be flipped to get forward direction
+        self.assertCoincide(Vector(0, 0, -1), edge.Curve.Axis)
         self.assertRoughly(27, edge.Curve.Radius)
 
         # the other way around everything's the same except the axis is negative
-        wire = PathOpUtil.offsetWire(
-            getWire(obj.Tool), getNegativeShape(obj), 3, False, tolerance=0
-        )
+        wire = PathOpUtil.offsetWire(getWire(obj.Tool), getNegativeShape(obj), 3, forward=False)
         self.assertEqual(1, len(wire.Edges))
         edge = wire.Edges[0]
         self.assertCoincide(Vector(), edge.Curve.Center)
-        self.assertCoincide(Vector(0, 0, -1), edge.Curve.Axis)
+        # default circle is CCW
+        self.assertCoincide(Vector(0, 0, 1), edge.Curve.Axis)
         self.assertRoughly(27, edge.Curve.Radius)
 
     def test36(self):
         """Check offsetting a square hole."""
         obj = self.doc.getObjectsByLabel("square-cut")[0]
 
-        wire = PathOpUtil.offsetWire(getWire(obj.Tool), getNegativeShape(obj), 3, True, tolerance=0)
+        wire = PathOpUtil.offsetWire(getWire(obj.Tool), getNegativeShape(obj), 3, forward=True)
         self.assertEqual(4, len(wire.Edges))
         self.assertEqual(4, len([e for e in wire.Edges if isinstance(e.Curve, Part.Line)]))
         for e in wire.Edges:
@@ -495,9 +494,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         self.assertFalse(PathOpUtil.isWireClockwise(wire))
 
         # change offset orientation
-        wire = PathOpUtil.offsetWire(
-            getWire(obj.Tool), getNegativeShape(obj), 3, False, tolerance=0
-        )
+        wire = PathOpUtil.offsetWire(getWire(obj.Tool), getNegativeShape(obj), 3, forward=False)
         self.assertEqual(4, len(wire.Edges))
         self.assertEqual(4, len([e for e in wire.Edges if isinstance(e.Curve, Part.Line)]))
         for e in wire.Edges:
@@ -511,7 +508,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         """Check offsetting a triangular holee."""
         obj = self.doc.getObjectsByLabel("triangle-cut")[0]
 
-        wire = PathOpUtil.offsetWire(getWire(obj.Tool), getNegativeShape(obj), 3, True, tolerance=0)
+        wire = PathOpUtil.offsetWire(getWire(obj.Tool), getNegativeShape(obj), 3, forward=True)
         self.assertEqual(3, len(wire.Edges))
         self.assertEqual(3, len([e for e in wire.Edges if isinstance(e.Curve, Part.Line)]))
         length = 48 * math.sin(math.radians(60))
@@ -520,9 +517,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         self.assertFalse(PathOpUtil.isWireClockwise(wire))
 
         # change offset orientation
-        wire = PathOpUtil.offsetWire(
-            getWire(obj.Tool), getNegativeShape(obj), 3, False, tolerance=0
-        )
+        wire = PathOpUtil.offsetWire(getWire(obj.Tool), getNegativeShape(obj), 3, forward=False)
         self.assertEqual(3, len(wire.Edges))
         self.assertEqual(3, len([e for e in wire.Edges if isinstance(e.Curve, Part.Line)]))
         for e in wire.Edges:
@@ -533,7 +528,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         """Check offsetting a shape hole."""
         obj = self.doc.getObjectsByLabel("shape-cut")[0]
 
-        wire = PathOpUtil.offsetWire(getWire(obj.Tool), getNegativeShape(obj), 3, True, tolerance=0)
+        wire = PathOpUtil.offsetWire(getWire(obj.Tool), getNegativeShape(obj), 3, forward=True)
         self.assertEqual(6, len(wire.Edges))
         self.assertEqual(3, len([e for e in wire.Edges if isinstance(e.Curve, Part.Line)]))
         self.assertEqual(3, len([e for e in wire.Edges if isinstance(e.Curve, Part.Circle)]))
@@ -547,9 +542,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
                 self.assertCoincide(Vector(0, 0, +1), e.Curve.Axis)
 
         # change offset orientation
-        wire = PathOpUtil.offsetWire(
-            getWire(obj.Tool), getNegativeShape(obj), 3, False, tolerance=0
-        )
+        wire = PathOpUtil.offsetWire(getWire(obj.Tool), getNegativeShape(obj), 3, forward=False)
         self.assertEqual(6, len(wire.Edges))
         self.assertEqual(3, len([e for e in wire.Edges if isinstance(e.Curve, Part.Line)]))
         self.assertEqual(3, len([e for e in wire.Edges if isinstance(e.Curve, Part.Circle)]))
@@ -582,7 +575,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         self.assertCoincide(Vector(-x, y, 0), edge.Vertexes[0].Point)
         self.assertCoincide(Vector(+x, y, 0), edge.Vertexes[1].Point)
 
-        wire = PathOpUtil.offsetWire(Part.Wire([edge]), obj.Shape, 5, True, tolerance=0)
+        wire = PathOpUtil.offsetWire(Part.Wire([edge]), obj.Shape, 5, forward=True)
         self.assertEqual(1, len(wire.Edges))
 
         y = y - 5
@@ -591,7 +584,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
 
         # make sure we get the same result even if the edge is oriented the other way
         edge = Path.Geom.flipEdge(edge)
-        wire = PathOpUtil.offsetWire(Part.Wire([edge]), obj.Shape, 5, True, tolerance=0)
+        wire = PathOpUtil.offsetWire(Part.Wire([edge]), obj.Shape, 5, forward=True)
         self.assertEqual(1, len(wire.Edges))
 
         self.assertCoincide(Vector(+x, y, 0), wire.Edges[0].Vertexes[0].Point)
@@ -618,7 +611,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         self.assertCoincide(Vector(-x, y, 0), edge.Vertexes[0].Point)
         self.assertCoincide(Vector(+x, y, 0), edge.Vertexes[1].Point)
 
-        wire = PathOpUtil.offsetWire(Part.Wire([edge]), obj.Shape, 5, False, tolerance=0)
+        wire = PathOpUtil.offsetWire(Part.Wire([edge]), obj.Shape, 5, forward=False)
         self.assertEqual(1, len(wire.Edges))
 
         y = y - 5
@@ -627,7 +620,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
 
         # make sure we get the same result on a reversed edge
         edge = Path.Geom.flipEdge(edge)
-        wire = PathOpUtil.offsetWire(Part.Wire([edge]), obj.Shape, 5, False, tolerance=0)
+        wire = PathOpUtil.offsetWire(Part.Wire([edge]), obj.Shape, 5, forward=False)
         self.assertEqual(1, len(wire.Edges))
 
         self.assertCoincide(Vector(-x, y, 0), wire.Edges[0].Vertexes[0].Point)
@@ -650,7 +643,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         ]
         self.assertEqual(2, len(lEdges))
 
-        wire = PathOpUtil.offsetWire(Part.Wire(lEdges), obj.Shape, 2, True, tolerance=0)
+        wire = PathOpUtil.offsetWire(Part.Wire(lEdges), obj.Shape, 2, forward=True)
 
         x = length / 2 + 2 * math.cos(math.pi / 6)
         y = -10 + 2 * math.sin(math.pi / 6)
@@ -665,7 +658,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         self.assertCoincide(Vector(0, 0, -1), rEdges[0].Curve.Axis)
 
         # offset the other way
-        wire = PathOpUtil.offsetWire(Part.Wire(lEdges), obj.Shape, 2, False, tolerance=0)
+        wire = PathOpUtil.offsetWire(Part.Wire(lEdges), obj.Shape, 2, forward=False)
 
         self.assertCoincide(Vector(+x, y, 0), wire.Edges[0].Vertexes[0].Point)
         self.assertCoincide(Vector(-x, y, 0), wire.Edges[-1].Vertexes[1].Point)
@@ -694,7 +687,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         self.assertEqual(2, len(lEdges))
 
         w = Path.Geom.flipWire(Part.Wire(lEdges))
-        wire = PathOpUtil.offsetWire(w, obj.Shape, 2, True, tolerance=0)
+        wire = PathOpUtil.offsetWire(w, obj.Shape, 2, forward=True)
 
         x = length / 2 + 2 * math.cos(math.pi / 6)
         y = -10 + 2 * math.sin(math.pi / 6)
@@ -709,7 +702,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         self.assertCoincide(Vector(0, 0, -1), rEdges[0].Curve.Axis)
 
         # offset the other way
-        wire = PathOpUtil.offsetWire(Part.Wire(lEdges), obj.Shape, 2, False, tolerance=0)
+        wire = PathOpUtil.offsetWire(Part.Wire(lEdges), obj.Shape, 2, forward=False)
 
         self.assertCoincide(Vector(+x, y, 0), wire.Edges[0].Vertexes[0].Point)
         self.assertCoincide(Vector(-x, y, 0), wire.Edges[-1].Vertexes[1].Point)
@@ -742,7 +735,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         self.assertCoincide(Vector(-x, y, 0), edge.Vertexes[0].Point)
         self.assertCoincide(Vector(+x, y, 0), edge.Vertexes[1].Point)
 
-        wire = PathOpUtil.offsetWire(Part.Wire([edge]), obj.Shape, 2, True, tolerance=0)
+        wire = PathOpUtil.offsetWire(Part.Wire([edge]), obj.Shape, 2, forward=True)
         self.assertEqual(1, len(wire.Edges))
 
         y = y + 2
@@ -751,7 +744,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
 
         # make sure we get the same result even if the edge is oriented the other way
         edge = Path.Geom.flipEdge(edge)
-        wire = PathOpUtil.offsetWire(Part.Wire([edge]), obj.Shape, 2, True, tolerance=0)
+        wire = PathOpUtil.offsetWire(Part.Wire([edge]), obj.Shape, 2, forward=True)
         self.assertEqual(1, len(wire.Edges))
 
         self.assertCoincide(Vector(-x, y, 0), wire.Edges[0].Vertexes[0].Point)
@@ -779,7 +772,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         self.assertCoincide(Vector(-x, y, 0), edge.Vertexes[0].Point)
         self.assertCoincide(Vector(+x, y, 0), edge.Vertexes[1].Point)
 
-        wire = PathOpUtil.offsetWire(Part.Wire([edge]), obj.Shape, 2, False, tolerance=0)
+        wire = PathOpUtil.offsetWire(Part.Wire([edge]), obj.Shape, 2, forward=False)
         self.assertEqual(1, len(wire.Edges))
 
         y = y + 2
@@ -788,7 +781,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
 
         # make sure we get the same result even if the edge is oriented the other way
         edge = Path.Geom.flipEdge(edge)
-        wire = PathOpUtil.offsetWire(Part.Wire([edge]), obj.Shape, 2, False, tolerance=0)
+        wire = PathOpUtil.offsetWire(Part.Wire([edge]), obj.Shape, 2, forward=False)
         self.assertEqual(1, len(wire.Edges))
 
         self.assertCoincide(Vector(+x, y, 0), wire.Edges[0].Vertexes[0].Point)
@@ -809,7 +802,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         ]
         self.assertEqual(2, len(lEdges))
 
-        wire = PathOpUtil.offsetWire(Part.Wire(lEdges), obj.Shape, 2, True, tolerance=0)
+        wire = PathOpUtil.offsetWire(Part.Wire(lEdges), obj.Shape, 2, forward=True)
 
         x = length / 2 - 2 * math.cos(math.pi / 6)
         y = -5 - 2 * math.sin(math.pi / 6)
@@ -821,7 +814,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         self.assertEqual(0, len(rEdges))
 
         # offset the other way
-        wire = PathOpUtil.offsetWire(Part.Wire(lEdges), obj.Shape, 2, False, tolerance=0)
+        wire = PathOpUtil.offsetWire(Part.Wire(lEdges), obj.Shape, 2, forward=False)
 
         self.assertCoincide(Vector(-x, y, 0), wire.Edges[0].Vertexes[0].Point)
         self.assertCoincide(Vector(+x, y, 0), wire.Edges[-1].Vertexes[1].Point)
@@ -847,7 +840,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
 
         # Test with flipped wire - the algorithm should handle it
         w = Path.Geom.flipWire(Part.Wire(lEdges))
-        wire = PathOpUtil.offsetWire(w, obj.Shape, 2, True, tolerance=0)
+        wire = PathOpUtil.offsetWire(w, obj.Shape, 2, forward=True)
 
         # Check structural properties rather than exact coordinates
         # Verify the wire is valid and has geometry
@@ -865,7 +858,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         self.assertGreater(total_length, 0)
 
         # offset the other way - this should also work
-        wire = PathOpUtil.offsetWire(Part.Wire(lEdges), obj.Shape, 2, False, tolerance=0)
+        wire = PathOpUtil.offsetWire(Part.Wire(lEdges), obj.Shape, 2, forward=False)
 
         # Check the same structural properties
         self.assertIsNotNone(wire)
@@ -888,13 +881,13 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
 
         # Test that offsetting the ellipse requires positive tolerance (i.e. requires discretization)
         with self.assertRaises(ValueError) as context:
-            PathOpUtil.offsetWire(ellipse_wire, base_shape, 2, True, tolerance=0)
+            PathOpUtil.offsetWire(ellipse_wire, base_shape, 2, forward=True, tolerance=0)
         self.assertIn(
             "tolerance parameter is required to be a positive value", str(context.exception)
         )
 
         # Test offsetting with default (positive) tolerance
-        offset_wire = PathOpUtil.offsetWire(ellipse_wire, base_shape, 2, True)
+        offset_wire = PathOpUtil.offsetWire(ellipse_wire, base_shape, 2, forward=True)
 
         # Verify the result exists and is converted into multiple edges
         self.assertIsNotNone(offset_wire)

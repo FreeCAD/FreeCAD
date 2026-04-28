@@ -104,6 +104,10 @@ public:
     {
         options.showProgress = enable;
     }
+    bool showProgress() const
+    {
+        return options.showProgress;
+    }
     void setExpandCompound(bool enable)
     {
         options.expandCompound = enable;

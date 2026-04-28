@@ -288,6 +288,7 @@ template<>
 inline void SketcherAddWorkbenchSketchEditModeActions(Gui::MenuItem& sketch)
 {
     sketch << "Sketcher_LeaveSketch"
+           << "Sketcher_CancelSketch"
            << "Sketcher_ViewSketch"
            << "Sketcher_ViewSection"
            << "Sketcher_StopOperation";

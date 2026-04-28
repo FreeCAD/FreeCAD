@@ -649,14 +649,20 @@ If unchecked, they will be sorted by their name.</source>
       <translation>选择图片</translation>
     </message>
     <message>
-      <location filename="../../ImageEdit.cpp" line="206"/>
-      <source>Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</source>
-      <translation>图像文件 (*.jpg *.jpeg *.png *.bmp);;所有文件 (*)</translation>
+      <location filename="../../ImageEdit.cpp" line="207"/>
+      <source>Image files (*.jpg *.jpeg *.png *.bmp)</source>
+      <translation>图片 (*.jpg *.jpeg *.png *.bmp)</translation>
     </message>
     <message>
-      <location filename="../../ImageEdit.cpp" line="218"/>
-      <source>Image files (*.svg);;All files (*)</source>
-      <translation>图像文件 (*.svg);;所有文件 (*)</translation>
+      <location filename="../../ImageEdit.cpp" line="208"/>
+      <location filename="../../ImageEdit.cpp" line="223"/>
+      <source>All files (*)</source>
+      <translation>所有文件 (*)</translation>
+    </message>
+    <message>
+      <location filename="../../ImageEdit.cpp" line="222"/>
+      <source>Image files (*.svg)</source>
+      <translation>矢量图 (*.svg)</translation>
     </message>
   </context>
   <context>

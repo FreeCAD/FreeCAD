@@ -1574,29 +1574,11 @@ Jeśli wartość wynosi zero, jest równa wartości promienia 2</translation>
     </message>
   </context>
   <context>
-    <name>PartDesignGui::TaskDlgFeatureParameters</name>
-    <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="229"/>
-      <source>The feature could not be created with the given parameters.
-The geometry may be invalid or the parameters may be incompatible.
-Please adjust the parameters and try again.</source>
-      <translation>Nie można utworzyć cechy z podanymi parametrami.
-Geometria może być nieprawidłowa lub parametry są ze sobą niezgodne.
-Proszę dostosować parametry i spróbować ponownie.</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="236"/>
-      <source>Input error</source>
-      <translation>Błąd danych wejściowych</translation>
-    </message>
-  </context>
-  <context>
     <name>PartDesignGui::TaskDlgShapeBinder</name>
     <message>
       <location filename="../../TaskShapeBinder.cpp" line="443"/>
       <source>Input error</source>
-      <translation>Błąd danych wejściowych
-</translation>
+      <translation>Błąd danych wejściowych</translation>
     </message>
   </context>
   <context>
@@ -1839,7 +1821,7 @@ Proszę dostosować parametry i spróbować ponownie.</translation>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="97"/>
       <source>Select Attachment</source>
-      <translation type="unfinished">Select Attachment</translation>
+      <translation>Wybierz dołączenie</translation>
     </message>
   </context>
   <context>
@@ -2671,7 +2653,8 @@ mierzona wzdłuż podanego kierunku</translation>
       <location filename="../../TaskPipeParameters.cpp" line="463"/>
       <location filename="../../TaskPipeParameters.cpp" line="584"/>
       <source>Input error</source>
-      <translation>Błąd danych wejściowych</translation>
+      <translation>Błąd danych wejściowych
+</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="463"/>
@@ -3198,11 +3181,11 @@ mierzona wzdłuż podanego kierunku</translation>
       <translation>Brak prawidłowej płaszczyzny w tym dokumencie</translation>
     </message>
     <message>
+      <location filename="../../SketchWorkflow.cpp" line="731"/>
+      <location filename="../../ViewProviderDatum.cpp" line="259"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
       <location filename="../../ViewProvider.cpp" line="137"/>
       <location filename="../../Command.cpp" line="1142"/>
-      <location filename="../../SketchWorkflow.cpp" line="731"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
-      <location filename="../../ViewProviderDatum.cpp" line="259"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Okno dialogowe jest już otwarte w panelu zadań</translation>
     </message>
@@ -3242,11 +3225,11 @@ mierzona wzdłuż podanego kierunku</translation>
       <translation>Szkic nie jest dostępny w dokumencie</translation>
     </message>
     <message>
+      <location filename="../../SketchWorkflow.cpp" line="732"/>
+      <location filename="../../ViewProviderDatum.cpp" line="260"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
       <location filename="../../ViewProvider.cpp" line="138"/>
       <location filename="../../Command.cpp" line="1143"/>
-      <location filename="../../SketchWorkflow.cpp" line="732"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
-      <location filename="../../ViewProviderDatum.cpp" line="260"/>
       <source>Close this dialog?</source>
       <translation>Zamknąć to okno dialogowe?</translation>
     </message>
@@ -3543,9 +3526,9 @@ Aktywuj istniejącą zawartość (podwójne kliknięcie) lub utwórz nową.</tra
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="65"/>
-      <location filename="../../ViewProvider.cpp" line="94"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="227"/>
       <location filename="../../ViewProviderDressUp.cpp" line="64"/>
+      <location filename="../../ViewProvider.cpp" line="94"/>
       <source>Edit %1</source>
       <translation>Edytuj %1</translation>
     </message>
@@ -4022,12 +4005,12 @@ Dostępne tylko dla otworów bez gwintu</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="673"/>
       <source>Tap drill</source>
-      <translation type="unfinished">Tap drill</translation>
+      <translation>Otwór pod gwint</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="678"/>
       <source>Threaded</source>
-      <translation type="unfinished">Threaded</translation>
+      <translation>Gwintowany</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="722"/>
@@ -4042,12 +4025,12 @@ Dostępne tylko dla otworów bez gwintu</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="805"/>
       <source>Whether the hole gets a modelled thread</source>
-      <translation type="unfinished">Whether the hole gets a modelled thread</translation>
+      <translation>Czy otwór będzie posiadał wymodelowany gwint</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="808"/>
       <source>Model Thread</source>
-      <translation type="unfinished">Model Thread</translation>
+      <translation>Modeluj gwint</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="861"/>
@@ -4483,19 +4466,19 @@ Zainstaluj ją, aby włączyć tę funkcję.</translation>
       <translation>Nie można przeprowadzić operacji logicznej z nieprawidłowym kształtem podstawowym</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2101"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="804"/>
       <location filename="../../../App/FeatureLoft.cpp" line="333"/>
       <location filename="../../../App/FeatureLoft.cpp" line="377"/>
       <location filename="../../../App/FeatureDraft.cpp" line="335"/>
       <location filename="../../../App/FeatureFillet.cpp" line="142"/>
       <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="804"/>
       <location filename="../../../App/FeaturePipe.cpp" line="482"/>
       <location filename="../../../App/FeaturePipe.cpp" line="531"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2101"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>Wynik zawiera wiele brył: włącz opcję "Zezwalaj na złożenia" w aktywnej zawartości.</translation>
     </message>
@@ -4530,10 +4513,10 @@ Zainstaluj ją, aby włączyć tę funkcję.</translation>
       <translation>Wynikowy proces scalania przez wytłaczanie nie zawiera objętości.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="766"/>
       <location filename="../../../App/FeatureLoft.cpp" line="370"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="141"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="766"/>
       <location filename="../../../App/FeaturePipe.cpp" line="523"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="141"/>
       <source>Resulting shape is not a solid</source>
       <translation>Otrzymany kształt nie jest bryłą</translation>
     </message>
@@ -4556,7 +4539,7 @@ Zainstaluj ją, aby włączyć tę funkcję.</translation>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="211"/>
       <source>Chamfer failed: OCC kernel error in chamfer computation</source>
-      <translation type="unfinished">Chamfer failed: OCC kernel error in chamfer computation</translation>
+      <translation>Fazowanie nie powiodło się: błąd jądra OCC w obliczeniach sfazowania</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="302"/>
@@ -4612,8 +4595,8 @@ Spróbuj zaokrąglać krawędzie pojedynczo albo użyj mniejszego promienia.</tr
       <translation>Tworzenie nie powiodło się, ponieważ kierunek jest prostopadły do wektora normalnego szkicu.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="479"/>
       <location filename="../../../App/FeatureRevolved.cpp" line="132"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="479"/>
       <source>Creating a face from sketch failed</source>
       <translation>Tworzenie ściany ze szkicu nie powiodło się</translation>
     </message>
@@ -4678,9 +4661,9 @@ Przecinające się obiekty w szkicu są niedozwolone.</translation>
       <translation>Błąd: ściana musi być płaska</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2457"/>
       <location filename="../../../App/FeatureHelix.cpp" line="445"/>
       <location filename="../../../App/FeatureHelix.cpp" line="486"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2457"/>
       <source>Error: Result is not a solid</source>
       <translation>Błąd: wynik nie jest bryłą</translation>
     </message>
@@ -4954,15 +4937,15 @@ Przecinające się elementy szkicu lub wiele ścian w szkicu nie są dozwolone.<
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="355"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="125"/>
       <location filename="../../../App/FeaturePipe.cpp" line="507"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="125"/>
       <source>Unknown operation type</source>
       <translation>Nieznany typ operacji</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="363"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="133"/>
       <location filename="../../../App/FeaturePipe.cpp" line="515"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="133"/>
       <source>Failed to perform boolean operation</source>
       <translation>Nie udało się wykonać operacji logicznej</translation>
     </message>
@@ -5097,17 +5080,17 @@ Przecinające się elementy szkicu lub wiele ścian w szkicu nie są dozwolone.<
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="109"/>
       <source>No features selected to be mirrored.</source>
-      <translation type="unfinished">No features selected to be mirrored.</translation>
+      <translation>Nie wybrano żadnych cech do odbicia lustrzanego.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="112"/>
       <source>No features selected to be patterned.</source>
-      <translation type="unfinished">No features selected to be patterned.</translation>
+      <translation>Nie wybrano żadnych cech do szyku.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="115"/>
       <source>No features selected to be transformed.</source>
-      <translation type="unfinished">No features selected to be transformed.</translation>
+      <translation>Nie wybrano żadnych cech do transformacji.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="356"/>
@@ -5465,6 +5448,18 @@ Może to oznaczać, że nie zostanie usunięty żaden materiał lub wystąpił p
       <source>Invalid selection. Select an edge, planar face, or datum line.</source>
       <translation>Nieprawidłowy wybór. 
 Wybierz krawędź, płaszczyznę lub linię odniesienia.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskDlgFeatureParameters</name>
+    <message>
+      <location filename="../../TaskFeatureParameters.cpp" line="229"/>
+      <source>The feature could not be created with the given parameters.
+The geometry may be invalid or the parameters may be incompatible.
+Please adjust the parameters and try again.</source>
+      <translation>Nie można utworzyć cechy z podanymi parametrami.
+Geometria może być nieprawidłowa lub parametry są ze sobą niezgodne.
+Proszę dostosować parametry i spróbować ponownie.</translation>
     </message>
   </context>
 </TS>

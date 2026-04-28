@@ -96,7 +96,7 @@
     <message>
       <location filename="../../Command.cpp" line="135"/>
       <source>Trim with plane</source>
-      <translation>Trimma med hyvel</translation>
+      <translation>Trimma med plan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="215"/>
@@ -114,7 +114,7 @@
     <message>
       <location filename="../../CrossSections.ui" line="20"/>
       <source>Guiding Plane</source>
-      <translation>Styrande flygplan</translation>
+      <translation>Styrande plan</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="26"/>

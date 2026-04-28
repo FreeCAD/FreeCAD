@@ -137,7 +137,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1803"/>
+      <location filename="../../../JointObject.py" line="1809"/>
       <source>Distance</source>
       <translation>Адлегласць</translation>
     </message>
@@ -177,27 +177,27 @@
       <translation>Рэмень</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="812"/>
+      <location filename="../../../JointObject.py" line="818"/>
       <source>Broken link in: </source>
       <translation>Непрацуючы спасылак у: </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1622"/>
+      <location filename="../../../JointObject.py" line="1628"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>Абраць два элемента з дзвюх асобных частак</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1805"/>
+      <location filename="../../../JointObject.py" line="1811"/>
       <source>Radius 1</source>
       <translation>Радыус 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1807"/>
+      <location filename="../../../JointObject.py" line="1813"/>
       <source>Thread pitch</source>
       <translation>Крок разьбы</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1809"/>
+      <location filename="../../../JointObject.py" line="1815"/>
       <source>Pitch radius</source>
       <translation>Радыус падачы</translation>
     </message>
@@ -698,7 +698,7 @@ SLOPE - вызначае крутасць пераходу ад 0 да H1 і а�
       <translation>{order} спасылак злучэння</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1231"/>
+      <location filename="../../../JointObject.py" line="1237"/>
       <source>The object to ground</source>
       <translation>Аб'ект для замацавання</translation>
     </message>
@@ -712,7 +712,7 @@ SLOPE - вызначае крутасць пераходу ад 0 да H1 і а�
       <location filename="../../../CommandCreateView.py" line="388"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
       <translation>Ход перамяшчэння.
-Канчатковае размяшчэнне з'яўляецца вынікам пачатковага размяшчэння * гэтае размяшчэння.</translation>
+Канцавое размяшчэнне з'яўляецца вынікам пачатковага размяшчэння * гэтае размяшчэння.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateView.py" line="397"/>
@@ -973,42 +973,42 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <translation>Ці жадаеце вы перамясціць аб'ект і выдаліць звязаныя з ім злучэнні?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1103"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1104"/>
       <source>Move part</source>
       <translation>Рухаць дэталь</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1818"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1819"/>
       <source>Empty Assembly</source>
       <translation>Пустая зборка</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1830"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1831"/>
       <source>Over-constrained:</source>
       <translation>Празмерна-абмежаваны:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1838"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1839"/>
       <source>Malformed joints:</source>
       <translation>Скажоныя злучэнні:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1801"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1802"/>
       <source>and %1 more</source>
       <translation>і яшчэ %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1862"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1863"/>
       <source>Solver failed to converge</source>
       <translation>Сродку рашэння не атрымалася сысціся</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1870"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1871"/>
       <source>Under-constrained:</source>
       <translation>Недастаткова абмежаваны:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1872"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1873"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n ступень свабоды</numerusform>
@@ -1018,7 +1018,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1876"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1877"/>
       <source>Fully constrained</source>
       <translation>Цалкам абмежаваны</translation>
     </message>

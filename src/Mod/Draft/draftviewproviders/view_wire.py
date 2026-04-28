@@ -117,15 +117,21 @@ class ViewProviderWire(ViewProviderDraft):
             and hasattr(self, "coords1")
             and hasattr(self, "coords2")
         ):
+            if utils.get_type(obj) == "BSpline":
+                shp = obj.Shape
+                rot = obj.Placement.Rotation.inverted()
+                v1 = rot.multVec(shp.tangentAt(shp.FirstParameter))
+                v2 = -rot.multVec(shp.tangentAt(shp.LastParameter))
+            else:
+                v1 = obj.Points[1].sub(obj.Points[0])
+                v2 = obj.Points[-2].sub(obj.Points[-1])
             self.coords1.translation.setValue(*obj.Points[0])
-            v1 = obj.Points[1].sub(obj.Points[0])
             if not DraftVecUtils.isNull(v1):
                 v1.normalize()
                 rot1 = coin.SbRotation()
                 rot1.setValue(coin.SbVec3f(1, 0, 0), coin.SbVec3f(*v1))
                 self.coords1.rotation.setValue(rot1)
             self.coords2.translation.setValue(*obj.Points[-1])
-            v2 = obj.Points[-2].sub(obj.Points[-1])
             if not DraftVecUtils.isNull(v2):
                 v2.normalize()
                 rot2 = coin.SbRotation()

@@ -649,14 +649,20 @@ If unchecked, they will be sorted by their name.</source>
       <translation>이미지 선택</translation>
     </message>
     <message>
-      <location filename="../../ImageEdit.cpp" line="206"/>
-      <source>Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</source>
-      <translation>이미지 파일 (*.jpg *.jpeg *.png *.bmp);;모든 파일 (*)</translation>
+      <location filename="../../ImageEdit.cpp" line="207"/>
+      <source>Image files (*.jpg *.jpeg *.png *.bmp)</source>
+      <translation type="unfinished">Image files (*.jpg *.jpeg *.png *.bmp)</translation>
     </message>
     <message>
-      <location filename="../../ImageEdit.cpp" line="218"/>
-      <source>Image files (*.svg);;All files (*)</source>
-      <translation>이미지 파일 (*.svg);;모든 파일 (*)</translation>
+      <location filename="../../ImageEdit.cpp" line="208"/>
+      <location filename="../../ImageEdit.cpp" line="223"/>
+      <source>All files (*)</source>
+      <translation type="unfinished">All files (*)</translation>
+    </message>
+    <message>
+      <location filename="../../ImageEdit.cpp" line="222"/>
+      <source>Image files (*.svg)</source>
+      <translation type="unfinished">Image files (*.svg)</translation>
     </message>
   </context>
   <context>

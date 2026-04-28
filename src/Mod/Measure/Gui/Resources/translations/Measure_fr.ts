@@ -492,19 +492,6 @@ sera lancée.</translation>
     </message>
   </context>
   <context>
-    <name>StdCmdMassProperties</name>
-    <message>
-      <location filename="../../Command.cpp" line="97"/>
-      <source>Mass Properties</source>
-      <translation>Propriétés physiques</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="98"/>
-      <source>Calculates mass properties of selected objects</source>
-      <translation>Calcule les propriétés physiques des objets sélectionnés.</translation>
-    </message>
-  </context>
-  <context>
     <name>MassPropertiesGui::TaskMassProperties</name>
     <message>
       <location filename="../../TaskMassProperties.cpp" line="279"/>
@@ -550,6 +537,19 @@ sera lancée.</translation>
       <location filename="../../TaskMassProperties.cpp" line="1126"/>
       <source> (Average)</source>
       <translation> (Moyenne)</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdMassProperties</name>
+    <message>
+      <location filename="../../Command.cpp" line="97"/>
+      <source>Mass Properties</source>
+      <translation>Propriétés physiques</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="98"/>
+      <source>Calculates mass properties of selected objects</source>
+      <translation>Calcule les propriétés physiques des objets sélectionnés.</translation>
     </message>
   </context>
 </TS>

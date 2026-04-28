@@ -40,7 +40,7 @@ public:
     SignalException& operator=(SignalException&&) = default;
 
 private:
-    bool enabled {false};
+    [[maybe_unused]] bool enabled {false};
 };
 
 }  // namespace Part

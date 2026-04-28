@@ -371,7 +371,7 @@
     <message>
       <location filename="../../Command.cpp" line="694"/>
       <source>Segment</source>
-      <translation>Segmentet</translation>
+      <translation>Segment</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="695"/>
@@ -430,7 +430,7 @@
     <message>
       <location filename="../../Command.cpp" line="1229"/>
       <source>Refinement</source>
-      <translation>Förädling</translation>
+      <translation>Förfining</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1230"/>
@@ -556,7 +556,7 @@
     <message>
       <location filename="../../Command.cpp" line="1355"/>
       <source>Smooth</source>
-      <translation>Smidig</translation>
+      <translation>Jämna</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1356"/>
@@ -2271,8 +2271,8 @@ Besök https://openscad.org/ för att installera det.</translation>
       <translation>Displayfärger</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1701"/>
       <location filename="../../ViewProviderCurvature.cpp" line="535"/>
+      <location filename="../../ViewProvider.cpp" line="1701"/>
       <source>Leave Info Mode</source>
       <translation>Lämna Info-läge</translation>
     </message>

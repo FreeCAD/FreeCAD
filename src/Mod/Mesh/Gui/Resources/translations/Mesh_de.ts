@@ -2270,8 +2270,8 @@ Siehe https://openscad.org/, um es zu installieren.</translation>
       <translation>Farben anzeigen</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1701"/>
       <location filename="../../ViewProviderCurvature.cpp" line="535"/>
+      <location filename="../../ViewProvider.cpp" line="1701"/>
       <source>Leave Info Mode</source>
       <translation>Informations-Modus verlassen</translation>
     </message>
@@ -2394,7 +2394,7 @@ Siehe https://openscad.org/, um es zu installieren.</translation>
     <message>
       <location filename="../../../Init.py" line="19"/>
       <source>STL Mesh</source>
-      <translation type="unfinished">STL Mesh</translation>
+      <translation>STL-Netz</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="20"/>
@@ -2411,7 +2411,7 @@ Siehe https://openscad.org/, um es zu installieren.</translation>
       <location filename="../../../Init.py" line="27"/>
       <source>Object File Format Mesh</source>
       <extracomment>Translation note: "Object File Format" is the official name and should not be translated</extracomment>
-      <translation type="unfinished">Object File Format Mesh</translation>
+      <translation>Object File Format-Netz</translation>
     </message>
   </context>
 </TS>

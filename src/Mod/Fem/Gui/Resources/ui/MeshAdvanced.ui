@@ -207,7 +207,7 @@
                </size>
               </property>
               <property name="toolTip">
-               <string>Mesh size when distance &lt; DistanceMinimum</string>
+               <string>Mesh size when distance = DistanceMaximum</string>
               </property>
               <property name="keyboardTracking">
                <bool>false</bool>
@@ -334,7 +334,7 @@
                </size>
               </property>
               <property name="toolTip">
-               <string>Mesh size when distance = DistanceMaximum</string>
+               <string>Mesh size when distance &lt; DistanceMinimum</string>
               </property>
               <property name="keyboardTracking">
                <bool>false</bool>
@@ -396,7 +396,7 @@
                </size>
               </property>
               <property name="toolTip">
-               <string>Mesh size when distance &lt; DistanceMinimum</string>
+               <string>Mesh size when distance = DistanceMaximum</string>
               </property>
               <property name="keyboardTracking">
                <bool>false</bool>
@@ -427,7 +427,7 @@
                </size>
               </property>
               <property name="toolTip">
-               <string>Mesh size when distance = DistanceMaximum</string>
+               <string>Mesh size when distance &lt; DistanceMinimum</string>
               </property>
               <property name="keyboardTracking">
                <bool>false</bool>
@@ -949,7 +949,7 @@ Example: &quot;F2 + Sin(z)&quot;</string>
           <item>
            <widget class="QLabel" name="label_17">
             <property name="text">
-             <string>Uses a datafield from a FEM postprocessing pipeline as mesh size. This allows you to adapt the mesh according to the physical behaviour of the result.</string>
+             <string>Uses a data field from a FEM postprocessing pipeline as mesh size. This allows you to adapt the mesh according to the physical behaviour of the result.</string>
             </property>
             <property name="wordWrap">
              <bool>true</bool>

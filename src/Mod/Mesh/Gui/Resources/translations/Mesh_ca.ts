@@ -2265,8 +2265,8 @@ Visiteu https://openscad.org/ per a instal·lar-lo.</translation>
       <translation>Mostra els colors</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1701"/>
       <location filename="../../ViewProviderCurvature.cpp" line="535"/>
+      <location filename="../../ViewProvider.cpp" line="1701"/>
       <source>Leave Info Mode</source>
       <translation>Surt del mode d'informació</translation>
     </message>

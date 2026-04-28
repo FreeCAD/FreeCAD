@@ -1245,9 +1245,16 @@ SET(Widget_CPP_SRCS
     FontScaledSVG.cpp
     SplitButton.cpp
 )
+if(WIN32)
+    SET(Widget_CPP_SRCS
+        ${Widget_CPP_SRCS}
+        FileDialogWin32.cpp
+    )
+endif(WIN32)
 SET(Widget_HPP_SRCS
     ComboLinks.h
     FileDialog.h
+    FileDialogInternal.h
     MainWindow.h
     MainWindowPy.h
     NotificationBox.h
