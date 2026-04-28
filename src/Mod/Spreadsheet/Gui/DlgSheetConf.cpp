@@ -273,11 +273,56 @@ void DlgSheetConf::accept()
         );
 
         if (ui->verticalCheckBox->isChecked()) {
-            // Adjust the range to skip the first cell
+            // Adjust the range to skip the first cell (containing variant string)
             range = Range(from.row() + 1, from.col(), to.row(), to.col());
 
-            // Formulate expression to calculate the column binding using
-            // PropertyEnumeration
+            // Dynamically bind the active configuration column to the
+            // configuration column selected by the property enumeration
+            // variant. For example, if the active configuration column is
+            // B2:B4, we would bind to C2:C4 for variant 0, D2:D4 for variant
+            // 1, and so on. The column varies with the selected property
+            // enumeration variant, but the rows are fixed.
+            //
+            // The bind target cell range is:
+            //      <dynamic column><from row>:<dynamic column><to row>
+            // where <from row> and <to row> are the fixed strings str(%5$d)
+            // and str(%6$d), populated with range.from().row() + 1 and
+            // range.to().row() + 1, respectively (the + 1 constant is because
+            // row() is 0-based).
+            //
+            // <dynamic column> is an alpha string ranging from A to ZZ.
+            // However, we can only use spreadsheet expressions to compute it.
+            // In the approach below, we form the two alpha letters of the
+            // column by converting the dynamic column index into ASCII
+            // characters with Python format strings.
+            // The upper letter is formed with the expression:
+            //      (column < 26) ? "" : "%c" % (65 + floor(column / 26) - 1)
+            // and the lower letter with the expression:
+            //      "%c" % (65 + column % 26)
+            // where column is the 0-based column index into the selected
+            // configuration column.
+            //
+            // In terms of spreadsheet expressions, the column index is:
+            //      %3$d+hiddenref(%4$s)
+            // which is the configuration table column offset plus the property
+            // enumeration variant index. The configuration table column offset
+            // is populated with from.col() + 1 (the + 1 constant is to start
+            // at the first parameter column, while keeping the overall
+            // expression 0-based).
+            //
+            // The final expression (omitting format escapes) for the column is:
+            //      ((%3$d+hiddenref(%4$s)) < 26 ?
+            //          <<>> :
+            //          <<%c>> % (65 +
+            //              sum(0;floor((%3$d+hiddenref(%4$s)) / 26) - 1)))
+            //      + <<%c>> % (65 + (%3$d+hiddenref(%4$s)) % 26)
+            // The sum(0;...) expression is needed to coerce the Base.Quantity
+            // type returned by floor() back into an integer type suitable for
+            // the format string.
+            //
+            // In the future, a new expression function to compute a cell
+            // address from integral row and column indices (e.g.
+            // `celladdress(2,3)` -> D3) could be used to vastly simplify this.
             Gui::cmdAppObjectArgs(
                 sheet,
                 "setExpression('.cells.Bind.%1$s.%2$s', "
@@ -297,11 +342,28 @@ void DlgSheetConf::accept()
             );
         }
         else {
-            // Adjust the range to skip the first cell
+            // Adjust the range to skip the first cell (containing variant string)
             range = Range(from.row(), from.col() + 1, to.row(), to.col());
 
-            // Formulate expression to calculate the row binding using
-            // PropertyEnumeration
+            // Dynamically bind the active configuration row to the
+            // configuration row selected by the property enumeration variant.
+            // For example, if the active configuration row is located at
+            // B2:D2, we would bind to B3:D3 for variant 0, B4:D4 for variant
+            // 1, and so on. The row varies with the selected property
+            // enumeration variant, but the columns are fixed.
+            //
+            // The bind target cell range is:
+            //      <from column><dynamic row>:<to column><dynamic row>
+            // where <from column> and <to column> are the fixed strings
+            // <<%5$s>> and <<%6$s>>, populated with range.from() and
+            // range.to() columns, respectively.
+            //
+            // <dynamic row> is computed dynamically with the cell expression:
+            //      str(%3$d+hiddenref(%4$s))
+            // which is the configuration table row offset plus the property
+            // enumeration variant index. The configuration table row offset is
+            // populated with from.row() + 2 (the + 2 constant is because row()
+            // is 0-based and to start at the first parameter row).
             Gui::cmdAppObjectArgs(
                 sheet,
                 "setExpression('.cells.Bind.%1$s.%2$s', "
