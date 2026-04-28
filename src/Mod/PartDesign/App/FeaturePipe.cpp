@@ -130,23 +130,24 @@ App::DocumentObjectExecReturn* Pipe::execute()
         if (!feature || !feature->isDerivedFrom<Part::Feature>()) {
             throw Base::TypeError("Pipe: Invalid profile/section");
         }
-    }
 
-    auto subName = subs.empty() ? "" : subs.front();
+        auto subName = subs.empty() ? "" : subs.front();
 
-    // only take the entire shape when we have a sketch selected, but
-    // not a point of the sketch
-    if (feature->isDerivedFrom<Part::Part2DObject>() && subName.compare(0, 6, "Vertex") != 0) {
-        return static_cast<Part::Part2DObject*>(feature)->Shape.getShape();
-    }
-    else {
-        if (subName.empty()) {
-            throw Base::ValueError("Pipe: No valid subelement linked in Part::Feature");
+        // only take the entire shape when we have a sketch selected, but
+        // not a point of the sketch
+        if (feature->isDerivedFrom<Part::Part2DObject>() && subName.compare(0, 6, "Vertex") != 0) {
+            return static_cast<Part::Part2DObject*>(feature)->Shape.getShape();
+        }
+        else {
+            if (subName.empty()) {
+                throw Base::ValueError("Pipe: No valid subelement linked in Part::Feature");
+            }
             return static_cast<Part::Feature*>(feature)->Shape.getShape().getSubTopoShape(
                 subName.c_str()
             );
         }
     };
+    
 
     std::vector<std::vector<Part::TopoShape>> wiresections;
 
@@ -190,7 +191,7 @@ App::DocumentObjectExecReturn* Pipe::execute()
         base = getBaseTopoShape();
     }
     catch (const Base::Exception&) {
-        base = Part::TopoShape(0, this->getDocument()->getStringHasher());
+        base = Part::TopoShape(getID(), this->getDocument()->getStringHasher());
     }
 
     auto hasher = getDocument()->getStringHasher();
@@ -494,13 +495,35 @@ App::DocumentObjectExecReturn* Pipe::execute()
             result.makeElementSolid(partCompound);
         }
 
-        BRepClass3d_SolidClassifier SC(result.getShape());
-        SC.PerformInfinitePoint(Precision::Confusion());
-        if (SC.State() == TopAbs_IN) {
-            result.setShape(result.getShape().Reversed(), false);
+        if (!result.countSubShapes(TopAbs_SHELL)) {
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "Loft: Failed to create shell") // isn't the prefix supposed to be "Pipe:"
+            );
         }
 
-        AddSubShape.setValue(result);  // Converts result to a TopoShape, but no tag.
+        auto shapes = result.getSubTopoShapes(TopAbs_SHELL);
+        for (auto& s : shapes) {
+            // build the solid
+            s = s.makeElementSolid();
+            BRepClass3d_SolidClassifier SC(s.getShape());
+            SC.PerformInfinitePoint(Precision::Confusion());
+            if (SC.State() == TopAbs_IN) {
+                s.setShape(s.getShape().Reversed(), false);
+            }
+        }
+
+        AddSubShape.setValue(result.makeElementCompound(
+            shapes,
+            nullptr,
+            Part::TopoShape::SingleShapeCompoundCreationPolicy::returnShape
+        ));
+
+        if (shapes.size() > 1) {
+            result.makeElementFuse(shapes);
+        }
+        else {
+            result = shapes.front();
+        }
 
         if (base.isNull()) {
             if (getAddSubType() == FeatureAddSub::Subtractive) {
@@ -525,7 +548,7 @@ App::DocumentObjectExecReturn* Pipe::execute()
         }
 
         std::string maker;
-        Part::TopoShape boolOp = Part::TopoShape(0, getDocument()->getStringHasher());
+        Part::TopoShape boolOp = Part::TopoShape(base.Tag, getDocument()->getStringHasher());
 
         if (getAddSubType() == FeatureAddSub::Additive) {
             maker = Part::OpCodes::Fuse;
