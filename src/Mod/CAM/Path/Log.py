@@ -89,9 +89,7 @@ class ModuleLogger:
         if not self.willLogAt(level):
             return None
 
-        message = ("{}.{}: " + str(msg)).format(
-            self.getModule(), Level.toString(level), *args
-        )
+        message = ("{}.{}: " + str(msg)).format(self.getModule(), Level.toString(level), *args)
 
         if _useConsole:
             message += "\n"
