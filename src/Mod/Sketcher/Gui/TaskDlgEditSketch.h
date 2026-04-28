@@ -64,6 +64,7 @@ public:
     bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
+    void deactivate();
     bool isAllowedAlterDocument() const override
     {
         return false;
@@ -96,6 +97,7 @@ protected:
 
 private:
     Connection connectionToolSettings;
+    bool isEscapeAction {false};
 };
 
 

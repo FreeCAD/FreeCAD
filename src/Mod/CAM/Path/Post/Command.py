@@ -24,7 +24,6 @@
 """Post Process command that will make use of the Output File and Post
 Processor entries in PathJob"""
 
-
 import FreeCAD
 import FreeCADGui
 import Path
@@ -91,9 +90,12 @@ class DlgSelectPostProcessor:
         if item.text() in self.tooltips:
             tooltip = self.tooltips[item.text()]
         else:
-            processor = PostProcessor.load(item.text())
-            self.tooltips[item.text()] = processor.tooltip
-            tooltip = processor.tooltip
+            try:
+                processor = PostProcessorFactory.get_post_processor(None, item.text())
+                tooltip = processor.tooltip if processor else ""
+            except Exception:
+                tooltip = ""
+            self.tooltips[item.text()] = tooltip
         self.dialog.lwPostProcessor.setToolTip(tooltip)
 
     def exec_(self):
@@ -201,12 +203,25 @@ class CommandPathPost:
         on user selection and document context.
         """
         Path.Log.debug(self.candidate.Name)
-        FreeCAD.ActiveDocument.openTransaction("Post Process the Selected Job")
 
         # Determine if we use new flow (machine-based) or old flow (legacy)
         # New flow: Job has Machine property -> get postprocessor from machine config -> use export2()
         # Old flow: Job lacks Machine -> get postprocessor from job property -> use export()
         use_new_flow = hasattr(self.candidate, "Machine") and self.candidate.Machine
+
+        # Show the unified post-processing dialog only for the new machine-based flow.
+        if use_new_flow and FreeCAD.GuiUp:
+            from Path.Post.Gui.DlgPostProcess import PostProcessDialog
+
+            dlg = PostProcessDialog(self.candidate)
+            if dlg.exec_() != QtGui.QDialog.DialogCode.Accepted:
+                return
+            # Files were written by the dialog's Save button; record the transaction and return.
+            FreeCAD.ActiveDocument.openTransaction("Post Process the Selected Job")
+            FreeCAD.ActiveDocument.commitTransaction()
+            return
+
+        FreeCAD.ActiveDocument.openTransaction("Post Process the Selected Job")
 
         if use_new_flow:
             Path.Log.debug("Using new flow (machine-based)")
@@ -229,7 +244,12 @@ class CommandPathPost:
         else:
             Path.Log.debug("Using old flow (legacy)")
             # Old flow: Get postprocessor from job property
-            postprocessor_name = _resolve_post_processor_name(self.candidate)
+            try:
+                postprocessor_name = _resolve_post_processor_name(self.candidate)
+            except ValueError as e:
+                FreeCAD.Console.PrintError(f"{e}\n")
+                FreeCAD.ActiveDocument.abortTransaction()
+                return
 
         Path.Log.debug(f"Post Processor: {postprocessor_name}")
 
@@ -291,9 +311,10 @@ class CommandPathPost:
             # a file.  There may be other uses found for this capability over time.
             #
             if gcode is not None:
-                # Show editor if user preference is enabled and GUI is available
                 final_gcode = gcode
-                if FreeCAD.GuiUp and Path.Preferences.showEditorOnPostProcess():
+                # Show editor only for the new flow; legacy scripts
+                # handle their own editor dialog inside export().
+                if use_new_flow and FreeCAD.GuiUp and Path.Preferences.showEditorOnPostProcess():
                     if len(gcode) > 100000:
                         FreeCAD.Console.PrintWarning(
                             "Skipping editor since output is greater than 100kb\n"
@@ -314,7 +335,7 @@ class CommandPathPost:
                 self._write_file(fname, final_gcode, policy)
 
         FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
+        # FreeCAD.ActiveDocument.recompute()
 
 
 class CommandPathPostSelected(CommandPathPost):

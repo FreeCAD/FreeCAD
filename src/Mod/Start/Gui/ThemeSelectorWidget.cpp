@@ -34,6 +34,7 @@
 #include <App/Application.h>
 #include <Gui/Command.h>
 #include <Gui/PreferencePackManager.h>
+#include <Gui/Utilities.h>
 
 #include <FCConfig.h>
 
@@ -140,18 +141,16 @@ void ThemeSelectorWidget::setupButtons(QBoxLayout* layout)
         if (theme.first == Theme::Classic && styleSheetName.isEmpty()) {
             button->setChecked(true);
         }
-        else if (theme.first == Theme::Light
-                 && styleSheetName.contains(
-                     QLatin1String("FreeCAD Light"),
-                     Qt::CaseSensitivity::CaseInsensitive
-                 )) {
+        else if (
+            theme.first == Theme::Light
+            && styleSheetName.contains(QLatin1String("FreeCAD Light"), Qt::CaseSensitivity::CaseInsensitive)
+        ) {
             button->setChecked(true);
         }
-        else if (theme.first == Theme::Dark
-                 && styleSheetName.contains(
-                     QLatin1String("FreeCAD Dark"),
-                     Qt::CaseSensitivity::CaseInsensitive
-                 )) {
+        else if (
+            theme.first == Theme::Dark
+            && styleSheetName.contains(QLatin1String("FreeCAD Dark"), Qt::CaseSensitivity::CaseInsensitive)
+        ) {
             button->setChecked(true);
         }
         connect(button, &QToolButton::clicked, this, [this, theme] { themeChanged(theme.first); });
@@ -195,6 +194,10 @@ void ThemeSelectorWidget::onLinkActivated(const QString& link)
 
 void ThemeSelectorWidget::preselectThemeFromSystemSettings()
 {
+    if (Gui::isInternalGuiTestRun()) {
+        return;
+    }
+
     auto nullStyle("<N/A>");
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/MainWindow"

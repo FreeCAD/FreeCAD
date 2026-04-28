@@ -24,8 +24,10 @@
 
 
 
+#include <algorithm>
 #include <iostream>
-#include <boost/regex.hpp>
+#include <string>
+#include <vector>
 
 #include <Base/Base64.h>
 #include <Base/Console.h>
@@ -38,6 +40,155 @@
 
 
 using namespace App;
+
+namespace {
+
+/**
+ * @brief Check whether a path starts with a given directory prefix.
+ *
+ * @param[in] filePath The file path to check.
+ * @param[in] directory The directory prefix to match against.
+ * @return @c true if @p filePath starts with @p directory.
+ */
+bool isUnderDirectory(std::string filePath, std::string directory)
+{
+    std::ranges::replace(filePath, '\\', '/');
+    std::ranges::replace(directory, '\\', '/');
+    // Collapse repeated slashes (e.g. home path "build/debug//" + "Mod")
+    auto collapseSlashes = [](std::string& s) {
+        auto out = s.begin();
+        for (auto it = s.begin(); it != s.end(); ++it) {
+            if (*it == '/' && out != s.begin() && *(out - 1) == '/') {
+                continue;
+            }
+            *out++ = *it;
+        }
+        s.erase(out, s.end());
+    };
+    collapseSlashes(filePath);
+    collapseSlashes(directory);
+    if (!directory.empty() && directory.back() != '/') {
+        directory += '/';
+    }
+    return filePath.starts_with(directory);
+}
+
+/**
+ * @brief Check whether a module import should be allowed during document restore.
+ *
+ * Modules already in @c sys.modules are permitted -- they were loaded by FreeCAD core or addons
+ * during normal startup.  For modules not yet loaded we use @c importlib.util.find_spec() to
+ * locate where the module would come from without executing it, then verify that path is under
+ * a FreeCAD module directory.  This prevents a crafted FCStd from importing arbitrary modules
+ * (whose <tt>__init__.py</tt> could run malicious code on import) while still allowing
+ * legitimate lazy-loaded FreeCAD workbench modules to restore.
+ *
+ * @param[in] moduleName The fully qualified Python module name to check.
+ * @return @c true if the module is allowed, @c false otherwise.
+ */
+bool isAllowedModule(const std::string& moduleName)
+{
+    Py::Dict sysModules(PyImport_GetModuleDict());
+    if (sysModules.isNone()) {
+        return false;
+    }
+
+    // 1) Already loaded? Must be safe.
+    if (sysModules.hasKey(moduleName)) {
+        return true;
+    }
+
+    // 2) Is it *in* an already loaded module? Safe.
+    std::string::size_type dot = moduleName.find('.');
+    if (dot != std::string::npos) {
+        std::string topLevel = moduleName.substr(0, dot);
+        if (sysModules.hasKey(topLevel)) {
+            return true;
+        }
+    }
+
+    // 3) The complicated path. Use importlib.util.find_spec() to find the origin of the module,
+    // being careful to NOT load it (which is the code-execution vulnerability we're trying to
+    // avoid in the first place). See if it's in one of our "safe" paths, and if it is, allow it.
+    // Safe paths are a few subdirectories we recognize in the set "home", "resource", and
+    // "userData" paths. Don't allow modules from outside of these directories. Not 100% mitigation,
+    // but it's better than nothing.
+    PyObject* importlibUtil = PyImport_ImportModule("importlib.util");
+    if (!importlibUtil) {
+        PyErr_Clear();
+        return false;
+    }
+    Py::Module importlib(importlibUtil, true);
+    Py::Callable findSpec(importlib.getAttr("find_spec"));
+
+    // FreeCAD adds each workbench directory to sys.path individually (e.g. .../Mod/Assembly/),
+    // so a module stored as "Assembly.JointObject" in the FCStd is actually importable as just
+    // "JointObject". Try the full name first, then the part after the first dot.
+    std::vector<std::string> namesToTry = {moduleName};
+    if (dot != std::string::npos) {
+        namesToTry.push_back(moduleName.substr(dot + 1));
+    }
+    Py::Object spec;
+    for (const std::string& name : namesToTry) {
+        Py::Tuple args(1);
+        args.setItem(0, Py::String(name));
+        try {
+            spec = findSpec.apply(args);
+        }
+        catch (Py::Exception&) {
+            PyErr_Clear();
+            continue;
+        }
+        if (!spec.isNone()) {
+            break;
+        }
+    }
+    if (spec.isNone()) {
+        return false;
+    }
+
+    // Use FreeCAD.__ModDirs__ as the authoritative list of allowed module directories.
+    // This is populated during startup by FreeCADInit.py and includes built-in workbenches,
+    // user addons, and any additional configured module paths.
+    Py::Module freecad(PyImport_ImportModule("FreeCAD"), true);
+    if (!freecad.hasAttr("__ModDirs__")) {
+        throw Py::RuntimeError("FreeCAD.__ModDirs__ not set -- FreeCADInit.py has not run yet");
+    }
+    Py::List modDirs(freecad.getAttr("__ModDirs__"));
+
+    auto isUnderFreeCAD = [&](const std::string& path) {
+        for (int i = 0; i < static_cast<int>(modDirs.size()); ++i) {
+            if (isUnderDirectory(path, Py::String(modDirs[i]).as_std_string())) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    // Get the origin (i.e. the file path) from the spec.
+    Py::Object origin = spec.getAttr("origin");
+    if (!origin.isNone() && origin.isString()) {
+        return isUnderFreeCAD(Py::String(origin).as_std_string());
+    }
+
+    // No origin -- this could be a built-in module (why is an FCStd trying to load this? Very
+    // suspicious, block it) or a synthetic module from a FreeCAD migration finder like
+    // FemMigrateApp (which we will allow).  Check whether the spec's loader itself comes from a
+    // FreeCAD module directory.
+    if (!spec.hasAttr("loader") || spec.getAttr("loader").isNone()) {
+        return false;
+    }
+    Py::Object loader = spec.getAttr("loader");
+    auto loaderType = loader.type();
+    if (!loaderType.hasAttr("__module__")) {
+        return false;
+    }
+    std::string loaderModuleName = Py::String(loaderType.getAttr("__module__")).as_std_string();
+    Py::Object loaderMod = sysModules.getItem(loaderModuleName);
+    return isUnderFreeCAD(Py::String(loaderMod.getAttr("__file__")).as_std_string());
+}
+
+}  // anonymous namespace
 
 
 TYPESYSTEM_SOURCE(App::PropertyPythonObject, App::Property)
@@ -180,31 +331,6 @@ void PropertyPythonObject::fromString(const std::string& repr)
     }
 }
 
-void PropertyPythonObject::loadPickle(const std::string& str)
-{
-    // find the custom attributes and restore them
-    Base::PyGILStateLocker lock;
-    try {
-        std::string buffer = str;
-        boost::regex pickle(R"(S'(\w+)'.+S'(\w+)'\n)");
-        boost::match_results<std::string::const_iterator> what;
-        std::string::const_iterator start, end;
-        start = buffer.begin();
-        end = buffer.end();
-        while (boost::regex_search(start, end, what, pickle)) {
-            std::string key = std::string(what[1].first, what[1].second);
-            std::string val = std::string(what[2].first, what[2].second);
-            this->object.setAttr(key, Py::String(val));
-            buffer = std::string(what[2].second, end);
-            start = buffer.begin();
-            end = buffer.end();
-        }
-    }
-    catch (Py::Exception&) {
-        Base::PyException e;  // extract the Python error text
-        e.reportException();
-    }
-}
 
 std::string PropertyPythonObject::encodeValue(const std::string& str) const
 {
@@ -341,7 +467,6 @@ void PropertyPythonObject::Restore(Base::XMLReader& reader)
     }
     else {
         bool load_json = false;
-        bool load_pickle = false;
         bool load_failed = false;
         std::string buffer = reader.getAttribute<const char*>("value");
         if (reader.hasAttribute("encoded") && strcmp(reader.getAttribute<const char*>("encoded"), "yes") == 0) {
@@ -353,21 +478,25 @@ void PropertyPythonObject::Restore(Base::XMLReader& reader)
 
         Base::PyGILStateLocker lock;
         try {
-            boost::regex pickle(R"(^\(i(\w+)\n(\w+)\n)");
-            boost::match_results<std::string::const_iterator> what;
-            std::string::const_iterator start, end;
-            start = buffer.begin();
-            end = buffer.end();
             if (reader.hasAttribute("module") && reader.hasAttribute("class")) {
-                Py::Module mod(PyImport_ImportModule(reader.getAttribute<const char*>("module")), true);
+                std::string moduleName = reader.getAttribute<const char*>("module");
+                if (!isAllowedModule(moduleName)) {
+                    Base::Console().warning(
+                        "PropertyPythonObject::Restore: blocked import of module '%s' during"
+                        " document restore. Only modules from FreeCAD or installed addons"
+                        " are permitted.\n",
+                        moduleName.c_str());
+                    throw Py::ImportError("module not permitted: " + moduleName);
+                }
+                Py::Module mod(PyImport_ImportModule(moduleName.c_str()), true);
                 if (mod.isNull()) {
                     throw Py::Exception();
                 }
-                PyObject* cls = mod.getAttr(reader.getAttribute<const char*>("class")).ptr();
+                std::string className = reader.getAttribute<const char*>("class");
+                PyObject* cls = mod.getAttr(className).ptr();
                 if (!cls) {
                     std::stringstream s;
-                    s << "Module " << reader.getAttribute<const char*>("module") << " has no class "
-                      << reader.getAttribute<const char*>("class");
+                    s << "Module " << moduleName << " has no class " << className;
                     throw Py::AttributeError(s.str());
                 }
                 if (PyType_Check(cls)) {
@@ -377,17 +506,6 @@ void PropertyPythonObject::Restore(Base::XMLReader& reader)
                     throw Py::TypeError("neither class nor type object");
                 }
                 load_json = true;
-            }
-            else if (boost::regex_search(start, end, what, pickle)) {
-                std::string name = std::string(what[1].first, what[1].second);
-                std::string type = std::string(what[2].first, what[2].second);
-                Py::Module mod(PyImport_ImportModule(name.c_str()), true);
-                if (mod.isNull()) {
-                    throw Py::Exception();
-                }
-                this->object = PyObject_CallObject(mod.getAttr(type).ptr(), nullptr);
-                load_pickle = true;
-                buffer = std::string(what[2].second, end);
             }
             else if (reader.hasAttribute("json")) {
                 load_json = true;
@@ -403,9 +521,6 @@ void PropertyPythonObject::Restore(Base::XMLReader& reader)
         aboutToSetValue();
         if (load_json) {
             this->fromString(buffer);
-        }
-        else if (load_pickle) {
-            this->loadPickle(buffer);
         }
         else if (!load_failed) {
             Base::Console().warning(

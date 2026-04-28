@@ -130,6 +130,7 @@ ViewProviderAssembly::ViewProviderAssembly()
 ViewProviderAssembly::~ViewProviderAssembly()
 {
     m_preTransactionConn.disconnect();
+    QObject::disconnect(workbenchConnection);
 
     updateTaskPanel(false);
 };
@@ -265,7 +266,7 @@ void ViewProviderAssembly::updateData(const App::Property* prop)
                 return;
             }
 
-            std::vector<App::DocumentObject*> joints = obj->getJoints(false);
+            std::vector<App::DocumentObject*> joints = obj->getJoints();
             for (auto* joint : joints) {
                 Gui::ViewProvider* jointVp = Gui::Application::Instance->getViewProvider(joint);
                 if (jointVp) {
@@ -297,9 +298,7 @@ bool ViewProviderAssembly::setEdit(int mode)
             this->getObject()->getNameInDocument()
         );
 
-        setDragger();
-
-        attachSelection();
+        setupActiveAndInEdit();
 
         updateTaskPanel(true);
 
@@ -337,8 +336,7 @@ void ViewProviderAssembly::unsetEdit(int mode)
         partMoving = false;
         docsToMove.clear();
 
-        unsetDragger();
-        detachSelection();
+        unsetupActiveAndInEdit();
 
         // Check if the view is still active before trying to deactivate the assembly.
         auto activeView = getDocument()->getActiveView();
@@ -403,10 +401,14 @@ void ViewProviderAssembly::setDragger()
 void ViewProviderAssembly::unsetDragger()
 {
     pcRoot->removeChild(asmDraggerSwitch);
-    asmDragger->unref();
-    asmDragger = nullptr;
-    asmDraggerSwitch->unref();
-    asmDraggerSwitch = nullptr;
+    if (asmDragger) {
+        asmDragger->unref();
+        asmDragger = nullptr;
+    }
+    if (asmDraggerSwitch) {
+        asmDraggerSwitch->unref();
+        asmDraggerSwitch = nullptr;
+    }
 }
 
 void ViewProviderAssembly::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
@@ -422,6 +424,26 @@ bool ViewProviderAssembly::isInEditMode() const
 {
     return asmDragger != nullptr;
 }
+void ViewProviderAssembly::setupActiveAndInEdit()
+{
+    setDragger();
+    attachSelection();
+}
+void ViewProviderAssembly::unsetupActiveAndInEdit()
+{
+    unsetDragger();
+    detachSelection();
+}
+void ViewProviderAssembly::setActive(bool active)
+{
+    if (active) {
+        setupActiveAndInEdit();
+    }
+    else {
+        unsetupActiveAndInEdit();
+    }
+}
+
 
 App::DocumentObject* ViewProviderAssembly::getActivePart() const
 {
@@ -436,7 +458,7 @@ bool ViewProviderAssembly::keyPressed(bool pressed, int key)
 {
     if (key == SoKeyboardEvent::ESCAPE) {
         if (isInEditMode()) {
-            if (Gui::Control().activeDialog()) {
+            if (Gui::Control().activeDialog(nullptr)) {
                 return true;
             }
 
@@ -978,8 +1000,8 @@ ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
         if (!ref) {
             return DragMode::Translation;
         }
-        auto* obj = getObjFromJointRef(movingJoint, pName.c_str());
-        Base::Placement global_plc = App::GeoFeature::getGlobalPlacement(nullptr, ref);
+        Base::Placement asmPlc = App::GeoFeature::getGlobalPlacement(getObject<AssemblyObject>());
+        Base::Placement global_plc = asmPlc * App::GeoFeature::getGlobalPlacement(nullptr, ref);
         jcsGlobalPlc = global_plc * jcsPlc;
 
         // Add downstream parts so that they move together
@@ -1083,7 +1105,7 @@ void ViewProviderAssembly::tryInitMove(const SbVec2s& cursorPos, Gui::View3DInve
     }
 
     if (moveInCommand) {
-        Gui::Command::openCommand(tr("Move part").toStdString().c_str());
+        getDocument()->openCommand(tr("Move part").toStdString().c_str());
     }
     partMoving = true;
 
@@ -1146,7 +1168,7 @@ void ViewProviderAssembly::endMove()
     }
 
     if (moveInCommand) {
-        Gui::Command::commitCommand();
+        getDocument()->commitCommand();
     }
 }
 
@@ -1792,9 +1814,7 @@ void ViewProviderAssembly::UpdateSolverInformation()
     auto* assembly = getObject<AssemblyObject>();
 
     int dofs = assembly->getLastDoF();
-    bool hasConflicts = assembly->getLastHasConflicts();
     bool hasRedundancies = assembly->getLastHasRedundancies();
-    bool hasPartiallyRedundant = assembly->getLastHasPartialRedundancies();
     bool hasMalformed = assembly->getLastHasMalformedConstraints();
 
     if (assembly->isEmpty()) {
@@ -1875,11 +1895,11 @@ void ViewProviderAssembly::updateTaskPanel(bool show)
 
     if (show && !taskSolver) {
         taskSolver = new TaskAssemblyMessages(this);
-        taskView->addContextualPanel(taskSolver);
+        taskView->addContextualPanel(taskSolver, this->getObject()->getDocument());
         UpdateSolverInformation();
     }
     else if (!show && taskSolver) {
-        taskView->removeContextualPanel(taskSolver);
+        taskView->removeContextualPanel(taskSolver, this->getObject()->getDocument());
         taskSolver = nullptr;
     }
 }

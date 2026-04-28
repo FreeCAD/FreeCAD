@@ -26,6 +26,7 @@ This module provides Coin (pivy) based objects
 that are used by the Draft Workbench to draw temporary geometry,
 that is, previews, of the real objects that will be created on the 3D view.
 """
+
 ## @package gui_trackers
 # \ingroup draftguitools
 # \brief Provides Coin based objects used to preview objects being built.
@@ -1711,14 +1712,15 @@ class archDimTracker(Tracker):
         self.matrix.setValue(*plane.get_placement().Matrix.transposed().A)
         self.string.setValue(text.encode("utf8"))
         # change the text position to external depending on the distance and scale values
-        volume = self.camera.getViewVolume()
-        scale = self.view.getSize()[1] / volume.getHeight()
-        if scale * self.Distance > self.size_pixel * len(text):
-            self.param2.setValue(0)
-        else:
-            self.param2.setValue(
-                1 / 2 * self.Distance + 3 / 5 * self.size_pixel * len(text) / scale
-            )
+        if self.camera:
+            volume = self.camera.getViewVolume()
+            scale = self.view.getSize()[1] / volume.getHeight()
+            if scale * self.Distance > self.size_pixel * len(text):
+                self.param2.setValue(0)
+            else:
+                self.param2.setValue(
+                    1 / 2 * self.Distance + 3 / 5 * self.size_pixel * len(text) / scale
+                )
 
     def setMode(self, mode=1):
         """Set the mode.

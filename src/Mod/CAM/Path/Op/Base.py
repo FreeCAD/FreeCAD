@@ -31,7 +31,6 @@ import PathScripts.PathUtils as PathUtils
 import math
 import time
 
-
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
 
@@ -828,7 +827,7 @@ class ObjectOp(object):
             self.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
 
         # Add block delete annotations if enabled
-        if obj.BlockDelete:
+        if hasattr(obj, "BlockDelete") and obj.BlockDelete:
             for command in self.commandlist:
                 annotations = command.Annotations
                 annotations["BlockDelete"] = True

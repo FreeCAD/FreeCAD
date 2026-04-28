@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to create Clone objects."""
+
 ## @package make_clone
 # \ingroup draftmake
 # \brief Provides functions to create Clone objects.

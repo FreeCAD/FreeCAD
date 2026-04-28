@@ -128,7 +128,7 @@ public:
         }
 
         try {
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Scale geometries"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Scale geometries"));
 
             createShape(false);
 
@@ -144,7 +144,7 @@ public:
             }
 
             scaleLabels(initialConstraintCount);
-            Gui::Command::commitCommand();
+            commitCommand();
         }
         catch (const Base::Exception& e) {
             e.reportException();
@@ -155,7 +155,7 @@ public:
             );
 
             if (abortOnFail) {
-                Gui::Command::abortCommand();
+                abortCommand();
             }
             THROWM(
                 Base::RuntimeError,
@@ -529,42 +529,54 @@ private:
                     newConstr->Second = secondIndex;
                     newConstr->Third = thirdIndex;
                 }
-                else if ((cstr->Type == Coincident || cstr->Type == Tangent
-                          || cstr->Type == Symmetric || cstr->Type == Perpendicular
-                          || cstr->Type == Parallel || cstr->Type == Equal || cstr->Type == Angle
-                          || cstr->Type == PointOnObject || cstr->Type == InternalAlignment)
-                         && firstIndex != GeoEnum::GeoUndef && secondIndex != GeoEnum::GeoUndef
-                         && thirdIndex == GeoEnum::GeoUndef) {
+                else if (
+                    (cstr->Type == Coincident || cstr->Type == Tangent || cstr->Type == Symmetric
+                     || cstr->Type == Perpendicular || cstr->Type == Parallel || cstr->Type == Equal
+                     || cstr->Type == Angle || cstr->Type == PointOnObject
+                     || cstr->Type == InternalAlignment)
+                    && firstIndex != GeoEnum::GeoUndef && secondIndex != GeoEnum::GeoUndef
+                    && thirdIndex == GeoEnum::GeoUndef
+                ) {
                     newConstr->First = firstIndex;
                     newConstr->Second = secondIndex;
                 }
-                else if (cstr->Type == Angle && firstIndex != GeoEnum::GeoUndef
-                         && secondIndex == GeoEnum::GeoUndef && thirdIndex == GeoEnum::GeoUndef) {
+                else if (
+                    cstr->Type == Angle && firstIndex != GeoEnum::GeoUndef
+                    && secondIndex == GeoEnum::GeoUndef && thirdIndex == GeoEnum::GeoUndef
+                ) {
                     newConstr->First = firstIndex;
                 }
-                else if ((cstr->Type == Radius || cstr->Type == Diameter)
-                         && firstIndex != GeoEnum::GeoUndef) {
+                else if (
+                    (cstr->Type == Radius || cstr->Type == Diameter) && firstIndex != GeoEnum::GeoUndef
+                ) {
                     newConstr->First = firstIndex;
                     newConstr->setValue(newConstr->getValue() * scaleFactor);
                 }
-                else if ((cstr->Type == Distance || cstr->Type == DistanceX || cstr->Type == DistanceY)
-                         && firstIndex != GeoEnum::GeoUndef && secondIndex != GeoEnum::GeoUndef) {
+                else if (
+                    (cstr->Type == Distance || cstr->Type == DistanceX || cstr->Type == DistanceY)
+                    && firstIndex != GeoEnum::GeoUndef && secondIndex != GeoEnum::GeoUndef
+                ) {
                     newConstr->First = firstIndex;
                     newConstr->Second = secondIndex;
                     newConstr->setValue(newConstr->getValue() * scaleFactor);
                 }
-                else if ((cstr->Type == Distance || cstr->Type == DistanceX || cstr->Type == DistanceY)
-                         && firstIndex != GeoEnum::GeoUndef && cstr->Second == GeoEnum::GeoUndef) {
+                else if (
+                    (cstr->Type == Distance || cstr->Type == DistanceX || cstr->Type == DistanceY)
+                    && firstIndex != GeoEnum::GeoUndef && cstr->Second == GeoEnum::GeoUndef
+                ) {
                     newConstr->First = firstIndex;
                     newConstr->setValue(newConstr->getValue() * scaleFactor);
                 }
-                else if ((cstr->Type == Block || cstr->Type == Weight)
-                         && firstIndex != GeoEnum::GeoUndef) {
+                else if (
+                    (cstr->Type == Block || cstr->Type == Weight) && firstIndex != GeoEnum::GeoUndef
+                ) {
                     newConstr->First = firstIndex;
                 }
-                else if ((cstr->Type == Vertical || cstr->Type == Horizontal)
-                         && (firstIndex != GeoEnum::GeoUndef
-                             && (cstr->Second == GeoEnum::GeoUndef || secondIndex != GeoUndef))) {
+                else if (
+                    (cstr->Type == Vertical || cstr->Type == Horizontal)
+                    && (firstIndex != GeoEnum::GeoUndef
+                        && (cstr->Second == GeoEnum::GeoUndef || secondIndex != GeoUndef))
+                ) {
                     newConstr->First = firstIndex;
                     newConstr->Second = secondIndex;
                 }

@@ -21,6 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
+#include <Base/Interpreter.h>
 #include <Base/Vector3D.h>
 
 #include "Services.h"
@@ -61,4 +62,67 @@ std::optional<Base::Vector3d> PartCenterOfMass::ofDocumentObject(App::DocumentOb
 bool PartCenterOfMass::supports(App::DocumentObject* object) const
 {
     return object->isDerivedFrom<Part::Feature>();
+}
+
+std::optional<PyObject*> ShapeAttributeProvider::getAttribute(
+    App::DocumentObject* object,
+    const char* attr
+) const
+{
+    if (Base::streq(attr, "Shape")) {
+        Base::PyGILStateLocker lock;
+        // Special treatment of Shape property
+        static PyObject* getShape = nullptr;
+        if (!getShape) {
+            getShape = Py_None;
+            PyObject* mod = PyImport_ImportModule("Part");
+            if (!mod) {
+                PyErr_Clear();
+                return {};
+            }
+
+            Py::Object pyMod = Py::asObject(mod);
+            if (pyMod.hasAttr("getShape")) {
+                getShape = Py::new_reference_to(pyMod.getAttr("getShape"));
+            }
+        }
+        if (getShape != Py_None) {
+            Py::Tuple args(1);
+            args.setItem(0, Py::asObject(object->getPyObject()));
+            auto res = PyObject_CallObject(getShape, args.ptr());
+            if (!res) {
+                PyErr_Clear();
+                return {};
+            }
+
+            Py::Object pyres(res, true);
+            if (pyres.hasAttr("isNull")) {
+                Py::Callable func(pyres.getAttr("isNull"));
+                if (!func.apply().isTrue()) {
+                    return Py::new_reference_to(res);
+                }
+            }
+        }
+    }
+
+    return {};
+}
+
+Py::Object PartPseudoShapeProvider::getElement(
+    const Py::Object& module,
+    const Py::Object& object,
+    const std::string& subname
+) const
+{
+    Py::Callable func(module.getAttr("getShape"));
+    Py::Tuple tuple(1);
+    tuple.setItem(0, object);
+    if (subname.empty()) {
+        return func.apply(tuple);
+    }
+
+    Py::Dict dict;
+    dict.setItem("subname", Py::String(subname));
+    dict.setItem("needSubElement", Py::True());
+    return func.apply(tuple, dict);
 }

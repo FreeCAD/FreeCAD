@@ -166,7 +166,6 @@ public:
     void setRotationCenterMode(RotationCenterModes);
     RotationCenterModes getRotationCenterMode() const;
     void setRotationCenter(const SbVec3f& cnt);
-    SbVec3f getFocalPoint() const;
 
     SoCamera* getCamera() const;
     std::shared_ptr<NavigationAnimation> setCameraOrientation(
@@ -202,6 +201,7 @@ public:
     void startSelection(SelectionMode = Lasso);
     void abortSelection();
     void stopSelection();
+    void resetButtonState();
     SbBool isSelecting() const;
     const std::vector<SbVec2s>& getPolygon(SelectionRole* role = nullptr) const;
 
@@ -211,6 +211,7 @@ public:
     {
         return ClarifySelectionMode::Default;
     }
+
 
     void setOrbitStyle(OrbitStyle style);
     OrbitStyle getOrbitStyle() const;

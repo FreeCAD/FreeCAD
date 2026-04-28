@@ -26,6 +26,7 @@
 
 Many viewprovider classes may inherit this class in order to have
 the same basic behavior."""
+
 ## @package view_base
 # \ingroup draftviewproviders
 # \brief Provides the viewprovider code for the base Draft object.

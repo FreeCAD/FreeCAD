@@ -1,0 +1,63 @@
+/* SPDX-License-Identifier: LGPL-2.1-or-later */
+/* SPDX-FileCopyrightText: 2026 Joao Matos */
+/* SPDX-FileNotice: Part of the FreeCAD project. */
+
+/** \page asyncrecompute Async recompute threading rules
+
+Async recompute allows some document recomputes to run on a worker thread.
+That changes the threading contract for code that can run during recompute or
+observe recompute-side state.
+
+\section asyncrecompute_scope Scope
+
+The current async recompute implementation is request-based. A recompute
+request may run on a worker thread when the request target is explicitly marked
+as worker-safe. Worker-safety is determined through
+App::DocumentObject::canRecomputeOnWorker().
+
+Objects that are not known to be worker-safe are expected to return false. In
+that case the recompute request falls back to the main thread instead of being
+queued to the worker.
+
+\section asyncrecompute_cpp Rules for C++ code
+
+- Code that runs from DocumentObject::execute(), document recompute hooks, or
+  any other recompute-side callback must be safe to execute concurrently with
+  the GUI thread and with other unrelated asynchronous activity.
+- Code that touches Qt widgets, view providers, FreeCADGui APIs, event loops,
+  timers, network callbacks, or any other thread-affine state must stay on the
+  main thread.
+- If an object's recompute path is not worker-safe, override
+  App::DocumentObject::canRecomputeOnWorker() to return false.
+- Document-scoped signals in App::Document use App::MainThreadSignal and are
+  intended for observers that need main-thread delivery, especially GUI code.
+- Raw App::DocumentObject signals remain plain fastsignals with same-thread
+  semantics. GUI code should not subscribe to them directly.
+
+\section asyncrecompute_python Rules for Python-backed objects
+
+Python-backed features may execute from the recompute worker. The GIL is kept
+for the duration of document recompute so Python execution stays serialized, but
+that does not make GUI access worker-safe.
+
+- App::FeaturePython objects default to worker-unsafe and therefore stay on the
+  main thread unless they explicitly opt in.
+- Python execute() implementations must not access Qt UI or FreeCADGui objects
+  from a worker thread.
+- Worker-thread GUI access should fail fast through the guarded FreeCADGui and
+  ViewObject entry points instead of proceeding silently.
+
+\section asyncrecompute_review Review checklist
+
+When changing recompute-related code, check at least the following:
+
+- Does this code run during recompute, or observe state that recompute mutates?
+- Does it touch GUI, Qt event-loop state, or any other thread-affine API?
+- Should this object override canRecomputeOnWorker()?
+- Is GUI-facing code subscribed to document-scoped main-thread signals instead
+  of raw DocumentObject signals?
+- Does the change introduce a new background callback path such as QTimer,
+  QThread, QNetwork, QtConcurrent, or a custom worker that can now overlap with
+  recompute?
+
+*/

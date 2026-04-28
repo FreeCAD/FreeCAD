@@ -697,6 +697,8 @@ class StockFromExistingEdit(StockEdit):
                 excludeIndexes.append(index)
             elif not model.ViewObject.ShowInTree:
                 excludeIndexes.append(index)
+            elif model.isDerivedFrom("PartDesign::Feature"):
+                excludeIndexes.append(index)
 
         for i in sorted(excludeIndexes, reverse=True):
             del solids[i]
@@ -1346,7 +1348,7 @@ class TaskPanel:
                     Draft.rotate(sel.Object, angle, sel.Object.Shape.BoundBox.Center, axis)
 
     def alignSetOrigin(self):
-        (obj, by) = self.alignMoveToOrigin()
+        obj, by = self.alignMoveToOrigin()
 
         for base in self.obj.Model.Group:
             if base != obj:

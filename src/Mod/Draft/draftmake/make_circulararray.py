@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to create circular Array objects."""
+
 ## @package make_circulararray
 # \ingroup draftmake
 # \brief Provides functions to create circular Array objects.

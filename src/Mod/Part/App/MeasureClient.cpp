@@ -86,29 +86,6 @@ static float getFaceArea(TopoDS_Shape& face)
     return gprops.Mass();
 }
 
-static float getRadius(TopoDS_Shape& edge)
-{
-    // gprops.Mass() would be the circumference (length) of the circle (arc)
-    if (edge.ShapeType() == TopAbs_EDGE) {
-        BRepAdaptor_Curve adapt(TopoDS::Edge(edge));
-        if (adapt.GetType() != GeomAbs_Circle) {
-            // TODO: not sure what the error handling here should be. nan? 0.0?
-            return 0.0;
-        }
-        gp_Circ circle = adapt.Circle();
-        return circle.Radius();
-    }
-    if (edge.ShapeType() == TopAbs_FACE) {
-        BRepAdaptor_Surface adapt(TopoDS::Face(edge));
-        if (adapt.GetType() != GeomAbs_Cylinder) {
-            return 0.0;
-        }
-        gp_Cylinder cylinder = adapt.Cylinder();
-        return cylinder.Radius();
-    }
-    return 0.0;
-}
-
 TopoDS_Shape getLocatedShape(const App::SubObjectT& subject, Base::Matrix4D* mat = nullptr)
 {
     App::DocumentObject* obj = subject.getSubObjectList().back();
@@ -218,6 +195,12 @@ App::MeasureElementType PartMeasureTypeCb(App::DocumentObject* ob, const char* s
             switch (surface.GetType()) {
                 case GeomAbs_Cylinder: {
                     return App::MeasureElementType::CYLINDER;
+                }
+                case GeomAbs_Torus: {
+                    return App::MeasureElementType::TORUS;
+                }
+                case GeomAbs_Sphere: {
+                    return App::MeasureElementType::SPHERE;
                 }
                 case GeomAbs_Plane: {
                     TopExp_Explorer edges(face, TopAbs_EDGE);
@@ -408,8 +391,22 @@ MeasureRadiusInfoPtr MeasureRadiusHandler(const App::SubObjectT& subject)
             center = surf.Cylinder().Location();
             radius = surf.Cylinder().Radius();
         }
+        else if (surf.GetType() == GeomAbs_Torus) {
+            center = surf.Torus().Location();
+            radius = surf.Torus().MinorRadius();
 
-        if (surf.GetType() == GeomAbs_Plane) {
+            // Places the label point inside the torus
+            // Which is better than placing it in the middle of the torus hole
+            gp_Vec direction(surf.Torus().Position().XDirection());
+            double majorRadius = surf.Torus().MajorRadius();
+            direction = direction * majorRadius;
+            center = center.Translated(direction);
+        }
+        else if (surf.GetType() == GeomAbs_Sphere) {
+            center = surf.Sphere().Location();
+            radius = surf.Sphere().Radius();
+        }
+        else if (surf.GetType() == GeomAbs_Plane) {
             TopExp_Explorer edges(face, TopAbs_EDGE);
             if (!edges.More()) {
                 return invalidRes;

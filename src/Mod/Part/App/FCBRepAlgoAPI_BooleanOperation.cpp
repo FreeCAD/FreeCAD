@@ -117,8 +117,10 @@ void FCBRepAlgoAPI_BooleanOperation::Build(const Message_ProgressRange& progress
         myArguments = myOriginalArguments;
         myTools = myOriginalTools;
     }
-    else if (myOperation == BOPAlgo_CUT && myArguments.Size() == 1
-             && myArguments.First().ShapeType() == TopAbs_COMPOUND) {
+    else if (
+        myOperation == BOPAlgo_CUT && myArguments.Size() == 1
+        && myArguments.First().ShapeType() == TopAbs_COMPOUND
+    ) {
         // cut compound argument
         TopTools_ListOfShape myOriginalArguments = myArguments;
         RecursiveCutCompound(myOriginalArguments.First());

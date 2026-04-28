@@ -30,7 +30,12 @@
 #else
 # include <GL/gl.h>
 #endif
+
+#include <algorithm>
+
 #include <QFontMetrics>
+#include <QOpenGLContext>
+#include <QOpenGLPaintDevice>
 #include <QPainter>
 #include <QPen>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -269,12 +274,17 @@ SoStringLabel::SoStringLabel()
  */
 void SoStringLabel::GLRender(SoGLRenderAction* action)
 {
-    QOpenGLWidget* window;
     SoState* state = action->getState();
     state->push();
     SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
-    SoGLWidgetElement::get(state, window);
-    if (!window) {
+    if (!QOpenGLContext::currentContext()) {
+        state->pop();
+        return;
+    }
+
+    const SbViewportRegion& vp = SoViewportRegionElement::get(state);
+    SbVec2s vpsize = vp.getViewportSizePixels();
+    if (vpsize[0] <= 0 || vpsize[1] <= 0) {
         state->pop();
         return;
     }
@@ -308,9 +318,39 @@ void SoStringLabel::GLRender(SoGLRenderAction* action)
         = (mat * SoViewingMatrixElement::get(state) * SoProjectionMatrixElement::get(state));
     SbVec3f nil(0.0f, 0.0f, 0.0f);
     projmatrix.multVecMatrix(nil, nil);
+    // Project to pixel coordinates. The resulting `nil` is in normalized device coordinates
+    // (-1..1). Map to viewport pixels, then convert to Qt's top-left coordinate system.
+    float px = (nil[0] + 1.0f) * 0.5f * vpsize[0];
+    float py = vpsize[1] - ((nil[1] + 1.0f) * 0.5f * vpsize[1]);
     QStringList list;
     for (int i = 0; i < this->string.getNum(); i++) {
         list << QLatin1String(this->string[i].getString());
+    }
+
+    if (!list.isEmpty()) {
+        QFontMetrics fm(font);
+        int maxWidth = 0;
+        for (const auto& line : list) {
+            maxWidth = std::max(maxWidth, fm.horizontalAdvance(line));
+        }
+
+        // Center text horizontally on the projected point.
+        float x = px - 0.5f * float(maxWidth);
+        float y = py + float(fm.ascent());
+
+        QOpenGLPaintDevice device(vpsize[0], vpsize[1]);
+        QPainter painter(&device);
+        painter.setRenderHint(QPainter::Antialiasing, false);
+        painter.setRenderHint(QPainter::TextAntialiasing, false);
+        painter.setRenderHint(QPainter::SmoothPixmapTransform, false);
+        painter.setFont(font);
+
+        QPen pen(QColor::fromRgbF(color[0], color[1], color[2], 1.0f));
+        painter.setPen(pen);
+        for (int i = 0; i < list.size(); i++) {
+            painter.drawText(QPointF(x, y + float(i) * float(fm.height())), list[i]);
+        }
+        painter.end();
     }
 
     // Leave 2D screen mode

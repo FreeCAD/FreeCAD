@@ -102,7 +102,6 @@ protected:
     void slotSkipRecompute(const App::Document& doc, const std::vector<App::DocumentObject*>& objs);
     void slotTouchedObject(const App::DocumentObject&);
     void slotChangePropertyEditor(const App::Document&, const App::Property&);
-    void callSignalBeforeRecompute();
     //@}
 
 public:
@@ -191,11 +190,20 @@ public:
     void setModified(bool);
     bool isModified() const;
 
+    /// getter-setter for workbench name
+    void setWorkbench(const std::string& name);
+    std::string workbench() const;
+
     /// Returns true if the document is about to be closed, false otherwise
     bool isAboutToClose() const;
 
     /// Getter for the App Document
     App::Document* getDocument() const;
+
+    /// Notify the document when it becomes
+    /// the active document/stops being the active document
+    void setIsActive(bool active);
+    bool isActive() const;
 
     /** @name methods for View handling */
     //@{
@@ -234,9 +242,9 @@ public:
     /// call relabel to all attached views
     void onRelabel();
     /// returns a list of all attached MDI views
-    std::list<MDIView*> getMDIViews() const;
+    std::list<MDIView*> getMDIViews(bool includePassive = false) const;
     /// returns a list of all MDI views of a certain type
-    std::list<MDIView*> getMDIViewsOfType(const Base::Type& typeId) const;
+    std::list<MDIView*> getMDIViewsOfType(const Base::Type& typeId, bool includePassive = false) const;
     MDIView* setActiveView(
         const ViewProviderDocumentObject* vp = nullptr,
         Base::Type typeId = Base::Type()
@@ -287,6 +295,8 @@ public:
         int* mode = nullptr,
         std::string* subElement = nullptr
     ) const;
+    ViewProvider* getEditViewProvider() const;  // Returns the _editViewProvider even if it is not
+                                                // in edit at the moment
     /// set the in edit ViewProvider subname reference
     void setInEdit(ViewProviderDocumentObject* parentVp, const char* subname);
     /** Add or remove view provider from scene graphs of all views
@@ -300,7 +310,7 @@ public:
     /** @name methods for the UNDO REDO handling */
     //@{
     /// Open a new Undo transaction on the document
-    void openCommand(const char* sName = nullptr);
+    int openCommand(const char* sName = nullptr);
     /// Commit the Undo transaction on the document
     void commitCommand();
     /// Abort the Undo transaction on the document
@@ -352,6 +362,8 @@ private:
     bool checkTransactionID(bool undo, int iSteps);
     /// Ask for user interaction if saving has failed
     bool askIfSavingFailed(const QString&);
+    /// Warn if saving a document from an older FreeCAD version (returns false if user cancels)
+    bool warnIfOlderVersion();
 
     struct DocumentP* d;
     static int _iDocCount;

@@ -58,3 +58,5 @@ class MeshWorkbench(Workbench):
 
 
 Gui.addWorkbench(MeshWorkbench())
+
+FreeCAD.__unit_test__ += ["MeshTestsGui"]

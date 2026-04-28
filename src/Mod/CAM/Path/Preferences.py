@@ -30,7 +30,6 @@ import pathlib
 from collections import defaultdict
 from typing import Optional
 
-
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())
@@ -224,6 +223,8 @@ def allEnabledPostProcessors(include=None):
 
 _post_type_cache = {}
 _post_type_cache_keys = None
+_extra_post_paths: list = []
+_addon_post_dirs_scanned = False
 
 
 def classifyPostProcessor(name):
@@ -308,11 +309,11 @@ def defaultPostProcessorArgs():
 
 
 def defaultGeometryTolerance():
-    return preferences().GetFloat(GeometryTolerance, 0.01)
+    return preferences().GetFloat(GeometryTolerance, 0.01) or 0.01
 
 
 def defaultLibAreaCurveAccuracy():
-    return preferences().GetFloat(LibAreaCurveAccuracy, 0.01)
+    return preferences().GetFloat(LibAreaCurveAccuracy, 0.01) or 0.01
 
 
 def defaultFilePath():
@@ -343,22 +344,120 @@ def searchPaths():
     return paths
 
 
+def _scan_addon_post_dirs() -> None:
+    """Scan FreeCAD Mod directories for post-processor addons via package.xml content.
+
+    Finds every installed addon whose package.xml declares a ``<Postprocessor>``
+    content element inside ``<content>`` and registers the corresponding
+    subdirectory.
+
+    Called once on first access; duplicate registrations are ignored.
+
+    Sentinel files:
+      - ``Mod/ALL_ADDONS_DISABLED`` — skip the entire Mod tree.
+      - ``<addon>/ADDON_DISABLED``  — skip a single addon.
+    """
+    global _addon_post_dirs_scanned
+    if _addon_post_dirs_scanned:
+        return
+    _addon_post_dirs_scanned = True
+
+    for get_dir in (FreeCAD.getUserAppDataDir, FreeCAD.getHomePath):
+        try:
+            mod_root = pathlib.Path(get_dir()) / "Mod"
+            if not mod_root.is_dir():
+                continue
+            if (mod_root / "ALL_ADDONS_DISABLED").exists():
+                continue
+            for entry in sorted(mod_root.iterdir(), key=lambda e: e.name.lower()):
+                if not entry.is_dir():
+                    continue
+                if (entry / "ADDON_DISABLED").exists():
+                    continue
+                pkg_xml = entry / "package.xml"
+                if not pkg_xml.exists():
+                    continue
+                try:
+                    meta = FreeCAD.Metadata(str(pkg_xml))
+                except Exception:
+                    # Skip addons with malformed or unreadable package.xml
+                    continue
+
+                content = meta.Content
+                if "Postprocessor" in content:
+                    for item in content["Postprocessor"]:
+                        subdir = item.Subdirectory or item.Name
+                        posts_dir = entry / subdir
+                        if posts_dir.is_dir():
+                            addAddonPostPath(str(posts_dir))
+        except Exception:
+            # Skip entire Mod root if directory listing fails
+            pass
+
+
 def searchPathsPost():
+    _scan_addon_post_dirs()
     paths = []
     p = defaultFilePath()
     if p:
         paths.append(p)
     paths.append(macroFilePath())
+    paths.extend(_extra_post_paths)  # addon post directories
     paths.append(os.path.join(pathPostSourcePath(), "scripts/"))
     paths.append(pathPostSourcePath())
     return paths
 
 
+def addAddonPostPath(path: str) -> None:
+    """Register an additional directory to search for post-processors.
+
+    Called by addon Init.py at FreeCAD startup. Each call adds one
+    directory. Duplicate registrations are silently ignored. Invalidates
+    the post-type cache so newly registered posts are classified correctly.
+    """
+    global _extra_post_paths, _post_type_cache, _post_type_cache_keys
+    if path not in _extra_post_paths:
+        _extra_post_paths.append(path)
+        _post_type_cache = {}
+        _post_type_cache_keys = None
+
+
+def addAddonAssetPath(addon_dir: str) -> None:
+    """Register all assets provided by an addon directory.
+
+    Convenience function for addon Init.py files. Discovers the standard
+    subdirectory layout of a Machines-style addon and registers each type:
+      - ``<addon_dir>/posts/``     → post-processor search path
+      - ``<addon_dir>/machines/``  → machine definition templates
+
+    Duplicate registrations are silently ignored.
+
+    Args:
+        addon_dir: Root directory of the installed addon.
+    """
+    posts_dir = os.path.join(addon_dir, "posts")
+    if os.path.isdir(posts_dir):
+        addAddonPostPath(posts_dir)
+
+    machines_dir = os.path.join(addon_dir, "machines")
+    if os.path.isdir(machines_dir):
+        try:
+            from Machine.models.machine import MachineFactory
+
+            MachineFactory.register_addon_machine_dir(machines_dir)
+        except ImportError:
+            # fail silently if the machine module is not available
+            pass
+
+
 def defaultJobTemplate():
     template = preferences().GetString(DefaultJobTemplate)
-    if "xml" not in template:
-        return template
-    return ""
+
+    # before b4d0428 .xml files were used as templates, ignore very old settings
+    if os.path.splitext(template)[1] == ".xml":
+        return ""
+
+    return template
 
 
 def setJobDefaults(jobTemplate, geometryTolerance, curveAccuracy):

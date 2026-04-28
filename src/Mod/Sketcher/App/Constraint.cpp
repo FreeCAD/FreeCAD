@@ -35,6 +35,7 @@
 
 #include <fmt/ranges.h>
 
+#include <Base/FileInfo.h>
 #include <Base/Reader.h>
 #include <Base/Tools.h>
 #include <Base/Writer.h>
@@ -42,6 +43,7 @@
 #include <boost/thread/mutex.hpp>
 #include <boost/thread/thread.hpp>
 #include "Constraint.h"
+
 #include "ConstraintPy.h"
 
 
@@ -82,6 +84,7 @@ Constraint* Constraint::copy() const
     temp->Value = this->Value;
     temp->Type = this->Type;
     temp->AlignmentType = this->AlignmentType;
+    temp->Orientation = this->Orientation;
     temp->Name = this->Name;
     temp->LabelDistance = this->LabelDistance;
     temp->LabelPosition = this->LabelPosition;
@@ -161,6 +164,7 @@ void Constraint::Save(Writer& writer) const
         writer.Stream() << "InternalAlignmentType=\"" << (int)AlignmentType << "\" "
                         << "InternalAlignmentIndex=\"" << InternalAlignmentIndex << "\" ";
     }
+    writer.Stream() << "Orientation=\"" << Orientation.toUnderlyingType() << "\" ";
     writer.Stream() << "Value=\"" << Value << "\" "
                     << "LabelDistance=\"" << LabelDistance << "\" "
                     << "LabelPosition=\"" << LabelPosition << "\" "
@@ -213,6 +217,12 @@ void Constraint::Restore(XMLReader& reader)
     }
     else {
         AlignmentType = Undef;
+    }
+    if (reader.hasAttribute("Orientation")) {
+        Orientation = reader.getAttribute<ConstraintOrientations>("Orientation");
+    }
+    else {
+        Orientation = ConstraintOrientations::None;
     }
 
     // Read the distance a constraint label has been moved
@@ -493,7 +503,7 @@ int Constraint::getPosIdAsInt(int index) const
 
 bool Constraint::hasElement(int index) const
 {
-    return index >= 0 && index < elements.size();
+    return index >= 0 && static_cast<decltype(elements)::size_type>(index) < elements.size();
 }
 
 void Constraint::setGeoId(int index, int geoId)
@@ -567,7 +577,7 @@ bool Constraint::ensureElementExists(int index)
     if (index < 0) {
         return false;  // Indicate failure for an invalid index
     }
-    if (index >= elements.size()) {
+    if (static_cast<decltype(elements)::size_type>(index) >= elements.size()) {
         elements.resize(index + 1);
     }
     return true;
@@ -634,7 +644,8 @@ std::string Constraint::getFont() const
     try {
         auto j = nlohmann::json::parse(MetaData);
         if (j.contains("font")) {
-            return j["font"].get<std::string>();
+            Base::FileInfo fi(j["font"].get<std::string>());
+            return fi.fileNamePure();
         }
     }
     catch (...) {
@@ -644,6 +655,9 @@ std::string Constraint::getFont() const
 
 void Constraint::setFont(const std::string& font)
 {
+    Base::FileInfo fi(font);
+    std::string fontName = fi.fileNamePure();
+
     nlohmann::json j;
     if (!MetaData.empty()) {
         try {
@@ -652,7 +666,7 @@ void Constraint::setFont(const std::string& font)
         catch (...) {
         }
     }
-    j["font"] = font;
+    j["font"] = fontName;
     MetaData = j.dump();
 }
 

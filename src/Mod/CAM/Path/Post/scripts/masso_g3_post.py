@@ -51,8 +51,6 @@ else:
 #
 Values = Dict[str, Any]
 
-POST_TYPE = "machine"
-
 
 class Masso_G3(PostProcessor):
     """The Masso G3 post processor class."""
@@ -95,9 +93,7 @@ class Masso_G3(PostProcessor):
             "D",
             "P",
         ]
-        values[
-            "POSTAMBLE"
-        ] = """M05
+        values["POSTAMBLE"] = """M05
 G17 G54 G90 G80 G40
 M2"""
         values["PREAMBLE"] = """G17 G54 G40 G49 G80 G90"""
