@@ -104,10 +104,10 @@ PyObject* TopoShapeCompoundPy::add(PyObject* args)
 
     TopoShape& comp = *(getTopoShapePtr());
     std::vector<TopoShape> shapes;
-    
+
     try {
         if (comp.shapeType() == TopAbs_COMPOUND) {
-            for (const TopoShape &childShape : comp.getSubTopoShapes()) {
+            for (const TopoShape& childShape : comp.getSubTopoShapes()) {
                 shapes.push_back(childShape);
             }
         }
