@@ -127,29 +127,31 @@ App::DocumentObjectExecReturn* Pipe::execute()
 
     auto getSectionShape = [](App::DocumentObject* feature,
                               const std::vector<std::string>& subs) -> Part::TopoShape {
-        if (!feature || !feature->isDerivedFrom<Part::Feature>())
+        if (!feature || !feature->isDerivedFrom<Part::Feature>()) {
             throw Base::TypeError("Pipe: Invalid profile/section");
         }
+    }
 
-        auto subName = subs.empty() ? "" : subs.front();
+    auto subName = subs.empty() ? "" : subs.front();
 
-        // only take the entire shape when we have a sketch selected, but
-        // not a point of the sketch
-        if (feature->isDerivedFrom<Part::Part2DObject>()
-            && subName.compare(0, 6, "Vertex") != 0)
-                return static_cast<Part::Part2DObject*>(feature)->Shape.getShape();
-        else {
-            if (subName.empty()) {
-                throw Base::ValueError("Pipe: No valid subelement linked in Part::Feature");
+    // only take the entire shape when we have a sketch selected, but
+    // not a point of the sketch
+    if (feature->isDerivedFrom<Part::Part2DObject>() && subName.compare(0, 6, "Vertex") != 0) {
+        return static_cast<Part::Part2DObject*>(feature)->Shape.getShape();
+    }
+    else {
+        if (subName.empty()) {
+            throw Base::ValueError("Pipe: No valid subelement linked in Part::Feature");
             return static_cast<Part::Feature*>(feature)->Shape.getShape().getSubTopoShape(
-                subName.c_str());
+                subName.c_str()
+            );
         }
     };
 
     std::vector<std::vector<Part::TopoShape>> wiresections;
 
-    auto addWiresToWireSections =
-        [](TopoShape& section, std::vector<std::vector<TopoShape>>& wiresections) -> size_t {
+    auto addWiresToWireSections = [](TopoShape& section,
+                                     std::vector<std::vector<TopoShape>>& wiresections) -> size_t {
         std::vector<Part::TopoShape> subs = section.getSubTopoShapes(TopAbs_WIRE);
         bool initialWireSectionsEmpty = wiresections.empty();
         size_t i = 0;
@@ -157,11 +159,15 @@ App::DocumentObjectExecReturn* Pipe::execute()
             if (i >= wiresections.size()) {
                 if (initialWireSectionsEmpty) {
                     wiresections.emplace_back(1, sub);
-                } else
+                }
+                else {
                     throw Base::ValueError(
                         "Pipe: Sections need to have the same amount of inner wires (except "
-                        "profile and last section, which can be points)");
-            } else {
+                        "profile and last section, which can be points)"
+                    );
+                }
+            }
+            else {
                 wiresections[i].push_back(sub);
             }
             ++i;
@@ -182,7 +188,8 @@ App::DocumentObjectExecReturn* Pipe::execute()
     Part::TopoShape base;
     try {
         base = getBaseTopoShape();
-    } catch (const Base::Exception&) {
+    }
+    catch (const Base::Exception&) {
         base = Part::TopoShape(0, this->getDocument()->getStringHasher());
     }
 
@@ -197,10 +204,12 @@ App::DocumentObjectExecReturn* Pipe::execute()
         }
 
         // setup the profile section
-        Part::TopoShape profileShape = getSectionShape(Profile.getValue(),
-                                                    Profile.getSubValues());
-        if (profileShape.isNull())
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Pipe: Could not obtain profile shape"));
+        Part::TopoShape profileShape = getSectionShape(Profile.getValue(), Profile.getSubValues());
+        if (profileShape.isNull()) {
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "Pipe: Could not obtain profile shape")
+            );
+        }
 
         // build the paths
         App::DocumentObject* spine = Spine.getValue();
@@ -238,17 +247,24 @@ App::DocumentObjectExecReturn* Pipe::execute()
         if (numWires == 0) {
             // profileShape had no wires so only other valid option is single point section
             size_t i = 0;
-            for (auto &vertex : profileShape.getSubTopoShapes(TopAbs_VERTEX))
+            for (auto& vertex : profileShape.getSubTopoShapes(TopAbs_VERTEX)) {
                 profilePoint = vertex;
-            if (i > 1)
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception",
-                                                                           "Pipe: Only one isolated point is needed if using a sketch with isolated "
-                                                                           "points for section"));
+            }
+            if (i > 1) {
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+                    "Exception",
+                    "Pipe: Only one isolated point is needed if using a sketch with isolated "
+                    "points for section"
+                ));
+            }
         }
 
-        if (!profilePoint.isNull() && (Transformation.getValue() != 1 || multisections.empty()))
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception",
-                                                                       "Pipe: At least one section is needed when using a single point for profile"));
+        if (!profilePoint.isNull() && (Transformation.getValue() != 1 || multisections.empty())) {
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+                "Exception",
+                "Pipe: At least one section is needed when using a single point for profile"
+            ));
+        }
 
         // maybe we need a scaling law
         Handle(Law_Function) scalinglaw;
@@ -268,19 +284,25 @@ App::DocumentObjectExecReturn* Pipe::execute()
 
                 // if the section is an object's face then take just the face
                 Part::TopoShape shape = getSectionShape(subSet.first, subSet.second);
-                if (shape.isNull())
-                    return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception",
-                                                                               "Pipe: Could not obtain section shape"));
+                if (shape.isNull()) {
+                    return new App::DocumentObjectExecReturn(
+                        QT_TRANSLATE_NOOP("Exception", "Pipe: Could not obtain section shape")
+                    );
+                }
 
                 size_t nWiresAdded = addWiresToWireSections(shape, wiresections);
                 if (nWiresAdded == 0) {
-                    for (auto &vertex : shape.getSubTopoShapes(TopAbs_VERTEX)) {
-                        if (isLastSectionVertex)
-                            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception",
-                                                                                       "Pipe: Only the profile and last section can be vertices"));
+                    for (auto& vertex : shape.getSubTopoShapes(TopAbs_VERTEX)) {
+                        if (isLastSectionVertex) {
+                            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+                                "Exception",
+                                "Pipe: Only the profile and last section can be vertices"
+                            ));
+                        }
                         isLastSectionVertex = true;
-                        for (auto& wires : wiresections)
+                        for (auto& wires : wiresections) {
                             wires.push_back(vertex);
+                        }
                     }
                 }
 
@@ -316,16 +338,19 @@ App::DocumentObjectExecReturn* Pipe::execute()
         }*/
 
         // Verify that path is not a null shape
-        if (path.isNull())
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
-                "Exception", "Path must not be a null shape"));
+        if (path.isNull()) {
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "Path must not be a null shape")
+            );
+        }
 
         // build all shells
         std::vector<Part::TopoShape> shells;
 
         Part::TopoShape copyProfilePoint(profilePoint);
-        if (!profilePoint.isNull())
+        if (!profilePoint.isNull()) {
             copyProfilePoint.move(invObjLoc);
+        }
 
         std::vector<Part::TopoShape> frontwires, backwires;
         for (auto& wires : wiresections) {
@@ -333,8 +358,9 @@ App::DocumentObjectExecReturn* Pipe::execute()
             setupAlgorithm(mkPS, auxpath.getShape());
 
             if (!scalinglaw) {
-                if (!profilePoint.isNull())
+                if (!profilePoint.isNull()) {
                     mkPS.Add(copyProfilePoint.getShape());
+                }
 
                 for (auto& wire : wires) {
                     wire.move(invObjLoc);
@@ -346,7 +372,7 @@ App::DocumentObjectExecReturn* Pipe::execute()
                     mkPS.SetLaw(copyProfilePoint.getShape(), scalinglaw);
                 }
 
-                for (auto& wire : wires)  {
+                for (auto& wire : wires) {
                     wire.move(invObjLoc);
                     mkPS.SetLaw(wire.getShape(), scalinglaw);
                 }
@@ -369,21 +395,26 @@ App::DocumentObjectExecReturn* Pipe::execute()
 
                 if (wires.front().shapeType() != TopAbs_VERTEX) {
                     TopoShape front(sim.First());
-                    if(front.countSubShapes(TopAbs_EDGE) == wires.front().countSubShapes(TopAbs_EDGE)) {
+                    if (front.countSubShapes(TopAbs_EDGE)
+                        == wires.front().countSubShapes(TopAbs_EDGE)) {
                         front = wires.front();
                         front.setShape(sim.First(), false);
-                    }else
+                    }
+                    else {
                         front.Tag = -wires.front().Tag;
+                    }
                     frontwires.push_back(front);
                 }
 
                 if (wires.back().shapeType() != TopAbs_VERTEX) {
                     TopoShape back(sim.Last());
-                    if(back.countSubShapes(TopAbs_EDGE) == wires.back().countSubShapes(TopAbs_EDGE)) {
+                    if (back.countSubShapes(TopAbs_EDGE) == wires.back().countSubShapes(TopAbs_EDGE)) {
                         back = wires.back();
                         back.setShape(sim.Last(), false);
-                    }else
+                    }
+                    else {
                         back.Tag = -wires.back().Tag;
+                    }
                     backwires.push_back(back);
                 }
             }
@@ -394,8 +425,9 @@ App::DocumentObjectExecReturn* Pipe::execute()
         if (!frontwires.empty() || !backwires.empty()) {
             BRepBuilderAPI_Sewing sewer;
             sewer.SetTolerance(Precision::Confusion());
-            for(auto& s : shells)
+            for (auto& s : shells) {
                 sewer.Add(s.getShape());
+            }
 
             Part::TopoShape frontface, backface;
             gp_Pln pln;
@@ -404,12 +436,17 @@ App::DocumentObjectExecReturn* Pipe::execute()
                 if (!TopoShape(-1).makeElementCompound(frontwires).findPlane(pln)) {
                     try {
                         frontface.makeElementBSplineFace(frontwires);
-                    } catch (Base::Exception &) {
-                        frontface.makeElementFilledFace(frontwires, Part::TopoShape::BRepFillingParams());
+                    }
+                    catch (Base::Exception&) {
+                        frontface.makeElementFilledFace(
+                            frontwires,
+                            Part::TopoShape::BRepFillingParams()
+                        );
                     }
                 }
-                else
+                else {
                     frontface.makeElementFace(frontwires);
+                }
                 sewer.Add(frontface.getShape());
             }
 
@@ -418,24 +455,38 @@ App::DocumentObjectExecReturn* Pipe::execute()
                 // topo name than the front face.
                 if (!Part::TopoShape(-1).makeElementCompound(backwires).findPlane(pln)) {
                     try {
-                        backface.makeElementBSplineFace(backwires,
-                                                        Part::FillingStyle::stretch,
-                                                        false,
-                                                        Part::OpCodes::Sewing);
-                    } catch (Base::Exception &) {
-                        backface.makeElementFilledFace(backwires,
-                                                       TopoShape::BRepFillingParams(),
-                                                       Part::OpCodes::Sewing);
+                        backface.makeElementBSplineFace(
+                            backwires,
+                            Part::FillingStyle::stretch,
+                            false,
+                            Part::OpCodes::Sewing
+                        );
+                    }
+                    catch (Base::Exception&) {
+                        backface.makeElementFilledFace(
+                            backwires,
+                            TopoShape::BRepFillingParams(),
+                            Part::OpCodes::Sewing
+                        );
                     }
                 }
-                else
+                else {
                     backface.makeElementFace(backwires, Part::OpCodes::Sewing);
+                }
                 sewer.Add(backface.getShape());
             }
 
             sewer.Perform();
-            result = result.makeShapeWithElementMap(sewer.SewedShape(), Part::MapperSewing(sewer), shells, Part::OpCodes::Sewing).makeElementSolid();
-        } else {
+            result = result
+                         .makeShapeWithElementMap(
+                             sewer.SewedShape(),
+                             Part::MapperSewing(sewer),
+                             shells,
+                             Part::OpCodes::Sewing
+                         )
+                         .makeElementSolid();
+        }
+        else {
             // shells are already closed - add them directly
             Part::TopoShape partCompound = TopoShape(0, getDocument()->getStringHasher());
             partCompound.makeElementCompound(shells);
@@ -449,7 +500,7 @@ App::DocumentObjectExecReturn* Pipe::execute()
             result.setShape(result.getShape().Reversed(), false);
         }
 
-        AddSubShape.setValue(result); // Converts result to a TopoShape, but no tag.
+        AddSubShape.setValue(result);  // Converts result to a TopoShape, but no tag.
 
         if (base.isNull()) {
             if (getAddSubType() == FeatureAddSub::Subtractive) {
@@ -478,12 +529,13 @@ App::DocumentObjectExecReturn* Pipe::execute()
 
         if (getAddSubType() == FeatureAddSub::Additive) {
             maker = Part::OpCodes::Fuse;
-        } else if (getAddSubType() == FeatureAddSub::Subtractive) {
+        }
+        else if (getAddSubType() == FeatureAddSub::Subtractive) {
             maker = Part::OpCodes::Cut;
         }
 
         if (!maker.empty()) {
-            result.Tag = -getID(); // invert tag to differentiate the pre-boolean pipe 
+            result.Tag = -getID();  // invert tag to differentiate the pre-boolean pipe
             //                        from the post-boolean pipe
             //                        setting result to the negative tag is a bit confusing,
             //                        because you would expect this to be set to the feature's shape,
@@ -492,17 +544,21 @@ App::DocumentObjectExecReturn* Pipe::execute()
             boolOp.makeElementBoolean(maker.c_str(), {base, result});
 
             if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception",
-                                                                           "Result has multiple solids: enable 'Allow Compound' in the active body."));
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+                    "Exception",
+                    "Result has multiple solids: enable 'Allow Compound' in the active body."
+                ));
             }
-            
+
             // store shape before refinement
             this->rawShape = boolOp;
             boolOp = refineShapeIfActive(boolOp);
             Shape.setValue(getSolid(boolOp));
-        } else {
+        }
+        else {
             return new App::DocumentObjectExecReturn(
-                    QT_TRANSLATE_NOOP("Exception", "Pipe: Invalid Boolean Type"));
+                QT_TRANSLATE_NOOP("Exception", "Pipe: Invalid Boolean Type")
+            );
         }
 
         TopoShape solid = getSolid(boolOp);
@@ -630,9 +686,9 @@ void Pipe::getContinuousEdges(Part::TopoShape /*TopShape*/, std::vector<std::str
 }
 
 void Pipe::buildPipePath(
-  const Part::TopoShape& shape,
-  const std::vector<std::string>& subedge,
-  Part::TopoShape& path
+    const Part::TopoShape& shape,
+    const std::vector<std::string>& subedge,
+    Part::TopoShape& path
 )
 {
     if (!shape.isNull()) {
@@ -642,7 +698,7 @@ void Pipe::buildPipePath(
                 // getContinuousEdges(shape, subedge);
 
                 std::vector<Part::TopoShape> shapes;
-                for (const auto & it : subedge) {
+                for (const auto& it : subedge) {
                     shapes.push_back(shape.getSubTopoShape(it.c_str()));
                 }
                 path = path.makeElementWires(shapes);
