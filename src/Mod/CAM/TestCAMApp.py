@@ -72,6 +72,7 @@ from CAMTests.TestPathPreferences import TestPathPreferences
 from CAMTests.TestPathPocket import TestPathPocket
 from CAMTests.TestPathProfile import TestPathProfile
 from CAMTests.TestPathPropertyBag import TestPathPropertyBag
+from CAMTests.TestPathRotaryGenerators import TestPathRotaryGenerators
 from CAMTests.TestPathRotationGenerator import TestPathRotationGenerator
 from CAMTests.TestPathSetupSheet import TestPathSetupSheet
 from CAMTests.TestPathStock import TestPathStock
