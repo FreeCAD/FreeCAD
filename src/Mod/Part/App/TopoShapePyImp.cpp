@@ -937,13 +937,14 @@ PyObject* TopoShapePy::ancestorsOfType(PyObject* args) const
         }
 
         std::vector<int> foundIndices = model.findAncestors(shape, shapetype);
-        std::unordered_set<int> appendedIndices = { };
+        std::unordered_set<int> appendedIndices = {};
 
         Py::List list;
         for (int idx : foundIndices) {
-            if (appendedIndices.count(idx))
+            if (appendedIndices.count(idx)) {
                 continue;
-            
+            }
+
             list.append(shape2pyshape(model.getSubTopoShape(shapetype, idx)));
             appendedIndices.emplace(idx);
         }
