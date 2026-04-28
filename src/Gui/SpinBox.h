@@ -215,6 +215,9 @@ public:
     using ExpressionSpinBox::apply;
     void setNumberExpression(App::NumberExpression*) override;
 
+    QValidator::State validate(QString& input, int& pos) const override;
+    double valueFromText(const QString& text) const override;
+
     void keyPressEvent(QKeyEvent* event) override;
     void resizeEvent(QResizeEvent* event) override;
     void paintEvent(QPaintEvent* event) override;
