@@ -2037,7 +2037,33 @@ void TreeWidget::mousePressEvent(QMouseEvent* event)
         }
     }
 
+    expandIndicatorPressed = false;
+    if (event->button() == Qt::LeftButton) {
+        QTreeWidgetItem* pressedItem = itemAt(event->pos());
+        if (pressedItem && pressedItem->childCount() > 0) {
+            auto itemRect = visualItemRect(pressedItem);
+            int x = event->pos().x();
+            if (x >= itemRect.left() - indentation() && x < itemRect.left()) {
+                expandIndicatorPressed = true;
+            }
+        }
+    }
+
     QTreeWidget::mousePressEvent(event);
+}
+
+void TreeWidget::mouseMoveEvent(QMouseEvent* event)
+{
+    if (expandIndicatorPressed) {
+        return;
+    }
+    QTreeWidget::mouseMoveEvent(event);
+}
+
+void TreeWidget::mouseReleaseEvent(QMouseEvent* event)
+{
+    expandIndicatorPressed = false;
+    QTreeWidget::mouseReleaseEvent(event);
 }
 
 void TreeWidget::mouseDoubleClickEvent(QMouseEvent* event)

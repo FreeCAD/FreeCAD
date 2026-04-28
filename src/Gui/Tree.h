@@ -190,6 +190,8 @@ protected:
     bool event(QEvent* e) override;
     void keyPressEvent(QKeyEvent* event) override;
     void mousePressEvent(QMouseEvent* event) override;
+    void mouseMoveEvent(QMouseEvent* event) override;
+    void mouseReleaseEvent(QMouseEvent* event) override;
     void mouseDoubleClickEvent(QMouseEvent* event) override;
 
     void showEvent(QShowEvent* ev) override;
@@ -295,6 +297,8 @@ private:
 
     // this timer is used to prevent double click event on visibility icon
     QTimer visibilityIconDoubleClickTimer;
+
+    bool expandIndicatorPressed = false;
 
     static std::unique_ptr<QPixmap> documentPixmap;
     static std::unique_ptr<QPixmap> documentPartialPixmap;
