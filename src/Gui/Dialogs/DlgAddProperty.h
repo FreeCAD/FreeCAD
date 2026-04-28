@@ -22,14 +22,14 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef GUI_DIALOG_DLG_ADD_PROPERTY_H
-#define GUI_DIALOG_DLG_ADD_PROPERTY_H
+#pragma once
 
 #include <qcompleter.h>
 
 #include <QDialog>
 #include <QComboBox>
 #include <QFormLayout>
+#include <QStandardItemModel>
 
 #include <FCGlobal.h>
 
@@ -85,6 +85,29 @@ private:
 
 class Ui_DlgAddProperty;
 
+class TypeItemModel: public QStandardItemModel
+{
+    Q_OBJECT
+public:
+    static constexpr int SeparatorRole = Qt::UserRole + 1;
+
+    explicit TypeItemModel(QObject* parent = nullptr)
+        : QStandardItemModel(parent)
+    {}
+
+    Qt::ItemFlags flags(const QModelIndex& index) const override
+    {
+        Qt::ItemFlags flags = QStandardItemModel::flags(index);
+        if (index.isValid()) {
+            QVariant isSeparator = index.data(SeparatorRole);
+            if (isSeparator.isValid() && isSeparator.toBool()) {
+                return flags & ~(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+            }
+        }
+        return flags;
+    }
+};
+
 class GuiExport DlgAddProperty: public QDialog
 {
     Q_OBJECT
@@ -126,26 +149,33 @@ private:
         Type
     };
 
+    struct SupportedTypes
+    {
+        std::vector<Base::Type> commonTypes;
+        std::vector<Base::Type> otherTypes;
+    };
+
     DlgAddProperty(QWidget* parent, App::PropertyContainer* container, ViewProviderVarSet* viewProvider);
 
     void setupMacroRedirector();
 
     void initializeGroup();
 
-    std::vector<Base::Type> getSupportedTypes();
+    SupportedTypes getSupportedTypes();
     void initializeTypes();
 
     void removeSelectionEditor();
     QVariant getEditorData() const;
     void setEditorData(const QVariant& data);
-    bool isSubLinkPropertyItem() const;
     bool isEnumPropertyItem() const;
     void addEnumEditor(PropertyEditor::PropertyItem* propertyItem);
     void addNormalEditor(PropertyEditor::PropertyItem* propertyItem);
     void addEditor(PropertyEditor::PropertyItem* propertyItem);
-    bool isTypeWithEditor(const Base::Type& type);
-    bool isTypeWithEditor(const std::string& type);
-    void createEditorForType(const Base::Type& type);
+    bool isExcluded(const Base::Type& type) const;
+    bool isTypeWithEditor(PropertyEditor::PropertyItem* propertyItem) const;
+    bool isTypeWithEditor(const Base::Type& type) const;
+    bool isTypeWithEditor(const std::string& type) const;
+    void createSupportDataForType(const Base::Type& type);
     void initializeValue();
 
     void setTitle();
@@ -216,5 +246,3 @@ private:
 
 }  // namespace Dialog
 }  // namespace Gui
-
-#endif  // GUI_DIALOG_DLG_ADD_PROPERTY_H

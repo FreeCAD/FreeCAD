@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEM_CONSTRAINTFORCE_H
-#define FEM_CONSTRAINTFORCE_H
+#pragma once
 
 #include "FemConstraint.h"
 
@@ -61,12 +60,10 @@ protected:
         App::Property* prop
     ) override;
     void onChanged(const App::Property* prop) override;
+    void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop) override;
 
 private:
     Base::Vector3d naturalDirectionVector;
 };
 
 }  // namespace Fem
-
-
-#endif  // FEM_CONSTRAINTFORCE_H

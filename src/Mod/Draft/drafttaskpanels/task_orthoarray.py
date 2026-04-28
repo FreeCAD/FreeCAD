@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the task panel code for the Draft OrthoArray tool."""
+
 ## @package task_orthoarray
 # \ingroup drafttaskpanels
 # \brief Provides the task panel code for the Draft OrthoArray tool.
@@ -43,6 +44,13 @@ from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
 bool(Draft_rc.__name__)
+
+
+def _quantity(st):
+    # workaround for improper handling of plus sign
+    # in Building US unit system
+    # https://github.com/FreeCAD/FreeCAD/issues/11345
+    return U.Quantity(st.replace("+", "--")).Value
 
 
 class TaskPanelOrthoArray:
@@ -173,9 +181,9 @@ class TaskPanelOrthoArray:
         """Execute when clicking the OK button or Enter key."""
         self.selection = Gui.Selection.getSelection()
 
-        (self.v_x, self.v_y, self.v_z) = self.get_intervals()
+        self.v_x, self.v_y, self.v_z = self.get_intervals()
 
-        (self.n_x, self.n_y, self.n_z) = self.get_numbers()
+        self.n_x, self.n_y, self.n_z = self.get_numbers()
 
         self.valid_input = self.validate_input(
             self.selection, self.v_x, self.v_y, self.v_z, self.n_x, self.n_y, self.n_z
@@ -321,23 +329,18 @@ class TaskPanelOrthoArray:
         v_x_x_str = self.form.input_X_x.text()
         v_x_y_str = self.form.input_X_y.text()
         v_x_z_str = self.form.input_X_z.text()
-        v_x = App.Vector(
-            U.Quantity(v_x_x_str).Value, U.Quantity(v_x_y_str).Value, U.Quantity(v_x_z_str).Value
-        )
+        v_x = App.Vector(_quantity(v_x_x_str), _quantity(v_x_y_str), _quantity(v_x_z_str))
 
         v_y_x_str = self.form.input_Y_x.text()
         v_y_y_str = self.form.input_Y_y.text()
         v_y_z_str = self.form.input_Y_z.text()
-        v_y = App.Vector(
-            U.Quantity(v_y_x_str).Value, U.Quantity(v_y_y_str).Value, U.Quantity(v_y_z_str).Value
-        )
+        v_y = App.Vector(_quantity(v_y_x_str), _quantity(v_y_y_str), _quantity(v_y_z_str))
 
         v_z_x_str = self.form.input_Z_x.text()
         v_z_y_str = self.form.input_Z_y.text()
         v_z_z_str = self.form.input_Z_z.text()
-        v_z = App.Vector(
-            U.Quantity(v_z_x_str).Value, U.Quantity(v_z_y_str).Value, U.Quantity(v_z_z_str).Value
-        )
+        v_z = App.Vector(_quantity(v_z_x_str), _quantity(v_z_y_str), _quantity(v_z_z_str))
+
         return v_x, v_y, v_z
 
     def reset_v(self, interval):

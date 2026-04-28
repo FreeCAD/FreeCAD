@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_DrawSketchHandlerCarbonCopy_H
-#define SKETCHERGUI_DrawSketchHandlerCarbonCopy_H
+#pragma once
 
 #include <QApplication>
 
@@ -130,6 +131,8 @@ public:
 
 class DrawSketchHandlerCarbonCopy: public DrawSketchHandler
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerCarbonCopy)
+
 public:
     DrawSketchHandlerCarbonCopy() = default;
     ~DrawSketchHandlerCarbonCopy() override
@@ -176,7 +179,7 @@ public:
             if (obj->is<Sketcher::SketchObject>() || sketchArchType == obj->getTypeId().getName()) {
 
                 try {
-                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create a carbon copy"));
+                    openCommand(QT_TRANSLATE_NOOP("Command", "Create a carbon copy"));
                     Gui::cmdAppObjectArgs(
                         sketchgui->getObject(),
                         "carbonCopy(\"%s\",%s)",
@@ -184,7 +187,7 @@ public:
                         constructionModeAsBooleanText()
                     );
 
-                    Gui::Command::commitCommand();
+                    commitCommand();
 
                     tryAutoRecomputeIfNotSolve(sketchgui->getObject<Sketcher::SketchObject>());
 
@@ -200,7 +203,7 @@ public:
                         QT_TRANSLATE_NOOP("Notifications", "Error"),
                         QT_TRANSLATE_NOOP("Notifications", "Failed to add carbon copy")
                     );
-                    Gui::Command::abortCommand();
+                    abortCommand();
                 }
                 return true;
             }
@@ -245,6 +248,3 @@ public:
 };
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerCarbonCopy_H

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2005 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,10 +23,9 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGKEYBOARD_IMP_H
-#define GUI_DIALOG_DLGKEYBOARD_IMP_H
+#pragma once
 
-#include <boost/signals2.hpp>
+#include <fastsignals/connection.h>
 #include <memory>
 #include <QPointer>
 #include <QAction>
@@ -75,7 +76,7 @@ public:
      * @return Return a boost signal connection for monitoring command changes.
      * Most disconnect the signal before widgets gets destroyed.
      */
-    static boost::signals2::connection initCommandWidgets(
+    static fastsignals::connection initCommandWidgets(
         QTreeWidget* commandTreeWidget,
         QTreeWidgetItem* separatorItem,
         QComboBox* comboGroups,
@@ -97,7 +98,7 @@ protected:
         QTreeWidget* treeWidget,
         QTreeWidgetItem* separatorItem
     );
-    static boost::signals2::connection initCommandList(QTreeWidget*, QTreeWidgetItem*, QComboBox* combo);
+    static fastsignals::connection initCommandList(QTreeWidget*, QTreeWidgetItem*, QComboBox* combo);
     static void initPriorityList(QTreeWidget*, QAbstractButton* buttonUp, QAbstractButton* buttonDown);
     static void populateCommandGroups(QComboBox*);
     static void populateCommandList(QTreeWidget*, QTreeWidgetItem*, QComboBox*);
@@ -130,10 +131,8 @@ protected:
 private:
     std::unique_ptr<Ui_DlgCustomKeyboard> ui;
     bool firstShow;
-    boost::signals2::scoped_connection conn;
+    fastsignals::scoped_connection conn;
 };
 
 }  // namespace Dialog
 }  // namespace Gui
-
-#endif  // GUI_DIALOG_DLGKEYBOARD_IMP_H

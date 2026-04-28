@@ -29,7 +29,6 @@ import Path
 import Path.Dressup.Utils as PathDressup
 import math
 
-
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
 
@@ -343,13 +342,6 @@ class ObjectDressup:
 
             last_params.update(params)
 
-            if cmd.Name in Path.Geom.CmdMoveAll and (
-                "X" not in params or "Y" not in params or "Z" not in params
-            ):
-                params["X"] = params.get("X", start_point[0])
-                params["Y"] = params.get("Y", start_point[1])
-                params["Z"] = params.get("Z", start_point[2])
-                cmd = Path.Command(cmd.Name, params)
             annotated = AnnotatedGCode(cmd, start_point)
             self.edges.append(annotated)
             start_point = annotated.end_point
@@ -407,7 +399,9 @@ class ObjectDressup:
                             covered = True
                         i = i + 1
                     if len(rampedges) == 0:
-                        Path.Log.warn("No suitable edges for ramping, plunge will remain as such")
+                        Path.Log.warning(
+                            "No suitable edges for ramping, plunge will remain as such"
+                        )
                         outedges.append(edge)
                     else:
                         # Path.Log.debug("Doing ramp to edges: {}".format(rampedges))
@@ -482,7 +476,7 @@ class ObjectDressup:
                         rampedges.append(candidate)
                         j = j + 1
                     if not loopFound:
-                        Path.Log.warn("No suitable helix found, leaving as a plunge")
+                        Path.Log.warning("No suitable helix found, leaving as a plunge")
                         outedges.append(edge)
                     else:
                         outedges.extend(self.createHelix(rampedges, edge.start_point[2]))
@@ -548,7 +542,7 @@ class ObjectDressup:
     def findMinZ(self, edges):
         minZ = 99999999999
         for edge in edges:
-            if edge.end_point[2] < minZ:
+            if edge.command.Name in Path.Geom.CmdMoveAll and edge.end_point[2] < minZ:
                 minZ = edge.end_point[2]
         return minZ
 
@@ -677,7 +671,7 @@ class ObjectDressup:
 
             z = z and round(z, 8)
 
-            if cmd.Name in ["G1", "G2", "G3", "G01", "G02", "G03"]:
+            if cmd.Name in Path.Geom.CmdMoveMill:
                 if lastZ != z:
                     if Path.Geom.isRoughly(x, lastX) and Path.Geom.isRoughly(y, lastY):
                         params["F"] = vertFeed
@@ -702,6 +696,7 @@ class ObjectDressup:
 class ViewProviderDressup:
     def __init__(self, vobj):
         self.obj = vobj.Object
+        vobj.Proxy = self
 
     def attach(self, vobj):
         self.obj = vobj.Object
@@ -715,7 +710,6 @@ class ViewProviderDressup:
                         if g.Name == self.obj.Base.Name:
                             group.remove(g)
                     i.Group = group
-                    print(i.Group)
         # FreeCADGui.ActiveDocument.getObject(obj.Base.Name).Visibility = False
         return [self.obj.Base]
 
@@ -755,26 +749,12 @@ class CommandPathDressupRampEntry:
         }
 
     def IsActive(self):
-        op = PathDressup.selection()
-        if op:
-            return not PathDressup.hasEntryMethod(op)
-        return False
+        return bool(PathDressup.selection())
 
     def Activated(self):
-
         # check that the selection contains exactly what we want
-        selection = FreeCADGui.Selection.getSelection()
-        if len(selection) != 1:
-            Path.Log.error(translate("CAM_DressupRampEntry", "Select one toolpath object") + "\n")
-            return
-        baseObject = selection[0]
-        if not baseObject.isDerivedFrom("Path::Feature"):
-            Path.Log.error(
-                translate("CAM_DressupRampEntry", "The selected object is not a toolpath") + "\n"
-            )
-            return
-        if baseObject.isDerivedFrom("Path::FeatureCompoundPython"):
-            Path.Log.error(translate("CAM_DressupRampEntry", "Select a Profile object"))
+        op = PathDressup.selection(verbose=True)
+        if not op:
             return
 
         # everything ok!
@@ -785,13 +765,11 @@ class CommandPathDressupRampEntry:
             'obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "RampEntryDressup")'
         )
         FreeCADGui.doCommand("dbo = Path.Dressup.Gui.RampEntry.ObjectDressup(obj)")
-        FreeCADGui.doCommand("base = FreeCAD.ActiveDocument." + selection[0].Name)
+        FreeCADGui.doCommand("base = FreeCAD.ActiveDocument." + op.Name)
         FreeCADGui.doCommand("job = PathScripts.PathUtils.findParentJob(base)")
         FreeCADGui.doCommand("obj.Base = base")
         FreeCADGui.doCommand("job.Proxy.addOperation(obj, base)")
-        FreeCADGui.doCommand(
-            "obj.ViewObject.Proxy = Path.Dressup.Gui.RampEntry.ViewProviderDressup(obj.ViewObject)"
-        )
+        FreeCADGui.doCommand("Path.Dressup.Gui.RampEntry.ViewProviderDressup(obj.ViewObject)")
         FreeCADGui.doCommand("Gui.ActiveDocument.getObject(base.Name).Visibility = False")
         FreeCADGui.doCommand("dbo.setup(obj)")
         # FreeCAD.ActiveDocument.commitTransaction()  # Final `commitTransaction()` called via TaskPanel.accept()

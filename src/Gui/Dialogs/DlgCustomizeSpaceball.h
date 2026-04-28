@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Thomas Anderson <ta@nextgenengineering>            *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_DIALOG_DLGCUSTOMIZESPACEBALL_H
-#define GUI_DIALOG_DLGCUSTOMIZESPACEBALL_H
+#pragma once
 
 #include <QAbstractListModel>
 #include <QComboBox>
@@ -185,5 +186,3 @@ private:
 };
 }  // namespace Dialog
 }  // namespace Gui
-
-#endif  // GUI_DIALOG_DLGCUSTOMIZESPACEBALL_H

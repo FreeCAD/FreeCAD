@@ -453,8 +453,8 @@ void TaskCheckGeometryResults::goCheck()
 
     std::string scopeName {tr("Boolean operation check…").toStdString()};
 
-    Handle(Message_ProgressIndicator) theProgress
-        = new BOPProgressIndicator(tr("Check geometry"), Gui::getMainWindow());
+    Handle(Message_ProgressIndicator)
+        theProgress = new BOPProgressIndicator(tr("Check geometry"), Gui::getMainWindow());
     Message_ProgressRange theRange(theProgress->Start());
     Message_ProgressScope theScope(
         theRange,
@@ -1451,7 +1451,7 @@ void TaskCheckGeometryDialog::onClicked(QAbstractButton* btn)
 void TaskCheckGeometryDialog::modifyStandardButtons(QDialogButtonBox* box)
 {
     okBtn = box->button(QDialogButtonBox::Ok);
-    okBtn->setText(tr("Run check"));
+    okBtn->setText(tr("Run Check"));
     settingsBtn = box->addButton(tr("Settings"), QDialogButtonBox::ActionRole);
     ParameterGrp::handle group = App::GetApplication()
                                      .GetUserParameter()

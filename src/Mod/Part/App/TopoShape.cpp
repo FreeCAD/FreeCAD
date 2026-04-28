@@ -24,6 +24,7 @@
 
 #include <FCConfig.h>
 
+#include <TopoDS_Shape.hxx>
 #include <array>
 #include <cmath>
 #include <cstdlib>
@@ -168,19 +169,22 @@
 #include <Base/Exception.h>
 #include <Base/Placement.h>
 #include <Base/Tools.h>
+#include <Base/Vector3D.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
 
-#include "TopoShape.h"
 #include "BRepMesh.h"
 #include "BRepOffsetAPI_MakeOffsetFix.h"
 #include "CrossSection.h"
 #include "encodeFilename.h"
 #include "FaceMakerBullseye.h"
 #include "Interface.h"
+#include "WireJoiner.h"
 #include "modelRefine.h"
 #include "PartPyCXX.h"
+#include "ProgressIndicator.h"
 #include "Tools.h"
+#include "TopoShape.h"
 #include "TopoShapeCompoundPy.h"
 #include "TopoShapeCompSolidPy.h"
 #include "TopoShapeEdgePy.h"
@@ -189,7 +193,6 @@
 #include "TopoShapeSolidPy.h"
 #include "TopoShapeVertexPy.h"
 #include "TopoShapeWirePy.h"
-#include "OCCTProgressIndicator.h"
 
 FC_LOG_LEVEL_INIT("TopoShape", true, true)
 
@@ -295,8 +298,10 @@ TopoShape::TopoShape(const TopoShape& shape)
     *this = shape;
 }
 
-std::pair<std::string, unsigned long> TopoShape::getElementTypeAndIndex(const char* Name)
+std::pair<std::string, unsigned long> TopoShape::getElementTypeAndIndex(const char* RawName)
 {
+    std::string strName = Data::oldElementName(RawName);
+    const char* Name = strName.c_str();
     int index = 0;
     std::string element;
     boost::regex ex("^(Face|Edge|Vertex)([1-9][0-9]*)$");
@@ -1778,7 +1783,7 @@ TopoDS_Shape TopoShape::cut(const std::vector<TopoDS_Shape>& shapes, Standard_Re
         mkCut.setAutoFuzzy();
     }
 #if OCC_VERSION_HEX >= 0x070600
-    mkCut.Build(OCCTProgressIndicator::getAppIndicator().Start());
+    mkCut.Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
     mkCut.Build();
 #endif
@@ -1827,7 +1832,7 @@ TopoDS_Shape TopoShape::common(const std::vector<TopoDS_Shape>& shapes, Standard
         mkCommon.setAutoFuzzy();
     }
 #if OCC_VERSION_HEX >= 0x070600
-    mkCommon.Build(OCCTProgressIndicator::getAppIndicator().Start());
+    mkCommon.Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
     mkCommon.Build();
 #endif
@@ -1876,7 +1881,7 @@ TopoDS_Shape TopoShape::fuse(const std::vector<TopoDS_Shape>& shapes, Standard_R
         mkFuse.setAutoFuzzy();
     }
 #if OCC_VERSION_HEX >= 0x070600
-    mkFuse.Build(OCCTProgressIndicator::getAppIndicator().Start());
+    mkFuse.Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
     mkFuse.Build();
 #endif
@@ -1902,7 +1907,7 @@ TopoDS_Shape TopoShape::section(TopoDS_Shape shape, Standard_Boolean approximate
     mkSection.Init2(shape);
     mkSection.Approximation(approximate);
 #if OCC_VERSION_HEX >= 0x070600
-    mkSection.Build(OCCTProgressIndicator::getAppIndicator().Start());
+    mkSection.Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
     mkSection.Build();
 #endif
@@ -1943,7 +1948,7 @@ TopoDS_Shape TopoShape::section(
         mkSection.setAutoFuzzy();
     }
 #if OCC_VERSION_HEX >= 0x070600
-    mkSection.Build(OCCTProgressIndicator::getAppIndicator().Start());
+    mkSection.Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
     mkSection.Build();
 #endif
@@ -2016,7 +2021,7 @@ TopoDS_Shape TopoShape::generalFuse(
     }
     mkGFA.SetNonDestructive(Standard_True);
 #if OCC_VERSION_HEX >= 0x070600
-    mkGFA.Build(OCCTProgressIndicator::getAppIndicator().Start());
+    mkGFA.Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
     mkGFA.Build();
 #endif
@@ -2086,7 +2091,7 @@ TopoDS_Shape TopoShape::makePipeShell(
     }
 
 #if OCC_VERSION_HEX >= 0x070600
-    mkPipeShell.Build(OCCTProgressIndicator::getAppIndicator().Start());
+    mkPipeShell.Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
     mkPipeShell.Build();
 #endif
@@ -2152,8 +2157,8 @@ TopoDS_Shape TopoShape::makeTube(double radius, double tol, int cont, int maxdeg
     aCirc->Rotate(gp::OZ(), std::numbers::pi / 2.);
 
     // perpendicular section
-    Handle(Law_Function) myEvol
-        = ::CreateBsFunction(myPath->FirstParameter(), myPath->LastParameter(), theRadius);
+    Handle(Law_Function)
+        myEvol = ::CreateBsFunction(myPath->FirstParameter(), myPath->LastParameter(), theRadius);
     Handle(GeomFill_SectionLaw) aSec = new GeomFill_EvolvedSection(aCirc, myEvol);
     Handle(GeomFill_LocationLaw) aLoc = new GeomFill_CurveAndTrihedron(new GeomFill_CorrectedFrenet);
     aLoc->SetCurve(myPath);
@@ -2645,7 +2650,7 @@ TopoDS_Shape TopoShape::makeLoft(
     aGenerator.CheckCompatibility(anIsCheck);  // use BRepFill_CompatibleWires on profiles. force
                                                // #edges, orientation, "origin" to match.
 #if OCC_VERSION_HEX >= 0x070600
-    aGenerator.Build(OCCTProgressIndicator::getAppIndicator().Start());
+    aGenerator.Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
     aGenerator.Build();
 #endif
@@ -2811,7 +2816,7 @@ TopoDS_Shape TopoShape::makeOffsetShape(
         aGenerator.AddWire(originalWire);
         aGenerator.AddWire(offsetWire);
 #if OCC_VERSION_HEX >= 0x070600
-        aGenerator.Build(OCCTProgressIndicator::getAppIndicator().Start());
+        aGenerator.Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
         aGenerator.Build();
 #endif
@@ -3027,8 +3032,8 @@ TopoDS_Shape TopoShape::makeOffset2D(
         std::list<TopoDS_Wire> offsetWires;
         // interestingly, if wires are removed, empty compounds are returned by MakeOffset (as of
         // OCC 7.0.0) so, we just extract all nesting
-        Handle(TopTools_HSequenceOfShape) seq
-            = ShapeExtend_Explorer().SeqFromCompound(offsetShape, Standard_True);
+        Handle(TopTools_HSequenceOfShape)
+            seq = ShapeExtend_Explorer().SeqFromCompound(offsetShape, Standard_True);
         TopoDS_Iterator it(offsetShape);
         for (int i = 0; i < seq->Length(); ++i) {
             offsetWires.push_back(TopoDS::Wire(seq->Value(i + 1)));
@@ -3146,8 +3151,10 @@ TopoDS_Shape TopoShape::makeOffset2D(
                     v3.Reverse();
                     v4.Reverse();
                 }
-                else if ((fabs(gp_Vec(BRep_Tool::Pnt(v2), BRep_Tool::Pnt(v4)).Magnitude() - fabs(offset))
-                          <= BRep_Tool::Tolerance(v2) + BRep_Tool::Tolerance(v4))) {
+                else if (
+                    (fabs(gp_Vec(BRep_Tool::Pnt(v2), BRep_Tool::Pnt(v4)).Magnitude() - fabs(offset))
+                     <= BRep_Tool::Tolerance(v2) + BRep_Tool::Tolerance(v4))
+                ) {
                     // orientation is as expected, nothing to do
                 }
                 else {
@@ -3174,7 +3181,7 @@ TopoDS_Shape TopoShape::makeOffset2D(
                 mkWire.Add(BRepBuilderAPI_MakeEdge(v3, v1).Edge());
 
 #if OCC_VERSION_HEX >= 0x070600
-                mkWire.Build(OCCTProgressIndicator::getAppIndicator().Start());
+                mkWire.Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
                 mkWire.Build();
 #endif
@@ -3190,7 +3197,7 @@ TopoDS_Shape TopoShape::makeOffset2D(
                 mkFace.addWire(w);
             }
 #if OCC_VERSION_HEX >= 0x070600
-            mkFace.Build(OCCTProgressIndicator::getAppIndicator().Start());
+            mkFace.Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
             mkFace.Build();
 #endif
@@ -3203,7 +3210,8 @@ TopoDS_Shape TopoShape::makeOffset2D(
             }
 
             ShapeExtend_Explorer xp;
-            Handle(TopTools_HSequenceOfShape) result_leaves = xp.SeqFromCompound(result, Standard_True);
+            Handle(TopTools_HSequenceOfShape)
+                result_leaves = xp.SeqFromCompound(result, Standard_True);
             for (int i = 0; i < result_leaves->Length(); ++i) {
                 shapesToReturn.push_back(result_leaves->Value(i + 1));
             }
@@ -3266,6 +3274,30 @@ void TopoShape::transformGeometry(const Base::Matrix4D& rclMat)
     catch (const Standard_Failure& e) {
         throw Base::CADKernelError(e.GetMessageString());
     }
+}
+
+void TopoShape::bakeInTransform()
+{
+    if (getShape().IsNull()) {
+        return;
+    }
+
+    if (shapeType() != TopAbs_COMPOUND) {
+        transformGeometry(getTransform());
+        setTransform(Base::Matrix4D {});
+        return;
+    }
+
+    TopoShape result;
+    std::vector<TopoShape> shapes;
+
+    for (auto& subshape : getSubTopoShapes()) {
+        subshape.bakeInTransform();
+        shapes.push_back(subshape);
+    }
+
+    result.makeCompound(shapes);
+    *this = result;
 }
 
 TopoDS_Shape TopoShape::transformGShape(const Base::Matrix4D& rclTrf, bool copy) const
@@ -3976,6 +4008,22 @@ void TopoShape::getLinesFromSubElement(
     }
 }
 
+bool TopoShape::getFirstVertexFromSubElement(const Data::Segment* element, Base::Vector3d& Point) const
+{
+    if (element->is<ShapeSegment>()) {
+        const TopoDS_Shape& shape = static_cast<const ShapeSegment*>(element)->Shape;
+        if (shape.IsNull()) {
+            return false;
+        }
+        for (TopExp_Explorer xp(shape, TopAbs_VERTEX, TopAbs_EDGE); xp.More(); xp.Next()) {
+            gp_Pnt p = BRep_Tool::Pnt(TopoDS::Vertex(xp.Current()));
+            Point = Base::Vector3d {Base::convertTo<Base::Vector3d>(p)};
+            return true;
+        }
+    }
+    return false;
+}
+
 void TopoShape::getFacesFromSubElement(
     const Data::Segment* element,
     std::vector<Base::Vector3d>& points,
@@ -4010,7 +4058,7 @@ TopoDS_Shape TopoShape::defeaturing(const std::vector<TopoDS_Shape>& s) const
         defeat.AddFaceToRemove(it);
     }
 #if OCC_VERSION_HEX >= 0x070600
-    defeat.Build(OCCTProgressIndicator::getAppIndicator().Start());
+    defeat.Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
     defeat.Build();
 #endif
@@ -4257,7 +4305,7 @@ TopoShape& TopoShape::makeFace(const std::vector<TopoShape>& shapes, const char*
         }
     }
 #if OCC_VERSION_HEX >= 0x070600
-    mkFace->Build(OCCTProgressIndicator::getAppIndicator().Start());
+    mkFace->Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
     mkFace->Build();
 #endif

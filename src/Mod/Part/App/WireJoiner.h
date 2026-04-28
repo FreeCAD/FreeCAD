@@ -22,8 +22,7 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef PART_WIRE_JOINER_H
-#define PART_WIRE_JOINER_H
+#pragma once
 
 #include <memory>
 #include <BRepBuilderAPI_MakeShape.hxx>
@@ -69,5 +68,3 @@ private:
 };
 
 }  // namespace Part
-
-#endif  // PART_WIRE_JOINER_H

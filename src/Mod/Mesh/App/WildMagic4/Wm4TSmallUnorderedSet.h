@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4TSET_H
-#define WM4TSET_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4Memory.h"
@@ -79,5 +78,3 @@ private:
 }
 
 #include "Wm4TSmallUnorderedSet.inl"
-
-#endif

@@ -589,8 +589,9 @@ void ViewProviderInspection::inspectCallback(void* ud, SoEventCallback* n)
                 view->removeEventCallback(SoButtonEvent::getClassTypeId(), inspectCallback, ud);
             }
         }
-        else if (mbe->getButton() == SoMouseButtonEvent::BUTTON1
-                 && mbe->getState() == SoButtonEvent::UP) {
+        else if (
+            mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::UP
+        ) {
             const SoPickedPoint* point = n->getPickedPoint();
             if (!point) {
                 Base::Console().message("No point picked.\n");

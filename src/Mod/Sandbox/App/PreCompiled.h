@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Werner Mayer <wmayer@users.sourceforge.net>        *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SANDBOX_APP_PRECOMPILED_H
-#define SANDBOX_APP_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -55,6 +56,3 @@
 #include <QWaitCondition>
 #include <QSemaphore>
 #include <QThread>
-
-#endif
-

@@ -95,6 +95,15 @@ void View3DSettings::applySettings()
     OnChange(*hGrp, "UseVBO");
     OnChange(*hGrp, "RenderCache");
     OnChange(*hGrp, "Orthographic");
+    OnChange(*hGrp, "NavigationStyle");
+    OnChange(*hGrp, "OrbitStyle");
+    OnChange(*hGrp, "Sensitivity");
+    OnChange(*hGrp, "ResetCursorPosition");
+    OnChange(*hGrp, "DimensionsVisible");
+    OnChange(*hGrp, "Dimensions3dVisible");
+    OnChange(*hGrp, "DimensionsDeltaVisible");
+    OnChange(*hGrp, "PickRadius");
+    OnChange(*hGrp, "TransparentObjectRenderType");
 
     auto lightSourcesGrp = hGrp->GetGroup("LightSources");
     OnChange(*lightSourcesGrp, "EnableHeadlight");
@@ -111,39 +120,6 @@ void View3DSettings::applySettings()
     OnChange(*lightSourcesGrp, "FillLightIntensity");
     OnChange(*lightSourcesGrp, "AmbientLightColor");
     OnChange(*lightSourcesGrp, "AmbientLightIntensity");
-
-    // Workaround
-    // Clear old settings that was used for a while in 1.1dev
-    // By clearing these settings, 1.0 will be able to run with same config file again
-    // For more info: https://github.com/FreeCAD/FreeCAD/issues/19880
-    // TODO: Remove when 1.1.0 is about to be released
-    if (hGrp->GetASCII("FillLightDirection").empty()) {
-        hGrp->RemoveBool("EnableHeadlight");
-        hGrp->RemoveUnsigned("HeadlightColor");
-        hGrp->RemoveASCII("HeadlightDirection");
-        hGrp->RemoveInt("HeadlightIntensity");
-        hGrp->RemoveBool("EnableBacklight");
-        hGrp->RemoveUnsigned("BacklightColor");
-        hGrp->RemoveASCII("BacklightDirection");
-        hGrp->RemoveInt("BacklightIntensity");
-        hGrp->RemoveBool("EnableFillLight");
-        hGrp->RemoveUnsigned("FillLightColor");
-        hGrp->RemoveASCII("FillLightDirection");
-        hGrp->RemoveInt("FillLightIntensity");
-        hGrp->RemoveUnsigned("AmbientLightColor");
-        hGrp->RemoveInt("AmbientLightIntensity");
-    }
-    // End of workaround
-
-    OnChange(*hGrp, "NavigationStyle");
-    OnChange(*hGrp, "OrbitStyle");
-    OnChange(*hGrp, "Sensitivity");
-    OnChange(*hGrp, "ResetCursorPosition");
-    OnChange(*hGrp, "DimensionsVisible");
-    OnChange(*hGrp, "Dimensions3dVisible");
-    OnChange(*hGrp, "DimensionsDeltaVisible");
-    OnChange(*hGrp, "PickRadius");
-    OnChange(*hGrp, "TransparentObjectRenderType");
 }
 
 void View3DSettings::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType Reason)
@@ -440,16 +416,21 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::
             _viewer->setEnabledNaviCube(rGrp.GetBool("ShowNaviCube", true));
         }
     }
-    else if (strcmp(Reason, "AxisXColor") == 0 || strcmp(Reason, "AxisYColor") == 0
-             || strcmp(Reason, "AxisZColor") == 0) {
+    else if (
+        strcmp(Reason, "AxisXColor") == 0 || strcmp(Reason, "AxisYColor") == 0
+        || strcmp(Reason, "AxisZColor") == 0
+    ) {
         for (auto _viewer : _viewers) {
             _viewer->updateColors();
         }
     }
     else if (strcmp(Reason, "UseVBO") == 0) {
         if (!ignoreVBO) {
+            // Assume no value means "on" as Coin only disables
+            // VBOs for some (very old) drivers and hardware.
+            const auto useVbo = rGrp.GetBool("UseVBO", true);
             for (auto _viewer : _viewers) {
-                _viewer->setEnabledVBO(rGrp.GetBool("UseVBO", false));
+                _viewer->setEnabledVBO(useVbo);
             }
         }
     }
@@ -617,7 +598,7 @@ void NaviCubeSettings::applySettings()
 
 void NaviCubeSettings::parameterChanged(const char* Name)
 {
-    if (Name == nullptr) {
+    if (!Name) {
         return;
     }
     NaviCube* nc = _viewer->getNaviCube();
@@ -677,9 +658,11 @@ void NaviCubeSettings::parameterChanged(const char* Name)
         float opacity = static_cast<float>(hGrp->GetInt("InactiveOpacity", 50)) / 100;
         nc->setInactiveOpacity(opacity);
     }
-    else if (strcmp(Name, "TextTop") == 0 || strcmp(Name, "TextBottom") == 0
-             || strcmp(Name, "TextFront") == 0 || strcmp(Name, "TextRear") == 0
-             || strcmp(Name, "TextLeft") == 0 || strcmp(Name, "TextRight") == 0) {
+    else if (
+        strcmp(Name, "TextTop") == 0 || strcmp(Name, "TextBottom") == 0
+        || strcmp(Name, "TextFront") == 0 || strcmp(Name, "TextRear") == 0
+        || strcmp(Name, "TextLeft") == 0 || strcmp(Name, "TextRight") == 0
+    ) {
         std::vector<std::string> labels;
         QByteArray frontByteArray = tr("FRONT").toUtf8();
         labels.push_back(hGrp->GetASCII("TextFront", frontByteArray.constData()));

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2021 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_ViewProviderSketchCoinAttorney_H
-#define SKETCHERGUI_ViewProviderSketchCoinAttorney_H
+#pragma once
 
 #include <QFont>
 #include <vector>
@@ -84,6 +85,10 @@ class ViewProviderSketchCoinAttorney
 private:
     static inline bool constraintHasExpression(const ViewProviderSketch& vp, int constrid);
     static inline const std::vector<Sketcher::Constraint*> getConstraints(const ViewProviderSketch& vp);
+    static inline bool isConstraintActiveInSketch(
+        const ViewProviderSketch& vp,
+        const Sketcher::Constraint* cstr
+    );
     static inline const GeoList getGeoList(const ViewProviderSketch& vp);
     static inline const GeoListFacade getGeoListFacade(const ViewProviderSketch& vp);
     static inline Base::Placement getEditingPlacement(const ViewProviderSketch& vp);
@@ -141,6 +146,14 @@ inline const std::vector<Sketcher::Constraint*> ViewProviderSketchCoinAttorney::
 )
 {
     return vp.getConstraints();
+}
+
+inline bool ViewProviderSketchCoinAttorney::isConstraintActiveInSketch(
+    const ViewProviderSketch& vp,
+    const Sketcher::Constraint* cstr
+)
+{
+    return vp.isConstraintActiveInSketch(cstr);
 }
 
 inline const GeoList ViewProviderSketchCoinAttorney::getGeoList(const ViewProviderSketch& vp)
@@ -292,6 +305,3 @@ inline void ViewProviderSketchCoinAttorney::executeOnSelectionPointSet(
 }
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_ViewProviderSketchCoinAttorney_H

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchHandlerArc_H
-#define SKETCHERGUI_DrawSketchHandlerArc_H
+#pragma once
 
 #include <Base/Tools.h>
 #include <Gui/BitmapFactory.h>
@@ -61,7 +62,8 @@ using DSHArcController = DrawSketchDefaultWidgetController<
     /*OnViewParametersT =*/OnViewParameters<5, 6>,  // NOLINT
     /*WidgetParametersT =*/WidgetParameters<0, 0>,  // NOLINT
     /*WidgetCheckboxesT =*/WidgetCheckboxes<0, 0>,  // NOLINT
-    /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,  // NOLINT
+    /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,  // NOLINT,
+    /*WidgetLineEditsT =*/WidgetLineEdits<0, 0>,
     ConstructionMethods::CircleEllipseConstructionMethod,
     /*bool PFirstComboboxIsConstructionMethod =*/true>;
 
@@ -71,6 +73,8 @@ using DrawSketchHandlerArcBase = DrawSketchControllableHandler<DSHArcController>
 
 class DrawSketchHandlerArc: public DrawSketchHandlerArcBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerArc)
+
     friend DSHArcController;
     friend DSHArcControllerBase;
 
@@ -278,18 +282,18 @@ private:
         try {
             createShape(false);
 
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc"));
 
             commandAddShapeGeometryAndConstraints();
 
-            Gui::Command::commitCommand();
+            commitCommand();
         }
         catch (const Base::Exception&) {
             /*Gui::NotifyError(sketchgui,
                 QT_TRANSLATE_NOOP("Notifications", "Error"),
                 QT_TRANSLATE_NOOP("Notifications", "Failed to add arc"));*/
 
-            Gui::Command::abortCommand();
+            abortCommand();
             THROWM(
                 Base::RuntimeError,
                 QT_TRANSLATE_NOOP(
@@ -310,6 +314,44 @@ private:
         auto& ac3 = sugConstraints[2];
 
         if (constructionMethod() == ConstructionMethod::Center) {
+            // Prevent overconstraining when the arc center is placed symmetrically (at the midpoint)
+            // of a line and the arc endpoints are coincident with the endpoints of the same line.
+            Sketcher::SketchObject* sketchObj = sketchgui->getSketchObject();
+            for (auto& centerAC : ac1) {
+                if (centerAC.Type == Sketcher::ConstraintType::Symmetric) {
+                    int lineGeoId = centerAC.GeoId;
+
+                    auto isCoincidentToLineEndpoint = [sketchObj, lineGeoId](const auto& ac) {
+                        if (ac.Type != Sketcher::ConstraintType::Coincident) {
+                            return false;
+                        }
+                        return sketchObj->arePointsCoincident(
+                                   ac.GeoId,
+                                   ac.PosId,
+                                   lineGeoId,
+                                   Sketcher::PointPos::start
+                               )
+                            || sketchObj->arePointsCoincident(
+                                ac.GeoId,
+                                ac.PosId,
+                                lineGeoId,
+                                Sketcher::PointPos::end
+                            );
+                    };
+
+                    bool startCoincident
+                        = std::any_of(ac2.begin(), ac2.end(), isCoincidentToLineEndpoint);
+                    bool endCoincident
+                        = std::any_of(ac3.begin(), ac3.end(), isCoincidentToLineEndpoint);
+
+                    if (startCoincident && endCoincident) {
+                        // Change symmetry to PointOnObject to maintain center on line without
+                        // overconstraining
+                        centerAC.Type = Sketcher::ConstraintType::PointOnObject;
+                    }
+                }
+            }
+
             generateAutoConstraintsOnElement(
                 ac1,
                 ArcGeoId,
@@ -987,6 +1029,3 @@ void DSHArcController::doConstructionMethodChanged()
 }
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerArc_H

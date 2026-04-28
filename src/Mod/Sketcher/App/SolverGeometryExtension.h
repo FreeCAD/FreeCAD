@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2019 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHER_SOLVERGEOMETRYEXTENSION_H
-#define SKETCHER_SOLVERGEOMETRYEXTENSION_H
+#pragma once
 
 #include <Base/Exception.h>
 #include <Mod/Part/App/GeometryExtension.h>
@@ -502,6 +503,3 @@ private:
 };
 
 }  // namespace Sketcher
-
-
-#endif  // SKETCHER_SOLVERGEOMETRYEXTENSION_H

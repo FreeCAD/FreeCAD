@@ -492,7 +492,7 @@ void PropertyPartShape::Restore(Base::XMLReader& reader)
             if (owner ? owner->checkElementMapVersion(this, _Ver.c_str())
                       : _Shape.checkElementMapVersion(_Ver.c_str())) {
                 auto ver = owner ? owner->getElementMapVersion(this) : _Shape.getElementMapVersion();
-                if (!owner || !owner->getNameInDocument() || !_Shape.getElementMapSize()) {
+                if (!owner || !owner->getNameInDocument()) {
                     _Ver = ver;
                 }
                 else {
@@ -507,6 +507,10 @@ void PropertyPartShape::Restore(Base::XMLReader& reader)
                         );
                     }
                     owner->getDocument()->addRecomputeObject(owner);
+
+                    // sometimes objects will not update _Ver properly,
+                    // so lets do it here to avoid unnecessary remigration
+                    _Ver = ver;
                 }
             }
         }
@@ -683,6 +687,12 @@ void PropertyPartShape::loadFromFile(Base::Reader& reader)
 
 void PropertyPartShape::loadFromStream(Base::Reader& reader)
 {
+    // Save locale before calling OCCT. TopTools_ShapeSet::Read imbues the stream
+    // with std::locale::classic() and restores it on return, but uses a non-RAII
+    // pattern. When exceptions propagate out (due to the exception mask below),
+    // the locale is not restored, leaving the stream with the classic locale whose
+    // internal data is statically allocated and must not be freed.
+    auto savedLocale = reader.getloc();
     try {
         reader.exceptions(std::istream::failbit | std::istream::badbit);
         BRep_Builder builder;
@@ -691,6 +701,7 @@ void PropertyPartShape::loadFromStream(Base::Reader& reader)
         setValue(shape);
     }
     catch (const std::exception&) {
+        reader.imbue(savedLocale);
         if (!reader.eof()) {
             Base::Console().warning("Failed to load BRep file %s\n", reader.getFileName().c_str());
         }

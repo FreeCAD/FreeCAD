@@ -63,9 +63,6 @@ def setStatusIcons(show=True):
         translate("BIM", "Auto"),
     ]
 
-    def toggle(state):
-        FreeCADGui.runCommand("BIM_TogglePanels")
-
     def toggleBimViews(state):
         FreeCADGui.runCommand("BIM_Views")
 
@@ -85,27 +82,6 @@ def setStatusIcons(show=True):
                 return
             utext = form.inputField.text()
         action.parent().parent().parent().setText(utext)
-
-    def toggleContextMenu(point):
-        # DISABLED - TODO need to find a way to add a context menu to a QAction...
-        FreeCADGui.BimToggleMenu = QtGui.QMenu()
-        for t in ["Report view", "Python console", "Selection view", "Combo View"]:
-            a = QtGui.QAction(t)
-            # a.setCheckable(True)
-            # a.setChecked(FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM").GetBool("toggle"+t.replace(" ",""),True))
-            FreeCADGui.BimToggleMenu.addAction(a)
-        pos = FreeCADGui.getMainWindow().cursor().pos()
-        FreeCADGui.BimToggleMenu.triggered.connect(toggleSaveSettings)
-        # QtCore.QObject.connect(FreeCADGui.BimToggleMenu,QtCore.SIGNAL("triggered(QAction *)"),toggleSaveSettings)
-        FreeCADGui.BimToggleMenu.popup(pos)
-
-    def toggleSaveSettings(action):
-        t = action.text()
-        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM").SetBool(
-            "toggle" + t.replace(" ", ""), action.isChecked()
-        )
-        if hasattr(FreeCADGui, "BimToggleMenu"):
-            del FreeCADGui.BimToggleMenu
 
     # main code
 
@@ -133,31 +109,6 @@ def setStatusIcons(show=True):
                 statuswidget.setIconSize(QtCore.QSize(s, s))
                 st.insertPermanentWidget(2, statuswidget)
 
-                # report panels toggle button
-                togglebutton = QtGui.QAction()
-                togglemenu = QtGui.QMenu()
-                for t in [
-                    "Toggle",
-                    "Report view",
-                    "Python console",
-                    "Selection view",
-                    "Combo View",
-                ]:
-                    a = QtGui.QAction(t)
-                    togglemenu.addAction(a)
-                togglemenu.triggered.connect(toggleSaveSettings)
-                togglebutton.setIcon(QtGui.QIcon(":/icons/BIM_TogglePanels.svg"))
-                togglebutton.setText("")
-                togglebutton.setToolTip(translate("BIM", "Toggle report panels on/off (Ctrl+0)"))
-                togglebutton.setCheckable(True)
-                rv = mw.findChild(QtGui.QWidget, "Python console")
-                if rv and rv.isVisible():
-                    togglebutton.setChecked(True)
-                statuswidget.togglebutton = togglebutton
-                # togglebutton.setMenu(togglemenu)
-                togglebutton.triggered.connect(toggle)
-                statuswidget.addAction(togglebutton)
-
                 # bim views widget toggle button
                 from bimcommands import BimViews
 
@@ -166,7 +117,7 @@ def setStatusIcons(show=True):
 
                 bimviewsbutton.setText("")
                 bimviewsbutton.setToolTip(
-                    translate("BIM", "Toggle BIM views panel on/off (Ctrl+9)")
+                    translate("BIM", "Toggles the BIM Views Manager on/off (Ctrl+9)")
                 )
                 bimviewsbutton.setCheckable(True)
                 if BimViews.findWidget():
@@ -182,7 +133,7 @@ def setStatusIcons(show=True):
                 bgbutton.setIcon(QtGui.QIcon(":/icons/BIM_Background.svg"))
                 bgbutton.setText("")
                 bgbutton.setToolTip(
-                    translate("BIM", "Toggle 3D view background between simple and gradient")
+                    translate("BIM", "Toggles the 3D View background between simple and gradient")
                 )
                 statuswidget.bgbutton = bgbutton
                 bgbutton.triggered.connect(toggleBackground)
@@ -204,10 +155,10 @@ def setStatusIcons(show=True):
                     translate(
                         "BIM",
                         "The value of the nudge movement (rotation is always 45°)."
-                        "CTRL+arrows to move\nCTRL+, to rotate left"
-                        "CTRL+. to rotate right\nCTRL+PgUp to extend extrusion"
-                        "CTRL+PgDown to shrink extrusion"
-                        "CTRL+/ to switch between auto and manual mode",
+                        "Alt+arrows to move\nAlt+, to rotate left"
+                        "Alt+. to rotate right\nAlt+PgUp to extend extrusion"
+                        "Alt+PgDown to shrink extrusion"
+                        "Alt+/ to switch between auto and manual mode",
                     )
                 )
                 statuswidget.addWidget(nudge)

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskSketcherMessages_H
-#define GUI_TASKVIEW_TaskSketcherMessages_H
+#pragma once
 
 #include <Gui/TaskView/TaskSolverMessages.h>
 
@@ -49,5 +50,3 @@ protected:
 };
 
 }  // namespace SketcherGui
-
-#endif  // GUI_TASKVIEW_TaskSketcherMessages_H

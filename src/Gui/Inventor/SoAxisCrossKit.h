@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_SOSHAPESCALE_H
-#define GUI_SOSHAPESCALE_H
+#pragma once
 
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/fields/SoSFFloat.h>
@@ -120,5 +121,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_SOSHAPESCALE_H

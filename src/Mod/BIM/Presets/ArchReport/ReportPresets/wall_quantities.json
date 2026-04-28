@@ -1,0 +1,24 @@
+{
+    "name": "Wall Quantities",
+    "description": "A schedule that lists all walls and calculates their total length.",
+    "statements": [
+        {
+            "description": "Wall List",
+            "query_string": "SELECT Label, Length, Height, Width FROM document WHERE IfcType = 'Wall'",
+            "use_description_as_header": true,
+            "include_column_names": true,
+            "add_empty_row_after": true,
+            "print_results_in_bold": false,
+            "is_pipelined": false
+        },
+        {
+            "description": "Total Wall Length",
+            "query_string": "SELECT 'Total Length', SUM(Length) FROM document WHERE IfcType = 'Wall'",
+            "use_description_as_header": false,
+            "include_column_names": false,
+            "add_empty_row_after": false,
+            "print_results_in_bold": true,
+            "is_pipelined": false
+        }
+    ]
+}

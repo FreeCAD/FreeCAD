@@ -23,12 +23,15 @@ generate_from_py(ViewProviderFemConstraint)
 generate_from_py(ViewProviderFemMesh)
 generate_from_py(ViewProviderFemPostPipeline)
 generate_from_py(ViewProviderFemPostFilter)
+generate_from_py(ViewProviderShapeExtension)
 
 SET(Python_SRCS
     ViewProviderFemConstraint.pyi
     ViewProviderFemConstraintPyImp.cpp
     ViewProviderFemMesh.pyi
     ViewProviderFemMeshPyImp.cpp
+    ViewProviderShapeExtension.pyi
+    ViewProviderShapeExtensionPyImp.cpp
 )
 if(BUILD_FEM_VTK)
     set(Python_SRCS
@@ -244,6 +247,8 @@ SET(FemGui_SRCS_ViewProvider
     ViewProviderFemConstraintTransform.h
     ViewProviderResult.cpp
     ViewProviderResult.h
+    ViewProviderShapeExtension.h
+    ViewProviderShapeExtension.cpp
 )
 SOURCE_GROUP("ViewProvider" FILES ${FemGui_SRCS_ViewProvider})
 
@@ -362,7 +367,7 @@ SET(FemGuiSymbol_IV
     Resources/symbols/ConstraintContact.iv
     Resources/symbols/ConstraintDisplacement.iv
     Resources/symbols/ConstraintElectricChargeDensity.iv
-    Resources/symbols/ConstraintElectrostaticPotential.iv
+    Resources/symbols/ConstraintElectromagnetic.iv
     Resources/symbols/ConstraintCurrentDensity.iv
     Resources/symbols/ConstraintFixed.iv
     Resources/symbols/ConstraintForce.iv
@@ -428,7 +433,7 @@ SET(FemGuiPythonUI_SRCS
     Resources/ui/CurrentDensity.ui
     Resources/ui/DlgSettingsNetgen.ui
     Resources/ui/ElectricChargeDensity.ui
-    Resources/ui/ElectrostaticPotential.ui
+    Resources/ui/Electromagnetic.ui
     Resources/ui/ElementFluid1D.ui
     Resources/ui/ElementGeometry1D.ui
     Resources/ui/ElementGeometry2D.ui
@@ -445,11 +450,21 @@ SET(FemGuiPythonUI_SRCS
     Resources/ui/MeshGroupXDMFExport.ui
     Resources/ui/MeshNetgen.ui
     Resources/ui/MeshRegion.ui
+    Resources/ui/MeshPreview.ui
+    Resources/ui/MeshPreviewSettings.ui
+    Resources/ui/MeshDistance.ui
+    Resources/ui/MeshManipulate.ui
+    Resources/ui/MeshAdvanced.ui
+    Resources/ui/MeshShape.ui
+    Resources/ui/MeshTransfiniteVolume.ui
+    Resources/ui/MeshTransfiniteSurface.ui
+    Resources/ui/MeshTransfiniteCurve.ui
     Resources/ui/ResultHints.ui
     Resources/ui/ResultShow.ui
     Resources/ui/SolverCalculiX.ui
     Resources/ui/SolverCcxTools.ui
     Resources/ui/SolverElmer.ui
+    Resources/ui/SolverZ88.ui
     Resources/ui/TaskPostGlyph.ui
     Resources/ui/TaskPostExtraction.ui
     Resources/ui/TaskPostHistogram.ui

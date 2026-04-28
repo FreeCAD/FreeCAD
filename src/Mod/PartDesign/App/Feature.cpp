@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -23,11 +25,15 @@
 
 #include <BRep_Tool.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
+#include <BRepCheck_Solid.hxx>
+#include <BRepCheck_Status.hxx>
 #include <gp_Pln.hxx>
 #include <gp_Pnt.hxx>
+#include <ShapeFix_Solid.hxx>
 #include <Standard_Failure.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
+#include <TopoDS_Builder.hxx>
 
 
 #include "App/Datums.h"
@@ -87,35 +93,14 @@ App::DocumentObjectExecReturn* Feature::recompute()
 {
     setMaterialToBodyMaterial();
 
-    SuppressedShape.setValue(TopoShape());
-
-    if (!Suppressed.getValue()) {
-        return Part::Feature::recompute();
-    }
-
-    bool failed = false;
-    try {
-        std::unique_ptr<App::DocumentObjectExecReturn> ret(Part::Feature::recompute());
-        if (ret) {
-            throw Base::RuntimeError(ret->Why);
-        }
-    }
-    catch (Base::AbortException&) {
-        throw;
-    }
-    catch (Base::Exception& e) {
-        failed = true;
-        e.reportException();
-        FC_ERR("Failed to recompute suppressed feature " << getFullName());
-    }
-
-    Shape.setValue(getBaseTopoShape(true));
-
-    if (!failed) {
+    if (Suppressed.getValue()) {
+        Shape.setValue(getBaseTopoShape(true));
         updateSuppressedShape();
+        return App::DocumentObject::StdReturn;
     }
 
-    return App::DocumentObject::StdReturn;
+    SuppressedShape.setValue(TopoShape());
+    return Part::Feature::recompute();
 }
 
 App::DocumentObjectExecReturn* Feature::recomputePreview()
@@ -217,6 +202,7 @@ void Feature::onChanged(const App::Property* prop)
         else if (prop == &Suppressed) {
             if (Suppressed.getValue()) {
                 SuppressedPlacement = Placement.getValue();
+                updateSuppressedShape();
             }
             else {
                 Placement.setValue(SuppressedPlacement);
@@ -239,6 +225,44 @@ int Feature::countSolids(const TopoDS_Shape& shape, TopAbs_ShapeEnum type)
         result++;
     }
     return result;
+}
+
+TopoShape Feature::fixSolids(const TopoShape& solids)
+{
+    if (solids.isNull()) {
+        return solids;
+    }
+
+    std::vector<TopoDS_Solid> fixSolids;
+
+    TopExp_Explorer xp;
+    xp.Init(solids.getShape(), TopAbs_SOLID);
+    for (; xp.More(); xp.Next()) {
+        TopoDS_Solid solid = TopoDS::Solid(xp.Current());
+        BRepCheck_Solid bs(solid);
+        if (bs.IsStatusOnShape(solid)) {
+            const auto& listOfStatus = bs.StatusOnShape(solid);
+            if (listOfStatus.Contains(BRepCheck_EnclosedRegion)) {
+                fixSolids.emplace_back(solid);
+            }
+        }
+    }
+
+    if (fixSolids.empty()) {
+        return solids;
+    }
+
+    TopoDS_Compound comp;
+    TopoDS_Builder bb;
+    bb.MakeCompound(comp);
+    for (const TopoDS_Solid& it : fixSolids) {
+        ShapeFix_Solid fix(it);
+        fix.Perform();
+        bb.Add(comp, fix.Solid());
+    }
+
+    TopoShape fixShape(comp);
+    return fixShape;
 }
 
 bool Feature::isSingleSolidRuleSatisfied(const TopoDS_Shape& shape, TopAbs_ShapeEnum type)

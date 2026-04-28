@@ -27,8 +27,15 @@ from .base import ToolBitShape
 
 
 class ToolBitShapeBullnose(ToolBitShape):
+    @classmethod
+    def filter_parameters(cls, params: dict) -> dict:
+        # Remove FlatRadius if present
+        params = dict(params)  # shallow copy
+        if "FlatRadius" in params:
+            del params["FlatRadius"]
+        return params
+
     name = "Bullnose"
-    aliases = "bullnose", "torus"
 
     @classmethod
     def schema(cls) -> Mapping[str, Tuple[str, str]]:

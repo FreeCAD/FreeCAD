@@ -39,7 +39,7 @@
 using namespace Gui;
 
 
-PROPERTY_SOURCE_WITH_EXTENSIONS(Gui::ViewProviderPart, Gui::ViewProviderDragger)
+PROPERTY_SOURCE_WITH_EXTENSIONS(Gui::ViewProviderPart, Gui::ViewProviderGeometryObject)
 
 
 /**
@@ -62,7 +62,7 @@ ViewProviderPart::~ViewProviderPart() = default;
  */
 void ViewProviderPart::onChanged(const App::Property* prop)
 {
-    ViewProviderDragger::onChanged(prop);
+    ViewProviderGeometryObject::onChanged(prop);
 }
 
 void ViewProviderPart::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
@@ -74,10 +74,10 @@ void ViewProviderPart::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     act->setChecked(isActivePart());
     func->trigger(act, [this]() { this->toggleActivePart(); });
 
-    ViewProviderDragger::setupContextMenu(menu, receiver, member);
+    ViewProviderGeometryObject::setupContextMenu(menu, receiver, member);
 }
 
-bool ViewProviderPart::isActivePart()
+bool ViewProviderPart::isActivePart(const char* key)
 {
     App::DocumentObject* activePart = nullptr;
     auto activeDoc = Gui::Application::Instance->activeDocument();
@@ -89,7 +89,7 @@ bool ViewProviderPart::isActivePart()
         return false;
     }
 
-    activePart = activeView->getActiveObject<App::DocumentObject*>(PARTKEY);
+    activePart = activeView->getActiveObject<App::DocumentObject*>(key);
 
     if (activePart == this->getObject()) {
         return true;

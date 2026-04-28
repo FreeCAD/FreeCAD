@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com      *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_VisualLayer_H
-#define SKETCHERGUI_VisualLayer_H
+#pragma once
 
 #include <map>
 #include <memory>
@@ -72,6 +73,3 @@ bool operator==(VisualLayer const& lhs, VisualLayer const& rhs)
 }
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_VisualLayer_H

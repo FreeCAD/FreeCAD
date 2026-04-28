@@ -70,14 +70,6 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
                 QT_TRANSLATE_NOOP("App::Property", "Additional base objects to be engraved"),
             )
         obj.setEditorMode("BaseShapes", 2)  # hide
-        if not hasattr(obj, "BaseObject"):
-            obj.addProperty(
-                "App::PropertyLink",
-                "BaseObject",
-                "Path",
-                QT_TRANSLATE_NOOP("App::Property", "Additional base objects to be engraved"),
-            )
-        obj.setEditorMode("BaseObject", 2)  # hide
 
     def initOperation(self, obj):
         """initOperation(obj) ... create engraving specific properties."""
@@ -99,38 +91,32 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
 
         jobshapes = []
 
-        if len(obj.Base) >= 1:  # user has selected specific subelements
+        if obj.Base:
+            # user has selected specific subelements
             Path.Log.track(len(obj.Base))
-            wires = []
             for base, subs in obj.Base:
                 edges = []
-                basewires = []
+                wires = []
                 for feature in subs:
                     sub = base.Shape.getElement(feature)
-                    if type(sub) == Part.Edge:
-                        edges.append(sub)
-                    elif sub.Wires:
-                        basewires.extend(sub.Wires)
+                    if sub.Wires:
+                        wires.extend(sub.Wires)
                     else:
-                        basewires.append(Part.Wire(sub.Edges))
+                        edges.extend(sub.Edges)
 
-                for edgelist in Part.sortEdges(edges):
-                    basewires.append(Part.Wire(edgelist))
+                wires.extend([Part.Wire(se) for se in Part.sortEdges(edges)])
 
-                wires.extend(basewires)
                 jobshapes.append(Part.makeCompound(wires))
 
-        elif len(obj.BaseShapes) > 0:  # user added specific shapes
+        elif obj.BaseShapes:
+            # user added specific shapes
             jobshapes.extend([base.Shape for base in obj.BaseShapes])
         else:
+            # process all objects in Job.Model.Group
             Path.Log.track(self.model)
             for base in self.model:
                 Path.Log.track(base.Label)
-                if base.isDerivedFrom("Part::Part2DObject"):
-                    jobshapes.append(base.Shape)
-                elif base.isDerivedFrom("Sketcher::SketchObject"):
-                    jobshapes.append(base.Shape)
-                elif hasattr(base, "ArrayType"):
+                if base.isDerivedFrom("Part::Feature") and base.Shape.Volume == 0:
                     jobshapes.append(base.Shape)
 
         if jobshapes:

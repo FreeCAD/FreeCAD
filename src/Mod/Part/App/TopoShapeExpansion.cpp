@@ -81,6 +81,8 @@
 #include <ShapeFix_ShapeTolerance.hxx>
 #include <gp_Pln.hxx>
 
+#include <boost/algorithm/string/predicate.hpp>
+
 #include <utility>
 
 #include <OSD_Parallel.hxx>
@@ -96,13 +98,15 @@
 #include "FaceMaker.h"
 #include "Geometry.h"
 #include "BRepOffsetAPI_MakeOffsetFix.h"
-#include "Base/BoundBox.h"
-#include "Base/Exception.h"
-#include "Base/Tools.h"
-#include "OCCTProgressIndicator.h"
+#include "ProgressIndicator.h"
 
 #include <App/ElementMap.h>
 #include <App/ElementNamingUtils.h>
+#include <Base/BoundBox.h>
+#include <Base/Exception.h>
+#include <Base/Sequencer.h>
+#include <Base/Tools.h>
+#include <SignalException.h>
 #include <ShapeAnalysis_FreeBoundsProperties.hxx>
 #include <BRepFeat_MakeRevol.hxx>
 
@@ -424,9 +428,10 @@ std::vector<TopoShape> TopoShape::findSubShapesWithSharedVertex(
                         }
                         auto options2 = options;
                         options2.setFlag(Data::SearchOption::SingleResult);
-                        if (ss.isNull() || s.isNull() || ss.shapeType() != s.shapeType()
-                            || ss.findSubShapesWithSharedVertex(s, nullptr, options2, tol, atol)
-                                   .empty()) {
+                        if (
+                            ss.isNull() || s.isNull() || ss.shapeType() != s.shapeType()
+                            || ss.findSubShapesWithSharedVertex(s, nullptr, options2, tol, atol).empty()
+                        ) {
                             found = false;
                             break;
                         }
@@ -1823,8 +1828,9 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                         continue;
                     }
                 }
-                else if (it == newNames.end()
-                         || !boost::starts_with(it->first.getType(), info.shapetype)) {
+                else if (
+                    it == newNames.end() || !boost::starts_with(it->first.getType(), info.shapetype)
+                ) {
                     break;
                 }
                 else {
@@ -2163,10 +2169,7 @@ TopoShape& TopoShape::makeElementEvolve(
     if (profileShape.IsNull() || !BRepBuilderAPI_FindPlane(profileShape).Found()) {
         if (profileShape.IsNull() || profile.countSubShapes(TopAbs_EDGE) > 1
             || !profile.getSubTopoShape(TopAbs_EDGE, 1).isLinearEdge()) {
-            FC_THROWM(
-                Base::CADKernelError,
-                "Expect the the profile to be a planar wire or a face or a line"
-            );
+            FC_THROWM(Base::CADKernelError, "Expect the profile to be a planar wire or a face or a line");
         }
     }
     if (spineShape.ShapeType() == TopAbs_FACE) {
@@ -2255,7 +2258,7 @@ TopoShape& TopoShape::makeElementRuledSurface(
     auto& S2 = curves[1];
     bool isWire = S1.shapeType() == TopAbs_WIRE;
 
-    // https://forum.freecadweb.org/viewtopic.php?f=8&t=24052
+    // https://forum.freecad.org/viewtopic.php?f=8&t=24052
     //
     // if both shapes are sub-elements of one common shape then the fill
     // algorithm leads to problems if the shape has set a placement. The
@@ -2467,7 +2470,7 @@ TopoShape& TopoShape::makeElementPipeShell(
     }
     else {
 #if OCC_VERSION_HEX >= 0x070600
-        mkPipeShell.Build(OCCTProgressIndicator::getAppIndicator().Start());
+        mkPipeShell.Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
         mkPipeShell.Build();
 #endif
@@ -2579,7 +2582,7 @@ TopoShape& TopoShape::makeElementOffset(
         aGenerator.AddWire(TopoDS::Wire(originalWire.getShape()));
         aGenerator.AddWire(offsetWire);
 #if OCC_VERSION_HEX >= 0x070600
-        aGenerator.Build(OCCTProgressIndicator::getAppIndicator().Start());
+        aGenerator.Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
         aGenerator.Build();
 #endif
@@ -2854,7 +2857,7 @@ TopoShape& TopoShape::makeElementOffset2D(
             }
 
             // Copying shape to fix strange orientation behavior, OCC7.0.0. See bug #2699
-            //  http://www.freecadweb.org/tracker/view.php?id=2699
+            //  http://www.freecad.org/tracker/view.php?id=2699
             offsetShape = shape.makeElementShape(mkOffset, op).makeElementCopy();
         }
         else {
@@ -2986,8 +2989,10 @@ TopoShape& TopoShape::makeElementOffset2D(
                     v3.Reverse();
                     v4.Reverse();
                 }
-                else if ((fabs(gp_Vec(BRep_Tool::Pnt(v2), BRep_Tool::Pnt(v4)).Magnitude() - fabs(offset))
-                          <= BRep_Tool::Tolerance(v2) + BRep_Tool::Tolerance(v4))) {
+                else if (
+                    (fabs(gp_Vec(BRep_Tool::Pnt(v2), BRep_Tool::Pnt(v4)).Magnitude() - fabs(offset))
+                     <= BRep_Tool::Tolerance(v2) + BRep_Tool::Tolerance(v4))
+                ) {
                     // orientation is as expected, nothing to do
                 }
                 else {
@@ -3014,11 +3019,10 @@ TopoShape& TopoShape::makeElementOffset2D(
                 // add final joining edge
                 mkWire.Add(BRepBuilderAPI_MakeEdge(v3, v1).Edge());
 #if OCC_VERSION_HEX >= 0x070600
-                mkWire.Build(OCCTProgressIndicator::getAppIndicator().Start());
+                mkWire.Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
                 mkWire.Build();
 #endif
-
                 wiresForMakingFaces.push_back(
                     TopoShape(Tag, Hasher).makeElementShape(mkWire, openWires, op)
                 );
@@ -3642,7 +3646,7 @@ struct MapperPrism: MapperMaker
             TopoShape shape(maker.Shape());
             for (auto& vertex : bottom.getSubShapes(TopAbs_VERTEX)) {
                 for (auto& e : shape.findAncestorsShapes(vertex, TopAbs_EDGE)) {
-                    // Make sure to not visit the the same edge twice.
+                    // Make sure to not visit the same edge twice.
                     // And check only edge that are not found in the bottom profile
                     if (!edgeSet.insert(e).second && !bottom.findShape(e)) {
                         auto otherVertex = TopExp::FirstVertex(TopoDS::Edge(e));
@@ -3908,7 +3912,7 @@ TopoShape& TopoShape::makeElementFilledFace(
     }
 
 #if OCC_VERSION_HEX >= 0x070600
-    maker.Build(OCCTProgressIndicator::getAppIndicator().Start());
+    maker.Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
     maker.Build();
 #endif
@@ -3990,9 +3994,10 @@ TopoShape& TopoShape::makeElementMirror(const TopoShape& shape, const gp_Ax2& ax
     }
     gp_Trsf mat;
     mat.SetMirror(ax2);
-    TopLoc_Location loc = shape.getShape().Location();
-    gp_Trsf placement = loc.Transformation();
-    mat = placement * mat;
+    // Note: Do NOT extract and pre-multiply the shape's Location/Placement here.
+    // BRepBuilderAPI_Transform correctly handles shapes with Location already.
+    // Pre-multiplying would double-apply the placement, causing incorrect results
+    // for shapes with non-identity Placement. See GitHub issue #20834.
     BRepBuilderAPI_Transform mkTrf(shape.getShape(), mat);
     return makeElementShape(mkTrf, shape, op);
 }
@@ -4135,13 +4140,23 @@ TopoShape& TopoShape::makeElementChamfer(
         if (!shape.findShape(edge)) {
             FC_THROWM(Base::CADKernelError, "edge does not belong to the shape");
         }
+        if (BRep_Tool::Degenerated(TopoDS::Edge(edge))) {
+            FC_THROWM(Base::CADKernelError, "chamfer edge is degenerated");
+        }
         // Add edge to fillet algorithm
         TopoDS_Shape face;
         if (flipDirection == Flip::flip) {
-            face = shape.findAncestorsShapes(edge, TopAbs_FACE).back();
+            const auto faces = shape.findAncestorsShapes(edge, TopAbs_FACE);
+            if (faces.empty()) {
+                FC_THROWM(Base::CADKernelError, "chamfer edge has no adjacent face");
+            }
+            face = faces.back();
         }
         else {
             face = shape.findAncestorShape(edge, TopAbs_FACE);
+        }
+        if (face.IsNull()) {
+            FC_THROWM(Base::CADKernelError, "chamfer edge has no adjacent face");
         }
         switch (chamferType) {
             case ChamferType::equalDistance:  // Equal distance
@@ -4156,6 +4171,7 @@ TopoShape& TopoShape::makeElementChamfer(
                 break;
         }
     }
+    Part::SignalException sig;
     return makeElementShape(mkChamfer, shape, op);
 }
 
@@ -4194,7 +4210,7 @@ TopoShape& TopoShape::makeElementGeneralFuse(
     }
     mkGFA.SetNonDestructive(Standard_True);
 #if OCC_VERSION_HEX >= 0x070600
-    mkGFA.Build(OCCTProgressIndicator::getAppIndicator().Start());
+    mkGFA.Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
     mkGFA.Build();
 #endif
@@ -4233,7 +4249,7 @@ TopoShape& TopoShape::makeElementXor(const std::vector<TopoShape>& shapes, const
         FC_THROWM(NullShapeException, "Null shape");
     }
 
-    if (OCCTProgressIndicator::getAppIndicator().UserBreak()) {
+    if (Base::Sequencer().wasCanceled()) {
         FC_THROWM(Base::CADKernelError, "User aborted");
     }
 
@@ -4421,7 +4437,7 @@ TopoShape& TopoShape::makeElementLoft(
                                                // #edges, orientation, "origin" to match.
 
 #if OCC_VERSION_HEX >= 0x070600
-    aGenerator.Build(OCCTProgressIndicator::getAppIndicator().Start());
+    aGenerator.Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
     aGenerator.Build();
 #endif
@@ -4745,7 +4761,7 @@ TopoShape& TopoShape::makeElementDraft(
                 // Note: the function ProblematicShape returns the face on which the error occurred
                 // Note: mkDraft.Remove() stumbles on a bug in Draft_Modification::Remove() and is
                 //       therefore unusable. See
-                //       http://forum.freecadweb.org/viewtopic.php?f=10&t=3209&start=10#p25341 The
+                //       http://forum.freecad.org/viewtopic.php?f=10&t=3209&start=10#p25341 The
                 //       only solution is to discard mkDraft and start over without the current face
                 // mkDraft.Remove(face);
                 FC_ERR("Failed to add some face for drafting, skip");
@@ -4757,7 +4773,7 @@ TopoShape& TopoShape::makeElementDraft(
     } while (retry && !done);
 
 #if OCC_VERSION_HEX >= 0x070600
-    mkDraft.Build(OCCTProgressIndicator::getAppIndicator().Start());
+    mkDraft.Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
     mkDraft.Build();
 #endif
@@ -4810,7 +4826,7 @@ TopoShape& TopoShape::makeElementFace(
         }
     }
 #if OCC_VERSION_HEX >= 0x070600
-    mkFace->Build(OCCTProgressIndicator::getAppIndicator().Start());
+    mkFace->Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
     mkFace->Build();
 #endif
@@ -5053,10 +5069,10 @@ TopoShape& TopoShape::makeElementBSplineFace(
         for (const auto& e : edges) {
             const TopoDS_Edge& edge = TopoDS::Edge(e.getShape());
             TopLoc_Location heloc;  // this will be output
-            Handle(Geom_Curve) c_geom = BRep_Tool::Curve(edge, heloc, u1, u2);  // The geometric curve
-            Handle(Geom_BSplineCurve) bspline = Handle(Geom_BSplineCurve)::DownCast(
-                c_geom
-            );  // Try to get BSpline curve
+            Handle(Geom_Curve)
+                c_geom = BRep_Tool::Curve(edge, heloc, u1, u2);  // The geometric curve
+            Handle(Geom_BSplineCurve)
+                bspline = Handle(Geom_BSplineCurve)::DownCast(c_geom);  // Try to get BSpline curve
             if (!bspline.IsNull()) {
                 gp_Trsf transf = heloc.Transformation();
                 bspline->Transform(transf);  // apply original transformation to control points
@@ -5085,8 +5101,8 @@ TopoShape& TopoShape::makeElementBSplineFace(
                 else {
                     // BRepBuilderAPI_NurbsConvert failed, try ShapeConstruct_Curve now
                     ShapeConstruct_Curve scc;
-                    Handle(Geom_BSplineCurve) spline
-                        = scc.ConvertToBSpline(c_geom, u1, u2, Precision::Confusion());
+                    Handle(Geom_BSplineCurve)
+                        spline = scc.ConvertToBSpline(c_geom, u1, u2, Precision::Confusion());
                     if (spline.IsNull()) {
                         Standard_Failure::Raise(
                             "A curve was not a B-spline and could not be converted into one."
@@ -5326,14 +5342,15 @@ std::vector<Data::MappedName> TopoShape::decodeElementComboName(
 /**
  * Reorient the outer and inner wires of the TopoShape
  *
- * @param inner If this is not a nullptr, then any inner wires processed will be returned in this
- * vector.
- * @param reorient  One of NoReorient, Reorient ( Outer forward, inner reversed ),
- *                  ReorientForward ( all forward ), or ReorientReversed ( all reversed )
+ * @param innerWiresOutput If this is not a nullptr, then any inner wires processed will be returned
+ * in this vector.
+ * @param reorient One of NoReorient, Reorient (Outer forward, inner reversed),
+ *                 ReorientForward (all forward), or ReorientReversed (all reversed)
+ *
  * @return The outer wire, or an empty TopoShape if this isn't a Face, has no Face subShapes, or the
  *         outer wire isn't found.
  */
-TopoShape TopoShape::splitWires(std::vector<TopoShape>* inner, SplitWireReorient reorient) const
+TopoShape TopoShape::splitWires(std::vector<TopoShape>* innerWiresOutput, SplitWireReorient reorient) const
 {
     // ShapeAnalysis::OuterWire() is un-reliable for some reason. OCC source
     // code shows it works by creating face using each wire, and then test using
@@ -5341,24 +5358,24 @@ TopoShape TopoShape::splitWires(std::vector<TopoShape>* inner, SplitWireReorient
     // outbound wire. And practice shows it sometimes returns the incorrect
     // result. Need more investigation. Note that this may be related to
     // unreliable solid face orientation
-    // (https://forum.freecadweb.org/viewtopic.php?p=446006#p445674)
+    // (https://forum.freecad.org/viewtopic.php?p=446006#p445674)
     //
     // Use BrepTools::OuterWire() instead. OCC source code shows it is
     // implemented using simple bound box checking. This should be a
     // reliable method, especially so for a planar face.
 
-    TopoDS_Shape tmp;
+    TopoDS_Shape outerWire;
+
     if (shapeType(true) == TopAbs_FACE) {
-        tmp = BRepTools::OuterWire(TopoDS::Face(_Shape));
+        outerWire = BRepTools::OuterWire(TopoDS::Face(_Shape));
     }
     else if (countSubShapes(TopAbs_FACE) == 1) {
-        tmp = BRepTools::OuterWire(TopoDS::Face(getSubShape(TopAbs_FACE, 1)));
+        outerWire = BRepTools::OuterWire(TopoDS::Face(getSubShape(TopAbs_FACE, 1)));
     }
-    if (tmp.IsNull()) {
+
+    if (outerWire.IsNull()) {
         return TopoShape {};
     }
-    const auto& wires = getSubTopoShapes(TopAbs_WIRE);
-    auto it = wires.begin();
 
     TopAbs_Orientation orientOuter, orientInner;
     switch (reorient) {
@@ -5374,55 +5391,51 @@ TopoShape TopoShape::splitWires(std::vector<TopoShape>* inner, SplitWireReorient
             break;
     }
 
-    auto doReorient = [](TopoShape& s, TopAbs_Orientation orient) {
+    auto reorientIfNecessary = [reorient](TopoShape& shape, TopAbs_Orientation orient) {
+        if (reorient == NoReorient) {
+            return;
+        }
+
         // Special case of single edge wire. Make sure the edge is in the
         // required orientation. This is necessary because BRepFill_OffsetWire
         // has special handling of circular edge offset, which seem to only
         // respect the edge orientation and disregard the wire orientation. The
         // orientation is used to determine whether to shrink or expand.
-        if (s.countSubShapes(TopAbs_EDGE) == 1) {
-            TopoDS_Shape e = s.getSubShape(TopAbs_EDGE, 1);
-            if (e.Orientation() == orient) {
-                if (s._Shape.Orientation() == orient) {
+        if (shape.countSubShapes(TopAbs_EDGE) == 1) {
+            TopoDS_Shape edge = shape.getSubShape(TopAbs_EDGE, 1);
+            if (edge.Orientation() == orient) {
+                if (shape._Shape.Orientation() == orient) {
                     return;
                 }
             }
             else {
-                e = e.Oriented(orient);
+                edge = edge.Oriented(orient);
             }
-            BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(e));
-            s.setShape(mkWire.Shape(), false);
+
+            BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(edge));
+            shape.setShape(mkWire.Shape(), false);
         }
-        else if (s._Shape.Orientation() != orient) {
-            s.setShape(s._Shape.Oriented(orient), false);
+        else if (shape._Shape.Orientation() != orient) {
+            shape.setShape(shape._Shape.Oriented(orient), false);
         }
     };
 
-    for (; it != wires.end(); ++it) {
-        auto& wire = *it;
-        if (wire.getShape().IsSame(tmp)) {
-            if (inner) {
-                for (++it; it != wires.end(); ++it) {
-                    inner->push_back(*it);
-                    if (reorient) {
-                        doReorient(inner->back(), orientInner);
-                    }
-                }
-            }
-            auto res = wire;
-            if (reorient) {
-                doReorient(res, orientOuter);
-            }
-            return res;
+    TopoShape outerWireResult {};
+
+    for (auto& wire : getSubTopoShapes(TopAbs_WIRE)) {
+        if (wire.getShape().IsSame(outerWire)) {
+            outerWireResult = wire;
+            reorientIfNecessary(outerWireResult, orientOuter);
+            continue;
         }
-        if (inner) {
-            inner->push_back(wire);
-            if (reorient) {
-                doReorient(inner->back(), orientInner);
-            }
+
+        if (innerWiresOutput) {
+            innerWiresOutput->push_back(wire);
+            reorientIfNecessary(innerWiresOutput->back(), orientInner);
         }
     }
-    return TopoShape {};
+
+    return outerWireResult;
 }
 
 bool TopoShape::isLinearEdge() const
@@ -5818,16 +5831,16 @@ TopoShape& TopoShape::makeElementBoolean(
         FC_THROWM(Base::CADKernelError, "no maker");
     }
 
-    if (!op) {
-        op = maker;
-    }
-
     if (shapes.empty()) {
         FC_THROWM(NullShapeException, "Null shape");
     }
 
-    if (OCCTProgressIndicator::getAppIndicator().UserBreak()) {
+    if (Base::Sequencer().wasCanceled()) {
         FC_THROWM(Base::CADKernelError, "User aborted");
+    }
+
+    if (!op) {
+        op = maker;
     }
 
     if (strcmp(maker, Part::OpCodes::Compound) == 0) {
@@ -5999,11 +6012,11 @@ TopoShape& TopoShape::makeElementBoolean(
         FCBRepAlgoAPIHelper::setAutoFuzzy(mk.get());
     }
 #if OCC_VERSION_HEX >= 0x070600
-    mk->Build(OCCTProgressIndicator::getAppIndicator().Start());
+    mk->Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
     mk->Build();
 #endif
-    if (OCCTProgressIndicator::getAppIndicator().UserBreak()) {
+    if (Base::Sequencer().wasCanceled()) {
         FC_THROWM(Base::CADKernelError, "User aborted");
     }
     makeElementShape(*mk, inputs, op);

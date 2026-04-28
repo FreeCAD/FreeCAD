@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2020 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SOMOUSEWHEELEVENT_H_FC
-#define SOMOUSEWHEELEVENT_H_FC
+#pragma once
 
 
 #include <Inventor/events/SoEvent.h>
@@ -63,5 +64,3 @@ public:  // methods
 private:  // data
     int delta;
 };
-
-#endif

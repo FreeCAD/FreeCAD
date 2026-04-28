@@ -41,6 +41,8 @@ Examples
 TODO put examples here.
 """
 
+import math
+
 import FreeCAD
 import ArchCommands
 import ArchIFC
@@ -64,13 +66,10 @@ else:
     # \endcond
 
 
-def addToComponent(compobject, addobject, mod=None):
-    """Add an object to a component's properties.
+def addToComponent(compobject, addobject, prop):
+    """Add an object to a component's property.
 
-    Does not run if the addobject already exists in the component's properties.
-    Adds the object to the first property found of Base, Group, or Hosts.
-
-    If mod is provided, adds the object to that property instead.
+    Does not run if the addobject already exists in the component's OutListRecursive.
 
     Parameters
     ----------
@@ -78,52 +77,31 @@ def addToComponent(compobject, addobject, mod=None):
         The component object to add the object to.
     addobject: <App::DocumentObject>
         The object to add to the component.
-    mod: str, optional
+    prop: str
         The property to add the object to.
     """
 
     import Draft
 
+    if not hasattr(compobject, prop):
+        return
     if compobject == addobject:
         return
-    # first check zis already there
-    found = False
-    attribs = ["Additions", "Objects", "Components", "Subtractions", "Base", "Group", "Hosts"]
-    for a in attribs:
-        if hasattr(compobject, a):
-            if a == "Base":
-                if addobject == getattr(compobject, a):
-                    found = True
-            else:
-                if addobject in getattr(compobject, a):
-                    found = True
-    if not found:
-        if mod:
-            if hasattr(compobject, mod):
-                if mod == "Base":
-                    setattr(compobject, mod, addobject)
-                    addobject.ViewObject.hide()
-                elif mod == "Axes":
-                    if Draft.getType(addobject) == "Axis":
-                        l = getattr(compobject, mod)
-                        l.append(addobject)
-                        setattr(compobject, mod, l)
-                else:
-                    l = getattr(compobject, mod)
-                    l.append(addobject)
-                    setattr(compobject, mod, l)
-                    if mod != "Objects":
-                        addobject.ViewObject.hide()
-                        if Draft.getType(compobject) == "PanelSheet":
-                            addobject.Placement.move(compobject.Placement.Base.negative())
-        else:
-            for a in attribs[:3]:
-                if hasattr(compobject, a):
-                    l = getattr(compobject, a)
-                    l.append(addobject)
-                    setattr(compobject, a, l)
-                    addobject.ViewObject.hide()
-                    break
+    if addobject in compobject.OutListRecursive:
+        return
+
+    if prop == "Base":
+        setattr(compobject, prop, addobject)
+        addobject.Visibility = False
+    elif prop == "Axes":
+        if Draft.getType(addobject) == "Axis":
+            setattr(compobject, prop, getattr(compobject, prop) + [addobject])
+    else:
+        setattr(compobject, prop, getattr(compobject, prop) + [addobject])
+        if prop not in ("Hosts", "Objects"):
+            addobject.Visibility = False
+            if Draft.getType(compobject) == "PanelSheet":
+                addobject.Placement.move(compobject.Placement.Base.negative())
 
 
 def removeFromComponent(compobject, subobject):
@@ -199,6 +177,10 @@ class Component(ArchIFC.IfcProduct):
         The object to turn into an Arch Component
     """
 
+    # List of properties to override in App::Link.
+    # Subclasses which require overrides (e.g. Window, Rebar) should populate the overrides list.
+    LinkOverrideProperties = []
+
     def __init__(self, obj):
         obj.Proxy = self
         self.Type = "Component"
@@ -271,18 +253,30 @@ class Component(ArchIFC.IfcProduct):
                 "Component",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "An optional standard (OmniClass, etc…) code for this component",
+                    "An optional standard (OmniClass, etc.) code for this component",
                 ),
                 locked=True,
             )
         if not "Material" in pl:
             obj.addProperty(
-                "App::PropertyLink",
+                "App::PropertyLinkGlobal",
                 "Material",
                 "Component",
                 QT_TRANSLATE_NOOP("App::Property", "A material for this object"),
                 locked=True,
             )
+        elif obj.getTypeIdOfProperty("Material") == "App::PropertyLink":
+            mat = obj.Material
+            obj.setPropertyStatus("Material", "-LockDynamic")
+            obj.removeProperty("Material")
+            obj.addProperty(
+                "App::PropertyLinkGlobal",
+                "Material",
+                "Component",
+                QT_TRANSLATE_NOOP("App::Property", "A material for this object"),
+                locked=True,
+            )
+            obj.Material = mat
         if "BaseMaterial" in pl:
             obj.Material = obj.BaseMaterial
             obj.removeProperty("BaseMaterial")
@@ -389,16 +383,34 @@ class Component(ArchIFC.IfcProduct):
         obj: <App::FeaturePython>
             The component object.
         """
+        import Part
 
         if self.clone(obj):
             return
-        if not self.ensureBase(obj):
+        if getattr(obj, "Base", None) is None:
+            # Do not modify Arch_Components without a Base object.
             return
-        if obj.Base:
-            shape = self.spread(obj, obj.Base.Shape)
-            if obj.Additions or obj.Subtractions:
-                shape = self.processSubShapes(obj, shape)
-            obj.Shape = shape
+
+        if hasattr(obj.Base, "Shape") and not obj.Base.Shape.isNull():
+            # The Base object contains valid geometry.
+            # Create a standalone shape as a deep copy of the base geometry, to avoid modifying
+            # the original source.
+            base_shape = Part.Shape(obj.Base.Shape)
+
+            # Reset the shape's internal placement to Identity. This strips the placement
+            # inherited from the Base object, ensuring the geometry is centered at (0,0,0) for
+            # Boolean operations in processSubShapes. This also prevents the shape's placement from
+            # overwriting the Component's own Placement property during assignment in applyShape.
+            base_shape.Placement = FreeCAD.Placement()
+
+            # Localize the CSG shapes: pass the object's placement to processSubShapes, so that the
+            # placements of any additions and subtractions are also localized to the local origin of
+            # the Arch Component.
+            final_shape = self.processSubShapes(obj, base_shape, obj.Placement)
+            self.applyShape(obj, final_shape, obj.Placement, allownosolid=True)
+        else:
+            # Clear the shape to avoid leaving a stale shape.
+            obj.Shape = Part.Shape()
 
     def dumps(self):
         return None
@@ -441,8 +453,6 @@ class Component(ArchIFC.IfcProduct):
         prop: string
             The name of the property that has changed.
         """
-
-        import math
 
         ArchIFC.IfcProduct.onChanged(self, obj, prop)
 
@@ -758,7 +768,6 @@ class Component(ArchIFC.IfcProduct):
             before being rotated.
         """
 
-        import math
         import DraftGeomUtils
 
         # Get the object's center.
@@ -829,11 +838,18 @@ class Component(ArchIFC.IfcProduct):
                                 if Draft.getType(o) == "Roof":
                                     continue
                             o.ViewObject.hide()
-            elif prop in ["Mesh"]:
+            elif prop == "HiRes":
                 if hasattr(obj, prop):
                     o = getattr(obj, prop)
                     if o:
                         o.ViewObject.hide()
+
+    def handleComponentRemoval(self, obj, subobject):
+        """
+        Default handler for when a component is removed via the Task Panel.
+        Subclasses can override this to provide special behavior.
+        """
+        removeFromComponent(obj, subobject)
 
     def processSubShapes(self, obj, base, placement=None):
         """Add Additions and Subtractions to a base shape.
@@ -1261,6 +1277,8 @@ class Component(ArchIFC.IfcProduct):
     def ensureBase(self, obj):
         """Returns False if the object has a Base but of the wrong type.
         Either returns True"""
+        # TODO: this method has a third undocumented state: None, which is returned if the object
+        # has no Base. This should either be fixed if unintended, or documented if intended.
 
         if getattr(obj, "Base", None):
             if obj.Base.isDerivedFrom("Part::Feature"):
@@ -1297,6 +1315,20 @@ class Component(ArchIFC.IfcProduct):
             if self._isInternalLinkgroup(inObj):
                 return True
         return False
+
+    def appLinkExecute(self, obj, linkObj, index, linkElement):
+        """
+        App::Link hook: called when a link to a BIM object is created.
+        Used to setup shadow properties for lightweight instancing.
+        """
+        # Shadow the given property so multiple links can have independent values without triggering
+        # a deep copy of the BIM object geometry.
+        if self.LinkOverrideProperties:
+            ArchCommands.override_link_properties(linkObj, self.LinkOverrideProperties)
+
+        # Execute features in the SketchArch External Add-on, if present
+        if hasattr(self, "executeSketchArchFeatures"):
+            self.executeSketchArchFeatures(obj, linkObj, index, linkElement)
 
 
 class AreaCalculator:
@@ -1335,12 +1367,20 @@ class AreaCalculator:
         for prop in ["VerticalArea", "HorizontalArea", "PerimeterLength"]:
             setattr(self.obj, prop, 0)
 
-    def isFaceVertical(self, face):
+    def isFaceVertical(self, face, face_index=None):
         """Determine if a face is vertical.
 
         A face is considered vertical if:
         - Its normal vector forms an angle close to 90 degrees with the Z-axis.
         - The projected face has an area of zero.
+
+        Parameters
+        ----------
+        face : Part.Face
+            The face object to be checked.
+        face_index : str, optional
+            The face's 1-based index identifier, used for debugging error messages.
+            Defaults to None.
 
         Notes
         -----
@@ -1350,56 +1390,58 @@ class AreaCalculator:
         as vertical and be counted. This is an improvement over the fix for
         https://github.com/FreeCAD/FreeCAD/issues/14687.
         """
-        from Part import OCCError, Face
-        from DraftGeomUtils import findWires
-        from TechDraw import project
+        import Part
+        import DraftGeomUtils
+        import TechDraw
 
-        try:
-            projectedFace = Face(findWires(project(face, FreeCAD.Vector(0, 0, 1))[0].Edges))
-        except OCCError:
-            FreeCAD.Console.PrintWarning(
-                translate("Arch", f"Could not project face from {self.obj.Label}\n")
-            )
-            return False
+        face_name = f" Face{face_index}" if face_index is not None else ""
 
-        isProjectedAreaZero = projectedFace.Area < 0.0001
-
-        try:
-            angle = face.normalAt(0, 0).getAngle(FreeCAD.Vector(0, 0, 1))
-            return self.isRightAngle(angle) and isProjectedAreaZero
-        except OCCError:
-            FreeCAD.Console.PrintWarning(
-                translate(
-                    "Arch",
-                    f"Could not determine if a face from {self.obj.Label}"
-                    " is vertical: normalAt() failed\n",
+        if face.Surface.TypeId == "Part::GeomCylinder":
+            angle = face.Surface.Axis.getAngle(FreeCAD.Vector(0, 0, 1))
+            return self.isZeroAngle(angle)
+        elif face.Surface.TypeId == "Part::GeomSurfaceOfExtrusion":
+            angle = face.Surface.Direction.getAngle(FreeCAD.Vector(0, 0, 1))
+            return self.isZeroAngle(angle)
+        elif face.Surface.TypeId == "Part::GeomPlane":
+            projectedArea = 0  # dummy value, isRightAngle check is sufficient here
+        elif face.findPlane() is not None:
+            projectedArea = 0  # dummy value, idem
+        else:
+            try:
+                edges = TechDraw.project(face, FreeCAD.Vector(0, 0, 1))[0].Edges
+                wires = DraftGeomUtils.findWires(edges)
+                if len(wires) == 1 and not wires[0].isClosed():
+                    projectedArea = 0
+                else:
+                    projectedArea = Part.Face(wires).Area
+            except Part.OCCError:
+                FreeCAD.Console.PrintWarning(
+                    translate("Arch", f"Could not project face{face_name} from {self.obj.Label}\n")
                 )
-            )
-            return False
-
-    def isFaceHorizontal(self, face):
-        """Determine if a face is horizontal.
-
-        A face is considered horizontal if its normal vector is parallel to the Z-axis.
-        """
-        from Part import OCCError
+                return False
 
         try:
             angle = face.normalAt(0, 0).getAngle(FreeCAD.Vector(0, 0, 1))
-            return not self.isRightAngle(angle)
-        except OCCError:
+            return self.isRightAngle(angle) and projectedArea < 0.0001
+        except Part.OCCError:
             FreeCAD.Console.PrintWarning(
                 translate(
                     "Arch",
-                    f"Could not determine if a face from {self.obj.Label}"
-                    " is horizontal: normalAt() failed\n",
+                    f"Could not determine if face{face_name} from {self.obj.Label}"
+                    " is vertical: normalAt() failed\n",
                 )
             )
             return False
 
     def isRightAngle(self, angle):
         """Check if the angle is close to 90 degrees."""
-        return 1.57 < angle < 1.571
+        return math.isclose(angle, math.pi / 2, abs_tol=0.0005)
+
+    def isZeroAngle(self, angle):
+        """Check if the angle is close to 0 or 180 degrees."""
+        if math.isclose(angle, 0, abs_tol=0.0005):
+            return True
+        return math.isclose(angle, math.pi, abs_tol=0.0005)
 
     def compute(self):
         """Compute the vertical area, horizontal area, and perimeter length.
@@ -1420,53 +1462,73 @@ class AreaCalculator:
             return
 
         verticalArea = 0
-        horizontalFaces = []
+        horizontalAreaFaces = []
 
-        # Compute vertical area and collect horizontal faces
-        for face in self.obj.Shape.Faces:
-            if self.isFaceVertical(face):
+        # Compute vertical area and collect faces to be projected for the horizontal area
+        for i, face in enumerate(self.obj.Shape.Faces, start=1):
+            if self.isFaceVertical(face, face_index=i):
                 verticalArea += face.Area
-            elif self.isFaceHorizontal(face):
-                horizontalFaces.append(face)
+            else:
+                horizontalAreaFaces.append(face)
 
         # Update vertical area
-        if verticalArea and hasattr(self.obj, "VerticalArea"):
-            if self.obj.VerticalArea.Value != verticalArea:
-                self.obj.VerticalArea = verticalArea
+        if hasattr(self.obj, "VerticalArea") and self.obj.VerticalArea.Value != verticalArea:
+            self.obj.VerticalArea = verticalArea
 
         # Compute horizontal area and perimeter length
-        if horizontalFaces and hasattr(self.obj, "HorizontalArea"):
-            self._computeHorizontalAreaAndPerimeter(horizontalFaces)
+        if horizontalAreaFaces and hasattr(self.obj, "HorizontalArea"):
+            self._computeHorizontalAreaAndPerimeter(horizontalAreaFaces)
 
-    def _computeHorizontalAreaAndPerimeter(self, horizontalFaces):
+    def _computeHorizontalAreaAndPerimeter(self, horizontalAreaFaces):
         """Compute the horizontal area and perimeter length.
 
-        Projects the given horizontal faces onto the XY plane, fuses them,
-        and calculates:
+        Projects the given faces onto the XY plane, fuses them, and calculates:
         - The total horizontal area.
         - The perimeter length of the fused horizontal area.
 
         Parameters
         ----------
-        horizontalFaces : list of Part.Face
-            The horizontal faces to process.
-
-        Notes
-        -----
-        The operation of projecting faces is done with the `Part::FaceMakerCheese`
-        facemaker algorithm, so that holes in the faces are taken into account for
-        the area calculation.
+        horizontalAreaFaces: list of Part.Face
+            The faces to process.
         """
-        import Part
-        from DraftGeomUtils import findWires
-        from TechDraw import project
 
+        import Part
+        import TechDraw
+        import DraftGeomUtils
+
+        # In TechDraw edges longer than 9999.9 (ca. 10m) are considered 'crazy'.
+        # See also Draft/draftobjects/hatch.py.
+        param_grp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/TechDraw/debug")
+        if "allowCrazyEdge" not in param_grp.GetBools():
+            old_allow_crazy_edge = None
+        else:
+            old_allow_crazy_edge = param_grp.GetBool("allowCrazyEdge")
+        param_grp.SetBool("allowCrazyEdge", True)
+
+        direction = FreeCAD.Vector(0, 0, 1)
         projectedFaces = []
-        for face in horizontalFaces:
+        for face in horizontalAreaFaces:
             try:
-                projectedEdges = project(face, FreeCAD.Vector(0, 0, 1))[0].Edges
-                wires = findWires(projectedEdges)
-                projectedFace = Part.makeFace(wires, "Part::FaceMakerCheese")
+                if face.findPlane() is None:
+                    if len(face.Wires) > 1:
+                        # Non-planar faces with holes are not handled properly
+                        FreeCAD.Console.PrintWarning(
+                            translate(
+                                "Arch",
+                                f"Error computing areas for {self.obj.Label}: unable to project "
+                                "non-planar faces with holes. Area values will be reset to 0.\n",
+                            )
+                        )
+                        self.resetAreas()
+                        return
+                    wire = TechDraw.findShapeOutline(face, 1, direction)
+                    projectedFace = Part.makeFace([wire], "Part::FaceMakerSimple")
+                else:
+                    edges = TechDraw.project(face, direction)[0].Edges
+                    wires = DraftGeomUtils.findWires(edges)
+                    # Using "Part::FaceMakerCheese" as the face can have holes
+                    projectedFace = Part.makeFace(wires, "Part::FaceMakerCheese")
+                # Part.show(projectedFace)
                 projectedFaces.append(projectedFace)
             except Part.OCCError:
                 FreeCAD.Console.PrintWarning(
@@ -1480,21 +1542,23 @@ class AreaCalculator:
                 self.resetAreas()
                 return
 
+        if old_allow_crazy_edge is None:
+            param_grp.RemBool("allowCrazyEdge")
+        else:
+            param_grp.SetBool("allowCrazyEdge", old_allow_crazy_edge)
+
         if projectedFaces:
             fusedFace = projectedFaces.pop()
             for face in projectedFaces:
                 fusedFace = fusedFace.fuse(face)
             fusedFace = fusedFace.removeSplitter()
+            # Part.show(fusedFace)
 
             if self.obj.HorizontalArea.Value != fusedFace.Area:
                 self.obj.HorizontalArea = fusedFace.Area
 
             if hasattr(self.obj, "PerimeterLength") and len(fusedFace.Faces) == 1:
-                edgeTable = {}
-                for edge in fusedFace.Edges:
-                    edgeTable.setdefault(edge.hashCode(), []).append(edge)
-                borderEdges = [edges[0] for edges in edgeTable.values() if len(edges) == 1]
-                perimeterLength = sum(edge.Length for edge in borderEdges)
+                perimeterLength = fusedFace.Faces[0].OuterWire.Length
                 if self.obj.PerimeterLength.Value != perimeterLength:
                     self.obj.PerimeterLength = perimeterLength
 
@@ -1822,7 +1886,7 @@ class ViewProviderComponent:
                 if hasattr(self.Object, link):
                     objlink = getattr(self.Object, link)
                     c.extend(objlink)
-            for link in ["Tool", "Subvolume", "Mesh", "HiRes"]:
+            for link in ["Tool", "Subvolume", "HiRes"]:
                 if hasattr(self.Object, link):
                     objlink = getattr(self.Object, link)
                     if objlink:
@@ -2054,6 +2118,10 @@ class ComponentTaskPanel:
     """
 
     def __init__(self):
+        """
+        Initializes the task panel. The transaction context is implicitly opened by the C++ layer
+        when entering edit mode.
+        """
         # the panel has a tree widget that contains categories
         # for the subcomponents, such as additions, subtractions.
         # the categories are shown only if they are not empty.
@@ -2138,6 +2206,8 @@ class ComponentTaskPanel:
         )
         self.update()
 
+        self.doc = FreeCAD.ActiveDocument
+
     def isAllowedAlterSelection(self):
         """Indicate whether this task dialog allows other commands to modify
         the selection while it is open.
@@ -2163,9 +2233,9 @@ class ComponentTaskPanel:
         return True
 
     def getStandardButtons(self):
-        """Add the standard ok button."""
+        """Add the standard Ok/Cancel buttons."""
 
-        return QtGui.QDialogButtonBox.Ok
+        return QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel
 
     def check(self, wid, col):
         """This method is run as the callback when the user selects an item in the tree.
@@ -2266,45 +2336,61 @@ class ComponentTaskPanel:
     def addElement(self):
         """This method is run as a callback when the user selects the add button.
 
-        Get the object selected in the 3D view, and get the attribute folder
+        Get the objects selected in the 3D view, and get the attribute folder
         selected in the tree widget.
 
-        Add the object selected in the 3D view to the attribute associated with
+        Add the objects selected in the 3D view to the attribute associated with
         the selected folder, by using function addToComponent().
         """
-
         it = self.tree.currentItem()
         if it:
-            mod = None
-            for a in self.attribs:
-                if it.text(0) == getattr(self, "tree" + a).text(0):
-                    mod = a
-            for o in FreeCADGui.Selection.getSelection():
-                addToComponent(self.obj, o, mod)
-        self.update()
+            for prop in self.attribs:
+                if it.text(0) == getattr(self, "tree" + prop).text(0):
+                    for o in FreeCADGui.Selection.getSelection():
+                        addToComponent(self.obj, o, prop)
+                    self.obj.recompute()
+                    self.update()
+                    break
 
     def removeElement(self):
-        """This method is run as a callback when the user selects the remove button.
-
-        Get the object selected in the tree widget. If there is an object in
-        the document with the same Name as the selected item in the tree,
-        remove it from the object being edited, with the removeFromComponent()
-        function.
         """
+        This method is run as a callback when the user selects the remove button.
+        It calls a handler on the object's proxy to perform the removal.
+        """
+        element_selected = self.tree.currentItem()
+        if not element_selected:
+            return
 
-        it = self.tree.currentItem()
-        if it:
-            comp = FreeCAD.ActiveDocument.getObject(str(it.toolTip(0)))
-            removeFromComponent(self.obj, comp)
+        element_to_remove = FreeCAD.ActiveDocument.getObject(str(element_selected.toolTip(0)))
+
+        # Call the polymorphic handler on the object's proxy.
+        # This is generic and works for any Arch object.
+        if hasattr(self.obj.Proxy, "handleComponentRemoval"):
+            self.obj.Proxy.handleComponentRemoval(self.obj, element_to_remove)
+        else:
+            # Fallback for older proxies that might not have the method
+            removeFromComponent(self.obj, element_to_remove)
+
+        self.obj.recompute()
         self.update()
 
     def accept(self):
         """This method runs as a callback when the user selects the ok button.
 
         Recomputes the document, and leave edit mode.
-        """
 
+        The transaction is implicitly committed by the C++ layer during resetEdit.
+        """
         FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.ActiveDocument.resetEdit()
+        return True
+
+    def reject(self):
+        """
+        Aborts the edit session. An explicit abort is required to prevent the C++ layer from
+        committing changes during resetEdit.
+        """
+        self.doc.abortTransaction()
         FreeCADGui.ActiveDocument.resetEdit()
         return True
 
@@ -2527,13 +2613,11 @@ class ComponentTaskPanel:
             ifcData["IfcUID"] = self.ifcEditor.labelUUID.text()
             ifcData["FlagForceBrep"] = str(self.ifcEditor.checkBrep.isChecked())
             ifcData["FlagParametric"] = str(self.ifcEditor.checkParametric.isChecked())
-            if (ifcdict != self.obj.IfcProperties) or (ifcData != self.obj.IfcData):
-                FreeCAD.ActiveDocument.openTransaction("Change Ifc Properties")
-                if ifcdict != self.obj.IfcProperties:
-                    self.obj.IfcProperties = ifcdict
-                if ifcData != self.obj.IfcData:
-                    self.obj.IfcData = ifcData
-                FreeCAD.ActiveDocument.commitTransaction()
+            # The transaction context is implicitly opened by the C++ layer when entering edit mode.
+            if ifcdict != self.obj.IfcProperties:
+                self.obj.IfcProperties = ifcdict
+            if ifcData != self.obj.IfcData:
+                self.obj.IfcData = ifcData
             del self.ifcEditor
 
     def addIfcProperty(self, idx=0, pset=None, prop=None, ptype=None):
@@ -2672,6 +2756,174 @@ class ComponentTaskPanel:
         FreeCADGui.Selection.clearSelection()
         FreeCADGui.Selection.addSelection(self.obj)
         FreeCADGui.runCommand("BIM_Classification")
+
+
+class ComponentOptionsTaskPanel(ComponentTaskPanel):
+    """
+    A generic TaskPanel that generates UI widgets based on a provided configuration.
+    It inherits from ComponentTaskPanel to keep the standard 'Components' tree functionality.
+    """
+
+    def __init__(self, obj, property_definitions):
+        """
+        obj: The FreeCAD object being edited.
+        property_definitions: A list of dictionaries defining the properties.
+                              e.g. [{'prop': 'Length'}]
+                              or [{'prop': 'Length', 'label': translate("Arch", "Total Length")}]
+        """
+        import re
+
+        super().__init__()
+        self.obj = obj
+        self.update()  # Populate the components tree now that self.obj is set
+        self.property_definitions = property_definitions
+        self.property_widgets = {}  # Map property name to {'widget': widget, 'type': type_id}
+
+        self.options_widget = QtGui.QWidget()
+        self.options_widget.setWindowTitle(translate("Arch", "Options"))
+        layout = QtGui.QFormLayout(self.options_widget)
+        loader = FreeCADGui.UiLoader()
+
+        for item in self.property_definitions:
+            prop_name = item["prop"]
+
+            # Heuristics for label: Use provided label or fallback to split CamelCase
+            label_text = item.get("label", re.sub(r"(?<!^)(?=[A-Z])", " ", prop_name))
+
+            # Check if property exists on Data object or View object
+            target_obj = self.obj
+            if not hasattr(target_obj, prop_name):
+                if hasattr(self.obj, "ViewObject") and hasattr(self.obj.ViewObject, prop_name):
+                    target_obj = self.obj.ViewObject
+                else:
+                    continue
+
+            prop_val = getattr(target_obj, prop_name)
+            prop_type_id = target_obj.getTypeIdOfProperty(prop_name)
+            widget = None
+
+            # Quantity types
+            if prop_type_id in [
+                "App::PropertyLength",
+                "App::PropertyDistance",
+                "App::PropertyArea",
+                "App::PropertyVolume",
+                "App::PropertyAngle",
+            ]:
+                widget = loader.createWidget("Gui::QuantitySpinBox")
+                FreeCADGui.ExpressionBinding(widget).bind(target_obj, prop_name)
+                widget.setProperty("value", prop_val)
+
+            # Float
+            elif prop_type_id == "App::PropertyFloat":
+                widget = loader.createWidget("Gui::DoubleSpinBox")
+                FreeCADGui.ExpressionBinding(widget).bind(target_obj, prop_name)
+                # Unlike `Gui::QuantitySpinbox`, `Gui::DoubleSpinBox` requires explicit initialization
+                widget.setDecimals(
+                    FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt(
+                        "Decimals", 2
+                    )
+                )
+                widget.setRange(-(2**31), 2**31)
+                widget.setValue(float(prop_val))
+
+            # Integer types
+            elif prop_type_id in ["App::PropertyInteger", "App::PropertyPercent"]:
+                widget = loader.createWidget("Gui::IntSpinBox")
+                FreeCADGui.ExpressionBinding(widget).bind(target_obj, prop_name)
+                widget.setProperty("value", int(prop_val))
+
+                if prop_type_id == "App::PropertyPercent":
+                    widget.setProperty("minimum", 0)
+                    widget.setProperty("maximum", 100)
+
+            # Boolean
+            elif prop_type_id == "App::PropertyBool":
+                widget = QtGui.QCheckBox()
+                widget.setChecked(prop_val)
+
+            # Enumeration (ComboBox)
+            elif prop_type_id == "App::PropertyEnumeration":
+                widget = QtGui.QComboBox()
+                # Combo boxes tend to have long texts in BIM. Do not use them to calculate the
+                # size of the task boxes, which would appear too wide and would grow beyond their
+                # task panel container
+                widget.setSizeAdjustPolicy(QtGui.QComboBox.AdjustToMinimumContentsLengthWithIcon)
+                widget.setMinimumContentsLength(20)
+                widget.addItems(target_obj.getEnumerationsOfProperty(prop_name))
+                idx = widget.findText(prop_val)
+                if idx >= 0:
+                    widget.setCurrentIndex(idx)
+
+            # String
+            elif prop_type_id == "App::PropertyString":
+                widget = loader.createWidget("Gui::ExpLineEdit")
+                FreeCADGui.ExpressionBinding(widget).bind(target_obj, prop_name)
+                widget.setProperty("text", prop_val)
+
+            # String List
+            elif prop_type_id == "App::PropertyStringList":
+                widget = QtGui.QPlainTextEdit()
+                widget.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
+                if prop_val:
+                    widget.setPlainText("\n".join(prop_val))
+
+            if widget:
+                tooltip = target_obj.getDocumentationOfProperty(prop_name)
+                if tooltip:
+                    widget.setToolTip(tooltip)
+                layout.addRow(label_text, widget)
+                self.property_widgets[prop_name] = {
+                    "widget": widget,
+                    "type": prop_type_id,
+                    "object": target_obj,
+                }
+
+        # Prepend the options widget to the form list (inherited from ComponentTaskPanel)
+        self.form = [self.options_widget, self.baseform]
+
+    def accept(self):
+        """Automatically save values back to the object"""
+        for prop_name, data in self.property_widgets.items():
+            widget = data["widget"]
+            prop_type = data["type"]
+            target_obj = data["object"]
+
+            try:
+                # Quantities, Floats and Integers
+                if prop_type in [
+                    "App::PropertyLength",
+                    "App::PropertyDistance",
+                    "App::PropertyArea",
+                    "App::PropertyVolume",
+                    "App::PropertyAngle",
+                    "App::PropertyFloat",
+                    "App::PropertyInteger",
+                    "App::PropertyPercent",
+                ]:
+                    setattr(target_obj, prop_name, widget.property("value"))
+
+                # Bools
+                elif prop_type == "App::PropertyBool":
+                    setattr(target_obj, prop_name, widget.isChecked())
+
+                # Enumerations
+                elif prop_type == "App::PropertyEnumeration":
+                    setattr(target_obj, prop_name, widget.currentText())
+
+                # Strings
+                elif prop_type == "App::PropertyString":
+                    setattr(target_obj, prop_name, widget.text())
+
+                # String Lists
+                elif prop_type == "App::PropertyStringList":
+                    setattr(target_obj, prop_name, widget.toPlainText().splitlines())
+
+            except Exception as e:
+                msg = translate("Arch", "Error saving property")
+                FreeCAD.Console.PrintError(f"{msg} {prop_name}: {str(e)}\n")
+
+        return super().accept()
 
 
 if FreeCAD.GuiUp:

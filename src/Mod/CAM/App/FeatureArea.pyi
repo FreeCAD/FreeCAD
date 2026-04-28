@@ -23,7 +23,10 @@ class FeatureArea(DocumentObject):
         ...
 
     def setParams(self, **kwargs) -> Any:
-        """setParams(key=value...): Convenient function to configure this feature.
+        """
+        Convenient function to configure this feature.
+
+        Call with keywords: setParams(key=value, ...)
 
         Same usage as Path.Area.setParams(). This function stores the parameters in the properties.
         """

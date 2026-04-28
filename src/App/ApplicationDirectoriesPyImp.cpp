@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************************************
  *                                                                                                 *
  *   Copyright (c) 2025 The FreeCAD project association AISBL                                      *
@@ -78,7 +79,12 @@ std::string ApplicationDirectoriesPy::representation() const
             }
             paths[i] = Base::FileInfo::stringToPath(s);
         }
-        App::Application::directories()->migrateAllPaths(paths);
+        auto result = App::Application::directories()->migrateAllPaths(paths);
+        Py::List failedList;
+        for (const auto& path : result.failedPaths) {
+            failedList.append(Py::String(Base::FileInfo::pathToString(path)));
+        }
+        return Py::new_reference_to(failedList);
     }
     Py_Return;
 }
@@ -131,10 +137,14 @@ std::string ApplicationDirectoriesPy::representation() const
     if (!PyArg_ParseTuple(args, "ss", &oldPath, &newPath)) {
         return nullptr;
     }
-    App::ApplicationDirectories::migrateConfig(
+    auto result = App::ApplicationDirectories::migrateConfig(
         Base::FileInfo::stringToPath(oldPath),
         Base::FileInfo::stringToPath(newPath));
-    Py_Return;
+    Py::List failedList;
+    for (const auto& path : result.failedPaths) {
+        failedList.append(Py::String(Base::FileInfo::pathToString(path)));
+    }
+    return Py::new_reference_to(failedList);
 }
 
 PyObject* ApplicationDirectoriesPy::getCustomAttributes([[maybe_unused]] const char* attr) const

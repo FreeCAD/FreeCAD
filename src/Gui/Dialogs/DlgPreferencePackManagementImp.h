@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Chris Hennes <chennes@pioneerlibrarysystem.org>    *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGPREFERENCEPACKMANAGEMENTIMP_H
-#define GUI_DIALOG_DLGPREFERENCEPACKMANAGEMENTIMP_H
+#pragma once
 
 #include <memory>
 #include <QDialog>
@@ -85,5 +86,3 @@ private:
 
 }  // namespace Dialog
 }  // namespace Gui
-
-#endif  // GUI_DIALOG_DLGPREFERENCEPACKMANAGEMENTIMP_H

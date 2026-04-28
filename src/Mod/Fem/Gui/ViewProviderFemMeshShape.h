@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef FEM_ViewProviderFemMeshShape_H
-#define FEM_ViewProviderFemMeshShape_H
+#pragma once
 
 #include <Gui/ViewProviderFeaturePython.h>
 
@@ -61,6 +60,3 @@ using ViewProviderFemMeshShapeBasePython
     = Gui::ViewProviderFeaturePythonT<ViewProviderFemMeshShapeBase>;
 
 }  // namespace FemGui
-
-
-#endif  // FEM_ViewProviderFemMeshShape_H

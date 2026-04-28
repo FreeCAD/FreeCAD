@@ -1,3 +1,7 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export
 from GeometrySurface import GeometrySurface
 
@@ -23,7 +27,7 @@ class PlateSurface(GeometrySurface):
         MaxDistance: float = 0,
         CritOrder: int = 0,
         Continuity: str = "",
-        EnlargeCoeff: float = 0
+        EnlargeCoeff: float = 0,
     ) -> None:
         """
         Approximate the plate surface to a B-Spline surface

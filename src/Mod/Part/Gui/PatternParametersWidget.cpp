@@ -46,8 +46,8 @@ using namespace PartGui;
 
 PatternParametersWidget::PatternParametersWidget(PatternType type, QWidget* parent)
     : QWidget(parent)
-    , type(type)
     , ui(new Ui_PatternParametersWidget)
+    , type(type)
 {
     ui->setupUi(this);
     setupUiElements();
@@ -67,6 +67,10 @@ void PatternParametersWidget::setupUiElements()
 
     if (type == PatternType::Polar) {
         setTitle(tr("Axis"));
+        ui->comboMode->setItemText(0, tr("Total Angle"));
+        ui->comboMode->setItemText(1, tr("Angular Spacing"));
+        ui->labelLength->setText(tr("Total Angle"));
+        ui->labelOffset->setText(tr("Angular Spacing"));
     }
 
     // Set combo box helper

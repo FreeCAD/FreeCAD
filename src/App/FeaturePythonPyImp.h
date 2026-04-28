@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 // clang-format off
-#ifndef APP_FEATUREPYTHONPYIMP_H
-#define APP_FEATUREPYTHONPYIMP_H
+#pragma once
 
 #include <Base/BaseClass.h>
 #include <Base/Interpreter.h>
@@ -116,5 +117,4 @@ private:
 # pragma GCC diagnostic pop
 #endif
 
-#endif // APP_FEATUREPYTHONPYIMP_H
 // clang-format on

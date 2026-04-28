@@ -383,7 +383,7 @@ class CAMSanity:
                 )
                 continue  # skip old-style tools
             tooldata = data.setdefault(str(TC.ToolNumber), {})
-            bitshape = tooldata.setdefault("ShapeType", "")
+            bitshape = tooldata.get("ShapeType", "")
             if bitshape not in ["", TC.Tool.ShapeType]:
                 data["squawkData"].append(
                     self.squawk(
@@ -394,6 +394,7 @@ class CAMSanity:
                         squawkType="CAUTION",
                     )
                 )
+            tooldata["ShapeType"] = TC.Tool.ShapeType
             tooldata["bitShape"] = TC.Tool.ShapeType
             tooldata["description"] = TC.Tool.Label
             tooldata["manufacturer"] = ""
@@ -505,6 +506,159 @@ class CAMSanity:
         Path.Log.debug("get_output_url")
 
         generator = ReportGenerator.ReportGenerator(self.data, embed_images=True)
-        html = generator.generate_html()
-        generator = None
-        return html
+        return generator.generate_html()
+
+    def get_all_squawks(self, overrides=None):
+        """Collect squawks from all validation sections without generating images or HTML.
+
+        Calls each _xxxData() method directly using the current image_builder (a
+        DummyImageBuilder when invoked via validate_job(), so no GUI or file I/O occurs).
+        Also runs _validate_job_structure() for structural checks.
+
+        Args:
+            overrides: Optional dict of postprocessor property overrides.
+                       Passed through to apply_configuration_bundle() so that
+                       callers (e.g. the dialog) can inject values without
+                       modifying the job.
+
+        Returns:
+            tuple: (all_squawks, critical_squawks) where critical = WARNING or CAUTION
+        """
+        all_squawks = []
+        for method in [
+            self._toolData,
+            self._outputData,
+            self._runData,
+            self._stockData,
+            self._fixtureData,
+            self._baseObjectData,
+            self._designData,
+        ]:
+            try:
+                all_squawks.extend(method().get("squawkData", []))
+            except Exception as e:
+                Path.Log.warning(f"get_all_squawks: {method.__name__} failed: {e}")
+        all_squawks.extend(self._validate_job_structure())
+
+        # Collect postprocessor-specific squawks
+        if hasattr(self.job, "Machine") and self.job.Machine:
+            try:
+                from Machine.models.machine import MachineFactory
+                from Path.Post.Processor import PostProcessorFactory
+
+                machine = MachineFactory.get_machine(self.job.Machine)
+                postprocessor_name = getattr(machine, "postprocessor_file_name", None)
+                if postprocessor_name:
+                    postprocessor = PostProcessorFactory.get_post_processor(
+                        self.job, postprocessor_name
+                    )
+                    if postprocessor and hasattr(postprocessor, "get_sanity_checks"):
+                        if hasattr(postprocessor, "apply_configuration_bundle"):
+                            postprocessor.apply_configuration_bundle(overrides=overrides)
+                        pp_squawks = postprocessor.get_sanity_checks(self.job)
+                        all_squawks.extend(pp_squawks)
+            except Exception as e:
+                Path.Log.warning(f"Failed to get postprocessor sanity checks: {e}")
+
+        critical = [s for s in all_squawks if s["squawkType"] in ("WARNING", "CAUTION")]
+        Path.Log.debug(f"get_all_squawks: {len(all_squawks)} squawks, {len(critical)} critical")
+        Path.Log.debug(f"Critical squawks: {critical}")
+        return all_squawks, critical
+
+    @staticmethod
+    def validate_job(job, overrides=None):
+        """Lightweight job validation without generating images or HTML.
+
+        Bypasses __init__ entirely to avoid calling summarize() or any image-generation
+        code. Sets up only the attributes needed by the _xxxData() methods, uses
+        DummyImageBuilder unconditionally, and calls get_all_squawks().
+
+        Args:
+            job: FreeCAD CAM job object
+            overrides: Optional dict of postprocessor property overrides.
+                       When provided these are passed to the postprocessor's
+                       apply_configuration_bundle() instead of reading from the job.
+
+        Returns:
+            tuple: (all_squawks, critical_squawks) where critical = WARNING or CAUTION
+        """
+        import tempfile
+        import os as _os
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            sanity = object.__new__(CAMSanity)
+            sanity.job = job
+            sanity.output_file = _os.path.join(tmpdir, "dummy.html")
+            sanity.filelocation = tmpdir
+            sanity.image_builder = ImageBuilder.DummyImageBuilder(tmpdir)
+            sanity.data = {}
+            return sanity.get_all_squawks(overrides=overrides)
+
+    def validate_for_postprocessing(self):
+        """
+        Lightweight validation for post-processing without full report generation.
+
+        Returns:
+            tuple: (has_critical_issues, all_squawks, critical_squawks)
+        """
+        all_squawks = []
+
+        # Collect squawks from key validation methods
+        all_squawks.extend(self._toolData().get("squawkData", []))
+
+        # Add basic job structure validation
+        job_squawks = self._validate_job_structure()
+        all_squawks.extend(job_squawks)
+
+        # Identify critical squawks that should block post-processing
+        critical_squawks = []
+        for squawk in all_squawks:
+            if squawk["squawkType"] in ("WARNING", "CAUTION"):
+                note = squawk["Note"].lower()
+                # Critical issues for post-processing
+                if any(
+                    keyword in note
+                    for keyword in [
+                        "no feedrate",
+                        "no spindlespeed",
+                        "no tool controllers",
+                        "no operations",
+                        "no model",
+                        "no base",
+                    ]
+                ):
+                    critical_squawks.append(squawk)
+
+        has_critical = len(critical_squawks) > 0
+        return has_critical, all_squawks, critical_squawks
+
+    def _validate_job_structure(self):
+        """
+        Validate basic job structure for post-processing.
+
+        Returns:
+            list: List of squawk dictionaries for job structure issues
+        """
+        job_squawks = []
+
+        # Check if job has operations
+        if not hasattr(self.job, "Operations") or not self.job.Operations:
+            job_squawks.append(
+                self.squawk(
+                    "CAMSanity",
+                    translate("CAM_Sanity", "No operations found in job"),
+                    squawkType="WARNING",
+                )
+            )
+
+        # Check if job has model
+        if not hasattr(self.job, "Model") or not self.job.Model:
+            job_squawks.append(
+                self.squawk(
+                    "CAMSanity",
+                    translate("CAM_Sanity", "No model/base geometry found in job"),
+                    squawkType="WARNING",
+                )
+            )
+
+        return job_squawks

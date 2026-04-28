@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -42,7 +44,7 @@ using namespace SketcherGui;
     qApp->translate("Workbench", "Constraints");
     qApp->translate("Workbench", "Sketcher Helpers");
     qApp->translate("Workbench", "B-Spline Tools");
-    qApp->translate("Workbench", "Visual Tools");
+    qApp->translate("Workbench", "Visual Helpers");
     qApp->translate("Workbench", "Virtual Space");
     qApp->translate("Workbench", "Sketcher Edit Tools");
 #endif
@@ -286,6 +288,7 @@ template<>
 inline void SketcherAddWorkbenchSketchEditModeActions(Gui::MenuItem& sketch)
 {
     sketch << "Sketcher_LeaveSketch"
+           << "Sketcher_CancelSketch"
            << "Sketcher_ViewSketch"
            << "Sketcher_ViewSection"
            << "Sketcher_StopOperation";
@@ -453,7 +456,8 @@ inline void SketcherAddWorkbenchGeometries(T& geom)
     SketcherAddWorkspaceRectangles(geom);
     SketcherAddWorkspaceRegularPolygon(geom);
     SketcherAddWorkspaceslots(geom);
-    geom << "Separator"
+    geom << "Sketcher_CreateText"
+         << "Separator"
          << "Sketcher_ToggleConstruction";
     /*<< "Sketcher_CreateText"*/
     /*<< "Sketcher_CreateDraftLine"*/;
@@ -485,6 +489,7 @@ inline void SketcherAddWorkbenchConstraints<Gui::MenuItem>(Gui::MenuItem& cons)
          << "Sketcher_ConstrainEqual"
          << "Sketcher_ConstrainSymmetric"
          << "Sketcher_ConstrainBlock"
+         << "Sketcher_ConstrainGroup"
          << "Separator"
          << "Sketcher_Dimension"
          << "Sketcher_ConstrainDistanceX"
@@ -551,7 +556,8 @@ inline void SketcherAddWorkbenchConstraints<Gui::ToolBarItem>(Gui::ToolBarItem& 
          << "Sketcher_ConstrainTangent"
          << "Sketcher_ConstrainEqual"
          << "Sketcher_ConstrainSymmetric"
-         << "Sketcher_ConstrainBlock";
+         << "Sketcher_ConstrainBlock"
+         << "Sketcher_ConstrainGroup";
 
     cons << "Separator"
          << "Sketcher_CompToggleConstraints";

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /******************************************************************************
  *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
@@ -21,8 +23,7 @@
  ******************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskTransformedParameters_H
-#define GUI_TASKVIEW_TaskTransformedParameters_H
+#pragma once
 
 #include <Gui/ComboLinks.h>
 #include <Gui/DocumentObserver.h>
@@ -241,5 +242,3 @@ protected:
 };
 
 }  // namespace PartDesignGui
-
-#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

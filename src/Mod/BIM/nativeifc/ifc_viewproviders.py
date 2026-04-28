@@ -467,7 +467,7 @@ class ifc_vp_document(ifc_vp_object):
         msg += " ?"
         dlg = QtGui.QMessageBox.question(
             None,
-            "Replace IFC file path?",
+            "Replace IFC File Path?",
             msg,
             QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
             QtGui.QMessageBox.No,
@@ -488,7 +488,7 @@ class ifc_vp_document(ifc_vp_object):
         msg += "Continue anyway?"
         dlg = QtGui.QMessageBox.question(
             None,
-            "Replace IFC file schema?",
+            "Replace IFC File Schema?",
             msg,
             QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
             QtGui.QMessageBox.No,
@@ -620,6 +620,9 @@ class ifc_vp_buildingpart(ifc_vp_object, ArchBuildingPart.ViewProviderBuildingPa
     def __init__(self, vobj):
         ArchBuildingPart.ViewProviderBuildingPart.__init__(self, vobj)
 
+    def attach(self, vobj):
+        ArchBuildingPart.ViewProviderBuildingPart.attach(self, vobj)
+
 
 def overlay(icon1, icon2):
     """Overlays icon2 onto icon1"""
@@ -656,7 +659,7 @@ def get_filepath(project):
 
     sf = QtGui.QFileDialog.getSaveFileName(
         None,
-        "Save an IFC file",
+        "Save an IFC File",
         project.IfcFilePath,
         "Industry Foundation Classes (*.ifc)",
     )

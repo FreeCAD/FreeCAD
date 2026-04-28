@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2021 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_EditModeCoinManagerParameters_H
-#define SKETCHERGUI_EditModeCoinManagerParameters_H
+#pragma once
 
 #include <map>
 #include <vector>
@@ -591,5 +592,3 @@ struct CoinMapping
 };
 
 }  // namespace SketcherGui
-
-#endif  // SKETCHERGUI_EditModeCoinManagerParameters_H

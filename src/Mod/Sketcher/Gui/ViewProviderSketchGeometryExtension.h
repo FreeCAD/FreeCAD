@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2020 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHER_VIEWPROVIDERSKETCHGEOMETRYEXTENSION_H
-#define SKETCHER_VIEWPROVIDERSKETCHGEOMETRYEXTENSION_H
+#pragma once
 
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher/SketcherGlobal.h>
@@ -82,6 +83,3 @@ private:
 };
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHER_VIEWPROVIDERSKETCHGEOMETRYEXTENSION_H

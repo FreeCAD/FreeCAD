@@ -1,7 +1,10 @@
-from Base.Metadata import export, constmethod, class_declarations
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
+from Base.Metadata import export, class_declarations
 from Base.PyObjectBase import PyObjectBase
 from Part.TopoShapePy import TopoShape
-from typing import Final, overload
 
 @export(
     PythonName="Part.HLRBRep_PolyAlgo",
@@ -10,8 +13,7 @@ from typing import Final, overload
     Include="HLRBRep_PolyAlgo.hxx",
     Constructor=True,
 )
-@class_declarations(
-    """
+@class_declarations("""
 private:
     Handle(HLRBRep_PolyAlgo) hAlgo;
 
@@ -19,8 +21,7 @@ public:
     Handle(HLRBRep_PolyAlgo) handle() {
         return hAlgo;
     }
-"""
-)
+""")
 class HLRBRep_PolyAlgo(PyObjectBase):
     """
     PolyAlgo() -> HLRBRep_PolyAlgo
@@ -62,7 +63,7 @@ class HLRBRep_PolyAlgo(PyObjectBase):
       same shape.
     """
 
-    def load(self, S: TopoShape) -> None:
+    def load(self, S: TopoShape, /) -> None:
         """
         load(S)
 
@@ -70,7 +71,7 @@ class HLRBRep_PolyAlgo(PyObjectBase):
         """
         ...
 
-    def remove(self, i: int) -> None:
+    def remove(self, i: int, /) -> None:
         """
         remove(i)
 
@@ -87,7 +88,7 @@ class HLRBRep_PolyAlgo(PyObjectBase):
         """
         ...
 
-    def shape(self, i: int) -> TopoShape:
+    def shape(self, i: int, /) -> TopoShape:
         """
         shape(i) -> TopoShape
 
@@ -95,7 +96,7 @@ class HLRBRep_PolyAlgo(PyObjectBase):
         """
         ...
 
-    def index(self, S: TopoShape) -> int:
+    def index(self, S: TopoShape, /) -> int:
         """
         index(S) ->  int
 
@@ -105,11 +106,10 @@ class HLRBRep_PolyAlgo(PyObjectBase):
 
     def setProjector(
         self,
-        *,
         Origin: tuple[float, float, float] = (0.0, 0.0, 0.0),
         ZDir: tuple[float, float, float] = (0.0, 0.0, 0.0),
         XDir: tuple[float, float, float] = (0.0, 0.0, 0.0),
-        focus: float = float("nan")
+        focus: float = float("nan"),
     ) -> None:
         """
         setProjector(Origin=(0, 0, 0), ZDir=(0,0,0), XDir=(0,0,0), focus=NaN)
@@ -165,7 +165,7 @@ class HLRBRep_PolyAlgo(PyObjectBase):
         """
         ...
 
-    def outLinedShape(self, S: TopoShape) -> TopoShape:
+    def outLinedShape(self, S: TopoShape, /) -> TopoShape:
         """
         outLinedShape(S) -> TopoShape
 

@@ -22,8 +22,7 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef IMPORT_IMPORTOCAF2_H
-#define IMPORT_IMPORTOCAF2_H
+#pragma once
 
 #include <map>
 #include <set>
@@ -104,6 +103,10 @@ public:
     void setShowProgress(bool enable)
     {
         options.showProgress = enable;
+    }
+    bool showProgress() const
+    {
+        return options.showProgress;
     }
     void setExpandCompound(bool enable)
     {
@@ -297,5 +300,3 @@ private:
 };
 
 }  // namespace Import
-
-#endif  // IMPORT_IMPORTOCAF2_H

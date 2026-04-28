@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef PART_PREVIEWEXTENSION_H
-#define PART_PREVIEWEXTENSION_H
+#pragma once
 
 #include "PropertyTopoShape.h"
 
@@ -68,6 +67,34 @@ private:
     bool _isPreviewFresh {false};
 };
 
+/**
+ * Service interface for update scheduler implementation.
+ *
+ * The scheduler manages the timing of preview recomputations. It is designed to debounce
+ * multiple requests—such as those occurring during batch property updates—ensuring that
+ * expensive preview computations are only performed when the system is idle or at a
+ * more convenient time, rather than for every intermediate step.
+ */
+class PartExport PreviewUpdateScheduler
+{
+public:
+    PreviewUpdateScheduler() = default;
+    virtual ~PreviewUpdateScheduler() = default;
+
+    FC_DISABLE_COPY_MOVE(PreviewUpdateScheduler);
+
+    /**
+     * Schedules a preview recompute for the given object.
+     *
+     * Instead of triggering an immediate update, this method registers the object
+     * with the scheduler. If multiple updates are requested in rapid succession,
+     * the scheduler should collapse them into a single recomputation to improve performance.
+     *
+     * @param object The preview extension of the object that requires an update.
+     */
+    virtual void schedulePreviewRecompute(App::DocumentObject* object) = 0;
+};
+
 template<typename ExtensionT>
 class PreviewExtensionPythonT: public ExtensionT
 {
@@ -80,5 +107,3 @@ public:
 using PreviewExtensionPython = App::ExtensionPythonT<PreviewExtensionPythonT<PreviewExtension>>;
 
 }  // namespace Part
-
-#endif  // PART_PREVIEWEXTENSION_H

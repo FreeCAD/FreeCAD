@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHER_SKETCHOBJECT_H
-#define SKETCHER_SKETCHOBJECT_H
+#pragma once
 
 #include <App/FeaturePython.h>
 #include <App/IndexedName.h>
@@ -141,6 +142,22 @@ public:
      \retval bool - true if the geometry is supported
      */
     bool isSupportedGeometry(const Part::Geometry* geo) const;
+
+    /*!
+     \brief Returns true if the geometry is in a group
+     \param geoId - the geometry id in the sketch
+     \param includeHandle - return true if geoId is the group construction line handle
+     \retval bool - true if the geometry is supported
+     */
+    bool isInGroup(int geoId, bool includeHandle = true) const;
+    bool isGroupHandle(int geoId) const;
+    std::set<int> getGroupGeometries(int handleGeoId) const;
+    /*!
+     \brief Returns geoId if it's not in a group. Or the group handle if it is in a group.
+     \param geoId - the geometry id in the sketch
+     */
+    int getGroupHandleIfInGroup(int geoId);
+
     /*!
      \brief Add geometry to a sketch - It adds a copy with a different uuid (internally uses copy()
      instead of clone()) \param geo - geometry to add \param construction - true for construction
@@ -289,6 +306,8 @@ public:
     {
         return ExternalGeo.getSize();
     }
+    /// Ensure ExternalGeo contains H/V axis. Must be called when rebuilding external or restoring.
+    void fixMissingAxisInExternalGeo();
     /// auto fix external geometry references
     void fixExternalGeometry(const std::vector<int>& geoIds = {});
 
@@ -335,6 +354,14 @@ public:
     int setDatum(int ConstrId, double Datum);
     /// get the datum of a Distance or Angle constraint
     double getDatum(int ConstrId) const;
+    /// set the text and font of a text constraint
+    int setTextAndFont(
+        int ConstrId,
+        std::string& newText,
+        std::string& newFont,
+        bool isHeight,
+        bool isConstruction = false
+    );
     /// set the driving status of this constraint and solve
     int setDriving(int ConstrId, bool isdriving);
     /// get the driving status of this constraint
@@ -349,6 +376,8 @@ public:
     int setActive(int ConstrId, bool isactive);
     /// get the driving status of this constraint
     int getActive(int ConstrId, bool& isactive);
+    // Return true if the constraint is active, includes checking if it's not in a group
+    bool isConstraintActiveInSketch(const Sketcher::Constraint* cstr) const;
     /// toggle the driving status of this constraint
     int toggleActive(int ConstrId);
 
@@ -369,15 +398,12 @@ public:
     /// Change an angle constraint to its supplementary angle.
     void reverseAngleConstraintToSupplementary(Constraint* constr, int constNum);
     void inverseAngleConstraint(Constraint* constr);
-    /// Modify an angle constraint expression string to its supplementary angle
-    static std::string reverseAngleConstraintExpression(std::string expression);
 
     // Check if a constraint has an expression associated.
     bool constraintHasExpression(int constNum) const;
     // Get a constraint associated expression
     std::string getConstraintExpression(int constNum) const;
     // Set a constraint associated expression
-    void setConstraintExpression(int constNum, const std::string& newExpression);
     void setExpression(const App::ObjectIdentifier& path, std::shared_ptr<App::Expression> expr) override;
 
     /// set the driving status of this constraint and solve
@@ -409,13 +435,6 @@ public:
     /// retrieves the coordinates of a point
     static Base::Vector3d getPoint(const Part::Geometry* geo, PointPos PosId);
     Base::Vector3d getPoint(int GeoId, PointPos PosId) const;
-    template<class GeomType>
-    static Base::Vector3d getPointForGeometry(const GeomType* geo, PointPos PosId)
-    {
-        (void)geo;
-        (void)PosId;
-        return Base::Vector3d();
-    }
 
     /// toggle geometry to draft line
     int toggleConstruction(int GeoId);
@@ -640,13 +659,16 @@ public:
         PointPos PosId,
         std::vector<int>& GeoIdList,
         std::vector<PointPos>& PosIdList
-    );
+    ) const;
     void getDirectlyCoincidentPoints(
         int VertexId,
         std::vector<int>& GeoIdList,
         std::vector<PointPos>& PosIdList
-    );
+    ) const;
     bool arePointsCoincident(int GeoId1, PointPos PosId1, int GeoId2, PointPos PosId2);
+
+    // Returns true if the sketch has 1 or more block constraint
+    bool hasBlockConstraint() const;
 
     /// returns a list of indices of all constraints involving given GeoId
     void getConstraintIndices(int GeoId, std::vector<int>& constraintList);
@@ -966,8 +988,9 @@ public:
     std::vector<Base::Vector3d> getOpenVertices() const;
 
     // Signaled when solver has done update
-    boost::signals2::signal<void()> signalSolverUpdate;
-    boost::signals2::signal<void()> signalElementsChanged;
+    fastsignals::signal<void()> signalSolverUpdate;
+    fastsignals::signal<void()> signalElementsChanged;
+    fastsignals::signal<void(Constraint*)> signalConstraintAdded;
 
     Part::TopoShape buildInternals(const Part::TopoShape& edges) const;
 
@@ -978,6 +1001,12 @@ public:  // geometry extension functionalities for single element sketch object 
     int setGeometryId(int GeoId, long id);
     int setGeometryIds(std::vector<std::pair<int, long>> GeoIdsToIds);
     int getGeometryId(int GeoId, long& id) const;
+
+    /// Replaces geometries at `oldGeoIds` with `newGeos`, lower Ids first.
+    /// If `oldGeoIds` is bigger, deletes the remaining.
+    /// If `newGeos` is bigger, adds the remaining geometries at the end.
+    /// NOTE: Does NOT move any constraints
+    void replaceGeometries(std::vector<int> oldGeoIds, std::vector<Part::Geometry*>& newGeos);
 
 protected:
     // Only the first flag is toggled, the rest of the flags is set or cleared following the first
@@ -991,12 +1020,6 @@ protected:
     /// get called by the container when a property has changed
     void onChanged(const App::Property* /*prop*/) override;
 
-    /// Replaces geometries at `oldGeoIds` with `newGeos`, lower Ids first.
-    /// If `oldGeoIds` is bigger, deletes the remaining.
-    /// If `newGeos` is bigger, adds the remaining geometries at the end.
-    /// NOTE: Does NOT move any constraints
-    void replaceGeometries(std::vector<int> oldGeoIds, std::vector<Part::Geometry*>& newGeos);
-
     /// Helper functions for `deleteUnusedInternalGeometry` by cases
     /// two foci for ellipses and arcs of ellipses and hyperbolas
     int deleteUnusedInternalGeometryWhenTwoFoci(int GeoId, bool delgeoid = false);
@@ -1004,6 +1027,14 @@ protected:
     int deleteUnusedInternalGeometryWhenOneFocus(int GeoId, bool delgeoid = false);
     /// b-splines need their own treatment
     int deleteUnusedInternalGeometryWhenBSpline(int GeoId, bool delgeoid = false);
+
+    void onGeometryChanged();
+    void onConstraintsChanged();
+    void onExternalGeoChanged();
+    void onExternalGeometryChanged();
+    void onPlacementChanged();
+    void onExpressionEngineChanged();
+    void onAttachmentSupportChanged();
 
     void onDocumentRestored() override;
     void restoreFinished() override;
@@ -1103,6 +1134,13 @@ protected:
         Sketcher::PointPos thirdPos = Sketcher::PointPos::none
     );
 
+    // sets the constraint's orientation flag
+    // if applicable using the geometric state
+    // if reset is set to false, the function
+    // will return early when the constraint
+    // already has an orientation
+    void setOrientation(Constraint* constr, bool reset);
+
 public:
     // FIXME: These may not need to be public. Decide before merging.
     std::unique_ptr<Constraint> getConstraintAfterDeletingGeo(
@@ -1113,6 +1151,9 @@ public:
     void changeConstraintAfterDeletingGeo(Constraint* constr, const int deletedGeoId) const;
 
 private:
+    void setOrientationDistance(Constraint* constr);
+    void setOrientationTangent(Constraint* constr);
+
     /// Internal helper method for exposeInternalGeometryForType
     /// Add geometry and constraints to `this`, then delete the geometry and constraints in the
     /// vectors Note that the contents of the two vectors are invalid after this call.
@@ -1148,8 +1189,8 @@ private:
     std::vector<int> lastPartiallyRedundant;
     std::vector<int> lastMalformedConstraints;
 
-    boost::signals2::scoped_connection constraintsRenamedConn;
-    boost::signals2::scoped_connection constraintsRemovedConn;
+    fastsignals::scoped_connection constraintsRenamedConn;
+    fastsignals::scoped_connection constraintsRemovedConn;
 
     bool AutoLockTangencyAndPerpty(Constraint* cstr, bool bForce = false, bool bLock = true);
 
@@ -1251,6 +1292,3 @@ using SketchObjectPython = App::FeaturePythonT<SketchObject>;
 
 // ---------------------------------------------------------
 }  // namespace Sketcher
-
-
-#endif  // SKETCHER_SKETCHOBJECT_H

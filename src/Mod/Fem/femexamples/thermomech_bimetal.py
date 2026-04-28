@@ -41,6 +41,7 @@ import ObjectsFem
 from . import manager
 from .manager import get_meshname
 from .manager import init_doc
+from .meshes import generate_mesh
 
 
 def get_information():
@@ -78,7 +79,7 @@ this file has 7.15 mm max deflection
     )
 
 
-def setup(doc=None, solvertype="ccxtools"):
+def setup(doc=None, solvertype="ccxtools", test_mode=False):
 
     # init FreeCAD document
     if doc is None:
@@ -141,7 +142,7 @@ def setup(doc=None, solvertype="ccxtools"):
         )
     if solvertype == "ccxtools":
         solver_obj.AnalysisType = "thermomech"
-        solver_obj.GeometricalNonlinearity = "linear"
+        solver_obj.GeometricalNonlinearity = False
         solver_obj.ThermoMechSteadyState = True
         # solver_obj.MatrixSolverType = "default"
         solver_obj.MatrixSolverType = "spooles"  # thomas
@@ -189,36 +190,38 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # constraint initial temperature
     con_inittemp = ObjectsFem.makeConstraintInitialTemperature(doc, "ConstraintInitialTemperature")
-    con_inittemp.initialTemperature = 273.0
+    con_inittemp.InitialTemperature = 273.0
     analysis.addObject(con_inittemp)
 
     # constraint temperature
     con_temp = ObjectsFem.makeConstraintTemperature(doc, "ConstraintTemperatureHot")
     con_temp.References = [(geom_obj, "Face5"), (geom_obj, "Face11")]
     con_temp.Temperature = 373.0
-    con_temp.CFlux = 0.0
+    con_temp.ConcentratedHeatFlux = 0.0
     analysis.addObject(con_temp)
 
     con_temp = ObjectsFem.makeConstraintTemperature(doc, "ConstraintTemperatureNormal")
     con_temp.References = [(geom_obj, "Face1"), (geom_obj, "Face7")]
     con_temp.Temperature = 273.0
-    con_temp.CFlux = 0.0
+    con_temp.ConcentratedHeatFlux = 0.0
     analysis.addObject(con_temp)
 
     # mesh
-    from .meshes.mesh_thermomech_bimetal_tetra10 import create_nodes, create_elements
-
-    fem_mesh = Fem.FemMesh()
-    control = create_nodes(fem_mesh)
-    if not control:
-        FreeCAD.Console.PrintError("Error on creating nodes.\n")
-    control = create_elements(fem_mesh)
-    if not control:
-        FreeCAD.Console.PrintError("Error on creating elements.\n")
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
-    femmesh_obj.FemMesh = fem_mesh
     femmesh_obj.Shape = geom_obj
     femmesh_obj.SecondOrderLinear = False
+    femmesh_obj.CharacteristicLengthMax = "2 mm"
+
+    # generate the mesh
+    success = False
+    if not test_mode:
+        success = generate_mesh.mesh_from_mesher(femmesh_obj, "gmsh")
+    if not success:
+        # try to create from existing rough mesh
+        from .meshes.mesh_thermomech_bimetal_tetra10 import create_nodes, create_elements
+
+        fem_mesh = generate_mesh.mesh_from_existing(create_nodes, create_elements)
+        femmesh_obj.FemMesh = fem_mesh
 
     doc.recompute()
     return doc

@@ -150,13 +150,12 @@ def getIndices(obj, shape, offsetv, offsetvn):
                     flist.append(fi)
             else:
                 fi = ""
-                edges = f.OuterWire.OrderedEdges
+                verts = f.OuterWire.OrderedVertexes
                 # Avoid flipped normals:
                 if f.Orientation == "Reversed":
-                    edges.reverse()
-                for e in edges:
-                    v = e.Vertexes[0 if e.Orientation == "Forward" else 1]
-                    ind = findVert(v, shape.Vertexes)
+                    verts.reverse()
+                for vert in verts:
+                    ind = findVert(vert, shape.Vertexes)
                     if ind is None:
                         return None, None, None, None
                     fi += " " + str(ind + offsetv)

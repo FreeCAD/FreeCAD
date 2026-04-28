@@ -22,7 +22,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-import ArchWindow
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 
@@ -36,23 +35,7 @@ class ArchSketch(ArchSketchObject):
         pass
 
     def setPropertiesLinkCommon(self, orgFp, linkFp=None, mode=None):
-        if linkFp:
-            fp = linkFp
-        else:
-            fp = orgFp
-        prop = fp.PropertiesList
-        if not isinstance(fp.getLinkedObject().Proxy, ArchWindow._Window):
-            pass
-        else:
-            if "Hosts" not in prop:
-                fp.addProperty(
-                    "App::PropertyLinkList",
-                    "Hosts",
-                    "Window",
-                    QT_TRANSLATE_NOOP("App::Property", "The objects that host this window"),
-                    locked=True,
-                )
-                # Arch Window's code
+        pass
 
 
 # from ArchSketchObjectExt import ArchSketch  # Doesn't work

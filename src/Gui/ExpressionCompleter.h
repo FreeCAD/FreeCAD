@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef EXPRESSIONCOMPLETER_H
-#define EXPRESSIONCOMPLETER_H
+#pragma once
 
 #include <QCompleter>
 #include <QLineEdit>
@@ -43,6 +42,12 @@ class ObjectIdentifier;
 
 namespace Gui
 {
+
+enum class ActivationMode
+{
+    Highlighted,  // browsing with arrow keys
+    Activated     // confirmed selection (Enter/Click)
+};
 
 class GuiExport ExpressionValidator: public QValidator
 {
@@ -123,8 +128,7 @@ Q_SIGNALS:
     void textChanged2(QString text, int pos);
 public Q_SLOTS:
     void slotTextChanged(const QString& text);
-    // activated == pressed enter on the completion item
-    void slotCompleteText(const QString& completionPrefix, bool isActivated);
+    void slotCompleteText(const QString& completionPrefix, ActivationMode mode);
     void slotCompleteTextHighlighted(const QString& completionPrefix);
     void slotCompleteTextSelected(const QString& completionPrefix);
 
@@ -159,7 +163,9 @@ Q_SIGNALS:
     void textChanged2(QString text, int pos);
 public Q_SLOTS:
     void slotTextChanged();
-    void slotCompleteText(const QString& completionPrefix);
+    void slotCompleteText(const QString& completionPrefix, ActivationMode mode);
+    void slotCompleteTextHighlighted(const QString& completionPrefix);
+    void slotCompleteTextSelected(const QString& completionPrefix);
     void adjustCompleterToCursor();
 
 private:
@@ -177,5 +183,3 @@ public:
 };
 
 }  // namespace Gui
-
-#endif  // EXPRESSIONCOMPLETER_H

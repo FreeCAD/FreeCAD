@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_PROGRESSBAR_H
-#define GUI_PROGRESSBAR_H
+#pragma once
 
 #include <QProgressBar>
 #ifdef QT_WINEXTRAS_LIB
@@ -119,6 +118,8 @@ protected:
     void setText(const char* pszTxt) override;
     /** Starts the progress bar */
     void startStep() override;
+    /** Stops the progress bar */
+    void stopStep() override;
     /** Increase the progress bar. */
     void nextStep(bool canAbort) override;
     /** Sets the progress indicator to a certain position. */
@@ -208,5 +209,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_PROGRESSBAR_H

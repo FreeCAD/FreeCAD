@@ -42,6 +42,8 @@
 #include <Inventor/details/SoLineDetail.h>
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoGLCoordinateElement.h>
+#include <Inventor/elements/SoDepthBufferElement.h>
+#include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoLineWidthElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoState.h>
@@ -62,10 +64,37 @@ using namespace PartGui;
 
 SO_NODE_SOURCE(SoBrepEdgeSet)
 
-struct SoBrepEdgeSet::SelContext: Gui::SoFCSelectionContext
+struct SoBrepEdgeSet::SelContext: Gui::SoFCSelectionContextEx
 {
     std::vector<int32_t> hl, sl;
 };
+
+static void renderOverlayLines(
+    SoGLRenderAction* action,
+    SoIndexedLineSet* lineSet,
+    const int32_t* indices,
+    int numIndices,
+    const SbColor& color
+)
+{
+    if (!action || !lineSet || !indices || numIndices <= 0) {
+        return;
+    }
+
+    auto state = action->getState();
+    state->push();
+
+    SoDepthBufferElement::set(state, FALSE, FALSE, SoDepthBufferElement::ALWAYS, SbVec2f(0.0f, 1.0f));
+
+    SoLazyElement::setEmissive(state, &color);
+    uint32_t packedColor = color.getPackedValue(0.0);
+    SoLazyElement::setPacked(state, lineSet, 1, &packedColor, false);
+
+    lineSet->coordIndex.setValues(0, numIndices, indices);
+    lineSet->GLRender(action);
+
+    state->pop();
+}
 
 void SoBrepEdgeSet::initClass()
 {
@@ -77,6 +106,23 @@ SoBrepEdgeSet::SoBrepEdgeSet()
     , selContext2(std::make_shared<SelContext>())
 {
     SO_NODE_CONSTRUCTOR(SoBrepEdgeSet);
+    SO_NODE_ADD_FIELD(highlightCoordIndex, (0));
+    SO_NODE_ADD_FIELD(selectionCoordIndex, (0));
+    SO_NODE_ADD_FIELD(highlightColor, (SbColor(1.0f, 0.0f, 0.0f)));
+    SO_NODE_ADD_FIELD(selectionColor, (SbColor(0.0f, 0.6f, 0.0f)));
+
+    highlightCoordIndex.setNum(0);
+    selectionCoordIndex.setNum(0);
+    overlayLineSet = new SoIndexedLineSet;
+    overlayLineSet->ref();
+}
+
+SoBrepEdgeSet::~SoBrepEdgeSet()
+{
+    if (overlayLineSet) {
+        overlayLineSet->unref();
+        overlayLineSet = nullptr;
+    }
 }
 
 void SoBrepEdgeSet::GLRender(SoGLRenderAction* action)
@@ -86,7 +132,7 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction* action)
 
     SelContextPtr ctx2;
     SelContextPtr ctx = Gui::SoFCSelectionRoot::getRenderContext<SelContext>(this, selContext, ctx2);
-    if (ctx2 && ctx2->selectionIndex.empty()) {
+    if (ctx2 && ctx2->selectionIndex.empty() && ctx2->colors.empty()) {
         return;
     }
 
@@ -126,6 +172,147 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction* action)
             selContext2->hl = ctx->hl;
         }
         ctx = selContext2;
+    }
+
+    bool hasColorOverride = (ctx2 && !ctx2->colors.empty());
+    if (hasColorOverride) {
+        // Special handling for edge color overrides (e.g. highlighting specific edges).
+        // We initially attempted to use the same logic as SoBrepFaceSet (setting
+        // SoMaterialBindingElement::PER_PART_INDEXED and populating SoLazyElement arrays).
+        // However, this proved brittle for SoIndexedLineSet, causing persistent crashes
+        // in SoMaterialBundle/SoGLLazyElement (SIGSEGV) due to internal Coin3D state
+        // mismatches when mixing Lit (default) and Unlit (highlighted) states.
+        //
+        // To ensure stability, we bypass the base class GLRender entirely and perform
+        // a manual dual-pass render using direct OpenGL calls:
+        // Pass 1: Render default lines using the current Coin3D state (Lighting enabled).
+        // Pass 2: Render highlighted lines with Lighting disabled to ensure bright, flat colors.
+        state->push();
+
+        const SoCoordinateElement* coords;
+        const SbVec3f* normals;
+        const int32_t* cindices;
+        const int32_t* nindices;
+        const int32_t* tindices;
+        const int32_t* mindices;
+        int numcindices;
+        SbBool normalCacheUsed;
+
+        // We request normals (true) because default lines need them for lighting
+        this->getVertexData(
+            state,
+            coords,
+            normals,
+            cindices,
+            nindices,
+            tindices,
+            mindices,
+            numcindices,
+            true,
+            normalCacheUsed
+        );
+
+        const SbVec3f* coords3d = coords->getArrayPtr3();
+
+        // Apply the default material settings (Standard Lighting/Material)
+        // This ensures default lines look correct (e.g. Black)
+        SoMaterialBundle mb(action);
+        mb.sendFirst();
+
+        // We will collect highlighted segments to render them in a second pass
+        // so we don't have to switch GL state constantly.
+        struct HighlightSegment
+        {
+            int startIndex;
+            Base::Color color;
+        };
+        std::vector<HighlightSegment> highlights;
+
+        int linecount = 0;
+        int i = 0;
+
+        // --- PASS 1: Render Default Lines (Lit) ---
+        while (i < numcindices) {
+            int startIndex = i;
+
+            // Check if this line index has an override color
+            const Base::Color* pColor = nullptr;
+            auto it = ctx2->colors.find(linecount);
+            if (it != ctx2->colors.end()) {
+                pColor = &it->second;
+            }
+            else {
+                // Check for wildcard color
+                auto it_all = ctx2->colors.find(-1);
+                if (it_all != ctx2->colors.end()) {
+                    pColor = &it_all->second;
+                }
+            }
+
+            if (pColor) {
+                // This is a highlighted line. Save it for Pass 2.
+                highlights.push_back({startIndex, *pColor});
+
+                // Skip over the indices for this line
+                while (i < numcindices && cindices[i] >= 0) {
+                    i++;
+                }
+                i++;  // skip the -1 separator
+            }
+            else {
+                // This is a default line. Render immediately with current (Lit) state.
+                glBegin(GL_LINE_STRIP);
+                while (i < numcindices) {
+                    int32_t idx = cindices[i++];
+                    if (idx < 0) {
+                        break;
+                    }
+
+                    if (idx < coords->getNum()) {
+                        if (normals) {
+                            glNormal3fv((const GLfloat*)(normals + idx));
+                        }
+                        glVertex3fv((const GLfloat*)(coords3d + idx));
+                    }
+                }
+                glEnd();
+            }
+            linecount++;
+        }
+
+        // --- PASS 2: Render Highlighted Lines (Unlit) ---
+        if (!highlights.empty()) {
+            // Disable lighting and textures so the color is flat and bright
+            glPushAttrib(GL_LIGHTING_BIT | GL_CURRENT_BIT | GL_ENABLE_BIT);
+            glDisable(GL_LIGHTING);
+            glDisable(GL_TEXTURE_2D);
+
+            for (const auto& segment : highlights) {
+                // Apply the explicit color from the map
+                // Note: FreeCAD Base::Color transparency is 0.0 (opaque) to 1.0 (transparent)
+                // OpenGL Alpha is 1.0 (opaque) to 0.0 (transparent)
+                glColor4f(segment.color.r, segment.color.g, segment.color.b, 1.0f - segment.color.a);
+
+                glBegin(GL_LINE_STRIP);
+                int j = segment.startIndex;
+                while (j < numcindices) {
+                    int32_t idx = cindices[j++];
+                    if (idx < 0) {
+                        break;
+                    }
+
+                    if (idx < coords->getNum()) {
+                        glVertex3fv((const GLfloat*)(coords3d + idx));
+                    }
+                }
+                glEnd();
+            }
+            glPopAttrib();
+        }
+
+        // Do NOT call inherited::GLRender(action). We have handled all rendering manually.
+        state->pop();
+        return;
     }
 
     if (ctx && ctx->highlightIndex == std::numeric_limits<int>::max()) {
@@ -180,8 +367,10 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction* action)
     if (ctx2 && !ctx2->selectionIndex.empty()) {
         renderSelection(action, ctx2, false);
     }
-    else if (Gui::Selection().isClarifySelectionActive()
-             && !Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths && hasAnyHighlight) {
+    else if (
+        Gui::Selection().isClarifySelectionActive()
+        && !Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths && hasAnyHighlight
+    ) {
         state->push();
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -208,6 +397,28 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction* action)
         renderHighlight(action, ctx);
     }
     // #endif
+
+    // Optional overlay rendering for deterministic tests (and programmatic usage).
+    const int hlNum = highlightCoordIndex.getNum();
+    if (hlNum > 0) {
+        renderOverlayLines(
+            action,
+            overlayLineSet,
+            highlightCoordIndex.getValues(0),
+            hlNum,
+            highlightColor.getValue()
+        );
+    }
+    const int selNum = selectionCoordIndex.getNum();
+    if (selNum > 0) {
+        renderOverlayLines(
+            action,
+            overlayLineSet,
+            selectionCoordIndex.getValues(0),
+            selNum,
+            selectionColor.getValue()
+        );
+    }
 }
 
 void SoBrepEdgeSet::GLRenderBelowPath(SoGLRenderAction* action)
@@ -478,6 +689,40 @@ void SoBrepEdgeSet::doAction(SoAction* action)
         Gui::SoSelectionElementAction* selaction = static_cast<Gui::SoSelectionElementAction*>(action);
 
         switch (selaction->getType()) {
+            case Gui::SoSelectionElementAction::Color:
+                if (selaction->isSecondary()) {
+                    const auto& colors = selaction->getColors();
+
+                    // Case 1: The color map is empty. This is a "clear" command.
+                    if (colors.empty()) {
+                        // We must find and remove any existing secondary context for this node.
+                        if (Gui::SoFCSelectionRoot::removeActionContext(action, this)) {
+                            touch();
+                        }
+                        return;
+                    }
+
+                    // Case 2: The color map is NOT empty. This is a "set color" command.
+                    static std::string element("Edge");
+                    bool hasEdgeColors = false;
+                    for (const auto& [name, color] : colors) {
+                        if (name.empty() || boost::starts_with(name, element)) {
+                            hasEdgeColors = true;
+                            break;
+                        }
+                    }
+
+                    if (hasEdgeColors) {
+                        auto ctx = Gui::SoFCSelectionRoot::getActionContext<SelContext>(action, this);
+                        selCounter.checkAction(selaction, ctx);
+                        ctx->selectAll();
+
+                        if (ctx->setColors(colors, element)) {
+                            touch();
+                        }
+                    }
+                }
+                return;
             case Gui::SoSelectionElementAction::None: {
                 if (selaction->isSecondary()) {
                     if (Gui::SoFCSelectionRoot::removeActionContext(action, this)) {
@@ -490,6 +735,7 @@ void SoBrepEdgeSet::doAction(SoAction* action)
                     if (ctx) {
                         ctx->selectionIndex.clear();
                         ctx->sl.clear();
+                        ctx->colors.clear();
                         touch();
                     }
                 }

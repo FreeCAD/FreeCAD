@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef PATH_COMMAND_H
-#define PATH_COMMAND_H
+#pragma once
 
 #include <map>
 #include <string>
@@ -44,6 +43,11 @@ public:
     // constructors
     Command();
     Command(const char* name, const std::map<std::string, double>& parameters);
+    Command(
+        const char* name,
+        const std::map<std::string, double>& parameters,
+        const std::map<std::string, std::variant<std::string, double>>& annotations
+    );
     ~Command() override;
     // from base class
     unsigned int getMemSize() const override;
@@ -106,5 +110,3 @@ public:
 };
 
 }  // namespace Path
-
-#endif  // PATH_COMMAND_H

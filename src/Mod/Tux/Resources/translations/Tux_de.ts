@@ -91,7 +91,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="659"/>
       <source>Trackball</source>
-      <translation>Steuerkugel</translation>
+      <translation>Trackball</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="660"/>
@@ -110,7 +110,7 @@
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="674"/>
-      <source>Navigation indicator</source>
+      <source>Navigation Indicator</source>
       <comment>A context menu action used to show or hide the &apos;Navigation indicator&apos; toolbar widget</comment>
       <translation>Navigationsanzeiger</translation>
     </message>

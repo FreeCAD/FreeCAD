@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUIRAWNATIVEINPUTEVENTFILTER_H
-#define GUIRAWNATIVEINPUTEVENTFILTER_H
+#pragma once
 
 #include <QAbstractNativeEventFilter>
 
@@ -57,5 +56,3 @@ private:
     EventFilter eventFilter;
 };
 }  // namespace Gui
-
-#endif  // GUIRAWNATIVEINPUTEVENTFILTER_H

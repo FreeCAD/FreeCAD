@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -20,13 +22,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskSketcherElements_H
-#define GUI_TASKVIEW_TaskSketcherElements_H
+#pragma once
 
+#include <unordered_map>
 #include <QListWidget>
 #include <QStyledItemDelegate>
 
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 
 #include <Gui/Selection/Selection.h>
 #include <Gui/TaskView/TaskView.h>
@@ -82,6 +84,8 @@ protected Q_SLOTS:
     void doEqualConstraint();
     void doSymmetricConstraint();
     void doBlockConstraint();
+    void doGroupConstraint();
+    void doConvertToGeometries();
 
     void doLockConstraint();
     void doHorizontalConstraint();
@@ -131,7 +135,7 @@ public:
 private:
     void slotElementsChanged();
     void updateVisibility();
-    void setItemVisibility(QListWidgetItem* item);
+    void setItemVisibility(QListWidgetItem* item, const std::set<int>& groupedGeoIds);
     void clearWidget();
     void createFilterButtonActions();
     void createSettingsButtonActions();
@@ -141,6 +145,7 @@ public Q_SLOTS:
     void onListWidgetElementsItemPressed(QListWidgetItem* item);
     void onListWidgetElementsItemEntered(QListWidgetItem* item);
     void onListWidgetElementsMouseMoveOnItem(QListWidgetItem* item);
+    void onListWidgetItemActivated(QListWidgetItem* item);
     void onSettingsExtendedInformationChanged();
     void onFilterBoxStateChanged(int val);
     void onListMultiFilterItemChanged(QListWidgetItem* item);
@@ -149,7 +154,7 @@ protected:
     void changeEvent(QEvent* e) override;
     void leaveEvent(QEvent* event) override;
     ViewProviderSketch* sketchView;
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::connection;
     Connection connectionElementsChanged;
 
 private:
@@ -163,8 +168,19 @@ private:
     ElementFilterList* filterList;
 
     bool isNamingBoxChecked;
+
+    // Buffering to speed up large selections
+    std::unordered_map<int, ElementItem*> elementMap;
+
+    struct PendingUpdate
+    {
+        ElementItem* item;
+        bool select;
+    };
+    std::vector<PendingUpdate> selectionBuffer;
+    bool updateTimerPending = false;
+
+    void processSelectionBuffer();
 };
 
 }  // namespace SketcherGui
-
-#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

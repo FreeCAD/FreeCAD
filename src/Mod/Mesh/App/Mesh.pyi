@@ -1,6 +1,10 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from typing import Any, Final
 
-from Base.Metadata import constmethod, export
+from Base.Metadata import constmethod, export, class_declarations
 
 from App.ComplexGeoData import ComplexGeoData
 
@@ -13,12 +17,10 @@ from App.ComplexGeoData import ComplexGeoData
     FatherNamespace="Data",
     Constructor=True,
 )
-@class_declarations(
-    """
+@class_declarations("""
     private:
     friend class PropertyMeshKernel;
-    class PropertyMeshKernel* parentProperty = nullptr;"""
-)
+    class PropertyMeshKernel* parentProperty = nullptr;""")
 class Mesh(ComplexGeoData):
     """
     Mesh() -- Create an empty mesh object.

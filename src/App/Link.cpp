@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /****************************************************************************
  *   Copyright (c) 2017 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
@@ -59,104 +61,85 @@ import LinkParams
 LinkParams.define()
 ]]]*/
 
-namespace
-{
-
-// Auto generated code. See class document of LinkParams.
-class LinkParamsP: public ParameterGrp::ObserverType
-{
+// Auto generated code (App/params_utils.py:209)
+namespace {
+class LinkParamsP: public ParameterGrp::ObserverType {
 public:
-    // Auto generated code. See class document of LinkParams.
     ParameterGrp::handle handle;
+    std::unordered_map<const char *,void(*)(LinkParamsP*),App::CStringHasher,App::CStringHasher> funcs;
 
-    // Auto generated code. See class document of LinkParams.
-    std::unordered_map<const char*, void (*)(LinkParamsP*), App::CStringHasher, App::CStringHasher>
-        funcs;
+    bool CopyOnChangeApplyToAll;
 
-    bool CopyOnChangeApplyToAll;  // Auto generated code. See class document of LinkParams.
-
-    // Auto generated code. See class document of LinkParams.
-    LinkParamsP()
-    {
-        handle = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Link");
+    // Auto generated code (App/params_utils.py:247)
+    LinkParamsP() {
+        handle = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Link");
         handle->Attach(this);
 
         CopyOnChangeApplyToAll = handle->GetBool("CopyOnChangeApplyToAll", true);
         funcs["CopyOnChangeApplyToAll"] = &LinkParamsP::updateCopyOnChangeApplyToAll;
     }
 
-    // Auto generated code. See class document of LinkParams.
-    ~LinkParamsP() override = default;
+    // Auto generated code (App/params_utils.py:265)
+    ~LinkParamsP() {
+    }
 
-    // Auto generated code. See class document of LinkParams.
-    void OnChange(Base::Subject<const char*>&, const char* sReason) override
-    {
-        if (!sReason) {
+    // Auto generated code (App/params_utils.py:272)
+    void OnChange(Base::Subject<const char*> &, const char* sReason) {
+        if(!sReason)
             return;
-        }
         auto it = funcs.find(sReason);
-        if (it == funcs.end()) {
+        if(it == funcs.end())
             return;
-        }
         it->second(this);
+        
     }
 
 
-    // Auto generated code. See class document of LinkParams.
-    static void updateCopyOnChangeApplyToAll(LinkParamsP* self)
-    {
+    // Auto generated code (App/params_utils.py:290)
+    static void updateCopyOnChangeApplyToAll(LinkParamsP *self) {
         self->CopyOnChangeApplyToAll = self->handle->GetBool("CopyOnChangeApplyToAll", true);
     }
 };
 
-// Auto generated code. See class document of LinkParams.
-LinkParamsP* instance()
-{
-    static LinkParamsP* inst = new LinkParamsP;
+// Auto generated code (App/params_utils.py:312)
+LinkParamsP *instance() {
+    static LinkParamsP *inst = new LinkParamsP;
     return inst;
 }
 
-}  // Anonymous namespace
+} // Anonymous namespace
 
-// Auto generated code. See class document of LinkParams.
-ParameterGrp::handle LinkParams::getHandle()
-{
+// Auto generated code (App/params_utils.py:323)
+ParameterGrp::handle LinkParams::getHandle() {
     return instance()->handle;
 }
 
-// Auto generated code. See class document of LinkParams.
-const char* LinkParams::docCopyOnChangeApplyToAll()
-{
-    return QT_TRANSLATE_NOOP(
-        "LinkParams",
-        "Stores the last user choice of whether to apply CopyOnChange setup to all links\n"
-        "that reference the same configurable object");
+// Auto generated code (App/params_utils.py:352)
+const char *LinkParams::docCopyOnChangeApplyToAll() {
+    return QT_TRANSLATE_NOOP("LinkParams",
+"Stores the last user choice of whether to apply CopyOnChange setup to all link\n"
+"that links to the same configurable object");
 }
 
-// Auto generated code. See class document of LinkParams.
-const bool& LinkParams::getCopyOnChangeApplyToAll()
-{
+// Auto generated code (App/params_utils.py:360)
+const bool & LinkParams::getCopyOnChangeApplyToAll() {
     return instance()->CopyOnChangeApplyToAll;
 }
 
-// Auto generated code. See class document of LinkParams.
-const bool& LinkParams::defaultCopyOnChangeApplyToAll()
-{
-    static const bool def = true;
+// Auto generated code (App/params_utils.py:368)
+const bool & LinkParams::defaultCopyOnChangeApplyToAll() {
+    const static bool def = true;
     return def;
 }
 
-// Auto generated code. See class document of LinkParams.
-void LinkParams::setCopyOnChangeApplyToAll(const bool& v)
-{
-    instance()->handle->SetBool("CopyOnChangeApplyToAll", v);
+// Auto generated code (App/params_utils.py:377)
+void LinkParams::setCopyOnChangeApplyToAll(const bool &v) {
+    instance()->handle->SetBool("CopyOnChangeApplyToAll",v);
     instance()->CopyOnChangeApplyToAll = v;
 }
 
-// Auto generated code. See class document of LinkParams.
-void LinkParams::removeCopyOnChangeApplyToAll()
-{
+// Auto generated code (App/params_utils.py:386)
+void LinkParams::removeCopyOnChangeApplyToAll() {
     instance()->handle->RemoveBool("CopyOnChangeApplyToAll");
 }
 //[[[end]]]
@@ -325,11 +308,8 @@ void LinkBaseExtension::setProperty(int idx, Property* prop)
         if (!prop) {
             propName = "<null>";
         }
-        else if (prop->getContainer()) {
-            propName = prop->getName();
-        }
         else {
-            propName = extensionGetPropertyName(prop);
+            propName = prop->getName();
         }
         if (!Property::isValidName(propName)) {
             propName = "?";
@@ -798,7 +778,7 @@ void LinkBaseExtension::setupCopyOnChange(DocumentObject* parent, bool checkSour
 bool LinkBaseExtension::setupCopyOnChange(
     DocumentObject* parent,
     DocumentObject* linked,
-    std::vector<boost::signals2::scoped_connection>* copyOnChangeConns,
+    std::vector<fastsignals::scoped_connection>* copyOnChangeConns,
     bool checkExisting)
 {
     if (!parent || !linked) {
@@ -2635,6 +2615,76 @@ bool Link::canLinkProperties() const
     return true;
 }
 
+Base::Placement Link::getPlacementOf(const std::string& sub, DocumentObject* targetObj)
+{
+    if (isLinkGroup() && _getShowElementValue()) {
+        // In this case we have child document objects, the subname can be used.
+        // and in this case the Link itself acts as a normal DocumentObject
+        return DocumentObject::getPlacementOf(sub, targetObj);
+    }
+
+    Base::Placement plc;
+    auto* propPlacement = dynamic_cast<App::PropertyPlacement*>(getPropertyByName("Placement"));
+    if (!propPlacement) {
+        return plc;
+    }
+    plc = propPlacement->getValue();
+
+    std::vector<std::string> names = Base::Tools::splitSubName(sub);
+
+    if (names.empty() || this == targetObj || !getLinkedObject()) {
+        return plc;
+    }
+
+    Document* doc = getLinkedObject()->getDocument();
+
+    if (isLinkGroup()) {
+        // !ShowElement, so there are no objects.
+        // The subname looks like : '1.pad.face3' or '1.face3'
+        // So names.front() is supposed to be an integer. If not something is wrong.
+        int i = -1;
+        try {
+            i = std::stoi(names.front());
+        }
+        catch (...) {  // Conversion failed (not an integer)
+            return plc;
+        }
+
+        std::vector<Base::Placement> plcs = PlacementList.getValues();
+        if (plcs.size() <= static_cast<size_t>(i)) {
+            return plc;
+        }
+        plc = plc * plcs[i];
+
+        // now that we handled the non-existing LinkElement, we can remove this subname and continue.
+        if (names.size() < 2) {  // Subname was just "1", we are done.
+            return plc;
+        }
+
+        DocumentObject* subObj = doc->getObject(names[1].c_str());
+        if (!subObj) {
+            return plc;
+        }
+
+        std::vector<std::string> newNames(names.begin() + 2, names.end());
+        std::string newSub = Base::Tools::joinList(newNames, ".");
+
+        return plc * subObj->getPlacementOf(newSub, targetObj);
+    }
+
+    // case of a normal link
+    DocumentObject* subObj = doc->getObject(names.front().c_str());
+
+    if (!subObj) {
+        return plc;
+    }
+
+    std::vector<std::string> newNames(names.begin() + 1, names.end());
+    std::string newSub = Base::Tools::joinList(newNames, ".");
+
+    return plc * subObj->getPlacementOf(newSub, targetObj);
+}
+
 bool Link::isLink() const
 {
     return ElementCount.getValue() == 0;
@@ -2699,6 +2749,35 @@ App::Link* LinkElement::getLinkGroup() const
         }
     }
     return nullptr;
+}
+
+Base::Placement LinkElement::getPlacementOf(const std::string& sub, DocumentObject* targetObj)
+{
+    Base::Placement plc;
+    auto* propPlacement = dynamic_cast<App::PropertyPlacement*>(getPropertyByName("Placement"));
+    if (!propPlacement) {
+        return plc;
+    }
+    plc = propPlacement->getValue();
+
+    std::vector<std::string> names = Base::Tools::splitSubName(sub);
+
+    if (names.empty() || this == targetObj || !getLinkedObject()) {
+        return plc;
+    }
+
+    Document* doc = getLinkedObject()->getDocument();
+
+    DocumentObject* subObj = doc->getObject(names.front().c_str());
+
+    if (!subObj) {
+        return plc;
+    }
+
+    std::vector<std::string> newNames(names.begin() + 1, names.end());
+    std::string newSub = Base::Tools::joinList(newNames, ".");
+
+    return plc * subObj->getPlacementOf(newSub, targetObj);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////

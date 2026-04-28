@@ -38,6 +38,8 @@
 #include "FeatureSections.h"
 #include "FeatureSewing.h"
 
+#include "Measure.h"
+
 
 namespace Surface
 {
@@ -86,6 +88,9 @@ PyMOD_INIT_FUNC(Surface)
     Surface::FeatureBlendCurve ::init();
     Surface::Sections          ::init();
     // clang-format on
+
+    // connect to unified measurement facility
+    Surface::Measure ::initialize();
 
     PyMOD_Return(mod);
 }

@@ -291,6 +291,87 @@ to determine whether a solution converges or not</string>
     </layout>
    </item>
    <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_32">
+     <item>
+      <widget class="QLabel" name="labelAutoChooseAlgo">
+       <property name="toolTip">
+        <string>Automatically select the QR algorithm based on number of dofs</string>
+       </property>
+       <property name="text">
+        <string>Automatic QR algorithm</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefCheckBox" name="checkBoxAutoChooseAlgo">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+       <property name="toolTip">
+        <string>Automatically select the QR algorithm based on number of dofs</string>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::RightToLeft</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>AutoChooseAlgo</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>Mod/Sketcher/SolverAdvanced</cstring>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_62">
+     <item>
+      <widget class="QLabel" name="labelAutoQRThreshold">
+       <property name="toolTip">
+        <string>Maximum number of parameters before switching to sparse QR algorithm</string>
+       </property>
+       <property name="text">
+        <string>Auto QR threshold</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefSpinBox" name="spinBoxAutoQRThreshold">
+       <property name="toolTip">
+        <string>Maximum number of parameters before switching to sparse QR algorithm</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="minimum">
+        <number>0</number>
+       </property>
+       <property name="maximum">
+        <number>10000000</number>
+       </property>
+       <property name="value">
+        <number>1000</number>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>AutoQRThreshold</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>Mod/Sketcher/SolverAdvanced</cstring>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QLabel" name="labelQRAlgorithm">

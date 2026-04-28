@@ -1,0 +1,573 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DlgPostProcess</class>
+ <widget class="QDialog" name="DlgPostProcess">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>740</width>
+    <height>660</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Post Processing</string>
+  </property>
+  <property name="sizeGripEnabled">
+   <bool>true</bool>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="margin" stdset="0">
+    <number>9</number>
+   </property>
+   <item>
+    <widget class="QLabel" name="labelJobTitle">
+     <property name="styleSheet">
+      <string>font-weight: bold; font-size: 13px;</string>
+     </property>
+     <property name="text">
+      <string>Post Processing - Job: (unknown)</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="tabOverview">
+      <attribute name="title">
+       <string>Overview</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="layoutOverview">
+       <item>
+        <widget class="QGroupBox" name="groupBoxMachine">
+         <property name="title">
+          <string>Machine</string>
+         </property>
+         <layout class="QFormLayout" name="formLayoutMachine">
+          <property name="fieldGrowthPolicy">
+           <enum>QFormLayout::FieldGrowthPolicy::ExpandingFieldsGrow</enum>
+          </property>
+          <item row="0" column="0">
+           <widget class="QLabel" name="labelMachineLabel">
+            <property name="text">
+             <string>Machine:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QComboBox" name="comboBoxMachine">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>1</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip">
+             <string>Machine configuration (.fcm) to use for post-processing</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBoxFixtures">
+         <property name="title">
+          <string>Fixtures</string>
+         </property>
+         <layout class="QVBoxLayout" name="layoutFixtures">
+          <item>
+           <widget class="QListWidget" name="listWidgetFixtures">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>90</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string>Check fixtures to include in the G-code output</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBoxJobDetails">
+         <property name="title">
+          <string>Job Details</string>
+         </property>
+         <layout class="QFormLayout" name="formLayoutJobDetails">
+          <property name="fieldGrowthPolicy">
+           <enum>QFormLayout::FieldGrowthPolicy::ExpandingFieldsGrow</enum>
+          </property>
+          <item row="0" column="0">
+           <widget class="QLabel" name="labelJobAuthorLabel">
+            <property name="text">
+             <string>Author:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="lineEditJobAuthor">
+            <property name="toolTip">
+             <string>Author name written into the G-code header comment</string>
+            </property>
+            <property name="placeholderText">
+             <string>(optional)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="labelCommentLabel">
+            <property name="text">
+             <string>Comment:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QPlainTextEdit" name="plainTextEditComment">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>70</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string>Arbitrary comment written into the G-code header</string>
+            </property>
+            <property name="placeholderText">
+             <string>(optional)</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBoxOptions">
+         <property name="title">
+          <string>Options</string>
+         </property>
+         <layout class="QVBoxLayout" name="layoutOptions">
+          <item>
+           <widget class="QCheckBox" name="checkBoxSanityReport">
+            <property name="toolTip">
+             <string>Generate a full sanity/setup report alongside the G-code file</string>
+            </property>
+            <property name="text">
+             <string>Generate HTML sanity report</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBoxPostParams">
+         <property name="title">
+          <string>Post Processor Parameters</string>
+         </property>
+         <layout class="QFormLayout" name="layoutPostParams">
+          <item row="0" column="0" colspan="2">
+           <widget class="QLabel" name="labelPostParamsPlaceholder">
+            <property name="styleSheet">
+             <string>color: gray;</string>
+            </property>
+            <property name="text">
+             <string>(No additional parameters for this post processor)</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignmentFlag::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer name="spacerOverview">
+         <property name="orientation">
+          <enum>Qt::Orientation::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>10</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabOperations">
+      <attribute name="title">
+       <string>Operations</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="layoutOperations">
+       <item>
+        <widget class="QTreeWidget" name="treeWidgetOperations">
+         <property name="toolTip">
+          <string>Check operations to include in the G-code output. Uncheck to skip.</string>
+         </property>
+         <property name="selectionMode">
+          <enum>QAbstractItemView::SelectionMode::ExtendedSelection</enum>
+         </property>
+         <property name="rootIsDecorated">
+          <bool>false</bool>
+         </property>
+         <property name="uniformRowHeights">
+          <bool>true</bool>
+         </property>
+         <column>
+          <property name="text">
+           <string>Operation</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="layoutOperationButtons">
+         <item>
+          <widget class="QPushButton" name="buttonSelectAllOps">
+           <property name="text">
+            <string>Select All</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="buttonSelectNoneOps">
+           <property name="text">
+            <string>Select None</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="buttonWorkplan">
+           <property name="toolTip">
+            <string>Show the workplan (postable items structure)</string>
+           </property>
+           <property name="text">
+            <string>Workplan</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="spacerOpButtons">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabOutput">
+      <attribute name="title">
+       <string>Options</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="layoutOutput">
+       <item>
+        <widget class="QScrollArea" name="scrollAreaOutput">
+         <property name="frameShape">
+          <enum>QFrame::Shape::NoFrame</enum>
+         </property>
+         <property name="widgetResizable">
+          <bool>true</bool>
+         </property>
+         <widget class="QWidget" name="scrollContentsOutput">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>704</width>
+            <height>531</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="layoutOutputScroll">
+           <item>
+            <widget class="QLabel" name="labelNoMachineOutput">
+             <property name="styleSheet">
+              <string>color: gray; font-style: italic;</string>
+             </property>
+             <property name="text">
+              <string>(Select a machine on the Overview tab to see machine output options)</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="spacerOutput">
+             <property name="orientation">
+              <enum>Qt::Orientation::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>10</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabGcodeOutput">
+      <attribute name="title">
+       <string>Output</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="layoutGcodeOutput">
+       <item>
+        <layout class="QHBoxLayout" name="layoutOutputLocation">
+         <item>
+          <widget class="QLabel" name="labelOutputLocationLabel">
+           <property name="text">
+            <string>Output folder:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="lineEditOutputLocation">
+           <property name="toolTip">
+            <string>Folder where G-code files will be saved</string>
+           </property>
+           <property name="placeholderText">
+            <string>(resolved when output is generated)</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="buttonBrowseOutputLocation">
+           <property name="maximumSize">
+            <size>
+             <width>80</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Browse...</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="layoutFilenameTemplate">
+         <item>
+          <widget class="QLabel" name="labelFilenameTemplateLabel">
+           <property name="text">
+            <string>Filename template:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="lineEditFilenameTemplate">
+           <property name="toolTip">
+            <string>Filename template. Substitutions: %j=job name, %d=document, %T=tool, %W=fixture, %O=operation</string>
+           </property>
+           <property name="placeholderText">
+            <string>e.g. %j.nc</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="buttonApplyTemplate">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>60</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>Regenerate output filenames using this template</string>
+           </property>
+           <property name="text">
+            <string>Apply</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QLabel" name="labelOutputStatus">
+         <property name="styleSheet">
+          <string>color: gray; font-style: italic;</string>
+         </property>
+         <property name="text">
+          <string>Press &quot;Generate Output&quot; to preview G-code before saving.</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignmentFlag::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSplitter" name="splitterOutput">
+         <property name="orientation">
+          <enum>Qt::Orientation::Horizontal</enum>
+         </property>
+         <widget class="QListWidget" name="listWidgetOutputFiles">
+          <property name="maximumSize">
+           <size>
+            <width>260</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Generated output files. Select a file to view or edit its contents.</string>
+          </property>
+         </widget>
+         <widget class="QPlainTextEdit" name="plainTextEditGcode">
+          <property name="font">
+           <font>
+            <family>Courier</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>G-code content for the selected file. You may edit before saving.</string>
+          </property>
+         </widget>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="layoutSaveRow">
+         <item>
+          <widget class="QPushButton" name="buttonSaveOutput">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>Save to Disk</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="spacerSaveRow">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabWarnings">
+      <attribute name="title">
+       <string>Warnings</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QLabel" name="labelWarningsStatus">
+         <property name="styleSheet">
+          <string>color: green; font-weight: bold;</string>
+         </property>
+         <property name="text">
+          <string>No issues found.</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignmentFlag::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="tableWidgetWarnings">
+         <property name="toolTip">
+          <string>Validation issues found in the job. WARNING and CAUTION items should be addressed before machining.</string>
+         </property>
+         <property name="editTriggers">
+          <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+         </property>
+         <property name="alternatingRowColors">
+          <bool>true</bool>
+         </property>
+         <property name="selectionBehavior">
+          <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+         </property>
+         <property name="showGrid">
+          <bool>false</bool>
+         </property>
+         <property name="columnCount">
+          <number>2</number>
+         </property>
+         <attribute name="horizontalHeaderStretchLastSection">
+          <bool>true</bool>
+         </attribute>
+         <column>
+          <property name="text">
+           <string>Severity</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Note</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::StandardButton::Close</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>DlgPostProcess</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>350</x>
+     <y>640</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>350</x>
+     <y>330</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

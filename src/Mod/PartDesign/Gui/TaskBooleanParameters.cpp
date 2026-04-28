@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Jan Rheinländer                                    *
  *                                   <jrheinlaender@users.sourceforge.net> *
@@ -23,6 +25,7 @@
 
 
 #include <QAction>
+#include <QApplication>
 #include <QMessageBox>
 
 
@@ -259,6 +262,9 @@ void TaskBooleanParameters::onTypeChanged(int index)
             pcBoolean->Type.setValue("Fuse");
     }
 
+    // Force UI update before starting heavy computation to show user's selection immediately
+    QApplication::processEvents();
+
     pcBoolean->getDocument()->recomputeFeature(pcBoolean);
 }
 
@@ -388,8 +394,14 @@ bool TaskDlgBooleanParameters::accept()
         }
         str << "])";
         Gui::Command::runCommand(Gui::Command::Doc, str.str().c_str());
+        FCMD_OBJ_CMD(obj, "Type = " << parameter->getType());
+
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+        Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
+        obj->getDocument()->commitTransaction();
     }
     catch (const Base::Exception& e) {
+        obj->getDocument()->abortTransaction();
         QMessageBox::warning(
             parameter,
             tr("Boolean: Accept: Input error"),
@@ -397,12 +409,6 @@ bool TaskDlgBooleanParameters::accept()
         );
         return false;
     }
-
-    FCMD_OBJ_CMD(obj, "Type = " << parameter->getType());
-    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
-    Gui::Command::commitCommand();
-
     return true;
 }
 
@@ -419,15 +425,12 @@ bool TaskDlgBooleanParameters::reject()
                 doc->setShow(body->getNameInDocument());
             }
         }
+        // roll back the done things
+        doc->abortCommand();
+        Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
     }
-
-    // roll back the done things
-    Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
-
 
     return true;
 }
-
 
 #include "moc_TaskBooleanParameters.cpp"

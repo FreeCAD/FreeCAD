@@ -1,5 +1,9 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from typing import Final, overload
-from Base.Metadata import export, constmethod
+from Base.Metadata import export
 from Part.Conic2d import Conic2d
 
 @export(

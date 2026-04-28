@@ -26,7 +26,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="99"/>
       <source>If this is checked, Features will claim their children in the tree view</source>
-      <translation>Калі птушка, Аб'екты будуць паказваць іх дачынныя аб'екты ў дрэве прагляду</translation>
+      <translation>Калі птушка, характарыстыкі будуць паказваць іх дачынныя аб'екты ў дрэве прагляду</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="119"/>
@@ -36,7 +36,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="122"/>
       <source>Use Multmatrix Feature</source>
-      <translation>Ужыць функцыю Multmatrix</translation>
+      <translation>Ужыць характарыстыку Multmatrix</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="139"/>
@@ -341,7 +341,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="158"/>
       <source>Refine Shape Feature</source>
-      <translation>Функцыя ўдасканалення фігур</translation>
+      <translation>Характарыстыка ўдасканалення фігур</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="161"/>
@@ -354,12 +354,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="268"/>
       <source>Increase Tolerance Feature</source>
-      <translation>Функцыя павелічэння дакладнасці</translation>
+      <translation>Характарыстыка павелічэння дакладнасці</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="271"/>
       <source>Creates a feature to increase the tolerance</source>
-      <translation>Стварае функцыю для павялічэння дакладнасці</translation>
+      <translation>Стварае характарыстыку для павялічэння дакладнасці</translation>
     </message>
   </context>
   <context>
@@ -440,7 +440,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="188"/>
       <source>Mirror Mesh Feature</source>
-      <translation>Функцыя люстраной паліганальнай сеткі</translation>
+      <translation>Характарыстыка люстраной паліганальнай сеткі</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="191"/>
@@ -453,12 +453,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="217"/>
       <source>Scale Mesh Feature</source>
-      <translation>Функцыя маштабу паліганальнай сеткі</translation>
+      <translation>Характарыстыка маштабавання паліганальнай сеткі</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="221"/>
       <source>Scales the mesh</source>
-      <translation>Маштабы паліганальнай сеткі</translation>
+      <translation>Маштабаванне паліганальнай сеткі</translation>
     </message>
   </context>
   <context>
@@ -466,7 +466,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="247"/>
       <source>Resize Mesh Feature</source>
-      <translation>Функцыя змены памеру паліганальнай сеткі</translation>
+      <translation>Характарыстыка змены памеру паліганальнай сеткі</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="251"/>

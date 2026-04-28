@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -204,7 +206,7 @@ std::vector<Base::Vector2d> CurveConverter::toVector2D(const Part::Geometry* geo
         vector2d.emplace_back(point.x, point.y);
     };
 
-    auto isconic = geometry->isDerivedFrom<Part::GeomConic>();
+    auto isperiodicconic = geometry->is<Part::GeomCircle>() || geometry->is<Part::GeomEllipse>();
     auto isbounded = geometry->isDerivedFrom<Part::GeomBoundedCurve>();
 
     if (geometry->is<Part::GeomLineSegment>()) {  // add a line
@@ -213,7 +215,7 @@ std::vector<Base::Vector2d> CurveConverter::toVector2D(const Part::Geometry* geo
         emplaceasvector2d(geo->getStartPoint());
         emplaceasvector2d(geo->getEndPoint());
     }
-    else if (isconic || isbounded) {
+    else if (isperiodicconic || isbounded) {
 
         auto geo = static_cast<const Part::GeomConic*>(geometry);
 
@@ -225,7 +227,7 @@ std::vector<Base::Vector2d> CurveConverter::toVector2D(const Part::Geometry* geo
         }
 
         // either close the curve for untrimmed conic or set the last point for bounded curves
-        emplaceasvector2d(isconic ? geo->value(0) : geo->value(geo->getLastParameter()));
+        emplaceasvector2d(isperiodicconic ? geo->value(0) : geo->value(geo->getLastParameter()));
     }
 
     return vector2d;
@@ -738,6 +740,19 @@ void DrawSketchHandler::seekTangentAutoConstraint(
     }
 }
 
+void DrawSketchHandler::openCommand(const std::string& name)
+{
+    currentTransactionID = sketchgui->getDocument()->openCommand(name.c_str());
+}
+void DrawSketchHandler::commitCommand()
+{
+    Gui::Command::commitCommand(currentTransactionID);
+}
+void DrawSketchHandler::abortCommand()
+{
+    Gui::Command::abortCommand(currentTransactionID);
+}
+
 int DrawSketchHandler::seekAutoConstraint(
     std::vector<AutoConstraint>& suggestedConstraints,
     const Base::Vector2d& Pos,
@@ -775,154 +790,170 @@ void DrawSketchHandler::createAutoConstraints(
         return;  // If Autoconstraints property is not set quit
     }
 
-    if (!autoConstrs.empty()) {
+    if (autoConstrs.empty()) {
+        return;
+    }
+
+    if (createowncommand) {
+        // Open the Command
+        openCommand(QT_TRANSLATE_NOOP("Command", "Add Auto-Constraints"));
+    }
+
+    // Iterate through constraints
+    for (auto& cstr : autoConstrs) {
+        int geoId2 = cstr.GeoId;
+
+        switch (cstr.Type) {
+            case Sketcher::Coincident: {
+                if (posId1 == Sketcher::PointPos::none) {
+                    continue;
+                }
+                // If the auto constraint has a point create a coincident otherwise it is an
+                // edge on a point
+                Gui::cmdAppObjectArgs(
+                    sketchgui->getObject(),
+                    "addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
+                    geoId1,
+                    static_cast<int>(posId1),
+                    cstr.GeoId,
+                    static_cast<int>(cstr.PosId)
+                );
+            } break;
+            case Sketcher::PointOnObject: {
+                Sketcher::PointPos posId2 = cstr.PosId;
+                if (posId1 == Sketcher::PointPos::none) {
+                    // Auto constraining an edge so swap parameters
+                    std::swap(geoId1, geoId2);
+                    std::swap(posId1, posId2);
+                }
+
+                Gui::cmdAppObjectArgs(
+                    sketchgui->getObject(),
+                    "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                    geoId1,
+                    static_cast<int>(posId1),
+                    geoId2
+                );
+            } break;
+            case Sketcher::Symmetric: {
+                Gui::cmdAppObjectArgs(
+                    sketchgui->getObject(),
+                    "addConstraint(Sketcher.Constraint('Symmetric',%d,1,%d,2,%d,%d)) ",
+                    geoId2,
+                    geoId2,
+                    geoId1,
+                    static_cast<int>(posId1)
+                );
+            } break;
+                // In special case of Horizontal/Vertical constraint, geoId2 is normally unused
+                // and should be 'Constraint::GeoUndef' However it can be used as a way to
+                // require the function to apply these constraints on another geometry In this
+                // case the caller as to set geoId2, then it will be used as target instead of
+                // geoId2
+            case Sketcher::Horizontal: {
+                Gui::cmdAppObjectArgs(
+                    sketchgui->getObject(),
+                    "addConstraint(Sketcher.Constraint('Horizontal',%d)) ",
+                    geoId2 != GeoEnum::GeoUndef ? geoId2 : geoId1
+                );
+            } break;
+            case Sketcher::Vertical: {
+                Gui::cmdAppObjectArgs(
+                    sketchgui->getObject(),
+                    "addConstraint(Sketcher.Constraint('Vertical',%d)) ",
+                    geoId2 != GeoEnum::GeoUndef ? geoId2 : geoId1
+                );
+            } break;
+            case Sketcher::Tangent: {
+                Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
+
+                const Part::Geometry* geom1 = Obj->getGeometry(geoId1);
+                const Part::Geometry* geom2 = Obj->getGeometry(cstr.GeoId);
+
+                // ellipse tangency support using construction elements (lines)
+                if (geom1 && geom2
+                    && (geom1->is<Part::GeomEllipse>() || geom2->is<Part::GeomEllipse>())) {
+
+                    if (!geom1->is<Part::GeomEllipse>()) {
+                        std::swap(geoId1, geoId2);
+                    }
+
+                    // geoId1 is the ellipse
+                    geom1 = Obj->getGeometry(geoId1);
+                    geom2 = Obj->getGeometry(geoId2);
+
+                    if (geom2->is<Part::GeomEllipse>() || geom2->is<Part::GeomArcOfEllipse>()
+                        || geom2->is<Part::GeomCircle>() || geom2->is<Part::GeomArcOfCircle>()) {
+                        // in all these cases an intermediate element is needed
+                        bool success = makeTangentToEllipseviaNewPoint(
+                            Obj,
+                            static_cast<const Part::GeomEllipse*>(geom1),
+                            geom2,
+                            geoId1,
+                            geoId2
+                        );
+
+                        if (createowncommand) {
+                            closeAndRecompute(currentTransactionID, !success, Obj);
+                        }
+                        else {
+                            tryAutoRecompute(Obj);
+                        }
+
+                        return;
+                    }
+                }
+
+                // arc of ellipse tangency support using external elements
+                if (geom1 && geom2
+                    && (geom1->is<Part::GeomArcOfEllipse>() || geom2->is<Part::GeomArcOfEllipse>())) {
+
+                    if (!geom1->is<Part::GeomArcOfEllipse>()) {
+                        std::swap(geoId1, geoId2);
+                    }
+
+                    // geoId1 is the arc of ellipse
+                    geom1 = Obj->getGeometry(geoId1);
+                    geom2 = Obj->getGeometry(geoId2);
+
+                    if (geom2->is<Part::GeomArcOfEllipse>() || geom2->is<Part::GeomCircle>()
+                        || geom2->is<Part::GeomArcOfCircle>()) {
+                        // in all these cases an intermediate element is needed
+                        bool success = makeTangentToArcOfEllipseviaNewPoint(
+                            Obj,
+                            static_cast<const Part::GeomArcOfEllipse*>(geom1),
+                            geom2,
+                            geoId1,
+                            geoId2
+                        );
+
+                        if (createowncommand) {
+                            closeAndRecompute(currentTransactionID, !success, Obj);
+                        }
+                        else {
+                            tryAutoRecompute(Obj);
+                        }
+
+                        return;
+                    }
+                }
+
+                Gui::cmdAppObjectArgs(
+                    sketchgui->getObject(),
+                    "addConstraint(Sketcher.Constraint('Tangent',%d, %d)) ",
+                    geoId1,
+                    cstr.GeoId
+                );
+            } break;
+            default:
+                break;
+        }
 
         if (createowncommand) {
-            // Open the Command
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Auto-Constraints"));
+            commitCommand();
         }
-
-        // Iterate through constraints
-        for (auto& cstr : autoConstrs) {
-            int geoId2 = cstr.GeoId;
-
-            switch (cstr.Type) {
-                case Sketcher::Coincident: {
-                    if (posId1 == Sketcher::PointPos::none) {
-                        continue;
-                    }
-                    // If the auto constraint has a point create a coincident otherwise it is an
-                    // edge on a point
-                    Gui::cmdAppObjectArgs(
-                        sketchgui->getObject(),
-                        "addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
-                        geoId1,
-                        static_cast<int>(posId1),
-                        cstr.GeoId,
-                        static_cast<int>(cstr.PosId)
-                    );
-                } break;
-                case Sketcher::PointOnObject: {
-                    Sketcher::PointPos posId2 = cstr.PosId;
-                    if (posId1 == Sketcher::PointPos::none) {
-                        // Auto constraining an edge so swap parameters
-                        std::swap(geoId1, geoId2);
-                        std::swap(posId1, posId2);
-                    }
-
-                    Gui::cmdAppObjectArgs(
-                        sketchgui->getObject(),
-                        "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-                        geoId1,
-                        static_cast<int>(posId1),
-                        geoId2
-                    );
-                } break;
-                case Sketcher::Symmetric: {
-                    Gui::cmdAppObjectArgs(
-                        sketchgui->getObject(),
-                        "addConstraint(Sketcher.Constraint('Symmetric',%d,1,%d,2,%d,%d)) ",
-                        geoId2,
-                        geoId2,
-                        geoId1,
-                        static_cast<int>(posId1)
-                    );
-                } break;
-                    // In special case of Horizontal/Vertical constraint, geoId2 is normally unused
-                    // and should be 'Constraint::GeoUndef' However it can be used as a way to
-                    // require the function to apply these constraints on another geometry In this
-                    // case the caller as to set geoId2, then it will be used as target instead of
-                    // geoId2
-                case Sketcher::Horizontal: {
-                    Gui::cmdAppObjectArgs(
-                        sketchgui->getObject(),
-                        "addConstraint(Sketcher.Constraint('Horizontal',%d)) ",
-                        geoId2 != GeoEnum::GeoUndef ? geoId2 : geoId1
-                    );
-                } break;
-                case Sketcher::Vertical: {
-                    Gui::cmdAppObjectArgs(
-                        sketchgui->getObject(),
-                        "addConstraint(Sketcher.Constraint('Vertical',%d)) ",
-                        geoId2 != GeoEnum::GeoUndef ? geoId2 : geoId1
-                    );
-                } break;
-                case Sketcher::Tangent: {
-                    Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
-
-                    const Part::Geometry* geom1 = Obj->getGeometry(geoId1);
-                    const Part::Geometry* geom2 = Obj->getGeometry(cstr.GeoId);
-
-                    // ellipse tangency support using construction elements (lines)
-                    if (geom1 && geom2
-                        && (geom1->is<Part::GeomEllipse>() || geom2->is<Part::GeomEllipse>())) {
-
-                        if (!geom1->is<Part::GeomEllipse>()) {
-                            std::swap(geoId1, geoId2);
-                        }
-
-                        // geoId1 is the ellipse
-                        geom1 = Obj->getGeometry(geoId1);
-                        geom2 = Obj->getGeometry(geoId2);
-
-                        if (geom2->is<Part::GeomEllipse>() || geom2->is<Part::GeomArcOfEllipse>()
-                            || geom2->is<Part::GeomCircle>() || geom2->is<Part::GeomArcOfCircle>()) {
-                            // in all these cases an intermediate element is needed
-                            makeTangentToEllipseviaNewPoint(
-                                Obj,
-                                static_cast<const Part::GeomEllipse*>(geom1),
-                                geom2,
-                                geoId1,
-                                geoId2
-                            );
-                            return;
-                        }
-                    }
-
-                    // arc of ellipse tangency support using external elements
-                    if (geom1 && geom2
-                        && (geom1->is<Part::GeomArcOfEllipse>()
-                            || geom2->is<Part::GeomArcOfEllipse>())) {
-
-                        if (!geom1->is<Part::GeomArcOfEllipse>()) {
-                            std::swap(geoId1, geoId2);
-                        }
-
-                        // geoId1 is the arc of ellipse
-                        geom1 = Obj->getGeometry(geoId1);
-                        geom2 = Obj->getGeometry(geoId2);
-
-                        if (geom2->is<Part::GeomArcOfEllipse>() || geom2->is<Part::GeomCircle>()
-                            || geom2->is<Part::GeomArcOfCircle>()) {
-                            // in all these cases an intermediate element is needed
-                            makeTangentToArcOfEllipseviaNewPoint(
-                                Obj,
-                                static_cast<const Part::GeomArcOfEllipse*>(geom1),
-                                geom2,
-                                geoId1,
-                                geoId2
-                            );
-                            return;
-                        }
-                    }
-
-                    Gui::cmdAppObjectArgs(
-                        sketchgui->getObject(),
-                        "addConstraint(Sketcher.Constraint('Tangent',%d, %d)) ",
-                        geoId1,
-                        cstr.GeoId
-                    );
-                } break;
-                default:
-                    break;
-            }
-
-            if (createowncommand) {
-                Gui::Command::commitCommand();
-            }
-            // Gui::Command::updateActive(); // There is already an recompute in each command
-            // creation, this is redundant.
-        }
+        // Gui::Command::updateActive(); // There is already an recompute in each command
+        // creation, this is redundant.
     }
 }
 

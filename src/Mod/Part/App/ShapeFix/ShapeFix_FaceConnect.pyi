@@ -1,4 +1,8 @@
-from Base.Metadata import export, constmethod
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
+from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase
 
 @export(
@@ -15,13 +19,13 @@ class ShapeFix_FaceConnect(PyObjectBase):
     Licence: LGPL
     """
 
-    def add(self, face) -> None:
+    def add(self, face, /) -> None:
         """
         add(face, face)
         """
         ...
 
-    def build(self, shell, sewtolerance, fixtolerance) -> None:
+    def build(self, shell, sewtolerance, fixtolerance, /) -> None:
         """
         build(shell, sewtolerance, fixtolerance)
         """

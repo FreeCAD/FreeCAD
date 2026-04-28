@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_FACET_H
-#define MESH_FACET_H
+#pragma once
 
 #include "Edge.h"
 
@@ -65,6 +64,3 @@ public:
 };
 
 }  // namespace Mesh
-
-
-#endif  // MESH_FACET_H

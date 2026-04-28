@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchHandlerSlot_H
-#define SKETCHERGUI_DrawSketchHandlerSlot_H
+#pragma once
 
 #include <sstream>
 
@@ -54,10 +55,11 @@ using DSHSlotController = DrawSketchDefaultWidgetController<
     DrawSketchHandlerSlot,
     StateMachines::ThreeSeekEnd,
     /*PAutoConstraintSize =*/2,
-    /*OnViewParametersT =*/OnViewParameters<5>,   // NOLINT
-    /*WidgetParametersT =*/WidgetParameters<0>,   // NOLINT
-    /*WidgetCheckboxesT =*/WidgetCheckboxes<0>,   // NOLINT
-    /*WidgetComboboxesT =*/WidgetComboboxes<0>>;  // NOLINT
+    /*OnViewParametersT =*/OnViewParameters<5>,  // NOLINT
+    /*WidgetParametersT =*/WidgetParameters<0>,  // NOLINT
+    /*WidgetCheckboxesT =*/WidgetCheckboxes<0>,  // NOLINT
+    /*WidgetComboboxesT =*/WidgetComboboxes<0>,  // NOLINT
+    /*WidgetLineEditsT =*/WidgetLineEdits<0>>;   // NOLINT
 
 using DSHSlotControllerBase = DSHSlotController::ControllerBase;
 
@@ -65,6 +67,8 @@ using DrawSketchHandlerSlotBase = DrawSketchControllableHandler<DSHSlotControlle
 
 class DrawSketchHandlerSlot: public DrawSketchHandlerSlotBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerSlot)
+
     friend DSHSlotController;
     friend DSHSlotControllerBase;
 
@@ -172,13 +176,13 @@ private:
         firstCurve = getHighestCurveIndex() + 1;
 
         try {
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add slot"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add slot"));
 
             createShape(false);
 
             commandAddShapeGeometryAndConstraints();
 
-            Gui::Command::commitCommand();
+            commitCommand();
         }
         catch (const Base::Exception&) {
             Gui::NotifyError(
@@ -187,7 +191,7 @@ private:
                 QT_TRANSLATE_NOOP("Notifications", "Failed to add slot")
             );
 
-            Gui::Command::abortCommand();
+            abortCommand();
             THROWM(
                 Base::RuntimeError,
                 QT_TRANSLATE_NOOP(
@@ -713,6 +717,3 @@ void DSHSlotController::addConstraints()
 }
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerSlot_H

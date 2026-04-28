@@ -30,7 +30,67 @@ def to_json(value):
     return value
 
 
-def format_value(value: FreeCAD.Units.Quantity | int | float | None, precision: int | None = None):
+def units_from_json(params):
+    """
+    Infer Units (Metric/Imperial) from JSON parameter strings.
+
+    For JSON files from disk, values are stored as strings like "3.175 in" or "6 mm".
+    This function examines common dimensional parameters (Diameter, Length, CuttingEdgeHeight, etc.)
+    to determine if the toolbit uses metric or imperial units.
+
+    Args:
+        params: Dictionary of parameters from JSON (before conversion to FreeCAD.Units.Quantity)
+
+    Returns:
+        str: "Metric" or "Imperial", or None if units cannot be determined
+    """
+    if not isinstance(params, dict):
+        return None
+
+    imperial_count = 0
+    metric_count = 0
+
+    for param_name in ("Diameter", "ShankDiameter", "Length", "CuttingEdgeLength"):
+        value = params.get(param_name)
+        if value is not None:
+            # Check if it's a string with unit suffix
+            if isinstance(value, str):
+                value_lower = value.lower().strip()
+
+                # Check for imperial units
+                if any(unit in value_lower for unit in ["in", "inch", '"', "thou"]):
+                    imperial_count += 1
+                # Check for metric units
+                elif any(unit in value_lower for unit in ["mm", "cm", "m "]):
+                    metric_count += 1
+
+        # Make a decision based on counts
+        if imperial_count > metric_count:
+            return "Imperial"
+        elif metric_count > imperial_count:
+            return "Metric"
+
+    return "Metric"  # Default to Metric if uncertain
+
+
+def format_value(
+    value: FreeCAD.Units.Quantity | int | float | None,
+    precision: int | None = None,
+    units: str | None = None,
+) -> str | None:
+    """
+    Format a numeric value as a string, optionally appending a unit and controlling precision.
+
+    This function uses the ToolBitSchema (via setToolBitSchema) to ensure that units are formatted according to the correct schema (Metric or Imperial) when a FreeCAD.Units.Quantity is provided. The schema is temporarily set for formatting and then restored.
+
+    Args:
+        value: The numeric value to format.
+        unit: (Optional) The unit string to append (e.g., 'mm', 'in').
+        precision: (Optional) Number of decimal places (default: 3).
+
+    Returns:
+        str: The formatted value as a string, with unit if provided.
+    """
     if value is None:
         return None
     elif isinstance(value, FreeCAD.Units.Quantity):
@@ -45,7 +105,10 @@ def format_value(value: FreeCAD.Units.Quantity | int | float | None, precision: 
                 formatted_value = f"{deg_val:.1f}".rstrip("0").rstrip(".")
                 return f"{formatted_value}°"
             # Format the value with the specified number of precision and strip trailing zeros
-            return value.getUserPreferred()[0]
+            setToolBitSchema(units)
+            _value = value.getUserPreferred()[0]
+            setToolBitSchema()
+            return _value
         return value.UserString
     return str(value)
 
@@ -78,3 +141,30 @@ def is_imperial_pitch(pitch_mm, tol=1e-6):
     if two_dec_clean and not is_whole_tpi:
         return False  # metric
     return True  # imperial
+
+
+def setToolBitSchema(schema=None):
+    """
+    Set the FreeCAD units schema. If passed 'Metric' or 'Imperial', set accordingly (case-insensitive).
+    Otherwise, if a document is open, set to its schema. If no document, fallback to user preference or provided schema.
+    """
+    units_schema_map = {
+        "metric": 6,  # 6 = Metric schema in FreeCAD
+        "imperial": 3,  # 3 = Imperial schema in FreeCAD
+    }
+    if isinstance(schema, str) and schema.lower() in units_schema_map:
+        FreeCAD.Units.setSchema(units_schema_map[schema.lower()])
+        return
+    if FreeCAD.ActiveDocument is not None:
+        try:
+            doc_schema = FreeCAD.ActiveDocument.getSchema()
+            FreeCAD.Units.setSchema(doc_schema)
+            return
+        except Exception:
+            pass
+    # Fallback to user preference or provided schema
+    if schema is None:
+        schema = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt(
+            "UserSchema", 6
+        )
+    FreeCAD.Units.setSchema(schema)

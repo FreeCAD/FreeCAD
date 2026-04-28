@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 Pierre-Louis Boyer <pierrelouis.boyer@gmail.com>   *
  *                                                                         *
@@ -21,8 +23,7 @@
  *   SnapManager initially funded by the Open Toolchain Foundation         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_SnapManager_H
-#define SKETCHERGUI_SnapManager_H
+#pragma once
 
 #include <App/Application.h>
 
@@ -153,6 +154,3 @@ private:
 
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_SnapManager_H

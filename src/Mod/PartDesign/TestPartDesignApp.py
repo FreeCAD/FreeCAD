@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # **************************************************************************
 #   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
 #                                                                         *
@@ -56,6 +58,7 @@ from PartDesignTests.TestThickness import TestThickness
 # extras
 from PartDesignTests.TestInvoluteGear import TestInvoluteGear
 from PartDesignTests.TestSketch import TestSketch
+from PartDesignTests.TestSuppressed import TestSuppressed
 
 # Topological naming problem
 from PartDesignTests.TestTopologicalNamingProblem import TestTopologicalNamingProblem

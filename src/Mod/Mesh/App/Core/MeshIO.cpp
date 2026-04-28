@@ -1103,8 +1103,8 @@ bool MeshInput::LoadNastran(std::istream& input)
                 // GRID    1               1.2345671.2345671.234567
                 // GRID    112             6.0000000.5000000.00E+00
 
-                // Element type(8), id(8), cp(8), x(8), y(8), z(at least 1)
-                if (line.length() < 41) {
+                // Element type(8), id(8), cp(8), x(8), y(8), z(8)
+                if (line.length() < 48) {
                     badElementCounter++;
                     continue;
                 }
@@ -1388,7 +1388,10 @@ bool MeshOutput::SaveAny(const char* FileName, MeshIO::Format format) const
     // ask for write permission
     Base::FileInfo file(FileName);
     Base::FileInfo directory(file.dirPath());
-    if ((file.exists() && !file.isWritable()) || !directory.exists() || !directory.isWritable()) {
+    if (!directory.exists()) {
+        throw Base::FileException("Directory does not exist", FileName);
+    }
+    if ((file.exists() && !file.isWritable()) || !directory.isWritable()) {
         throw Base::FileException("No write permission for file", FileName);
     }
 
@@ -2190,7 +2193,7 @@ void MeshOutput::SaveXML(Base::Writer& writer) const
 bool MeshOutput::Save3MF(std::ostream& output) const
 {
     Writer3MF writer(output);
-    writer.AddMesh(_rclMesh, _transform);
+    writer.AddMesh(_rclMesh, _transform, objectName);
     return writer.Save();
 }
 

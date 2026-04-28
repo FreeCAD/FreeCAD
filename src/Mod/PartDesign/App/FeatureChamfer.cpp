@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -37,9 +39,12 @@
 #include <Base/Exception.h>
 #include <Base/Reader.h>
 #include <Base/Tools.h>
+#include <Mod/Part/App/SignalException.h>
 #include <Mod/Part/App/TopoShape.h>
 
 #include "FeatureChamfer.h"
+
+#include <Base/ProgramVersion.h>
 
 
 using namespace PartDesign;
@@ -156,6 +161,7 @@ App::DocumentObjectExecReturn* Chamfer::execute()
     }
     try {
         TopoShape shape(0);
+        Part::SignalException sig;
         shape.makeElementChamfer(
             TopShape,
             edges,
@@ -200,11 +206,18 @@ App::DocumentObjectExecReturn* Chamfer::execute()
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
+    catch (...) {
+        return new App::DocumentObjectExecReturn(
+            QT_TRANSLATE_NOOP("Exception", "Chamfer failed: OCC kernel error in chamfer computation")
+        );
+    }
 }
 
 void Chamfer::Restore(Base::XMLReader& reader)
 {
     DressUp::Restore(reader);
+
+    migrateFlippedProperties(reader);
 }
 
 void Chamfer::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop)
@@ -218,6 +231,29 @@ void Chamfer::handleChangedPropertyType(Base::XMLReader& reader, const char* Typ
     else {
         DressUp::handleChangedPropertyType(reader, TypeName, prop);
     }
+}
+
+bool Chamfer::requiresSizeSwapping(const Base::XMLReader& reader) const
+{
+    return Base::getVersion(reader.ProgramVersion) < Base::Version::v1_0
+        && (ChamferType.getValue() == 1 || ChamferType.getValue() == 2);
+}
+
+void Chamfer::migrateFlippedProperties(const Base::XMLReader& reader)
+{
+    if (!requiresSizeSwapping(reader)) {
+        return;
+    }
+
+    Base::Console().warning(
+        "The 'FlipDirection' property of the chamfer of %s is being adjusted to maintain"
+        "the same geometry in this FreeCAD version. If the re-saved file is later opened "
+        "in FreeCAD 0.21.x the chamfer result may differ due to the changed parameter "
+        "interpretation.\n",
+        getFullName()
+    );
+
+    FlipDirection.setValue(!FlipDirection.getValue());
 }
 
 void Chamfer::onChanged(const App::Property* prop)

@@ -352,9 +352,8 @@ static Handle(Geom_Plane) getGeomPlane(const TopoDS_Face& faceIn)
     if (!surface.IsNull()) {
         planeSurfaceOut = Handle(Geom_Plane)::DownCast(surface);
         if (planeSurfaceOut.IsNull()) {
-            Handle(Geom_RectangularTrimmedSurface) trimmedSurface = Handle(
-                Geom_RectangularTrimmedSurface
-            )::DownCast(surface);
+            Handle(Geom_RectangularTrimmedSurface)
+                trimmedSurface = Handle(Geom_RectangularTrimmedSurface)::DownCast(surface);
             if (!trimmedSurface.IsNull()) {
                 planeSurfaceOut = Handle(Geom_Plane)::DownCast(trimmedSurface->BasisSurface());
             }
@@ -454,9 +453,8 @@ static Handle(Geom_CylindricalSurface) getGeomCylinder(const TopoDS_Face& faceIn
     if (!surface.IsNull()) {
         cylinderSurfaceOut = Handle(Geom_CylindricalSurface)::DownCast(surface);
         if (cylinderSurfaceOut.IsNull()) {
-            Handle(Geom_RectangularTrimmedSurface) trimmedSurface = Handle(
-                Geom_RectangularTrimmedSurface
-            )::DownCast(surface);
+            Handle(Geom_RectangularTrimmedSurface)
+                trimmedSurface = Handle(Geom_RectangularTrimmedSurface)::DownCast(surface);
             if (!trimmedSurface.IsNull()) {
                 cylinderSurfaceOut = Handle(Geom_CylindricalSurface)::DownCast(
                     trimmedSurface->BasisSurface()
@@ -862,12 +860,10 @@ FaceTypedBSpline::FaceTypedBSpline()
 bool FaceTypedBSpline::isEqual(const TopoDS_Face& faceOne, const TopoDS_Face& faceTwo) const
 {
     try {
-        Handle(Geom_BSplineSurface) surfaceOne = Handle(Geom_BSplineSurface)::DownCast(
-            BRep_Tool::Surface(faceOne)
-        );
-        Handle(Geom_BSplineSurface) surfaceTwo = Handle(Geom_BSplineSurface)::DownCast(
-            BRep_Tool::Surface(faceTwo)
-        );
+        Handle(Geom_BSplineSurface)
+            surfaceOne = Handle(Geom_BSplineSurface)::DownCast(BRep_Tool::Surface(faceOne));
+        Handle(Geom_BSplineSurface)
+            surfaceTwo = Handle(Geom_BSplineSurface)::DownCast(BRep_Tool::Surface(faceTwo));
 
         if (surfaceOne.IsNull() || surfaceTwo.IsNull()) {
             return false;
@@ -1055,9 +1051,8 @@ TopoDS_Face FaceTypedBSpline::buildFace(const FaceVectorType& faces) const
     std::sort(wires.begin(), wires.end(), ModelRefine::WireSort());
 
     // make face from surface and outer wire.
-    Handle(Geom_BSplineSurface) surface = Handle(Geom_BSplineSurface)::DownCast(
-        BRep_Tool::Surface(faces.at(0))
-    );
+    Handle(Geom_BSplineSurface)
+        surface = Handle(Geom_BSplineSurface)::DownCast(BRep_Tool::Surface(faces.at(0)));
     if (!surface) {
         return {};
     }
@@ -1292,6 +1287,13 @@ bool FaceUniter::process()
     return true;
 }
 
+void FaceUniter::fixOrientation(const TopoDS_Shell& shell)
+{
+    if (shell.Orientation() != workShell.Orientation()) {
+        workShell.Reverse();
+    }
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // BRepBuilderAPI_RefineModel implement a way to log all modifications on the faces
@@ -1358,11 +1360,16 @@ void Part::BRepBuilderAPI_RefineModel::Build()
             const TopoDS_Solid& solid = TopoDS::Solid(xp.Current());
             BRepTools_ReShape reshape;
             TopExp_Explorer it;
+            int countShells = 0;
             for (it.Init(solid, TopAbs_SHELL); it.More(); it.Next()) {
+                countShells++;
                 const TopoDS_Shell& currentShell = TopoDS::Shell(it.Current());
                 ModelRefine::FaceUniter uniter(currentShell);
                 if (uniter.process()) {
                     if (uniter.isModified()) {
+                        if (countShells > 1) {
+                            uniter.fixOrientation(currentShell);
+                        }
                         const TopoDS_Shell& newShell = uniter.getShell();
                         reshape.Replace(currentShell, newShell);
                         LogModifications(uniter);

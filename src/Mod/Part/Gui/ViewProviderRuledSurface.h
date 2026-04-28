@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_VIEWPROVIDERRULEDSURFACE_H
-#define PARTGUI_VIEWPROVIDERRULEDSURFACE_H
+#pragma once
 
 #include <Mod/Part/PartGlobal.h>
 
@@ -53,6 +52,3 @@ protected:
 };
 
 }  // namespace PartGui
-
-
-#endif  // PARTGUI_VIEWPROVIDERRULEDSURFACE_H

@@ -548,8 +548,10 @@ static void copyTemplateParameters(
     }
 }
 
-static void copyTemplateParameters(/*const*/ ParameterManager& templateParameterManager,
-                                   ParameterManager& outputParameterManager)
+static void copyTemplateParameters(
+    /*const*/ ParameterManager& templateParameterManager,
+    ParameterManager& outputParameterManager
+)
 {
     auto groups = templateParameterManager.GetGroups();
     for (auto& group : groups) {

@@ -32,6 +32,7 @@ Essentially, the points of the original object are extracted
 and passed to the `make_wire` or `make_bspline` functions,
 depending on the desired result.
 """
+
 ## @package gui_wire2spline
 # \ingroup draftguitools
 # \brief Provides GUI tools to convert polylines to B-splines and back.
@@ -41,15 +42,12 @@ depending on the desired result.
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
-import Draft_rc
-import Draft
-import draftutils.utils as utils
-import draftguitools.gui_base_original as gui_base_original
-
+from draftguitools import gui_base_original
+from draftmake import make_bspline
+from draftmake import make_wire
+from draftutils import gui_utils
+from draftutils import utils
 from draftutils.translate import translate
-
-# The module is used to prevent complaints from code checkers (flake8)
-True if Draft_rc.__name__ else False
 
 
 class WireToBSpline(gui_base_original.Modifier):
@@ -96,12 +94,12 @@ class WireToBSpline(gui_base_original.Modifier):
                         self.closed = self.obj.Closed
                         n = None
                         if utils.getType(self.obj) == "Wire":
-                            n = Draft.make_bspline(
+                            n = make_bspline.make_bspline(
                                 self.Points, closed=self.closed, placement=self.pl
                             )
                         elif utils.getType(self.obj) == "BSpline":
                             self.bs2wire = True
-                            n = Draft.make_wire(
+                            n = make_wire.make_wire(
                                 self.Points,
                                 closed=self.closed,
                                 placement=self.pl,
@@ -110,7 +108,7 @@ class WireToBSpline(gui_base_original.Modifier):
                                 bs2wire=self.bs2wire,
                             )
                         if n:
-                            Draft.formatObject(n, self.obj)
+                            gui_utils.format_object(n, self.obj)
                             self.doc.recompute()
                     else:
                         self.finish()

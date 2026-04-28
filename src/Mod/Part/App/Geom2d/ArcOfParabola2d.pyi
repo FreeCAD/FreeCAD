@@ -1,4 +1,8 @@
-from Metadata import export, constmethod, overload
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
+from Metadata import export, overload
 from typing import Final
 from Part.Geom2d import ArcOfConic2d
 

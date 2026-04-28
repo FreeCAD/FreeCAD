@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2025 Boyer Pierre-Louis                                 *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_CommandConstraints_H
-#define SKETCHERGUI_CommandConstraints_H
+#pragma once
 
 #include <QWidgetAction>
 #include <QCoreApplication>
@@ -117,4 +118,3 @@ private:
 };
 
 }  // namespace SketcherGui
-#endif  // SKETCHERGUI_Command_H

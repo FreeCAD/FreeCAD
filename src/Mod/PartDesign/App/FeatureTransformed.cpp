@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /******************************************************************************
  *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
@@ -35,8 +37,8 @@
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
-#include <Base/ProgressIndicator.h>
 #include <Base/Reader.h>
+#include <Base/Sequencer.h>
 #include <Mod/Part/App/modelRefine.h>
 
 #include "FeatureTransformed.h"
@@ -48,14 +50,12 @@
 #include "FeaturePolarPattern.h"
 #include "FeatureSketchBased.h"
 #include "Mod/Part/App/TopoShapeOpCode.h"
-#include "Mod/Part/App/OCCTProgressIndicator.h"
 
 
 using namespace PartDesign;
 
 namespace PartDesign
 {
-using Part::OCCTProgressIndicator;
 extern bool getPDRefineModelParameter();
 
 PROPERTY_SOURCE(PartDesign::Transformed, PartDesign::FeatureRefine)
@@ -103,7 +103,15 @@ Part::Feature* Transformed::getBaseObject(bool silent) const
         }
     }
     else {
-        err = QT_TRANSLATE_NOOP("Exception", "No originals linked to the transformed feature.");
+        if (freecad_cast<const Mirrored*>(this)) {
+            err = QT_TRANSLATE_NOOP("Exception", "No features selected to be mirrored.");
+        }
+        else if (freecad_cast<const LinearPattern*>(this) || freecad_cast<const PolarPattern*>(this)) {
+            err = QT_TRANSLATE_NOOP("Exception", "No features selected to be patterned.");
+        }
+        else {
+            err = QT_TRANSLATE_NOOP("Exception", "No features selected to be transformed.");
+        }
     }
 
     if (!silent && err) {
@@ -227,18 +235,33 @@ App::DocumentObjectExecReturn* Transformed::recomputePreview()
 {
     const auto mode = static_cast<Mode>(TransformMode.getValue());
 
-    const auto makeCompoundOfToolShapes = [this]() {
+    const Part::Feature* supportFeature = getBaseObject();
+    const Part::TopoShape supportShape = supportFeature->Shape.getShape();
+
+    if (supportShape.isNull()) {
+        return App::DocumentObject::StdReturn;
+    }
+
+    gp_Trsf supportTransform = supportShape.getShape().Location().Transformation();
+
+    const auto makeCompoundOfToolShapes = [this, &supportTransform]() {
         BRep_Builder builder;
         TopoDS_Compound compound;
 
         builder.MakeCompound(compound);
         for (const auto& original : getOriginals()) {
             if (auto* feature = freecad_cast<FeatureAddSub*>(original)) {
-                const auto& shape = feature->AddSubShape.getShape();
+                auto shape = feature->AddSubShape.getShape();
+
+                gp_Trsf trsf = feature->getLocation().Transformation().Multiplied(
+                    supportTransform.Inverted()
+                );
 
                 if (shape.isNull()) {
                     continue;
                 }
+
+                shape = shape.makeElementTransform(trsf);
 
                 builder.Add(compound, shape.getShape());
             }
@@ -252,9 +275,14 @@ App::DocumentObjectExecReturn* Transformed::recomputePreview()
             PreviewShape.setValue(makeCompoundOfToolShapes());
             return StdReturn;
 
-        case Mode::WholeShape:
-            PreviewShape.setValue(getBaseShape());
+        case Mode::WholeShape: {
+            auto shape = getBaseTopoShape();
+            shape = shape.makeElementTransform(supportTransform.Inverted());
+
+            PreviewShape.setValue(shape.getShape());
+
             return StdReturn;
+        }
 
         default:
             return FeatureRefine::recomputePreview();
@@ -341,7 +369,7 @@ App::DocumentObjectExecReturn* Transformed::execute()
         auto transformIter = transformations.cbegin();
         transformIter++;
         for (; transformIter != transformations.end(); transformIter++) {
-            if (OCCTProgressIndicator::getAppIndicator().UserBreak()) {
+            if (Base::Sequencer().wasCanceled()) {
                 return std::vector<TopoShape>();
             }
             auto opName = Data::indexSuffix(idx++);
@@ -386,14 +414,14 @@ App::DocumentObjectExecReturn* Transformed::execute()
                 }
                 if (!fuseShape.isNull()) {
                     auto shapes = getTransformedCompShape(supportShape, fuseShape);
-                    if (OCCTProgressIndicator::getAppIndicator().UserBreak()) {
+                    if (Base::Sequencer().wasCanceled()) {
                         return new App::DocumentObjectExecReturn("User aborted");
                     }
                     supportShape.makeElementFuse(shapes);
                 }
                 if (!cutShape.isNull()) {
                     auto shapes = getTransformedCompShape(supportShape, cutShape);
-                    if (OCCTProgressIndicator::getAppIndicator().UserBreak()) {
+                    if (Base::Sequencer().wasCanceled()) {
                         return new App::DocumentObjectExecReturn("User aborted");
                     }
                     supportShape.makeElementCut(shapes);
@@ -402,7 +430,7 @@ App::DocumentObjectExecReturn* Transformed::execute()
             break;
         case Mode::WholeShape: {
             auto shapes = getTransformedCompShape(supportShape, supportShape);
-            if (OCCTProgressIndicator::getAppIndicator().UserBreak()) {
+            if (Base::Sequencer().wasCanceled()) {
                 return new App::DocumentObjectExecReturn("User aborted");
             }
             supportShape.makeElementFuse(shapes);

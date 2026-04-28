@@ -30,6 +30,7 @@
 
 #include <QMessageBox>
 
+#include <Base/ProgramVersion.h>
 #include <Base/Parameter.h>
 #include <App/Application.h>
 #include <App/DocumentObject.h>
@@ -179,7 +180,8 @@ void ViewProviderDimension::updateData(const App::Property* prop)
         prop == &(getViewObject()->EqualTolerance) ||
         prop == &(getViewObject()->OverTolerance) ||
         prop == &(getViewObject()->UnderTolerance) ||
-        prop == &(getViewObject()->Inverted)) {
+        prop == &(getViewObject()->Inverted) ||
+        prop == &(getViewObject()->ShowSupplementary)) {
 
         QGIView* qgiv = getQView();
         if (qgiv) {
@@ -348,4 +350,42 @@ std::vector<App::DocumentObject*> ViewProviderDimension::claimChildren() const
    return temp;
 }
 
+
+void ViewProviderDimension::finishRestoring()
+{
+    fixTextSize();
+    fixArrowSize();
+
+    ViewProviderDrawingView::finishRestoring();
+}
+
+
+void ViewProviderDimension::fixTextSize()
+{
+    App::Document* ourDoc = getDocument()->getDocument();
+    if (checkMinimumDocumentVersion(ourDoc, Base::Version::v1_1)) {
+        return;
+    }
+
+    double size = Fontsize.getValue();
+    if (size == 0.0) {
+        size = Preferences::dimFontSizeMM();
+        Fontsize.setValue(size);
+    }
+}
+
+
+void ViewProviderDimension::fixArrowSize()
+{
+    App::Document* ourDoc = getDocument()->getDocument();
+    if (checkMinimumDocumentVersion(ourDoc, Base::Version::v1_1)) {
+        return;
+    }
+
+    double size = Arrowsize.getValue();
+    if (size == 0.0) {
+        size = Preferences::dimFontSizeMM();
+        Arrowsize.setValue(size);
+    }
+}
 

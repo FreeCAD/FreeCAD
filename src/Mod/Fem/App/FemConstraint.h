@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEM_CONSTRAINT_H
-#define FEM_CONSTRAINT_H
+#pragma once
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
@@ -223,21 +222,17 @@ protected:
      *  variables. It should be rewritten at a different place.
      */
     const Base::Vector3d getDirection(const App::PropertyLinkSub& direction);
+    virtual void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop);
 
 private:
     /**
      * @brief Symbol size factor determined from the size of the shape.
      */
     double sizeFactor;
-
-    void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop);
-    boost::signals2::connection connDocChangedObject;
+    fastsignals::connection connDocChangedObject;
 };
 
 using ConstraintPython = App::FeaturePythonT<Constraint>;
 
 
 }  // namespace Fem
-
-
-#endif  // FEM_CONSTRAINT_H

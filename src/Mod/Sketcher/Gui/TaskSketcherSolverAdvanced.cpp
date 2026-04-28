@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -69,12 +71,20 @@ TaskSketcherSolverAdvanced::TaskSketcherSolverAdvanced(ViewProviderSketch* sketc
     ui->checkBoxSketchSizeMultiplier->onRestore();
     ui->lineEditConvergence->onRestore();
     ui->comboBoxQRMethod->onRestore();
+    ui->spinBoxAutoQRThreshold->onRestore();
+    ui->checkBoxAutoChooseAlgo->onRestore();
     ui->lineEditQRPivotThreshold->onRestore();
     ui->comboBoxRedundantDefaultSolver->onRestore();
     ui->spinBoxRedundantSolverMaxIterations->onRestore();
     ui->checkBoxRedundantSketchSizeMultiplier->onRestore();
     ui->lineEditRedundantConvergence->onRestore();
     ui->comboBoxDebugMode->onRestore();
+
+    bool autoAlgo = ui->checkBoxAutoChooseAlgo->isChecked();
+    ui->labelAutoQRThreshold->setVisible(autoAlgo);
+    ui->spinBoxAutoQRThreshold->setVisible(autoAlgo);
+    ui->labelQRAlgorithm->setVisible(!autoAlgo);
+    ui->comboBoxQRMethod->setVisible(!autoAlgo);
 
     updateSketchObject();
 }
@@ -102,6 +112,27 @@ void TaskSketcherSolverAdvanced::setupConnections()
         this,
         &TaskSketcherSolverAdvanced::onSpinBoxMaxIterValueChanged
     );
+    connect(
+        ui->spinBoxAutoQRThreshold,
+        qOverload<int>(&QSpinBox::valueChanged),
+        this,
+        &TaskSketcherSolverAdvanced::onSpinBoxAutoQRAlgoChanged
+    );
+#if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
+    connect(
+        ui->checkBoxAutoChooseAlgo,
+        &QCheckBox::checkStateChanged,
+        this,
+        &TaskSketcherSolverAdvanced::onCheckBoxAutoQRAlgoStateChanged
+    );
+#else
+    connect(
+        ui->checkBoxAutoChooseAlgo,
+        &QCheckBox::stateChanged,
+        this,
+        &TaskSketcherSolverAdvanced::onCheckBoxAutoQRAlgoStateChanged
+    );
+#endif
 #if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
     connect(
         ui->checkBoxSketchSizeMultiplier,
@@ -635,6 +666,35 @@ void TaskSketcherSolverAdvanced::onSpinBoxMaxIterValueChanged(int i)
     const_cast<Sketcher::Sketch&>(sketchView->getSketchObject()->getSolvedSketch()).setMaxIter(i);
 }
 
+void TaskSketcherSolverAdvanced::onSpinBoxAutoQRAlgoChanged(int i)
+{
+    ui->spinBoxAutoQRThreshold->onSave();
+    const_cast<Sketcher::Sketch&>(sketchView->getSketchObject()->getSolvedSketch())
+        .setAutoQRThreshold(i);
+}
+
+void TaskSketcherSolverAdvanced::onCheckBoxAutoQRAlgoStateChanged(int state)
+{
+    if (state == Qt::Checked) {
+        ui->spinBoxAutoQRThreshold->show();
+        ui->comboBoxQRMethod->hide();
+        ui->labelAutoQRThreshold->show();
+        ui->labelQRAlgorithm->hide();
+        ui->checkBoxAutoChooseAlgo->onSave();
+        const_cast<Sketcher::Sketch&>(sketchView->getSketchObject()->getSolvedSketch())
+            .setSketchAutoAlgo(true);
+    }
+    else if (state == Qt::Unchecked) {
+        ui->spinBoxAutoQRThreshold->hide();
+        ui->comboBoxQRMethod->show();
+        ui->labelAutoQRThreshold->hide();
+        ui->labelQRAlgorithm->show();
+        ui->checkBoxAutoChooseAlgo->onSave();
+        const_cast<Sketcher::Sketch&>(sketchView->getSketchObject()->getSolvedSketch())
+            .setSketchAutoAlgo(false);
+    }
+}
+
 void TaskSketcherSolverAdvanced::onCheckBoxSketchSizeMultiplierStateChanged(int state)
 {
     if (state == Qt::Checked) {
@@ -782,6 +842,8 @@ void TaskSketcherSolverAdvanced::onPushButtonDefaultsClicked(bool checked /* = f
     ui->checkBoxSketchSizeMultiplier->onRestore();
     ui->lineEditConvergence->onRestore();
     ui->comboBoxQRMethod->onRestore();
+    ui->spinBoxAutoQRThreshold->onRestore();
+    ui->checkBoxAutoChooseAlgo->onRestore();
     ui->lineEditQRPivotThreshold->onRestore();
     ui->comboBoxRedundantDefaultSolver->onRestore();
     ui->spinBoxRedundantSolverMaxIterations->onRestore();
@@ -794,30 +856,24 @@ void TaskSketcherSolverAdvanced::onPushButtonDefaultsClicked(bool checked /* = f
 
 void TaskSketcherSolverAdvanced::updateSketchObject()
 {
-    const_cast<Sketcher::Sketch&>(sketchView->getSketchObject()->getSolvedSketch())
-        .setDebugMode((GCS::DebugMode)ui->comboBoxDebugMode->currentIndex());
-    const_cast<Sketcher::Sketch&>(sketchView->getSketchObject()->getSolvedSketch())
-        .setSketchSizeMultiplierRedundant(ui->checkBoxRedundantSketchSizeMultiplier->isChecked());
-    const_cast<Sketcher::Sketch&>(sketchView->getSketchObject()->getSolvedSketch())
-        .setMaxIterRedundant(ui->spinBoxRedundantSolverMaxIterations->value());
-    const_cast<Sketcher::Sketch&>(sketchView->getSketchObject()->getSolvedSketch()).defaultSolverRedundant
-        = static_cast<GCS::Algorithm>(ui->comboBoxRedundantDefaultSolver->currentIndex());
-    const_cast<Sketcher::Sketch&>(sketchView->getSketchObject()->getSolvedSketch())
-        .setQRAlgorithm((GCS::QRAlgorithm)ui->comboBoxQRMethod->currentIndex());
-    const_cast<Sketcher::Sketch&>(sketchView->getSketchObject()->getSolvedSketch())
-        .setQRPivotThreshold(ui->lineEditQRPivotThreshold->text().toDouble());
-    const_cast<Sketcher::Sketch&>(sketchView->getSketchObject()->getSolvedSketch())
-        .setConvergenceRedundant(ui->lineEditRedundantConvergence->text().toDouble());
-    const_cast<Sketcher::Sketch&>(sketchView->getSketchObject()->getSolvedSketch())
-        .setConvergence(ui->lineEditConvergence->text().toDouble());
-    const_cast<Sketcher::Sketch&>(sketchView->getSketchObject()->getSolvedSketch())
-        .setSketchSizeMultiplier(ui->checkBoxSketchSizeMultiplier->isChecked());
-    const_cast<Sketcher::Sketch&>(sketchView->getSketchObject()->getSolvedSketch())
-        .setMaxIter(ui->spinBoxMaxIter->value());
-    const_cast<Sketcher::Sketch&>(sketchView->getSketchObject()->getSolvedSketch()).defaultSolver
-        = static_cast<GCS::Algorithm>(ui->comboBoxDefaultSolver->currentIndex());
-    const_cast<Sketcher::Sketch&>(sketchView->getSketchObject()->getSolvedSketch())
-        .setDogLegGaussStep((GCS::DogLegGaussStep)ui->comboBoxDogLegGaussStep->currentIndex());
+    auto& sketch = const_cast<Sketcher::Sketch&>(sketchView->getSketchObject()->getSolvedSketch());
+
+    sketch.setDebugMode((GCS::DebugMode)ui->comboBoxDebugMode->currentIndex());
+    sketch.setSketchSizeMultiplierRedundant(ui->checkBoxRedundantSketchSizeMultiplier->isChecked());
+    sketch.setMaxIterRedundant(ui->spinBoxRedundantSolverMaxIterations->value());
+    sketch.defaultSolverRedundant = static_cast<GCS::Algorithm>(
+        ui->comboBoxRedundantDefaultSolver->currentIndex()
+    );
+    sketch.setQRAlgorithm((GCS::QRAlgorithm)ui->comboBoxQRMethod->currentIndex());
+    sketch.setAutoQRThreshold(ui->spinBoxAutoQRThreshold->value());
+    sketch.setSketchAutoAlgo(ui->checkBoxAutoChooseAlgo->isChecked());
+    sketch.setQRPivotThreshold(ui->lineEditQRPivotThreshold->text().toDouble());
+    sketch.setConvergenceRedundant(ui->lineEditRedundantConvergence->text().toDouble());
+    sketch.setConvergence(ui->lineEditConvergence->text().toDouble());
+    sketch.setSketchSizeMultiplier(ui->checkBoxSketchSizeMultiplier->isChecked());
+    sketch.setMaxIter(ui->spinBoxMaxIter->value());
+    sketch.defaultSolver = static_cast<GCS::Algorithm>(ui->comboBoxDefaultSolver->currentIndex());
+    sketch.setDogLegGaussStep((GCS::DogLegGaussStep)ui->comboBoxDogLegGaussStep->currentIndex());
 
     updateDefaultMethodParameters();
     updateRedundantMethodParameters();

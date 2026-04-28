@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel <development@ondsel.com>                    *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchHandlerArcSlot_H
-#define SKETCHERGUI_DrawSketchHandlerArcSlot_H
+#pragma once
 
 #include <QApplication>
 
@@ -67,6 +68,7 @@ using DSHArcSlotController = DrawSketchDefaultWidgetController<
     /*WidgetParametersT =*/WidgetParameters<0, 0>,  // NOLINT
     /*WidgetCheckboxesT =*/WidgetCheckboxes<0, 0>,  // NOLINT
     /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,  // NOLINT
+    /*WidgetLineEditsT =*/WidgetLineEdits<0, 0>,
     ConstructionMethods::ArcSlotConstructionMethod,
     /*bool PFirstComboboxIsConstructionMethod =*/true>;
 
@@ -76,6 +78,8 @@ using DrawSketchHandlerArcSlotBase = DrawSketchControllableHandler<DSHArcSlotCon
 
 class DrawSketchHandlerArcSlot: public DrawSketchHandlerArcSlotBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerArcSlot)
+
     friend DSHArcSlotController;
     friend DSHArcSlotControllerBase;
 
@@ -199,11 +203,11 @@ private:
         try {
             createShape(false);
 
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc slot"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc slot"));
 
             commandAddShapeGeometryAndConstraints();
 
-            Gui::Command::commitCommand();
+            commitCommand();
         }
         catch (const Base::Exception&) {
             Gui::NotifyError(
@@ -212,7 +216,7 @@ private:
                 QT_TRANSLATE_NOOP("Notifications", "Failed to add arc slot")
             );
 
-            Gui::Command::abortCommand();
+            abortCommand();
             THROWM(
                 Base::RuntimeError,
                 QT_TRANSLATE_NOOP(
@@ -1032,6 +1036,3 @@ void DSHArcSlotController::addConstraints()
 }
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerArcSlot_H

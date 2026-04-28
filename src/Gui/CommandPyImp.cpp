@@ -26,19 +26,18 @@
 
 #include <Base/PyWrapParseTupleAndKeywords.h>
 
-#include "Command.h"
 #include "Action.h"
 #include "Application.h"
+#include "Command.h"
 #include "MainWindow.h"
-#include "Selection.h"
-#include "Window.h"
 #include "PythonWrapper.h"
+#include "Selection.h"
+#include "ShortcutManager.h"
+#include "Window.h"
 
-// inclusion of the generated files (generated out of CommandPy.pyi)
+// generated out of Command.pyi
 #include "CommandPy.h"
 #include "CommandPy.cpp"
-#include "ShortcutManager.h"
-
 
 // returns a string which represents the object e.g. when printed in python
 std::string CommandPy::representation() const
@@ -117,8 +116,10 @@ PyObject* CommandPy::listByShortcut(PyObject* args)
                     matches.emplace_back(c->getName());
                 }
             }
-            else if (action->shortcut().toString().remove(spc).toUpper()
-                     == QString::fromLatin1(shortcut_to_find).remove(spc).toUpper()) {
+            else if (
+                action->shortcut().toString().remove(spc).toUpper()
+                == QString::fromLatin1(shortcut_to_find).remove(spc).toUpper()
+            ) {
                 matches.emplace_back(c->getName());
             }
         }

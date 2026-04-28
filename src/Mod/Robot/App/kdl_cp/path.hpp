@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
   tag: Erwin Aertbelien  Mon Jan 10 16:38:38 CET 2005  path.h
 
@@ -41,8 +43,7 @@
  *		$Name:  $
  ****************************************************************************/
 
-#ifndef KDL_MOTION_PATH_H
-#define KDL_MOTION_PATH_H
+#pragma once
 
 #include "frames.hpp"
 
@@ -131,6 +132,3 @@ class Path
 	};
 
 }
-
-
-#endif

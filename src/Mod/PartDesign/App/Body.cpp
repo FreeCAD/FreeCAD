@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -41,13 +43,7 @@ PROPERTY_SOURCE(PartDesign::Body, Part::BodyBase)
 
 Body::Body()
 {
-    ADD_PROPERTY_TYPE(
-        AllowCompound,
-        (true),
-        "Experimental",
-        App::Prop_None,
-        "Allow multiple solids in Body (experimental)"
-    );
+    ADD_PROPERTY_TYPE(AllowCompound, (true), "Base", App::Prop_None, "Allow multiple solids in Body");
 
     _GroupTouched.setStatus(App::Property::Output, true);
 }
@@ -343,17 +339,18 @@ void Body::setBaseProperty(App::DocumentObject* feature)
 
 std::vector<App::DocumentObject*> Body::removeObject(App::DocumentObject* feature)
 {
+    // This method must be called BEFORE the feature is removed from the Document!
+
     App::DocumentObject* nextSolidFeature = getNextSolidFeature(feature);
     App::DocumentObject* prevSolidFeature = getPrevSolidFeature(feature);
-    // This method must be called BEFORE the feature is removed from the Document!
-    if (isSolidFeature(feature)) {
-        // This is a solid feature
-        // If the next feature is solid, reroute its BaseFeature property to the previous solid feature
-        if (nextSolidFeature) {
-            assert(nextSolidFeature->isDerivedFrom(PartDesign::Feature::getClassTypeId()));
-            // Note: It's ok to remove the first solid feature, that just mean the next feature
-            // become the base one
-            static_cast<PartDesign::Feature*>(nextSolidFeature)->BaseFeature.setValue(prevSolidFeature);
+
+    // It's ok to remove the first solid feature, that just mean the next feature become the base one
+
+    if (nextSolidFeature && nextSolidFeature->isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
+        auto* nextPD = static_cast<PartDesign::Feature*>(nextSolidFeature);
+        // Check if the next feature is pointing to the one being deleted
+        if (nextPD->BaseFeature.getValue() == feature) {
+            nextPD->BaseFeature.setValue(prevSolidFeature);
         }
     }
 

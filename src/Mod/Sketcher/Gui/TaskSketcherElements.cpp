@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -30,9 +32,11 @@
 #include <QRegularExpressionMatch>
 #include <QShortcut>
 #include <QString>
+#include <QTimer>
 #include <QWidgetAction>
 #include <boost/core/ignore_unused.hpp>
 #include <limits>
+#include <cstring>
 
 #include <fmt/format.h>
 
@@ -50,6 +54,7 @@
 #include <Mod/Sketcher/App/SketchObject.h>
 
 #include "TaskSketcherElements.h"
+#include "EditTextDialog.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
 #include "ui_TaskSketcherElements.h"
@@ -79,6 +84,8 @@ QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Equal Constraint");
 QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Symmetric Constraint");
 
 QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Block Constraint");
+
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Group Constraint");
 
 QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Lock Position");
 
@@ -197,7 +204,8 @@ public:
         Base::Type geometryType,
         GeometryState state,
         const QString& lab,
-        ViewProviderSketch* sketchView
+        ViewProviderSketch* sketchView,
+        bool isTextHandle = false
     )
         : ElementNbr(elementnr)
         , StartingVertex(startingVertex)
@@ -212,6 +220,7 @@ public:
         , clickedOn(SubElementType::none)
         , hovered(SubElementType::none)
         , rightClicked(false)
+        , isTextHandle(isTextHandle)
         , label(lab)
         , sketchView(sketchView)
     {
@@ -312,6 +321,7 @@ public:
     SubElementType clickedOn;
     SubElementType hovered;
     bool rightClicked;
+    bool isTextHandle;
 
     QString label;
 
@@ -370,11 +380,12 @@ public:
 
     static const QIcon&
     getIcon(Base::Type type, Sketcher::PointPos pos,
-            ElementItem::GeometryState icontype = ElementItem::GeometryState::Normal)
+            ElementItem::GeometryState icontype = ElementItem::GeometryState::Normal,
+                             bool isTextHandle = false)
     {
         static ElementWidgetIcons elementicons;
 
-        return elementicons.getIconImpl(type, pos, icontype);
+        return elementicons.getIconImpl(type, pos, icontype, isTextHandle);
     }
 
 private:
@@ -498,11 +509,34 @@ private:
                     {Sketcher::PointPos::none,
                      getMultIcon("Sketcher_Element_SelectionTypeInvalid")},
                 }));
+
+        // Text Handle Icons
+        textIcons[Sketcher::PointPos::none] = Gui::BitmapFactory().iconFromTheme("Sketcher_CreateText");
+        textIcons[Sketcher::PointPos::start] = Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Text_StartPoint");
+        textIcons[Sketcher::PointPos::end] = Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Text_EndPoint");
     }
 
     const QIcon& getIconImpl(Base::Type type, Sketcher::PointPos pos,
-                             ElementItem::GeometryState icontype)
+                             ElementItem::GeometryState icontype,
+                             bool isTextHandle)
     {
+        if (isTextHandle) {
+            auto it = textIcons.find(pos);
+            if (it != textIcons.end()) {
+                return it->second;
+            }
+            // Fallback for Midpoint or other positions: use normal line icon without blue filter
+            if (type == Part::GeomLineSegment::getClassTypeId()) {
+                auto typekey = icons.find(type);
+                if (typekey != icons.end()) {
+                    auto poskey = typekey->second.find(pos);
+                    if (poskey != typekey->second.end()) {
+                        // Return the 'Normal' variant (index 0) to avoid blue construction color
+                        return std::get<0>(poskey->second);
+                    }
+                }
+            }
+        }
 
         auto typekey = icons.find(type);
 
@@ -578,6 +612,7 @@ private:
 private:
     std::map<Base::Type, std::map<Sketcher::PointPos, std::tuple<QIcon, QIcon, QIcon, QIcon>>>
         icons;
+    std::map<Sketcher::PointPos, QIcon> textIcons;
 };
 
 ElementView::ElementView(QWidget* parent)
@@ -713,6 +748,14 @@ void ElementView::contextMenuEvent(QContextMenuEvent* event)
     QMenu menu;
     QList<QListWidgetItem*> items = selectedItems();
 
+    if (items.size() == 1) {
+        ElementItem* item = static_cast<ElementItem*>(items.first());
+        if (item->isTextHandle) {
+             menu.addSeparator();
+             menu.addAction(tr("Convert to geometries"), this, SLOT(doConvertToGeometries()));
+        }
+    }
+
     // NOTE: If extending this context menu, be sure to add the items to the translation block at
     // the top of this file
 
@@ -764,7 +807,8 @@ void ElementView::contextMenuEvent(QContextMenuEvent* event)
                  true)
     CONTEXT_ITEM(
         "Constraint_Block", "Block Constraint", "Sketcher_ConstrainBlock", doBlockConstraint, true)
-
+    CONTEXT_ITEM(
+        "Constraint_Group", "Group constraint", "Sketcher_ConstrainGroup", doGroupConstraint, true)
     CONTEXT_ITEM("Constraint_HorizontalDistance",
                  "Horizontal Dimension",
                  "Sketcher_ConstrainDistanceX",
@@ -882,6 +926,7 @@ CONTEXT_MEMBER_DEF("Sketcher_ConstrainTangent", doTangentConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainEqual", doEqualConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainSymmetric", doSymmetricConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainBlock", doBlockConstraint)
+CONTEXT_MEMBER_DEF("Sketcher_ConstrainGroup", doGroupConstraint)
 
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainDistanceX", doHorizontalDistance)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainDistanceY", doVerticalDistance)
@@ -933,6 +978,25 @@ void ElementView::onIndexChecked(QModelIndex index, Qt::CheckState state)
 ElementItem* ElementView::itemFromIndex(const QModelIndex& index)
 {
     return static_cast<ElementItem*>(QListWidget::itemFromIndex(index));
+}
+
+void ElementView::doConvertToGeometries()
+{
+    QList<QListWidgetItem*> items = selectedItems();
+    if (items.isEmpty())
+        return;
+
+    ElementItem* item = static_cast<ElementItem*>(items.first());
+    if (!item->isTextHandle)
+        return;
+
+    int geoId = item->ElementNbr;
+    Sketcher::SketchObject* sketch = item->getSketchObject();
+
+    // Deleting the handle geometry will automatically remove the Text constraint
+    // (turning it to None), leaving the generated text geometries intact.
+    Gui::Selection().clearSelection();
+    sketch->delGeometry(geoId);
 }
 
 // clang-format on
@@ -1029,7 +1093,8 @@ void ElementItemDelegate::drawSubControl(
     auto isHovered = rect.contains(mousePos);
 
     auto drawSelectIcon = [&](Sketcher::PointPos pos) {
-        auto icon = ElementWidgetIcons::getIcon(item->GeometryType, pos, item->State);
+        auto icon
+            = ElementWidgetIcons::getIcon(item->GeometryType, pos, item->State, item->isTextHandle);
 
         auto isOptionSelected = option.state & QStyle::State_Selected;
         auto isOptionHovered = option.state & QStyle::State_MouseOver;
@@ -1318,6 +1383,10 @@ void TaskSketcherElements::connectSignals()
                      &ElementView::onItemHovered,
                      this,
                      &TaskSketcherElements::onListWidgetElementsMouseMoveOnItem);
+    QObject::connect(ui->listWidgetElements,
+                     &ElementView::itemActivated,
+                     this,
+                     &TaskSketcherElements::onListWidgetItemActivated);
     QObject::connect(filterList,
                      &QListWidget::itemChanged,
                      this,
@@ -1415,9 +1484,15 @@ void TaskSketcherElements::onListMultiFilterItemChanged(QListWidgetItem* item)
     updateVisibility();
 }
 
-void TaskSketcherElements::setItemVisibility(QListWidgetItem* it)
+void TaskSketcherElements::setItemVisibility(QListWidgetItem* it, const std::set<int>& groupedGeoIds)
 {
     auto* item = static_cast<ElementItem*>(it);
+
+    // First, check if the item is a member of a group. If so, it must be hidden.
+    if (groupedGeoIds.count(item->ElementNbr)) {
+        item->setHidden(true);
+        return;
+    }
 
     if (ui->filterBox->checkState() == Qt::Unchecked) {
         item->setHidden(false);
@@ -1473,155 +1548,138 @@ void TaskSketcherElements::setItemVisibility(QListWidgetItem* it)
 
 void TaskSketcherElements::updateVisibility()
 {
+    // Calculate the set of grouped geometries that should be hidden.
+    std::set<int> groupedGeoIds;
+    const auto& constraints = sketchView->getSketchObject()->Constraints.getValues();
+    for (const auto* c : constraints) {
+        if (c->Type == Sketcher::Group || c->Type == Sketcher::Text) {
+            // Member geometries start from index 1.
+            for (int j = 1; c->hasElement(j); ++j) {
+                groupedGeoIds.insert(c->getGeoId(j));
+            }
+        }
+    }
+
     for (int i = 0; i < ui->listWidgetElements->count(); i++) {
-        setItemVisibility(ui->listWidgetElements->item(i));
+        setItemVisibility(ui->listWidgetElements->item(i), groupedGeoIds);
     }
 }
 
-/*------------------*/
-// clang-format on
 void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    // update the listwidget
-    auto updateListWidget = [this](auto& modified_item) {
-        QSignalBlocker sigblk(this->ui->listWidgetElements);
-        if (modified_item == nullptr) {
-            return;
-        }
-        bool is_selected = modified_item->isSelected();
-        const bool should_be_selected = modified_item->isLineSelected
-            || modified_item->isStartingPointSelected || modified_item->isEndPointSelected
-            || modified_item->isMidPointSelected;
+    if (msg.Type == Gui::SelectionChanges::ClrSelection) {
+        clearWidget();
+        return;
+    }
 
-        // If an element is already selected and a new subelement gets selected
-        // (eg., if you select the arc of a circle then select the center as
-        // well), the new subelement won't get highlighted in the list until you
-        // mouseover the list.  To avoid this, we deselect first to trigger a
-        // redraw.
-        if (should_be_selected && is_selected) {
-            modified_item->setSelected(false);
-            is_selected = false;
-        }
+    if (msg.Type != Gui::SelectionChanges::AddSelection
+        && msg.Type != Gui::SelectionChanges::RmvSelection) {
+        return;
+    }
 
-        if (should_be_selected != is_selected) {
-            modified_item->setSelected(should_be_selected);
-        }
-    };
+    // is it this object??
+    if (strcmp(msg.pDocName, sketchView->getSketchObject()->getDocument()->getName()) != 0
+        || strcmp(msg.pObjectName, sketchView->getSketchObject()->getNameInDocument()) != 0
+        || !msg.pSubName) {
+        return;
+    }
 
-    switch (msg.Type) {
-        case Gui::SelectionChanges::ClrSelection: {
-            clearWidget();
-            return;
-        }
-        case Gui::SelectionChanges::AddSelection:
-        case Gui::SelectionChanges::RmvSelection: {
-            bool select = (msg.Type == Gui::SelectionChanges::AddSelection);
-            // is it this object??
-            if (strcmp(msg.pDocName, sketchView->getSketchObject()->getDocument()->getName()) != 0
-                || strcmp(msg.pObjectName, sketchView->getSketchObject()->getNameInDocument()) != 0) {
-                return;
-            }
-            if (!msg.pSubName) {
-                return;
-            }
-            ElementItem* modified_item = nullptr;
-            QString expr = QString::fromLatin1(msg.pSubName);
-            std::string shapetype(msg.pSubName);
-            // if-else edge vertex
-            if (shapetype.starts_with("Edge")) {
-                QRegularExpression rx(QStringLiteral("^Edge(\\d+)$"));
-                QRegularExpressionMatch match;
-                boost::ignore_unused(expr.indexOf(rx, 0, &match));
-                if (!match.hasMatch()) {
-                    return;
-                }
-                bool ok;
-                int ElementId = match.captured(1).toInt(&ok) - 1;
-                if (!ok) {
-                    return;
-                }
-                int countItems = ui->listWidgetElements->count();
-                // TODO: This and the loop below get slow when we have a lot of items.
-                // Perhaps we should also maintain a map so that we can look up items
-                // by element number.
-                for (int i = 0; i < countItems; i++) {
-                    auto* item = static_cast<ElementItem*>(ui->listWidgetElements->item(i));
-                    if (item->ElementNbr == ElementId) {
-                        item->isLineSelected = select;
-                        modified_item = item;
-                        SketcherGui::scrollTo(ui->listWidgetElements, i, select);
-                        break;
-                    }
-                }
-            }
-            else if (shapetype.starts_with("ExternalEdge")) {
-                QRegularExpression rx(QStringLiteral("^ExternalEdge(\\d+)$"));
-                QRegularExpressionMatch match;
-                boost::ignore_unused(expr.indexOf(rx, 0, &match));
-                if (!match.hasMatch()) {
-                    return;
-                }
-                bool ok;
-                int ElementId = -match.captured(1).toInt(&ok) - 2;
-                if (!ok) {
-                    return;
-                }
-                int countItems = ui->listWidgetElements->count();
-                for (int i = 0; i < countItems; i++) {
-                    auto* item = static_cast<ElementItem*>(ui->listWidgetElements->item(i));
-                    if (item->ElementNbr == ElementId) {
-                        item->isLineSelected = select;
-                        modified_item = item;
-                        break;
-                    }
-                }
-            }
-            else if (shapetype.starts_with("Vertex")) {
-                QRegularExpression rx(QStringLiteral("^Vertex(\\d+)$"));
-                QRegularExpressionMatch match;
-                boost::ignore_unused(expr.indexOf(rx, 0, &match));
-                if (!match.hasMatch()) {
-                    return;
-                }
-                bool ok;
-                int ElementId = match.captured(1).toInt(&ok) - 1;
-                if (!ok) {
-                    return;
-                }
-                // Get the GeoID&Pos
-                int GeoId;
-                Sketcher::PointPos PosId;
-                sketchView->getSketchObject()->getGeoVertexIndex(ElementId, GeoId, PosId);
 
-                int countItems = ui->listWidgetElements->count();
-                for (int i = 0; i < countItems; i++) {
-                    auto* item = static_cast<ElementItem*>(ui->listWidgetElements->item(i));
-                    if (item->ElementNbr == GeoId) {
-                        modified_item = item;
-                        switch (PosId) {
-                            case Sketcher::PointPos::start:
-                                item->isStartingPointSelected = select;
-                                break;
-                            case Sketcher::PointPos::end:
-                                item->isEndPointSelected = select;
-                                break;
-                            case Sketcher::PointPos::mid:
-                                item->isMidPointSelected = select;
-                                break;
-                            default:
-                                break;
-                        }
-                        break;
-                    }
-                }
-            }
-            updateListWidget(modified_item);
+    bool select = (msg.Type == Gui::SelectionChanges::AddSelection);
+    const char* subName = msg.pSubName;
+    ElementItem* modified_item = nullptr;
+
+    // Format: "Edge123" -> offset 4
+    if (std::strncmp(subName, "Edge", 4) == 0) {
+        int id = std::atoi(subName + 4) - 1;
+        auto it = elementMap.find(id);
+        if (it != elementMap.end()) {
+            modified_item = it->second;
+            modified_item->isLineSelected = select;
         }
-        default:
-            return;
+    }
+    // Format: "ExternalEdge123" -> offset 12
+    else if (std::strncmp(subName, "ExternalEdge", 12) == 0) {
+        int id = -std::atoi(subName + 12) - 2;
+        auto it = elementMap.find(id);
+        if (it != elementMap.end()) {
+            modified_item = it->second;
+            modified_item->isLineSelected = select;
+        }
+    }
+    // Format: "Vertex123" -> offset 6
+    else if (std::strncmp(subName, "Vertex", 6) == 0) {
+        int vtId = std::atoi(subName + 6) - 1;
+        int GeoId;
+        Sketcher::PointPos PosId;
+        sketchView->getSketchObject()->getGeoVertexIndex(vtId, GeoId, PosId);
+
+        auto it = elementMap.find(GeoId);
+        if (it != elementMap.end()) {
+            modified_item = it->second;
+            switch (PosId) {
+                case Sketcher::PointPos::start:
+                    modified_item->isStartingPointSelected = select;
+                    break;
+                case Sketcher::PointPos::end:
+                    modified_item->isEndPointSelected = select;
+                    break;
+                case Sketcher::PointPos::mid:
+                    modified_item->isMidPointSelected = select;
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    // 3. Queue the UI update instead of applying immediately
+    if (modified_item) {
+        selectionBuffer.push_back({modified_item, select});
+
+        if (!updateTimerPending) {
+            updateTimerPending = true;
+            // Schedule processing for the next event loop cycle (0ms)
+            QTimer::singleShot(0, this, &TaskSketcherElements::processSelectionBuffer);
+        }
     }
 }
-// clang-format off
+
+void TaskSketcherElements::processSelectionBuffer()
+{
+    updateTimerPending = false;
+    if (selectionBuffer.empty()) {
+        return;
+    }
+
+    QSignalBlocker sigblk(ui->listWidgetElements);
+
+    QItemSelection selectionObj;
+    for (const auto& update : selectionBuffer) {
+        bool should_be = update.item->isLineSelected ||
+                            update.item->isStartingPointSelected ||
+                            update.item->isEndPointSelected ||
+                            update.item->isMidPointSelected;
+
+        if (should_be) {
+            QModelIndex idx = ui->listWidgetElements->model()->index(ui->listWidgetElements->row(update.item), 0);
+            selectionObj.select(idx, idx);
+        }
+        else {
+            update.item->setSelected(false);
+        }
+    }
+
+    // Apply all selections in ONE go
+    ui->listWidgetElements->selectionModel()->select(selectionObj, QItemSelectionModel::Select);
+
+    // Only scroll if a single item was clicked/selected
+    if (selectionBuffer.size() == 1 && selectionBuffer[0].select) {
+            SketcherGui::scrollTo(ui->listWidgetElements, ui->listWidgetElements->row(selectionBuffer[0].item), true);
+    }
+
+    selectionBuffer.clear();
+}
 
 void TaskSketcherElements::onListWidgetElementsItemPressed(QListWidgetItem* it)
 {
@@ -1785,7 +1843,7 @@ void TaskSketcherElements::onListWidgetElementsItemPressed(QListWidgetItem* it)
     ui->listWidgetElements->repaint();
 
     // it seems that addSelections gives back the focus to the view, and not immediately.
-    QTimer::singleShot(200, [this]() {
+    QTimer::singleShot(200, this, [this]() {
         ui->listWidgetElements->setFocus();
     });
 }
@@ -1884,6 +1942,34 @@ void TaskSketcherElements::onListWidgetElementsMouseMoveOnItem(QListWidgetItem* 
     previouslyHoveredType = item->hovered;
 }
 
+void TaskSketcherElements::onListWidgetItemActivated(QListWidgetItem* item)
+{
+    auto* elementItem = static_cast<ElementItem*>(item);
+    if (!elementItem) {
+        return;
+    }
+
+    Sketcher::SketchObject* sketch = sketchView->getSketchObject();
+    int geoId = elementItem->ElementNbr;
+
+    const auto& constraints = sketch->Constraints.getValues();
+    for (size_t i = 0; i < constraints.size(); ++i) {
+        const auto* constraint = constraints[i];
+
+        // Check if the constraint is a Text constraint and if the activated element
+        // is its handle (the geometry at index 0).
+        if (constraint->Type == Sketcher::Text && constraint->hasElement(0)) {
+            if (constraint->getGeoId(0) == geoId) {
+                // The item is a handle for a text constraint. Open the edit dialog.
+                auto* editDialog = new EditTextDialog(this->sketchView, i);
+                editDialog->exec();
+                delete editDialog;
+                return;
+            }
+        }
+    }
+}
+
 void TaskSketcherElements::leaveEvent(QEvent* event)
 {
     Q_UNUSED(event);
@@ -1896,22 +1982,40 @@ void TaskSketcherElements::slotElementsChanged()
     assert(sketchView);
     // Build up ListView with the elements
     Sketcher::SketchObject* sketch = sketchView->getSketchObject();
+
+    // Pre-process constraints to identify grouped elements and their handles
+    const auto& constraints = sketch->Constraints.getValues();
+    std::set<int> groupedGeoIds;
+    std::map<int, Sketcher::ConstraintType> handleIdToType;
+    for (const auto* c : constraints) {
+        if (c->Type == Sketcher::Group || c->Type == Sketcher::Text) {
+            if (c->hasElement(0)) {
+                handleIdToType[c->getGeoId(0)] = c->Type;
+            }
+            // Elements from index 1 onwards are the members.
+            for (int j = 1; c->hasElement(j); ++j) {
+                groupedGeoIds.insert(c->getGeoId(j));
+            }
+        }
+    }
+
     const std::vector<Part::Geometry*>& vals = sketch->Geometry.getValues();
 
     ui->listWidgetElements->clear();
+    elementMap.clear();
+    selectionBuffer.clear();
 
     using GeometryState = ElementItem::GeometryState;
 
     int i = 1;
-    for (std::vector<Part::Geometry*>::const_iterator it = vals.begin(); it != vals.end();
-         ++it, ++i) {
-        Base::Type type = (*it)->getTypeId();
+    for (auto* geo : vals) {
+        Base::Type type = geo->getTypeId();
         GeometryState state = GeometryState::Normal;
 
-        bool construction = Sketcher::GeometryFacade::getConstruction(*it);
-        bool internalAligned = Sketcher::GeometryFacade::isInternalAligned(*it);
+        bool construction = Sketcher::GeometryFacade::getConstruction(geo);
+        bool internalAligned = Sketcher::GeometryFacade::isInternalAligned(geo);
 
-        auto layerId = getSafeGeomLayerId(*it);
+        auto layerId = getSafeGeomLayerId(geo);
 
         if (internalAligned)
             state = GeometryState::InternalAlignment;
@@ -1926,6 +2030,69 @@ void TaskSketcherElements::slotElementsChanged()
                 return QStringLiteral("(Edge%1#ID%2)").arg(i).arg(i - 1);
         };
 
+        QString label;
+        // This is a regular geometry. Get its type name.
+        QString baseName;
+        bool isTextHandle = false;
+        if (type == Part::GeomPoint::getClassTypeId()) {
+            baseName = tr("Point");
+        }
+        else if (type == Part::GeomLineSegment::getClassTypeId()) {
+            int geoId = i - 1;
+            auto handle_it = handleIdToType.find(geoId);
+            if (handle_it != handleIdToType.end()) {
+                // This is a group/text handle
+                if (handle_it->second == Sketcher::Group) {
+                    baseName = tr("Group");
+                }
+                else {
+                    baseName = tr("Text");
+                    isTextHandle = true;
+                }
+            }
+            else {
+                baseName = tr("Line");
+            }
+        }
+        else if (type == Part::GeomArcOfCircle::getClassTypeId()) {
+            baseName = tr("Arc");
+        }
+        else if (type == Part::GeomCircle::getClassTypeId()) {
+            baseName = tr("Circle");
+        }
+        else if (type == Part::GeomEllipse::getClassTypeId()) {
+            baseName = tr("Ellipse");
+        }
+        else if (type == Part::GeomArcOfEllipse::getClassTypeId()) {
+            baseName = tr("Elliptical Arc");
+        }
+        else if (type == Part::GeomArcOfHyperbola::getClassTypeId()) {
+            baseName = tr("Hyperbolic Arc");
+        }
+        else if (type == Part::GeomArcOfParabola::getClassTypeId()) {
+            baseName = tr("Parabolic arc");
+        }
+        else if (type == Part::GeomBSplineCurve::getClassTypeId()) {
+            baseName = tr("B-spline");
+        }
+        else {
+            baseName = tr("Other");
+        }
+
+        // Reconstruct the label using the baseName.
+        if (isNamingBoxChecked) {
+                label = baseName + IdInformation();
+                if (state == GeometryState::Construction) {
+                    label += QStringLiteral("-") + tr("Construction");
+                }
+                else if (state == GeometryState::InternalAlignment) {
+                    label += QStringLiteral("-") + tr("Internal");
+                }
+        }
+        else {
+            label = QStringLiteral("%1-").arg(i) + baseName;
+        }
+
         auto* itemN = new ElementItem(
             i - 1,
             sketchView->getSketchObject()->getVertexIndexGeoPos(i - 1, Sketcher::PointPos::start),
@@ -1933,80 +2100,16 @@ void TaskSketcherElements::slotElementsChanged()
             sketchView->getSketchObject()->getVertexIndexGeoPos(i - 1, Sketcher::PointPos::end),
             type,
             state,
-            type == Part::GeomPoint::getClassTypeId()
-                ? (isNamingBoxChecked ? (tr("Point") + IdInformation())
-                           + (construction
-                                  ? (QStringLiteral("-") + tr("Construction"))
-                                  : (internalAligned ? (QStringLiteral("-") + tr("Internal"))
-                                                     : QStringLiteral("")))
-                                      : (QStringLiteral("%1-").arg(i) + tr("Point")))
-                : type == Part::GeomLineSegment::getClassTypeId()
-                ? (isNamingBoxChecked ? (tr("Line") + IdInformation())
-                           + (construction
-                                  ? (QStringLiteral("-") + tr("Construction"))
-                                  : (internalAligned ? (QStringLiteral("-") + tr("Internal"))
-                                                     : QStringLiteral("")))
-                                      : (QStringLiteral("%1-").arg(i) + tr("Line")))
-                : type == Part::GeomArcOfCircle::getClassTypeId()
-                ? (isNamingBoxChecked ? (tr("Arc") + IdInformation())
-                           + (construction
-                                  ? (QStringLiteral("-") + tr("Construction"))
-                                  : (internalAligned ? (QStringLiteral("-") + tr("Internal"))
-                                                     : QStringLiteral("")))
-                                      : (QStringLiteral("%1-").arg(i) + tr("Arc")))
-                : type == Part::GeomCircle::getClassTypeId()
-                ? (isNamingBoxChecked ? (tr("Circle") + IdInformation())
-                           + (construction
-                                  ? (QStringLiteral("-") + tr("Construction"))
-                                  : (internalAligned ? (QStringLiteral("-") + tr("Internal"))
-                                                     : QStringLiteral("")))
-                                      : (QStringLiteral("%1-").arg(i) + tr("Circle")))
-                : type == Part::GeomEllipse::getClassTypeId()
-                ? (isNamingBoxChecked ? (tr("Ellipse") + IdInformation())
-                           + (construction
-                                  ? (QStringLiteral("-") + tr("Construction"))
-                                  : (internalAligned ? (QStringLiteral("-") + tr("Internal"))
-                                                     : QStringLiteral("")))
-                                      : (QStringLiteral("%1-").arg(i) + tr("Ellipse")))
-                : type == Part::GeomArcOfEllipse::getClassTypeId()
-                ? (isNamingBoxChecked ? (tr("Elliptical Arc") + IdInformation())
-                           + (construction
-                                  ? (QStringLiteral("-") + tr("Construction"))
-                                  : (internalAligned ? (QStringLiteral("-") + tr("Internal"))
-                                                     : QStringLiteral("")))
-                                      : (QStringLiteral("%1-").arg(i) + tr("Elliptical arc")))
-                : type == Part::GeomArcOfHyperbola::getClassTypeId()
-                ? (isNamingBoxChecked ? (tr("Hyperbolic Arc") + IdInformation())
-                           + (construction
-                                  ? (QStringLiteral("-") + tr("Construction"))
-                                  : (internalAligned ? (QStringLiteral("-") + tr("Internal"))
-                                                     : QStringLiteral("")))
-                                      : (QStringLiteral("%1-").arg(i) + tr("Hyperbolic arc")))
-                : type == Part::GeomArcOfParabola::getClassTypeId()
-                ? (isNamingBoxChecked ? (tr("Parabolic Arc") + IdInformation())
-                           + (construction
-                                  ? (QStringLiteral("-") + tr("Construction"))
-                                  : (internalAligned ? (QStringLiteral("-") + tr("Internal"))
-                                                     : QStringLiteral("")))
-                                      : (QStringLiteral("%1-").arg(i) + tr("Parabolic arc")))
-                : type == Part::GeomBSplineCurve::getClassTypeId()
-                ? (isNamingBoxChecked ? (tr("B-spline") + IdInformation())
-                           + (construction
-                                  ? (QStringLiteral("-") + tr("Construction"))
-                                  : (internalAligned ? (QStringLiteral("-") + tr("Internal"))
-                                                     : QStringLiteral("")))
-                                      : (QStringLiteral("%1-").arg(i) + tr("B-spline")))
-                : (isNamingBoxChecked ? (tr("Other") + IdInformation())
-                           + (construction
-                                  ? (QStringLiteral("-") + tr("Construction"))
-                                  : (internalAligned ? (QStringLiteral("-") + tr("Internal"))
-                                                     : QStringLiteral("")))
-                                      : (QStringLiteral("%1-").arg(i) + tr("Other"))),
-            sketchView);
+            label,
+            sketchView,
+            isTextHandle);
 
         ui->listWidgetElements->addItem(itemN);
 
-        setItemVisibility(itemN);
+        elementMap[itemN->ElementNbr] = itemN;
+
+        setItemVisibility(itemN, groupedGeoIds);
+        ++i;
     }
 
     const std::vector<Part::Geometry*>& ext_vals =
@@ -2110,7 +2213,9 @@ void TaskSketcherElements::slotElementsChanged()
 
             ui->listWidgetElements->addItem(itemN);
 
-            setItemVisibility(itemN);
+            elementMap[itemN->ElementNbr] = itemN;
+
+            setItemVisibility(itemN, groupedGeoIds);
         }
     }
 }

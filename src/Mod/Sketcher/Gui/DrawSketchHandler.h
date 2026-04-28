@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_DrawSketchHandler_H
-#define SKETCHERGUI_DrawSketchHandler_H
+#pragma once
 
 #include <QPixmap>
 #include <QCoreApplication>
@@ -156,7 +157,7 @@ private:
  */
 class SketcherGuiExport DrawSketchHandler: public Gui::ToolHandler
 {
-    Q_DECLARE_TR_FUNCTIONS(DrawSketchHandler)
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandler)
 
 public:
     DrawSketchHandler();
@@ -333,6 +334,10 @@ protected:
         const Base::Vector2d& Dir
     );
 
+    void openCommand(const std::string& name);
+    void commitCommand();
+    void abortCommand();
+
 protected:
     /**
      * Returns constraints icons scaled to width.
@@ -342,10 +347,8 @@ protected:
     ViewProviderSketch* sketchgui;
 
     QWidget* toolwidget;
+    int currentTransactionID {0};
 };
 
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandler_H

@@ -27,6 +27,7 @@ import Path
 from Path import Preferences
 from Path.Preferences import addToolPreferenceObserver
 from .assets import AssetManager, AssetUri, Asset, FileStore
+from .toolbit.migration import ParameterAccessor, migrate_parameters
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -58,28 +59,40 @@ def ensure_toolbits_have_shape_type(asset_manager: AssetManager, store_name: str
     for uri in toolbit_uris:
         data = asset_manager.get_raw(uri, store=store_name)
         attrs = json.loads(data)
-        if "shape-type" in attrs:
-            continue
+        changed = False
 
-        shape_id = pathlib.Path(
-            str(attrs.get("shape", ""))
-        ).stem  # backward compatibility. used to be a filename
-        if not shape_id:
-            Path.Log.error(f"ToolBit {uri} missing shape ID")
-            continue
+        # --- Step 1: Ensure shape-type exists (migrate if needed) ---
+        if "shape-type" not in attrs:
+            shape_id = pathlib.Path(
+                str(attrs.get("shape", ""))
+            ).stem  # backward compatibility. used to be a filename
+            if not shape_id:
+                Path.Log.error(f"ToolBit {uri} missing shape ID")
+                continue
 
-        try:
-            shape_class = ToolBitShape.get_shape_class_from_id(shape_id)
-        except Exception as e:
-            Path.Log.error(f"Failed to load toolbit {uri}: {e}. Skipping")
-            continue
-        if not shape_class:
-            Path.Log.error(f"Toolbit {uri} has no shape-type attribute, and failed to infer it")
-            continue
-        attrs["shape-type"] = shape_class.name
-        Path.Log.info(f"Migrating toolbit {uri}: Adding shape-type attribute '{shape_class.name}'")
-        data = json.dumps(attrs, sort_keys=True, indent=2).encode("utf-8")
-        asset_manager.add_raw("toolbit", uri.asset_id, data, store=store_name)
+            try:
+                shape_class = ToolBitShape.get_shape_class_from_id(shape_id)
+            except Exception as e:
+                Path.Log.error(f"Failed to load toolbit {uri}: {e}. Skipping")
+                continue
+            if not shape_class:
+                Path.Log.error(f"Toolbit {uri} has no shape-type attribute, and failed to infer it")
+                continue
+            attrs["shape-type"] = shape_class.name
+            Path.Log.info(
+                f"Migrating toolbit {uri}: Adding shape-type attribute '{shape_class.name}'"
+            )
+            changed = True
+
+        # --- Step 2: Migrate legacy parameters (now that shape-type is set) ---
+        if "parameter" in attrs and isinstance(attrs["parameter"], dict):
+            if migrate_parameters(ParameterAccessor(attrs)):
+                changed = True
+
+        # --- Step 3: Write changes if any occurred ---
+        if changed:
+            data = json.dumps(attrs, sort_keys=True, indent=2).encode("utf-8")
+            asset_manager.add_raw("toolbit", uri.asset_id, data, store=store_name)
 
 
 def ensure_toolbit_assets_initialized(asset_manager: AssetManager, store_name: str = "local"):

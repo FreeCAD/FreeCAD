@@ -72,7 +72,7 @@ QString getAutoGroupCommandStr(QString objectName)
         "part"
     );
     if (activePart) {
-        QString activeObjectName = QString::fromLatin1(activePart->getNameInDocument());
+        QString activeObjectName = QString::fromUtf8(activePart->getNameInDocument());
         return QStringLiteral(
                    "App.ActiveDocument.getObject('%1\')."
                    "addObject(App.ActiveDocument.getObject('%2\'))\n"
@@ -131,7 +131,7 @@ void Picker::createPrimitive(QWidget* widget, const QString& descr, Gui::Documen
 
         // Execute the Python block
         doc->openCommand(descr.toUtf8());
-        Gui::Command::runCommand(Gui::Command::Doc, cmd.toLatin1());
+        Gui::Command::runCommand(Gui::Command::Doc, cmd.toUtf8());
         doc->commitCommand();
         Gui::Command::runCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
         Gui::Command::runCommand(Gui::Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
@@ -189,7 +189,7 @@ public:
         Handle(Geom_TrimmedCurve) trim = arc.Value();
         Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(trim->BasisCurve());
 
-        QString name = QString::fromLatin1(doc->getUniqueObjectName("Circle").c_str());
+        QString name = QString::fromUtf8(doc->getUniqueObjectName("Circle").c_str());
         return QStringLiteral(
                    "App.ActiveDocument.addObject(\"Part::Circle\",\"%1\")\n"
                    "App.ActiveDocument.%1.Radius=%2\n"
@@ -2301,7 +2301,7 @@ void DlgPrimitives::tryCreatePrimitive(const QString& placement)
     }
 
     std::shared_ptr<AbstractPrimitive> primitive = getPrimitive(ui->PrimitiveTypeCB->currentIndex());
-    name = QString::fromLatin1(doc->getUniqueObjectName(primitive->getDefaultName()).c_str());
+    name = QString::fromUtf8(doc->getUniqueObjectName(primitive->getDefaultName()).c_str());
     cmd = primitive->create(name, placement);
 
     // Execute the Python block
@@ -2340,8 +2340,8 @@ void DlgPrimitives::acceptChanges(const QString& placement)
     App::Document* doc = featurePtr->getDocument();
     QString objectName = QStringLiteral("App.getDocument(\"%1\").%2")
                              .arg(
-                                 QString::fromLatin1(doc->getName()),
-                                 QString::fromLatin1(featurePtr->getNameInDocument())
+                                 QString::fromUtf8(doc->getName()),
+                                 QString::fromUtf8(featurePtr->getNameInDocument())
                              );
 
     // read values from the properties
@@ -2533,6 +2533,9 @@ void Location::onPlacementChanged()
 void Location::onViewPositionButton()
 {
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
+
+    ui->viewPositionButton->setChecked(true);
+
     if (!doc) {
         return;
     }
@@ -2560,6 +2563,7 @@ void Location::pickCallback(void* ud, SoEventCallback* n)
 {
     const SoMouseButtonEvent* mbe = static_cast<const SoMouseButtonEvent*>(n->getEvent());
     Gui::View3DInventorViewer* view = static_cast<Gui::View3DInventorViewer*>(n->getUserData());
+    Location* dlg = static_cast<Location*>(ud);
 
     // Mark all incoming mouse button events as handled, especially, to deactivate the selection node
     n->getAction()->setHandled();
@@ -2569,7 +2573,6 @@ void Location::pickCallback(void* ud, SoEventCallback* n)
             if (point) {
                 SbVec3f pnt = point->getPoint();
                 SbVec3f nor = point->getNormal();
-                Location* dlg = static_cast<Location*>(ud);
                 dlg->ui->XPositionQSB->setValue(pnt[0]);
                 dlg->ui->YPositionQSB->setValue(pnt[1]);
                 dlg->ui->ZPositionQSB->setValue(pnt[2]);
@@ -2585,8 +2588,8 @@ void Location::pickCallback(void* ud, SoEventCallback* n)
             n->setHandled();
             view->setEditing(false);
             view->setRedirectToSceneGraph(false);
-            Location* dlg = static_cast<Location*>(ud);
             dlg->activeView = nullptr;
+            dlg->ui->viewPositionButton->setChecked(false);
             view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), pickCallback, ud);
             SoNode* root = view->getSceneGraph();
             if (root && root->getTypeId().isDerivedFrom(Gui::SoFCUnifiedSelection::getClassTypeId())) {
@@ -2645,7 +2648,7 @@ QDialogButtonBox::StandardButtons TaskPrimitives::getStandardButtons() const
 void TaskPrimitives::modifyStandardButtons(QDialogButtonBox* box)
 {
     QPushButton* btn = box->button(QDialogButtonBox::Ok);
-    btn->setText(QApplication::translate("PartGui::DlgPrimitives", "&Create"));
+    btn->setText(QApplication::translate("PartGui::DlgPrimitives", "C&reate"));
 }
 
 bool TaskPrimitives::accept()

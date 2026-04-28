@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2004 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -300,6 +302,9 @@ void DlgCustomToolbars::onMoveActionRightButtonClicked()
 {
     QTreeWidgetItem* item = ui->commandTreeWidget->currentItem();
     if (item) {
+        if (!ui->toolbarTreeWidget->topLevelItemCount()) {
+            onNewButtonClicked();
+        }
         QTreeWidgetItem* current = ui->toolbarTreeWidget->currentItem();
         if (!current) {
             current = ui->toolbarTreeWidget->topLevelItem(0);

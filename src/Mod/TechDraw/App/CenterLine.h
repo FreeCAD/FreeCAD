@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAW_CENTERLINE_H
-#define TECHDRAW_CENTERLINE_H
+#pragma once
 
 #include <App/FeaturePython.h>
 #include <Base/Persistence.h>
@@ -183,5 +182,3 @@ protected:
 };
 
 }  // namespace TechDraw
-
-#endif  // TECHDRAW_CENTERLINE_H

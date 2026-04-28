@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATERIAL_LIBRARY_H
-#define MATERIAL_LIBRARY_H
+#pragma once
 
 #include <QDir>
 #include <QByteArray>
@@ -89,18 +88,9 @@ public:
         _readOnly = readOnly;
     }
 
-    QString getDirectory() const
-    {
-        return _directory;
-    }
-    void setDirectory(const QString& directory)
-    {
-        _directory = directory;
-    }
-    QString getDirectoryPath() const
-    {
-        return QDir(_directory).absolutePath();
-    }
+    QString getDirectory() const;
+    void setDirectory(const QString& directory);
+    QString getDirectoryPath() const;
 
     bool operator==(const Library& library) const;
     bool operator!=(const Library& library) const
@@ -116,15 +106,21 @@ public:
     // Validate a remote library against this one (a local library)
     void validate(const Library& remote) const;
 
+    static QString canonical(const QString& path);
+
+    Qt::CaseSensitivity caseSensitivity() const;
+
 private:
     QString _name;
     QString _directory;
     QByteArray _icon;
     bool _readOnly;
+    bool _caseSensitive;
 
     bool _local;
 
     QByteArray loadByteArrayFromFile(const QString& filePath) const;
+    void setCaseSensitivity();
 };
 
 class MaterialsExport LibraryObject
@@ -188,5 +184,3 @@ private:
 };
 
 }  // namespace Materials
-
-#endif  // MATERIAL_LIBRARY_H

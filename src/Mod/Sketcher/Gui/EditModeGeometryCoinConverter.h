@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2021 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_GeometryCoinConverter_H
-#define SKETCHERGUI_GeometryCoinConverter_H
+#pragma once
 
 #include <vector>
 
@@ -157,7 +158,8 @@ private:
     void convert(
         const Sketcher::GeometryFacade* geometryfacade,
         [[maybe_unused]] int geoId,
-        [[maybe_unused]] int subLayerId = 0
+        [[maybe_unused]] int subLayerId = 0,
+        bool isGroupMember = false
     );
 
 private:
@@ -167,6 +169,9 @@ private:
     GeometryLayerNodes& geometryLayerNodes;
 
     std::vector<std::vector<Base::Vector3d>> Points;
+    // To hide the points of geometries that are grouped, we make them transparent
+    // Just not adding the points would mess the indexes in Points
+    std::vector<std::vector<bool>> PointsHidden;
     std::vector<std::vector<std::vector<Base::Vector3d>>> Coords;
     std::vector<std::vector<std::vector<unsigned int>>> Index;
 
@@ -192,6 +197,3 @@ private:
 
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_GeometryCoinConverter_H

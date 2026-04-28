@@ -61,6 +61,7 @@ the logic in `execute` would have to be changed to account for multiple
 objects. Therefore, the first solution is simpler, that is, using
 a single property of type `App::PropertyLinkSub`.
 """
+
 ## @package patharray
 # \ingroup draftobjects
 # \brief Provides the object code for the PathArray object.
@@ -604,7 +605,7 @@ def placements_on_path(
     if forceNormal and normalOverride:
         normal = normalOverride
     else:
-        normal = DraftGeomUtils.get_normal(pathwire)
+        normal = DraftGeomUtils.get_shape_normal(pathwire)
         if normal is None:
             normal = App.Vector(0, 0, 1)
 

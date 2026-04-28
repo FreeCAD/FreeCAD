@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2019 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGPARAMETERFIND_H
-#define GUI_DIALOG_DLGPARAMETERFIND_H
+#pragma once
 
 #include <QDialog>
 #include <FCGlobal.h>
@@ -74,5 +75,3 @@ private:
 
 }  // namespace Dialog
 }  // namespace Gui
-
-#endif  // GUI_DIALOG_DLGPARAMETERFIND_H

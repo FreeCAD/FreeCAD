@@ -28,6 +28,11 @@ without requiring disk I/O or loading actual FreeCAD documents.
 import Path
 
 
+class MockTool:
+    def __init__(self):
+        self.ShapeType = "endmill"
+
+
 class MockToolController:
     """Mock ToolController for operations."""
 
@@ -38,6 +43,7 @@ class MockToolController:
         spindle_speed=1000,
         spindle_dir="Forward",
     ):
+        self.Tool = MockTool()
         self.ToolNumber = tool_number
         self.Label = label
         self.SpindleSpeed = spindle_speed
@@ -50,6 +56,7 @@ class MockToolController:
             [Path.Command(f"M6 T{tool_number}"), Path.Command(f"M3 S{spindle_speed}")]
         )
 
+    @property
     def InList(self):
         return []
 
@@ -66,6 +73,7 @@ class MockOperation:
         # Create an empty path by default
         self.Path = Path.Path()
 
+    @property
     def InList(self):
         """Mock InList - operations belong to a job."""
         return []
@@ -103,6 +111,42 @@ class MockSetupSheet:
         self.SafeHeightOffset = type("obj", (object,), {"Value": safe_height})()
 
 
+class MockToolhead:
+    """Mock Toolhead/Spindle object."""
+
+    def __init__(self, index=0):
+        self.index = index
+        self.spindle_wait = 0  # Default to 0 to avoid spindle wait expansion
+        self.coolant_delay = 0  # Default to 0 to avoid coolant delay expansion
+
+
+class MockMachine:
+    """Mock Machine object with postprocessor properties."""
+
+    def __init__(self):
+        self.postprocessor_properties = {}
+        self.toolheads = [MockToolhead(0)]  # Default toolhead at index 0
+        # Disable tool change and other processing to avoid extra commands in tests
+        processing_config = {
+            "early_tool_prep": False,
+            "filter_inefficient_moves": False,
+            "split_arcs": False,
+            "tool_change": False,  # Disable tool change to avoid extra M3 commands
+            "translate_rapid_moves": False,
+            "xy_before_z_after_tool_change": False,
+            "spindle": False,  # Disable spindle commands to avoid M3 S1000
+            "coolant": False,  # Disable coolant commands
+        }
+        # Make processing properties accessible as attributes
+        self.processing = type("Processing", (), processing_config)()
+
+    def get_spindle_by_index(self, index):
+        """Get toolhead by index (legacy compatibility method)."""
+        if 0 <= index < len(self.toolheads):
+            return self.toolheads[index]
+        return None
+
+
 class MockJob:
     """Mock Job object for testing postprocessors."""
 
@@ -130,7 +174,9 @@ class MockJob:
         self.Fixtures = ["G54"]
         self.OrderOutputBy = "Tool"
         self.SplitOutput = False
+        self.TypeId = "dummy"
 
+    @property
     def InList(self):
         """Mock InList for fixture setup."""
         return []

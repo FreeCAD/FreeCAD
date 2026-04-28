@@ -1,5 +1,9 @@
-from Base.Metadata import export, constmethod
-from typing import Final, overload
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
+from Base.Metadata import export
+from typing import overload
 from Part.Geom2d import Curve2d
 
 @export(
@@ -12,7 +16,7 @@ from Part.Geom2d import Curve2d
 )
 class Line2dSegment(Curve2d):
     """
-        Describes a line segment in 2D space.
+    Describes a line segment in 2D space.
 
     To create a line there are several ways:
     Part.Geom2d.Line2dSegment()

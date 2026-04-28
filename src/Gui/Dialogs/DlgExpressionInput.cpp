@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *   Copyright (c) 2025 Pieter Hijma <info@pieterhijma.net>                *
@@ -667,7 +669,7 @@ void DlgExpressionInput::acceptWithVarSet()
 
     // Create a new expression that refers to the property in the VarSet
     // for the original property that is the target of this dialog.
-    expression.reset(ExpressionParser::parse(path.getDocumentObject(), prop->getFullName().c_str()));
+    expression = ExpressionParser::parse(path.getDocumentObject(), prop->getFullName().c_str());
 
     storePreferences(nameDoc.toStdString(), nameVarSet.toStdString(), group);
 }
@@ -695,7 +697,7 @@ static App::Document* getPreselectedDocument()
     }
 
     App::Document* doc = App::GetApplication().getDocument(lastDoc.c_str());
-    if (doc == nullptr) {
+    if (!doc) {
         return App::GetApplication().getActiveDocument();
     }
 
@@ -726,7 +728,7 @@ int DlgExpressionInput::getVarSetIndex(const App::Document* doc) const
 void DlgExpressionInput::preselectVarSet()
 {
     const App::Document* doc = getPreselectedDocument();
-    if (doc == nullptr) {
+    if (!doc) {
         FC_ERR("No active document found");
     }
     ui->comboBoxVarSet->setCurrentIndex(getVarSetIndex(doc));
@@ -761,7 +763,7 @@ static void addVarSetsVarSetComboBox(
         auto* vp = freecad_cast<Gui::ViewProviderDocumentObject*>(
             Gui::Application::Instance->getViewProvider(varSet)
         );
-        if (vp == nullptr) {
+        if (!vp) {
             FC_ERR("No ViewProvider found for VarSet: " << varSet->getNameInDocument());
             continue;
         }
@@ -887,13 +889,13 @@ void DlgExpressionInput::onVarSetSelected(int /*index*/)
     }
 
     App::Document* doc = App::GetApplication().getDocument(docName.toUtf8());
-    if (doc == nullptr) {
+    if (!doc) {
         FC_ERR("Document not found: " << docName.toStdString());
         return;
     }
 
     App::DocumentObject* varSet = doc->getObject(varSetName.toUtf8());
-    if (varSet == nullptr) {
+    if (!varSet) {
         FC_ERR("Variable set not found: " << varSetName.toStdString());
         return;
     }
@@ -1058,7 +1060,8 @@ void DlgExpressionInput::setMsgText()
     // elide text if it is going out of widget bounds
     // note: this is only 'rough elide', as this text is usually not very long;
     const int msgLinesLimit = 3;
-    if (wrappedMsg.size() > msgContentWidth / msgFontMetrics.averageCharWidth() * msgLinesLimit) {
+    if (static_cast<int>(wrappedMsg.size())
+        > msgContentWidth / msgFontMetrics.averageCharWidth() * msgLinesLimit) {
         const QString elidedMsg = msgFontMetrics.elidedText(
             QString::fromStdString(wrappedMsg),
             Qt::ElideRight,

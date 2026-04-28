@@ -282,8 +282,8 @@ PyObject* TopoShapeEdgePy::parameters(PyObject* args) const
         if (edge2Face.Contains(e)) {
             Handle(Poly_Triangulation) aPolyTria = BRep_Tool::Triangulation(TopoDS::Face(face), aLoc);
             if (!aPolyTria.IsNull()) {
-                Handle(Poly_PolygonOnTriangulation) aPoly
-                    = BRep_Tool::PolygonOnTriangulation(e, aPolyTria, aLoc);
+                Handle(Poly_PolygonOnTriangulation)
+                    aPoly = BRep_Tool::PolygonOnTriangulation(e, aPolyTria, aLoc);
                 if (!aPoly.IsNull()) {
                     if (!aPoly->HasParameters()) {
                         Py::List list;
@@ -591,15 +591,9 @@ PyObject* TopoShapeEdgePy::discretize(PyObject* args, PyObject* kwds) const
         static const std::array<const char*, 4> kwds_Deflection {"Deflection", "First", "Last", nullptr};
         PyErr_Clear();
         double deflection;
-        if (Base::Wrapped_ParseTupleAndKeywords(
-                args,
-                kwds,
-                "d|dd",
-                kwds_Deflection,
-                &deflection,
-                &first,
-                &last
-            )) {
+        if (
+            Base::Wrapped_ParseTupleAndKeywords(args, kwds, "d|dd", kwds_Deflection, &deflection, &first, &last)
+        ) {
             GCPnts_UniformDeflection discretizer(adapt, deflection, first, last);
             if (discretizer.IsDone() && discretizer.NbPoints() > 0) {
                 Py::List points;

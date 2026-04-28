@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef Preferences_h_
-#define Preferences_h_
+#pragma once
 
 #include <Qt>
 #include <string>
@@ -166,8 +165,12 @@ public:
     static bool snapDetailHighlights();
     static double detailSnapRadius();
 
+    static bool showCenterMarks();
+    static bool printCenterMarks();
+
+    static bool fixColorAlphaOnLoad();
+
 };
 
 
 }//end namespace TechDraw
-#endif

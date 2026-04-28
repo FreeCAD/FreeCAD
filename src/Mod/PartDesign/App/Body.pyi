@@ -1,6 +1,10 @@
-from Base.Metadata import export, constmethod
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
+from Base.Metadata import export
 from Part.BodyBase import BodyBase
-from typing import Final, overload
+from typing import Final
 
 @export(
     Include="Mod/PartDesign/App/Body.h",
@@ -17,9 +21,8 @@ class Body(BodyBase):
     VisibleFeature: Final[object] = ...
     """Return the visible feature of this body"""
 
-    def insertObject(self, feature: object, target: object, after: bool = False) -> None:
+    def insertObject(self, feature: object, target: object, after: bool = False, /) -> None:
         """
-        insertObject(feature, target, after=False)
         Insert the feature into the body after the given feature.
 
         @param feature  The feature to insert into the body

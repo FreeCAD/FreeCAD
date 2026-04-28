@@ -132,20 +132,6 @@ SheetView::SheetView(Gui::Document* pcDocument, App::DocumentObject* docObj, QWi
     palette.setColor(QPalette::Text, QColor(0, 0, 0));
     ui->cells->setPalette(palette);
 
-    QList<QtColorPicker*> bgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(
-        QStringLiteral("Spreadsheet_BackgroundColor")
-    );
-    if (!bgList.empty()) {
-        bgList[0]->setCurrentColor(palette.color(QPalette::Base));
-    }
-
-    QList<QtColorPicker*> fgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(
-        QStringLiteral("Spreadsheet_ForegroundColor")
-    );
-    if (!fgList.empty()) {
-        fgList[0]->setCurrentColor(palette.color(QPalette::Text));
-    }
-
     // Set document object to create auto completer
     ui->cellContent->setDocumentObject(sheet);
     ui->cellAlias->setDocumentObject(sheet);
@@ -161,7 +147,7 @@ SheetView::~SheetView()
     delete delegate;
 }
 
-bool SheetView::onMsg(const char* pMsg, const char**)
+bool SheetView::onMsg(const char* pMsg)
 {
     if (strcmp("Undo", pMsg) == 0) {
         getGuiDocument()->undo(1);
@@ -190,12 +176,12 @@ bool SheetView::onMsg(const char* pMsg, const char**)
     else if (strcmp("Std_Delete", pMsg) == 0) {
         std::vector<Range> ranges = selectedRanges();
         if (sheet->hasCell(ranges)) {
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Clear Cells"));
+            sheet->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Clear Cells"));
             std::vector<Range>::const_iterator i = ranges.begin();
             for (; i != ranges.end(); ++i) {
                 FCMD_OBJ_CMD(sheet, "clear('" << i->rangeString() << "')");
             }
-            Gui::Command::commitCommand();
+            sheet->getDocument()->commitTransaction();
             Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
         }
         return true;
@@ -251,9 +237,6 @@ bool SheetView::onHasMsg(const char* pMsg) const
     if (strcmp(pMsg, "PrintPdf") == 0) {
         return true;
     }
-    else if (strcmp("AllowsOverlayOnHover", pMsg) == 0) {
-        return true;
-    }
 
     return false;
 }
@@ -300,7 +283,7 @@ void SheetView::printPdf()
         this,
         tr("Export PDF"),
         QString(),
-        QStringLiteral("%1 (*.pdf)").arg(tr("PDF file"))
+        FileDialog::FilterList {{QStringLiteral("PDF"), {"*.pdf"}}}
     );
     if (!filename.isEmpty()) {
         QPrinter printer(QPrinter::ScreenResolution);
@@ -756,8 +739,7 @@ Py::Object SheetViewPy::select(const Py::Tuple& _args)
             static_cast<QItemSelectionModel::SelectionFlags>(flags)
         );
     }
-    else if (args.size() == 3
-             && PyArg_ParseTuple(_args.ptr(), "ssi", &topLeft, &bottomRight, &flags)) {
+    else if (args.size() == 3 && PyArg_ParseTuple(_args.ptr(), "ssi", &topLeft, &bottomRight, &flags)) {
         sheetView->select(
             App::CellAddress(topLeft),
             App::CellAddress(bottomRight),

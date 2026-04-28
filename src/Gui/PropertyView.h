@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_DOCKWND_PROPERTYVIEW_H
-#define GUI_DOCKWND_PROPERTYVIEW_H
+#pragma once
 
 #include "DockWindow.h"
 #include "Selection.h"
@@ -99,7 +98,7 @@ private:
 private:
     struct PropInfo;
     struct PropFind;
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::connection;
     Connection connectPropData;
     Connection connectPropView;
     Connection connectPropAppend;
@@ -134,5 +133,3 @@ public:
 
 }  // namespace DockWnd
 }  // namespace Gui
-
-#endif  // GUI_DOCKWND_PROPERTYVIEW_H

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_DrawSketchHandlerFillet_H
-#define SKETCHERGUI_DrawSketchHandlerFillet_H
+#pragma once
 
 #include <Gui/Notifications.h>
 #include <Gui/Selection/SelectionFilter.h>
@@ -111,6 +112,7 @@ using DSHFilletController = DrawSketchDefaultWidgetController<
     /*WidgetParametersT =*/WidgetParameters<0, 0>,  // NOLINT
     /*WidgetCheckboxesT =*/WidgetCheckboxes<1, 1>,  // NOLINT
     /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,  // NOLINT
+    /*WidgetLineEditsT =*/WidgetLineEdits<0, 0>,
     ConstructionMethods::FilletConstructionMethod,
     /*bool PFirstComboboxIsConstructionMethod =*/true>;
 
@@ -120,6 +122,8 @@ using DrawSketchHandlerFilletBase = DrawSketchControllableHandler<DSHFilletContr
 
 class DrawSketchHandlerFillet: public DrawSketchHandlerFilletBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerFillet)
+
     friend DSHFilletController;
     friend DSHFilletControllerBase;
 
@@ -205,7 +209,7 @@ private:
                 int filletGeoId = getHighestCurveIndex() + (isChamfer ? 2 : 1);
                 // create fillet at point
                 try {
-                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create fillet"));
+                    openCommand(QT_TRANSLATE_NOOP("Command", "Create fillet"));
                     Gui::cmdAppObjectArgs(
                         obj,
                         "fillet(%d,%d,%f,%s,%s,%s)",
@@ -221,7 +225,7 @@ private:
                         Gui::cmdAppObjectArgs(obj, "toggleConstruction(%d) ", filletGeoId);
                     }
 
-                    Gui::Command::commitCommand();
+                    commitCommand();
                 }
                 catch (const Base::Exception& e) {
                     Gui::NotifyUserError(
@@ -229,7 +233,7 @@ private:
                         QT_TRANSLATE_NOOP("Notifications", "Failed to create fillet"),
                         e.what()
                     );
-                    Gui::Command::abortCommand();
+                    abortCommand();
                 }
 
                 tryAutoRecomputeIfNotSolve(obj);
@@ -263,7 +267,7 @@ private:
 
             // create fillet between lines
             try {
-                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create fillet"));
+                openCommand(QT_TRANSLATE_NOOP("Command", "Create fillet"));
                 Gui::cmdAppObjectArgs(
                     obj,
                     "fillet(%d,%d,App.Vector(%f,%f,0),App.Vector(%f,%f,0),%f,%s,%s,%s)",
@@ -278,7 +282,7 @@ private:
                     preserveCorner ? "True" : "False",
                     isChamfer ? "True" : "False"
                 );
-                Gui::Command::commitCommand();
+                commitCommand();
             }
             catch (const Base::CADKernelError& e) {
                 if (e.getTranslatable()) {
@@ -289,12 +293,12 @@ private:
                     );
                 }
                 Gui::Selection().clearSelection();
-                Gui::Command::abortCommand();
+                abortCommand();
             }
             catch (const Base::ValueError& e) {
                 Gui::TranslatedUserError(sketchgui, tr("Value Error"), tr(e.getMessage().c_str()));
                 Gui::Selection().clearSelection();
-                Gui::Command::abortCommand();
+                abortCommand();
             }
 
             tryAutoRecompute(obj);
@@ -500,5 +504,3 @@ void DSHFilletController::adaptDrawingToCheckboxChange(int checkboxindex, bool v
 }
 
 }  // namespace SketcherGui
-
-#endif  // SKETCHERGUI_DrawSketchHandlerFillet_H

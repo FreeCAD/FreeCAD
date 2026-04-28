@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchControllableHandler_H
-#define SKETCHERGUI_DrawSketchControllableHandler_H
+#pragma once
 
 #include <type_traits>
 
@@ -91,7 +92,12 @@ public:
 
     bool pressButton(Base::Vector2d onSketchPos) override
     {
+        // ensure controller state is initialized even if no mouseMove occurred
+        // ie. when a modal dialog blocks input before the first click
+        toolWidgetManager.mouseMoved(onSketchPos);
         toolWidgetManager.enforceControlParameters(onSketchPos);
+        updateDataAndDrawToPosition(onSketchPos);
+        toolWidgetManager.adaptParameters(onSketchPos);
 
         onButtonPressed(onSketchPos);
         return true;
@@ -208,6 +214,3 @@ protected:
 };
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchControllableHandler_H

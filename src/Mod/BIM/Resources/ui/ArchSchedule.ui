@@ -133,7 +133,7 @@ When dealing with native IFC objects, you can use FreeCAD properties name, ex: '
      <item>
       <widget class="Gui::PrefCheckBox" name="checkDetailed">
        <property name="toolTip">
-        <string>If this is enabled, additional lines will be filled with each object considered. If not, only the totals.</string>
+        <string>If this is enabled, additional rows will be filled with each object considered. If not, only the totals.</string>
        </property>
        <property name="text">
         <string>Detailed results</string>
@@ -157,7 +157,7 @@ When dealing with native IFC objects, you can use FreeCAD properties name, ex: '
      <item row="0" column="0">
       <widget class="QPushButton" name="buttonAdd">
        <property name="toolTip">
-        <string>Adds a line below the selected line/cell</string>
+        <string>Adds a row below the selected row/cell</string>
        </property>
        <property name="text">
         <string>Add Row</string>
@@ -171,7 +171,7 @@ When dealing with native IFC objects, you can use FreeCAD properties name, ex: '
      <item row="0" column="1">
       <widget class="QPushButton" name="buttonDel">
        <property name="toolTip">
-        <string>Deletes the selected line</string>
+        <string>Deletes the selected row</string>
        </property>
        <property name="text">
         <string>Delete Row</string>

@@ -51,7 +51,7 @@ std::string DimensionFormatter::formatValue(const qreal value,
                                             const Format partial,
                                             const bool isDim) const
 {
-   bool distanceMeasure{true};
+    bool distanceMeasure{true};
     const bool angularMeasure =
         m_dimension->Type.isValue("Angle") || m_dimension->Type.isValue("Angle3Pt");
     const bool areaMeasure = m_dimension->Type.isValue("Area");
@@ -77,7 +77,7 @@ std::string DimensionFormatter::formatValue(const qreal value,
     // won't give more than Global_Decimals precision
     std::string basicString = formatPrefix + asQuantity.getUserString() + formatSuffix;
 
-    if (isMultiValueSchema() && partial == Format::UNALTERED) {
+    if (isMultiValueSchema() || partial == Format::UNALTERED) {
         return basicString;  // Don't even try to use Alt Decimals or hide units
     }
 
@@ -101,8 +101,9 @@ std::string DimensionFormatter::formatValue(const qreal value,
         formatSpecifier.replace(QStringLiteral("%g"), newSpecifier, Qt::CaseInsensitive);
     }
 
-    std::string unitText = Base::UnitsApi::getUnitText(asQuantity);
-    std::string super2{"²"};
+    double factor{1.0};
+    std::string unitText{""};
+    asQuantity.getUserString(factor, unitText);
     std::string squareTag{"^2"};
 
     if (unitText.empty()) {
@@ -118,16 +119,12 @@ std::string DimensionFormatter::formatValue(const qreal value,
     double userVal = asQuantity.getValue();
 
     if (distanceMeasure || areaMeasure) {
-        const double convertValue = Base::Quantity::parse("1" + unitText).getValue();
-        userVal /= convertValue;
+        userVal /= factor;
     }
 
     // convert ^2 to superscript 2 for display
     if (areaMeasure) {
-        size_t tagPosition = unitText.find(squareTag);
-        if (tagPosition != std::string::npos) {
-            unitText = unitText.replace(tagPosition, 2, super2);
-        }
+        unitText = Base::UnitsApi::toUnicodeSuperscript(unitText);
     }
 
     QString formattedValue = formatValueToSpec(userVal, formatSpecifier);
@@ -314,7 +311,7 @@ QString DimensionFormatter::formatValueToSpec(const double value, QString format
     else if (spec == QStringLiteral("r")) {
         // round the value to the given precision
         double rounder = dec.toDouble();
-        double roundValue = std::ceil(value / rounder) * rounder;
+        double roundValue = std::round(value / rounder) * rounder;
         // format the result with the same decimal count than the rounder
         int dotIndex = dec.indexOf(QStringLiteral("."));
         int nDecimals = 0;

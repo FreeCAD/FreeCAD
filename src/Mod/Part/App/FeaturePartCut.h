@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_FEATUREPARTCUT_H
-#define PART_FEATUREPARTCUT_H
+#pragma once
 
 #include "FeaturePartBoolean.h"
 
@@ -48,5 +47,3 @@ protected:
 };
 
 }  // namespace Part
-
-#endif  // PART_FEATUREPARTCUT_H

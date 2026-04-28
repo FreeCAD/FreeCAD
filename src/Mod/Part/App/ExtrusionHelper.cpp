@@ -615,13 +615,16 @@ void ExtrusionHelper::makeElementDraft(
                 Standard_Failure::Raise("Failed to make drafted extrusion");
             }
             std::vector<TopoShape> inner;
-            TopoShape innerWires(0);
-            innerWires.makeElementCompound(
-                wires,
-                "",
-                TopoShape::SingleShapeCompoundCreationPolicy::returnShape
-            );
-            makeElementDraft(params, innerWires, inner, hasher);
+            // Inner wires are lofted into separate solids and then cut from the
+            // outer solid.
+            for (auto& innerWire : wires) {
+                ExtrusionParameters innerParams = params;
+                if (params.innerWireTaper == InnerWireTaper::Inverted) {
+                    innerParams.taperAngleFwd = -params.taperAngleFwd;
+                    innerParams.taperAngleRev = -params.taperAngleRev;
+                }
+                makeElementDraft(innerParams, innerWire, inner, hasher);
+            }
             if (inner.empty()) {
                 Standard_Failure::Raise("Failed to make drafted extrusion with inner hole");
             }

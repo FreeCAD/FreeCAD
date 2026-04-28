@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_MANUALALIGNMENT_H
-#define GUI_MANUALALIGNMENT_H
+#pragma once
 
 #include <QObject>
 #include <QPointer>
@@ -263,7 +262,7 @@ private:
 
     static ManualAlignment* _instance;
 
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::connection;
     Connection connectApplicationDeletedDocument;
     Connection connectDocumentDeletedObject;
 
@@ -283,6 +282,3 @@ private:
 };
 
 }  // namespace Gui
-
-
-#endif  // GUI_MANUALALIGNMENT_H

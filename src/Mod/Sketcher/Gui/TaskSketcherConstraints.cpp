@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Juergen Riegel <juergen.riegel@web.de>             *
  *                                                                         *
@@ -27,10 +29,12 @@
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
 #include <QString>
+#include <QTimer>
 #include <QStyledItemDelegate>
 #include <QWidgetAction>
 #include <boost/core/ignore_unused.hpp>
 #include <cmath>
+#include <cstring>
 #include <limits>
 
 #include <App/Application.h>
@@ -48,6 +52,7 @@
 #include <Mod/Sketcher/App/SketchObject.h>
 
 #include "EditDatumDialog.h"
+#include "EditTextDialog.h"
 #include "TaskSketcherConstraints.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
@@ -103,6 +108,88 @@ public:
     }
     ~ConstraintItem() override
     {}
+
+    QString getName() const
+    {
+        const Sketcher::Constraint* constraint = sketch->Constraints[ConstraintNbr];
+
+        if (!constraint->Name.empty()) {
+            return QString::fromStdString(constraint->Name);
+        }
+
+        QString type;
+        switch (constraint->Type) {
+            case Sketcher::Horizontal:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Horizontal");
+                break;
+            case Sketcher::Vertical:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Vertical");
+                break;
+            case Sketcher::Coincident:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Coincident");
+                break;
+            case Sketcher::PointOnObject:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "PointOnObject");
+                break;
+            case Sketcher::Parallel:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Parallel");
+                break;
+            case Sketcher::Perpendicular:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Perpendicular");
+                break;
+            case Sketcher::Tangent:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Tangent");
+                break;
+            case Sketcher::Equal:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Equal");
+                break;
+            case Sketcher::Symmetric:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Symmetric");
+                break;
+            case Sketcher::Block:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Lock");
+                break;
+            case Sketcher::Distance:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Distance");
+                break;
+            case Sketcher::DistanceX:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "DistanceX");
+                break;
+            case Sketcher::DistanceY:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "DistanceY");
+                break;
+            case Sketcher::Radius:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Radius");
+                break;
+            case Sketcher::Diameter:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Diameter");
+                break;
+            case Sketcher::Angle:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Angle");
+                break;
+            case Sketcher::Weight:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Weight");
+                break;
+            case Sketcher::SnellsLaw:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Snell");
+                break;
+            case Sketcher::InternalAlignment:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Alignment");
+                break;
+            /*case Sketcher::Group:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Group");
+                break;
+            case Sketcher::Text:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Text");
+                break;*/
+            default:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Constraint");
+                break;
+        }
+
+        return QStringLiteral("%1-%2").arg(ConstraintNbr + 1).arg(type);
+    }
+
     void setData(int role, const QVariant& value) override
     {
         if (role == Qt::EditRole)
@@ -133,9 +220,7 @@ public:
                                                                         ConstraintNbr));
         }
         else if (role == Qt::DisplayRole) {
-            QString name =
-                QString::fromStdString(Sketcher::PropertyConstraintList::getConstraintName(
-                    constraint->Name, ConstraintNbr));
+            QString name = getName();
 
             switch (constraint->Type) {
                 case Sketcher::Horizontal:
@@ -234,6 +319,8 @@ public:
             // Gui::BitmapFactory().iconFromTheme("Constraint_Ellipse_Axis_Angle") );
             static QIcon equal(Gui::BitmapFactory().iconFromTheme("Constraint_EqualLength"));
             static QIcon pntoo(Gui::BitmapFactory().iconFromTheme("Constraint_PointOnObject"));
+            static QIcon group(Gui::BitmapFactory().iconFromTheme("Constraint_Group"));
+            static QIcon text(Gui::BitmapFactory().iconFromTheme("Constraint_Text"));
             static QIcon symm(Gui::BitmapFactory().iconFromTheme("Constraint_Symmetric"));
             static QIcon snell(Gui::BitmapFactory().iconFromTheme("Constraint_SnellsLaw"));
             static QIcon iaellipseminoraxis(Gui::BitmapFactory().iconFromTheme(
@@ -265,7 +352,7 @@ public:
             auto selicon = [this](const Sketcher::Constraint* constr,
                               const QIcon& normal,
                               const QIcon& driven) -> QIcon {
-                if (!constr->isActive) {
+                if (!sketch->isConstraintActiveInSketch(constr)) {
                     QIcon darkIcon;
                     int w = listWidget()->style()->pixelMetric(QStyle::PM_ListViewIconSize);
                     darkIcon.addPixmap(normal.pixmap(w, w, QIcon::Disabled, QIcon::Off),
@@ -294,6 +381,10 @@ public:
                     return selicon(constraint, block, block);
                 case Sketcher::PointOnObject:
                     return selicon(constraint, pntoo, pntoo);
+                case Sketcher::Group:
+                    return selicon(constraint, group, group);
+                case Sketcher::Text:
+                    return selicon(constraint, text, text);
                 case Sketcher::Parallel:
                     return selicon(constraint, para, para);
                 case Sketcher::Perpendicular:
@@ -377,6 +468,8 @@ public:
             case Sketcher::Tangent:
             case Sketcher::Equal:
             case Sketcher::Symmetric:
+            case Sketcher::Group:
+            case Sketcher::Text:
                 return true;
             case Sketcher::Distance:
             case Sketcher::DistanceX:
@@ -558,7 +651,7 @@ void ConstraintView::contextMenuEvent(QContextMenuEvent* event)
 
     // This does the same as a double-click and thus it should be the first action and with bold
     // text
-    QAction* change = menu.addAction(tr("Change Value"), this, &ConstraintView::modifyCurrentItem);
+    QAction* change = menu.addAction(tr("Edit Value"), this, &ConstraintView::modifyCurrentItem);
     change->setEnabled(isQuantity);
     menu.setDefaultAction(change);
 
@@ -703,14 +796,16 @@ void ConstraintView::swapNamedOfSelectedItems()
     ss << "DummyConstraint" << rand();
     std::string tmpname = ss.str();
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Swap constraint names"));
+
+
+    item1->sketch->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Swap constraint names"));
     Gui::cmdAppObjectArgs(
         item1->sketch, "renameConstraint(%d, u'%s')", item1->ConstraintNbr, tmpname.c_str());
     Gui::cmdAppObjectArgs(
         item2->sketch, "renameConstraint(%d, u'%s')", item2->ConstraintNbr, escapedstr1.c_str());
     Gui::cmdAppObjectArgs(
         item1->sketch, "renameConstraint(%d, u'%s')", item1->ConstraintNbr, escapedstr2.c_str());
-    Gui::Command::commitCommand();
+    item1->sketch->getDocument()->commitTransaction();
 }
 
 /* Filter constraints list widget ----------------------*/
@@ -741,6 +836,10 @@ ConstraintFilterList::ConstraintFilterList(QWidget* parent)
         it->setCheckState(isChecked ? Qt::Checked : Qt::Unchecked);
         filterState = filterState >> 1;// shift right to get rid of the used bit.
     }
+
+    // Text constraint filter is hidden from the user
+    item(static_cast<int>(ConstraintFilter::FilterValue::Text))->setHidden(true);
+
     languageChange();
 
     setPartiallyChecked();
@@ -822,6 +921,7 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch* sketchView)
     , specialFilterMode{SpecialFilterType::None}
     , sketchView(sketchView)
     , inEditMode(false)
+    , updateListPending(false)
     , ui(new Ui_TaskSketcherConstraints)
 {
     // we need a separate container widget to add all controls to
@@ -977,7 +1077,7 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch* sketchView)
     //NOLINTBEGIN
     Gui::Application* app = Gui::Application::Instance;
     changedSketchView = app->signalChangedObject.connect(
-        std::bind(&TaskSketcherConstraints::onChangedSketchView, this, sp::_1, sp::_2));
+        std::bind(&TaskSketcherConstraints::onChangedSketchView, this, sp::_1, sp::_2), fastsignals::advanced_tag());
     //NOLINTEND
 
     updateList();
@@ -1172,9 +1272,19 @@ void TaskSketcherConstraints::onListWidgetConstraintsItemActivated(QListWidgetIt
 
     // if its the right constraint
     if (it->isDimensional()) {
-        EditDatumDialog* editDatumDialog = new EditDatumDialog(this->sketchView, it->ConstraintNbr);
-        editDatumDialog->exec(false);
-        delete editDatumDialog;
+        int tid = this->sketchView->getDocument()->openCommand(
+                    QT_TRANSLATE_NOOP("Command", "Modify sketch constraints"));
+        EditDatumDialog(tid, this->sketchView, it->ConstraintNbr).exec(false);
+    }
+    else if (it->constraintType() == Sketcher::Text) {
+        auto* editDialog = new EditTextDialog(this->sketchView, it->ConstraintNbr);
+        editDialog->exec();
+        delete editDialog;
+    }
+    // For all other constraints (geometric: e.g., Parallel, Perpendicular, Coincident),
+    // double-click triggers the rename functionality.
+    else {
+        ui->listWidgetConstraints->editItem(item);
     }
 }
 
@@ -1208,14 +1318,14 @@ void TaskSketcherConstraints::onListWidgetConstraintsItemChanged(QListWidgetItem
             newName = currConstraintName;
         }
 
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Rename sketch constraint"));
+        sketchView->getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Rename sketch constraint"));
         try {
             Gui::cmdAppObjectArgs(
                 sketch, "renameConstraint(%d, u'%s')", it->ConstraintNbr, newName.c_str());
-            Gui::Command::commitCommand();
+            sketchView->getDocument()->commitCommand();
         }
         catch (const Base::Exception& e) {
-            Gui::Command::abortCommand();
+            sketchView->getDocument()->abortCommand();
 
             Gui::NotifyUserError(
                 sketch, QT_TRANSLATE_NOOP("Notifications", "Value Error"), e.what());
@@ -1297,6 +1407,7 @@ void TaskSketcherConstraints::updateList()
 void TaskSketcherConstraints::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     assert(sketchView);
+    assert(sketchView->getSketchObject());
 
     std::string temp;
     if (msg.Type == Gui::SelectionChanges::ClrSelection) {
@@ -1304,76 +1415,109 @@ void TaskSketcherConstraints::onSelectionChanged(const Gui::SelectionChanges& ms
         ui->listWidgetConstraints->clearSelection();
         ui->listWidgetConstraints->blockSignals(tmpBlock);
 
-        if (specialFilterMode == SpecialFilterType::Selected) {
-            updateSelectionFilter();
+        if (ui->filterBox->checkState() == Qt::Checked) {
+            if (specialFilterMode == SpecialFilterType::Selected) {
+                updateSelectionFilter();
 
-            bool block = this->blockSelection(true);// avoid to be notified by itself
-            updateList();
-            this->blockSelection(block);
+                bool block = this->blockSelection(true);// avoid to be notified by itself
+                updateList();
+                this->blockSelection(block);
+            }
+            else if (specialFilterMode == SpecialFilterType::Associated) {
+                associatedConstraintsFilter.clear();
+                updateList();
+            }
         }
-        else if (specialFilterMode == SpecialFilterType::Associated) {
-            associatedConstraintsFilter.clear();
-            updateList();
-        }
+        return;
     }
-    else if (msg.Type == Gui::SelectionChanges::AddSelection
-             || msg.Type == Gui::SelectionChanges::RmvSelection) {
-        bool select = (msg.Type == Gui::SelectionChanges::AddSelection);
-        // is it this object??
-        if (strcmp(msg.pDocName, sketchView->getSketchObject()->getDocument()->getName()) == 0
-            && strcmp(msg.pObjectName, sketchView->getSketchObject()->getNameInDocument()) == 0) {
-            if (msg.pSubName) {
-                QRegularExpression rx(QStringLiteral("^Constraint(\\d+)$"));
-                QRegularExpressionMatch match;
-                QString expr = QString::fromLatin1(msg.pSubName);
-                boost::ignore_unused(expr.indexOf(rx, 0, &match));
-                if (match.hasMatch()) {// is a constraint
-                    bool ok;
-                    int ConstrId = match.captured(1).toInt(&ok) - 1;
-                    if (ok) {
-                        int countItems = ui->listWidgetConstraints->count();
-                        for (int i = 0; i < countItems; i++) {
-                            ConstraintItem* item =
-                                static_cast<ConstraintItem*>(ui->listWidgetConstraints->item(i));
-                            if (item->ConstraintNbr == ConstrId) {
-                                auto tmpBlock = ui->listWidgetConstraints->blockSignals(true);
-                                item->setSelected(select);
-                                ui->listWidgetConstraints->blockSignals(tmpBlock);
-                                SketcherGui::scrollTo(ui->listWidgetConstraints, i, select);
-                                break;
-                            }
-                        }
 
-                        if (specialFilterMode == SpecialFilterType::Selected) {
-                            updateSelectionFilter();
-                            bool block =
-                                this->blockSelection(true);// avoid to be notified by itself
-                            updateList();
-                            this->blockSelection(block);
-                        }
-                    }
-                }
-                else if (specialFilterMode == SpecialFilterType::Associated) {// is NOT a constraint
-                    int geoid = Sketcher::GeoEnum::GeoUndef;
-                    Sketcher::PointPos pointpos = Sketcher::PointPos::none;
-                    getSelectionGeoId(expr, geoid, pointpos);
+    bool select = msg.Type == Gui::SelectionChanges::AddSelection;
+    if (!select && msg.Type != Gui::SelectionChanges::RmvSelection) {
+        return;
+    }
 
-                    if (geoid != Sketcher::GeoEnum::GeoUndef
-                        && pointpos == Sketcher::PointPos::none) {
-                        // It is not possible to update on single addition/removal of a geometric
-                        // element, as one removal may imply removing a constraint that should be
-                        // added by a different element that is still selected. The necessary checks
-                        // outweigh a full rebuild of the filter.
-                        updateAssociatedConstraintsFilter();
-                        updateList();
-                    }
-                }
+    // is it this object??
+    if (strcmp(msg.pDocName, sketchView->getSketchObject()->getDocument()->getName()) != 0
+        || strcmp(msg.pObjectName, sketchView->getSketchObject()->getNameInDocument()) != 0
+        || !msg.pSubName) {
+        return;
+    }
+
+    if (std::strncmp(msg.pSubName, "Constraint", 10) == 0) {
+        int id = std::atoi(msg.pSubName + 10) - 1;
+
+        auto it = constraintMap.find(id);
+        if (it != constraintMap.end()) {
+            selectionBuffer.push_back({it->second, select});
+
+            if (!selectionUpdateTimerPending) {
+                selectionUpdateTimerPending = true;
+                QTimer::singleShot(0, this, &TaskSketcherConstraints::processSelectionBuffer);
             }
         }
     }
-    else if (msg.Type == Gui::SelectionChanges::SetSelection) {
-        // do nothing here
+    else if (ui->filterBox->checkState() == Qt::Checked && specialFilterMode == SpecialFilterType::Associated) {
+        int geoid = Sketcher::GeoEnum::GeoUndef;
+        Sketcher::PointPos pointpos = Sketcher::PointPos::none;
+        QString expr = QString::fromLatin1(msg.pSubName);
+        getSelectionGeoId(expr, geoid, pointpos);
+
+        if (geoid != Sketcher::GeoEnum::GeoUndef
+            && pointpos == Sketcher::PointPos::none) {
+            // It is not possible to update on single addition/removal of a geometric
+            // element, as one removal may imply removing a constraint that should be
+            // added by a different element that is still selected. The necessary checks
+            // outweigh a full rebuild of the filter.
+            if (!updateListPending) {
+                updateListPending = true;
+                QTimer::singleShot(0, this, &TaskSketcherConstraints::deferredUpdateList);
+            }
+        }
     }
+}
+
+void TaskSketcherConstraints::processSelectionBuffer()
+{
+    selectionUpdateTimerPending = false;
+    if (selectionBuffer.empty()) {
+        return;
+    }
+
+    QSignalBlocker block(ui->listWidgetConstraints);
+
+    QItemSelection selectionObj;
+    for (const auto& update : selectionBuffer) {
+        // NOTE: We trust the buffer has valid pointers (lifetime matches widget)
+        if (update.select) {
+            QModelIndex idx = ui->listWidgetConstraints->model()->index(ui->listWidgetConstraints->row(update.item), 0);
+            selectionObj.select(idx, idx);
+        } else {
+            update.item->setSelected(false);
+        }
+    }
+    ui->listWidgetConstraints->selectionModel()->select(selectionObj, QItemSelectionModel::Select);
+
+    // Scroll only if single item selected
+    if (selectionBuffer.size() == 1 && selectionBuffer[0].select) {
+        SketcherGui::scrollTo(ui->listWidgetConstraints, ui->listWidgetConstraints->row(selectionBuffer[0].item), true);
+    }
+
+    if (specialFilterMode == SpecialFilterType::Selected) {
+        updateSelectionFilter();
+        // avoid to be notified by itself
+        bool block = this->blockSelection(true);
+        updateList();
+        this->blockSelection(block);
+    }
+
+    selectionBuffer.clear();
+}
+
+void TaskSketcherConstraints::deferredUpdateList()
+{
+    updateAssociatedConstraintsFilter();
+    updateList();
+    updateListPending = false;
 }
 
 void TaskSketcherConstraints::OnChange(Base::Subject<const char*>& rCaller, const char* rcReason)
@@ -1458,7 +1602,11 @@ void TaskSketcherConstraints::onListWidgetConstraintsItemSelectionChanged()
     this->blockSelection(block);
 
     // it seems that addSelections gives back the focus to the view, and not immediately.
-    QTimer::singleShot(200, [this]() {
+    QTimer::singleShot(200, this, [this]() {
+        QWidget* fw = QApplication::focusWidget();
+        if (fw && ui->listWidgetConstraints->viewport()->isAncestorOf(fw)) {
+            return; // Do NOT steal focus if the editor is active
+        }
         ui->listWidgetConstraints->setFocus();
     });
 }
@@ -1520,17 +1668,16 @@ bool TaskSketcherConstraints::doSetVirtualSpace(const std::vector<int>& constrId
 
     std::string constrIdList = stream.str();
 
-    Gui::Command::openCommand(
-            QT_TRANSLATE_NOOP("Command", "Update constraint's virtual space"));
+    sketchView->getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Update constraint's virtual space"));
     try {
         Gui::cmdAppObjectArgs(sketch,
             "setVirtualSpace(%s, %s)",
             constrIdList,
             isvirtualspace ? "True" : "False");
-        Gui::Command::commitCommand();
-    }
+            sketchView->getDocument()->commitCommand();
+        }
     catch (const Base::Exception& e) {
-        Gui::Command::abortCommand();
+        sketchView->getDocument()->abortCommand();
 
         Gui::TranslatedUserError(
             sketch, tr("Error"), tr("Impossible to update visibility tracking:") + QLatin1String(" ") + QLatin1String(e.what()));
@@ -1576,6 +1723,10 @@ bool TaskSketcherConstraints::isConstraintFiltered(QListWidgetItem* item)
     ConstraintItem* it = static_cast<ConstraintItem*>(item);
     const Sketcher::Constraint* constraint = vals[it->ConstraintNbr];
 
+    // Text constraint is hidden from the list widget.
+    if (constraint->Type == Sketcher::Text) {
+        return true;
+    }
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher");
@@ -1597,6 +1748,12 @@ bool TaskSketcherConstraints::isConstraintFiltered(QListWidgetItem* item)
                 break;
             case Sketcher::PointOnObject:
                 visible = checkFilterBitset(multiFilterStatus, FilterValue::PointOnObject);
+                break;
+            case Sketcher::Group:
+                visible = checkFilterBitset(multiFilterStatus, FilterValue::Group);
+                break;
+            case Sketcher::Text:
+                visible = checkFilterBitset(multiFilterStatus, FilterValue::Text);
                 break;
             case Sketcher::Parallel:
                 visible = checkFilterBitset(multiFilterStatus, FilterValue::Parallel);
@@ -1668,19 +1825,13 @@ bool TaskSketcherConstraints::isConstraintFiltered(QListWidgetItem* item)
 void TaskSketcherConstraints::slotConstraintsChanged()
 {
     assert(sketchView);
+
+    constraintMap.clear();
+    selectionBuffer.clear();
+
     // Build up ListView with the constraints
     const Sketcher::SketchObject* sketch = sketchView->getSketchObject();
     const std::vector<Sketcher::Constraint*>& vals = sketch->Constraints.getValues();
-
-    /* Update constraint number and virtual space check status */
-    for (int i = 0; i < ui->listWidgetConstraints->count(); ++i) {
-        ConstraintItem* it = dynamic_cast<ConstraintItem*>(ui->listWidgetConstraints->item(i));
-
-        assert(it);
-
-        it->ConstraintNbr = i;
-        it->value = QVariant();
-    }
 
     /* Remove entries, if any */
     for (std::size_t i = ui->listWidgetConstraints->count(); i > vals.size(); --i)
@@ -1693,7 +1844,10 @@ void TaskSketcherConstraints::slotConstraintsChanged()
     /* Update the states */
     auto tmpBlock = ui->listWidgetConstraints->blockSignals(true);
     for (int i = 0; i < ui->listWidgetConstraints->count(); ++i) {
-        ConstraintItem* it = static_cast<ConstraintItem*>(ui->listWidgetConstraints->item(i));
+        auto* it = static_cast<ConstraintItem*>(ui->listWidgetConstraints->item(i));
+        it->ConstraintNbr = i;
+        it->value = QVariant();
+        constraintMap[it->ConstraintNbr] = it;
         it->updateVirtualSpaceStatus();
     }
     ui->listWidgetConstraints->blockSignals(tmpBlock);

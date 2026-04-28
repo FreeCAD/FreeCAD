@@ -42,6 +42,12 @@ SET(TestGuiIcon_SVG
     Resources/icons/TestWorkbench.svg
 )
 
+set(TestGui_COPY_OUTPUTS
+    "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Test/Resources/icons/TestWorkbench.svg"
+)
+
+add_custom_target(TestGuiSources DEPENDS ${TestGui_COPY_OUTPUTS})
+
 add_library(QtUnitGui SHARED ${TestGui_SRCS} ${TestGuiPy_SRCS} ${TestGuiIcon_SVG})
 
 if(FREECAD_USE_PCH)
@@ -58,7 +64,7 @@ target_include_directories(
 )
 
 target_link_libraries(QtUnitGui ${TestGui_LIBS})
-add_dependencies(QtUnitGui Test)
+add_dependencies(QtUnitGui TestSources TestGuiSources)
 
 if (MSVC)
     target_compile_options(QtUnitGui PRIVATE /wd4251)

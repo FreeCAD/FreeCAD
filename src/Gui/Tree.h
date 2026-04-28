@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TREE_H
-#define GUI_TREE_H
+#pragma once
 
 #include <unordered_map>
+#include <QTimer>
 #include <QElapsedTimer>
 #include <QStyledItemDelegate>
 #include <QTreeWidget>
@@ -104,6 +104,16 @@ public:
     void markItem(const App::DocumentObject* Obj, bool mark);
     void syncView(ViewProviderDocumentObject* vp);
 
+    /**
+     * @brief Selects all selectable objects within the current group or document.
+     *
+     *
+     * First press: selects all sibling items of the current selected object
+     * (children of
+     * same parent) or a group and its childs.
+     * Second press: expands selection to the whole
+     * document.
+     */
     void selectAll() override;
 
     const char* getTreeName() const;
@@ -188,6 +198,12 @@ protected:
 
 private:
     void _updateStatus(bool delay = true);
+
+    // Helpers for the two-stage "Select All" feature
+    void selectGroupItems(const QTreeWidgetItem* group, bool recursive);
+    void selectAllDocumentLevel();
+    void selectAllGroupLevel(const QTreeWidgetItem* targetNode, bool isGroup);
+    void clearSelectAllContext();
 
 protected Q_SLOTS:
     void onCreateGroup();
@@ -276,6 +292,10 @@ private:
     QTimer* selectTimer;
     QTimer* preselectTimer;
     QElapsedTimer preselectTime;
+
+    // this timer is used to prevent double click event on visibility icon
+    QTimer visibilityIconDoubleClickTimer;
+
     static std::unique_ptr<QPixmap> documentPixmap;
     static std::unique_ptr<QPixmap> documentPartialPixmap;
     std::unordered_map<const Gui::Document*, DocumentItem*> DocumentMap;
@@ -295,12 +315,18 @@ private:
     std::string myName;  // for debugging purpose
     int updateBlocked = 0;
 
+    // State tracking for the two-stage "Select All" operation
+    bool lastSelectAllParent = false;   // true if last select was group-level, used for double-tap
+                                        // detection
+    bool inSelectAllOperation = false;  // prevents context from reseting when we change selection
+                                        // in code
+
     friend class DocumentItem;
     friend class DocumentObjectItem;
     friend class TreeParams;
     friend class TreeWidgetItemDelegate;
 
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::connection;
     Connection connectNewDocument;
     Connection connectDelDocument;
     Connection connectRenDocument;
@@ -430,7 +456,7 @@ private:
     ExpandInfoPtr _ExpandInfo;
     void restoreItemExpansion(const ExpandInfoPtr&, DocumentObjectItem*);
 
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::connection;
     Connection connectNewObject;
     Connection connectDelObject;
     Connection connectChgObject;
@@ -531,7 +557,7 @@ private:
     DocumentItem* myOwner;
     DocumentObjectDataPtr myData;
     std::vector<std::string> mySubs;
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::connection;
     int previousStatus;
     int selected;
     bool populated;
@@ -575,5 +601,3 @@ public:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_TREE_H

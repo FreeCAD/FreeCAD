@@ -31,6 +31,7 @@ These include linear dimensions, including radius and diameter,
 as well as angular dimensions.
 They inherit their behavior from the base Annotation viewprovider.
 """
+
 ## @package view_dimension
 # \ingroup draftviewproviders
 # \brief Provides the viewprovider code for the Dimension objects.
@@ -847,6 +848,10 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
         self.trans1 = coin.SoTransform()
         self.coord2 = coin.SoCoordinate3()
         self.trans2 = coin.SoTransform()
+        self.transDimOvershoot1 = coin.SoTransform()
+        self.transDimOvershoot2 = coin.SoTransform()
+        self.transExtOvershoot1 = coin.SoTransform()
+        self.transExtOvershoot2 = coin.SoTransform()
 
         self.linecolor = coin.SoBaseColor()
         self.drawstyle = coin.SoDrawStyle()
@@ -855,6 +860,8 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
 
         self.arc = coin.SoType.fromName("SoBrepEdgeSet").createInstance()
         self.marks = coin.SoSeparator()
+        self.marksDimOvershoot = coin.SoSeparator()
+        self.marksExtOvershoot = coin.SoSeparator()
 
         self.node_wld = coin.SoGroup()
         self.node_wld.addChild(self.linecolor)
@@ -862,6 +869,8 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
         self.node_wld.addChild(self.coords)
         self.node_wld.addChild(self.arc)
         self.node_wld.addChild(self.marks)
+        self.node_wld.addChild(self.marksDimOvershoot)
+        self.node_wld.addChild(self.marksExtOvershoot)
         self.node_wld.addChild(label_wld)
 
         self.node_scr = coin.SoGroup()
@@ -870,6 +879,8 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
         self.node_scr.addChild(self.coords)
         self.node_scr.addChild(self.arc)
         self.node_scr.addChild(self.marks)
+        self.node_scr.addChild(self.marksDimOvershoot)
+        self.node_scr.addChild(self.marksExtOvershoot)
         self.node_scr.addChild(label_scr)
 
         vobj.addDisplayMode(self.node_wld, "World")
@@ -881,6 +892,9 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
         self.onChanged(vobj, "ArrowTypeStart")
         self.onChanged(vobj, "ArrowTypeEnd")
         self.onChanged(vobj, "LineColor")
+        self.onChanged(vobj, "DimOvershoot")
+        self.onChanged(vobj, "ExtOvershoot")
+        self.onChanged(vobj, "LineWidth")
 
     def updateData(self, obj, prop):
         """Execute when a property from the Proxy class is changed."""
@@ -888,6 +902,10 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
             return
 
         arcsegs = 24
+
+        # for ext lines
+        self.p1 = obj.Center
+        self.p4 = obj.Center
 
         vobj = obj.ViewObject
 
@@ -906,6 +924,22 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
         self.p3 = self.circle.Vertexes[-1].Point
         midp = DraftGeomUtils.findMidpoint(self.circle)
         ray = midp - obj.Center
+
+        proj1 = obj.Center - self.p2
+        proj2 = obj.Center - self.p3
+        if hasattr(vobj, "ExtLines") and hasattr(vobj, "ScaleMultiplier"):
+            # The scale multiplier also affects the value
+            # of the extension line; this makes sure a maximum length
+            # is used if the calculated value is larger than it.
+            dmax = vobj.ExtLines.Value * vobj.ScaleMultiplier
+            if dmax and proj1.Length > dmax:
+                if dmax > 0:
+                    self.p1 = self.p2 + DraftVecUtils.scaleTo(proj1, dmax)
+                    self.p4 = self.p3 + DraftVecUtils.scaleTo(proj2, dmax)
+                else:
+                    rest = proj1.Length + dmax
+                    self.p1 = self.p2 + DraftVecUtils.scaleTo(proj1, rest)
+                    self.p4 = self.p3 + DraftVecUtils.scaleTo(proj2, rest)
 
         # Set text value
         if obj.LastAngle.Value > obj.FirstAngle.Value:
@@ -958,16 +992,26 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
                     else:
                         pts2.append([p.x, p.y, p.z])
 
-            self.coords.point.setValues(pts1 + pts2)
-
             pts1_num = len(pts1)
             pts2_num = len(pts2)
-            i1 = pts1_num
-            i2 = i1 + pts2_num
 
-            self.arc.coordIndex.setValues(
-                0, pts1_num + pts2_num + 1, list(range(pts1_num)) + [-1] + list(range(i1, i2))
+            # fmt: off
+            ext_pts = [[self.p1.x, self.p1.y, self.p1.z],
+                       [self.p4.x, self.p4.y, self.p4.z]]
+            # fmt: on
+
+            self.coords.point.setValues(pts1 + pts2 + ext_pts)
+
+            p1_idx = pts1_num + pts2_num
+            p4_idx = p1_idx + 1
+            all_indices = (
+                [p1_idx]
+                + list(range(pts1_num))
+                + [-1]
+                + list(range(pts1_num, pts1_num + pts2_num))
+                + [p4_idx]
             )
+            self.arc.coordIndex.setValues(0, len(all_indices), all_indices)
 
             if pts1_num >= 3 and pts2_num >= 3:
                 self.circle1 = Part.Arc(
@@ -986,8 +1030,16 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
                 p = self.circle.valueAt(first + (last - first) / arcsegs * i)
                 pts.append([p.x, p.y, p.z])
 
-            self.coords.point.setValues(pts)
-            self.arc.coordIndex.setValues(0, arcsegs + 1, list(range(arcsegs + 1)))
+            # fmt: off
+            ext_pts = [[self.p1.x, self.p1.y, self.p1.z],
+                       [self.p4.x, self.p4.y, self.p4.z]]
+            # fmt: on
+
+            self.coords.point.setValues(pts + ext_pts)
+            p1_idx = len(pts)
+            p4_idx = p1_idx + 1
+            all_indices = [p1_idx] + list(range(arcsegs + 1)) + [p4_idx]
+            self.arc.coordIndex.setValues(0, len(all_indices), all_indices)
 
         # Set the arrow coords and rotation
         p2 = (self.p2.x, self.p2.y, self.p2.z)
@@ -997,6 +1049,10 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
         self.coord1.point.setValue(p2)
         self.trans2.translation.setValue(p3)
         self.coord2.point.setValue(p3)
+        self.transDimOvershoot1.translation.setValue(p2)
+        self.transDimOvershoot2.translation.setValue(p3)
+        self.transExtOvershoot1.translation.setValue(p2)
+        self.transExtOvershoot2.translation.setValue(p3)
 
         # Calculate small chords to make arrows look better
         if (
@@ -1035,6 +1091,38 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
 
             self.trans1.rotation.setValue((q1[0], q1[1], q1[2], q1[3]))
             self.trans2.rotation.setValue((q2[0], q2[1], q2[2], q2[3]))
+
+        tangent1 = self.circle.tangentAt(self.circle.FirstParameter)
+        tangent2 = self.circle.tangentAt(self.circle.LastParameter)
+        if not DraftVecUtils.isNull(tangent1):
+            tangent1.normalize()
+            plane_rot = DraftVecUtils.getPlaneRotation(tangent1, norm.cross(tangent1), norm)
+            if plane_rot is not None:
+                q = App.Placement(plane_rot).Rotation.Q
+                self.transDimOvershoot1.rotation.setValue((q[0], q[1], q[2], q[3]))
+
+        if not DraftVecUtils.isNull(tangent2):
+            tangent2.normalize()
+            plane_rot = DraftVecUtils.getPlaneRotation(tangent2, norm.cross(tangent2), norm)
+            if plane_rot is not None:
+                q = App.Placement(plane_rot).Rotation.Q
+                self.transDimOvershoot2.rotation.setValue((q[0], q[1], q[2], q[3]))
+
+        ext1 = self.p1 - self.p2
+        ext2 = self.p4 - self.p3
+        if not DraftVecUtils.isNull(ext1):
+            ext1.normalize()
+            plane_rot = DraftVecUtils.getPlaneRotation(ext1, norm.cross(ext1), norm)
+            if plane_rot is not None:
+                q = App.Placement(plane_rot).Rotation.Q
+                self.transExtOvershoot1.rotation.setValue((q[0], q[1], q[2], q[3]))
+
+        if not DraftVecUtils.isNull(ext2):
+            ext2.normalize()
+            plane_rot = DraftVecUtils.getPlaneRotation(ext2, norm.cross(ext2), norm)
+            if plane_rot is not None:
+                q = App.Placement(plane_rot).Rotation.Q
+                self.transExtOvershoot2.rotation.setValue((q[0], q[1], q[2], q[3]))
 
         # Set text position and rotation
         self.tbase = midp
@@ -1092,6 +1180,12 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
             ):
                 self.remove_dim_arrows()
                 self.draw_dim_arrows(vobj)
+            if "DimOvershoot" in properties:
+                self.remove_dim_overshoot()
+                self.draw_dim_overshoot(vobj)
+            if "ExtOvershoot" in properties:
+                self.remove_ext_overshoot()
+                self.draw_ext_overshoot(vobj)
 
             self.updateData(obj, None)
 
@@ -1112,6 +1206,22 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
 
         elif prop == "LineWidth" and hasattr(self, "drawstyle"):
             self.drawstyle.lineWidth = vobj.LineWidth
+
+        elif (
+            prop == "DimOvershoot"
+            and "DimOvershoot" in properties
+            and "ScaleMultiplier" in properties
+        ):
+            self.remove_dim_overshoot()
+            self.draw_dim_overshoot(vobj)
+
+        elif (
+            prop == "ExtOvershoot"
+            and "ExtOvershoot" in properties
+            and "ScaleMultiplier" in properties
+        ):
+            self.remove_ext_overshoot()
+            self.draw_ext_overshoot(vobj)
 
         elif (
             prop in ("ArrowSizeStart", "ArrowTypeStart", "ArrowSizeEnd", "ArrowTypeEnd")
@@ -1174,6 +1284,62 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
 
         self.node_wld.insertChild(self.marks, 2)
         self.node_scr.insertChild(self.marks, 2)
+
+    def remove_dim_overshoot(self):
+        """Remove the dimension overshoot lines."""
+        self.node_wld.removeChild(self.marksDimOvershoot)
+        self.node_scr.removeChild(self.marksDimOvershoot)
+
+    def draw_dim_overshoot(self, vobj):
+        """Draw dimension overshoot lines."""
+        s = vobj.DimOvershoot.Value * vobj.ScaleMultiplier
+        self.transDimOvershoot1.scaleFactor.setValue((s, s, s))
+        self.transDimOvershoot2.scaleFactor.setValue((s, s, s))
+
+        self.marksDimOvershoot = coin.SoSeparator()
+        if vobj.DimOvershoot.Value:
+            self.marksDimOvershoot.addChild(self.linecolor)
+
+            s1 = coin.SoSeparator()
+            s1.addChild(self.transDimOvershoot1)
+            s1.addChild(gui_utils.dimDash((-1, 0, 0), (0, 0, 0)))
+            self.marksDimOvershoot.addChild(s1)
+
+            s2 = coin.SoSeparator()
+            s2.addChild(self.transDimOvershoot2)
+            s2.addChild(gui_utils.dimDash((0, 0, 0), (1, 0, 0)))
+            self.marksDimOvershoot.addChild(s2)
+
+        self.node_wld.insertChild(self.marksDimOvershoot, 5)
+        self.node_scr.insertChild(self.marksDimOvershoot, 5)
+
+    def remove_ext_overshoot(self):
+        """Remove dimension extension overshoot lines."""
+        self.node_wld.removeChild(self.marksExtOvershoot)
+        self.node_scr.removeChild(self.marksExtOvershoot)
+
+    def draw_ext_overshoot(self, vobj):
+        """Draw dimension extension overshoot lines."""
+        s = vobj.ExtOvershoot.Value * vobj.ScaleMultiplier
+        self.transExtOvershoot1.scaleFactor.setValue((s, s, s))
+        self.transExtOvershoot2.scaleFactor.setValue((s, s, s))
+
+        self.marksExtOvershoot = coin.SoSeparator()
+        if vobj.ExtOvershoot.Value:
+            self.marksExtOvershoot.addChild(self.linecolor)
+
+            s1 = coin.SoSeparator()
+            s1.addChild(self.transExtOvershoot1)
+            s1.addChild(gui_utils.dimDash((0, 0, 0), (-1, 0, 0)))
+            self.marksExtOvershoot.addChild(s1)
+
+            s2 = coin.SoSeparator()
+            s2.addChild(self.transExtOvershoot2)
+            s2.addChild(gui_utils.dimDash((0, 0, 0), (-1, 0, 0)))
+            self.marksExtOvershoot.addChild(s2)
+
+        self.node_wld.insertChild(self.marksExtOvershoot, 6)
+        self.node_scr.insertChild(self.marksExtOvershoot, 6)
 
     def getIcon(self):
         """Return the path to the icon used by the viewprovider."""

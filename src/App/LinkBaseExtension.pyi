@@ -1,11 +1,13 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export
 from DocumentObjectExtension import DocumentObjectExtension
 from typing import Any, Final, List, Tuple, Optional, Union, overload
 
 
-@export(
-    Include="App/Link.h",
-)
+@export(Include="App/Link.h", )
 class LinkBaseExtension(DocumentObjectExtension):
     """
     Link extension base class
@@ -16,15 +18,18 @@ class LinkBaseExtension(DocumentObjectExtension):
     LinkedChildren: Final[List[Any]] = []
     """Return a flattened (in case grouped by plain group) list of linked children"""
 
-    def configLinkProperty(self, **kwargs) -> Any:
+    def configLinkProperty(self, *args, **kwargs) -> Any:
         """
-        configLinkProperty(key=val,...): property configuration
-        configLinkProperty(key,...): property configuration with default name
+        Examples:
+            Called with default names:
+                configLinkProperty(prop1, prop2, ..., propN)
+            Called with custom names:
+                configLinkProperty(prop1=val1, prop2=val2, ..., propN=valN)
 
-        This methode is here to implement what I called Property Design
+        This method is here to implement what I called Property Design
         Pattern. The extension operates on a predefined set of properties,
         but it relies on the extended object to supply the actual property by
-        calling this methode. You can choose a sub set of functionality of
+        calling this method. You can choose a sub set of functionality of
         this extension by supplying only some of the supported properties.
 
         The 'key' are names used to refer to properties supported by this
@@ -41,48 +46,48 @@ class LinkBaseExtension(DocumentObjectExtension):
         """
         ...
 
-    def getLinkExtProperty(self, name: str) -> Any:
+    def getLinkExtProperty(self, name: str, /) -> Any:
         """
-        getLinkExtProperty(name): return the property value by its predefined name 
+        return the property value by its predefined name
         """
         ...
 
-    def getLinkExtPropertyName(self, name: str) -> str:
+    def getLinkExtPropertyName(self, name: str, /) -> str:
         """
-        getLinkExtPropertyName(name): lookup the property name by its predefined name 
+        lookup the property name by its predefined name
         """
         ...
 
     @overload
-    def getLinkPropertyInfo(self) -> tuple:
+    def getLinkPropertyInfo(self, /) -> tuple[tuple[str, str, str]]:
         ...
-    
+
     @overload
-    def getLinkPropertyInfo(self, index: int) -> tuple:
+    def getLinkPropertyInfo(self, index: int, /) -> tuple[str, str, str]:
         ...
-    
+
     @overload
-    def getLinkPropertyInfo(self, name: str) -> tuple:
-        ...
-    
-    def getLinkPropertyInfo(self, arg: Any = None) -> tuple:
-        """
-        getLinkPropertyInfo(): return a tuple of (name,type,doc) for all supported properties.
-
-        getLinkPropertyInfo(index): return (name,type,doc) of a specific property
-
-        getLinkPropertyInfo(name): return (type,doc) of a specific property
-        """
+    def getLinkPropertyInfo(self, name: str, /) -> tuple[str, str]:
         ...
 
-    def setLink(self, obj: Any, subName: Optional[str] = None, subElements: Optional[Union[str, Tuple[str, ...]]] = None) -> None:
+    def getLinkPropertyInfo(self, arg: Any = None, /) -> tuple:
         """
-        setLink(obj,subName=None,subElements=None): Set link object.
+        Overloads:
+            (): return (name,type,doc) for all supported properties.
+            (index): return (name,type,doc) of a specific property
+            (name): return (type,doc) of a specific property
+        """
+        ...
 
-        setLink([obj,...]),
-        setLink([(obj,subName,subElements),...]),
-        setLink({index:obj,...}),
-        setLink({index:(obj,subName,subElements),...}): set link element of a link group.
+    def setLink(
+        self,
+        obj: Any,
+        subName: Optional[str] = None,
+        subElements: Optional[Union[str, Tuple[str, ...]]] = None,
+        /,
+    ) -> None:
+        """
+        Called with only obj, set link object, otherwise set link element of a link group.
 
         obj (DocumentObject): the object to link to. If this is None, then the link is cleared
 
@@ -92,27 +97,23 @@ class LinkBaseExtension(DocumentObjectExtension):
         """
         ...
 
-    def cacheChildLabel(self, enable: bool = True) -> None:
+    def cacheChildLabel(self, enable: bool = True, /) -> None:
         """
-        cacheChildLabel(enable=True): enable/disable child label cache
+        enable/disable child label cache
 
         The cache is not updated on child label change for performance reason. You must
         call this function on any child label change
         """
         ...
 
-    def flattenSubname(self, subname: str) -> str:
+    def flattenSubname(self, subname: str, /) -> str:
         """
-        flattenSubname(subname) -> string
-
         Return a flattened subname in case it references an object inside a linked plain group
         """
         ...
 
-    def expandSubname(self, subname: str) -> str:
+    def expandSubname(self, subname: str, /) -> str:
         """
-        expandSubname(subname) -> string
-
         Return an expanded subname in case it references an object inside a linked plain group
         """
         ...

@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+
 /****************************************************************************
  *                                                                          *
  *   Copyright (c) 2025 The FreeCAD Project Association AISBL               *
@@ -21,8 +22,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_SketcherTransformationExpressionHelper_H
-#define SKETCHERGUI_SketcherTransformationExpressionHelper_H
+#pragma once
 
 #include <map>
 #include <vector>
@@ -84,6 +84,12 @@ private:
         int numberOfCopiesToMake;
     };
 
+    struct ConstraintExpressionInfo
+    {
+        std::shared_ptr<App::Expression> expression;
+        int geoId;  // the geoId from listOfGeoIds that this constraint references
+    };
+
     /// calculate parameters needed for copy operations
     CopyCalculationParams calculateCopyParams(
         Sketcher::SketchObject* sketchObject,
@@ -106,10 +112,8 @@ private:
     /// check if a constraint references the specified geometry ID
     bool constraintReferencesGeometry(const Sketcher::Constraint* cstr, int geoId) const;
 
-    // original geo id to expression mapping
-    std::map<int, std::shared_ptr<App::Expression>> originalExpressions;
+    // original constraint index to expression and geoId mapping
+    std::map<int, ConstraintExpressionInfo> originalExpressions;
 };
 
 }  // namespace SketcherGui
-
-#endif  // SKETCHERGUI_SketcherTransformationExpressionHelper_H

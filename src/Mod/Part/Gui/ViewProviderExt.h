@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_VIEWPROVIDERPARTEXT_H
-#define PARTGUI_VIEWPROVIDERPARTEXT_H
+#pragma once
 
 #include "SoFCShapeObject.h"
 
@@ -82,9 +81,6 @@ public:
     App::PropertyAngle AngularDeflection;
     App::PropertyEnumeration Lighting;
     App::PropertyEnumeration DrawStyle;
-    /// Property controlling visibility of the placement indicator, useful for displaying origin
-    /// position of attached Document Object.
-    App::PropertyBool ShowPlacement;
     // Points
     App::PropertyFloatConstraint PointSize;
     App::PropertyColor PointColor;
@@ -254,8 +250,9 @@ private:
     // This is needed to restore old DiffuseColor values since the restore
     // function is asynchronous
     App::PropertyColorList _diffuseColor;
+
+    // shape that was last rendered so if it does not change we don't re-render it without need
+    TopoDS_Shape lastRenderedShape;
 };
 
 }  // namespace PartGui
-
-#endif  // PARTGUI_VIEWPROVIDERPARTEXT_H

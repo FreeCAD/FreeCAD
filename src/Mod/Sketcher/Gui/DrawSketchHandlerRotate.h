@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Boyer Pierre-Louis <pierrelouis.boyer@gmail.com>   *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchHandlerRotate_H
-#define SKETCHERGUI_DrawSketchHandlerRotate_H
+#pragma once
 
 #include <QApplication>
 
@@ -52,7 +53,8 @@ using DSHRotateController = DrawSketchDefaultWidgetController<
     /*OnViewParametersT =*/OnViewParameters<4>,
     /*WidgetParametersT =*/WidgetParameters<1>,
     /*WidgetCheckboxesT =*/WidgetCheckboxes<1>,
-    /*WidgetComboboxesT =*/WidgetComboboxes<0>>;
+    /*WidgetComboboxesT =*/WidgetComboboxes<0>,
+    /*WidgetLineEditsT =*/WidgetLineEdits<0>>;
 
 using DSHRotateControllerBase = DSHRotateController::ControllerBase;
 
@@ -60,6 +62,8 @@ using DrawSketchHandlerRotateBase = DrawSketchControllableHandler<DSHRotateContr
 
 class DrawSketchHandlerRotate: public DrawSketchHandlerRotateBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerRotate)
+
     friend DSHRotateController;
     friend DSHRotateControllerBase;
 
@@ -142,7 +146,7 @@ private:
     void executeCommands() override
     {
         try {
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Rotate geometries"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Rotate geometries"));
 
             expressionHelper.storeOriginalExpressions(sketchgui->getSketchObject(), listOfGeoIds);
 
@@ -162,7 +166,7 @@ private:
                 deleteOriginalGeos();
             }
 
-            Gui::Command::commitCommand();
+            commitCommand();
         }
         catch (const Base::Exception& e) {
             e.reportException();
@@ -172,7 +176,7 @@ private:
                 QT_TRANSLATE_NOOP("Notifications", "Failed to rotate")
             );
 
-            Gui::Command::abortCommand();
+            abortCommand();
             THROWM(
                 Base::RuntimeError,
                 QT_TRANSLATE_NOOP(
@@ -352,16 +356,19 @@ private:
                         newConstr->Second = secondIndexi;
                         newConstr->Third = thirdIndexi;
                     }
-                    else if ((cstr->Type == Coincident || cstr->Type == Tangent
-                              || cstr->Type == Symmetric || cstr->Type == Perpendicular
-                              || cstr->Type == Parallel || cstr->Type == Equal || cstr->Type == Angle
-                              || cstr->Type == PointOnObject || cstr->Type == InternalAlignment)
-                             && firstIndex >= 0 && secondIndex >= 0
-                             && thirdIndex == GeoEnum::GeoUndef) {
+                    else if (
+                        (cstr->Type == Coincident || cstr->Type == Tangent
+                         || cstr->Type == Symmetric || cstr->Type == Perpendicular
+                         || cstr->Type == Parallel || cstr->Type == Equal || cstr->Type == Angle
+                         || cstr->Type == PointOnObject || cstr->Type == InternalAlignment)
+                        && firstIndex >= 0 && secondIndex >= 0 && thirdIndex == GeoEnum::GeoUndef
+                    ) {
                         newConstr->Second = secondIndexi;
                     }
-                    else if ((cstr->Type == Radius || cstr->Type == Diameter || cstr->Type == Weight)
-                             && firstIndex >= 0) {
+                    else if (
+                        (cstr->Type == Radius || cstr->Type == Diameter || cstr->Type == Weight)
+                        && firstIndex >= 0
+                    ) {
                         if (deleteOriginal || !cloneConstraints) {
                             newConstr->setValue(cstr->getValue());
                         }
@@ -371,21 +378,25 @@ private:
                             newConstr->Second = firstIndexi;
                         }
                     }
-                    else if ((cstr->Type == Distance || cstr->Type == DistanceX
-                              || cstr->Type == DistanceY)
-                             && firstIndex >= 0 && secondIndex >= 0) {
+                    else if (
+                        (cstr->Type == Distance || cstr->Type == DistanceX || cstr->Type == DistanceY)
+                        && firstIndex >= 0
+                    ) {
                         if (!deleteOriginal && cloneConstraints
-                            && cstr->First == cstr->Second) {  // only line distances
-                            if (indexOfGeoId(geoIdsWhoAlreadyHasEqual, secondIndexi) != -1) {
+                            && (cstr->First == cstr->Second || secondIndex < 0)) {  // only line
+                                                                                    // distances
+                            if (indexOfGeoId(geoIdsWhoAlreadyHasEqual, firstIndexi) != -1) {
                                 continue;
                             }
                             newConstr->Type = Equal;
                             newConstr->First = cstr->First;
-                            newConstr->Second = secondIndexi;
-                            geoIdsWhoAlreadyHasEqual.push_back(secondIndexi);
+                            newConstr->Second = firstIndexi;
+                            geoIdsWhoAlreadyHasEqual.push_back(firstIndexi);
                         }
                         else if (cstr->Type == Distance) {
-                            newConstr->Second = secondIndexi;
+                            if (secondIndex >= 0) {
+                                newConstr->Second = secondIndexi;
+                            }
                         }
                         else {
                             // We should be able to handle cases where rotation is 90 or 180, but
@@ -667,6 +678,3 @@ void DSHRotateController::computeNextDrawSketchHandlerMode()
 
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerRotate_H

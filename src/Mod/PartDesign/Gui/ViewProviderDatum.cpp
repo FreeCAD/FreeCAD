@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Jan Rheinlaender                                   *
  *                                   <jrheinlaender@users.sourceforge.net> *
@@ -300,7 +302,7 @@ bool ViewProviderDatum::doubleClicked()
 
     std::string Msg("Edit ");
     Msg += this->pcObject->Label.getValue();
-    Gui::Command::openCommand(Msg.c_str());
+    getDocument()->openCommand(Msg.c_str());
 
     Part::Datum* pcDatum = getObject<Part::Datum>();
     PartDesign::Body* activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY);

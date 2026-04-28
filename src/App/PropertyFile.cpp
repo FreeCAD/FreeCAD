@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -427,7 +429,13 @@ void PropertyFileIncluded::Restore(Base::XMLReader& reader)
 
 void PropertyFileIncluded::SaveDocFile(Base::Writer& writer) const
 {
-    Base::ifstream from(Base::FileInfo(_cValue.c_str()), std::ios::in | std::ios::binary);
+    if (_cValue.empty()) {
+        Base::Console().warning("Empty filename in PropertyFileIncluded::SaveDocFile. "
+                                "Nothing to do.\n");
+        return;
+    }
+
+    Base::ifstream from(Base::FileInfo(_cValue), std::ios::in | std::ios::binary);
     if (!from) {
         std::stringstream str;
         str << "PropertyFileIncluded::SaveDocFile(): "

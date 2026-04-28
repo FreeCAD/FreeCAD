@@ -33,6 +33,7 @@ import ObjectsFem
 from . import manager
 from .manager import get_meshname
 from .manager import init_doc
+from .meshes import generate_mesh
 
 
 def get_information():
@@ -40,7 +41,7 @@ def get_information():
         "name": "Electrostatics Capacitance Two Balls",
         "meshtype": "solid",
         "meshelement": "Tet4",
-        "constraints": ["electrostatic potential"],
+        "constraints": ["electromagnetic"],
         "solvers": ["elmer"],
         "material": "fluid",
         "equations": ["electrostatic"],
@@ -139,15 +140,15 @@ def setup(doc=None, solvertype="elmer"):
 
     # constraint potential 1st
     name_pot1 = "ElectrostaticPotential1"
-    con_elect_pot1 = ObjectsFem.makeConstraintElectrostaticPotential(doc, name_pot1)
+    con_elect_pot1 = ObjectsFem.makeConstraintElectromagnetic(doc, name_pot1)
     con_elect_pot1.References = [(geom_obj, "Face1")]
-    con_elect_pot1.ElectricInfinity = True
+    con_elect_pot1.FarField = True
     con_elect_pot1.PotentialEnabled = False
     analysis.addObject(con_elect_pot1)
 
     # constraint potential 2nd
     name_pot2 = "ElectrostaticPotential2"
-    con_elect_pot2 = ObjectsFem.makeConstraintElectrostaticPotential(doc, name_pot2)
+    con_elect_pot2 = ObjectsFem.makeConstraintElectromagnetic(doc, name_pot2)
     con_elect_pot2.References = [(geom_obj, "Face2")]
     con_elect_pot2.CapacitanceBody = 1
     con_elect_pot2.CapacitanceBodyEnabled = True
@@ -156,7 +157,7 @@ def setup(doc=None, solvertype="elmer"):
 
     # constraint potential 3rd
     name_pot3 = "ElectrostaticPotential3"
-    con_elect_pot3 = ObjectsFem.makeConstraintElectrostaticPotential(doc, name_pot3)
+    con_elect_pot3 = ObjectsFem.makeConstraintElectromagnetic(doc, name_pot3)
     con_elect_pot3.References = [(geom_obj, "Face3")]
     con_elect_pot3.CapacitanceBody = 2
     con_elect_pot3.CapacitanceBodyEnabled = True
@@ -177,28 +178,15 @@ def setup(doc=None, solvertype="elmer"):
     mesh_region.ViewObject.Visibility = False
 
     # generate the mesh
-    from femmesh import gmshtools
-
-    gmsh_mesh = gmshtools.GmshTools(femmesh_obj, analysis)
-    try:
-        error = gmsh_mesh.create_mesh()
-    except Exception:
-        error = sys.exc_info()[1]
-        FreeCAD.Console.PrintError(f"Unexpected error when creating mesh: {error}\n")
-    if error:
+    success = generate_mesh.mesh_from_mesher(femmesh_obj, "gmsh")
+    if not success:
         # try to create from existing rough mesh
         from .meshes.mesh_capacitance_two_balls_tetra10 import (
             create_nodes,
             create_elements,
         )
 
-        fem_mesh = Fem.FemMesh()
-        control = create_nodes(fem_mesh)
-        if not control:
-            FreeCAD.Console.PrintError("Error on creating nodes.\n")
-        control = create_elements(fem_mesh)
-        if not control:
-            FreeCAD.Console.PrintError("Error on creating elements.\n")
+        fem_mesh = generate_mesh.mesh_from_existing(create_nodes, create_elements)
         femmesh_obj.FemMesh = fem_mesh
 
     doc.recompute()

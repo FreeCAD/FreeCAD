@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef APPLICATION_H
-#define APPLICATION_H
+#pragma once
 
 #include <QPixmap>
 #include <map>
@@ -38,6 +37,8 @@ class NavlibInterface;
 
 namespace Gui
 {
+GuiExport void requireMainThread(const char* api);
+
 class ApplicationPy;
 class BaseView;
 class CommandManager;
@@ -92,11 +93,11 @@ public:
     /** @name methods for View handling */
     //@{
     /// send Messages to the active view
-    bool sendMsgToActiveView(const char* pMsg, const char** ppReturn = nullptr);
+    bool sendMsgToActiveView(const char* pMsg);
     /// send Messages test to the active view
     bool sendHasMsgToActiveView(const char* pMsg);
     /// send Messages to the focused view
-    bool sendMsgToFocusView(const char* pMsg, const char** ppReturn = nullptr);
+    bool sendMsgToFocusView(const char* pMsg);
     /// send Messages test to the focused view
     bool sendHasMsgToFocusView(const char* pMsg);
     /// Attach a view (get called by the FCView constructor)
@@ -118,43 +119,43 @@ public:
     /** @name Signals of the Application */
     //@{
     /// signal on new Document
-    boost::signals2::signal<void(const Gui::Document&, bool)> signalNewDocument;
+    fastsignals::signal<void(const Gui::Document&, bool)> signalNewDocument;
     /// signal on deleted Document
-    boost::signals2::signal<void(const Gui::Document&)> signalDeleteDocument;
+    fastsignals::signal<void(const Gui::Document&)> signalDeleteDocument;
     /// signal on relabeling Document
-    boost::signals2::signal<void(const Gui::Document&)> signalRelabelDocument;
+    fastsignals::signal<void(const Gui::Document&)> signalRelabelDocument;
     /// signal on renaming Document
-    boost::signals2::signal<void(const Gui::Document&)> signalRenameDocument;
+    fastsignals::signal<void(const Gui::Document&)> signalRenameDocument;
     /// signal on activating Document
-    boost::signals2::signal<void(const Gui::Document&)> signalActiveDocument;
+    fastsignals::signal<void(const Gui::Document&)> signalActiveDocument;
     /// signal on new Object
-    boost::signals2::signal<void(const Gui::ViewProvider&)> signalNewObject;
+    fastsignals::signal<void(const Gui::ViewProvider&)> signalNewObject;
     /// signal on deleted Object
-    boost::signals2::signal<void(const Gui::ViewProvider&)> signalDeletedObject;
+    fastsignals::signal<void(const Gui::ViewProvider&)> signalDeletedObject;
     /// signal on changed Object
-    boost::signals2::signal<void(const Gui::ViewProvider&, const App::Property&)> signalBeforeChangeObject;
+    fastsignals::signal<void(const Gui::ViewProvider&, const App::Property&)> signalBeforeChangeObject;
     /// signal on changed object property
-    boost::signals2::signal<void(const Gui::ViewProvider&, const App::Property&)> signalChangedObject;
+    fastsignals::signal<void(const Gui::ViewProvider&, const App::Property&)> signalChangedObject;
     /// signal on renamed Object
-    boost::signals2::signal<void(const Gui::ViewProvider&)> signalRelabelObject;
+    fastsignals::signal<void(const Gui::ViewProvider&)> signalRelabelObject;
     /// signal on activated Object
-    boost::signals2::signal<void(const Gui::ViewProvider&)> signalActivatedObject;
+    fastsignals::signal<void(const Gui::ViewProvider&)> signalActivatedObject;
     /// signal on activated workbench
-    boost::signals2::signal<void(const char*)> signalActivateWorkbench;
+    fastsignals::signal<void(const char*)> signalActivateWorkbench;
     /// signal on added/removed workbench
-    boost::signals2::signal<void()> signalRefreshWorkbenches;
+    fastsignals::signal<void()> signalRefreshWorkbenches;
     /// signal on show hidden items
-    boost::signals2::signal<void(const Gui::Document&)> signalShowHidden;
+    fastsignals::signal<void(const Gui::Document&)> signalShowHidden;
     /// signal on activating view
-    boost::signals2::signal<void(const Gui::MDIView*)> signalActivateView;
+    fastsignals::signal<void(const Gui::MDIView*)> signalActivateView;
     /// signal on closing view
-    boost::signals2::signal<void(const Gui::MDIView*)> signalCloseView;
+    fastsignals::signal<void(const Gui::MDIView*)> signalCloseView;
     /// signal on entering in edit mode
-    boost::signals2::signal<void(const Gui::ViewProviderDocumentObject&)> signalInEdit;
+    fastsignals::signal<void(const Gui::ViewProviderDocumentObject&)> signalInEdit;
     /// signal on leaving edit mode
-    boost::signals2::signal<void(const Gui::ViewProviderDocumentObject&)> signalResetEdit;
+    fastsignals::signal<void(const Gui::ViewProviderDocumentObject&)> signalResetEdit;
     /// signal on changing user edit mode
-    boost::signals2::signal<void(int)> signalUserEditModeChanged;
+    fastsignals::signal<void(int)> signalUserEditModeChanged;
     //@}
 
     /** @name methods for Document handling */
@@ -182,11 +183,26 @@ public:
     Gui::Document* activeDocument() const;
     /// Set the active document
     void setActiveDocument(Gui::Document* pcDocument);
-    /// Getter for the editing document
+
+    /// Getter for the editing document, will be removed soon
     Gui::Document* editDocument() const;
+    /// Getter for the first editing document that matches a functor
+    Gui::Document* editDocument(const std::function<bool(Gui::Document*)>& eval);
+    /// Getter for all currently editing documents, all pointers are guaranteed to be non-null
+    std::vector<Gui::Document*> editDocuments() const;
+
+    // Returns true if the document is in edit (will make more sense once the edit document it is a
+    // vector)
+    bool isInEdit(Gui::Document* pcDocument) const;
+    // Reset edit if eval returns true for a document in edit
+
     Gui::MDIView* editViewOfNode(SoNode* node) const;
-    /// Set editing document, which will reset editing of all other document
+    /// Adds a document in edit
     void setEditDocument(Gui::Document* pcDocument);
+    // After this, isInEdit(pcDocument) returns false
+    void unsetEditDocument(Gui::Document* pcDocument);
+    void unsetEditDocumentIf(const std::function<bool(Gui::Document*)>& eval);
+
     /** Retrieves a pointer to the Gui::Document whose App::Document has the name \a name.
      * If no such document exists 0 is returned.
      */
@@ -236,6 +252,9 @@ public:
     void setStyleSheet(const QString& qssFile, bool tiledBackground);
     void reloadStyleSheet();
     QString replaceVariablesInQss(const QString& qssText);
+
+    /// Set QStyle by name
+    void setStyle(const QString& name);
     //@}
 
     /** @name User Commands */
@@ -262,9 +281,6 @@ public:
     static void runApplication();
     void tryClose(QCloseEvent* e);
     //@}
-
-    /// get verbose DPI and style info
-    static void getVerboseDPIStyleInfo(QTextStream& str);
 
     /// whenever GUI is about to start with the main window hidden
     static bool hiddenMainWindow();
@@ -335,10 +351,9 @@ private:
     /// workbench python dictionary
     PyObject* _pcWorkbenchDictionary;
     NavlibInterface* pNavlibInterface;
+    static void init3DMouse(MainWindow* mainWindow, QApplication* qtApp);
 
     friend class ApplicationPy;
 };
 
 }  // namespace Gui
-
-#endif

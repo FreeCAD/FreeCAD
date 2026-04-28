@@ -1,12 +1,13 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import (
     export,
     constmethod,
-    forward_declarations,
-    class_declarations,
-    sequence_protocol,
 )
 from GeometrySurface import GeometrySurface
-from typing import Final, Tuple
+from typing import Final, Tuple, Any
 
 @export(
     Twin="GeomBezierSurface",
@@ -106,7 +107,7 @@ class BezierSurface(GeometrySurface):
         """
         ...
 
-    def increase(self, DegreeU: int, DegreeV: int) -> None:
+    def increase(self, DegreeU: int, DegreeV: int, /) -> None:
         """
         increase(DegreeU: int, DegreeV: int)
         Increases the degree of this Bezier surface in the two
@@ -114,7 +115,7 @@ class BezierSurface(GeometrySurface):
         """
         ...
 
-    def insertPoleColAfter(self, index: int) -> None:
+    def insertPoleColAfter(self, index: int, /) -> None:
         """
         Inserts into the table of poles of this surface, after the column
         of poles of index.
@@ -125,7 +126,7 @@ class BezierSurface(GeometrySurface):
         """
         ...
 
-    def insertPoleRowAfter(self, index: int) -> None:
+    def insertPoleRowAfter(self, index: int, /) -> None:
         """
         Inserts into the table of poles of this surface, after the row
         of poles of index.
@@ -136,7 +137,7 @@ class BezierSurface(GeometrySurface):
         """
         ...
 
-    def insertPoleColBefore(self, index: int) -> None:
+    def insertPoleColBefore(self, index: int, /) -> None:
         """
         Inserts into the table of poles of this surface, before the column
         of poles of index.
@@ -147,7 +148,7 @@ class BezierSurface(GeometrySurface):
         """
         ...
 
-    def insertPoleRowBefore(self, index: int) -> None:
+    def insertPoleRowBefore(self, index: int, /) -> None:
         """
         Inserts into the table of poles of this surface, before the row
         of poles of index.
@@ -158,7 +159,7 @@ class BezierSurface(GeometrySurface):
         """
         ...
 
-    def removePoleCol(self, VIndex: int) -> None:
+    def removePoleCol(self, VIndex: int, /) -> None:
         """
         removePoleRow(VIndex: int)
         Removes the column of poles of index VIndex from the table of
@@ -167,7 +168,7 @@ class BezierSurface(GeometrySurface):
         """
         ...
 
-    def removePoleRow(self, UIndex: int) -> None:
+    def removePoleRow(self, UIndex: int, /) -> None:
         """
         removePoleRow(UIndex: int)
         Removes the row of poles of index UIndex from the table of
@@ -176,7 +177,7 @@ class BezierSurface(GeometrySurface):
         """
         ...
 
-    def segment(self, U1: float, U2: float, V1: float, V2: float) -> None:
+    def segment(self, U1: float, U2: float, V1: float, V2: float, /) -> None:
         """
         segment(U1: double, U2: double, V1: double, V2: double)
         Modifies this Bezier surface by segmenting it between U1 and U2
@@ -200,26 +201,26 @@ class BezierSurface(GeometrySurface):
         """
         ...
 
-    def setPole(self, pole: Any) -> None:
+    def setPole(self, pole: Any, /) -> None:
         """
         Set a pole of the Bezier surface.
         """
         ...
 
-    def setPoleCol(self, poles: Any) -> None:
+    def setPoleCol(self, poles: Any, /) -> None:
         """
         Set the column of poles of the Bezier surface.
         """
         ...
 
-    def setPoleRow(self, poles: Any) -> None:
+    def setPoleRow(self, poles: Any, /) -> None:
         """
         Set the row of poles of the Bezier surface.
         """
         ...
 
     @constmethod
-    def getPole(self, UIndex: int, VIndex: int) -> Any:
+    def getPole(self, UIndex: int, VIndex: int, /) -> Any:
         """
         Get a pole of index (UIndex, VIndex) of the Bezier surface.
         """
@@ -232,21 +233,21 @@ class BezierSurface(GeometrySurface):
         """
         ...
 
-    def setWeight(self, UIndex: int, VIndex: int, weight: float) -> None:
+    def setWeight(self, UIndex: int, VIndex: int, weight: float, /) -> None:
         """
         Set the weight of pole of the index (UIndex, VIndex)
         for the Bezier surface.
         """
         ...
 
-    def setWeightCol(self, VIndex: int, weights: Any) -> None:
+    def setWeightCol(self, VIndex: int, weights: Any, /) -> None:
         """
         Set the weights of the poles in the column of poles
         of index VIndex of the Bezier surface.
         """
         ...
 
-    def setWeightRow(self, UIndex: int, weights: Any) -> None:
+    def setWeightRow(self, UIndex: int, weights: Any, /) -> None:
         """
         Set the weights of the poles in the row of poles
         of index UIndex of the Bezier surface.
@@ -254,7 +255,7 @@ class BezierSurface(GeometrySurface):
         ...
 
     @constmethod
-    def getWeight(self, UIndex: int, VIndex: int) -> float:
+    def getWeight(self, UIndex: int, VIndex: int, /) -> float:
         """
         Get a weight of the pole of index (UIndex, VIndex)
         of the Bezier surface.
@@ -269,7 +270,7 @@ class BezierSurface(GeometrySurface):
         ...
 
     @constmethod
-    def getResolution(self, Tolerance3D: float) -> Tuple[float, float]:
+    def getResolution(self, Tolerance3D: float, /) -> Tuple[float, float]:
         """
         Computes two tolerance values for this Bezier surface, based on the
         given tolerance in 3D space Tolerance3D. The tolerances computed are:

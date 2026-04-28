@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGPREFERENCESIMP_H
-#define GUI_DIALOG_DLGPREFERENCESIMP_H
+#pragma once
 
 #include <QDialog>
 #include <QStandardItemModel>
@@ -96,8 +95,8 @@ public:
 
     // Event handling
     bool handleSearchBoxKeyPress(QKeyEvent* keyEvent);
-    bool handlePopupKeyPress(QKeyEvent* keyEvent);
-    bool isClickOutsidePopup(QMouseEvent* mouseEvent);
+    bool handlePopupKeyPress(const QKeyEvent* keyEvent);
+    bool isClickOutsidePopup(const QMouseEvent* mouseEvent) const;
 
     // Focus management
     void ensureSearchBoxFocus();
@@ -144,18 +143,18 @@ private:
 
     // UI helpers
     void configurePopupSize();
-    int calculatePopupHeight(int popupWidth);
+    int calculatePopupHeight(int popupWidth) const;
     void applyHighlightToWidget(QWidget* widget);
-    QString getHighlightStyleForWidget(QWidget* widget);
+    static QString getHighlightStyleForWidget(QWidget* widget);
 
     // Search result navigation
     void selectNextSearchResult();
     void selectPreviousSearchResult();
 
     // Utility methods
-    QString findGroupBoxForWidget(QWidget* widget);
-    bool fuzzyMatch(const QString& searchText, const QString& targetText, int& score);
-    bool isExactMatch(const QString& searchText, const QString& targetText);
+    static QString findGroupBoxForWidget(QWidget* widget);
+    static bool fuzzyMatch(const QString& searchText, const QString& targetText, int& score);
+    static bool isExactMatch(const QString& searchText, const QString& targetText);
 
 private:
     DlgPreferencesImp* m_parentDialog;
@@ -374,5 +373,3 @@ private:
 };
 
 }  // namespace Gui::Dialog
-
-#endif  // GUI_DIALOG_DLGPREFERENCESIMP_H

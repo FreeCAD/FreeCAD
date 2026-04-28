@@ -22,6 +22,7 @@
 # ***************************************************************************
 import FreeCAD
 import Path
+from typing import Optional, Mapping
 from ...shape import ToolBitShapeChamfer
 from ..mixins import RotaryToolBitMixin, CuttingToolMixin
 from .base import ToolBit
@@ -30,10 +31,12 @@ from .base import ToolBit
 class ToolBitChamfer(ToolBit, CuttingToolMixin, RotaryToolBitMixin):
     SHAPE_CLASS = ToolBitShapeChamfer
 
-    def __init__(self, shape: ToolBitShapeChamfer, id: str | None = None):
+    def __init__(
+        self, shape: ToolBitShapeChamfer, id: str | None = None, attrs: Optional[Mapping] = None
+    ):
         Path.Log.track(f"ToolBitChamfer __init__ called with shape: {shape}, id: {id}")
-        super().__init__(shape, id=id)
-        CuttingToolMixin.__init__(self, self.obj)
+        super().__init__(shape, id=id, attrs=attrs)
+        self._init_cutting_properties(self.obj)
 
     @property
     def summary(self) -> str:

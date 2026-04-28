@@ -838,6 +838,31 @@ PyObject* SheetPy::setForeground(PyObject* args)
     }
 }
 
+PyObject* SheetPy::clearForeground(PyObject* args)
+{
+    try {
+        const char* range;
+
+        if (!PyArg_ParseTuple(args, "s:clearForeground", &range)) {
+            return nullptr;
+        }
+
+        Range rangeIter(range);
+        do {
+            getSheetPtr()->clearForeground(*rangeIter);
+        } while (rangeIter.next());
+        Py_Return;
+    }
+    catch (const Base::TypeError& e) {
+        PyErr_SetString(PyExc_TypeError, e.what());
+        return nullptr;
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(PyExc_ValueError, e.what());
+        return nullptr;
+    }
+}
+
 PyObject* SheetPy::getForeground(PyObject* args)
 {
     const char* strAddress;
@@ -889,6 +914,32 @@ PyObject* SheetPy::setBackground(PyObject* args)
 
         do {
             getSheetPtr()->setBackground(*rangeIter, c);
+        } while (rangeIter.next());
+        Py_Return;
+    }
+    catch (const Base::TypeError& e) {
+        PyErr_SetString(PyExc_TypeError, e.what());
+        return nullptr;
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(PyExc_ValueError, e.what());
+        return nullptr;
+    }
+}
+
+PyObject* SheetPy::clearBackground(PyObject* args)
+{
+    try {
+        const char* strAddress;
+
+        if (!PyArg_ParseTuple(args, "s:clearBackground", &strAddress)) {
+            return nullptr;
+        }
+
+        Range rangeIter(strAddress);
+
+        do {
+            getSheetPtr()->clearBackground(*rangeIter);
         } while (rangeIter.next());
         Py_Return;
     }
@@ -1102,6 +1153,9 @@ PyObject* SheetPy::getUsedRange(PyObject* args)
         return nullptr;
     }
     auto usedRange = getSheetPtr()->getCells()->getUsedRange();
+    if (!std::get<0>(usedRange).isValid()) {
+        Py_Return;
+    }
     Py::Tuple pyTuple(2);
     pyTuple[0] = Py::String(std::get<0>(usedRange).toString());
     pyTuple[1] = Py::String(std::get<1>(usedRange).toString());

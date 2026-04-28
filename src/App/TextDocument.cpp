@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
  *                                                                         *
@@ -51,12 +53,12 @@ const char* TextDocument::getViewProviderName() const
     return "Gui::ViewProviderTextDocument";
 }
 
-boost::signals2::connection TextDocument::connectText(const TextSlot& sub)
+fastsignals::advanced_connection TextDocument::connectText(const TextSlot& sub)
 {
-    return textChanged.connect(sub);
+    return textChanged.connect(sub, fastsignals::advanced_tag());
 }
 
-boost::signals2::connection TextDocument::connectLabel(const TextSlot& sub)
+fastsignals::connection TextDocument::connectLabel(const TextSlot& sub)
 {
     return labelChanged.connect(sub);
 }

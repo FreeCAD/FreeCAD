@@ -56,6 +56,7 @@ as the older class.
 
     old_module.ViewProviderRectangle = new_module.ViewProviderRectangle
 """
+
 ## \defgroup draftviewproviders draftviewproviders
 # \ingroup DRAFT
 # \brief Classes that define viewproviders for the scripted objects.

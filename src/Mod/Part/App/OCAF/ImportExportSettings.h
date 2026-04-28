@@ -22,9 +22,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_OCAF_IMPORTEXPORTSETTINGS_H
-#define PART_OCAF_IMPORTEXPORTSETTINGS_H
+#pragma once
 
+#include <list>
 #include <memory>
 #include <Mod/Part/App/Interface.h>
 #include <Base/Parameter.h>
@@ -156,5 +156,3 @@ private:
 
 }  // namespace OCAF
 }  // namespace Part
-
-#endif

@@ -1,7 +1,10 @@
-from Metadata import export, constmethod
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
+from Metadata import export
 from Base.PyObjectBase import PyObjectBase
 from Base.Vector import Vector
-from typing import Final
 
 @export(
     Name="ChFi2d_FilletAlgoPy",
@@ -26,7 +29,7 @@ class FilletAlgo(PyObjectBase):
         """
         ...
 
-    def perform(self, radius: float) -> bool:
+    def perform(self, radius: float, /) -> bool:
         """
         perform(radius) -> bool
 
@@ -40,7 +43,7 @@ class FilletAlgo(PyObjectBase):
         """
         ...
 
-    def result(self, point: Vector, solution: int = -1) -> tuple[object, object, object]:
+    def result(self, point: Vector, solution: int = -1, /) -> tuple[object, object, object]:
         """
         result(point, solution=-1)
 

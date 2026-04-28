@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+
 /****************************************************************************
  *                                                                          *
  *   Copyright (c) 2025 The FreeCAD Project Association AISBL               *
@@ -21,8 +22,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef SKETCHER_STYLEPARAMETERS_H
-#define SKETCHER_STYLEPARAMETERS_H
+#pragma once
 
 #include <Gui/StyleParameters/ParameterManager.h>
 
@@ -38,5 +38,3 @@ DEFINE_STYLE_PARAMETER(
     Base::Color(0.0F, 0.4F, 1.0F, 1.0F)
 );  // blue for window selection (left to right)
 }  // namespace SketcherGui::StyleParameters
-
-#endif  // SKETCHER_STYLEPARAMETERS_H

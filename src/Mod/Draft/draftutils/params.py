@@ -466,7 +466,7 @@ def _get_param_dictionary():
     # fmt: off
     param_dict["Mod/Draft"] = {
         "AnnotationStyleEditorHeight": ("int",       450),
-        "AnnotationStyleEditorWidth":  ("int",       450),
+        "AnnotationStyleEditorWidth":  ("int",       600),
         "CenterPlaneOnView":           ("bool",      False),
         "ChainedMode":                 ("bool",      False),
         "CopyMode":                    ("bool",      False),
@@ -493,7 +493,6 @@ def _get_param_dictionary():
         "LayersManagerWidth":          ("int",       640),
         "MakeFaceMode":                ("bool",      True),
         "maxSnapEdges":                ("int",       0),
-        "maxSnapFaces":                ("int",       0),
         "OffsetCopyMode":              ("bool",      False),
         "Offset_OCC":                  ("bool",      False),
         "RelativeMode":                ("bool",      True),
@@ -599,6 +598,12 @@ def _get_param_dictionary():
         "ScheduleColumnWidth3":        ("int",       100),
         "ScheduleDialogHeight":        ("int",       200),
         "ScheduleDialogWidth":         ("int",       300),
+        "BeamHeight":                  ("float",     100.0),
+        "BeamLength":                  ("float",     1000.0),
+        "BeamWidth":                   ("float",     100.0),
+        "ColumnHeight":                ("float",     1000.0),
+        "ColumnLength":                ("float",     100.0),
+        "ColumnWidth":                 ("float",     100.0),
         "StructureHeight":             ("float",     1000.0),
         "StructureLength":             ("float",     100.0),
         "StructurePreset":             ("string",    ""),
@@ -620,6 +625,13 @@ def _get_param_dictionary():
         "WindowW1":                    ("float",     100.0),
         "WindowW2":                    ("float",     50.0),
         "WindowWidth":                 ("float",     1000.0),
+    }
+
+    # BIM parameters that are not in the preferences:
+    # Note: incomplete!
+    param_dict["Mod/BIM"] = {
+        "BIMSketchPlacementOnly":      ("bool",      False),
+        "WallBaseline":                ("int",       0),
     }
 
     # For the Mod/Mesh parameters we do not check the preferences:
@@ -685,7 +697,9 @@ def _get_param_dictionary():
         # https://stackoverflow.com/questions/14750997/load-txt-file-from-resources-in-python
         fd = QtCore.QFile(fnm)
         if fd.open(QtCore.QIODevice.ReadOnly | QtCore.QFile.Text):
-            text = QtCore.QTextStream(fd).readAll()
+            # avoid using QTextStream due to bug in PySide6.11
+            # text = QtCore.QTextStream(fd).readAll()
+            text = fd.readAll().data().decode()
             fd.close()
         else:
             continue

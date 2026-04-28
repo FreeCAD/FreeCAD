@@ -169,7 +169,7 @@ App::DocumentObjectExecReturn* Mirroring::execute()
         if (refObject->isDerivedFrom<Part::Plane>() || refObject->isDerivedFrom<App::Plane>()
             || (strstr(refObject->getNameInDocument(), "Plane")
                 && refObject->isDerivedFrom<Part::Datum>())) {
-            Part::Feature* plane = static_cast<Part::Feature*>(refObject);
+            auto* plane = static_cast<Part::Feature*>(refObject);
             Base::Vector3d base = plane->Placement.getValue().getPosition();
             axbase = gp_Pnt(base.x, base.y, base.z);
             Base::Rotation rot = plane->Placement.getValue().getRotation();
@@ -216,8 +216,8 @@ App::DocumentObjectExecReturn* Mirroring::execute()
 
             // if there is only 1 face or 1 edge, then we don't need to force the user to select
             // that face or edge instead we can infer what was intended
-            int faceCount = Part::TopoShape(shape).countSubShapes(TopAbs_FACE);
-            int edgeCount = Part::TopoShape(shape).countSubShapes(TopAbs_EDGE);
+            auto faceCount = Part::TopoShape(shape).countSubShapes(TopAbs_FACE);
+            auto edgeCount = Part::TopoShape(shape).countSubShapes(TopAbs_EDGE);
 
             TopoDS_Face face;
             TopoDS_Edge edge;
@@ -309,12 +309,32 @@ App::DocumentObjectExecReturn* Mirroring::execute()
     Base::Vector3d norm = Normal.getValue();
 
     try {
+        // get shape without transform
+        auto shape = Feature::getTopoShape(link, ShapeOption::ResolveLink);
+
+        // check for placement property no matter the type hierarchy
+        // App::Link does not get its placement via GeoFeature inheritance
+        if (auto propPlacement = link->getPropertyByName<App::PropertyPlacement>("Placement")) {
+            Base::Placement placement = propPlacement->getValue();
+
+            if (!placement.isIdentity()) {
+                gp_Trsf trsf;
+                TopoShape::convertTogpTrsf(placement.toMatrix(), trsf);
+
+                BRepBuilderAPI_Transform mkTrf(shape.getShape(), trsf, Standard_True);
+                shape = TopoShape(mkTrf.Shape());
+            }
+        }
+
         gp_Ax2 ax2(gp_Pnt(base.x, base.y, base.z), gp_Dir(norm.x, norm.y, norm.z));
-        auto shape = Feature::getTopoShape(link, ShapeOption::ResolveLink | ShapeOption::Transform);
+
         if (shape.isNull()) {
             Standard_Failure::Raise("Cannot mirror empty shape");
         }
-        this->Shape.setValue(TopoShape(0).makeElementMirror(shape, ax2));
+
+        auto mirrored = TopoShape(0).makeElementMirror(shape, ax2);
+
+        this->Shape.setValue(mirrored);
         copyMaterial(link);
 
         return Part::Feature::execute();

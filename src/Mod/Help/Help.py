@@ -36,7 +36,7 @@ Basic usage:
     import Help
     Help.show("Draft Line")
     Help.show("Draft_Line") # works with spaces or underscores
-    Help.show("https://wiki.freecadweb.org/Draft_Line")
+    Help.show("https://wiki.freecad.org/Draft_Line")
     Help.show("https://gitlab.com/freecad/FreeCAD-documentation/-/raw/main/wiki/Draft_Line.md")
     Help.show("/home/myUser/.FreeCAD/Documentation/Draft_Line.md")
     Help.show("http://myserver.com/myfolder/Draft_Line.html")
@@ -58,7 +58,6 @@ import re
 import urllib.request
 import urllib.error
 import FreeCAD
-
 
 translate = FreeCAD.Qt.translate
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP

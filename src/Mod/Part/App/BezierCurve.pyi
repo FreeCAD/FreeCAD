@@ -1,3 +1,7 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, constmethod
 from Base.Vector import Vector
 from BoundedCurve import BoundedCurve
@@ -73,26 +77,26 @@ class BezierCurve(BoundedCurve):
         """
         ...
 
-    def increase(self, Int: int = ...) -> None:
+    def increase(self, Int: int = ..., /) -> None:
         """
         Increases the degree of this Bezier curve to Degree.
         As a result, the poles and weights tables are modified.
         """
         ...
 
-    def insertPoleAfter(self, index: int) -> None:
+    def insertPoleAfter(self, index: int, /) -> None:
         """
         Inserts after the pole of index.
         """
         ...
 
-    def insertPoleBefore(self, index: int) -> None:
+    def insertPoleBefore(self, index: int, /) -> None:
         """
         Inserts before the pole of index.
         """
         ...
 
-    def removePole(self, Index: int) -> None:
+    def removePole(self, Index: int, /) -> None:
         """
         Removes the pole of index Index from the table of poles of this Bezier curve.
         If this Bezier curve is rational, it can become non-rational.
@@ -105,14 +109,14 @@ class BezierCurve(BoundedCurve):
         """
         ...
 
-    def setPole(self, pole: Vector) -> None:
+    def setPole(self, pole: Vector, /) -> None:
         """
         Set a pole of the Bezier curve.
         """
         ...
 
     @constmethod
-    def getPole(self, index: int) -> Vector:
+    def getPole(self, index: int, /) -> Vector:
         """
         Get a pole of the Bezier curve.
         """
@@ -125,7 +129,7 @@ class BezierCurve(BoundedCurve):
         """
         ...
 
-    def setPoles(self, poles: List[Vector]) -> None:
+    def setPoles(self, poles: List[Vector], /) -> None:
         """
         Set the poles of the Bezier curve.
 
@@ -133,14 +137,14 @@ class BezierCurve(BoundedCurve):
         """
         ...
 
-    def setWeight(self, id: int, weight: float) -> None:
+    def setWeight(self, id: int, weight: float, /) -> None:
         """
         (id, weight) Set a weight of the Bezier curve.
         """
         ...
 
     @constmethod
-    def getWeight(self, id: int) -> float:
+    def getWeight(self, id: int, /) -> float:
         """
         Get a weight of the Bezier curve.
         """
@@ -154,7 +158,7 @@ class BezierCurve(BoundedCurve):
         ...
 
     @constmethod
-    def getResolution(self, Tolerance3D: float) -> float:
+    def getResolution(self, Tolerance3D: float, /) -> float:
         """
         Computes for this Bezier curve the parametric tolerance (UTolerance)
         for a given 3D tolerance (Tolerance3D).
@@ -164,7 +168,7 @@ class BezierCurve(BoundedCurve):
         """
         ...
 
-    def interpolate(self, constraints: List[List], parameters: List[float] = ...) -> None:
+    def interpolate(self, constraints: List[List], parameters: List[float] = ..., /) -> None:
         """
         Interpolates a list of constraints.
         Each constraint is a list of a point and some optional derivatives

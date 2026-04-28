@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -21,13 +23,12 @@
  ***************************************************************************/
 
 
-#ifndef APP_PROPERTY_H
-#define APP_PROPERTY_H
+#pragma once
 
 #include <Base/Exception.h>
 #include <Base/Persistence.h>
 #include <boost/any.hpp>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 #include <bitset>
 #include <string>
 #include <FCGlobal.h>
@@ -264,7 +265,7 @@ public:
      * This function sets the value of the property identified by the path.  It
      * is meant to be overridden for subclasses in which the `path` is
      * typically ignored.  The default implementation redirects setting a value
-     * to the the `path` ObjectIdentifier.
+     * to the `path` ObjectIdentifier.
      *
      * @param[in] path The path to the property.
      * @param[in] value The value to set.
@@ -606,7 +607,7 @@ private:
 
 public:
     /// Signal emitted when the property value has changed.
-    boost::signals2::signal<void(const App::Property&)> signalChanged;
+    fastsignals::signal<void(const App::Property&)> signalChanged;
 };
 
 
@@ -1096,6 +1097,16 @@ public:
         guard.tryInvoke();
     }
 
+    template<std::predicate<const T&> F>
+    int removeIf(F f) {
+        ListT vals = _lValueList;
+        size_t removed = std::erase_if(vals, f);
+        if (removed > 0) {
+            setValues(std::move(vals));
+        }
+        return static_cast<int>(removed);
+    }
+
 protected:
     void setPyValues(const std::vector<PyObject*>& vals, const std::vector<int>& indices) override
     {
@@ -1132,5 +1143,3 @@ protected:
 };
 
 }  // namespace App
-
-#endif  // APP_PROPERTY_H

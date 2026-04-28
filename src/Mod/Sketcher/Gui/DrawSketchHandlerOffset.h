@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Boyer Pierre-Louis <pierrelouis.boyer@gmail.com>   *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchHandlerOffset_H
-#define SKETCHERGUI_DrawSketchHandlerOffset_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -32,6 +33,7 @@
 
 #include <BRep_Tool.hxx>
 #include <BRepAdaptor_Curve.hxx>
+#include <BRepAdaptor_Surface.hxx>
 #include <BRepClass_FaceClassifier.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepOffsetAPI_MakeOffset.hxx>
@@ -103,6 +105,7 @@ using DSHOffsetController = DrawSketchDefaultWidgetController<
     /*WidgetParametersT =*/WidgetParameters<0, 0>,
     /*WidgetCheckboxesT =*/WidgetCheckboxes<2, 2>,
     /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,
+    /*WidgetLineEditsT =*/WidgetLineEdits<0, 0>,
     ConstructionMethods::OffsetConstructionMethod,
     /*bool PFirstComboboxIsConstructionMethod =*/true>;
 
@@ -112,6 +115,8 @@ using DrawSketchHandlerOffsetBase = DrawSketchControllableHandler<DSHOffsetContr
 
 class DrawSketchHandlerOffset: public DrawSketchHandlerOffsetBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerOffset)
+
     friend DSHOffsetController;
     friend DSHOffsetControllerBase;
 
@@ -269,7 +274,7 @@ private:
         }
 
         // Copying shape to fix strange orientation behavior, OCC7.0.0. See bug #2699
-        //  http://www.freecadweb.org/tracker/view.php?id=2699
+        //  http://www.freecad.org/tracker/view.php?id=2699
         offsetShape = BRepBuilderAPI_Copy(offsetShape).Shape();
         return offsetShape;
     }
@@ -297,7 +302,7 @@ private:
         return line;
     }
 
-    Part::Geometry* curveToCircleOrArc(BRepAdaptor_Curve curve, const TopoDS_Edge& edge)
+    Part::Geometry* curveToCircleOrArc(BRepAdaptor_Curve curve, const TopoDS_Edge& /*edge*/)
     {
         gp_Circ circle = curve.Circle();
         gp_Pnt cnt = circle.Location();
@@ -329,7 +334,7 @@ private:
         }
     }
 
-    Part::Geometry* curveToEllipseOrArc(BRepAdaptor_Curve curve, const TopoDS_Edge& edge)
+    Part::Geometry* curveToEllipseOrArc(BRepAdaptor_Curve curve, const TopoDS_Edge& /*edge*/)
     {
         gp_Elips ellipse = curve.Ellipse();
         gp_Pnt beg = curve.Value(curve.FirstParameter());
@@ -393,11 +398,16 @@ private:
 
     void drawOffsetPreview()
     {
-        std::vector<Part::Geometry*> geometriesToAdd;
-        std::vector<int> listOfOffsetGeoIds;
-        getOffsetGeos(geometriesToAdd, listOfOffsetGeoIds);
+        try {
+            std::vector<Part::Geometry*> geometriesToAdd;
+            std::vector<int> listOfOffsetGeoIds;
+            getOffsetGeos(geometriesToAdd, listOfOffsetGeoIds);
 
-        drawEdit(geometriesToAdd);
+            drawEdit(geometriesToAdd);
+        }
+        catch (const Base::Exception& e) {
+            e.reportException();
+        }
     }
 
     void createOffset()
@@ -417,7 +427,7 @@ private:
             return;
         }
 
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Offset"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Offset"));
 
         // Create geos
         Obj->addGeometry(std::move(geometriesToAdd));
@@ -432,7 +442,7 @@ private:
             makeOffsetConstraint(listOfOffsetGeoIds);
         }
 
-        Gui::Command::commitCommand();
+        commitCommand();
     }
 
     void jointOffsetCurves(std::vector<int>& listOfOffsetGeoIds)
@@ -778,8 +788,10 @@ private:
                                 break;
                             }
                         }
-                        else if (isLineSegment(*geo2) || isBSplineCurve(*geo2)
-                                 || geo2->is<Part::GeomArcOfConic>()) {
+                        else if (
+                            isLineSegment(*geo2) || isBSplineCurve(*geo2)
+                            || geo2->is<Part::GeomArcOfConic>()
+                        ) {
                             // cases where arc is created by arc join mode.
                             Base::Vector3d p2, p3;
 
@@ -965,12 +977,29 @@ private:
                 mkWire.Add(TopoDS::Edge(geo->toShape()));
             }
 
+            TopoDS_Wire wire = mkWire.Wire();
+
+            // Fix orientation: ensure all closed wires are CCW relative to Sketch Plane (+Z)
+            if (wire.Closed()) {
+                BRepBuilderAPI_MakeFace mkFace(wire);
+                if (mkFace.IsDone()) {
+                    TopoDS_Face face = mkFace.Face();
+                    BRepAdaptor_Surface surf(face);
+                    if (surf.GetType() == GeomAbs_Plane) {
+                        gp_Dir norm = surf.Plane().Axis().Direction();
+                        if (norm.Z() < 0) {
+                            wire.Reverse();
+                        }
+                    }
+                }
+            }
+
             // Here we make sure that if possible the first wire is not a single line.
             if (CC.size() == 1 && isLineSegment(*Obj->getGeometry(CC[0]))) {
-                sourceWires.push_back(mkWire.Wire());
+                sourceWires.push_back(wire);
             }
             else {
-                sourceWires.insert(sourceWires.begin(), mkWire.Wire());
+                sourceWires.insert(sourceWires.begin(), wire);
                 onlySingleLines = false;
             }
         }
@@ -1023,8 +1052,10 @@ private:
             endPoint = line->getEndPoint();
             return true;
         }
-        else if (isArcOfCircle(*geo) || isArcOfEllipse(*geo) || isArcOfHyperbola(*geo)
-                 || isArcOfParabola(*geo)) {
+        else if (
+            isArcOfCircle(*geo) || isArcOfEllipse(*geo) || isArcOfHyperbola(*geo)
+            || isArcOfParabola(*geo)
+        ) {
             const auto* arcOfConic = static_cast<const Part::GeomArcOfConic*>(geo);
             startPoint = arcOfConic->getStartPoint(true);
             endPoint = arcOfConic->getEndPoint(true);
@@ -1168,6 +1199,23 @@ void DSHOffsetController::configureToolWidget()
             WCheckbox::SecondBox,
             QApplication::translate("TaskSketcherTool_c2_offset", "Add offset constraint (J)")
         );
+        toolWidget->setCheckboxToolTip(
+            WCheckbox::FirstBox,
+            QApplication::translate(
+                "TaskSketcherTool_c1_offset",
+                "Deletes the original geometry. If creating a single copy, this effectively "
+                "performs a 'Move' operation."
+            )
+        );
+        toolWidget->setCheckboxToolTip(
+            WCheckbox::SecondBox,
+            QApplication::translate(
+                "TaskSketcherTool_c2_offset",
+                "Adds a distance constraint with additional construction geometries that allows "
+                "the distance to modify the entire offset geometry"
+
+            )
+        );
     }
 
     onViewParameters[OnViewParameter::First]->setLabelType(
@@ -1293,6 +1341,3 @@ void DSHOffsetController::computeNextDrawSketchHandlerMode()
 
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerOffset_H

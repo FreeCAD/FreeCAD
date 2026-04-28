@@ -175,6 +175,12 @@ SoBrepFaceSet::SoBrepFaceSet()
 {
     SO_NODE_CONSTRUCTOR(SoBrepFaceSet);
     SO_NODE_ADD_FIELD(partIndex, (-1));
+    SO_NODE_ADD_FIELD(highlightPartIndex, (-1));
+    SO_NODE_ADD_FIELD(selectionPartIndex, (0));
+    SO_NODE_ADD_FIELD(highlightColor, (SbColor(1.0f, 0.0f, 0.0f)));
+    SO_NODE_ADD_FIELD(selectionColor, (SbColor(0.0f, 0.6f, 0.0f)));
+
+    selectionPartIndex.setNum(0);
 
     selContext = std::make_shared<SelContext>();
     selContext2 = std::make_shared<SelContext>();
@@ -583,7 +589,9 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction* action)
     SelContextPtr ctx2;
     std::vector<SelContextPtr> ctxs;
     SelContextPtr ctx = Gui::SoFCSelectionRoot::getRenderContext(this, selContext, ctx2);
-    if (ctx2 && ctx2->selectionIndex.empty()) {
+    const bool hasOverlayFields = (highlightPartIndex.getValue() >= 0)
+        || (selectionPartIndex.getNum() > 0);
+    if (!hasOverlayFields && ctx2 && ctx2->selectionIndex.empty()) {
         return;
     }
     if (selContext2->checkGlobal(ctx)) {
@@ -803,6 +811,26 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction* action)
         renderSelection(action, ctx);
         renderHighlight(action, ctx);
     }
+
+    // Optional overlay rendering for deterministic tests (and programmatic usage).
+    // Render selection first, then highlight on top.
+    const int selNum = selectionPartIndex.getNum();
+    if (selNum > 0) {
+        SelContextPtr octx = std::make_shared<SelContext>();
+        octx->selectionColor = selectionColor.getValue();
+        const int32_t* vals = selectionPartIndex.getValues(0);
+        for (int i = 0; i < selNum; i++) {
+            octx->selectionIndex.insert(vals[i]);
+        }
+        renderSelection(action, octx);
+    }
+    const int hl = highlightPartIndex.getValue();
+    if (hl >= 0) {
+        SelContextPtr octx = std::make_shared<SelContext>();
+        octx->highlightIndex = hl;
+        octx->highlightColor = highlightColor.getValue();
+        renderHighlight(action, octx);
+    }
 }
 #endif
 
@@ -854,20 +882,12 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction* action, SelContext
 
     if ((mb == SoMaterialBindingElement::OVERALL
          || (mb == SoMaterialBindingElement::PER_PART && diffuse_size >= partIndex.getNum()))
-        && ((ctx && Gui::Selection().needPickedList()) || trans0 != 0.0
-            || (ctx2 && !ctx2->colors.empty()))) {
+        && (trans0 != 0.0 || (ctx2 && !ctx2->colors.empty()))) {
         state->push();
 
         packedColors.clear();
 
-        if (ctx && Gui::Selection().needPickedList()) {
-            hasTransparency = true;
-            trans_size = 1;
-            if (ctx2) {
-                ctx2->trans0 = trans0;
-            }
-        }
-        else if (ctx2) {
+        if (ctx2) {
             ctx2->trans0 = 0.0;
         }
 
@@ -1197,8 +1217,9 @@ void SoBrepFaceSet::generatePrimitives(SoAction* action)
         }
         // FIXME: just call inherited::areTexCoordsIndexed() instead of
         // the if-check? 20020110 mortene.
-        else if (SoTextureCoordinateBindingElement::get(state)
-                 == SoTextureCoordinateBindingElement::PER_VERTEX) {
+        else if (
+            SoTextureCoordinateBindingElement::get(state) == SoTextureCoordinateBindingElement::PER_VERTEX
+        ) {
             tbind = PER_VERTEX;
             tindices = nullptr;
         }

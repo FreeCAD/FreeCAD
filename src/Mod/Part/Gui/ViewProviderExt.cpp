@@ -24,6 +24,7 @@
 
 #include <Bnd_Box.hxx>
 #include <BRep_Tool.hxx>
+#include <BRepTools.hxx>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
@@ -218,14 +219,6 @@ ViewProviderPartExt::ViewProviderPartExt()
         "Defines the style of the edges in the 3D view."
     );
     DrawStyle.setEnums(DrawStyleEnums);
-    ADD_PROPERTY_TYPE(
-        ShowPlacement,
-        (false),
-        "Display Options",
-        App::Prop_None,
-        "If true, placement of object is additionally rendered."
-    );
-
     coords = new SoCoordinate3();
     coords->ref();
     faceset = new SoBrepFaceSet();
@@ -318,6 +311,7 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
     // to freeze the GUI
     // https://forum.freecad.org/viewtopic.php?f=3&t=24912&p=195613
     if (prop == &Deviation) {
+        lastRenderedShape = {};
         if (isUpdateForced() || Visibility.getValue()) {
             updateVisual();
         }
@@ -326,6 +320,7 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
         }
     }
     if (prop == &AngularDeflection) {
+        lastRenderedShape = {};
         if (isUpdateForced() || Visibility.getValue()) {
             updateVisual();
         }
@@ -438,11 +433,6 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
         else {
             pcLineStyle->linePattern = 0xff88;
         }
-    }
-    else if (prop == &ShowPlacement) {
-        pcPlacement->whichChild = (ShowPlacement.getValue() && Visibility.getValue())
-            ? SO_SWITCH_ALL
-            : SO_SWITCH_NONE;
     }
     else {
         // if the object was invisible and has been changed, recreate the visual
@@ -604,10 +594,12 @@ std::string ViewProviderPartExt::getElement(const SoDetail* detail) const
 
 SoDetail* ViewProviderPartExt::getDetail(const char* subelement) const
 {
+    // 1. Try standard string parsing (FaceN, EdgeN...)
     auto type = Part::TopoShape::getElementTypeAndIndex(subelement);
     std::string element = type.first;
     int index = type.second;
 
+    // 2. Create the Coin3D Detail
     if (element == "Face") {
         SoFaceDetail* detail = new SoFaceDetail();
         detail->setPartIndex(index - 1);
@@ -756,7 +748,7 @@ std::map<std::string, Base::Color> ViewProviderPartExt::getElementColors(const c
 
     if (!element || !element[0]) {
         auto color = ShapeAppearance.getDiffuseColor();
-        color.setTransparency(Base::fromPercent(Transparency.getValue()));
+        color.setTransparency(ShapeAppearance.getTransparency());
         ret["Face"] = color;
         ret["Edge"] = LineColor.getValue();
         ret["Vertex"] = PointColor.getValue();
@@ -770,18 +762,16 @@ std::map<std::string, Base::Color> ViewProviderPartExt::getElementColors(const c
             color.setTransparency(Base::fromPercent(Transparency.getValue()));
             bool singleColor = true;
             for (int i = 0; i < size; ++i) {
-                Base::Color faceColor = ShapeAppearance.getDiffuseColor(i);
-                faceColor.setTransparency(ShapeAppearance.getTransparency(i));
-                if (faceColor != color) {
-                    ret[std::string(element, 4) + std::to_string(i + 1)] = faceColor;
+                auto color_i = ShapeAppearance.getDiffuseColor(i);
+                color_i.setTransparency(ShapeAppearance.getTransparency(i));
+                if (color_i != color) {
+                    ret[std::string(element, 4) + std::to_string(i + 1)] = color_i;
                 }
-                Base::Color firstFaceColor = ShapeAppearance.getDiffuseColor(0);
-                firstFaceColor.setTransparency(ShapeAppearance.getTransparency(0));
-                singleColor = singleColor && (faceColor == firstFaceColor);
+                singleColor = singleColor && color == color_i;
             }
             if (size > 0 && singleColor) {
                 color = ShapeAppearance.getDiffuseColor(0);
-                color.setTransparency(ShapeAppearance.getTransparency(0));
+                color.setTransparency(ShapeAppearance.getTransparency());
                 ret.clear();
             }
             ret["Face"] = color;
@@ -789,13 +779,17 @@ std::map<std::string, Base::Color> ViewProviderPartExt::getElementColors(const c
         else {
             int idx = atoi(element + 4);
             if (idx > 0 && idx <= size) {
-                ret[element] = ShapeAppearance.getDiffuseColor(idx - 1);
+                auto color_i = ShapeAppearance.getDiffuseColor(idx - 1);
+                color_i.setTransparency(ShapeAppearance.getTransparency(idx - 1));
+                ret[element] = color_i;
             }
             else {
-                ret[element] = ShapeAppearance.getDiffuseColor();
+                auto color_i = ShapeAppearance.getDiffuseColor();
+                color_i.setTransparency(ShapeAppearance.getTransparency());
+                ret[element] = color_i;
             }
             if (size == 1) {
-                ret[element].setTransparency(Base::fromPercent(Transparency.getValue()));
+                ret[element].setTransparency(ShapeAppearance.getTransparency());
             }
         }
     }
@@ -1063,8 +1057,7 @@ void ViewProviderPartExt::setupCoinGeometry(
     Base::TimeElapsed startTime;
 
     [[maybe_unused]]
-    int numTriangles
-        = 0,
+    int numTriangles = 0,
         numNodes = 0, numNorms = 0, numFaces = 0, numEdges = 0, numLines = 0;
 
     std::set<int> faceEdges;
@@ -1092,6 +1085,13 @@ void ViewProviderPartExt::setupCoinGeometry(
     meshParams.Angle = AngDeflectionRads;
     meshParams.InParallel = Standard_True;
     meshParams.AllowQualityDecrease = Standard_True;
+
+    // Clear triangulation and PCurves from geometry which can slow down the process
+#if OCC_VERSION_HEX < 0x070600
+    BRepTools::Clean(shape);
+#else
+    BRepTools::Clean(shape, Standard_True);
+#endif
 
     BRepMesh_IncrementalMesh(shape, meshParams);
 
@@ -1305,8 +1305,8 @@ void ViewProviderPartExt::setupCoinGeometry(
             if (edgeIdxSet.find(edgeIndex) != edgeIdxSet.end()) {
 
                 // this holds the indices of the edge's triangulation to the current polygon
-                Handle(Poly_PolygonOnTriangulation) aPoly
-                    = BRep_Tool::PolygonOnTriangulation(curEdge, mesh, aLoc);
+                Handle(Poly_PolygonOnTriangulation)
+                    aPoly = BRep_Tool::PolygonOnTriangulation(curEdge, mesh, aLoc);
                 if (aPoly.IsNull()) {
                     continue;  // polygon does not exist
                 }
@@ -1457,6 +1457,21 @@ void ViewProviderPartExt::setupCoinGeometry(
 
 void ViewProviderPartExt::updateVisual()
 {
+    TopoDS_Shape shape = getRenderedShape().getShape();
+
+    if (!VisualTouched && lastRenderedShape.IsPartner(shape)) {
+        // shape unchanged so do not rebuild geometry
+        // but still re-apply materials in case colors changed
+        Gui::SoHighlightElementAction haction;
+        haction.apply(this->faceset);
+        haction.apply(this->lineset);
+        haction.apply(this->nodeset);
+        setHighlightedFaces(ShapeAppearance.getValues());
+        setHighlightedEdges(LineColorArray.getValues());
+        setHighlightedPoints(PointColorArray.getValue());
+        return;
+    }
+
     Gui::SoUpdateVBOAction action;
     action.apply(this->faceset);
 
@@ -1473,10 +1488,8 @@ void ViewProviderPartExt::updateVisual()
     haction.apply(this->nodeset);
 
     try {
-        TopoDS_Shape cShape = getRenderedShape().getShape();
-
         setupCoinGeometry(
-            cShape,
+            shape,
             coords,
             faceset,
             norm,
@@ -1486,6 +1499,8 @@ void ViewProviderPartExt::updateVisual()
             AngularDeflection.getValue(),
             NormalsFromUV
         );
+
+        lastRenderedShape = shape;
 
         VisualTouched = false;
     }

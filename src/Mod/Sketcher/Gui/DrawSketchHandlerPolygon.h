@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchHandlerPolygon_H
-#define SKETCHERGUI_DrawSketchHandlerPolygon_H
+#pragma once
 
 #include <QApplication>
 
@@ -56,7 +57,8 @@ using DSHPolygonController = DrawSketchDefaultWidgetController<
     /*OnViewParametersT =*/OnViewParameters<4>,
     /*WidgetParametersT =*/WidgetParameters<1>,
     /*WidgetCheckboxesT =*/WidgetCheckboxes<0>,
-    /*WidgetComboboxesT =*/WidgetComboboxes<0>>;
+    /*WidgetComboboxesT =*/WidgetComboboxes<0>,
+    /*WidgetLineEditsT =*/WidgetLineEdits<0>>;
 
 using DSHPolygonControllerBase = DSHPolygonController::ControllerBase;
 
@@ -65,6 +67,8 @@ using DrawSketchHandlerPolygonBase = DrawSketchControllableHandler<DSHPolygonCon
 
 class DrawSketchHandlerPolygon: public DrawSketchHandlerPolygonBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerPolygon)
+
     friend DSHPolygonController;
     friend DSHPolygonControllerBase;
 
@@ -104,7 +108,7 @@ private:
     {
         unsetCursor();
         resetPositionText();
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add polygon"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Add polygon"));
 
         try {
             Gui::Command::doCommand(
@@ -121,7 +125,7 @@ private:
                 constructionModeAsBooleanText()
             );
 
-            Gui::Command::commitCommand();
+            commitCommand();
 
             tryAutoRecomputeIfNotSolve(sketchgui->getObject<Sketcher::SketchObject>());
         }
@@ -132,7 +136,7 @@ private:
                 QT_TRANSLATE_NOOP("Notifications", "Failed to add polygon")
             );
 
-            Gui::Command::abortCommand();
+            abortCommand();
             THROWM(
                 Base::RuntimeError,
                 QT_TRANSLATE_NOOP(
@@ -574,6 +578,3 @@ void DSHPolygonController::addConstraints()
 }
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerPolygon_H

@@ -72,24 +72,17 @@ QString BaseDelegate::getStringValue(const QModelIndex& index) const
     return propertyValue;
 }
 
-QRgb BaseDelegate::parseColor(const QString& color) const
+Color BaseDelegate::parseColor(const QString& color) const
 {
     QString trimmed = color;
     trimmed.replace(QRegularExpression(QStringLiteral("\\(([^<]*)\\)")),
                     QStringLiteral("\\1"));
     QStringList parts = trimmed.split(QStringLiteral(","));
     if (parts.length() < 3) {
-        return qRgba(0, 0, 0, 255);
+        return Color();
     }
-    int red = parts.at(0).toDouble() * 255;
-    int green = parts.at(1).toDouble() * 255;
-    int blue = parts.at(2).toDouble() * 255;
-    int alpha = 255;
-    if (parts.length() > 3) {
-        alpha = parts.at(3).toDouble() * 255;
-    }
-
-    return qRgba(red, green, blue, alpha);
+    return Color(parts.at(0).toDouble(), parts.at(1).toDouble(), parts.at(2).toDouble(),
+                 parts.length() > 3 ? parts.at(3).toDouble() : 1.0);
 }
 
 void BaseDelegate::paintQuantity(QPainter* painter,
@@ -164,23 +157,21 @@ void BaseDelegate::paintColor(QPainter* painter,
     auto propertyValue = getStringValue(index);
     painter->save();
 
-    QColor color;
-    color.setRgba(qRgba(0, 0, 0, 255));  // Black border
     int left = option.rect.left() + 2;
     int width = option.rect.width() - 4;
     if (option.rect.width() > 75) {
         left += (option.rect.width() - 75) / 2;
         width = 71;
     }
-    painter->fillRect(left, option.rect.top() + 2, width, option.rect.height() - 4, QBrush(color));
+    painter->fillRect(left, option.rect.top() + 2, width, option.rect.height() - 4, QBrush(Qt::black));
 
-    color.setRgba(parseColor(propertyValue));
     left = option.rect.left() + 5;
     width = option.rect.width() - 10;
     if (option.rect.width() > 75) {
         left += (option.rect.width() - 75) / 2;
         width = 65;
     }
+    auto color = parseColor(propertyValue).asValue<QColor>();
     painter->fillRect(left, option.rect.top() + 5, width, option.rect.height() - 10, QBrush(color));
 
     painter->restore();

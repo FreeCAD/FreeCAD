@@ -200,7 +200,7 @@
         <bool>true</bool>
        </property>
        <property name="toolTip">
-        <string>Table of tool bits of the library</string>
+        <string>Table of toolbits of the library</string>
        </property>
        <property name="frameShape">
         <enum>QFrame::Box</enum>

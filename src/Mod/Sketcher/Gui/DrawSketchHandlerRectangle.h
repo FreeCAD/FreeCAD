@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchHandlerRectangle_H
-#define SKETCHERGUI_DrawSketchHandlerRectangle_H
+#pragma once
 
 #include <QApplication>
 
@@ -68,6 +69,7 @@ using DSHRectangleController = DrawSketchDefaultWidgetController<
     /*WidgetParametersT =*/WidgetParameters<0, 0, 0, 0>,  // NOLINT
     /*WidgetCheckboxesT =*/WidgetCheckboxes<2, 2, 2, 2>,  // NOLINT
     /*WidgetComboboxesT =*/WidgetComboboxes<1, 1, 1, 1>,  // NOLINT
+    /*WidgetLineEditsT =*/WidgetLineEdits<0, 0, 0, 0>,    // NOLINT
     ConstructionMethods::RectangleConstructionMethod,
     /*bool PFirstComboboxIsConstructionMethod =*/true>;
 
@@ -78,6 +80,8 @@ using DrawSketchHandlerRectangleBase = DrawSketchControllableHandler<DSHRectangl
 
 class DrawSketchHandlerRectangle: public DrawSketchHandlerRectangleBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerRectangle)
+
     // Allow specialisations of controllers access to private members
     friend DSHRectangleController;
     friend DSHRectangleControllerBase;
@@ -499,11 +503,11 @@ private:
 
             createShape(false);
 
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch box"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch box"));
 
             commandAddShapeGeometryAndConstraints();
 
-            Gui::Command::commitCommand();
+            commitCommand();
         }
         catch (const Base::Exception&) {
             Gui::NotifyError(
@@ -512,7 +516,7 @@ private:
                 QT_TRANSLATE_NOOP("Notifications", "Failed to add box")
             );
 
-            Gui::Command::abortCommand();
+            abortCommand();
             THROWM(
                 Base::RuntimeError,
                 QT_TRANSLATE_NOOP(
@@ -798,16 +802,21 @@ private:
             && state() == SelectMode::SeekSecond) {
             setAngleSnapping(true, corner1);
         }
-        else if ((constructionMethod() == ConstructionMethod::CenterAnd3Points)
-                 && state() == SelectMode::SeekSecond) {
+        else if (
+            (constructionMethod() == ConstructionMethod::CenterAnd3Points)
+            && state() == SelectMode::SeekSecond
+        ) {
             setAngleSnapping(true, center);
         }
-        else if ((constructionMethod() == ConstructionMethod::ThreePoints)
-                 && state() == SelectMode::SeekThird) {
+        else if (
+            (constructionMethod() == ConstructionMethod::ThreePoints) && state() == SelectMode::SeekThird
+        ) {
             setAngleSnapping(true, cornersReversed ? corner4 : corner2);
         }
-        else if ((constructionMethod() == ConstructionMethod::CenterAnd3Points)
-                 && state() == SelectMode::SeekThird) {
+        else if (
+            (constructionMethod() == ConstructionMethod::CenterAnd3Points)
+            && state() == SelectMode::SeekThird
+        ) {
             setAngleSnapping(true, corner1);
         }
 
@@ -837,8 +846,10 @@ private:
                 if (state() == SelectMode::SeekSecond && !roundCorners && !makeFrame) {
                     setState(SelectMode::End);
                 }
-                else if ((state() == SelectMode::SeekThird && roundCorners && !makeFrame)
-                         || (state() == SelectMode::SeekThird && !roundCorners && makeFrame)) {
+                else if (
+                    (state() == SelectMode::SeekThird && roundCorners && !makeFrame)
+                    || (state() == SelectMode::SeekThird && !roundCorners && makeFrame)
+                ) {
                     setState(SelectMode::End);
                 }
                 else if (state() == SelectMode::SeekFourth) {
@@ -852,8 +863,10 @@ private:
                 if (state() == SelectMode::SeekThird && !roundCorners && !makeFrame) {
                     setState(SelectMode::End);
                 }
-                else if ((state() == SelectMode::SeekFourth && roundCorners && !makeFrame)
-                         || (state() == SelectMode::SeekFourth && !roundCorners && makeFrame)) {
+                else if (
+                    (state() == SelectMode::SeekFourth && roundCorners && !makeFrame)
+                    || (state() == SelectMode::SeekFourth && !roundCorners && makeFrame)
+                ) {
                     setState(SelectMode::End);
                 }
                 else {
@@ -2846,8 +2859,9 @@ void DSHRectangleController::computeNextDrawSketchHandlerMode()
                         handler->setNextState(SelectMode::End);
                     }
                 }
-                else if (handler->makeFrame
-                         && onViewParameters[OnViewParameter::Sixth]->hasFinishedEditing) {
+                else if (
+                    handler->makeFrame && onViewParameters[OnViewParameter::Sixth]->hasFinishedEditing
+                ) {
 
                     handler->setNextState(SelectMode::End);
                 }
@@ -2882,8 +2896,9 @@ void DSHRectangleController::computeNextDrawSketchHandlerMode()
                         handler->setNextState(SelectMode::End);
                     }
                 }
-                else if (handler->makeFrame
-                         && onViewParameters[OnViewParameter::Eighth]->hasFinishedEditing) {
+                else if (
+                    handler->makeFrame && onViewParameters[OnViewParameter::Eighth]->hasFinishedEditing
+                ) {
                     handler->setNextState(SelectMode::End);
                 }
             }
@@ -3153,6 +3168,3 @@ void DSHRectangleController::doConstructionMethodChanged()
 }
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerRectangle_H

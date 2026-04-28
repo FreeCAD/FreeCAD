@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 
 add_subdirectory(App)
 if(BUILD_GUI)
@@ -62,6 +63,7 @@ set(PartDesign_TestScripts
 if(BUILD_GUI)
     list(APPEND PartDesign_TestScripts
         PartDesignTests/TestMaterial.py
+        PartDesignTests/TestSuppressed.py
     )
 endif(BUILD_GUI)
 

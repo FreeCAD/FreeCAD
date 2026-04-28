@@ -150,25 +150,29 @@ void TaskImage::changeTransparency(int val)
     }
 }
 
-void TaskImage::changeWidth(double val)
+void TaskImage::changeWidth()
 {
     if (!feature.expired()) {
+        double val = ui->spinBoxWidth->value().getValue();
         feature->XSize.setValue(val);
 
         if (ui->checkBoxRatio->isChecked()) {
-            QSignalBlocker block(ui->spinBoxWidth);
+            feature->YSize.setValue(val / aspectRatio);
+            QSignalBlocker block(ui->spinBoxHeight);
             ui->spinBoxHeight->setValue(val / aspectRatio);
         }
     }
 }
 
-void TaskImage::changeHeight(double val)
+void TaskImage::changeHeight()
 {
     if (!feature.expired()) {
+        double val = ui->spinBoxHeight->value().getValue();
         feature->YSize.setValue(val);
 
         if (ui->checkBoxRatio->isChecked()) {
-            QSignalBlocker block(ui->spinBoxHeight);
+            feature->XSize.setValue(val * aspectRatio);
+            QSignalBlocker block(ui->spinBoxWidth);
             ui->spinBoxWidth->setValue(val * aspectRatio);
         }
     }

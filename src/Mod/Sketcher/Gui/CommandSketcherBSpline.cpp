@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2017 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -359,6 +361,9 @@ bool isCommandNeedingBSplineKnotActive(Gui::Document* doc)
         }
 
         auto* Obj = static_cast<Sketcher::SketchObject*>(sel[0].getObject());
+        if (!Obj) {
+            return false;
+        }
         const std::string& name = names[0];
 
         int geoId {GeoEnum::GeoUndef};
@@ -845,7 +850,7 @@ public:
     {
         Q_UNUSED(onSketchPos);
 
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Insert knot"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Insert knot"));
 
         bool applied = false;
         boost::uuids::uuid bsplinetag = Obj->getGeometry(GeoId)->getTag();
@@ -910,10 +915,10 @@ public:
         }
 
         if (applied) {
-            Gui::Command::commitCommand();
+            commitCommand();
         }
         else {
-            Gui::Command::abortCommand();
+            abortCommand();
         }
 
         tryAutoRecomputeIfNotSolve(Obj);
@@ -1157,7 +1162,7 @@ void CmdSketcherJoinCurves::activated(int iMsg)
         }
     }
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Join Curves"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Join Curves"));
     bool applied = false;
 
     try {
@@ -1185,10 +1190,10 @@ void CmdSketcherJoinCurves::activated(int iMsg)
     }
 
     if (applied) {
-        Gui::Command::commitCommand();
+        commitCommand();
     }
     else {
-        Gui::Command::abortCommand();
+        abortCommand();
     }
 
     tryAutoRecomputeIfNotSolve(Obj);

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
   tag: Erwin Aertbelien  Mon Jan 10 16:38:39 CET 2005  trajectory.h
 
@@ -54,8 +56,7 @@
  *     CONSEQUENCE : everything has to be declared public.
  ****************************************************************************/
 
-#ifndef TRAJECTORY_H
-#define TRAJECTORY_H
+#pragma once
 
 #include "frames.hpp"
 #include "frames_io.hpp"
@@ -106,6 +107,3 @@ namespace KDL {
 
 
 }
-
-
-#endif

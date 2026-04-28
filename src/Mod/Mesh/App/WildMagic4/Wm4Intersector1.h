@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4INTERSECTOR1_H
-#define WM4INTERSECTOR1_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4Math.h"
@@ -73,5 +72,3 @@ typedef Intersector1<float> Intersector1f;
 typedef Intersector1<double> Intersector1d;
 
 }
-
-#endif

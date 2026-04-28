@@ -36,7 +36,6 @@ import FreeCADGui as Gui
 import femsolver.report
 import femsolver.run
 
-
 _UPDATE_INTERVAL = 50
 _REPORT_TITLE = "Run Report"
 _REPORT_ERR = "Failed to run. Please try again after all of the following errors are resolved."
