@@ -761,9 +761,7 @@ class _ViewProviderAxis:
                 pla_inv = obj.Placement.inverse()
                 for i in range(n):
                     if obj.Labels[i]:
-                        vert = pla_inv.multVec(
-                            obj.Shape.Edges[i * i_factor].Vertexes[0].Point
-                        )
+                        vert = pla_inv.multVec(obj.Shape.Edges[i * i_factor].Vertexes[0].Point)
                         if hasattr(vobj, "LabelOffset"):
                             pl = FreeCAD.Placement(vobj.LabelOffset)
                             pl.Base = vert.add(pl.Base)
