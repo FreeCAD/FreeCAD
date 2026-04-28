@@ -147,7 +147,7 @@ App::DocumentObjectExecReturn* Pipe::execute()
             );
         }
     };
-    
+
 
     std::vector<std::vector<Part::TopoShape>> wiresections;
 
@@ -497,7 +497,8 @@ App::DocumentObjectExecReturn* Pipe::execute()
 
         if (!result.countSubShapes(TopAbs_SHELL)) {
             return new App::DocumentObjectExecReturn(
-                QT_TRANSLATE_NOOP("Exception", "Loft: Failed to create shell") // isn't the prefix supposed to be "Pipe:"
+                QT_TRANSLATE_NOOP("Exception", "Loft: Failed to create shell")  // isn't the prefix
+                                                                                // supposed to be "Pipe:"
             );
         }
 
